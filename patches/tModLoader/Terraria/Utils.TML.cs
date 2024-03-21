@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
+using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Chat;
 using Terraria.Utilities;
 
 namespace Terraria;
@@ -220,5 +224,34 @@ partial class Utils
 			Console.WriteLine("ERROR: " + message);
 			Console.ResetColor();
 		}
+	}
+
+	internal static string CleanChatTags(string text)
+	{
+		return string.Join("", ChatManager.ParseMessage(text, Color.White)
+				.Where(x => x.GetType() == typeof(TextSnippet))
+				.Select(x => x.Text));
+	}
+
+	internal static void HandleSaveErrorMessageLogging(NetworkText message, bool broadcast)
+	{
+		Utils.LogAndConsoleInfoMessage(message.ToString());
+		if (Main.gameMenu && Main.menuMode == 10) {
+			// Save and Quit. Due to multithreading we need to queue up the message window instead of Interface.errorMessage.Show immediately.
+			Interface.pendingErrorMessages.Push(message.ToString());
+		}
+		else if (!Main.gameMenu) {
+			// In-game autosave
+			if (broadcast)
+				ChatHelper.BroadcastChatMessage(message, Color.OrangeRed); // Handles SP and Server cases.
+			else
+				Main.NewText(message, Color.OrangeRed);
+		}
+	}
+
+	internal static NetworkText CreateSaveErrorMessage(string localizationKey, Dictionary<string, string> errors, bool doubleNewline = false)
+	{
+		string separator = doubleNewline ? "\n\n" : "\n";
+		return NetworkText.FromKey(localizationKey, separator + string.Join(separator, errors.Select(x => $"{x.Key}:\n{x.Value}")));
 	}
 }

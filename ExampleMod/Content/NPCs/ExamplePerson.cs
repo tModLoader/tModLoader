@@ -310,7 +310,7 @@ namespace ExampleMod.Content.NPCs
 				.Add<Items.Weapons.ExampleSword>(Condition.MoonPhasesQuarter0)
 				//.Add<ExampleGun>(Condition.MoonPhasesQuarter1)
 				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
-				//.Add<ExampleStaff>(Condition.MoonPhasesQuarter2)
+				.Add<Items.Weapons.ExampleStaff>(ExampleConditions.DownedMinionBoss)
 				.Add<ExampleOnBuyItem>()
 				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 

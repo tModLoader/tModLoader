@@ -8,12 +8,13 @@
  using System.Threading;
  using System.Threading.Tasks;
  using Microsoft.Xna.Framework;
-@@ -22,13 +_,15 @@
+@@ -22,13 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
++using Terraria.ModLoader.Exceptions;
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -25,6 +26,16 @@
  {
  	public static class WorldSize
  	{
+@@ -923,6 +_,9 @@
+ 	public static bool noMapUpdateRefresh = false;
+ 	private static bool skipFramingDuringGen = false;
+ 
++	/// <summary>
++	/// The random number generator for world generation. It is important to use this instead of <see cref="Main.rand"/> for all world generation randomness to make the world seed feature reliable.
++	/// </summary>
+ 	public static UnifiedRandom genRand {
+ 		get {
+ 			if (_lastSeed != _genRandSeed) {
 @@ -989,6 +_,7 @@
  		list.Add(new Point16(105, 37));
  		list.Add(new Point16(105, 2));
@@ -251,7 +262,22 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
-@@ -2633,21 +_,48 @@
+@@ -2624,30 +_,62 @@
+ 					worldBackup = false;
+ 
+ 				if (!Main.dedServ) {
++					// If the loading error is mod related, show the exception, then back to the load backup/load failed menus.
++					if (WorldFile.LastThrownLoadException is CustomModDataException ex) {
++						WorldIO.customDataFail = ex;
++						Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.WorldIOException")}\n{ex.modName}\n\n{ex.Message}\n{ex.StackTrace}", worldBackup ? 200 : 201);
++						return;
++					}
+ 					if (worldBackup)
+ 						Main.menuMode = 200;
+ 					else
+ 						Main.menuMode = 201;
+-
+ 					return;
  				}
  
  				if (!worldBackup) {
@@ -370,6 +396,21 @@
  		worldCleared = true;
  	}
  
+@@ -4881,6 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the provided tile coordinates are within the world bounds.
++	/// <para/>When dealing with random coordinates combined with addition or subtraction, there is a chance you might construct coordinates outside the bounds of the world. This will crash world generation, so it is important that you check that the coordinates are suitable before attempting to do things at those coordinates. Use this method to check if the given coordinates fall inside the world. The fluff parameter further checks that the coordinates are at least that many tiles away from the edge, which is useful for world generation actions that could affect large areas of tiles.
++	/// </summary>
++	/// <param name="x"></param>
++	/// <param name="y"></param>
++	/// <param name="fluff"></param>
++	/// <returns></returns>
+ 	public static bool InWorld(int x, int y, int fluff = 0)
+ 	{
+ 		if (x < fluff || x >= Main.maxTilesX - fluff || y < fluff || y >= Main.maxTilesY - fluff)
 @@ -5231,17 +_,17 @@
  
  	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)
@@ -626,6 +667,24 @@
  		if (!item.Prefix(-3))
  			return;
  
+@@ -15349,6 +_,17 @@
+ 	public static Point RandomRectanglePoint(Rectangle rectangle) => new Point(genRand.Next(rectangle.X, rectangle.X + rectangle.Width), genRand.Next(rectangle.Y, rectangle.Y + rectangle.Height));
+ 	public static Point RandomRectanglePoint(int x, int y, int width, int height) => new Point(genRand.Next(x, x + width), genRand.Next(y, y + height));
+ 	public static Point RandomWorldPoint(int padding) => RandomWorldPoint(padding, padding, padding, padding);
++	/// <summary>
++	/// Generates a random tile coordinate within the world bounds. The optional parameters define additional padding, avoiding the edges or defining a target area.
++	/// <para/> <c>Point point = WorldGen.RandomWorldPoint((int)Main.worldSurface, 40, 500, 60)</c> is equivalent to <code>int x = WorldGen.genRand.Next(60, Main.maxTilesX - 40);
++	/// int y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY - 500);
++	/// </code>
++	/// </summary>
++	/// <param name="top"></param>
++	/// <param name="right"></param>
++	/// <param name="bottom"></param>
++	/// <param name="left"></param>
++	/// <returns></returns>
+ 	public static Point RandomWorldPoint(int top = 0, int right = 0, int bottom = 0, int left = 0) => new Point(genRand.Next(left, Main.maxTilesX - right), genRand.Next(top, Main.maxTilesY - bottom));
+ 
+ 	public static bool GrowPalmTree(int i, int y)
 @@ -15357,7 +_,7 @@
  		if (!InWorld(i, y))
  			return false;
@@ -901,6 +960,25 @@
  									flag2 = true;
  									break;
  								}
+@@ -25584,6 +_,18 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to place a chest and fill it with typical loot according to the style (<paramref name="Style"/>) and depth. Without any parameters, a regular, gold, or locked shadow chest will be created, depending on the depth. You can pass in an item type (<paramref name="contain"/>) and the first item in the chest will be that item. Unlike <see cref="PlaceChest(int, int, ushort, bool, int)"/>, the resulting chest will be placed with the bottom right corner at the given coordinates (<paramref name="i"/>, <paramref name="j"/>). In addition, if the given <paramref name="j"/> coordinate isn't suitable, AddBuriedChest will search down from the given coordinate to find the first solid tile it encounters and attempt to place there. This method returns true if a chest was successfully placed, but be aware that the chest might not be exactly at the coordinates you provide. This makes further adjusting the chest contents directly difficult.
++	/// <para/> A video guide can be found on the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#terrariaworldgen-public-static-void-tilerunnerint-i-int-j-double-strength-int-steps-int-type-bool-addtile--false-float-speedx--0f-float-speedy--0f-bool-noychange--false-bool-override--true">World Generation wiki page</see>. It shows an example of running the method with the default parameters <c>WorldGen.AddBuriedChest(x, y);</c>. Notice how the chest style changes according to depth and how the chest is placed on the floor directly below the provided coordinates if possible.
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="contain"></param>
++	/// <param name="notNearOtherChests"></param>
++	/// <param name="Style"></param>
++	/// <param name="trySlope"></param>
++	/// <param name="chestTileType"></param>
++	/// <returns></returns>
+ 	public static bool AddBuriedChest(int i, int j, int contain = 0, bool notNearOtherChests = false, int Style = -1, bool trySlope = false, ushort chestTileType = 0)
+ 	{
+ 		if (chestTileType == 0)
 @@ -26845,9 +_,10 @@
  			Main.tile[i, j] = new Tile();
  
@@ -1222,6 +1300,22 @@
  
  		switch (type) {
  			case 42: {
+@@ -31578,6 +_,15 @@
+ 		destroyObject = false;
+ 	}
+ 
++	/// <summary>
++	/// Places <see cref="TileID.SmallPiles"/> tiles. This tile is special and doesn't follow the normal style rules and won't place with PlaceTile. i and j are the coordinates. X and Y are the count and row indexes of the specific tile in the texture file. Indexes count from left to right and start at 0. So for example the Sapphire Stash would have Y=1 (second row) and X=21 (22nd 2x1 tile).
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="X"></param>
++	/// <param name="Y"></param>
++	/// <param name="type"></param>
++	/// <returns></returns>
+ 	public static bool PlaceSmallPile(int i, int j, int X, int Y, ushort type = 185)
+ 	{
+ 		short frameY = (short)(Y * 18);
 @@ -31653,7 +_,7 @@
  
  			int num = tile.frameX / 18;
@@ -1352,6 +1446,22 @@
  
  		int num14 = 0;
  		switch (type) {
+@@ -33602,6 +_,15 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="TileRunner(int, int, double, int, int, bool, double, double, bool, bool, int)"/>, but without many of the options. OreRunner places small splotches of the specified tile (<paramref name="type"/>) starting at the coordinates (<paramref name="i"/> and <paramref name="j"/> in tile coordinates). OreRunner only replaces active tiles (<see cref="Tile.HasTile"/>) that are either <see cref="TileID.Sets.CanBeClearedDuringOreRunner"/> or <see cref="Main.tileMoss"/>, making it suitable to be used even after FrameImportant tiles (<see cref="Main.tileFrameImportant"/>) exist in the world.
++	/// <para/> If you have a tile that should be susceptible to being replaced when additional ores are spawned in the world, set <see cref="TileID.Sets.CanBeClearedDuringOreRunner"/> to true for that ModTile. Vanilla code only uses this method when spawning hardmode ores. This method is suitable for use in-game and in multiplayer as it both frames and syncs tile changes.
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="strength"></param>
++	/// <param name="steps"></param>
++	/// <param name="type"></param>
+ 	public static void OreRunner(int i, int j, double strength, int steps, ushort type)
+ 	{
+ 		double num = strength;
 @@ -33636,7 +_,13 @@
  
  			for (int k = num3; k < num4; k++) {
@@ -1873,7 +1983,27 @@
  
  		switch (num4) {
  			case 0:
-@@ -40953,6 +_,10 @@
+@@ -40927,6 +_,19 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to place a chest at the given tile coordinates. The coordinate provided (<paramref name="x"/>, <paramref name="y"/>) will be the bottom left corner of the resulting chest, if the method succeeds. <paramref name="type"/> is the tile type to place, and <paramref name="style"/> is the tile style to place.
++	/// <para/> For vanilla chests, you can count from zero starting from the left in the <c>Tiles_21.png</c> image after <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Prerequisites#vanilla-texture-file-reference">extracting the vanilla textures</see> to find the style you want to place. Another option is to follow the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#tile-ids">Tile IDs wiki guide</see> to find the style.
++	/// <para/> <paramref name="notNearOtherChests"/> can be set to true to prevent the chest from placing if another chest exists within 25 tiles left or right and 8 tiles up or down. This method returns the chest index (the index within <see cref="Main.chest"/>) of the chest that was successfully placed or -1 if placing the chest failed. Chest placement can fail for many reasons, such as if existing tiles block the space, or if there isn't 2 suitable solid tiles directly below the intended location.
++	/// <para/> See the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#try-until-success">"Try Until Success" section of the World Generation wiki guide</see> for an approach to using this method. See the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#try-until-success">"Placing Items in Chests" section of the World Generation wiki guide</see> for info on placing items in the chest.
++	/// <para/> The <see cref="AddBuriedChest(int, int, int, bool, int, bool, ushort)"/> method places a chest and fills it with the default items for that chest.
++	/// </summary>
++	/// <param name="x"></param>
++	/// <param name="y"></param>
++	/// <param name="type"></param>
++	/// <param name="notNearOtherChests"></param>
++	/// <param name="style"></param>
++	/// <returns></returns>
+ 	public static int PlaceChest(int x, int y, ushort type = 21, bool notNearOtherChests = false, int style = 0)
+ 	{
+ 		int num = -1;
+@@ -40953,9 +_,16 @@
  		if (num != -1 && Main.netMode == 1 && type == 467)
  			NetMessage.SendData(34, -1, -1, null, 4, x, y, style);
  
@@ -1884,6 +2014,12 @@
  		return num;
  	}
  
++	/// <summary>
++	/// Used for network syncing. Modders should use <see cref="PlaceChest(int, int, ushort, bool, int)"/> if attempting to place a chest.
++	/// </summary>
+ 	public static void PlaceChestDirect(int x, int y, ushort type, int style, int id)
+ 	{
+ 		Chest.CreateChest(x, y - 1, id);
 @@ -41066,6 +_,7 @@
  
  		int chestItemDrop = GetChestItemDrop(i, j, type);
@@ -1900,7 +2036,27 @@
  
  		Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, chestItemDrop);
  		destroyObject = false;
-@@ -42137,8 +_,10 @@
+@@ -42131,14 +_,30 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// PlaceTile is the main way to place individual tiles while obeying anchor considerations. Most of the other PlaceX methods in the WorldGen class are called by this method. i and j are the tile coordinates. These coordinates relate to the origin of the tile, not necessarily the top left corner of the tile. Read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">the Basic Tile wiki guide</see> to familiarize yourself with the concepts of Anchors and Origins. <paramref name="mute"/> indicates if a sound should be made, this only applies to in-game usage as sounds are all muted during world gen. <paramref name="forced"/> attempts to place the tile even if other tiles are already at the coordinates, but it is unreliable. <paramref name="plr"/> does nothing except affect bathtubs. <paramref name="style"/> refers to the style of the tile type provided. Styles are explained in the Basic Tile guide.
++	/// <para/> PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <c>if(Main.tile[x, y].type == TileID.Campfire)</c>
++	/// <para/> PlaceTile doesn't expose everything. For example, attempting to place a tile with a specific style will be ignored by many of the underlying methods. Another issue is that it is impossible to place a tile that has left and right placement orientations facing right. In these situations, you might need to manually place each tile in the multitile or use <see cref="PlaceObject(int, int, int, bool, int, int, int, int)"/> instead. WorldGen.PlaceObject requires more input. For example, placing Coral with PlaceObject means you have to manually specify the style, as the random style (<see cref="TileObjectData.RandomStyleRange"/>) choosing is a feature of PlaceTile.
++	/// <para/> 
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="Type"></param>
++	/// <param name="mute"></param>
++	/// <param name="forced"></param>
++	/// <param name="plr"></param>
++	/// <param name="style"></param>
++	/// <returns></returns>
+ 	public static bool PlaceTile(int i, int j, int Type, bool mute = false, bool forced = false, int plr = -1, int style = 0)
+ 	{
+ 		int num = Type;
  		if (gen && Main.tile[i, j].active() && Main.tile[i, j].type == 488)
  			return false;
  
@@ -2600,6 +2756,17 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -55722,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Places small splotches of the specified tile starting at the designated coordinates. This should only be used early in world generation code. <see cref="OreRunner(int, int, double, int, ushort)"/> is a safer version that can be used anytime without corrupting tiles.
++	/// <para/> More detailed information and a video guide can be found on the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#terrariaworldgen-public-static-void-tilerunnerint-i-int-j-double-strength-int-steps-int-type-bool-addtile--false-float-speedx--0f-float-speedy--0f-bool-noychange--false-bool-override--true">World Generation wiki page</see>
++	/// </summary>
+ 	public static void TileRunner(int i, int j, double strength, int steps, int type, bool addTile = false, double speedX = 0.0, double speedY = 0.0, bool noYChange = false, bool overRide = true, int ignoreTileType = -1)
+ 	{
+ 		if (!GenVars.mudWall) {
 @@ -58741,7 +_,7 @@
  			Main.tile[x, y + 1] = new Tile();
  
@@ -2928,6 +3095,15 @@
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}
+@@ -63321,7 +_,7 @@
+ 			currentMerge = -1;
+ 	}
+ 
+-	private static bool SpawnFallingBlockProjectile(int i, int j, Tile tileCache, Tile tileTopCache, Tile tileBottomCache, int type)
++	public static bool SpawnFallingBlockProjectile(int i, int j, Tile tileCache, Tile tileTopCache, Tile tileBottomCache, int type)
+ 	{
+ 		if (Main.netMode == 1)
+ 			return false;
 @@ -63615,7 +_,8 @@
  		if (!SolidTile(tile) || !SolidTile(tile2)) {
  			flag = true;
@@ -2962,6 +3138,26 @@
  			}
  
  			destroyObject = false;
+@@ -63712,6 +_,7 @@
+ 	private static void GetSandfallProjData(int type, out int projType, out int dmg)
+ 	{
+ 		dmg = 10;
++		/*
+ 		switch (type) {
+ 			case 112:
+ 				projType = 56;
+@@ -63753,6 +_,11 @@
+ 			default:
+ 				projType = 31;
+ 				break;
++		*/
++		projType = 31;
++		if (TileID.Sets.FallingBlockProjectile[type] is TileID.Sets.FallingBlockProjectileInfo data) {
++			projType = data.FallingProjectileType;
++			dmg = data.FallingProjectileDamage;
+ 		}
+ 	}
+ 
 @@ -63768,7 +_,7 @@
  
  		if (!tile.nactive())

@@ -17,3 +17,11 @@
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
  			{
  				759,
+@@ -101,6 +_,7 @@
+ 	public static int Coin = 71;
+ 	public static int FallenStar = 75;
+ 	public static int Bullet = 97;
++	/// <summary> Items using this as <see cref="Item.ammo"/> can use <see cref="ItemID.Sets.SandgunAmmoProjectileData"/> to customize the projectile and bonus damage of this ammo. </summary>
+ 	public static int Sand = 169;
+ 	public static int Dart = 283;
+ 	public static int Rocket = 771;

@@ -64,7 +64,7 @@ internal class UIModItem : UIPanel
 		Height.Pixels = 90;
 		Width.Percent = 1f;
 		SetPadding(6f);
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(_mod.DisplayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
+		DisplayNameClean = _mod.DisplayNameClean;
 	}
 
 	public override void OnInitialize()
@@ -229,11 +229,7 @@ internal class UIModItem : UIPanel
 			Append(_keyImage);
 		}
 
-		if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
-			BackgroundColor = Color.MediumPurple * 0.7f;
-			modFromLocalModFolder = true;
-		}
-		else {
+		if (_mod.location == ModLocation.Workshop) {
 			var steamIcon = new UIImage(TextureAssets.Extra[243]) {
 				Left = { Pixels = -22, Percent = 1f }
 			};
@@ -265,7 +261,7 @@ internal class UIModItem : UIPanel
 				_uiModStateText.LeftClick(e);
 		};
 
-		if (!_loaded) {
+		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
 			bottomRightRowOffset -= 36;
 			_deleteModButton = new UIImage(TextureAssets.Trash) {
 				Width = { Pixels = 36 },
@@ -290,6 +286,21 @@ internal class UIModItem : UIPanel
 
 			Append(updatedModDot);
 		}
+
+		if (loadedMod != null && (_mod.modFile.path != loadedMod.File.path)) {
+			var serverDiffMessage = new UITextPanel<string>($"v{loadedMod.Version} currently loaded due to multiplayer game session") {
+				Left = new StyleDimension(0, 0f),
+				Width = new StyleDimension(0, 1f),
+				Height = new StyleDimension(30, 0f),
+				BackgroundColor = Color.Orange,
+				Top = { Pixels = 82 }
+			};
+			Append(serverDiffMessage);
+
+			Height.Pixels = 130;
+		}
+
+		SetHoverColors(hovered: false);
 	}
 
 	// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
@@ -380,19 +391,22 @@ internal class UIModItem : UIPanel
 	public override void MouseOver(UIMouseEvent evt)
 	{
 		base.MouseOver(evt);
-		BackgroundColor = UICommon.DefaultUIBlue;
-		BorderColor = new Color(89, 116, 213);
-		if(modFromLocalModFolder)
-			BackgroundColor = Color.MediumPurple;
+		SetHoverColors(hovered: true);
 	}
 
 	public override void MouseOut(UIMouseEvent evt)
 	{
 		base.MouseOut(evt);
-		BackgroundColor = new Color(63, 82, 151) * 0.7f;
-		BorderColor = new Color(89, 116, 213) * 0.7f;
-		if (modFromLocalModFolder)
-			BackgroundColor = Color.MediumPurple * 0.7f;
+		SetHoverColors(hovered: false);
+	}
+
+	private void SetHoverColors(bool hovered)
+	{
+		BorderColor = hovered ? new Color(89, 116, 213) : new Color(89, 116, 213) * 0.7f;
+		if (_mod.location == ModLocation.Local)
+			BackgroundColor = hovered ? Color.MediumPurple : Color.MediumPurple * 0.7f;
+		else
+			BackgroundColor = hovered ? UICommon.DefaultUIBlueMouseOver : UICommon.DefaultUIBlue;
 	}
 
 	private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement)

@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,321 @@
+@@ -66,76 +_,324 @@
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
@@ -189,7 +189,10 @@
  	public float light;
 +
 +	/// <summary>
-+	/// Set manually to true in <see cref="ModProjectile.AI"/> once to make it sync its current <see cref="ai"/>[] array to the server and other clients (depending on what the <see cref="Main.netMode"/> is where this is set to true)
++	/// Set to true in <see cref="ModProjectile.AI"/> or other suitable places to trigger the Projectile syncing code (<see cref="MessageID.SyncProjectile"/>). This will sync position, velocity, damage, knockback, and other data about this Projectile to the server and other clients. This also includes modded data from <see cref="ModProjectile.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="GlobalProjectile.SendExtraAI(Projectile, ModLoader.IO.BitWriter, System.IO.BinaryWriter)"/>.
++	/// <para/> Use this to sync changes that happen only on the owners game, such as responding to player mouse and keyboard input or non-Deterministic logic such as random choices. Consulting similar Terraria aiStyle code and following that usage is usually a good idea.
++	/// <para/> netUpdate only has effect for the Projectile owner. Projectiles owned by clients will sync data from the owner to the server and the server will relay that data to the other clients. Projectiles owned by the server will send their data to all clients.
++	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode wiki page</see> goes into more details and links to examples.
 +	/// </summary>
  	public bool netUpdate;
 +
@@ -1761,6 +1764,31 @@
  				AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  			ai[1] = 0f;
+@@ -56364,6 +_,16 @@
+ 					int num1023 = (int)(position.Y + (float)(height / 2)) / 16;
+ 					int num1024 = 0;
+ 					int num1025 = 2;
++
++					if (ProjectileID.Sets.FallingBlockTileItem[type] is ProjectileID.Sets.FallingBlockTileItemInfo data) {
++						num1024 = data.TileType;
++						num1025 = data.ItemType;
++					}
++
++					if (type == 31 && ai[0] == 2f) // Antlion
++						num1025 = 0;
++
++					/*
+ 					if (type == 109) {
+ 						num1024 = 147;
+ 						num1025 = 0;
+@@ -56455,6 +_,7 @@
+ 						num1024 = 495;
+ 						num1025 = 4090;
+ 					}
++					*/
+ 
+ 					if (type == 109) {
+ 						int num1026 = Player.FindClosest(position, width, height);
 @@ -56584,15 +_,23 @@
  					x2 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					y8 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
