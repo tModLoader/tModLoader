@@ -281,6 +281,7 @@ public static class ModNet
 		}
 
 		if (needsReload) {
+			NetReloadKeepAliveTimer.Restart();
 			// If needsReload, show the ServerModsDifferMessage UI.
 			string continueButtonText = Language.GetTextValue("tModLoader." + (downloadQueue.Count > 0 ? "ReloadRequiredDownloadAndContinue" : "ReloadRequiredReloadAndContinue"));
 			Interface.serverModsDifferMessage.Show(

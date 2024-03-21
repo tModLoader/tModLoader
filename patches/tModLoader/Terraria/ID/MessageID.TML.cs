@@ -19,7 +19,7 @@ partial class MessageID
 	public const byte ModPacket = 250;
 
 	// Sent instead of LoadPlayer for non-vanilla clients {
-	//    value of ModNet.AllowVanillaClients is synchronised for common net spec
+	//    value of ModNet.AllowVanillaClients is synchronized for common net spec
 	//    list of all mods loaded on the server with side == Both {name, version, hash, isBrowserSigned}
 	// }
 	// The client then enables/disables mods to ensure a matching mod set
@@ -29,9 +29,9 @@ partial class MessageID
 	// when the server receives SyncMods, it sends ModPacket with the netIDs and then LoadPlayer
 	public const byte SyncMods = 251;
 
-	// The server recieves the name of one of the mods sent in SyncMods
+	// The server receives the name of one of the mods sent in SyncMods
 	// Sends one packet containing the display name and length, then a series of packets containing up to 64k bytes containing the contents of the file
-	// Client displays the downloading mod UI when it recieves the first packet with display name and length
+	// Client displays the downloading mod UI when it receives the first packet with display name and length
 	// Once the file is downloaded, the client either sends a request for the next file, or reloads and sends SyncMods
 	public const byte ModFile = 252;
 
