@@ -39,11 +39,6 @@ namespace ExampleMod.Content.Items.Tools
 			chainTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Items/Tools/ExampleHookChain");
 		}
 
-		public override void Unload() { // This is called once on mod reload when this piece of content is being unloaded.
-			// It's currently pretty important to unload your static fields like this, to avoid having parts of your mod remain in memory when it's been unloaded.
-			chainTexture = null;
-		}
-
 		/*
 		public override void SetStaticDefaults() {
 			// If you wish for your hook projectile to have ONE copy of it PER player, uncomment this section.
