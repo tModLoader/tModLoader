@@ -29,7 +29,7 @@ public static class ModLoader
 {
 	// Stores the most recent version of tModLoader launched. Can be used for migration.
 	public static Version LastLaunchedTModLoaderVersion;
-	// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
+	// Stores the most recent sha for a launched official preview build. Used for ShowWhatsNew
 	public static string LastLaunchedTModLoaderAlphaSha;
 	public static bool ShowWhatsNew;
 	public static bool PreviewFreezeNotification;
@@ -353,7 +353,7 @@ public static class ModLoader
 
 		Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 		Main.Configuration.Put(nameof(BetaUpgradeWelcomed144), BetaUpgradeWelcomed144);
-		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.IsPreview && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
