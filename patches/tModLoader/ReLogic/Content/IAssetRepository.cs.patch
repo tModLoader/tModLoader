@@ -8,7 +8,7 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -16,7 +_,32 @@
+@@ -16,7 +_,33 @@
  
  	void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
  
