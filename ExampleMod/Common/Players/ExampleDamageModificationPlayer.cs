@@ -162,7 +162,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		private bool TeammateCanAbsorbDamage() {
-			foreach (var otherPlayer in Main.activePlayers) {
+			foreach (var otherPlayer in Main.ActivePlayers) {
 				if (otherPlayer.whoAmI != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, Player.team)) {
 					return true;
 				}
@@ -190,7 +190,7 @@ namespace ExampleMod.Common.Players
 				return false; // player we're out of range, so can't take the hit
 			}
 
-			foreach (var otherPlayer in Main.activePlayers) {
+			foreach (var otherPlayer in Main.ActivePlayers) {
 				if (otherPlayer.whoAmI != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, team)) {
 					float otherPlayerDistance = otherPlayer.Distance(target);
 					if (distance > otherPlayerDistance || (distance == otherPlayerDistance && otherPlayer.whoAmI < Main.myPlayer)) {

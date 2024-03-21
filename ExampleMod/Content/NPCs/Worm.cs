@@ -251,14 +251,14 @@ namespace ExampleMod.NPCs
 
 					// Ensure that all of the segments could spawn.  If they could not, despawn the worm entirely
 					int count = 0;
-					foreach (var n in Main.activeNpcs) {
+					foreach (var n in Main.ActiveNPCs) {
 						if ((n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI)
 							count++;
 					}
 
 					if (count != randomWormLength) {
 						// Unable to spawn all of the segments... kill the worm
-						foreach (var n in Main.activeNpcs) {
+						foreach (var n in Main.ActiveNPCs) {
 							if ((n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI) {
 								n.active = false;
 								n.netUpdate = true;
@@ -322,7 +322,7 @@ namespace ExampleMod.NPCs
 
 				bool tooFar = true;
 
-				foreach (var player in Main.activePlayers) {
+				foreach (var player in Main.ActivePlayers) {
 					Rectangle areaCheck;
 
 					if (ForcedTargetPosition is Vector2 target)

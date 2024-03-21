@@ -80,9 +80,10 @@ public partial class Main
 	/// </summary>
 	public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
-	public static ActiveEntityIterator<Player> activePlayers => new ActiveEntityIterator<Player>();
-	public static ActiveEntityIterator<NPC> activeNpcs => new ActiveEntityIterator<NPC>();
-	public static ActiveEntityIterator<Projectile> activeProjectiles => new ActiveEntityIterator<Projectile>();
+	public static ActiveEntityIterator<Player> ActivePlayers => new(player.AsSpan(0, maxPlayers));
+	public static ActiveEntityIterator<NPC> ActiveNPCs => new(npc.AsSpan(0, maxNPCs));
+	public static ActiveEntityIterator<Projectile> ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
+	public static ActiveEntityIterator<Item> ActiveItems => new(item.AsSpan(0, maxItems));
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.

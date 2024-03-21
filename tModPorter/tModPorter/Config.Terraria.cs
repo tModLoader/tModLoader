@@ -134,7 +134,7 @@ public static partial class Config
 
 		RenameStaticField("Terraria.Main",		from: "dresserX",			to: "interactedDresserTopLeftX");
 		RenameStaticField("Terraria.Main",		from: "dresserY",			to: "interactedDresserTopLeftY");
-		RenameStaticField("Terraria.Main",		from: "ActivePlayerCount",	to: "CurrentFrameFlags.ActivePlayersCount");
+		RenameStaticField("Terraria.Main",		from: "ActivePlayerCount",	to: "CurrentFrameFlags.activePlayersCount");
 		RenameStaticField("Terraria.Main",		from: "GlobalTime",			to: "GlobalTimeWrappedHourly");
 		RenameStaticField("Terraria.Main",		from: "itemLockoutTime",	to: "timeItemSlotCannotBeReusedFor");
 		RenameStaticField("Terraria.Main",		from: "maxInventory",		to: "InventorySlotsTotal");

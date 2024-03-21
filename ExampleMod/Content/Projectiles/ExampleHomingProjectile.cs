@@ -54,7 +54,7 @@ namespace ExampleMod.Content.Projectiles
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
 			// Loop through all NPCs
-			foreach (var target in Main.activeNpcs) {
+			foreach (var target in Main.ActiveNPCs) {
 				// Check if NPC able to be targeted. It means that NPC is
 				// 1. active (alive)
 				// 2. chaseable (e.g. not a cultist archer)

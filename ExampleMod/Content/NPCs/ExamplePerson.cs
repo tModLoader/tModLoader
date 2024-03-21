@@ -172,7 +172,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) { // Requirements for the town NPC to spawn.
-			foreach (var player in Main.activePlayers) {
+			foreach (var player in Main.ActivePlayers) {
 				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
 				if (player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>() || item.type == ModContent.ItemType<Items.Placeable.ExampleBlock>())) {
 					return true;

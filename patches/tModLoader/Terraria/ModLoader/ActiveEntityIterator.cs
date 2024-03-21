@@ -5,36 +5,29 @@ namespace Terraria.ModLoader;
 
 public readonly ref struct ActiveEntityIterator<T> where T : Entity
 {
-	private readonly Span<T> span;
+	private readonly ReadOnlySpan<T> span;
 
-	public ActiveEntityIterator() : this(EntityArrays<T>.Array.AsSpan(0, EntityArrays<T>.Max))
-	{
-	}
+	public ActiveEntityIterator(ReadOnlySpan<T> span) => this.span = span;
 
-	public ActiveEntityIterator(Span<T> span)
-	{
-		this.span = span;
-	}
+	public readonly Enumerator GetEnumerator() => new(span.GetEnumerator());
 
-	public readonly Enumerator GetEnumerator()
+	public ref struct Enumerator
 	{
-		return new(span.GetEnumerator());
-	}
+		private ReadOnlySpan<T>.Enumerator enumerator;
 
-	public ref struct Enumerator(Span<T>.Enumerator enumerator)
-	{
-		private Span<T>.Enumerator enumerator = enumerator;
+		public Enumerator(ReadOnlySpan<T>.Enumerator enumerator) => this.enumerator = enumerator;
 
 		public readonly T Current => enumerator.Current;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool MoveNext()
 		{
-			do {
-				if (!enumerator.MoveNext())
-					return false;
-			} while (!enumerator.Current.active);
+			while (enumerator.MoveNext()) {
+				if (enumerator.Current.active)
+					return true;
+			}
 
-			return true;
+			return false;
 		}
 	}
 }

@@ -190,7 +190,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			float overlapVelocity = 0.04f;
 
 			// Fix overlap with other minions
-			foreach (var other in Main.activeProjectiles) {
+			foreach (var other in Main.ActiveProjectiles) {
 				if (other.whoAmI != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
 					if (Projectile.position.X < other.position.X) {
 						Projectile.velocity.X -= overlapVelocity;
@@ -230,7 +230,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 			if (!foundTarget) {
 				// This code is required either way, used for finding a target
-				foreach (var npc in Main.activeNpcs) {
+				foreach (var npc in Main.ActiveNPCs) {
 					if (npc.CanBeChasedBy()) {
 						float between = Vector2.Distance(npc.Center, Projectile.Center);
 						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;

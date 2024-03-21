@@ -80,7 +80,7 @@ namespace ExampleMod.Common.Systems
 			if (myMap.Length == 0) {
 				return;
 			}
-			foreach (var player in Main.activePlayers) {
+			foreach (var player in Main.ActivePlayers) {
 				UpdateFromNearestInMap(player);
 			}
 		}

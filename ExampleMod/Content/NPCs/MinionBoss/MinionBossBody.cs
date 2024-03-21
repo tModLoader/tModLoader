@@ -370,7 +370,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				return;
 			}
 
-			foreach (var otherNPC in Main.activeNpcs) {
+			foreach (var otherNPC in Main.ActiveNPCs) {
 				if (otherNPC.type == MinionType() && otherNPC.ModNPC is MinionBossMinion minion) {
 					if (minion.ParentIndex == NPC.whoAmI) {
 						MinionHealthTotal += otherNPC.life;

@@ -81,7 +81,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			}
 
 			// Enumerate
-			foreach (var npc in Main.activeNpcs) {
+			foreach (var npc in Main.ActiveNPCs) {
 				// Ignore this npc if it's friendly.
 				if (npc.friendly) {
 					continue;
