@@ -6,12 +6,9 @@
 #cd "$(dirname "$0")"
 . ./BashUtils.sh
 
-# The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
-# Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
-# without actually invoking managed NativeLibrary resolving events!
+echo "Fixing Environment Issues" 2>&1 | tee -a "$LogFile"
 
-echo "Fixing .NET SDL PATH issues" 2>&1 | tee -a "$LogFile"
-
+# This is a workaround for the managed library of SteamWorks.NET not being fully cross platform. 
 unixSteamworks="$root_dir/Libraries/Steamworks.NET/20.1.0.0/Steamworks.NET.dll"
 if [ -f "$unixSteamworks" ]; then
 	rm $unixSteamworks
@@ -21,6 +18,9 @@ if [ -d "$steamworksRename" ]; then
 	mv -v "$steamworksRename" "$root_dir/Libraries/steamworks.net" 2>&1 | tee -a "$LogFile"
 fi
 
+# The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
+# Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
+# without actually invoking managed NativeLibrary resolving events!
 if [ "$_uname" = Darwin ]; then
 	library_dir="$root_dir/Libraries/Native/OSX"
 	export DYLD_LIBRARY_PATH="$library_dir"
@@ -38,10 +38,29 @@ if [ "$_uname" = Darwin ]; then
         export DYLD_INSERT_LIBRARIES="$STEAM_DYLD_INSERT_LIBRARIES"
     fi
 elif [[ "$_uname" == *"_NT"* ]]; then
+	# This fixes issues with people clicking in the command prompt on Win10 & Win11
+	echo "Windows Version $WINDOWS_MAJOR.$WINDOWS_MINOR" 2>&1 | tee -a "$LogFile"
+	if [[ $WINDOWS_MAJOR -ge 10 ]]; then 
+		./QuickEditDisable.exe 2>&1 | tee -a "$LogFile"
+	else
+		# Allows Dotnet8 to run on Windows 7 (6.1) to 8.1 (6.3)
+		export DOTNET_EnableWriteXorExecute=0
+	fi
+
+	# removes incompatible 1.3 64 files
+	run_script ./Remove13_64Bit.sh  2>&1 | tee -a "$LogFile"
+
+	# Fixes SDL2 link issues
 	export PATH="$root_dir/Libraries/Native/Windows;$PATH"
 else
 	library_dir="$root_dir/Libraries/Native/Linux"
 	export LD_LIBRARY_PATH="$library_dir"
 	ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
 fi
+
+# Detecting Proton usage which can break tModLoader game rendering as of Dec 2023.
+if [[ "$WINDOWS_MAJOR" == "0" || ! -z "$WINEHOMEDIR" ]]; then
+	echo "Proton has been detected. It is highly recommended to not use it as it causes all manner of issues. Please disable Proton and launch again. See https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#disable-proton for information on moving save data to the correct location." 2>&1 | tee -a "$LogFile"
+fi
+
 echo "Success!" 2>&1 | tee -a "$LogFile"
