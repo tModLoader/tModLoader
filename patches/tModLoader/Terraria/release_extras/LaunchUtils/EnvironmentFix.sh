@@ -8,11 +8,13 @@
 
 echo "Fixing Environment Issues" 2>&1 | tee -a "$LogFile"
 
-# This is a workaround for the managed library of SteamWorks.NET not being fully cross platform. 
+# Following two IF blocks are for an update bug encountered. https://github.com/tModLoader/tModLoader/issues/2660
+# The first IF elimates the non-Nuget files from the Steam folder
 unixSteamworks="$root_dir/Libraries/Steamworks.NET/20.1.0.0/Steamworks.NET.dll"
 if [ -f "$unixSteamworks" ]; then
 	rm $unixSteamworks
 fi
+# The second IF block fixes the parent folder name to match the new path from the NuGet
 steamworksRename="$root_dir/Libraries/Steamworks.NET"
 if [ -d "$steamworksRename" ]; then
 	mv -v "$steamworksRename" "$root_dir/Libraries/steamworks.net" 2>&1 | tee -a "$LogFile"
