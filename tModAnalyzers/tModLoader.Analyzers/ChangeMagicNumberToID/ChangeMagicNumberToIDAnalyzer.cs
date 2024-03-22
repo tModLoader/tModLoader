@@ -23,199 +23,126 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 
 	protected override void InitializeWorker(AnalysisContext ctx)
 	{
-		ctx.RegisterCompilationStartAction(ctx => {
-			var compilation = ctx.Compilation;
-			var attributeSymbol = compilation.GetTypeByMetadataName(IDTypeAttribute1MetadataName);
+		/*
+			item.type = 1;
 
-			/*
-				item.type = 1;
+					=>
 
-						=>
+			item.type = ItemID.IronPickaxe;
+		 */
+		ctx.RegisterOperationAction(ctx => {
+			var op = (IAssignmentOperation)ctx.Operation;
+			
+			var left = op.Target;
+			var right = op.Value;
 
-				item.type = ItemID.IronPickaxe;
-			 */
-			ctx.RegisterOperationAction(ctx => {
-				var op = (IAssignmentOperation)ctx.Operation;
+			if (!right.ConstantValue.HasValue)
+				return;
 
-				var left = op.Target;
-				var right = op.Value;
+			if (!IsValidOperationType(left, out var target))
+				return;
 
-				if (!right.ConstantValue.HasValue)
-					return;
+			if (!HasAssociatedIdType(ctx.Compilation, target, out string idClassMetadataName, out var search))
+				return;
 
-				if (!IsValidOperationType(left, out var target))
-					return;
+			TryReport(ctx.ReportDiagnostic, right, idClassMetadataName, search);
+		}, OperationKind.SimpleAssignment);
 
-				if (!HasAssociatedIdType(target, out string idClassMetadataName, out var search))
-					return;
+		/*
+			item.type == 1
 
-				TryReport(ctx.ReportDiagnostic, right, idClassMetadataName, search);
-			}, OperationKind.SimpleAssignment);
+					=>
 
-			/*
-				item.type == 1
+			item.type == ItemID.IronPickaxe
+		 */
+		ctx.RegisterOperationAction(ctx => {
+			var op = (IBinaryOperation)ctx.Operation;
 
-						=>
+			var memberSymbol = default(ISymbol);
+			var constantOperation = default(IOperation);
 
-				item.type == ItemID.IronPickaxe
-			 */
-			ctx.RegisterOperationAction(ctx => {
-				var op = (IBinaryOperation)ctx.Operation;
+			if (IsValidOperationType(op.LeftOperand, out var target) && op.RightOperand.ConstantValue.HasValue) {
+				memberSymbol = target;
+				constantOperation = op.RightOperand;
+			}
+			else if (IsValidOperationType(op.RightOperand, out target) && op.LeftOperand.ConstantValue.HasValue) {
+				memberSymbol = target;
+				constantOperation = op.LeftOperand;
+			}
+			else {
+				return;
+			}
 
-				var memberSymbol = default(ISymbol);
-				var constantOperation = default(IOperation);
+			if (!HasAssociatedIdType(ctx.Compilation, memberSymbol, out string idClassMetadataName, out var search))
+				return;
 
-				if (IsValidOperationType(op.LeftOperand, out var target) && op.RightOperand.ConstantValue.HasValue) {
-					memberSymbol = target;
-					constantOperation = op.RightOperand;
-				}
-				else if (IsValidOperationType(op.RightOperand, out target) && op.LeftOperand.ConstantValue.HasValue) {
-					memberSymbol = target;
-					constantOperation = op.LeftOperand;
-				}
-				else {
-					return;
-				}
+			TryReport(ctx.ReportDiagnostic, constantOperation, idClassMetadataName, search);
+		}, OperationKind.Binary);
 
-				if (!HasAssociatedIdType(memberSymbol, out string idClassMetadataName, out var search))
-					return;
+		/*
+			switch (item.type) {
+				case 1:
+					break;
+			}
 
-				TryReport(ctx.ReportDiagnostic, constantOperation, idClassMetadataName, search);
-			}, OperationKind.Binary);
+					=>
 
-			/*
-				switch (item.type) {
-					case 1:
-						break;
-				}
+			switch (item.type) {
+				case ItemID.IronPickaxe:
+					break;
+			}
+		 */
+		ctx.RegisterOperationAction(ctx => {
+			var op = (ISwitchOperation)ctx.Operation;
 
-						=>
+			if (!IsValidOperationType(op.Value, out var target))
+				return;
 
-				switch (item.type) {
-					case ItemID.IronPickaxe:
-						break;
-				}
-			 */
-			ctx.RegisterOperationAction(ctx => {
-				var op = (ISwitchOperation)ctx.Operation;
+			if (!HasAssociatedIdType(ctx.Compilation, target, out string idClassMetadataName, out var search))
+				return;
 
-				if (!IsValidOperationType(op.Value, out var target))
-					return;
-
-				if (!HasAssociatedIdType(target, out string idClassMetadataName, out var search))
-					return;
-
-				foreach (var caseOperation in op.Cases) {
-					foreach (var clauseOperation in caseOperation.Clauses) {
-						if (clauseOperation is ISingleValueCaseClauseOperation singleValueCaseClause && singleValueCaseClause.Value.ConstantValue.HasValue) {
-							TryReport(ctx.ReportDiagnostic, singleValueCaseClause.Value, idClassMetadataName, search);
-						}
-						else if (clauseOperation is IRangeCaseClauseOperation rangeCaseClauseOperation) {
-							if (rangeCaseClauseOperation.MinimumValue.ConstantValue.HasValue)
-								TryReport(ctx.ReportDiagnostic, rangeCaseClauseOperation.MinimumValue, idClassMetadataName, search);
-
-							if (rangeCaseClauseOperation.MaximumValue.ConstantValue.HasValue)
-								TryReport(ctx.ReportDiagnostic, rangeCaseClauseOperation.MaximumValue, idClassMetadataName, search);
-						}
+			foreach (var caseOperation in op.Cases) {
+				foreach (var clauseOperation in caseOperation.Clauses) {
+					if (clauseOperation is ISingleValueCaseClauseOperation singleValueCaseClause && singleValueCaseClause.Value.ConstantValue.HasValue) {
+						TryReport(ctx.ReportDiagnostic, singleValueCaseClause.Value, idClassMetadataName, search);
 					}
-				}
-			}, OperationKind.Switch);
+					else if (clauseOperation is IRangeCaseClauseOperation rangeCaseClauseOperation) {
+						if (rangeCaseClauseOperation.MinimumValue.ConstantValue.HasValue)
+							TryReport(ctx.ReportDiagnostic, rangeCaseClauseOperation.MinimumValue, idClassMetadataName, search);
 
-			/*
-				Foo(1);
-
-						=>
-
-				Foo(ItemID.IronPickaxe);
-			 */
-			ctx.RegisterOperationAction(ctx => {
-				var op = ctx.Operation;
-
-				if (op is not IObjectCreationOperation && !IsValidOperationType(op))
-					return;
-
-				var args = (op as IObjectCreationOperation)?.Arguments
-					?? (op as IInvocationOperation)?.Arguments;
-
-				foreach (var arg in args) {
-					if (!arg.Value.ConstantValue.HasValue)
-						continue;
-
-					if (!HasAssociatedIdType(arg.Parameter, out string idClassMetadataName, out var search))
-						continue;
-
-					TryReport(ctx.ReportDiagnostic, arg.Value, idClassMetadataName, search);
-				}
-			}, OperationKind.ObjectCreation, OperationKind.Invocation);
-
-			bool HasAssociatedIdType(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
-			{
-				idClassMetadataName = null;
-				search = null;
-
-				string containigTypeMetadataName = ToMetadataName(symbol.ContainingType.OriginalDefinition);
-				BuiltinData.Key formattedName;
-
-				if (symbol is IParameterSymbol parameterSymbol) {
-					var methodSymbol = (IMethodSymbol)parameterSymbol.ContainingSymbol;
-
-					formattedName = new BuiltinData.Key(containigTypeMetadataName, methodSymbol.MetadataName, symbol.Name);
-
-					// If no entry with parameter name exists, then format to the one without overload.
-					if (!BuiltinData.ContainsKey(formattedName))
-						formattedName = new BuiltinData.Key(containigTypeMetadataName, methodSymbol.Name, parameterSymbol.Ordinal);
-				}
-				else {
-					formattedName = new BuiltinData.Key(containigTypeMetadataName, symbol.Name);
-				}
-
-				return LookGeneric(symbol, out idClassMetadataName, out search)
-					|| LookIntoAttributes(symbol, out idClassMetadataName, out search);
-
-				bool LookGeneric(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
-				{
-					idClassMetadataName = null;
-					search = null;
-
-					if (BuiltinData.TryGetValue(formattedName, out var memberInfo)) {
-						idClassMetadataName = memberInfo.IdClassMetadataName;
-						search = memberInfo.Search;
-						return true;
+						if (rangeCaseClauseOperation.MaximumValue.ConstantValue.HasValue)
+							TryReport(ctx.ReportDiagnostic, rangeCaseClauseOperation.MaximumValue, idClassMetadataName, search);
 					}
-
-					return false;
-				}
-
-				bool LookIntoAttributes(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
-				{
-					idClassMetadataName = null;
-					search = null;
-
-					var attributes = symbol is IMethodSymbol methodSymbol ? methodSymbol.GetReturnTypeAttributes() : symbol.GetAttributes();
-
-					foreach (var attributeData in attributes) {
-						if (!SymbolEqualityComparer.Default.Equals(attributeData.AttributeClass, attributeSymbol))
-							continue;
-
-						var idTypeSymbol = attributeData.AttributeClass.TypeArguments[0];
-						string idTypeMetadataName = ToMetadataName(idTypeSymbol);
-
-						if (!Searches.TryGetByMetadataName(idTypeMetadataName, out search))
-							continue;
-
-						idClassMetadataName = idTypeMetadataName;
-						return true;
-					}
-
-					return false;
-				}
-
-				static string ToMetadataName(ISymbol symbol)
-				{
-					return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
 				}
 			}
-		});
+		}, OperationKind.Switch);
+
+		/*
+			Foo(1);
+
+					=>
+
+			Foo(ItemID.IronPickaxe);
+		 */
+		ctx.RegisterOperationAction(ctx => {
+			var op = ctx.Operation;
+
+			if (op is not IObjectCreationOperation && !IsValidOperationType(op))
+				return;
+
+			var args = (op as IObjectCreationOperation)?.Arguments
+				?? (op as IInvocationOperation)?.Arguments;
+
+			foreach (var arg in args) {
+				if (!arg.Value.ConstantValue.HasValue)
+					continue;
+
+				if (!HasAssociatedIdType(ctx.Compilation, arg.Parameter, out string idClassMetadataName, out var search))
+					continue;
+
+				TryReport(ctx.ReportDiagnostic, arg.Value, idClassMetadataName, search);
+			}
+		}, OperationKind.ObjectCreation, OperationKind.Invocation);
 	}
 
 	private static void TryReport(Action<Diagnostic> report, IOperation operation, string idClassMetadataName, IdDictionary search)
@@ -264,5 +191,71 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		}
 
 		return target != null;
+	}
+
+	private static bool HasAssociatedIdType(Compilation compilation, ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
+	{
+		string containigTypeMetadataName = ToMetadataName(symbol.ContainingType.OriginalDefinition);
+		BuiltinData.Key formattedName;
+
+		if (symbol is IParameterSymbol parameterSymbol) {
+			var methodSymbol = (IMethodSymbol)parameterSymbol.ContainingSymbol;
+
+			formattedName = new BuiltinData.Key(containigTypeMetadataName, methodSymbol.MetadataName, symbol.Name);
+
+			// If no entry with parameter name exists, then format to the one without overload.
+			if (!BuiltinData.ContainsKey(formattedName))
+				formattedName = new BuiltinData.Key(containigTypeMetadataName, methodSymbol.Name, parameterSymbol.Ordinal);
+		}
+		else {
+			formattedName = new BuiltinData.Key(containigTypeMetadataName, symbol.Name);
+		}
+
+		return LookGeneric(formattedName, out idClassMetadataName, out search)
+			|| LookIntoAttributes(compilation, symbol, out idClassMetadataName, out search);
+
+		static bool LookGeneric(BuiltinData.Key formattedName, out string idClassMetadataName, out IdDictionary search)
+		{
+			idClassMetadataName = null;
+			search = null;
+
+			if (BuiltinData.TryGetValue(formattedName, out var memberInfo)) {
+				idClassMetadataName = memberInfo.IdClassMetadataName;
+				search = memberInfo.Search;
+				return true;
+			}
+
+			return false;
+		}
+
+		static bool LookIntoAttributes(Compilation compilation, ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
+		{
+			idClassMetadataName = null;
+			search = null;
+
+			var attributes = symbol is IMethodSymbol methodSymbol ? methodSymbol.GetReturnTypeAttributes() : symbol.GetAttributes();
+			var attributeSymbol = compilation.GetTypeByMetadataName(IDTypeAttribute1MetadataName);
+
+			foreach (var attributeData in attributes) {
+				if (!SymbolEqualityComparer.Default.Equals(attributeData.AttributeClass.OriginalDefinition, attributeSymbol))
+					continue;
+
+				var idTypeSymbol = attributeData.AttributeClass.TypeArguments[0];
+				string idTypeMetadataName = ToMetadataName(idTypeSymbol);
+
+				if (!Searches.TryGetByMetadataName(idTypeMetadataName, out search))
+					continue;
+
+				idClassMetadataName = idTypeMetadataName;
+				return true;
+			}
+
+			return false;
+		}
+
+		static string ToMetadataName(ISymbol symbol)
+		{
+			return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+		}
 	}
 }

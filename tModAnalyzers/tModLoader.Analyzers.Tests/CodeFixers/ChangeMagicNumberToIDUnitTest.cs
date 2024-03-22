@@ -92,7 +92,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 
 			_ = Foo() == [|1|];
 
-			[return: AssociatedIdTypeAttribute(typeof(ItemID))]
+			[return: IDType<ItemID>]
 			int Foo() => ItemID.None;
 			""",
 			"""
@@ -102,7 +102,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			
 			_ = Foo() == ItemID.IronPickaxe;
 
-			[return: AssociatedIdTypeAttribute(typeof(ItemID))]
+			[return: IDType<ItemID>]
 			int Foo() => ItemID.None;
 			""");
 	}
