@@ -52,17 +52,17 @@ fi
 
 # Dotnet binaries Fixes (Proton, AppleSilicon)
 if [[ "$_uname" == *"_NT"* ]]; then
-	if [[ -f "$install_dir/dotnet" ]]; then
+	if [[ -f "$dotnet_dir/dotnet" ]]; then
 		echo "A non-Windows dotnet executable was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
 	fi
 else
-	if [[ -f "$install_dir/dotnet.exe" ]]; then
+	if [[ -f "$dotnet_dir/dotnet.exe" ]]; then
 		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
-	elif [[ "$_arch" != "arm64" ]] && [[ "$(file "$install_dir/dotnet")" == *"arm64"* ]]; then
+	elif [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
 		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
@@ -94,11 +94,11 @@ else
 	fi
 fi
 
-if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
+if [[ -f "$dotnet_dir/dotnet" || -f "$dotnet_dir/dotnet.exe" ]]; then
 	export DOTNET_ROLL_FORWARD=Disable
-	echo "Launched Using Local Dotnet. Launch command: \"$install_dir/dotnet\" tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
-	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
+	echo "Launched Using Local Dotnet. Launch command: \"$dotnet_dir/dotnet\" tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
+	[[ -f "$dotnet_dir/dotnet" ]] && chmod a+x "$dotnet_dir/dotnet"
+	exec "$dotnet_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
 else
 	echo "Launched Using System Dotnet. Launch command: dotnet tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
 	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"

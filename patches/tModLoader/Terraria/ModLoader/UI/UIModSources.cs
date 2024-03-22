@@ -262,7 +262,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.DevModsInSandbox"), 888, PreviousUIState);
 			}
 			else {
-				ShowWelcomeMessage("tModLoader.MSNetSDKNotFound", "tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-6-sdk", 888, PreviousUIState);
+				ShowWelcomeMessage("tModLoader.MSNetSDKNotFound", "tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk", 888, PreviousUIState);
 			}
 
 			return true;
@@ -273,7 +273,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 	private void ShowWelcomeMessage(string messageKey, string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
 	{
-		Interface.infoMessage.Show(Language.GetTextValue(messageKey), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
+		Interface.infoMessage.Show(Language.GetTextValue(messageKey, Environment.Version.Major), gotoMenu, state, Language.GetTextValue(altButtonTextKey, Environment.Version.Major), () => Utils.OpenToURL(url));
 	}
 
 	private static string GetCommandToFindPathOfExecutable()
