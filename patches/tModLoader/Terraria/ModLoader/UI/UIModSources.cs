@@ -273,7 +273,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 	private void ShowWelcomeMessage(string messageKey, string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
 	{
-		Interface.infoMessage.Show(Language.GetTextValue(messageKey, Environment.Version.Major), gotoMenu, state, Language.GetTextValue(altButtonTextKey, Environment.Version.Major), () => Utils.OpenToURL(url));
+		var dotnetVersion = Environment.Version.MajorMinor().ToString();
+		Interface.infoMessage.Show(Language.GetTextValue(messageKey, dotnetVersion), gotoMenu, state, Language.GetTextValue(altButtonTextKey, dotnetVersion), () => Utils.OpenToURL(url));
 	}
 
 	private static string GetCommandToFindPathOfExecutable()
