@@ -2448,7 +2448,7 @@
  
  		bool flag = false;
 -		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
-+		if (Main.inputText.IsKeyDown(Keys.LeftAlt) || Main.inputText.IsKeyDown(Keys.RightAlt) && !(Main.inputText.IsKeyDown(Keys.LeftControl) || Main.inputText.IsKeyDown(Keys.RightControl))) {
++		if (inputText.IsKeyDown(Keys.LeftAlt) || inputText.IsKeyDown(Keys.RightAlt) && !(inputText.IsKeyDown(Keys.LeftControl) || inputText.IsKeyDown(Keys.RightControl))) {
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
