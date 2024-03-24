@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,45 +_,65 @@
+@@ -11,59 +_,89 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -69,6 +69,7 @@
 +		<PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
 +		<PackageReference Include="Hjson" Version="3.0.0" />
 +		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
++		<PackageReference Include="Stubble.Core" Version="1.10.8" PrivateAssets="All" />
  	</ItemGroup>
  
  	<!-- Embedded Resources -->
@@ -77,7 +78,18 @@
  		<EmbeddedResource Include="GameContent/Creative/Content/*" />
  		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
  		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -60,10 +_,11 @@
+ 		<EmbeddedResource Include="IO/Data/*" />
+ 		<EmbeddedResource Include="Localization/Content/**" />
+ 		<EmbeddedResource Include="Microsoft/**" />
++		
++		<!-- Mod Template -->
++		<None Include="ModLoader/Templates/**" />
++		<Compile Remove="ModLoader/Templates/**" />
++		<EmbeddedResource Remove="ModLoader/Templates/**" />
++		<EmbeddedResource Include="ModLoader/Templates/**">
++			<LogicalName>$([System.String]::Copy('Terraria/%(Identity)').Replace('\', '/'))</LogicalName>
++		</EmbeddedResource>
+ 	</ItemGroup>
  
  	<!-- Files -->
  	<ItemGroup>

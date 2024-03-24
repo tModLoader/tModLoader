@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Import tModLoader mod properties -->
+	<Import Project="..\tModLoader.targets" />
+
+	<!-- General -->
+	<PropertyGroup>
+		<AssemblyName>{{ModName}}</AssemblyName>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<!-- References -->
+	<ItemGroup>
+		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+	</ItemGroup>
+
+</Project>
