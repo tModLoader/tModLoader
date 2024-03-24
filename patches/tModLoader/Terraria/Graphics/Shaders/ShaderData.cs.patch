@@ -7,7 +7,7 @@
  
  namespace Terraria.Graphics.Shaders;
  
-@@ -8,19 +_,32 @@
+@@ -8,21 +_,34 @@
  	private string _passName;
  	private EffectPass _effectPass;
  
@@ -31,12 +31,23 @@
  	{
  		_passName = passName;
  		_shader = shader;
-+	}
-+
+ 	}
+ 
 +	public ShaderData(Asset<Effect> shader, string passName)
 +	{
 +		_passName = passName;
 +		_asset = shader;
- 	}
- 
++	}
++
  	public void SwapProgram(string passName)
+ 	{
+ 		_passName = passName;
+@@ -32,7 +_,7 @@
+ 
+ 	public virtual void Apply()
+ 	{
+-		if (_shader != null && Shader != null && _passName != null)
++		if (Shader != null && _passName != null)
+ 			_effectPass = Shader.CurrentTechnique.Passes[_passName];
+ 
+ 		_effectPass.Apply();
