@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/GameEventClearedID.cs
++++ src/tModLoader/Terraria/ID/GameEventClearedID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public class GameEventClearedID
+@@ -28,4 +_,5 @@
+ 	public const int DefeatedEmpressOfLight = 23;
+ 	public const int DefeatedQueenSlime = 24;
+ 	public const int DefeatedDeerclops = 25;
++	public static readonly IdDictionary Search = IdDictionary.Create<GameEventClearedID, int>(); // TML
+ }

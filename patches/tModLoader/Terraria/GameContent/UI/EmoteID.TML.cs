@@ -1,4 +1,6 @@
-﻿namespace Terraria.GameContent.UI;
+﻿using ReLogic.Reflection;
+
+namespace Terraria.GameContent.UI;
 
 public partial class EmoteID
 {
@@ -41,5 +43,7 @@ public partial class EmoteID
 		/// <b>Dangers</b> Emotes (For bosses)
 		/// </summary>
 		public const int Dangers = 6;
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Category, int>();
 	}
 }

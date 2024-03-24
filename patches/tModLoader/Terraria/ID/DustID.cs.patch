@@ -4,7 +4,7 @@
  namespace Terraria.ID;
  
 -public static class DustID
-+public static partial class DustID
++public partial class DustID
  {
  	public const short Dirt = 0;
  	public const short Stone = 1;

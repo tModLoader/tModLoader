@@ -3,7 +3,7 @@ using ReLogic.Reflection;
 namespace Terraria.ID;
 
 /// <summary>Enumerates the values used with Item.rare</summary>
-public static class ItemRarityID
+public class ItemRarityID
 {
 	/// <summary>Minus thirteen (-13)<br/>Master: Fiery Red<br/>Flag: item.master</summary>
 	public const int Master = -13;

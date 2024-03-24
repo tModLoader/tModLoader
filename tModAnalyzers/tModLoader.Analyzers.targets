@@ -1,0 +1,12 @@
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup>
+		<_LibraryAnalyzersOutputPath>Libraries\tModLoader.Analyzers\1.0.0\</_LibraryAnalyzersOutputPath>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)tModLoader.Analyzers\bin\tModLoader.Analyzers.dll" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)$(_LibraryAnalyzersOutputPath)%(Filename)%(Extension)" />
+		<Content Include="$(MSBuildThisFileDirectory)tModLoader.Analyzers.CodeFixes\bin\tModLoader.Analyzers.CodeFixes.dll" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)$(_LibraryAnalyzersOutputPath)%(Filename)%(Extension)" />
+	</ItemGroup>
+	
+</Project>

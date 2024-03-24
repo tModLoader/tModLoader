@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemHoldStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemHoldStyleID.cs
-@@ -1,13 +_,49 @@
+@@ -1,13 +_,52 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
 +/// <summary>
@@ -49,4 +51,5 @@
 +	/// <br/> Used by Kwad Racer Drone
 +	/// </summary>
  	public const int HoldRadio = 7;
++	public static readonly IdDictionary Search = IdDictionary.Create<ItemHoldStyleID, int>(); // TML
  }

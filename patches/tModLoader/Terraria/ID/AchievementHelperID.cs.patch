@@ -1,0 +1,23 @@
+--- src/TerrariaNetCore/Terraria/ID/AchievementHelperID.cs
++++ src/tModLoader/Terraria/ID/AchievementHelperID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public class AchievementHelperID
+@@ -33,6 +_,7 @@
+ 		public const int HousedAllTownSlimes = 26;
+ 		public const int TransmuteItem = 27;
+ 		public const int DroneDiedInSpace = 28;
++		public static readonly IdDictionary Search = IdDictionary.Create<Events, int>(); // TML
+ 	}
+ 
+ 	public class Special
+@@ -65,5 +_,6 @@
+ 		public const int DrinkBottledWaterWhileDrowning = 25;
+ 		public const int PlayOnASpecialSeed = 26;
+ 		public const int PurifyEntireWorld = 27;
++		public static readonly IdDictionary Search = IdDictionary.Create<Special, int>(); // TML
+ 	}
+ }

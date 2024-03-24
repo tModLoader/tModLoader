@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
@@ -10,6 +6,7 @@ partial class ArmorIDs
 {
 	partial class Head
 	{
+#if !TMLANALYZER
 		partial class Sets
 		{
 			// Created based on 'fullHair' definition in 'Player.GetHairSettings'.
@@ -52,10 +49,14 @@ partial class ArmorIDs
 			// Created based on 'PlayerDrawLayers.DrawPlayer_21_Head_TheFace'.
 			public static bool[] DrawHead = Factory.CreateBoolSet(true, 38, 135, 269);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Head, int>();
 	}
 
 	partial class Body
 	{
+#if !TMLANALYZER
 		partial class Sets
 		{
 			// Created based on 'hidesTopSkin' definition in 'PlayerDrawSet.BoringSetup'.
@@ -95,10 +96,14 @@ partial class ArmorIDs
 			/// </remarks>
 			public static bool[] HidesArms = Factory.CreateBoolSet(83);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Body, int>();
 	}
 
 	partial class Legs
 	{
+#if !TMLANALYZER
 		partial class Sets
 		{
 			/// <summary>
@@ -128,10 +133,34 @@ partial class ArmorIDs
 			/// </remarks>
 			public static bool[] HidesBottomSkin = Factory.CreateBoolSet(20, 21);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Legs, int>();
+	}
+
+	partial class HandOn
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<HandOn, sbyte>();
+	}
+
+	partial class HandOff
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<HandOff, sbyte>();
+	}
+
+	partial class Back
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Back, sbyte>();
+	}
+
+	partial class Front
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Front, sbyte>();
 	}
 
 	partial class Shoe
 	{
+#if !TMLANALYZER
 		partial class Sets
 		{
 			// Created based on 'PlayerDrawLayers.ShouldOverrideLegs_CheckShoes'.
@@ -141,5 +170,48 @@ partial class ArmorIDs
 			/// </summary>
 			public static bool[] OverridesLegs = Factory.CreateBoolSet(15);
 		}
+#endif
+
+		public static readonly IdDictionary Search = IdDictionary.Create<Shoe, int>();
+	}
+
+	partial class Waist
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Waist, sbyte>();
+	}
+
+	partial class Wing
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Wing, sbyte>();
+	}
+
+	partial class Shield
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Shield, sbyte>();
+	}
+
+	partial class Neck
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Neck, sbyte>();
+	}
+
+	partial class Face
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Face, sbyte>();
+	}
+
+	partial class Balloon
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Balloon, sbyte>();
+	}
+
+	partial class RocketBoots
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<RocketBoots, int>();
+	}
+
+	partial class Beard
+	{
+		public static readonly IdDictionary Search = IdDictionary.Create<Beard, sbyte>();
 	}
 }
