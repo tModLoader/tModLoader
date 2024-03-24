@@ -2443,6 +2443,15 @@
  		wallFrameCounter[144]++;
  		int num3 = 5;
  		int num4 = 10;
+@@ -15840,7 +_,7 @@
+ 			text = "";
+ 
+ 		bool flag = false;
+-		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
++		if (Main.inputText.IsKeyDown(Keys.LeftAlt) || Main.inputText.IsKeyDown(Keys.RightAlt) && !(Main.inputText.IsKeyDown(Keys.LeftControl) || Main.inputText.IsKeyDown(Keys.RightControl))) {
+ 			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
+ 				text = "";
+ 			}
 @@ -15989,15 +_,19 @@
  			X += 34;
  
