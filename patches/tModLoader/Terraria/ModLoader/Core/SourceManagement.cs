@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using Stubble.Core;
 
 #nullable enable
@@ -85,50 +88,27 @@ internal static class SourceManagement
 		return true;
 	}
 
-	/// <summary> Returns whether the provided source-code directory requires an upgrade. </summary>
+	/// <summary> Returns whether the provided mod source-code directory requires an upgrade. </summary>
 	public static bool SourceUpgradeNeeded(string modSrcDirectory)
 	{
-		string modName = Path.GetFileName(modSrcDirectory);
-		string csprojFile = Path.Combine(modSrcDirectory, $"{modName}.csproj");
-
-		if (!File.Exists(csprojFile))
+		if (!File.Exists(Path.Combine(modSrcDirectory, "Properties", "launchSettings.json")))
 			return true;
 
-		string csprojContents = File.ReadAllText(csprojFile);
-
-		if (!csprojContents.Contains(@"..\tModLoader.targets"))
-			return true;
-
-		if (!csprojContents.Contains(@"<TargetFramework>net6.0</TargetFramework>"))
+		if (CheckOrUpgradeCsprojFile(modSrcDirectory, checkOnly: true))
 			return true;
 
 		return false;
 	}
 
-	public static void UpgradeSource(string modSrcDirectory)
+	/// <summary> Runs upgrades on the provided mod source-code directory. </summary>
+	public static bool UpgradeSource(string modSrcDirectory)
 	{
-		var properties = BuildProperties.ReadBuildFile(modSrcDirectory);
-
-		TemplateParameters parameters;
-		parameters.ModName = Path.GetFileName(modSrcDirectory);
-		parameters.ModDisplayName = properties.displayName;
-		parameters.ModAuthor = properties.author;
-		parameters.ModVersion = properties.version.ToString();
-		parameters.ItemName = string.Empty;
-		parameters.ItemDisplayName = string.Empty;
+		bool doneAnything = false;
+		var parameters = ReadTemplateParameters(modSrcDirectory);
 		object boxedParameters = parameters;
 
-		TryWriteModTemplateFile(modSrcDirectory, $"{TemplateResourcePrefix}{ModNameVar}.csproj", boxedParameters);
-		TryWriteModTemplateFile(modSrcDirectory, $"{TemplateResourcePrefix}Properties/launchSettings.json", boxedParameters);
-
-		static void DeleteIfExists(FileSystemInfo entry)
-		{
-			switch (entry) {
-				case FileSystemInfo when !entry.Exists: return;
-				case FileInfo file: file.Delete(); break;
-				case DirectoryInfo directory: directory.Delete(recursive: true); break;
-			}
-		}
+		doneAnything |= CheckOrUpgradeCsprojFile(modSrcDirectory, checkOnly: false, templateParameters: boxedParameters);
+		doneAnything |= TryWriteModTemplateFile(modSrcDirectory, $"{TemplateResourcePrefix}Properties/launchSettings.json", boxedParameters);
 
 		try {
 			// Old files can cause some issues.
@@ -139,8 +119,126 @@ internal static class SourceManagement
 			DeleteIfExists(new FileInfo(Path.Combine(modSrcDirectory, "Properties", "AssemblyInfo.cs")));
 		}
 		catch { }
+
+		return doneAnything;
 	}
 
-	private static Stream GetResourceStream(string key)
-		=> typeof(ModLoader).Assembly.GetManifestResourceStream(key)!;
+	private static TemplateParameters ReadTemplateParameters(string modSrcDirectory)
+	{
+		var properties = BuildProperties.ReadBuildFile(modSrcDirectory);
+		TemplateParameters parameters;
+		parameters.ModName = Path.GetFileName(modSrcDirectory);
+		parameters.ModDisplayName = properties.displayName;
+		parameters.ModAuthor = properties.author;
+		parameters.ModVersion = properties.version.ToString();
+		parameters.ItemName = string.Empty;
+		parameters.ItemDisplayName = string.Empty;
+
+		return parameters;
+	}
+
+	private static bool CheckOrUpgradeCsprojFile(string modSrcDirectory, bool checkOnly, object? templateParameters = null)
+	{
+		string csprojPath = Path.Combine(modSrcDirectory, $"{Path.GetFileName(modSrcDirectory)}.csproj");
+		bool fileIsMissing = !File.Exists(csprojPath);
+		bool fileIsBroken = false;
+		bool fileIsUpgradeable = false;
+		XDocument? document = null;
+
+		if (!fileIsMissing) {
+			using (new Logging.QuietExceptionHandle()) {
+				try { document = XDocument.Parse(File.ReadAllText(csprojPath), LoadOptions.PreserveWhitespace); }
+				catch { fileIsBroken = true; }
+			}
+		}
+
+		if (!fileIsMissing && !fileIsBroken) {
+			// Check if this is even a C# project.
+			if (document!.Root is not XElement { Name.LocalName: "Project", FirstAttribute: { Name.LocalName: "Sdk", Value: "Microsoft.NET.Sdk" } } root) {
+				fileIsBroken = true;
+				goto SkipXmlVerification;
+			}
+
+			List<XElement>? elementsToRemove = null;
+			var propertyGroups = root.Elements().Where(e => e is XElement { Name.LocalName: "PropertyGroup", IsEmpty: false });
+
+			// Ensure that root imports tModLoader.targets.
+			if (!root.Elements().Any(e => e is XElement { Name.LocalName: "Import", FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
+				fileIsUpgradeable = true;
+				if (!checkOnly) {
+					var import = new XElement("Import");
+					import.SetAttributeValue("Project", @"..\tModLoader.targets");
+
+					root.AddFirst(new object[] {
+						new XText("\n\n\t"),
+						new XComment(" Import tModLoader mod properties "),
+						new XText("\n\t"),
+						import,
+					});
+				}
+			}
+
+			// Get rid of Framework & Platform overrides.
+			foreach (var property in propertyGroups.SelectMany(g => g.Elements()).Where(e => e is XElement { Name.LocalName: "TargetFramework" or "PlatformTarget" })) {
+				fileIsUpgradeable = true;
+				if (!checkOnly) {
+					(elementsToRemove ??= new()).Add(property);
+				}
+			}
+
+			foreach (var element in elementsToRemove ?? Enumerable.Empty<XElement>()) {
+				// Remove whitespace, which is kept due to the way we parsed the document.
+				if (element.PreviousNode is XText previous && string.IsNullOrWhiteSpace(previous.Value)) {
+					previous.Remove();
+				}
+
+				element.Remove();
+			}
+		}
+
+		SkipXmlVerification:
+		if (!checkOnly) {
+			// Recreate the file from scratch if it's broken or missing.
+			if (fileIsMissing || fileIsBroken) {
+				// Make a backup.
+				if (!fileIsMissing) {
+					File.Move(csprojPath, csprojPath + ".backup", overwrite: true);
+				}
+
+				templateParameters ??= ReadTemplateParameters(modSrcDirectory);
+
+				TryWriteModTemplateFile(modSrcDirectory, $"{TemplateResourcePrefix}{ModNameVar}.csproj", templateParameters);
+			}
+			// Save the document if it's been modified.
+			else if (fileIsUpgradeable) {
+				File.WriteAllText(csprojPath, XmlToFancyString(document!));
+			}
+		}
+
+		return fileIsMissing || fileIsBroken || fileIsUpgradeable;
+	}
+
+	private static string XmlToFancyString(XDocument document)
+	{
+		var sb = new StringBuilder();
+		using var xmlWriter = XmlWriter.Create(sb, new() {
+			Indent = true,
+			IndentChars = "\t",
+			OmitXmlDeclaration = true,
+		});
+
+		document.WriteTo(xmlWriter);
+		xmlWriter.Flush();
+
+		return sb.ToString();
+	}
+
+	private static void DeleteIfExists(FileSystemInfo entry)
+	{
+		switch (entry) {
+			case FileSystemInfo when !entry.Exists: return;
+			case FileInfo file: file.Delete(); break;
+			case DirectoryInfo directory: directory.Delete(recursive: true); break;
+		}
+	}
 }
