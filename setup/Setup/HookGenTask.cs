@@ -1,4 +1,4 @@
-﻿using Mono.Cecil;
+using Mono.Cecil;
 using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
@@ -73,16 +73,25 @@ namespace Terraria.ModLoader.Setup
 			mm.DependencyDirs.AddRange(Directory.GetDirectories(binLibsPath, "*", SearchOption.AllDirectories));
 
 			mm.Read();
-			mm.MapDependencies();
 
 			var gen = new HookGenerator(mm, "TerrariaHooks") {
 				HookPrivate = true,
 			};
 
-			gen.Generate();
+			foreach (var type in mm.Module.Types) {
+				if (!type.FullName.StartsWith("Terraria") || type.FullName.StartsWith("Terraria.ModLoader"))
+					continue;
 
-			RemoveModLoaderTypes(gen.OutputModule);
-			AdjustNamespaceStyle(gen.OutputModule);
+				gen.GenerateFor(type, out var hookType, out var hookILType);
+				if (hookType == null || hookILType == null || hookType.IsNested)
+					continue;
+
+				AdjustNamespaceStyle(hookType);
+				AdjustNamespaceStyle(hookILType);
+
+				gen.OutputModule.Types.Add(hookType);
+				gen.OutputModule.Types.Add(hookILType);
+			}
 
 			gen.OutputModule.Write(outputPath);
 
@@ -93,22 +102,13 @@ namespace Terraria.ModLoader.Setup
 		// convert
 		//   On.Namespace.Type -> Namespace.On_Type
 		//   IL.Namespace.Type -> Namespace.IL_Type
-		private static void AdjustNamespaceStyle(ModuleDefinition module)
+		private static void AdjustNamespaceStyle(TypeDefinition type)
 		{
-			foreach (var type in module.Types) {
-				if (string.IsNullOrEmpty(type.Namespace))
-					continue;
+			if (string.IsNullOrEmpty(type.Namespace))
+				return;
 
-				type.Name = type.Namespace[..2] + '_' + type.Name;
-				type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];
-			}
-		}
-
-		private static void RemoveModLoaderTypes(ModuleDefinition module)
-		{
-			for (int i = module.Types.Count - 1; i >= 0; i--)
-				if (module.Types[i].FullName.Contains("Terraria.ModLoader"))
-					module.Types.RemoveAt(i);
+			type.Name = type.Namespace[..2] + '_' + type.Name;
+			type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];
 		}
 	}
 }
