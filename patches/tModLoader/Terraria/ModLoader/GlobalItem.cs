@@ -1140,4 +1140,23 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual void NetReceive(Item item, BinaryReader reader)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to do things before this held item is drawn.
+	/// </summary>
+	/// <param name="item">The item.</param>
+	/// <param name="drawInfo">The <see cref="PlayerDrawSet"/> for the player holding the item. Contains no vanilla drawing data for the held item.</param>
+	/// <returns>Whether or not to draw this held item.</returns>
+	public virtual bool PreDrawHeldItem(Item item, ref PlayerDrawSet drawInfo)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to do things after this held item is drawn, or modify how the held item is drawn. Called even if <see cref="PreDrawHeldItem(Item, ref PlayerDrawSet)"/> returns false.
+	/// </summary>
+	/// <param name="item">The item.</param>
+	/// <param name="drawInfo">The <see cref="PlayerDrawSet"/> for the player holding the item.</param>
+	/// <param name="heldItemDrawData">All the draw data for the held item. Added to <see cref="PlayerDrawSet.DrawDataCache"/>. Do not add draw data directly to <see cref="PlayerDrawSet.DrawDataCache"/>.</param>
+	public virtual void PostDrawHeldItem(Item item, ref PlayerDrawSet drawInfo, List<DrawData> heldItemDrawData) { }
 }

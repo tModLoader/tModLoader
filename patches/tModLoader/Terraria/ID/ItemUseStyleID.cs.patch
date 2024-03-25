@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemUseStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemUseStyleID.cs
-@@ -1,20 +_,61 @@
+@@ -1,20 +_,62 @@
  namespace Terraria.ID;
  
 +/// <summary>
@@ -9,6 +9,7 @@
 +/// </summary>
  public class ItemUseStyleID
  {
++	public const int Custom = -1;
  	public const int None = 0;
 +	/// <summary>Item is swung in an overhead arch.<br/>Used for many sword weapons, block placement, etc.</summary>
  	public const int Swing = 1;
