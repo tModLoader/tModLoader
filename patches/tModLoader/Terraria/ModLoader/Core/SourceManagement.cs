@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,7 @@ internal static class SourceManagement
 
 	private const string TemplateResourcePrefix = $"Terraria/ModLoader/Templates/";
 	private const string ModNameVar = "{{" + nameof(TemplateParameters.ModName) + "}}";
+	private static readonly Version languageVersion = new(10, 0);
 
 	private static readonly HashSet<string> textExtensions = new() {
 		".txt", ".json", ".hjson", ".toml", ".cs", ".csproj", ".sln"
@@ -161,6 +163,7 @@ internal static class SourceManagement
 
 			List<XElement>? elementsToRemove = null;
 			var propertyGroups = root.Elements().Where(e => e is XElement { Name.LocalName: "PropertyGroup", IsEmpty: false });
+			var properties = propertyGroups.SelectMany(g => g.Elements());
 
 			// Ensure that root imports tModLoader.targets.
 			if (!root.Elements().Any(e => e is XElement { Name.LocalName: "Import", FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
@@ -179,15 +182,27 @@ internal static class SourceManagement
 			}
 
 			// Get rid of Framework & Platform overrides.
-			foreach (var property in propertyGroups.SelectMany(g => g.Elements()).Where(e => e is XElement { Name.LocalName: "TargetFramework" or "PlatformTarget" })) {
+			foreach (var property in properties.Where(e => e is XElement { Name.LocalName: "TargetFramework" or "PlatformTarget" })) {
 				fileIsUpgradeable = true;
 				if (!checkOnly) {
 					(elementsToRemove ??= new()).Add(property);
 				}
 			}
 
+			// Keep LangVersion up-to-date by removing old overrides.
+			foreach (var property in properties.Where(e => e is XElement { Name.LocalName: "LangVersion" })) {
+				if (Version.TryParse(property.Value, out var version) && version.MajorMinor() <= languageVersion) {
+					fileIsUpgradeable = true;
+
+					if (!checkOnly) {
+						(elementsToRemove ??= new()).Add(property);
+					}
+				}
+			}
+
+			// Remove elements marked for removal.
 			foreach (var element in elementsToRemove ?? Enumerable.Empty<XElement>()) {
-				// Remove whitespace, which is kept due to the way we parsed the document.
+				// Remove whitespace, which is otherwise kept due to the way we parsed the document.
 				if (element.PreviousNode is XText previous && string.IsNullOrWhiteSpace(previous.Value)) {
 					previous.Remove();
 				}
