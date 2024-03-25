@@ -191,7 +191,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 			// Fix overlap with other minions
 			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
+				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
 					if (Projectile.position.X < other.position.X) {
 						Projectile.velocity.X -= overlapVelocity;
 					}

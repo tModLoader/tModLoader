@@ -10,7 +10,7 @@ public class SimpleRenamedVanillaMembersTest
 	void Method() {
 		var dresserX = Main.interactedDresserTopLeftX;
 		var dresserY = Main.interactedDresserTopLeftY;
-		var activePlayerCount = Main.CurrentFrameFlags.activePlayersCount;
+		var activePlayerCount = Main.CurrentFrameFlags.ActivePlayersCount;
 		var globalTime = Main.GlobalTimeWrappedHourly;
 		var itemLockoutTime = Main.timeItemSlotCannotBeReusedFor;
 		var maxInventory = Main.InventorySlotsTotal;

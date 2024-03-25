@@ -69,25 +69,20 @@ namespace ExampleMod.Content.Items.Tools
 
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
 		// You can also change the projectile like: Dual Hook, Lunar Hook
-		// public override void UseGrapple(Player player, ref int type)
-		// {
+		// public override void UseGrapple(Player player, ref int type) {
 		//	int hooksOut = 0;
 		//	int oldestHookIndex = -1;
 		//	int oldestHookTimeLeft = 100000;
-		//	foreach (var projectile in Main.ActiveProjectiles)
-		//	{
-		//		if (projectile.owner == projectile.whoAmI && projectile.type == projectile.type)
-		//		{
+		//	foreach (var otherProjectile in Main.ActiveProjectiles) {
+		//		if (otherProjectile.owner == player.whoAmI && otherProjectile.type == type) {
 		//			hooksOut++;
-		//			if (projectile.timeLeft < oldestHookTimeLeft)
-		//			{
-		//				oldestHookIndex = i;
-		//				oldestHookTimeLeft = projectile.timeLeft;
+		//			if (otherProjectile.timeLeft < oldestHookTimeLeft) {
+		//				oldestHookIndex = otherProjectile.whoAmI;
+		//				oldestHookTimeLeft = otherProjectile.timeLeft;
 		//			}
 		//		}
 		//	}
-		//	if (hooksOut > 1)
-		//	{
+		//	if (hooksOut > 1) {
 		//		Main.projectile[oldestHookIndex].Kill();
 		//	}
 		// }
