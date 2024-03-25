@@ -1,4 +1,4 @@
-using Mono.Cecil;
+﻿using Mono.Cecil;
 using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
 using System;
@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Setup
 {
 	internal class HookGenTask : SetupOperation
 	{
-		private const string dotnetSdkVersion = "8.0.0";
+		private const string dotnetSdkVersion = "8.0.1";
 		private const string dotnetTargetVersion = "net8.0";
 		private const string libsPath = "src/tModLoader/Terraria/Libraries";
 		private const string binLibsPath = $"src/tModLoader/Terraria/bin/Release/{dotnetTargetVersion}/Libraries";
