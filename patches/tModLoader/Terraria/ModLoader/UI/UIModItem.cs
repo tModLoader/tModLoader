@@ -33,7 +33,7 @@ internal class UIModItem : UIPanel
 	private UIImage _configButton;
 	private UIText _modName;
 	private UIModStateText _uiModStateText;
-	private UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
+	internal UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
 	private UIImage _modReferenceIcon;
 	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
@@ -256,6 +256,8 @@ internal class UIModItem : UIPanel
 		}
 
 		OnLeftDoubleClick += (e, el) => {
+			if (tMLUpdateRequired != null)
+				return;
 			// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
 			if (e.Target.GetType() != typeof(UIModStateText))
 				_uiModStateText.LeftClick(e);
