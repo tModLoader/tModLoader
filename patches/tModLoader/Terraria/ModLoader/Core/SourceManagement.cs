@@ -13,7 +13,9 @@ using Stubble.Core;
 
 namespace Terraria.ModLoader.Core;
 
-// Everything related to creating and maintaining mod source-code directories.
+/// <summary>
+/// Everything related to creating and maintaining mod source-code directories.
+/// </summary>
 internal static class SourceManagement
 {
 	public record struct TemplateParameters
@@ -219,10 +221,11 @@ internal static class SourceManagement
 		}
 
 		var nodesToRemove = new List<XNode>();
-		var properties = root.Elements().Where(e => e.Name.LocalName == "PropertyGroup").SelectMany(g => g.Elements());
+		var itemGroups = root.Elements("ItemGroup");
+		var propertyGroups = root.Elements("PropertyGroup");
 
 		// Ensure that root imports tModLoader.targets.
-		if (!root.Elements().Any(e => e is { Name.LocalName: "Import", FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
+		if (!root.Elements("Import").Any(e => e is { FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
 			modifications.Add(() => {
 				var import = new XElement("Import");
 				import.SetAttributeValue("Project", @"..\tModLoader.targets");
@@ -237,14 +240,16 @@ internal static class SourceManagement
 		}
 
 		// Get rid of Framework & Platform overrides.
-		nodesToRemove.AddRange(properties.Where(
-			e => e.Name.LocalName is "TargetFramework" or "PlatformTarget"
+		nodesToRemove.AddRange(Enumerable.Concat(
+			propertyGroups.Elements("TargetFramework"),
+			propertyGroups.Elements("PlatformTarget")
 		));
 
 		// Keep LangVersion up-to-date by removing old overrides.
-		nodesToRemove.AddRange(properties.Where(
-			e => e.Name.LocalName == "LangVersion" && Version.TryParse(e.Value, out var version) && version.MajorMinor() <= languageVersion
-		));
+		nodesToRemove.AddRange(propertyGroups
+			.Elements("LangVersion")
+			.Where(e => Version.TryParse(e.Value, out var v) && v.MajorMinor() <= languageVersion)
+		);
 
 		// Remove elements marked for removal.
 		if (nodesToRemove.Count != 0) {
