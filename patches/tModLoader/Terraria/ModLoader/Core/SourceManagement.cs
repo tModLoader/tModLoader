@@ -214,15 +214,15 @@ internal static class SourceManagement
 	private static bool TryCollectingCsprojModifications(XDocument document, List<Action> modifications)
 	{
 		// Check if this is even a C# project.
-		if (document!.Root is not XElement { Name.LocalName: "Project", FirstAttribute: { Name.LocalName: "Sdk", Value: "Microsoft.NET.Sdk" } } root) {
+		if (document!.Root is not { Name.LocalName: "Project", FirstAttribute: { Name.LocalName: "Sdk", Value: "Microsoft.NET.Sdk" } } root) {
 			return false;
 		}
 
 		var nodesToRemove = new List<XNode>();
-		var properties = root.Elements().Where(e => e is XElement { Name.LocalName: "PropertyGroup" }).SelectMany(g => g.Elements());
+		var properties = root.Elements().Where(e => e.Name.LocalName == "PropertyGroup").SelectMany(g => g.Elements());
 
 		// Ensure that root imports tModLoader.targets.
-		if (!root.Elements().Any(e => e is XElement { Name.LocalName: "Import", FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
+		if (!root.Elements().Any(e => e is { Name.LocalName: "Import", FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
 			modifications.Add(() => {
 				var import = new XElement("Import");
 				import.SetAttributeValue("Project", @"..\tModLoader.targets");
@@ -237,16 +237,14 @@ internal static class SourceManagement
 		}
 
 		// Get rid of Framework & Platform overrides.
-		foreach (var property in properties.Where(e => e is XElement { Name.LocalName: "TargetFramework" or "PlatformTarget" })) {
-			nodesToRemove.Add(property);
-		}
+		nodesToRemove.AddRange(properties.Where(
+			e => e.Name.LocalName is "TargetFramework" or "PlatformTarget"
+		));
 
 		// Keep LangVersion up-to-date by removing old overrides.
-		foreach (var property in properties.Where(e => e is XElement { Name.LocalName: "LangVersion" })) {
-			if (Version.TryParse(property.Value, out var version) && version.MajorMinor() <= languageVersion) {
-				nodesToRemove.Add(property);
-			}
-		}
+		nodesToRemove.AddRange(properties.Where(
+			e => e.Name.LocalName == "LangVersion" && Version.TryParse(e.Value, out var version) && version.MajorMinor() <= languageVersion
+		));
 
 		// Remove elements marked for removal.
 		if (nodesToRemove.Count != 0) {
