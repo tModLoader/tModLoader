@@ -42,6 +42,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "Actions", "class_actions.html", null ],
+    [ "ActiveEntityIterator< T >", "struct_active_entity_iterator.html", null ],
     [ "ActiveSound", "class_active_sound.html", null ],
     [ "AddableFloat", "struct_addable_float.html", null ],
     [ "AdvancedPopupRequest", "struct_advanced_popup_request.html", null ],
@@ -418,6 +419,7 @@ var hierarchy =
     [ "EntrySorter< BestiaryEntry, IBestiarySortStep >", "class_entry_sorter.html", null ],
     [ "EntrySorter< int, ICreativeItemSortStep >", "class_entry_sorter.html", null ],
     [ "EnumerationExtensions", "class_enumeration_extensions.html", null ],
+    [ "ActiveEntityIterator< T >.Enumerator", "struct_active_entity_iterator_1_1_enumerator.html", null ],
     [ "EquipLoader", "class_equip_loader.html", null ],
     [ "EquipmentLoadout", "class_equipment_loadout.html", null ],
     [ "EquipTexture", "class_equip_texture.html", null ],

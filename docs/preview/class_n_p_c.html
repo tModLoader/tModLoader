@@ -647,7 +647,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>FairyEffects</
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindCattailTop</b> (int landX, int landY, out int cattailX, out int cattailY)</td></tr>
 <tr class="separator:aa457e958c04776538756b3917746216d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5272dd7834b4c553bcb08fea42c2630c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">FindFirstNPC</a> (int Type)</td></tr>
-<tr class="memdesc:a5272dd7834b4c553bcb08fea42c2630c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index within Main.npc of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">More...</a><br /></td></tr>
+<tr class="memdesc:a5272dd7834b4c553bcb08fea42c2630c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index within <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">More...</a><br /></td></tr>
 <tr class="separator:a5272dd7834b4c553bcb08fea42c2630c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac48691e54026c0363369b329d7a44a25"><td class="memItemLeft" align="right" valign="top"><a id="ac48691e54026c0363369b329d7a44a25" name="ac48691e54026c0363369b329d7a44a25"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindTreeBranch</b> (int landX, int landY, out int treeBranchX, out int treeBranchY)</td></tr>
@@ -738,13 +738,13 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NearSpikeBall<
 <tr class="memitem:a9e06da30b864a0cefc43ca3762d013e3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, int x, int y, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
 <tr class="memdesc:a9e06da30b864a0cefc43ca3762d013e3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
-This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array. <br  />
+This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array. <br  />
  A short-hand for  <a href="class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3">More...</a><br /></td></tr>
 <tr class="separator:a9e06da30b864a0cefc43ca3762d013e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a835e0dd6969506583b01b698b5b53f30"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">position</a>, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
 <tr class="memdesc:a835e0dd6969506583b01b698b5b53f30"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
-This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
+This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
  A short-hand for  <a href="class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30">More...</a><br /></td></tr>
 <tr class="separator:a835e0dd6969506583b01b698b5b53f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab6416463c6e1b70b7f5e5593e33724d"><td class="memItemLeft" align="right" valign="top"><a id="aab6416463c6e1b70b7f5e5593e33724d" name="aab6416463c6e1b70b7f5e5593e33724d"></a>
@@ -1284,7 +1284,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>onFrostBurn2</b></td>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>playerInteraction</b> = new bool[256]</td></tr>
 <tr class="memdesc:a2733db98473f44858e9a5ec94c3a1698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tracks which <a class="el" href="class_player.html">Player</a>s have damaged this <a class="el" href="class_n_p_c.html">NPC</a>. Damaging boss minions or other parts of a boss is usually counted as damaging the main body of the boss. Used to determine which players participated in a boss fight and should receive a boss bag.<br  />
 <br  />
- Indexed by each players <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a> (or <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">Main.myPlayer</a> for code running locally).<br  />
+ Indexed by each players <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a> (or <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a> for code running locally).<br  />
 <br  />
  <a class="el" href="class_n_p_c.html#a9f507768340df00ef17c4b275a909346" title="The Entity.whoAmI of the Player that last damaged this NPC. Used to award Banner items to the player ...">lastInteraction</a> tracks which player was the last player to damage this <a class="el" href="class_n_p_c.html">NPC</a>. <a class="el" href="class_n_p_c.html#abe60ba5bdf081fffe741c01d43494f23" title="Returns true if any player has damaged this NPC. Individual player participation can be determined by...">AnyInteractions</a> can be used to easily check if any player has damaged the <a class="el" href="class_n_p_c.html">NPC</a>. <br /></td></tr>
 <tr class="separator:a2733db98473f44858e9a5ec94c3a1698"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1460,9 +1460,9 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>wetCount</b></td></tr
 int&#160;</td><td class="memItemRight" valign="bottom"><b>whoAmI</b></td></tr>
 <tr class="memdesc:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of this <a class="el" href="class_entity.html">Entity</a> within its specific array. These arrays track the entities in the world. <br  />
  <a class="el" href="class_item.html">Item</a>: unused <br  />
- <a class="el" href="class_projectile.html">Projectile</a>: Main.projectile <br  />
- <a class="el" href="class_n_p_c.html">NPC</a>: Main.npc <br  />
- <a class="el" href="class_player.html">Player</a>: Main.player <br /></td></tr>
+ <a class="el" href="class_projectile.html">Projectile</a>: <a class="el" href="class_main.html#a83c4abb74853f4fe224109b98389c5e3" title="Contains all the Projectiles in the game world. Projectiles should only be spawned via Projectile....">Main.projectile</a> <br  />
+ <a class="el" href="class_n_p_c.html">NPC</a>: <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> <br  />
+ <a class="el" href="class_player.html">Player</a>: <a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a> Note that <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Projectile.whoAmI</a> is not consistent between clients in multiplayer for the same projectile. <br /></td></tr>
 <tr class="separator:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa687666b6a0f25fe0115c0ac6aa6aca5" name="aa687666b6a0f25fe0115c0ac6aa6aca5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
@@ -2444,7 +2444,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 </table>
 </div><div class="memdoc">
 
-<p>Returns the index within Main.npc of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
+<p>Returns the index within <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Type</td><td></td></tr>
@@ -2864,7 +2864,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array</dd></dl>
 
 </div>
 </div>
@@ -2952,9 +2952,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 
 <p><br  />
 <br  />
-This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array. <br  />
+This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array. <br  />
  A short-hand for </p>
-<p ><code> Main.npc[NPC.NewNPC(...)] </code> </p>
+<p ><code> <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a>[NPC.NewNPC(...)] </code> </p>
 
 </div>
 </div>
@@ -3036,9 +3036,9 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 
 <p><br  />
 <br  />
-This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the Main.npc array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
+This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
  A short-hand for </p>
-<p ><code> Main.npc[NPC.NewNPC(...)] </code> </p>
+<p ><code> <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a>[NPC.NewNPC(...)] </code> </p>
 
 </div>
 </div>

@@ -85,7 +85,7 @@ var searchData=
   ['isvalidspawnpoint_82',['IsValidSpawnPoint',['../class_tile_i_d_1_1_sets.html#ad6912ddfda80b5c2bcf9e2c0d92a50f7',1,'TileID::Sets']]],
   ['iswellfed_83',['IsWellFed',['../class_buff_i_d_1_1_sets.html#af367e708b85c1f573c454d587cd266a9',1,'BuffID::Sets']]],
   ['iswet_84',['IsWet',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a51fcb2adc165dc222462218057f2f013',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
-  ['item_85',['item',['../class_chest.html#a68292840161efcf35daf6cb246f90280',1,'Chest']]],
+  ['item_85',['item',['../class_chest.html#a68292840161efcf35daf6cb246f90280',1,'Chest.item()'],['../class_main.html#a2acb653c4505fbd0d29230630234732a',1,'Main.item()']]],
   ['itemcreativesortingid_86',['ItemCreativeSortingId',['../class_content_samples.html#ac6fd569f4f0876f1567b7f30fdee86cb',1,'ContentSamples']]],
   ['itemiconpulse_87',['ItemIconPulse',['../class_item_i_d_1_1_sets.html#a547a5c419e4317e4eb7d038f4d0bda72',1,'ItemID::Sets']]],
   ['itemnetidsbypersistentids_88',['ItemNetIdsByPersistentIds',['../class_content_samples.html#a0436d4c4434a13c690c2738ccb60df44',1,'ContentSamples']]],

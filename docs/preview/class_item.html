@@ -482,7 +482,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>MechSpawn</b> 
 <tr class="memdesc:a861d974bce4b638b0d0180a775da3e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. <br  />
  This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. <br  />
  See the <em>noBroadcast</em>  documentation if you need to customize attached <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a> data prior to syncing. <br  />
- The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the Main.item array.  <a href="class_item.html#a861d974bce4b638b0d0180a775da3e12">More...</a><br /></td></tr>
+ The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a> array.  <a href="class_item.html#a861d974bce4b638b0d0180a775da3e12">More...</a><br /></td></tr>
 <tr class="separator:a861d974bce4b638b0d0180a775da3e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee93c1f1a86db882300293a86afc3e67"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#aee93c1f1a86db882300293a86afc3e67">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, <a class="el" href="class_item.html">Item</a> item, bool noBroadcast=false, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:aee93c1f1a86db882300293a86afc3e67"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
@@ -1195,9 +1195,9 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>wetCount</b></td></tr
 int&#160;</td><td class="memItemRight" valign="bottom"><b>whoAmI</b></td></tr>
 <tr class="memdesc:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of this <a class="el" href="class_entity.html">Entity</a> within its specific array. These arrays track the entities in the world. <br  />
  <a class="el" href="class_item.html">Item</a>: unused <br  />
- <a class="el" href="class_projectile.html">Projectile</a>: Main.projectile <br  />
- <a class="el" href="class_n_p_c.html">NPC</a>: Main.npc <br  />
- <a class="el" href="class_player.html">Player</a>: Main.player <br /></td></tr>
+ <a class="el" href="class_projectile.html">Projectile</a>: <a class="el" href="class_main.html#a83c4abb74853f4fe224109b98389c5e3" title="Contains all the Projectiles in the game world. Projectiles should only be spawned via Projectile....">Main.projectile</a> <br  />
+ <a class="el" href="class_n_p_c.html">NPC</a>: <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> <br  />
+ <a class="el" href="class_player.html">Player</a>: <a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a> Note that <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Projectile.whoAmI</a> is not consistent between clients in multiplayer for the same projectile. <br /></td></tr>
 <tr class="separator:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa687666b6a0f25fe0115c0ac6aa6aca5" name="aa687666b6a0f25fe0115c0ac6aa6aca5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
@@ -2783,7 +2783,7 @@ UseSound = SoundID.Item5;</code><br  />
 <p>Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. <br  />
  This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. <br  />
  See the <em>noBroadcast</em>  documentation if you need to customize attached <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a> data prior to syncing. <br  />
- The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the Main.item array. </p>
+ The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a> array. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">source</td><td></td></tr>
@@ -2800,7 +2800,7 @@ UseSound = SoundID.Item5;</code><br  />
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The index of the item within Main.item</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the item within <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a></dd></dl>
 
 </div>
 </div>
