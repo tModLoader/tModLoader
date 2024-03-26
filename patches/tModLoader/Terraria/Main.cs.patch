@@ -938,7 +938,7 @@
 +		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
-+		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
++		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 +			ModLoader.ModLoader.MigrateSettings();
  			SaveSettings();
 +		}
@@ -5908,6 +5908,63 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
+@@ -48744,18 +_,33 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Loads the item texture if needed. All modded item textures are already loaded during mod loading so this is only needed before accessing vanilla item textures.
++	/// <para/> Use <see cref="TextureAssets.Item"/> to access the item texture: <c>TextureAssets.Item[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadItem(int i)
+ 	{
+ 		if (TextureAssets.Item[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Item[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the NPC texture if needed. All modded NPC textures are already loaded during mod loading so this is only needed before accessing vanilla NPC textures.
++	/// <para/> Use <see cref="TextureAssets.Npc"/> to access the NPC texture: <c>TextureAssets.Npc[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadNPC(int i)
+ 	{
+ 		if (TextureAssets.Npc[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Npc[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the projectile texture if needed. All modded projectile textures are already loaded during mod loading so this is only needed before accessing vanilla projectile textures.
++	/// <para/> Use <see cref="TextureAssets.Projectile"/> to access the projectile texture: <c>TextureAssets.Projectile[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadProjectile(int i)
+ 	{
+ 		if (TextureAssets.Projectile[i].State == AssetState.NotLoaded)
+@@ -48768,12 +_,22 @@
+ 			Assets.Request<Texture2D>(TextureAssets.Gore[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the wall texture if needed. All modded wall textures are already loaded during mod loading so this is only needed before accessing vanilla wall textures.
++	/// <para/> Use <see cref="TextureAssets.Wall"/> to access the tile texture: <c>TextureAssets.Wall[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadWall(int i)
+ 	{
+ 		if (TextureAssets.Wall[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Wall[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the tile texture if needed. All modded tile textures are already loaded during mod loading so this is only needed before accessing vanilla tile textures.
++	/// <para/> Use <see cref="TextureAssets.Tile"/> to access the tile texture: <c>TextureAssets.Tile[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadTiles(int i)
+ 	{
+ 		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
 @@ -48974,12 +_,12 @@
  		if (!WorldGen.drunkWorldGen && flag && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  			if (BackgroundEnabled) {
