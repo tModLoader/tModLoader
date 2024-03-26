@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,45 +_,61 @@
+@@ -11,45 +_,62 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -24,8 +24,9 @@
  		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
  		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
  		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
- 	</PropertyGroup>
- 
++		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
++	</PropertyGroup>
++
 +	<!-- Versioning -->
 +	<PropertyGroup>
 +		<tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
@@ -36,8 +37,8 @@
 +		<CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +		<BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
 +		<SourceRevisionId>$(tMLVersion)|$(StableVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
-+	</PropertyGroup>
-+
+ 	</PropertyGroup>
+ 
  	<!-- References -->
  	<ItemGroup>
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />

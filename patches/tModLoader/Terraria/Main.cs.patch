@@ -470,7 +470,7 @@
  	public static int[] tileFrameCounter = new int[TileID.Count];
  	public static byte[] wallFrame = new byte[WallID.Count];
  	public static byte[] wallFrameCounter = new byte[WallID.Count];
-@@ -952,7 +_,10 @@
+@@ -952,18 +_,39 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
@@ -480,8 +480,27 @@
 +	public static Tilemap tile = new((ushort)maxTilesX, (ushort)maxTilesY);
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
++	/// <summary>
++	/// Contains all the <see cref="Item"/>s in the game world. Items should only be spawned via <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/> or similar methods. <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> is an option that is safe to call from client code.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all items should use <see cref="ActiveItems"/> to iterate over the Main.item entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
  	public static Item[] item = new Item[401];
-@@ -964,6 +_,9 @@
+ 	public static int[] timeItemSlotCannotBeReusedFor = new int[401];
++	/// <summary>
++	/// Contains all the <see cref="NPC"/>s in the game world. NPC are spawned via the <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/> method.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each NPC has an <see cref="Entity.whoAmI"/> corresponding to their index within Main.npc. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all NPCs should use <see cref="ActiveNPCs"/> to iterate over the Main.npc entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static NPC[] npc = new NPC[201];
+ 	public static Gore[] gore = new Gore[601];
+ 	public static Rain[] rain = new Rain[maxRain + 1];
++	/// <summary>
++	/// Contains all the <see cref="Projectile"/>s in the game world. Projectiles should only be spawned via <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/> or similar methods. Projectile ordering is <b>not</b> consistent between multiplayer clients.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each projectile has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.projectile. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all projectiles should use <see cref="ActiveProjectiles"/> to iterate over the Main.projectile entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static Projectile[] projectile = new Projectile[1001];
  	public static int[,] projectileIdentity = new int[256, 1001];
  	public static CombatText[] combatText = new CombatText[100];
  	public static PopupText[] popupText = new PopupText[20];
@@ -513,7 +532,7 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
-@@ -1026,6 +_,11 @@
+@@ -1026,7 +_,18 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
  	public static int focusRecipe;
@@ -521,10 +540,17 @@
 +	/// <summary>
 +	/// The index in <see cref="player"/> of this client's Player.
 +	/// <br/> If this is <c>255</c>, this client is the server.
++	/// <para/> <see cref="Main.LocalPlayer"/> is shorthand for <c>Main.player[Main.myPlayer]</c> and retrieves the local Player object.
 +	/// </summary>
  	public static int myPlayer;
++	/// <summary>
++	/// Contains all the <see cref="Player"/>s in the game world.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each player has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.player. <see cref="myPlayer"/> is the index of the local player as well. The last entry is a dummy entry used for server operations and should not be accessed.
++	/// <para/> Modders seeking to run logic on all players should use <see cref="ActivePlayers"/> to iterate over the Main.player entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
+ 	public static bool[] countsAsHostForGameplay = new bool[256];
 @@ -1044,8 +_,11 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -906,7 +932,7 @@
 +		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
-+		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
++		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 +			ModLoader.ModLoader.MigrateSettings();
  			SaveSettings();
 +		}
@@ -5876,6 +5902,63 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
+@@ -48744,18 +_,33 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Loads the item texture if needed. All modded item textures are already loaded during mod loading so this is only needed before accessing vanilla item textures.
++	/// <para/> Use <see cref="TextureAssets.Item"/> to access the item texture: <c>TextureAssets.Item[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadItem(int i)
+ 	{
+ 		if (TextureAssets.Item[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Item[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the NPC texture if needed. All modded NPC textures are already loaded during mod loading so this is only needed before accessing vanilla NPC textures.
++	/// <para/> Use <see cref="TextureAssets.Npc"/> to access the NPC texture: <c>TextureAssets.Npc[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadNPC(int i)
+ 	{
+ 		if (TextureAssets.Npc[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Npc[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the projectile texture if needed. All modded projectile textures are already loaded during mod loading so this is only needed before accessing vanilla projectile textures.
++	/// <para/> Use <see cref="TextureAssets.Projectile"/> to access the projectile texture: <c>TextureAssets.Projectile[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadProjectile(int i)
+ 	{
+ 		if (TextureAssets.Projectile[i].State == AssetState.NotLoaded)
+@@ -48768,12 +_,22 @@
+ 			Assets.Request<Texture2D>(TextureAssets.Gore[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the wall texture if needed. All modded wall textures are already loaded during mod loading so this is only needed before accessing vanilla wall textures.
++	/// <para/> Use <see cref="TextureAssets.Wall"/> to access the tile texture: <c>TextureAssets.Wall[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadWall(int i)
+ 	{
+ 		if (TextureAssets.Wall[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Wall[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the tile texture if needed. All modded tile textures are already loaded during mod loading so this is only needed before accessing vanilla tile textures.
++	/// <para/> Use <see cref="TextureAssets.Tile"/> to access the tile texture: <c>TextureAssets.Tile[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadTiles(int i)
+ 	{
+ 		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
 @@ -48974,12 +_,12 @@
  		if (!WorldGen.drunkWorldGen && flag && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  			if (BackgroundEnabled) {
