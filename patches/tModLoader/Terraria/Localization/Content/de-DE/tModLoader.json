@@ -169,6 +169,8 @@
 		// Mod Errors
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
 		"LoadErrorDisabled": "Der/Die Mod/s wurden automatisch deaktiviert.",
+		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
+		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "Der verantwortliche Mod ist unbekannt. tModLoader muss neu gestartet werden.",
 		"LoadErrorContentType": "Dieser Fehler wurde von der \"{0}\" Klasse verursacht.",
 		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",

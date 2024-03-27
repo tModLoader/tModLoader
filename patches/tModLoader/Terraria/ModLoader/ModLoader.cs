@@ -166,7 +166,7 @@ public static class ModLoader
 				else if (mod != null)
 					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
 					SteamedWraps.QueueForceValidateSteamInstall();
-					
+
 				if (e is Exceptions.JITException)
 					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
 			}
@@ -182,17 +182,28 @@ public static class ModLoader
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
 			foreach (var mod in responsibleMods) {
+				string dependentsDisabledMessage = "";
+				if (DisableModAndDependents(mod, ref dependentsDisabledMessage)) {
+					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDependentsDisabled", mod, dependentsDisabledMessage);
+				}
+			}
+			bool DisableModAndDependents(string mod, ref string dependenciesListing)
+			{
 				DisableMod(mod);
 
 				var dependents = availableMods
-					.Where(m => m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
+					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
 					.Select(m => m.Name);
 
-				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDependentsDisabled", mod,
-					string.Join(", ", dependents));
-				
-				foreach (var dependent in dependents)
-					DisableMod(dependent);
+				if (!dependents.Any())
+					return false; // All dependents already disabled, maybe through other links. No need to repeat message.
+
+				foreach (var dependent in dependents) {
+					dependenciesListing += (string.IsNullOrWhiteSpace(dependenciesListing) ? "" : ", ") + Language.GetTextValue("tModLoader.LoadErrorDependsOn", dependent, mod);
+					DisableModAndDependents(dependent, ref dependenciesListing);
+				}
+
+				return true;
 			}
 			
 			Logging.tML.Error(msg, e);

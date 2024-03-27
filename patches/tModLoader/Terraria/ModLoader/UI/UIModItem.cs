@@ -174,7 +174,7 @@ internal class UIModItem : UIPanel
 
 		_modReferences = _mod.properties.modReferences.Select(x => x.mod).ToArray();
 
-		if (_modReferences.Length > 0 && !_mod.Enabled) {
+		if (_modReferences.Length > 0 && !_mod.Enabled) { // TODO: Might want to get rid of !_mod.Enabled check?
 			var icon = UICommon.ButtonExclamationTexture;
 			_modReferenceIcon = new UIImage(icon) {
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
@@ -415,6 +415,7 @@ internal class UIModItem : UIPanel
 		_mod.Enabled = !_mod.Enabled;
 
 		if (!_mod.Enabled)
+			// TODO: DisableDependents
 			return;
 
 		EnableDependencies();

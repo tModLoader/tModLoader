@@ -169,6 +169,8 @@
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
 		"LoadErrorDisabled": "Мод(ы) был(и) автоматически выключен(ы).",
+		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
+		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "Виновный мод неизвестен. Следует перезапустить tModLoader.",
 		"LoadErrorContentType": "Возникла ошибка из-за класса \"{0}\".",
 		"LoadErrorMissingModQualifier": "В пути ресурса \"{0}\" отсутствует квалификатор мода. При загрузке ресурсов необходимо указывать имя мода или \"Terraria\" в начале пути, за которым следует слэш (\"/\").",
