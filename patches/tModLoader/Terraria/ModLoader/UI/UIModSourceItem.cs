@@ -168,42 +168,27 @@ internal class UIModSourceItem : UIPanel
 		// This code here rather than ctor since the delay for dozens of mod source folders is noticeable.
 		if (!_upgradePotentialChecked) {
 			_upgradePotentialChecked = true;
-			string modFolderName = Path.GetFileName(_mod);
-			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
+			string modFolderPath = _mod;
 			bool projNeedsUpdate = false;
-			if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
+
+			if (SourceManagement.SourceUpgradeNeeded(modFolderPath)) {
 				var icon = UICommon.ButtonExclamationTexture;
 				var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
 				};
+
 				upgradeCSProjButton.OnLeftClick += (s, e) => {
-					File.WriteAllText(csprojFile, Interface.createMod.GetModCsproj(modFolderName));
-					string propertiesFolder = Path.Combine(_mod, "Properties");
-					string AssemblyInfoFile = Path.Combine(propertiesFolder, "AssemblyInfo.cs");
-					if (File.Exists(AssemblyInfoFile))
-						File.Delete(AssemblyInfoFile);
+					SourceManagement.UpgradeSource(modFolderPath);
 
-					try {
-						string objFolder = Path.Combine(_mod, "obj"); // Old files can cause some issues.
-						if (Directory.Exists(objFolder))
-							Directory.Delete(objFolder, true);
-						string binFolder = Path.Combine(_mod, "bin");
-						if (Directory.Exists(binFolder))
-							Directory.Delete(binFolder, true);
-					}
-					catch (Exception) {
-					}
-
-					Directory.CreateDirectory(propertiesFolder);
-					File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					Main.menuMode = Interface.modSourcesID;
 
 					upgradeCSProjButton.Remove();
 					_upgradePotentialChecked = false;
 				};
+
 				Append(upgradeCSProjButton);
 
 				contextButtonsLeft -= 26;

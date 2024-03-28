@@ -98,7 +98,10 @@ public static class ModLoader
 
 	internal static void PrepareAssets()
 	{
-		ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
+		ManifestContentSource = new AssemblyResourcesContentSource(
+			Assembly.GetExecutingAssembly(),
+			excludedStartingPaths: new[] { "Terraria/ModLoader/Templates/" }
+		);
 		ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, new[] { ManifestContentSource }) {
 			AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
 		};
