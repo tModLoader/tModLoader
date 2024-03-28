@@ -2,12 +2,12 @@
   <Import Project="../../src/WorkspaceInfo.targets" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
 	<Platform>x64</Platform>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.1.4.3" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.0" />
   </ItemGroup>
   <ItemGroup>
 	  <Reference Include="FNA" HintPath="$(tModLoaderSteamPath)\Libraries\FNA\1.0.0\FNA.dll"/>

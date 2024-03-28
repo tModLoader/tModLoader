@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -6,7 +_,10 @@
+@@ -6,7 +_,11 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
 +using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria;
@@ -17,7 +18,7 @@
  	{
 +		// Launch tModPorter instead if it needed.
 +		if (Array.IndexOf(args, "-tModPorter") is int i && i >= 0) {
-+			tModPorter.Program.Main(args.Skip(i + 1).ToArray()).GetAwaiter().GetResult();
++			tModPorterLaunch.Launch(args.Skip(i).ToArray());
 +			return;
 +		}
 +

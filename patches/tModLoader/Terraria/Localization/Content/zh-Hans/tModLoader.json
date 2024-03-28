@@ -460,8 +460,8 @@
 		"DiscordLink": "前往 Discord 群组寻求帮助",
 		"MSPortToLatest": "运行 tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "欢迎来到开发模组菜单。 此菜单是供模组制作者使用的。 您可以在这里生成模组。\n\n如果您刚接触模组制作，请点击下方的“在 GitHub 上查看”按钮访问我们的 wiki 并浏览“我是新手（I am new to modding）”章节。 若您不便阅读英文或无法访问 GitHub，也可以访问中文教程网站 fs49.org 或寻找其他资源。",
-		"MSNetSDKNotFound": "模组制作现在需要安装 .NET 6.0 SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET 6.0 SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
-		"DownloadNetSDK": "下载 .NET 6.0 SDK",
+		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET {0} SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
+		"DownloadNetSDK": "下载 .NET SDK",
 		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
 
 		// Developer Mode UI

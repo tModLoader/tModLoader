@@ -6,9 +6,9 @@
 -		<TargetFramework>net40</TargetFramework>
 -		<Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
 -		<PlatformTarget>x86</PlatformTarget>
-+		<TargetFramework>net6.0</TargetFramework>
++		<TargetFramework>net8.0</TargetFramework>
 +		<!-- Defines the Minimum patch version that is required to play. -->
-+		<RuntimeFrameworkVersion>6.0.14</RuntimeFrameworkVersion>
++		<!-- <RuntimeFrameworkVersion>6.0.14</RuntimeFrameworkVersion> -->
 +		<!-- Eliminates the Refs folder from output-->
 +		<ProduceReferenceAssembly>false</ProduceReferenceAssembly> 
 +		<Configurations>Debug;Release</Configurations>
