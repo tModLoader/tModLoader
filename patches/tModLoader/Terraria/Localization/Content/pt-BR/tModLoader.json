@@ -169,6 +169,8 @@
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
 		"LoadErrorDisabled": "O(s) mod(s) foi(ram) desabilitado(s) automaticamente.",
+		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
+		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "O mod responsável é desconhecido e o tModLoader deve ser reiniciado.",
 		"LoadErrorContentType": "Esse erro foi causado pela classe \"{0}\".",
 		"LoadErrorMissingModQualifier": "O caminho do recurso \"{0}\" está sem o qualificador de mod. Os caminhos de recursos devem iniciar com o nome do mod ou \"Terraria\" seguido por uma barra (\"/\").",
