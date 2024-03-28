@@ -84,7 +84,8 @@
 +	/// <summary>
 +	/// The maximum length that <see cref="name"/> is allowed to be.
 +	/// </summary>
- 	public const int MaxNameLength = 20;
+-	public const int MaxNameLength = 20;
++	public const int MaxNameLength = 63;
 +
 +	/// <summary>
 +	/// The items this chest contains.

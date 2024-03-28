@@ -194,7 +194,7 @@
  	public const byte SyncChestItem = 32;
 +
 +	// ChestIndex, x, y, nameLen, name
-+	// Name is only sent if nameLen <= 20
++	// Name is only sent if nameLen <= Chest.MaxNameLength
 +	// On client, does the open and close sounds (if changed)
 +	// On server, sends ChestName and SyncPlayerChestIndex to other clients
  	public const byte SyncPlayerChest = 33;
