@@ -28,6 +28,15 @@
  						flag4 = true;
  
  					if (flag4 || flag2 || flag3) {
+@@ -385,7 +_,7 @@
+ 						if (!flag6 && (anchorBottom.type & AnchorType.PlatformNonHammered) == AnchorType.PlatformNonHammered && TileID.Sets.Platforms[tileSafely.type] && tileSafely.slope() == 0 && !tileSafely.halfBrick())
+ 							flag6 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+-						if (!flag6 && (anchorBottom.type & AnchorType.PlanterBox) == AnchorType.PlanterBox && tileSafely.type == 380)
++						if (!flag6 && (anchorBottom.type & AnchorType.PlanterBox) == AnchorType.PlanterBox && TileID.Sets.PlanterBoxes[tileSafely.type])
+ 							flag6 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag6 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
 @@ -565,6 +_,9 @@
  			}
  

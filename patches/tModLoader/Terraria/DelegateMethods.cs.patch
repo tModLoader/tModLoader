@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -386,7 +_,7 @@
+@@ -386,11 +_,11 @@
  		if (tile2 == null)
  			return false;
  
@@ -17,3 +17,8 @@
  			return false;
  
  		if (Main.tileSolid[tile2.type] && !TileID.Sets.Platforms[tile2.type])
+-			return tile2.type == 380;
++			return TileID.Sets.PlanterBoxes[tile2.type];
+ 
+ 		return true;
+ 	}

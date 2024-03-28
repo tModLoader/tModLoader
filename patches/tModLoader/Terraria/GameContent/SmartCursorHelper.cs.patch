@@ -35,6 +35,68 @@
  			return;
  
  		_targets.Clear();
+@@ -353,19 +_,19 @@
+ 
+ 	private static void Step_PlanterBox(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
+ 	{
+-		if (providedInfo.item.createTile != 380 || focusedX != -1 || focusedY != -1)
++		if ((providedInfo.item.createTile > 0 && !TileID.Sets.PlanterBoxes[providedInfo.item.createTile]) || focusedX != -1 || focusedY != -1)
+ 			return;
+ 
+ 		_targets.Clear();
+ 		bool flag = false;
+-		if (Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].active() && Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type == 380)
++		if (Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].active() && TileID.Sets.PlanterBoxes[Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY].type])
+ 			flag = true;
+ 
+ 		if (!flag) {
+ 			for (int i = providedInfo.reachableStartX; i <= providedInfo.reachableEndX; i++) {
+ 				for (int j = providedInfo.reachableStartY; j <= providedInfo.reachableEndY; j++) {
+ 					Tile tile = Main.tile[i, j];
+-					if (tile.active() && tile.type == 380) {
++					if (tile.active() && TileID.Sets.PlanterBoxes[tile.type]) {
+ 						if (!Main.tile[i - 1, j].active() || Main.tileCut[Main.tile[i - 1, j].type] || TileID.Sets.BreakableWhenPlacing[Main.tile[i - 1, j].type])
+ 							_targets.Add(new Tuple<int, int>(i - 1, j));
+ 
+@@ -414,31 +_,31 @@
+ 
+ 				switch (placeStyle) {
+ 					case 0:
+-						if ((tile2.type != 78 && tile2.type != 380 && tile2.type != 2 && tile2.type != 477 && tile2.type != 109 && tile2.type != 492) || tile.liquid > 0)
++						if ((tile2.type != 78 && !TileID.Sets.PlanterBoxes[tile2.type] && tile2.type != 2 && tile2.type != 477 && tile2.type != 109 && tile2.type != 492) || tile.liquid > 0)
+ 							continue;
+ 						break;
+ 					case 1:
+-						if ((tile2.type != 78 && tile2.type != 380 && tile2.type != 60) || tile.liquid > 0)
++						if ((tile2.type != 78 && !TileID.Sets.PlanterBoxes[tile2.type] && tile2.type != 60) || tile.liquid > 0)
+ 							continue;
+ 						break;
+ 					case 2:
+-						if ((tile2.type != 78 && tile2.type != 380 && tile2.type != 0 && tile2.type != 59) || tile.liquid > 0)
++						if ((tile2.type != 78 && !TileID.Sets.PlanterBoxes[tile2.type] && tile2.type != 0 && tile2.type != 59) || tile.liquid > 0)
+ 							continue;
+ 						break;
+ 					case 3:
+-						if ((tile2.type != 78 && tile2.type != 380 && tile2.type != 203 && tile2.type != 199 && tile2.type != 23 && tile2.type != 25) || tile.liquid > 0)
++						if ((tile2.type != 78 && !TileID.Sets.PlanterBoxes[tile2.type] && tile2.type != 203 && tile2.type != 199 && tile2.type != 23 && tile2.type != 25) || tile.liquid > 0)
+ 							continue;
+ 						break;
+ 					case 4:
+-						if ((tile2.type != 78 && tile2.type != 380 && tile2.type != 53 && tile2.type != 116) || (tile.liquid > 0 && tile.lava()))
++						if ((tile2.type != 78 && !TileID.Sets.PlanterBoxes[tile2.type] && tile2.type != 53 && tile2.type != 116) || (tile.liquid > 0 && tile.lava()))
+ 							continue;
+ 						break;
+ 					case 5:
+-						if ((tile2.type != 78 && tile2.type != 380 && tile2.type != 57 && tile2.type != 633) || (tile.liquid > 0 && !tile.lava()))
++						if ((tile2.type != 78 && !TileID.Sets.PlanterBoxes[tile2.type] && tile2.type != 57 && tile2.type != 633) || (tile.liquid > 0 && !tile.lava()))
+ 							continue;
+ 						break;
+ 					case 6:
+-						if ((tile2.type != 78 && tile2.type != 380 && tile2.type != 147 && tile2.type != 161 && tile2.type != 163 && tile2.type != 164 && tile2.type != 200) || (tile.liquid > 0 && tile.lava()))
++						if ((tile2.type != 78 && !TileID.Sets.PlanterBoxes[tile2.type] && tile2.type != 147 && tile2.type != 161 && tile2.type != 163 && tile2.type != 164 && tile2.type != 200) || (tile.liquid > 0 && tile.lava()))
+ 							continue;
+ 						break;
+ 				}
 @@ -672,7 +_,7 @@
  	private static void Step_BlocksLines(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{

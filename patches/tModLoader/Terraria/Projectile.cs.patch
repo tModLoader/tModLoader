@@ -1499,6 +1499,15 @@
  			Kill();
  
  		rotation = (float)Math.Atan2(velocity.Y, velocity.X) + 2.355f;
+@@ -32855,7 +_,7 @@
+ 			int num2 = (int)(base.Center.Y / 16f);
+ 			if (WorldGen.InWorld(num, num2)) {
+ 				Tile tile = Main.tile[num, num2];
+-				if (tile != null && tile.active() && (TileID.Sets.Platforms[tile.type] || tile.type == 380)) {
++				if (tile != null && tile.active() && (TileID.Sets.Platforms[tile.type] || TileID.Sets.PlanterBoxes[tile.type])) {
+ 					Kill();
+ 					return;
+ 				}
 @@ -33692,6 +_,13 @@
  	public static void GetWhipSettings(Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier)
  	{
