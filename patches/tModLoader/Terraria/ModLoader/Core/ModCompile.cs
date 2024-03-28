@@ -67,7 +67,7 @@ internal class ModCompile
 
 	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
-	private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+	private static readonly string tMLDir = Path.GetDirectoryName(CoreModLoader.VirtualLocation);
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
 	private static readonly string modTargetsPath = Path.Combine(ModSourcePath, "tModLoader.targets");
 	private static readonly string tMLModTargetsPath = Path.Combine(tMLDir, "tMLMod.targets");
@@ -436,11 +436,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 	}
 
 	private static IEnumerable<string> GetTerrariaReferences() {
-		var executingAssembly = Assembly.GetExecutingAssembly();
-		yield return executingAssembly.Location;
+		// var executingAssembly = Assembly.GetExecutingAssembly();
+		yield return CoreModLoader.VirtualLocation;
 
 		// same filters as the <Reference> elements in the generated .targets file
-		var libsDir = Path.Combine(Path.GetDirectoryName(executingAssembly.Location), "Libraries");
+		var libsDir = Path.Combine(Path.GetDirectoryName(CoreModLoader.VirtualLocation), "Libraries");
 		foreach (var f in Directory.EnumerateFiles(libsDir, "*.dll", SearchOption.AllDirectories)) {
 			var path = f.Replace('\\', '/');
 			if (!path.EndsWith(".resources.dll") &&

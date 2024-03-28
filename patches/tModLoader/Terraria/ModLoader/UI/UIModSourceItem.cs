@@ -248,7 +248,7 @@ internal class UIModSourceItem : UIPanel
 					string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
 					string args = $"\"{csprojFile}\"";
-					var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+					var tMLPath = Path.GetFileName(CoreModLoader.VirtualLocation);
 					var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
 
 					var porterInfo = new ProcessStartInfo() {

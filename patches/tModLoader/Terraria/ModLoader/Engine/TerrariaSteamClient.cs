@@ -8,6 +8,7 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.Engine;
 
@@ -45,7 +46,7 @@ internal class TerrariaSteamClient
 		}
 
 		serverPipe = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
-		var tMLName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+		var tMLName = Path.GetFileName(CoreModLoader.VirtualLocation);
 		var proc = new Process() {
 			StartInfo = {
 				FileName = Environment.ProcessPath,
