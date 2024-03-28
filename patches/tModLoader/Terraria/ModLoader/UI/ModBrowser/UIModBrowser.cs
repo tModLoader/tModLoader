@@ -379,10 +379,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			onNewModInstalled: mod => {
 				newModInstalled = true;
 				if (ModLoader.autoReloadAndEnableModsLeavingModBrowser) {
-					/* TODO: Do we want this re-added?
 					ModLoader.EnableMod(mod.ModName);
 					reloadOnExit = true;
-					*/
 				}
 			});
 	}
