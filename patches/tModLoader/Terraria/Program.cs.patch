@@ -8,7 +8,7 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -11,12 +_,16 @@
+@@ -11,12 +_,17 @@
  using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -17,6 +17,7 @@
 +using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
++using Terraria.Social.WeGame;
  using Terraria.Utilities;
  
  namespace Terraria;
@@ -109,7 +110,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,28 @@
+@@ -164,6 +_,35 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -118,7 +119,14 @@
 +		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
-+		
++
++		if (CoreModLoader.FindCoreMods(args, out Mod[] coreMods)) {
++			Logging.tML.InfoFormat("Coremods found, initiating child tML startup...");
++			CoreModLoader.LaunchALCWithCoreMods(isServer, coreMods);
++			return;
++		}
++
++		Logging.tML.InfoFormat("No coremods found, running tML as usual...");
 +		LaunchGame_(isServer);
 +	}
 +

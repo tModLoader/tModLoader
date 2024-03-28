@@ -17,6 +17,8 @@ public static partial class Program
 {
 	public static string SavePathShared { get; private set; } // Points to the Stable tModLoader save folder, used for Mod Sources only currently
 
+	public static string tMLAssemblyLocation { get; private set; } = Assembly.GetExecutingAssembly().Location;
+
 	private static IEnumerable<MethodInfo> GetAllMethods(Type type)
 	{
 		return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
