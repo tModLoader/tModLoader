@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Setup
 {
 	public class DiffTask : SetupOperation
 	{
-		private static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".targets", ".txt", ".bat", ".sh" };
+		private static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".targets", ".txt", ".bat", ".sh", "fxc.exe" };
 		private static bool IsDiffable(string relPath) => extensions.Any(relPath.EndsWith);
 
 		public static readonly string RemovedFileList = "removed_files.list";
@@ -36,7 +36,8 @@ namespace Terraria.ModLoader.Setup
 			
 			foreach (var (file, relPath) in PatchTask.EnumerateSrcFiles(patchedDir))
 			{
-				if (File.GetLastWriteTime(file) < cutoff.Get())
+				// exe files won't be modified, so we should always diff them
+				if (File.GetLastWriteTime(file) < cutoff.Get() && !file.EndsWith(".exe"))
 					continue;
 
 				if (!File.Exists(Path.Combine(baseDir, relPath)))
