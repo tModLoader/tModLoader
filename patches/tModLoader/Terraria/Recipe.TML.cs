@@ -21,27 +21,26 @@ public partial class Recipe
 {
 	public static class ConsumptionRules
 	{
-		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
-		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount) => {
-			if (!Main.LocalPlayer.alchemyTable) return;
-
-			int amountUsed = 0;
-
-			for (int i = 0; i < amount; i++) {
-				if (!Main.rand.NextBool(3))
-					amountUsed++;
+		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behaviour is already automatically given to all items that can be made at a placed bottle tile. </summary>
+		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount, bool isDecrafting) => {
+			if (!Main.LocalPlayer.alchemyTable && !isDecrafting)
+				return;
+			for (int i = amount; i > 0; i--) {
+				if (Main.rand.NextBool(3))
+					amount--;
 			}
-
-			amount = amountUsed;
 		};
 	}
 
 	public readonly Mod Mod;
-	public readonly List<Condition> Conditions = new List<Condition>();
-	public readonly List<Condition> DecraftConditions = new List<Condition>();
+	public readonly List<Condition> Conditions = new();
+	public readonly List<Condition> DecraftConditions = new();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
-	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
+	/// <summary>
+	/// Called for both <see cref="Create()"/> and <see cref="Item.GetShimmered"/>, using <paramref name="isDecraft"/> == <see langword="true"/> to denote a shimmer operation
+	/// </summary>
+	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount, bool isDecrafting);
 
 	internal OnCraftCallback OnCraftHooks { get; private set; }
 	internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
@@ -62,6 +61,11 @@ public partial class Recipe
 	/// Any recipe with this flag won't be shown in game.
 	/// </summary>
 	public bool Disabled { get; private set; }
+
+	/// <summary>
+	/// Any recipe with this flag won't be decrafted in shimmer.
+	/// </summary>
+	public bool DecraftDisabled => notDecraftable;
 
 	/// <summary>
 	/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
@@ -406,7 +410,6 @@ public partial class Recipe
 		clone.anyPressurePlate = anyPressurePlate;
 		clone.anySand = anySand;
 		clone.anyFragment = anyFragment;
-		clone.alchemy = alchemy;
 		clone.needSnowBiome = needSnowBiome;
 		clone.needGraveyardBiome = needGraveyardBiome;
 		clone.needEverythingSeed = needEverythingSeed;
