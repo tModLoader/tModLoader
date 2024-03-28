@@ -157,5 +157,10 @@ public partial class NPCID
 		///	Note: Even though this defaults to 1, this set should only be checked if <see cref="NPC.GetNPCInvasionGroup(int)"/> is above 0 or if any BelongsToInvasion sets are <see langword="true"/>.
 		/// </remarks>
 		public static int[] InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0);
+
+		/// <summary>
+		/// When spawning a new npc, if the player's luck roll returns that the NPC should be golden, spawns the ID corresponding to its type instead.
+		/// </summary>
+		public static int[] GoldCritterRedirect = Factory.CreateIntSet(-1);
 	}
 }
