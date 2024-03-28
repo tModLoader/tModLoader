@@ -157,9 +157,9 @@ namespace ExampleMod.Content.NPCs
 			int w = NPC.sWidth + NPC.safeRangeX * 2;
 			int h = NPC.sHeight + NPC.safeRangeY * 2;
 			Rectangle npcScreenRect = new Rectangle((int)center.X - w / 2, (int)center.Y - h / 2, w, h);
-			foreach (Player player in Main.player) {
+			foreach (Player player in Main.ActivePlayers) {
 				// If any player is close enough to the traveling merchant, it will prevent the npc from despawning
-				if (player.active && player.getRect().Intersects(npcScreenRect)) {
+				if (player.getRect().Intersects(npcScreenRect)) {
 					return true;
 				}
 			}

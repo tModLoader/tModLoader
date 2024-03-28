@@ -329,14 +329,7 @@
  	public static int[] projFrames = new int[ProjectileID.Count];
  	public static bool[] projPet = new bool[ProjectileID.Count];
  	public static float demonTorch = 1f;
-@@ -801,14 +_,21 @@
- 	public static bool windPhysics = false;
- 	public static float windPhysicsStrength = 0.1f;
- 	public static bool SettingsEnabled_TilesSwayInWind = true;
--	public static Cloud[] cloud = new Cloud[200];
-+	public static readonly Cloud[] cloud = new Cloud[200];
- 	public static bool resetClouds = true;
- 	public static float SmoothedMushroomLightInfluence;
+@@ -807,8 +_,15 @@
  	public static int fadeCounter;
  	public static float invAlpha = 1f;
  	public static float invDir = 1f;
@@ -477,7 +470,7 @@
  	public static int[] tileFrameCounter = new int[TileID.Count];
  	public static byte[] wallFrame = new byte[WallID.Count];
  	public static byte[] wallFrameCounter = new byte[WallID.Count];
-@@ -952,26 +_,36 @@
+@@ -952,18 +_,39 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
@@ -485,40 +478,39 @@
  	public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
 +	*/
 +	public static Tilemap tile = new((ushort)maxTilesX, (ushort)maxTilesY);
--	public static Dust[] dust = new Dust[6001];
-+	public static readonly Dust[] dust = new Dust[6001];
--	public static Star[] star = new Star[400];
-+	public static readonly Star[] star = new Star[400];
--	public static Item[] item = new Item[401];
-+	public static readonly Item[] item = new Item[401];
--	public static int[] timeItemSlotCannotBeReusedFor = new int[401];
-+	public static readonly int[] timeItemSlotCannotBeReusedFor = new int[401];
--	public static NPC[] npc = new NPC[201];
-+	public static readonly NPC[] npc = new NPC[201];
--	public static Gore[] gore = new Gore[601];
-+	public static readonly Gore[] gore = new Gore[601];
--	public static Rain[] rain = new Rain[maxRain + 1];
-+	public static readonly Rain[] rain = new Rain[maxRain + 1];
--	public static Projectile[] projectile = new Projectile[1001];
-+	public static readonly Projectile[] projectile = new Projectile[1001];
--	public static int[,] projectileIdentity = new int[256, 1001];
-+	public static readonly int[,] projectileIdentity = new int[256, 1001];
--	public static CombatText[] combatText = new CombatText[100];
-+	public static readonly CombatText[] combatText = new CombatText[100];
--	public static PopupText[] popupText = new PopupText[20];
-+	public static readonly PopupText[] popupText = new PopupText[20];
+ 	public static Dust[] dust = new Dust[6001];
+ 	public static Star[] star = new Star[400];
++	/// <summary>
++	/// Contains all the <see cref="Item"/>s in the game world. Items should only be spawned via <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/> or similar methods. <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> is an option that is safe to call from client code.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all items should use <see cref="ActiveItems"/> to iterate over the Main.item entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static Item[] item = new Item[401];
+ 	public static int[] timeItemSlotCannotBeReusedFor = new int[401];
++	/// <summary>
++	/// Contains all the <see cref="NPC"/>s in the game world. NPC are spawned via the <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/> method.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each NPC has an <see cref="Entity.whoAmI"/> corresponding to their index within Main.npc. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all NPCs should use <see cref="ActiveNPCs"/> to iterate over the Main.npc entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static NPC[] npc = new NPC[201];
+ 	public static Gore[] gore = new Gore[601];
+ 	public static Rain[] rain = new Rain[maxRain + 1];
++	/// <summary>
++	/// Contains all the <see cref="Projectile"/>s in the game world. Projectiles should only be spawned via <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/> or similar methods. Projectile ordering is <b>not</b> consistent between multiplayer clients.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each projectile has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.projectile. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all projectiles should use <see cref="ActiveProjectiles"/> to iterate over the Main.projectile entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static Projectile[] projectile = new Projectile[1001];
+ 	public static int[,] projectileIdentity = new int[256, 1001];
+ 	public static CombatText[] combatText = new CombatText[100];
+ 	public static PopupText[] popupText = new PopupText[20];
 +	/// <summary>
 +	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
 +	/// </summary>
--	public static Chest[] chest = new Chest[8000];
-+	public static readonly Chest[] chest = new Chest[8000];
--	public static Sign[] sign = new Sign[1000];
-+	public static readonly Sign[] sign = new Sign[1000];
--	public static int[] itemFrame = new int[401];
-+	public static readonly int[] itemFrame = new int[401];
--	public static int[] itemFrameCounter = new int[401];
-+	public static readonly int[] itemFrameCounter = new int[401];
- 	public static DrawAnimation[] itemAnimations = new DrawAnimation[ItemID.Count];
+ 	public static Chest[] chest = new Chest[8000];
+ 	public static Sign[] sign = new Sign[1000];
+ 	public static int[] itemFrame = new int[401];
+@@ -972,6 +_,10 @@
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
  	public static List<int> itemAnimationsRegistered = new List<int>();
@@ -540,7 +532,7 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
-@@ -1026,9 +_,14 @@
+@@ -1026,7 +_,18 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
  	public static int focusRecipe;
@@ -548,15 +540,17 @@
 +	/// <summary>
 +	/// The index in <see cref="player"/> of this client's Player.
 +	/// <br/> If this is <c>255</c>, this client is the server.
++	/// <para/> <see cref="Main.LocalPlayer"/> is shorthand for <c>Main.player[Main.myPlayer]</c> and retrieves the local Player object.
 +	/// </summary>
  	public static int myPlayer;
--	public static Player[] player = new Player[256];
-+	public static readonly Player[] player = new Player[256];
--	public static Player[] playerVisualClone = new Player[256];
-+	public static readonly Player[] playerVisualClone = new Player[256];
++	/// <summary>
++	/// Contains all the <see cref="Player"/>s in the game world.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each player has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.player. <see cref="myPlayer"/> is the index of the local player as well. The last entry is a dummy entry used for server operations and should not be accessed.
++	/// <para/> Modders seeking to run logic on all players should use <see cref="ActivePlayers"/> to iterate over the Main.player entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static Player[] player = new Player[256];
+ 	public static Player[] playerVisualClone = new Player[256];
  	public static bool[] countsAsHostForGameplay = new bool[256];
- 	public static int spawnTileX;
- 	public static int spawnTileY;
 @@ -1044,8 +_,11 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -2475,6 +2469,16 @@
  		wallFrameCounter[144]++;
  		int num3 = 5;
  		int num4 = 10;
+@@ -15840,7 +_,8 @@
+ 			text = "";
+ 
+ 		bool flag = false;
+-		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
++		// Old code prevented users from using AltGr modifier key. Needed to type chars such as []{}\| on many languages keyboard layouts. Windows interprets Ctrl + Alt as AltGr.
++		if ((inputText.IsKeyDown(Keys.LeftControl) || inputText.IsKeyDown(Keys.RightControl)) && !(inputText.IsKeyDown(Keys.LeftAlt) || inputText.IsKeyDown(Keys.RightAlt))) {
+ 			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
+ 				text = "";
+ 			}
 @@ -15989,15 +_,19 @@
  			X += 34;
  

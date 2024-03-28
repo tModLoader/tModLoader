@@ -307,6 +307,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	{
 		SoundEngine.PlaySound(12, -1, -1, 1);
 		foreach (UIModItem modItem in items) {
+			if (modItem.tMLUpdateRequired != null)
+				continue;
 			modItem.Enable();
 		}
 	}
