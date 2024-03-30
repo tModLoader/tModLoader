@@ -35,7 +35,7 @@
 		"MenuModUpdatesAvailable": "({0} {^0:atualização;atualizações} {^0:disponível;disponíveis}!)",
 		"AudioNotSupported": "Nenhum hardware de áudio encontrado. Desativando todo o áudio.",
 		"SwitchVersionInfoButton": "Alternar para uma versão diferente do tModLoader",
-		"LatestNews": "Últimas Notícias:",
+		"LatestNews": "Últimas Notícias: {0}",
 		"LatestNewsOffline": "Offline",
 		"LatestNewsChecking": "Verificando...",
 		"SteamFamilyShareWarning": "Foi detectado que você está usando uma cópia do Terraria de uma biblioteca compartilhada.\nO Steam não oferece suporte ao tModLoader em uma biblioteca compartilhada.\nA solução experimental do tModLoader para bibliotecas compartilhadas foi carregada.\nOs seguintes recursos não estão disponíveis:\n - Overlay do Steam\n - Multijogador do Steam",
