@@ -62,7 +62,7 @@
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModStableOnPreviewWarning": "No es de una versión preliminar. Actívalo bajo tu propio riesgo",
 		"ModDependencyTooltip": "Este mod depende de: {0}\n (Se habilitará(n) automáticamente)",
-		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n (These will disable automatically)",
+		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n(These will disable automatically)",
 		"TranslationModTooltip": "Este mod proporciona traducciones para: {0}",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
 		"ModDependencyModsNotFound": "Los siguientes mods no han sido encontrados: {0}",

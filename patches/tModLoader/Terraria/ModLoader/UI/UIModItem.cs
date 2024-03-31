@@ -170,7 +170,7 @@ internal class UIModItem : UIPanel
 			}
 		}
 
-		var availableMods = ModOrganizer.FindMods(); // slow? is this accessible somewhere?
+		var availableMods = ModOrganizer.RecheckVersionsToLoad();
 		_modDependents = availableMods
 					.Where(m => m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(_mod.Name)))
 					.Select(m => m.Name).ToArray();

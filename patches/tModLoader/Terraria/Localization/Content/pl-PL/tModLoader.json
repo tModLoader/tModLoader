@@ -62,7 +62,7 @@
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		"ModStableOnPreviewWarning": "Brak wersji podglądowej. Włącz na własne ryzyko.",
 		"ModDependencyTooltip": "Ten mod wymaga: {0}\n (Te zostaną włączone automatycznie))",
-		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n (These will disable automatically)",
+		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n(These will disable automatically)",
 		"TranslationModTooltip": "Ten mod zapewnia tłumaczenia dla: {0}",
 		"ModDependencyClickTooltip": "Ten mod wymaga: {0}\n (kliknij, aby włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
