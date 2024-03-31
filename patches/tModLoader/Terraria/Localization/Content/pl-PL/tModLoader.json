@@ -623,7 +623,7 @@
 		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Następna strona",
@@ -724,7 +724,7 @@
 		"InMarble": "Musi być w marmurowym biomie",
 		"InHive": "Musi być w ulu",
 		"InGemCave": "Musi być w jaskini kamieni szlachetnych",
-		"InLihzardTemple": "Musi być w Świątyni Jaszczura"
+		"InLihzardTemple": "Musi być w Świątyni Jaszczura",
 		"InGraveyard": "Musi być na Cmentarzu",
 		"InAether": "Musi być w Aetherze",
 		"InShoppingForest": "Musi być powyżej powierzchni i nie w innym głównym biomie",
@@ -762,7 +762,7 @@
 		"WorldNotNoTraps": "Nie w świecie No Traps",
 		"WorldNotZenith": "Nie w świecie Zenith",
 
-		"Christmas": "Podczas świąt Bożego Narodzenia"
+		"Christmas": "Podczas świąt Bożego Narodzenia",
 		"Halloween": "Podczas Halloween",
 		"Thunderstorm": "Podczas burzy",
 		"BirthdayParty": "Podczas przyjęcia urodzinowego NPC",
@@ -934,9 +934,9 @@
 		"ModLoader.Items.UnloadedItem.DisplayName": "Nieaktywny przedmiot",
 		"ModLoader.Items.UnloadedItem.Tooltip": "\n",
 		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
-		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Przedmiot: {0}"
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Przedmiot: {0}",
 		"ModLoader.Tiles.UnloadedChest.MapEntry0": "Niezaładowana skrzynia",
-		"ModLoader.Tiles.UnloadedChest.MapEntry1": "Zamknięta niezaładowana skrzynia",
+		"ModLoader.Tiles.UnloadedChest.MapEntry1": "Zamknięta niezaładowana skrzynia"
 		// "ModLoader.Items.Jofairden_Body.DisplayName": "Andromedon Body",
 		// "ModLoader.Items.Jofairden_Body.Tooltip": "The power of the Andromedon flows within you",
 		// "ModLoader.Items.Jofairden_Head.DisplayName": "Andromedon Head",
