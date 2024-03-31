@@ -63,6 +63,7 @@
 		"ModOldWarning": "旧模组，风险自负",
 		"ModStableOnPreviewWarning": "没有对应的测试版，风险自负",
 		"ModDependencyTooltip": "此模组依赖于：{0}\n （这些将自动启用）",
+		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n (These will disable automatically)",
 		"TranslationModTooltip": "此模组为下列模组提供翻译：\n{0}",
 		"ModDependencyClickTooltip": "该模组依赖于：{0}\n（点击启用）",
 		"ModDependencyModsNotFound": "未找到下列模组：{0}",
@@ -170,8 +171,6 @@
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
 		"LoadErrorDisabled": "该模组已被自动禁用.",
-		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
-		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "该模组错误原因未知,必须重新启动tModLoader.",
 		"LoadErrorContentType": "此错误是由“{0}”类引起的。",
 		"LoadErrorMissingModQualifier": "资源文件“{0}”缺少模组修饰符，资源文件应以模组名称或Terraria开头，后跟斜杠 (“/”)。",

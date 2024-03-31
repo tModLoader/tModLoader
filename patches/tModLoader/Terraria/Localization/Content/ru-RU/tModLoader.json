@@ -62,6 +62,7 @@
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModStableOnPreviewWarning": "Не подходит для Preview-версии.\nВключайте на свой страх и риск",
 		"ModDependencyTooltip": "Этот мод требует установки: {0}\n (Они будут автоматически включены)",
+		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n (These will disable automatically)",
 		"TranslationModTooltip": "В этом моде доступны переводы для таких языков: {0}",
 		"ModDependencyClickTooltip": "Запуск этого мода невозможен без:\n{0}\n(нажмите, чтобы включить зависимости)",
 		"ModDependencyModsNotFound": "Следующие моды не найдены: {0}",
@@ -169,8 +170,6 @@
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
 		"LoadErrorDisabled": "Мод(ы) был(и) автоматически выключен(ы).",
-		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
-		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "Виновный мод неизвестен. Следует перезапустить tModLoader.",
 		"LoadErrorContentType": "Возникла ошибка из-за класса \"{0}\".",
 		"LoadErrorMissingModQualifier": "В пути ресурса \"{0}\" отсутствует квалификатор мода. При загрузке ресурсов необходимо указывать имя мода или \"Terraria\" в начале пути, за которым следует слэш (\"/\").",

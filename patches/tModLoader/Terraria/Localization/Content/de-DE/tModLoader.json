@@ -62,6 +62,7 @@
 		"ModOldWarning": "Mod veraltet. Benutzung auf eigene Gefahr!",
 		"ModStableOnPreviewWarning": "Kein Vorschau Build. Aktivieren auf eigene Gefahr!",
 		"ModDependencyTooltip": "Dieser Mod basiert auf: {0}\n (Diese werden automatisch aktiviert)",
+		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n (These will disable automatically)",
 		"TranslationModTooltip": "Dieser Mod bietet Übersetzungen für: {0}",
 		"ModDependencyClickTooltip": "Dieser Mod benötigt: {0}\n (Klicken zum aktivieren)",
 		"ModDependencyModsNotFound": "Folgende Mods konnten nicht gefunden werden: {0}",
@@ -169,8 +170,6 @@
 		// Mod Errors
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
 		"LoadErrorDisabled": "Der/Die Mod/s wurden automatisch deaktiviert.",
-		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
-		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "Der verantwortliche Mod ist unbekannt. tModLoader muss neu gestartet werden.",
 		"LoadErrorContentType": "Dieser Fehler wurde von der \"{0}\" Klasse verursacht.",
 		// "LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",

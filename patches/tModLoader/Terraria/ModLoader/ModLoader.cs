@@ -182,12 +182,9 @@ public static class ModLoader
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
 			foreach (var mod in responsibleMods) {
-				string dependentsDisabledMessage = "";
-				if (DisableModAndDependents(mod, ref dependentsDisabledMessage)) {
-					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDependentsDisabled", mod, dependentsDisabledMessage);
-				}
+				DisableModAndDependents(mod);
 			}
-			bool DisableModAndDependents(string mod, ref string dependenciesListing)
+			void DisableModAndDependents(string mod)
 			{
 				DisableMod(mod);
 
@@ -195,15 +192,9 @@ public static class ModLoader
 					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
 					.Select(m => m.Name);
 
-				if (!dependents.Any())
-					return false; // All dependents already disabled, maybe through other links. No need to repeat message.
-
 				foreach (var dependent in dependents) {
-					dependenciesListing += (string.IsNullOrWhiteSpace(dependenciesListing) ? "" : ", ") + Language.GetTextValue("tModLoader.LoadErrorDependsOn", dependent, mod);
-					DisableModAndDependents(dependent, ref dependenciesListing);
+					DisableModAndDependents(dependent);
 				}
-
-				return true;
 			}
 			
 			Logging.tML.Error(msg, e);

@@ -62,6 +62,7 @@
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		"ModStableOnPreviewWarning": "Brak wersji podglądowej. Włącz na własne ryzyko.",
 		"ModDependencyTooltip": "Ten mod wymaga: {0}\n (Te zostaną włączone automatycznie))",
+		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n (These will disable automatically)",
 		"TranslationModTooltip": "Ten mod zapewnia tłumaczenia dla: {0}",
 		"ModDependencyClickTooltip": "Ten mod wymaga: {0}\n (kliknij, aby włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
@@ -169,8 +170,6 @@
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
 		"LoadErrorDisabled": "Mod(y) zostały automatycznie wyłączone.",
-		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
-		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "Mod odpowiedzialny jest nieznany i tModLoader musi zostać ponownie uruchomiony.",
 		"LoadErrorContentType": "To błąd został spowodowany przez klasę \"{0}\".",
 		"LoadErrorMissingModQualifier": "Ścieżka zasobu \"{0}\" nie zawiera kwalifikatora moda. Ścieżki zasobów powinny zaczynać się od nazwy moda lub \"Terraria\", po którym następuje ukośnik (\"/\").",

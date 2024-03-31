@@ -62,6 +62,7 @@
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModStableOnPreviewWarning": "No es de una versión preliminar. Actívalo bajo tu propio riesgo",
 		"ModDependencyTooltip": "Este mod depende de: {0}\n (Se habilitará(n) automáticamente)",
+		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n (These will disable automatically)",
 		"TranslationModTooltip": "Este mod proporciona traducciones para: {0}",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
 		"ModDependencyModsNotFound": "Los siguientes mods no han sido encontrados: {0}",
@@ -169,8 +170,6 @@
 		// Mod Errors
 		"LoadError": "Se ha producido un error al cargar {0}",
 		"LoadErrorDisabled": "Los mods se han desactivado automáticamente.",
-		// "LoadErrorDependentsDisabled": "The following mods have also been disabled because of dependencies to {0}:\n    {1}",
-		// "LoadErrorDependsOn": "{0} depends on {1}",
 		"LoadErrorCulpritUnknown": "Se desconoce el mod responsable y tModLoader debe reiniciarse.",
 		"LoadErrorContentType": "Este error fue causado por la clase \"{0}\".",
 		"LoadErrorMissingModQualifier": "La ruta de recurso \"{0}\" no tiene el calificador del mod. Las rutas de recurso deben comenzar con el nombre del mod o con \"Terraria\" seguido de una barra (\"/\").",

@@ -10,12 +10,9 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
-using Terraria.UI.Chat;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
-using System.IO;
-using ReLogic.Utilities;
 using Terraria.Social.Base;
 
 namespace Terraria.ModLoader.UI;
@@ -50,6 +47,7 @@ internal class UIModItem : UIPanel
 	private int _modIconAdjust;
 	private string _tooltip;
 	private string[] _modReferences;
+	private string[] _modDependents;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
 
 	private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
@@ -120,7 +118,7 @@ internal class UIModItem : UIPanel
 		// Detect if it's for a preview version ahead of our time
 		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
 			updateVersion = $"v{_mod.tModLoaderVersion}";
-			
+
 			if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
 				updateVersion = $"Preview {updateVersion}";
 		}
@@ -172,9 +170,13 @@ internal class UIModItem : UIPanel
 			}
 		}
 
+		var availableMods = ModOrganizer.FindMods(); // slow? is this accessible somewhere?
+		_modDependents = availableMods
+					.Where(m => m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(_mod.Name)))
+					.Select(m => m.Name).ToArray();
 		_modReferences = _mod.properties.modReferences.Select(x => x.mod).ToArray();
 
-		if (_modReferences.Length > 0 && !_mod.Enabled) { // TODO: Might want to get rid of !_mod.Enabled check?
+		if (_modReferences.Length > 0 || _modDependents.Length > 0) {
 			var icon = UICommon.ButtonExclamationTexture;
 			_modReferenceIcon = new UIImage(icon) {
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
@@ -183,7 +185,7 @@ internal class UIModItem : UIPanel
 			left2ndLine += 28;
 			// _modReferenceIcon.OnLeftClick += EnableDependencies;
 
-			Append(_modReferenceIcon);
+			this.AddOrRemoveChild(_modReferenceIcon, _mod.Enabled ? _modDependents.Length != 0 : _mod.properties.modReferences.Length != 0);
 		}
 
 		if (_mod.properties.RefNames(true).Any() && _mod.properties.translationMod) {
@@ -328,9 +330,9 @@ internal class UIModItem : UIPanel
 		_tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(_tooltip)) {
-			var bounds = GetOuterDimensions().ToRectangle();
-			bounds.Height += 16;
-			UICommon.DrawHoverStringInBounds(spriteBatch, _tooltip, bounds);
+			//var bounds = GetOuterDimensions().ToRectangle();
+			//bounds.Height += 16;
+			UICommon.TooltipMouseText(_tooltip);
 		}
 	}
 
@@ -379,8 +381,14 @@ internal class UIModItem : UIPanel
 			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 		}
 		else if (_modReferenceIcon?.IsMouseHovering == true) {
-			string refs = string.Join(", ", _mod.properties.modReferences);
-			_tooltip = Language.GetTextValue("tModLoader.ModDependencyTooltip", refs);
+			if (!_mod.Enabled) {
+				string refs = string.Join(", ", _mod.properties.modReferences);
+				_tooltip = Language.GetTextValue("tModLoader.ModDependencyTooltip", refs);
+			}
+			else {
+				string refs = string.Join(", ", _modDependents);
+				_tooltip = Language.GetTextValue("tModLoader.ModDependentsTooltip", refs);
+			}
 		}
 		else if (_translationModIcon?.IsMouseHovering == true) {
 			string refs = string.Join(", ", _mod.properties.RefNames(true)); // Translation mods can be strong or weak references.
@@ -414,27 +422,39 @@ internal class UIModItem : UIPanel
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		_mod.Enabled = !_mod.Enabled;
 
-		if (!_mod.Enabled)
-			// TODO: DisableDependents
+		UpdateUIForEnabledChange();
+
+		if (!_mod.Enabled) {
+			DisableDependents();
 			return;
+		}
 
 		EnableDependencies();
 	}
 
 	internal void Enable()
 	{
-		if(_mod.Enabled){return;}
-		SoundEngine.PlaySound(SoundID.MenuTick);
+		if (_mod.Enabled) { return; }
 		_mod.Enabled = true;
-		_uiModStateText.SetEnabled();
+		UpdateUIForEnabledChange();
 	}
 
 	internal void Disable()
 	{
-		if(!_mod.Enabled){return;}
-		SoundEngine.PlaySound(SoundID.MenuTick);
+		if (!_mod.Enabled) { return; }
 		_mod.Enabled = false;
-		_uiModStateText.SetDisabled();
+		UpdateUIForEnabledChange();
+	}
+
+	private void UpdateUIForEnabledChange()
+	{
+		if (_mod.Enabled)
+			_uiModStateText.SetEnabled();
+		else
+			_uiModStateText.SetDisabled();
+		if (_modReferenceIcon != null) {
+			this.AddOrRemoveChild(_modReferenceIcon, _mod.Enabled ? _modDependents.Length != 0 : _mod.properties.modReferences.Length != 0);
+		}
 	}
 
 	internal void EnableDependencies()
@@ -457,6 +477,23 @@ internal class UIModItem : UIPanel
 			}
 			dep.EnableDepsRecursive(missingRefs);
 			dep.Enable();
+		}
+	}
+
+	private void DisableDependents()
+	{
+		DisableDependentsRecursive();
+	}
+
+	private void DisableDependentsRecursive()
+	{
+		foreach (var name in _modDependents) {
+			var dep = Interface.modsMenu.FindUIModItem(name);
+			if (dep == null) {
+				continue;
+			}
+			dep.DisableDependentsRecursive();
+			dep.Disable();
 		}
 	}
 
