@@ -47,10 +47,25 @@ internal class UIModItem : UIPanel
 	private int _modIconAdjust;
 	private string _tooltip;
 	private string[] _modReferences;
-	private string[] _modDependents;
+	private string[] _modDependents; // Note: Recursive
+	private string[] _modDependencies; // Note: Recursive
+	private string _modRequiresTooltip;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
 
-	private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
+	private string ToggleModStateText {
+		get {
+			if (_mod.Enabled) {
+				if(_modDependents.Any())
+					return Language.GetTextValue("tModLoader.ModsDisableAndDependents", _mod.DisplayName, _modDependents.Length);
+				return Language.GetTextValue("tModLoader.ModsDisable");
+			}
+			else {
+				if (_modDependencies.Any())
+					return Language.GetTextValue("tModLoader.ModsEnableAndDependencies", _mod.DisplayName, _modDependencies.Length);
+				return Language.GetTextValue("tModLoader.ModsEnable");
+			}
+		}
+	}
 
 	public string ModName => _mod.Name;
 	public bool NeedsReload => _mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload);
@@ -170,14 +185,53 @@ internal class UIModItem : UIPanel
 			}
 		}
 
-		var availableMods = ModOrganizer.RecheckVersionsToLoad();
-		_modDependents = availableMods
-					.Where(m => m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(_mod.Name)))
-					.Select(m => m.Name).ToArray();
 		_modReferences = _mod.properties.modReferences.Select(x => x.mod).ToArray();
 
-		if (_modReferences.Length > 0 || _modDependents.Length > 0) {
-			var icon = UICommon.ButtonExclamationTexture;
+		var availableMods = ModOrganizer.RecheckVersionsToLoad();
+		_modRequiresTooltip = "";
+		HashSet<string> allDependencies = new();
+		GetDependencies(_mod.Name, allDependencies);
+		_modDependencies = allDependencies.ToArray();
+		if (_modDependencies.Any()) {
+			string refs = string.Join("\n", _modDependencies.Select(x => "- " + (Interface.modsMenu.FindUIModItem(x)?._mod.DisplayName ?? x + Language.GetTextValue("tModLoader.ModPackMissing"))));
+			_modRequiresTooltip += Language.GetTextValue("tModLoader.ModDependencyTooltip", refs);
+		}
+		void GetDependencies(string modName, HashSet<string> allDependencies)
+		{
+			var modItem = Interface.modsMenu.FindUIModItem(modName);
+			if (modItem == null)
+				return; // Mod isn't downloaded, can't determine further recursive dependencies
+
+			var dependencies = modItem._mod.properties.modReferences.Select(x => x.mod).ToArray();
+			foreach (var dependency in dependencies) {
+				if (allDependencies.Add(dependency)) {
+					GetDependencies(dependency, allDependencies);
+				}
+			}
+		}
+
+		HashSet<string> allDependents = new();
+		GetDependents(_mod.Name, allDependents);
+		_modDependents = allDependents.ToArray();
+		if (_modDependents.Any()) {
+			if (!string.IsNullOrWhiteSpace(_modRequiresTooltip))
+				_modRequiresTooltip += "\n\n";
+			string refs = string.Join("\n", _modDependents.Select(x => "- " + (Interface.modsMenu.FindUIModItem(x)?._mod.DisplayName ?? x + Language.GetTextValue("tModLoader.ModPackMissing"))));
+			_modRequiresTooltip += Language.GetTextValue("tModLoader.ModDependentsTooltip", refs);
+		}
+		void GetDependents(string modName, HashSet<string> allDependents)
+		{
+			var dependents = availableMods
+				.Where(m => m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(modName)))
+				.Select(m => m.Name).ToArray();
+			foreach (var dependent in dependents) {
+				if (allDependents.Add(dependent))
+					GetDependents(dependent, allDependents);
+			}
+		}
+
+		if (!string.IsNullOrWhiteSpace(_modRequiresTooltip)) {
+			var icon = UICommon.ButtonDepsTexture;
 			_modReferenceIcon = new UIImage(icon) {
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
 				Top = { Pixels = 42.5f }
@@ -185,7 +239,7 @@ internal class UIModItem : UIPanel
 			left2ndLine += 28;
 			// _modReferenceIcon.OnLeftClick += EnableDependencies;
 
-			this.AddOrRemoveChild(_modReferenceIcon, _mod.Enabled ? _modDependents.Length != 0 : _mod.properties.modReferences.Length != 0);
+			Append(_modReferenceIcon);
 		}
 
 		if (_mod.properties.RefNames(true).Any() && _mod.properties.translationMod) {
@@ -383,14 +437,7 @@ internal class UIModItem : UIPanel
 			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 		}
 		else if (_modReferenceIcon?.IsMouseHovering == true) {
-			if (!_mod.Enabled) {
-				string refs = string.Join(", ", _mod.properties.modReferences);
-				_tooltip = Language.GetTextValue("tModLoader.ModDependencyTooltip", refs);
-			}
-			else {
-				string refs = string.Join(", ", _modDependents);
-				_tooltip = Language.GetTextValue("tModLoader.ModDependentsTooltip", refs);
-			}
+			_tooltip = _modRequiresTooltip;
 		}
 		else if (_translationModIcon?.IsMouseHovering == true) {
 			string refs = string.Join(", ", _mod.properties.RefNames(true)); // Translation mods can be strong or weak references.
@@ -454,9 +501,6 @@ internal class UIModItem : UIPanel
 			_uiModStateText.SetEnabled();
 		else
 			_uiModStateText.SetDisabled();
-		if (_modReferenceIcon != null) {
-			this.AddOrRemoveChild(_modReferenceIcon, _mod.Enabled ? _modDependents.Length != 0 : _mod.properties.modReferences.Length != 0);
-		}
 	}
 
 	internal void EnableDependencies()

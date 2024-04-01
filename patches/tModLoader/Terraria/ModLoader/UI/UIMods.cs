@@ -432,8 +432,10 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
 			foreach (var mod in mods) {
 				UIModItem modItem = new UIModItem(mod);
-				modItem.Activate();
 				items.Add(modItem);
+			}
+			foreach (var modItem in items) {
+				modItem.Activate();
 			}
 			needToRemoveLoading = true;
 			updateNeeded = true;
