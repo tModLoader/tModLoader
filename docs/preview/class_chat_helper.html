@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -90,11 +90,14 @@ $(document).ready(function(){initNavTree('class_chat_helper.html',''); initResiz
   <div class="headertitle"><div class="title">ChatHelper Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Facilitates sending chat messages from the server to clients. <a class="el" href="class_chat_helper.html#a7bf3083fca81823cad87fbce6f3686d5" title="Sends a message to all connected clients to be displayed in chat. Intended to be used from the server...">BroadcastChatMessage(NetworkText, Color, int)</a> and <a class="el" href="class_chat_helper.html#a46db2b94f0d1fc88fe05baf931ea17f5" title="Sends a message to the specified client to be displayed in their chat. Intended to be used from the s...">SendChatMessageToClient(NetworkText, Color, int)</a> are the most commonly used methods provided.  
+ <a href="class_chat_helper.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7bf3083fca81823cad87fbce6f3686d5"><td class="memItemLeft" align="right" valign="top"><a id="a7bf3083fca81823cad87fbce6f3686d5" name="a7bf3083fca81823cad87fbce6f3686d5"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>BroadcastChatMessage</b> (<a class="el" href="class_network_text.html">NetworkText</a> text, Color color, int excludedPlayer=-1)</td></tr>
+<tr class="memitem:a7bf3083fca81823cad87fbce6f3686d5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chat_helper.html#a7bf3083fca81823cad87fbce6f3686d5">BroadcastChatMessage</a> (<a class="el" href="class_network_text.html">NetworkText</a> text, Color color, int excludedPlayer=-1)</td></tr>
+<tr class="memdesc:a7bf3083fca81823cad87fbce6f3686d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message to all connected clients to be displayed in chat. Intended to be used from the server.  <a href="class_chat_helper.html#a7bf3083fca81823cad87fbce6f3686d5">More...</a><br /></td></tr>
 <tr class="separator:a7bf3083fca81823cad87fbce6f3686d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7a8464c282a8b3839bd567fdafc7fdf"><td class="memItemLeft" align="right" valign="top"><a id="aa7a8464c282a8b3839bd567fdafc7fdf" name="aa7a8464c282a8b3839bd567fdafc7fdf"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>BroadcastChatMessageAs</b> (byte messageAuthor, <a class="el" href="class_network_text.html">NetworkText</a> text, Color color, int excludedPlayer=-1)</td></tr>
@@ -114,8 +117,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>OnlySendToPlay
 <tr class="memitem:a20db99ad0edb37d64778b03e4cdfb8dd"><td class="memItemLeft" align="right" valign="top"><a id="a20db99ad0edb37d64778b03e4cdfb8dd" name="a20db99ad0edb37d64778b03e4cdfb8dd"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendChatMessageFromClient</b> (<a class="el" href="class_chat_message.html">ChatMessage</a> message)</td></tr>
 <tr class="separator:a20db99ad0edb37d64778b03e4cdfb8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46db2b94f0d1fc88fe05baf931ea17f5"><td class="memItemLeft" align="right" valign="top"><a id="a46db2b94f0d1fc88fe05baf931ea17f5" name="a46db2b94f0d1fc88fe05baf931ea17f5"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendChatMessageToClient</b> (<a class="el" href="class_network_text.html">NetworkText</a> text, Color color, int playerId)</td></tr>
+<tr class="memitem:a46db2b94f0d1fc88fe05baf931ea17f5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chat_helper.html#a46db2b94f0d1fc88fe05baf931ea17f5">SendChatMessageToClient</a> (<a class="el" href="class_network_text.html">NetworkText</a> text, Color color, int playerId)</td></tr>
+<tr class="memdesc:a46db2b94f0d1fc88fe05baf931ea17f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message to the specified client to be displayed in their chat. Intended to be used from the server. Useful for the server replying to client actions.  <a href="class_chat_helper.html#a46db2b94f0d1fc88fe05baf931ea17f5">More...</a><br /></td></tr>
 <tr class="separator:a46db2b94f0d1fc88fe05baf931ea17f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ef9a420f97ee5d6bd9abf3a41b9eb85"><td class="memItemLeft" align="right" valign="top"><a id="a4ef9a420f97ee5d6bd9abf3a41b9eb85" name="a4ef9a420f97ee5d6bd9abf3a41b9eb85"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendChatMessageToClientAs</b> (byte messageAuthor, <a class="el" href="class_network_text.html">NetworkText</a> text, Color color, int playerId)</td></tr>
@@ -124,6 +127,114 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendChatMessag
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowCachedMessages</b> ()</td></tr>
 <tr class="separator:a021dd0f0a2729a2640245114e4ca218c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Facilitates sending chat messages from the server to clients. </p>
+<p ><a class="el" href="class_chat_helper.html#a7bf3083fca81823cad87fbce6f3686d5" title="Sends a message to all connected clients to be displayed in chat. Intended to be used from the server...">BroadcastChatMessage(NetworkText, Color, int)</a> and <a class="el" href="class_chat_helper.html#a46db2b94f0d1fc88fe05baf931ea17f5" title="Sends a message to the specified client to be displayed in their chat. Intended to be used from the s...">SendChatMessageToClient(NetworkText, Color, int)</a> are the most commonly used methods provided. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7bf3083fca81823cad87fbce6f3686d5" name="a7bf3083fca81823cad87fbce6f3686d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bf3083fca81823cad87fbce6f3686d5">&#9670;&nbsp;</a></span>BroadcastChatMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ChatHelper.BroadcastChatMessage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_network_text.html">NetworkText</a>&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>excludedPlayer</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sends a message to all connected clients to be displayed in chat. Intended to be used from the server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td></td></tr>
+    <tr><td class="paramname">color</td><td></td></tr>
+    <tr><td class="paramname">excludedPlayer</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a46db2b94f0d1fc88fe05baf931ea17f5" name="a46db2b94f0d1fc88fe05baf931ea17f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46db2b94f0d1fc88fe05baf931ea17f5">&#9670;&nbsp;</a></span>SendChatMessageToClient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ChatHelper.SendChatMessageToClient </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_network_text.html">NetworkText</a>&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>playerId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sends a message to the specified client to be displayed in their chat. Intended to be used from the server. Useful for the server replying to client actions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td></td></tr>
+    <tr><td class="paramname">color</td><td></td></tr>
+    <tr><td class="paramname">playerId</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

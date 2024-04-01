@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('class_autoload_equip.html',''); initRe
 </div><!--header-->
 <div class="contents">
 
+<p>This attribute annotates a <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> class to indicate that the game should autoload the specified equipment texture or textures and assign it to this item. The equipment texture is the texture that appears on the player itself when the item is worn and visible. Armor and most accessories will set at least one EquipType, but not every accessory needs on-player visuals. The equipment texture will be loaded from the path made from appending "_EquipTypeNameHere" to <a class="el" href="class_mod_item.html#a4451e8e94662601603427838e9a67ffd" title="The file name of this type&#39;s texture file in the mod loader&#39;s file space.   The resulting Asset&lt;Textu...">ModItem.Texture</a>. An error will be thrown during mod loading if the texture can't be found. For example, a helmet item named "ExampleHelmet" annotated with <code>[<a class="el" href="class_autoload_equip.html" title="This attribute annotates a ModItem class to indicate that the game should autoload the specified equi...">AutoloadEquip</a>(EquipType.Head)]</code> will need both a "ExampleHelmet.png" and "ExampleHelmet_Head.png" to work. Note that equipment textures must follow specific layouts, see ExampleMod examplesof similar items to use as a guide.  
+ <a href="class_autoload_equip.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_attribute.html">Attribute</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -106,7 +109,11 @@ Public Attributes</h2></td></tr>
 readonly EquipType[]&#160;</td><td class="memItemRight" valign="bottom"><b>equipTypes</b></td></tr>
 <tr class="separator:a9525ffdc350d0b7dfd3904710f28229c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >This attribute annotates a <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> class to indicate that the game should autoload the specified equipment texture or textures and assign it to this item. The equipment texture is the texture that appears on the player itself when the item is worn and visible. Armor and most accessories will set at least one EquipType, but not every accessory needs on-player visuals. </p>
+<p >The equipment texture will be loaded from the path made from appending "_EquipTypeNameHere" to <a class="el" href="class_mod_item.html#a4451e8e94662601603427838e9a67ffd" title="The file name of this type&#39;s texture file in the mod loader&#39;s file space.   The resulting Asset&lt;Textu...">ModItem.Texture</a>. An error will be thrown during mod loading if the texture can't be found. For example, a helmet item named "ExampleHelmet" annotated with <code>[<a class="el" href="class_autoload_equip.html" title="This attribute annotates a ModItem class to indicate that the game should autoload the specified equi...">AutoloadEquip</a>(EquipType.Head)]</code> will need both a "ExampleHelmet.png" and "ExampleHelmet_Head.png" to work. Note that equipment textures must follow specific layouts, see ExampleMod examples</p>
+<p >of similar items to use as a guide. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

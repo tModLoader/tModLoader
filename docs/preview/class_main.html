@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -706,8 +706,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>NewText</b> (o
 <tr class="separator:a2335d9663703c85c735a940d7b498f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b57a708788344d768b0cfc846b5dd6c"><td class="memItemLeft" align="right" valign="top"><a id="a4b57a708788344d768b0cfc846b5dd6c" name="a4b57a708788344d768b0cfc846b5dd6c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>NewText</b> (string newText, byte R=byte.MaxValue, byte G=byte.MaxValue, byte B=byte.MaxValue)</td></tr>
-<tr class="memdesc:a4b57a708788344d768b0cfc846b5dd6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns chat text on the local client. Does nothing on the server. <br  />
- For floating text, such as damage, see <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> <br  />
+<tr class="memdesc:a4b57a708788344d768b0cfc846b5dd6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns chat text on the local client. Does nothing on the server. To send chat text from the server, use one of the following:<br  />
+ • Terraria.Chat.ChatHelper.BroadcastChatMessage(NetworkText, Color, int) sends a message from the server to be displayed in chat for all clients. <br  />
+ • Terraria.Chat.ChatHelper.SendChatMessageToClient(NetworkText, Color, int) sends a message from the server to be displayed in chat for a specific client. For floating text, such as damage, see <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> <br  />
   <br /></td></tr>
 <tr class="separator:a4b57a708788344d768b0cfc846b5dd6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9efc927cc5e93de9e052b5ede94f8e8b"><td class="memItemLeft" align="right" valign="top"><a id="a9efc927cc5e93de9e052b5ede94f8e8b" name="a9efc927cc5e93de9e052b5ede94f8e8b"></a>
@@ -4261,6 +4262,7 @@ static Color&#160;</td><td class="memItemRight" valign="bottom"><b>DiscoColor</b
 <tr class="separator:a34866c5522dd2830f1e21306624a54c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03b02e2e8dbe5623836170e09168858c"><td class="memItemLeft" align="right" valign="top"><a id="a03b02e2e8dbe5623836170e09168858c" name="a03b02e2e8dbe5623836170e09168858c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>expertMode</b><code> [get]</code></td></tr>
+<tr class="memdesc:a03b02e2e8dbe5623836170e09168858c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds. <br /></td></tr>
 <tr class="separator:a03b02e2e8dbe5623836170e09168858c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcc15debdf8b5a45fb7b1c5dee871860"><td class="memItemLeft" align="right" valign="top"><a id="afcc15debdf8b5a45fb7b1c5dee871860" name="afcc15debdf8b5a45fb7b1c5dee871860"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GameMode</b><code> [get, set]</code></td></tr>
@@ -4299,6 +4301,7 @@ static <a class="el" href="class_creative_unlocks_tracker.html">CreativeUnlocksT
 <tr class="separator:a1d1cb71f6ca325a00810e6ac8b83b441"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaa1a3eb39a50db92fb699127f60a913"><td class="memItemLeft" align="right" valign="top"><a id="acaa1a3eb39a50db92fb699127f60a913" name="acaa1a3eb39a50db92fb699127f60a913"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>masterMode</b><code> [get]</code></td></tr>
+<tr class="memdesc:acaa1a3eb39a50db92fb699127f60a913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the world is a Master Mode world. Note that the <a class="el" href="class_main.html#a03b02e2e8dbe5623836170e09168858c" title="Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds.">expertMode</a> will also be true. <br /></td></tr>
 <tr class="separator:acaa1a3eb39a50db92fb699127f60a913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4061437db22d405c4ca0303118ddc190"><td class="memItemLeft" align="right" valign="top"><a id="a4061437db22d405c4ca0303118ddc190" name="a4061437db22d405c4ca0303118ddc190"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MouseScreen</b><code> [get]</code></td></tr>
@@ -5684,7 +5687,7 @@ EventHandler&lt; EventArgs &gt;&#160;</td><td class="memItemRight" valign="botto
 </div><div class="memdoc">
 
 <p>The y-coordinate of the top of the underworld, in tile coordinates. </p>
-<p ><a class="el" href="class_player.html">Player</a> in this layer will have Player.ZoneUnderworld set to <code>true</code>.</p>
+<p ><a class="el" href="class_player.html">Player</a> in this layer will have <a class="el" href="class_player.html#af09e18a476d1507dba5e7cc80aa4cf26" title="If true, then this player is in the Underworld (Main.UnderworldLayer).">Player.ZoneUnderworldHeight</a> set to <code>true</code>.</p>
 
 </div>
 </div>

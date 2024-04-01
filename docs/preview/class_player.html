@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -628,8 +628,8 @@ Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetImmuneAlpha</b> (
 <tr class="memitem:a66fcdbef2d6df11b7dba1591ab12f4dc"><td class="memItemLeft" align="right" valign="top"><a id="a66fcdbef2d6df11b7dba1591ab12f4dc" name="a66fcdbef2d6df11b7dba1591ab12f4dc"></a>
 Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetImmuneAlphaPure</b> (Color newColor, float alphaReduction)</td></tr>
 <tr class="separator:a66fcdbef2d6df11b7dba1591ab12f4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50d1ec13cf5e569ec3d20e2df4264ef4"><td class="memItemLeft" align="right" valign="top"><a id="a50d1ec13cf5e569ec3d20e2df4264ef4" name="a50d1ec13cf5e569ec3d20e2df4264ef4"></a>
-<a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetItem</b> (int plr, <a class="el" href="class_item.html">Item</a> newItem, <a class="el" href="struct_get_item_settings.html">GetItemSettings</a> settings)</td></tr>
+<tr class="memitem:a50d1ec13cf5e569ec3d20e2df4264ef4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a50d1ec13cf5e569ec3d20e2df4264ef4">GetItem</a> (int plr, <a class="el" href="class_item.html">Item</a> newItem, <a class="el" href="struct_get_item_settings.html">GetItemSettings</a> settings)</td></tr>
+<tr class="memdesc:a50d1ec13cf5e569ec3d20e2df4264ef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Places the <em>newItem</em>  directly into this player's inventory. The <em>settings</em>  dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <a class="el" href="struct_get_item_settings.html" title="Contains settings for the popup text shown when using Player.GetItem(int, Terraria....">GetItemSettings</a> for this parameter to match vanilla behavior. The <em>plr</em>  parameter should always be set to the whoAmI of this player. Modders commonly use <a class="el" href="class_player.html#a5f4c568dba11277c2164aed64b8bae65">QuickSpawnItem(IEntitySource, Item, int)</a> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible. The return value is an <a class="el" href="class_item.html">Item</a> instance containing the overflow. If the full stack of <em>newItem</em>  is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <em>newItem</em>  fit in the inventory, the return value will be the <a class="el" href="class_item.html">Item</a> that didn't fit. If the returned <a class="el" href="class_item.html">Item</a> isn't Item.IsAir, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <em>newItem</em>  came from. Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.  <a href="class_player.html#a50d1ec13cf5e569ec3d20e2df4264ef4">More...</a><br /></td></tr>
 <tr class="separator:a50d1ec13cf5e569ec3d20e2df4264ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f71e00a0b2892399e04c9c5c60cfd0d"><td class="memItemLeft" align="right" valign="top"><a id="a5f71e00a0b2892399e04c9c5c60cfd0d" name="a5f71e00a0b2892399e04c9c5c60cfd0d"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemDrawFrame</b> (int type)</td></tr>
@@ -5801,6 +5801,51 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a50d1ec13cf5e569ec3d20e2df4264ef4" name="a50d1ec13cf5e569ec3d20e2df4264ef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50d1ec13cf5e569ec3d20e2df4264ef4">&#9670;&nbsp;</a></span>GetItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_item.html">Item</a> Player.GetItem </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>plr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>newItem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_get_item_settings.html">GetItemSettings</a>&#160;</td>
+          <td class="paramname"><em>settings</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Places the <em>newItem</em>  directly into this player's inventory. The <em>settings</em>  dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <a class="el" href="struct_get_item_settings.html" title="Contains settings for the popup text shown when using Player.GetItem(int, Terraria....">GetItemSettings</a> for this parameter to match vanilla behavior. The <em>plr</em>  parameter should always be set to the whoAmI of this player. Modders commonly use <a class="el" href="class_player.html#a5f4c568dba11277c2164aed64b8bae65">QuickSpawnItem(IEntitySource, Item, int)</a> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible. The return value is an <a class="el" href="class_item.html">Item</a> instance containing the overflow. If the full stack of <em>newItem</em>  is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <em>newItem</em>  fit in the inventory, the return value will be the <a class="el" href="class_item.html">Item</a> that didn't fit. If the returned <a class="el" href="class_item.html">Item</a> isn't Item.IsAir, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <em>newItem</em>  came from. Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">plr</td><td></td></tr>
+    <tr><td class="paramname">newItem</td><td></td></tr>
+    <tr><td class="paramname">settings</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

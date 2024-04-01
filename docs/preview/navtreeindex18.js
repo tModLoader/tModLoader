@@ -1,5 +1,15 @@
 var NAVTREEINDEX18 =
 {
+"class_recipe.html#a19108cd242ac564fae40dfb601d1b968":[3,0,1045,21],
+"class_recipe.html#a1f51a3c15aa2ee0e112e660643047b5e":[3,0,1045,14],
+"class_recipe.html#a201aa97265a199607d864e8fbe40dda6":[3,0,1045,3],
+"class_recipe.html#a26f24b17f13e9a8ecbf3cecab309f43f":[3,0,1045,17],
+"class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7":[3,0,1045,8],
+"class_recipe.html#a3dff5481bb47513683cfdd8abec91a94":[3,0,1045,5],
+"class_recipe.html#a42c2a6104d56731eae1d3c50137485ae":[3,0,1045,23],
+"class_recipe.html#a474a5953b0fbbdec4c68881277228d79":[3,0,1045,22],
+"class_recipe.html#a4fb1462aac3ce2547c222f858b55b6d5":[3,0,1045,12],
+"class_recipe.html#a57e4f436ccb5261a6a76bf4b2d1bf268":[3,0,1045,27],
 "class_recipe.html#a65694504cb539a30b4b834cfe5c66e1e":[3,0,1045,6],
 "class_recipe.html#a6b5557174d959e1f2753e4a91abf24c9":[3,0,1045,10],
 "class_recipe.html#a751327b6eabc4ce750fd7059387b120a":[3,0,1045,19],
@@ -239,15 +249,5 @@ var NAVTREEINDEX18 =
 "class_t_e_hat_rack.html#ad59fe25bc951d91941964f13fdf8c2ca":[3,0,1203,0],
 "class_t_e_item_frame.html":[3,0,1204],
 "class_t_e_item_frame.html#a4fb230b8f046e2e36d3ba0fd6410b149":[3,0,1204,0],
-"class_t_e_item_frame.html#a7efaab7670626ba141faaeb5a448c294":[3,0,1204,3],
-"class_t_e_item_frame.html#a8c302b9477e1295a59782c7c57aa2727":[3,0,1204,2],
-"class_t_e_item_frame.html#abf8f2f669298cb42025c267d95b1a83f":[3,0,1204,1],
-"class_t_e_logic_sensor.html":[3,0,1210],
-"class_t_e_modded_pylon.html":[3,0,1211],
-"class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d":[3,0,1211,1],
-"class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835":[3,0,1211,0],
-"class_t_e_teleportation_pylon.html":[3,0,1215],
-"class_t_e_training_dummy.html":[3,0,1216],
-"class_t_e_weapons_rack.html":[3,0,1217],
-"class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae":[3,0,1217,3]
+"class_t_e_item_frame.html#a7efaab7670626ba141faaeb5a448c294":[3,0,1204,3]
 };

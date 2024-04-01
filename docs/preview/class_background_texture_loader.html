@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('class_background_texture_loader.html',
 </div><!--header-->
 <div class="contents">
 
-<p>This is the class that keeps track of all modded background textures and their slots/IDs.  
+<p>This is the class that keeps track of all modded background textures and their slots/IDs. Remember that unless you manually register backgrounds via <a class="el" href="class_background_texture_loader.html#a749bdf9c8dae1a34bd34c0a4703b8dc2" title="Adds a texture to the list of background textures and assigns it a background texture slot....">AddBackgroundTexture(Mod, string)</a>, only files found in a folder or subfolder of a folder named "Backgrounds" will be autoloaded as background textures.  
  <a href="class_background_texture_loader.html#details">More...</a></p>
 
 <p>Inherits Loader.</p>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('class_background_texture_loader.html',
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a749bdf9c8dae1a34bd34c0a4703b8dc2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_background_texture_loader.html#a749bdf9c8dae1a34bd34c0a4703b8dc2">AddBackgroundTexture</a> (<a class="el" href="class_mod.html">Mod</a> mod, string texture)</td></tr>
-<tr class="memdesc:a749bdf9c8dae1a34bd34c0a4703b8dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a texture to the list of background textures and assigns it a background texture slot.  <a href="class_background_texture_loader.html#a749bdf9c8dae1a34bd34c0a4703b8dc2">More...</a><br /></td></tr>
+<tr class="memdesc:a749bdf9c8dae1a34bd34c0a4703b8dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a texture to the list of background textures and assigns it a background texture slot. Use this for any background textures not autoloaded by the <a class="el" href="class_mod.html#a7a2ec207e31889c9a9ca3ea3ecdb9c59" title="Whether or not this mod will automatically add images in the &quot;Backgrounds&quot; folder as background textu...">Mod.BackgroundAutoloadingEnabled</a> logic.  <a href="class_background_texture_loader.html#a749bdf9c8dae1a34bd34c0a4703b8dc2">More...</a><br /></td></tr>
 <tr class="separator:a749bdf9c8dae1a34bd34c0a4703b8dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d85ef51ffeacfc739c3063e9f8a915c"><td class="memItemLeft" align="right" valign="top"><a id="a9d85ef51ffeacfc739c3063e9f8a915c" name="a9d85ef51ffeacfc739c3063e9f8a915c"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetBackgroundSlot</b> (<a class="el" href="class_mod.html">Mod</a> mod, string texture)</td></tr>
@@ -120,6 +120,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetBackgrou
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This is the class that keeps track of all modded background textures and their slots/IDs. </p>
+<p >Remember that unless you manually register backgrounds via <a class="el" href="class_background_texture_loader.html#a749bdf9c8dae1a34bd34c0a4703b8dc2" title="Adds a texture to the list of background textures and assigns it a background texture slot....">AddBackgroundTexture(Mod, string)</a>, only files found in a folder or subfolder of a folder named "Backgrounds" will be autoloaded as background textures. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a749bdf9c8dae1a34bd34c0a4703b8dc2" name="a749bdf9c8dae1a34bd34c0a4703b8dc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a749bdf9c8dae1a34bd34c0a4703b8dc2">&#9670;&nbsp;</a></span>AddBackgroundTexture()</h2>
@@ -155,7 +156,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetBackgrou
 </table>
 </div><div class="memdoc">
 
-<p>Adds a texture to the list of background textures and assigns it a background texture slot. </p>
+<p>Adds a texture to the list of background textures and assigns it a background texture slot. Use this for any background textures not autoloaded by the <a class="el" href="class_mod.html#a7a2ec207e31889c9a9ca3ea3ecdb9c59" title="Whether or not this mod will automatically add images in the &quot;Backgrounds&quot; folder as background textu...">Mod.BackgroundAutoloadingEnabled</a> logic. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mod</td><td>The mod that owns this background.</td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -160,12 +160,14 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendTemporaryA
 <tr class="separator:af4a4cd343a2711042140368761208ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31c760defd5b42afc50f6b1b4ac36d98"><td class="memItemLeft" align="right" valign="top"><a id="a31c760defd5b42afc50f6b1b4ac36d98" name="a31c760defd5b42afc50f6b1b4ac36d98"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendTileSquare</b> (int whoAmi, int tileX, int tileY, int centeredSquareSize, TileChangeType changeType=TileChangeType.None)</td></tr>
+<tr class="memdesc:a31c760defd5b42afc50f6b1b4ac36d98"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Range: </b>In this particular overload, <em>tileX</em>  and <em>tileY</em>  denote the center of a square range of tiles to sync and <em>centeredSquareSize</em>  denotes the width/height of the square to send. Odd <em>centeredSquareSize</em>  values result in a square centered directly on <em>tileX</em>  and <em>tileY</em> . The <a class="el" href="class_net_message.html#a13d811ff0be4a491b299312207e5a248" title="Range: In this particular overload, tileX  and tileY  denote the top left corner of tiles to sync and...">SendTileSquare(int, int, int, int, int, TileChangeType)</a> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly. <br /></td></tr>
 <tr class="separator:a31c760defd5b42afc50f6b1b4ac36d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13d811ff0be4a491b299312207e5a248"><td class="memItemLeft" align="right" valign="top"><a id="a13d811ff0be4a491b299312207e5a248" name="a13d811ff0be4a491b299312207e5a248"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendTileSquare</b> (int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType=TileChangeType.None)</td></tr>
+<tr class="memitem:a13d811ff0be4a491b299312207e5a248"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_net_message.html#a13d811ff0be4a491b299312207e5a248">SendTileSquare</a> (int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType=TileChangeType.None)</td></tr>
+<tr class="memdesc:a13d811ff0be4a491b299312207e5a248"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Range: </b>In this particular overload, <em>tileX</em>  and <em>tileY</em>  denote the top left corner of tiles to sync and <em>xSize</em>  and <em>ySize</em>  denote the width and height of the rectangle.  <a href="class_net_message.html#a13d811ff0be4a491b299312207e5a248">More...</a><br /></td></tr>
 <tr class="separator:a13d811ff0be4a491b299312207e5a248"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adca742c59502eba773e5db8b3f1ab6ae"><td class="memItemLeft" align="right" valign="top"><a id="adca742c59502eba773e5db8b3f1ab6ae" name="adca742c59502eba773e5db8b3f1ab6ae"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendTileSquare</b> (int whoAmi, int tileX, int tileY, TileChangeType changeType=TileChangeType.None)</td></tr>
+<tr class="memdesc:adca742c59502eba773e5db8b3f1ab6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Range: </b>In this particular overload, <em>tileX</em>  and <em>tileY</em>  denote a single tile to sync. If sending multiple tiles use the other overloads instead. <br /></td></tr>
 <tr class="separator:adca742c59502eba773e5db8b3f1ab6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e347be8f8173f95653c7c33f7a15e5d"><td class="memItemLeft" align="right" valign="top"><a id="a6e347be8f8173f95653c7c33f7a15e5d" name="a6e347be8f8173f95653c7c33f7a15e5d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SendTravelShop</b> (int remoteClient)</td></tr>
@@ -192,6 +194,75 @@ static <a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>
 static <a class="el" href="class_message_buffer.html">MessageBuffer</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffer</b> = new <a class="el" href="class_message_buffer.html">MessageBuffer</a>[257]</td></tr>
 <tr class="separator:a56f8562ad481e836fe4564a0c973fe72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a13d811ff0be4a491b299312207e5a248" name="a13d811ff0be4a491b299312207e5a248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13d811ff0be4a491b299312207e5a248">&#9670;&nbsp;</a></span>SendTileSquare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void NetMessage.SendTileSquare </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>whoAmi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>xSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ySize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TileChangeType&#160;</td>
+          <td class="paramname"><em>changeType</em> = <code>TileChangeType.None</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><b>Range: </b>In this particular overload, <em>tileX</em>  and <em>tileY</em>  denote the top left corner of tiles to sync and <em>xSize</em>  and <em>ySize</em>  denote the width and height of the rectangle. </p>
+<p >&lt;SharedSummary&gt; Sends all the tiles in a rectangle range to sync them. The range is defined by parameters explained below. </p>
+<p ><em>whoAmi</em>  should usually be -1. <em>changeType</em>  can optionally be set to one of the TileChangeType to automatically play the corresponding liquid sound on the receiving clients. </p>
+<p >If called on a client, the server will relay the changed tiles to other clients when it is received. </p>
+<p >Use this method when manually adjusting Main.tile. Uses such as wiring, right clicking on tiles, tiles randomly updating, and projectiles modifying tiles are all exhibited in ExampleMod</p>
+<p >. </p>
+<p >&lt;/SharedSummary&gt; </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

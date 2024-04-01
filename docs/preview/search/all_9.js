@@ -22,5 +22,6 @@ var searchData=
   ['jungleshader_19',['JungleShader',['../class_jungle_shader.html',1,'']]],
   ['junglespore_20',['JungleSpore',['../class_dust_i_d.html#ad7865bffe90c8c951c04de5aed7f9e8e',1,'DustID']]],
   ['justpressed_21',['JustPressed',['../class_mod_keybind.html#a77b6498a332a9ff3f4ab664a07841939',1,'ModKeybind']]],
-  ['justreleased_22',['JustReleased',['../class_mod_keybind.html#ae16bbd0a3fe69f24d182fe9732a30f81',1,'ModKeybind']]]
+  ['justreleased_22',['JustReleased',['../class_mod_keybind.html#ae16bbd0a3fe69f24d182fe9732a30f81',1,'ModKeybind']]],
+  ['justtookdamage_23',['JustTookDamage',['../struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef',1,'PlayerEyeHelper']]]
 ];

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -227,23 +227,17 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumeItem</
 <tr class="memdesc:ab3f639e44c40a17fdc7977187a67eede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the colors in which the player's armor and their surrounding accessories are drawn, in addition to which glow mask and in what color is drawn.  <a href="class_global_item.html#ab3f639e44c40a17fdc7977187a67eede">More...</a><br /></td></tr>
 <tr class="separator:ab3f639e44c40a17fdc7977187a67eede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70babf50f55402c074c12965794d1fe8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a70babf50f55402c074c12965794d1fe8">ExtractinatorUse</a> (int extractType, int extractinatorBlockType, ref int resultType, ref int resultStack)</td></tr>
-<tr class="memdesc:a70babf50f55402c074c12965794d1fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. <br  />
- An extractType of 0 represents the default extraction (Silt and Slush). 0, ItemID.DesertFossil, ItemID.OldShoe, and ItemID.LavaMoss are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The Extractinator wiki pagehas more info. <br  />
- By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator. <br  />
- Use <em>extractinatorBlockType</em>  to provide different behavior for TileID.ChlorophyteExtractinator if desired. <br  />
- If the Chlorophyte Extractinator item swapping behavior is desired, see the example in ExampleAdvancedFlail.cs. <br  />
- <br  />
- This method is not instanced.  <a href="class_global_item.html#a70babf50f55402c074c12965794d1fe8">More...</a><br /></td></tr>
+<tr class="memdesc:a70babf50f55402c074c12965794d1fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. Use <a class="el" href="class_item_i_d_1_1_sets.html#af0737632d94e0a1506f93cb062be8935" title="Indicates which extractinator type an item belongs to. An extractType of 0 represents the default ext...">ItemID.Sets.ExtractinatorMode</a> to allow an item to be fed into the Extractinator. An extractType of 0 represents the default extraction (Silt and Slush). 0, ItemID.DesertFossil, ItemID.OldShoe, and ItemID.LavaMoss are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The Extractinator wiki pagehas more info. By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator. Use <em>extractinatorBlockType</em>  to provide different behavior for TileID.ChlorophyteExtractinator if desired. If the Chlorophyte Extractinator item swapping behavior is desired, see the example in TorchExtractinatorGlobalItem.cs. This method is not instanced.  <a href="class_global_item.html#a70babf50f55402c074c12965794d1fe8">More...</a><br /></td></tr>
 <tr class="separator:a70babf50f55402c074c12965794d1fe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f11307ffb29efa6af02bb871c8a4827"><td class="memItemLeft" align="right" valign="top"><a id="a7f11307ffb29efa6af02bb871c8a4827" name="a7f11307ffb29efa6af02bb871c8a4827"></a>
 virtual ? Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlpha</b> (<a class="el" href="class_item.html">Item</a> item, Color lightColor)</td></tr>
 <tr class="memdesc:a7f11307ffb29efa6af02bb871c8a4827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which an item is drawn. Return null to use the default color (normally light color). Returns null by default. <br /></td></tr>
 <tr class="separator:a7f11307ffb29efa6af02bb871c8a4827"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa07715038b129492da940c0e3e94046b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#aa07715038b129492da940c0e3e94046b">GetHealLife</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, bool quickHeal, ref int healValue)</td></tr>
-<tr class="memdesc:aa07715038b129492da940c0e3e94046b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.  <a href="class_global_item.html#aa07715038b129492da940c0e3e94046b">More...</a><br /></td></tr>
+<tr class="memdesc:aa07715038b129492da940c0e3e94046b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#a76a7a2a325263a16176c2b58e341b319" title="The amount of health this item restores on use.   Use ModItem.GetHealLife(Player, bool,...">Item.healLife</a> value.  <a href="class_global_item.html#aa07715038b129492da940c0e3e94046b">More...</a><br /></td></tr>
 <tr class="separator:aa07715038b129492da940c0e3e94046b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2848d1b6955448e14b2705c1c1d73e52"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a2848d1b6955448e14b2705c1c1d73e52">GetHealMana</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, bool quickHeal, ref int healValue)</td></tr>
-<tr class="memdesc:a2848d1b6955448e14b2705c1c1d73e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.  <a href="class_global_item.html#a2848d1b6955448e14b2705c1c1d73e52">More...</a><br /></td></tr>
+<tr class="memdesc:a2848d1b6955448e14b2705c1c1d73e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#af9fe3594a76ad5d1f32ff3f4ca22832a" title="The amount of mana this item restores on use.   Use ModItem.GetHealMana(Player, bool,...">Item.healMana</a> value.  <a href="class_global_item.html#a2848d1b6955448e14b2705c1c1d73e52">More...</a><br /></td></tr>
 <tr class="separator:a2848d1b6955448e14b2705c1c1d73e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16fbe1d1170313ae5c1c131c8a75116c"><td class="memItemLeft" align="right" valign="top"><a id="a16fbe1d1170313ae5c1c131c8a75116c" name="a16fbe1d1170313ae5c1c131c8a75116c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrabRange</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref int grabRange)</td></tr>
@@ -322,7 +316,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHitPvp<
  <b>Do not</b> modify <a class="el" href="class_item.html#a58c1d23d287efddbfcf7c208af3b2395" title="The amount of mana this item consumes on use.   Use ModItem.ModifyManaCost(Player,...">Item.mana</a>, modify the <em>reduce</em>  and <em>mult</em>  parameters.  <a href="class_global_item.html#ab00a91bfb0344bd88eb8aff517390c4d">More...</a><br /></td></tr>
 <tr class="separator:ab00a91bfb0344bd88eb8aff517390c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f4b7e0f3fd5409ec669a99c512cd2bd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a0f4b7e0f3fd5409ec669a99c512cd2bd">ModifyResearchSorting</a> (<a class="el" href="class_item.html">Item</a> item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup)</td></tr>
-<tr class="memdesc:a0f4b7e0f3fd5409ec669a99c512cd2bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.  <a href="class_global_item.html#a0f4b7e0f3fd5409ec669a99c512cd2bd">More...</a><br /></td></tr>
+<tr class="memdesc:a0f4b7e0f3fd5409ec669a99c512cd2bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it. Note that this affects the order of the item in the listing, not which filters the item satisfies.  <a href="class_global_item.html#a0f4b7e0f3fd5409ec669a99c512cd2bd">More...</a><br /></td></tr>
 <tr class="separator:a0f4b7e0f3fd5409ec669a99c512cd2bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9af6e913f9f2d04b6c7cfeeee7b939fe"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a9af6e913f9f2d04b6c7cfeeee7b939fe">ModifyShootStats</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)</td></tr>
 <tr class="memdesc:a9af6e913f9f2d04b6c7cfeeee7b939fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.<br  />
@@ -1613,13 +1607,7 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. <br  />
- An extractType of 0 represents the default extraction (Silt and Slush). 0, ItemID.DesertFossil, ItemID.OldShoe, and ItemID.LavaMoss are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The Extractinator wiki pagehas more info. <br  />
- By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator. <br  />
- Use <em>extractinatorBlockType</em>  to provide different behavior for TileID.ChlorophyteExtractinator if desired. <br  />
- If the Chlorophyte Extractinator item swapping behavior is desired, see the example in ExampleAdvancedFlail.cs. <br  />
- <br  />
- This method is not instanced. </p>
+<p>Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. Use <a class="el" href="class_item_i_d_1_1_sets.html#af0737632d94e0a1506f93cb062be8935" title="Indicates which extractinator type an item belongs to. An extractType of 0 represents the default ext...">ItemID.Sets.ExtractinatorMode</a> to allow an item to be fed into the Extractinator. An extractType of 0 represents the default extraction (Silt and Slush). 0, ItemID.DesertFossil, ItemID.OldShoe, and ItemID.LavaMoss are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The Extractinator wiki pagehas more info. By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator. Use <em>extractinatorBlockType</em>  to provide different behavior for TileID.ChlorophyteExtractinator if desired. If the Chlorophyte Extractinator item swapping behavior is desired, see the example in TorchExtractinatorGlobalItem.cs. This method is not instanced. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">extractType</td><td>The extractinator type corresponding to the items being processed</td></tr>
@@ -1678,7 +1666,7 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value. </p>
+<p>Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#a76a7a2a325263a16176c2b58e341b319" title="The amount of health this item restores on use.   Use ModItem.GetHealLife(Player, bool,...">Item.healLife</a> value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used.</td></tr>
@@ -1737,7 +1725,7 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value. </p>
+<p>Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#af9fe3594a76ad5d1f32ff3f4ca22832a" title="The amount of mana this item restores on use.   Use ModItem.GetHealMana(Player, bool,...">Item.healMana</a> value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used.</td></tr>
@@ -2226,7 +2214,7 @@ This is only called when two items of the same type attempt to stack. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it. </p>
+<p>Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it. Note that this affects the order of the item in the listing, not which filters the item satisfies. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used</td></tr>

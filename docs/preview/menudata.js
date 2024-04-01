@@ -110,6 +110,7 @@ var menudata={children:[
 {text:"x",url:"functions_vars_x.html#index_x"},
 {text:"y",url:"functions_vars_y.html#index_y"},
 {text:"z",url:"functions_vars_z.html#index_z"}]},
+{text:"Enumerations",url:"functions_enum.html"},
 {text:"Properties",url:"functions_prop.html",children:[
 {text:"a",url:"functions_prop.html#index_a"},
 {text:"b",url:"functions_prop_b.html#index_b"},

@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"class_conditions_1_1_living_flames.html":[3,0,191,42],
+"class_conditions_1_1_mechanical_bosses_dummy_condition.html":[3,0,191,43],
 "class_conditions_1_1_mechdusa_kill.html":[3,0,191,44],
 "class_conditions_1_1_missing_twin.html":[3,0,191,45],
 "class_conditions_1_1_mystic_snake.html":[3,0,191,46],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "class_dust.html#adcb451dc788d3e82cd37c1fed56e9bf8":[3,0,293,18],
 "class_dust.html#af0fc9111ae5d4cbbed21e840505d4f4e":[3,0,293,16],
 "class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1":[3,0,293,7],
-"class_dust.html#af80c445e506df08a3f7fd46cb7b04aa6":[3,0,293,12],
-"class_dust.html#afa20260dc72a4f7e30d95d778eec78c4":[3,0,293,3],
-"class_dust_i_d.html":[3,0,294]
+"class_dust.html#af80c445e506df08a3f7fd46cb7b04aa6":[3,0,293,12]
 };

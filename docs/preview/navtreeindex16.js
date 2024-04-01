@@ -1,5 +1,15 @@
 var NAVTREEINDEX16 =
 {
+"class_player_difficulty_i_d.html":[3,0,968],
+"class_player_draw_helper.html":[3,0,969],
+"class_player_draw_layer.html":[3,0,970],
+"class_player_draw_layer.html#a49126f9a687d43d3120a7533eb1e8397":[3,0,970,10],
+"class_player_draw_layer.html#a7fafe8d9378958d03cac0fa5f13a4a61":[3,0,970,11],
+"class_player_draw_layer.html#a92600d23b21a3424eaccca4247c27b4c":[3,0,970,9],
+"class_player_draw_layer.html#aa1621b2c94333b9f9f928bcad59c7af5":[3,0,970,6],
+"class_player_draw_layer.html#aace7bac01413c45ecaa2464d31105cf5":[3,0,970,8],
+"class_player_draw_layer.html#ad1abf53d0ac67bbd2cc16b1ee91d1c81":[3,0,970,7],
+"class_player_draw_layer_1_1_after_parent.html":[3,0,970,0],
 "class_player_draw_layer_1_1_before_parent.html":[3,0,970,1],
 "class_player_draw_layer_1_1_between.html":[3,0,970,2],
 "class_player_draw_layer_1_1_multiple.html":[3,0,970,3],
@@ -239,15 +249,5 @@ var NAVTREEINDEX16 =
 "class_proj_a_i_style_i_d.html#a6445d75c6deb8a907bf80cccd2c33d44":[3,0,1019,96],
 "class_proj_a_i_style_i_d.html#a65b8471bee28727e36ec0b3f7289d5bc":[3,0,1019,33],
 "class_proj_a_i_style_i_d.html#a6675e33aba9ac205a4fba1aa9ffc2ce6":[3,0,1019,153],
-"class_proj_a_i_style_i_d.html#a684922187f1cdda7ea074d5c8abba521":[3,0,1019,167],
-"class_proj_a_i_style_i_d.html#a695a2c88492693db4ee1cb6fe9144bac":[3,0,1019,151],
-"class_proj_a_i_style_i_d.html#a695ae3947772ee50476101521b32268d":[3,0,1019,121],
-"class_proj_a_i_style_i_d.html#a69c9e9775cddbae4bfe200b4e7518ccb":[3,0,1019,156],
-"class_proj_a_i_style_i_d.html#a6a765a2726ee1f8a0ec945324f2a3a22":[3,0,1019,7],
-"class_proj_a_i_style_i_d.html#a6c7d44b7228392724f7ece235537e987":[3,0,1019,170],
-"class_proj_a_i_style_i_d.html#a6e299ef8350af66665e48e5e8899c355":[3,0,1019,26],
-"class_proj_a_i_style_i_d.html#a71be348da1a0d95025d99c7c16db91a5":[3,0,1019,17],
-"class_proj_a_i_style_i_d.html#a7415656f9dbd5d91462fa1016f348b2c":[3,0,1019,159],
-"class_proj_a_i_style_i_d.html#a743711a25ac0a68c8ab26957c27c0a24":[3,0,1019,85],
-"class_proj_a_i_style_i_d.html#a75c7691022e9cde3b59ac58d9bcdca75":[3,0,1019,116]
+"class_proj_a_i_style_i_d.html#a684922187f1cdda7ea074d5c8abba521":[3,0,1019,167]
 };
