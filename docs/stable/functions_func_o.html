@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -104,6 +104,8 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <li>OnExtraJumpEnded()&#160;:&#160;<a class="el" href="class_mod_player.html#ae3940d1804a32c31713b2c25e828d092">ModPlayer</a></li>
 <li>OnExtraJumpRefreshed()&#160;:&#160;<a class="el" href="class_mod_player.html#ac6cae086c9e4d339e7b7845232231bd3">ModPlayer</a></li>
 <li>OnExtraJumpStarted()&#160;:&#160;<a class="el" href="class_mod_player.html#a06c21fc03ecf5a38df58d9d68564a2d5">ModPlayer</a></li>
+<li>OnFailedConditions()&#160;:&#160;<a class="el" href="class_chains.html#aa9f661f33144556d51236459d8a0655e">Chains</a></li>
+<li>OnFailedRoll()&#160;:&#160;<a class="el" href="class_chains.html#a8c05a75d9ebb76856431d33140cb4011">Chains</a></li>
 <li>OnGoToStatue()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a8cf33dfc983d343ae3a3b4cb23c841d6">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a2b7f108608af16299c62fd6c7c624ee9">ModNPC</a></li>
 <li>OnHitAnything()&#160;:&#160;<a class="el" href="class_mod_player.html#aaae2bf47f5e61760db5a136192ec16b6">ModPlayer</a></li>
 <li>OnHitByItem()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a25de8da95b124625480058b1c4b07965">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#aefdef952cf25966e70860e2282964293">ModNPC</a></li>
@@ -118,6 +120,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <li>OnInBiome()&#160;:&#160;<a class="el" href="class_mod_biome.html#afd14c5c9e4e11f438500cfa6105c1e0b">ModBiome</a></li>
 <li>OnKill()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a5b52ba090400609bca64e93756480cc7">GlobalNPC</a>, <a class="el" href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">GlobalProjectile</a>, <a class="el" href="class_mod_n_p_c.html#a2c1ad109db9314006a395886a967fe07">ModNPC</a>, <a class="el" href="class_mod_projectile.html#a1154c0c4a7cf829584f1fa97608ab470">ModProjectile</a>, <a class="el" href="class_mod_tile_entity.html#ac51e2fe4251311f634ae40cb80607447">ModTileEntity</a></li>
 <li>OnLeave()&#160;:&#160;<a class="el" href="class_mod_biome.html#a473feac5a62719c6d880e2d2e666d0c2">ModBiome</a></li>
+<li>OnLeftClick()&#160;:&#160;<a class="el" href="class_builder_toggle.html#af1e3cf046bd045f3317fbdc6385e405f">BuilderToggle</a></li>
 <li>OnLoaded()&#160;:&#160;<a class="el" href="class_mod_config.html#af02ded51ef3c98534476412ea117d179">ModConfig</a></li>
 <li>OnLocalizationsLoaded()&#160;:&#160;<a class="el" href="class_mod_system.html#a2b5501032d7e09dcf7a8bf122eefef2d">ModSystem</a></li>
 <li>OnMissingMana()&#160;:&#160;<a class="el" href="class_global_item.html#ab72228117854476e7a1f03e928391515">GlobalItem</a>, <a class="el" href="class_item_loader.html#a41e2281dd377e257421f4a352a6f8fa4">ItemLoader</a>, <a class="el" href="class_mod_item.html#a551a0902b2fa7ab8b5c60b9f18f7b783">ModItem</a>, <a class="el" href="class_mod_player.html#a19964efe7ba5a1564052b3000665b641">ModPlayer</a></li>
@@ -129,10 +132,12 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <li>OnRefreshed()&#160;:&#160;<a class="el" href="class_extra_jump.html#ac112e409c4a1087fafe1ac465580ee51">ExtraJump</a></li>
 <li>OnResearched()&#160;:&#160;<a class="el" href="class_global_item.html#aa7accf7c0732dd9cb7186bc094c04d5a">GlobalItem</a>, <a class="el" href="class_mod_item.html#a756de06ee2405aa96a4ec733c5ea9c25">ModItem</a></li>
 <li>OnRespawn()&#160;:&#160;<a class="el" href="class_mod_player.html#ac31fbd2a5247f07f9a6b95f292fc910c">ModPlayer</a></li>
+<li>OnRightClick()&#160;:&#160;<a class="el" href="class_builder_toggle.html#aba2f7e9f36ec8e567f3c57780fd120f5">BuilderToggle</a></li>
 <li>OnSelected()&#160;:&#160;<a class="el" href="class_mod_boss_bar_style.html#a39a7f208068ea73327185a21ed649a99">ModBossBarStyle</a>, <a class="el" href="class_mod_menu.html#adbf98cb23f9c8a91ace611a7c55a19eb">ModMenu</a></li>
 <li>OnSpawn()&#160;:&#160;<a class="el" href="class_global_emote_bubble.html#af1758c8ef0679a00717ae211e0b9527a">GlobalEmoteBubble</a>, <a class="el" href="class_global_item.html#a00f1c24c3e30d9d1737ee0f6c1a06a64">GlobalItem</a>, <a class="el" href="class_global_n_p_c.html#a9e6faf26813e7925b90554e9f92923f8">GlobalNPC</a>, <a class="el" href="class_global_projectile.html#a5e5a20d5923e842b14cfe959ca515138">GlobalProjectile</a>, <a class="el" href="class_mod_dust.html#a3fe601c3400bd33e34ac382229b60d8b">ModDust</a>, <a class="el" href="class_mod_emote_bubble.html#a855d169079d16e4e54a7aa8935a08868">ModEmoteBubble</a>, <a class="el" href="class_mod_gore.html#a81ae287c515015143c0b776e43923f17">ModGore</a>, <a class="el" href="class_mod_item.html#abf086cb00125fb2cf9977b15b4a44aea">ModItem</a>, <a class="el" href="class_mod_n_p_c.html#a7f4875e42ba28150c072e4829261cba2">ModNPC</a>, <a class="el" href="class_mod_projectile.html#ab15bdf7d367d10003312746be807c5fa">ModProjectile</a></li>
 <li>OnStack()&#160;:&#160;<a class="el" href="class_global_item.html#a50fa1fe2213f5939b0f181fbe61a6c6f">GlobalItem</a>, <a class="el" href="class_item_loader.html#a96f09be3aef82ed03e450cb74979ecde">ItemLoader</a>, <a class="el" href="class_mod_item.html#a05cfd3ac2d68987974690b1d68620e6d">ModItem</a></li>
 <li>OnStarted()&#160;:&#160;<a class="el" href="class_basilisk_mount_jump.html#a02aa48e721df0bd84221802e9bf2f5c9">BasiliskMountJump</a>, <a class="el" href="class_cloud_in_a_bottle_jump.html#a5ea91c26f17ca455a86fd14f676af288">CloudInABottleJump</a>, <a class="el" href="class_extra_jump.html#a9943d15f6a9fbe6ec36a829c8c3005f7">ExtraJump</a>, <a class="el" href="class_fart_in_a_jar_jump.html#a34b6083aaa157a0eecb5b4c0f7c183ff">FartInAJarJump</a>, <a class="el" href="class_flipper_jump.html#af6efe7908c0cdaa1bee753fb57e7edb8">FlipperJump</a>, <a class="el" href="class_goat_mount_jump.html#a602291ac1e2e3204474dadcf1f7a497a">GoatMountJump</a>, <a class="el" href="class_santank_mount_jump.html#a8e80fd33304490e0609601cc6a1aff9d">SantankMountJump</a>, <a class="el" href="class_tsunami_in_a_bottle_jump.html#a6eb7bcb4bf53f055fadfcf0e8113b7a9">TsunamiInABottleJump</a>, <a class="el" href="class_unicorn_mount_jump.html#a1ac7267a8917cd764339df237531f3eb">UnicornMountJump</a></li>
+<li>OnSuccess()&#160;:&#160;<a class="el" href="class_chains.html#a146f3cc62c7ddf3f8b32a10658b599c1">Chains</a></li>
 <li>OnTileCollide()&#160;:&#160;<a class="el" href="class_global_projectile.html#ae8e35ed4da134f82eb1497e1f25f7ebe">GlobalProjectile</a>, <a class="el" href="class_mod_projectile.html#a6425d9656f519c99f5ebedf8145a1837">ModProjectile</a></li>
 <li>OnWorldLoad()&#160;:&#160;<a class="el" href="class_mod_system.html#ad6a150f64d282a855c4b9c6dbe8347b6">ModSystem</a></li>
 <li>OnWorldUnload()&#160;:&#160;<a class="el" href="class_mod_system.html#a953bc06309d50d385ffa4e4a6ea15dd9">ModSystem</a></li>
@@ -141,6 +146,7 @@ $(document).ready(function(){initNavTree('functions_func_o.html',''); initResiza
 <li>operator+()&#160;:&#160;<a class="el" href="struct_stat_modifier.html#a0aa73c39bba3ab2aa34f82c131d1f20b">StatModifier</a></li>
 <li>operator-()&#160;:&#160;<a class="el" href="struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f">StatModifier</a></li>
 <li>OrderedSparseLookupBuilder()&#160;:&#160;<a class="el" href="class_pos_data_1_1_ordered_sparse_lookup_builder.html#acbdc6855f8d1cc6b232f2160c80c7ffa">PosData&lt; T &gt;.OrderedSparseLookupBuilder</a></li>
+<li>OreRunner()&#160;:&#160;<a class="el" href="class_world_gen.html#aac943af9cb0ceaf697cc1a6347e396c3">WorldGen</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

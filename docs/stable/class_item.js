@@ -69,6 +69,7 @@ var class_item =
     [ "bodyType", "class_item.html#a19537efd3f1a35e4f0c00561f89703ce", null ],
     [ "buffTime", "class_item.html#a9e41f9ea32fe91b900d4ccd88d6360e2", null ],
     [ "buffType", "class_item.html#a776efb25e63b5922d269f03462aec530", null ],
+    [ "buyOnce", "class_item.html#a9a9a58fd3ed77b2235265d3a9b41ba92", null ],
     [ "cachedItemSpawnsByType", "class_item.html#a93678c115261a95508cc016fa07518d6", null ],
     [ "channel", "class_item.html#a74aac6f77dfaf0d7ce28ee534968fb09", null ],
     [ "claw", "class_item.html#ab92e6881109a4113cf257f0b677491bd", null ],

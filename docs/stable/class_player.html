@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -2116,7 +2116,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>cHead</b></td></tr>
 <tr class="memitem:ac20590051011862e88d28c6c96ec526d"><td class="memItemLeft" align="right" valign="top"><a id="ac20590051011862e88d28c6c96ec526d" name="ac20590051011862e88d28c6c96ec526d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>chest</b> = -1</td></tr>
 <tr class="memdesc:ac20590051011862e88d28c6c96ec526d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the chest the player currently has open. If -1, the player has no chest open.<br  />
- Positive values indicate the index of the chest in Main.chest the player currently has open.<br  />
+ Positive values indicate the index of the chest in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> the player currently has open.<br  />
  Negative values are used to indicate additional inventories: Piggy Bank (-2), Safe (-3), Defender's Forge (-4), Void Vault (-5) <br /></td></tr>
 <tr class="separator:ac20590051011862e88d28c6c96ec526d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af66f424bd9c510140d217dcfef5453c4"><td class="memItemLeft" align="right" valign="top"><a id="af66f424bd9c510140d217dcfef5453c4" name="af66f424bd9c510140d217dcfef5453c4"></a>
@@ -4601,9 +4601,9 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>wetCount</b></td></tr
 int&#160;</td><td class="memItemRight" valign="bottom"><b>whoAmI</b></td></tr>
 <tr class="memdesc:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of this <a class="el" href="class_entity.html">Entity</a> within its specific array. These arrays track the entities in the world. <br  />
  <a class="el" href="class_item.html">Item</a>: unused <br  />
- <a class="el" href="class_projectile.html">Projectile</a>: Main.projectile <br  />
- <a class="el" href="class_n_p_c.html">NPC</a>: Main.npc <br  />
- <a class="el" href="class_player.html">Player</a>: Main.player <br /></td></tr>
+ <a class="el" href="class_projectile.html">Projectile</a>: <a class="el" href="class_main.html#a83c4abb74853f4fe224109b98389c5e3" title="Contains all the Projectiles in the game world. Projectiles should only be spawned via Projectile....">Main.projectile</a> <br  />
+ <a class="el" href="class_n_p_c.html">NPC</a>: <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> <br  />
+ <a class="el" href="class_player.html">Player</a>: <a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a> Note that <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Projectile.whoAmI</a> is not consistent between clients in multiplayer for the same projectile. <br /></td></tr>
 <tr class="separator:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa687666b6a0f25fe0115c0ac6aa6aca5" name="aa687666b6a0f25fe0115c0ac6aa6aca5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
@@ -6465,7 +6465,7 @@ Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html
   <table class="params">
     <tr><td class="paramname">x</td><td>The top-left X coordinate of the container.</td></tr>
     <tr><td class="paramname">y</td><td>The top-left Y coordinate of the container.</td></tr>
-    <tr><td class="paramname">newChest</td><td>The container index in Main.chest if opening, or -1 if closing.</td></tr>
+    <tr><td class="paramname">newChest</td><td>The container index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> if opening, or -1 if closing.</td></tr>
   </table>
   </dd>
 </dl>
@@ -6672,7 +6672,7 @@ Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The index of the item within Main.item</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the item within <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a></dd></dl>
 
 </div>
 </div>

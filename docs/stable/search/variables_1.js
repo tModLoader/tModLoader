@@ -68,5 +68,6 @@ var searchData=
   ['builddate_65',['BuildDate',['../class_build_info.html#a8024b0e691747717f349b5145988c089',1,'BuildInfo']]],
   ['bunnykillingiscruel_66',['BunnyKillingIsCruel',['../class_game_tip_i_d.html#a1faab886775c62eefc442cde2c259627',1,'GameTipID']]],
   ['butterfly_67',['Butterfly',['../class_n_p_c_a_i_style_i_d.html#a01733088b02859aadd3bf4c95d749c90',1,'NPCAIStyleID']]],
-  ['buttonremappingincontrolsmenu_68',['ButtonRemappingInControlsMenu',['../class_game_tip_i_d.html#a6359e4caae3a1709315294456c14507a',1,'GameTipID']]]
+  ['buttonremappingincontrolsmenu_68',['ButtonRemappingInControlsMenu',['../class_game_tip_i_d.html#a6359e4caae3a1709315294456c14507a',1,'GameTipID']]],
+  ['buyonce_69',['buyOnce',['../class_item.html#a9a9a58fd3ed77b2235265d3a9b41ba92',1,'Item']]]
 ];

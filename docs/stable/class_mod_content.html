@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('class_mod_content.html',''); initResiz
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_mod_content-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ModContent Class Reference</div></div>
@@ -209,7 +210,7 @@ static Stream&#160;</td><td class="memItemRight" valign="bottom"><b>OpenRead</b>
 <tr class="memdesc:ac5705e81b75a364882b330e5666d0721"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the id (type) of a <a class="el" href="class_mod_rarity.html">ModRarity</a> by class. Assumes one instance per class.  <a href="class_mod_content.html#ac5705e81b75a364882b330e5666d0721">More...</a><br /></td></tr>
 <tr class="separator:ac5705e81b75a364882b330e5666d0721"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24e36b809900269a1ecd3d1fb85a3a5f"><td class="memItemLeft" align="right" valign="top">static Asset&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#a24e36b809900269a1ecd3d1fb85a3a5f">Request&lt; T &gt;</a> (string name, AssetRequestMode mode=AssetRequestMode.AsyncLoad)</td></tr>
-<tr class="memdesc:a24e36b809900269a1ecd3d1fb85a3a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the asset with the specified name. Throws an <a class="el" href="class_exception.html">Exception</a> if the asset does not exist.  <a href="class_mod_content.html#a24e36b809900269a1ecd3d1fb85a3a5f">More...</a><br /></td></tr>
+<tr class="memdesc:a24e36b809900269a1ecd3d1fb85a3a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the asset with the specified name. Throws an <a class="el" href="class_exception.html">Exception</a> if the asset does not exist. Modders may wish to use <code>Mod.Assets.Request</code> where the mod name prefix may be omitted for convenience.  <a href="class_mod_content.html#a24e36b809900269a1ecd3d1fb85a3a5f">More...</a><br /></td></tr>
 <tr class="separator:a24e36b809900269a1ecd3d1fb85a3a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af150eda5721e4b1bf4d022b82d948c4b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#af150eda5721e4b1bf4d022b82d948c4b">RequestIfExists&lt; T &gt;</a> (string name, out Asset&lt; T &gt; asset, AssetRequestMode mode=AssetRequestMode.AsyncLoad)</td></tr>
 <tr class="separator:af150eda5721e4b1bf4d022b82d948c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -885,7 +886,7 @@ This only includes the 'template' instance for each piece of content, not all th
 </table>
 </div><div class="memdoc">
 
-<p>Gets the asset with the specified name. Throws an <a class="el" href="class_exception.html">Exception</a> if the asset does not exist. </p>
+<p>Gets the asset with the specified name. Throws an <a class="el" href="class_exception.html">Exception</a> if the asset does not exist. Modders may wish to use <code>Mod.Assets.Request</code> where the mod name prefix may be omitted for convenience. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The path to the asset without extension, including the mod name (or <a class="el" href="namespace_terraria.html">Terraria</a>) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</td></tr>

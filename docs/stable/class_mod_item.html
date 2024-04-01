@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -311,6 +311,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MagicPrefix</
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MeleePrefix</b> ()</td></tr>
 <tr class="memdesc:a9b1eec50a051b0a48bdd0d7bf0a33194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not. Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix <br /></td></tr>
 <tr class="separator:a9b1eec50a051b0a48bdd0d7bf0a33194"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2bbf852362fe7918ef0aac7b9cd4f0d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d">ModifyFishingLine</a> (<a class="el" href="class_projectile.html">Projectile</a> bobber, ref Vector2 lineOriginOffset, ref Color lineColor)</td></tr>
+<tr class="memdesc:af2bbf852362fe7918ef0aac7b9cd4f0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this item is a fishing pole, allows you to modify the origin and color of its fishing line.  <a href="class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d">More...</a><br /></td></tr>
+<tr class="separator:af2bbf852362fe7918ef0aac7b9cd4f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa52336877bff4894a21dfae26f1c66b8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#aa52336877bff4894a21dfae26f1c66b8">ModifyHitNPC</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_n_p_c.html">NPC</a> target, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
 <tr class="memdesc:aa52336877bff4894a21dfae26f1c66b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this melee weapon does to an <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
  This method is only called on the on the client of the player holding the weapon. <br  />
@@ -2572,6 +2575,58 @@ This is only called when attempting to stack with an item of the same type. </p>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>
     <tr><td class="paramname">hitbox</td><td>The hitbox.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af2bbf852362fe7918ef0aac7b9cd4f0d" name="af2bbf852362fe7918ef0aac7b9cd4f0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2bbf852362fe7918ef0aac7b9cd4f0d">&#9670;&nbsp;</a></span>ModifyFishingLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModItem.ModifyFishingLine </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_projectile.html">Projectile</a>&#160;</td>
+          <td class="paramname"><em>bobber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>lineOriginOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>lineColor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If this item is a fishing pole, allows you to modify the origin and color of its fishing line. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bobber</td><td>The bobber projectile</td></tr>
+    <tr><td class="paramname">lineOriginOffset</td><td>The offset of the fishing line's origin from the player's center. </td></tr>
+    <tr><td class="paramname">lineColor</td><td>The fishing line's color, before being overridden by string color accessories. </td></tr>
   </table>
   </dd>
 </dl>
@@ -5010,7 +5065,7 @@ Can be called on both server and client. </p>
 </div><div class="memdoc">
 
 <p>Allows you to make things happen when this item's use animation starts. Runs on all clients and server. Use </p>
-<p ><code>if (player.whoAmI == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">Main.myPlayer</a>)</code> and <code>if (<a class="el" href="class_main.html#a5b7c21c478b58b72ea5c4e6921e940bd" title="Denotes the current network mode: 0 for single player client, 1 for multiplayer client,...">Main.netMode</a> == <a class="el" href="class_netmode_i_d.html" title="Correspond to Main.netMode values.">NetmodeID</a>.??)</code> if appropriate. </p>
+<p ><code>if (player.whoAmI == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a>)</code> and <code>if (<a class="el" href="class_main.html#a5b7c21c478b58b72ea5c4e6921e940bd" title="Denotes the current network mode: 0 for single player client, 1 for multiplayer client,...">Main.netMode</a> == <a class="el" href="class_netmode_i_d.html" title="Correspond to Main.netMode values.">NetmodeID</a>.??)</code> if appropriate. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player. </td></tr>
@@ -5078,7 +5133,7 @@ Can be called on both server and client. </p>
  Return true if the item actually did something, to force itemTime. <br  />
  Return false to keep itemTime at 0. <br  />
  Return null for vanilla behavior. Runs on all clients and server. Use </p>
-<p ><code>if (player.whoAmI == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server.">Main.myPlayer</a>)</code> and <code>if (<a class="el" href="class_main.html#a5b7c21c478b58b72ea5c4e6921e940bd" title="Denotes the current network mode: 0 for single player client, 1 for multiplayer client,...">Main.netMode</a> == <a class="el" href="class_netmode_i_d.html" title="Correspond to Main.netMode values.">NetmodeID</a>.??)</code> if appropriate. </p>
+<p ><code>if (player.whoAmI == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a>)</code> and <code>if (<a class="el" href="class_main.html#a5b7c21c478b58b72ea5c4e6921e940bd" title="Denotes the current network mode: 0 for single player client, 1 for multiplayer client,...">Main.netMode</a> == <a class="el" href="class_netmode_i_d.html" title="Correspond to Main.netMode values.">NetmodeID</a>.??)</code> if appropriate. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>

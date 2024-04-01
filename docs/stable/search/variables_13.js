@@ -14,7 +14,7 @@ var searchData=
   ['text_11',['Text',['../class_drawable_tooltip_line.html#a095db813950b75d5c3237ac5b71abaae',1,'DrawableTooltipLine.Text()'],['../class_tooltip_line.html#ae01f383ca11ba6637f03d4cb5d8e6ddf',1,'TooltipLine.Text()']]],
   ['textoffset_12',['TextOffset',['../struct_boss_bar_draw_params.html#aa6d658c158f71215e51569f6c1736fea',1,'BossBarDrawParams']]],
   ['textposition_13',['TextPosition',['../struct_buff_draw_params.html#a94dc35a5f9b9e8add7539b27946b26a6',1,'BuffDrawParams']]],
-  ['texture_14',['Texture',['../struct_buff_draw_params.html#a8a31fa564f587ad7df1bb7d1466188c5',1,'BuffDrawParams']]],
+  ['texture_14',['Texture',['../struct_buff_draw_params.html#a8a31fa564f587ad7df1bb7d1466188c5',1,'BuffDrawParams.Texture()'],['../struct_builder_toggle_draw_params.html#abc549fd199b8a167a83f6ad379b4ab04',1,'BuilderToggleDrawParams.Texture()']]],
   ['texturecopyload_15',['TextureCopyLoad',['../class_item_i_d_1_1_sets.html#a98688c0fd8edb291f83092c2a1a36e1a',1,'ItemID::Sets']]],
   ['thedestroyer_16',['TheDestroyer',['../class_n_p_c_a_i_style_i_d.html#ae9a25cf3a3615e83875278232f45bfd5',1,'NPCAIStyleID']]],
   ['thehungry_17',['TheHungry',['../class_n_p_c_a_i_style_i_d.html#aad9c89983e018cd2e806a9dbe5d413f0',1,'NPCAIStyleID']]],

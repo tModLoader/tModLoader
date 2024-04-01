@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -162,7 +162,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyTransfo
 <tr class="separator:a40c60741a007b1f5a69facc175c0614e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d3537099fd511aa551fa4d28052387b"><td class="memItemLeft" align="right" valign="top"><a id="a6d3537099fd511aa551fa4d28052387b" name="a6d3537099fd511aa551fa4d28052387b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyWorldGenTasks</b> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_gen_pass.html">GenPass</a> &gt; tasks, ref double totalWeight)</td></tr>
-<tr class="memdesc:a6d3537099fd511aa551fa4d28052387b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more advanced option to PostWorldGen, this method allows you modify the list of Generation <a class="el" href="class_passes.html">Passes</a> before a new world begins to be generated. For example, disabling the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. To disable or hide generation passes, please use GenPass.Disable and defensive coding. <br /></td></tr>
+<tr class="memdesc:a6d3537099fd511aa551fa4d28052387b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more advanced option to PostWorldGen, this method allows you modify the list of Generation <a class="el" href="class_passes.html">Passes</a> before a new world begins to be generated. For example, disabling the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon. To disable or hide generation passes, please use GenPass.Disable and defensive coding. See the "Determining a suitable index" section of the World Generation wiki guidefor more information about how to properly use this for adding new world generation passes. <br /></td></tr>
 <tr class="separator:a6d3537099fd511aa551fa4d28052387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a144ef598fa0b3bcc2a0ac6bd1c5467aa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a144ef598fa0b3bcc2a0ac6bd1c5467aa">NetReceive</a> (BinaryReader reader)</td></tr>
 <tr class="memdesc:a144ef598fa0b3bcc2a0ac6bd1c5467aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_tile_entity.html#a85d2692b4774c6140a968ef92accc6df" title="Allows you to send custom data for this tile entity between client and server, which will be handled ...">NetSend</a>. <br  />

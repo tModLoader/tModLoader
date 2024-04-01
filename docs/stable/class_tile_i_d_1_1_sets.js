@@ -1,6 +1,7 @@
 var class_tile_i_d_1_1_sets =
 [
     [ "Conversion", "class_tile_i_d_1_1_sets_1_1_conversion.html", null ],
+    [ "FallingBlockProjectileInfo", "class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html", null ],
     [ "ForAdvancedCollision", "class_tile_i_d_1_1_sets_1_1_for_advanced_collision.html", null ],
     [ "RoomNeeds", "class_tile_i_d_1_1_sets_1_1_room_needs.html", null ],
     [ "TileCutIgnore", "class_tile_i_d_1_1_sets_1_1_tile_cut_ignore.html", null ],
@@ -31,6 +32,8 @@ var class_tile_i_d_1_1_sets =
     [ "DoesntGetReplacedWithTileReplacement", "class_tile_i_d_1_1_sets.html#a40fcb33e079653d8b942406323a72370", null ],
     [ "DoesntPlaceWithTileReplacement", "class_tile_i_d_1_1_sets.html#a74c822a6ceca1ff049b828022f023805", null ],
     [ "DontDrawTileSliced", "class_tile_i_d_1_1_sets.html#a9db9240389b2331304b54272a4fa19cb", null ],
+    [ "Falling", "class_tile_i_d_1_1_sets.html#a0098d22c058970386f8ee18bc385df9b", null ],
+    [ "FallingBlockProjectile", "class_tile_i_d_1_1_sets.html#ad4d6d68fd58b984a99145d196d56f799", null ],
     [ "HasOutlines", "class_tile_i_d_1_1_sets.html#a612fadd9d5e3f24c17c1052fdf9b6ebe", null ],
     [ "IceSkateSlippery", "class_tile_i_d_1_1_sets.html#a38c57298977bbdfc47182befc869a9e2", null ],
     [ "IgnoredByGrowingSaplings", "class_tile_i_d_1_1_sets.html#af69a818caf125df9f8897c190f049add", null ],

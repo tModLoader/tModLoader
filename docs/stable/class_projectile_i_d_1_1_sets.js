@@ -1,5 +1,6 @@
 var class_projectile_i_d_1_1_sets =
 [
+    [ "FallingBlockTileItemInfo", "class_projectile_i_d_1_1_sets_1_1_falling_block_tile_item_info.html", null ],
     [ "AllowsContactDamageFromJellyfish", "class_projectile_i_d_1_1_sets.html#a6b764d3c8b5df10d5f100f707a4b5da0", null ],
     [ "CanDistortWater", "class_projectile_i_d_1_1_sets.html#a64c40fa972df846119234b3147adb8cf", null ],
     [ "CanHitPastShimmer", "class_projectile_i_d_1_1_sets.html#ab79b63290907b5d0360261e0e5217ebb", null ],
@@ -13,6 +14,7 @@ var class_projectile_i_d_1_1_sets =
     [ "ExtendedCanHitCheckRange", "class_projectile_i_d_1_1_sets.html#a8427c47b8da4c8536a23eb090cad0cd5", null ],
     [ "ExtendedCanHitCheckSearch", "class_projectile_i_d_1_1_sets.html#a55510f0139e16d3251fa9eb51690d38e", null ],
     [ "FallingBlockDoesNotFallThroughPlatforms", "class_projectile_i_d_1_1_sets.html#a935f885823fca92a7aa292ba6f107691", null ],
+    [ "FallingBlockTileItem", "class_projectile_i_d_1_1_sets.html#aeb9103d8037bfdd777e9bd9e600d1703", null ],
     [ "ForcePlateDetection", "class_projectile_i_d_1_1_sets.html#af59e06fddaa7b5693ccc09343aa54e44", null ],
     [ "HeldProjDoesNotUsePlayerGfxOffY", "class_projectile_i_d_1_1_sets.html#a0fe48a56f4c77cb9bf1767301495ea02", null ],
     [ "ImmediatelyUpdatesNPCBuffFlags", "class_projectile_i_d_1_1_sets.html#a0aed86a0717c8b9a5a4f4375a615aca7", null ],

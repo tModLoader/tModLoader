@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -482,7 +482,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>MechSpawn</b> 
 <tr class="memdesc:a861d974bce4b638b0d0180a775da3e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. <br  />
  This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. <br  />
  See the <em>noBroadcast</em>  documentation if you need to customize attached <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a> data prior to syncing. <br  />
- The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the Main.item array.  <a href="class_item.html#a861d974bce4b638b0d0180a775da3e12">More...</a><br /></td></tr>
+ The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a> array.  <a href="class_item.html#a861d974bce4b638b0d0180a775da3e12">More...</a><br /></td></tr>
 <tr class="separator:a861d974bce4b638b0d0180a775da3e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee93c1f1a86db882300293a86afc3e67"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#aee93c1f1a86db882300293a86afc3e67">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, <a class="el" href="class_item.html">Item</a> item, bool noBroadcast=false, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:aee93c1f1a86db882300293a86afc3e67"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
@@ -641,6 +641,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>buy</b></td></tr>
 <tr class="separator:ad1def96383db2f33fa7caac555e8158e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a9a58fd3ed77b2235265d3a9b41ba92"><td class="memItemLeft" align="right" valign="top"><a id="a9a9a58fd3ed77b2235265d3a9b41ba92" name="a9a9a58fd3ed77b2235265d3a9b41ba92"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>buyOnce</b></td></tr>
+<tr class="memdesc:a9a9a58fd3ed77b2235265d3a9b41ba92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that an item in a shop can only be bought once, meaning it is an item that has been sold to the <a class="el" href="class_n_p_c.html">NPC</a> shop by the player. <br /></td></tr>
 <tr class="separator:a9a9a58fd3ed77b2235265d3a9b41ba92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f94b3e02853338b448e30a72b8e6c7c"><td class="memItemLeft" align="right" valign="top"><a id="a4f94b3e02853338b448e30a72b8e6c7c" name="a4f94b3e02853338b448e30a72b8e6c7c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>cartTrack</b></td></tr>
@@ -899,7 +900,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>noMelee</b></td></tr>
 <tr class="separator:af12f64d3bea397bd4d322c2321f3339c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add94f36769fd9ac3a53325fb41edfce9"><td class="memItemLeft" align="right" valign="top"><a id="add94f36769fd9ac3a53325fb41edfce9" name="add94f36769fd9ac3a53325fb41edfce9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>notAmmo</b></td></tr>
-<tr class="memdesc:add94f36769fd9ac3a53325fb41edfce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true and the item is ammo (sets <a class="el" href="class_item.html#addaf53abeefd8999bc77746befd84d8f" title="The Ammo ID this item belongs to. Weapons with useAmmo set to the same AmmoID will consume this item ...">ammo</a> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Wire. <br  />
+<tr class="memdesc:add94f36769fd9ac3a53325fb41edfce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true and the item is ammo (sets <a class="el" href="class_item.html#addaf53abeefd8999bc77746befd84d8f" title="The Ammo ID this item belongs to. Weapons with useAmmo set to the same AmmoID will consume this item ...">ammo</a> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Sand Blocks. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:add94f36769fd9ac3a53325fb41edfce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed31960a48462fb2f1ed08431e6e4780"><td class="memItemLeft" align="right" valign="top"><a id="aed31960a48462fb2f1ed08431e6e4780" name="aed31960a48462fb2f1ed08431e6e4780"></a>
@@ -1194,9 +1195,9 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>wetCount</b></td></tr
 int&#160;</td><td class="memItemRight" valign="bottom"><b>whoAmI</b></td></tr>
 <tr class="memdesc:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of this <a class="el" href="class_entity.html">Entity</a> within its specific array. These arrays track the entities in the world. <br  />
  <a class="el" href="class_item.html">Item</a>: unused <br  />
- <a class="el" href="class_projectile.html">Projectile</a>: Main.projectile <br  />
- <a class="el" href="class_n_p_c.html">NPC</a>: Main.npc <br  />
- <a class="el" href="class_player.html">Player</a>: Main.player <br /></td></tr>
+ <a class="el" href="class_projectile.html">Projectile</a>: <a class="el" href="class_main.html#a83c4abb74853f4fe224109b98389c5e3" title="Contains all the Projectiles in the game world. Projectiles should only be spawned via Projectile....">Main.projectile</a> <br  />
+ <a class="el" href="class_n_p_c.html">NPC</a>: <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> <br  />
+ <a class="el" href="class_player.html">Player</a>: <a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a> Note that <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Projectile.whoAmI</a> is not consistent between clients in multiplayer for the same projectile. <br /></td></tr>
 <tr class="separator:a0fe3075b1852d0fc8e9e6d24f4bfa3db inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa687666b6a0f25fe0115c0ac6aa6aca5 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa687666b6a0f25fe0115c0ac6aa6aca5" name="aa687666b6a0f25fe0115c0ac6aa6aca5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
@@ -2782,7 +2783,7 @@ UseSound = SoundID.Item5;</code><br  />
 <p>Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. <br  />
  This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. <br  />
  See the <em>noBroadcast</em>  documentation if you need to customize attached <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a> data prior to syncing. <br  />
- The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the Main.item array. </p>
+ The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a> array. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">source</td><td></td></tr>
@@ -2799,7 +2800,7 @@ UseSound = SoundID.Item5;</code><br  />
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The index of the item within Main.item</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the item within <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a></dd></dl>
 
 </div>
 </div>
