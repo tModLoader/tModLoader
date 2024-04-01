@@ -66,7 +66,7 @@
 		"ModOldWarning": "旧模组，风险自负",
 		"ModStableOnPreviewWarning": "没有对应的测试版，风险自负",
 		"ModDependencyTooltip": "此模组依赖于：{0}\n （这些将自动启用）",
-		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n(These will disable automatically)",
+		// "ModDependentsTooltip": "This mod has the following dependents: {0}\n(These will disable automatically)",
 		"TranslationModTooltip": "此模组为下列模组提供翻译：\n{0}",
 		"ModDependencyClickTooltip": "该模组依赖于：{0}\n（点击启用）",
 		"ModDependencyModsNotFound": "未找到下列模组：{0}",

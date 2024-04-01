@@ -62,7 +62,7 @@
 		"ModOldWarning": "Mod antigo, ative-o por sua conta e risco",
 		"ModStableOnPreviewWarning": "Sem build para o modo Preview. Ative por sua conta e risco",
 		"ModDependencyTooltip": "Este mod depende de: {0}\n (Estes serão ativados automaticamente)",
-		// "ModDependentsTooltip": "This mod has the following dependants: {0}\n(These will disable automatically)",
+		// "ModDependentsTooltip": "This mod has the following dependents: {0}\n(These will disable automatically)",
 		"TranslationModTooltip": "Este mod fornece traduções para: {0}",
 		"ModDependencyClickTooltip": "Este mod depende de: {0}\n (clique para ativar)",
 		"ModDependencyModsNotFound": "Os mods a seguir não foram encontrados: {0}",
