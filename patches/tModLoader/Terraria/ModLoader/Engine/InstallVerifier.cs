@@ -222,6 +222,9 @@ internal static class InstallVerifier
 			case TerrariaSteamClient.LaunchResult.ErrInstallOutOfDate:
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
 				break;
+			case TerrariaSteamClient.LaunchResult.ErrInstallLegacyVersion:
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
+				break;
 			default:
 				throw new Exception("Unsupported result type: " + result);
 		}

@@ -16,6 +16,7 @@ internal class TerrariaSteamClient
 	private static ILog Logger { get; } = LogManager.GetLogger("TerrariaSteamClient");
 
 	private const int LatestTerrariaBuildID = 9653812; // Currently v1.4.4.4. Update this when any Terraria update changes any asset. Also update InitTMLContentManager with a newly added file
+	private static int[] LegacyTerrariaBuildIDs = new int[] { 13650765 }; // Terraria legacy branch build IDs (v1.0.6.1)
 	private static AnonymousPipeServerStream serverPipe;
 
 	private static string MsgInitFailed = "init_failed";
@@ -23,6 +24,7 @@ internal class TerrariaSteamClient
 	private static string MsgFamilyShared = "family_shared";
 	private static string MsgNotInstalled = "not_installed";
 	private static string MsgInstallOutOfDate = "install_out_of_date";
+	private static string MsgInstallLegacyVersion = "install_legacy_version";
 	private static string MsgGrant = "grant:";
 	private static string MsgAck = "acknowledged";
 	private static string MsgShutdown = "shutdown";
@@ -34,6 +36,7 @@ internal class TerrariaSteamClient
 		ErrSteamInitFailed,
 		ErrNotInstalled,
 		ErrInstallOutOfDate,
+		ErrInstallLegacyVersion,
 		Ok
 	}
 
@@ -83,6 +86,9 @@ internal class TerrariaSteamClient
 
 			if (line == MsgInstallOutOfDate)
 				return LaunchResult.ErrInstallOutOfDate;
+
+			if (line == MsgInstallLegacyVersion)
+				return LaunchResult.ErrInstallLegacyVersion;
 
 			if (line == MsgInitSuccess)
 				break;
@@ -154,6 +160,12 @@ internal class TerrariaSteamClient
 
 			int TerrariaBuildID = SteamApps.GetAppBuildId();
 			Logger.Info("Terraria BuildID: " + TerrariaBuildID);
+			if (LegacyTerrariaBuildIDs.Contains(TerrariaBuildID)) {
+				Logger.Fatal("Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.");
+				Send(MsgInstallLegacyVersion);
+				SteamShutdown();
+				return;
+			}
 			if (TerrariaBuildID < LatestTerrariaBuildID) { 
 				Logger.Fatal("Terraria is out of date, you need to update Terraria in Steam.");
 				Send(MsgInstallOutOfDate);
