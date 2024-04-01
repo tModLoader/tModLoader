@@ -170,19 +170,16 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
-			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
+			// The order in which you add loot will appear as such in the Bestiary. To mirror vanilla boss order:
+			// 1. Trophy
+			// 2. Classic Mode ("not expert")
+			// 3. Expert Mode (usually just the treasure bag)
+			// 4. Master Mode (relic first, pet last, everything else inbetween)
 
 			// Trophies are spawned with 1/10 chance
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
 
-			// ItemDropRule.MasterModeCommonDrop for the relic
-			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>()));
-
-			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
-			npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
+			// All the Classic Mode drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
 			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
@@ -206,6 +203,15 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			// Finally add the leading rule
 			npcLoot.Add(notExpertRule);
+
+			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
+
+			// ItemDropRule.MasterModeCommonDrop for the relic
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>()));
+
+			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
+			npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 		}
 
 		public override void OnKill() {
