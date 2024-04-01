@@ -8,7 +8,7 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -16,7 +_,30 @@
+@@ -16,7 +_,33 @@
  
  	void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
  
@@ -23,6 +23,8 @@
 +	/// <br/><see cref="Asset{T}.Wait"/> can be used to ensure an asynchronously loaded asset has finished loading before accessing <see cref="Asset{T}.Value"/>
 +	/// <para/>
 +	/// <seealso cref="Texture2D"/> assets have a default <see cref="Asset{T}.Value"/> containing a transparent 1x1 texture that can be used while the asset loads.
++	/// <para/>
++	/// Can be safely called on the server despite the server not loading assets, so there is no need to add checks for <c>Main.dedServ</c>. Assets loaded on the server will always be returned as if loaded via <see cref="AssetRequestMode.DoNotLoad"/>.
 +	/// </summary>
 +	/// <typeparam name="T"></typeparam>
 +	/// <param name="assetName"></param>
@@ -30,11 +32,13 @@
 +	/// <returns></returns>
 -	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
 +	Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class;
-+
+ 
+-	void TransferCompletedAssets();
 +	// Added by TML.
 +	Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class;
- 
- 	void TransferCompletedAssets();
++
++	// Return type changed to bool to indicate if any assets were transferred
++	bool TransferCompletedAssets();
 +
 +	// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
 +	internal Asset<T> Request<T>(string assetName) where T : class

@@ -799,7 +799,7 @@
  				}
  				break;
  			case 134: {
-@@ -3587,6 +_,27 @@
+@@ -3587,6 +_,35 @@
  
  				break;
  			}
@@ -823,6 +823,14 @@
 +					ModNet.ReceiveMod(reader);
 +				else
 +					ModNet.SendMod(reader.ReadString(), whoAmI);
++				return;
++			case MessageID.KeepAliveDuringModReload:
++				string keepAlive = "Keep Alive During Mod Reload";
++				ModNet.Log(whoAmI, keepAlive);
++				// Logging.ServerConsoleLine doesn't log client info and ModNet.Log doesn't output to console, so manually replicate here.
++				var client = Netplay.Clients[whoAmI];
++				Console.WriteLine($"[{whoAmI}][{client.Socket?.GetRemoteAddress()?.GetFriendlyName()} ({client.Name})]: {keepAlive}");
++				// Does nothing. "Netplay.Clients[whoAmI].TimeOutTimer = 0;" at top of method should keep the connection alive
 +				return;
  			default:
  				if (Netplay.Clients[whoAmI].State == 0)

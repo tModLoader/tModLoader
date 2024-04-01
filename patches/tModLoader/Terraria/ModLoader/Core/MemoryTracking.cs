@@ -59,7 +59,7 @@ internal static class MemoryTracking
 				.OfType<Asset<Texture2D>>()
 				.Select(asset => asset.Value)
 				.Where(val => val != null)
-				.Sum(tex => tex.Width * tex.Height * 4);
+				.Sum(tex => (long)(tex.Width * tex.Height * 4));
 
 			usage.sounds = mod.Assets
 				.GetLoadedAssets()

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +78,8 @@ internal class TileDefinitionOptionElement : DefinitionOptionElement<TileDefinit
 
 		if (Definition != null && (Type > NullID || Unloaded)) {
 			int type = Unloaded ? ModContent.TileType<UnloadedSolidTile>() : Definition.Type;
-			Main.instance.LoadTiles(type);
+			if (TextureAssets.Tile[type].State == AssetState.NotLoaded)
+				Main.Assets.Request<Texture2D>(TextureAssets.Tile[type].Name, AssetRequestMode.AsyncLoad);
 
 			// Framed tiles: draw a part of the texture making it look like one solitary block
 			// FrameImportant tiles: use TileObjectData to get the correct parts of the texture and draw them

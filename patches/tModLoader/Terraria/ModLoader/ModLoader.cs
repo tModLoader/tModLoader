@@ -29,7 +29,7 @@ public static class ModLoader
 {
 	// Stores the most recent version of tModLoader launched. Can be used for migration.
 	public static Version LastLaunchedTModLoaderVersion;
-	// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
+	// Stores the most recent sha for a launched official preview build. Used for ShowWhatsNew
 	public static string LastLaunchedTModLoaderAlphaSha;
 	public static bool ShowWhatsNew;
 	public static bool PreviewFreezeNotification;
@@ -68,7 +68,7 @@ public static class ModLoader
 	internal static bool skipLoad;
 	internal static Action OnSuccessfulLoad;
 
-	private static bool isLoading;
+	internal static bool isLoading;
 
 	public static Mod[] Mods { get; private set; } = new Mod[0];
 
@@ -366,7 +366,7 @@ public static class ModLoader
 
 		Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 		Main.Configuration.Put(nameof(BetaUpgradeWelcomed144), BetaUpgradeWelcomed144);
-		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.IsPreview && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
@@ -420,11 +420,7 @@ public static class ModLoader
 	/// </summary>
 	internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
 	{
-		list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
-	}
-
-	internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
-	{
-		return providers.WhereMethodIsOverridden(expr).ToArray();
+		var query = expr.ToOverrideQuery();
+		list = providers.Where(query.HasOverride).Select(t => (F)query.Binder(t)).ToArray();
 	}
 }

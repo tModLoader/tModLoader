@@ -19,17 +19,20 @@ partial class UIWorldSelect
 
 	// Individual
 	private static UIExpandablePanel _migrationPanel;
+	private static ModLoader.Config.UI.NestedUIList migrateWorldList;
+	private static bool migratableWorldsLoaded = false;
 
-	private void LoadMigratableWorlds()
+	private void InitializeMigrationPanel()
 	{
 		_migrationPanel = new UIExpandablePanel();
-		_worldList.Add(_migrationPanel);
+		_migrationPanel.OnExpanded += _migrationPanel_OnExpanded;
+		//_worldList.Add(_migrationPanel);
 
 		var playerMigrationPanelTitle = new UIText(Language.GetTextValue("tModLoader.MigrateIndividualWorldsHeader"));
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 
-		ModLoader.Config.UI.NestedUIList migrateWorldList = new ModLoader.Config.UI.NestedUIList();
+		migrateWorldList = new ModLoader.Config.UI.NestedUIList();
 		migrateWorldList.Width.Set(-22, 1f);
 		migrateWorldList.Left.Set(0, 0f);
 		migrateWorldList.Top.Set(30, 0);
@@ -47,7 +50,25 @@ partial class UIWorldSelect
 		//DataListElement.Append(scrollbar);
 
 		_migrationPanel.VisibleWhenExpanded.Add(scrollbar);
+	}
 
+	private void ActivateMigrationPanel()
+	{
+		migrateWorldList.Clear();
+		migratableWorldsLoaded = false;
+		_migrationPanel.Collapse();
+	}
+
+	private void _migrationPanel_OnExpanded()
+	{
+		if (migratableWorldsLoaded)
+			return;
+		migratableWorldsLoaded = true;
+		LoadMigratableWorlds();
+	}
+
+	private void LoadMigratableWorlds()
+	{
 		// TODO: Do we need to do extra work for .wld files that have been renamed? Is that valid?
 		// Vanilla and 1.3 paths are defaults, 1.4 TML paths are relative to current savepath.
 		var otherPaths = FileUtilities.GetAlternateSavePathFiles("Worlds");

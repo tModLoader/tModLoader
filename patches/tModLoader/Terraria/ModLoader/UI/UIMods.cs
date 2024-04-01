@@ -308,6 +308,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
+			if (modItem.tMLUpdateRequired != null)
+				continue;
 			modItem.Enable();
 		}
 	}

@@ -116,7 +116,11 @@ public abstract class DamageClass : ModType, ILocalizedModType
 		Type = DamageClassLoader.Add(this);
 	}
 
-	public sealed override void SetupContent() => SetStaticDefaults();
+	public sealed override void SetupContent()
+	{
+		_ = DisplayName;
+		SetStaticDefaults();
+	}
 
 	/// <inheritdoc cref="CountsAsClass"/>
 	public bool CountsAsClass<T>() where T : DamageClass
