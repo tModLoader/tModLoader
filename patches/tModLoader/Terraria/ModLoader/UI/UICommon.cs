@@ -128,6 +128,7 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonDownloadMultipleTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonModInfoTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonModConfigTexture { get; internal set; }
+	public static Asset<Texture2D> ModLocationModPackIcon { get; internal set; }
 	public static Asset<Texture2D> DividerTexture { get; internal set; }
 	public static Asset<Texture2D> InnerPanelTexture { get; internal set; }
 	public static Asset<Texture2D> InfoDisplayPageArrowTexture { get; internal set; }
@@ -156,6 +157,7 @@ public static class UICommon
 		ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple");
 		ButtonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo");
 		ButtonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig");
+		ModLocationModPackIcon = LoadEmbeddedTexture("UI.ModLocationModPackIcon");
 
 		DividerTexture = Main.Assets.Request<Texture2D>("Images/UI/Divider");
 		InnerPanelTexture = Main.Assets.Request<Texture2D>("Images/UI/InnerPanelBackground");

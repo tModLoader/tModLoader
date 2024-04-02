@@ -291,6 +291,12 @@ internal class UIModItem : UIPanel
 			};
 			Append(steamIcon);
 		}
+		else if (_mod.location == ModLocation.Modpack) {
+			var modpackIcon = new UIImage(UICommon.ModLocationModPackIcon) {
+				Left = { Pixels = -22, Percent = 1f }
+			};
+			Append(modpackIcon);
+		}
 
 		if (loadedMod != null) {
 			_loaded = true;
@@ -462,6 +468,8 @@ internal class UIModItem : UIPanel
 		BorderColor = hovered ? new Color(89, 116, 213) : new Color(89, 116, 213) * 0.7f;
 		if (_mod.location == ModLocation.Local)
 			BackgroundColor = hovered ? Color.MediumPurple : Color.MediumPurple * 0.7f;
+		else if (_mod.location == ModLocation.Modpack)
+			BackgroundColor = hovered ? Color.SkyBlue : Color.SkyBlue * 0.7f;
 		else
 			BackgroundColor = hovered ? UICommon.DefaultUIBlueMouseOver : UICommon.DefaultUIBlue;
 	}
