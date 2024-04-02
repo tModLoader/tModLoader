@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -20,7 +22,7 @@ namespace ExampleMod.Common.Players
 		// Here are additional things you might need to implement if you intend to make a custom resource:
 		// - Multiplayer Syncing: The current example doesn't require MP code, but pretty much any additional functionality will require this. ModPlayer.SendClientChanges and CopyClientState will be necessary, as well as SyncPlayer if you allow the user to increase exampleResourceMax.
 		// - Save/Load permanent changes to max resource: You'll need to implement Save/Load to remember increases to your exampleResourceMax cap.
-		// - Resource replenishment item: Use GlobalNPC.OnKill to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource.
+		// - Resource replenishment item: Use GlobalNPC.OnKill to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource. Hmm...
 
 		public override void Initialize() {
 			exampleResourceMax = DefaultExampleResourceMax;
@@ -67,6 +69,28 @@ namespace ExampleMod.Common.Players
 			if (Main.myPlayer == Player.whoAmI && Player.creativeGodMode) {
 				exampleResourceCurrent = exampleResourceMax2;
 			}
+		}
+
+		public static void HandleExampleResourceEffectMessage(BinaryReader reader, int whoAmI) {
+			int player = reader.ReadByte();
+			if (Main.netMode == NetmodeID.Server) {
+				player = whoAmI;
+			}
+
+			Main.player[player].GetModPlayer<ExampleResourcePlayer>().ExampleDodgeEffects();
+
+			if (Main.netMode == NetmodeID.Server) {
+				// If the server receives this message, it sends it to all other clients to sync the effects.
+				SendExampleResourceEffectMessage(player);
+			}
+		}
+
+		public static void SendExampleResourceEffectMessage(int whoAmI) {
+			// This code is called by both the initial 
+			ModPacket packet = ModContent.GetInstance<ExampleMod>().GetPacket();
+			packet.Write((byte)ExampleMod.MessageType.ExampleResourceEffect);
+			packet.Write((byte)whoAmI);
+			packet.Send(ignoreClient: whoAmI);
 		}
 	}
 }

@@ -13,7 +13,8 @@ namespace ExampleMod
 		{
 			ExampleStatIncreasePlayerSync,
 			ExampleTeleportToStatue,
-			ExampleDodge
+			ExampleDodge,
+			ExampleResourceEffect
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -41,6 +42,9 @@ namespace ExampleMod
 					break;
 				case MessageType.ExampleDodge:
 					ExampleDamageModificationPlayer.HandleExampleDodgeMessage(reader, whoAmI);
+					break;
+				case MessageType.ExampleResourceEffect:
+					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
