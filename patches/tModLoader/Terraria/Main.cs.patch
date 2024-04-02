@@ -1434,7 +1434,7 @@
  			return;
  		}
  
-@@ -4976,9 +_,11 @@
+@@ -4976,9 +_,12 @@
  
  		dayRate = num;
  		desiredWorldTilesUpdateRate = num;
@@ -1443,6 +1443,7 @@
  			dayRate = 1;
  			desiredWorldTilesUpdateRate = 1;
 +			desiredWorldEventsUpdateRate = 1;
++			worldEventUpdates = 1;
  		}
  	}
  
