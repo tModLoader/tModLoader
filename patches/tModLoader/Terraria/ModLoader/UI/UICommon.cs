@@ -119,6 +119,7 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonExpandedTexture { get; internal set; }
 	public static Asset<Texture2D> ModBrowserIconsTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonExclamationTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonDepsTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonTranslationModTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderBgTexture { get; internal set; }
@@ -146,6 +147,7 @@ public static class UICommon
 		ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded");
 		ModBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons");
 		ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation");
+		ButtonDepsTexture = LoadEmbeddedTexture("UI.ButtonDeps");
 		ButtonTranslationModTexture = LoadEmbeddedTexture("UI.ButtonTranslationMod");
 		LoaderTexture = LoadEmbeddedTexture("UI.Loader");
 		LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG");
