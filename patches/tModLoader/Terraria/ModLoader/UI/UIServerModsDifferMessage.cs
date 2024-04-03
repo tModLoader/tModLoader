@@ -189,6 +189,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 		Main.menuMode = Interface.serverModsDifferMessageID;
 		Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
 		Main.alreadyGrabbingSunOrMoon = false; // Prevents cursor from being invisible in rare situations because netmode is technically 1 at this menu so it won't reset correctly.
+		Logging.tML.Info("ModsDifferMessage: " + message + "\n" + string.Join("\n", reloadRequiredExplanationEntries.Select(x => $"    {x.localMod?.DisplayNameClean ?? x.mod}: {Utils.CleanChatTags(x.reason).Replace("\n", " ")}")));
 	}
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
