@@ -267,7 +267,7 @@
 +	public static string statusText {
 +		get => _statusText;
 +		set {
-+			Logging.LogStatusChange(_statusText, value);
++			Logging.LogStatusChange(value);
 +			_statusText = value;
 +		}
 +	}
