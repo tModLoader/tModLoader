@@ -313,7 +313,7 @@
  				projectile.ProjectileFixDesperation();
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(27, -1, whoAmI, null, num38);
-@@ -1523,10 +_,29 @@
+@@ -1523,10 +_,33 @@
  			}
  			case 28: {
  				int num190 = reader.ReadInt16();
@@ -327,17 +327,21 @@
 +				var num191 = reader.Read7BitEncodedInt();
 +				NPC.HitInfo hit = default;
 +				if (num191 >= 0) {
++					var sourceDamage = reader.Read7BitEncodedInt();
++					var damageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()];
++					var hitDirection = reader.ReadSByte();
++					var knockBack = reader.ReadSingle();
++					BitsByte flags = reader.ReadByte();
 +					hit = new NPC.HitInfo {
 +						Damage = num191,
-+						SourceDamage = reader.Read7BitEncodedInt(),
-+						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
-+						HitDirection = reader.ReadSByte(),
-+						Knockback = reader.ReadSingle()
++						SourceDamage = sourceDamage,
++						DamageType = damageType,
++						HitDirection = hitDirection,
++						Knockback = knockBack,
++						Crit = flags[0],
++						InstantKill = flags[1],
++						HideCombatText = flags[2],
 +					};
-+					BitsByte flags = reader.ReadByte();
-+					hit.Crit = flags[0];
-+					hit.InstantKill = flags[1];
-+					hit.HideCombatText = flags[2];
 +				}
 +
  				if (Main.netMode == 2) {
