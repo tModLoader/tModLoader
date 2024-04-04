@@ -26,6 +26,21 @@
  		if (tile.nactive() && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type])
  			return false;
  
+@@ -1077,7 +_,13 @@
+ 		bool honeyNearby = b == 2;
+ 		bool shimmerNearby = b == 3;
+ 		int liquidMergeType = 0;
++
++		bool[] liquidNearby = new bool[LiquidLoader.LiquidCount];
++
++		liquidNearby[b] = true;
++
+-		Liquid.GetLiquidMergeTypes(liquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
++		// Liquid.GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
++		Liquid.GetLiquidMergeTypes(b, out liquidMergeTileType, out liquidMergeType, liquidNearby);
+ 		if (liquidMergeTileType != 0) {
+ 			tile.liquid = 0;
+ 			tile.liquidType(0);
 @@ -1284,7 +_,7 @@
  			}
  		}

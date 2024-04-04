@@ -76,6 +76,21 @@ public static class LiquidLoader
 		GetLiquid(type)?.ModifyLight(i, j, ref r, ref g, ref b);
 	}
 
+	public static void PreUpdate(int type, int x, int y)
+	{
+		GetLiquid(type)?.PreUpdate(x, y);
+	}
+
+	public static bool Update(int type, Liquid liquid, int x, int y, Tile left, Tile right, Tile up, Tile down)
+	{
+		return GetLiquid(type)?.Update(liquid, x, y, left, right, up, down) ?? true;
+	}
+
+	public static void Merge(int type, bool[] liquidNearby, ref int liquidMergeTileType, ref int liquidMergeType)
+	{
+		GetLiquid(type)?.Merge(type, liquidNearby, ref liquidMergeTileType, ref liquidMergeType);
+	}
+
 	static LiquidLoader()
 	{
 		liquidProperties = new LiquidProperties[] {

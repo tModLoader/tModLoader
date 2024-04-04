@@ -17,10 +17,12 @@ namespace ExampleMod.Content.Items
 			Item.width = 24;
 			Item.height = 22;
 			Item.maxStack = 9999;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTime = 100;
-			Item.useAnimation = 1;
+			Item.useStyle = 1;
+			Item.useTime = 10;
+			Item.useAnimation = 15;
 			Item.consumable = true;
+			Item.autoReuse = true;
+			Item.useTurn = true;
 		}
 
 		public override bool? UseItem(Player player) {

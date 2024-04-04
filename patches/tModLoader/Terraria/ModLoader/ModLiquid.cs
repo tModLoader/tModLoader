@@ -107,4 +107,20 @@ public abstract class ModLiquid : ModBlockType
 			MapLoader.liquidEntries[Type].Add(entry);
 		}
 	}
+
+
+	public virtual void PreUpdate(int x, int y)
+	{
+		
+	}
+
+	public virtual bool Update(Liquid liquid, int x, int y, Tile left, Tile right, Tile up, Tile down)
+	{
+		return true;
+	}
+
+	public virtual void Merge(int otherLiquid, bool[] liquidNearby, ref int liquidMergeTileType, ref int liquidMergeType)
+	{
+
+	}
 }
