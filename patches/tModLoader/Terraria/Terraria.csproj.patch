@@ -1,14 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -3,6 +_,7 @@
- 	<Import Project="../Configuration.targets" />
- 	<Import Project="../../WorkspaceInfo.targets" />
- 	<Import Project="../../../tModBuildTasks/BuildTasks.targets" />
-+	<Import Project="../../../tModAnalyzers/tModLoader.Analyzers.targets" />
- 
- 	<!-- General -->
- 	<PropertyGroup>
-@@ -11,45 +_,74 @@
+@@ -11,45 +_,66 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -21,7 +13,6 @@
 -		<AssemblyName Condition="$(Configuration.Contains('Debug'))">$(AssemblyName)Debug</AssemblyName>
 -		<AssemblyName Condition="!$(Configuration.Contains('Debug'))">$(AssemblyName)Release</AssemblyName>
  		<OutputName>$(AssemblyName)</OutputName>
-+		<LangVersion>11.0</LangVersion>
  	</PropertyGroup>
  
  	<!-- Build Configuration -->
@@ -33,8 +24,9 @@
  		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
  		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
  		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
- 	</PropertyGroup>
- 
++		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
++	</PropertyGroup>
++
 +	<!-- Versioning -->
 +	<PropertyGroup>
 +		<tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
@@ -45,8 +37,8 @@
 +		<CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +		<BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
 +		<SourceRevisionId>$(tMLVersion)|$(StableVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
-+	</PropertyGroup>
-+
+ 	</PropertyGroup>
+ 
  	<!-- References -->
  	<ItemGroup>
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
@@ -56,14 +48,6 @@
 -			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -		</EmbeddedResource>
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj"
-+                      PrivateAssets="all"
-+                      ReferenceOutputAssembly="false"
-+                      OutputItemType="Analyzer" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj"
-+                      PrivateAssets="all"
-+                      ReferenceOutputAssembly="false"
-+                      OutputItemType="Analyzer" />
  
  		<Reference Include="CsvHelper" />
 -		<Reference Include="Ionic.Zip.CF" />

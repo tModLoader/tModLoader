@@ -5491,6 +5491,23 @@
  		}
  
  		if (newItem.CanFillEmptyAmmoSlot()) {
+@@ -30325,6 +_,16 @@
+ 		return newItem;
+ 	}
+ 
++	/// <summary>
++	/// Places the <paramref name="newItem"/> directly into this player's inventory. The <paramref name="settings"/> dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <see cref="GetItemSettings"/> for this parameter to match vanilla behavior. The <paramref name="plr"/> parameter should always be set to the whoAmI of this player.
++	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
++	/// <para/> The return value is an Item instance containing the overflow. If the full stack of <paramref name="newItem"/> is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <paramref name="newItem"/> fit in the inventory, the return value will be the Item that didn't fit. If the returned <see cref="Item"/> isn't <see cref="Item.IsAir"/>, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <paramref name="newItem"/> came from.
++	/// <para/> Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.
++	/// </summary>
++	/// <param name="plr"></param>
++	/// <param name="newItem"></param>
++	/// <param name="settings"></param>
++	/// <returns></returns>
+ 	public Item GetItem(int plr, Item newItem, GetItemSettings settings)
+ 	{
+ 		bool isACoin = newItem.IsACoin;
 @@ -30416,11 +_,16 @@
  	private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
