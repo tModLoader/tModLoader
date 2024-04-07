@@ -1,6 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,45 +_,66 @@
+@@ -3,6 +_,7 @@
+ 	<Import Project="../Configuration.targets" />
+ 	<Import Project="../../WorkspaceInfo.targets" />
+ 	<Import Project="../../../tModBuildTasks/BuildTasks.targets" />
++	<Import Project="../../../tModAnalyzers/tModLoader.Analyzers.targets" />
+ 
+ 	<!-- General -->
+ 	<PropertyGroup>
+@@ -11,45 +_,75 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -13,6 +21,7 @@
 -		<AssemblyName Condition="$(Configuration.Contains('Debug'))">$(AssemblyName)Debug</AssemblyName>
 -		<AssemblyName Condition="!$(Configuration.Contains('Debug'))">$(AssemblyName)Release</AssemblyName>
  		<OutputName>$(AssemblyName)</OutputName>
++		<LangVersion>11.0</LangVersion>
  	</PropertyGroup>
  
  	<!-- Build Configuration -->
@@ -48,6 +57,14 @@
 -			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -		</EmbeddedResource>
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj"
++			PrivateAssets="all"
++			ReferenceOutputAssembly="false"
++			OutputItemType="Analyzer" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj"
++			PrivateAssets="all"
++			ReferenceOutputAssembly="false"
++			OutputItemType="Analyzer" />
  
  		<Reference Include="CsvHelper" />
 -		<Reference Include="Ionic.Zip.CF" />
