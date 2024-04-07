@@ -9,7 +9,7 @@ env:
     IsRelease: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
     IsVersioned: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable') || endsWith(github.ref, '1.4.4'))  }}
     RunDiscordHook: true
-    ForcedDotnetSdkVersion: 8.0.102
+    ForcedDotnetSdkVersion: 8.0.203
 
 # Controls when the action will run. 
 on:
