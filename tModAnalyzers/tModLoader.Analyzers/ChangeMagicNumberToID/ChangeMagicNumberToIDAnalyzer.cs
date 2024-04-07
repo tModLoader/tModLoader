@@ -42,7 +42,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			if (!IsValidOperationType(left, out var target))
 				return;
 
-			if (!HasAssociatedIdType(ctx.Compilation, target, out string idClassMetadataName, out var search))
+			if (!HasAssociatedIdType(target, out string idClassMetadataName, out var search))
 				return;
 
 			TryReport(ctx.ReportDiagnostic, right, idClassMetadataName, search);
@@ -73,7 +73,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 				return;
 			}
 
-			if (!HasAssociatedIdType(ctx.Compilation, memberSymbol, out string idClassMetadataName, out var search))
+			if (!HasAssociatedIdType(memberSymbol, out string idClassMetadataName, out var search))
 				return;
 
 			TryReport(ctx.ReportDiagnostic, constantOperation, idClassMetadataName, search);
@@ -98,7 +98,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			if (!IsValidOperationType(op.Value, out var target))
 				return;
 
-			if (!HasAssociatedIdType(ctx.Compilation, target, out string idClassMetadataName, out var search))
+			if (!HasAssociatedIdType(target, out string idClassMetadataName, out var search))
 				return;
 
 			foreach (var caseOperation in op.Cases) {
@@ -137,7 +137,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 				if (!arg.Value.ConstantValue.HasValue)
 					continue;
 
-				if (!HasAssociatedIdType(ctx.Compilation, arg.Parameter, out string idClassMetadataName, out var search))
+				if (!HasAssociatedIdType(arg.Parameter, out string idClassMetadataName, out var search))
 					continue;
 
 				TryReport(ctx.ReportDiagnostic, arg.Value, idClassMetadataName, search);
@@ -193,7 +193,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		return target != null;
 	}
 
-	private static bool HasAssociatedIdType(Compilation compilation, ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
+	private static bool HasAssociatedIdType(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
 	{
 		string containigTypeMetadataName = ToMetadataName(symbol.ContainingType.OriginalDefinition);
 		BuiltinData.Key formattedName;
@@ -212,7 +212,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		}
 
 		return LookGeneric(formattedName, out idClassMetadataName, out search)
-			|| LookIntoAttributes(compilation, symbol, out idClassMetadataName, out search);
+			|| LookIntoAttributes(symbol, out idClassMetadataName, out search);
 
 		static bool LookGeneric(BuiltinData.Key formattedName, out string idClassMetadataName, out IdDictionary search)
 		{
@@ -228,16 +228,15 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			return false;
 		}
 
-		static bool LookIntoAttributes(Compilation compilation, ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
+		static bool LookIntoAttributes(ISymbol symbol, out string idClassMetadataName, out IdDictionary search)
 		{
 			idClassMetadataName = null;
 			search = null;
 
 			var attributes = symbol is IMethodSymbol methodSymbol ? methodSymbol.GetReturnTypeAttributes() : symbol.GetAttributes();
-			var attributeSymbol = compilation.GetTypeByMetadataName(IDTypeAttribute1MetadataName);
 
 			foreach (var attributeData in attributes) {
-				if (!SymbolEqualityComparer.Default.Equals(attributeData.AttributeClass.OriginalDefinition, attributeSymbol))
+				if (!WellKnownTypes.IsIdTypeAttribute(attributeData.AttributeClass.OriginalDefinition))
 					continue;
 
 				var idTypeSymbol = attributeData.AttributeClass.TypeArguments[0];
