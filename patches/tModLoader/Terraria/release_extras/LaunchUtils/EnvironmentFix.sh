@@ -44,8 +44,9 @@ elif [[ "$_uname" == *"_NT"* ]]; then
 	echo "Windows Version $WINDOWS_MAJOR.$WINDOWS_MINOR" 2>&1 | tee -a "$LogFile"
 	if [[ $WINDOWS_MAJOR -ge 10 ]]; then 
 		./QuickEditDisable.exe 2>&1 | tee -a "$LogFile"
-	else
-		# Allows Dotnet8 to run on Windows 7 (6.1) to 8.1 (6.3)
+	elif [[ $WINDOWS_MAJOR -ge 6 ]]
+		# Allows Dotnet8 to run on Windows 7 (6.1) to 8.1 (6.3). Configures it for all applications
+		run_script ./Windows7Dotnet8Fix.bat
 		export DOTNET_EnableWriteXorExecute=0
 	fi
 
