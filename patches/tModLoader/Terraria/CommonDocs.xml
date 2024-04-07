@@ -23,4 +23,8 @@
 		<para/> The Tile coordinate returned will be the coordinate of the Tile that would contain the World Coordinate. Be sure to plan out which world coordinate to use when dealing with entities, sometimes the logic might be better suited to use the Center of the entity vs the Position.
 		<para/> <include file = 'CommonDocs.xml' path='Common/CoordinateConversionNote' /> 
 	</ToTileCoordinates>
+	<LightingGetColor>
+		<para/> Lighting is tracked at Tile Coordinate granularity (<see href="https://github.com/tModLoader/tModLoader/wiki/Coordinates">Coordinates wiki page</see>). Typically the center of an entity, converted to tile coordinates, is used to query the lighting color at the entity's location. That color is then used to draw the entity.
+		<para/> Lighting values in-between tile coordinates can be interpolated using <see cref="GetSubLight(Vector2)"/>, but usually the lighting values at the tile coordinates closest to the center of an entity are sufficient. There are many more GetColorX methods for more advanced situations, if needed. If drawing a really large sprite, one might consider splitting up the drawing to allow sections of the sprite to be drawn at different light values.
+	</LightingGetColor>
 </Common>
