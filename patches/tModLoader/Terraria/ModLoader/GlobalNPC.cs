@@ -645,10 +645,11 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to add shops, similar to adding recipes for items. <br/>
-	/// Make a new <see cref="NPCShop"/>, add items to it, and call <see cref="AbstractNPCShop.Register"/>
+	/// Allows you to add shops, similar to adding recipes for items.<br/>
+	/// Make a new <see cref="NPCShop"/>, add items to it, and call <see cref="AbstractNPCShop.Register"/><br/>
+	/// Be aware that this hook is only called once per NPC during loading.
 	/// </summary>
-	public virtual void AddShops()
+	public virtual void AddShops(int type)
 	{
 	}
 
