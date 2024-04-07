@@ -25,7 +25,7 @@ internal class tModPorterLaunch
 				var buildHostPath = psi.ArgumentList.First(s => s.EndsWith("BuildHost.dll"));
 				int argIndex = psi.ArgumentList.IndexOf(buildHostPath);
 				//var buildHostPath = Path.Combine(Path.GetDirectoryName(typeof(MSBuildWorkspace).Assembly.Location), "Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll");
-				buildHostPath = Path.Combine(Path.GetDirectoryName(typeof(MonoLaunch).Assembly.Location), "BuildHost-netcore", "Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll");
+				buildHostPath = Path.Combine(Path.GetDirectoryName(typeof(MSBuildWorkspace).Assembly.Location), "..", "..", "BuildHost-netcore", "Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll");
 				psi.ArgumentList.RemoveAt(argIndex);
 				psi.ArgumentList.Insert(argIndex, buildHostPath);
 				return psi;

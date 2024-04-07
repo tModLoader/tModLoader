@@ -87,6 +87,17 @@
  	</ItemGroup>
  
  	<!-- Import tasks -->
+@@ -73,8 +_,8 @@
+ 	<!-- Organize output copies of Project, NuGet, and directly referenced libraries under a single tidy folder. -->
+ 	<Target Name="OrganizeAllReferences" AfterTargets="ResolveAssemblyReferences" BeforeTargets="GenerateBuildDependencyFile;CopyFilesToOutputDirectory">
+ 		<!-- Run the task. -->
+-		<OrganizeReferenceDestinations BaseDirectory="$(LibrariesDirectory)" ReferenceCopyLocalPaths="@(ReferenceCopyLocalPaths)">
++		<OrganizeReferenceDestinations BaseDirectory="$(LibrariesDirectory)" Items="@(ReferenceCopyLocalPaths)">
+-			<Output TaskParameter="ReferenceCopyLocalPaths" ItemName="ReferenceCopyLocalPaths_New" />
++			<Output TaskParameter="Items" ItemName="ReferenceCopyLocalPaths_New" />
+ 		</OrganizeReferenceDestinations>
+ 
+ 		<!-- This has to be done because the Output element above can only append items, and is unable to replace them. -->
 @@ -104,9 +_,13 @@
  	<!-- Installs the build's output into the relevant game folder. -->
  	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">

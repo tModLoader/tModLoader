@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="../../tModBuildTasks/BuildTasks.targets" />
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
@@ -24,4 +27,27 @@
 		</Content>
 		<Content Remove="@(Content->HasMetadata('Remove'))" />
 	</ItemGroup>
+
+	<!-- Import tasks -->
+	<UsingTask TaskName="OrganizeReferenceDestinations" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
+
+	<!-- Organize output copies of Project, NuGet, and directly referenced libraries under a single tidy folder. -->
+	<Target Name="OrganizeAllReferences" AfterTargets="ResolveAssemblyReferences" BeforeTargets="GenerateBuildDependencyFile;CopyFilesToOutputDirectory">
+		<!-- Run the task. -->
+		<OrganizeReferenceDestinations BaseDirectory="Libraries" Items="@(Content)">
+			<Output TaskParameter="Items" ItemName="Content_New" />
+		</OrganizeReferenceDestinations>
+		<OrganizeReferenceDestinations BaseDirectory="Libraries" Items="@(ReferenceCopyLocalPaths)">
+			<Output TaskParameter="Items" ItemName="ReferenceCopyLocalPaths_New" />
+		</OrganizeReferenceDestinations>
+
+		<!-- This has to be done because the Output element above can only append items, and is unable to replace them. -->
+		<ItemGroup>
+			<Content Remove="@(Content)" />
+			<Content Include="@(Content_New)" />
+			<ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" />
+			<ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths_New)" />
+		</ItemGroup>
+	</Target>
+
 </Project>
