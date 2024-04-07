@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Projectiles
 	// NPC.immune is decremented towards 0 every update
 	// Melee items set NPC.immune to player.itemAnimation, which starts at item.useAnimation and decrements towards 0
 	// Projectiles, however, provide mechanisms for custom immunity.
-	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the npc's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
+	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the NPC's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
 	//	Ex: Wooden Arrow.
 	// 2. No code and penetrate > 1, penetrate == -1, or (appliesImmunityTimeOnSingleHits && penetrate == 1): npc.immune[owner] will be set to 10.
 	// 	The NPC will be hit if not immune and will become immune to all damage for 10 ticks
@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Projectiles
 	// 3. Override OnHitNPC: If not immune, when it hits it manually set an immune other than 10
 	// 	Ex: Arkhalis: Sets it to 5
 	// 	Ex: Sharknado Minion: Sets to 20
-	// 	Video: https://gfycat.com/DisloyalImprobableHoatzin Notice how Sharknado minion hits prevent Arhalis hits for a brief moment.
+	// 	Video: https://media-1.discordapp.net/attachments/242228770855976960/1150275205017636995/Projectile_Immunity_Sharknado_Arkhalis_Example.mp4 Notice how Sharknado minion hits prevent Arkhalis hits for a brief moment.
 	// 4. Projectile.usesIDStaticNPCImmunity and Projectile.idStaticNPCHitCooldown: Specifies that a type of projectile has a shared immunity timer for each npc.
 	// 	Use this if you want other projectiles a chance to damage, but don't want the same projectile type to hit an npc rapidly.
 	// 	Ex: Ghastly Glaive is the only one who uses this.
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.width = 12; // The width of projectile hitbox
 			Projectile.height = 12; // The height of projectile hitbox
 
-			// Ccopy the ai of any given projectile using AIType, since we want
+			// Copy the ai of any given projectile using AIType, since we want
 			// the projectile to essentially behave the same way as the vanilla projectile.
 			AIType = ProjectileID.Bullet;
 

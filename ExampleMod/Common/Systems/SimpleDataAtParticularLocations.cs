@@ -65,7 +65,7 @@ namespace ExampleMod.Common.Systems
 
 			int xCenter = Main.maxTilesX / 2;
 
-			for (int y = 0; y < Main.maxTilesY ; y++) {
+			for (int y = 0; y < Main.maxTilesY; y++) {
 				builder.Add(
 					xCenter, y, // The locations
 					(byte)(y % 255) // The data we want to store at the location
@@ -80,10 +80,8 @@ namespace ExampleMod.Common.Systems
 			if (myMap.Length == 0) {
 				return;
 			}
-			foreach (var player in Main.player) {
-				if (player.active) {
-					UpdateFromNearestInMap(player);
-				}
+			foreach (var player in Main.ActivePlayers) {
+				UpdateFromNearestInMap(player);
 			}
 		}
 

@@ -31,6 +31,10 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.consumable = true;
 		}
 
+		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+			itemGroup = ContentSamples.CreativeHelper.ItemGroup.BossSpawners;
+		}
+
 		public override bool CanUseItem(Player player) {
 			// If you decide to use the below UseItem code, you have to include !NPC.AnyNPCs(id), as this is also the check the server does when receiving MessageID.SpawnBoss.
 			// If you want more constraints for the summon item, combine them as boolean expressions:
@@ -41,7 +45,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public override bool? UseItem(Player player) {
 			if (player.whoAmI == Main.myPlayer) {
 				// If the player using the item is the client
-				// (explicitely excluded serverside here)
+				// (explicitly excluded serverside here)
 				SoundEngine.PlaySound(SoundID.Roar, player.position);
 
 				int type = ModContent.NPCType<MinionBossBody>();

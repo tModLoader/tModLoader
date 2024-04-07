@@ -18,7 +18,7 @@ internal class UILoadMods : UIProgress
 
 		_cts = new CancellationTokenSource();
 		OnCancel += () => {
-			SetLoadStage("Loading Cancelled");
+			SetLoadStage("tModLoader.LoadingCancelled");
 			_cts.Cancel();
 		};
 		gotoMenu = 888; // ModLoader will redirect to the mods menu if there are no errors during cancel
@@ -38,14 +38,16 @@ internal class UILoadMods : UIProgress
 		this.modCount = modCount;
 		if (modCount < 0) SetProgressText(Language.GetTextValue(stageText));
 		Progress = 0;
-		SubProgressText = "";
 	}
 
 	private void SetProgressText(string text, string logText = null)
 	{
-		Logging.tML.Info(logText ?? text);
-		if (Main.dedServ) Console.WriteLine(text);
+		string cleanText = Utils.CleanChatTags(text); // text might have chat tags, most notably mod display names.
+		Logging.tML.Info(logText != null ? Utils.CleanChatTags(logText) : cleanText);
+		if (Main.dedServ) Console.WriteLine(cleanText);
 		else DisplayText = text;
+
+		SubProgressText = "";
 	}
 
 	public void SetCurrentMod(int i, string modName, string displayName, Version version)

@@ -6,6 +6,29 @@ partial class ItemID
 {
 	partial class Sets
 	{
+		/// <summary>Used in <see cref="SandgunAmmoProjectileData"/>.</summary>
+		public class SandgunAmmoInfo
+		{
+			public SandgunAmmoInfo(int ProjectileType, int BonusDamage = 0)
+			{
+				this.ProjectileType = ProjectileType;
+				this.BonusDamage = BonusDamage;
+			}
+
+			public int ProjectileType { get; set; }
+			public int BonusDamage { get; set; }
+		}
+		/// <summary>
+		/// The projectile type and associated bonus damage for the specified sandgun ammo item (an item with <c>Item.ammo = AmmoID.Sand;</c>).
+		/// <para/> If undefined, the projectile will default to 42 (<see cref = "ProjectileID.SandBallGun" />), as this is the normal sandgun sand projectile. The bonus damage will default to 0.
+		/// <para/> The projectile shouldn't be your falling sand projectile - you need to create a second projectile for the sandgun.
+		/// </summary>
+		public static SandgunAmmoInfo[] SandgunAmmoProjectileData = Factory.CreateCustomSet<SandgunAmmoInfo>(null,
+			EbonsandBlock, new SandgunAmmoInfo(ProjectileID.EbonsandBallGun, 5),
+			PearlsandBlock, new SandgunAmmoInfo(ProjectileID.PearlSandBallGun, 5),
+			CrimsandBlock, new SandgunAmmoInfo(ProjectileID.CrimsandBallGun, 5)
+		);
+
 		/// <summary>
 		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
 		/// <br/> Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player.
@@ -120,5 +143,10 @@ partial class ItemID
 			{ GoldOre, (3, 13) },
 			{ PlatinumOre, (3, 13) },
 		};
+
+		/// <summary>
+		/// Set to <see langword="true"/> to make this Item set its mana cost to 0 whenever <see cref="Player.spaceGun"/> is set to <see langword="true"/>.
+		/// </summary>
+		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
 	}
 }

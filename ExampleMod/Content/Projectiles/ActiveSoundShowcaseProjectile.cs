@@ -115,7 +115,7 @@ namespace ExampleMod.Content.Projectiles
 					}
 
 					// SlotId can be stored as a float, such as in Projectile.localAI entries. This can be an alternative to making a SlotId field in the class.
-					// Don't use ai slots for SlotId, since those will sync and sounds and sound slots are completelly local and are not synced
+					// Don't use ai slots for SlotId, since those will sync and sounds and sound slots are completely local and are not synced
 					// SlotId soundSlot = SlotId.FromFloat(Projectile.localAI[0]);
 					// Projectile.localAI[0] = soundSlot.ToFloat();
 
@@ -150,7 +150,7 @@ namespace ExampleMod.Content.Projectiles
 			soundInstance.Pitch = (Projectile.maxPenetrate - Projectile.penetrate) * 0.15f;
 
 			// Muffle the sound if the projectile is wet
-			if(Projectile.wet) {
+			if (Projectile.wet) {
 				soundInstance.Pitch -= 0.4f;
 				soundInstance.Volume = MathHelper.Clamp(soundInstance.Style.Volume - 0.4f, 0f, 1f);
 			}
@@ -158,7 +158,7 @@ namespace ExampleMod.Content.Projectiles
 			return tracker.IsActiveAndInGame();
 		}
 
-		public override void Kill(int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			// For long sounds, the sound can be stopped when the projectile is killed.
 			// This approach is not foolproof, so it should NOT be used, especially for looped sounds.
 			// See SoundUpdateCallbackApproach for the better approach. This example, however, does show how an ActiveSound can be modified from another hook other than where the sound was played.

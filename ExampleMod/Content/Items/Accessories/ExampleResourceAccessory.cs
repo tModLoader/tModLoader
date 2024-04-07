@@ -1,8 +1,8 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.Players;
+using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using ExampleMod.Common.Players;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {

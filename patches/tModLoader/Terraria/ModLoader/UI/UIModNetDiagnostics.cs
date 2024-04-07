@@ -122,7 +122,13 @@ public class UIModNetDiagnostics : INetDiagnosticsUI
 			int lineCountInCol = i == numCols ? 1 + (count - 1) % maxLinesPerCol : maxLinesPerCol;
 			int height = lineHeight * (lineCountInCol + 2);
 			int heightBuf = height + 10;
-			Utils.DrawInvBG(spriteBatch, x + widthBuf * i, y, width, heightBuf);
+			if (i == 0) {
+				Utils.DrawInvBG(spriteBatch, x + widthBuf * i, y - 20, width, heightBuf + 20);
+				spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F8), new Vector2(200, 96), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+			}
+			else {
+				Utils.DrawInvBG(spriteBatch, x + widthBuf * i, y, width, heightBuf);
+			}
 
 			Vector2 modPos = new Vector2(xBuf + widthBuf * i, yBuf);
 			Vector2 headerPos = modPos + new Vector2(FirstColumnWidth, 0);

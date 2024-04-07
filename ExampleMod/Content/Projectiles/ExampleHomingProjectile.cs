@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Dusts;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -42,7 +41,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// If found, change the velocity of the projectile and turn it in the direction of the target
 			// Use the SafeNormalize extension method to avoid NaNs returned by Vector2.Normalize when the vector is zero
-			Projectile.velocity =  (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
+			Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * projSpeed;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
 
@@ -54,9 +53,8 @@ namespace ExampleMod.Content.Projectiles
 			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-			// Loop through all NPCs(max always 200)
-			for (int k = 0; k < Main.maxNPCs; k++) {
-				NPC target = Main.npc[k];
+			// Loop through all NPCs
+			foreach (var target in Main.ActiveNPCs) {
 				// Check if NPC able to be targeted. It means that NPC is
 				// 1. active (alive)
 				// 2. chaseable (e.g. not a cultist archer)

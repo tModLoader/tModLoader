@@ -16,8 +16,8 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		private const int FadeOutTicks = 30;
 		private const float Range = 500f;
 
-		private static readonly float RangeHypoteneus = (float)(Math.Sqrt(2.0) * Range); // This comes from the formula for calculating the diagonal of a square (a * √2)
-		private static readonly float RangeHypoteneusSquared = RangeHypoteneus * RangeHypoteneus;
+		private static readonly float RangeHypotenuse = (float)(Math.Sqrt(2.0) * Range); // This comes from the formula for calculating the diagonal of a square (a * √2)
+		private static readonly float RangeHypotenuseSquared = RangeHypotenuse * RangeHypotenuse;
 
 		// The following 2 lines of code are ref properties (learn about them in google) to the Projectile.ai array entries, which will help us make our code way more readable.
 		// We're using the ai array because it's automatically synchronized by the base game in multiplayer, which saves us from writing a lot of boilerplate code.
@@ -81,16 +81,14 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			}
 
 			// Enumerate
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				var npc = Main.npc[i];
-
-				// Ignore this npc if it's not active, or if it's friendly.
-				if (!npc.active || npc.friendly) {
+			foreach (var npc in Main.ActiveNPCs) {
+				// Ignore this npc if it's friendly.
+				if (npc.friendly) {
 					continue;
 				}
 
 				// Ignore this npc if it's too far away. Note that we're using squared values for our checks, to avoid square root calculations as a small, but effective optimization.
-				if (player.DistanceSQ(npc.Center) >= RangeHypoteneusSquared) {
+				if (player.DistanceSQ(npc.Center) >= RangeHypotenuseSquared) {
 					continue;
 				}
 
@@ -135,7 +133,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 				Projectile.velocity = 2f * Vector2.Normalize(playerCenter - Projectile.Center);
 			}
 
-			if (Vector2.Distance(playerCenter, Projectile.Center) > RangeHypoteneus) {
+			if (Vector2.Distance(playerCenter, Projectile.Center) > RangeHypotenuse) {
 				Projectile.Center = playerCenter + Main.rand.NextVector2Circular(Range, Range);
 				AIFadeProgress = 0f;
 

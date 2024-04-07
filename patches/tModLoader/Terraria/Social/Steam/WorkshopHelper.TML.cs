@@ -185,7 +185,7 @@ public partial class WorkshopHelper
 		var values = new NameValueCollection
 		{
 			{ "displayname", bp.displayName },
-			{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
+			{ "displaynameclean", Utils.CleanChatTags(bp.displayName) },
 			{ "name", modFile.Name },
 			{ "version", $"{bp.version}" },
 			{ "author", bp.author },
@@ -209,15 +209,35 @@ public partial class WorkshopHelper
 			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
 		}
 		else {
-			SocialAPI.LoadSteam();
+			try {
+				// Command Line / Server Publishing.
+				SocialAPI.Workshop = new WorkshopSocialModule();
+				SocialAPI.Workshop.Initialize();
 
-			var publishSetttings = new WorkshopItemPublishSettings {
-				Publicity = WorkshopItemPublicSettingId.Public,
-				UsedTags = Array.Empty<WorkshopTagOption>(),
-				PreviewImagePath = iconPath
-			};
-			SteamedWraps.SteamClient = true;
-			SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
+				if (!SteamedWraps.SteamClient)
+					return;
+
+				Thread.Sleep(1500); // Solxan: SteamAPI requires 1 or so seconds to initialize
+
+				var usedTags = Array.Empty<WorkshopTagOption>();
+				var publicity = WorkshopItemPublicSettingId.Public;
+
+				if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
+					usedTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToArray();
+					publicity = info.publicity;
+				}
+
+				var publishSetttings = new WorkshopItemPublishSettings {
+					Publicity = publicity,
+					UsedTags = usedTags,
+					PreviewImagePath = iconPath
+				};
+				
+				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
+			}
+			finally {
+				SteamedWraps.OnGameExitCleanup();
+			}
 		}
 	}
 

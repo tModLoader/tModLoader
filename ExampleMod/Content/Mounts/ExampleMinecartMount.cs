@@ -1,16 +1,15 @@
+using ExampleMod.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Buffs;
 
 namespace ExampleMod.Content.Mounts
 {
 	public class ExampleMinecartMount : ModMount
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			MountID.Sets.Cart[Type] = true;
 			MountID.Sets.FacePlayersVelocity[Type] = true;
 
@@ -30,11 +29,9 @@ namespace ExampleMod.Content.Mounts
 			// Important to note is that runSpeed, dashSpeed, and acceleration will get overridden when the player has used the Minecart Upgrade Kit. Keep that in mind when changing the values yourself
 		}
 
-		public override void UpdateEffects(Player player)
-		{
+		public override void UpdateEffects(Player player) {
 			// Visuals copied from Diamond Minecart
-			if (Main.rand.NextBool(10))
-			{
+			if (Main.rand.NextBool(10)) {
 				Vector2 randomOffset = Main.rand.NextVector2Square(-1f, 1f) * new Vector2(22f, 10f);
 				Vector2 directionOffset = new Vector2(0f, 10f) * player.Directions;
 				Vector2 position = player.Center + directionOffset + randomOffset;

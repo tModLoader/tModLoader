@@ -138,7 +138,28 @@
  		if (!flag)
  			return;
  
-@@ -994,7 +_,7 @@
+@@ -974,7 +_,13 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the tile is visible.
++	/// <para/>Tiles painted with Echo Coating as well as the Echo Platform, Echo Block, and Ghostly Stinkbug Blocker tiles will all be invisible unless the player has Echo Sight (Nearby active Echo Chamber tile or wearing Spectre Goggles)
++	/// </summary>
++	/// <param name="tile"></param>
++	/// <returns></returns>
+-	private bool IsVisible(Tile tile)
++	public static bool IsVisible(Tile tile)
+ 	{
+ 		bool flag = tile.invisibleBlock();
+ 		switch (tile.type) {
+@@ -989,12 +_,12 @@
+ 		}
+ 
+ 		if (flag)
+-			return _shouldShowInvisibleBlocks;
++			return Main.instance.TilesRenderer._shouldShowInvisibleBlocks;
+ 
  		return true;
  	}
  
@@ -163,7 +184,7 @@
 +					tileStyle = sandType + 1;
 +					break;
 +				}
-+					
++
 +				if (tile.frameX == 204 || tile.frameX == 202) {
 +					var asset = PlantLoader.GetCactusFruitTexture(sandType);
 +					if (asset != null)
@@ -229,12 +250,13 @@
  		return num;
  	}
  
-@@ -2877,7 +_,7 @@
+@@ -2877,7 +_,8 @@
  		vertices.TopRightColor *= num7;
  		bool flag7 = false;
  		if (flag6) {
++			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
 -			for (int i = 0; i < 15; i++) {
-+			for (int i = 0; i < LoaderManager.Get<WaterStylesLoader>().TotalCount; i++) {
++			for (int i = 0; i < totalCount; i++) {
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
@@ -322,6 +344,31 @@
  	}
  
  	private bool IsWindBlocked(int x, int y)
+@@ -4868,21 +_,21 @@
+ 		return false;
+ 	}
+ 
+-	private int GetWaterAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetWaterAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
+ 		return num / 2 * (num2 / 3) % Main.cageFrames;
+ 	}
+ 
+-	private int GetSmallAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetSmallAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
+ 		return num / 3 * (num2 / 3) % Main.cageFrames;
+ 	}
+ 
+-	private int GetBigAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
++	public static int GetBigAnimalCageFrame(int x, int y, int tileFrameX, int tileFrameY)
+ 	{
+ 		int num = x - tileFrameX / 18;
+ 		int num2 = y - tileFrameY / 18;
 @@ -4922,18 +_,29 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
@@ -502,7 +549,7 @@
 +
  			texture2D = TextureAssets.TreeTop[treeTextureIndex].Value;
 +		}
-+			
++
  
  		return texture2D;
  	}

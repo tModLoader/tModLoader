@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoMod.Core.Platforms;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO;
@@ -87,22 +90,13 @@ internal static class PlayerIO
 		LoadHair(player, tag.GetString("hair"));
 	}
 
-	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
+	internal static byte[] ReadDataBytes(string path, bool isCloudSave)
 	{
 		path = Path.ChangeExtension(path, ".tplr");
-		tag = new TagCompound();
-
 		if (!FileUtilities.Exists(path, isCloudSave))
-			return false;
+			return null;
 
-		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
-
-		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
-		}
-
-		tag = TagIO.FromStream(buf.ToMemoryStream());
-		return true;
+		return FileUtilities.ReadAllBytes(path, isCloudSave);
 	}
 
 	public static List<TagCompound> SaveInventory(Item[] inv)
@@ -218,7 +212,23 @@ internal static class PlayerIO
 		var saveData = new TagCompound();
 
 		foreach (var modPlayer in player.modPlayers) {
-			modPlayer.SaveData(saveData);
+			try {
+				modPlayer.SaveData(saveData);
+			}
+			catch (Exception e) {
+				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
+				var message = NetworkText.FromKey("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name, "\n\n" + e.ToString());
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: false);
+
+				list.Add(new TagCompound {
+					["mod"] = modPlayer.Mod.Name,
+					["name"] = modPlayer.Name,
+					["error"] = e.ToString()
+				});
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 
 			if (saveData.Count == 0)
 				continue;
@@ -239,6 +249,11 @@ internal static class PlayerIO
 		foreach (var tag in list) {
 			string modName = tag.GetString("mod");
 			string modPlayerName = tag.GetString("name");
+
+			if (tag.TryGet<string>("error", out string errorMessage)) {
+				player.ModSaveErrors[$"{modName}/{modPlayerName}.SaveData"] = errorMessage;
+				continue;
+			}
 
 			if (ModContent.TryFind<ModPlayer>(modName, modPlayerName, out var modPlayerBase)) {
 				var modPlayer = player.GetModPlayer(modPlayerBase);
@@ -388,7 +403,7 @@ internal static class PlayerIO
 
 	internal static void LoadUsedModPack(Player player, string modpack)
 	{
-		player.modPack = modpack;
+		player.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null 
 	}
 
 	internal static string SaveUsedModPack(Player player)

@@ -16,6 +16,36 @@ partial class TileID
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
 
+		/// <summary>Used in <see cref="FallingBlockProjectile"/>.</summary>
+		public class FallingBlockProjectileInfo
+		{
+			public FallingBlockProjectileInfo(int FallingProjectileType, int FallingProjectileDamage = 10)
+			{
+				this.FallingProjectileType = FallingProjectileType;
+				this.FallingProjectileDamage = FallingProjectileDamage;
+			}
+
+			public int FallingProjectileType { get; set; }
+			public int FallingProjectileDamage { get; set; }
+		}
+		/// <summary>
+		/// Maps tile type for <see cref="Falling"/> tiles to their corresponding falling block projectile and associated falling projectile damage. Falling coins use 0 damage while all other tiles use 10 damage.
+		/// </summary>
+		public static FallingBlockProjectileInfo[] FallingBlockProjectile = Factory.CreateCustomSet<FallingBlockProjectileInfo>(null,
+			Sand, new FallingBlockProjectileInfo(ProjectileID.SandBallFalling),
+			Ebonsand, new FallingBlockProjectileInfo(ProjectileID.EbonsandBallFalling),
+			TileID.Mud, new FallingBlockProjectileInfo(ProjectileID.MudBall),
+			Pearlsand, new FallingBlockProjectileInfo(ProjectileID.PearlSandBallFalling),
+			Silt, new FallingBlockProjectileInfo(ProjectileID.SiltBall),
+			Slush, new FallingBlockProjectileInfo(ProjectileID.SlushBall),
+			Crimsand, new FallingBlockProjectileInfo(ProjectileID.CrimsandBallFalling),
+			CopperCoinPile, new FallingBlockProjectileInfo(ProjectileID.CopperCoinsFalling, 0),
+			SilverCoinPile, new FallingBlockProjectileInfo(ProjectileID.SilverCoinsFalling, 0),
+			GoldCoinPile, new FallingBlockProjectileInfo(ProjectileID.GoldCoinsFalling, 0),
+			PlatinumCoinPile, new FallingBlockProjectileInfo(ProjectileID.PlatinumCoinsFalling, 0),
+			ShellPile, new FallingBlockProjectileInfo(ProjectileID.ShellPileFalling)
+		);
+
 		/// <summary>
 		/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
 		/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
@@ -81,7 +111,7 @@ partial class TileID
 		};
 
 		/// <summary>
-		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparant tiles.
+		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
 		/// </summary>
 		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
 
@@ -90,6 +120,13 @@ partial class TileID
 		/// The value a tile forces to be set for <see cref="BlockMergesWithMergeAllBlock"/> regardless of default conditions (see its documentation). null by default.
 		/// </summary>
 		public static bool?[] BlockMergesWithMergeAllBlockOverride = Factory.CreateCustomSet<bool?>(null, 10, false, 387, false, 541, false);
+
+		// Values taken from Player.PlaceThing_Tiles_BlockPlacementForAssortedThings()
+		/// <summary>
+		/// Allows tiles to be placed next to any tile or wall. (Tiles normally need a <see cref="Main.tileSolid"/> tile, <see cref="Rope"/> tile, <see cref="IsBeam"/> tile, or a wall adjacent to the target position to be placeable.)
+		/// <br>Used by: Cobweb, Coin Piles, Living Fire Blocks, Smoke Blocks, Bubble Blocks</br>
+		/// </summary>
+		public static bool[] CanPlaceNextToNonSolidTile = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble);
 
 		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
 		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);

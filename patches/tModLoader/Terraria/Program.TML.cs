@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
@@ -108,7 +109,7 @@ public static partial class Program
 	/// maxVersionOfSource is used to determine if we even should port the files. Example: 1.4.3-Legacy has maxVersion of 2022.9
 	/// isAtomicLockable could be expressed as CopyToNewlyCreatedDestinationFolderViaTempFolder if that makes more sense to the reader.
 	/// </summary>
-	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud, bool isAtomicLockable)
+	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud, bool isAtomicLockable, DateTime migrationDay)
 	{
 		string newFolderPath = Path.Combine(superSavePath, destination);
 		string newFolderPathTemp = Path.Combine(superSavePath, destination + "-temp");
@@ -159,7 +160,7 @@ public static partial class Program
 		if (!File.Exists(sourceFolderConfig)) {
 			Logging.tML.Info($"No config.json found at {sourceFolderConfig}\nAssuming nothing to port");
 			return;
-		}	
+		}
 
 		string lastLaunchedTml = null;
 		try {
@@ -168,9 +169,21 @@ public static partial class Program
 				lastLaunchedTml = (string)lastLaunchedTmlObject;
 		}
 		catch (Exception e) {
-			e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
-			ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+			if (File.GetLastWriteTime(sourceFolderConfig) > migrationDay) {
+				// If the file was edited recently, we assume that an updated tModLoader edited it. This should ignore modifications made long ago by pre-migration logic tModLoader releases.
+				lastLaunchedTml = BuildInfo.tMLVersion.ToString();
+			}
+			else {
+				PromptUserForNewestTMLVersionLaunched(ref lastLaunchedTml);
+
+				if (string.IsNullOrEmpty(lastLaunchedTml)) {
+					e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
+					ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+				}
+			}
 		}
+
+		PromptUserForNewestTMLVersionLaunched(ref lastLaunchedTml);
 
 		if (string.IsNullOrEmpty(lastLaunchedTml)) {
 			// It's unclear what we should do in this situation. Leave it up to the user.
@@ -216,6 +229,24 @@ public static partial class Program
 		}
 
 		Logging.tML.Info($"Porting {cloudName} finished");
+
+		static void PromptUserForNewestTMLVersionLaunched(ref string lastLaunchedTml)
+		{
+			if (string.IsNullOrEmpty(lastLaunchedTml)) {
+				// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
+				// We can't localized these the normal way because localization isn't loaded at this point.
+				int result = ErrorReporting.ShowMessageBoxWithChoices(
+					title: "Failed to read config.json configuration file",
+					message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
+					buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
+				);
+				if (result == 0)
+					lastLaunchedTml = BuildInfo.tMLVersion.ToString();
+				if (result == 1)
+					lastLaunchedTml = "2022.09";
+				// If the user presses escape or presses cancel, lastLaunchedTml will still be NullOrEmpty.
+			}
+		}
 	}
 
 	internal static void PortFilesMaster(string savePath, bool isCloud)
@@ -225,26 +256,31 @@ public static partial class Program
 		PortCommonFilesToStagingBranches(savePath);
 
 		// Establishing 1.4.3-Legacy branch
-		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud, isAtomicLockable: !isCloud);
+		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud, isAtomicLockable: !isCloud, migrationDay: new DateTime(2023, 9, 1));
 		// Local: This is supposed to create a new 1.4.3 folder if it doesn't exist, and ignore it if it does. (already migrated)
 		// Steam: Move files if canary file doesn't exist.
 
 		// Moving files from 1.4.4-preview (beta) to 1.4.4-stable - August 1st 2023 steam release
 		if (BuildInfo.IsStable)
-			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false);
+			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false, migrationDay: new DateTime(2023, 9, 1));
 			// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
 			// Steam: Move files if canary file doesn't exist.
 	}
 
 	private static void SetSavePath()
 	{
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
+			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
+			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+
 		if (LaunchParameters.TryGetValue("-tmlsavedirectory", out var customSavePath)) {
 			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
 			SavePathShared = customSavePath;
 			SavePath = customSavePath;
 		}
 		else if (File.Exists("savehere.txt")) {
-			// Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
+			// Fallback for unresolvable antivirus/onedrive issues. Also makes the game portable I guess.
 			SavePathShared = ReleaseFolder;
 			SavePath = SaveFolderName;
 		}
@@ -260,16 +296,13 @@ public static partial class Program
 				PortFilesMaster(savePathCopy, isCloud: false);
 			}
 			catch (Exception e) {
-				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
+				bool controlledFolderAccessMightBeRelevant = (e is COMException || e is FileNotFoundException) && ControlledFolderAccessSupport.ControlledFolderAccessDetected;
+				
+				ErrorReporting.FatalExit("An error occurred migrating files and folders to the new structure" + (controlledFolderAccessMightBeRelevant ? $"\n\nControlled Folder Access feature detected, this might be the cause of this error.\n\nMake sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu." : ""), e);
 			}
 		}
-		
-		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
-			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
-			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 	}
 
 	private static void StartupSequenceTml(bool isServer)
@@ -296,7 +329,33 @@ public static partial class Program
 		    }
 		}
 		catch (Exception ex) {
-			ErrorReporting.FatalExit("An unexpected error occured during tML startup", ex);
+			ErrorReporting.FatalExit("An unexpected error occurred during tML startup", ex);
+		}
+	}
+
+	private static void ProcessLaunchArgs(string[] args, bool monoArgs, out bool isServer)
+	{
+		isServer = false;
+
+		try {
+			if (monoArgs)
+				args = Utils.ConvertMonoArgsToDotNet(args);
+
+			LaunchParameters = Utils.ParseArguements(args);
+
+			if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
+				// Launch the Terraria playtime tracker and quit.
+				TerrariaSteamClient.Run();
+				Environment.Exit(1);
+			}
+
+			SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
+
+			// Unify server and client dll via launch param
+			isServer = LaunchParameters.ContainsKey("-server");
+		}
+		catch (Exception e) {
+			ErrorReporting.FatalExit("Unhandled Issue with Launch Arguments. Please verify sources such as Steam Launch Options, cli-ArgsConfig, and VS profiles", e);
 		}
 	}
 

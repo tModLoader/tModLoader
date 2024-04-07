@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System.ComponentModel;
-using Terraria.ModLoader.Config;
 
 // This file defines custom data type that represents Gradient data type that can be used in ModConfig classes.
 namespace ExampleMod.Common.Configs.CustomDataTypes
