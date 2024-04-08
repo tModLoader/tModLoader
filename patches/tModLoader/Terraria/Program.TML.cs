@@ -322,8 +322,11 @@ public static partial class Program
 			ControlledFolderAccessSupport.CheckFileSystemAccess();
 			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
 
-			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
+			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64) {
+				if (Program.LaunchParameters.ContainsKey("-build"))
+					Console.WriteLine("Warning: Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK appears to be running. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk"); // MessageBoxShow called below will also error when attempting to load 32 bit SDL2.
 				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
+			}
 
 			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
 
