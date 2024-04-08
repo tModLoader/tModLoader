@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Items.Tools
 
 			// This item does not meet Terraria's automatic criteria to be filtered under the "Tools" filter in Journey Mode's duplication menu.
 			// As such, this set is needed to manually indicate that this item is to be filtered under the "Tools" filter.
-			ItemID.Sets.ToolsFilter[Item.type] = true;
+			ItemID.Sets.DuplicationMenuToolsFilter[Item.type] = true;
 		}
 
 		public override void SetDefaults() {

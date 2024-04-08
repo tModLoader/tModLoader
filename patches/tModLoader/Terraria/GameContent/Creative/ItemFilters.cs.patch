@@ -46,28 +46,26 @@
  
  	public class Tools : IItemEntryFilter, IEntryFilter<Item>
  	{
-+		/* Handled with ItemID.Sets.ToolsFilter automatically
++		/* Replaced by ItemID.Sets.DuplicationMenuToolsFilter
  		private HashSet<int> _itemIdsThatAreAccepted = new HashSet<int> {
  			509,
  			850,
-@@ -162,7 +_,7 @@
- 			4711,
+@@ -163,6 +_,7 @@
  			4049,
  			114
--		};
-+		};*/
+ 		};
++		*/
  
  		public bool FitsFilter(Item entry)
  		{
-@@ -181,7 +_,11 @@
+@@ -181,7 +_,10 @@
  			if (entry.tileWand != -1)
  				return true;
  
 +			/* See the above comment
  			if (_itemIdsThatAreAccepted.Contains(entry.type))
-+				return true;*/
-+
-+			if (ItemID.Sets.ToolsFilter[entry.type])
++			*/
++			if (ItemID.Sets.DuplicationMenuToolsFilter[entry.type])
  				return true;
  
  			return false;

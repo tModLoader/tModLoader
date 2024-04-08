@@ -38,7 +38,7 @@ partial class ItemID
 
 		/// <summary>
 		/// Set for pre-hardmode boss bags, except it also contains the Queen Slime's Boss Bag. Affects the way dev armor drops function, making it only drop in special world seeds.
-		/// <br/> Don't forget to use the <see cref="BossBag"/> set in conjuction with this one.
+		/// <br/> Don't forget to use the <see cref="BossBag"/> set in conjunction with this one.
 		/// </summary>
 		public static bool[] PreHardmodeLikeBossBag = Factory.CreateBoolSet(
 			KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,
@@ -47,9 +47,9 @@ partial class ItemID
 
 		/// <summary> Indicates that an item is to be filtered under the "Tools" filter in Journey Mode's duplication menu.
 		/// <br/> Useful for manually setting an item to be filtered under the "Tools" filter, if your item does not meet the automatic criteria for the "Tools" filter.
-		/// <br/> See (<see cref="GameContent.Creative.ItemFilters.Tools.FitsFilter(Item)"/>) to check if your item meets the automatic criteria.
+		/// <br/> See the code of <see cref="GameContent.Creative.ItemFilters.Tools.FitsFilter(Item)"/> to check if your item meets the automatic criteria.
 		/// </summary>
-		public static bool[] ToolsFilter = Factory.CreateBoolSet(
+		public static bool[] DuplicationMenuToolsFilter = Factory.CreateBoolSet(
 			509,
 			850,
 			851,
