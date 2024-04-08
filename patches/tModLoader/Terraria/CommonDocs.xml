@@ -8,4 +8,23 @@
 	<MusicAutoloadReminder>
 		Remember that unless you manually register music via <see cref="AddMusic(Mod, string)"/>, only files found in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	</MusicAutoloadReminder>
+    <CoordinateConversionNote>
+		<para/> By convention, Tile coordinates should be represented by represented using <see cref="Point"/> or <see cref="Point16"/> and World coordinates should be represented using <see cref="Vector2"/>. This convention is not always followed, so naming variables appropriately is highly recommended.
+		<para/> Please read the <see href="https://github.com/tModLoader/tModLoader/wiki/Coordinates">Coordinates wiki page</see> for more information.
+	</CoordinateConversionNote>
+    <ToWorldCoordinates>
+		Converts from Tile coordinates to World coordinates.
+		<para/> If this overload has <c>autoAddX</c> and <c>autoAddY</c> parameters, those parameters default to 8, meaning that they can be omitted and the resulting world coordinate will be in the center of the tile. Zeros can be used to get the world coordinate of the top left corner instead.
+		<para/> If this overload has a <c>autoAddXY</c> parameter, that will be added to the resulting world coordinate. <c>new Vector2(8)</c> can be used to get thw world coordinate in the center of the tile. <c>Vector2.Zero</c> can be used to get the world coordinate of the top left corner instead.
+		<para/> <include file = 'CommonDocs.xml' path='Common/CoordinateConversionNote' /> 
+	</ToWorldCoordinates>
+    <ToTileCoordinates>
+		Converts from World coordinates to Tile coordinates.
+		<para/> The Tile coordinate returned will be the coordinate of the Tile that would contain the World Coordinate. Be sure to plan out which world coordinate to use when dealing with entities, sometimes the logic might be better suited to use the Center of the entity vs the Position.
+		<para/> <include file = 'CommonDocs.xml' path='Common/CoordinateConversionNote' /> 
+	</ToTileCoordinates>
+	<LightingGetColor>
+		<para/> Lighting is tracked at Tile Coordinate granularity (<see href="https://github.com/tModLoader/tModLoader/wiki/Coordinates">Coordinates wiki page</see>). Typically the center of an entity, converted to tile coordinates, is used to query the lighting color at the entity's location. That color is then used to draw the entity.
+		<para/> Lighting values in-between tile coordinates can be interpolated using <see cref="GetSubLight(Vector2)"/>, but usually the lighting values at the tile coordinates closest to the center of an entity are sufficient. There are many more GetColorX methods for more advanced situations, if needed. If drawing a really large sprite, one might consider splitting up the drawing to allow sections of the sprite to be drawn at different light values.
+	</LightingGetColor>
 </Common>

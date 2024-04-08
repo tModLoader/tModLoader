@@ -13,6 +13,7 @@ using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Audio;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.UI;
 
@@ -305,15 +306,17 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
+			if (modItem.tMLUpdateRequired != null)
+				continue;
 			modItem.Enable();
 		}
 	}
 
 	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}
@@ -337,7 +340,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			needToRemoveLoading = false;
 			uIPanel.RemoveChild(uiLoader);
 		}
-		if (!updateNeeded) return;
+		if (!updateNeeded)
+			return;
 		updateNeeded = false;
 		filter = filterTextBox.Text;
 		modList.Clear();
@@ -393,12 +397,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 						text = "None";
 						break;
 				}
-				UICommon.DrawHoverStringInBounds(spriteBatch, text);
+				UICommon.TooltipMouseText(text);
 				return;
 			}
 		}
-		if(buttonOMF.IsMouseHovering)
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
+		if (buttonOMF.IsMouseHovering)
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 	}
 
 	public override void OnActivate()
@@ -428,8 +432,10 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
 			foreach (var mod in mods) {
 				UIModItem modItem = new UIModItem(mod);
-				modItem.Activate();
 				items.Add(modItem);
+			}
+			foreach (var modItem in items) {
+				modItem.Activate();
 			}
 			needToRemoveLoading = true;
 			updateNeeded = true;

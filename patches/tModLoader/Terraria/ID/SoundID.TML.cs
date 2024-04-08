@@ -661,7 +661,14 @@ partial class SoundID
 		LegacySoundIDs.DoubleJump => DoubleJump,
 		LegacySoundIDs.Run => Run,
 		LegacySoundIDs.Coins => Coins,
-		LegacySoundIDs.Splash => style switch { 1 => SplashWeak, _ => Splash },
+		LegacySoundIDs.Splash => style switch {
+			1 => SplashWeak,
+			2 => Shimmer1,
+			3 => Shimmer2,
+			4 => ShimmerWeak1,
+			5 => ShimmerWeak2,
+			_ => Splash
+		},
 		LegacySoundIDs.FemaleHit => FemaleHit,
 		LegacySoundIDs.Tink => Tink,
 		LegacySoundIDs.Unlock => Unlock,

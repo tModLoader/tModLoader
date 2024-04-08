@@ -57,11 +57,14 @@
 		"DownloadMissingMods": "Pobierz brakujące Mody",
 		"ModsDisable": "Wyłącz",
 		"ModsEnable": "Włącz",
+		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
+		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
 		"ModConfiguration": "Konfiguracja Moda",
 		"ModsOpenConfig": "Kliknij, aby otworzyć konfigurację",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		"ModStableOnPreviewWarning": "Brak wersji podglądowej. Włącz na własne ryzyko.",
 		"ModDependencyTooltip": "Ten mod wymaga: {0}\n (Te zostaną włączone automatycznie))",
+		// "ModDependentsTooltip": "Required by:\n{0}",
 		"TranslationModTooltip": "Ten mod zapewnia tłumaczenia dla: {0}",
 		"ModDependencyClickTooltip": "Ten mod wymaga: {0}\n (kliknij, aby włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
@@ -280,18 +283,20 @@
 		"MPPacketTooLarge": "Pakiet za duży {0} > {1}",
 		// "ReloadRequiredDownloadAndContinue": "Download and Continue",
 		// "ReloadRequiredReloadAndContinue": "Reload and Continue",
-		// "ReloadRequiredServerJoinMessage": "Due to the following mod version or config differences, mods will reload if you join this server. Press \"{0}\" to join this server.",
-		// "ReloadRequiredSinglePlayerMessage": "Due to the following mod version or config differences still present from multiplayer, mods will reload if you enter single player. Press \"{0}\" to enter single player.",
+		// "ReloadRequiredServerJoinMessage": "The following changes to your enabled mods will be automatically applied if you join this server. Press \"{0}\" to reload mods and join this server.",
+		// "ReloadRequiredSinglePlayerMessage": "The following changes to your enabled mods will be automatically applied if you enter single player. Press \"{0}\" to reload mods and enter single player.",
 		// "ReloadRequiredExplanationDownload": "[c/{0}:Download] v{1} from server",
-		// "ReloadRequiredExplanationDownloadDowngrade": "[c/{0}:Download] v{1} from server\n(Temporarily downgrade from v{2})",
+		// "ReloadRequiredExplanationDownloadDowngradeTemporary": "[c/{0}:Download] v{1} from server\n(Temporarily downgrade from v{2})",
+		// "ReloadRequiredExplanationDownloadDowngrade": "[c/{0}:Download] v{1} from server\n(Downgrade from v{2})",
 		// "ReloadRequiredExplanationDownloadUpgrade": "[c/{0}:Download] v{1} from server\n(Upgrade from v{2})",
 		// "ReloadRequiredExplanationDownloadHashDiffers": "[c/{0}:Download] v{1} ({2}) from server\n(Mod file differs from local copy)",
 		// "ReloadRequiredExplanationSwitchVersion": "[c/{0}:Switch] to v{1}\n(Currently loaded v{2})",
 		// "ReloadRequiredExplanationSwitchVersionDowngrade": "[c/{0}:Switch] to v{1}\n(Temporarily downgrade from v{2})",
-		// "ReloadRequiredExplanationSwitchVersionUpgrade": "[c/{0}:Switch] to v{1}\n(Temporarily upgrade from v{2})",
+		// "ReloadRequiredExplanationSwitchVersionUpgrade": "[c/{0}:Switch] to v{1}\n(Upgrade from v{2})",
 		// "ReloadRequiredExplanationEnable": "[c/{0}:Enable]",
 		// "ReloadRequiredExplanationDisable": "[c/{0}:Disable]",
-		// "ReloadRequiredExplanationConfigChanged": "[c/{0}:Config change]",
+		// "ReloadRequiredExplanationConfigChanged": "[c/{0}:Change config] temporarily",
+		// "ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:Restore config]",
 
 		// UIAsyncList
 		"ALLoading": "Ładowanie...",
@@ -621,7 +626,7 @@
 		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Następna strona",
@@ -722,7 +727,7 @@
 		"InMarble": "Musi być w marmurowym biomie",
 		"InHive": "Musi być w ulu",
 		"InGemCave": "Musi być w jaskini kamieni szlachetnych",
-		"InLihzardTemple": "Musi być w Świątyni Jaszczura"
+		"InLihzardTemple": "Musi być w Świątyni Jaszczura",
 		"InGraveyard": "Musi być na Cmentarzu",
 		"InAether": "Musi być w Aetherze",
 		"InShoppingForest": "Musi być powyżej powierzchni i nie w innym głównym biomie",
@@ -760,7 +765,7 @@
 		"WorldNotNoTraps": "Nie w świecie No Traps",
 		"WorldNotZenith": "Nie w świecie Zenith",
 
-		"Christmas": "Podczas świąt Bożego Narodzenia"
+		"Christmas": "Podczas świąt Bożego Narodzenia",
 		"Halloween": "Podczas Halloween",
 		"Thunderstorm": "Podczas burzy",
 		"BirthdayParty": "Podczas przyjęcia urodzinowego NPC",
@@ -932,9 +937,9 @@
 		"ModLoader.Items.UnloadedItem.DisplayName": "Nieaktywny przedmiot",
 		"ModLoader.Items.UnloadedItem.Tooltip": "\n",
 		"ModLoader.Items.UnloadedItem.UnloadedItemModTooltip": "Mod: {0}",
-		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Przedmiot: {0}"
+		"ModLoader.Items.UnloadedItem.UnloadedItemItemNameTooltip": "Przedmiot: {0}",
 		"ModLoader.Tiles.UnloadedChest.MapEntry0": "Niezaładowana skrzynia",
-		"ModLoader.Tiles.UnloadedChest.MapEntry1": "Zamknięta niezaładowana skrzynia",
+		"ModLoader.Tiles.UnloadedChest.MapEntry1": "Zamknięta niezaładowana skrzynia"
 		// "ModLoader.Items.Jofairden_Body.DisplayName": "Andromedon Body",
 		// "ModLoader.Items.Jofairden_Body.Tooltip": "The power of the Andromedon flows within you",
 		// "ModLoader.Items.Jofairden_Head.DisplayName": "Andromedon Head",

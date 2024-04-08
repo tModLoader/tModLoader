@@ -72,6 +72,7 @@ internal static class ModOrganizer
 		// Active Modpack
 		if (!string.IsNullOrEmpty(ModPackActive)) {
 			if (Directory.Exists(ModPackActive)) {
+				Logging.tML.Info($"Loading Mods from active modpack: {ModPackActive}");
 				mods.AddRange(ReadModFiles(ModLocation.Modpack, Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories)));
 			}
 			else {
