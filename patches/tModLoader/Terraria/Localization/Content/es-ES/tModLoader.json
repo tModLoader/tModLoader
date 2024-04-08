@@ -461,8 +461,8 @@
 		"DocumentationLink": "Leer la documentación",
 		"DiscordLink": "Encuentra ayuda en el servidor de Discord",
 		"MSPortToLatest": "Ejecutar tModPorter",
-		"MSFirstLaunchModderWelcomeMessage": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
-		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
+		"MSFirstLaunchModderWelcomeMessage": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
+		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
 		"DownloadNetSDK": "Descargar el SDK de .NET",
 		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
 

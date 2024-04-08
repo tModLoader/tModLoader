@@ -462,8 +462,8 @@
 		"DiscordLink": "Znajdź pomoc na serwerze Discord",
 		"MSPortToLatest": "Uruchom program tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Witaj w menu Tworzenia modów. To menu jest przeznaczone dla osób tworzących mody. Tutaj będziesz mógł budować swój mod.\n\nJeśli jesteś nowy w tworzeniu modów, kliknij poniżej przycisk \"Zobacz na GitHubie\", aby odwiedzić naszą wiki i przejrzeć sekcję \"I am new to modding\".",
-		"MSNetSDKNotFound": "Tworzenie modów dla tModLoadera wymaga zainstalowania .NET 6 SDK, ale nie zostało to wykryte. Kliknij poniżej przycisk \"Pobierz .NET 6.0 SDK\" w celu uzyskania instrukcji instalacji. Po zainstalowaniu może być konieczne ponowne uruchomienie tModLoadera.",
-		"DownloadNetSDK": "Pobierz .NET 6.0 SDK",
+		"MSNetSDKNotFound": "Tworzenie modów dla tModLoadera wymaga zainstalowania .NET {0} SDK, ale nie zostało to wykryte. Kliknij poniżej przycisk \"Pobierz .NET SDK\" w celu uzyskania instrukcji instalacji. Po zainstalowaniu może być konieczne ponowne uruchomienie tModLoadera.",
+		"DownloadNetSDK": "Pobierz .NET SDK",
 		"DevModsInSandbox": "tModLoader nie może rozwijać modów podczas działania w piaskownicy (np. w przypadku Flatpak). Upewnij się, że zainstalowano Steam bezpośrednio na Twoim systemie.",
 
 		// Developer Mode UI

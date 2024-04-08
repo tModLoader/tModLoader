@@ -464,8 +464,8 @@
 		// "DiscordLink": "Find Help on the Discord Server",
 		// "MSPortToLatest": "Run tModPorter",
 		// "MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
-		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET 6 SDK to be installed, but it has not been detected. Click the \"Download .NET 6.0 SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
-		// "DownloadNetSDK": "Download .NET 6.0 SDK",
+		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
+		// "DownloadNetSDK": "Download .NET SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
