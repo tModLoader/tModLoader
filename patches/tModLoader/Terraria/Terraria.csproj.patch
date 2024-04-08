@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,45 +_,66 @@
+@@ -11,45 +_,62 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -61,15 +61,11 @@
  
 +		<PackageReference Include="DotNetZip" Version="1.16.0" />
  		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
-+		<PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
++		<PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.5.0" />
 +		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.0" />
-+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
-+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
-+		<PackageReference Include="System.CodeDom" Version="6.0.0" />
-+		<PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
 +		<PackageReference Include="Hjson" Version="3.0.0" />
-+		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
++		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />
  	</ItemGroup>
  
  	<!-- Embedded Resources -->
