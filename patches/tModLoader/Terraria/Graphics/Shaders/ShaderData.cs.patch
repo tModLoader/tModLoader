@@ -1,0 +1,53 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Shaders/ShaderData.cs
++++ src/tModLoader/Terraria/Graphics/Shaders/ShaderData.cs
+@@ -1,4 +_,6 @@
++using System;
+ using Microsoft.Xna.Framework.Graphics;
++using ReLogic.Content;
+ 
+ namespace Terraria.Graphics.Shaders;
+ 
+@@ -8,21 +_,34 @@
+ 	private string _passName;
+ 	private EffectPass _effectPass;
+ 
++	// Forward-port from 1.4.5
++	private readonly Asset<Effect> _asset;
++
+ 	public Effect Shader {
+ 		get {
+ 			if (_shader != null)
+ 				return _shader.Value;
+ 
++			if (_asset != null)
++				return _asset.Value;
++
+ 			return null;
+ 		}
+ 	}
+ 
++	[Obsolete("Removed in 1.4.5. Use Asset<Effect> version instead. Asset version works with AsyncLoad", error: true)]
+ 	public ShaderData(Ref<Effect> shader, string passName)
+ 	{
+ 		_passName = passName;
+ 		_shader = shader;
+ 	}
+ 
++	public ShaderData(Asset<Effect> shader, string passName)
++	{
++		_passName = passName;
++		_asset = shader;
++	}
++
+ 	public void SwapProgram(string passName)
+ 	{
+ 		_passName = passName;
+@@ -32,7 +_,7 @@
+ 
+ 	public virtual void Apply()
+ 	{
+-		if (_shader != null && Shader != null && _passName != null)
++		if (Shader != null && _passName != null)
+ 			_effectPass = Shader.CurrentTechnique.Passes[_passName];
+ 
+ 		_effectPass.Apply();

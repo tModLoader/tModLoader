@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -45,7 +46,7 @@ internal class ItemDefinitionElement : DefinitionElement<ItemDefinition>
 			string modname = "Terraria";
 
 			if (option.Type >= ItemID.Count) {
-				modname = ItemLoader.GetItem(option.Type).Mod.DisplayName; // or internal name?
+				modname = ItemLoader.GetItem(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
@@ -81,7 +82,8 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 
 			if (!Item.IsAir || Unloaded) {
 				int type = Unloaded ? ModContent.ItemType<UnloadedItem>() : Item.type;
-				Main.instance.LoadItem(Item.type);
+				if (TextureAssets.Item[type].State == AssetState.NotLoaded)
+					Main.Assets.Request<Texture2D>(TextureAssets.Item[type].Name, AssetRequestMode.AsyncLoad);
 				Texture2D itemTexture = TextureAssets.Item[type].Value;
 				Rectangle rectangle2;
 

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -44,7 +45,7 @@ internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinit
 			string modname = option.Definition.Mod;
 
 			if (option.Type >= ProjectileID.Count) {
-				modname = ProjectileLoader.GetProjectile(option.Type).Mod.DisplayName; // or internal name?
+				modname = ProjectileLoader.GetProjectile(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (!modname.Contains(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase))
@@ -71,7 +72,8 @@ internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<Proje
 
 		if (Definition != null) {
 			int type = Unloaded ? ProjectileID.None : Type;
-			Main.instance.LoadProjectile(type);
+			if (TextureAssets.Projectile[type].State == AssetState.NotLoaded)
+				Main.Assets.Request<Texture2D>(TextureAssets.Projectile[type].Name, AssetRequestMode.AsyncLoad);
 			Texture2D projectileTexture = TextureAssets.Projectile[type].Value;
 
 			int frameCounter = Interface.modConfig.UpdateCount / 4;

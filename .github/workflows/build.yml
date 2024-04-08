@@ -328,7 +328,7 @@ jobs:
           echo ::endgroup::
           
           echo Adding version info to ExampleMod
-          echo "version = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
+          echo -e "\nversion = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
           
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
           ModloaderDir=$(pwd)/local/ModLoader
@@ -483,7 +483,7 @@ jobs:
           
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
-        uses: tj-actions/changed-files@v18.4
+        uses: tj-actions/changed-files@v41
         with:
           files: |
             ExampleMod
@@ -496,7 +496,7 @@ jobs:
           
       - name: Detect patches Changed Files
         id: changed-files-patches
-        uses: tj-actions/changed-files@v18.4
+        uses: tj-actions/changed-files@v41
         with:
           files: |
             patches

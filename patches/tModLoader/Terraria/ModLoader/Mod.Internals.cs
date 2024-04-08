@@ -16,11 +16,9 @@ partial class Mod
 {
 	internal bool loading;
 
-	private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
-
 	//Entities
 	internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-	internal readonly IList<ILoadable> content = new List<ILoadable>();
+	internal ContentCache Content { get; private set; }
 
 	internal void SetupContent()
 	{
@@ -33,10 +31,11 @@ partial class Mod
 
 		Unload();
 
-		foreach (var loadable in content.Reverse()) {
+		foreach (var loadable in GetContent().Reverse()) {
 			loadable.Unload();
 		}
-		content.Clear();
+		Content.Clear();
+		Content = null;
 
 		equipTextures.Clear();
 
@@ -50,11 +49,7 @@ partial class Mod
 
 		LocalizationLoader.Autoload(this);
 
-		Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
-		while (AsyncLoadQueue.Count > 0)
-			AsyncLoadQueue.Dequeue().Wait();
-
-		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
+		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName); // TODO: DisplayName is incorrect, but ModBestiaryInfoElement._displayName usage inconsistent.
 
 		if (ContentAutoloadingEnabled) {
 			var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
@@ -92,16 +87,10 @@ partial class Mod
 
 	internal void TransferAllAssets()
 	{
-		initialTransferComplete = false;
+		Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
 		Assets.TransferAllAssets();
 		initialTransferComplete = true;
-		if (AssetExceptions.Count > 0) {
-			if (AssetExceptions.Count == 1)
-				throw AssetExceptions[0];
-
-			if (AssetExceptions.Count > 0)
-				throw new MultipleException(AssetExceptions);
-		}
+		LoaderUtils.RethrowAggregatedExceptions(AssetExceptions);
 	}
 
 	internal bool initialTransferComplete;

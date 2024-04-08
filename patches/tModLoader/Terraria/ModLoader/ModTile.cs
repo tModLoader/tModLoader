@@ -20,10 +20,16 @@ public abstract class ModTile : ModBlockType
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
 	public int AnimationFrameHeight { get; set; }
 
-	/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. Defaults to 1f. </summary>
+	/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. <br/> Defaults to 1f.
+	/// <para/> For example a MineResist value of 2f, such as used by <see cref="TileID.Pearlstone"/>, would require roughly twice as many hits to mine. Conversely, a MineResist value of 0.5f, such as used by <see cref="TileID.Sand"/>, would require roughtly half as many hits to mine
+	/// <para/> To find an appropriate value, see the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#mineresist">wiki</see>.
+	/// <para/> Use <see cref="MinPick"/> to adjust the minimum pickaxe power required to mine this tile. </summary>
 	public float MineResist { get; set; } = 1f;
 
-	/// <summary> The minimum pickaxe power required for pickaxes to mine this block. Defaults to 0. </summary>
+	/// <summary> The minimum pickaxe power required for pickaxes to mine this block. <br/> Defaults to 0.
+	/// <para/> For example a MinPick value of 50, such as what <see cref="TileID.Meteorite"/> uses, would require a pickaxe with at least 50% pickaxe power (<see cref="Item.pick"/>) to break.
+	/// <para/> To find an appropriate value, see the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#minpick">wiki</see>.
+	/// <para/> Use <see cref="MineResist"/> to adjust how long a tile takes to be mined.</summary>
 	public int MinPick { get; set; }
 
 	/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
@@ -485,6 +491,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Whether or not this tile creates dust when the player walks on it. Returns false by default.
+	/// <para/> Customize the dust spawned using <see cref="WalkDust(ref int, ref bool, ref Color)"/>. The default dust is <see cref="DustID.Snow"/> otherwise.
 	/// </summary>
 	public virtual bool HasWalkDust()
 	{
@@ -493,6 +500,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to modify the dust created when the player walks on this tile. The makeDust parameter is whether or not to make dust; you can randomly set this to false to reduce the amount of dust produced.
+	/// <para/> The default dust (<paramref name="dustType"/>) is <see cref="DustID.Snow"/> 
 	/// </summary>
 	/// <param name="dustType"></param>
 	/// <param name="makeDust"></param>
