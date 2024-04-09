@@ -47,21 +47,12 @@ internal static class SourceManagement
 		}
 	}
 
-	private enum UpgradeStatus
-	{
-		NotRequired,
-		Upgradeable,
-		FileMissing,
-		FileBroken,
-	}
-
 	private const string TemplateResourcePrefix = $"Terraria/ModLoader/Templates/";
 
 	private static readonly Version languageVersion = new(10, 0);
 	private static readonly HashSet<string> textExtensions = new() {
 		".txt", ".json", ".hjson", ".toml", ".cs", ".csproj", ".sln"
 	};
-
 
 	/// <summary> Writes mod template files to the provided source-code directory. </summary>
 	public static void WriteModTemplate(string modSrcDirectory, TemplateParameters templateParameters)
@@ -166,62 +157,50 @@ internal static class SourceManagement
 	/// <summary> Checks a mod source-code directory for available upgrades, optionally applying them. </summary>
 	private static bool TryGetCsprojUpgradeAction(string modSrcDirectory, [NotNullWhen(true)] out Action? result, TemplateParameters? templateParameters = null)
 	{
-		var status = UpgradeStatus.NotRequired;
 		string csprojPath = Path.Combine(modSrcDirectory, $"{Path.GetFileName(modSrcDirectory)}.csproj");
-		
-		// Check if the file even exists.
-		if (!File.Exists(csprojPath))
-			status = UpgradeStatus.FileMissing;
 
-		// Try to load the XML document.
-		XDocument? document = null;
-		if (status is not UpgradeStatus.FileMissing && !TryLoadXmlDocument(csprojPath, LoadOptions.PreserveWhitespace, out document)) {
-			status = UpgradeStatus.FileBroken;
-		}
+		// Load and verify the file.
+		if (File.Exists(csprojPath)
+		&& TryLoadXmlDocument(csprojPath, LoadOptions.PreserveWhitespace, out var document)
+		&& IsXmlAValidCsprojFile(document)
+		) {
+			var modifications = CollectCsprojModifications(document);
 
-		// Try to collect required modifications.
-		var modifications = new List<Action>();
-		if (document != null && !TryCollectingCsprojModifications(document, modifications)) {
-			status = UpgradeStatus.FileBroken;
-		}
+			// All is good and there's nothing to do!
+			if (!modifications.Any()) {
+				result = null;
+				return false;
+			}
 
-		// If there are any modifications - the file is upgradeable.
-		if (modifications?.Count > 0) {
-			status = UpgradeStatus.Upgradeable;
-		}
-
-		// If this is not a dry run and there's changes to be made.
-		if (status is not UpgradeStatus.NotRequired) {
+			// Apply modifications and save the XML.
 			result = () => {
-				// Apply modifications if any exist.
-				modifications!.ForEach(m => m());
-
-				// Recreate the file from scratch if it's missing or broken, otherwise just save our XML.
-				if (status is UpgradeStatus.FileMissing or UpgradeStatus.FileBroken) {
-					ResetCsprojFile(csprojPath, templateParameters);
-				} else {
-					WriteXmlDocumentToFile(csprojPath, document!);
+				foreach (var action in modifications) {
+					action();
 				}
+
+				WriteXmlDocumentToFile(csprojPath, document!);
 			};
 
 			return true;
 		}
 
-		result = default;
-		return false;
+		// Recreate the file from scratch, as it's missing, broken, or absolutely ancient.
+		result = () => ResetCsprojFile(csprojPath, templateParameters);
+
+		return true;
 	}
 
-	/// <summary> If succesfful - populates the provided list with delegates, executing which will upgrade the provided document. </summary>
-	private static bool TryCollectingCsprojModifications(XDocument document, List<Action> modifications)
+	private static bool IsXmlAValidCsprojFile(XDocument? document)
 	{
-		// Check if this is even a C# project.
-		if (document!.Root is not { Name.LocalName: "Project", FirstAttribute: { Name.LocalName: "Sdk", Value: "Microsoft.NET.Sdk" } } root) {
-			return false;
-		}
+		return document?.Root is { Name.LocalName: "Project", FirstAttribute: { Name.LocalName: "Sdk", Value: "Microsoft.NET.Sdk" } };
+	}
 
-		void RemoveNodes(IEnumerable<XNode> nodes)
+	/// <summary> Returns an enumerable of delegates, executing which will upgrade the provided document. </summary>
+	private static IEnumerable<Action> CollectCsprojModifications(XDocument document)
+	{
+		Action RemoveNodes(IEnumerable<XNode> nodes)
 		{
-			modifications.Add(() => {
+			return () => {
 				foreach (var node in nodes) {
 					// Remove whitespace, which is otherwise kept due to the way we parsed the document.
 					if (node.PreviousNode is XText previous && string.IsNullOrWhiteSpace(previous.Value)) {
@@ -230,15 +209,16 @@ internal static class SourceManagement
 
 					node.Remove();
 				}
-			});
+			};
 		}
 
+		var root = document.Root!;
 		var itemGroups = root.Elements("ItemGroup");
 		var propertyGroups = root.Elements("PropertyGroup");
 
 		// Ensure that root imports tModLoader.targets.
 		if (!root.Elements("Import").Any(e => e is { FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
-			modifications.Add(() => {
+			yield return () => {
 				var import = new XElement("Import");
 				import.SetAttributeValue("Project", @"..\tModLoader.targets");
 
@@ -248,22 +228,20 @@ internal static class SourceManagement
 					new XText("\n\t"),
 					import,
 				});
-			});
+			};
 		}
 
 		// Get rid of Framework & Platform overrides.
-		RemoveNodes(Enumerable.Concat(
+		yield return RemoveNodes(Enumerable.Concat(
 			propertyGroups.Elements("TargetFramework"),
 			propertyGroups.Elements("PlatformTarget")
 		));
 
 		// Keep LangVersion up-to-date by removing old overrides.
-		RemoveNodes(propertyGroups
+		yield return RemoveNodes(propertyGroups
 			.Elements("LangVersion")
 			.Where(e => Version.TryParse(e.Value, out var v) && v.MajorMinor() <= languageVersion)
 		);
-
-		return true;
 	}
 
 	private static bool TryLoadXmlDocument(string filePath, LoadOptions loadOptions, [NotNullWhen(true)] out XDocument? document)
