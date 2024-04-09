@@ -171,53 +171,58 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 			searchModSlugs = new string[] { _dataObject.Name },
 			queryType = QueryType.SearchDirect
 		};
-		if (WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods) && mods.Count == 1 && mods[0] != null) {
-			ulong existingAuthorID = ulong.Parse(mods[0].OwnerId);
 
-			if (existingAuthorID != 0 && existingAuthorID != Steamworks.SteamUser.GetSteamID().m_SteamID) {
-				float num = 180f;
-				float num2 = 0f + num;
-
-				GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(option: true, null, null, Color.White, null, 1f, 0.5f, 16f) {
-					HAlign = 0.5f,
-					VAlign = 0f,
-					Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
-					Left = StyleDimension.FromPixels(0f),
-					Height = StyleDimension.FromPixelsAndPercent(num2 + 4f, 0f),
-					Top = StyleDimension.FromPixels(0f),
-					ShowHighlightWhenSelected = false
-				};
-
-				groupOptionButton.SetCurrentOption(option: false);
-				groupOptionButton.Width.Set(0f, 1f);
-
-				UIElement uIElement = new UIElement {
-					HAlign = 0.5f,
-					VAlign = 1f,
-					Width = new StyleDimension(0f, 1f),
-					Height = new StyleDimension(num, 0f)
-				};
-
-				groupOptionButton.Append(uIElement);
-
-				UIText uIText = new UIText(Language.GetTextValue("tModLoader.NonModOwnerPublishWarning", _dataObject.Name)) {
-					HAlign = 0f,
-					VAlign = 0f,
-					Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
-					Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
-					TextColor = Color.Yellow,
-					IgnoresMouseInteraction = true
-				};
-
-				uIText.PaddingLeft = 20f;
-				uIText.PaddingRight = 20f;
-				uIText.PaddingTop = 4f;
-				uIText.IsWrapped = true;
-
-				uIElement.Append(uIText);
-				uIText.SetSnapPoint("warning", 0);
-				uiList.Add(groupOptionButton);
-			}
+		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods) || mods.Count != 1 || mods[0] == null) {
+			return;
 		}
+
+		ulong existingAuthorID = ulong.Parse(mods[0].OwnerId);
+		if (existingAuthorID == 0 || existingAuthorID == Steamworks.SteamUser.GetSteamID().m_SteamID) {
+			return;
+		}
+
+		float num = 180f;
+		float num2 = 0f + num;
+
+		GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(option: true, null, null, Color.White, null, 1f, 0.5f, 16f) {
+			HAlign = 0.5f,
+			VAlign = 0f,
+			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
+			Left = StyleDimension.FromPixels(0f),
+			Height = StyleDimension.FromPixelsAndPercent(num2 + 4f, 0f),
+			Top = StyleDimension.FromPixels(0f),
+			ShowHighlightWhenSelected = false
+		};
+
+		groupOptionButton.SetCurrentOption(option: false);
+		groupOptionButton.Width.Set(0f, 1f);
+
+		UIElement uIElement = new UIElement {
+			HAlign = 0.5f,
+			VAlign = 1f,
+			Width = new StyleDimension(0f, 1f),
+			Height = new StyleDimension(num, 0f)
+		};
+		uIElement.OnLeftClick += (sender, e) => Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Workshop#renaming-a-mod");
+
+		groupOptionButton.Append(uIElement);
+
+		UIText uIText = new UIText(Language.GetTextValue("tModLoader.NonModOwnerPublishWarning", _dataObject.Name)) {
+			HAlign = 0f,
+			VAlign = 0f,
+			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
+			Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
+			TextColor = Color.Yellow,
+			IgnoresMouseInteraction = true
+		};
+
+		uIText.PaddingLeft = 20f;
+		uIText.PaddingRight = 20f;
+		uIText.PaddingTop = 4f;
+		uIText.IsWrapped = true;
+
+		uIElement.Append(uIText);
+		uIText.SetSnapPoint("warning", 0);
+		uiList.Add(groupOptionButton);
 	}
 }
