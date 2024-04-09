@@ -150,15 +150,14 @@ internal static class SourceManagement
 
 		// Do some cleanups, but only if we already have something.
 		if (modifications.Count != 0) {
-			try {
+			modifications.Add(() => {
 				// Old files can cause some issues.
 				DeleteIfExists(new DirectoryInfo(Path.Combine(modSrcDirectory, "obj")));
 				DeleteIfExists(new DirectoryInfo(Path.Combine(modSrcDirectory, "bin")));
 
 				//TODO: Why do we do this?
 				DeleteIfExists(new FileInfo(Path.Combine(modSrcDirectory, "Properties", "AssemblyInfo.cs")));
-			}
-			catch { }
+			});
 		}
 
 		return modifications;
@@ -199,7 +198,7 @@ internal static class SourceManagement
 
 				// Recreate the file from scratch if it's missing or broken, otherwise just save our XML.
 				if (status is UpgradeStatus.FileMissing or UpgradeStatus.FileBroken) {
-					ResetCsprojFile(csprojPath, createBackup: status is not UpgradeStatus.FileMissing, templateParameters);
+					ResetCsprojFile(csprojPath, templateParameters);
 				} else {
 					WriteXmlDocumentToFile(csprojPath, document!);
 				}
@@ -220,7 +219,20 @@ internal static class SourceManagement
 			return false;
 		}
 
-		var nodesToRemove = new List<XNode>();
+		void RemoveNodes(IEnumerable<XNode> nodes)
+		{
+			modifications.Add(() => {
+				foreach (var node in nodes) {
+					// Remove whitespace, which is otherwise kept due to the way we parsed the document.
+					if (node.PreviousNode is XText previous && string.IsNullOrWhiteSpace(previous.Value)) {
+						previous.Remove();
+					}
+
+					node.Remove();
+				}
+			});
+		}
+
 		var itemGroups = root.Elements("ItemGroup");
 		var propertyGroups = root.Elements("PropertyGroup");
 
@@ -240,30 +252,16 @@ internal static class SourceManagement
 		}
 
 		// Get rid of Framework & Platform overrides.
-		nodesToRemove.AddRange(Enumerable.Concat(
+		RemoveNodes(Enumerable.Concat(
 			propertyGroups.Elements("TargetFramework"),
 			propertyGroups.Elements("PlatformTarget")
 		));
 
 		// Keep LangVersion up-to-date by removing old overrides.
-		nodesToRemove.AddRange(propertyGroups
+		RemoveNodes(propertyGroups
 			.Elements("LangVersion")
 			.Where(e => Version.TryParse(e.Value, out var v) && v.MajorMinor() <= languageVersion)
 		);
-
-		// Remove elements marked for removal.
-		if (nodesToRemove.Count != 0) {
-			modifications.Add(() => {
-				foreach (var element in nodesToRemove) {
-					// Remove whitespace, which is otherwise kept due to the way we parsed the document.
-					if (element.PreviousNode is XText previous && string.IsNullOrWhiteSpace(previous.Value)) {
-						previous.Remove();
-					}
-
-					element.Remove();
-				}
-			});
-		}
 
 		return true;
 	}
@@ -297,12 +295,12 @@ internal static class SourceManagement
 		File.WriteAllText(filePath, sb.ToString());
 	}
 
-	private static void ResetCsprojFile(string csprojPath, bool createBackup, TemplateParameters? templateParameters = null)
+	private static void ResetCsprojFile(string csprojPath, TemplateParameters? templateParameters = null)
 	{
 		string modSrcDirectory = Path.GetDirectoryName(csprojPath)!;
 
-		// Make a backup.
-		if (createBackup) {
+		// Make a backup if the file already exists.
+		if (File.Exists(csprojPath)) {
 			File.Move(csprojPath, csprojPath + ".backup", overwrite: true);
 		}
 
@@ -316,10 +314,18 @@ internal static class SourceManagement
 
 	private static void DeleteIfExists(FileSystemInfo entry)
 	{
-		switch (entry) {
-			case FileSystemInfo when !entry.Exists: return;
-			case FileInfo file: file.Delete(); break;
-			case DirectoryInfo directory: directory.Delete(recursive: true); break;
+		try {
+			switch (entry) {
+				case FileSystemInfo when !entry.Exists:
+					return;
+				case FileInfo file:
+					file.Delete();
+					break;
+				case DirectoryInfo directory:
+					directory.Delete(recursive: true);
+					break;
+			}
 		}
+		catch { }
 	}
 }
