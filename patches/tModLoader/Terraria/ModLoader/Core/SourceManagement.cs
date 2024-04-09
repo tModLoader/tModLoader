@@ -49,7 +49,8 @@ internal static class SourceManagement
 
 	private const string TemplateResourcePrefix = $"Terraria/ModLoader/Templates/";
 
-	private static readonly Version languageVersion = new(10, 0);
+	// Version specifications <= of this will be removed from csproj files.
+	private static readonly Version maxLanguageVersionToRemove = new(12, 0);
 	private static readonly HashSet<string> textExtensions = new() {
 		".txt", ".json", ".hjson", ".toml", ".cs", ".csproj", ".sln"
 	};
@@ -245,7 +246,7 @@ internal static class SourceManagement
 		// Keep LangVersion up-to-date by removing old overrides.
 		yield return RemoveNodes(propertyGroups
 			.Elements("LangVersion")
-			.Where(e => Version.TryParse(e.Value, out var v) && v.MajorMinor() <= languageVersion)
+			.Where(e => Version.TryParse(e.Value, out var v) && v.MajorMinor() <= maxLanguageVersionToRemove)
 		);
 	}
 
