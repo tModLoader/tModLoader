@@ -153,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "Опубликовывая этот контент, вы соглашаетесь с правилами пользования tModLoader",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Ошибка: Публикация контента в Мастерской возможна только для пользователей Steam-версии tModLoader.",
 		"NoWorkshopAccess": "Ошибка: Невозможно подключиться к Мастерской Steam.\n\nДля использования внутриигрового «Браузера модов» у вас должен быть установлен Steam.\n\nОБРАТИТЕ ВНИМАНИЕ: Обладатели GOG-версии могут использовать внутриигровой «Браузер модов» только после установки Steam.",
 		"ModAlreadyUploaded": "Ошибка: Мод уже существует в Мастерской",

@@ -80,7 +80,7 @@
 +		// Added by tML
 +		if (_isMod) {
 +			uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer"));
-+			(this as WorkshopPublishInfoStateForMods).AddNonOwnerWarning(uiList);
++			(this as WorkshopPublishInfoStateForMods).AddNonModOwnerPublishWarning(uiList);
 +		}
 +
  		uiList.Add(CreatePreviewImageSelectionPanel("image"));

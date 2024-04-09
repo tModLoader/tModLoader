@@ -155,6 +155,7 @@
 
 		// Workshop
 		// "WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		// "SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
 		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop.\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser.\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods",
 		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",

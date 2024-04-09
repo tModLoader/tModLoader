@@ -153,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "En soumettant cet article, vous acceptez les Conditions d'utilisation de tModLoader",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Erreur: Seuls les propriétaires de Steam tModLoader peuvent publier sur Workshop dans le jeu.",
 		"NoWorkshopAccess": "Erreur: Impossible d'accéder à Steam Workshop",
 		"ModAlreadyUploaded": "Erreur: Mod existe déjà sur Workshop!",

@@ -165,7 +165,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		}
 	}
 
-	internal void AddNonOwnerWarning(UIList uiList)
+	internal void AddNonModOwnerPublishWarning(UIList uiList)
 	{
 		var query = new QueryParameters() {
 			searchModSlugs = new string[] { _dataObject.Name },
@@ -175,7 +175,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 			ulong existingAuthorID = ulong.Parse(mods[0].OwnerId);
 
 			if (existingAuthorID != 0 && existingAuthorID != Steamworks.SteamUser.GetSteamID().m_SteamID) {
-				float num = 90f;
+				float num = 180f;
 				float num2 = 0f + num;
 
 				GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(option: true, null, null, Color.White, null, 1f, 0.5f, 16f) {
@@ -200,10 +200,10 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 				groupOptionButton.Append(uIElement);
 
-				UIText uIText = new UIText(Language.GetText("A mod with this name has already been published to the workshop by another modder, if you are not a contributor to that mod then attempting to publish will fail.")) {
+				UIText uIText = new UIText(Language.GetTextValue("tModLoader.NonModOwnerPublishWarning", _dataObject.Name)) {
 					HAlign = 0f,
 					VAlign = 0f,
-					Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
+					Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
 					Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
 					TextColor = Color.Yellow,
 					IgnoresMouseInteraction = true
