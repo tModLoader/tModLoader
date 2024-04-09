@@ -207,13 +207,15 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 
 	private SourceManagement.TemplateParameters GetModTemplateArguments()
 	{
-		SourceManagement.TemplateParameters result;
-		result.ModName = _modName.CurrentString.Trim();
-		result.ModDisplayName = _modDiplayName.CurrentString;
-		result.ModAuthor = _modAuthor.CurrentString.Trim();
-		result.ModVersion = "0.1";
-		result.ItemName = _basicSword.CurrentString.Trim();
+		var result = new SourceManagement.TemplateParameters {
+			ModName = _modName.CurrentString.Trim(),
+			ModDisplayName = _modDiplayName.CurrentString,
+			ModAuthor = _modAuthor.CurrentString.Trim(),
+			ModVersion = "0.1",
+			ItemName = _basicSword.CurrentString.Trim(),
+		};
 		result.ItemDisplayName = Regex.Replace(result.ItemName, "([A-Z])", " $1").Trim();
+
 		return result;
 	}
 }
