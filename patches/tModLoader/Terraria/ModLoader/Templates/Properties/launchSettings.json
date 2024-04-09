@@ -2,30 +2,15 @@
 	"profiles": {
 		"Terraria": {
 			"commandName": "Executable",
-			"executablePath": "dotnet",
+			"executablePath": "$(DotNetName)",
 			"commandLineArgs": "$(tMLPath)",
-			"workingDirectory": "$(TerrariaSteamPath)"
+			"workingDirectory": "$(tMLSteamPath)"
 		},
 		"TerrariaServer": {
 			"commandName": "Executable",
-			"executablePath": "dotnet",
+			"executablePath": "$(DotNetName)",
 			"commandLineArgs": "$(tMLServerPath)",
-			"workingDirectory": "$(TerrariaSteamPath)"
-		},
-		// Note that native debugging disables Edit & Continue and Hot-reload.
-		"Terraria - Native Debug": {
-			"commandName": "Executable",
-			"executablePath": "dotnet",
-			"commandLineArgs": "$(tMLPath)",
-			"workingDirectory": "$(TerrariaSteamPath)",
-			"nativeDebugging": true
-		},
-		"TerrariaServer - Native Debug": {
-			"commandName": "Executable",
-			"executablePath": "dotnet",
-			"commandLineArgs": "$(tMLServerPath)",
-			"workingDirectory": "$(TerrariaSteamPath)",
-			"nativeDebugging": true
+			"workingDirectory": "$(tMLSteamPath)"
 		}
 	}
 }
