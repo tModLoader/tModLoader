@@ -57,11 +57,14 @@
 		"DownloadMissingMods": "Descargar mods faltantes",
 		"ModsDisable": "Desactivar",
 		"ModsEnable": "Activar",
+		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
+		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
 		"ModConfiguration": "Configurar mods",
 		"ModsOpenConfig": "Haz clic para abrir la configuración",
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModStableOnPreviewWarning": "No es de una versión preliminar. Actívalo bajo tu propio riesgo",
 		"ModDependencyTooltip": "Este mod depende de: {0}\n (Se habilitará(n) automáticamente)",
+		// "ModDependentsTooltip": "Required by:\n{0}",
 		"TranslationModTooltip": "Este mod proporciona traducciones para: {0}",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
 		"ModDependencyModsNotFound": "Los siguientes mods no han sido encontrados: {0}",
@@ -150,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "Al publicar este elemento, aceptas los Términos de Servicio de tModLoader",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Error: Solo los usuarios de Steam pueden publicar a través del juego en Steam Workshop.",
 		"NoWorkshopAccess": "Error: Error al acceder a Steam Workshop",
 		"ModAlreadyUploaded": "Error: ¡Este mod ya existe en Steam Workshop!",
@@ -458,8 +462,8 @@
 		"DocumentationLink": "Leer la documentación",
 		"DiscordLink": "Encuentra ayuda en el servidor de Discord",
 		"MSPortToLatest": "Ejecutar tModPorter",
-		"MSFirstLaunchModderWelcomeMessage": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
-		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
+		"MSFirstLaunchModderWelcomeMessage": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
+		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
 		"DownloadNetSDK": "Descargar el SDK de .NET",
 		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
 

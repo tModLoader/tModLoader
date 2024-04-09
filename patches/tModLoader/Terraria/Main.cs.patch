@@ -267,7 +267,7 @@
 +	public static string statusText {
 +		get => _statusText;
 +		set {
-+			Logging.LogStatusChange(_statusText, value);
++			Logging.LogStatusChange(value);
 +			_statusText = value;
 +		}
 +	}
@@ -1434,7 +1434,7 @@
  			return;
  		}
  
-@@ -4976,9 +_,11 @@
+@@ -4976,9 +_,12 @@
  
  		dayRate = num;
  		desiredWorldTilesUpdateRate = num;
@@ -1443,6 +1443,7 @@
  			dayRate = 1;
  			desiredWorldTilesUpdateRate = 1;
 +			desiredWorldEventsUpdateRate = 1;
++			worldEventUpdates = 1;
  		}
  	}
  
@@ -2469,6 +2470,16 @@
  		wallFrameCounter[144]++;
  		int num3 = 5;
  		int num4 = 10;
+@@ -15840,7 +_,8 @@
+ 			text = "";
+ 
+ 		bool flag = false;
+-		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
++		// Old code prevented users from using AltGr modifier key. Needed to type chars such as []{}\| on many languages keyboard layouts. Windows interprets Ctrl + Alt as AltGr.
++		if ((inputText.IsKeyDown(Keys.LeftControl) || inputText.IsKeyDown(Keys.RightControl)) && !(inputText.IsKeyDown(Keys.LeftAlt) || inputText.IsKeyDown(Keys.RightAlt))) {
+ 			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
+ 				text = "";
+ 			}
 @@ -15989,15 +_,19 @@
  			X += 34;
  

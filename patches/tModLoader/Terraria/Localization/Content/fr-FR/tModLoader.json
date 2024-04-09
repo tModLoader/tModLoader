@@ -57,11 +57,14 @@
 		// "DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "Désactiver",
 		"ModsEnable": "Activer",
+		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
+		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
 		"ModConfiguration": "Configuration du Mod",
 		"ModsOpenConfig": "Cliquez pour ouvrir la configuration",
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
-		// "ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		// "ModDependencyTooltip": "Requires:\n{0}",
+		// "ModDependentsTooltip": "Required by:\n{0}",
 		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
@@ -150,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "En soumettant cet article, vous acceptez les Conditions d'utilisation de tModLoader",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Erreur: Seuls les propriétaires de Steam tModLoader peuvent publier sur Workshop dans le jeu.",
 		"NoWorkshopAccess": "Erreur: Impossible d'accéder à Steam Workshop",
 		"ModAlreadyUploaded": "Erreur: Mod existe déjà sur Workshop!",
@@ -459,8 +463,8 @@
 		// "DiscordLink": "Find Help on the Discord Server",
 		// "MSPortToLatest": "Run tModPorter",
 		// "MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
-		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET 6 SDK to be installed, but it has not been detected. Click the \"Download .NET 6.0 SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
-		// "DownloadNetSDK": "Download .NET 6.0 SDK",
+		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
+		// "DownloadNetSDK": "Download .NET SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI

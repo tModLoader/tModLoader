@@ -138,6 +138,7 @@ public static class LocalizationLoader
 	#nullable disable
 	{
 		path = Path.ChangeExtension(path, null);
+		path = path.Replace("\\", "/");
 
 		culture = null;
 		prefix = null;

@@ -448,6 +448,7 @@ internal class UIModPackItem : UIPanel
 	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = modpack._filepath;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 
@@ -460,6 +461,7 @@ internal class UIModPackItem : UIPanel
 		// Clear active Mod Pack 
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = null;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 

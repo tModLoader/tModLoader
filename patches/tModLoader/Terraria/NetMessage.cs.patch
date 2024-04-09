@@ -580,7 +580,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2291,6 +_,23 @@
+@@ -2291,18 +_,54 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -601,9 +601,40 @@
 +		SendData(28, -1, ignoreClient, null, npc.whoAmI, number7: 1);
 +	}
 +
++	/// <SharedSummary>
++	/// Sends all the tiles in a rectangle range to sync them. The range is defined by parameters explained below.
++	/// <para/> <paramref name="whoAmi"/> should usually be -1. <paramref name="changeType"/> can optionally be set to one of the <see cref="TileChangeType"/> to automatically play the corresponding liquid sound on the receiving clients.
++	/// <para/> If called on a client, the server will relay the changed tiles to other clients when it is received.
++	/// <para/> Use this method when manually adjusting <see cref="Main.tile"/>. Uses such as wiring, right clicking on tiles, tiles randomly updating, and projectiles modifying tiles are all exhibited in <see href="https://github.com/search?q=repo%3AtModLoader%2FtModLoader+SendTileSquare+path%3AExampleMod&amp;type=Code">ExampleMod</see>. <para/>
++	/// </SharedSummary>
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the top left corner of tiles to sync and <paramref name="xSize"/> and <paramref name="ySize"/> denote the width and height of the rectangle.
++	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
  	{
  		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
+ 		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>.
++	/// <para/> The <see cref="SendTileSquare(int, int, int, int, int, TileChangeType)"/> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly. 
++	/// </summary>
+ 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, TileChangeType changeType = TileChangeType.None)
+ 	{
+ 		int num = (centeredSquareSize - 1) / 2;
+ 		SendTileSquare(whoAmi, tileX - num, tileY - num, centeredSquareSize, centeredSquareSize, changeType);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote a single tile to sync. If sending multiple tiles use the other overloads instead.
++	/// </summary>
+ 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, TileChangeType changeType = TileChangeType.None)
+ 	{
+ 		int num = 1;
 @@ -2455,7 +_,7 @@
  		}
  
