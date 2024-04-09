@@ -5556,13 +5556,19 @@
  		if (menuMode == num)
  			GamepadMainMenuHandler.LastDrew = num;
  	}
-@@ -42624,7 +_,15 @@
+@@ -42624,7 +_,21 @@
  
  		text = ((!ActiveWorldFileData.IsCloudSave) ? (text + SanitizePathArgument("world", worldPathName)) : (text + SanitizePathArgument("cloudworld", worldPathName)));
  		text = text + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
 +
 +		// TML options
 +		text += $@" -modpath ""{ModOrganizer.modPath}""";
++
++		if (Program.LaunchParameters.TryGetValue("-tmlsavedirectory", out var tmlsavedirectory)) 
++			text += $@" -tmlsavedirectory ""{tmlsavedirectory}""";
++		else if (Program.LaunchParameters.TryGetValue("-savedirectory", out var savedirectory)) 
++			text += $@" -savedirectory ""{savedirectory}""";
++
 +		if (showServerConsole)
 +			text += " -showserverconsole";
 +
