@@ -157,6 +157,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "在提交之前，你需要同意 tModLoader 的服务条款",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "只有 Steam 版的 tModLoader 才可以在游戏里上传内容到 Steam 创意工坊。",
 		"NoWorkshopAccess": "无法访问 Steam 创意工坊。",
 		"ModAlreadyUploaded": "创意工坊上已经有这个模组了。",
