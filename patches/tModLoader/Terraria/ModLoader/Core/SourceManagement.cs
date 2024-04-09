@@ -237,6 +237,11 @@ internal static class SourceManagement
 			propertyGroups.Elements("PlatformTarget")
 		));
 
+		// Remove the analyzer package, since our targets file now handles all that.
+		yield return RemoveNodes(itemGroups.Elements("PackageReference").Where(
+			e => e.Attribute("Include")?.Value == "tModLoader.CodeAssist"
+		));
+
 		// Keep LangVersion up-to-date by removing old overrides.
 		yield return RemoveNodes(propertyGroups
 			.Elements("LangVersion")
