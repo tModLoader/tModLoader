@@ -533,6 +533,7 @@
 		"SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
 		"ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
 		"ModifiedByMods": "Is modified by ",
+		"MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",
