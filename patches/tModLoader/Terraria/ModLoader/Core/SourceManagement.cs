@@ -285,7 +285,7 @@ internal static class SourceManagement
 
 		// Make a backup if the file already exists.
 		if (File.Exists(csprojPath)) {
-			File.Move(csprojPath, csprojPath + ".backup", overwrite: true);
+			File.Move(csprojPath, csprojPath + ".bak", overwrite: true);
 		}
 
 		// Overwrite using template.
