@@ -145,6 +145,16 @@ internal class UIModSourceItem : UIPanel
 
 			contextButtonsLeft -= 26;
 		}
+
+		if (File.Exists(csprojFile)) {
+			var openFolderButton = new UIHoverImage(UICommon.ButtonOpenFolder, Lang.inter[110].Value) {
+				Left = { Pixels = contextButtonsLeft, Percent = 1f },
+				Top = { Pixels = 4 }
+			};
+			openFolderButton.OnLeftClick += (a, b) => Utils.OpenFolder(_mod);
+			Append(openFolderButton);
+			contextButtonsLeft -= 26;
+		}
 	}
 
 	protected override void DrawChildren(SpriteBatch spriteBatch)
@@ -173,7 +183,7 @@ internal class UIModSourceItem : UIPanel
 			bool projNeedsUpdate = false;
 
 			if (SourceManagement.SourceUpgradeNeeded(modFolderPath)) {
-				var icon = UICommon.ButtonExclamationTexture;
+				var icon = UICommon.ButtonUpgradeCsproj;
 				var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
@@ -200,7 +210,7 @@ internal class UIModSourceItem : UIPanel
 			string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
 
 			if (files.Length > 0) {
-				var icon = UICommon.ButtonExclamationTexture;
+				var icon = UICommon.ButtonUpgradeLang;
 				var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
@@ -222,7 +232,7 @@ internal class UIModSourceItem : UIPanel
 
 			// Display Run tModPorter when .csproj is valid
 			if (!projNeedsUpdate) {
-				var pIcon = UICommon.ButtonExclamationTexture;
+				var pIcon = UICommon.ButtonRunTModPorter;
 				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
