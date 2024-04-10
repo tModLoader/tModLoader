@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,59 +_,85 @@
+@@ -11,59 +_,86 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -82,7 +82,8 @@
 +		<!-- Mod Template -->
 +		<None Include="ModLoader/Templates/**" />
 +		<Compile Remove="ModLoader/Templates/**" />
-+		<EmbeddedResource Update="ModLoader/Templates/**">
++		<EmbeddedResource Remove="ModLoader/Templates/**" />
++		<EmbeddedResource Include="ModLoader/Templates/**">
 +			<LogicalName>$([System.String]::Copy('Terraria/%(Identity)').Replace('\', '/'))</LogicalName>
 +		</EmbeddedResource>
  	</ItemGroup>
