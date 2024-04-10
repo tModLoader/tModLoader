@@ -197,20 +197,22 @@ internal static class SourceManagement
 	}
 
 	/// <summary> Returns an enumerable of delegates, executing which will upgrade the provided document. </summary>
-	private static IEnumerable<Action> CollectCsprojModifications(XDocument document)
+	private static List<Action> CollectCsprojModifications(XDocument document)
 	{
-		Action RemoveNodes(IEnumerable<XNode> nodes)
+		var modifications = new List<Action>();
+
+		void RemoveNodes(IEnumerable<XNode> nodes)
 		{
-			return () => {
-				foreach (var node in nodes) {
+			foreach (var node in nodes) {
+				modifications.Add(() => {
 					// Remove whitespace, which is otherwise kept due to the way we parsed the document.
 					if (node.PreviousNode is XText previous && string.IsNullOrWhiteSpace(previous.Value)) {
 						previous.Remove();
 					}
 
 					node.Remove();
-				}
-			};
+				});
+			}
 		}
 
 		var root = document.Root!;
@@ -219,7 +221,7 @@ internal static class SourceManagement
 
 		// Ensure that root imports tModLoader.targets.
 		if (!root.Elements("Import").Any(e => e is { FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
-			yield return () => {
+			modifications.Add(() => {
 				var import = new XElement("Import");
 				import.SetAttributeValue("Project", @"..\tModLoader.targets");
 
@@ -229,25 +231,27 @@ internal static class SourceManagement
 					new XText("\n\t"),
 					import,
 				});
-			};
+			});
 		}
 
 		// Get rid of Framework & Platform overrides.
-		yield return RemoveNodes(Enumerable.Concat(
+		RemoveNodes(Enumerable.Concat(
 			propertyGroups.Elements("TargetFramework"),
 			propertyGroups.Elements("PlatformTarget")
 		));
 
 		// Remove the analyzer package, since our targets file now handles all that.
-		yield return RemoveNodes(itemGroups.Elements("PackageReference").Where(
+		RemoveNodes(itemGroups.Elements("PackageReference").Where(
 			e => e.Attribute("Include")?.Value == "tModLoader.CodeAssist"
 		));
 
 		// Keep LangVersion up-to-date by removing old overrides.
-		yield return RemoveNodes(propertyGroups
+		RemoveNodes(propertyGroups
 			.Elements("LangVersion")
 			.Where(e => Version.TryParse(e.Value, out var v) && v.MajorMinor() <= maxLanguageVersionToRemove)
 		);
+
+		return modifications;
 	}
 
 	private static bool TryLoadXmlDocument(string filePath, LoadOptions loadOptions, [NotNullWhen(true)] out XDocument? document)
