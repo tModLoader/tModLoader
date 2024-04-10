@@ -295,7 +295,7 @@ internal static class SourceManagement
 		// Overwrite using template.
 		TryWriteModTemplateFile(
 			modSrcDirectory,
-			"{{" + nameof(TemplateParameters.ModName) + "}}",
+			"{{" + nameof(TemplateParameters.ModName) + "}}.csproj",
 			templateParameters ?? TemplateParameters.FromSourceFolder(modSrcDirectory)
 		);
 	}
