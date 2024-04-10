@@ -216,8 +216,8 @@ internal static class SourceManagement
 		}
 
 		var root = document.Root!;
-		var itemGroups = root.Elements("ItemGroup");
-		var propertyGroups = root.Elements("PropertyGroup");
+		var itemGroups = root.Elements("ItemGroup").Where(e => e.Attribute("Condition") == null);
+		var propertyGroups = root.Elements("PropertyGroup").Where(e => e.Attribute("Condition") == null);
 
 		// Ensure that root imports tModLoader.targets.
 		if (!root.Elements("Import").Any(e => e is { FirstAttribute: { Name.LocalName: "Project", Value: @"..\tModLoader.targets" } })) {
