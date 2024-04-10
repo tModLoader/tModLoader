@@ -1,8 +1,19 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/TerrariaNetCore/ReLogic/ReLogic.csproj
-@@ -8,17 +_,10 @@
+@@ -1,5 +_,8 @@
+ <Project Sdk="Microsoft.NET.Sdk">
++
+ 	<Import Project="../Configuration.targets" />
++	<Import Project="../../../tModBuildTasks/BuildTasks.targets" />
++
+ 	<PropertyGroup>
+ 		<OutputType>Library</OutputType>
+ 		<Version>1.0.0.0</Version>
+@@ -7,20 +_,16 @@
+ 		<Copyright>Copyright © Re-Logic 2017</Copyright>
  		<RootNamespace>ReLogic</RootNamespace>
  	</PropertyGroup>
++
  	<ItemGroup>
 -		<Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
 -		<Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
@@ -19,5 +30,9 @@
 -		<Reference Include="System.Drawing" />
 -		<Reference Include="System.Windows.Forms" />
  	</ItemGroup>
++
  	<ItemGroup>
  		<EmbeddedResource Include="Microsoft/**" />
+ 	</ItemGroup>
++
+ </Project>

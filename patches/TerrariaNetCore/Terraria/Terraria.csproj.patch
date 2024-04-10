@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -1,90 +_,122 @@
+@@ -1,90 +_,107 @@
  <Project Sdk="Microsoft.NET.Sdk">
 +
  	<Import Project="../Configuration.targets" />
@@ -128,21 +128,6 @@
 +
 +	<!-- Import tasks -->
 +	<UsingTask TaskName="SynchronizeDirectories" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
-+	<UsingTask TaskName="OrganizeReferenceDestinations" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
-+
-+	<!-- Organize output copies of Project, NuGet, and directly referenced libraries under a single tidy folder. -->
-+	<Target Name="OrganizeAllReferences" AfterTargets="ResolveAssemblyReferences" BeforeTargets="GenerateBuildDependencyFile;CopyFilesToOutputDirectory">
-+		<!-- Run the task. -->
-+		<OrganizeReferenceDestinations BaseDirectory="$(LibrariesDirectory)" Items="@(ReferenceCopyLocalPaths)">
-+			<Output TaskParameter="Items" ItemName="ReferenceCopyLocalPaths_New" />
-+		</OrganizeReferenceDestinations>
-+
-+		<!-- This has to be done because the Output element above can only append items, and is unable to replace them. -->
-+		<ItemGroup>
-+			<ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" />
-+			<ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths_New)" />
-+		</ItemGroup>
-+	</Target>
 +
 +	<!-- Overwrites runtimeconfig.dev.json probing paths for the runtime to look only into our custom libraries directory. -->
 +	<Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles" Condition="$(GenerateRuntimeConfigDevFile) == 'true'">

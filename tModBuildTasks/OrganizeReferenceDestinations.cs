@@ -11,8 +11,7 @@ namespace tModLoader.BuildTasks;
 /// </summary>
 public sealed class OrganizeReferenceDestinations : TaskBase
 {
-	[Required]
-	public string BaseDirectory { get; set; } = null!;
+	public string BaseDirectory { get; set; } = "Libraries";
 
 	//[Required]
 	//public string NativesDirectory { get; set; } = null!;
@@ -49,6 +48,7 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 
 			AssemblyName? assemblyName = !string.IsNullOrEmpty(fusionName) ? new AssemblyName(fusionName) : null;
 
+			string destinationSubPath;
 			string destinationSubDirectory;
 
 			// Project References
@@ -57,10 +57,12 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 				const string VersionHack = "1.0.0";
 
 				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, VersionHack);
+				destinationSubPath = Path.Combine(destinationSubDirectory, Path.GetFileName(item.ItemSpec));
 			}
 			// Direct Managed References
 			else if (referenceSourceTarget == "ResolveAssemblyReference" && assemblyName != null) {
 				destinationSubDirectory = Path.Combine(BaseDirectory, assemblyName.Name, assemblyName.Version.ToString());
+				destinationSubPath = Path.Combine(destinationSubDirectory, Path.GetFileName(item.ItemSpec));
 			}
 			// NuGet Packages - This is used for all NuGet libraries, whether native or managed, whether rid-specific or agnostic.
 			else if (!string.IsNullOrEmpty(nugetPackageId)) {
@@ -70,6 +72,7 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 				string? nugetPackageIdLower = nugetPackageId.ToLower();
 
 				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageIdLower, nugetPackageVersion, directoryInPackage);
+				destinationSubPath = Path.Combine(destinationSubDirectory, Path.GetFileName(item.ItemSpec));
 			}
 			// Fallback
 			else {
@@ -91,6 +94,8 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 
 			// Set copying destination
 			item.SetMetadata("DestinationSubDirectory", destinationSubDirectory);
+			// SubPath is also required, so that things like build acceleration doesn't screw up.
+			item.SetMetadata("DestinationSubPath", destinationSubPath);
 		}
 	}
 }

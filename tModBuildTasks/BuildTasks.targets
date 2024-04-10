@@ -20,5 +20,29 @@
 		<!-- Add a ProjectReference to ensure that the task gets built before it needs to be called. -->
 		<ProjectReference Include="$(BuildTasksProjectFile)" ReferenceOutputAssembly="false" />
 	</ItemGroup>
+	
+	<!-- Import tasks -->
+	<UsingTask TaskName="OrganizeReferenceDestinations" AssemblyFile="$(BuildTasksAssemblyFile)" TaskFactory="$(BuildTasksTaskFactory)" />
+
+	<!-- Organize output copies of Project, NuGet, and directly referenced libraries under a single tidy folder. -->
+	<Target Name="OrganizeAllReferences" AfterTargets="ResolveReferences;ResolveAssemblyReferences" BeforeTargets="GenerateBuildDependencyFile;CopyFilesToOutputDirectory">
+		<!-- Run the task. -->
+		<OrganizeReferenceDestinations Items="@(Content)">
+			<Output TaskParameter="Items" ItemName="Content_New" />
+		</OrganizeReferenceDestinations>
+		<OrganizeReferenceDestinations Items="@(ReferenceCopyLocalPaths)">
+			<Output TaskParameter="Items" ItemName="ReferenceCopyLocalPaths_New" />
+		</OrganizeReferenceDestinations>
+
+		<!-- This has to be done because the Output element above can only append items, and is unable to replace them. -->
+		<ItemGroup>
+			<Content Remove="@(Content)" />
+			<Content Include="@(Content_New)" />
+			<Content_New Remove="@(Content_New)" />
+			<ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" />
+			<ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths_New)" />
+			<ReferenceCopyLocalPaths_New Remove="@(ReferenceCopyLocalPaths_New)" />
+		</ItemGroup>
+	</Target>
 
 </Project>
