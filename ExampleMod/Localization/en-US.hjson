@@ -1123,7 +1123,10 @@ Mods: {
 			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
 		}
 
-		WorldGen.ExampleOrePassMessage: Example Mod Ores
+		WorldGen: {
+			ExampleOrePassMessage: Example Mod Ores
+			BlessedWithExampleOreMessage: Your world has been blessed with Example Ore!
+		}
 
 		BuilderToggles: {
 			ExampleBuilderToggleDimmedLight: {
