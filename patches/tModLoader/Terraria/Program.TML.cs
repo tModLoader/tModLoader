@@ -142,14 +142,25 @@ public static partial class Program
 			try {
 				var oneDrivePath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\OneDrive\\OneDrive.exe");
 				var oneDrivePath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe");
-				if (File.Exists(oneDrivePath1))
-					System.Diagnostics.Process.Start(oneDrivePath1);
-				else if (File.Exists(oneDrivePath2))
-					System.Diagnostics.Process.Start(oneDrivePath2);
 
+				// passing /background to onedrive starts it with neither a tooltip popup nor a file explorer window
+				System.Diagnostics.ProcessStartInfo oneDriveInfo = new System.Diagnostics.ProcessStartInfo {
+					Arguments = "/background",
+					UseShellExecute = false
+				};
+
+				if (File.Exists(oneDrivePath1)) {
+					oneDriveInfo.FileName = oneDrivePath1;
+					System.Diagnostics.Process.Start(oneDriveInfo);
+				}
+				else if (File.Exists(oneDrivePath2)) {
+					oneDriveInfo.FileName = oneDrivePath2;
+					System.Diagnostics.Process.Start(oneDriveInfo);
+				}
 				Thread.Sleep(3000);
 			}
 			catch { }
+
 		}
 
 		// Verify that we are moving maxVersionOfSource player data to destination folder. Do so by checking for version <= maxVersionOfSource
