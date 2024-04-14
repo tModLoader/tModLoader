@@ -160,7 +160,6 @@ public static partial class Program
 				Thread.Sleep(3000);
 			}
 			catch { }
-
 		}
 
 		// Verify that we are moving maxVersionOfSource player data to destination folder. Do so by checking for version <= maxVersionOfSource
