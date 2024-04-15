@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['damage_0',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()']]],
-  ['damage_1',['Damage',['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()'],['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()']]],
+  ['damage_0',['Damage',['../struct_n_p_c_1_1_hit_info.html#acead2fc88eec68678284a6324bf35886',1,'NPC.HitInfo.Damage()'],['../struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb',1,'Player.HurtInfo.Damage()']]],
+  ['damage_1',['damage',['../class_item.html#a26d10a605b43706b07db3f314be4c0a0',1,'Item.damage()'],['../class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580',1,'NPC.damage()'],['../class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4',1,'Projectile.damage()']]],
   ['damageclass_2',['DamageClass',['../class_damage_class.html',1,'']]],
   ['damageclassdata_3',['DamageClassData',['../class_damage_class_data.html',1,'']]],
   ['damageclassloader_4',['DamageClassLoader',['../class_damage_class_loader.html',1,'']]],
@@ -79,8 +79,8 @@ var searchData=
   ['defaulttowhip_76',['DefaultToWhip',['../class_item.html#a19677680af3f6930fe59649fa96086b9',1,'Item']]],
   ['defdamage_77',['defDamage',['../class_n_p_c.html#ad7691fdbe3843bfc6604a4bdba3e2707',1,'NPC']]],
   ['defdefense_78',['defDefense',['../class_n_p_c.html#acaa2249bf787bcd07a672eaaaa6e3066',1,'NPC']]],
-  ['defense_79',['Defense',['../struct_n_p_c_1_1_hit_modifiers.html#afabf2128c79084710e94f9e72a16405f',1,'NPC::HitModifiers']]],
-  ['defense_80',['defense',['../class_n_p_c.html#ab16ba6496d54d7e4080fbd11d11540ba',1,'NPC.defense()'],['../class_item.html#af408dfdaffd7c3e1920615c9ad124079',1,'Item.defense()']]],
+  ['defense_79',['defense',['../class_n_p_c.html#ab16ba6496d54d7e4080fbd11d11540ba',1,'NPC.defense()'],['../class_item.html#af408dfdaffd7c3e1920615c9ad124079',1,'Item.defense()']]],
+  ['defense_80',['Defense',['../struct_n_p_c_1_1_hit_modifiers.html#afabf2128c79084710e94f9e72a16405f',1,'NPC::HitModifiers']]],
   ['defenseeffectiveness_81',['DefenseEffectiveness',['../struct_n_p_c_1_1_hit_modifiers.html#a00625b9d69366bef28de62b6b15e1804',1,'NPC.HitModifiers.DefenseEffectiveness()'],['../class_player.html#a3c361255efc711c3b823a59c6d5b8327',1,'Player.DefenseEffectiveness()']]],
   ['defenseiconposition_82',['DefenseIconPosition',['../class_accessory_slot_loader.html#aea203924566177e9a9c0277deb489627',1,'AccessorySlotLoader']]],
   ['defensestat_83',['DefenseStat',['../struct_player_1_1_defense_stat.html',1,'Player']]],
