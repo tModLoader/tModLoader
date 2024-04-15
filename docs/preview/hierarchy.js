@@ -2447,6 +2447,7 @@ var hierarchy =
     [ "NPCUtils.TargetSearchResults", "struct_n_p_c_utils_1_1_target_search_results.html", null ],
     [ "TeleportationStyleID", "class_teleportation_style_i_d.html", null ],
     [ "TeleportHelpers", "class_teleport_helpers.html", null ],
+    [ "SourceManagement.TemplateParameters", "class_source_management_1_1_template_parameters.html", null ],
     [ "WorldGen.TenthAnniversaryWorldInfo", "class_world_gen_1_1_tenth_anniversary_world_info.html", null ],
     [ "TestHighFPSIssues", "class_test_high_f_p_s_issues.html", null ],
     [ "Main.TextDisplayCache", "class_main_1_1_text_display_cache.html", null ],
