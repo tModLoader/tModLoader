@@ -5,7 +5,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExclusiveAccessory.Items
+namespace Content.Items.Accessories
 {
     // This file is showcasing inheritance to implement an accessory "type" that you can only have one of equipped
     // It also shows how you can interact with inherited methods
