@@ -1,15 +1,36 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Shaders/ArmorShaderData.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/ArmorShaderData.cs
-@@ -77,6 +_,12 @@
- 		return this;
- 	}
+@@ -1,3 +_,4 @@
++using System;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+@@ -14,10 +_,15 @@
+ 	private Asset<Texture2D> _uImage;
+ 	private Vector2 _uTargetPosition = Vector2.One;
  
-+	public ArmorShaderData UseImage(Asset<Texture2D> asset)
++	[Obsolete("Removed in 1.4.5. Use Asset<Effect> version instead. Asset version works with AsyncLoad")]
+ 	public ArmorShaderData(Ref<Effect> shader, string passName)
+ 		: base(shader, passName)
+ 	{
+ 	}
++	public ArmorShaderData(Asset<Effect> shader, string passName)
++		: base(shader, passName)
 +	{
-+		_uImage = asset;
++	}
+ 
+ 	public virtual void Apply(Entity entity, DrawData? drawData = null)
+ 	{
+@@ -74,6 +_,12 @@
+ 	public ArmorShaderData UseImage(string path)
+ 	{
+ 		_uImage = Main.Assets.Request<Texture2D>(path);
 +		return this;
 +	}
 +
- 	public ArmorShaderData UseOpacity(float alpha)
- 	{
- 		_uOpacity = alpha;
++	public ArmorShaderData UseImage(Asset<Texture2D> asset)
++	{
++		_uImage = asset;
+ 		return this;
+ 	}
+ 

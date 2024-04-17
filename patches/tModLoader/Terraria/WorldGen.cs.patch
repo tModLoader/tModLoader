@@ -8,12 +8,13 @@
  using System.Threading;
  using System.Threading.Tasks;
  using Microsoft.Xna.Framework;
-@@ -22,13 +_,15 @@
+@@ -22,13 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
++using Terraria.ModLoader.Exceptions;
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -261,7 +262,22 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
-@@ -2633,21 +_,48 @@
+@@ -2624,30 +_,62 @@
+ 					worldBackup = false;
+ 
+ 				if (!Main.dedServ) {
++					// If the loading error is mod related, show the exception, then back to the load backup/load failed menus.
++					if (WorldFile.LastThrownLoadException is CustomModDataException ex) {
++						WorldIO.customDataFail = ex;
++						Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.WorldIOException")}\n{ex.modName}\n\n{ex.Message}\n{ex.StackTrace}", worldBackup ? 200 : 201);
++						return;
++					}
+ 					if (worldBackup)
+ 						Main.menuMode = 200;
+ 					else
+ 						Main.menuMode = 201;
+-
+ 					return;
  				}
  
  				if (!worldBackup) {
@@ -2028,7 +2044,7 @@
 +	/// PlaceTile is the main way to place individual tiles while obeying anchor considerations. Most of the other PlaceX methods in the WorldGen class are called by this method. i and j are the tile coordinates. These coordinates relate to the origin of the tile, not necessarily the top left corner of the tile. Read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">the Basic Tile wiki guide</see> to familiarize yourself with the concepts of Anchors and Origins. <paramref name="mute"/> indicates if a sound should be made, this only applies to in-game usage as sounds are all muted during world gen. <paramref name="forced"/> attempts to place the tile even if other tiles are already at the coordinates, but it is unreliable. <paramref name="plr"/> does nothing except affect bathtubs. <paramref name="style"/> refers to the style of the tile type provided. Styles are explained in the Basic Tile guide.
 +	/// <para/> PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <c>if(Main.tile[x, y].type == TileID.Campfire)</c>
 +	/// <para/> PlaceTile doesn't expose everything. For example, attempting to place a tile with a specific style will be ignored by many of the underlying methods. Another issue is that it is impossible to place a tile that has left and right placement orientations facing right. In these situations, you might need to manually place each tile in the multitile or use <see cref="PlaceObject(int, int, int, bool, int, int, int, int)"/> instead. WorldGen.PlaceObject requires more input. For example, placing Coral with PlaceObject means you have to manually specify the style, as the random style (<see cref="TileObjectData.RandomStyleRange"/>) choosing is a feature of PlaceTile.
-+	/// <para/> 
++	/// <para/> If called in-game, the changed tiles would need to be synced if placement is successful. See <see cref="NetMessage.SendTileSquare(int, int, int, int, int, TileChangeType)"/> for more information and examples.
 +	/// </summary>
 +	/// <param name="i"></param>
 +	/// <param name="j"></param>
@@ -3079,6 +3095,15 @@
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}
+@@ -63321,7 +_,7 @@
+ 			currentMerge = -1;
+ 	}
+ 
+-	private static bool SpawnFallingBlockProjectile(int i, int j, Tile tileCache, Tile tileTopCache, Tile tileBottomCache, int type)
++	public static bool SpawnFallingBlockProjectile(int i, int j, Tile tileCache, Tile tileTopCache, Tile tileBottomCache, int type)
+ 	{
+ 		if (Main.netMode == 1)
+ 			return false;
 @@ -63615,7 +_,8 @@
  		if (!SolidTile(tile) || !SolidTile(tile2)) {
  			flag = true;
@@ -3113,6 +3138,26 @@
  			}
  
  			destroyObject = false;
+@@ -63712,6 +_,7 @@
+ 	private static void GetSandfallProjData(int type, out int projType, out int dmg)
+ 	{
+ 		dmg = 10;
++		/*
+ 		switch (type) {
+ 			case 112:
+ 				projType = 56;
+@@ -63753,6 +_,11 @@
+ 			default:
+ 				projType = 31;
+ 				break;
++		*/
++		projType = 31;
++		if (TileID.Sets.FallingBlockProjectile[type] is TileID.Sets.FallingBlockProjectileInfo data) {
++			projType = data.FallingProjectileType;
++			dmg = data.FallingProjectileDamage;
+ 		}
+ 	}
+ 
 @@ -63768,7 +_,7 @@
  
  		if (!tile.nactive())

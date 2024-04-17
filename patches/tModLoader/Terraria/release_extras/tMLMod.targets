@@ -1,4 +1,12 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="IncludeModReferences">
+
+	<!-- Build Defaults -->
+	<PropertyGroup>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<TargetFramework>net8.0</TargetFramework>
+		<LangVersion>12.0</LangVersion>
+	</PropertyGroup>
+	
 	<PropertyGroup>
 		<!-- legacy property -->
 		<TerrariaSteamPath>$(MSBuildThisFileDirectory)</TerrariaSteamPath>
@@ -12,6 +20,7 @@
     	<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
 		<!-- TML stable version define placeholder -->
 	</PropertyGroup>
+	
 	<ItemGroup>
 		<AdditionalFiles Include="**/*.hjson" />
 		<AdditionalFiles Include="**/*.txt" />
@@ -21,10 +30,12 @@
 		<AdditionalFiles Remove="bin/**" />
 		<AdditionalFiles Remove="obj/**" />
 		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="false" />
-		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="false" /> 
+		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="false" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
+
+		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
 	</ItemGroup>
 
 	<ItemDefinitionGroup>
@@ -88,4 +99,5 @@
 				ModProperties="@(ModProperty)" >
 		</PackageModFile>
 	</Target>
+
 </Project>

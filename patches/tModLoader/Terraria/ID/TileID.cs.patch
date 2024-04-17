@@ -65,7 +65,7 @@
  		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +		/// <summary>
 +		/// Prevents a tile immediately below a tile of this type from being mineable.
-+		/// <br/> Use <see cref="ModTile.KillTile(int, int, ref bool, ref bool, ref bool)"/> or <see cref="GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
++		/// <br/> Use <see cref="ModTile.CanKillTile(int, int, ref bool)"/> or <see cref="GlobalTile.CanKillTile(int, int, int, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
 +		/// <br/> To affect tile replace behavior in a similar manner, see <see cref="PreventsTileReplaceIfOnTopOfIt"/>
 +		/// <br/> Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack).
 +		/// </summary>
@@ -86,7 +86,7 @@
  		public static bool[] AllBlocksWithSmoothBordersToResolveHalfBlockIssue = Factory.CreateBoolSet(false, 321, 157, 208, 159, 190, 80, 251, 202, 229, 56, 38, 39, 152, 118, 151, 148, 206, 119, 175, 46, 176, 45, 140, 347, 370, 121, 122, 680, 681, 682, 685, 686, 346, 687, 688, 689, 690, 691, 692, 160, 226, 54, 156, 155, 153, 154, 150, 250, 198, 273, 274, 325, 284, 348, 385, 327, 326, 345, 328, 329, 357, 369, 268, 261, 262, 255, 267, 260, 265, 258, 266, 259, 264, 257, 263, 256, 311, 431, 426, 433, 430, 434, 432, 272, 145, 146, 350, 127, 472, 473, 477, 478, 479, 492, 496, 507, 508, 563, 618);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be mined using a shovel.
++		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile can be mined using a <see href="https://terraria.wiki.gg/wiki/Gravedigger%27s_Shovel">shovel</see>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanBeDugByShovel = Factory.CreateBoolSet(false, 0, 668, 59, 57, 123, 224, 147, 2, 109, 23, 661, 199, 662, 60, 70, 477, 492, 53, 116, 112, 234, 40, 495, 633);
@@ -144,7 +144,22 @@
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -238,21 +_,53 @@
+@@ -181,6 +_,14 @@
+ 		public static bool[] HellSpecial = Factory.CreateBoolSet(58, 76, 75);
+ 		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
+ 		public static bool[] tileMossBrick = Factory.CreateBoolSet(false, 512, 513, 514, 515, 516, 517, 535, 537, 540, 626, 628);
++		/// <summary>
++		/// Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be valid for general placement will prevent the placement of various micro biomes such as hives, campsites, enchanted sword shrines, and minecart tracks.
++		/// <para/> Vanilla tiles set to false in this set include Chests, Life Crystals, various Dungeon Bricks, Lihzahrd Bricks, Ebonsand, Ebonstone, Crimstone, Shadow Orbs, Hive, Mushroom Grass, Sandstone Brick, and others. The effect of these tiles being in this set means that micro biomes will not overlap with the dungeon, pyramid, temple, corruption/crimson biomes, glowing mushroom biomes, and other important placed tiles such as chests and life crystals.
++		/// <para/> Modders should set this to false for any tile that could potentially be placed during world generation where this effect is desired. In conjunction with <see cref="WorldBuilding.StructureMap.AddProtectedStructure(Microsoft.Xna.Framework.Rectangle, int)"/>, this will help ensure that interesting world generation features do not overlap. This is especially useful for terrain tiles that would be placed into the world that wouldn't be well served by adding rectangular areas to protect using <c>AddProtectedStructure</c>.
++		/// <para/> This effect is cooperative and is reliant on world generation code that checks this set, such as how <see cref="WorldBuilding.StructureMap.CanPlace(Microsoft.Xna.Framework.Rectangle, int)"/> will check this set and the protected structures by default.
++		/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation">World Generation wiki page</see> teaches more about this subject.
++		/// <para/> Defaults to <c>true</c>.
++		/// </summary>
+ 		public static bool[] GeneralPlacementTiles = Factory.CreateBoolSet(true, 225, 41, 481, 43, 482, 44, 483, 226, 203, 112, 25, 70, 151, 21, 31, 467, 12, 665, 639);
+ 		public static bool[] BasicChest = Factory.CreateBoolSet(21, 467);
+ 		public static bool[] BasicChestFake = Factory.CreateBoolSet(441, 468);
+@@ -238,21 +_,56 @@
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
  		public static bool[] FramesOnKillWall = Factory.CreateBoolSet(440, 240, 241, 242, 245, 246, 4, 136, 334, 132, 55, 395, 425, 440, 471, 510, 511, 573, 630, 631);
@@ -175,6 +190,9 @@
 +		/// Deals the provided amount of damage to any player in contact with the tile. Used by cactus, thorn, and spike tiles.
 +		/// </summary>
  		public static int[] TouchDamageImmediate = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10, 655, 100, 48, 60, 232, 80, 484, 25);
++		/// <summary>
++		/// Set to true for falling tiles, such as sand, coin piles, and shell pile. Affects block swapping falling tiles requiring 110% pickaxe power and causes blocks with this set to call <see cref="WorldGen.SpawnFallingBlockProjectile"/>, where <see cref="FallingBlockProjectile"/> is used to spawn the falling block projectile. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleSand.cs">the ExampleSand tile</see> and corresponding projectiles for an example.
++		/// </summary>
  		public static bool[] Falling = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495);
 +		// Conditions taken from Main.SetupTileMerge
 +		/// <summary>

@@ -14,6 +14,8 @@ namespace Terraria;
 public partial class Player : IEntityWithInstances<ModPlayer>
 {
 	internal IList<string> usedMods;
+	/// <summary> Contains error messages from ModPlayer.SaveData from a previous player save retrieved from the .tplr. Shown when entering a world and on player select menu. Maps ModSystem.FullName.MethodName to exception string.</summary>
+	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();
 	internal string modPack;
 	internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 

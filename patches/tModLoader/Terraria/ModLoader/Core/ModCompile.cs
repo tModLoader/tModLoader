@@ -47,7 +47,7 @@ internal class ModCompile
 	{
 		public string path;
 
-		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties)
+		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(ModLocation.Local, modFile, properties)
 		{
 			this.path = path;
 		}
@@ -208,11 +208,12 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 				string firstError = output.Split('\n').FirstOrDefault(line => ErrorMessageRegex.IsMatch(line), "N/A");
 
-				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
+				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name + ".dll", numErrors, numWarnings) + $"\nError: {firstError}");
 			}
 
 			// Enable mods here to update mod menu UI
 			ModLoader.EnableMod(mod.Name);
+			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);
 		}
 		catch (Exception e) {

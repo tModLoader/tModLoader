@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Import tModLoader mod properties -->
+	<Import Project="..\tModLoader.targets" />
+
+	<!-- General -->
+	<PropertyGroup>
+		<DisplayName>{{ModDisplayName}}</DisplayName>
+		<Author>{{ModAuthor}}</Author>
+		<Version>{{ModVersion}}</Version>
+	</PropertyGroup>
+
+	<!-- References -->
+	<ItemGroup>
+		
+	</ItemGroup>
+
+</Project>

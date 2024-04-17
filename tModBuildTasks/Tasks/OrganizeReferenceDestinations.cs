@@ -18,15 +18,17 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 	//public string NativesDirectory { get; set; } = null!;
 
 	[Required, Output]
-	public ITaskItem[] ReferenceCopyLocalPaths { get; set; } = null!;
+	public ITaskItem[] Items { get; set; } = null!;
 
 	protected override void Run()
 	{
-		var items = ReferenceCopyLocalPaths;
+		// Organize all reference-tied files that are to be copied.
+		ProcessItems(Items);
+	}
 
-		for (int i = 0; i < items.Length; i++) {
-			var item = items[i];
-
+	private void ProcessItems(ITaskItem[] items)
+	{
+		foreach (var item in items) {
 			string fileExtension = item.GetMetadata("Extension");
 			string nugetPackageId = item.GetMetadata("NuGetPackageId");
 			string nugetPackageVersion = item.GetMetadata("NuGetPackageVersion");
@@ -72,6 +74,16 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			// Fallback
 			else {
 				continue;
+			}
+
+			// Adjust Content links.
+			if (item.GetMetadata("Link") is string { Length: not 0 } link) {
+				item.SetMetadata("Link", Path.Combine(destinationSubDirectory, link));
+			}
+
+			// Adjust Content target paths.
+			if (item.GetMetadata("TargetPath") is string { Length: not 0 } targetPath) {
+				item.SetMetadata("TargetPath", Path.Combine(destinationSubDirectory, targetPath));
 			}
 
 			// This MUST have a trailing slash!

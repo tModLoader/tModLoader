@@ -56,6 +56,7 @@ internal static class Interface
 	internal const int createModID = 10025;
 	internal const int exitID = 10026;
 	internal const int modConfigListID = 10027;
+	internal const int serverModsDifferMessageID = 10028;
 	internal static UIMods modsMenu = new UIMods();
 	internal static UILoadMods loadMods = new UILoadMods();
 	internal static UIModSources modSources = new UIModSources();
@@ -73,9 +74,13 @@ internal static class Interface
 	internal static UIExtractMod extractMod = new UIExtractMod();
 	internal static UIModConfig modConfig = new UIModConfig();
 	internal static UIModConfigList modConfigList = new UIModConfigList();
+	internal static UIServerModsDifferMessage serverModsDifferMessage = new UIServerModsDifferMessage();
 	internal static UICreateMod createMod = new UICreateMod();
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+
+	/// <summary> Collection of error messages that will be shown one at a time once the main menu is reached. Useful for error messages during player and world saving happening on another thread. </summary>
+	internal static Stack<string> pendingErrorMessages = new Stack<string>();
 
 	// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 	//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
@@ -159,9 +164,17 @@ internal static class Interface
 							}
 						}
 					}
-					if (LastLaunchedShaInRecentGitHubCommits)
-						infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
-							() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4"));
+					string compareUrl = $"{ModLoader.LastLaunchedTModLoaderAlphaSha}...preview";
+					if (!LastLaunchedShaInRecentGitHubCommits) {
+						// If not seen, then too many commits since the last time user opened Preview
+						messages.Append("\n...and more");
+						compareUrl = $"stable...preview";
+					}
+
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{compareUrl}"));
+				}
+				else {
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + "Unknown, somehow RecentGitHubCommits.txt is missing.", Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/stable...preview"));
 				}
 			}
 
@@ -169,7 +182,7 @@ internal static class Interface
 				ModLoader.PreviewFreezeNotification = false;
 				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
-					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14"));
+					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#144"));
 				Main.SaveSettings();
 			}
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
@@ -376,6 +389,10 @@ internal static class Interface
 		else if (Main.menuMode == modConfigListID)
 		{
 			Main.MenuUI.SetState(modConfigList);
+			Main.menuMode = 888;
+		}
+		else if (Main.menuMode == serverModsDifferMessageID) {
+			Main.MenuUI.SetState(serverModsDifferMessage);
 			Main.menuMode = 888;
 		}
 		else if (Main.menuMode == exitID) {

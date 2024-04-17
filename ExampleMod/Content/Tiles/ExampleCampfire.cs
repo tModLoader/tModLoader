@@ -50,9 +50,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(254, 121, 2), Language.GetText("ItemName.Campfire"));
 
 			// Assets
-			if (!Main.dedServ) {
-				flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
-			}
+			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
 		}
 
 		public override void NearbyEffects(int i, int j, bool closer) {

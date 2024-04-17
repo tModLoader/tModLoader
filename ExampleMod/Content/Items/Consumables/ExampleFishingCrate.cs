@@ -26,7 +26,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.value = Item.sellPrice(0, 2);
 		}
 
-		// TODO ExampleMod: apply this to all items where necessary (which are not automatically detected)
 		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
 			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Crates;
 		}
