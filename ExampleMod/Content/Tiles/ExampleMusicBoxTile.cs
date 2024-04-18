@@ -31,5 +31,29 @@ namespace ExampleMod.Content.Tiles
 			player.cursorItemIconEnabled = true;
 			player.cursorItemIconID = ModContent.ItemType<ExampleMusicBox>();
 		}
+
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+    	{
+        	if (!Lighting.UpdateEveryFrame || new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) == 0) {
+		 		if (Main.tile[i, j].TileFrameX != 36 || (int)Main.timeForVisualEffects % 7 != 0 ||
+            		!Main._rand.NextBool(5)) return;
+        		var MusicNote = Main._rand.Next(570, 573);
+        		Vector2 SpawnPosition = new(i * 16 + 8, j * 16 - 8);
+        		Vector2 NoteMovement = new(Main.WindForVisuals * 2f, -0.5f);
+        		NoteMovement.X *= 1f + Main._rand.Next(-50, 51) * 0.01f;
+        		NoteMovement.Y *= 1f + Main._rand.Next(-50, 51) * 0.01f;
+        		switch (MusicNote)
+        		{
+            		case 572:
+                		SpawnPosition.X -= 8f;
+                		break;
+            		case 571:
+                		SpawnPosition.X -= 4f;
+                		break;
+        		}
+
+        		Gore.NewGore(new EntitySource_Misc(""), SpawnPosition, NoteMovement, MusicNote, 0.8f);
+		 	}
+    	}
 	}
 }
