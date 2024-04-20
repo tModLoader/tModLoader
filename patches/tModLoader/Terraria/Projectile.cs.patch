@@ -362,6 +362,26 @@
  
  	public bool WipableTurret {
  		get {
+@@ -163,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Derived from <see cref="alpha"/>, except it ranges from 0f to 1f and is inverted. 0 is transparent and 1 is fully opaque. Using this instead of alpha might make more sense when doing graphics calculations.
++	/// </summary>
+ 	public float Opacity {
+ 		get {
+ 			return 1f - (float)alpha / 255f;
+@@ -172,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Derived from <see cref="extraUpdates"/>, except 1 is added to arrive at the total number of updates to be run. Using this instead of extraUpdates might make code more readable.
++	/// </summary>
+ 	public int MaxUpdates {
+ 		get {
+ 			return extraUpdates + 1;
 @@ -202,7 +_,7 @@
  
  	public static void ResetImmunity()
