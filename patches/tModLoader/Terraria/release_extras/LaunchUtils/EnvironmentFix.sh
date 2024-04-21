@@ -26,7 +26,7 @@ fi
 if [ "$_uname" = Darwin ]; then
 	library_dir="$root_dir/Libraries/Native/OSX"
 	export DYLD_LIBRARY_PATH="$library_dir"
-	export VK_ICD_FILENAMES="$libary_dir/MoltenVK_icd.json"
+	export VK_ICD_FILENAMES="$library_dir/MoltenVK_icd.json"
 	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
 
 	# El Capitan is a total idiot and wipes this variable out, making the
