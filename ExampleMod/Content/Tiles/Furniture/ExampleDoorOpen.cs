@@ -48,9 +48,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.StyleHorizontal = true;
-			TileObjectData.newTile.StyleMultiplier = 2;
-			TileObjectData.newTile.StyleWrapLimit = 2;
+			TileObjectData.newTile.StyleHorizontal = false;
+			TileObjectData.newTile.StyleWrapLimit = 36;
+			TileObjectData.newTile.StyleLineSkip = 2;
 			TileObjectData.newTile.Direction = TileObjectDirection.PlaceRight;
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newAlternate.Origin = new Point16(0, 1);
