@@ -36,6 +36,33 @@
  						flag4 = true;
  
  					if (flag4 || flag2 || flag3) {
+@@ -373,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num29, num9 + num28);
+ 					bool flag6 = false;
+ 					if (tileSafely.nactive()) {
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorTop
+ 							flag6 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag6 && (anchorBottom.type & AnchorType.SolidBottom) == AnchorType.SolidBottom && ((Main.tileSolid[tileSafely.type] && (!Main.tileSolidTop[tileSafely.type] || (TileID.Sets.Platforms[tileSafely.type] && (tileSafely.halfBrick() || tileSafely.topSlope())))) || tileSafely.halfBrick() || tileSafely.topSlope()) && !TileID.Sets.NotReallySolid[tileSafely.type] && !tileSafely.bottomSlope())
+@@ -424,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + width, num9 + num30);
+ 					bool flag7 = false;
+ 					if (tileSafely.nactive()) {
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorRight
+ 							flag7 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag7 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
+@@ -492,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num31, num9 + num32);
+ 					bool flag8 = false;
+ 					if (tileSafely.nactive()) {
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorLeft
+ 							flag8 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag8 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
 @@ -565,6 +_,9 @@
  			}
  
