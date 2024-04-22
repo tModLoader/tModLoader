@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/TileObject.cs
 +++ src/tModLoader/Terraria/TileObject.cs
+@@ -14,6 +_,7 @@
+ 	public int yCoord;
+ 	public int type;
+ 	public int style;
++	/// <summary> Note: The index of the alternate within the <see cref="TileObjectData.Alternates"/>, not the alternate placement style offset (<see cref="TileObjectData.Style"/>) </summary>
+ 	public int alternate;
+ 	public int random;
+ 	public static TileObject Empty = default(TileObject);
 @@ -139,7 +_,8 @@
  		return true;
  	}

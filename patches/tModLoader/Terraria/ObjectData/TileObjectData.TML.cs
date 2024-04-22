@@ -15,6 +15,11 @@ public partial class TileObjectData
 		newTile = new TileObjectData(_baseObject);
 	}
 
+	/// <summary>
+	/// Retrieves the tile style corresponding to the passed in Tile. Empty tiles and terrain tiles will return -1. Any Tile of the multitile works.
+	/// <para/> This is most useful in replacing hard-coded math where the tile style is calculated from <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/> directly, such as mouse over icons and other tile style specific behaviors.
+	/// <para/> Other related methods include <see cref="GetTileData(Tile)"/>, <see cref="GetTileData(int, int, int)"/>, and <see cref="GetTileInfo(Tile, ref int, ref int)"/>.
+	/// </summary>
 	public static int GetTileStyle(Tile getTile)
 	{
 		if (getTile == null || !getTile.active())
@@ -45,6 +50,10 @@ public partial class TileObjectData
 		return num5;
 	}
 
+	/// <summary>
+	/// Retrieves the tile <paramref name="style"/> and <paramref name="alternate"/> placement corresponding to the passed in Tile. Empty tiles and terrain tiles will return without setting the ref parameters. Any Tile of the multitile works.
+	/// <para/> Other related methods include <see cref="GetTileData(Tile)"/>, <see cref="GetTileData(int, int, int)"/>, and <see cref="GetTileStyle(Tile)"/>.
+	/// </summary>
 	public static void GetTileInfo(Tile getTile, ref int style, ref int alternate)
 	{
 		if (getTile == null || !getTile.active())
