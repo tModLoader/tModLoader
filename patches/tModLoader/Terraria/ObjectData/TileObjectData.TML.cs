@@ -37,20 +37,10 @@ public partial class TileObjectData
 		if (num3 == 0)
 			num3 = 1;
 
-		int num4 = ((!tileObjectData.StyleHorizontal) ? (num * num3 + num2) : (num2 * num3 + num));
+		int styleLineSkip = tileObjectData.StyleLineSkip;
+		int num4 = (!tileObjectData.StyleHorizontal) ? (num / styleLineSkip * num3 + num2) : (num2 / styleLineSkip * num3 + num);
 		int num5 = num4 / tileObjectData.StyleMultiplier;
 		//int num6 = num4 % tileObjectData.StyleMultiplier;
-		int styleLineSkip = tileObjectData.StyleLineSkip;
-		if (styleLineSkip > 1) {
-			if (tileObjectData.StyleHorizontal) {
-				num5 = num2 / styleLineSkip * num3 + num;
-				//num6 = num2 % styleLineSkip;
-			}
-			else {
-				num5 = num / styleLineSkip * num3 + num2;
-				//num6 = num % styleLineSkip;
-			}
-		}
 
 		return num5;
 	}
@@ -77,20 +67,10 @@ public partial class TileObjectData
 		if (num3 == 0)
 			num3 = 1;
 
-		int num4 = ((!tileObjectData.StyleHorizontal) ? (num * num3 + num2) : (num2 * num3 + num));
+		int styleLineSkip = tileObjectData.StyleLineSkip;
+		int num4 = (!tileObjectData.StyleHorizontal) ? (num / styleLineSkip * num3 + num2) : (num2 / styleLineSkip * num3 + num);
 		int num5 = num4 / tileObjectData.StyleMultiplier;
 		int num6 = num4 % tileObjectData.StyleMultiplier;
-		int styleLineSkip = tileObjectData.StyleLineSkip;
-		if (styleLineSkip > 1) {
-			if (tileObjectData.StyleHorizontal) {
-				num5 = num2 / styleLineSkip * num3 + num;
-				num6 = num2 % styleLineSkip;
-			}
-			else {
-				num5 = num / styleLineSkip * num3 + num2;
-				num6 = num % styleLineSkip;
-			}
-		}
 
 		style = num5;
 		alternate = num6;

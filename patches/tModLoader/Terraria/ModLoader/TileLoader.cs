@@ -304,7 +304,8 @@ public static class TileLoader
 		if (wrap == 0) {
 			wrap = 1;
 		}
-		int subTile = tileData.StyleHorizontal ? subY * wrap + subX : subX * wrap + subY;
+		int styleLineSkip = tileData.StyleLineSkip;
+		int subTile = tileData.StyleHorizontal ? subY / styleLineSkip * wrap + subX : subX / styleLineSkip * wrap + subY;
 		int style = subTile / tileData.StyleMultiplier;
 		int alternate = subTile % tileData.StyleMultiplier;
 		for (int k = 0; k < tileData.AlternatesCount; k++) {
