@@ -1057,7 +1057,7 @@
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -750,16 +_,65 @@
+@@ -750,16 +_,66 @@
  		return null;
  	}
  
@@ -1066,6 +1066,7 @@
 +	/// Determines the <see cref="PrefixCategory"/> of this <see cref="Item"/>.
 +	/// </summary>
 +	/// <returns>The <see cref="PrefixCategory"/> of this <see cref="Item"/> or <see langword="null"/> if this <see cref="Item"/> doesn't have a category.</returns>
++	[Obsolete("Does not support items with multiple prefix categories, use GetPrefixCategories instead")]
 +	public PrefixCategory? GetPrefixCategory()
 +	{
 +		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))

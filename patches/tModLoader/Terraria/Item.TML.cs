@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
@@ -294,5 +296,30 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 			else
 				attackSpeedOnlyAffectsWeaponAnimation = true;
 		}
+	}
+
+	// Added by TML.
+	/// <summary>
+	/// Determines the <see cref="PrefixCategory">prefix categories</see> of this <see cref="Item"/>.
+	/// </summary>
+	/// <returns>A <see cref="List{PrefixCategory}"/> of every category this <see cref="Item"/> matches, the <see cref="List{PrefixCategory}"/> will be empty if this <see cref="Item"/> doesn't have any categories.</returns>
+	public List<PrefixCategory> GetPrefixCategories() {
+		List<PrefixCategory> categories = new List<PrefixCategory>();
+		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
+			categories.Add(PrefixCategory.Melee);
+
+		if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
+			categories.Add(PrefixCategory.Ranged);
+
+		if (PrefixLegacy.ItemSets.MagicAndSummon[type] || ItemLoader.MagicPrefix(this))
+			categories.Add(PrefixCategory.Magic);
+
+		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this) || categories.Count != 0)
+			categories.Add(PrefixCategory.AnyWeapon);
+
+		if (IsAPrefixableAccessory())
+			categories.Add(PrefixCategory.Accessory);
+
+		return categories;
 	}
 }

@@ -5,6 +5,7 @@ using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.Utilities;
+using static Terraria.GameContent.UI.EmoteID;
 
 namespace Terraria.ModLoader;
 
@@ -91,10 +92,10 @@ public static class PrefixLoader
 			if (modPrefix.Category is PrefixCategory.Custom)
 				return true;
 
-			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || modPrefix.Category == PrefixCategory.AnyWeapon && IsWeaponSubCategory(itemCategory));
+			return item.GetPrefixCategories().Contains(modPrefix.Category);
 		}
 
-		if (item.GetPrefixCategory() is PrefixCategory category) {
+		foreach (PrefixCategory category in item.GetPrefixCategories()) {
 			if (Item.GetVanillaPrefixes(category).Contains(prefix))
 				return true;
 		}
@@ -113,29 +114,31 @@ public static class PrefixLoader
 
 		prefix = 0;
 		var wr = new WeightedRandom<int>(unifiedRandom);
+		var addedPrefixes = new HashSet<int>();
 
 		void AddCategory(PrefixCategory category)
 		{
-			foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {
+			foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item) && addedPrefixes.Add(x.Type))) {
 				wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 			}
 		}
 
-		if (item.GetPrefixCategory() is not PrefixCategory category)
+		List<PrefixCategory> categories = item.GetPrefixCategories();
+		if (categories.Count == 0)
 			return false;
 
 		if (justCheck)
 			return true; // if it has a category, there are probably prefixes in that category...
 
-		foreach (int pre in Item.GetVanillaPrefixes(category))
-			wr.Add(pre, 1);
+		foreach (PrefixCategory category in categories) {
+			foreach (int pre in Item.GetVanillaPrefixes(category)) {
+				if (addedPrefixes.Add(pre)) wr.Add(pre, 1);
+			}
+			AddCategory(category);
+		}
 
-		if(PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type]) // Fix #3688, Rather than mess with the PrefixCategory enum and Item.GetPrefixCategory at this time and risk compatibility issues, manually support this until a redesign.
+		if (PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type]) // Fix #3688, Rather than mess with the PrefixCategory enum and Item.GetPrefixCategory at this time and risk compatibility issues, manually support this until a redesign.
 			wr.Add(PrefixID.Legendary2, 1);
-
-		AddCategory(category);
-		if (IsWeaponSubCategory(category))
-			AddCategory(PrefixCategory.AnyWeapon);
 
 		// try 50 times
 		for (int i = 0; i < 50; i++) {
