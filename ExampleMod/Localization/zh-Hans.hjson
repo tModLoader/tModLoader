@@ -896,6 +896,10 @@ Mods: {
 				// DisplayName: Example Sand Block
 				// Tooltip: This is a modded sand block
 			}
+
+			// TileObjectDataShowcaseStyle0.DisplayName: TileObjectData Showcase Style 0 - Gold
+			// TileObjectDataShowcaseStyle1.DisplayName: TileObjectData Showcase Style 1 - Silver
+			// TileObjectDataShowcaseStyle2.DisplayName: TileObjectData Showcase Style 2 - Copper
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
