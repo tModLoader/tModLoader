@@ -43,7 +43,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
 		base.ValidateType();
 
-		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
+		LoaderUtils.MustOverrideTogether(this, p => p.SaveData, p => p.LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
 
