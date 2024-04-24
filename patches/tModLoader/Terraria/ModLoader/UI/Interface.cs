@@ -3,8 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -14,11 +17,14 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
+using Terraria.ModLoader.Config;
 using Terraria.Social;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using System.Collections.Generic;
 using Microsoft.Build.Framework;
+using Terraria.UI.Chat;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.UI;
 
@@ -50,6 +56,7 @@ internal static class Interface
 	internal const int createModID = 10025;
 	internal const int exitID = 10026;
 	internal const int modConfigListID = 10027;
+	internal const int serverModsDifferMessageID = 10028;
 	internal static UIMods modsMenu = new UIMods();
 	internal static UILoadMods loadMods = new UILoadMods();
 	internal static UIModSources modSources = new UIModSources();
@@ -67,9 +74,13 @@ internal static class Interface
 	internal static UIExtractMod extractMod = new UIExtractMod();
 	internal static UIModConfig modConfig = new UIModConfig();
 	internal static UIModConfigList modConfigList = new UIModConfigList();
+	internal static UIServerModsDifferMessage serverModsDifferMessage = new UIServerModsDifferMessage();
 	internal static UICreateMod createMod = new UICreateMod();
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+
+	/// <summary> Collection of error messages that will be shown one at a time once the main menu is reached. Useful for error messages during player and world saving happening on another thread. </summary>
+	internal static Stack<string> pendingErrorMessages = new Stack<string>();
 
 	// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 	//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
@@ -153,9 +164,17 @@ internal static class Interface
 							}
 						}
 					}
-					if (LastLaunchedShaInRecentGitHubCommits)
-						infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
-							() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4"));
+					string compareUrl = $"{ModLoader.LastLaunchedTModLoaderAlphaSha}...preview";
+					if (!LastLaunchedShaInRecentGitHubCommits) {
+						// If not seen, then too many commits since the last time user opened Preview
+						messages.Append("\n...and more");
+						compareUrl = $"stable...preview";
+					}
+
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{compareUrl}"));
+				}
+				else {
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + "Unknown, somehow RecentGitHubCommits.txt is missing.", Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/stable...preview"));
 				}
 			}
 
@@ -163,7 +182,7 @@ internal static class Interface
 				ModLoader.PreviewFreezeNotification = false;
 				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
-					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14"));
+					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#144"));
 				Main.SaveSettings();
 			}
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
@@ -173,12 +192,17 @@ internal static class Interface
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
 				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}\n{string.Concat(missingDeps)}".Trim('\n');
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}";
+				if (promptDepDownloads) {
+					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
+				}
+				message = message.Trim('\n');
+
 
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
 				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
 
-				Action downloadAction = () => {
+				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
 						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
@@ -189,10 +213,15 @@ internal static class Interface
 						downloads.Add(item);
 					}
 
-					_ = UIModBrowser.DownloadMods(
+					await UIModBrowser.DownloadMods(
 						downloads,
 						loadModsID);
-                };
+
+					Main.QueueMainThreadAction(() => {
+						Main.menuMode = Interface.loadModsID;
+						Main.MenuUI.SetState(null);
+					});
+				};
 
 				if (!string.IsNullOrWhiteSpace(message)) {
 					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
@@ -372,6 +401,10 @@ internal static class Interface
 			Main.MenuUI.SetState(modConfigList);
 			Main.menuMode = 888;
 		}
+		else if (Main.menuMode == serverModsDifferMessageID) {
+			Main.MenuUI.SetState(serverModsDifferMessage);
+			Main.menuMode = 888;
+		}
 		else if (Main.menuMode == exitID) {
 			Environment.Exit(0);
 		}
@@ -388,7 +421,7 @@ internal static class Interface
 			Console.WriteLine();
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
 			for (int k = 0; k < mods.Length; k++) {
-				Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
+				Console.Write((k + 1) + "\t\t" + mods[k].DisplayNameClean);
 				Console.WriteLine(" (" + (mods[k].Enabled ? "enabled" : "disabled") + ")");
 			}
 			if (mods.Length == 0) {
@@ -396,16 +429,15 @@ internal static class Interface
 				Console.WriteLine(Language.GetTextValue("tModLoader.ModsNotFoundServer", ModLoader.ModPath));
 				Console.ResetColor();
 			}
+			Console.WriteLine();
 			Console.WriteLine("e\t\t" + Language.GetTextValue("tModLoader.ModsEnableAll"));
 			Console.WriteLine("d\t\t" + Language.GetTextValue("tModLoader.ModsDisableAll"));
+			Console.WriteLine("c <number>\t" + Language.GetTextValue("tModLoader.DedConfigEditServerConfigsForMod"));
 			Console.WriteLine("r\t\t" + Language.GetTextValue("tModLoader.ModsReloadAndReturn"));
 			Console.WriteLine(Language.GetTextValue("tModLoader.AskForModIndex"));
 			Console.WriteLine();
 			Console.WriteLine(Language.GetTextValue("tModLoader.AskForCommand"));
-			string command = Console.ReadLine();
-			if (command == null) {
-				command = "";
-			}
+			string command = Console.ReadLine() ?? "";
 			command = command.ToLower();
 			Console.Clear();
 			if (command == "e") {
@@ -422,6 +454,26 @@ internal static class Interface
 				//Do not reload mods here, just to ensure that Main.DedServ_PostModLoad isn't in the call stack during mod reload, to allow hooking into it.
 				reloadMods = true;
 				exit = true;
+			}
+			else if (command.StartsWith("c")) {
+				Match match = new Regex("c\\s*(\\d+)").Match(command);
+				if (!match.Success) {
+					continue;
+				}
+				int modIndex = Convert.ToInt32(match.Groups[1].Value) - 1;
+				if (modIndex < 0 || modIndex >= mods.Length) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorModOOB"));
+				}
+				else if (!ModLoader.TryGetMod(mods[modIndex].Name, out Mod mod)) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNotEnabled"));
+				}
+				else if (!ConfigManager.Configs.TryGetValue(mod, out List<ModConfig> configs) || !configs.Any(config => config.Mode == ConfigScope.ServerSide)) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNoConfig"));
+				}
+				else {
+					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.  
+					ConfigureMod(mod, configs);
+				}
 			}
 			else if (int.TryParse(command, out int value) && value > 0 && value <= mods.Length) {
 				var mod = mods[value - 1];
@@ -441,6 +493,176 @@ internal static class Interface
 		}
 	}
 
+	internal static void ConfigureMod(Mod mod, List<ModConfig> configs)
+	{
+		Dictionary<int, (PropertyFieldWrapper, ModConfig)> properties = new();
+		int index = 1;
+		var sortedConfigs = configs.OrderBy(x => x.DisplayName.Value).ToList();
+		foreach (ModConfig config in sortedConfigs) {
+			if (config.Mode == ConfigScope.ServerSide) {
+				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
+					if (variable.IsProperty && variable.Name == "Mode")
+						continue;
+
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+						continue;
+
+					properties.Add(index++, (variable, config));
+				}
+			}
+		}
+
+		while (true) {
+			PrintConfigValues(mod, properties);
+
+			Console.WriteLine();
+			Console.WriteLine("m <number> <new config> :\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigEditConfig"));
+			WriteColoredLine(ConsoleColor.DarkYellow, Language.GetTextValue("tModLoader.DedConfigEditConfigNote"));
+			Console.WriteLine("d :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.DedConfigRestoreConfig"));
+			Console.WriteLine("e :\t\t\t\t\t\t\t" + Language.GetTextValue("tModLoader.Exit"));
+			Console.WriteLine();
+			Console.WriteLine(Language.GetTextValue("tModLoader.AskForCommand"));
+			string command = Console.ReadLine();
+			Console.Clear();
+			command ??= "";
+
+			Match match = new Regex("m\\s*(\\d+) (.*)").Match(command);
+			if (match.Success) { // Edit command
+				HandleEditConfigValueCommand(properties, match);
+			}
+			else if (command == "d") {
+				foreach (ModConfig config in configs) {
+					if (config.Mode == ConfigScope.ServerSide) {
+						ConfigManager.Reset(config);
+						ConfigManager.Save(config);
+						config.OnChanged();
+					}
+				}
+			}
+			else if (command == "e") {
+				// Note: No need to check for reload required, this returns to mods menu and the only exit from mods menu is "Reload and return to world menu"
+				break;
+			}
+		}
+	}
+
+	private static void PrintConfigValues(Mod mod, Dictionary<int, (PropertyFieldWrapper, ModConfig)> properties)
+	{
+		WriteColoredLine(ConsoleColor.White, mod.DisplayName);
+		ModConfig currentConfig = null;
+		foreach ((int key, (PropertyFieldWrapper variable, ModConfig config)) in properties) {
+			if (currentConfig != config) {
+				currentConfig = config;
+				WriteColoredLine(ConsoleColor.Green, $"{config.DisplayName}:");
+			}
+
+			HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
+			if (header != null) {
+				WriteColoredLine(ConsoleColor.Yellow, "    " + ConvertChatTagsToText(header.Header)); // are tabs always 8 spaces?
+			}
+
+			string text = ConvertChatTagsToText(ConfigManager.GetLocalizedLabel(variable)) + ":";
+			int size = text.Length;
+			text = (variable.CanWrite ? key : "-") + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 1));
+			if (!variable.CanWrite)
+				Console.ForegroundColor = ConsoleColor.DarkGray;
+			text += JsonConvert.SerializeObject(variable.GetValue(config));
+			MethodInfo methodInfo = variable.Type.GetMethod("ToString", Array.Empty<Type>());
+			bool hasToString = methodInfo != null && methodInfo.DeclaringType != typeof(object);
+			if (!variable.Type.IsPrimitive && hasToString && variable.Type != typeof(string))
+				text += "\t\t--> " + variable.GetValue(config);
+			Console.WriteLine(text);
+			if (!variable.CanWrite)
+				Console.ResetColor();
+
+			string tooltip = ConvertChatTagsToText(ConfigManager.GetLocalizedTooltip(variable));
+			if (!string.IsNullOrWhiteSpace(tooltip)) {
+				WriteColoredLine(ConsoleColor.Cyan, "\t" + tooltip.Replace("\n", "\n\t"));
+			}
+		}
+	}
+
+	private static void HandleEditConfigValueCommand(Dictionary<int, (PropertyFieldWrapper, ModConfig)> properties, Match match)
+	{
+		int configIndex = Convert.ToInt32(match.Groups[1].Value);
+		if (!properties.TryGetValue(configIndex, out (PropertyFieldWrapper, ModConfig) value)) {
+			WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigConfigIndexOOB", configIndex));
+			return;
+		}
+		(PropertyFieldWrapper variable, ModConfig config) = value;
+		if (!variable.CanWrite) {
+			WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigReadOnly", ConfigManager.GetLocalizedLabel(variable)));
+			return;
+		}
+		try {
+			string inputString = match.Groups[2].Value;
+			Type type = variable.Type;
+			if (type == typeof(bool))
+				inputString = inputString.ToLower();
+
+			// Attempts to simplify the user experience by allowing user to omit "", [], and {}:
+			// Some objects are represented as a string in json.
+			object originalObject = variable.GetValue(config);
+			string originalRepresentation = JsonConvert.SerializeObject(originalObject);
+			if ((originalRepresentation.StartsWith('"') || type == typeof(string)) && !inputString.StartsWith('"'))
+				inputString = $"\"{inputString}\"";
+			else if (type.IsArray || type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>) || type.GetGenericTypeDefinition() == typeof(HashSet<>))) {
+				if (!inputString.StartsWith("["))
+					inputString = $"[{inputString}]";
+			}
+			else if (type.IsClass && originalRepresentation.StartsWith('{') && !inputString.StartsWith('{')) {
+				inputString = $"{{{inputString}}}";
+			}
+			else if (type.IsEnum && !int.TryParse(inputString, out _)) {
+				inputString = $"\"{inputString}\"";
+			}
+
+			object newValue = JsonConvert.DeserializeObject(inputString, type);
+
+			// Validate value
+			OptionStringsAttribute optionStringsAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<OptionStringsAttribute>(variable, null, null);
+			RangeAttribute rangeAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<RangeAttribute>(variable, null, null);
+			if (optionStringsAttribute != null &&
+				!optionStringsAttribute.OptionLabels.Any(s => s.Equals(newValue))) {
+				string text = Language.GetTextValue("tModLoader.DedConfigErrorOutOfOptionStrings", string.Join(", ", optionStringsAttribute.OptionLabels));
+				WriteColoredLine(ConsoleColor.Yellow, text);
+			}
+			else if (rangeAttribute != null && newValue is IComparable comparable &&
+						(comparable.CompareTo(rangeAttribute.Min) < 0 ||
+						comparable.CompareTo(rangeAttribute.Max) > 0)) {
+				WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigErrorOutOfRange", rangeAttribute.Min, rangeAttribute.Max));
+			}
+			else if (type.IsArray && originalObject is Array originalArray && newValue is Array newArray && originalArray.Length != newArray.Length) {
+				WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigArrayLengthCantChange", ConfigManager.GetLocalizedLabel(variable)));
+			}
+			else {
+				if (rangeAttribute != null && newValue is not IComparable) {
+					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigRangeCantBeValidated", ConfigManager.GetLocalizedLabel(variable)));
+				}
+
+				variable.SetValue(config, newValue);
+				ConfigManager.Save(config);
+				config.OnChanged();
+			}
+		}
+		catch {
+			WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedConfigErrorNotParsable"));
+		}
+	}
+
+	private static void WriteColoredLine(ConsoleColor color, string text)
+	{
+		Console.ForegroundColor = color;
+		Console.WriteLine(text);
+		Console.ResetColor();
+	}
+
+	internal static string ConvertChatTagsToText(string text)
+	{
+		return string.Join("", ChatManager.ParseMessage(text, Color.White)
+				.Select(x => x.Text));
+	}
+
 	private static void EnableDepsRecursive(LocalMod mod, LocalMod[] mods, List<string> missingRefs)
 	{
 		string[] _modReferences = mod.properties.modReferences.Select(x => x.mod).ToArray();
@@ -453,7 +675,7 @@ internal static class Interface
 			EnableDepsRecursive(dep, mods, missingRefs);
 			if (!dep.Enabled) {
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine($"Automatically enabling {dep.DisplayName} required by {mod.DisplayName}");
+				Console.WriteLine($"Automatically enabling {dep.DisplayNameClean} required by {mod.DisplayNameClean}");
 				Console.ResetColor();
 			}
 			dep.Enabled ^= true;

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
@@ -108,7 +109,7 @@ public static partial class Program
 	/// maxVersionOfSource is used to determine if we even should port the files. Example: 1.4.3-Legacy has maxVersion of 2022.9
 	/// isAtomicLockable could be expressed as CopyToNewlyCreatedDestinationFolderViaTempFolder if that makes more sense to the reader.
 	/// </summary>
-	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud, bool isAtomicLockable)
+	private static void PortFilesFromXtoY(string superSavePath, string source, string destination, string maxVersionOfSource, bool isCloud, bool isAtomicLockable, DateTime migrationDay)
 	{
 		string newFolderPath = Path.Combine(superSavePath, destination);
 		string newFolderPathTemp = Path.Combine(superSavePath, destination + "-temp");
@@ -141,11 +142,21 @@ public static partial class Program
 			try {
 				var oneDrivePath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\OneDrive\\OneDrive.exe");
 				var oneDrivePath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe");
-				if (File.Exists(oneDrivePath1))
-					System.Diagnostics.Process.Start(oneDrivePath1);
-				else if (File.Exists(oneDrivePath2))
-					System.Diagnostics.Process.Start(oneDrivePath2);
 
+				// passing /background to onedrive starts it with neither a tooltip popup nor a file explorer window
+				System.Diagnostics.ProcessStartInfo oneDriveInfo = new System.Diagnostics.ProcessStartInfo {
+					Arguments = "/background",
+					UseShellExecute = false
+				};
+
+				if (File.Exists(oneDrivePath1)) {
+					oneDriveInfo.FileName = oneDrivePath1;
+					System.Diagnostics.Process.Start(oneDriveInfo);
+				}
+				else if (File.Exists(oneDrivePath2)) {
+					oneDriveInfo.FileName = oneDrivePath2;
+					System.Diagnostics.Process.Start(oneDriveInfo);
+				}
 				Thread.Sleep(3000);
 			}
 			catch { }
@@ -159,7 +170,7 @@ public static partial class Program
 		if (!File.Exists(sourceFolderConfig)) {
 			Logging.tML.Info($"No config.json found at {sourceFolderConfig}\nAssuming nothing to port");
 			return;
-		}	
+		}
 
 		string lastLaunchedTml = null;
 		try {
@@ -168,9 +179,21 @@ public static partial class Program
 				lastLaunchedTml = (string)lastLaunchedTmlObject;
 		}
 		catch (Exception e) {
-			e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
-			ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+			if (File.GetLastWriteTime(sourceFolderConfig) > migrationDay) {
+				// If the file was edited recently, we assume that an updated tModLoader edited it. This should ignore modifications made long ago by pre-migration logic tModLoader releases.
+				lastLaunchedTml = BuildInfo.tMLVersion.ToString();
+			}
+			else {
+				PromptUserForNewestTMLVersionLaunched(ref lastLaunchedTml);
+
+				if (string.IsNullOrEmpty(lastLaunchedTml)) {
+					e.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#configjson-corrupted";
+					ErrorReporting.FatalExit($"Attempt to Port from \"{oldFolderPath}\" to \"{newFolderPath}\" aborted, the \"{sourceFolderConfig}\" file is corrupted.", e);
+				}
+			}
 		}
+
+		PromptUserForNewestTMLVersionLaunched(ref lastLaunchedTml);
 
 		if (string.IsNullOrEmpty(lastLaunchedTml)) {
 			// It's unclear what we should do in this situation. Leave it up to the user.
@@ -216,6 +239,24 @@ public static partial class Program
 		}
 
 		Logging.tML.Info($"Porting {cloudName} finished");
+
+		static void PromptUserForNewestTMLVersionLaunched(ref string lastLaunchedTml)
+		{
+			if (string.IsNullOrEmpty(lastLaunchedTml)) {
+				// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
+				// We can't localized these the normal way because localization isn't loaded at this point.
+				int result = ErrorReporting.ShowMessageBoxWithChoices(
+					title: "Failed to read config.json configuration file",
+					message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
+					buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
+				);
+				if (result == 0)
+					lastLaunchedTml = BuildInfo.tMLVersion.ToString();
+				if (result == 1)
+					lastLaunchedTml = "2022.09";
+				// If the user presses escape or presses cancel, lastLaunchedTml will still be NullOrEmpty.
+			}
+		}
 	}
 
 	internal static void PortFilesMaster(string savePath, bool isCloud)
@@ -225,19 +266,24 @@ public static partial class Program
 		PortCommonFilesToStagingBranches(savePath);
 
 		// Establishing 1.4.3-Legacy branch
-		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud, isAtomicLockable: !isCloud);
+		PortFilesFromXtoY(savePath, ReleaseFolder, Legacy143Folder, maxVersionOfSource: "2022.9", isCloud, isAtomicLockable: !isCloud, migrationDay: new DateTime(2023, 9, 1));
 		// Local: This is supposed to create a new 1.4.3 folder if it doesn't exist, and ignore it if it does. (already migrated)
 		// Steam: Move files if canary file doesn't exist.
 
 		// Moving files from 1.4.4-preview (beta) to 1.4.4-stable - August 1st 2023 steam release
 		if (BuildInfo.IsStable)
-			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false);
+			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false, migrationDay: new DateTime(2023, 9, 1));
 			// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
 			// Steam: Move files if canary file doesn't exist.
 	}
 
 	private static void SetSavePath()
 	{
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
+			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
+		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
+			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+
 		if (LaunchParameters.TryGetValue("-tmlsavedirectory", out var customSavePath)) {
 			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
 			SavePathShared = customSavePath;
@@ -260,16 +306,24 @@ public static partial class Program
 				PortFilesMaster(savePathCopy, isCloud: false);
 			}
 			catch (Exception e) {
-				ErrorReporting.FatalExit("An error occured migrating files and folders to the new structure", e);
+				bool controlledFolderAccessMightBeRelevant = (e is COMException || e is FileNotFoundException) && ControlledFolderAccessSupport.ControlledFolderAccessDetected;
+				
+				ErrorReporting.FatalExit("An error occurred migrating files and folders to the new structure" + (controlledFolderAccessMightBeRelevant ? $"\n\nControlled Folder Access feature detected, this might be the cause of this error.\n\nMake sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu." : ""), e);
 			}
 		}
-		
-		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetectionPrevented)
-			Logging.tML.Info($"Controlled Folder Access detection failed, something is preventing the game from accessing the registry.");
-		if (ControlledFolderAccessSupport.ControlledFolderAccessDetected)
-			Logging.tML.Info($"Controlled Folder Access feature detected. If game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu."); // Before language is loaded, no need to localize
+		if (Platform.IsWindows) {
+			// Fix #4168, for some reason sometimes Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) in PathService.GetStoragePath is returning a path with / and \, causing issues for some interactions. Bad -tmlsavedirectory or -savedirectory arguments could also cause this.
+			string SavePathFixed = SavePath.Replace('/', Path.DirectorySeparatorChar);
+			string SavePathSharedFixed = SavePathShared.Replace('/', Path.DirectorySeparatorChar);
+			if (SavePath != SavePathFixed || SavePathShared != SavePathSharedFixed) {
+				Logging.tML.Warn($"Saves paths had incorrect slashes somehow: \"{SavePath}\"=>\"{SavePathFixed}\", \"{SavePathShared}\"=>\"{SavePathSharedFixed}\"");
+				SavePath = SavePathFixed;
+				SavePathShared = SavePathSharedFixed;
+			}
+		}
+
+		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 	}
 
 	private static void StartupSequenceTml(bool isServer)
@@ -278,8 +332,11 @@ public static partial class Program
 			ControlledFolderAccessSupport.CheckFileSystemAccess();
 			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
 
-			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
+			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64) {
+				if (Program.LaunchParameters.ContainsKey("-build"))
+					Console.WriteLine("Warning: Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK appears to be running. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk"); // MessageBoxShow called below will also error when attempting to load 32 bit SDL2.
 				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
+			}
 
 			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
 

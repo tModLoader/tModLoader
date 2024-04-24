@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -105,18 +106,18 @@ namespace ExampleMod.Content.Projectiles
 				spriteEffects = SpriteEffects.FlipHorizontally;
 
 			// Getting texture of projectile
-			Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
+			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
 			// Calculating frameHeight and current Y pos dependence of frame
 			// If texture without animation frameHeight is always texture.Height and startY is always 0
-			int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+			int frameHeight = texture.Height / Main.projFrames[Type];
 			int startY = frameHeight * Projectile.frame;
 
 			// Get this frame on texture
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 
 			// Alternatively, you can skip defining frameHeight and startY and use this:
-			// Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
+			// Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
 
 			Vector2 origin = sourceRectangle.Size() / 2f;
 

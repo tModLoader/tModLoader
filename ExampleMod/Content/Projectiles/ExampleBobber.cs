@@ -7,6 +7,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
+	// ExampleBobber is a fishing bobber spawned by ExampleFishingRod.
+	// Aside from the code in SetDefaults, everything else should be ignored when making a typical bobber projectile.
+	// Typically the fishing rod item decides the line color, but this bobber decides its own line color and serves as an example of using OnSpawn, SendExtraAI, and ReceiveExtraAI to sync a random value determined when spawned.
 	public class ExampleBobber : ModProjectile
 	{
 		public static readonly Color[] PossibleLineColors = new Color[] {
@@ -17,7 +20,7 @@ namespace ExampleMod.Content.Projectiles
 		// This holds the index of the fishing line color in the PossibleLineColors array.
 		private int fishingLineColorIndex;
 
-		private Color FishingLineColor => PossibleLineColors[fishingLineColorIndex];
+		public Color FishingLineColor => PossibleLineColors[fishingLineColorIndex];
 
 		public override void SetDefaults() {
 			// These are copied through the CloneDefaults method
@@ -37,21 +40,12 @@ namespace ExampleMod.Content.Projectiles
 			fishingLineColorIndex = (byte)Main.rand.Next(PossibleLineColors.Length);
 		}
 
-		// What if we want to randomize the line color
 		public override void AI() {
 			// Always ensure that graphics-related code doesn't run on dedicated servers via this check.
 			if (!Main.dedServ) {
 				// Create some light based on the color of the line.
 				Lighting.AddLight(Projectile.Center, FishingLineColor.ToVector3());
 			}
-		}
-
-		public override void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor) {
-			// Change these two values in order to change the origin of where the line is being drawn.
-			// This will make it draw 47 pixels right and 31 pixels up from the player's center, while they are looking right and in normal gravity.
-			lineOriginOffset = new Vector2(47, -31);
-			// Sets the fishing line's color. Note that this will be overridden by the colored string accessories.
-			lineColor = FishingLineColor;
 		}
 
 		// These last two methods are required so the line color is properly synced in multiplayer.

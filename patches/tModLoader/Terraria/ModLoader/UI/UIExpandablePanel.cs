@@ -41,6 +41,14 @@ internal class UIExpandablePanel : UIPanel
 		Append(expandButton);
 	}
 
+	public void Collapse()
+	{
+		if (expanded) {
+			expanded = false;
+			pendingChanges = true;
+		}
+	}
+
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);

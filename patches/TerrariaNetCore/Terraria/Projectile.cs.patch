@@ -1,0 +1,67 @@
+--- src/Terraria/Terraria/Projectile.cs
++++ src/TerrariaNetCore/Terraria/Projectile.cs
+@@ -331,6 +_,17 @@
+ 		projUUID = -1;
+ 		frame = 0;
+ 		frameCounter = 0;
++
++		// Due to https://github.com/dotnet/roslyn/issues/72393
++		// The following methods are splits of this one.
++
++		SetDefaults_Inner(Type);
++		SetDefaults_End(Type);
++	}
++
++	// Method split.
++	private bool SetDefaults1(int Type)
++	{
+ 		if (type == 1) {
+ 			arrow = true;
+ 			width = 10;
+@@ -5009,6 +_,19 @@
+ 			penetrate = -1;
+ 			timeLeft = 180;
+ 		}
++		else {
++			return false;
++		}
++
++		return true;
++	}
++
++	// Method split.
++	private bool SetDefaults2(int Type)
++	{
++		if (false) {
++			// Dummy block for a nice patch.
++		}
+ 		else if (type == 501) {
+ 			width = 14;
+ 			height = 14;
+@@ -8644,9 +_,26 @@
+ 			penetrate = -1;
+ 		}
+ 		else {
++			return false;
++		}
++
++		return true;
++	}
++
++	// Method split.
++	private void SetDefaults_Inner(int Type)
++	{
++		if (SetDefaults1(Type) || SetDefaults2(Type)) {
++			// Dummy block for a nice patch.
++		}
++		else {
+ 			active = false;
+ 		}
++	}
+ 
++	// Method split.
++	private void SetDefaults_End(int Type)
++	{
+ 		width = (int)((float)width * scale);
+ 		height = (int)((float)height * scale);
+ 		maxPenetrate = penetrate;

@@ -84,7 +84,7 @@
  	private void ProcessCopyCommandsInTexts()
  	{
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-@@ -155,15 +_,30 @@
+@@ -155,21 +_,37 @@
  					break;
  
  				value.SetValue(text);
@@ -113,9 +113,33 @@
  		LoadLanguage(ActiveCulture, processCopyCommands: false);
 +		*/
  		foreach (IContentSource item in sourcesFromLowestToHighest) {
- 			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart)) {
- 				string extension = item.GetExtension(item2);
-@@ -181,8 +_,10 @@
+-			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart)) {
+-				string extension = item.GetExtension(item2);
++			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart, ignoreCase: true)) {
++				// TODO: GetExtension doesn't work for ZipContentSource. Might work if we do the same workaround that FileSystemContentSource does for assetExtensions, but that seems hacky/wrong. We can wait for reworks of asset system to fix these inconsistencies. Zip resource packs are rare.
++				string extension = item.GetExtension(item2) ?? "";
+ 				if (!(extension == ".json") && !(extension == ".csv"))
+ 					continue;
+-
++				try {
+ 				using Stream stream = item.OpenStream(item2);
+ 				using StreamReader streamReader = new StreamReader(stream);
+ 				string fileText = streamReader.ReadToEnd();
+@@ -178,11 +_,24 @@
+ 
+ 				if (extension == ".csv")
+ 					LoadLanguageFromFileTextCsv(fileText);
++				} catch {
++					Logging.Terraria.Error($"An error occurred loading the \"{item2}\" file from one of the enabled resource packs. The language changes contained within will not take effect.");
++					string basePath = null;
++					if(item is FileSystemContentSource fileSystemContentSource) {
++						basePath = (string)typeof(FileSystemContentSource).GetField("_basePath", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(fileSystemContentSource);
++						var resourcePack = Main.AssetSourceController.ActiveResourcePackList.EnabledPacks.FirstOrDefault(x => basePath.Contains(x.FileName));
++						if (resourcePack != null) {
++							Logging.Terraria.Error($"The resource pack that caused this error is \"{resourcePack.Name}\".");
++						}
++					}
++				}
  			}
  		}
  

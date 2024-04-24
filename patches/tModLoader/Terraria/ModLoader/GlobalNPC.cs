@@ -36,7 +36,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Called after SetDefaults for NPCs with a negative <see cref="NPC.netID"/><br/>
 	/// This hook is required because <see cref="NPC.SetDefaultsFromNetId"/> only sets <see cref="NPC.netID"/> after SetDefaults<br/>
-	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but differet netID<br/>
+	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but different netID<br/>
 	/// </summary>
 	public virtual void SetDefaultsFromNetId(NPC npc)
 	{
@@ -188,7 +188,10 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make the NPC either regenerate health or take damage over time by setting npc.lifeRegen. Regeneration or damage will occur at a rate of half of npc.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.
+	/// Allows you to make the NPC either regenerate health or take damage over time by setting <see cref="NPC.lifeRegen"/>. This is useful for implementing damage over time debuffs such as <see cref="BuffID.Poisoned"/> or <see cref="BuffID.OnFire"/>. Regeneration or damage will occur at a rate of half of <see cref="NPC.lifeRegen"/> per second.
+	/// <para/>Essentially, modders implementing damage over time debuffs should subtract from <see cref="NPC.lifeRegen"/> a number that is twice as large as the intended damage per second. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example of this.
+	/// <para/>The damage parameter is the number that appears above the NPC's head if it takes damage over time.
+	/// <para/>Multiple debuffs work together by following some conventions: <see cref="NPC.lifeRegen"/> should not be assigned a number, rather it should be subtracted from. <paramref name="damage"/> should only be assigned if the intended popup text is larger then its current value.  
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
@@ -301,7 +304,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters to use (-1, 0, or 1), and defaults to -1.
+	/// Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters (<see cref="ImmunityCooldownID"/>) to use, and defaults to -1 (<see cref="ImmunityCooldownID.General"/>).
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>

@@ -76,6 +76,8 @@ public static class MenuLoader
 		switchToMenu = MenutML;
 		if (ModContent.TryFind(LastSelectedModMenu, out ModMenu value) && value.IsAvailable)
 			switchToMenu = value;
+		if (LastSelectedModMenu == MenuJourneysEnd.FullName)
+			switchToMenu = MenuJourneysEnd;
 
 		loading = false;
 	}
@@ -93,10 +95,8 @@ public static class MenuLoader
 		try {
 			UpdateAndDrawModMenuInner(spriteBatch, gameTime, color, logoRotation, logoScale);
 		}
-		catch {
-			throw;
-		}
 		finally {
+			// We don't call Use() to avoid triggering recalculations.
 			UserInterface.ActiveInstance = activeInterface;
 		}
 	}
@@ -120,7 +120,10 @@ public static class MenuLoader
 		}
 
 		currentMenu.UserInterface.Update(gameTime);
+		// Prevent Recalculate() spam due to Use() in UserInterface.Draw().
+		UserInterface.ActiveInstance = currentMenu.UserInterface;
 		currentMenu.UserInterface.Draw(spriteBatch, gameTime);
+
 		currentMenu.Update(Main.menuMode == 0);
 
 		Texture2D logo = currentMenu.Logo.Value;

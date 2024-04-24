@@ -31,6 +31,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 			TileID.Sets.IsAContainer[Type] = true;
 			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
+			TileID.Sets.GeneralPlacementTiles[Type] = false;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };
