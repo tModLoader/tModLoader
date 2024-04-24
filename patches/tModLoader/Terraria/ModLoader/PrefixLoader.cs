@@ -5,7 +5,6 @@ using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.Utilities;
-using static Terraria.GameContent.UI.EmoteID;
 
 namespace Terraria.ModLoader;
 
