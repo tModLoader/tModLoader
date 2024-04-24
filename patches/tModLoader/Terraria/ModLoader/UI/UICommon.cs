@@ -119,6 +119,11 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonExpandedTexture { get; internal set; }
 	public static Asset<Texture2D> ModBrowserIconsTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonExclamationTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonDepsTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonUpgradeCsproj { get; internal set; }
+	public static Asset<Texture2D> ButtonUpgradeLang { get; internal set; }
+	public static Asset<Texture2D> ButtonRunTModPorter { get; internal set; }
+	public static Asset<Texture2D> ButtonOpenFolder { get; internal set; }
 	public static Asset<Texture2D> ButtonTranslationModTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderBgTexture { get; internal set; }
@@ -127,6 +132,7 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonDownloadMultipleTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonModInfoTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonModConfigTexture { get; internal set; }
+	public static Asset<Texture2D> ModLocationModPackIcon { get; internal set; }
 	public static Asset<Texture2D> DividerTexture { get; internal set; }
 	public static Asset<Texture2D> InnerPanelTexture { get; internal set; }
 	public static Asset<Texture2D> InfoDisplayPageArrowTexture { get; internal set; }
@@ -146,6 +152,11 @@ public static class UICommon
 		ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded");
 		ModBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons");
 		ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation");
+		ButtonDepsTexture = LoadEmbeddedTexture("UI.ButtonDeps");
+		ButtonUpgradeCsproj = LoadEmbeddedTexture("UI.ButtonUpgradeCsproj");
+		ButtonUpgradeLang = LoadEmbeddedTexture("UI.ButtonUpgradeLang");
+		ButtonRunTModPorter = LoadEmbeddedTexture("UI.ButtonRunTModPorter");
+		ButtonOpenFolder = LoadEmbeddedTexture("UI.ButtonOpenFolder");
 		ButtonTranslationModTexture = LoadEmbeddedTexture("UI.ButtonTranslationMod");
 		LoaderTexture = LoadEmbeddedTexture("UI.Loader");
 		LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG");
@@ -154,6 +165,7 @@ public static class UICommon
 		ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple");
 		ButtonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo");
 		ButtonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig");
+		ModLocationModPackIcon = LoadEmbeddedTexture("UI.ModLocationModPackIcon");
 
 		DividerTexture = Main.Assets.Request<Texture2D>("Images/UI/Divider");
 		InnerPanelTexture = Main.Assets.Request<Texture2D>("Images/UI/InnerPanelBackground");

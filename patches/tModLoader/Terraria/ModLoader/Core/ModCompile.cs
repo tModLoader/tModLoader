@@ -224,6 +224,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			mod.modFile.Save();
 			ModLoader.EnableMod(mod.Name);
+			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);
 		}
 		catch (Exception e) {
@@ -465,7 +466,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
 		var refs = references.Select(s => MetadataReference.CreateFromFile(s));
-		refs = refs.Concat(Net60.All);
+		refs = refs.Concat(Net80.References.All);
 
 		var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 

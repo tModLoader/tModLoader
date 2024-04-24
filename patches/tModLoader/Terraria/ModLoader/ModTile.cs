@@ -333,6 +333,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to determine whether or not the tile will draw itself flipped in the world.
+	/// <para/> If flipping, consider setting <see cref="TileObjectData.DrawFlipHorizontal"/> or <see cref="TileObjectData.DrawFlipVertical"/> as well to ensure that the tile placement preview is also flipped.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

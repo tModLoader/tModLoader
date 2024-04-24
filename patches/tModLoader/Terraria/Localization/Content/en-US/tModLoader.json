@@ -57,11 +57,14 @@
 		"DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "Click to disable",
 		"ModsEnable": "Click to enable",
+		"ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
+		"ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
 		"ModConfiguration": "Mod Configuration",
 		"ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Old mod, enable at own risk",
 		"ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
-		"ModDependencyTooltip": "This mod depends on: {0}\n (These will enable automatically)",
+		"ModDependencyTooltip": "Requires:\n{0}",
+		"ModDependentsTooltip": "Required by:\n{0}",
 		"TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
 		"ModDependencyModsNotFound": "The following mods were not found: {0}",
@@ -150,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
+		"NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
 		"NoWorkshopAccess": "Error: Unable to access Steam Workshop.\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser.\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods",
 		"ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
@@ -168,7 +172,7 @@
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
-		"LoadErrorDisabled": "The mod(s) have been automatically disabled.",
+		"LoadErrorDisabled": "The mod(s) and any dependencies have been automatically disabled.",
 		"LoadErrorCulpritUnknown": "The mod responsible is unknown and tModLoader must be restarted.",
 		"LoadErrorContentType": "This error was caused by the \"{0}\" class.",
 		"LoadErrorMissingModQualifier": "The asset path \"{0}\" is missing the mod qualifier. Asset paths should start with the mod name or \"Terraria\" followed by a slash (\"/\").",
@@ -459,8 +463,8 @@
 		"DiscordLink": "Find Help on the Discord Server",
 		"MSPortToLatest": "Run tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
-		"MSNetSDKNotFound": "Making mods for tModLoader requires the .NET 6 SDK to be installed, but it has not been detected. Click the \"Download .NET 6.0 SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
-		"DownloadNetSDK": "Download .NET 6.0 SDK",
+		"MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET {0} SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
+		"DownloadNetSDK": "Download .NET SDK",
 		"DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
 		// Developer Mode UI
@@ -529,6 +533,7 @@
 		"SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
 		"ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
 		"ModifiedByMods": "Is modified by ",
+		"MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",

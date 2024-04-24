@@ -61,11 +61,14 @@
 		"DownloadMissingMods": "下载缺失的模组",
 		"ModsDisable": "禁用",
 		"ModsEnable": "启用",
+		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
+		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
 		"ModConfiguration": "模组配置",
 		"ModsOpenConfig": "点击打开配置",
 		"ModOldWarning": "旧模组，风险自负",
 		"ModStableOnPreviewWarning": "没有对应的测试版，风险自负",
 		"ModDependencyTooltip": "此模组依赖于：{0}\n （这些将自动启用）",
+		// "ModDependentsTooltip": "Required by:\n{0}",
 		"TranslationModTooltip": "此模组为下列模组提供翻译：\n{0}",
 		"ModDependencyClickTooltip": "该模组依赖于：{0}\n（点击启用）",
 		"ModDependencyModsNotFound": "未找到下列模组：{0}",
@@ -154,6 +157,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "在提交之前，你需要同意 tModLoader 的服务条款",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "只有 Steam 版的 tModLoader 才可以在游戏里上传内容到 Steam 创意工坊。",
 		"NoWorkshopAccess": "无法访问 Steam 创意工坊。",
 		"ModAlreadyUploaded": "创意工坊上已经有这个模组了。",
@@ -463,8 +467,8 @@
 		"DiscordLink": "前往 Discord 群组寻求帮助",
 		"MSPortToLatest": "运行 tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "欢迎来到开发模组菜单。 此菜单是供模组制作者使用的。 您可以在这里生成模组。\n\n如果您刚接触模组制作，请点击下方的“在 GitHub 上查看”按钮访问我们的 wiki 并浏览“我是新手（I am new to modding）”章节。 若您不便阅读英文或无法访问 GitHub，也可以访问中文教程网站 fs49.org 或寻找其他资源。",
-		"MSNetSDKNotFound": "模组制作现在需要安装 .NET 6.0 SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET 6.0 SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
-		"DownloadNetSDK": "下载 .NET 6.0 SDK",
+		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET {0} SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
+		"DownloadNetSDK": "下载 .NET SDK",
 		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
 
 		// Developer Mode UI
