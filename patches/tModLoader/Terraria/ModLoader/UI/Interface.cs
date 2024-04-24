@@ -217,8 +217,10 @@ internal static class Interface
 						downloads,
 						loadModsID);
 
-					Main.menuMode = Interface.loadModsID;
-					Main.MenuUI.SetState(null);
+					Main.QueueMainThreadAction(() => {
+						Main.menuMode = Interface.loadModsID;
+						Main.MenuUI.SetState(null);
+					});
 				};
 
 				if (!string.IsNullOrWhiteSpace(message)) {
