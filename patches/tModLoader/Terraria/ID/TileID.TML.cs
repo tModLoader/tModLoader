@@ -112,6 +112,7 @@ partial class TileID
 		// Values taken from the end of Terraria.Wiring::DeActive(int, int)
 		/// <summary>
 		/// Whether or not this tile will prevent tiles beneath it from being actuated, including activating <see cref="ActiveStoneBlock"/>s.
+		/// <para/> This is used to prevent breaking tiles via actuation that should otherwise not be broken due to minimum pickaxe requirements, such as Demon Altar, Hellforge, and Lihzahrd Altar, or tiles that can't always be successfully broken, such as Mannequin and Hat Rack since they might have items contained within them. Pylons are also in this set.
 		/// </summary>
 		/// <remarks>
 		///	Note: This Set does not include the values within the Sets <seealso cref="BasicChest"/> and <seealso cref="BasicDresser"/>,
