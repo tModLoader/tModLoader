@@ -304,7 +304,9 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// </summary>
 	/// <returns>A <see cref="List{PrefixCategory}"/> of every category this <see cref="Item"/> matches, the <see cref="List{PrefixCategory}"/> will be empty if this <see cref="Item"/> doesn't have any categories.</returns>
 	public List<PrefixCategory> GetPrefixCategories() {
-		List<PrefixCategory> categories = new List<PrefixCategory>();
+		ref List<PrefixCategory> categories = ref PrefixLoader.itemPrefixesByType[type];
+		if (categories is not null) return categories;
+		categories = new List<PrefixCategory>();
 		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
 			categories.Add(PrefixCategory.Melee);
 

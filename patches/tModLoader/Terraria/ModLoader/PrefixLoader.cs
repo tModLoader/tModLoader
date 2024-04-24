@@ -13,12 +13,14 @@ public static class PrefixLoader
 	// TODO storing twice? could see a better implementation
 	internal static readonly IList<ModPrefix> prefixes = new List<ModPrefix>();
 	internal static readonly IDictionary<PrefixCategory, List<ModPrefix>> categoryPrefixes;
+	internal static List<PrefixCategory>[] itemPrefixesByType;
 
 	public static int PrefixCount { get; private set; } = PrefixID.Count;
 
 	static PrefixLoader()
 	{
 		categoryPrefixes = new Dictionary<PrefixCategory, List<ModPrefix>>();
+		itemPrefixesByType = new List<PrefixCategory>[ItemID.Count];
 
 		foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {
 			categoryPrefixes[category] = new List<ModPrefix>();
@@ -59,6 +61,7 @@ public static class PrefixLoader
 
 		//Etc
 		Array.Resize(ref Lang.prefix, PrefixCount);
+		Array.Resize(ref itemPrefixesByType, ItemLoader.ItemCount);
 	}
 
 	internal static void FinishSetup()
@@ -77,6 +80,8 @@ public static class PrefixLoader
 		foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {
 			categoryPrefixes[category].Clear();
 		}
+
+		itemPrefixesByType = new List<PrefixCategory>[ItemID.Count];
 	}
 
 	public static bool CanRoll(Item item, int prefix)
