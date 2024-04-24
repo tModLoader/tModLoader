@@ -269,7 +269,7 @@
 +	/// - <see cref="NPC.DropItemInstanced"/><br/>
 +	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
 +	/// - <see cref="MessageID.InstancedItem"/><br/>
-+	/// Defaults to false.<br/>
++	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool instanced;
  	public int ownIgnore = -1;
