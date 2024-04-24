@@ -312,6 +312,17 @@ public static partial class Program
 			}
 		}
 
+		if (Platform.IsWindows) {
+			// Fix #4168, for some reason sometimes Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) in PathService.GetStoragePath is returning a path with / and \, causing issues for some interactions. Bad -tmlsavedirectory or -savedirectory arguments could also cause this.
+			string SavePathFixed = SavePath.Replace('/', Path.DirectorySeparatorChar);
+			string SavePathSharedFixed = SavePathShared.Replace('/', Path.DirectorySeparatorChar);
+			if (SavePath != SavePathFixed || SavePathShared != SavePathSharedFixed) {
+				Logging.tML.Warn($"Saves paths had incorrect slashes somehow: \"{SavePath}\"=>\"{SavePathFixed}\", \"{SavePathShared}\"=>\"{SavePathSharedFixed}\"");
+				SavePath = SavePathFixed;
+				SavePathShared = SavePathSharedFixed;
+			}
+		}
+
 		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 	}
 

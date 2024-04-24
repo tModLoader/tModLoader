@@ -362,6 +362,26 @@
  
  	public bool WipableTurret {
  		get {
+@@ -163,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Derived from <see cref="alpha"/>, except it ranges from 0f to 1f and is inverted. 0 is transparent and 1 is fully opaque. Using this instead of alpha might make more sense when doing graphics calculations.
++	/// </summary>
+ 	public float Opacity {
+ 		get {
+ 			return 1f - (float)alpha / 255f;
+@@ -172,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Derived from <see cref="extraUpdates"/>, except 1 is added to arrive at the total number of updates to be run. Using this instead of extraUpdates might make code more readable.
++	/// </summary>
+ 	public int MaxUpdates {
+ 		get {
+ 			return extraUpdates + 1;
 @@ -202,7 +_,7 @@
  
  	public static void ResetImmunity()
@@ -1023,6 +1043,19 @@
  									}
  
  									if (type == 916)
+@@ -10847,8 +_,10 @@
+ 										nPC.immune[owner] = 1;
+ 									}
+ 									else if (type == 611) {
+-										if (localAI[1] <= 0f)
++										if (localAI[1] <= 0f) {
+-											NewProjectile(GetProjectileSource_FromThis(), nPC.Center.X, nPC.Center.Y, 0f, 0f, 612, damage, 10f, owner, 0f, 0.85f + Main.rand.NextFloat() * 1.15f);
++											Projectile p = Main.projectile[NewProjectile(GetProjectileSource_FromThis(), nPC.Center.X, nPC.Center.Y, 0f, 0f, 612, damage, 10f, owner, 0f, 0.85f + Main.rand.NextFloat() * 1.15f)];
++											p.CritChance = 0; // Fix #4161
++										}
+ 
+ 										localAI[1] = 4f;
+ 									}
 @@ -10954,9 +_,12 @@
  										}
  									}
@@ -1768,6 +1801,19 @@
  				AI_061_FishingBobber_GiveItemToPlayer(Main.player[owner], (int)ai[1]);
  
  			ai[1] = 0f;
+@@ -51092,8 +_,10 @@
+ 				}
+ 			}
+ 
+-			if (Main.myPlayer == owner)
++			if (Main.myPlayer == owner) {
+-				NewProjectile(GetProjectileSource_FromThis(), base.Center.X, base.Center.Y, 0f, 0f, 953, damage, 10f, owner, 0f, 0.85f + Main.rand.NextFloat() * 1.15f);
++				Projectile p = Main.projectile[Projectile.NewProjectile(GetProjectileSource_FromThis(), base.Center.X, base.Center.Y, 0f, 0f, 953, damage, 10f, owner, 0f, 0.85f + Main.rand.NextFloat() * 1.15f)];
++				p.CritChance = 0; // Fix #4161
++			}
+ 		}
+ 		else if (type == 614) {
+ 			for (int num143 = 0; num143 < 10; num143++) {
 @@ -56405,6 +_,16 @@
  					int num1023 = (int)(position.Y + (float)(height / 2)) / 16;
  					int num1024 = 0;

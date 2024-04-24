@@ -82,7 +82,6 @@ Mods: {
 			// ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			// ExampleFishingCrate.MapEntry: Crate
 			// ExampleHerb.MapEntry: Example Herb
-			// ExampleMusicBoxTile.MapEntry: Music Box
 			// ExampleOre.MapEntry: ExampleOre
 
 			ExampleChest: {

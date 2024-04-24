@@ -246,7 +246,7 @@ public static class LoaderUtils
 	{
 		int c = methods.Count(m => HasOverride(t, m));
 		if (c > 0 && c < methods.Length)
-			throw new Exception($"{t!.GetType()} must override all of ({string.Join('/', methods.Select(m => m.Name))}) or none");
+			throw new Exception($"{t!.GetType()} must override all of ({string.Join('/', methods.Select(m => m.ToMethodInfo().Name))}) or none");
 	}
 
 	private static readonly HashSet<Type> validatedTypes = new();

@@ -118,25 +118,25 @@
 +
 +	/// <summary>
 +	/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] persistentBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
-+	/// Defaults to false; all vanilla vanity pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla vanity pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] vanityPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
-+	/// Defaults to false; all vanilla light pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla light pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] lightPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] meleeBuff = new bool[BuffID.Count];
 +
@@ -346,7 +346,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,39 +_,99 @@
+@@ -829,39 +_,102 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -386,6 +386,7 @@
  	public static bool[] tileStone = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileAxe = new bool[TileID.Count];
  	public static bool[] tileHammer = new bool[TileID.Count];
@@ -395,6 +396,7 @@
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
 +	/// <summary>
@@ -439,6 +441,7 @@
  	public static bool[] tileCracked = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
