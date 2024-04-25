@@ -580,6 +580,7 @@
 		"AntivirusHint": "Dica: Se você tiver um antivírus, tente adicionar Terraria à sua lista de permissão/lista de exclusão",
 		"TypeInitializationHint": "Dica: Reinicie o jogo. Se o problema persistir, tente desinstalar o Terraria completamente, reinstalar por meio do Steam e, em seguida, reinstalar o tModLoader",
 		"TerrariaOutOfDateMessage": "O Terraria está desatualizado, você precisa atualizar o Terraria no Steam.",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Recursos do mod",

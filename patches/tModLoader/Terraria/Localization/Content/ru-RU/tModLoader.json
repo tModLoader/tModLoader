@@ -580,6 +580,7 @@
 		"AntivirusHint": "Совет: Если у вас установлен антивирус, попробуйте добавить Terraria в список исключений/белый список антивируса.",
 		"TypeInitializationHint": "Совет: Перезапустите игру. Если проблема не исчезла, то попробуйте полностью удалить Terraria, а затем повторно установить игру через Steam, после чего переустановите tModLoader.",
 		"TerrariaOutOfDateMessage": "Ваша версия Terraria устарела, пожалуйста, обновите её через Steam.",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Особенности мода",
