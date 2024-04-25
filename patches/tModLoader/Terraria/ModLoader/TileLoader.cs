@@ -772,7 +772,7 @@ public static class TileLoader
 			TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
 			if (tileData != null) {
 				int partY = 0;
-				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
+				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY + 1 < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] - tileData.CoordinatePadding >= 0; partY++) {
 					remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 				}
 				width = tileData.CoordinateWidth;
