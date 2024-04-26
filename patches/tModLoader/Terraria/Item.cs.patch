@@ -1969,6 +1969,49 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
+@@ -47808,10 +_,40 @@
+ 			shimmered = true;
+ 		}
+ 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
+-			int num8 = stack;
++			int stackSize = stack;
+ 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
+-			stack = num8;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			int spawnCount = 0;
++
++			while (stackSize > 0) {
++				spawnCount++;
++
++				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
++				Item item = Main.item[newItemIndex];
++				item.stack = stackSize;
++				if (item.stack > maxStack)
++					item.stack = maxStack;
++				stackSize -= item.stack;
++				item.shimmerTime = 1f;
++				item.shimmered = true;
++				item.shimmerWet = true;
++				item.wet = true;
++				item.velocity *= 0.1f;
++				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++				//if (flag) { vanilla uses this to keep different items from stacking not multiple of the same item. Changing here because this fix almost exclusively exists to unstack unstackable items like swords and it feels wrong to leave them stacked.
++				item.velocity.X = 1f * (float)spawnCount;
++				item.velocity.X *= 1f + (float)spawnCount * 0.05f;
++				if (0 % 2 == 0) // Assumed bug in vanilla left in for parity. Vanilla uses if (num14 % 2 == 0) but num14 is only assigned 0 a value. I assume it's supposed to be num15 or 'spawnCount' here.
++					item.velocity.X *= -1f;
++				//}
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];
@@ -1992,7 +2035,7 @@
  				}
 +				*/
 +
-+				RecipeLoader.ConsumeItem(recipe, item2.type, ref num16, true);
++				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
  
  				while (num16 > 0) {
  					int num18 = num16;

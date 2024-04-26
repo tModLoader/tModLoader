@@ -138,11 +138,11 @@ namespace ExampleMod.Content
 			clonedRecipe.Register();
 
 			// Recipes can also contain custom item consumption logic, similar to how the Alchemy Table causes potion recipes to consume less ingredients: See https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#custom-item-consumption for more information.
-			// This example requires the Chain item as an ingredient, but the DontConsumeChain ConsumeItemCallback causes the Chain to not be consumed
+			// This example requires the Chain item as an ingredient, but the DontConsumeChain ConsumeIngredientCallback causes the Chain to not be consumed
 			Recipe.Create(ItemID.AlphabetStatueJ)
 				.AddIngredient(ItemID.StoneBlock, 10)
 				.AddIngredient(ItemID.Chain)
-				.AddConsumeItemCallback(ExampleRecipeCallbacks.DontConsumeChain)
+				.AddConsumeIngredientCallback(ExampleRecipeCallbacks.DontConsumeChain)
 				.AddTile(TileID.HeavyWorkBench)
 				.Register();
 

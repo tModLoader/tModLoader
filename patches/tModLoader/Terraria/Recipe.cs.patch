@@ -204,7 +204,7 @@
  			}
 +			*/
 +
-+			RecipeLoader.ConsumeItem(this, item2.type, ref num, false);
++			RecipeLoader.ConsumeIngredient(this, item2.type, ref num, false);
  
  			if (num <= 0)
  				continue;
@@ -748,7 +748,7 @@
 +
 +		//TML: The whole method is rewritten.
 +		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
-+			currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
++			currentRecipe.AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 +
 +		static void ReplaceCondition(ref bool field, Condition cond)
 +		{

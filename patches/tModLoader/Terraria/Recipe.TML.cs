@@ -19,10 +19,17 @@ namespace Terraria;
 /// </summary>
 public partial class Recipe
 {
+	[Obsolete($"Replaced by {nameof(IngredientQuantityRules)} due to not accounting for shimmer decrafting")]
 	public static class ConsumptionRules
 	{
+		[Obsolete($"Replaced by {nameof(IngredientQuantityRules)}.{nameof(IngredientQuantityRules.Alchemy)} due to not accounting for shimmer decrafting")]
+		public static ConsumeItemCallback Alchemy => (Recipe recipe, int type, ref int amount) => IngredientQuantityRules.Alchemy(recipe, type, ref amount, false);
+	}
+
+	public static class IngredientQuantityRules
+	{
 		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behaviour is already automatically given to all items that can be made at a placed bottle tile. </summary>
-		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount, bool isDecrafting) => {
+		public static IngredientQuantityCallback Alchemy = (Recipe recipe, int type, ref int amount, bool isDecrafting) => {
 			if (!Main.LocalPlayer.alchemyTable && !isDecrafting)
 				return;
 			for (int i = amount; i > 0; i--) {
@@ -37,13 +44,15 @@ public partial class Recipe
 	public readonly List<Condition> DecraftConditions = new();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
-	/// <summary>
-	/// Called for both <see cref="Create()"/> and <see cref="Item.GetShimmered"/>, using <paramref name="isDecraft"/> == <see langword="true"/> to denote a shimmer operation
-	/// </summary>
-	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount, bool isDecrafting);
 
+	[Obsolete($"Replaced by {nameof(IngredientQuantityCallback)} due to not accounting for shimmer decrafting")]
+	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
+	/// <summary>
+	/// Called for both <see cref="Create()"/> and <see cref="Item.GetShimmered"/>, using <paramref name="isDecrafting"/> = <see langword="true"/> to denote a shimmer operation
+	/// </summary>
+	public delegate void IngredientQuantityCallback(Recipe recipe, int type, ref int amount, bool isDecrafting);
 	internal OnCraftCallback OnCraftHooks { get; private set; }
-	internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
+	internal IngredientQuantityCallback ConsumeIngredientHooks { get; private set; }
 
 	private void AddGroup(int id)
 	{
@@ -308,9 +317,21 @@ public partial class Recipe
 	/// <summary>
 	/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
 	/// </summary>
+
+	[Obsolete($"Replaced by {nameof(AddConsumeIngredientCallback)} due to not accounting for shimmer decrafting")]
 	public Recipe AddConsumeItemCallback(ConsumeItemCallback callback)
 	{
-		ConsumeItemHooks += callback;
+		ConsumeIngredientHooks += (Recipe recipe, int type, ref int num, bool decraft) => callback(recipe, type, ref num);
+
+		return this;
+	}
+
+	/// <summary>
+	/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
+	/// </summary>
+	public Recipe AddConsumeIngredientCallback(IngredientQuantityCallback callback)
+	{
+		ConsumeIngredientHooks += callback;
 
 		return this;
 	}
@@ -415,7 +436,7 @@ public partial class Recipe
 		clone.needEverythingSeed = needEverythingSeed;
 
 		clone.OnCraftHooks = OnCraftHooks;
-		clone.ConsumeItemHooks = ConsumeItemHooks;
+		clone.ConsumeIngredientHooks = ConsumeIngredientHooks;
 		foreach (Condition condition in Conditions) {
 			clone.AddCondition(condition);
 		}
@@ -427,7 +448,7 @@ public partial class Recipe
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
 		// it here to not have multiple duplicate hooks.
 		if (clone.requiredTile.Contains(TileID.Bottles))
-			clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
+			clone.ConsumeIngredientHooks -= IngredientQuantityRules.Alchemy;
 
 		return clone;
 	}
@@ -445,7 +466,7 @@ public partial class Recipe
 			throw new RecipeException("There was an attempt to register an already registered recipe.");
 
 		if (requiredTile.Contains(TileID.Bottles))
-			AddConsumeItemCallback(ConsumptionRules.Alchemy);
+			AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 
 		if (numRecipes >= maxRecipes) {
 			maxRecipes += 500;
