@@ -397,7 +397,7 @@
  	public float manaCost = 1f;
  	public bool fireWalk;
  	public bool channel;
-@@ -961,23 +_,96 @@
+@@ -961,23 +_,97 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -464,7 +464,7 @@
  	public int statManaMax2;
 +
 +	/// <summary>
-+	/// The rate of this player's life regeneration in health/ticks, divided by <c>120</c>.
++	/// The rate of this player's life regeneration in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs and life regeneration accessories such as <see cref="ItemID.BandofRegeneration"/>.
 +	/// <br/> For example, adding <c>10</c> to this value regenerates <c>10 / 120</c> = <c>1/6</c> health per tick, or 5 health per second.
 +	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
 +	/// <br/> This value should be subtracted from in <see cref="ModPlayer.UpdateBadLifeRegen"/> and added to in <see cref="ModPlayer.UpdateLifeRegen"/>.
@@ -475,6 +475,7 @@
 +	/// This player's accumulated life regeneration.
 +	/// <br/> If this value reaches or exceeds <c>120</c>, the player gains <c><see cref="lifeRegenCount"/> / 120</c> health and this value decreases until it no longer exceeds <c>120</c>.
 +	/// <br/> If this value reaches or exceeds <c>-120</c>, the player loses health in the same way.
++	/// <br/> In either case, text will appear above the player indicating the life regeneration or life loss.
 +	/// </summary>
  	public int lifeRegenCount;
 +
@@ -1174,6 +1175,22 @@
  			item.stack--;
  			if (item.stack <= 0)
  				item.TurnToAir();
+@@ -3186,13 +_,13 @@
+ 	public Item QuickMana_GetItemToUse()
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+-			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion))
++			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && CombinedHooks.CanUseItem(this, inventory[i]))
+ 				return inventory[i];
+ 		}
+ 
+ 		if (useVoidBag()) {
+ 			for (int j = 0; j < 40; j++) {
+-				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, inventory[j]))
+ 					return bank4.item[j];
+ 			}
+ 		}
 @@ -3226,7 +_,7 @@
  		if (cursed || CCed || dead)
  			return;
@@ -1394,7 +1411,7 @@
  	{
 +		DropFromItem(type);
 +
-+		if ((!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++		if (!ItemID.Sets.PreHardmodeLikeBossBag[type]) {
 +			TryGettingDevArmor(GetItemSource_OpenItem(type));
 +		}
 +
@@ -2450,7 +2467,7 @@
  		}
  
  		if (armorPiece.type == 1549) {
-@@ -10365,14 +_,17 @@
+@@ -10365,14 +_,21 @@
  			minionDamage += 0.11f;
  		}
  
@@ -2460,6 +2477,10 @@
  			maxMinions++;
  			minionDamage += 0.11f;
  		}
++
++		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
++			hasGemRobe = true;
 +
 +		ItemLoader.UpdateEquip(armorPiece, this);
  	}
@@ -3054,8 +3075,11 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
-@@ -14540,6 +_,7 @@
+@@ -14538,8 +_,10 @@
+ 		witheredWeapon = false;
+ 		parryDamageBuff = false;
  		slowOgreSpit = false;
++		hasGemRobe = false; // Added by TML.
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML.
@@ -5467,6 +5491,23 @@
  		}
  
  		if (newItem.CanFillEmptyAmmoSlot()) {
+@@ -30325,6 +_,16 @@
+ 		return newItem;
+ 	}
+ 
++	/// <summary>
++	/// Places the <paramref name="newItem"/> directly into this player's inventory. The <paramref name="settings"/> dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <see cref="GetItemSettings"/> for this parameter to match vanilla behavior. The <paramref name="plr"/> parameter should always be set to the whoAmI of this player.
++	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
++	/// <para/> The return value is an Item instance containing the overflow. If the full stack of <paramref name="newItem"/> is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <paramref name="newItem"/> fit in the inventory, the return value will be the Item that didn't fit. If the returned <see cref="Item"/> isn't <see cref="Item.IsAir"/>, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <paramref name="newItem"/> came from.
++	/// <para/> Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.
++	/// </summary>
++	/// <param name="plr"></param>
++	/// <param name="newItem"></param>
++	/// <param name="settings"></param>
++	/// <returns></returns>
+ 	public Item GetItem(int plr, Item newItem, GetItemSettings settings)
+ 	{
+ 		bool isACoin = newItem.IsACoin;
 @@ -30416,11 +_,16 @@
  	private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
@@ -5877,7 +5918,14 @@
  		if (result.BaitItemType == 2673)
  			return result;
  
-@@ -32894,12 +_,15 @@
+@@ -32890,16 +_,22 @@
+ 		if (canFloatInWater && wet)
+ 			num += 5;
+ 
++		/*
+ 		if (sitting.TryGetSittingBlock(this, out var tile) && ((tile.type == 15 && tile.frameY / 40 == 1) || tile.type == 497))
++		*/
++		if (sitting.TryGetSittingBlock(this, out var _) && sitting.details.IsAToilet) // Make modded toilets give the fishing boost as well
  			num += 5;
  
  		int num2 = result.BaitPower + result.PolePower + fishingSkill + num;
@@ -7010,6 +7058,15 @@
  		if (isPettingAnimal) {
  			int num = miscCounter % 14 / 7;
  			CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
+@@ -38798,7 +_,7 @@
+ 				itemLocation.X = position.X + (float)width * 0.5f + 20f * (float)direction;
+ 			}
+ 			else if (sItem.type == 930) {
+-				itemLocation.X = position.X + (float)(width / 2) * 0.5f - 12f - (float)(2 * direction);
++				itemLocation.X = position.X + width * 0.5f - 2 * direction; // forward port from 1.4.5
+ 				float x = position.X + (float)(width / 2) + (float)(38 * direction);
+ 				if (direction == 1)
+ 					x -= 10f;
 @@ -38865,7 +_,7 @@
  					if (Main.tile[num5, num6] == null)
  						Main.tile[num5, num6] = new Tile();
@@ -7019,6 +7076,15 @@
  						miscTimer++;
  						if (Main.rand.Next(5) == 0)
  							miscTimer++;
+@@ -38982,7 +_,7 @@
+ 		}
+ 		else if (sItem.holdStyle == 3 && !pulley) {
+ 			if (!Main.dedServ) {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 				itemRotation = 0f;
+ 			}
 @@ -39041,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
@@ -7042,6 +7108,24 @@
 +	{
  		if (Main.dedServ)
  			return;
+ 
+@@ -39456,7 +_,7 @@
+ 			}
+ 			else if (sItem.type == 4262) {
+ 				itemRotation = 0f;
+-				itemLocation.X = base.Center.X + (float)(-heldItemFrame.Width) * 0.5f + (float)(direction * -6);
++				itemLocation.X = base.Center.X + (float)(direction * -6); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - 6f;
+ 				if (Main.rand.Next(20) == 0) {
+ 					int num21 = Main.rand.Next(570, 573);
+@@ -39482,7 +_,7 @@
+ 				itemLocation += (itemRotation.ToRotationVector2() * num22 * direction).Floor();
+ 			}
+ 			else {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 			}
  
 @@ -39713,7 +_,7 @@
  		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
@@ -7071,8 +7155,8 @@
  		int num = item.healLife;
  		int healMana = item.healMana;
 +		*/
-+		int num = GetHealLife(item, true);
-+		int healMana = GetHealMana(item, true);
++		int num = item.healLife > 0 ? GetHealLife(item, true) : 0;
++		int healMana = item.healMana > 0 ? GetHealMana(item, true) : 0;
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
@@ -7426,6 +7510,27 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
+@@ -41015,6 +_,7 @@
+ 			projToShoot = 117;
+ 
+ 		if (projToShoot == 42) {
++			/*
+ 			if (item.type == 370) {
+ 				projToShoot = 65;
+ 				Damage += 5;
+@@ -41027,6 +_,12 @@
+ 				projToShoot = 354;
+ 				Damage += 5;
+ 			}
++			*/
++
++			if (ItemID.Sets.SandgunAmmoProjectileData[item.type] is ItemID.Sets.SandgunAmmoInfo data) {
++				projToShoot = data.ProjectileType;
++				Damage += data.BonusDamage;
++			}
+ 		}
+ 
+ 		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
 @@ -41043,6 +_,9 @@
  			speed *= 1.1f;
  		}
@@ -7850,7 +7955,7 @@
  			throw;
  		}
  	}
-@@ -41979,11 +_,32 @@
+@@ -41979,11 +_,33 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
@@ -7866,6 +7971,7 @@
 +		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
 +		PlayerLoader.PostSavePlayer(player);
 +
++		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
 +		TagCompound tplrData = PlayerIO.SaveData(player);
 +
 +		SavePlayerFile_Write(playerFile, plrData, tplrData);
@@ -8086,12 +8192,17 @@
  		catch {
  		}
  
-@@ -42322,8 +_,28 @@
+@@ -42322,8 +_,33 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
-+		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		try {
++			Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		}
++		catch (CustomModDataException) {
++			// Same exception should already be caught in LoadPlayerFromStream
++		}
  		return player;
 +	}
 +

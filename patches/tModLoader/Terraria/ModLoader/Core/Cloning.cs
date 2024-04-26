@@ -52,30 +52,29 @@ public static class Cloning
 	private static Dictionary<Type, TypeCloningInfo> typeInfos = new();
 	private static ConditionalWeakTable<Type, object> immutableTypes = new();
 
+	public static bool IsCloneable<T>(T t, Expression<Func<T, Delegate>> cloneMethod) => IsCloneable<T, Delegate>(t, cloneMethod);
 	public static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate
 	{
 		var type = t.GetType();
-		return typeInfos.TryGetValue(type, out var typeInfo) ? typeInfo.IsCloneable : ComputeInfo(t.GetType(), cloneMethod.ToMethodInfo()).IsCloneable;
+		if (!typeInfos.TryGetValue(type, out var typeInfo))
+			typeInfo = ComputeInfo(type, cloneMethod.ToOverrideQuery().Binder(t).Method.DeclaringType);
+
+		return typeInfo.IsCloneable;
 	}
 
-	public static bool IsCloneable(Type type, MethodInfo cloneMethod) => GetOrComputeInfo(type, cloneMethod).IsCloneable;
-
-	private static TypeCloningInfo GetOrComputeInfo(Type type, MethodInfo cloneMethod) =>
-		typeInfos.TryGetValue(type, out var typeInfo) ? typeInfo : ComputeInfo(type, cloneMethod);
-
-	private static TypeCloningInfo ComputeInfo(Type type, MethodInfo cloneMethod)
+	private static TypeCloningInfo ComputeInfo(Type type, Type cloneableAncestor)
 	{
 		var info = new TypeCloningInfo {
 			type = type,
-			overridesClone = LoaderUtils.GetDerivedDefinition(type, cloneMethod).DeclaringType == type,
-			fieldsWhichMightNeedDeepCloning =
-					type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-					.Where(f => f.DeclaringType == type && !IsCloneByReference(f))
-					.ToArray()
+			overridesClone = type == cloneableAncestor
 		};
 
 		if (!info.overridesClone) {
-			info.baseTypeInfo = GetOrComputeInfo(type.BaseType, cloneMethod);
+			info.fieldsWhichMightNeedDeepCloning =
+					type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+					.Where(f => f.DeclaringType == type && !IsCloneByReference(f))
+					.ToArray();
+			info.baseTypeInfo = typeInfos.TryGetValue(type.BaseType, out var typeInfo) ? typeInfo : ComputeInfo(type.BaseType, cloneableAncestor);
 		}
 
 		typeInfos[type] = info;

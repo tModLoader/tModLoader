@@ -11,7 +11,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers;
-@@ -25,13 +_,17 @@
+@@ -25,13 +_,55 @@
  		string s;
  		if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out var result))
  			Netplay.ListenPort = result;
@@ -19,21 +19,6 @@
 +		// Added by TML.
 +		if (TryParameter("-modpack") is string modPack)
 +			ModOrganizer.commandLineModPack = modPack;
- 	}
- 
- 	private static void LoadClientParameters(Main game)
- 	{
- 		string iP;
- 		if ((iP = TryParameter("-j", "-join")) != null)
--			game.AutoJoin(iP);
-+			game.AutoJoin(iP, TryParameter("-plr", "-player"));
- 
- 		string arg;
- 		if ((arg = TryParameter("-pass", "-password")) != null) {
-@@ -41,10 +_,53 @@
- 
- 		if (HasParameter("-host"))
- 			game.AutoHost();
 +
 +		// Added by TML.
 +		if (HasParameter("-skipselect")) {
@@ -53,11 +38,13 @@
 +			ModLoader.ModLoader.OnSuccessfulLoad += () => {
 +				WorldGen.clearWorld();
 +
-+				Main.LoadPlayers();
-+				(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
-+
 +				Main.LoadWorlds();
 +				(Main.WorldList.FirstOrDefault(x => x.Name == worldName) ?? Main.WorldList[0]).SetAsActive();
++				if (Main.dedServ) // Fix #4035, logic will continue to DedServ_PostModLoad where selected world will be loaded and WorldGen.serverLoadWorld run.
++					return;
++
++				Main.LoadPlayers();
++				(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
 +
 +				if (!GameContent.UI.States.UIWorldSelect.CanWorldBePlayed(Main.ActiveWorldFileData)) {
 +					throw new Exception(
@@ -71,6 +58,17 @@
 +			};
 +		}
  	}
+ 
+ 	private static void LoadClientParameters(Main game)
+ 	{
+ 		string iP;
+ 		if ((iP = TryParameter("-j", "-join")) != null)
+-			game.AutoJoin(iP);
++			game.AutoJoin(iP, TryParameter("-plr", "-player"));
+ 
+ 		string arg;
+ 		if ((arg = TryParameter("-pass", "-password")) != null) {
+@@ -45,6 +_,13 @@
  
  	private static void LoadServerParameters(Main game)
  	{

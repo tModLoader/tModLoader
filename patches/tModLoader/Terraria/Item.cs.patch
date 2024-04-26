@@ -269,7 +269,7 @@
 +	/// - <see cref="NPC.DropItemInstanced"/><br/>
 +	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
 +	/// - <see cref="MessageID.InstancedItem"/><br/>
-+	/// Defaults to false.<br/>
++	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool instanced;
  	public int ownIgnore = -1;
@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,242 @@
+@@ -121,49 +_,245 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -535,7 +535,7 @@
  	public int ammo = AmmoID.None;
 +
 +	/// <summary>
-+	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Wire.
++	/// If true and the item is ammo (sets <see cref="ammo"/> to something), the item will not count as ammo for certain ammo-specific behavior, such as the tooltip mentioning the item is ammo, or ammo items going into ammo slots first when picked up. Used for the Coin items, Ale, and Sand Blocks.
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool notAmmo;
@@ -552,6 +552,9 @@
 +	/// </summary>
  	public int lifeRegen;
  	public int manaIncrease;
++	/// <summary>
++	/// Indicates that an item in a shop can only be bought once, meaning it is an item that has been sold to the NPC shop by the player.
++	/// </summary>
  	public bool buyOnce;
 +
 +	/// <summary>
@@ -1901,6 +1904,15 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
+@@ -47366,7 +_,7 @@
+ 		noUseGraphic = false;
+ 		lifeRegen = 0;
+ 		shootSpeed = 0f;
+-		active = true;
++		active = Type != 0;
+ 		alpha = 0;
+ 		ammo = AmmoID.None;
+ 		useAmmo = AmmoID.None;
 @@ -47426,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
@@ -2308,10 +2320,11 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -49309,6 +_,9 @@
+@@ -49309,6 +_,10 @@
  		dye = 0;
  		shoot = 0;
  		mountType = -1;
++		active = false;
 +
 +		ModItem = null;
 +		_globals = null;

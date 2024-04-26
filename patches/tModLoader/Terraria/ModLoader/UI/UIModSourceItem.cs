@@ -145,6 +145,16 @@ internal class UIModSourceItem : UIPanel
 
 			contextButtonsLeft -= 26;
 		}
+
+		if (File.Exists(csprojFile)) {
+			var openFolderButton = new UIHoverImage(UICommon.ButtonOpenFolder, Lang.inter[110].Value) {
+				Left = { Pixels = contextButtonsLeft, Percent = 1f },
+				Top = { Pixels = 4 }
+			};
+			openFolderButton.OnLeftClick += (a, b) => Utils.OpenFolder(_mod);
+			Append(openFolderButton);
+			contextButtonsLeft -= 26;
+		}
 	}
 
 	protected override void DrawChildren(SpriteBatch spriteBatch)
@@ -168,42 +178,27 @@ internal class UIModSourceItem : UIPanel
 		// This code here rather than ctor since the delay for dozens of mod source folders is noticeable.
 		if (!_upgradePotentialChecked) {
 			_upgradePotentialChecked = true;
-			string modFolderName = Path.GetFileName(_mod);
-			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
+			string modFolderPath = _mod;
 			bool projNeedsUpdate = false;
-			if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
-				var icon = UICommon.ButtonExclamationTexture;
+
+			if (SourceManagement.SourceUpgradeNeeded(modFolderPath)) {
+				var icon = UICommon.ButtonUpgradeCsproj;
 				var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
 				};
+
 				upgradeCSProjButton.OnLeftClick += (s, e) => {
-					File.WriteAllText(csprojFile, Interface.createMod.GetModCsproj(modFolderName));
-					string propertiesFolder = Path.Combine(_mod, "Properties");
-					string AssemblyInfoFile = Path.Combine(propertiesFolder, "AssemblyInfo.cs");
-					if (File.Exists(AssemblyInfoFile))
-						File.Delete(AssemblyInfoFile);
+					SourceManagement.UpgradeSource(modFolderPath);
 
-					try {
-						string objFolder = Path.Combine(_mod, "obj"); // Old files can cause some issues.
-						if (Directory.Exists(objFolder))
-							Directory.Delete(objFolder, true);
-						string binFolder = Path.Combine(_mod, "bin");
-						if (Directory.Exists(binFolder))
-							Directory.Delete(binFolder, true);
-					}
-					catch (Exception) {
-					}
-
-					Directory.CreateDirectory(propertiesFolder);
-					File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					Main.menuMode = Interface.modSourcesID;
 
 					upgradeCSProjButton.Remove();
 					_upgradePotentialChecked = false;
 				};
+
 				Append(upgradeCSProjButton);
 
 				contextButtonsLeft -= 26;
@@ -215,7 +210,7 @@ internal class UIModSourceItem : UIPanel
 			string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
 
 			if (files.Length > 0) {
-				var icon = UICommon.ButtonExclamationTexture;
+				var icon = UICommon.ButtonUpgradeLang;
 				var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
@@ -237,7 +232,7 @@ internal class UIModSourceItem : UIPanel
 
 			// Display Run tModPorter when .csproj is valid
 			if (!projNeedsUpdate) {
-				var pIcon = UICommon.ButtonExclamationTexture;
+				var pIcon = UICommon.ButtonRunTModPorter;
 				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
 					Top = { Pixels = 4 }
@@ -370,7 +365,7 @@ internal class UIModSourceItem : UIPanel
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
 			var modFile = new TmodFile(modPath);
 			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
-				localMod = new LocalMod(modFile);
+				localMod = new LocalMod(ModLocation.Local, modFile);
 
 			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
 			if (!File.Exists(icon))

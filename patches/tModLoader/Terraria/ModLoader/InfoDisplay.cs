@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.ModLoader.Core;
-using System.Reflection;
 
 namespace Terraria.ModLoader;
 
@@ -94,22 +93,24 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
+		_ = DisplayName;
 		ModContent.Request<Texture2D>(Texture);
 		SetStaticDefaults();
 	}
 
-	private static readonly MethodInfo displayValueMethodOld = typeof(InfoDisplay).GetMethod(nameof(DisplayValue), new[] { typeof(Color).MakeByRefType() });
-	private static readonly MethodInfo displayValueMethodNew = typeof(InfoDisplay).GetMethod(nameof(DisplayValue), new[] { typeof(Color).MakeByRefType(), typeof(Color).MakeByRefType() });
-
 	protected override void ValidateType()
 	{
 		base.ValidateType();
+		MustOverrideDisplayValue();
+	}
 
-		var t = GetType();
-
-		if (!LoaderUtils.HasOverride(t, displayValueMethodNew) && !LoaderUtils.HasOverride(t, displayValueMethodOld)) {
-			throw new Exception($"{t} must override {nameof(DisplayValue)}.");
-		}
+	private delegate string DisplayValueMethodType(ref Color displayColor, ref Color displayShadowColor);
+	private delegate string OldDisplayValueMethodType(ref Color displayColor);
+	[Obsolete]
+	private void MustOverrideDisplayValue()
+	{
+		if (!LoaderUtils.HasOverride(this, t => (DisplayValueMethodType)t.DisplayValue) && !LoaderUtils.HasOverride(this, t => (OldDisplayValueMethodType)t.DisplayValue))
+			throw new Exception($"{GetType()} must override {nameof(DisplayValue)}.");
 	}
 
 	protected sealed override void Register()

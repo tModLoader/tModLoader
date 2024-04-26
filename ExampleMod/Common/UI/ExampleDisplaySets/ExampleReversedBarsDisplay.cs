@@ -37,15 +37,15 @@ namespace ExampleMod.Common.UI.ExampleDisplaySets
 
 			string vanillaFolder = "Images/UI/PlayerResourceSets/HorizontalBars/";
 			string modFolder = "ExampleMod/Common/UI/ExampleDisplaySets/";
-			_hpFill = Main.Assets.Request<Texture2D>(vanillaFolder + "HP_Fill", AssetRequestMode.ImmediateLoad);
-			_hpFillHoney = Main.Assets.Request<Texture2D>(vanillaFolder + "HP_Fill_Honey", AssetRequestMode.ImmediateLoad);
-			_mpFill = Main.Assets.Request<Texture2D>(vanillaFolder + "MP_Fill", AssetRequestMode.ImmediateLoad);
+			_hpFill = Main.Assets.Request<Texture2D>(vanillaFolder + "HP_Fill");
+			_hpFillHoney = Main.Assets.Request<Texture2D>(vanillaFolder + "HP_Fill_Honey");
+			_mpFill = Main.Assets.Request<Texture2D>(vanillaFolder + "MP_Fill");
 
-			_panelLeft = Main.Assets.Request<Texture2D>(vanillaFolder + "Panel_Left", AssetRequestMode.ImmediateLoad);
-			_panelMiddleHP = Main.Assets.Request<Texture2D>(vanillaFolder + "HP_Panel_Middle", AssetRequestMode.ImmediateLoad);
-			_panelRightHP = ModContent.Request<Texture2D>(modFolder + "HP_Panel_Right", AssetRequestMode.ImmediateLoad);
-			_panelMiddleMP = Main.Assets.Request<Texture2D>(vanillaFolder + "MP_Panel_Middle", AssetRequestMode.ImmediateLoad);
-			_panelRightMP = ModContent.Request<Texture2D>(modFolder + "MP_Panel_Right", AssetRequestMode.ImmediateLoad);
+			_panelLeft = Main.Assets.Request<Texture2D>(vanillaFolder + "Panel_Left");
+			_panelMiddleHP = Main.Assets.Request<Texture2D>(vanillaFolder + "HP_Panel_Middle");
+			_panelRightHP = ModContent.Request<Texture2D>(modFolder + "HP_Panel_Right");
+			_panelMiddleMP = Main.Assets.Request<Texture2D>(vanillaFolder + "MP_Panel_Middle");
+			_panelRightMP = ModContent.Request<Texture2D>(modFolder + "MP_Panel_Right");
 		}
 
 		// DrawLife runs before DrawMana, so keep that in mind

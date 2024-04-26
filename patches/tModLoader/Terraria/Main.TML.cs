@@ -19,6 +19,10 @@ using Terraria.Social;
 using Terraria.UI.Chat;
 using ReLogic.Content;
 using Terraria.UI.Gamepad;
+using System.Linq;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Default;
+using Terraria.ModLoader.Config;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 
@@ -75,6 +79,83 @@ public partial class Main
 	/// This works in the player select screen, and in multiplayer (when other players are updating)
 	/// </summary>
 	public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
+
+	/// <summary>
+	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// <para/> Typically used in a foreach statement:
+	/// <code>foreach (var player in Main.ActivePlayers) {
+	///     // Code
+	/// }
+	/// </code>
+	/// This is equivalent to the less convenient approach:
+	/// <code>
+	/// for (int i = 0; i &lt; Main.maxPlayers; i++) {
+	///     var player = Main.player[i];
+	///     if (!player.active)
+	///         continue;
+	///     // Code
+	/// }
+	/// </code>
+	/// Note that if the index of the Player in the <see cref="Main.player"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// </summary>
+	public static ActiveEntityIterator<Player> ActivePlayers => new(player.AsSpan(0, maxPlayers));
+	/// <summary>
+	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// <para/> Typically used in a foreach statement:
+	/// <code>foreach (var npc in Main.ActiveNPCs) {
+	///     // Code
+	/// }
+	/// </code>
+	/// This is equivalent to the less convenient approach:
+	/// <code>
+	/// for (int i = 0; i &lt; Main.maxNPCs; i++) {
+	///     var npc = Main.npc[i];
+	///     if (!npc.active)
+	///         continue;
+	///     // Code
+	/// }
+	/// </code>
+	/// Note that if the index of the NPC in the <see cref="Main.npc"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// </summary>
+	public static ActiveEntityIterator<NPC> ActiveNPCs => new(npc.AsSpan(0, maxNPCs));
+	/// <summary>
+	/// Use to iterate over active projectiles. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// <para/> Typically used in a foreach statement:
+	/// <code>foreach (var projectile in Main.ActiveProjectiles) {
+	///     // Code
+	/// }
+	/// </code>
+	/// This is equivalent to the less convenient approach:
+	/// <code>
+	/// for (int i = 0; i &lt; Main.maxProjectiles; i++) {
+	///     var projectile = Main.projectile[i];
+	///     if (!projectile.active)
+	///         continue;
+	///     // Code
+	/// }
+	/// </code>
+	/// Note that if the index of the Projectile in the <see cref="Main.projectile"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// </summary>
+	public static ActiveEntityIterator<Projectile> ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
+	/// <summary>
+	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// <para/> Typically used in a foreach statement:
+	/// <code>foreach (var item in Main.ActiveItems) {
+	///     // Code
+	/// }
+	/// </code>
+	/// This is equivalent to the less convenient approach:
+	/// <code>
+	/// for (int i = 0; i &lt; Main.maxItems; i++) {
+	///     var item = Main.item[i];
+	///     if (!item.active)
+	///         continue;
+	///     // Code
+	/// }
+	/// </code>
+	/// Note that if the index of the Item in the <see cref="Main.item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
+	/// </summary>
+	public static ActiveEntityIterator<Item> ActiveItems => new(item.AsSpan(0, maxItems));
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.
@@ -202,7 +283,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Previous Page";
+					text = Language.GetTextValue("tModLoader.PreviousInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -226,7 +307,7 @@ public partial class Main
 					hover = true;
 
 					player[myPlayer].mouseInterface = true;
-					text = "Next Page";
+					text = Language.GetTextValue("tModLoader.NextInfoAccPage");
 					mouseText = true;
 
 					if (mouseLeft && mouseLeftRelease) {
@@ -266,7 +347,7 @@ public partial class Main
 
 			Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
 			Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-			Color color = builderToggle.DisplayColorTexture();
+			Color color = builderToggle.DisplayColorTexture_Obsolete();
 
 			Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
 			text = builderToggle.DisplayValue();
@@ -279,44 +360,65 @@ public partial class Main
 			*/
 
 			bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
-			bool click = hover && mouseLeft && mouseLeftRelease;
-
-			if (toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) {
-				if (toggleType == BuilderToggle.BlockSwap.Type)
-					rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
-				else
-					rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
-
-				position += new Vector2(1, 0);
-			}
-			else
-				rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
+			bool leftClick = hover && mouseLeft && mouseLeftRelease;
+			bool rightClick = hover && mouseRight && mouseRightRelease;
 
 			/*
 			BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
 			BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
 			*/
 
-			spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+			// Save the original position for hover texture drawing so it won't be confusing
+			Vector2 hoverDrawPosition = position;
+			float scale = 1f;
+			SpriteEffects spriteEffects = SpriteEffects.None;
+
+			BuilderToggleDrawParams drawParams = new() {
+				Texture = texture,
+				Position = position,
+				Frame = rectangle,
+				Color = color,
+				Scale = scale,
+				SpriteEffects = spriteEffects
+			};
+			if (builderToggle.Draw(spriteBatch, ref drawParams)) {
+				spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
+			}
 
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
 
-				if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type) {
-					Asset<Texture2D> iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture);
-					spriteBatch.Draw(iconHover.Value, position, null, OurFavoriteColor, 0f, iconHover.Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
+				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
+				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
+				Color hoverColor = OurFavoriteColor;
+				float hoverScale = 1f;
+				SpriteEffects hoverSpriteEffects = SpriteEffects.None;
+				drawParams = new() {
+					Texture = iconHover,
+					Position = hoverDrawPosition,
+					Frame = hoverRectangle,
+					Color = hoverColor,
+					Scale = hoverScale,
+					SpriteEffects = hoverSpriteEffects
+				};
+				if (builderToggle.DrawHover(spriteBatch, ref drawParams)) {
+					spriteBatch.Draw(drawParams.Texture, drawParams.Position, drawParams.Frame, drawParams.Color, 0f, drawParams.Frame.Size() / 2f, drawParams.Scale, drawParams.SpriteEffects, 0f);
 				}
-				else if (toggleType == BuilderToggle.BlockSwap.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
-				else if (toggleType == BuilderToggle.TorchBiome.Type)
-					spriteBatch.Draw(texture, position, texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 3 : 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
 			}
 
-			if (click) {
-				builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
-				SoundEngine.PlaySound((toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) ? SoundID.Unlock : SoundID.MenuTick);
+			if (leftClick) {
+				SoundStyle? sound = SoundID.MenuTick;
+				if (builderToggle.OnLeftClick(ref sound)) {
+					builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
+					SoundEngine.PlaySound(sound);
+				}
 				mouseLeftRelease = false;
+			}
+
+			if (rightClick) {
+				builderToggle.OnRightClick();
+				mouseRightRelease = false;
 			}
 
 
@@ -375,21 +477,35 @@ public partial class Main
 		if (SocialAPI.Mode == SocialMode.Steam) {
 			vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 		}
-		else {
+		else if (InstallVerifier.DistributionPlatform == DistributionPlatform.GoG) {
+			vanillaContentFolder = Path.Combine(Path.GetDirectoryName(InstallVerifier.vanillaExePath), "Content");
+			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
+		}
+		// Explicitly path if we are family shared using the old logic from prior to #4018; Temporary Hotfix - Solxan
+		// Maybe replace with a call to get InstallDir from TerrariaSteamClient? Or change Steam.GetInstallDir to be 'FamilyShare' safe?
+		// Also left as a generic fallback 
+		else /*if (Social.Steam.SteamedWraps.FamilyShared)*/ {
 			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
 			if (!Directory.Exists(vanillaContentFolder)) {
 				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
-			Logging.tML.Info("Content folder of Terraria GOG Install Location assumed to be: " + Path.GetFullPath(vanillaContentFolder));
 		}
+		
 
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 		}
 
+		// Canary file for legacy Terraria branches.
+		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_56.xnb"))) {
+			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
+			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
+		}
+
 		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
 		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
+			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
 		}
 
@@ -501,6 +617,55 @@ public partial class Main
 					newsIsNew = false;
 				}
 			}
+		}
+	}
+
+	private static void PrepareLoadedModsAndConfigsForSingleplayer()
+	{
+		// If any loaded mod or config differs from normal, intercept SinglePlayer menu with a prompt
+		// TODO: Should this remember the mod loadout before joining server? Right now it only cares about version downgrades. MP mods will still load.
+		bool needsReload = false;
+		List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = new();
+		var normalModsToLoad = ModOrganizer.RecheckVersionsToLoad();
+		foreach (var loadedMod in ModLoader.ModLoader.Mods) {
+			if (loadedMod is ModLoaderMod || loadedMod.File == null)
+				continue;
+			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
+			if (normalMod.modFile.path != loadedMod.File.path) {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				needsReload = true;
+			}
+		}
+
+		if(ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
+			needsReload = true;
+			foreach (var mod in modsWithChangedConfigs) {
+				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, mod.Name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChangedRestore", "DDA0DD")));
+			}
+		}
+
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		if (needsReload) {
+			string continueButtonText = Language.GetTextValue("tModLoader.ReloadRequiredReloadAndContinue");
+			Interface.serverModsDifferMessage.Show(Language.GetTextValue("tModLoader.ReloadRequiredSinglePlayerMessage", continueButtonText),
+				gotoMenu: 0, // back to main menu
+				continueButtonText: continueButtonText,
+				continueButtonAction: () => {
+					ModLoader.ModLoader.OnSuccessfulLoad += () => { Main.menuMode = 1; };
+					ModLoader.ModLoader.Reload();
+				},
+				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
+				backButtonAction: () => {
+					// Do nothing, logic will to back to main menu
+				},
+				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
+			);
+		}
+		else {
+			// Otherwise, config changes take effect immediately and the player select menu will be shown
+			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
+			ConfigManager.OnChangedAll();
 		}
 	}
 }

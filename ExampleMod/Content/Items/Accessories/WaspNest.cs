@@ -70,5 +70,9 @@ namespace ExampleMod.Content.Items.Accessories
 	public class WaspNestPlayer : ModPlayer
 	{
 		public bool strongBeesUpgrade;
+
+		public override void ResetEffects() {
+			strongBeesUpgrade = false;
+		}
 	}
 }

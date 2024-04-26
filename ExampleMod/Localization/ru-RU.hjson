@@ -82,7 +82,6 @@ Mods: {
 			// ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			// ExampleFishingCrate.MapEntry: Crate
 			// ExampleHerb.MapEntry: Example Herb
-			// ExampleMusicBoxTile.MapEntry: Music Box
 			// ExampleOre.MapEntry: ExampleOre
 
 			ExampleChest: {
@@ -891,6 +890,11 @@ Mods: {
 				// DisplayName: Example Statue
 				// Tooltip: The power of examplium flows in this inanimate fish
 			}
+
+			ExampleSandBlock: {
+				// DisplayName: Example Sand Block
+				// Tooltip: This is a modded sand block
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -930,6 +934,8 @@ Mods: {
 			// ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
 			// ExampleLastPrismHoldout.DisplayName: Example Last Prism
 			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			// ExampleSandBallFallingProjectile.DisplayName: Example Sand Ball
+			// ExampleSandBallGunProjectile.DisplayName: "{$ExampleSandBallFallingProjectile.DisplayName}"
 		}
 
 		Buffs: {
@@ -1102,6 +1108,7 @@ Mods: {
 			// PlayerHasLifeforceBuff: When the player has the Lifeforce buff
 			// InExampleBiome: In the Example biome
 			// NotSellingExampleItem: When not selling Example Item
+			// DownedMinionBoss: After defeating {$NPCs.MinionBossBody.DisplayName}
 		}
 
 		DropConditions: {
@@ -1115,13 +1122,18 @@ Mods: {
 			// InGameNotificationTitle: Welcome to the world, you are using Example Mod!
 		}
 
-		// WorldGen.ExampleOrePassMessage: Example Mod Ores
+		WorldGen: {
+			// ExampleOrePassMessage: Example Mod Ores
+			// BlessedWithExampleOreMessage: Your world has been blessed with Example Ore!
+		}
 
 		BuilderToggles: {
 			ExampleBuilderToggleDimmedLight: {
 				// OnText: Example On
 				// OffText: Example Off
 			}
+
+			FreeBaitBuilderToggle.NameText: Бесплатная наживка: {0}
 		}
 
 		# This is the command names for mod emotes
