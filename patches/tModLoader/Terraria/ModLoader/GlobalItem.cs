@@ -616,6 +616,13 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
+	/// Allows you to modify the effects of prefixes after all modded prefixes & vanilla prefixes have been applied. 
+	/// </summary>
+	public virtual void PostUpdatePrefixBenefits(Item equippedItem, Player player)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to determine whether the player is wearing an armor set, and return a name for this set.
 	/// If there is no armor set, return the empty string.
 	/// Returns the empty string by default.
