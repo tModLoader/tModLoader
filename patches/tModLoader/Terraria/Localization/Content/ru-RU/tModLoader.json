@@ -57,14 +57,14 @@
 		"DownloadMissingMods": "Скачать недостающие моды",
 		"ModsDisable": "Нажмите, чтобы выключить",
 		"ModsEnable": "Нажмите, чтобы включить",
-		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
-		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
+		"ModsDisableAndDependents": "Нажмите, чтобы выключить {0} и {1} {^1:зависимость;зависимости;зависимостей}",
+		"ModsEnableAndDependencies": "Нажмите, чтобы включить {0} и {1} {^1:зависимость;зависимости;зависимостей}",
 		"ModConfiguration": "Конфигурация модов",
 		"ModsOpenConfig": "Нажмите, чтобы открыть конфигурацию мода",
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModStableOnPreviewWarning": "Не подходит для Preview-версии.\nВключайте на свой страх и риск",
-		"ModDependencyTooltip": "Этот мод требует установки: {0}\n (Они будут автоматически включены)",
-		// "ModDependentsTooltip": "Required by:\n{0}",
+		"ModDependencyTooltip": "Требует:\n{0}",
+		"ModDependentsTooltip": "Требуется для:\n{0}",
 		"TranslationModTooltip": "В этом моде доступны переводы для таких языков: {0}",
 		"ModDependencyClickTooltip": "Запуск этого мода невозможен без:\n{0}\n(нажмите, чтобы включить зависимости)",
 		"ModDependencyModsNotFound": "Следующие моды не найдены: {0}",
@@ -153,7 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "Опубликовывая этот контент, вы соглашаетесь с правилами пользования tModLoader",
-		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
+		"NonModOwnerPublishWarning": "Мод с таким же названием \"{0}\" уже был опубликован в Мастерской другим автором. Если вы не являетесь соавтором этого мода, попытка его публикации не удастся. Если же это ваш мод, пожалуйста, убедитесь, что вы авторизованы в правильном аккаунте Steam. У каждого мода должно быть уникальное внутреннее название.",
 		"SteamPublishingLimit": "Ошибка: Публикация контента в Мастерской возможна только для пользователей Steam-версии tModLoader.",
 		"NoWorkshopAccess": "Ошибка: Невозможно подключиться к Мастерской Steam.\n\nДля использования внутриигрового «Браузера модов» у вас должен быть установлен Steam.\n\nОБРАТИТЕ ВНИМАНИЕ: Обладатели GOG-версии могут использовать внутриигровой «Браузер модов» только после установки Steam.",
 		"ModAlreadyUploaded": "Ошибка: Мод уже существует в Мастерской",
@@ -172,7 +172,7 @@
 
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
-		"LoadErrorDisabled": "Мод(ы) был(и) автоматически выключен(ы).",
+		"LoadErrorDisabled": "Мод(ы) и любые зависимости был(и) автоматически выключен(ы).",
 		"LoadErrorCulpritUnknown": "Виновный мод неизвестен. Следует перезапустить tModLoader.",
 		"LoadErrorContentType": "Возникла ошибка из-за класса \"{0}\".",
 		"LoadErrorMissingModQualifier": "В пути ресурса \"{0}\" отсутствует квалификатор мода. При загрузке ресурсов необходимо указывать имя мода или \"Terraria\" в начале пути, за которым следует слэш (\"/\").",
@@ -192,7 +192,7 @@
 		"BuildErrorModNameEmpty": "У модов не может быть пустое название",
 		"BuildErrorModNamedTerraria": "Моды не могут иметь название Terraria",
 		"BuildErrorModNameHasPeriod": "Внутреннее название мода не может содержать символ точки",
-		"BuildErrorTwoModsSameName": "У двух разных модов обнаружено одно и то же внутреннее имя {0}",
+		"BuildErrorTwoModsSameName": "У двух разных модов обнаружено одно и то же внутреннее название {0}",
 		"BuildErrorModReference": "Не удалось прочесть ссылку на мод {0}",
 		"BuildErrorMissingNoCompile": "У вас отсутствуют dll файлы для параметра noCompile: {0} или {1}\n\nОбратите внимание, что All.dll не должен содержать ссылок на Microsoft.Xna.Framework или FNA\nXNA.dll должен ссылаться на правильный tModLoader.exe и фреймворк.",
 		"BuildErrorModNameDoesntMatchAssemblyName": "Название мода {0} не совпадает с названием сборки {1}",
@@ -584,7 +584,7 @@
 		"AntivirusHint": "Совет: Если у вас установлен антивирус, попробуйте добавить Terraria в список исключений/белый список антивируса.",
 		"TypeInitializationHint": "Совет: Перезапустите игру. Если проблема не исчезла, то попробуйте полностью удалить Terraria, а затем повторно установить игру через Steam, после чего переустановите tModLoader.",
 		"TerrariaOutOfDateMessage": "Ваша версия Terraria устарела, пожалуйста, обновите её через Steam.",
-		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
+		"TerrariaLegacyBranchMessage": "В данный момент Terraria запущена с использованием устаревшей версии. Для корректной работы tModLoader необходимо переключиться на стандартную версию Terraria в Steam.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Особенности мода",
