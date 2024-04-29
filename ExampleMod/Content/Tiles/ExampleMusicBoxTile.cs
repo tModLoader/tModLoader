@@ -51,7 +51,7 @@ namespace ExampleMod.Content.Tiles
 
 			Tile tile = Main.tile[i, j];
 
-			if (!TileDrawing.IsVisible(tile) || tile.TileFrameX != 36 || tile.TileFrameY % 36 != 0 || (int)Main.timeForVisualEffects % 7 != 0 || !Main.rand.NextBool(5)) {
+			if (!TileDrawing.IsVisible(tile) || tile.TileFrameX != 36 || tile.TileFrameY % 36 != 0 || (int)Main.timeForVisualEffects % 7 != 0 || !Main.rand.NextBool(3)) {
 				return;
 			}
 
