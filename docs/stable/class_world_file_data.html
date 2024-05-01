@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -138,7 +138,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetHeaderData</b> 
 <tr class="separator:a4cdb5ecf907c488125d04dcbe17b3f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84a45caece0c389abb68b713a56a4183"><td class="memItemLeft" align="right" valign="top"><a id="a84a45caece0c389abb68b713a56a4183" name="a84a45caece0c389abb68b713a56a4183"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetModVersionGeneratedWith</b> (string mod, out Version modVersion)</td></tr>
-<tr class="memdesc:a84a45caece0c389abb68b713a56a4183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the version that the specified mod was at when the world was generated. <code>false</code> will be returned for mods that were not enabled when the world was generated.The feature tracking which mods were used to generate a world was added in v2023.8, so modders should first check <a class="el" href="class_world_file_data.html#af3180bae4abd0f55fbbd86ff51eac2e5" title="If true, the mods used to genereate this world have been saved and their version can be retrieved usi...">WorldGenModsRecorded</a> to see if the mods used to generate the world were recorded at all. <br /></td></tr>
+<tr class="memdesc:a84a45caece0c389abb68b713a56a4183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the version that the specified mod was at when the world was generated. <code>false</code> will be returned for mods that were not enabled when the world was generated.The feature tracking which mods were used to generate a world was added in v2023.8, so modders should first check <a class="el" href="class_world_file_data.html#af3180bae4abd0f55fbbd86ff51eac2e5" title="If true, the mods used to generate this world have been saved and their version can be retrieved usin...">WorldGenModsRecorded</a> to see if the mods used to generate the world were recorded at all. <br /></td></tr>
 <tr class="separator:a84a45caece0c389abb68b713a56a4183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_file_data"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_file_data')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_file_data.html">FileData</a></td></tr>
 <tr class="memitem:ac0c989848ceba0563c96a6b9fbc87eed inherit pub_methods_class_file_data"><td class="memItemLeft" align="right" valign="top"><a id="ac0c989848ceba0563c96a6b9fbc87eed" name="ac0c989848ceba0563c96a6b9fbc87eed"></a>
@@ -255,7 +255,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseGuidAsMapName</b><
 <tr class="separator:aec4fc3993552f17de0762dc157223994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3180bae4abd0f55fbbd86ff51eac2e5"><td class="memItemLeft" align="right" valign="top"><a id="af3180bae4abd0f55fbbd86ff51eac2e5" name="af3180bae4abd0f55fbbd86ff51eac2e5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>WorldGenModsRecorded</b><code> [get]</code></td></tr>
-<tr class="memdesc:af3180bae4abd0f55fbbd86ff51eac2e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, the mods used to genereate this world have been saved and their version can be retrieved using <a class="el" href="class_world_file_data.html#a84a45caece0c389abb68b713a56a4183" title="Retrieves the version that the specified mod was at when the world was generated. false will be retur...">TryGetModVersionGeneratedWith(string, out Version)</a>.If <code>false</code>, this world was generated before the feature tracking mods used to generate a world was added (v2023.8) and modders can't determine if a specific mod was enabled when the world was generated. <br /></td></tr>
+<tr class="memdesc:af3180bae4abd0f55fbbd86ff51eac2e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, the mods used to generate this world have been saved and their version can be retrieved using <a class="el" href="class_world_file_data.html#a84a45caece0c389abb68b713a56a4183" title="Retrieves the version that the specified mod was at when the world was generated. false will be retur...">TryGetModVersionGeneratedWith(string, out Version)</a>.If <code>false</code>, this world was generated before the feature tracking mods used to generate a world was added (v2023.8) and modders can't determine if a specific mod was enabled when the world was generated. <br /></td></tr>
 <tr class="separator:af3180bae4abd0f55fbbd86ff51eac2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48d1d0fb8fc8c42c419c14985b33540c"><td class="memItemLeft" align="right" valign="top"><a id="a48d1d0fb8fc8c42c419c14985b33540c" name="a48d1d0fb8fc8c42c419c14985b33540c"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>WorldSizeName</b><code> [get]</code></td></tr>

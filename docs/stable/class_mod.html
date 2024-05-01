@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -141,8 +141,8 @@ virtual IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>Cre
 <tr class="memitem:a85cf2ca07646b4a0ed99f84dc371b897"><td class="memItemLeft" align="right" valign="top"><a id="a85cf2ca07646b4a0ed99f84dc371b897" name="a85cf2ca07646b4a0ed99f84dc371b897"></a>
 <a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreateRecipe</b> (int result, int amount=1)</td></tr>
 <tr class="separator:a85cf2ca07646b4a0ed99f84dc371b897"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a389d00209f66dae9ac3c2009eacd41bf"><td class="memItemLeft" align="right" valign="top"><a id="a389d00209f66dae9ac3c2009eacd41bf" name="a389d00209f66dae9ac3c2009eacd41bf"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>FileExists</b> (string name)</td></tr>
+<tr class="memitem:a389d00209f66dae9ac3c2009eacd41bf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a389d00209f66dae9ac3c2009eacd41bf">FileExists</a> (string name)</td></tr>
+<tr class="memdesc:a389d00209f66dae9ac3c2009eacd41bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not a file with the specified name exists. Note that this includes file extension and the folder path: "Folders/FileNameWithExtension"  <a href="class_mod.html#a389d00209f66dae9ac3c2009eacd41bf">More...</a><br /></td></tr>
 <tr class="separator:a389d00209f66dae9ac3c2009eacd41bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e2234b93a8bdd9f6817e3e5eb7a7959"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a6e2234b93a8bdd9f6817e3e5eb7a7959">Find&lt; T &gt;</a> (string name)</td></tr>
 <tr class="memdesc:a6e2234b93a8bdd9f6817e3e5eb7a7959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to find the template instance from this mod with the specified name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.This will throw exceptions on failure.  <a href="class_mod.html#a6e2234b93a8bdd9f6817e3e5eb7a7959">More...</a><br /></td></tr>
@@ -160,13 +160,13 @@ This only includes the 'template' instance for each piece of content, not all th
 This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played  <a href="class_mod.html#ad748232737b3d6ac1f7bd10a7a94b21f">More...</a><br /></td></tr>
 <tr class="separator:ad748232737b3d6ac1f7bd10a7a94b21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3a49430cf7766fd70d52004d355b830"><td class="memItemLeft" align="right" valign="top">byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#af3a49430cf7766fd70d52004d355b830">GetFileBytes</a> (string name)</td></tr>
-<tr class="memdesc:af3a49430cf7766fd70d52004d355b830"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve contents of files within the tmod file  <a href="class_mod.html#af3a49430cf7766fd70d52004d355b830">More...</a><br /></td></tr>
+<tr class="memdesc:af3a49430cf7766fd70d52004d355b830"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-Asset&lt;T&gt; files. The <em>name</em>  should be in the format of "Folders/FileNameWithExtension" starting from your mod's source code folder. Returns null if the file does not exist within the mod. A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <code>string pointsFileContents = Encoding.UTF8.GetString(<a class="el" href="class_mod.html#af3a49430cf7766fd70d52004d355b830" title="Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainl...">Mod.GetFileBytes</a>("data/points.txt"));</code>  <a href="class_mod.html#af3a49430cf7766fd70d52004d355b830">More...</a><br /></td></tr>
 <tr class="separator:af3a49430cf7766fd70d52004d355b830"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0336ef4f24454d009a80fa4ebf2bc4fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_list.html">List</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a0336ef4f24454d009a80fa4ebf2bc4fc">GetFileNames</a> ()</td></tr>
 <tr class="memdesc:a0336ef4f24454d009a80fa4ebf2bc4fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the names of every file packaged into this mod. Note that this includes extensions, and for images the extension will always be <code>.rawimg</code>.  <a href="class_mod.html#a0336ef4f24454d009a80fa4ebf2bc4fc">More...</a><br /></td></tr>
 <tr class="separator:a0336ef4f24454d009a80fa4ebf2bc4fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bfa0ce3609d5ad9cea40676acc08373"><td class="memItemLeft" align="right" valign="top">Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">GetFileStream</a> (string name, bool newFileStream=false)</td></tr>
-<tr class="memdesc:a6bfa0ce3609d5ad9cea40676acc08373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve contents of files within the tmod file  <a href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">More...</a><br /></td></tr>
+<tr class="memdesc:a6bfa0ce3609d5ad9cea40676acc08373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve contents of files within the .tmod file.  <a href="class_mod.html#a6bfa0ce3609d5ad9cea40676acc08373">More...</a><br /></td></tr>
 <tr class="separator:a6bfa0ce3609d5ad9cea40676acc08373"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c54b351c403d26a0fcff074be8a9589"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a3c54b351c403d26a0fcff074be8a9589">GetLocalization</a> (string suffix, Func&lt; string &gt; makeDefaultValue=null)</td></tr>
 <tr class="memdesc:a3c54b351c403d26a0fcff074be8a9589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> for this <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> with the provided <em>suffix</em> . The suffix will be used to generate a key by providing it to <a class="el" href="class_mod.html#ae3cc0ce693c21784b185d1da10d5fd81" title="Creates a localization key following the pattern of &quot;Mods.{ModName}.{suffix}&quot;. Use this with Language...">GetLocalizationKey(string)</a>. <br  />
@@ -215,12 +215,12 @@ GameContent.Bestiary.ModSourceBestiaryInfoElement&#160;</td><td class="memItemRi
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a4c11f9df40a7fad9ce11b661bd04c357"><td class="memItemLeft" align="right" valign="top"><a id="a4c11f9df40a7fad9ce11b661bd04c357" name="a4c11f9df40a7fad9ce11b661bd04c357"></a>
-AssetRepository&#160;</td><td class="memItemRight" valign="bottom"><b>Assets</b><code> [get]</code></td></tr>
+<tr class="memitem:a4c11f9df40a7fad9ce11b661bd04c357"><td class="memItemLeft" align="right" valign="top">AssetRepository&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod.html#a4c11f9df40a7fad9ce11b661bd04c357">Assets</a><code> [get]</code></td></tr>
+<tr class="memdesc:a4c11f9df40a7fad9ce11b661bd04c357"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the AssetRepository.Request&lt;T&gt;(string) method to retrieve an Asset&lt;T&gt; instance:  <a href="class_mod.html#a4c11f9df40a7fad9ce11b661bd04c357">More...</a><br /></td></tr>
 <tr class="separator:a4c11f9df40a7fad9ce11b661bd04c357"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a2ec207e31889c9a9ca3ea3ecdb9c59"><td class="memItemLeft" align="right" valign="top"><a id="a7a2ec207e31889c9a9ca3ea3ecdb9c59" name="a7a2ec207e31889c9a9ca3ea3ecdb9c59"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>BackgroundAutoloadingEnabled</b> = true<code> [get]</code></td></tr>
-<tr class="memdesc:a7a2ec207e31889c9a9ca3ea3ecdb9c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture. <br /></td></tr>
+<tr class="memdesc:a7a2ec207e31889c9a9ca3ea3ecdb9c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the "Backgrounds" folder as background textures to the game. This means you do not need to manually call <a class="el" href="class_background_texture_loader.html#a749bdf9c8dae1a34bd34c0a4703b8dc2" title="Adds a texture to the list of background textures and assigns it a background texture slot....">BackgroundTextureLoader.AddBackgroundTexture(Mod, string)</a>. <br /></td></tr>
 <tr class="separator:a7a2ec207e31889c9a9ca3ea3ecdb9c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35d8d5126d591d95110eaf26b2a21eb8"><td class="memItemLeft" align="right" valign="top"><a id="a35d8d5126d591d95110eaf26b2a21eb8" name="a35d8d5126d591d95110eaf26b2a21eb8"></a>
 Assembly&#160;</td><td class="memItemRight" valign="bottom"><b>Code</b><code> [get, set]</code></td></tr>
@@ -245,7 +245,7 @@ virtual uint&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraPlayerBu
 <tr class="separator:a1e5eebd662fa5948f063d890e407724c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab41198cdf95d58ca446d2ff9477f5f46"><td class="memItemLeft" align="right" valign="top"><a id="ab41198cdf95d58ca446d2ff9477f5f46" name="ab41198cdf95d58ca446d2ff9477f5f46"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GoreAutoloadingEnabled</b> = true<code> [get]</code></td></tr>
-<tr class="memdesc:ab41198cdf95d58ca446d2ff9477f5f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any <a class="el" href="class_mod_gore.html" title="This class allows you to customize the behavior of a custom gore.">ModGore</a> classes that share names with the images. This means you do not need to manually call Mod.AddGore. <br /></td></tr>
+<tr class="memdesc:ab41198cdf95d58ca446d2ff9477f5f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the "Gores" folder as gores to the game, along with any <a class="el" href="class_mod_gore.html" title="This class allows you to customize the behavior of a custom gore.">ModGore</a> classes that share names with the images. This means you do not need to manually call <a class="el" href="class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71" title="Registers a new gore with the provided texture. Typically used with SimpleModGore as TGore for gore w...">GoreLoader.AddGoreFromTexture&lt;TGore&gt;(Mod, string)</a>. <br /></td></tr>
 <tr class="separator:ab41198cdf95d58ca446d2ff9477f5f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60ebbe739c0a94f34d2e1d2409c9af73"><td class="memItemLeft" align="right" valign="top"><a id="a60ebbe739c0a94f34d2e1d2409c9af73" name="a60ebbe739c0a94f34d2e1d2409c9af73"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetSynced</b><code> [get]</code></td></tr>
@@ -431,6 +431,33 @@ virtual Version&#160;</td><td class="memItemRight" valign="bottom"><b>Version</b
 
 </div>
 </div>
+<a id="a389d00209f66dae9ac3c2009eacd41bf" name="a389d00209f66dae9ac3c2009eacd41bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a389d00209f66dae9ac3c2009eacd41bf">&#9670;&nbsp;</a></span>FileExists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Mod.FileExists </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns whether or not a file with the specified name exists. Note that this includes file extension and the folder path: "Folders/FileNameWithExtension" </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a6e2234b93a8bdd9f6817e3e5eb7a7959" name="a6e2234b93a8bdd9f6817e3e5eb7a7959"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e2234b93a8bdd9f6817e3e5eb7a7959">&#9670;&nbsp;</a></span>Find&lt; T &gt;()</h2>
 
@@ -513,7 +540,7 @@ This only includes the 'template' instance for each piece of content, not all th
       </table>
 </div><div class="memdoc">
 
-<p>Retrieve contents of files within the tmod file </p>
+<p>Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-Asset&lt;T&gt; files. The <em>name</em>  should be in the format of "Folders/FileNameWithExtension" starting from your mod's source code folder. Returns null if the file does not exist within the mod. A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <code>string pointsFileContents = Encoding.UTF8.GetString(<a class="el" href="class_mod.html#af3a49430cf7766fd70d52004d355b830" title="Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainl...">Mod.GetFileBytes</a>("data/points.txt"));</code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name.</td></tr>
@@ -570,7 +597,7 @@ This only includes the 'template' instance for each piece of content, not all th
       </table>
 </div><div class="memdoc">
 
-<p>Retrieve contents of files within the tmod file </p>
+<p>Retrieve contents of files within the .tmod file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name.</td></tr>
@@ -803,6 +830,32 @@ If no existing localization exists for the key, it will be defined so it can be 
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a4c11f9df40a7fad9ce11b661bd04c357" name="a4c11f9df40a7fad9ce11b661bd04c357"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c11f9df40a7fad9ce11b661bd04c357">&#9670;&nbsp;</a></span>Assets</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">AssetRepository Mod.Assets</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the AssetRepository.Request&lt;T&gt;(string) method to retrieve an Asset&lt;T&gt; instance: </p>
+<p ><code>Asset&lt;Texture2D&gt; balloonTexture = Mod.Assets.Request&lt;Texture2D&gt;("Content/Items/Armor/SimpleAccessory_Balloon");</code> Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <a class="el" href="class_mod_content.html#a24e36b809900269a1ecd3d1fb85a3a5f" title="Gets the asset with the specified name. Throws an Exception if the asset does not exist....">ModContent.Request&lt;T&gt;(string, AssetRequestMode)</a> where the mod name is required. </p>
 
 </div>
 </div>

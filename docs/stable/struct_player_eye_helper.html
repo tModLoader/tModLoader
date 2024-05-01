@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('struct_player_eye_helper.html',''); in
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="struct_player_eye_helper-members.html">List of all members</a>  </div>
@@ -92,21 +93,92 @@ $(document).ready(function(){initNavTree('struct_player_eye_helper.html',''); in
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a5e4477c3e8c8530bce31a1d56c47ddcc"><td class="memItemLeft" align="right" valign="top"><a id="a5e4477c3e8c8530bce31a1d56c47ddcc" name="a5e4477c3e8c8530bce31a1d56c47ddcc"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>EyeFrame</b> { <b>EyeOpen</b>
+, <b>EyeHalfClosed</b>
+, <b>EyeClosed</b>
+ }</td></tr>
+<tr class="separator:a5e4477c3e8c8530bce31a1d56c47ddcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b46fc8c646ce30c5413a7b6c6b98dcc"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcc">EyeState</a> { <br />
+&#160;&#160;<b>NormalBlinking</b>
+, <a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccaa55c75a4451478e14f04f0b0bbaa25a5">InStorm</a>
+, <a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca80e068c35fb15df9d7793c4f67eaa382">InBed</a>
+, <a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef">JustTookDamage</a>
+, <br />
+&#160;&#160;<a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccac3e8eee880729358e90fda8a90f137ea">IsModeratelyDamaged</a>
+, <a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca6b6cceb98a8c7c84b12454e5ade29483">IsBlind</a>
+, <a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccab4fc5f9d75519f3d796f82e3778c2662">IsTipsy</a>
+, <a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca17a534ce8bc354776ba2bf6bd4050095">IsPoisoned</a>
+<br />
+ }</td></tr>
+<tr class="separator:a2b46fc8c646ce30c5413a7b6c6b98dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3e7d878568ebb7f15e7dec1c7d4ea27e"><td class="memItemLeft" align="right" valign="top"><a id="a3e7d878568ebb7f15e7dec1c7d4ea27e" name="a3e7d878568ebb7f15e7dec1c7d4ea27e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>BlinkBecausePlayerGotHurt</b> ()</td></tr>
 <tr class="separator:a3e7d878568ebb7f15e7dec1c7d4ea27e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1af748986cb513b637cf53f0e7bbfa"><td class="memItemLeft" align="right" valign="top"><a id="a7c1af748986cb513b637cf53f0e7bbfa" name="a7c1af748986cb513b637cf53f0e7bbfa"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchToState</b> (<a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcc">EyeState</a> newState, bool resetStateTimerEvenIfAlreadyInState=false)</td></tr>
+<tr class="separator:a7c1af748986cb513b637cf53f0e7bbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefb0bba4d7cb160a8582a6bbfd653ca4"><td class="memItemLeft" align="right" valign="top"><a id="aefb0bba4d7cb160a8582a6bbfd653ca4" name="aefb0bba4d7cb160a8582a6bbfd653ca4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:aefb0bba4d7cb160a8582a6bbfd653ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a8734b2ae5dbf349dc0f27b3f0c404731"><td class="memItemLeft" align="right" valign="top"><a id="a8734b2ae5dbf349dc0f27b3f0c404731" name="a8734b2ae5dbf349dc0f27b3f0c404731"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>EyeFrameToShow</b><code> [get]</code></td></tr>
-<tr class="separator:a8734b2ae5dbf349dc0f27b3f0c404731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81a45332972369a5a225a9904787f6ec"><td class="memItemLeft" align="right" valign="top"><a id="a81a45332972369a5a225a9904787f6ec" name="a81a45332972369a5a225a9904787f6ec"></a>
+EyeFrame&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentEyeFrame</b><code> [get, set]</code></td></tr>
+<tr class="separator:a81a45332972369a5a225a9904787f6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ad169a7625e15543f8a5345e8fc985"><td class="memItemLeft" align="right" valign="top"><a id="a66ad169a7625e15543f8a5345e8fc985" name="a66ad169a7625e15543f8a5345e8fc985"></a>
+<a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcc">EyeState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentEyeState</b><code> [get, set]</code></td></tr>
+<tr class="separator:a66ad169a7625e15543f8a5345e8fc985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadb94128827ec3cef608e0dec267b735"><td class="memItemLeft" align="right" valign="top"><a id="aadb94128827ec3cef608e0dec267b735" name="aadb94128827ec3cef608e0dec267b735"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>TimeInState</b><code> [get, set]</code></td></tr>
+<tr class="separator:aadb94128827ec3cef608e0dec267b735"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a2b46fc8c646ce30c5413a7b6c6b98dcc" name="a2b46fc8c646ce30c5413a7b6c6b98dcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b46fc8c646ce30c5413a7b6c6b98dcc">&#9670;&nbsp;</a></span>EyeState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcc">PlayerEyeHelper.EyeState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2b46fc8c646ce30c5413a7b6c6b98dccaa55c75a4451478e14f04f0b0bbaa25a5" name="a2b46fc8c646ce30c5413a7b6c6b98dccaa55c75a4451478e14f04f0b0bbaa25a5"></a>InStorm&#160;</td><td class="fielddoc"><p ><br  />
+ Out of 120 ticks, 5 of them will have eyes closed; otherwise eyes are half closed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b46fc8c646ce30c5413a7b6c6b98dcca80e068c35fb15df9d7793c4f67eaa382" name="a2b46fc8c646ce30c5413a7b6c6b98dcca80e068c35fb15df9d7793c4f67eaa382"></a>InBed&#160;</td><td class="fielddoc"><p ><br  />
+ Slowly closes eyes. </p>
+<p >If player is moderately damaged, then eyes will be half closed for first second in bed instead of open. <br  />
+ For the next second, eyes are half closed. <br  />
+ Afterwards, eyes are closed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef" name="a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef"></a>JustTookDamage&#160;</td><td class="fielddoc"><p ><br  />
+ Eyes always closed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b46fc8c646ce30c5413a7b6c6b98dccac3e8eee880729358e90fda8a90f137ea" name="a2b46fc8c646ce30c5413a7b6c6b98dccac3e8eee880729358e90fda8a90f137ea"></a>IsModeratelyDamaged&#160;</td><td class="fielddoc"><p ><br  />
+ Out of 120 ticks, 19 of them will have eyes closed; otherwise eyes are half closed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b46fc8c646ce30c5413a7b6c6b98dcca6b6cceb98a8c7c84b12454e5ade29483" name="a2b46fc8c646ce30c5413a7b6c6b98dcca6b6cceb98a8c7c84b12454e5ade29483"></a>IsBlind&#160;</td><td class="fielddoc"><p ><br  />
+ Eyes always closed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b46fc8c646ce30c5413a7b6c6b98dccab4fc5f9d75519f3d796f82e3778c2662" name="a2b46fc8c646ce30c5413a7b6c6b98dccab4fc5f9d75519f3d796f82e3778c2662"></a>IsTipsy&#160;</td><td class="fielddoc"><p ><br  />
+ Out of 120 ticks, 19 of them will have eyes closed; otherwise eyes are half closed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2b46fc8c646ce30c5413a7b6c6b98dcca17a534ce8bc354776ba2bf6bd4050095" name="a2b46fc8c646ce30c5413a7b6c6b98dcca17a534ce8bc354776ba2bf6bd4050095"></a>IsPoisoned&#160;</td><td class="fielddoc"><p ><br  />
+ Out of 120 ticks, 19 of them will have eyes closed; otherwise eyes are half closed. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -227,10 +227,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>FrameEffects<
 <tr class="memdesc:ace6ca2c984f8e19d95d73920f3817486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the player's fishing power. As an example of the type of stuff that should go here, the phase of the moon can influence fishing power.  <a href="class_mod_player.html#ace6ca2c984f8e19d95d73920f3817486">More...</a><br /></td></tr>
 <tr class="separator:ace6ca2c984f8e19d95d73920f3817486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea058be17af7e3152a456a5951fae5c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#aea058be17af7e3152a456a5951fae5c6">GetHealLife</a> (<a class="el" href="class_item.html">Item</a> item, bool quickHeal, ref int healValue)</td></tr>
-<tr class="memdesc:aea058be17af7e3152a456a5951fae5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.  <a href="class_mod_player.html#aea058be17af7e3152a456a5951fae5c6">More...</a><br /></td></tr>
+<tr class="memdesc:aea058be17af7e3152a456a5951fae5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#a76a7a2a325263a16176c2b58e341b319" title="The amount of health this item restores on use.   Use ModItem.GetHealLife(Player, bool,...">Item.healLife</a> value.  <a href="class_mod_player.html#aea058be17af7e3152a456a5951fae5c6">More...</a><br /></td></tr>
 <tr class="separator:aea058be17af7e3152a456a5951fae5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac203467fd37be0e5e373f91a542bc0d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#ac203467fd37be0e5e373f91a542bc0d3">GetHealMana</a> (<a class="el" href="class_item.html">Item</a> item, bool quickHeal, ref int healValue)</td></tr>
-<tr class="memdesc:ac203467fd37be0e5e373f91a542bc0d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.  <a href="class_mod_player.html#ac203467fd37be0e5e373f91a542bc0d3">More...</a><br /></td></tr>
+<tr class="memdesc:ac203467fd37be0e5e373f91a542bc0d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#af9fe3594a76ad5d1f32ff3f4ca22832a" title="The amount of mana this item restores on use.   Use ModItem.GetHealMana(Player, bool,...">Item.healMana</a> value.  <a href="class_mod_player.html#ac203467fd37be0e5e373f91a542bc0d3">More...</a><br /></td></tr>
 <tr class="separator:ac203467fd37be0e5e373f91a542bc0d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a770a4ba46aae89ce2282c820415f6273"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a770a4ba46aae89ce2282c820415f6273">HideDrawLayers</a> (<a class="el" href="struct_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
 <tr class="memdesc:a770a4ba46aae89ce2282c820415f6273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the visibility of layers about to be drawn  <a href="class_mod_player.html#a770a4ba46aae89ce2282c820415f6273">More...</a><br /></td></tr>
@@ -375,9 +375,8 @@ override <a class="el" href="class_mod_player.html">ModPlayer</a>&#160;</td><td 
 <tr class="memitem:afe7ae489bd8d87d28c998a532166ee62"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#afe7ae489bd8d87d28c998a532166ee62">OnConsumeMana</a> (<a class="el" href="class_item.html">Item</a> item, int manaConsumed)</td></tr>
 <tr class="memdesc:afe7ae489bd8d87d28c998a532166ee62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make stuff happen when a player consumes mana on use of an item.  <a href="class_mod_player.html#afe7ae489bd8d87d28c998a532166ee62">More...</a><br /></td></tr>
 <tr class="separator:afe7ae489bd8d87d28c998a532166ee62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7caed04d4b7c2d8579b7d61abea21a2d"><td class="memItemLeft" align="right" valign="top"><a id="a7caed04d4b7c2d8579b7d61abea21a2d" name="a7caed04d4b7c2d8579b7d61abea21a2d"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnEnterWorld</b> ()</td></tr>
-<tr class="memdesc:a7caed04d4b7c2d8579b7d61abea21a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a>. Can also be used for informational messages. <br /></td></tr>
+<tr class="memitem:a7caed04d4b7c2d8579b7d61abea21a2d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a7caed04d4b7c2d8579b7d61abea21a2d">OnEnterWorld</a> ()</td></tr>
+<tr class="memdesc:a7caed04d4b7c2d8579b7d61abea21a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a>. Can also be used for informational messages.  <a href="class_mod_player.html#a7caed04d4b7c2d8579b7d61abea21a2d">More...</a><br /></td></tr>
 <tr class="separator:a7caed04d4b7c2d8579b7d61abea21a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad70d6f1b6e58141aabc106734e5530fd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#ad70d6f1b6e58141aabc106734e5530fd">OnExtraJumpCleared</a> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump)</td></tr>
 <tr class="memdesc:ad70d6f1b6e58141aabc106734e5530fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook runs before the <a class="el" href="struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71" title="true if the extra jump has not been consumed. Will be set to false when the extra jump starts....">ExtraJumpState.Available</a> flag for an extra jump is set to <code>false</code> in Player.Update(int) due to the jump being unavailable or when calling <a class="el" href="class_player.html#a52ea38bbdc0320b5aca184252442a471" title="Sets the ExtraJumpState.Available flag for all extra jumps to false.  If you want to disable an extra...">Player.ConsumeAllExtraJumps</a> (vanilla calls it when a mount that blocks jumps is active)  <a href="class_mod_player.html#ad70d6f1b6e58141aabc106734e5530fd">More...</a><br /></td></tr>
@@ -2010,7 +2009,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value. </p>
+<p>Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#a76a7a2a325263a16176c2b58e341b319" title="The amount of health this item restores on use.   Use ModItem.GetHealLife(Player, bool,...">Item.healLife</a> value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item.</td></tr>
@@ -2062,7 +2061,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value. </p>
+<p>Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#af9fe3594a76ad5d1f32ff3f4ca22832a" title="The amount of mana this item restores on use.   Use ModItem.GetHealMana(Player, bool,...">Item.healMana</a> value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item.</td></tr>
@@ -3533,6 +3532,35 @@ Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7caed04d4b7c2d8579b7d61abea21a2d" name="a7caed04d4b7c2d8579b7d61abea21a2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7caed04d4b7c2d8579b7d61abea21a2d">&#9670;&nbsp;</a></span>OnEnterWorld()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModPlayer.OnEnterWorld </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a>. Can also be used for informational messages. </p>
+
+<p>Reimplemented in <a class="el" href="class_unloaded_player.html#a9f8892c5aaa53b83778084c00b6b8fcd">UnloadedPlayer</a>.</p>
 
 </div>
 </div>

@@ -96,6 +96,8 @@ var NAVTREEINDEX1 =
 "class_chat_command_attribute.html":[3,0,141],
 "class_chat_command_processor.html":[3,0,143],
 "class_chat_helper.html":[3,0,144],
+"class_chat_helper.html#a46db2b94f0d1fc88fe05baf931ea17f5":[3,0,144,1],
+"class_chat_helper.html#a7bf3083fca81823cad87fbce6f3686d5":[3,0,144,0],
 "class_chat_initializer.html":[3,0,145],
 "class_chat_line.html":[3,0,146],
 "class_chat_manager.html":[3,0,147],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_jungle_key_condition.html":[3,0,191,38],
 "class_conditions_1_1_legacy_hack___is_a_boss.html":[3,0,191,39],
 "class_conditions_1_1_legacy_hack___is_boss_and_expert.html":[3,0,191,40],
-"class_conditions_1_1_legacy_hack___is_boss_and_not_expert.html":[3,0,191,41],
-"class_conditions_1_1_living_flames.html":[3,0,191,42],
-"class_conditions_1_1_mechanical_bosses_dummy_condition.html":[3,0,191,43]
+"class_conditions_1_1_legacy_hack___is_boss_and_not_expert.html":[3,0,191,41]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('class_builder_toggle.html',''); initRe
 </div><!--header-->
 <div class="contents">
 
-<p>Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visiblility or other building-related quality of life features.The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> method determines if the <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> should be shown to the user and is usually reliant on player-specific values. The CurrentState property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have NumberOfStates values.  
+<p>Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visibility or other building-related quality of life features.The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> method determines if the <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> should be shown to the user and is usually reliant on player-specific values. The CurrentState property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have NumberOfStates values.  
  <a href="class_builder_toggle.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_mod_textured_type.html">ModTexturedType</a>, and <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
@@ -124,10 +124,10 @@ abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayVal
 <tr class="memdesc:aa4ef27b4b875408f3c30f426634073a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the value that will show up when hovering on the toggle icon. You can specify different values per each available CurrentState <br /></td></tr>
 <tr class="separator:aa4ef27b4b875408f3c30f426634073a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb24c1d139d3c076f4f1c661815d0ccf"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#aeb24c1d139d3c076f4f1c661815d0ccf">Draw</a> (SpriteBatch spriteBatch, ref <a class="el" href="struct_builder_toggle_draw_params.html">BuilderToggleDrawParams</a> drawParams)</td></tr>
-<tr class="memdesc:aeb24c1d139d3c076f4f1c661815d0ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon itself. See DrawHover if you want to modify icon hover drawing.Return false to stop vanilla drawing code from running. Returns true by default.  <a href="class_builder_toggle.html#aeb24c1d139d3c076f4f1c661815d0ccf">More...</a><br /></td></tr>
+<tr class="memdesc:aeb24c1d139d3c076f4f1c661815d0ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows you to change basic drawing parameters or to override the vanilla drawing completely.This is for the icon itself. See DrawHover if you want to modify icon hover drawing.Return false to stop vanilla drawing code from running. Returns true by default.  <a href="class_builder_toggle.html#aeb24c1d139d3c076f4f1c661815d0ccf">More...</a><br /></td></tr>
 <tr class="separator:aeb24c1d139d3c076f4f1c661815d0ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0975f255d774195888ad4664a6fc955f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#a0975f255d774195888ad4664a6fc955f">DrawHover</a> (SpriteBatch spriteBatch, ref <a class="el" href="struct_builder_toggle_draw_params.html">BuilderToggleDrawParams</a> drawParams)</td></tr>
-<tr class="memdesc:a0975f255d774195888ad4664a6fc955f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon hover. See Draw if you want to modify icon drawing.Return false to stop vanilla drawing code from running. Returns true by default.  <a href="class_builder_toggle.html#a0975f255d774195888ad4664a6fc955f">More...</a><br /></td></tr>
+<tr class="memdesc:a0975f255d774195888ad4664a6fc955f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows you to change basic drawing parameters or to override the vanilla drawing completely.This is for the icon hover. See Draw if you want to modify icon drawing.Return false to stop vanilla drawing code from running. Returns true by default.  <a href="class_builder_toggle.html#a0975f255d774195888ad4664a6fc955f">More...</a><br /></td></tr>
 <tr class="separator:a0975f255d774195888ad4664a6fc955f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1e3cf046bd045f3317fbdc6385e405f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_builder_toggle.html#af1e3cf046bd045f3317fbdc6385e405f">OnLeftClick</a> (ref <a class="el" href="struct_sound_style.html">SoundStyle</a>? sound)</td></tr>
 <tr class="memdesc:af1e3cf046bd045f3317fbdc6385e405f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the toggle is left clicked and before vanilla operation takes place.Return false to stop vanilla left click code (switching between states and playing sound) from running.<br  />
@@ -369,7 +369,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="separator:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visiblility or other building-related quality of life features.</p>
+<div class="textblock"><p >Represents a builder toggle button shown in the top left corner of the screen while the inventory is shown. These toggles typically control wiring-related visibility or other building-related quality of life features.</p>
 <p >The <a class="el" href="struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566" title="Whether any effects (e.g. spawning dusts) should be performed after consuming the extra jump,...">Active</a> method determines if the <a class="el" href="class_builder_toggle.html" title="Represents a builder toggle button shown in the top left corner of the screen while the inventory is ...">BuilderToggle</a> should be shown to the user and is usually reliant on player-specific values. The CurrentState property represents the current state of the toggle. For vanilla toggles a value of 0 is off and a value of 1 is on, but modded toggles can have NumberOfStates values. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a91163893b0d74991ebb3141e0a97250f" name="a91163893b0d74991ebb3141e0a97250f"></a>
@@ -434,7 +434,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon itself. See DrawHover if you want to modify icon hover drawing.Return false to stop vanilla drawing code from running. Returns true by default. </p>
+<p>This allows you to change basic drawing parameters or to override the vanilla drawing completely.This is for the icon itself. See DrawHover if you want to modify icon hover drawing.Return false to stop vanilla drawing code from running. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spriteBatch</td><td>The spritebatch to draw on</td></tr>
@@ -480,7 +480,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>This allows you to change basic drawing parameters or to override the vanillia drawing completely.This is for the icon hover. See Draw if you want to modify icon drawing.Return false to stop vanilla drawing code from running. Returns true by default. </p>
+<p>This allows you to change basic drawing parameters or to override the vanilla drawing completely.This is for the icon hover. See Draw if you want to modify icon drawing.Return false to stop vanilla drawing code from running. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spriteBatch</td><td>The spritebatch to draw on</td></tr>

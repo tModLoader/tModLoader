@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"class_frost_legion_shader.html":[3,0,415],
+"class_fxc_reader.html":[3,0,416],
 "class_game.html":[3,0,417],
 "class_game_configuration.html":[3,0,419],
 "class_game_culture.html":[3,0,420],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "class_global_item.html#a37708aaedc3801a748eaa0d1b606a33f":[3,0,457,56],
 "class_global_item.html#a392840d367f8029c8c7d66b49fc5ce51":[3,0,457,57],
 "class_global_item.html#a397d6589e63f4fba06366c311234f620":[3,0,457,25],
-"class_global_item.html#a39b6b6d677416a4d6b7219f8c8dbb073":[3,0,457,107],
-"class_global_item.html#a3c09aa7319828878f64e67b1049a5372":[3,0,457,46],
-"class_global_item.html#a3e99d6e94bd0691dde908bd03b6e7c1c":[3,0,457,92]
+"class_global_item.html#a39b6b6d677416a4d6b7219f8c8dbb073":[3,0,457,107]
 };

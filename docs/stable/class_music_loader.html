@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('class_music_loader.html',''); initResi
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a43ab8c776e399a83e5fe87ab233c8e80"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_music_loader.html#a43ab8c776e399a83e5fe87ab233c8e80">AddMusic</a> (<a class="el" href="class_mod.html">Mod</a> mod, string musicPath)</td></tr>
-<tr class="memdesc:a43ab8c776e399a83e5fe87ab233c8e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new music track with the provided mod and its local path to the sound file.  <a href="class_music_loader.html#a43ab8c776e399a83e5fe87ab233c8e80">More...</a><br /></td></tr>
+<tr class="memdesc:a43ab8c776e399a83e5fe87ab233c8e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new music track with the provided mod and its local path to the sound file. Use this for any music not autoloaded by the <a class="el" href="class_mod.html#a00d5eed93524439d8a47da0bc5bff0de" title="Whether or not this mod will automatically add music to the game. All supported audio files in a fold...">Mod.MusicAutoloadingEnabled</a> logic.  <a href="class_music_loader.html#a43ab8c776e399a83e5fe87ab233c8e80">More...</a><br /></td></tr>
 <tr class="separator:a43ab8c776e399a83e5fe87ab233c8e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840dcdd5d3182278e95dbd40dd0bb87e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_music_loader.html#a840dcdd5d3182278e95dbd40dd0bb87e">AddMusicBox</a> (<a class="el" href="class_mod.html">Mod</a> mod, int musicSlot, int itemType, int tileType, int tileFrameY=0)</td></tr>
 <tr class="memdesc:a840dcdd5d3182278e95dbd40dd0bb87e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to tie a music ID, and item ID, and a tile ID together to form a music box. <br  />
@@ -171,7 +171,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>MusicCount</b> 
 </table>
 </div><div class="memdoc">
 
-<p>Registers a new music track with the provided mod and its local path to the sound file. </p>
+<p>Registers a new music track with the provided mod and its local path to the sound file. Use this for any music not autoloaded by the <a class="el" href="class_mod.html#a00d5eed93524439d8a47da0bc5bff0de" title="Whether or not this mod will automatically add music to the game. All supported audio files in a fold...">Mod.MusicAutoloadingEnabled</a> logic. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mod</td><td>The mod that owns the music track. </td></tr>

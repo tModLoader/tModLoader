@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -108,7 +108,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a3bc92dd34e75e83175f542ba9751f287"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa62a1a13744a3ac5c4cb12b2879e87ee"><td class="memItemLeft" align="right" valign="top"><a id="aa62a1a13744a3ac5c4cb12b2879e87ee" name="aa62a1a13744a3ac5c4cb12b2879e87ee"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FileExists</b> (string name)</td></tr>
-<tr class="memdesc:aa62a1a13744a3ac5c4cb12b2879e87ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not a file with the specified name exists. <br /></td></tr>
+<tr class="memdesc:aa62a1a13744a3ac5c4cb12b2879e87ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not a file with the specified name exists. Note that this includes file extension, the folder path, and must start with the mod name at the start of the path: "ModFolder/OtherFolders/FileNameWithExtension" <br /></td></tr>
 <tr class="separator:aa62a1a13744a3ac5c4cb12b2879e87ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affc0d221807d3aaba139988257cd5ca4"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#affc0d221807d3aaba139988257cd5ca4">Find&lt; T &gt;</a> (string fullname)</td></tr>
 <tr class="memdesc:affc0d221807d3aaba139988257cd5ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to find the template instance with the specified full name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.This will throw exceptions on failure.  <a href="class_mod_content.html#affc0d221807d3aaba139988257cd5ca4">More...</a><br /></td></tr>
@@ -124,7 +124,7 @@ This only includes the 'template' instance for each piece of content, not all th
 static <a class="el" href="class_equip_texture.html">EquipTexture</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetEquipTexture</b> (EquipType type, int slot)</td></tr>
 <tr class="separator:a451852ddd21b93396592e505203a4562"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51a9bb4ad25c40f1d95b4d5a6979f5da"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#a51a9bb4ad25c40f1d95b4d5a6979f5da">GetFileBytes</a> (string name)</td></tr>
-<tr class="memdesc:a51a9bb4ad25c40f1d95b4d5a6979f5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.  <a href="class_mod_content.html#a51a9bb4ad25c40f1d95b4d5a6979f5da">More...</a><br /></td></tr>
+<tr class="memdesc:a51a9bb4ad25c40f1d95b4d5a6979f5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-Asset&lt;T&gt; files. The <em>name</em>  should be in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the mod does not exist. Returns null if the file does not exist. A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <code>string pointsFileContents = Encoding.UTF8.GetString(<a class="el" href="class_mod_content.html#a51a9bb4ad25c40f1d95b4d5a6979f5da" title="Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainl...">ModContent.GetFileBytes</a>("MyMod/data/points.txt"));</code>  <a href="class_mod_content.html#a51a9bb4ad25c40f1d95b4d5a6979f5da">More...</a><br /></td></tr>
 <tr class="separator:a51a9bb4ad25c40f1d95b4d5a6979f5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdff87a801fa92c1ea46907113eb6839"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#acdff87a801fa92c1ea46907113eb6839">GetInstance&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:acdff87a801fa92c1ea46907113eb6839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the template instance of the provided content type (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played).  <a href="class_mod_content.html#acdff87a801fa92c1ea46907113eb6839">More...</a><br /></td></tr>
@@ -509,7 +509,7 @@ This only includes the 'template' instance for each piece of content, not all th
 </table>
 </div><div class="memdoc">
 
-<p>Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist. </p>
+<p>Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-Asset&lt;T&gt; files. The <em>name</em>  should be in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the mod does not exist. Returns null if the file does not exist. A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <code>string pointsFileContents = Encoding.UTF8.GetString(<a class="el" href="class_mod_content.html#a51a9bb4ad25c40f1d95b4d5a6979f5da" title="Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainl...">ModContent.GetFileBytes</a>("MyMod/data/points.txt"));</code> </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="class_missing_resource_exception.html">MissingResourceException</a></td><td></td></tr>

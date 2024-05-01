@@ -41,6 +41,7 @@ var class_player =
     [ "GetCritChance< T >", "class_player.html#abfd68467028ebdd62b53431f1ec3f40b", null ],
     [ "GetDamage", "class_player.html#afb5ba132b05a7e2abf19f970eefd4634", null ],
     [ "GetDamage< T >", "class_player.html#a927f1454f1a2d12a612959bb7b5cefd1", null ],
+    [ "GetItem", "class_player.html#a50d1ec13cf5e569ec3d20e2df4264ef4", null ],
     [ "GetItemGrabRange", "class_player.html#a22cc9a0354b38ac9f9fe4010c5415993", null ],
     [ "GetKnockback", "class_player.html#a9914fa71ab8a375d6474cca582f49f8a", null ],
     [ "GetKnockback< T >", "class_player.html#a2909430ec761087579f4cdafc89a1dff", null ],

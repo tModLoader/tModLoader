@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('class_gore_loader.html',''); initResiz
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a94508aa2c742f0cf9ca27a64f32f1f71"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71">AddGoreFromTexture&lt; TGore &gt;</a> (<a class="el" href="class_mod.html">Mod</a> mod, string texture)</td></tr>
-<tr class="memdesc:a94508aa2c742f0cf9ca27a64f32f1f71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new gore with the provided texture.  <a href="class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71">More...</a><br /></td></tr>
+<tr class="memdesc:a94508aa2c742f0cf9ca27a64f32f1f71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new gore with the provided texture. Typically used with <a class="el" href="class_simple_mod_gore.html">SimpleModGore</a> as TGore for gore with no additional logic. Use this for any gore textures not autoloaded by the <a class="el" href="class_mod.html#ab41198cdf95d58ca446d2ff9477f5f46" title="Whether or not this mod will automatically add images in the &quot;Gores&quot; folder as gores to the game,...">Mod.GoreAutoloadingEnabled</a> logic.  <a href="class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71">More...</a><br /></td></tr>
 <tr class="separator:a94508aa2c742f0cf9ca27a64f32f1f71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -139,7 +139,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GoreCount</b> =
 </table>
 </div><div class="memdoc">
 
-<p>Registers a new gore with the provided texture. </p>
+<p>Registers a new gore with the provided texture. Typically used with <a class="el" href="class_simple_mod_gore.html">SimpleModGore</a> as TGore for gore with no additional logic. Use this for any gore textures not autoloaded by the <a class="el" href="class_mod.html#ab41198cdf95d58ca446d2ff9477f5f46" title="Whether or not this mod will automatically add images in the &quot;Gores&quot; folder as gores to the game,...">Mod.GoreAutoloadingEnabled</a> logic. </p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

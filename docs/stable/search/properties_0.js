@@ -18,8 +18,9 @@ var searchData=
   ['animationtype_15',['AnimationType',['../class_mod_n_p_c.html#af868d87e9055c21278c06f59cad37b59',1,'ModNPC']]],
   ['anythrowncostreduction_16',['AnyThrownCostReduction',['../class_player.html#a55103513d96bc820345e45f34cad7c7a',1,'Player']]],
   ['armorpenetration_17',['ArmorPenetration',['../class_item.html#aa681f8f65ccb0983c4349c07ae0bff07',1,'Item.ArmorPenetration()'],['../class_projectile.html#afc7aebede199bd1bd64e7cb52d5f8c46',1,'Projectile.ArmorPenetration()']]],
-  ['attacker_18',['Attacker',['../class_entity_source___item_use___on_hurt.html#a146f6fb61f84493fdfe4d8984e622fc2',1,'EntitySource_ItemUse_OnHurt.Attacker()'],['../interface_i_entity_source___on_hit.html#a0532e76ea397c9c983e87c99970ad6a2',1,'IEntitySource_OnHit.Attacker()'],['../class_entity_source___on_hit.html#afb5e838d9092828bb7982f81ec4ca6a9',1,'EntitySource_OnHit.Attacker()'],['../interface_i_entity_source___on_hurt.html#aafe2a9d09991742c467c8ba27e42f308',1,'IEntitySource_OnHurt.Attacker()'],['../class_entity_source___on_hurt.html#ac146d93f9ee57dcd1d4268fb45577953',1,'EntitySource_OnHurt.Attacker()']]],
-  ['attackspeedonlyaffectsweaponanimation_19',['attackSpeedOnlyAffectsWeaponAnimation',['../class_item.html#a91c7b416021f195c3a6505d35c1bc7d2',1,'Item']]],
-  ['available_20',['Available',['../struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71',1,'ExtraJumpState']]],
-  ['availableduringcharactercreation_21',['AvailableDuringCharacterCreation',['../class_mod_hair.html#aae116dab2b3c375df543bd734aaa316c',1,'ModHair']]]
+  ['assets_18',['Assets',['../class_mod.html#a4c11f9df40a7fad9ce11b661bd04c357',1,'Mod']]],
+  ['attacker_19',['Attacker',['../class_entity_source___item_use___on_hurt.html#a146f6fb61f84493fdfe4d8984e622fc2',1,'EntitySource_ItemUse_OnHurt.Attacker()'],['../interface_i_entity_source___on_hit.html#a0532e76ea397c9c983e87c99970ad6a2',1,'IEntitySource_OnHit.Attacker()'],['../class_entity_source___on_hit.html#afb5e838d9092828bb7982f81ec4ca6a9',1,'EntitySource_OnHit.Attacker()'],['../interface_i_entity_source___on_hurt.html#aafe2a9d09991742c467c8ba27e42f308',1,'IEntitySource_OnHurt.Attacker()'],['../class_entity_source___on_hurt.html#ac146d93f9ee57dcd1d4268fb45577953',1,'EntitySource_OnHurt.Attacker()']]],
+  ['attackspeedonlyaffectsweaponanimation_20',['attackSpeedOnlyAffectsWeaponAnimation',['../class_item.html#a91c7b416021f195c3a6505d35c1bc7d2',1,'Item']]],
+  ['available_21',['Available',['../struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71',1,'ExtraJumpState']]],
+  ['availableduringcharactercreation_22',['AvailableDuringCharacterCreation',['../class_mod_hair.html#aae116dab2b3c375df543bd734aaa316c',1,'ModHair']]]
 ];
