@@ -20,6 +20,7 @@ var class_item_i_d_1_1_sets =
     [ "DisableAutomaticPlaceableDrop", "class_item_i_d_1_1_sets.html#a6ead921d2646f54442ddc30dc4d320a0", null ],
     [ "DrawUnsafeIndicator", "class_item_i_d_1_1_sets.html#a02b6f4761f0bf05e4b5592d2cab258f2", null ],
     [ "DrinkParticleColors", "class_item_i_d_1_1_sets.html#ada6351fa7cff484ac94cd268c9a1fb01", null ],
+    [ "DuplicationMenuToolsFilter", "class_item_i_d_1_1_sets.html#ad7f8743f024aff4fee81b75f29ddbed1", null ],
     [ "ExoticPlantsForDyeTrade", "class_item_i_d_1_1_sets.html#acfbbf6149ab9b530243b438002903fa4", null ],
     [ "ExtractinatorMode", "class_item_i_d_1_1_sets.html#af0737632d94e0a1506f93cb062be8935", null ],
     [ "Factory", "class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58", null ],

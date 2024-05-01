@@ -34,6 +34,7 @@ var class_tile_i_d_1_1_sets =
     [ "DontDrawTileSliced", "class_tile_i_d_1_1_sets.html#a9db9240389b2331304b54272a4fa19cb", null ],
     [ "Falling", "class_tile_i_d_1_1_sets.html#a0098d22c058970386f8ee18bc385df9b", null ],
     [ "FallingBlockProjectile", "class_tile_i_d_1_1_sets.html#ad4d6d68fd58b984a99145d196d56f799", null ],
+    [ "GeneralPlacementTiles", "class_tile_i_d_1_1_sets.html#af10fec8c6cff941d6b7409a43b518a68", null ],
     [ "HasOutlines", "class_tile_i_d_1_1_sets.html#a612fadd9d5e3f24c17c1052fdf9b6ebe", null ],
     [ "IceSkateSlippery", "class_tile_i_d_1_1_sets.html#a38c57298977bbdfc47182befc869a9e2", null ],
     [ "IgnoredByGrowingSaplings", "class_tile_i_d_1_1_sets.html#af69a818caf125df9f8897c190f049add", null ],

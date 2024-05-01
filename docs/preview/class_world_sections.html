@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -137,6 +137,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTilesLoaded</b> (i
 <tr class="separator:a29147c623c784d24368547783ad72482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e657d1ea2bbd415565a56dbf84c236"><td class="memItemLeft" align="right" valign="top"><a id="ab5e657d1ea2bbd415565a56dbf84c236" name="ab5e657d1ea2bbd415565a56dbf84c236"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TileLoaded</b> (int tileX, int tileY)</td></tr>
+<tr class="memdesc:ab5e657d1ea2bbd415565a56dbf84c236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the tile at the specified tile coordinate has been loaded for this client in a multiplayer game session. In multiplayer, sections of tiles are sent when the player visits them, so much of the map will not be loaded for a client. until visited. Modders may need to check this for client code that could potentially access unloaded tiles. <br /></td></tr>
 <tr class="separator:ab5e657d1ea2bbd415565a56dbf84c236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcf369e8e39eeeae772f8d6ffba18ec4"><td class="memItemLeft" align="right" valign="top"><a id="afcf369e8e39eeeae772f8d6ffba18ec4" name="afcf369e8e39eeeae772f8d6ffba18ec4"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TilesLoaded</b> (int startX, int startY, int endXInclusive, int endYInclusive)</td></tr>

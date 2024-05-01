@@ -65,7 +65,9 @@ var class_projectile =
     [ "CritChance", "class_projectile.html#a56758a1e35c234345b4507b36c0e8088", null ],
     [ "DamageType", "class_projectile.html#aad257e1f87a6c5b7a5813a185df060b4", null ],
     [ "IsMinionOrSentryRelated", "class_projectile.html#a0b34b3b9b56439acfc13ebba50455ca6", null ],
+    [ "MaxUpdates", "class_projectile.html#acb1e424d762f2cfe6a4d25fb20cf7167", null ],
     [ "ModProjectile", "class_projectile.html#acf73b38dd6006395707713d1afb995ea", null ],
+    [ "Opacity", "class_projectile.html#aaaef267521b5f0b04e58f12ec817da83", null ],
     [ "OriginalArmorPenetration", "class_projectile.html#ab9b496d833e80e1b7a950e968ec3841c", null ],
     [ "OriginalCritChance", "class_projectile.html#aa4f752f854e89325b991e7db7a316562", null ]
 ];

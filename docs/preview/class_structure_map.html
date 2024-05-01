@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -90,20 +90,27 @@ $(document).ready(function(){initNavTree('class_structure_map.html',''); initRes
   <div class="headertitle"><div class="title">StructureMap Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Used during world generation to track and check important world generation features to prevent overlap. Access this via <a class="el" href="class_gen_vars.html#a16f4d28cb5361cf1db462ab32c953834">GenVars.structures</a>. The <a class="el" href="class_structure_map.html#acd2298145b892adeafd96e37d40d1088" title="Adds an area of the world to the protected structures listing to be protected from other world genera...">AddProtectedStructure(Rectangle, int)</a> method is used to indicate an area of the world to be protected from other world generation code. The <a class="el" href="class_structure_map.html#a8f93887496f32259130515e961b91f86" title="Checks if the provided tile coordinate area  padded by the padding  is free from protected structures...">CanPlace(Rectangle, int)</a> method will check if the designated area is free from protected structures as well as any tiles that are not <a class="el" href="class_tile_i_d_1_1_sets.html#af10fec8c6cff941d6b7409a43b518a68" title="Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be val...">TileID.Sets.GeneralPlacementTiles</a>. This is used to find an area that is unused. It is up to modders to properly use <a class="el" href="class_structure_map.html" title="Used during world generation to track and check important world generation features to prevent overla...">StructureMap</a> to both mark areas as occupied by structures and check for areas free of existing structures. The Structure Map section of the World Generation wiki pagehas more information and useful visualizations.  
+ <a href="class_structure_map.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acd2298145b892adeafd96e37d40d1088"><td class="memItemLeft" align="right" valign="top"><a id="acd2298145b892adeafd96e37d40d1088" name="acd2298145b892adeafd96e37d40d1088"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddProtectedStructure</b> (Rectangle area, int padding=0)</td></tr>
+<tr class="memdesc:acd2298145b892adeafd96e37d40d1088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an area of the world to the protected structures listing to be protected from other world generation code. Use this after placing a structure if you do not wish other world generation code to overlap with it. <br /></td></tr>
 <tr class="separator:acd2298145b892adeafd96e37d40d1088"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf6e15771f6cea1274dc89f7efe27f66"><td class="memItemLeft" align="right" valign="top"><a id="aaf6e15771f6cea1274dc89f7efe27f66" name="aaf6e15771f6cea1274dc89f7efe27f66"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddStructure</b> (Rectangle area, int padding=0)</td></tr>
+<tr class="memdesc:aaf6e15771f6cea1274dc89f7efe27f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unused, use <a class="el" href="class_structure_map.html#acd2298145b892adeafd96e37d40d1088" title="Adds an area of the world to the protected structures listing to be protected from other world genera...">AddProtectedStructure(Rectangle, int)</a> instead. <br /></td></tr>
 <tr class="separator:aaf6e15771f6cea1274dc89f7efe27f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a746436c215907a8e40f9a7c610b74684"><td class="memItemLeft" align="right" valign="top"><a id="a746436c215907a8e40f9a7c610b74684" name="a746436c215907a8e40f9a7c610b74684"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPlace</b> (Rectangle area, bool[] validTiles, int padding=0)</td></tr>
+<tr class="memdesc:a746436c215907a8e40f9a7c610b74684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_structure_map.html#a8f93887496f32259130515e961b91f86" title="Checks if the provided tile coordinate area  padded by the padding  is free from protected structures...">CanPlace(Rectangle, int)</a>, except instead of using <a class="el" href="class_tile_i_d_1_1_sets.html#af10fec8c6cff941d6b7409a43b518a68" title="Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be val...">TileID.Sets.GeneralPlacementTiles</a> the set of valid tiles to overwrite are passed in. Typically this is used with a copy of <code>GeneralPlacementTiles</code> that is changed slightly to allow or disallow some specific tiles. <br /></td></tr>
 <tr class="separator:a746436c215907a8e40f9a7c610b74684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f93887496f32259130515e961b91f86"><td class="memItemLeft" align="right" valign="top"><a id="a8f93887496f32259130515e961b91f86" name="a8f93887496f32259130515e961b91f86"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPlace</b> (Rectangle area, int padding=0)</td></tr>
+<tr class="memdesc:a8f93887496f32259130515e961b91f86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided tile coordinate <em>area</em>  padded by the <em>padding</em>  is free from protected structures and tiles that are not <a class="el" href="class_tile_i_d_1_1_sets.html#af10fec8c6cff941d6b7409a43b518a68" title="Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be val...">TileID.Sets.GeneralPlacementTiles</a>. Use this to find a suitable place for placing a structure feature free from any existing structures or protected tile, then use <a class="el" href="class_structure_map.html#acd2298145b892adeafd96e37d40d1088" title="Adds an area of the world to the protected structures listing to be protected from other world genera...">AddProtectedStructure(Rectangle, int)</a> after placing a structure. <br /></td></tr>
 <tr class="separator:a8f93887496f32259130515e961b91f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3999ce41f79158c0e14422519df6c841"><td class="memItemLeft" align="right" valign="top"><a id="a3999ce41f79158c0e14422519df6c841" name="a3999ce41f79158c0e14422519df6c841"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>GetBoundingBox</b> ()</td></tr>
@@ -112,7 +119,14 @@ Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>GetBoundingBox</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Reset</b> ()</td></tr>
 <tr class="separator:a661c8ed5b77ec25647892443d27b3d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Used during world generation to track and check important world generation features to prevent overlap. Access this via <a class="el" href="class_gen_vars.html#a16f4d28cb5361cf1db462ab32c953834">GenVars.structures</a>. </p>
+<p >The <a class="el" href="class_structure_map.html#acd2298145b892adeafd96e37d40d1088" title="Adds an area of the world to the protected structures listing to be protected from other world genera...">AddProtectedStructure(Rectangle, int)</a> method is used to indicate an area of the world to be protected from other world generation code. </p>
+<p >The <a class="el" href="class_structure_map.html#a8f93887496f32259130515e961b91f86" title="Checks if the provided tile coordinate area  padded by the padding  is free from protected structures...">CanPlace(Rectangle, int)</a> method will check if the designated area is free from protected structures as well as any tiles that are not <a class="el" href="class_tile_i_d_1_1_sets.html#af10fec8c6cff941d6b7409a43b518a68" title="Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be val...">TileID.Sets.GeneralPlacementTiles</a>. This is used to find an area that is unused. </p>
+<p >It is up to modders to properly use <a class="el" href="class_structure_map.html" title="Used during world generation to track and check important world generation features to prevent overla...">StructureMap</a> to both mark areas as occupied by structures and check for areas free of existing structures. </p>
+<p >The Structure Map section of the World Generation wiki page</p>
+<p >has more information and useful visualizations. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

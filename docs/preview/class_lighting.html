@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('class_lighting.html',''); initResizabl
   <div class="headertitle"><div class="title">Lighting Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>This class manages lighting in the game world. <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use GetColor methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the AddLight methods.  
+ <a href="class_lighting.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -117,6 +120,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</
 <tr class="separator:a70c88eebc45738e31bbf7719590f18bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afefe893018692f523bdd8abd8430b4c6"><td class="memItemLeft" align="right" valign="top"><a id="afefe893018692f523bdd8abd8430b4c6" name="afefe893018692f523bdd8abd8430b4c6"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (int x, int y)</td></tr>
+<tr class="memdesc:afefe893018692f523bdd8abd8430b4c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the lighting color at the specified <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> coordinate location.  <br /></td></tr>
 <tr class="separator:afefe893018692f523bdd8abd8430b4c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f8dc5af758ec11158c420ee2c671f44"><td class="memItemLeft" align="right" valign="top"><a id="a5f8dc5af758ec11158c420ee2c671f44" name="a5f8dc5af758ec11158c420ee2c671f44"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (int x, int y, Color oldColor)</td></tr>
@@ -126,6 +130,7 @@ static Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> 
 <tr class="separator:a2d4dad695635fc155f6a05af9a63348d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa424e3ce2389627923eab5e317b11f54"><td class="memItemLeft" align="right" valign="top"><a id="aa424e3ce2389627923eab5e317b11f54" name="aa424e3ce2389627923eab5e317b11f54"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (Point tileCoords, Color originalColor)</td></tr>
+<tr class="memdesc:aa424e3ce2389627923eab5e317b11f54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the lighting color at the specified <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> coordinate location, then multiplies it by the provided Color.  <br /></td></tr>
 <tr class="separator:aa424e3ce2389627923eab5e317b11f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb9c71c8e79aec72affd20e351be0ac"><td class="memItemLeft" align="right" valign="top"><a id="addb9c71c8e79aec72affd20e351be0ac" name="addb9c71c8e79aec72affd20e351be0ac"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor4Slice</b> (int centerX, int centerY, ref Color[] slices)</td></tr>
@@ -147,6 +152,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetCornerColor
 <tr class="separator:a0d7cde7c091dcaefeb1f5e689a50973e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a071b92fde6c0634bad0ffd1ab5c66991"><td class="memItemLeft" align="right" valign="top"><a id="a071b92fde6c0634bad0ffd1ab5c66991" name="a071b92fde6c0634bad0ffd1ab5c66991"></a>
 static Vector3&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubLight</b> (Vector2 position)</td></tr>
+<tr class="memdesc:a071b92fde6c0634bad0ffd1ab5c66991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the lighting color at the specified World coordinate location. The value is calculated through bilinear interpolation of the nearby tile coordinates.  <br /></td></tr>
 <tr class="separator:a071b92fde6c0634bad0ffd1ab5c66991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0faa4c57247fce5d8c1edb39ebe975d"><td class="memItemLeft" align="right" valign="top"><a id="af0faa4c57247fce5d8c1edb39ebe975d" name="af0faa4c57247fce5d8c1edb39ebe975d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
@@ -185,7 +191,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateEveryFra
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsingNewLighting</b><code> [get]</code></td></tr>
 <tr class="separator:a9446f0c56d60a9059b33af44aff753cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >This class manages lighting in the game world. <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use GetColor methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the AddLight methods. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a657943484e31f0e345c978bcdcd47feb" name="a657943484e31f0e345c978bcdcd47feb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a657943484e31f0e345c978bcdcd47feb">&#9670;&nbsp;</a></span>AddLight() <span class="overload">[1/3]</span></h2>
 

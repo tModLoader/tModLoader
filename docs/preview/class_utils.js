@@ -1,6 +1,7 @@
 var class_utils =
 [
     [ "ChaseResults", "struct_utils_1_1_chase_results.html", null ],
+    [ "ClosestPointOnLine", "class_utils.html#a1aa7dde73333fb2204b3b115a6fc829a", null ],
     [ "Next< T >", "class_utils.html#a89069d24f25560e0c9d565dd55e2187f", null ],
     [ "Next< T >", "class_utils.html#a20b08c978c09a4c4046fd34c2510df05", null ],
     [ "NextBool", "class_utils.html#a0f5347faf5b45c4175e236b265168370", null ],
@@ -10,5 +11,18 @@ var class_utils =
     [ "NextFloat", "class_utils.html#a6165040d42a1c8e5cd839b0125e89c60", null ],
     [ "NextFloat", "class_utils.html#a1534059d7f850e4f2763b6e254ef97f1", null ],
     [ "ReceiveBitArray", "class_utils.html#af154fd00f5cb2d5b6dfac3ecebce62e2", null ],
-    [ "SendBitArray", "class_utils.html#a61052d8ca30048a078b060895ca931ae", null ]
+    [ "SafeNormalize", "class_utils.html#a4e70ac2591faca81e9cfc1a11d86bc5a", null ],
+    [ "SendBitArray", "class_utils.html#a61052d8ca30048a078b060895ca931ae", null ],
+    [ "ToDirectionInt", "class_utils.html#af6c4d91bbedc8425a021369677117ccb", null ],
+    [ "ToInt", "class_utils.html#a2bf550346c994d3e72a657a8b09989b7", null ],
+    [ "ToPoint16", "class_utils.html#a6e2879d0566eca15938d1cdfb6f37a77", null ],
+    [ "ToTileCoordinates", "class_utils.html#a69dbdf4c764b0872e9b256a370e19e8c", null ],
+    [ "ToTileCoordinates16", "class_utils.html#a110c6856d868319aa28c15002f16120c", null ],
+    [ "ToWorldCoordinates", "class_utils.html#af6636467ea05cb0b68a342824bf0a74e", null ],
+    [ "ToWorldCoordinates", "class_utils.html#a20b956d811cb0253bbeb9abab4f691c9", null ],
+    [ "ToWorldCoordinates", "class_utils.html#a5768aa30724b513caa0a886a7ba10491", null ],
+    [ "ToWorldCoordinates", "class_utils.html#a82e337a061ab203467da51ee113557ef", null ],
+    [ "ToWorldCoordinates", "class_utils.html#a94e9c33d236efe8e5ac60763833fd53b", null ],
+    [ "ToWorldCoordinates", "class_utils.html#aace99ebac7621154ec9804a1f1a8deb1", null ],
+    [ "WithinRange", "class_utils.html#a8415ee64662b02f45fe52df60653c077", null ]
 ];
