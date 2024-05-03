@@ -895,6 +895,22 @@ Mods: {
 				DisplayName: Example Sand Block
 				Tooltip: This is a modded sand block
 			}
+
+			ExampleBoots: {
+				DisplayName: Example Boots
+				Tooltip:
+				'''
+					Allows flight, super fast running, even faster running on snad, and extra mobility on ice
+					10% increased movement speed
+					8% increased acceleration
+					Provides the ability to walk on water, honey & lava
+					Grants immunity to fire blocks and 2 seconds of immunity to lava
+					Reduces damage from touching lava
+					Prevents fall damage
+					Leaves a trail of flames in your wake
+				'''
+				}
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
