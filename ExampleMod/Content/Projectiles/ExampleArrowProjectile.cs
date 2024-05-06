@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -6,36 +6,49 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
-
+	// This example is similar to the Wooden Arrow projectile
 	public class ExampleArrowProjectile : ModProjectile
 	{
 		public override void SetDefaults() {
 			Projectile.width = 10; // The width of projectile hitbox
 			Projectile.height = 10; // The height of projectile hitbox
 
-			Projectile.aiStyle = 1; // The ai style of the projectile, please reference the source code of Terraria
-			Projectile.friendly = true; // Does the projectile damage enemies?
-			Projectile.hostile = false; // Does the projectile damage the player? (town npcs will be affected by this aswell.)
-			Projectile.DamageType = DamageClass.Ranged; // Is the projectile shoot by a ranged weapon?
-			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-			Projectile.alpha = 0; // The transparency of the projectile, 255 for completely transparent. (aiStyle 1 quickly fades the projectile in) Remember to delete this if you aren't using an aiStyle that fades in.
-			Projectile.ignoreWater = true; // Does the projectiles speed/velocity change whilst underwater?
-			Projectile.tileCollide = true; // Can the projectile collide with tiles?
-			Projectile.extraUpdates = 1; // Set to above 0 if you want the projectile to update multiple time in a frame
-
-			AIType = ProjectileID.WoodenArrowFriendly; // Makes the projectile behave like the standard arrow
+			Projectile.arrow = true;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.timeLeft = 1200;
 		}
 
+		public override void AI() {
+			// The code below was adapted from the ProjAIStyleID.Arrow behavior. Rather than copy an existing aiStyle using Projectile.aiStyle and AIType,
+			// like some examples do, this example has custom AI code that is better suited for modifying directly.
+			// See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai for more information on custom projectile AI.
+
+			// Apply gravity after a quarter of a second
+			Projectile.ai[0] += 1f;
+			if (Projectile.ai[0] >= 15f) {
+				Projectile.ai[0] = 15f;
+				Projectile.velocity.Y += 0.1f;
+			}
+
+			// The projectile is rotated to face the direction of travel
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+
+			// Cap downward velocity
+			if (Projectile.velocity.Y > 16f) {
+				Projectile.velocity.Y = 16f;
+			}
+		}
 
 		public override void OnKill(int timeLeft) {
-			SoundEngine.PlaySound(SoundID.Dig, Projectile.position); //Plays the basic sound most projectiles make when hitting blocks.
-			for (int index1 = 0; index1 < 5; ++index1)//Creates a splash of dust around the position the projectile dies.
+			SoundEngine.PlaySound(SoundID.Dig, Projectile.position); // Plays the basic sound most projectiles make when hitting blocks.
+			for (int i = 0; i < 5; i++) // Creates a splash of dust around the position the projectile dies.
 			{
-				int index2 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Silver);
-				Main.dust[index2].noGravity = true;
-				Main.dust[index2].velocity *= 1.5f;
-				Main.dust[index2].scale *= 0.9f;
-			}
+				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Silver);
+				dust.noGravity = true;
+				dust.velocity *= 1.5f;
+				dust.scale *= 0.9f;
+			} 
 		}
 	}
 }

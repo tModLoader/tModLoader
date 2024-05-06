@@ -5,22 +5,22 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Ammo
 {
+	// This example is similar to the Wooden Arrow item
 	public class ExampleArrow : ModItem
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 99;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Item.width = 14;
 			Item.height = 36;
 
-			Item.damage = 6; // Keep in mind that the arrows damage is additive on the base weapon damage.
+			Item.damage = 6; // Keep in mind that the arrow's final damage is combined with the bow weapon damage.
 			Item.DamageType = DamageClass.Ranged;
 
 			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true; // Makes the item consumable, relatively self explanitory.
+			Item.consumable = true;
 			Item.knockBack = 1.5f;
 			Item.value = Item.sellPrice(copper: 16);
 			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleArrowProjectile>(); // The projectile that weapons fire when using this item as ammunition.
