@@ -18,6 +18,7 @@
 #-secure			                        		Adds addition cheat protection to the server.
 #-noupnp				                        	Disables automatic port forwarding
 #-steam                         					Enables Steam Support
+#-nosteam                         				Disable Steam Support
 #-lobby <friends> or <private>             Allows friends to join the server or sets it to private if Steam is enabled
 #-ip <ip address>	Sets the IP address for the server to listen on
 #-forcepriority <priority>	Sets the process priority for this task. If this is used the "priority" setting below will be ignored.
@@ -58,7 +59,7 @@
 #password=p@55w0rd
 
 #Set the message of the day
-#motd=Please don’t cut the purple trees!
+#motd=Please donâ€™t cut the purple trees!
 
 #Sets the folder where world files will be stored
 #worldpath=C:\Users\Defaults\My Documents\My Games\Terraria\Worlds\
