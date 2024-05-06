@@ -18,7 +18,13 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,76 +_,324 @@
+@@ -63,79 +_,330 @@
+ 	public const int SentryLifeTime = 36000;
+ 	public const int ArrowLifeTime = 1200;
+ 	public float ownerHitCheckDistance = 1000f;
++	/// <summary>
++	/// Indicates that this is an arrow projectile. Used to apply the Phantasm and Magic Quiver effects.
++	/// </summary>
  	public bool arrow;
  	public int numHits;
  	public bool bobber;
