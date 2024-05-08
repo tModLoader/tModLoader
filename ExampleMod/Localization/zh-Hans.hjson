@@ -188,6 +188,7 @@ Mods: {
 					{6} magic armor penetration
 					{7}% increased example knockback
 					{8}% increased crit damage
+					Increased movement speed and acceleration
 					''' */
 			}
 
@@ -894,6 +895,20 @@ Mods: {
 			ExampleSandBlock: {
 				// DisplayName: Example Sand Block
 				// Tooltip: This is a modded sand block
+			}
+
+			ExampleBoots: {
+				// DisplayName: Example Boots
+				/* Tooltip:
+					'''
+					Allows flight, super fast running, even faster running on snad, and extra mobility on ice
+					{$CommonItemTooltip.PercentIncreasedMovementSpeed}
+					Provides the ability to walk on water, honey, lava, and shimmer
+					Grants immunity to fire blocks and {1} seconds of immunity to lava
+					Reduces damage from touching lava
+					Prevents fall damage
+					Leaves a trail of flames in your wake
+					''' */
 			}
 
 			ExampleArrow: {
