@@ -123,6 +123,64 @@
  	}
  
  	protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
+@@ -328,41 +_,46 @@
+ 	private UIElement CreatePublicSettingsRow(float accumulatedHeight, float height, string tagGroup)
+ 	{
+ 		CreateStylizedCategoryPanel(height, "Workshop.CategoryTitlePublicity", out var entirePanel, out var innerPanel);
+-		WorkshopItemPublicSettingId[] array = new WorkshopItemPublicSettingId[3] {
++		WorkshopItemPublicSettingId[] array = new WorkshopItemPublicSettingId[4] {
+ 			WorkshopItemPublicSettingId.Public,
+ 			WorkshopItemPublicSettingId.FriendsOnly,
+-			WorkshopItemPublicSettingId.Private
++			WorkshopItemPublicSettingId.Private,
++			WorkshopItemPublicSettingId.Unlisted
+ 		};
+ 
+-		LocalizedText[] array2 = new LocalizedText[3] {
++		LocalizedText[] array2 = new LocalizedText[4] {
+ 			Language.GetText("Workshop.SettingsPublicityPublic"),
+ 			Language.GetText("Workshop.SettingsPublicityFriendsOnly"),
+-			Language.GetText("Workshop.SettingsPublicityPrivate")
++			Language.GetText("Workshop.SettingsPublicityPrivate"),
++			Language.GetText("tModLoader.SettingsPublicityUnlisted")
+ 		};
+ 
+-		LocalizedText[] array3 = new LocalizedText[3] {
++		LocalizedText[] array3 = new LocalizedText[4] {
+ 			Language.GetText("Workshop.SettingsPublicityPublicDescription"),
+ 			Language.GetText("Workshop.SettingsPublicityFriendsOnlyDescription"),
+-			Language.GetText("Workshop.SettingsPublicityPrivateDescription")
++			Language.GetText("Workshop.SettingsPublicityPrivateDescription"),
++			Language.GetText("tModLoader.SettingsPublicityUnlistedDescription")
+ 		};
+ 
+-		Color[] array4 = new Color[3] {
++		Color[] array4 = new Color[4] {
++			Color.White,
+ 			Color.White,
+ 			Color.White,
+ 			Color.White
+ 		};
+ 
+-		string[] array5 = new string[3] {
++		string[] array5 = new string[4] {
+ 			"Images/UI/Workshop/PublicityPublic",
+ 			"Images/UI/Workshop/PublicityFriendsOnly",
+-			"Images/UI/Workshop/PublicityPrivate"
++			"Images/UI/Workshop/PublicityPrivate",
++			"Images/UI/WorldCreation/IconRandomName" //tmod added
+ 		};
+ 
+ 		float num = 0.98f;
+ 		GroupOptionButton<WorkshopItemPublicSettingId>[] array6 = new GroupOptionButton<WorkshopItemPublicSettingId>[array.Length];
+ 		for (int i = 0; i < array6.Length; i++) {
+-			GroupOptionButton<WorkshopItemPublicSettingId> groupOptionButton = new GroupOptionButton<WorkshopItemPublicSettingId>(array[i], array2[i], array3[i], array4[i], array5[i], 1f, 1f, 16f);
++			GroupOptionButton<WorkshopItemPublicSettingId> groupOptionButton = new GroupOptionButton<WorkshopItemPublicSettingId>(array[i], array2[i], array3[i], array4[i], array5[i], 0.8f, 1f, 16f);
+-			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (array6.Length - 1), 1f / (float)array6.Length * num);
++			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-2 * (array6.Length - 1), 1f / (float)array6.Length * num);
+ 			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
+ 			groupOptionButton.Left = StyleDimension.FromPercent((1f - num) * (1f - groupOptionButton.HAlign * 2f));
+ 			groupOptionButton.Top.Set(accumulatedHeight, 0f);
 @@ -382,18 +_,41 @@
  	{
  		List<WorkshopTagOption> tagsToShow = GetTagsToShow();

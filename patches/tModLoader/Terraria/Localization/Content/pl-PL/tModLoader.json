@@ -371,6 +371,8 @@
 		"EnterSteamID": "Proszę Wpisz Swój SteamID",
 		"PasteSteamID": "Wklej SteamID (ctrl-v)",
 		"MBServerResponse": "Odpowiedź serwera Przeglądarki modów:\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Pobieraj mody z serwerów: Tak",
@@ -533,6 +535,7 @@
 		"SpecialAttackSpeedScaling": "Bonusy do prędkości ataku wpływają na broń w {0}%",
 		"ModifiedByModsHoldSHIFT": "Zmodyfikowany przez mody (przytrzymaj SHIFT aby wyświetlić więcej informacji)",
 		"ModifiedByMods": "Zmodyfikowany przez ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Szacowane użycie pamięci RAM (przy ostatnio aktywnych Modach): {0}",

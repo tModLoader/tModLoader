@@ -375,6 +375,8 @@
 		"EnterSteamID": "请输入你的SteamID",
 		"PasteSteamID": "粘贴SteamID（Ctrl+V）",
 		"MBServerResponse": "模组浏览器服务器响应：\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开启",
@@ -537,6 +539,7 @@
 		"SpecialAttackSpeedScaling": "受到全局攻速加成的效果为原有的{0}%",
 		"ModifiedByModsHoldSHIFT": "基础属性已被模组修改 （按住[SHIFT]键以了解详细信息）",
 		"ModifiedByMods": "基础属性已被以下模组修改：",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "上次加载时的内存占用：{0}",
