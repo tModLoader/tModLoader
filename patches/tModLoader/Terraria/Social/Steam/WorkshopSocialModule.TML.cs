@@ -31,6 +31,8 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
+		currPublishID = 0;
+
 		if (!mods.Any() || mods[0] == null)
 			return false;
 

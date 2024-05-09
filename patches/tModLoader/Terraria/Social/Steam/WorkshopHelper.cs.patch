@@ -167,7 +167,14 @@
  					UpdateItem();
  				}
  				else {
-@@ -212,14 +_,41 @@
+@@ -207,19 +_,48 @@
+ 						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
+ 					case WorkshopItemPublicSettingId.Public:
+ 						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
++					case WorkshopItemPublicSettingId.Unlisted:
++						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityUnlisted;
+ 				}
+ 			}
  
  			private void CreateItem()
  			{

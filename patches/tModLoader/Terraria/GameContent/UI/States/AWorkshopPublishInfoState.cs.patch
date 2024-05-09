@@ -123,7 +123,7 @@
  	}
  
  	protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
-@@ -328,34 +_,39 @@
+@@ -328,41 +_,46 @@
  	private UIElement CreatePublicSettingsRow(float accumulatedHeight, float height, string tagGroup)
  	{
  		CreateStylizedCategoryPanel(height, "Workshop.CategoryTitlePublicity", out var entirePanel, out var innerPanel);
@@ -168,10 +168,19 @@
  			"Images/UI/Workshop/PublicityFriendsOnly",
 -			"Images/UI/Workshop/PublicityPrivate"
 +			"Images/UI/Workshop/PublicityPrivate",
-+			"Images/UI/Workshop/PublicityPrivate" //tmod added
++			"Images/UI/WorldCreation/IconRandomName" //tmod added
  		};
  
  		float num = 0.98f;
+ 		GroupOptionButton<WorkshopItemPublicSettingId>[] array6 = new GroupOptionButton<WorkshopItemPublicSettingId>[array.Length];
+ 		for (int i = 0; i < array6.Length; i++) {
+-			GroupOptionButton<WorkshopItemPublicSettingId> groupOptionButton = new GroupOptionButton<WorkshopItemPublicSettingId>(array[i], array2[i], array3[i], array4[i], array5[i], 1f, 1f, 16f);
++			GroupOptionButton<WorkshopItemPublicSettingId> groupOptionButton = new GroupOptionButton<WorkshopItemPublicSettingId>(array[i], array2[i], array3[i], array4[i], array5[i], 0.8f, 1f, 16f);
+-			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (array6.Length - 1), 1f / (float)array6.Length * num);
++			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-2 * (array6.Length - 1), 1f / (float)array6.Length * num);
+ 			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
+ 			groupOptionButton.Left = StyleDimension.FromPercent((1f - num) * (1f - groupOptionButton.HAlign * 2f));
+ 			groupOptionButton.Top.Set(accumulatedHeight, 0f);
 @@ -382,18 +_,41 @@
  	{
  		List<WorkshopTagOption> tagsToShow = GetTagsToShow();
