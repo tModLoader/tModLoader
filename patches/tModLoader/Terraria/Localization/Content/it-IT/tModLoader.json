@@ -373,6 +373,8 @@
 		// "EnterSteamID": "Please Enter Your SteamID",
 		// "PasteSteamID": "Paste SteamID (ctrl-v)",
 		// "MBServerResponse": "The Mod Browser server response:\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		// "DownloadFromServersYes": "Download Mods From Servers: On",
@@ -465,7 +467,7 @@
 		// "DiscordLink": "Find Help on the Discord Server",
 		// "MSPortToLatest": "Run tModPorter",
 		// "MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
-		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
+		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET {0} SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
 		// "DownloadNetSDK": "Download .NET SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
@@ -535,6 +537,7 @@
 		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
 		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
 		// "ModifiedByMods": "Is modified by ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		// "LastLoadRamUsage": "Estimated last load RAM usage: {0}",

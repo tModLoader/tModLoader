@@ -371,6 +371,8 @@
 		"EnterSteamID": "Por favor, introduce tu SteamID",
 		"PasteSteamID": "Pegar SteamID (Ctrl + V)",
 		"MBServerResponse": "Respuesta del servidor del Navegador:\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Descargar mods de los servidores: Activado",
@@ -533,6 +535,7 @@
 		"SpecialAttackSpeedScaling": "{0}% de mejora en la velocidad de ataque",
 		"ModifiedByModsHoldSHIFT": "Se modifica (pulsa SHIFT para más info)",
 		"ModifiedByMods": "Es modificada por ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Uso de RAM estimado en la última carga: {0}",
