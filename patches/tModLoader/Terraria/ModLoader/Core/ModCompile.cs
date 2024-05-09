@@ -212,7 +212,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
 			BuildMod(mod, out var code, out var pdb);
-			mod.modFile.AddFile(mod.Name+".dll", code);
+			mod.modFile.AddFile(mod.Name + ".dll", code);
 			if (pdb != null)
 				mod.modFile.AddFile(mod.Name + ".pdb", pdb);
 
@@ -224,6 +224,14 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			mod.modFile.Save();
 			ModLoader.EnableMod(mod.Name);
+
+			var availableMods = ModOrganizer.FindMods();
+			var modToLoad = availableMods.SingleOrDefault(x => x.Name == mod.Name);
+			if (modToLoad?.location == ModLocation.Modpack)
+				throw new BuildException("The built mod will not be loaded because a frozen copy is present in the active modpack.");
+			else if (modToLoad?.location == ModLocation.Workshop)
+				throw new BuildException($"The built mod will not be loaded because the workshop version, \"{modToLoad.Version}\", is larger than the current version, \"{mod.Version}\"");
+
 			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);
 		}
