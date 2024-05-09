@@ -126,7 +126,6 @@ public partial class WorkshopSocialModule
 		
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
-		//TODO: We ought to delete the TemporaryFolder after successful publishing to prevent future issues if they delete and attempt to re-pub
 		if (MakeTemporaryFolder(contentFolderPath)) {
 			string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
 
