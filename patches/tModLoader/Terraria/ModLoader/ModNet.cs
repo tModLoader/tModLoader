@@ -58,7 +58,7 @@ public static class ModNet
 	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
 	internal static bool downloadModsFromServers = true;
-	internal static bool onlyDownloadSignedMods = false;
+	// internal static bool onlyDownloadSignedMods = false;
 
 	internal static bool[] isModdedClient = new bool[256];
 
@@ -148,7 +148,7 @@ public static class ModNet
 			p.Write(mod.Name);
 			p.Write(mod.Version.ToString());
 			p.Write(mod.File.Hash);
-			p.Write(mod.File.ValidModBrowserSignature);
+			// p.Write(mod.File.ValidModBrowserSignature);
 			SendServerConfigs(p, mod);
 		}
 
@@ -216,7 +216,7 @@ public static class ModNet
 
 		int n = reader.ReadInt32();
 		for (int i = 0; i < n; i++) {
-			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
+			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), false /*reader.ReadBoolean()*/);;
 			SyncModHeaders.Add(header);
 
 			int configCount = reader.ReadInt32();
@@ -238,7 +238,7 @@ public static class ModNet
 				continue;
 			}
 
-			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
+			if (downloadModsFromServers) { // && (header.signed || !onlyDownloadSignedMods)
 				downloadQueue.Enqueue(header);
 				reloadRequiredExplanationEntries.Add(MakeDownloadModExplanation(modFiles, header, clientMod));
 			}
@@ -476,8 +476,10 @@ public static class ModNet
 				if (!downloadingMod.Matches(mod))
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
 
+				/*
 				if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
+				*/
 
 				ModLoader.EnableMod(mod.Name);
 

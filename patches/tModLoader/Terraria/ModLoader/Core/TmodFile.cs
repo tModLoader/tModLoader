@@ -65,6 +65,7 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 
 	internal byte[] Signature { get; private set; } = new byte[256];
 
+	/*
 	private bool? validModBrowserSignature;
 	internal bool ValidModBrowserSignature {
 		get {
@@ -74,6 +75,7 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 			return validModBrowserSignature.Value;
 		}
 	}
+	*/
 
 	internal TmodFile(string path, string name = null, Version version = null)
 	{

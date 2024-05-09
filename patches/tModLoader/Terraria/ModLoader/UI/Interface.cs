@@ -295,7 +295,7 @@ internal static class Interface
 		else if (Main.menuMode == tModLoaderSettingsID) {
 			offY = 210;
 			spacing = 42;
-			numButtons = 10;
+			numButtons = 9;
 			buttonVerticalSpacing[numButtons - 1] = 18;
 			for (int i = 0; i < numButtons; i++) {
 				buttonScales[i] = 0.75f;
@@ -307,12 +307,14 @@ internal static class Interface
 				ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
 			}
 
+			/*
 			buttonIndex++;
 			buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? Language.GetTextValue("tModLoader.DownloadSignedYes") : Language.GetTextValue("tModLoader.DownloadSignedNo"));
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
 			}
+			*/
 
 			buttonIndex++;
 			buttonNames[buttonIndex] = (ModLoader.autoReloadAndEnableModsLeavingModBrowser ? Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserNo"));
