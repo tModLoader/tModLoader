@@ -15,6 +15,7 @@ namespace Terraria.ModLoader.UI;
 /// <summary>
 /// <paramref name="typeOrder"/> dictates the order specific explanations are shown:
 /// <br/> 1: Download, 2: Switch Version, 3: Enable, 4: Disable, 5: Config Change
+/// <para/> <paramref name="mod"/> is internal name, <paramref name="localMod"/> might be null for mods that need to be downloaded.
 /// </summary>
 internal record ReloadRequiredExplanation(int typeOrder, string mod, LocalMod localMod, string reason);
 
@@ -129,7 +130,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			panel.Height.Set(92, 0f);
 			panel.BackgroundColor = UICommon.DefaultUIBlue;
 
-			UIText modName = new UIText(entry.mod) {
+			UIText modName = new UIText(entry.localMod?.DisplayName ?? entry.mod) {
 				Top = { Pixels = 2 },
 				Left = { Pixels = 85 }
 			};
