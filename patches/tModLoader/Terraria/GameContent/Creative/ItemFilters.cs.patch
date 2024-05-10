@@ -42,6 +42,33 @@
  					return true;
  			}
  
+@@ -107,6 +_,7 @@
+ 
+ 	public class Tools : IItemEntryFilter, IEntryFilter<Item>
+ 	{
++		/* Replaced by ItemID.Sets.DuplicationMenuToolsFilter
+ 		private HashSet<int> _itemIdsThatAreAccepted = new HashSet<int> {
+ 			509,
+ 			850,
+@@ -163,6 +_,7 @@
+ 			4049,
+ 			114
+ 		};
++		*/
+ 
+ 		public bool FitsFilter(Item entry)
+ 		{
+@@ -181,7 +_,10 @@
+ 			if (entry.tileWand != -1)
+ 				return true;
+ 
++			/* See the above comment
+ 			if (_itemIdsThatAreAccepted.Contains(entry.type))
++			*/
++			if (ItemID.Sets.DuplicationMenuToolsFilter[entry.type])
+ 				return true;
+ 
+ 			return false;
 @@ -354,7 +_,7 @@
  
  		public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst)

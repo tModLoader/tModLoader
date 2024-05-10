@@ -1,4 +1,12 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- Build Defaults -->
+	<PropertyGroup>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<TargetFramework>net8.0</TargetFramework>
+		<LangVersion>12.0</LangVersion>
+	</PropertyGroup>
+	
 	<PropertyGroup>
 		<!-- legacy property -->
 		<TerrariaSteamPath>$(MSBuildThisFileDirectory)</TerrariaSteamPath>
@@ -12,6 +20,7 @@
     	<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
 		<!-- TML stable version define placeholder -->
 	</PropertyGroup>
+	
 	<ItemGroup>
 		<AdditionalFiles Include="**/*.hjson" />
 		<AdditionalFiles Include="**/*.txt" />
@@ -25,10 +34,12 @@
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
-		<Reference Remove="$(tMLLibraryPath)/tModLoader.Analyzers/**/*.dll" />
-		<Analyzer Include="$(tMLLibraryPath)/tModLoader.Analyzers/**/*.dll" />
+
+		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
 	</ItemGroup>
+
 	<Target Name="BuildMod" AfterTargets="Build">
 		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>
 	</Target>
+
 </Project>

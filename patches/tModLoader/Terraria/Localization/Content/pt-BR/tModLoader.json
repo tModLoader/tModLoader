@@ -57,14 +57,14 @@
 		"DownloadMissingMods": "Baixar Mods Ausentes",
 		"ModsDisable": "Clique para desativar",
 		"ModsEnable": "Clique para ativar",
-		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
-		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
+		"ModsDisableAndDependents": "Clique para desativar {0} e {1} {^1:dependente;dependentes}",
+		"ModsEnableAndDependencies": "Clique para ativar {0} e {1} {^1:dependência;dependências}",
 		"ModConfiguration": "Configurações de Mods",
 		"ModsOpenConfig": "Clique para abrir a configuração",
 		"ModOldWarning": "Mod antigo, ative-o por sua conta e risco",
 		"ModStableOnPreviewWarning": "Sem build para o modo Preview. Ative por sua conta e risco",
 		"ModDependencyTooltip": "Este mod depende de: {0}\n (Estes serão ativados automaticamente)",
-		// "ModDependentsTooltip": "Required by:\n{0}",
+		"ModDependentsTooltip": "Exigido por:\n{0}",
 		"TranslationModTooltip": "Este mod fornece traduções para: {0}",
 		"ModDependencyClickTooltip": "Este mod depende de: {0}\n (clique para ativar)",
 		"ModDependencyModsNotFound": "Os mods a seguir não foram encontrados: {0}",
@@ -153,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "Ao enviar este item, você concorda com os Termos de Serviço do tModLoader.",
+		"NonModOwnerPublishWarning": "Um mod com o nome \"{0}\" já foi publicado à oficina por outro criador de mods. Se você não é um contribuidor desse mod, não é possível publicá-lo. Se este mod é seu, verifique se está logado na conta correta do Steam. Cada mod deve possuir um nome interno único.",
 		"SteamPublishingLimit": "Erro: Apenas proprietários do tModLoader no Steam podem publicar para a Oficina dentro do jogo.",
 		"NoWorkshopAccess": "Erro: Não foi possível acessar a Oficina Steam",
 		"ModAlreadyUploaded": "Erro: O Mod já existe na Oficina!",
@@ -370,6 +371,8 @@
 		"EnterSteamID": "Insira o seu SteamID",
 		"PasteSteamID": "Colar SteamID (ctrl-v)",
 		"MBServerResponse": "A resposta do servidor do Navegador de Mods:\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Baixar Mods de Servidores: Ligado",
@@ -461,8 +464,8 @@
 		"DocumentationLink": "Leia a documentação",
 		"DiscordLink": "Encontre ajuda no servidor do Discord",
 		"MSPortToLatest": "Executar tModPorter",
-		"MSFirstLaunchModderWelcomeMessage": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET 6. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
-		"MSNetSDKNotFound": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET 6. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
+		"MSFirstLaunchModderWelcomeMessage": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET {0}. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
+		"MSNetSDKNotFound": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET {0}. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
 		"DownloadNetSDK": "Baixar SDK do .NET",
 		"DevModsInSandbox": "tModLoader não consegue desenvolver mods quando executado em um sandbox (como Flatpak). Certifique-se de instalar o Steam diretamente no seu sistema.",
 
@@ -532,6 +535,7 @@
 		"SpecialAttackSpeedScaling": "{0}% de benefício de aumentos de velocidade do ataque",
 		"ModifiedByModsHoldSHIFT": "É modificado (segure SHIFT para mais informações)",
 		"ModifiedByMods": "É modificado por ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Uso estimado de RAM no último carregamento: {0}",
@@ -551,7 +555,7 @@
 		// In Game UI additions
 		"slotStack": "Empilhar",
 		"slotScroll": "Rolar",
-		// "PressXToClose": "Press {0} to close",
+		"PressXToClose": "Pressione {0} para fechar",
 
 		// Misc
 		"OK": "OK",
@@ -583,13 +587,14 @@
 		"AntivirusHint": "Dica: Se você tiver um antivírus, tente adicionar Terraria à sua lista de permissão/lista de exclusão",
 		"TypeInitializationHint": "Dica: Reinicie o jogo. Se o problema persistir, tente desinstalar o Terraria completamente, reinstalar por meio do Steam e, em seguida, reinstalar o tModLoader",
 		"TerrariaOutOfDateMessage": "O Terraria está desatualizado, você precisa atualizar o Terraria no Steam.",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Recursos do mod",
 		"TagsCategoryModSide": "Lado do mod",
 		"TagsCategoryTModLoaderVersion": "Versão do tModLoader",
 		"TagsCategoryLanguage": "{$LegacyMenu.103}",
-		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6. Translations by Pixelnando.
 		"TagsContent": "Conteúdo Novo",
 		"TagsContentDescription": "Adiciona conteúdo novo (por exemplo, itens, armas, npcs etc.) ao jogo",
 		"TagsUtility": "Utilidades",

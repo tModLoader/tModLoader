@@ -153,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Błąd: Tylko posiadacze tModLoadera na Steamie mogą publikować do warsztatu gry.",
 		"NoWorkshopAccess": "Błąd: Nie można uzyskać dostępu do Warsztatu Steam",
 		"ModAlreadyUploaded": "Błąd: Mod już istnieje w Warsztacie!",
@@ -370,6 +371,8 @@
 		"EnterSteamID": "Proszę Wpisz Swój SteamID",
 		"PasteSteamID": "Wklej SteamID (ctrl-v)",
 		"MBServerResponse": "Odpowiedź serwera Przeglądarki modów:\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Pobieraj mody z serwerów: Tak",
@@ -462,8 +465,8 @@
 		"DiscordLink": "Znajdź pomoc na serwerze Discord",
 		"MSPortToLatest": "Uruchom program tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Witaj w menu Tworzenia modów. To menu jest przeznaczone dla osób tworzących mody. Tutaj będziesz mógł budować swój mod.\n\nJeśli jesteś nowy w tworzeniu modów, kliknij poniżej przycisk \"Zobacz na GitHubie\", aby odwiedzić naszą wiki i przejrzeć sekcję \"I am new to modding\".",
-		"MSNetSDKNotFound": "Tworzenie modów dla tModLoadera wymaga zainstalowania .NET 6 SDK, ale nie zostało to wykryte. Kliknij poniżej przycisk \"Pobierz .NET 6.0 SDK\" w celu uzyskania instrukcji instalacji. Po zainstalowaniu może być konieczne ponowne uruchomienie tModLoadera.",
-		"DownloadNetSDK": "Pobierz .NET 6.0 SDK",
+		"MSNetSDKNotFound": "Tworzenie modów dla tModLoadera wymaga zainstalowania .NET {0} SDK, ale nie zostało to wykryte. Kliknij poniżej przycisk \"Pobierz .NET SDK\" w celu uzyskania instrukcji instalacji. Po zainstalowaniu może być konieczne ponowne uruchomienie tModLoadera.",
+		"DownloadNetSDK": "Pobierz .NET SDK",
 		"DevModsInSandbox": "tModLoader nie może rozwijać modów podczas działania w piaskownicy (np. w przypadku Flatpak). Upewnij się, że zainstalowano Steam bezpośrednio na Twoim systemie.",
 
 		// Developer Mode UI
@@ -532,6 +535,7 @@
 		"SpecialAttackSpeedScaling": "Bonusy do prędkości ataku wpływają na broń w {0}%",
 		"ModifiedByModsHoldSHIFT": "Zmodyfikowany przez mody (przytrzymaj SHIFT aby wyświetlić więcej informacji)",
 		"ModifiedByMods": "Zmodyfikowany przez ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Szacowane użycie pamięci RAM (przy ostatnio aktywnych Modach): {0}",
@@ -583,6 +587,7 @@
 		"AntivirusHint": "Wskazówka: Jeśli masz antywirusa, spróbuj dodać Terrarię do jego białej listy/listy wykluczeń.",
 		"TypeInitializationHint": "Wskazówka: Uruchom ponownie grę. Jeśli problem nadal występuje, spróbuj całkowicie odinstalować Terrarię, zainstalować ją ponownie poprzez Steam, a następnie ponownie zainstalować tModLoader.",
 		"TerrariaOutOfDateMessage": "Terraria jest nieaktualna, musisz zaktualizować Terraria w Steamie.",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Cechy Modu",

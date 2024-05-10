@@ -5,6 +5,7 @@ using ExampleMod.Content.Items.Armor.Vanity;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Pets.MinionBossPet;
 using ExampleMod.Content.Projectiles;
+using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -215,6 +216,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override void OnKill() {
+			// The first time this boss is killed, spawn ExampleOre into the world. This code is above SetEventFlagCleared because that will set downedMinionBoss to true.
+			if (!DownedBossSystem.downedMinionBoss) {
+				ModContent.GetInstance<ExampleOreSystem>().BlessWorldWithExampleOre();
+			}
+
 			// This sets downedMinionBoss to true, and if it was false before, it initiates a lantern night
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedMinionBoss, -1);
 

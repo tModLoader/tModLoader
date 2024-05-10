@@ -447,6 +447,17 @@
  	{
  		int num = 0;
  		if (Main.WindForVisuals > 0.2f)
+@@ -5603,7 +_,10 @@
+ 		rectangle.Y -= 100;
+ 		rectangle.Height = 400;
+ 		for (int k = 0; k < 600; k++) {
++			/*
+ 			if (_gore[k].active && ((_gore[k].type >= 706 && _gore[k].type <= 717) || _gore[k].type == 943 || _gore[k].type == 1147 || (_gore[k].type >= 1160 && _gore[k].type <= 1162))) {
++			*/
++			if (_gore[k].active && GoreID.Sets.LiquidDroplet[_gore[k].type]) {
+ 				Rectangle value = new Rectangle((int)_gore[k].position.X, (int)_gore[k].position.Y, 16, 16);
+ 				if (rectangle.Intersects(value))
+ 					return;
 @@ -5618,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)

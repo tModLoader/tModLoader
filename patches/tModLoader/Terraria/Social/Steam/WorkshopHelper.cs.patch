@@ -88,7 +88,7 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -155,19 +_,31 @@
+@@ -155,19 +_,32 @@
  
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
@@ -98,6 +98,7 @@
 +			// Fields added by TML:
 +			protected EResult _createCallback;
 +			protected EResult _updateCallback;
++			bool cleanTemporaryFolder = false;
 +
  			private UGCUpdateHandle_t _updateHandle;
  			private CallResult<CreateItemResult_t> _createItemHook;
@@ -144,7 +145,7 @@
  				ulong? num = null;
  				if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out var info))
  					num = info.workshopEntryId;
-@@ -185,6 +_,22 @@
+@@ -185,9 +_,26 @@
  				if (num.HasValue && finder.HasItemOfId(num.Value)) {
  					_publishedFileID = new PublishedFileId_t(num.Value);
  					PreventUpdatingCertainThings();
@@ -167,7 +168,18 @@
  					UpdateItem();
  				}
  				else {
-@@ -212,14 +_,41 @@
++					cleanTemporaryFolder = true;
+ 					CreateItem();
+ 				}
+ 			}
+@@ -207,19 +_,48 @@
+ 						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
+ 					case WorkshopItemPublicSettingId.Public:
+ 						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
++					case WorkshopItemPublicSettingId.Unlisted:
++						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityUnlisted;
+ 				}
+ 			}
  
  			private void CreateItem()
  			{
@@ -328,11 +340,14 @@
  					case EResult.k_EResultOK:
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -301,6 +_,8 @@
+@@ -301,6 +_,11 @@
  						break;
  				}
  
 +				SteamUGC.SubscribeItem(_publishedFileID);
++
++				if (cleanTemporaryFolder)
++					Directory.Delete(_entryData.ContentFolderPath, true);
 +
  				_endAction(this);
  			}

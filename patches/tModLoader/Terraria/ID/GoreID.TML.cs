@@ -12,7 +12,13 @@ partial class GoreID
 		/// If <see langword="true"/> for a given gore type (<see cref="Gore.type"/>), then that gore draws behind tiles.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] DrawBehind = Factory.CreateBoolSet(706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 943, 1147, 1160, 1161, 1162);
+		public static bool[] DrawBehind = Factory.CreateBoolSet();
+
+		/// <summary>
+		/// If <see langword="true"/>, this gore will behave as a dripping liquid droplet. Useful for gore used in <see cref="ModLoader.ModWaterStyle.GetDropletGore"/>.
+		/// <br/> Defaults to <see langword="false"/>.
+		/// </summary>
+		public static bool[] LiquidDroplet = Factory.CreateBoolSet(706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 943, 1147, 1160, 1161, 1162);
 
 		// TML: Definition from GoreID.Sets.SpecialAI[Type] == 3 check in 'Gore.NewGore'
 		/// <summary>

@@ -153,6 +153,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "Al publicar este elemento, aceptas los Términos de Servicio de tModLoader",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Error: Solo los usuarios de Steam pueden publicar a través del juego en Steam Workshop.",
 		"NoWorkshopAccess": "Error: Error al acceder a Steam Workshop",
 		"ModAlreadyUploaded": "Error: ¡Este mod ya existe en Steam Workshop!",
@@ -370,6 +371,8 @@
 		"EnterSteamID": "Por favor, introduce tu SteamID",
 		"PasteSteamID": "Pegar SteamID (Ctrl + V)",
 		"MBServerResponse": "Respuesta del servidor del Navegador:\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Descargar mods de los servidores: Activado",
@@ -461,8 +464,8 @@
 		"DocumentationLink": "Leer la documentación",
 		"DiscordLink": "Encuentra ayuda en el servidor de Discord",
 		"MSPortToLatest": "Ejecutar tModPorter",
-		"MSFirstLaunchModderWelcomeMessage": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
-		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET 6, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
+		"MSFirstLaunchModderWelcomeMessage": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
+		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
 		"DownloadNetSDK": "Descargar el SDK de .NET",
 		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
 
@@ -532,6 +535,7 @@
 		"SpecialAttackSpeedScaling": "{0}% de mejora en la velocidad de ataque",
 		"ModifiedByModsHoldSHIFT": "Se modifica (pulsa SHIFT para más info)",
 		"ModifiedByMods": "Es modificada por ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Uso de RAM estimado en la última carga: {0}",
@@ -583,6 +587,7 @@
 		"AntivirusHint": "Sugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
 		"TypeInitializationHint": "Sugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstala el juego a través de Steam y vuelve a instalar tModLoader.",
 		"TerrariaOutOfDateMessage": "El juego está desactualizado. Debes actualizar Terraria en Steam.",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Características del mod",

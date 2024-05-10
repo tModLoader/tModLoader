@@ -31,6 +31,8 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
+		currPublishID = 0;
+
 		if (!mods.Any() || mods[0] == null)
 			return false;
 
@@ -124,7 +126,6 @@ public partial class WorkshopSocialModule
 		
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
-		//TODO: We ought to delete the TemporaryFolder after successful publishing to prevent future issues if they delete and attempt to re-pub
 		if (MakeTemporaryFolder(contentFolderPath)) {
 			string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
 
@@ -164,6 +165,12 @@ public partial class WorkshopSocialModule
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor()) {
 				if (mod.Version >= buildVersion) {
 					failureMessage = Language.GetTextValue("tModLoader.ModVersionTooSmall", buildVersion, mod.Version);
+					if (mod.Version.Minor > buildVersion.Minor)
+						failureMessage += $"\nThe 2nd number \"{buildVersion.Minor}\" is less than \"{mod.Version.Minor}\".";
+					else if (mod.Version.Revision > buildVersion.Revision)
+						failureMessage += $"\nThe 3rd number \"{buildVersion.Revision}\" is less than {mod.Version.Revision}\".";
+					else if (mod.Version.MinorRevision > buildVersion.MinorRevision)
+						failureMessage += $"\nThe 4th number \"{buildVersion.MinorRevision}\" is less than {mod.Version.MinorRevision}\".";
 					return false;
 				}
 			}
