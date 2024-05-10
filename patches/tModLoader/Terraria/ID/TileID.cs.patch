@@ -1,20 +1,15 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,17 @@
-+#if !TMLANALYZER
+@@ -1,11 +_,12 @@
  using System.Collections.Generic;
-+#endif
  using ReLogic.Reflection;
-+#if !TMLANALYZER
 +using Terraria.ModLoader;
-+#endif
  
  namespace Terraria.ID;
  
 -public class TileID
 +public partial class TileID
  {
-+#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -222,10 +217,3 @@
  		public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 441, 468);
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
- 		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633);
- 		public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 661, 109, 199, 662, 60, 70, 633);
- 	}
-+#endif
- 
- 	public const ushort Dirt = 0;
- 	public const ushort Stone = 1;
