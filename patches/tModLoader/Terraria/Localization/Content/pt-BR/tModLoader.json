@@ -168,6 +168,7 @@
 		"UpdateItem": "Atualizando item {0}",
 		"PublishItem": "Tentando publicar item {0}",
 		"SteamDownloader": "Enfileirando o download com o gerenciador de downloads do Steam...",
+		// "PublishUpdateButton": "Update",
 		"DownloadProgress": "Download {0}% concluído",
 
 		// Mod Errors
@@ -594,7 +595,7 @@
 		"TagsCategoryModSide": "Lado do mod",
 		"TagsCategoryTModLoaderVersion": "Versão do tModLoader",
 		"TagsCategoryLanguage": "{$LegacyMenu.103}",
-		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6. Translations by Pixelnando.
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Conteúdo Novo",
 		"TagsContentDescription": "Adiciona conteúdo novo (por exemplo, itens, armas, npcs etc.) ao jogo",
 		"TagsUtility": "Utilidades",

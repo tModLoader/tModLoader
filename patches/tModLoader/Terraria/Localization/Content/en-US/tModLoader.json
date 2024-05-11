@@ -168,6 +168,7 @@
 		"UpdateItem": "Updating Item {0}",
 		"PublishItem": "Attempting Publishing Item {0}",
 		"SteamDownloader": "Queuing download with Steam download manager...",
+		"PublishUpdateButton": "Update",
 		"DownloadProgress": "Download {0}% Complete",
 
 		// Mod Errors
