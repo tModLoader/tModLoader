@@ -901,7 +901,7 @@ Mods: {
 				// DisplayName: Example Boots
 				/* Tooltip:
 					'''
-					Allows flight, super fast running, even faster running on snad, and extra mobility on ice
+					Allows flight, super fast running, even faster running on sand, and extra mobility on ice
 					{$CommonItemTooltip.PercentIncreasedMovementSpeed}
 					Provides the ability to walk on water, honey, lava, and shimmer
 					Grants immunity to fire blocks and {1} seconds of immunity to lava
