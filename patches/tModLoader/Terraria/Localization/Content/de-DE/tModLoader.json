@@ -168,7 +168,8 @@
 		"UpdateItem": "Gegenstand {0} aktualisieren",
 		"PublishItem": "Versuche Gegenstand {0} zu veröffentlichen",
 		"SteamDownloader": "Download wird in die Warteschleife des Steam-Download-Managers gestellt...",
-		// "PublishUpdateButton": "Update",
+		// "PublishUpdateButton": "Push Update",
+		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Zu {0}% heruntergeladen",
 
 		// Mod Errors

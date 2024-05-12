@@ -268,12 +268,13 @@
  		uIText.IsWrapped = true;
  		uISlicedImage.Append(uIText);
  		_descriptionText = uIText;
-@@ -593,7 +_,7 @@
+@@ -593,7 +_,8 @@
  
  	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)
  	{
 -		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText("Workshop.Publish"), 0.7f, large: true);
-+		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText(_isUpdate ? "tModLoader.PublishUpdateButton" : "Workshop.Publish"), 0.7f, large: true);
++		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText(_isUpdate ? "tModLoader.PublishUpdateButton" : "tModLoader.PublishNewButton"), 0.7f, large: true);
++		uITextPanel.TextColor = _isUpdate ? Color.White : Color.Orange;
  		uITextPanel.Width.Set(-10f, 0.5f);
  		uITextPanel.Height.Set(50f, 0f);
  		uITextPanel.VAlign = 1f;
