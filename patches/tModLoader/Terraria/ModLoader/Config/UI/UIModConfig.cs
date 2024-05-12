@@ -248,59 +248,7 @@ internal class UIModConfig : UIState
 
 	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		// Main Menu: Save, leave reload for later
-		// MP with ServerSide: Send request to server
-		// SP or MP with ClientSide: Apply immediately if !NeedsReload
-		if (Main.gameMenu) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			ConfigManager.Save(pendingConfig);
-			ConfigManager.Load(modConfig);
-			// modConfig.OnChanged(); delayed until ReloadRequired checked
-			// Reload will be forced by Back Button in UIMods if needed
-		}
-		else {
-			// If we are in game...
-			if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-				// TODO: Too
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); //"Asking server to accept changes..."
-
-				var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
-				requestChanges.Write(pendingConfig.Mod.Name);
-				requestChanges.Write(pendingConfig.Name);
-				string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
-				requestChanges.Write(json);
-				requestChanges.Send();
-
-				//IngameFancyUI.Close();
-
-				return;
-			}
-
-			// SP or MP with ClientSide
-			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
-
-			if (loadTimeConfig.NeedsReload(pendingConfig)) {
-				SoundEngine.PlaySound(SoundID.MenuClose);
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);//"Can't save because changes would require a reload."
-				return;
-			}
-			else {
-				SoundEngine.PlaySound(SoundID.MenuOpen);
-				ConfigManager.Save(pendingConfig);
-				ConfigManager.Load(modConfig);
-				modConfig.OnChanged();
-			}
-		}
-
-		/*
-		if (ConfigManager.ModNeedsReload(modConfig.mod)) {
-			Main.menuMode = Interface.reloadModsID;
-		}
-		else {
-			DoMenuModeState();
-		}
-		*/
-
+		modConfig.Save();
 		DoMenuModeState();
 	}
 

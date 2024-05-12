@@ -1,8 +1,12 @@
 using System;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config;
 
@@ -91,5 +95,50 @@ public abstract class ModConfig : ILocalizedModType
 		}
 
 		return false;
+	}
+
+	public bool Save(bool showMessages = true)
+	{
+		// Since this can be called on a clone, we need to get the real config to load the data into
+		var realConfig = ConfigManager.GetConfig(Mod, Name); // Used to load changes back into
+		var loadTimeConfig = ConfigManager.GetLoadTimeConfig(Mod, Name); // Used to check if a reload is required
+
+		// Main Menu - Save, leave reload for later
+		// MP with ServerSide - Send request to server
+		// SP || (MP with ClientSide) - Apply immediately if !NeedsReload
+
+		// Client sending request to change server config
+		if (!Main.gameMenu && realConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
+			if (showMessages)
+				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"),  Color.Yellow);
+
+			var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
+			requestChanges.Write(Mod.Name);
+			requestChanges.Write(Name);
+			string json = JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact);
+			requestChanges.Write(json);
+			requestChanges.Send();
+
+			return true;
+		}
+
+		// Single-player in game but NeedsReload
+		if (!Main.gameMenu && loadTimeConfig.NeedsReload(this)) {
+			if (showMessages)
+				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);
+
+			return false;
+		}
+
+		// Menu || (single-player, no reload) || (multiplayer, client side, no reload)
+		ConfigManager.Save(this);
+		ConfigManager.Load(realConfig);
+
+		// ModConfig.OnChanged() delayed until ReloadRequired checked if in main menu
+		// Reload will be forced by back button in UIMods if needed
+		if (!Main.gameMenu)
+			OnChanged();
+
+		return true;
 	}
 }
