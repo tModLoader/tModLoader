@@ -172,7 +172,7 @@
 		"UpdateItem": "正在更新模组 {0}",
 		"PublishItem": "尝试发布模组 {0}",
 		"SteamDownloader": "正在使用 Steam 下载管理器排队下载……",
-		// "PublishUpdateButton": "Push Update",
+		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "下载完成 {0}%",
 

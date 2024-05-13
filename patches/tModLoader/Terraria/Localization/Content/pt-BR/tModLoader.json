@@ -168,7 +168,7 @@
 		"UpdateItem": "Atualizando item {0}",
 		"PublishItem": "Tentando publicar item {0}",
 		"SteamDownloader": "Enfileirando o download com o gerenciador de downloads do Steam...",
-		// "PublishUpdateButton": "Push Update",
+		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Download {0}% concluído",
 

@@ -168,7 +168,7 @@
 		"UpdateItem": "Zaktualizuj pozycję {0}",
 		"PublishItem": "Próba opublikowania pozycji {0}",
 		"SteamDownloader": "Pobieranie jest w kolejce przez menedżera pobierania Steam...",
-		// "PublishUpdateButton": "Push Update",
+		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Pobrano {0}%",
 

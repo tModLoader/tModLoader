@@ -168,7 +168,7 @@
 		"UpdateItem": "Обновление {0}",
 		"PublishItem": "Попытка публикации {0}",
 		"SteamDownloader": "Постановка скачивания в очередь менеджера загрузок Steam...",
-		// "PublishUpdateButton": "Push Update",
+		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Скачано {0}%",
 
