@@ -168,6 +168,8 @@
 		"UpdateItem": "Mise à jour d'un Élément {0}",
 		"PublishItem": "Tentative d'Élément de Publication {0}",
 		"SteamDownloader": "Téléchargement en file d'attente avec le gestionnaire de téléchargement Steam...",
+		// "PublishUpdateButton": "Update Existing",
+		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Téléchargement {0}% Terminé",
 
 		// Mod Errors

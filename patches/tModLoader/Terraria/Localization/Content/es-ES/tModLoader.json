@@ -168,6 +168,8 @@
 		"UpdateItem": "Actualizando el elemento {0}",
 		"PublishItem": "Publicando el elemento {0}",
 		"SteamDownloader": "Poner en cola la descarga mediante el gestor de Steam...",
+		// "PublishUpdateButton": "Update Existing",
+		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Progreso de descarga: {0}%",
 
 		// Mod Errors

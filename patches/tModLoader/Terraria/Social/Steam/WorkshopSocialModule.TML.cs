@@ -16,7 +16,6 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
-	private ulong existingAuthorID = 0;
 
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
@@ -33,11 +32,20 @@ public partial class WorkshopSocialModule
 
 		currPublishID = 0;
 
-		if (!mods.Any() || mods[0] == null)
+		if (!mods.Any() || mods[0] == null) {
+			// This logic is for using a local copy of Workshop.json to figure out what the publish ID is. 
+			// It is currently unused and would need modifications to get the 'mod download item' for later.
+			/*
+			if (!AWorkshopEntry.TryReadingManifest(  <GET PATH> + Path.DirectorySeparatorChar + "workshop.json", out info))
+				return false;
+
+			currPublishID = info.workshopEntryId;
+			mods[0] = Get Mod From Publish ID ()
+			*/
 			return false;
+		}
 
 		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
-		existingAuthorID = ulong.Parse(mods[0].OwnerId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 		WorkshopBrowserModule.Instance.DownloadItem(mods[0], uiProgress: null);
@@ -83,14 +91,6 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			var currID = Steamworks.SteamUser.GetSteamID();
-
-			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			if (DateTime.Today < new DateTime(2023, 11, 21) && existingAuthorID != currID.m_SteamID) {
-				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
-				return false;
-			}
-
 			// Publish by updating the files available on the current published version
 			workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
 

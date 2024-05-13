@@ -145,15 +145,12 @@
  				ulong? num = null;
  				if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out var info))
  					num = info.workshopEntryId;
-@@ -185,9 +_,26 @@
+@@ -185,9 +_,23 @@
  				if (num.HasValue && finder.HasItemOfId(num.Value)) {
  					_publishedFileID = new PublishedFileId_t(num.Value);
  					PreventUpdatingCertainThings();
 +				*/
 +				_publishedFileID = new PublishedFileId_t(existingID);
-+
-+				if (existingID == 0 && AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out var info))
-+					_publishedFileID = new PublishedFileId_t(info.workshopEntryId);
 +
 +				// Verify can write to the manifest before running creating any items.
 +				if (!WrappedWriteManifest())
