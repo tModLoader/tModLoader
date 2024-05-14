@@ -252,16 +252,6 @@ internal class UIModItem : UIPanel
 			Append(_translationModIcon);
 		}
 
-		/*
-		if (_mod.modFile.ValidModBrowserSignature) {
-			_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.GoldenKey].Name), Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
-				Left = { Pixels = -20, Percent = 1f }
-			};
-
-			Append(_keyImage);
-		}
-		*/
-
 		// TODO: Keep this feature locked to Dev for now until we are sure modders are at fault for this warning.
 		if (BuildInfo.IsDev && ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 			_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {

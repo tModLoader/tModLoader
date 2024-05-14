@@ -307,15 +307,6 @@ internal static class Interface
 				ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
 			}
 
-			/*
-			buttonIndex++;
-			buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? Language.GetTextValue("tModLoader.DownloadSignedYes") : Language.GetTextValue("tModLoader.DownloadSignedNo"));
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
-			}
-			*/
-
 			buttonIndex++;
 			buttonNames[buttonIndex] = (ModLoader.autoReloadAndEnableModsLeavingModBrowser ? Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserNo"));
 			if (selectedMenu == buttonIndex) {
