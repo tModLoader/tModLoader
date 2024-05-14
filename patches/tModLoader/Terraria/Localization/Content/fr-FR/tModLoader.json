@@ -329,6 +329,7 @@
 		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Remplissage du navigateur...",
 		"MBSortByRecentlyUpdated": "Trier par date de mise à jour",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Trier par popularité",
 		"MBSortDownloadDesc": "Trier par ordre décroissant de téléchargements",
 		"MBSortDownloadAsc": "Trier par ordre croissant de téléchargements",

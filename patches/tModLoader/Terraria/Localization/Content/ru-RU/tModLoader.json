@@ -329,6 +329,7 @@
 		"MBCancelLoading": "Отмена загрузки",
 		"MBPopulatingBrowser": "Наполнение Браузера...",
 		"MBSortByRecentlyUpdated": "Сортировка: Последние обновлённые моды",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Сортировка: Моды по популярности",
 		"MBSortDownloadDesc": "Сортировка: Моды по убыванию количества скачиваний",
 		"MBSortDownloadAsc": "Сортировка: Моды по возрастанию количества скачиваний",

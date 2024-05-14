@@ -329,6 +329,7 @@
 		"MBCancelLoading": "Laden abbrechen",
 		"MBPopulatingBrowser": "Browser aktivieren...",
 		"MBSortByRecentlyUpdated": "Nach kürzlich aktualisierten sortieren",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Nach Beliebtheit sortieren",
 		"MBSortDownloadDesc": "Nach absteigenden Downloads sortieren",
 		"MBSortDownloadAsc": "Nach aufsteigenden Downloads sortieren",

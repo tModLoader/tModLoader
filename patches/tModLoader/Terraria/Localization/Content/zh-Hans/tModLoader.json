@@ -333,6 +333,7 @@
 		"MBCancelLoading": "取消加载",
 		"MBPopulatingBrowser": "填充浏览器中……",
 		"MBSortByRecentlyUpdated": "按最近更新时间排序",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "按热度排序",
 		"MBSortDownloadDesc": "按总下载量排序（从高到低）",
 		"MBSortDownloadAsc": "按总下载量排序（从低到高）",

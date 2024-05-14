@@ -5,6 +5,7 @@ public enum ModBrowserSortMode
 {
 	DownloadsDescending,
 	RecentlyUpdated,
+	RecentlyPublished,
 	Hot,
 	//DisplayNameAtoZ, // Not currently doable in Steam Workshop - Solxan 2023-05
 	//DisplayNameZtoA, // Not currently doable in Steam Workshop - Solxan 2023-05

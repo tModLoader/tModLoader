@@ -234,6 +234,7 @@ public static class SteamedWraps
 			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
 			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
 			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
+			ModBrowserSortMode.RecentlyPublished => EUGCQuery.k_EUGCQuery_RankedByPublicationDate,
 			_ => EUGCQuery.k_EUGCQuery_RankedByTextSearch
 		};
 	}
