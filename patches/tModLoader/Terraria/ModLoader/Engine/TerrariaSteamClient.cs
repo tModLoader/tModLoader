@@ -45,7 +45,7 @@ internal class TerrariaSteamClient
 		// To Disable Playtime tracking without breaking the family share workaround,
 		// we continue if SteamAppId not set (which should not yet be set for Family Shared) && SteamClientLaunch is set
 		// Inverting the output for when abort, we get !(SCL && !SA) -> !SCL || SA
-		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" /*|| Environment.GetEnvironmentVariable("STEAMAPPID") != null*/) {
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" || Environment.GetEnvironmentVariable("STEAMAPPID") != null) {
 			Logger.Debug("Disabled. Launched outside steam client.");
 			return LaunchResult.Ok;
 		}
