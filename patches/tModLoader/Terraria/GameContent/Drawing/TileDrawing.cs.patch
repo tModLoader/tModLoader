@@ -184,7 +184,7 @@
 +					tileStyle = sandType + 1;
 +					break;
 +				}
-+					
++
 +				if (tile.frameX == 204 || tile.frameX == 202) {
 +					var asset = PlantLoader.GetCactusFruitTexture(sandType);
 +					if (asset != null)
@@ -250,12 +250,13 @@
  		return num;
  	}
  
-@@ -2877,7 +_,7 @@
+@@ -2877,7 +_,8 @@
  		vertices.TopRightColor *= num7;
  		bool flag7 = false;
  		if (flag6) {
++			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
 -			for (int i = 0; i < 15; i++) {
-+			for (int i = 0; i < LoaderManager.Get<WaterStylesLoader>().TotalCount; i++) {
++			for (int i = 0; i < totalCount; i++) {
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
@@ -446,6 +447,17 @@
  	{
  		int num = 0;
  		if (Main.WindForVisuals > 0.2f)
+@@ -5603,7 +_,10 @@
+ 		rectangle.Y -= 100;
+ 		rectangle.Height = 400;
+ 		for (int k = 0; k < 600; k++) {
++			/*
+ 			if (_gore[k].active && ((_gore[k].type >= 706 && _gore[k].type <= 717) || _gore[k].type == 943 || _gore[k].type == 1147 || (_gore[k].type >= 1160 && _gore[k].type <= 1162))) {
++			*/
++			if (_gore[k].active && GoreID.Sets.LiquidDroplet[_gore[k].type]) {
+ 				Rectangle value = new Rectangle((int)_gore[k].position.X, (int)_gore[k].position.Y, 16, 16);
+ 				if (rectangle.Intersects(value))
+ 					return;
 @@ -5618,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)
@@ -548,7 +560,7 @@
 +
  			texture2D = TextureAssets.TreeTop[treeTextureIndex].Value;
 +		}
-+			
++
  
  		return texture2D;
  	}

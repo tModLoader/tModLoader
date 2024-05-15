@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -34,20 +_,36 @@
+@@ -34,20 +_,37 @@
  	private UIElement _publishButton;
  	private WorkshopItemPublicSettingId _optionPublicity = WorkshopItemPublicSettingId.Public;
  	private GroupOptionButton<WorkshopItemPublicSettingId>[] _publicityOptions;
@@ -30,6 +30,7 @@
 +	protected UIElement _tMLDisclaimerButton;
 +
 +	private bool _isMod;
++	private bool _isUpdate;
 +
 +	public UIState PreviousUIState {
 +		get => _previousUIState;
@@ -48,7 +49,22 @@
  	}
  
  	public override void OnInitialize()
-@@ -80,13 +_,23 @@
+@@ -66,8 +_,7 @@
+ 		uIPanel.Width.Set(0f, 1f);
+ 		uIPanel.Height.Set(-num3, 1f);
+ 		uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+-		AddBackButton(num, uIElement);
++		AddBackButton(num, uIElement);	
+-		AddPublishButton(num, uIElement);
+ 		int num5 = 6 + num4;
+ 		UIList uiList = AddUIList(uIPanel, num5);
+ 		FillUIList(uiList);
+@@ -76,17 +_,28 @@
+ 		uIElement.Append(uIPanel);
+ 		Append(uIElement);
+ 		SetDefaultOptions();
++		AddPublishButton(num, uIElement);
+ 	}
  
  	private void SetDefaultOptions()
  	{
@@ -72,14 +88,16 @@
  		UpdateImagePreview();
  	}
  
-@@ -100,6 +_,11 @@
+@@ -100,6 +_,13 @@
  		uIElement.SetPadding(0f);
  		uiList.Add(uIElement);
  		uiList.Add(CreateSteamDisclaimer("disclaimer"));
 +
 +		// Added by tML
-+		if (_isMod)
++		if (_isMod) {
 +			uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer"));
++			(this as WorkshopPublishInfoStateForMods).AddNonModOwnerPublishWarning(uiList);
++		}
 +
  		uiList.Add(CreatePreviewImageSelectionPanel("image"));
  		uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
@@ -106,6 +124,15 @@
  		_previewImageUIElement = uIImage;
  		UICharacterNameButton uICharacterNameButton = new UICharacterNameButton(Language.GetText("Workshop.PreviewImagePathTitle"), Language.GetText("Workshop.PreviewImagePathEmpty"), Language.GetText("Workshop.PreviewImagePathDescription")) {
  			Width = StyleDimension.FromPixelsAndPercent(0f - num, 1f),
+@@ -161,6 +_,8 @@
+ 		if (!TryFindingTags(out var info))
+ 			return;
+ 
++		_isUpdate = true;
++
+ 		if (info.tags != null) {
+ 			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
+ 				bool flag = info.tags.Contains(tagOption.OptionValue.InternalNameForAPIs);
 @@ -169,10 +_,14 @@
  			}
  		}
@@ -121,6 +148,64 @@
  	}
  
  	protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
+@@ -328,41 +_,46 @@
+ 	private UIElement CreatePublicSettingsRow(float accumulatedHeight, float height, string tagGroup)
+ 	{
+ 		CreateStylizedCategoryPanel(height, "Workshop.CategoryTitlePublicity", out var entirePanel, out var innerPanel);
+-		WorkshopItemPublicSettingId[] array = new WorkshopItemPublicSettingId[3] {
++		WorkshopItemPublicSettingId[] array = new WorkshopItemPublicSettingId[4] {
+ 			WorkshopItemPublicSettingId.Public,
+ 			WorkshopItemPublicSettingId.FriendsOnly,
+-			WorkshopItemPublicSettingId.Private
++			WorkshopItemPublicSettingId.Private,
++			WorkshopItemPublicSettingId.Unlisted
+ 		};
+ 
+-		LocalizedText[] array2 = new LocalizedText[3] {
++		LocalizedText[] array2 = new LocalizedText[4] {
+ 			Language.GetText("Workshop.SettingsPublicityPublic"),
+ 			Language.GetText("Workshop.SettingsPublicityFriendsOnly"),
+-			Language.GetText("Workshop.SettingsPublicityPrivate")
++			Language.GetText("Workshop.SettingsPublicityPrivate"),
++			Language.GetText("tModLoader.SettingsPublicityUnlisted")
+ 		};
+ 
+-		LocalizedText[] array3 = new LocalizedText[3] {
++		LocalizedText[] array3 = new LocalizedText[4] {
+ 			Language.GetText("Workshop.SettingsPublicityPublicDescription"),
+ 			Language.GetText("Workshop.SettingsPublicityFriendsOnlyDescription"),
+-			Language.GetText("Workshop.SettingsPublicityPrivateDescription")
++			Language.GetText("Workshop.SettingsPublicityPrivateDescription"),
++			Language.GetText("tModLoader.SettingsPublicityUnlistedDescription")
+ 		};
+ 
+-		Color[] array4 = new Color[3] {
++		Color[] array4 = new Color[4] {
++			Color.White,
+ 			Color.White,
+ 			Color.White,
+ 			Color.White
+ 		};
+ 
+-		string[] array5 = new string[3] {
++		string[] array5 = new string[4] {
+ 			"Images/UI/Workshop/PublicityPublic",
+ 			"Images/UI/Workshop/PublicityFriendsOnly",
+-			"Images/UI/Workshop/PublicityPrivate"
++			"Images/UI/Workshop/PublicityPrivate",
++			"Images/UI/WorldCreation/IconRandomName" //tmod added
+ 		};
+ 
+ 		float num = 0.98f;
+ 		GroupOptionButton<WorkshopItemPublicSettingId>[] array6 = new GroupOptionButton<WorkshopItemPublicSettingId>[array.Length];
+ 		for (int i = 0; i < array6.Length; i++) {
+-			GroupOptionButton<WorkshopItemPublicSettingId> groupOptionButton = new GroupOptionButton<WorkshopItemPublicSettingId>(array[i], array2[i], array3[i], array4[i], array5[i], 1f, 1f, 16f);
++			GroupOptionButton<WorkshopItemPublicSettingId> groupOptionButton = new GroupOptionButton<WorkshopItemPublicSettingId>(array[i], array2[i], array3[i], array4[i], array5[i], 0.8f, 1f, 16f);
+-			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (array6.Length - 1), 1f / (float)array6.Length * num);
++			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-2 * (array6.Length - 1), 1f / (float)array6.Length * num);
+ 			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
+ 			groupOptionButton.Left = StyleDimension.FromPercent((1f - num) * (1f - groupOptionButton.HAlign * 2f));
+ 			groupOptionButton.Top.Set(accumulatedHeight, 0f);
 @@ -382,18 +_,41 @@
  	{
  		List<WorkshopTagOption> tagsToShow = GetTagsToShow();
@@ -183,6 +268,16 @@
  		uIText.IsWrapped = true;
  		uISlicedImage.Append(uIText);
  		_descriptionText = uIText;
+@@ -593,7 +_,8 @@
+ 
+ 	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)
+ 	{
+-		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText("Workshop.Publish"), 0.7f, large: true);
++		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText(_isUpdate ? "tModLoader.PublishUpdateButton" : "tModLoader.PublishNewButton"), 0.7f, large: true);
++		uITextPanel.TextColor = _isUpdate ? Color.White : Color.Orange;
+ 		uITextPanel.Width.Set(-10f, 0.5f);
+ 		uITextPanel.Height.Set(50f, 0f);
+ 		uITextPanel.VAlign = 1f;
 @@ -643,7 +_,9 @@
  			UsedTags = (from x in _tagOptions
  						where x.IsSelected

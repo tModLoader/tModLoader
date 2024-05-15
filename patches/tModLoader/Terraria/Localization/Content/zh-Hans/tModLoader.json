@@ -1,4 +1,7 @@
 // Chinese Translations made by @Dierney.
+// 泰拉中文字体的
+// 。】
+// 后没有留足够的空位，请适时补充空格。
 {
 	"tModLoader": {
 		// Main Menu
@@ -19,8 +22,8 @@
 		// // "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
 		// // "MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
 		"WelcomeMessagePreview": "【警告】：玩家请注意！！\n此版本是包含重大改动的预览版，所以模组不会正常运作。\n[c/ff1919:请勿要求模组制作者修复模组在此版本上的问题。]\n该预览版为模组制作者提供按【他们自己的】 时间表预先更新模组的机会。\n\n点击 \"更多信息\" 了解此更新循环。\n\n加入 tModLoader 的 Discord 了解本月的改动和迁移提示。",
-		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader 1.4！\n\n进入创意工坊界面以访问tModLoader的模组相关功能. 如果你还在使用tModLoader 1.3, 你也可以在Steam的Beta选项里切换回旧版本（1.3-legacy）。如果你找不到以前曾经玩过的模组, 它们可能现在还没有更新到1.4。",
-		"WhatsNewMessage": "以下是自您上次启动 tModLoader 1.4 版本后更新的基本说明。受这些更改影响的模组或许需要其作者进行更新。访问 GitHub 以查看更多细节：\n",
+		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader 1.4！\n\n进入创意工坊界面以访问tModLoader的模组相关功能。 如果你还在使用 1.3 的 tModLoader，你也可以在Steam的 Beta 选项里切换回旧版本（1.3-legacy）。 如果你找不到以前曾经玩过的模组，它们可能现在还没有更新到1.4。",
+		"WhatsNewMessage": "以下是自您上次启动 tModLoader 1.4 版本后更新的基本说明。 受这些更改影响的模组或许需要其作者进行更新。 访问 GitHub 以查看更多细节：\n",
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\n更新模组：",
@@ -58,11 +61,14 @@
 		"DownloadMissingMods": "下载缺失的模组",
 		"ModsDisable": "禁用",
 		"ModsEnable": "启用",
+		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
+		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
 		"ModConfiguration": "模组配置",
 		"ModsOpenConfig": "点击打开配置",
 		"ModOldWarning": "旧模组，风险自负",
 		"ModStableOnPreviewWarning": "没有对应的测试版，风险自负",
 		"ModDependencyTooltip": "此模组依赖于：{0}\n （这些将自动启用）",
+		// "ModDependentsTooltip": "Required by:\n{0}",
 		"TranslationModTooltip": "此模组为下列模组提供翻译：\n{0}",
 		"ModDependencyClickTooltip": "该模组依赖于：{0}\n（点击启用）",
 		"ModDependencyModsNotFound": "未找到下列模组：{0}",
@@ -98,25 +104,25 @@
 
 		//Dedicated server
 		"ModsReloadAndReturn": "重新加载模组并回到地图选择页面",
-		"ModsNotFoundServer": "在“{0}”里没有找到任何模组。\n如果你在开启一个模组服务器，你可以使用‘modpath’命令行参数或配置项来设置加载的模组的路径。\n",
-		"AskForModIndex": "输入模组序号以启用/禁用模组",
+		"ModsNotFoundServer": "在“{0}”里没有找到任何模组。\n如果是模组服务器，你可以使用“modpath”命令行参数或配置项来设置加载的模组的路径。\n",
+		"AskForModIndex": "输入模组序号以启用/禁用模组：",
 		"AskForCommand": "请输入命令：",
-		// "DedErrorNoConfig": "This mod does not have any config",
-		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
-		// "DedErrorModOOB": "Mod index out of bounds",
+		"DedErrorNoConfig": "该模组没有配置。",
+		"DedErrorNotEnabled": "模组未启用。 修改配置前，请启用该模组并重载。",
+		"DedErrorModOOB": "模组索引超出界限。",
 
 		//Dedicated server mod config
-		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
-		// "DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
-		// "DedConfigRangeCantBeValidated": "Warning, \"{0}\" uses ranges that are unable to be validated, you might run into issues.",
-		// "DedConfigReadOnly": "\"{0}\" is read only, it cannot be changed directly.",
-		// "DedConfigArrayLengthCantChange": "\"{0}\" is an array, the length of arrays in configs can't be changed.",
-		// "DedConfigEditConfig": "Modify configuration value",
-		// "DedConfigEditConfigNote": "Note that data validation, such as min and max values, is not enforced. Try to use values only allowed in the client.",
-		// "DedConfigRestoreConfig": "Restore configurations to default",
-		// "DedConfigErrorOutOfOptionStrings": "The only possible values are: {0}",
-		// "DedConfigErrorOutOfRange": "The value must be between {0} and {1}",
-		// "DedConfigErrorNotParsable": "Invalid input",
+		"DedConfigEditServerConfigsForMod": "修改服务器的模组配置",
+		"DedConfigConfigIndexOOB": "配置索引 {0} 超出了界限。",
+		"DedConfigRangeCantBeValidated": "警告，“{0}”使用了无法验证的范围，你可能会遇到问题。",
+		"DedConfigReadOnly": "“{0}”仅能被读取，而无法被直接修改。",
+		"DedConfigArrayLengthCantChange": "“{0}”是一个数组，配置中数组的长度无法改变。",
+		"DedConfigEditConfig": "修改配置",
+		"DedConfigEditConfigNote": "注意：该项没有最大、最小值之类的数据验证。请填入在客户端上验证过的值。",
+		"DedConfigRestoreConfig": "恢复默认配置",
+		"DedConfigErrorOutOfOptionStrings": "只能填入 {0} 当中的值。",
+		"DedConfigErrorOutOfRange": "只能填入 {0} 到 {1} 之间的值。",
+		"DedConfigErrorNotParsable": "无效输入。",
 
 		//Mod Config
 		"ModConfigs": "配置",
@@ -151,13 +157,14 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "在提交之前，你需要同意 tModLoader 的服务条款",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "只有 Steam 版的 tModLoader 才可以在游戏里上传内容到 Steam 创意工坊。",
 		"NoWorkshopAccess": "无法访问 Steam 创意工坊。",
-		"ModAlreadyUploaded": "这个模组已经存在于创意工坊中。",
-		"ModVersionTooSmall": "模组的版本号在更新时应当增加。\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",
-		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than or equal to existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
+		"ModAlreadyUploaded": "创意工坊上已经有这个模组了。",
+		"ModVersionTooSmall": "模组版本号在更新时应当增加。\n\n新版本号（{0}）应该比创意工坊上的（{1}）大。",
+		"ModVersionLargerThanFutureVersions": "错误：模组版本号不能大于较新 tModLoader 上发布的同名模组的版本号。\n\n当前版本号（{0}）要小于或等于创意工坊上面向较新 tModLoader 的同名模组的版本号（v{1} 是在 tModLoader v{2} 上发布的）。\n\n若模组需要以当前版本号发布，您可以在 tModLoader v{2} 上发布更高版本号的，再回当前 tModLoader 上发布 v{0}。",
 		"ConsultSteamLogs": "查看 Steam 的 workshop_log.txt （默认位置在: {0}）以获得更多细节。",
-		"SteamRejectUpdate": "模组已被安装：{0}。若要重新安装，请先重启游戏。\n若仍无法重新安装，请按以下步骤操作：\n1）打开 Steam 客户端\n2）在 tModLoader 的创意工坊中找到对应模组\n3）在 Steam 创意工坊中（而不是游戏内）取消订阅并再次订阅",
+		"SteamRejectUpdate": "模组已被安装：{0}。若要重新安装，请先重启游戏。\n若仍无法重新安装，请按以下步骤操作：\n1）打开 Steam 客户端\n2）在 tModLoader 的创意工坊中找到对应模组\n3）在 Steam 创意工坊中（不是游戏内）取消订阅并再次订阅",
 		"BrowserRejectWarning": "无法下载, 点击查看信息",
 		"BeginDownload": "正在尝试下载模组：{0}",
 		"EndDownload": "项目下载完成",
@@ -165,27 +172,29 @@
 		"UpdateItem": "正在更新模组 {0}",
 		"PublishItem": "尝试发布模组 {0}",
 		"SteamDownloader": "正在使用 Steam 下载管理器排队下载……",
+		// "PublishUpdateButton": "Update Existing",
+		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "下载完成 {0}%",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
-		"LoadErrorDisabled": "该模组已被自动禁用.",
-		"LoadErrorCulpritUnknown": "该模组错误原因未知,必须重新启动tModLoader.",
+		"LoadErrorDisabled": "该模组已被自动禁用。",
+		"LoadErrorCulpritUnknown": "该模组错误原因未知，必须重新启动 tModLoader。",
 		"LoadErrorContentType": "此错误是由“{0}”类引起的。",
 		"LoadErrorMissingModQualifier": "资源文件“{0}”缺少模组修饰符，资源文件应以模组名称或Terraria开头，后跟斜杠 (“/”)。",
-		"LoadErrorModNotFoundDuringAsset": "尝试加载路径为“{1}”的资源文件时未找到名为“{0}”的模组。检查此路径是否以正确的模组名称开头。",
+		"LoadErrorModNotFoundDuringAsset": "尝试加载路径为“{1}”的资源文件时未找到名为“{0}”的模组。 检查此路径是否以正确的模组名称开头。",
 		"LoadErrorVersionMessage": "该模组是基于tModLoader v{0}开发的\n但是, 你正在使用 {1}\n（版本不同不一定是加载错误的原因）",
-		"LoadErrorDotNet45Required": "需要[.NET Framework 4.5]或更高版本才能使用模组.请下载最新版本的[.NET Framework]",
+		"LoadErrorDotNet45Required": "需要[.NET Framework 4.5]或更高版本才能使用模组。 请下载最新版本的[.NET Framework]",
 		"LoadErrorDependencyMissing": "缺少模组：{0} 需求来源：{1}",
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "校验码不匹配, 模组文件已损坏",
-		"LoadErrorDependencyVersionTooLow": "{0} 需要 {2} （版本 {1}或以上），但你安装的为 {3} 版本", // {0}为被依赖的Mod，{1}为需要版本号，{2}为依赖的Mod，{3}为当前版本号
-		"LoadErrorMajorVersionMismatch": "{0} 需要 {2} （版本 {1}），和你安装的版本（{3}）可能有较大的区别, 存在兼容问题. 请更新{0}.", // {0}为依赖的Mod，{1}为需要版本号，{2}为被依赖的Mod，{3}为当前版本号
-		"LoadWarningBannerOrBannerItemNotSet": "{0}：{1}。你已设置[ModNPC.banner]或[ModNPC.bannerItem]中的一个,但没有设置另一个。请确保两者都已设置,拼写没有错误，且如果你正在使用[mod.ItemType()]时该物品确实存在。请将此错误报告发送给 {0} 开发者。",
+		"LoadErrorDependencyVersionTooLow": "{0} 需要 {2}（v{1} 或以上），但你安装的是 v{3}。", // {0}为被依赖的Mod，{1}为需要版本号，{2}为依赖的Mod，{3}为当前版本号
+		"LoadErrorMajorVersionMismatch": "{0} 需要 {2}（v{1}），和你安装的版本（{3}）可能存在兼容问题。 {0} 需要更新。", // {0}为依赖的Mod，{1}为需要版本号，{2}为被依赖的Mod，{3}为当前版本号
+		"LoadWarningBannerOrBannerItemNotSet": "{0}：{1}。 你已设置[ModNPC.banner]或[ModNPC.bannerItem]中的一个，但没有设置另一个。 请确保两者都已设置，拼写没有错误，且如果你正在使用[mod.ItemType()]时该物品确实存在。 请将此错误报告发送给 {0} 开发者。",
 		"UnloadError": "卸载时发生一个或多个错误，必须重新启动tModLoader以防止发生更多问题。",
-		"DefensiveUnload": "{0} 无法正常卸载。无论加载过程中是否有任何错误，模组作者都必须使用防御性编程（Defensive Programming）来确保卸载完成.",
+		"DefensiveUnload": "{0} 无法正常卸载。无论加载过程中是否有任何错误，模组作者都必须使用防御性编程（Defensive Programming）来确保卸载完成。",
 		"BuildError": "{0} 编译时发生错误",
-		"CompileError": "{0} 编译失败，出现{1}个错误与{2}警告",
+		"CompileError": "{0} 编译失败，出现{1}个错误与{2}个警告",
 		"BuildErrorModNameEmpty": "模组必须填写模组名称",
 		"BuildErrorModNamedTerraria": "模组不能被命名为[Terraria]",
 		"BuildErrorModNameHasPeriod": "模组的内部名称不能含有英文句点",
@@ -207,11 +216,11 @@
 		"LoadErrorUnknownXNBFileHint": "发现不明[xnb]文件 {0}。它可能应被放置于Fonts（字体）或Effects（效果）文件夹里",
 		"LoadErrorCannotLoadCompressedEffects": "无法加载已压缩的Effects（效果）.",
 
-		"LoadErrorNotLoading": "Mod.AddContent在加载时只能被调用一次",
+		"LoadErrorNotLoading": "Mod.AddContent 在加载时只能被调用一次",
 		"LoadErrorDuplicateName": "无法添加两个具有相同名称{1}的{0}。也许有两个类名相同但在不同的命名空间的类自动加载, 或者你手动调用AddContent添加了两次同名的{0}。",
 
 		"LoadErrorResourceNotFoundPathHint": "未找到预期的资源:\n    {0}\n很可能：（是否拼写或文件夹放置错误？）\n    {1}",
-		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
+		"LoadErrorResourceNotFoundEquipTextureHint": "不只物品栏里的，装备物品还需要绘制在人物身上的材质。未找到这样的材质",
 		"RuntimeErrorSilentlyCaughtException": "静默捕获异常: ",
 		"RuntimeErrorSeeLogsForFullTrace": "（请参阅 {0} 以获取完整调用堆栈）",
 		"ShopOverflow": "物品太多，塞不进商店里 :(",
@@ -279,20 +288,22 @@
 		"MPErrorModNotSigned": "模组未在模组浏览器中签名认证",
 		"MPErrorModDownloadError": "下载时发生错误 {0}",
 		"MPPacketTooLarge": "数据包太大 {0} > {1}",
-		// "ReloadRequiredDownloadAndContinue": "Download and Continue",
-		// "ReloadRequiredReloadAndContinue": "Reload and Continue",
-		// "ReloadRequiredServerJoinMessage": "Due to the following mod version or config differences, mods will reload if you join this server. Press \"{0}\" to join this server.",
-		// "ReloadRequiredSinglePlayerMessage": "Due to the following mod version or config differences still present from multiplayer, mods will reload if you enter single player. Press \"{0}\" to enter single player.",
-		// "ReloadRequiredExplanationDownload": "[c/{0}:Download] v{1} from server",
-		// "ReloadRequiredExplanationDownloadDowngrade": "[c/{0}:Download] v{1} from server\n(Temporarily downgrade from v{2})",
-		// "ReloadRequiredExplanationDownloadUpgrade": "[c/{0}:Download] v{1} from server\n(Upgrade from v{2})",
-		// "ReloadRequiredExplanationDownloadHashDiffers": "[c/{0}:Download] v{1} ({2}) from server\n(Mod file differs from local copy)",
-		// "ReloadRequiredExplanationSwitchVersion": "[c/{0}:Switch] to v{1}\n(Currently loaded v{2})",
-		// "ReloadRequiredExplanationSwitchVersionDowngrade": "[c/{0}:Switch] to v{1}\n(Temporarily downgrade from v{2})",
-		// "ReloadRequiredExplanationSwitchVersionUpgrade": "[c/{0}:Switch] to v{1}\n(Temporarily upgrade from v{2})",
-		// "ReloadRequiredExplanationEnable": "[c/{0}:Enable]",
-		// "ReloadRequiredExplanationDisable": "[c/{0}:Disable]",
-		// "ReloadRequiredExplanationConfigChanged": "[c/{0}:Config change]",
+		"ReloadRequiredDownloadAndContinue": "下载并继续",
+		"ReloadRequiredReloadAndContinue": "重载并继续",
+		"ReloadRequiredServerJoinMessage": "如果你加入此服务器，下列模组将被启用/禁用。若要重载模组并加入此服务器，按“{0}”。",
+		"ReloadRequiredSinglePlayerMessage": "如果你进入单人模式，下列模组将被启用/禁用。若要重载模组并进入单人模式，按“{0}”。",
+		"ReloadRequiredExplanationDownload": "从服务器[c/{0}:下载] v{1}",
+		"ReloadRequiredExplanationDownloadDowngradeTemporary": "从服务器[c/{0}:下载] v{1}\n（暂时从 v{2} 降级）",
+		"ReloadRequiredExplanationDownloadDowngrade": "从服务器[c/{0}:下载] v{1}\n（从 v{2} 降级）",
+		"ReloadRequiredExplanationDownloadUpgrade": "从服务器[c/{0}:下载] v{1}\n（从 v{2} 升级）",
+		"ReloadRequiredExplanationDownloadHashDiffers": "从服务器[c/{0}:下载] v{1}（{2}）\n（与本机的同名模组有区别）",
+		"ReloadRequiredExplanationSwitchVersion": "[c/{0}:切换]至 v{1}\n（当前加载的是 v{2}）",
+		"ReloadRequiredExplanationSwitchVersionDowngrade": "[c/{0}:切换]至 v{1}\n（暂时从 v{2} 降级）",
+		"ReloadRequiredExplanationSwitchVersionUpgrade": "[c/{0}:切换]至 v{1}\n（从 v{2} 升级）",
+		"ReloadRequiredExplanationEnable": "[c/{0}:启用]",
+		"ReloadRequiredExplanationDisable": "[c/{0}:禁用]",
+		"ReloadRequiredExplanationConfigChanged": "暂时[c/{0}:修改配置]",
+		"ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:恢复配置]",
 
 		// UIAsyncList
 		"ALLoading": "加载中……",
@@ -366,6 +377,8 @@
 		"EnterSteamID": "请输入你的SteamID",
 		"PasteSteamID": "粘贴SteamID（Ctrl+V）",
 		"MBServerResponse": "模组浏览器服务器响应：\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开启",
@@ -458,8 +471,8 @@
 		"DiscordLink": "前往 Discord 群组寻求帮助",
 		"MSPortToLatest": "运行 tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "欢迎来到开发模组菜单。 此菜单是供模组制作者使用的。 您可以在这里生成模组。\n\n如果您刚接触模组制作，请点击下方的“在 GitHub 上查看”按钮访问我们的 wiki 并浏览“我是新手（I am new to modding）”章节。 若您不便阅读英文或无法访问 GitHub，也可以访问中文教程网站 fs49.org 或寻找其他资源。",
-		"MSNetSDKNotFound": "模组制作现在需要安装 .NET 6.0 SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET 6.0 SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
-		"DownloadNetSDK": "下载 .NET 6.0 SDK",
+		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET {0} SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
+		"DownloadNetSDK": "下载 .NET SDK",
 		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
 
 		// Developer Mode UI
@@ -528,6 +541,7 @@
 		"SpecialAttackSpeedScaling": "受到全局攻速加成的效果为原有的{0}%",
 		"ModifiedByModsHoldSHIFT": "基础属性已被模组修改 （按住[SHIFT]键以了解详细信息）",
 		"ModifiedByMods": "基础属性已被以下模组修改：",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "上次加载时的内存占用：{0}",
@@ -579,6 +593,7 @@
 		"AntivirusHint": "提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
 		"TypeInitializationHint": "提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
 		"TerrariaOutOfDateMessage": "泰拉瑞亚（Terraria）是过时的，你需要在Steam中更新泰拉瑞亚。",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "模组功能",

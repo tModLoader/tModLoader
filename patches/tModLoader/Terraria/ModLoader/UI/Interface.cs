@@ -164,9 +164,17 @@ internal static class Interface
 							}
 						}
 					}
-					if (LastLaunchedShaInRecentGitHubCommits)
-						infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
-							() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4"));
+					string compareUrl = $"{ModLoader.LastLaunchedTModLoaderAlphaSha}...preview";
+					if (!LastLaunchedShaInRecentGitHubCommits) {
+						// If not seen, then too many commits since the last time user opened Preview
+						messages.Append("\n...and more");
+						compareUrl = $"stable...preview";
+					}
+
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{compareUrl}"));
+				}
+				else {
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + "Unknown, somehow RecentGitHubCommits.txt is missing.", Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/stable...preview"));
 				}
 			}
 
@@ -174,7 +182,7 @@ internal static class Interface
 				ModLoader.PreviewFreezeNotification = false;
 				ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
 				infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessagePreview"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
-					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14"));
+					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#144"));
 				Main.SaveSettings();
 			}
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
@@ -184,12 +192,17 @@ internal static class Interface
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
 				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}\n{string.Concat(missingDeps)}".Trim('\n');
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}";
+				if (promptDepDownloads) {
+					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
+				}
+				message = message.Trim('\n');
+
 
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
 				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
 
-				Action downloadAction = () => {
+				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
 						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
@@ -200,10 +213,15 @@ internal static class Interface
 						downloads.Add(item);
 					}
 
-					_ = UIModBrowser.DownloadMods(
+					await UIModBrowser.DownloadMods(
 						downloads,
 						loadModsID);
-                };
+
+					Main.QueueMainThreadAction(() => {
+						Main.menuMode = Interface.loadModsID;
+						Main.MenuUI.SetState(null);
+					});
+				};
 
 				if (!string.IsNullOrWhiteSpace(message)) {
 					Logging.tML.Info($"Mod Changes since last launch:\n{message}");

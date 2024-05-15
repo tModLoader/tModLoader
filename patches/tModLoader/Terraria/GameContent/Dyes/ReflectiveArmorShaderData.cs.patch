@@ -1,0 +1,20 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Dyes/ReflectiveArmorShaderData.cs
++++ src/tModLoader/Terraria/GameContent/Dyes/ReflectiveArmorShaderData.cs
+@@ -15,7 +_,7 @@
+ 	public override void Apply(Entity entity, DrawData? drawData)
+ 	{
+ 		if (entity == null) {
+-			base.Shader.Parameters["uLightSource"].SetValue(Vector3.Zero);
++			base.Shader.Parameters["uLightSource"]?.SetValue(Vector3.Zero);
+ 		}
+ 		else {
+ 			float num = 0f;
+@@ -53,7 +_,7 @@
+ 			value.Y *= 2f;
+ 			value.Normalize();
+ 			value.Z *= 0.6f;
+-			base.Shader.Parameters["uLightSource"].SetValue(value);
++			base.Shader.Parameters["uLightSource"]?.SetValue(value);
+ 		}
+ 
+ 		base.Apply(entity, drawData);

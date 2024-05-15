@@ -25,6 +25,8 @@ using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
 using Terraria.GameContent;
 using System.Reflection;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Terraria.ModLoader;
 
@@ -71,7 +73,8 @@ public static class ModContent
 	}
 
 	/// <summary>
-	/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
+	/// Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-<see cref="Asset{T}"/> files. The <paramref name="name"/> should be in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the mod does not exist. Returns null if the file does not exist.
+	/// <para/> A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <c>string pointsFileContents = Encoding.UTF8.GetString(ModContent.GetFileBytes("MyMod/data/points.txt"));</c>
 	/// </summary>
 	/// <exception cref="MissingResourceException"></exception>
 	public static byte[] GetFileBytes(string name)
@@ -85,7 +88,7 @@ public static class ModContent
 	}
 
 	/// <summary>
-	/// Returns whether or not a file with the specified name exists.
+	/// Returns whether or not a file with the specified name exists. Note that this includes file extension, the folder path, and must start with the mod name at the start of the path: "ModFolder/OtherFolders/FileNameWithExtension"
 	/// </summary>
 	public static bool FileExists(string name)
 	{
@@ -278,13 +281,21 @@ public static class ModContent
 	/// </summary>
 	public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
 
+	private record struct ScopedCleanup(Action Dispose) : IDisposable
+	{
+		void IDisposable.Dispose() => Dispose();
+	}
+
 	internal static void Load(CancellationToken token)
 	{
+		using var parallelCts = new CancellationTokenSource();
+		using var cancelOnExit = new ScopedCleanup(parallelCts.Cancel);
+		var jitTask = JITModsAsync(parallelCts.Token);
+
 		CacheVanillaState();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
-			if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 			ContentInstance.Register(mod);
 			mod.loading = true;
 			mod.AutoloadConfig();
@@ -296,6 +307,8 @@ public static class ModContent
 		});
 
 		ContentCache.contentLoadingFinished = true;
+
+		jitTask.GetAwaiter().GetResult();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
@@ -361,6 +374,16 @@ public static class ModContent
 		BossBarLoader.GotoSavedStyle();
 
 		ModOrganizer.SaveLastLaunchedMods();
+	}
+
+	private static async Task JITModsAsync(CancellationToken token)
+	{
+		var sw = Stopwatch.StartNew();
+		foreach (var mod in ModLoader.Mods)
+			if (mod.Code != Assembly.GetExecutingAssembly())
+				await AssemblyManager.JITModAsync(mod, token).ConfigureAwait(false);
+
+		Logging.tML.Info($"JITModsAsync completed in {sw.ElapsedMilliseconds}ms");
 	}
 
 	private static void CacheVanillaState()
@@ -603,9 +626,26 @@ public static class ModContent
 
 	internal static void TransferCompletedAssets()
 	{
-		foreach (var mod in ModLoader.Mods)
+		if (!ModLoader.isLoading) {
+			DoTransferCompletedAssets();
+			return;
+		}
+
+		// During mod loading, spin wait for assets to transfer. Note that SpinWait.SpinUntil uses a low resolution timer (~15ms on windows) so it may spin for up to that long.
+		// If any assets are queued we will continue to spend main thread time to transfer assets. We accept some frame stutter to hopefully sync up with repeated ImmediateLoad calls and get better throughput
+		var sw = Stopwatch.StartNew();
+		while (sw.ElapsedMilliseconds < 15 && SpinWait.SpinUntil(DoTransferCompletedAssets, millisecondsTimeout: 1)) { }
+	}
+
+	private static bool DoTransferCompletedAssets()
+	{
+		bool transferredAnything = false;
+		foreach (var mod in ModLoader.Mods) {
 			if (mod.Assets is AssetRepository assetRepo && !assetRepo.IsDisposed)
-				assetRepo.TransferCompletedAssets();
+				transferredAnything |= assetRepo.TransferCompletedAssets();
+		}
+
+		return false;
 	}
 
 	private class AssetWaitTracker : IDisposable

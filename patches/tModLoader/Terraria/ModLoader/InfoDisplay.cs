@@ -93,6 +93,7 @@ public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 
 	public sealed override void SetupContent()
 	{
+		_ = DisplayName;
 		ModContent.Request<Texture2D>(Texture);
 		SetStaticDefaults();
 	}

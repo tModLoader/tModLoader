@@ -4,7 +4,7 @@
 	<Import Project="setup.Common.targets" />
 
 	<PropertyGroup>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<UseWindowsForms>True</UseWindowsForms>
 		<UseWPF>True</UseWPF>
 		<OutputType>WinExe</OutputType>

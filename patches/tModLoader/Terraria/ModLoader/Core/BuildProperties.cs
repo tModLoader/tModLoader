@@ -134,7 +134,12 @@ internal class BuildProperties
 					properties.author = value;
 					break;
 				case "version":
-					properties.version = new Version(value);
+					if (Version.TryParse(value, out Version result)) {
+						properties.version = result;
+					}
+					else {
+						Logging.tML.Error($"The version found in {propertiesFile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
+					}
 					break;
 				case "displayName":
 					properties.displayName = value;

@@ -82,7 +82,6 @@ Mods: {
 			ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			ExampleFishingCrate.MapEntry: Crate
 			ExampleHerb.MapEntry: Example Herb
-			ExampleMusicBoxTile.MapEntry: Music Box
 			ExampleOre.MapEntry: ExampleOre
 
 			ExampleChest: {
@@ -189,6 +188,7 @@ Mods: {
 					{6} magic armor penetration
 					{7}% increased example knockback
 					{8}% increased crit damage
+					Increased movement speed and acceleration
 					'''
 			}
 
@@ -904,6 +904,24 @@ Mods: {
 
 			ExampleRocketLauncher: {
 				DisplayName: Example Rocket Launcher
+			}
+
+			ExampleBoots: {
+				DisplayName: Example Boots
+				Tooltip:
+					'''
+					Allows flight, super fast running, even faster running on sand, and extra mobility on ice
+					{$CommonItemTooltip.PercentIncreasedMovementSpeed}
+					Provides the ability to walk on water, honey, lava, and shimmer
+					Grants immunity to fire blocks and {1} seconds of immunity to lava
+					Reduces damage from touching lava
+					Prevents fall damage
+					Leaves a trail of flames in your wake
+					'''
+			}
+
+			ExampleArrow: {
+				DisplayName: Example Arrow
 				Tooltip: ""
 			}
 		}
@@ -951,6 +969,7 @@ Mods: {
 			ExampleProximityMineProjectile.DisplayName: Example Proximity Mine Projectile
 			ExampleRocketProjectile.DisplayName: Example Rocket Projectile
 			ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
+			ExampleArrowProjectile.DisplayName: Example Arrow Projectile
 		}
 
 		Buffs: {
@@ -1137,7 +1156,10 @@ Mods: {
 			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
 		}
 
-		WorldGen.ExampleOrePassMessage: Example Mod Ores
+		WorldGen: {
+			ExampleOrePassMessage: Example Mod Ores
+			BlessedWithExampleOreMessage: Your world has been blessed with Example Ore!
+		}
 
 		BuilderToggles: {
 			ExampleBuilderToggleDimmedLight: {

@@ -16,7 +16,6 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
-	private ulong existingAuthorID = 0;
 
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
@@ -31,11 +30,22 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (!mods.Any() || mods[0] == null)
+		currPublishID = 0;
+
+		if (!mods.Any() || mods[0] == null) {
+			// This logic is for using a local copy of Workshop.json to figure out what the publish ID is. 
+			// It is currently unused and would need modifications to get the 'mod download item' for later.
+			/*
+			if (!AWorkshopEntry.TryReadingManifest(  <GET PATH> + Path.DirectorySeparatorChar + "workshop.json", out info))
+				return false;
+
+			currPublishID = info.workshopEntryId;
+			mods[0] = Get Mod From Publish ID ()
+			*/
 			return false;
+		}
 
 		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
-		existingAuthorID = ulong.Parse(mods[0].OwnerId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 		WorkshopBrowserModule.Instance.DownloadItem(mods[0], uiProgress: null);
@@ -81,14 +91,6 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			var currID = Steamworks.SteamUser.GetSteamID();
-
-			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			if (DateTime.Today < new DateTime(2023, 11, 21) && existingAuthorID != currID.m_SteamID) {
-				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
-				return false;
-			}
-
 			// Publish by updating the files available on the current published version
 			workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
 
@@ -124,7 +126,6 @@ public partial class WorkshopSocialModule
 		
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
-		//TODO: We ought to delete the TemporaryFolder after successful publishing to prevent future issues if they delete and attempt to re-pub
 		if (MakeTemporaryFolder(contentFolderPath)) {
 			string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
 
@@ -164,6 +165,12 @@ public partial class WorkshopSocialModule
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor()) {
 				if (mod.Version >= buildVersion) {
 					failureMessage = Language.GetTextValue("tModLoader.ModVersionTooSmall", buildVersion, mod.Version);
+					if (mod.Version.Minor > buildVersion.Minor)
+						failureMessage += $"\nThe 2nd number \"{buildVersion.Minor}\" is less than \"{mod.Version.Minor}\".";
+					else if (mod.Version.Revision > buildVersion.Revision)
+						failureMessage += $"\nThe 3rd number \"{buildVersion.Revision}\" is less than {mod.Version.Revision}\".";
+					else if (mod.Version.MinorRevision > buildVersion.MinorRevision)
+						failureMessage += $"\nThe 4th number \"{buildVersion.MinorRevision}\" is less than {mod.Version.MinorRevision}\".";
 					return false;
 				}
 			}
