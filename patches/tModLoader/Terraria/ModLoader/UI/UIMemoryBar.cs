@@ -185,6 +185,12 @@ internal class UIMemoryBar : UIElement
 		return gcMemInfo.TotalAvailableMemoryBytes;
 	}
 
+	public static long GetTotalMemoryCommit()
+	{
+		var gcMemInfo = GC.GetGCMemoryInfo();
+		return gcMemInfo.TotalCommittedBytes;
+	}
+
 	/*
 	[DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
 	[return: MarshalAs(UnmanagedType.Bool)]

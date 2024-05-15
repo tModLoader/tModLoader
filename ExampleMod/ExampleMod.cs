@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Terraria;
 using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 
@@ -13,6 +15,22 @@ namespace ExampleMod
 		public override void Load() {
 			// Registers a new custom currency
 			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
+
+			List<byte[,]> datas = new List<byte[,]>();
+			for (int i = 0; i < 500; i++) {
+				datas.Add(new byte[Main.tile.Width, Main.tile.Height]); // 20 MB each
+			}
+			// 500 * 20MB = 10 gb
+
+			foreach (var item in datas) {
+				for (int i = 0; i < item.GetLength(0); i++) {
+					for (int j = 0; j < item.GetLength(1); j++) {
+						item[i, j] = 10;//	(byte)Main.rand.Next(0, 255);
+					}
+				}
+			}
+
+			System.Console.WriteLine();
 		}
 
 		public override void Unload() {
