@@ -872,4 +872,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public virtual void PartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
 	{
 	}
+
+	/// <inheritdoc cref="ModNPC.EmoteBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void EmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
 }

@@ -927,4 +927,20 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual void PartyHatPosition(ref Vector2 position, ref SpriteEffects spriteEffects)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to change the location and sprite direction of the emote bubble when anchored to an NPC.
+	/// </summary>
+	/// <param name="position">
+	/// <br>The default position is:</br>
+	/// <br>The X component is set to the NPC's Top + 75% of their width.</br>
+	/// <br>Code: <c>entity.Top.X + ((-entity.direction * entity.width) * 0.75f)</c></br>
+	/// <br>The Y component is set to the NPC's Y position + 2 pixels. (Positive Y is down.)</br>
+	/// <br>Code: <c>entity.VisualPosition.Y + 2f</c></br>
+	/// <br>(<seealso cref="Entity.VisualPosition"/> is only used for the player for <seealso cref="Player.gfxOffY"/>)</br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the emote bubble is flipped.</param>
+	public virtual void EmoteBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
 }
