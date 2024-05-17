@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content.Projectiles
+namespace ExampleMod.Content.Projectiles.Rockets
 {
 	public class ExampleRocketProjectile : ModProjectile
 	{
