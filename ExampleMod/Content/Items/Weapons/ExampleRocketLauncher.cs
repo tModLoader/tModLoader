@@ -6,25 +6,28 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
+	// Rocket launchers are special because they typically have ammo-specific variant projectiles.
+	// ExampleRocketLauncher will inherit the variants specified by the Rocket Launcher weapon
 	public class ExampleRocketLauncher : ModItem {
 		public override void SetStaticDefaults() {
+			// This line lets ExampleRocketLauncher act like a normal RocketLauncher in regard to any variant projectiles
+			// corresponding to ammo that aren't specifically populated in SpecificLauncherAmmoProjectileMatches below.
+			AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[Type] = ItemID.RocketLauncher;
 
-			// Define which ammo types correspond to which projectile types. This example is just like the Rocket Launcher.
+			// SpecificLauncherAmmoProjectileMatches can be used to provide specific projectiles for specific ammo items.
+			// This example dictates that when RocketIII ammo is used, this weapon will fire the Meowmere projectile.
+			// This is purely to show off this capability, typically SpecificLauncherAmmoProjectileFallback is all
+			// that is needed for an "upgrade". A completely custom rocket launcher would instead specify new and
+			// unique projectiles for all possible rocket ammo.
 			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.Add(Type, new Dictionary<int, int> {
-				{ ItemID.RocketI, ProjectileID.RocketI },
-				{ ItemID.RocketII, ProjectileID.RocketII },
-				{ ItemID.RocketIII, ProjectileID.RocketIII },
-				{ ItemID.RocketIV, ProjectileID.RocketIV },
-				{ ItemID.ClusterRocketI, ProjectileID.ClusterRocketI },
-				{ ItemID.ClusterRocketII, ProjectileID.ClusterRocketII },
-				{ ItemID.MiniNukeI, ProjectileID.MiniNukeRocketI },
-				{ ItemID.MiniNukeII, ProjectileID.MiniNukeRocketII },
-				{ ItemID.DryRocket, ProjectileID.DryRocket },
-				{ ItemID.WetRocket, ProjectileID.WetRocket },
-				{ ItemID.LavaRocket, ProjectileID.LavaRocket },
-				{ ItemID.HoneyRocket, ProjectileID.HoneyRocket }
+				{ ItemID.RocketIII, ProjectileID.Meowmere }, 
 			});
+
+			// Note that some rocket launchers, like Celebration and Electrosphere Launcher, will always
+			// use their own projectiles no matter which rocket is used as ammo.
+			// This type of behavior can be implemented in ModifyShootStats
 		}
+
 		public override void SetDefaults() {
 			Item.DefaultToRangedWeapon(ProjectileID.RocketI, AmmoID.Rocket, singleShotTime: 30, shotVelocity: 5f, hasAutoReuse: true);
 			Item.width = 50;

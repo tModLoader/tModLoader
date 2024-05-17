@@ -904,6 +904,7 @@ Mods: {
 
 			ExampleRocketLauncher: {
 				DisplayName: Example Rocket Launcher
+				Tooltip: ""
 			}
 
 			ExampleBoots: {
