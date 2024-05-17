@@ -862,4 +862,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 		return null;
 	}
+
+	/// <inheritdoc cref="ModNPC.ChatBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void ChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
 }

@@ -1464,4 +1464,16 @@ public static class NPCLoader
 	}
 
 	internal static HookList HookSaveData = AddHook<Action<NPC, TagCompound>>(g => g.SaveData);
+
+	private delegate void DelegateChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookChatBubblePosition = AddHook<DelegateChatBubblePosition>(g => g.ChatBubblePosition);
+
+	public static void ChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.ChatBubblePosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookChatBubblePosition.Enumerate(npc)) {
+			g.ChatBubblePosition(npc, ref position, ref spriteEffects);
+		}
+	}
 }

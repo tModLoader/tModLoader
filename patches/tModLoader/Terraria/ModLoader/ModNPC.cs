@@ -898,4 +898,19 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual void LoadData(TagCompound tag)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to change the location and sprite direction of the chat bubble that shows up while hovering over a Town NPC.
+	/// </summary>
+	/// <param name="position">
+	/// <br>The default position is:</br>
+	/// <br>The X component is set to the NPC's Center - half the width of the chat bubble texture. Then +/- half of the NPC's width + 8 pixels for facing right/left respectively.</br>
+	/// <br>Code: <c>npc.Center.X - screenPosition.X - (TextureAssets.Chat.Width() / 2f) +/- (npc.width / 2f + 8)</c></br>
+	/// <br>The Y component is set to the top of the NPC - the height of the chat bubble texture. (Negative Y is up.)</br>
+	/// <br>Code: <c>npc.position.Y - TextureAssets.Chat.Height() - (float)(int)screenPosition.Y</c></br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the chat bubble is flipped.</param>
+	public virtual void ChatBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
 }
