@@ -913,4 +913,18 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual void ChatBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
 	{
 	}
+
+	/// <summary>
+	/// <br>Allows you to fully control the location of the party and sprite direction of the party while an NPC is wearing it.</br>
+	/// <br><seealso cref="NPCID.Sets.HatOffsetY"/> can be used instead of this hook for a constant Y offset.</br>
+	/// <br><seealso cref="NPCID.Sets.NPCFramingGroup"/> can be additionally be used for the Y offset for the Town NPC's animations.</br>
+	/// </summary>
+	/// <param name="position">
+	/// <br>This is the final position right before the party hat gets drawn which is generally the top center of the NPC's hitbox.</br>
+	/// <br><seealso cref="NPCID.Sets.HatOffsetY"/> and <seealso cref="NPCID.Sets.NPCFramingGroup"/> are already taken into account.</br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the party hat is flipped.</param>
+	public virtual void PartyHatPosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
 }

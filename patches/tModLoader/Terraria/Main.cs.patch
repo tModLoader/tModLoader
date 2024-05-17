@@ -3558,6 +3558,15 @@
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
+@@ -21928,6 +_,8 @@
+ 			if (n.shimmerTransparency > 0f)
+ 				num8 *= 1f - n.shimmerTransparency;
+ 
++			NPCLoader.PartyHatPosition(n, ref vector, ref spriteEffects);
++
+ 			spriteBatch.Draw(value, new Vector2(vector.X - screenPosition.X, vector.Y - screenPosition.Y), rectangle, npcColor * n.Opacity * num8, 0f, origin, n.scale, spriteEffects, 0f);
+ 		}
+ 
 @@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;

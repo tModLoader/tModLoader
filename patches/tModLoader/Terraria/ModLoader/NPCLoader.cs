@@ -1476,4 +1476,16 @@ public static class NPCLoader
 			g.ChatBubblePosition(npc, ref position, ref spriteEffects);
 		}
 	}
+
+	private delegate void DelegatePartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookPartyHatPosition = AddHook<DelegatePartyHatPosition>(g => g.PartyHatPosition);
+
+	public static void PartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.PartyHatPosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookPartyHatPosition.Enumerate(npc)) {
+			g.PartyHatPosition(npc, ref position, ref spriteEffects);
+		}
+	}
 }
