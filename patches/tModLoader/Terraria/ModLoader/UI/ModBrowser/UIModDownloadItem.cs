@@ -109,8 +109,9 @@ internal class UIModDownloadItem : UIPanel
 		_updateWithDepsButton.OnLeftClick += DownloadWithDeps;
 		
 		if (ModDownload.ModReferencesBySlug?.Length > 0) {
-			var icon = UICommon.ButtonExclamationTexture;
+			var icon = UICommon.ButtonDepsTexture;
 			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim())))) {
+				UseTooltipMouseText = true,
 				Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
 			};
 			modReferenceIcon.OnLeftClick += ShowModDependencies;
@@ -186,7 +187,7 @@ internal class UIModDownloadItem : UIPanel
 		if (!string.IsNullOrEmpty(tooltip)) {
 			var bounds = GetOuterDimensions().ToRectangle();
 			bounds.Height += 16;
-			UICommon.DrawHoverStringInBounds(spriteBatch, tooltip, bounds);
+			UICommon.TooltipMouseText(tooltip);
 		}
 	}
 
@@ -194,10 +195,10 @@ internal class UIModDownloadItem : UIPanel
 	{
 		base.DrawChildren(spriteBatch);
 		if (tMLUpdateRequired?.IsMouseHovering == true) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.MBClickToUpdate"), GetInnerDimensions().ToRectangle());
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.MBClickToUpdate"));
 		}
 		if (_modName.IsMouseHovering) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsByline", ModDownload.Author), GetInnerDimensions().ToRectangle());
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModsByline", ModDownload.Author));
 		}
 	}
 

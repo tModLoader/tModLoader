@@ -198,11 +198,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 						break;
 				}
 
-				UICommon.DrawHoverStringInBounds(spriteBatch, text);
+				UICommon.TooltipMouseText(text);
 				break;
 			}
 		if (_browserStatus.IsMouseHovering && ModList.State != AsyncProviderState.Completed) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, ModList.GetEndItemText());
+			UICommon.TooltipMouseText(ModList.GetEndItemText());
 		}
 	}
 
