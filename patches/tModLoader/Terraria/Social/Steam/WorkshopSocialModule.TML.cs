@@ -253,7 +253,7 @@ public partial class WorkshopSocialModule
 		if (isCi)
 			descriptionFinal += $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]";
 
-		descriptionFinal += $"{workshopDesc}" + $"[quote={buildData["name"]}\nDeveloped By {buildData["author"]}[/quote]";
+		descriptionFinal += $"{workshopDesc}" + $"[quote=tModLoader {buildData["name"]}]\nDeveloped By {buildData["author"]}[/quote]";
 
 		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
 
