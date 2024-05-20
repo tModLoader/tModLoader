@@ -546,7 +546,7 @@ public static class SteamedWraps
 			int nextPercentageToLog = LogEveryXPercent;
 			int numFailures = 0;
 
-			while (!IsWorkshopItemInstalled(publishId) && _downloadCallback == EResult.k_EResultNone) {
+			while (!IsWorkshopItemInstalled(publishId)) {
 				if (SteamClient)
 					SteamUGC.GetItemDownloadInfo(publishId, out dlBytes, out totalBytes);
 				else
@@ -587,7 +587,7 @@ public static class SteamedWraps
 			}
 
 			// Due to issues with Steam moving files from downloading folder to installed folder,
-			// there can be some latency in detecting it's actually ready for use compared to IsWorkshopItemInstalled. - Solxan
+			// there can be some latency in detecting it's installed. - Solxan
 			while (_downloadCallback == EResult.k_EResultNone) {
 				Thread.Sleep(100);
 				RunCallbacks();
