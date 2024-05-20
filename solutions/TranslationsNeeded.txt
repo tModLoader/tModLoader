@@ -1,7 +1,7 @@
 zh-Hans 24
 ru-RU 8
 pt-BR 9
-pl-PL 157
+pl-PL 4
 it-IT 903
 fr-FR 518
 es-ES 327
