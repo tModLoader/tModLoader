@@ -626,7 +626,7 @@ public static class SteamedWraps
 		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
 	}
 
-	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, ref string patchNotes, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
+	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
 	{
 		if (!SteamClient)
 			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
@@ -636,16 +636,6 @@ public static class SteamedWraps
 			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
-
-		patchNotes = _entryData.ChangeNotes;
-		// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
-		if (string.IsNullOrWhiteSpace(patchNotes)) {
-			patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
-			if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
-				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
-		}
-
-		ModCompile.UpdateSubstitutedDescriptionValues(ref patchNotes, _entryData.BuildData["trueversion"], _entryData.BuildData["homepage"]);
 
 		string refs = _entryData.BuildData["workshopdeps"];
 
