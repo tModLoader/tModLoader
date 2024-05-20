@@ -1018,9 +1018,7 @@ int?&#160;</td><td class="memItemRight" valign="bottom"><b>shopCustomPrice</b></
  Used for assigning a non-default price to an item in shops.<br  />
  Can be used with <a class="el" href="class_item.html#a20d6efe0a3c858d2f9e7a5c9e8316a77" title="The numerical ID of the special currency this item is bought using.  To make an item bought using Def...">shopSpecialCurrency</a> to assign a price in terms of a custom currency instead of coins.<br  />
  To get the raw price of an item, use GetStoreValue.<br  />
- To get the price of an item after discounts, use Player.GetItemExpectedPrice.<br  />
- Defaults to <code>null</code>.<br  />
- <br /></td></tr>
+ To get the price of an item after discounts, use Player.GetItemExpectedPrice. Be careful of setting a custom price far below the normal <a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>, it could result in an infinite money exploit. Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:ac60bb6a29b6e60906e67472d6da06a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20d6efe0a3c858d2f9e7a5c9e8316a77"><td class="memItemLeft" align="right" valign="top"><a id="a20d6efe0a3c858d2f9e7a5c9e8316a77" name="a20d6efe0a3c858d2f9e7a5c9e8316a77"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>shopSpecialCurrency</b> = -1</td></tr>
