@@ -272,7 +272,7 @@ public static class AssemblyManager
 
 			//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
 			Interface.loadMods.SetLoadStage("tModLoader.MSInstantiating");
-			MemoryTracking.Checkpoint();
+			MemoryTracking.Checkpoint(first: true);
 			return modList.Select(mod => {
 				token.ThrowIfCancellationRequested();
 				return Instantiate(mod);

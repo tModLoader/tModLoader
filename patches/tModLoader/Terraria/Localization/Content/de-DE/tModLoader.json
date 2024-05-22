@@ -542,6 +542,7 @@
 		// Memory bar
 		"LastLoadRamUsage": "Geschätzte RAM-Nutzung beim letzten Laden: {0}",
 		"AvailableMemory": "Verfügbarer Arbeitsspeicher: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + Verschiedenes: {0}",
 		"ManagedMemory": "Verwaltet: {0}",
 		"CodeMemory": "Code: {0}",

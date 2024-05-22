@@ -62,7 +62,7 @@ public static class ModLoader
 	internal static bool autoReloadRequiredModsLeavingModsScreen = true;
 	internal static bool removeForcedMinimumZoom;
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
-	internal static bool showMemoryEstimates = false;
+	internal static bool showMemoryEstimates = true;
 	internal static bool notifyNewMainMenuThemes = true;
 	internal static bool showNewUpdatedModsInfo = true;
 	internal static bool skipLoad;
@@ -384,7 +384,7 @@ public static class ModLoader
 		Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
 		Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 		Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
-		//Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
+		Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 		Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 		Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);

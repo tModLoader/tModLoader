@@ -542,6 +542,7 @@
 		// Memory bar
 		"LastLoadRamUsage": "Примерное использование ОЗУ при последнем запуске: {0}",
 		"AvailableMemory": "Доступно ОЗУ: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + Прочее: {0}",
 		"ManagedMemory": "Управляемая: {0}",
 		"CodeMemory": "Код: {0}",

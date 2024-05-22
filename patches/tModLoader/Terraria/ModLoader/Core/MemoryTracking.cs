@@ -11,18 +11,21 @@ namespace Terraria.ModLoader.Core;
 
 internal class ModMemoryUsage
 {
-	internal long managed;
+	internal long commit;
+	// internal long managed;
 	internal long sounds;
 	internal long textures;
 	internal long code;
 
-	internal long total => managed + code + sounds + textures;
+	internal long total => commit; // managed + code + sounds + textures;
 }
 
 internal static class MemoryTracking
 {
 	internal static Dictionary<string, ModMemoryUsage> modMemoryUsageEstimates = new Dictionary<string, ModMemoryUsage>();
-	private static long previousMemory;
+	private static long previousMemory; // Running total memory usage
+	internal static long preModLoadMemory; // Total memory usage of the process before loading mods
+	internal static long postModLoadMemory;
 
 	internal static void Clear()
 	{
@@ -35,18 +38,34 @@ internal static class MemoryTracking
 			modMemoryUsageEstimates[modName] = usage = new ModMemoryUsage();
 
 		if (ModLoader.showMemoryEstimates) {
-			var newMemory = GC.GetTotalMemory(true);
-			usage.managed += Math.Max(0, newMemory - previousMemory);
+			//var newMemory = GC.GetTotalMemory(true);
+			//usage.managed += Math.Max(0, newMemory - previousMemory);
+			//previousMemory = newMemory;
+
+			var process = Process.GetCurrentProcess();
+			process.Refresh();
+			var newMemory = process.PrivateMemorySize64;
+			usage.commit += Math.Max(0, newMemory - previousMemory);
 			previousMemory = newMemory;
 		}
 
 		return usage;
 	}
 
-	internal static void Checkpoint()
+	internal static void Checkpoint(bool first = false)
 	{
-		if (ModLoader.showMemoryEstimates)
-			previousMemory = GC.GetTotalMemory(true);
+		// Sets new baseline prior to mod-specific loading
+		if (ModLoader.showMemoryEstimates) {
+			//previousMemory = GC.GetTotalMemory(true);
+
+			var process = Process.GetCurrentProcess();
+			process.Refresh();
+			previousMemory = process.PrivateMemorySize64;
+
+			if (first)
+				preModLoadMemory = previousMemory;
+		}
+
 	}
 
 	internal static void Finish()
@@ -61,48 +80,36 @@ internal static class MemoryTracking
 				.Where(val => val != null)
 				.Sum(tex => (long)(tex.Width * tex.Height * 4));
 
+			// Most mods don't load any sounds during mod loading, so this is usually 0.
 			usage.sounds = mod.Assets
 				.GetLoadedAssets()
 				.OfType<Asset<SoundEffect>>()
 				.Select(asset => asset.Value)
 				.Where(val => val != null)
-				.Sum(sound => (long)sound.Duration.TotalSeconds * 44100 * 2 * 2);
+				.Sum(sound => (long)(sound.Duration.TotalSeconds * 44100 * 2 * 2));
 		}
+		if(ModLoader.Mods.Length > 1) {
+			Logging.tML.Info("Mods using the most RAM: " + string.Join(", ", modMemoryUsageEstimates.OrderByDescending(x => x.Value.total).Where(x => x.Key != "ModLoader").Take(3).Select(x => $"{x.Key} {UIMemoryBar.SizeSuffix(x.Value.total)}")));
+		}
+
 		long totalRamUsage = -1;
+		long totalCommit = -1;
 		try {
 			totalRamUsage = Process.GetProcesses().Sum(x => x.WorkingSet64); // Might throw UnauthorizedAccessException on locked down Linux systems. See https://github.com/tModLoader/tModLoader/issues/3689
+			totalCommit = Process.GetProcesses().Sum(x => x.PrivateMemorySize64); // does this not account for shared?
 		}
 		catch {	}
-		Logging.tML.Info($"RAM: tModLoader usage: {UIMemoryBar.SizeSuffix(Process.GetCurrentProcess().WorkingSet64)}, All processes usage: {(totalRamUsage == -1 ? "Unknown" : UIMemoryBar.SizeSuffix(totalRamUsage))}, Available: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory() - totalRamUsage)}, Total Installed: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory())}");
 
-		Logging.tML.Info($"RAM continued: Total Commit: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemoryCommit())}");
+		Process process = Process.GetCurrentProcess();
+		process.Refresh();
+		Logging.tML.Info($"RAM physical: tModLoader usage: {UIMemoryBar.SizeSuffix(process.WorkingSet64)}, All processes usage: {(totalRamUsage == -1 ? "Unknown" : UIMemoryBar.SizeSuffix(totalRamUsage))}, Available: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory() - totalRamUsage)}, Total Installed: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory())}");
+		Logging.tML.Info($"RAM virtual: tModLoader usage: {UIMemoryBar.SizeSuffix(process.PrivateMemorySize64)}, All processes usage: {(totalCommit == -1 ? "Unknown" : UIMemoryBar.SizeSuffix(totalCommit))}");
 
-		Process myProcess = Process.GetCurrentProcess();
+		postModLoadMemory = process.PrivateMemorySize64;
 
-		Logging.tML.Info($"  Physical memory usage     : {myProcess.WorkingSet64}");
-		Logging.tML.Info($"  Base priority             : {myProcess.BasePriority}");
-		Logging.tML.Info($"  Priority class            : {myProcess.PriorityClass}");
-		Logging.tML.Info($"  User processor time       : {myProcess.UserProcessorTime}");
-		Logging.tML.Info($"  Privileged processor time : {myProcess.PrivilegedProcessorTime}");
-		Logging.tML.Info($"  Total processor time      : {myProcess.TotalProcessorTime}");
-		Logging.tML.Info($"  Paged system memory size  : {myProcess.PagedSystemMemorySize64}");
-		Logging.tML.Info($"  Paged memory size         : {myProcess.PagedMemorySize64}");
-
-		Logging.tML.Info($"  Virtual memory size       : {myProcess.VirtualMemorySize64}"); // 2 TB?
-		Logging.tML.Info($"  Private memory size       : {myProcess.PrivateMemorySize64}");
-		Logging.tML.Info($"  Total memory commit       : {UIMemoryBar.GetTotalMemoryCommit()}");
-	}
-
-
-	private static long previousPrivateMemorySize64;
-	private static long previousTotalCommittedBytes;
-	internal static void LogStuff()
-	{
-		// no garbage collection
-		long curPrivateMemorySize64 = Process.GetCurrentProcess().PrivateMemorySize64;
-		long diff = curPrivateMemorySize64 - previousPrivateMemorySize64;
-		Logging.tML.Info($"Pre: {previousPrivateMemorySize64}, Cur: {curPrivateMemorySize64}, Diff: {diff}");
-		Logging.tML.Info($"Pre: {UIMemoryBar.SizeSuffix(previousPrivateMemorySize64)}, Cur: {UIMemoryBar.SizeSuffix(curPrivateMemorySize64)}, Diff: {UIMemoryBar.SizeSuffix(diff)}");
-		previousPrivateMemorySize64 = curPrivateMemorySize64;
+		if (totalCommit > UIMemoryBar.GetTotalMemory()) {
+			// No way to query page file size, but this warning should help identify if that is a potential issue.
+			Logging.tML.Warn("Total system memory usage exceeds installed physical memory, tModLoader will likely experience performance issues due to frequent page file access.");
+		}
 	}
 }

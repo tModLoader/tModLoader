@@ -412,7 +412,6 @@ public static class ModContent
 				throw;
 			}
 			finally {
-				MemoryTracking.LogStuff();
 				MemoryTracking.Update(mod.Name);
 			}
 		}
