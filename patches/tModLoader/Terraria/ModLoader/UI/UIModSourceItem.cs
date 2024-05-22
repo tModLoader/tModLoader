@@ -3,10 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.OS;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -31,6 +34,7 @@ internal class UIModSourceItem : UIPanel
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
 	private int contextButtonsLeft = -26;
+	private TaskCompletionSource<IEnumerable<string>> fileSource;
 
 	public UIModSourceItem(string mod, LocalMod builtMod)
 	{
@@ -205,30 +209,7 @@ internal class UIModSourceItem : UIPanel
 				projNeedsUpdate = true;
 			}
 
-			// Display upgrade .lang files button if any .lang files present
-			//TODO: Make this asynchronous, as this can be quite expensive
-			string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
-
-			if (files.Length > 0) {
-				var icon = UICommon.ButtonUpgradeLang;
-				var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
-					Left = { Pixels = contextButtonsLeft, Percent = 1f },
-					Top = { Pixels = 4 }
-				};
-
-				upgradeLangFilesButton.OnLeftClick += (s, e) => {
-					foreach (string file in files) {
-						LocalizationLoader.UpgradeLangFile(file, modName);
-					}
-
-					upgradeLangFilesButton.Remove();
-				};
-
-				Append(upgradeLangFilesButton);
-
-				contextButtonsLeft -= 26;
-			}
-
+			CheckLangFileUpgrade();
 
 			// Display Run tModPorter when .csproj is valid
 			if (!projNeedsUpdate) {
@@ -259,6 +240,33 @@ internal class UIModSourceItem : UIPanel
 
 				contextButtonsLeft -= 26;
 			}
+		}
+
+		// Display upgrade .lang files button if any .lang files present
+		if (fileSource?.Task.IsCompleted ?? false) {
+			IEnumerable<string> result = fileSource.Task.Result;
+
+			if (result.Any()) {
+				var icon = UICommon.ButtonUpgradeLang;
+				var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
+					Left = { Pixels = contextButtonsLeft, Percent = 1f },
+					Top = { Pixels = 4 }
+				};
+
+				upgradeLangFilesButton.OnLeftClick += (s, e) => {
+					foreach (string file in result) {
+						LocalizationLoader.UpgradeLangFile(file, modName);
+					}
+
+					upgradeLangFilesButton.Remove();
+				};
+
+				Append(upgradeLangFilesButton);
+
+				contextButtonsLeft -= 26;
+			}
+
+			fileSource = null;
 		}
 	}
 
@@ -382,5 +390,18 @@ internal class UIModSourceItem : UIPanel
 		Console.WriteLine("exiting ");
 		Steamworks.SteamAPI.Shutdown();
 		Environment.Exit(0);
+	}
+
+	private void CheckLangFileUpgrade()
+	{
+		fileSource = new TaskCompletionSource<IEnumerable<string>>();
+
+		Task<IEnumerable<string>> fetchFiles = fileSource.Task;
+
+		Task.Factory.StartNew(() => {
+			IEnumerable<string> files = Directory.EnumerateFiles(_mod, "*.lang", SearchOption.AllDirectories);
+
+			fileSource.SetResult(files);
+		});
 	}
 }
