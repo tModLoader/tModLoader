@@ -134,7 +134,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 
-		buttonB.OnLeftClick += BackClick;
+		buttonB.OnLeftClick += (_, _) => HandleBackButtonUsage();
 
 		uIElement.Append(buttonB);
 		buttonOMF = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenModsFolders"));
@@ -266,7 +266,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 	}
 
-	internal void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	public void HandleBackButtonUsage()
 	{
 		// To prevent entering the game with Configs that violate ReloadRequired
 		if (ConfigManager.AnyModNeedsReload()) {
@@ -282,7 +282,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		ConfigManager.OnChangedAll();
 
-		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+		IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 	}
 
 	private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
@@ -375,7 +375,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 102;
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		base.Draw(spriteBatch);
 		for (int i = 0; i < _categoryButtons.Count; i++) {
 			if (_categoryButtons[i].IsMouseHovering) {

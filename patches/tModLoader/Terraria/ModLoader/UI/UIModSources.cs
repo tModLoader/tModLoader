@@ -231,6 +231,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	public override void OnActivate()
 	{
 		_cts = new CancellationTokenSource();
+		Main.clrInput();
 		ModCompile.UpdateReferencesFolder();
 		_uIPanel.Append(_uiLoader);
 		_modList.Clear();
