@@ -3,6 +3,7 @@ using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -125,6 +126,16 @@ public static class MonoModHooks
 		HookEndpointManager.Clear();
 		assemblyDetours.Clear();
 		_hookCache.Clear();
+
+		var type = typeof(ReflectionHelper);
+		FieldInfo[] caches = [
+			type.GetField("AssemblyCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("AssembliesCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("ResolveReflectionCache", BindingFlags.NonPublic | BindingFlags.Static),
+		];
+		foreach(var cache in caches) {
+			((IDictionary)cache.GetValue(null)).Clear();
+		}
 	}
 
 	#region Obsolete HookEndpointManager method replacement
