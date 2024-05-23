@@ -123,6 +123,8 @@
 		//Mod Config
 		"ModConfigs": "Конфигурации",
 		"ModConfigFilterOptions": "Фильтр",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация модов",
 		"ModConfigSaveConfig": "Сохранить",
@@ -141,6 +143,7 @@
 		"ModConfigCollapse": "Свернуть",
 		"ModConfigScaleUp": "Увеличить масштаб",
 		"ModConfigScaleDown": "Уменьшить масштаб",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Ответ сервера: {0}",
 		"ModConfigServerRejectedChanges": "Сервер отклонил изменения: {0}",
 		"ModConfigSharedConfigChanged": "Изменена общая конфигурация: Сообщение: {0}, Мод: {1}, Конфигурация: {2}",
@@ -470,6 +473,19 @@
 		"MSNetSDKNotFound": "Разработка модов для tModLoader требует установки .NET {0} SDK, но оно не было обнаружено. Нажмите кнопку \"Загрузить .NET SDK\" ниже для получения подробных инструкций. После установки вам возможно понадобится перезапустить tModLoader.",
 		"DownloadNetSDK": "Загрузить .NET SDK",
 		"DevModsInSandbox": "tModLoader не может разрабатывать моды в среде песочницы (например, в Flatpak). Пожалуйста, убедитесь, что вы установили Steam непосредственно на вашу систему.",
+
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Для сборки модов требуются дополнительные библиотеки. (Отсутствует папка ModCompile)",

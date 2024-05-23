@@ -123,6 +123,8 @@
 		//Mod Config
 		"ModConfigs": "Configuración de mods",
 		"ModConfigFilterOptions": "Opciones de filtro",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Notificación: ",
 		"ModConfigModConfig": "Config. del mod",
 		"ModConfigSaveConfig": "Guardar config.",
@@ -141,6 +143,7 @@
 		"ModConfigCollapse": "Colapsar",
 		"ModConfigScaleUp": "Ampliar",
 		"ModConfigScaleDown": "Reducir",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Respuesta del servidor: {0}",
 		"ModConfigServerRejectedChanges": "El servidor rechazó los cambios: {0}",
 		"ModConfigSharedConfigChanged": "La configuración compartida ha cambiado: Mensaje: {0}, Mod: {1}, Configuración: {2}",
@@ -470,6 +473,19 @@
 		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
 		"DownloadNetSDK": "Descargar el SDK de .NET",
 		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
+
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",

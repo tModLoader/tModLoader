@@ -127,6 +127,8 @@
 		//Mod Config
 		"ModConfigs": "配置",
 		"ModConfigFilterOptions": "筛选选项",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "通知：",
 		"ModConfigModConfig": "模组配置",
 		"ModConfigSaveConfig": "保存配置",
@@ -145,6 +147,7 @@
 		"ModConfigCollapse": "折叠",
 		"ModConfigScaleUp": "增加",
 		"ModConfigScaleDown": "减少",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "服务器响应：{0}",
 		"ModConfigServerRejectedChanges": "服务器已拒绝更改：{0}",
 		"ModConfigSharedConfigChanged": "模组共享配置已更改：消息：{0}，模组：{1}，配置：{2}",
@@ -474,6 +477,19 @@
 		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET {0} SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
 		"DownloadNetSDK": "下载 .NET SDK",
 		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
+
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库。（缺少[ModCompile]文件夹）",

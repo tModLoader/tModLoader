@@ -123,6 +123,8 @@
 		//Mod Config
 		"ModConfigs": "Konfiguracje",
 		"ModConfigFilterOptions": "Opcje filtrowania",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Powiadomienie: ",
 		"ModConfigModConfig": "Konfiguracja moda",
 		"ModConfigSaveConfig": "Zapisz konfigurację",
@@ -141,6 +143,7 @@
 		"ModConfigCollapse": "Zwiń",
 		"ModConfigScaleUp": "Przybliż",
 		"ModConfigScaleDown": "Oddal",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Odpowiedź serwera: {0}",
 		"ModConfigServerRejectedChanges": "Serwer odrzucił zmiany: {0}",
 		"ModConfigSharedConfigChanged": "Wspólna konfiguracja zmieniona: Wiadomość: {0}, Mod: {1}, Konfiguracja: {2}",
@@ -470,6 +473,19 @@
 		"MSNetSDKNotFound": "Tworzenie modów dla tModLoadera wymaga zainstalowania .NET {0} SDK, ale nie zostało to wykryte. Kliknij poniżej przycisk \"Pobierz .NET SDK\" w celu uzyskania instrukcji instalacji. Po zainstalowaniu może być konieczne ponowne uruchomienie tModLoadera.",
 		"DownloadNetSDK": "Pobierz .NET SDK",
 		"DevModsInSandbox": "tModLoader nie może rozwijać modów podczas działania w piaskownicy (np. w przypadku Flatpak). Upewnij się, że zainstalowano Steam bezpośrednio na Twoim systemie.",
+
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Do budowania modów wymagane są dodatkowe biblioteki. (Brak folderu ModCompile)",
