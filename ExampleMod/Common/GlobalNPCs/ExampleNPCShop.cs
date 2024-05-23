@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Content.Items;
+using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Mounts;
 using Terraria;
 using Terraria.ID;
@@ -34,6 +35,9 @@ namespace ExampleMod.Common.GlobalNPCs
 			}
 			else if (shop.NpcType == NPCID.Stylist) {
 				shop.Add<ExampleHairDye>();
+			}
+			else if (shop.NpcType == NPCID.BestiaryGirl) {
+				shop.Add<ExampleTownPetLicense>(Condition.BestiaryFilledPercent(50));
 			}
 
 			// Example of adding new items with complex conditions in the Merchant shop.

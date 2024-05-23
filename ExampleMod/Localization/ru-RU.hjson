@@ -74,6 +74,12 @@ Mods: {
 			// MinionBossMinion.DisplayName: Minion Boss Minion
 			// PartyZombie.DisplayName: Party Zombie
 			// ExampleCritterNPC.DisplayName: Lava Frog
+
+			ExampleTownPet: {
+				// DisplayName: Example Town Pet
+				// NameVariant2_6: Pine
+				// Census.SpawnCondition: Use an [i:ExampleMod/ExampleTownPetLicense] Example Town Pet License. Purchased from the Zoologist at 50% Bestiary completetion.
+			}
 		}
 
 		Tiles: {
@@ -915,6 +921,17 @@ Mods: {
 				// DisplayName: Example Arrow
 				// Tooltip: ""
 			}
+
+			ExampleTownPetLicense: {
+				// DisplayName: Example Town Pet License
+				/* Tooltip:
+					'''
+					Use to adopt a Example Town Pet for your town
+					Already have a Example Town Pet?
+					Use additional licenses to activate the Pet Exchange Program!
+					Find the perfect fit for you and your Example Town Pet!
+					''' */
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1052,6 +1069,7 @@ Mods: {
 		Bestiary: {
 			ExamplePerson: Построен из блоков, с руками из стали. Качает своё железо и днём и ночью.
 			// ExampleBoneMerchant: Built with bone blocks and arms of steel. Throws bones day and night.
+			// ExampleTownPet: A blocky Town Pet to bring extra cuteness to the town.
 		}
 
 		Biomes: {
@@ -1141,6 +1159,7 @@ Mods: {
 		UI: {
 			// ExampleResource: Example Resource: {0} / {1}
 			// InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+			// LicenseExampleTownPetUse: The license teleports away to the Example Town Pet delivery service...
 		}
 
 		WorldGen: {

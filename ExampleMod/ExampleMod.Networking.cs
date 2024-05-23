@@ -1,8 +1,11 @@
 using ExampleMod.Common.Players;
+using ExampleMod.Common.Systems;
+using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod
 {
@@ -13,7 +16,8 @@ namespace ExampleMod
 		{
 			ExampleStatIncreasePlayerSync,
 			ExampleTeleportToStatue,
-			ExampleDodge
+			ExampleDodge,
+			ExampleTownPetUnlockOrExchange
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -41,6 +45,10 @@ namespace ExampleMod
 					break;
 				case MessageType.ExampleDodge:
 					ExampleDamageModificationPlayer.HandleExampleDodgeMessage(reader, whoAmI);
+					break;
+				case MessageType.ExampleTownPetUnlockOrExchange:
+					// Call a custom function that we made in our License item.
+					ExampleTownPetLicense.TutorialTownPetUnlockOrExchangePet(ref ExampleTownPetSystem.boughtExampleTownPet, ModContent.NPCType<Content.NPCs.TownPets.ExampleTownPet>(), "Mods.ExampleMod.UI.LicenseExampleTownPetUse");
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
