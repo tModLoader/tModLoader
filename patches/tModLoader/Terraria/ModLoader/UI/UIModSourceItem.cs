@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -32,11 +33,13 @@ internal class UIModSourceItem : UIPanel
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
 	private int contextButtonsLeft = -26;
-	private Task<string[]> files;
-
-	public UIModSourceItem(string mod, LocalMod builtMod)
+	private Task<string[]> langFileTask;
+	private CancellationTokenSource _modSourcesCts;
+	
+	public UIModSourceItem(string mod, LocalMod builtMod, CancellationTokenSource modSourcesCts)
 	{
 		_mod = mod;
+		_modSourcesCts = modSourcesCts;
 
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 		_dividerTexture = UICommon.DividerTexture;
@@ -207,7 +210,7 @@ internal class UIModSourceItem : UIPanel
 				projNeedsUpdate = true;
 			}
 
-			CheckLangFileUpgrade();
+			StartLangFileUpgradeTask();
 
 			// Display Run tModPorter when .csproj is valid
 			if (!projNeedsUpdate) {
@@ -241,9 +244,9 @@ internal class UIModSourceItem : UIPanel
 		}
 
 		// Display upgrade .lang files button if any .lang files present
-		if (files?.IsCompleted ?? false) {
+		if (langFileTask?.IsCompleted ?? false) {
 			// Capture result for OnClick delegate.
-			string[] result = files.Result;
+			string[] result = langFileTask.Result;
 
 			if (result.Length > 0) {
 				var icon = UICommon.ButtonUpgradeLang;
@@ -258,6 +261,8 @@ internal class UIModSourceItem : UIPanel
 					}
 
 					upgradeLangFilesButton.Remove();
+
+					SoundEngine.PlaySound(SoundID.MenuTick);
 				};
 
 				Append(upgradeLangFilesButton);
@@ -265,7 +270,7 @@ internal class UIModSourceItem : UIPanel
 				contextButtonsLeft -= 26;
 			}
 
-			files = null;
+			langFileTask = null;
 		}
 	}
 
@@ -391,12 +396,11 @@ internal class UIModSourceItem : UIPanel
 		Environment.Exit(0);
 	}
 
-	private void CheckLangFileUpgrade()
+	private void StartLangFileUpgradeTask()
 	{
-		files = Task.Run(() => {
-			string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
-
-			return files;
-		});
+		langFileTask = Task.Run(
+			() => Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories),
+			_modSourcesCts.Token
+		);
 	}
 }
