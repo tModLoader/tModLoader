@@ -34,7 +34,7 @@ internal class UIModSourceItem : UIPanel
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
 	private int contextButtonsLeft = -26;
-	private TaskCompletionSource<IEnumerable<string>> fileSource;
+	private Task<string[]> files;
 
 	public UIModSourceItem(string mod, LocalMod builtMod)
 	{
@@ -243,10 +243,11 @@ internal class UIModSourceItem : UIPanel
 		}
 
 		// Display upgrade .lang files button if any .lang files present
-		if (fileSource?.Task.IsCompleted ?? false) {
-			IEnumerable<string> result = fileSource.Task.Result;
+		if (files?.IsCompleted ?? false) {
+			// Capture result for OnClick delegate.
+			string[] result = files.Result;
 
-			if (result.Any()) {
+			if (result.Length > 0) {
 				var icon = UICommon.ButtonUpgradeLang;
 				var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
 					Left = { Pixels = contextButtonsLeft, Percent = 1f },
@@ -266,7 +267,7 @@ internal class UIModSourceItem : UIPanel
 				contextButtonsLeft -= 26;
 			}
 
-			fileSource = null;
+			files = null;
 		}
 	}
 
@@ -394,14 +395,10 @@ internal class UIModSourceItem : UIPanel
 
 	private void CheckLangFileUpgrade()
 	{
-		fileSource = new TaskCompletionSource<IEnumerable<string>>();
+		files = Task.Run(() => {
+			string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
 
-		Task<IEnumerable<string>> fetchFiles = fileSource.Task;
-
-		Task.Factory.StartNew(() => {
-			IEnumerable<string> files = Directory.EnumerateFiles(_mod, "*.lang", SearchOption.AllDirectories);
-
-			fileSource.SetResult(files);
+			return files;
 		});
 	}
 }
