@@ -127,13 +127,14 @@ public static class MonoModHooks
 		assemblyDetours.Clear();
 		_hookCache.Clear();
 
+		// #4220 - Mitigation for bugs in reflection cache with mod reloads, and helps with assembly unloading
 		var type = typeof(ReflectionHelper);
 		FieldInfo[] caches = [
 			type.GetField("AssemblyCache", BindingFlags.NonPublic | BindingFlags.Static),
 			type.GetField("AssembliesCache", BindingFlags.NonPublic | BindingFlags.Static),
 			type.GetField("ResolveReflectionCache", BindingFlags.NonPublic | BindingFlags.Static),
 		];
-		foreach(var cache in caches) {
+		foreach (var cache in caches) {
 			((IDictionary)cache.GetValue(null)).Clear();
 		}
 	}
