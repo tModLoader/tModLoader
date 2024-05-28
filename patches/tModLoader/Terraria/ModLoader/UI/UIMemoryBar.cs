@@ -95,9 +95,6 @@ internal class UIMemoryBar : UIElement
 	{
 		_memoryBarItems.Clear();
 
-		// Due to inaccuracies, we need to use a fake sum instead of postModLoadMemory to make sure bar width math works.
-		totalMeasuredMemory = MemoryTracking.modMemoryUsageEstimates.Sum(x => x.Value.commit) + MemoryTracking.preModLoadMemory;
-
 		long totalModMemory = 0;
 		int i = 0;
 		foreach (var entry in MemoryTracking.modMemoryUsageEstimates.OrderBy(v => -v.Value.total)) {
@@ -110,8 +107,8 @@ internal class UIMemoryBar : UIElement
 			var sb = new StringBuilder();
 			sb.Append(ModLoader.GetMod(modName).DisplayName);
 			sb.Append($"\n {Language.GetTextValue("tModLoader.LastLoadRamUsage", SizeSuffix(usage.total))}");
-			//if (usage.managed > 0)
-			//	sb.Append($"\n  {Language.GetTextValue("tModLoader.ManagedMemory", SizeSuffix(usage.managed))}");
+			if (usage.managed > 0)
+				sb.Append($"\n  {Language.GetTextValue("tModLoader.ManagedMemory", SizeSuffix(usage.managed))}");
 			if (usage.code > 0)
 				sb.Append($"\n  {Language.GetTextValue("tModLoader.CodeMemory", SizeSuffix(usage.code))}");
 			if (usage.sounds > 0)
@@ -121,20 +118,23 @@ internal class UIMemoryBar : UIElement
 			_memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, _colors[i++ % _colors.Length]));
 		}
 
-		long allocatedMemory = MemoryTracking.postModLoadMemory;
-		var nonModMemory = MemoryTracking.preModLoadMemory; // What we think tmod itself is using.
+		long allocatedMemory = MemoryTracking.postModLoadMemory; // should be total process usage.
+		long nonModMemory = MemoryTracking.postModLoadMemory - totalModMemory; // What we think tmod itself is using.
 		_memoryBarItems.Add(new MemoryBarItem(
 			$"{Language.GetTextValue("tModLoader.TerrariaMemory", SizeSuffix(nonModMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(allocatedMemory))}\n\n{Language.GetTextValue("tModLoader.InstalledMemory", SizeSuffix(GetTotalMemory()))}",
 			nonModMemory, Color.DeepSkyBlue));
 
-		//var remainingMemory = availableMemory - allocatedMemory;
-		//_memoryBarItems.Add(new MemoryBarItem(
-		//	$"{Language.GetTextValue("tModLoader.AvailableMemory", SizeSuffix(remainingMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(availableMemory))}",
-		//	remainingMemory, Color.Gray));
+		/*
+		var remainingMemory = availableMemory - allocatedMemory;
+		_memoryBarItems.Add(new MemoryBarItem(
+			$"{Language.GetTextValue("tModLoader.AvailableMemory", SizeSuffix(remainingMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffixavailableMemory))}",
+			remainingMemory, Color.Gray));
+		*/
 
 		//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;
 		//memoryBarItems.Add(new MemoryBarData($"Other programs: {SizeSuffix(maxMemory - availableMemory - meminuse)}", portion, Color.Black));
 
+		// Due to inaccuracies, we need to use a fake sum instead of postModLoadMemory to make sure bar width math works.
 		totalMeasuredMemory = _memoryBarItems.Sum(x => x.Memory);
 
 		RecalculateMemoryNeeded = false;
@@ -177,6 +177,7 @@ internal class UIMemoryBar : UIElement
 	}
 	*/
 
+	/// <summary> Returns total installed RAM </summary>
 	public static long GetTotalMemory()
 	{
 		var gcMemInfo = GC.GetGCMemoryInfo();

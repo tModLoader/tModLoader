@@ -11,21 +11,21 @@ namespace Terraria.ModLoader.Core;
 
 internal class ModMemoryUsage
 {
-	internal long commit;
-	// internal long managed;
+	internal long managed;
 	internal long sounds;
 	internal long textures;
 	internal long code;
 
-	internal long total => commit; // managed + code + sounds + textures;
+	internal long total => managed + code + sounds + textures;
 }
 
 internal static class MemoryTracking
 {
 	internal static Dictionary<string, ModMemoryUsage> modMemoryUsageEstimates = new Dictionary<string, ModMemoryUsage>();
-	private static long previousMemory; // Running total memory usage
-	internal static long preModLoadMemory; // Total memory usage of the process before loading mods
+	private static long previousMemory; // Running total managed memory usage
+	internal static long preModLoadMemory; // Total memory usage of the process before loading mods. Might be erroneously larger after unloading large mods as memory allocations are freed by OS.
 	internal static long postModLoadMemory;
+	internal static bool accurate = false; // use -accuratememorytracking command line argument to set.
 
 	internal static void Clear()
 	{
@@ -38,14 +38,8 @@ internal static class MemoryTracking
 			modMemoryUsageEstimates[modName] = usage = new ModMemoryUsage();
 
 		if (ModLoader.showMemoryEstimates) {
-			//var newMemory = GC.GetTotalMemory(true);
-			//usage.managed += Math.Max(0, newMemory - previousMemory);
-			//previousMemory = newMemory;
-
-			var process = Process.GetCurrentProcess();
-			process.Refresh();
-			var newMemory = process.PrivateMemorySize64;
-			usage.commit += Math.Max(0, newMemory - previousMemory);
+			var newMemory = GC.GetTotalMemory(accurate);
+			usage.managed += Math.Max(0, newMemory - previousMemory);
 			previousMemory = newMemory;
 		}
 
@@ -56,16 +50,14 @@ internal static class MemoryTracking
 	{
 		// Sets new baseline prior to mod-specific loading
 		if (ModLoader.showMemoryEstimates) {
-			//previousMemory = GC.GetTotalMemory(true);
+			previousMemory = GC.GetTotalMemory(accurate);
 
-			var process = Process.GetCurrentProcess();
-			process.Refresh();
-			previousMemory = process.PrivateMemorySize64;
-
-			if (first)
-				preModLoadMemory = previousMemory;
+			if (first) {
+				var process = Process.GetCurrentProcess();
+				process.Refresh();
+				preModLoadMemory = process.PrivateMemorySize64;
+			}
 		}
-
 	}
 
 	internal static void Finish()
