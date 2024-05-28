@@ -32,9 +32,6 @@ public static class MountLoader
 
 	internal static int ReserveMountID()
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding mounts breaks vanilla client compatibility");
-
 		return MountCount++;
 	}
 

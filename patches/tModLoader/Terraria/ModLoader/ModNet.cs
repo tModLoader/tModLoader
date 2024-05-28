@@ -95,8 +95,6 @@ public static class ModNet
 	{
 		kickMsg = null;
 		isModded = clientVersion.StartsWith("tModLoader");
-		if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
-			return true;
 
 		if (clientVersion == NetVersionString)
 			return true;
@@ -127,15 +125,12 @@ public static class ModNet
 	internal static void Unload()
 	{
 		netMods = null;
-		if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
-			AllowVanillaClients = false;
 		ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 	}
 
 	internal static void SyncMods(int clientIndex)
 	{
 		var p = new ModPacket(MessageID.SyncMods);
-		p.Write(AllowVanillaClients);
 
 		var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToList();
 		AddNoSyncDeps(syncMods);
@@ -196,9 +191,6 @@ public static class ModNet
 	// This method is split so that the local variables aren't held by the GC when reloading
 	internal static bool SyncClientMods(BinaryReader reader, out bool needsReload)
 	{
-		AllowVanillaClients = reader.ReadBoolean();
-		Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
-
 		Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 		Mod[] clientMods = ModLoader.Mods;
 		LocalMod[] modFiles = ModOrganizer.FindAllMods();

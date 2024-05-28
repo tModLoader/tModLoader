@@ -74,7 +74,7 @@
  		writer.Write(Position.Y);
 +
 +		//Call NetSend instead of the vanilla method when in modded contexts.
-+		if (networkSend && !ModNet.AllowVanillaClients) {
++		if (networkSend) {
 +			NetSend(writer);
 +
 +			return;
@@ -94,7 +94,7 @@
  		Position = new Point16(reader.ReadInt16(), reader.ReadInt16());
 +
 +		//Call NetReceive instead of the vanilla method when in modded contexts.
-+		if (networkSend && !ModNet.AllowVanillaClients) {
++		if (networkSend) {
 +			NetReceive(reader);
 +
 +			return;

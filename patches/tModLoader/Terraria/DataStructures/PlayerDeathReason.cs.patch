@@ -104,18 +104,15 @@
  
  		return playerDeathReason;
  	}
-@@ -139,11 +_,19 @@
- 		if (bitsByte[4])
+@@ -140,10 +_,16 @@
  			writer.Write((short)_sourceProjectileType);
  
-+		if (!ModNet.AllowVanillaClients) {
-+			if (bitsByte[5])
-+				ItemIO.Send(_sourceItem, writer);
-+
-+			goto SkipVanillaItemWrite;
-+		}
-+
  		if (bitsByte[5])
++			ItemIO.Send(_sourceItem, writer);
++
++		goto SkipVanillaItemWrite;
++
++		if (bitsByte[5])
  			writer.Write((short)_sourceItemType);
  
  		if (bitsByte[6])
@@ -135,7 +132,7 @@
  		if (bitsByte[6])
  			playerDeathReason._sourceItemPrefix = reader.ReadByte();
 +		*/
-+		if (ModNet.AllowVanillaClients) {
++		if (false) {
 +			int itemType = bitsByte[5] ? reader.ReadInt16() : 0;
 +			int prefix = bitsByte[6] ? reader.ReadByte() : 0;
 +			playerDeathReason._sourceItem = itemType == 0 ? null : new Item(itemType, prefix: prefix);

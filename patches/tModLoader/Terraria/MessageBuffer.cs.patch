@@ -120,7 +120,7 @@
  
  				player14.name = reader.ReadString().Trim().Trim();
 -				player14.hairDye = reader.ReadByte();
-+				player14.hairDye = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt();
++				player14.hairDye = reader.Read7BitEncodedInt();
  				ReadAccessoryVisibility(reader, player14.hideVisibleAccessory);
  				player14.hideMisc = reader.ReadByte();
  				player14.hairColor = reader.ReadRGB();
@@ -131,20 +131,18 @@
 -					int stack7 = reader.ReadInt16();
 -					int num260 = reader.ReadByte();
 -					int type16 = reader.ReadInt16();
-+					int stack7 = ModNet.AllowVanillaClients ? reader.ReadInt16() : -1;
-+					int num260 = ModNet.AllowVanillaClients ? reader.ReadByte() : -1;
-+					int type16 = ModNet.AllowVanillaClients ? reader.ReadInt16() : -1;
++					int stack7 = -1;
++					int num260 = -1;
++					int type16 = -1;
  					Item[] array3 = null;
  					Item[] array4 = null;
  					int num261 = 0;
-@@ -411,20 +_,35 @@
+@@ -411,20 +_,31 @@
  					}
  
  					if (flag16) {
-+						if (!ModNet.AllowVanillaClients) {
-+							player17.trashItem = ItemIO.Receive(reader, readStack: true);
-+							goto SkipVanillaRead;
-+						}
++						player17.trashItem = ItemIO.Receive(reader, readStack: true);
++						goto SkipVanillaRead;
 +
  						player17.trashItem = new Item();
  						player17.trashItem.netDefaults(type16);
@@ -159,10 +157,8 @@
  						int type17 = array3[num261].type;
  						int stack8 = array3[num261].stack;
 +
-+						if (!ModNet.AllowVanillaClients) {
-+							array3[num261] = ItemIO.Receive(reader, readStack: true);
-+							goto SkipVanillaRead;
-+						}
++						array3[num261] = ItemIO.Receive(reader, readStack: true);
++						goto SkipVanillaRead;
 +
  						array3[num261] = new Item();
  						array3[num261].netDefaults(type16);
@@ -173,14 +169,12 @@
  						if (num258 == Main.myPlayer && !Main.ServerSideCharacter)
  							array4[num261] = array3[num261].Clone();
  
-@@ -438,10 +_,17 @@
+@@ -438,10 +_,15 @@
  						}
  					}
  					else {
-+						if (!ModNet.AllowVanillaClients) {
-+							array3[num261] = ItemIO.Receive(reader, readStack: true);
-+							goto SkipVanillaRead;
-+						}
++						array3[num261] = ItemIO.Receive(reader, readStack: true);
++						goto SkipVanillaRead;
 +
  						array3[num261] = new Item();
  						array3[num261].netDefaults(type16);
@@ -196,7 +190,7 @@
  					Main.LobbyId = reader.ReadUInt64();
  					Sandstorm.IntendedSeverity = reader.ReadSingle();
 +
-+					if (!ModNet.AllowVanillaClients && Netplay.Connection.State > 4)
++					if (Netplay.Connection.State > 4)
 +						WorldIO.ReceiveModData(reader);
 +
  					if (Netplay.Connection.State == 3) {
@@ -239,9 +233,9 @@
  				Vector2 position3 = reader.ReadVector2();
  				Vector2 velocity3 = reader.ReadVector2();
 -				int stack3 = reader.ReadInt16();
++				int stack3 = reader.Read7BitEncodedInt();
 -				int prefixWeWant2 = reader.ReadByte();
-+				int stack3 = ModNet.AllowVanillaClients ? reader.ReadInt16() : reader.Read7BitEncodedInt();
-+				int prefixWeWant2 = ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt();
++				int prefixWeWant2 = reader.Read7BitEncodedInt();
  				int num106 = reader.ReadByte();
  				int num107 = reader.ReadInt16();
  				bool shimmered = false;
@@ -267,7 +261,7 @@
  					item4.position = position3;
  					item4.velocity = velocity3;
  					item4.active = true;
-@@ -1419,11 +_,16 @@
+@@ -1419,11 +_,15 @@
  				if (num158 == 668)
  					NPC.deerclopsBoss = num155;
  
@@ -276,8 +270,7 @@
  					nPC5.releaseOwner = reader.ReadByte();
  
 +				// Extra AI is read into a temporary buffer for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
-+				if (!ModNet.AllowVanillaClients)
-+					NPCLoader.ReceiveExtraAI(nPC5, NPCLoader.ReadExtraAI(reader));
++				NPCLoader.ReceiveExtraAI(nPC5, NPCLoader.ReadExtraAI(reader));
 +
  				break;
  			}
@@ -373,20 +366,18 @@
 -				int stack5 = reader.ReadInt16();
 -				int prefixWeWant3 = reader.ReadByte();
 -				int type8 = reader.ReadInt16();
-+				int stack5 = ModNet.AllowVanillaClients ? reader.ReadInt16() : -1;
-+				int prefixWeWant3 = ModNet.AllowVanillaClients ? reader.ReadByte() : -1;
-+				int type8 = ModNet.AllowVanillaClients ? reader.ReadInt16() : -1;
++				int stack5 = -1;
++				int prefixWeWant3 = -1;
++				int type8 = -1;
  				if (num164 >= 0 && num164 < 8000) {
  					if (Main.chest[num164] == null)
  						Main.chest[num164] = new Chest();
-@@ -1635,9 +_,16 @@
+@@ -1635,9 +_,14 @@
  					if (Main.chest[num164].item[num165] == null)
  						Main.chest[num164].item[num165] = new Item();
  
-+					if (!ModNet.AllowVanillaClients) {
-+						ItemIO.Receive(Main.chest[num164].item[num165], reader, readStack: true);
-+						goto SkipVanillaItemSetup;
-+					}
++					ItemIO.Receive(Main.chest[num164].item[num165], reader, readStack: true);
++					goto SkipVanillaItemSetup;
 +
  					Main.chest[num164].item[num165].netDefaults(type8);
  					Main.chest[num164].item[num165].Prefix(prefixWeWant3);
@@ -535,13 +526,12 @@
  						break;
  					case 4:
  						if (num206 == -1) {
-@@ -1860,6 +_,13 @@
+@@ -1860,6 +_,12 @@
  				player7.zone3 = reader.ReadByte();
  				player7.zone4 = reader.ReadByte();
  				player7.zone5 = reader.ReadByte();
 +
-+				if (!ModNet.AllowVanillaClients)
-+					BiomeLoader.ReceiveCustomBiomes(player7, reader);
++				BiomeLoader.ReceiveCustomBiomes(player7, reader);
 +
 +				//TML: Recalculate the 'not in any biome' value.
 +				player7.ZonePurity = player7.InZonePurity();
@@ -628,17 +618,15 @@
  					tileEntity.ID = num67;
  					TileEntity.ByID[tileEntity.ID] = tileEntity;
  					TileEntity.ByPosition[tileEntity.Position] = tileEntity;
-@@ -2819,10 +_,24 @@
+@@ -2819,10 +_,22 @@
  				if (Main.netMode == 2) {
  					short x12 = reader.ReadInt16();
  					int y12 = reader.ReadInt16();
 +
 +					Item item;
-+					if (!ModNet.AllowVanillaClients) {
-+						item = ItemIO.Receive(reader);
-+						item.stack = reader.Read7BitEncodedInt();
-+						goto SkipVanillaRead;
-+					}
++					item = ItemIO.Receive(reader);
++					item.stack = reader.Read7BitEncodedInt();
++					goto SkipVanillaRead;
 +
  					int netid3 = reader.ReadInt16();
  					int prefix3 = reader.ReadByte();
@@ -659,7 +647,7 @@
  				int num186 = reader.ReadByte();
 +
 +				// If type corresponds to projectile (magic number 2), read another byte for owner #WorldUIAnchorProjectileSyncFix
-+				if (!ModNet.AllowVanillaClients && num186 == 2) {
++				if (num186 == 2) {
 +					int owner = reader.ReadByte();
 +					num186 |= owner << 8; // Reassign num186 for use in DeserializeNetAnchor - this is now "packedOwnerType"
 +				}
@@ -728,16 +716,14 @@
  					EmoteBubble.NewBubble(num214, new WorldUIAnchor(Main.player[num213]), 360);
  					EmoteBubble.CheckForNPCsToReactToEmoteBubble(num214, Main.player[num213]);
  				}
-@@ -3293,10 +_,23 @@
+@@ -3293,10 +_,21 @@
  				if (Main.netMode == 2) {
  					short x10 = reader.ReadInt16();
  					int y10 = reader.ReadInt16();
 +
 +					Item item;
-+					if (!ModNet.AllowVanillaClients) {
-+						item = ItemIO.Receive(reader, readStack: true);
-+						goto SkipVanillaRead;
-+					}
++					item = ItemIO.Receive(reader, readStack: true);
++					goto SkipVanillaRead;
 +
  					int netid2 = reader.ReadInt16();
  					int prefix2 = reader.ReadByte();
@@ -752,7 +738,7 @@
  				}
  				break;
  			case 124: {
-@@ -3431,20 +_,46 @@
+@@ -3431,20 +_,44 @@
  					ushort key = reader.ReadUInt16();
  					LegacySoundStyle legacySoundStyle = SoundID.SoundByIndex[key];
  					BitsByte bitsByte4 = reader.ReadByte();
@@ -781,10 +767,8 @@
  					int y5 = reader.ReadInt16();
 +
 +					Item item;
-+					if (!ModNet.AllowVanillaClients) {
-+						item = ItemIO.Receive(reader, readStack: true);
-+						goto SkipVanillaRead;
-+					}
++					item = ItemIO.Receive(reader, readStack: true);
++					goto SkipVanillaRead;
 +
  					int netid = reader.ReadInt16();
  					int prefix = reader.ReadByte();
