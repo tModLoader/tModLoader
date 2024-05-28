@@ -118,8 +118,10 @@ internal class UIMemoryBar : UIElement
 			_memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, _colors[i++ % _colors.Length]));
 		}
 
-		long allocatedMemory = MemoryTracking.postModLoadMemory; // should be total process usage.
-		long nonModMemory = MemoryTracking.postModLoadMemory - totalModMemory; // What we think tmod itself is using.
+		Process process = Process.GetCurrentProcess();
+		process.Refresh();
+		long allocatedMemory = process.PrivateMemorySize64; // Use this rather than cache a value in MemoryTracking.Finish due to OS taking time to free memory
+		long nonModMemory = allocatedMemory - totalModMemory; // What we think tmod itself is using.
 		_memoryBarItems.Add(new MemoryBarItem(
 			$"{Language.GetTextValue("tModLoader.TerrariaMemory", SizeSuffix(nonModMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(allocatedMemory))}\n\n{Language.GetTextValue("tModLoader.InstalledMemory", SizeSuffix(GetTotalMemory()))}",
 			nonModMemory, Color.DeepSkyBlue));

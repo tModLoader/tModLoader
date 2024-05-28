@@ -405,7 +405,7 @@ public static class ModLoader
 
 	internal static void MigrateSettings()
 	{
-		if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
+		if (LastLaunchedTModLoaderVersion < new Version(2024, 5))
 			showMemoryEstimates = true;
 
 		// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.

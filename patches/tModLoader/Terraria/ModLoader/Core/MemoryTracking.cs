@@ -23,8 +23,6 @@ internal static class MemoryTracking
 {
 	internal static Dictionary<string, ModMemoryUsage> modMemoryUsageEstimates = new Dictionary<string, ModMemoryUsage>();
 	private static long previousMemory; // Running total managed memory usage
-	internal static long preModLoadMemory; // Total memory usage of the process before loading mods. Might be erroneously larger after unloading large mods as memory allocations are freed by OS.
-	internal static long postModLoadMemory;
 	internal static bool accurate = false; // use -accuratememorytracking command line argument to set.
 
 	internal static void Clear()
@@ -46,17 +44,11 @@ internal static class MemoryTracking
 		return usage;
 	}
 
-	internal static void Checkpoint(bool first = false)
+	internal static void Checkpoint()
 	{
 		// Sets new baseline prior to mod-specific loading
 		if (ModLoader.showMemoryEstimates) {
 			previousMemory = GC.GetTotalMemory(accurate);
-
-			if (first) {
-				var process = Process.GetCurrentProcess();
-				process.Refresh();
-				preModLoadMemory = process.PrivateMemorySize64;
-			}
 		}
 	}
 
@@ -96,8 +88,6 @@ internal static class MemoryTracking
 		process.Refresh();
 		Logging.tML.Info($"RAM physical: tModLoader usage: {UIMemoryBar.SizeSuffix(process.WorkingSet64)}, All processes usage: {(totalRamUsage == -1 ? "Unknown" : UIMemoryBar.SizeSuffix(totalRamUsage))}, Available: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory() - totalRamUsage)}, Total Installed: {UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory())}");
 		Logging.tML.Info($"RAM virtual: tModLoader usage: {UIMemoryBar.SizeSuffix(process.PrivateMemorySize64)}, All processes usage: {(totalCommit == -1 ? "Unknown" : UIMemoryBar.SizeSuffix(totalCommit))}");
-
-		postModLoadMemory = process.PrivateMemorySize64;
 
 		if (totalCommit > UIMemoryBar.GetTotalMemory()) {
 			// No way to query page file size, but this warning should help identify if that is a potential issue.
