@@ -50,16 +50,14 @@
  					break;
  				case 3:
  					writer.Write((byte)remoteClient);
-@@ -115,7 +_,15 @@
+@@ -115,7 +_,13 @@
  					writer.Write((byte)player4.skinVariant);
  					writer.Write((byte)player4.hair);
  					writer.Write(player4.name);
 +
-+					if (ModNet.AllowVanillaClients) {
 -					writer.Write(player4.hairDye);
-+						writer.Write7BitEncodedInt(player4.hairDye);
-+						goto SkipVanillaWrite;
-+					}
++					writer.Write7BitEncodedInt(player4.hairDye);
++					goto SkipVanillaWrite;
 +
 +					writer.Write((byte)player4.hairDye);
 +					SkipVanillaWrite:
