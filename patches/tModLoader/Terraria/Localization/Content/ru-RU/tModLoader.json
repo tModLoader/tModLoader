@@ -123,8 +123,8 @@
 		//Mod Config
 		"ModConfigs": "Конфигурации",
 		"ModConfigFilterOptions": "Фильтр",
-		// "ModConfigFilterByName": "Filter by Name",
-		// "ModConfigFilterByMod": "Filter by Mod",
+		"ModConfigFilterByName": "Фильтр по имени",
+		"ModConfigFilterByMod": "Фильтр по моду",
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация модов",
 		"ModConfigSaveConfig": "Сохранить",
@@ -143,7 +143,7 @@
 		"ModConfigCollapse": "Свернуть",
 		"ModConfigScaleUp": "Увеличить масштаб",
 		"ModConfigScaleDown": "Уменьшить масштаб",
-		// "ModConfigTypeHere": "Type Here",
+		"ModConfigTypeHere": "Напишите здесь",
 		"ModConfigServerResponse": "Ответ сервера: {0}",
 		"ModConfigServerRejectedChanges": "Сервер отклонил изменения: {0}",
 		"ModConfigSharedConfigChanged": "Изменена общая конфигурация: Сообщение: {0}, Мод: {1}, Конфигурация: {2}",
@@ -171,8 +171,8 @@
 		"UpdateItem": "Обновление {0}",
 		"PublishItem": "Попытка публикации {0}",
 		"SteamDownloader": "Постановка скачивания в очередь менеджера загрузок Steam...",
-		// "PublishUpdateButton": "Update Existing",
-		// "PublishNewButton": "Publish New",
+		"PublishUpdateButton": "Обновить существующий",
+		"PublishNewButton": "Опубликовать новый",
 		"DownloadProgress": "Скачано {0}%",
 
 		// Mod Errors
@@ -376,8 +376,8 @@
 		"EnterSteamID": "Пожалуйста, введите свой SteamID",
 		"PasteSteamID": "Вставить SteamID (ctrl-v)",
 		"MBServerResponse": "Ответ сервера «Браузера модов»:\n\n{0}",
-		// "SettingsPublicityUnlisted": "Unlisted",
-		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
+		"SettingsPublicityUnlisted": "Не в списке",
+		"SettingsPublicityUnlistedDescription": "Мод не отображается в общедоступных результатах поиска, если на него не подписаны.\nВы можете изменить настройку видимости на странице Мастерской в любое время.",
 
 		// TML Options
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
@@ -475,17 +475,17 @@
 		"DevModsInSandbox": "tModLoader не может разрабатывать моды в среде песочницы (например, в Flatpak). Пожалуйста, убедитесь, что вы установили Steam непосредственно на вашу систему.",
 
 		// Create Mod
-		// "CreateModName": "ModName (no spaces)",
-		// "CreateModDisplayName": "Mod DisplayName",
-		// "CreateModAuthor": "Mod Author",
-		// "CreateModBasicSword": "BasicSword (no spaces)",
-		// "CreateModBasicSwordHint": "Leave Blank to Skip",
-		// "CreateModFolderAlreadyExists": "Folder already exists",
-		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
-		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
-		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
-		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
-		// "CreateModAuthorEmpty": "Author can't be empty",
+		"CreateModName": "Имя мода (без пробелов)",
+		"CreateModDisplayName": "Отображаемое имя мода",
+		"CreateModAuthor": "Автор мода",
+		"CreateModBasicSword": "Базовый меч (без пробелов)",
+		"CreateModBasicSwordHint": "Оставьте пустым, чтобы пропустить",
+		"CreateModFolderAlreadyExists": "Папка уже существует",
+		"CreateModNameInvalid": "Имя мода не является допустимым идентификатором C#. Удалите пробелы.",
+		"CreateModNameReserved": "Имя мода является зарезервированным. Выберите другое имя.",
+		"CreateModBasicSwordInvalid": "Базовый меч не является допустимым идентификатором C#. Удалите пробелы.",
+		"CreateModDisplayNameEmpty": "Отображаемое имя не может быть пустым.",
+		"CreateModAuthorEmpty": "Автор мода не может быть пустым.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Для сборки модов требуются дополнительные библиотеки. (Отсутствует папка ModCompile)",
