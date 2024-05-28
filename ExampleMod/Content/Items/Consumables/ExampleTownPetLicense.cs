@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Items.Consumables
 			if (!ExampleTownPetSystem.boughtExampleTownPet || NPC.AnyNPCs(ModContent.NPCType<ExampleTownPet>())) {
 				return true;
 			}
-			return true;
+			return null;
 		}
 
 		/// <summary>
