@@ -104,24 +104,22 @@
  
  		return playerDeathReason;
  	}
-@@ -140,10 +_,16 @@
+@@ -140,10 +_,14 @@
  			writer.Write((short)_sourceProjectileType);
  
  		if (bitsByte[5])
 +			ItemIO.Send(_sourceItem, writer);
-+
-+		goto SkipVanillaItemWrite;
-+
++		/*
 +		if (bitsByte[5])
  			writer.Write((short)_sourceItemType);
  
  		if (bitsByte[6])
  			writer.Write((byte)_sourceItemPrefix);
-+		SkipVanillaItemWrite:
++		*/
  
  		if (bitsByte[7])
  			writer.Write(_sourceCustomReason);
-@@ -168,11 +_,20 @@
+@@ -168,11 +_,15 @@
  		if (bitsByte[4])
  			playerDeathReason._sourceProjectileType = reader.ReadInt16();
  
@@ -132,12 +130,7 @@
  		if (bitsByte[6])
  			playerDeathReason._sourceItemPrefix = reader.ReadByte();
 +		*/
-+		if (false) {
-+			int itemType = bitsByte[5] ? reader.ReadInt16() : 0;
-+			int prefix = bitsByte[6] ? reader.ReadByte() : 0;
-+			playerDeathReason._sourceItem = itemType == 0 ? null : new Item(itemType, prefix: prefix);
-+		}
-+		else if (bitsByte[5])
++		if (bitsByte[5])
 +			playerDeathReason._sourceItem = ItemIO.Receive(reader);
  
  		if (bitsByte[7])

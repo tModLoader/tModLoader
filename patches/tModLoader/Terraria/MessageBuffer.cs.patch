@@ -137,18 +137,17 @@
  					Item[] array3 = null;
  					Item[] array4 = null;
  					int num261 = 0;
-@@ -411,20 +_,31 @@
+@@ -411,20 +_,29 @@
  					}
  
  					if (flag16) {
 +						player17.trashItem = ItemIO.Receive(reader, readStack: true);
-+						goto SkipVanillaRead;
-+
++						/*
  						player17.trashItem = new Item();
  						player17.trashItem.netDefaults(type16);
  						player17.trashItem.stack = stack7;
  						player17.trashItem.Prefix(num260);
-+						SkipVanillaRead:
++						*/
 +
  						if (num258 == Main.myPlayer && !Main.ServerSideCharacter)
  							clientPlayer.trashItem = player17.trashItem.Clone();
@@ -158,29 +157,27 @@
  						int stack8 = array3[num261].stack;
 +
 +						array3[num261] = ItemIO.Receive(reader, readStack: true);
-+						goto SkipVanillaRead;
-+
++						/*
  						array3[num261] = new Item();
  						array3[num261].netDefaults(type16);
  						array3[num261].stack = stack7;
  						array3[num261].Prefix(num260);
-+						SkipVanillaRead:
++						*/
 +
  						if (num258 == Main.myPlayer && !Main.ServerSideCharacter)
  							array4[num261] = array3[num261].Clone();
  
-@@ -438,10 +_,15 @@
+@@ -438,10 +_,14 @@
  						}
  					}
  					else {
 +						array3[num261] = ItemIO.Receive(reader, readStack: true);
-+						goto SkipVanillaRead;
-+
++						/*
  						array3[num261] = new Item();
  						array3[num261].netDefaults(type16);
  						array3[num261].stack = stack7;
  						array3[num261].Prefix(num260);
-+						SkipVanillaRead:
++						*/
 +
  						if (num258 == Main.myPlayer && !Main.ServerSideCharacter)
  							array4[num261] = array3[num261].Clone();
@@ -618,7 +615,7 @@
  					tileEntity.ID = num67;
  					TileEntity.ByID[tileEntity.ID] = tileEntity;
  					TileEntity.ByPosition[tileEntity.Position] = tileEntity;
-@@ -2819,10 +_,22 @@
+@@ -2819,10 +_,21 @@
  				if (Main.netMode == 2) {
  					short x12 = reader.ReadInt16();
  					int y12 = reader.ReadInt16();
@@ -626,13 +623,12 @@
 +					Item item;
 +					item = ItemIO.Receive(reader);
 +					item.stack = reader.Read7BitEncodedInt();
-+					goto SkipVanillaRead;
-+
++					/*
  					int netid3 = reader.ReadInt16();
  					int prefix3 = reader.ReadByte();
  					int stack6 = reader.ReadInt16();
 +					item = new Item(netid3, stack6, prefix3);
-+					SkipVanillaRead:
++					*/
 +
 +					/*
  					TEItemFrame.TryPlacing(x12, y12, netid3, prefix3, stack6);
@@ -716,20 +712,19 @@
  					EmoteBubble.NewBubble(num214, new WorldUIAnchor(Main.player[num213]), 360);
  					EmoteBubble.CheckForNPCsToReactToEmoteBubble(num214, Main.player[num213]);
  				}
-@@ -3293,10 +_,21 @@
+@@ -3293,10 +_,20 @@
  				if (Main.netMode == 2) {
  					short x10 = reader.ReadInt16();
  					int y10 = reader.ReadInt16();
 +
 +					Item item;
 +					item = ItemIO.Receive(reader, readStack: true);
-+					goto SkipVanillaRead;
-+
++					/*
  					int netid2 = reader.ReadInt16();
  					int prefix2 = reader.ReadByte();
  					int stack4 = reader.ReadInt16();
 +					item = new Item(netid2, stack4, prefix2);
-+					SkipVanillaRead:
++					*/
 +
 +					/*
  					TEWeaponsRack.TryPlacing(x10, y10, netid2, prefix2, stack4);
@@ -738,7 +733,7 @@
  				}
  				break;
  			case 124: {
-@@ -3431,20 +_,44 @@
+@@ -3431,20 +_,43 @@
  					ushort key = reader.ReadUInt16();
  					LegacySoundStyle legacySoundStyle = SoundID.SoundByIndex[key];
  					BitsByte bitsByte4 = reader.ReadByte();
@@ -768,13 +763,12 @@
 +
 +					Item item;
 +					item = ItemIO.Receive(reader, readStack: true);
-+					goto SkipVanillaRead;
-+
++					/*
  					int netid = reader.ReadInt16();
  					int prefix = reader.ReadByte();
  					int stack = reader.ReadInt16();
 +					item = new Item(netid, stack, prefix);
-+					SkipVanillaRead:
++					*/
 +
 +					/*
  					TEFoodPlatter.TryPlacing(x5, y5, netid, prefix, stack);
