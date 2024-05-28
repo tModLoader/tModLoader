@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework.Audio;
-using ReLogic.Content;
 using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 

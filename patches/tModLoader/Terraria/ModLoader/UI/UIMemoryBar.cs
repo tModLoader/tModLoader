@@ -34,7 +34,7 @@ internal class UIMemoryBar : UIElement
 	internal static bool RecalculateMemoryNeeded = true;
 
 	private readonly List<MemoryBarItem> _memoryBarItems = new List<MemoryBarItem>();
-	private long totalMeasuredMemory; // Sum of estimated mod memory and base Terraria memory, serves as total width value of memory bar.
+	private long allocatedMemory; // Total process memory usage, serves as total width value of memory bar.
 
 	public override void OnInitialize()
 	{
@@ -63,7 +63,7 @@ internal class UIMemoryBar : UIElement
 
 		for (int i = 0; i < _memoryBarItems.Count; i++) {
 			var memoryBarData = _memoryBarItems[i];
-			int width = (int)(rectangle.Width * (memoryBarData.Memory / (float)totalMeasuredMemory));
+			int width = (int)(rectangle.Width * (memoryBarData.Memory / (float)allocatedMemory));
 			if (i == _memoryBarItems.Count - 1) { // Fix rounding errors on last entry for consistent right edge
 				width = rectangle.Right - xOffset - rectangle.X;
 			}
@@ -120,7 +120,7 @@ internal class UIMemoryBar : UIElement
 
 		Process process = Process.GetCurrentProcess();
 		process.Refresh();
-		long allocatedMemory = process.PrivateMemorySize64; // Use this rather than cache a value in MemoryTracking.Finish due to OS taking time to free memory
+		allocatedMemory = process.PrivateMemorySize64; // Use this rather than cache a value in MemoryTracking.Finish due to OS taking time to free memory
 		long nonModMemory = allocatedMemory - totalModMemory; // What we think tmod itself is using.
 		_memoryBarItems.Add(new MemoryBarItem(
 			$"{Language.GetTextValue("tModLoader.TerrariaMemory", SizeSuffix(nonModMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(allocatedMemory))}\n\n{Language.GetTextValue("tModLoader.InstalledMemory", SizeSuffix(GetTotalMemory()))}",
@@ -135,9 +135,6 @@ internal class UIMemoryBar : UIElement
 
 		//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;
 		//memoryBarItems.Add(new MemoryBarData($"Other programs: {SizeSuffix(maxMemory - availableMemory - meminuse)}", portion, Color.Black));
-
-		// Due to inaccuracies, we need to use a fake sum instead of postModLoadMemory to make sure bar width math works.
-		totalMeasuredMemory = _memoryBarItems.Sum(x => x.Memory);
 
 		RecalculateMemoryNeeded = false;
 	}

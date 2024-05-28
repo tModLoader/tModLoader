@@ -47,9 +47,8 @@ internal static class MemoryTracking
 	internal static void Checkpoint()
 	{
 		// Sets new baseline prior to mod-specific loading
-		if (ModLoader.showMemoryEstimates) {
+		if (ModLoader.showMemoryEstimates)
 			previousMemory = GC.GetTotalMemory(accurate);
-		}
 	}
 
 	internal static void Finish()
