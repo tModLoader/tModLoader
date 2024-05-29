@@ -7,6 +7,15 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <Version>1.0</Version>
+    <DisplayName>Example Mod</DisplayName>
+    <Author>TML Team</Author>
+    <Homepage>https://tmodloader.net/</Homepage>
+    <HideResources>false</HideResources>
+    <IncludeSource>true</IncludeSource>
+    <BuildIgnore>*.csproj, *.user, obj\*, bin\*, .vs\*, Old\*</BuildIgnore>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>

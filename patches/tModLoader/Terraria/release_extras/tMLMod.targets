@@ -1,4 +1,4 @@
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="IncludeModReferences">
 
 	<!-- Build Defaults -->
 	<PropertyGroup>
@@ -29,8 +29,8 @@
 		<!-- Remove the txt files that can be found in build folders, causing them to appear in the editor -->
 		<AdditionalFiles Remove="bin/**" />
 		<AdditionalFiles Remove="obj/**" />
-		<Reference Include="$(tMLSteamPath)$(tMLPath)" />
-		<Reference Include="$(tMLLibraryPath)/**/*.dll" />
+		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="false" />
+		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="false" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
@@ -38,8 +38,66 @@
 		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
 	</ItemGroup>
 
-	<Target Name="BuildMod" AfterTargets="Build">
-		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>
+	<ItemDefinitionGroup>
+		<ModReference>
+			<Visible>false</Visible>
+		</ModReference>
+	</ItemDefinitionGroup>
+	<UsingTask TaskName="GetTmlVersionSymbol" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTasks/1.0.0/tModLoader.BuildTasks.dll" TaskFactory="TaskHostFactory" />
+	<Target Name="AddPreprocessorVersionSymbol" BeforeTargets="CoreCompile">
+		<GetTmlVersionSymbol TmlDllPath="$(tMLSteamPath)$(tMLPath)">
+			<Output TaskParameter="TmlVersionSymbol" PropertyName="TmlVersionSymbol" />
+		</GetTmlVersionSymbol>
+		<PropertyGroup>
+			<DefineConstants>$(DefineConstants);$(TmlVersionSymbol)</DefineConstants>
+		</PropertyGroup>
+	</Target>
+	<Target Name="IncludeModReferences">
+		<Message Text="Adding %(ModReference.Identity) as a reference" />
+
+		<ItemGroup>
+			<Reference Include="%(ModReference.Identity)" Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'!=''" Private="true">
+				<HintPath>%(ModReference.HintPath)</HintPath>
+			</Reference>
+		</ItemGroup>
+
+		<ItemGroup>
+			<ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''" Private="true" />
+		</ItemGroup>
+	</Target>
+
+	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTasks/1.0.0/tModLoader.BuildTasks.dll" TaskFactory="TaskHostFactory" />
+	<Target Name="Package" AfterTargets="Build">
+		<Message Text="Packaging mod..." />
+
+		<Message Text="Convert mod properties into item group" />
+		<ItemGroup>
+			<ModProperty Include="Version" Value="$(Version)" Condition="$(Version) != ''" />
+			<ModProperty Include="DisplayName" Value="$(DisplayName)" Condition="$(DisplayName) != ''" />
+			<ModProperty Include="Author" Value="$(Author)" Condition="$(Author) != ''" />
+			<ModProperty Include="Homepage" Value="$(Homepage)" Condition="$(Homepage) != ''" />
+			<ModProperty Include="HideResources" Value="$(HideResources)" Condition="$(HideResources) != ''" />
+			<ModProperty Include="IncludeSource" Value="$(IncludeSource)" Condition="$(IncludeSource) != ''" />
+			<ModProperty Include="BuildIgnore" Value="$(BuildIgnore)" Condition="$(BuildIgnore) != ''" />
+			<ModProperty Include="Side" Value="$(Side)" Condition="$(Side) != ''" />
+			<ModProperty Include="SortBefore" Value="$(SortBefore)" Condition="$(SortBefore) != ''" />
+			<ModProperty Include="SortAfter" Value="$(SortAfter)" Condition="$(SortAfter) != ''" />
+			<ModProperty Include="PlayableOnPreview" Value="$(PlayableOnPreview)" Condition="$(PlayableOnPreview) != ''" />
+			<ModProperty Include="TranslationMod" Value="$(TranslationMod)" Condition="$(TranslationMod) != ''" />
+		</ItemGroup>
+
+		<PackageModFile
+				PackageReferences="@(PackageReference)"
+				ProjectReferences="@(_ResolvedProjectReferencePaths)"
+				ModReferences="@(ModReference)"
+				ReferencePaths="@(ReferencePath)"
+				ProjectDirectory="$(MSBuildProjectDirectory)"
+				OutputPath="$(OutputPath)"
+				AssemblyName="$(AssemblyName)"
+				TmlDllPath="$(tMLSteamPath)$(tMLPath)"
+				OutputTmodPath="$(OutputTmodPath)"
+				ModProperties="@(ModProperty)" >
+		</PackageModFile>
 	</Target>
 
 </Project>

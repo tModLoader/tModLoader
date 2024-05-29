@@ -128,14 +128,14 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -65 }
 		};
 		buttonBA.WithFadedMouseOver();
-		buttonBA.OnLeftClick += BuildMods;
+		//buttonBA.OnLeftClick += BuildMods;
 		//_uIElement.Append(buttonBA);
 
 		var buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"));
 		buttonBRA.CopyStyle(buttonBA);
 		buttonBRA.HAlign = 0.5f;
 		buttonBRA.WithFadedMouseOver();
-		buttonBRA.OnLeftClick += BuildAndReload;
+		//buttonBRA.OnLeftClick += BuildAndReload;
 		//_uIElement.Append(buttonBRA);
 
 		var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
@@ -208,7 +208,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void BuildMods(UIMouseEvent evt, UIElement listeningElement)
+	/*private void BuildMods(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(10, -1, -1, 1);
 		if (_modList.Count > 0)
@@ -220,7 +220,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(10, -1, -1, 1);
 		if (_modList.Count > 0)
 			Interface.buildMod.BuildAll(true);
-	}
+	}*/
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
@@ -325,7 +325,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		yield return "/usr/bin/dotnet";
 	}
 
-	private static string GetSystemDotnetPath()
+	public static string GetSystemDotnetPath()
 	{
 		try {
 			if (GetPossibleSystemDotnetPaths().FirstOrDefault(File.Exists) is string path) {

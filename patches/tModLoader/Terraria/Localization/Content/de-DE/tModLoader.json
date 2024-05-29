@@ -455,6 +455,7 @@
 		"MSUpgradeCSProj": ".csproj-Datei aktualisieren",
 		"MSOpenCSProj": "Öffne .csproj",
 		"MSUpgradeLangFiles": ".lang Dateien in .hjson Dateien umwandeln (zerstörungsfrei)",
+		// "MSUpgradeBuildTxt": "Move build.txt properties to .csproj",
 		"MSRebuildRequired": "Neuerstellen erforderlich",
 		"MSLocalizationFilesChangedCantPublish": "Es wurden Änderungen an den Übersetzungsdateien gemacht,\neine Neuerstellung ist erforderlich vor der Veröffentlichung",
 		"MSOpenSources": "Quellen öffnen",
@@ -509,7 +510,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Ein Fehler ist beim extrahieren aufgetreten {0}",
-		"ExtractHideCodeMessage": " Der Modder hat ausgewählt, dass der Code vom tModReader nicht gelesen werden kann.",
 		"ExtractNoSourceCodeMessage": "Der Modder hat seinen Quellcode nicht veröffentlicht.",
 		"ExtractHideResourcesMessage": "Der Modder hat ausgewählt, dass z.B. Bilder nicht vom TModReader eingelesen werden können.",
 		"ExtractFileListing": "Dateien:",

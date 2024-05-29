@@ -5,7 +5,9 @@
 
 	<!-- General -->
 	<PropertyGroup>
-		
+		<DisplayName>{{ModDisplayName}}</DisplayName>
+		<Author>{{ModAuthor}}</Author>
+		<Version>{{ModVersion}}</Version>
 	</PropertyGroup>
 
 	<!-- References -->

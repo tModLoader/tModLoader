@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Build.Utilities;
 
-namespace tModLoader.BuildTasks;
+namespace tModLoader.BuildTasks.Tasks;
 
 public abstract class TaskBase : Task
 {

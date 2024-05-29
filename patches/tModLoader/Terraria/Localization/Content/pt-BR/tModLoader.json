@@ -455,6 +455,7 @@
 		"MSUpgradeCSProj": "Atualizar o arquivo .csproj",
 		"MSOpenCSProj": "Abrir .csproj",
 		"MSUpgradeLangFiles": "Atualizar arquivos .lang para .hjson (não destrutivo)",
+		// "MSUpgradeBuildTxt": "Move build.txt properties to .csproj",
 		"MSRebuildRequired": "Reconstrução Necessária",
 		"MSLocalizationFilesChangedCantPublish": "Mudanças foram feitas nos arquivos de localização,\numa reconstrução é necessária antes da publicação",
 		"MSOpenSources": "Abrir Fontes",
@@ -509,7 +510,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Ocorreu um erro ao extrair {0}",
-		"ExtractHideCodeMessage": "O desenvolvedor do mod optou por esconder o código do tModReader.",
 		"ExtractNoSourceCodeMessage": "O desenvolvedor do mod optou por não incluir o seu código fonte.",
 		"ExtractHideResourcesMessage": "O desenvolvedor do mod optou por esconder recursos (ex. imagens) do tModReader.",
 		"ExtractFileListing": "Arquivos:",
