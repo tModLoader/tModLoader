@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -371,6 +372,7 @@ internal static class ModOrganizer
 
 		var modsToLoad = GetModsToLoad(availableMods);
 		try {
+			EnsureRecentlyBuildModsAreLoading(modsToLoad);
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
 			return Sort(modsToLoad);
@@ -451,6 +453,27 @@ internal static class ModOrganizer
 			var e = new Exception(string.Join("\n", errors));
 			e.Data["mods"] = erroredMods.Select(m => m.Name).ToArray();
 			throw e;
+		}
+	}
+
+	
+	private static void EnsureRecentlyBuildModsAreLoading(List<LocalMod> mods)
+	{
+		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. ModCompile.modsBuiltThisSession does the same but for in-game builds. We throw an error because this is definitely not desired.
+		foreach (var mod in mods) {
+			var localMod = AllFoundMods.SingleOrDefault(x => x.Name == mod.Name && x.location == ModLocation.Local);
+
+			if (localMod == null || localMod == mod || localMod.lastModified.CompareTo(mod.lastModified) <= 0) {
+				continue;
+			}
+			if (Debugger.IsAttached && File.Exists(localMod.properties.eacPath) && (Process.GetCurrentProcess().StartTime - File.GetLastWriteTime(localMod.properties.eacPath)).TotalSeconds < 60 || ModCompile.modsBuiltThisSessionThatWontBeSelectedToLoad.Contains(mod.Name)) {
+				var e = new Exception(Language.GetTextValue("tModLoader.LoadErrorRecentlyBuiltLocalModWithLowerVersion" + mod.location.ToString(), localMod.Name, localMod.Version, mod.Version));
+				e.Data["mod"] = mod.Name;
+				e.Data["hideStackTrace"] = true;
+				throw e;
+			}
+
+			continue;
 		}
 	}
 
