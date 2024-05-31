@@ -206,6 +206,9 @@ internal class UIModSourceItem : UIPanel
 			if (result) {
 				AddCsProjUpgradeButton();
 			}
+			else {
+				AddModPorterButton();
+			}
 
 			sourceUpgradeTask = null;
 		}
