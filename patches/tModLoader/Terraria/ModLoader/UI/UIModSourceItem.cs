@@ -35,12 +35,12 @@ internal class UIModSourceItem : UIPanel
 	private int contextButtonsLeft = -26;
 	private Task<string[]> langFileTask;
 	private Task<bool> sourceUpgradeTask;
-	private CancellationTokenSource _modSourcesCts;
+	private CancellationToken _modSourcesToken;
 	
-	public UIModSourceItem(string mod, LocalMod builtMod, CancellationTokenSource modSourcesCts)
+	public UIModSourceItem(string mod, LocalMod builtMod, CancellationToken modSourcesToken)
 	{
 		_mod = mod;
-		_modSourcesCts = modSourcesCts;
+		_modSourcesToken = modSourcesToken;
 
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 		_dividerTexture = UICommon.DividerTexture;
@@ -188,7 +188,7 @@ internal class UIModSourceItem : UIPanel
 		}
 
 		// Display upgrade .lang files button if any .lang files present
-		if (langFileTask?.IsCompleted ?? false) {
+		if (langFileTask is { IsCompleted: true }) {
 			string[] result = langFileTask.Result;
 
 			if (result.Length > 0) {
@@ -199,7 +199,7 @@ internal class UIModSourceItem : UIPanel
 		}
 
 		// Display Run tModPorter when .csproj is valid
-		if (sourceUpgradeTask?.IsCompleted ?? false) {
+		if (sourceUpgradeTask is { IsCompleted: true }) {
 			bool result = sourceUpgradeTask.Result;
 
 			// Source upgrade needed.
@@ -337,12 +337,12 @@ internal class UIModSourceItem : UIPanel
 	{
 		langFileTask = Task.Run(
 			() => Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories),
-			_modSourcesCts.Token
+			_modSourcesToken
 		);
 
 		sourceUpgradeTask = Task.Run(
 			() => SourceManagement.SourceUpgradeNeeded(_mod),
-			_modSourcesCts.Token
+			_modSourcesToken
 		);
 	}
 
