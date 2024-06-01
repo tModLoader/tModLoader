@@ -36,7 +36,7 @@ internal class UIMemoryBar : UIElement
 	private readonly List<MemoryBarItem> _memoryBarItems = new List<MemoryBarItem>();
 	private long allocatedMemory; // Total process memory usage, serves as total width value of memory bar.
 
-	public override void OnInitialize()
+	public UIMemoryBar()
 	{
 		Width.Set(0f, 1f);
 		Height.Set(20f, 0f);
@@ -46,6 +46,11 @@ internal class UIMemoryBar : UIElement
 	{
 		base.OnActivate();
 		// moved from constructor to avoid texture loading on JIT thread
+		Show();
+	}
+
+	internal void Show()
+	{
 		RecalculateMemoryNeeded = true;
 		Task.Run(RecalculateMemory);
 	}
@@ -76,6 +81,11 @@ internal class UIMemoryBar : UIElement
 				hoverData = memoryBarData;
 			}
 		}
+
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X, rectangle.Y, 2, rectangle.Height), Color.Black);
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X, rectangle.Y, rectangle.Width, 2), Color.Black);
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X + rectangle.Width - 2, rectangle.Y, 2, rectangle.Height), Color.Black);
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height - 2, rectangle.Width, 2), Color.Black);
 
 		if (drawHover && hoverData != null) {
 			UICommon.TooltipMouseText(hoverData.Tooltip);

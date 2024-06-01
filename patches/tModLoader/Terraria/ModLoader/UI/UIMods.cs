@@ -25,9 +25,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UILoaderAnimatedImage uiLoader;
 	private bool needToRemoveLoading;
 	private UIList modList;
+	private UIScrollbar uIScrollbar;
 	private float modListViewPosition;
 	private readonly List<UIModItem> items = new List<UIModItem>();
 	private bool updateNeeded;
+	private UIMemoryBar ramUsage;
+	private bool showRamUsage;
 	public bool loading;
 	private UIInputTextField filterTextBox;
 	public UICycleImage SearchFilterToggle;
@@ -68,23 +71,19 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		modList = new UIList {
 			Width = { Pixels = -25, Percent = 1f },
-			Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
-			Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
+			Height = { Pixels = -50, Percent = 1f },
+			Top = { Pixels = 50 },
 			ListPadding = 5f
 		};
 		uIPanel.Append(modList);
 
-		if (ModLoader.showMemoryEstimates) {
-			var ramUsage = new UIMemoryBar() {
-				Top = { Pixels = 45 },
-			};
-			ramUsage.Width.Pixels = -25;
-			uIPanel.Append(ramUsage);
-		}
+		ramUsage = new UIMemoryBar() {
+			Top = { Pixels = 44 },
+		};
 
-		var uIScrollbar = new UIScrollbar {
-			Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
-			Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
+		uIScrollbar = new UIScrollbar {
+			Height = { Pixels = -50, Percent = 1f },
+			Top = { Pixels = 50 },
 			HAlign = 1f
 		}.WithView(100f, 1000f);
 		uIPanel.Append(uIScrollbar);
@@ -152,7 +151,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		};
 
 		UICycleImage toggleImage;
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 4; j++) {
 			if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 				toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
 				toggleImage.SetCurrentState((int)sortMode);
@@ -177,7 +176,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 					updateNeeded = true;
 				};
 			}
-			else {
+			else if (j == 2) {
 				toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
 				toggleImage.SetCurrentState((int)modSideFilterMode);
 				toggleImage.OnLeftClick += (a, b) => {
@@ -189,14 +188,34 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 					updateNeeded = true;
 				};
 			}
-			toggleImage.Left.Pixels = j * 36 + 8;
+			else {
+				toggleImage = new UICycleImage(texture, 2, 32, 32, 34 * 7, 0);
+				toggleImage.SetCurrentState(showRamUsage.ToInt());
+				toggleImage.OnLeftClick += (a, b) => ToggleRamButtonAction();
+				toggleImage.OnRightClick += (a, b) => ToggleRamButtonAction();
+				void ToggleRamButtonAction()
+				{
+					showRamUsage = !showRamUsage;
+					uIPanel.AddOrRemoveChild(ramUsage, showRamUsage);
+					if (showRamUsage) {
+						ramUsage.Show();
+					}
+					int ramUsageSpace = showRamUsage ? 72 : 50;
+					modList.Height.Pixels = -ramUsageSpace;
+					modList.Top.Pixels = ramUsageSpace;
+					uIScrollbar.Height.Pixels = -ramUsageSpace;
+					uIScrollbar.Top.Pixels = ramUsageSpace;
+					uIScrollbar.Recalculate();
+				}
+			}
+			toggleImage.Left.Pixels = j * 36;
 			_categoryButtons.Add(toggleImage);
 			upperMenuContainer.Append(toggleImage);
 		}
 
 		var filterTextBoxBackground = new UIPanel {
 			Top = { Percent = 0f },
-			Left = { Pixels = -185, Percent = 1f },
+			Left = { Pixels = -186, Percent = 1f },
 			Width = { Pixels = 150 },
 			Height = { Pixels = 40 }
 		};
@@ -225,7 +244,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		filterTextBoxBackground.Append(clearSearchButton);
 
 		SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
-			Left = { Pixels = 545 }
+			Left = { Pixels = 544 }
 		};
 		SearchFilterToggle.SetCurrentState((int)searchFilterMode);
 		SearchFilterToggle.OnLeftClick += (a, b) => {
@@ -391,6 +410,9 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 						text = modSideFilterMode.ToFriendlyString();
 						break;
 					case 3:
+						text = Language.GetTextValue("tModLoader.ShowMemoryEstimates" + (showRamUsage ? "Yes" : "No"));
+						break;
+					case 4:
 						text = searchFilterMode.ToFriendlyString();
 						break;
 					default:
