@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"class_global_tile.html#aea84cf25c26547b18259d51b979397f1":[3,0,465,8],
 "class_global_tile.html#af524918ae55b890402dae31df61825db":[3,0,465,6],
 "class_global_tile.html#afe930e11a453ea3bac520f8c5b7a481d":[3,0,465,22],
 "class_global_type.html":[3,0,466],
@@ -45,10 +46,11 @@ var NAVTREEINDEX6 =
 "class_gore_i_d.html":[3,0,480],
 "class_gore_i_d_1_1_sets.html":[3,0,480,0],
 "class_gore_i_d_1_1_sets.html#a454d906cd24814cb95860c82c81c9d96":[3,0,480,0,2],
-"class_gore_i_d_1_1_sets.html#a607c5f38eac7b05b47541dccf702e69d":[3,0,480,0,4],
+"class_gore_i_d_1_1_sets.html#a607c5f38eac7b05b47541dccf702e69d":[3,0,480,0,5],
+"class_gore_i_d_1_1_sets.html#a661cac090873853d2c5cf34c3902022b":[3,0,480,0,3],
 "class_gore_i_d_1_1_sets.html#a6a46814572bb797343e30f27bf8852ac":[3,0,480,0,0],
 "class_gore_i_d_1_1_sets.html#a83ad7f1713ff91ab6c9e0c976fdc7389":[3,0,480,0,1],
-"class_gore_i_d_1_1_sets.html#aeac5c82e6adf955634ef8015353a66e0":[3,0,480,0,3],
+"class_gore_i_d_1_1_sets.html#aeac5c82e6adf955634ef8015353a66e0":[3,0,480,0,4],
 "class_gore_loader.html":[3,0,481],
 "class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71":[3,0,481,0],
 "class_granite_biome.html":[3,0,482],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35":[3,0,624,160],
 "class_item.html#aab4098bfcd01cf2bbf9ad0201984c77e":[3,0,624,89],
 "class_item.html#aae13cf054f98781555a4f50ff417cc88":[3,0,624,11],
-"class_item.html#aaf5f668b462b0244e85de0b7da69a815":[3,0,624,65],
-"class_item.html#ab0656ddd68272719de52a79cdc422da6":[3,0,624,101],
-"class_item.html#ab442988b55e45d07c89dfe6296ed5590":[3,0,624,96]
+"class_item.html#aaf5f668b462b0244e85de0b7da69a815":[3,0,624,65]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"class_item_loader.html#abd634865f7413f78b9397bc0681c00d5":[3,0,640,18],
+"class_item_loader.html#abe5b49fd6918233bda3ceb888b077513":[3,0,640,34],
+"class_item_loader.html#ac03b509ad3618df1cbb79167de5130b2":[3,0,640,74],
 "class_item_loader.html#ac409567b93a7331273b6d1d2259fbe6d":[3,0,640,60],
 "class_item_loader.html#ac8b18ec09a7dc4cd8d064d0e1641280c":[3,0,640,55],
 "class_item_loader.html#acaf903811d1ac60ac4bddbc5a29d7bc1":[3,0,640,53],
@@ -141,9 +144,14 @@ var NAVTREEINDEX8 =
 "class_lifeform_analyzer_info_display.html#a6a6296dc87a0ea5f6cbc935082a55a44":[3,0,703,0],
 "class_light_map.html":[3,0,707],
 "class_lighting.html":[3,0,705],
+"class_lighting.html#a071b92fde6c0634bad0ffd1ab5c66991":[3,0,705,7],
 "class_lighting.html#a231da45b0b9d4569fa06bd6f031f88f1":[3,0,705,2],
+"class_lighting.html#a2d4dad695635fc155f6a05af9a63348d":[3,0,705,5],
+"class_lighting.html#a5f8dc5af758ec11158c420ee2c671f44":[3,0,705,4],
 "class_lighting.html#a657943484e31f0e345c978bcdcd47feb":[3,0,705,0],
+"class_lighting.html#aa424e3ce2389627923eab5e317b11f54":[3,0,705,6],
 "class_lighting.html#aad42651b51f7f55a8cfa3e518631dc53":[3,0,705,1],
+"class_lighting.html#afefe893018692f523bdd8abd8430b4c6":[3,0,705,3],
 "class_lighting_engine.html":[3,0,706],
 "class_link_buttons_initializer.html":[3,0,709],
 "class_liquid.html":[3,0,710],
@@ -241,13 +249,5 @@ var NAVTREEINDEX8 =
 "class_main.html#a8b2a9466851d8f46469c1b64ea5d9e71":[3,0,738,12],
 "class_main.html#a8ebb90ade0b89892ebd4e7ea242904db":[3,0,738,43],
 "class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33":[3,0,738,44],
-"class_main.html#a977a3c4c4f1f7e8e47307624db4da6ce":[3,0,738,11],
-"class_main.html#a9b43ba6a62eef2a91a16433fca565626":[3,0,738,20],
-"class_main.html#a9ff5fc055998930148540c434e6e9ad0":[3,0,738,21],
-"class_main.html#aa040125595dd0a090c6588743b7dc34b":[3,0,738,64],
-"class_main.html#aa39286967de374f049ed929672601ddb":[3,0,738,60],
-"class_main.html#aa3c33b3a39f7a4e711830285ac31ef7a":[3,0,738,25],
-"class_main.html#aa44e433e53a98400dacd5260313d7b2b":[3,0,738,74],
-"class_main.html#aa82ef182eb900b40f557dee09347103e":[3,0,738,7],
-"class_main.html#aa844b5324096225533879d1901aa9afe":[3,0,738,50]
+"class_main.html#a977a3c4c4f1f7e8e47307624db4da6ce":[3,0,738,11]
 };

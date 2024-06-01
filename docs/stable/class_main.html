@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -2271,7 +2271,7 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>lightning</b>
 <tr class="memitem:a52907c46ebad4f04fe95179cffef3b97"><td class="memItemLeft" align="right" valign="top"><a id="a52907c46ebad4f04fe95179cffef3b97" name="a52907c46ebad4f04fe95179cffef3b97"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>lightPet</b> = new bool[BuffID.Count]</td></tr>
 <tr class="memdesc:a52907c46ebad4f04fe95179cffef3b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br  />
- Defaults to false; all vanilla light pets have their entries here set to true.<br  />
+ Defaults to <code>false</code>; all vanilla light pets have their entries here set to true.<br  />
  <br /></td></tr>
 <tr class="separator:a52907c46ebad4f04fe95179cffef3b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17884400122e93c318234f37c8ad1b1b"><td class="memItemLeft" align="right" valign="top"><a id="a17884400122e93c318234f37c8ad1b1b" name="a17884400122e93c318234f37c8ad1b1b"></a>
@@ -2561,7 +2561,7 @@ static Microsoft.Xna.Framework.Color&#160;</td><td class="memItemRight" valign="
 <tr class="memitem:ab609d9831d6103d2cab0782dc53f1309"><td class="memItemLeft" align="right" valign="top"><a id="ab609d9831d6103d2cab0782dc53f1309" name="ab609d9831d6103d2cab0782dc53f1309"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>meleeBuff</b> = new bool[BuffID.Count]</td></tr>
 <tr class="memdesc:ab609d9831d6103d2cab0782dc53f1309"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br  />
- Defaults to false; all vanilla flask effects have their entries here set to true.<br  />
+ Defaults to <code>false</code>; all vanilla flask effects have their entries here set to true.<br  />
  <br /></td></tr>
 <tr class="separator:ab609d9831d6103d2cab0782dc53f1309"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a804a461324324728d3d65a87f0c55cd7"><td class="memItemLeft" align="right" valign="top"><a id="a804a461324324728d3d65a87f0c55cd7" name="a804a461324324728d3d65a87f0c55cd7"></a>
@@ -2921,7 +2921,7 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>penguinCageFr
 <tr class="memitem:a8ebb90ade0b89892ebd4e7ea242904db"><td class="memItemLeft" align="right" valign="top"><a id="a8ebb90ade0b89892ebd4e7ea242904db" name="a8ebb90ade0b89892ebd4e7ea242904db"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>persistentBuff</b> = new bool[BuffID.Count]</td></tr>
 <tr class="memdesc:a8ebb90ade0b89892ebd4e7ea242904db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows status effects for which this is set to true to persist after the afflicted player's death.<br  />
- Defaults to false; all vanilla flask effects have their entries here set to true.<br  />
+ Defaults to <code>false</code>; all vanilla flask effects have their entries here set to true.<br  />
  <br /></td></tr>
 <tr class="separator:a8ebb90ade0b89892ebd4e7ea242904db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b79b7fcbd0a20f993cb74fe717c29bb"><td class="memItemLeft" align="right" valign="top"><a id="a5b79b7fcbd0a20f993cb74fe717c29bb" name="a5b79b7fcbd0a20f993cb74fe717c29bb"></a>
@@ -3536,7 +3536,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileAlch</b>
 <tr class="separator:a1ed3850cbd019d12544d4917dd337848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa844b5324096225533879d1901aa9afe"><td class="memItemLeft" align="right" valign="top"><a id="aa844b5324096225533879d1901aa9afe" name="aa844b5324096225533879d1901aa9afe"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileAxe</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:aa844b5324096225533879d1901aa9afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe. <br /></td></tr>
+<tr class="memdesc:aa844b5324096225533879d1901aa9afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe. Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aa844b5324096225533879d1901aa9afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b19bfc511ba28f0a5d86d9c2ef53d99"><td class="memItemLeft" align="right" valign="top"><a id="a6b19bfc511ba28f0a5d86d9c2ef53d99" name="a6b19bfc511ba28f0a5d86d9c2ef53d99"></a>
 static <a class="el" href="class_tile_batch.html">TileBatch</a>&#160;</td><td class="memItemRight" valign="bottom"><b>tileBatch</b></td></tr>
@@ -3613,7 +3613,7 @@ static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLargeFra
 <tr class="separator:a31efd2fbedd7a4071162d6678c0da706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memItemLeft" align="right" valign="top"><a id="ae4e747a8a660d98c8fd21b613e1fc2d4" name="ae4e747a8a660d98c8fd21b613e1fc2d4"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLavaDeath</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if in contact with lava. TileObjectData.LavaDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. Use <a class="el" href="class_main.html#ac8f3eeb77b730712be9268d5d8ca9cf5" title="If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it...">tileObsidianKill</a> instead if the tile should only be killed by obsidian forming over it. <br /></td></tr>
+<tr class="memdesc:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if in contact with lava. TileObjectData.LavaDeath supersedes this if a <a class="el" href="class_tile_object_data.html">TileObjectData</a> is available. Use <a class="el" href="class_main.html#ac8f3eeb77b730712be9268d5d8ca9cf5" title="If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it...">tileObsidianKill</a> instead if the tile should only be killed by obsidian forming over it. Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a735063a3cb2816b52d2e861269294589"><td class="memItemLeft" align="right" valign="top"><a id="a735063a3cb2816b52d2e861269294589" name="a735063a3cb2816b52d2e861269294589"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLighted</b> = new bool[TileID.Count]</td></tr>
@@ -3644,7 +3644,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileNoSunLig
 <tr class="separator:a045bb155cfc729b80a6b7be8987af6d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="memItemLeft" align="right" valign="top"><a id="ac8f3eeb77b730712be9268d5d8ca9cf5" name="ac8f3eeb77b730712be9268d5d8ca9cf5"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileObsidianKill</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <a class="el" href="class_main.html#ae4e747a8a660d98c8fd21b613e1fc2d4" title="If true for the given tile type, tiles of the type will be destroyed if in contact with lava....">tileLavaDeath</a> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils. <br /></td></tr>
+<tr class="memdesc:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <a class="el" href="class_main.html#ae4e747a8a660d98c8fd21b613e1fc2d4" title="If true for the given tile type, tiles of the type will be destroyed if in contact with lava....">tileLavaDeath</a> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils. Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f9ffde4d29e185014fb024d3e6ed24"><td class="memItemLeft" align="right" valign="top"><a id="a34f9ffde4d29e185014fb024d3e6ed24" name="a34f9ffde4d29e185014fb024d3e6ed24"></a>
 static short[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileOreFinderPriority</b> = new short[TileID.Count]</td></tr>
@@ -3827,7 +3827,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>validateSaves<
 <tr class="memitem:a610f0ef35769f577a8670ac04e86be9a"><td class="memItemLeft" align="right" valign="top"><a id="a610f0ef35769f577a8670ac04e86be9a" name="a610f0ef35769f577a8670ac04e86be9a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>vanityPet</b> = new bool[BuffID.Count]</td></tr>
 <tr class="memdesc:a610f0ef35769f577a8670ac04e86be9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br  />
- Defaults to false; all vanilla vanity pets have their entries here set to true.<br  />
+ Defaults to <code>false</code>; all vanilla vanity pets have their entries here set to true.<br  />
  <br /></td></tr>
 <tr class="separator:a610f0ef35769f577a8670ac04e86be9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae87653adab1cb730a3c539dc534ecff9"><td class="memItemLeft" align="right" valign="top"><a id="ae87653adab1cb730a3c539dc534ecff9" name="ae87653adab1cb730a3c539dc534ecff9"></a>

@@ -1,5 +1,13 @@
 var NAVTREEINDEX16 =
 {
+"class_player_1_1_random_teleportation_attempt_settings.html":[3,0,965,11],
+"class_player_1_1_saved_player_data_with_annoying_rules.html":[3,0,965,12],
+"class_player_1_1_selection_radial.html":[3,0,965,13],
+"class_player_1_1_settings.html":[3,0,965,15],
+"class_player_1_1_smart_cursor_settings.html":[3,0,965,16],
+"class_player_data_initializer.html":[3,0,966],
+"class_player_death_reason.html":[3,0,967],
+"class_player_death_reason.html#a6171817be69d166d82feaf78b89954c6":[3,0,967,0],
 "class_player_difficulty_i_d.html":[3,0,968],
 "class_player_draw_helper.html":[3,0,969],
 "class_player_draw_layer.html":[3,0,970],
@@ -241,13 +249,5 @@ var NAVTREEINDEX16 =
 "class_proj_a_i_style_i_d.html#a525acc528c7c82aee71ea07ed6d6ea68":[3,0,1019,185],
 "class_proj_a_i_style_i_d.html#a56f3b0e441ef10a9989d5b5630c0da53":[3,0,1019,114],
 "class_proj_a_i_style_i_d.html#a5768b12b922f6b0dfb0da8cf7d2b5b31":[3,0,1019,93],
-"class_proj_a_i_style_i_d.html#a5ac1cc25e3d4b591ca0424d6f58bbd6d":[3,0,1019,46],
-"class_proj_a_i_style_i_d.html#a5bce806d6d86f1cbbca94bc9831b6e35":[3,0,1019,105],
-"class_proj_a_i_style_i_d.html#a5fad6c0143970cc3b392b8d9033e27fc":[3,0,1019,24],
-"class_proj_a_i_style_i_d.html#a61dcbe99c1ddaef1d18a7a3baaf78f28":[3,0,1019,83],
-"class_proj_a_i_style_i_d.html#a640c04f3bd84166611d90537e6cbf461":[3,0,1019,9],
-"class_proj_a_i_style_i_d.html#a6445d75c6deb8a907bf80cccd2c33d44":[3,0,1019,96],
-"class_proj_a_i_style_i_d.html#a65b8471bee28727e36ec0b3f7289d5bc":[3,0,1019,33],
-"class_proj_a_i_style_i_d.html#a6675e33aba9ac205a4fba1aa9ffc2ce6":[3,0,1019,153],
-"class_proj_a_i_style_i_d.html#a684922187f1cdda7ea074d5c8abba521":[3,0,1019,167]
+"class_proj_a_i_style_i_d.html#a5ac1cc25e3d4b591ca0424d6f58bbd6d":[3,0,1019,46]
 };

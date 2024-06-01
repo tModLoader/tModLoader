@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -106,13 +106,18 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>DisappearSpee
  Defaults to <code>1</code>. <br /></td></tr>
 <tr class="separator:a83ad7f1713ff91ab6c9e0c976fdc7389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a454d906cd24814cb95860c82c81c9d96"><td class="memItemLeft" align="right" valign="top"><a id="a454d906cd24814cb95860c82c81c9d96" name="a454d906cd24814cb95860c82c81c9d96"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DrawBehind</b> = Factory.CreateBoolSet(706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 943, 1147, 1160, 1161, 1162)</td></tr>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DrawBehind</b> = Factory.CreateBoolSet()</td></tr>
 <tr class="memdesc:a454d906cd24814cb95860c82c81c9d96"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given gore type (Gore.type), then that gore draws behind tiles. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a454d906cd24814cb95860c82c81c9d96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a835b2fb7b2c1c87a81e60fc8ba192ff1"><td class="memItemLeft" align="right" valign="top"><a id="a835b2fb7b2c1c87a81e60fc8ba192ff1" name="a835b2fb7b2c1c87a81e60fc8ba192ff1"></a>
 static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(GoreLoader.GoreCount)</td></tr>
 <tr class="separator:a835b2fb7b2c1c87a81e60fc8ba192ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a661cac090873853d2c5cf34c3902022b"><td class="memItemLeft" align="right" valign="top"><a id="a661cac090873853d2c5cf34c3902022b" name="a661cac090873853d2c5cf34c3902022b"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>LiquidDroplet</b> = Factory.CreateBoolSet(706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 943, 1147, 1160, 1161, 1162)</td></tr>
+<tr class="memdesc:a661cac090873853d2c5cf34c3902022b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this gore will behave as a dripping liquid droplet. Useful for gore used in ModLoader.ModWaterStyle.GetDropletGore. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a661cac090873853d2c5cf34c3902022b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeac5c82e6adf955634ef8015353a66e0"><td class="memItemLeft" align="right" valign="top"><a id="aeac5c82e6adf955634ef8015353a66e0" name="aeac5c82e6adf955634ef8015353a66e0"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PaintedFallingLeaf</b> = Factory.CreateBoolSet(910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920, 921, 922, 923, 924, 925, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121, 1248, 1249, 1250, 1251, 1252, 1253, 1254, 1255, 1257, 1278)</td></tr>
 <tr class="memdesc:aeac5c82e6adf955634ef8015353a66e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given gore type (Gore.type), then that gore has columns in its sprite corresponding to the amount of tile paints, and Gore.Frame.CurrentColumn will be set to tile.TileColor on spawn if it's coming from a tree via wind effects. <br  />

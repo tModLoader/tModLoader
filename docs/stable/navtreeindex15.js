@@ -1,5 +1,13 @@
 var NAVTREEINDEX15 =
 {
+"class_n_p_c_shop.html":[3,0,912],
+"class_n_p_c_shop.html#a0862b24bb718936b58ce51fe24c19a00":[3,0,912,2],
+"class_n_p_c_shop.html#a1c0a971bb9013cc09724fd3d233100cc":[3,0,912,1],
+"class_n_p_c_shop_1_1_entry.html":[3,0,912,0],
+"class_n_p_c_shop_database.html":[3,0,913],
+"class_n_p_c_shop_database.html#aaec2893a470d893be7a70324cdc389cd":[3,0,913,0],
+"class_n_p_c_smart_interact_candidate_provider.html":[3,0,914],
+"class_n_p_c_stats_report_info_element.html":[3,0,917],
 "class_n_p_c_utils.html":[3,0,919],
 "class_n_p_c_utils_1_1_search_filters.html":[3,0,919,0],
 "class_n_p_c_was_chat_with_tracker.html":[3,0,920],
@@ -241,13 +249,5 @@ var NAVTREEINDEX15 =
 "class_player.html#afb5ba132b05a7e2abf19f970eefd4634":[3,0,965,39],
 "class_player.html#affe1d691bd3a8fbeb795d6d8aa204b7c":[3,0,965,139],
 "class_player_1_1_builder_acc_toggle_i_ds.html":[3,0,965,0],
-"class_player_1_1_hooks.html":[3,0,965,4],
-"class_player_1_1_random_teleportation_attempt_settings.html":[3,0,965,11],
-"class_player_1_1_saved_player_data_with_annoying_rules.html":[3,0,965,12],
-"class_player_1_1_selection_radial.html":[3,0,965,13],
-"class_player_1_1_settings.html":[3,0,965,15],
-"class_player_1_1_smart_cursor_settings.html":[3,0,965,16],
-"class_player_data_initializer.html":[3,0,966],
-"class_player_death_reason.html":[3,0,967],
-"class_player_death_reason.html#a6171817be69d166d82feaf78b89954c6":[3,0,967,0]
+"class_player_1_1_hooks.html":[3,0,965,4]
 };

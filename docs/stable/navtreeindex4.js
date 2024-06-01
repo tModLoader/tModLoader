@@ -162,6 +162,7 @@ var NAVTREEINDEX4 =
 "class_gen_shape.html":[3,0,444],
 "class_gen_structure.html":[3,0,446],
 "class_gen_vars.html":[3,0,447],
+"class_gen_vars.html#a16f4d28cb5361cf1db462ab32c953834":[3,0,447,2],
 "class_gen_vars.html#a3271458d842324de964b87a9fc8b0ae7":[3,0,447,0],
 "class_gen_vars.html#a97d37bffde691950d75343be003dda12":[3,0,447,1],
 "class_general_issue_reporter.html":[3,0,438],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "class_global_item.html#a36d9e69d9571c38e679a4e99b6b26f38":[3,0,457,43],
 "class_global_item.html#a37708aaedc3801a748eaa0d1b606a33f":[3,0,457,56],
 "class_global_item.html#a392840d367f8029c8c7d66b49fc5ce51":[3,0,457,57],
-"class_global_item.html#a397d6589e63f4fba06366c311234f620":[3,0,457,25],
-"class_global_item.html#a39b6b6d677416a4d6b7219f8c8dbb073":[3,0,457,107]
+"class_global_item.html#a397d6589e63f4fba06366c311234f620":[3,0,457,25]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -153,6 +153,7 @@ static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>ClosestPoin
 <tr class="separator:a76e185165ab7632777884abc741961a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1aa7dde73333fb2204b3b115a6fc829a"><td class="memItemLeft" align="right" valign="top"><a id="a1aa7dde73333fb2204b3b115a6fc829a" name="a1aa7dde73333fb2204b3b115a6fc829a"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>ClosestPointOnLine</b> (this Vector2 P, Vector2 A, Vector2 B)</td></tr>
+<tr class="memdesc:a1aa7dde73333fb2204b3b115a6fc829a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the closest point on a line segment from <em>A</em>  to <em>B</em>  to another point <em>P</em> . The resulting point will be on the line and not extend past A or B. <br /></td></tr>
 <tr class="separator:a1aa7dde73333fb2204b3b115a6fc829a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1df39274edab0cc23429e945da3ec9b"><td class="memItemLeft" align="right" valign="top"><a id="ad1df39274edab0cc23429e945da3ec9b" name="ad1df39274edab0cc23429e945da3ec9b"></a>
 static long&#160;</td><td class="memItemRight" valign="bottom"><b>CoinsCombineStacks</b> (out bool overFlowing, params long[] coinCounts)</td></tr>
@@ -558,6 +559,7 @@ static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Round</b> (
 <tr class="separator:afd06b22a0d111f9b07a91637241b7cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e70ac2591faca81e9cfc1a11d86bc5a"><td class="memItemLeft" align="right" valign="top"><a id="a4e70ac2591faca81e9cfc1a11d86bc5a" name="a4e70ac2591faca81e9cfc1a11d86bc5a"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>SafeNormalize</b> (this Vector2 v, Vector2 defaultValue)</td></tr>
+<tr class="memdesc:a4e70ac2591faca81e9cfc1a11d86bc5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this Vector2 can't be normalized, either because it is a 0 length vector or has not a number values, <em>defaultValue</em>  will be returned instead as a fallback. It will not be normalized so using Vector2.UnitX or Vector2.UnitY is appropriate. Vector2.Zero can also be appropriate if the surrounding logic expects it. Using SafeNormalize instead of Normalize avoids many difficult to anticipate issues that would cause bugs. <br /></td></tr>
 <tr class="separator:a4e70ac2591faca81e9cfc1a11d86bc5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28c6181fb5f158b16dc418b29381e44b"><td class="memItemLeft" align="right" valign="top"><a id="a28c6181fb5f158b16dc418b29381e44b" name="a28c6181fb5f158b16dc418b29381e44b"></a>
 static T&#160;</td><td class="memItemRight" valign="bottom"><b>SelectRandom&lt; T &gt;</b> (<a class="el" href="class_unified_random.html">UnifiedRandom</a> random, params T[] choices)</td></tr>
@@ -595,9 +597,11 @@ static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>ToByteArray<
 <tr class="separator:aab0b275e14a7fb5160ce5d31278b89e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6c4d91bbedc8425a021369677117ccb"><td class="memItemLeft" align="right" valign="top"><a id="af6c4d91bbedc8425a021369677117ccb" name="af6c4d91bbedc8425a021369677117ccb"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>ToDirectionInt</b> (this bool value)</td></tr>
+<tr class="memdesc:af6c4d91bbedc8425a021369677117ccb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a bool to 1 if true, -1 if false. Suitable for working with <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a> and Projectile.spriteDirection, or anything else related to geometry.<br /></td></tr>
 <tr class="separator:af6c4d91bbedc8425a021369677117ccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bf550346c994d3e72a657a8b09989b7"><td class="memItemLeft" align="right" valign="top"><a id="a2bf550346c994d3e72a657a8b09989b7" name="a2bf550346c994d3e72a657a8b09989b7"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>ToInt</b> (this bool value)</td></tr>
+<tr class="memdesc:a2bf550346c994d3e72a657a8b09989b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a bool to 1 if true, 0 if false. <br /></td></tr>
 <tr class="separator:a2bf550346c994d3e72a657a8b09989b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a972497890904bd5483d16b304e3ae217"><td class="memItemLeft" align="right" valign="top"><a id="a972497890904bd5483d16b304e3ae217" name="a972497890904bd5483d16b304e3ae217"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Top</b> (this Rectangle r)</td></tr>
@@ -616,6 +620,7 @@ static Point&#160;</td><td class="memItemRight" valign="bottom"><b>ToPoint</b> (
 <tr class="separator:abf018e6455b5e72028ddcc8e732597bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e2879d0566eca15938d1cdfb6f37a77"><td class="memItemLeft" align="right" valign="top"><a id="a6e2879d0566eca15938d1cdfb6f37a77" name="a6e2879d0566eca15938d1cdfb6f37a77"></a>
 static <a class="el" href="struct_point16.html">Point16</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ToPoint16</b> (this Vector2 v)</td></tr>
+<tr class="memdesc:a6e2879d0566eca15938d1cdfb6f37a77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts this Vector2 to a <a class="el" href="struct_point16.html">Point16</a>, resulting in X and Y values rounded towards 0. If the intention is to convert to <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> coordinates from World coordinates, use ToTileCoordinates16(Vector2) instead. <br /></td></tr>
 <tr class="separator:a6e2879d0566eca15938d1cdfb6f37a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a644ca38beecfd33a20ac66ced029ab9f"><td class="memItemLeft" align="right" valign="top"><a id="a644ca38beecfd33a20ac66ced029ab9f" name="a644ca38beecfd33a20ac66ced029ab9f"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>TopRight</b> (this Rectangle r)</td></tr>
@@ -700,6 +705,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>Width</b> (this
 <tr class="separator:a9bd128a05bade65c7d35b5e2b99fc272"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8415ee64662b02f45fe52df60653c077"><td class="memItemLeft" align="right" valign="top"><a id="a8415ee64662b02f45fe52df60653c077" name="a8415ee64662b02f45fe52df60653c077"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>WithinRange</b> (this Vector2 Origin, Vector2 Target, float MaxRange)</td></tr>
+<tr class="memdesc:a8415ee64662b02f45fe52df60653c077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the <em>Target</em>  is within <em>MaxRange</em>  world coordinate units of <em>Origin</em> . <br /></td></tr>
 <tr class="separator:a8415ee64662b02f45fe52df60653c077"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1e946aabafa59288ad237f717edee2c"><td class="memItemLeft" align="right" valign="top"><a id="af1e946aabafa59288ad237f717edee2c" name="af1e946aabafa59288ad237f717edee2c"></a>
 static string[]&#160;</td><td class="memItemRight" valign="bottom"><b>WordwrapString</b> (string text, DynamicSpriteFont font, int maxWidth, int maxLines, out int lineAmount)</td></tr>
