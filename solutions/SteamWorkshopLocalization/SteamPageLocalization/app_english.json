@@ -1,0 +1,15 @@
+{
+	"HomePage": {
+		"AreaTitle": "Developer's Choice",
+		"AreaDescription": "These mods have been hand-picked by the developers of tModLoader, and are intended to shine the spotlight on high quality, but perhaps lesser-known Terraria mods.",
+	},
+	"General": {
+		"WorkshopTitle": "tModLoader Mods",
+		// Max Length: 200
+		"WorkshopDescription": "View and download tModLoader Mods from the Steam Workshop. Please note that the mods listed here are only usable on the default tModLoader branch. Mods usable on 1.3-legacy are found elsewhere.",
+	},
+	"StorePage": {
+		// Max Length: 300
+		"ShortDescription": "Dig, Fight, and Build your way through the world of player-created mods on Terraria with tModLoader - this DLC makes modding Terraria a reality!",
+	},
+}}

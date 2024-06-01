@@ -1,6 +1,5 @@
 ﻿using ExampleMod.Common;
 using ExampleMod.Common.Systems;
-using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.TileEntities;
 using Microsoft.Xna.Framework;

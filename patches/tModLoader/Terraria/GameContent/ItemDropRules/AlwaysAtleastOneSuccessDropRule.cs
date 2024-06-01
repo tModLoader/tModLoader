@@ -5,7 +5,7 @@ using System.Linq;
 namespace Terraria.GameContent.ItemDropRules;
 
 /// <summary>
-/// Re-runs all drop rules if none succeded.
+/// Re-runs all drop rules if none succeeded.
 /// </summary>
 public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRule
 {

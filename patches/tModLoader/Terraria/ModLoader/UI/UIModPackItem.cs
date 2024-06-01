@@ -10,6 +10,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Base;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.Audio;
 using ReLogic.Content;
@@ -370,18 +372,36 @@ internal class UIModPackItem : UIPanel
 		ModLoader.Reload();
 	}
 
+	private List<ModPubId_t> GetModPackBrowserIds()
+	{
+		if (!_legacy) {
+			string path = UIModPacks.ModPackModsPath(_filename);
+			var ids = File.ReadAllLines(Path.Combine(path, "install.txt"));
+			return Array.ConvertAll(ids, x => new ModPubId_t() { m_ModPubId = x }).ToList();
+		}
+
+		var query = new QueryParameters() { searchModSlugs = _mods };
+		if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+			return new List<ModPubId_t>(); // query failed. TODO, actually show an error UI instead
+
+		var output = new List<ModPubId_t>();
+		foreach (var item in modIds) {
+			if (item != "0")
+				output.Add(new ModPubId_t() { m_ModPubId = item });
+		}
+
+		return output;
+	}
+
 	private static void DownloadMissingMods(UIMouseEvent evt, UIElement listeningElement)
 	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		Interface.modBrowser.Activate();
 		Interface.modBrowser.FilterTextBox.Text = "";
-		Interface.modBrowser.SpecialModPackFilter = modpack._mods.ToList();
+		Interface.modBrowser.SpecialModPackFilter = modpack.GetModPackBrowserIds();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 		Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 		Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
-		Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
-		Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
-		Interface.modBrowser.UpdateNeeded = true;
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 
 		Interface.modBrowser.PreviousUIState = Interface.modPacksMenu;
@@ -428,6 +448,7 @@ internal class UIModPackItem : UIPanel
 	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = modpack._filepath;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 
@@ -440,6 +461,7 @@ internal class UIModPackItem : UIPanel
 		// Clear active Mod Pack 
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = null;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 

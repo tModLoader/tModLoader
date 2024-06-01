@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.UI;
 
 internal class UIModPacks : UIState, IHaveBackButtonCommand
 {
-	internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
+	internal static readonly Regex ModPackRegex = new(@"(?:[^a-zA-Z0-9_.-]+)|(?:^(con|prn|aux|nul|com[1-9]|lpt[1-9])$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 	internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
 
 	private UIList _modPacks;
@@ -114,6 +114,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(11);
+		Main.clrInput();
 		VirtualKeyboard.Text = "";
 		Main.MenuUI.SetState(VirtualKeyboard);
 		Main.menuMode = 888;
@@ -155,10 +156,10 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	}
 
 	internal static string SanitizeModpackName(string name)
-		=> Regex.Replace(name, MODPACK_REGEX, string.Empty, RegexOptions.Compiled);
+		=> ModPackRegex.Replace(name, string.Empty);
 
 	internal static bool IsValidModpackName(string name)
-		=> !Regex.Match(name, MODPACK_REGEX, RegexOptions.Compiled).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+		=> !ModPackRegex.Match(name).Success && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
 
 	public override void OnDeactivate()
 	{
@@ -286,7 +287,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		FileUtilities.CopyFolder(configPath, Path.Combine(instancePath, "SaveData", "ModConfigs"));
 
 		// Customize the instance to look at the correct folder
-		File.WriteAllText(Path.Combine(instancePath, "cli-argsConfig.txt"), $"-tmlsavedirectory {Path.Combine(instancePath, "SaveData")} -steamworkshopfolder none");
+		File.WriteAllText(Path.Combine(instancePath, "cli-argsConfig.txt"), $"-tmlsavedirectory {Path.Combine(instancePath, "SaveData")}\n-steamworkshopfolder none");
 
 		//TODO: Install the correct tModLoader version
 		/*

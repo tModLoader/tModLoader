@@ -35,6 +35,8 @@ internal class Steam
 	{
 		RecalculateAvailableSteamCloudStorage();
 		Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)lastAvailableSteamCloudStorage)} available");
+		bool OnBetaBranch = SteamApps.GetCurrentBetaName(out string branchName, 1000);
+		Logging.tML.Info($"Steam beta branch: {(OnBetaBranch ? branchName : "None")}");
 	}
 
 	public static string GetSteamTerrariaInstallDir()
@@ -57,7 +59,7 @@ internal class Steam
 		var steam_appid_path = "steam_appid.txt";
 
 		// Family Share & GoG, Dev Enviroments rely on steam_appid.txt to know what the game is in Steam
-		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" || Social.Steam.SteamedWraps.FamilyShared) {
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" || Social.Steam.SteamedWraps.FamilyShared || InstallVerifier.DistributionPlatform == DistributionPlatform.GoG) {
 			File.WriteAllText(steam_appid_path, appId.ToString());
 			return;
 		}

@@ -1,11 +1,11 @@
+using ExampleMod.Common.ItemDropRules.DropConditions;
+using ExampleMod.Content.Items;
+using ExampleMod.Content.Items.Weapons;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Items;
-using ExampleMod.Common.ItemDropRules.DropConditions;
-using System.Linq;
-using ExampleMod.Content.Items.Weapons;
 
 namespace ExampleMod.Common.GlobalNPCs
 {

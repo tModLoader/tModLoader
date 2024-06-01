@@ -15,8 +15,9 @@
 		// "MenuModPackDescription": "Manage Mod Packs, for features like saving your current list of mods & config, and Import & Export Mod Packs. Experimental.",
 		"MenuEnableDeveloperMode": "Activer le mode Développeur",
 		// //No Longer In Use. "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
-		// "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
-		// "MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
+		// // "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
+		// // "MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
+		// "WelcomeMessagePreview": "WARNING: Player Beware!!\nThis is a monthly preview build with breaking changes, and thus mods will be broken.\n[c/ff1919:DO NOT ask modders to fix their mods for this preview build.]\nThis Preview branch provides opportunity for modders to update their mods on THEIR own schedule.\n\nClick \"More Info\" to learn more about the continuous release cycle.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes.",
 		"FirstLaunchWelcomeMessage": "Bienvenue sur tModLoader 1.4 Alpha.\n\nVous avez installé avec succès tModLoader. Utilisez le menu du Navigateur de Mods pour trouver les mods que vous souhaitez télécharger. Utilisez le menu Mods pour modifier les mods actuellement actifs. Après avoir changé de mods, assurez-vous de cliquer sur le bouton Recharger les Mods pour les recharger.",
 		"WhatsNewMessage": "Voici les notes de modification de base de la dernière fois que vous avez lancé l'Alpha. Vous constaterez peut-être que les mods liés à ces modifications doivent être reconstruits par l'auteur. Visitez GitHub pour voir plus de détails:\n",
 		// "ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
@@ -33,8 +34,14 @@
 		"MenuModsEnabled": "{0} {^0:Mod Activé;Mods Activés}",
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "Aucun matériel audio trouvé. Désactivation de tout l’audio.",
-		// "HowToAccessLegacytModLoaderButton": "How to Access legacy tModLoader versions",
+		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "LatestNews": "Latest News: {0}",
+		// "LatestNewsOffline": "Offline",
+		// "LatestNewsChecking": "Checking...",
 		// "SteamFamilyShareWarning": "It has been detected you are using Family Share copy of Terraria.\nSteam does not support family-shared tModLoader.\nExperimental Family-Shared tModLoader workaround has been loaded.\nThe following features are not available:\n - Steam Overlay\n - Steam Multiplayer",
+		// "WaitXSeconds": "Wait {0} {^0:second;seconds}...",
+		// "ViewInstructions": "View Instructions",
+		// "ModReadyFor144": "This mod has been updated to 1.4.4",
 
 		// Mods Menu
 		"ModsModsList": "Liste des Mods",
@@ -50,17 +57,23 @@
 		// "DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "Désactiver",
 		"ModsEnable": "Activer",
+		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
+		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
 		"ModConfiguration": "Configuration du Mod",
 		"ModsOpenConfig": "Cliquez pour ouvrir la configuration",
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		// "ModStableOnPreviewWarning": "No Preview Build. Enable At Own Risk",
+		// "ModDependencyTooltip": "Requires:\n{0}",
+		// "ModDependentsTooltip": "Required by:\n{0}",
+		// "TranslationModTooltip": "This mod provides translations for: {0}",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",
 		"ModDependencyModsNotFound": "Ces Mods n'ont pas été trouvés: {0}",
 		"ModDidNotFullyUnloadWarning": "Ce mod ne s'est pas complètement déchargé lors du dernier déchargement.\n(Ceci est un message pour le créateur du mod)",
-		"BetaModCantPublish": "Ce mod a été construit sur la version Beta et ne peut pas être publié",
 		"BetaModCantPublishError": "Vous ne pouvez pas publier un Mod compilé en version Beta de tModLoader",
 		"OutdatedModCantPublishError": "Vous ne pouvez pas publier un Mod compilé avec une version obsolète de tModLoader",
+		// "WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Relance requise",
+		// "ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Relance forcée",
 		"ModIsServerSide": "Ceci est un mod côté serveur",
 		"ModsByline": "Par : {0}",
@@ -84,13 +97,34 @@
 		"ModsXWalls": "{0} {^0:mur;murs}",
 		"ModsXBuffs": "{0} {^0:buff;buffs}",
 		"ModsXMounts": "{0} {^0:monture;montures}",
+
+		//Dedicated server
 		"ModsReloadAndReturn": "Recharger et retourner au menu du monde",
 		"ModsNotFoundServer": "Aucun Mod n'a été trouvé à: \"{0}\"\nSi vous exécutez un serveur dédié, vous pouvez utiliser le commutateur de ligne de commande 'modpath' ou le paramètre de configuration du serveur pour spécifier un répertoire de mods personnalisés.\n",
 		"AskForModIndex": "Tapez un nombre pour basculer entre activé/désactivé",
 		"AskForCommand": "Tapez une commande: ",
+		// "DedErrorNoConfig": "This mod does not have any config",
+		// "DedErrorNotEnabled": "Mod not enabled, please enable it and reload to edit its configs",
+		// "DedErrorModOOB": "Mod index out of bounds",
+
+		//Dedicated server mod config
+		// "DedConfigEditServerConfigsForMod": "Edit Server Configs for Mod",
+		// "DedConfigConfigIndexOOB": "The config index {0} is out of bounds",
+		// "DedConfigRangeCantBeValidated": "Warning, \"{0}\" uses ranges that are unable to be validated, you might run into issues.",
+		// "DedConfigReadOnly": "\"{0}\" is read only, it cannot be changed directly.",
+		// "DedConfigArrayLengthCantChange": "\"{0}\" is an array, the length of arrays in configs can't be changed.",
+		// "DedConfigEditConfig": "Modify configuration value",
+		// "DedConfigEditConfigNote": "Note that data validation, such as min and max values, is not enforced. Try to use values only allowed in the client.",
+		// "DedConfigRestoreConfig": "Restore configurations to default",
+		// "DedConfigErrorOutOfOptionStrings": "The only possible values are: {0}",
+		// "DedConfigErrorOutOfRange": "The value must be between {0} and {1}",
+		// "DedConfigErrorNotParsable": "Invalid input",
 
 		//Mod Config
+		// "ModConfigs": "Configs",
 		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		// "ModConfigNotification": "Notification: ",
 		// "ModConfigModConfig": "Mod Config",
 		// "ModConfigSaveConfig": "Save Config",
@@ -99,6 +133,22 @@
 		// "ModConfigRestoreDefaults": "Restore Defaults",
 		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		// "ModConfigServerSide": "Server Side Config",
+		// "ModConfigClientSide": "Client Side Config",
+		// "ModConfigAdd": "Add",
+		// "ModConfigRemove": "Remove",
+		// "ModConfigInitialize": "Initialize",
+		// "ModConfigClear": "Clear",
+		// "ModConfigExpand": "Expand",
+		// "ModConfigCollapse": "Collapse",
+		// "ModConfigScaleUp": "Scale Up",
+		// "ModConfigScaleDown": "Scale Down",
+		// "ModConfigTypeHere": "Type Here",
+		// "ModConfigServerResponse": "Server response: {0}",
+		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
+		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
+		// "ModConfigAccepted": "Accepted",
+		// "ModConfigRejectChangesNotHost": "Only the host can change this config",
 
 		// Interface
 		"BossBarStyle": "Style de Barre de Patron: {0}",
@@ -106,10 +156,12 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "En soumettant cet article, vous acceptez les Conditions d'utilisation de tModLoader",
+		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		"SteamPublishingLimit": "Erreur: Seuls les propriétaires de Steam tModLoader peuvent publier sur Workshop dans le jeu.",
 		"NoWorkshopAccess": "Erreur: Impossible d'accéder à Steam Workshop",
 		"ModAlreadyUploaded": "Erreur: Mod existe déjà sur Workshop!",
-		"ModVersionInfoUnchanged": "Erreur: Les informations sur la version du Mod doivent être incrémentées avant la mise à jour.",
+		"ModVersionTooSmall": "Erreur: Les informations sur la version du Mod doivent être incrémentées avant la mise à jour.\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",
+		// "ModVersionLargerThanFutureVersions": "Error: Mod Version can't exceed the version of this mod published on newer releases of tModLoader.\n\nThe current version (v{0}) needs to be smaller than or equal to existing versions already on the Workshop made for newer releases of tModLoader (v{1} was published on tModLoader v{2}).\n\nIf the current version number is desired for this release, a workaround is to publish an even larger version on tModLoader v{2} and then publish v{0} on this tModLoader release.",
 		"ConsultSteamLogs": "Consultez Steam workshop_log.txt (Emplacement par défaut: {0}) pour plus d'informations.",
 		"SteamRejectUpdate": "L'élément est / était déjà installé: {0}. Si vous tentez de réinstaller, fermez l'instance actuelle et relancez-la.",
 		// "BrowserRejectWarning": "Can't Download. Click For Info",
@@ -119,6 +171,8 @@
 		"UpdateItem": "Mise à jour d'un Élément {0}",
 		"PublishItem": "Tentative d'Élément de Publication {0}",
 		"SteamDownloader": "Téléchargement en file d'attente avec le gestionnaire de téléchargement Steam...",
+		// "PublishUpdateButton": "Update Existing",
+		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Téléchargement {0}% Terminé",
 
 		// Mod Errors
@@ -165,6 +219,7 @@
 		"LoadErrorDuplicateName": "Impossible d'ajouter deux {0} portant le même nom: {1}. Peut-être que 2 classes partagent un nom de classe mais dans des espaces de noms différents lors du chargement automatique ou que vous avez appelé manuellement AddContent avec 2 {0} du même nom.",
 
 		"LoadErrorResourceNotFoundPathHint": "Ressource supposée introuvable :\n    {0}\nRésultat le plus probable: (Possiblement un typo ou un mauvais emplacement?)\n    {1}",
+		// "LoadErrorResourceNotFoundEquipTextureHint": "Equipment items require an additional texture that is drawn on the player. This is separate from the item texture shown in the inventory. This is the texture that can't be found.",
 		"RuntimeErrorSilentlyCaughtException": "Exception capturée silencieusement : ",
 		"RuntimeErrorSeeLogsForFullTrace": "(Voir {0} pour plus de détails)",
 		// "ShopOverflow": "Not all items could fit in the shop!",
@@ -232,6 +287,28 @@
 		"MPErrorModNotSigned": "Le Mod n'a pas été enregistré par le navigateur",
 		"MPErrorModDownloadError": "Une erreur est apparue en téléchargeant {0}",
 		"MPPacketTooLarge": "Paquets supérieurs en nombre {0} > {1}",
+		// "ReloadRequiredDownloadAndContinue": "Download and Continue",
+		// "ReloadRequiredReloadAndContinue": "Reload and Continue",
+		// "ReloadRequiredServerJoinMessage": "The following changes to your enabled mods will be automatically applied if you join this server. Press \"{0}\" to reload mods and join this server.",
+		// "ReloadRequiredSinglePlayerMessage": "The following changes to your enabled mods will be automatically applied if you enter single player. Press \"{0}\" to reload mods and enter single player.",
+		// "ReloadRequiredExplanationDownload": "[c/{0}:Download] v{1} from server",
+		// "ReloadRequiredExplanationDownloadDowngradeTemporary": "[c/{0}:Download] v{1} from server\n(Temporarily downgrade from v{2})",
+		// "ReloadRequiredExplanationDownloadDowngrade": "[c/{0}:Download] v{1} from server\n(Downgrade from v{2})",
+		// "ReloadRequiredExplanationDownloadUpgrade": "[c/{0}:Download] v{1} from server\n(Upgrade from v{2})",
+		// "ReloadRequiredExplanationDownloadHashDiffers": "[c/{0}:Download] v{1} ({2}) from server\n(Mod file differs from local copy)",
+		// "ReloadRequiredExplanationSwitchVersion": "[c/{0}:Switch] to v{1}\n(Currently loaded v{2})",
+		// "ReloadRequiredExplanationSwitchVersionDowngrade": "[c/{0}:Switch] to v{1}\n(Temporarily downgrade from v{2})",
+		// "ReloadRequiredExplanationSwitchVersionUpgrade": "[c/{0}:Switch] to v{1}\n(Upgrade from v{2})",
+		// "ReloadRequiredExplanationEnable": "[c/{0}:Enable]",
+		// "ReloadRequiredExplanationDisable": "[c/{0}:Disable]",
+		// "ReloadRequiredExplanationConfigChanged": "[c/{0}:Change config] temporarily",
+		// "ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:Restore config]",
+
+		// UIAsyncList
+		// "ALLoading": "Loading...",
+		// "ALNoEntries": "No matching entries",
+		// "ALCancel": "Loading cancelled, refresh to see all entries",
+		// "ALError": "An error occurred, try refreshing",
 
 		// Mod Browser
 		"MBDownload": "Télécharger",
@@ -252,6 +329,7 @@
 		"MBUpdateAll": "Tout mettre à jour",
 		"MBReloadBrowser": "Relancer le navigateur",
 		"MBGettingData": "Obtention des données...",
+		// "MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Remplissage du navigateur...",
 		"MBSortByRecentlyUpdated": "Trier par date de mise à jour",
 		"MBSortByPopularity": "Trier par popularité",
@@ -298,6 +376,8 @@
 		"EnterSteamID": "Merci d'entrer votre ID Steam",
 		"PasteSteamID": "Coller votre ID Steam (ctrl-v)",
 		"MBServerResponse": "La réponse du serveur du Navigateur :\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Télécharger les Mods du serveur : Oui",
@@ -330,8 +410,6 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Activer et relancer automatiquement les Mods en quittant le navigateur : Non",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatically Reload Required Mods When Leaving Mods Screen: On",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatically Reload Required Mods When Leaving Mods Screen: Off",
-		"ReloadModsReminder": "Vous avez mis à jour un Mod. N'oubliez pas de relancer les Mods pour que cela prenne effet.",
-		"EnableModsReminder": "Vos Mods téléchargés récemment sont actuallement désactivés. N'oubliez pas de les activer et de les relancer si vous comptez les utiliser.",
 		"DontShowAgain": "Ne pas montrer de nouveau",
 		"ModControls": "Contrôles pour les Mods",
 
@@ -353,8 +431,21 @@
 		"NewXMods": "{0} nouveaux Mods",
 		"NewModsListing": "Nouveaux Mods :\n{0}",
 		"PlayerCustomDataFail": "Un problème a été rencontré pendant le chargement des données personnalisées d'un personnage",
+		// "PlayerCustomDataSaveFail": "The following errors were reported when this player was last saved. There might be lost data from the associated mods: {0}",
+		// "WorldCustomDataSaveFail": "The following errors were reported when this world was last saved. There might be lost data from the associated mods: {0}",
 		"PlayerLoadWorldFail": "Un problème a été rencontré pendant le chargement du monde",
+		// "SaveWorldHeaderExceptionWarning": "Encountered an error while saving custom world header data because of an error in \"{0}.SaveWorldHeader\" from the \"{1}\" mod. The data related to this class will not be saved.",
+		// "SaveWorldDataExceptionWarning": "Encountered an error while saving custom world data because of an error in \"{0}.SaveWorldData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "SavePlayerDataExceptionWarning": "Encountered an error while saving custom player data because of an error in \"{0}.SaveData\" from the \"{1}\" mod. The data related to this class will not be saved: {2}",
+		// "ViewSaveErrorMessage": "View Save Error Message",
 		"CloudWarning": "Limite de stockage cloud atteinte, impossible de passer au cloud",
+		// "PlayerFromNewerTModMightNotWork": "This player is from a newer tModLoader, it might not work",
+		// "WorldFromNewerTModMightNotWork": "This world is from a newer tModLoader, it might not work",
+		// "PlayerWithThisNameExistsWillBeOverwritten": "A player with this name exists, it will be overwritten",
+		// "WorldWithThisNameExistsWillBeOverwritten": "A world with this name exists, it will be overwritten",
+		// "ExistingPlayerPlayedMoreRecently": "The existing player was last played more recently",
+		// "ExistingWorldPlayedMoreRecently": "The existing world was last played more recently",
+		// "SavingModdedWorldData": "Saving modded world data",
 
 		// Mod Sources
 		"MSBuild": "Compiler",
@@ -362,6 +453,7 @@
 		"MSBuildAll": "Tout compiler",
 		"MSBuildReloadAll": "Tout compiler + Tout relancer",
 		"MSUpgradeCSProj": "Mettre à jour le fichier .csproj",
+		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Mettre à niveau les fichiers .lang à .hjson (non destructif)",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
@@ -369,6 +461,7 @@
 		"MSManagePublished": "Gérer les publications",
 		"MSPublish": "Publier",
 		"MSModSourcesCantHaveSpaces": "(Les noms de dossiers de Mods sources ne peuvent pas avoir d'espace)",
+		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Créer un Mod",
 		"VersionUpgrade": "LIEN: En savoir plus sur la migration des Mods pour la dernière mise à jour",
 		// "WikiLink": "Explore the Wiki",
@@ -376,9 +469,23 @@
 		// "DocumentationLink": "Read the Documentation",
 		// "DiscordLink": "Find Help on the Discord Server",
 		// "MSPortToLatest": "Run tModPorter",
-		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. After installing, you may need to restart tModLoader. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
+		// "MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
+		// "MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET {0} SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
 		// "DownloadNetSDK": "Download .NET SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
+
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Des bibliothèques logicielles supplémentaires sont requises pour compiler des Mods. (Dossier ModCompile manquant)",
@@ -433,6 +540,8 @@
 		"MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "Finalisation du chargement des ressources",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",
+		// "CancellingLoading": "Cancelling loading...",
+		// "LoadingCancelled": "Loading Cancelled",
 
 		// Default Unimplemented
 		"DefaultTownNPCName": "Sans-Nom",
@@ -444,6 +553,7 @@
 		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
 		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
 		// "ModifiedByMods": "Is modified by ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		// "LastLoadRamUsage": "Estimated last load RAM usage: {0}",
@@ -463,6 +573,7 @@
 		// In Game UI additions
 		"slotStack": "Stack",
 		"slotScroll": "Défiler",
+		// "PressXToClose": "Press {0} to close",
 
 		// Misc
 		"OK": "OK",
@@ -488,12 +599,13 @@
 		// "GOGHashMismatch": "{0} is not the unmodified Terraria {1} executable.\r\n\r\nThis release of tModLoader expects to be installed alongside Terraria {1}. If Terraria recently updated, you may have to downgrade to this earlier release in GOG Galaxy.\r\n\r\nIf you patched the .exe, you can create a copy of the original exe and name it \"{2}\"",
 		"DefaultExtraMessage": "Veuillez restaurer votre installation de Terraria, puis installer tModLoader sur Steam ou en suivant les instructions README.txt pour une installation manuelle.",
 		"LogPathHint": "{0} fichier journal contenant des informations d'erreur a été généré dans\n{1}\n(Vous devrez partager ce fichier si vous demandez de l'aide)",
-		"OutOfMemoryHint": "Conseil: Essayez d’exécuter moins de mods à la fois, ou déterminez si un mod prend trop de mémoire. En option, installez tModLoader 64 bits",
+		"OutOfMemoryHint": "Conseil: Essayez d’exécuter moins de mods à la fois, ou déterminez si un mod prend trop de mémoire.",
 		"ModExceptionHint": "Conseil: C'est probablement la faute d'un mod. Désactivez les mods un par un et vérifiez si le problème persiste",
 		"OneDriveHint": "Conseil: Essayez d'installer/activer OneDrive. Faites un clic droit sur votre dossier de documents et activez \"Toujours enregistrer sur cet appareil\"",
 		"AntivirusHint": "Conseil: Si vous avez un antivirus, essayez d’ajouter Terraria à sa liste blanche/d’exclusion",
 		"TypeInitializationHint": "Conseil: Redémarrez le jeu. Si ce problème persiste, essayez de désinstaller complètement Terraria, puis de réinstaller via Steam, puis de réinstaller tModLoader",
 		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		// "TagsCategoryModFeatures": "Mod Features",
@@ -537,7 +649,7 @@
 		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
 
 		// Info Display Pages
 		// "NextInfoAccPage": "Next Page",
@@ -638,7 +750,7 @@
 		"InMarble": "Doit être dans le Biome de Marbre",
 		"InHive": "Doit être dans la Ruche",
 		"InGemCave": "Doit être dans la Grotte des Gemmes",
-		"InLihzardTemple": "Doit être dans le Temple de Lihzahrd",
+		"InLihzardTemple": "Doit être dans le Temple de Lihzahrd"
 		// "InGraveyard": "In a Graveyard biome",
 		// "InAether": "In an Aether biome",
 		// "InShoppingForest": "When above the surface and not in another major biome",
@@ -841,6 +953,7 @@
 		// "Vector2.Y.Label": "Y"
 	},
 	"Mods": {
+		// "ModLoader.Unloaded": "Unloaded",
 		"ModLoader.Items.AprilFools.DisplayName": "La Blague du Poisson D'Avril",
 		"ModLoader.Items.StartBag.DisplayName": "Sac de Départ",
 		"ModLoader.Items.StartBag.Tooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",
@@ -931,6 +1044,10 @@
 		// "ModLoader.Items.Squid_Body.DisplayName": "Squid's Body",
 		// "ModLoader.Items.Squid_Head.DisplayName": "Squid's Head",
 		// "ModLoader.Items.Squid_Legs.DisplayName": "Squid's Legs",
+		// "ModLoader.Items.Tantamount_Body.DisplayName": "Tantamount's Body",
+		// "ModLoader.Items.Tantamount_Head.DisplayName": "Tantamount's Head",
+		// "ModLoader.Items.Tantamount_Legs.DisplayName": "Tantamount's Legs",
+		// "ModLoader.Items.Tantamount_Wings.DisplayName": "Tantamount's Wings",
 		// "ModLoader.Items.toplayz_Body.DisplayName": "toplayz's Body",
 		// "ModLoader.Items.toplayz_Head.DisplayName": "toplayz's Head",
 		// "ModLoader.Items.toplayz_Legs.DisplayName": "toplayz's Legs",

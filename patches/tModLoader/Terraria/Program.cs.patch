@@ -92,15 +92,10 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,23 +_,56 @@
+@@ -147,9 +_,15 @@
  		}
  	}
  
-+	public const string PreviewFolder = "tModLoader-preview";
-+	public const string ReleaseFolder = "tModLoader";
-+	public const string DevFolder = "tModLoader-dev";
-+	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
-+
 +	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +	// Moving all calls to Main to LaunchGame_() mitigates this risk
  	public static void LaunchGame(string[] args, bool monoArgs = false)
@@ -110,31 +105,17 @@
 -		Thread.CurrentThread.Name = "Main Thread";
 +		MainThread.Name = "Main Thread";
 +
++		/*
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-+		/*
- 		if (IsFna)
- 			TrySettingFNAToOpenGL(args);
-+		*/
- 
- 		LaunchParameters = Utils.ParseArguements(args);
-+
-+		if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
-+			// Launch the Terraria playtime tracker and quit.
-+			TerrariaSteamClient.Run();
-+			Environment.Exit(1);
-+		}
-+
- 		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
--#if SERVER
--		Main.dedServ = true;
--#else
-+
+@@ -164,6 +_,28 @@
  		// Unify server and client dll via launch param
--		Main.dedServ = LaunchParameters.ContainsKey("-server");
--#endif
-+		bool isServer = LaunchParameters.ContainsKey("-server");
+ 		Main.dedServ = LaunchParameters.ContainsKey("-server");
+ #endif
++		*/
++
++		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
 +		
@@ -146,6 +127,8 @@
 +	public static void LaunchGame_(bool isServer)
 +	{
 +		Main.dedServ = isServer;
++		if (isServer)
++			Main.myPlayer = 255;
 +
 +		//TODO: Can this be moved to LaunchInitializer.LoadServerParameters?
 +		if (LaunchInitializer.TryParameter("-build") is string build)

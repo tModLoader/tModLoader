@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.GameContent;
-using System;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -136,7 +136,7 @@ namespace ExampleMod.Content.Projectiles
 			return false;
 		}
 
-		public override void Kill(int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(SoundID.Item10, Projectile.position); // Play a sound when the projectile dies. In this case, that is when it hits a block or a liquid.
 
 			if (Projectile.owner == Main.myPlayer && !Projectile.noDropItem) {

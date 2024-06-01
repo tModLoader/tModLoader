@@ -4,13 +4,12 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.ObjectInteractions;
 using Terraria.Enums;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using System.Collections.Generic;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -32,6 +31,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 			TileID.Sets.IsAContainer[Type] = true;
 			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
+			TileID.Sets.GeneralPlacementTiles[Type] = false;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Containers };

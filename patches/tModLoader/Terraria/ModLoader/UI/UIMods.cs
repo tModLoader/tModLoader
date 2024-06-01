@@ -13,6 +13,7 @@ using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Audio;
+using Terraria.ID;
 
 namespace Terraria.ModLoader.UI;
 
@@ -41,7 +42,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonRM;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonB;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonOMF;
-	private UIAutoScaleTextTextPanel<string> buttonMP;
+	private UIAutoScaleTextTextPanel<LocalizedText> buttonCL;
 	private CancellationTokenSource _cts;
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 
@@ -133,7 +134,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 
-		buttonB.OnLeftClick += BackClick;
+		buttonB.OnLeftClick += (_, _) => HandleBackButtonUsage();
 
 		uIElement.Append(buttonB);
 		buttonOMF = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenModsFolders"));
@@ -238,12 +239,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		_categoryButtons.Add(SearchFilterToggle);
 		upperMenuContainer.Append(SearchFilterToggle);
 
-		buttonMP = new UIAutoScaleTextTextPanel<string>("TBD");
-		buttonMP.CopyStyle(buttonOMF);
-		buttonMP.HAlign = 1f;
-		buttonMP.WithFadedMouseOver();
-		buttonMP.OnLeftClick += null;
-		//uIElement.Append(buttonMP);
+		buttonCL = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfiguration"));
+		buttonCL.CopyStyle(buttonOMF);
+		buttonCL.HAlign = 1f;
+		buttonCL.WithFadedMouseOver();
+		buttonCL.OnLeftClick += GotoModConfigList;
+		uIElement.Append(buttonCL);
 
 		uIPanel.Append(upperMenuContainer);
 		Append(uIElement);
@@ -265,7 +266,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 	}
 
-	internal void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	public void HandleBackButtonUsage()
 	{
 		// To prevent entering the game with Configs that violate ReloadRequired
 		if (ConfigManager.AnyModNeedsReload()) {
@@ -281,7 +282,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		ConfigManager.OnChangedAll();
 
-		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+		IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 	}
 
 	private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
@@ -305,18 +306,26 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
+			if (modItem.tMLUpdateRequired != null)
+				continue;
 			modItem.Enable();
 		}
 	}
 
 	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}
+	}
+
+	private void GotoModConfigList(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(10, -1, -1, 1);
+		Main.menuMode = Interface.modConfigListID;
 	}
 
 	public UIModItem FindUIModItem(string modName)
@@ -331,7 +340,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			needToRemoveLoading = false;
 			uIPanel.RemoveChild(uiLoader);
 		}
-		if (!updateNeeded) return;
+		if (!updateNeeded)
+			return;
 		updateNeeded = false;
 		filter = filterTextBox.Text;
 		modList.Clear();
@@ -365,7 +375,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 102;
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		base.Draw(spriteBatch);
 		for (int i = 0; i < _categoryButtons.Count; i++) {
 			if (_categoryButtons[i].IsMouseHovering) {
@@ -387,12 +397,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 						text = "None";
 						break;
 				}
-				UICommon.DrawHoverStringInBounds(spriteBatch, text);
+				UICommon.TooltipMouseText(text);
 				return;
 			}
 		}
-		if(buttonOMF.IsMouseHovering)
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
+		if (buttonOMF.IsMouseHovering)
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 	}
 
 	public override void OnActivate()
@@ -422,8 +432,10 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
 			foreach (var mod in mods) {
 				UIModItem modItem = new UIModItem(mod);
-				modItem.Activate();
 				items.Add(modItem);
+			}
+			foreach (var modItem in items) {
+				modItem.Activate();
 			}
 			needToRemoveLoading = true;
 			updateNeeded = true;

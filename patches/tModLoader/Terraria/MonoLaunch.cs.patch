@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -6,7 +_,10 @@
+@@ -6,7 +_,11 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
 +using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria;
@@ -17,7 +18,7 @@
  	{
 +		// Launch tModPorter instead if it needed.
 +		if (Array.IndexOf(args, "-tModPorter") is int i && i >= 0) {
-+			tModPorter.Program.Main(args.Skip(i + 1).ToArray()).GetAwaiter().GetResult();
++			tModPorterLaunch.Launch(args.Skip(i).ToArray());
 +			return;
 +		}
 +
@@ -28,10 +29,17 @@
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
  #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,6 +_,28 @@
+@@ -34,6 +_,35 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
++
++		if (File.Exists("cli-argsConfig.txt"))
++			args = args.Concat(File.ReadAllLines("cli-argsConfig.txt").SelectMany(a => a.Split(" ", 2))).ToArray();
++
++		if (File.Exists("env-argsConfig.txt"))
++			foreach (var environmentVar in File.ReadAllLines("env-argsConfig.txt").Select(text => text.Split("=")).Where(envVar => envVar.Length == 2))
++				Environment.SetEnvironmentVariable(environmentVar[0], environmentVar[1]);
 +
 +		// Spawn a thread to use configured default stack size instead of the one reported in the binary
 +		// https://social.msdn.microsoft.com/Forums/office/en-US/7132b30d-9792-4bf3-87ec-7198052e4ed3/main-thread-stack-size?forum=csharpgeneral

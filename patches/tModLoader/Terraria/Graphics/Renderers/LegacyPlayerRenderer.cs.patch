@@ -30,7 +30,7 @@
  
  	public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f)
  	{
-+		DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
++		DrawPlayerInternal(camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale: scale);
 +	}
 +
 +	// A split to add some not publicly exposed parameters.

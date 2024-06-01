@@ -10,18 +10,17 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
-using Terraria.UI.Chat;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
-using System.IO;
-using ReLogic.Utilities;
+using Terraria.Social.Base;
 
 namespace Terraria.ModLoader.UI;
 
 internal class UIModItem : UIPanel
 {
 	private const float PADDING = 5f;
+	private float left2ndLine = 0;
 
 	private UIImage _moreInfoButton;
 	private UIImage _modIcon;
@@ -31,7 +30,9 @@ internal class UIModItem : UIPanel
 	private UIImage _configButton;
 	private UIText _modName;
 	private UIModStateText _uiModStateText;
-	private UIHoverImage _modReferenceIcon;
+	internal UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
+	private UIImage _modReferenceIcon;
+	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
 	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
 	private UIAutoScaleTextTextPanel<string> _dialogNoButton;
@@ -46,9 +47,25 @@ internal class UIModItem : UIPanel
 	private int _modIconAdjust;
 	private string _tooltip;
 	private string[] _modReferences;
+	private string[] _modDependents; // Note: Recursive
+	private string[] _modDependencies; // Note: Recursive
+	private string _modRequiresTooltip;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
 
-	private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
+	private string ToggleModStateText {
+		get {
+			if (_mod.Enabled) {
+				if(_modDependents.Any())
+					return Language.GetTextValue("tModLoader.ModsDisableAndDependents", _mod.DisplayName, _modDependents.Length);
+				return Language.GetTextValue("tModLoader.ModsDisable");
+			}
+			else {
+				if (_modDependencies.Any())
+					return Language.GetTextValue("tModLoader.ModsEnableAndDependencies", _mod.DisplayName, _modDependencies.Length);
+				return Language.GetTextValue("tModLoader.ModsEnable");
+			}
+		}
+	}
 
 	public string ModName => _mod.Name;
 	public bool NeedsReload => _mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload);
@@ -60,7 +77,7 @@ internal class UIModItem : UIPanel
 		Height.Pixels = 90;
 		Width.Percent = 1f;
 		SetPadding(6f);
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(_mod.DisplayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
+		DisplayNameClean = _mod.DisplayNameClean;
 	}
 
 	public override void OnInitialize()
@@ -68,19 +85,17 @@ internal class UIModItem : UIPanel
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
+		var modIcon = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon", AssetRequestMode.ImmediateLoad);
+		_modIconAdjust += 85;
+
 		if (_mod.modFile.HasFile("icon.png")) {
 			try {
 				using (_mod.modFile.Open())
 				using (var s = _mod.modFile.GetStream("icon.png")) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png").Value;
+					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
 
-					if (iconTexture.Width == 80 && iconTexture.Height == 80) {
-						_modIcon = new UIImage(iconTexture) {
-							Left = { Percent = 0f },
-							Top = { Percent = 0f }
-						};
-						Append(_modIcon);
-						_modIconAdjust += 85;
+					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
+						modIcon = iconTexture;
 					}
 				}
 			}
@@ -88,6 +103,15 @@ internal class UIModItem : UIPanel
 				Logging.tML.Error("Unknown error", e);
 			}
 		}
+
+		_modIcon = new UIImage(modIcon) {
+			Left = { Percent = 0f },
+			Top = { Percent = 0f },
+			Width = { Pixels = 80 },
+			Height = { Pixels = 80 },
+			ScaleToFit = true,
+		};
+		Append(_modIcon);
 
 		_modName = new UIText(text) {
 			Left = new StyleDimension(_modIconAdjust, 0f),
@@ -100,22 +124,58 @@ internal class UIModItem : UIPanel
 			Left = { Pixels = _modIconAdjust }
 		};
 		_uiModStateText.OnLeftClick += ToggleEnabled;
-		Append(_uiModStateText);
 
+		// Don't show the Enable/Disable button if there is no loadable version
+		string updateVersion = null;
+		string updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
+		Color updateColor = Color.Orange;
+
+		// Detect if it's for a preview version ahead of our time
+		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
+			updateVersion = $"v{_mod.tModLoaderVersion}";
+
+			if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
+				updateVersion = $"Preview {updateVersion}";
+		}
+
+		// Detect if it's for a different browser version entirely
+		if (!CheckIfPublishedForThisBrowserVersion(out var modBrowserVersion)) {
+			updateVersion = $"{modBrowserVersion} v{_mod.tModLoaderVersion}";
+			updateColor = Color.Yellow;
+		}
+
+		// Hide the Enabled button if it's not for this built version
+		if (updateVersion != null) {
+			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(updateColor, updateColor * 0.7f);
+			tMLUpdateRequired.BackgroundColor = updateColor * 0.7f;
+			tMLUpdateRequired.Top.Pixels = 40;
+			tMLUpdateRequired.Width.Pixels = 280;
+			tMLUpdateRequired.Height.Pixels = 36;
+			tMLUpdateRequired.Left.Pixels += _uiModStateText.Width.Pixels + _uiModStateText.Left.Pixels + PADDING;
+			tMLUpdateRequired.OnLeftClick += (a, b) => {
+				Utils.OpenToURL(updateURL);
+			};
+			Append(tMLUpdateRequired);
+		}
+		else
+			Append(_uiModStateText);
+
+		int bottomRightRowOffset = -36;
 		_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
 			Width = { Pixels = 36 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = -36, Precent = 1 },
+			Left = { Pixels = bottomRightRowOffset, Precent = 1 },
 			Top = { Pixels = 40 }
 		};
 		_moreInfoButton.OnLeftClick += ShowMoreInfo;
 		Append(_moreInfoButton);
 
 		if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
+			bottomRightRowOffset -= 36;
 			_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36f },
-				Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1f },
+				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1f },
 				Top = { Pixels = 40f }
 			};
 			_configButton.OnLeftClick += OpenConfig;
@@ -127,27 +187,70 @@ internal class UIModItem : UIPanel
 
 		_modReferences = _mod.properties.modReferences.Select(x => x.mod).ToArray();
 
-		if (_modReferences.Length > 0 && !_mod.Enabled) {
-			string refs = string.Join(", ", _mod.properties.modReferences);
-			var icon = UICommon.ButtonExclamationTexture;
-			_modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.ModDependencyClickTooltip", refs)) {
-				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING, 0f),
+		var availableMods = ModOrganizer.RecheckVersionsToLoad();
+		_modRequiresTooltip = "";
+		HashSet<string> allDependencies = new();
+		GetDependencies(_mod.Name, allDependencies);
+		_modDependencies = allDependencies.ToArray();
+		if (_modDependencies.Any()) {
+			string refs = string.Join("\n", _modDependencies.Select(x => "- " + (Interface.modsMenu.FindUIModItem(x)?._mod.DisplayName ?? x + Language.GetTextValue("tModLoader.ModPackMissing"))));
+			_modRequiresTooltip += Language.GetTextValue("tModLoader.ModDependencyTooltip", refs);
+		}
+		void GetDependencies(string modName, HashSet<string> allDependencies)
+		{
+			var modItem = Interface.modsMenu.FindUIModItem(modName);
+			if (modItem == null)
+				return; // Mod isn't downloaded, can't determine further recursive dependencies
+
+			var dependencies = modItem._mod.properties.modReferences.Select(x => x.mod).ToArray();
+			foreach (var dependency in dependencies) {
+				if (allDependencies.Add(dependency)) {
+					GetDependencies(dependency, allDependencies);
+				}
+			}
+		}
+
+		HashSet<string> allDependents = new();
+		GetDependents(_mod.Name, allDependents);
+		_modDependents = allDependents.ToArray();
+		if (_modDependents.Any()) {
+			if (!string.IsNullOrWhiteSpace(_modRequiresTooltip))
+				_modRequiresTooltip += "\n\n";
+			string refs = string.Join("\n", _modDependents.Select(x => "- " + (Interface.modsMenu.FindUIModItem(x)?._mod.DisplayName ?? x + Language.GetTextValue("tModLoader.ModPackMissing"))));
+			_modRequiresTooltip += Language.GetTextValue("tModLoader.ModDependentsTooltip", refs);
+		}
+		void GetDependents(string modName, HashSet<string> allDependents)
+		{
+			var dependents = availableMods
+				.Where(m => m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(modName)))
+				.Select(m => m.Name).ToArray();
+			foreach (var dependent in dependents) {
+				if (allDependents.Add(dependent))
+					GetDependents(dependent, allDependents);
+			}
+		}
+
+		if (!string.IsNullOrWhiteSpace(_modRequiresTooltip)) {
+			var icon = UICommon.ButtonDepsTexture;
+			_modReferenceIcon = new UIImage(icon) {
+				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
 				Top = { Pixels = 42.5f }
 			};
-			_modReferenceIcon.OnLeftClick += EnableDependencies;
+			left2ndLine += 28;
+			// _modReferenceIcon.OnLeftClick += EnableDependencies;
 
 			Append(_modReferenceIcon);
 		}
 
-		/*
-		if (_mod.modFile.ValidModBrowserSignature) {
-			_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.GoldenKey].Name), Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
-				Left = { Pixels = -20, Percent = 1f }
+		if (_mod.properties.RefNames(true).Any() && _mod.properties.translationMod) {
+			var icon = UICommon.ButtonTranslationModTexture;
+			_translationModIcon = new UIImage(icon) {
+				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
+				Top = { Pixels = 42.5f }
 			};
-
-			Append(_keyImage);
+			left2ndLine += 28;
+			Append(_translationModIcon);
 		}
-		*/
 
 		// TODO: Keep this feature locked to Dev for now until we are sure modders are at fault for this warning.
 		if (BuildInfo.IsDev && ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
@@ -172,15 +275,17 @@ internal class UIModItem : UIPanel
 			Append(_keyImage);
 		}
 
-		if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
-			BackgroundColor = Color.MediumPurple * 0.7f;
-			modFromLocalModFolder = true;
-		}
-		else {
+		if (_mod.location == ModLocation.Workshop) {
 			var steamIcon = new UIImage(TextureAssets.Extra[243]) {
 				Left = { Pixels = -22, Percent = 1f }
 			};
 			Append(steamIcon);
+		}
+		else if (_mod.location == ModLocation.Modpack) {
+			var modpackIcon = new UIImage(UICommon.ModLocationModPackIcon) {
+				Left = { Pixels = -22, Percent = 1f }
+			};
+			Append(modpackIcon);
 		}
 
 		if (loadedMod != null) {
@@ -203,16 +308,19 @@ internal class UIModItem : UIPanel
 		}
 
 		OnLeftDoubleClick += (e, el) => {
+			if (tMLUpdateRequired != null)
+				return;
 			// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
 			if (e.Target.GetType() != typeof(UIModStateText))
 				_uiModStateText.LeftClick(e);
 		};
 
-		if (!_loaded) {
+		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
+			bottomRightRowOffset -= 36;
 			_deleteModButton = new UIImage(TextureAssets.Trash) {
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
-				Left = { Pixels = _moreInfoButton.Left.Pixels - 36 - PADDING, Precent = 1 },
+				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
 				Top = { Pixels = 42.5f }
 			};
 			_deleteModButton.OnLeftClick += QuickModDelete;
@@ -232,6 +340,21 @@ internal class UIModItem : UIPanel
 
 			Append(updatedModDot);
 		}
+
+		if (loadedMod != null && (_mod.modFile.path != loadedMod.File.path)) {
+			var serverDiffMessage = new UITextPanel<string>($"v{loadedMod.Version} currently loaded due to multiplayer game session") {
+				Left = new StyleDimension(0, 0f),
+				Width = new StyleDimension(0, 1f),
+				Height = new StyleDimension(30, 0f),
+				BackgroundColor = Color.Orange,
+				Top = { Pixels = 82 }
+			};
+			Append(serverDiffMessage);
+
+			Height.Pixels = 130;
+		}
+
+		SetHoverColors(hovered: false);
 	}
 
 	// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
@@ -259,9 +382,9 @@ internal class UIModItem : UIPanel
 		_tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(_tooltip)) {
-			var bounds = GetOuterDimensions().ToRectangle();
-			bounds.Height += 16;
-			UICommon.DrawHoverStringInBounds(spriteBatch, _tooltip, bounds);
+			//var bounds = GetOuterDimensions().ToRectangle();
+			//bounds.Height += 16;
+			UICommon.TooltipMouseText(_tooltip);
 		}
 	}
 
@@ -275,12 +398,7 @@ internal class UIModItem : UIPanel
 
 		// TODO: These should just be UITexts
 		if (_mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload)) {
-			if (_modReferenceIcon != null) {
-				drawPos += new Vector2(_uiModStateText.Width.Pixels + _modReferenceIcon.Width.Pixels + PADDING, 0f);
-			}
-			else {
-				drawPos += new Vector2(_uiModStateText.Width.Pixels, 0f);
-			}
+			drawPos += new Vector2(_uiModStateText.Width.Pixels + left2ndLine, 0f);
 			Utils.DrawBorderString(spriteBatch, _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
 		}
 		if (_mod.properties.side == ModSide.Server) {
@@ -311,55 +429,85 @@ internal class UIModItem : UIPanel
 			else
 				_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage", previousVersionHint);
 		}
+		else if (tMLUpdateRequired?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
+		}
+		else if (_modReferenceIcon?.IsMouseHovering == true) {
+			_tooltip = _modRequiresTooltip;
+		}
+		else if (_translationModIcon?.IsMouseHovering == true) {
+			string refs = string.Join(", ", _mod.properties.RefNames(true)); // Translation mods can be strong or weak references.
+			_tooltip = Language.GetTextValue("tModLoader.TranslationModTooltip", refs);
+		}
 	}
 
 	public override void MouseOver(UIMouseEvent evt)
 	{
 		base.MouseOver(evt);
-		BackgroundColor = UICommon.DefaultUIBlue;
-		BorderColor = new Color(89, 116, 213);
-		if(modFromLocalModFolder)
-			BackgroundColor = Color.MediumPurple;
+		SetHoverColors(hovered: true);
 	}
 
 	public override void MouseOut(UIMouseEvent evt)
 	{
 		base.MouseOut(evt);
-		BackgroundColor = new Color(63, 82, 151) * 0.7f;
-		BorderColor = new Color(89, 116, 213) * 0.7f;
-		if (modFromLocalModFolder)
-			BackgroundColor = Color.MediumPurple * 0.7f;
+		SetHoverColors(hovered: false);
+	}
+
+	private void SetHoverColors(bool hovered)
+	{
+		BorderColor = hovered ? new Color(89, 116, 213) : new Color(89, 116, 213) * 0.7f;
+		if (_mod.location == ModLocation.Local)
+			BackgroundColor = hovered ? Color.MediumPurple : Color.MediumPurple * 0.7f;
+		else if (_mod.location == ModLocation.Modpack)
+			BackgroundColor = hovered ? Color.SkyBlue : Color.SkyBlue * 0.7f;
+		else
+			BackgroundColor = hovered ? UICommon.DefaultUIBlueMouseOver : UICommon.DefaultUIBlue;
 	}
 
 	private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 		_mod.Enabled = !_mod.Enabled;
+
+		UpdateUIForEnabledChange();
+
+		if (!_mod.Enabled) {
+			DisableDependents();
+			return;
+		}
+
+		EnableDependencies();
 	}
 
 	internal void Enable()
 	{
-		if(_mod.Enabled){return;}
-		SoundEngine.PlaySound(SoundID.MenuTick);
+		if (_mod.Enabled) { return; }
 		_mod.Enabled = true;
-		_uiModStateText.SetEnabled();
+		UpdateUIForEnabledChange();
 	}
 
 	internal void Disable()
 	{
-		if(!_mod.Enabled){return;}
-		SoundEngine.PlaySound(SoundID.MenuTick);
+		if (!_mod.Enabled) { return; }
 		_mod.Enabled = false;
-		_uiModStateText.SetDisabled();
+		UpdateUIForEnabledChange();
 	}
 
-	internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement)
+	private void UpdateUIForEnabledChange()
+	{
+		if (_mod.Enabled)
+			_uiModStateText.SetEnabled();
+		else
+			_uiModStateText.SetDisabled();
+	}
+
+	internal void EnableDependencies()
 	{
 		var missingRefs = new List<string>();
 		EnableDepsRecursive(missingRefs);
 
 		if (missingRefs.Any()) {
-			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(",", missingRefs)), Interface.modsMenuID);
+			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(", ", missingRefs)), Interface.modsMenuID);
 		}
 	}
 
@@ -376,6 +524,23 @@ internal class UIModItem : UIPanel
 		}
 	}
 
+	private void DisableDependents()
+	{
+		DisableDependentsRecursive();
+	}
+
+	private void DisableDependentsRecursive()
+	{
+		foreach (var name in _modDependents) {
+			var dep = Interface.modsMenu.FindUIModItem(name);
+			if (dep == null) {
+				continue;
+			}
+			dep.DisableDependentsRecursive();
+			dep.Disable();
+		}
+	}
+
 	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -385,8 +550,8 @@ internal class UIModItem : UIPanel
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modConfig.SetMod(ModLoader.GetMod(ModName));
-		Main.menuMode = Interface.modConfigID;
+		Interface.modConfigList.ModToSelectOnOpen = ModLoader.GetMod(ModName);
+		Main.menuMode = Interface.modConfigListID;
 	}
 
 	public override int CompareTo(object obj)
@@ -498,6 +663,8 @@ internal class UIModItem : UIPanel
 				IsWrapped = true
 			};
 			_deleteModDialog.Append(_dialogText);
+
+			Interface.modsMenu.Recalculate();
 		}
 		else {
 			DeleteMod(evt, listeningElement);
@@ -515,9 +682,13 @@ internal class UIModItem : UIPanel
 	{
 		ModOrganizer.DeleteMod(_mod);
 
-		UIModBrowser.CleanupDeletedItem(ModName);
-
 		CloseDialog(evt, listeningElement);
 		Interface.modsMenu.Activate();
+	}
+
+	private bool CheckIfPublishedForThisBrowserVersion(out string recommendedModBrowserVersion)
+	{
+		recommendedModBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(_mod.tModLoaderVersion);
+		return recommendedModBrowserVersion == SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
 	}
 }

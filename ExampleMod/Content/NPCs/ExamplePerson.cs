@@ -1,30 +1,32 @@
+using ExampleMod.Common;
+using ExampleMod.Common.Configs;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Armor;
+using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Personalities;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.GameContent.Personalities;
-using System.Collections.Generic;
 using Terraria.ModLoader.IO;
-using ExampleMod.Common.Configs;
-using ExampleMod.Common;
-using ExampleMod.Content.Projectiles;
+using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -57,8 +59,13 @@ namespace ExampleMod.Content.NPCs
 
 			NPCID.Sets.ShimmerTownTransform[Type] = true; // Allows for this NPC to have a different texture after touching the Shimmer liquid.
 
+			// Connects this NPC with a custom emote.
+			// This makes it when the NPC is in the world, other NPCs will "talk about him".
+			// By setting this you don't have to override the PickEmote method for the emote to appear.
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>();
+
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
 				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
@@ -165,12 +172,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) { // Requirements for the town NPC to spawn.
-			for (int k = 0; k < Main.maxPlayers; k++) {
-				Player player = Main.player[k];
-				if (!player.active) {
-					continue;
-				}
-
+			foreach (var player in Main.ActivePlayers) {
 				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
 				if (player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>() || item.type == ModContent.ItemType<Items.Placeable.ExampleBlock>())) {
 					return true;
@@ -235,6 +237,7 @@ namespace ExampleMod.Content.NPCs
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4"));
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
 			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
 
@@ -244,7 +247,15 @@ namespace ExampleMod.Content.NPCs
 				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
 			}
 
-			return chat; // chat is implicitly cast to a string.
+			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
+
+			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
+			if (chosenChat == Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4")) {
+				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
+				Main.npcChatCornerItem = ItemID.HiveBackpack;
+			}
+
+			return chosenChat;
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
@@ -294,7 +305,7 @@ namespace ExampleMod.Content.NPCs
 				.Add<Items.Weapons.ExampleSword>(Condition.MoonPhasesQuarter0)
 				//.Add<ExampleGun>(Condition.MoonPhasesQuarter1)
 				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
-				//.Add<ExampleStaff>(Condition.MoonPhasesQuarter2)
+				.Add<Items.Weapons.ExampleStaff>(ExampleConditions.DownedMinionBoss)
 				.Add<ExampleOnBuyItem>()
 				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
@@ -303,8 +314,8 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
-		 	 	npcShop.Add(bloodTalisman.Type);
-		 	}
+				npcShop.Add(bloodTalisman.Type);
+			}
 			npcShop.Register(); // Name of this shop tab
 		}
 
@@ -385,6 +396,24 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SaveData(TagCompound tag) {
 			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
+		}
+
+		// Let the NPC "talk about" minion boss
+		public override int? PickEmote(Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor) {
+			// By default this NPC will have a chance to use the Minion Boss Emote even if Minion Boss is not downed yet
+			int type = ModContent.EmoteBubbleType<MinionBossEmote>();
+			// If the NPC is talking to the Demolitionist, it will be more likely to react with angry emote
+			if (otherAnchor.entity is NPC { type: NPCID.Demolitionist }) {
+				type = EmoteID.EmotionAnger;
+			}
+
+			// Make the selection more likely by adding it to the list multiple times
+			for (int i = 0; i < 4; i++) {
+				emoteList.Add(type);
+			}
+
+			// Use this or return null if you don't want to override the emote selection totally
+			return base.PickEmote(closestPlayer, emoteList, otherAnchor);
 		}
 	}
 }

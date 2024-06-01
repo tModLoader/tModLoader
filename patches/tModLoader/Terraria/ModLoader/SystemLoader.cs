@@ -7,6 +7,7 @@ using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader.Exceptions;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -114,21 +115,36 @@ public static partial class SystemLoader
 	public static void OnWorldLoad()
 	{
 		foreach (var system in HookOnWorldLoad.Enumerate()) {
-			system.OnWorldLoad();
+			try {
+				system.OnWorldLoad();
+			}
+			catch (Exception e) {
+				throw new CustomModDataException(system.Mod, e.Message, e);
+			}
 		}
 	}
 
 	public static void OnWorldUnload()
 	{
 		foreach (var system in HookOnWorldUnload.Enumerate()) {
-			system.OnWorldUnload();
+			try {
+				system.OnWorldUnload();
+			}
+			catch {
+				Logging.tML.Error($"Encountered an error while running the \"{system.Name}.OnWorldUnload\" method from the \"{system.Mod.Name}\" mod. The game, world, or mod might be in an unstable state.");
+			}
 		}
 	}
 
 	public static void ClearWorld()
 	{
 		foreach (var system in HookClearWorld.Enumerate()) {
-			system.ClearWorld();
+			try {
+				system.ClearWorld();
+			}
+			catch (Exception e) {
+				throw new CustomModDataException(system.Mod, e.Message, e);
+			}
 		}
 	}
 
@@ -431,6 +447,8 @@ public static partial class SystemLoader
 				throw;
 			}
 		}
+
+		passes.RemoveAll(x => !x.Enabled);
 	}
 
 	public static void PostWorldGen()
@@ -459,6 +477,8 @@ public static partial class SystemLoader
 		foreach (var system in HookModifyHardmodeTasks.Enumerate()) {
 			system.ModifyHardmodeTasks(passes);
 		}
+
+		passes.RemoveAll(x => !x.Enabled);
 	}
 
 	internal static bool HijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber)

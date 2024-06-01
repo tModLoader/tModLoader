@@ -1,7 +1,7 @@
-using System;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 	// - ModBuff - the icon you can click on to despawn the minion
 	// - ModProjectile - the minion itself
 
-	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overwiew.
+	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overview.
 	// To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
 	// This is NOT an in-depth guide to advanced minion AI
 
@@ -190,10 +190,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 			float overlapVelocity = 0.04f;
 
 			// Fix overlap with other minions
-			for (int i = 0; i < Main.maxProjectiles; i++) {
-				Projectile other = Main.projectile[i];
-
-				if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
+			foreach (var other in Main.ActiveProjectiles) {
+				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
 					if (Projectile.position.X < other.position.X) {
 						Projectile.velocity.X -= overlapVelocity;
 					}
@@ -232,9 +230,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 			if (!foundTarget) {
 				// This code is required either way, used for finding a target
-				for (int i = 0; i < Main.maxNPCs; i++) {
-					NPC npc = Main.npc[i];
-
+				foreach (var npc in Main.ActiveNPCs) {
 					if (npc.CanBeChasedBy()) {
 						float between = Vector2.Distance(npc.Center, Projectile.Center);
 						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;

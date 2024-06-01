@@ -65,16 +65,6 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 
 	internal byte[] Signature { get; private set; } = new byte[256];
 
-	private bool? validModBrowserSignature;
-	internal bool ValidModBrowserSignature {
-		get {
-			if (!validModBrowserSignature.HasValue)
-				validModBrowserSignature = ModLoader.IsSignedBy(this, ModLoader.modBrowserPublicKey);
-
-			return validModBrowserSignature.Value;
-		}
-	}
-
 	internal TmodFile(string path, string name = null, Version version = null)
 	{
 		this.path = path;
@@ -101,7 +91,7 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	{
 		Stream stream;
 		if (entry.cachedBytes != null) {
-			stream = new MemoryStream(entry.cachedBytes);
+			stream = entry.cachedBytes.ToMemoryStream();
 		}
 		else if (fileStream == null) {
 			throw new IOException($"File not open: {path}");

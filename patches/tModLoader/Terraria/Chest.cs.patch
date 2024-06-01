@@ -574,7 +574,7 @@
  	public static void DestroyChestDirect(int X, int Y, int id)
  	{
  		if (id < 0 || id >= Main.chest.Length)
-@@ -637,13 +_,27 @@
+@@ -637,23 +_,44 @@
  		}
  	}
  
@@ -588,23 +588,26 @@
 +	public int AddItemToShop(Item newItem)
  	{
  		int num = Main.shopSellbackHelper.Remove(newItem);
-+
- 		if (num >= newItem.stack)
+-		if (num >= newItem.stack)
 -			return;
-+			return 0;
- 
++
++		if (num >= newItem.stack) {
++			for (int i = 0; i < 39; i++)
++				if (item[i] != null && item[i].type == newItem.type)
++					return i;
++			return 0; // Technically this shouldn't happen
++		}
++
 +		//TML:
 +		// When selling to vendor with full inventory, replace 2nd to last
 +		// item rather than have the item disappear to facilitate PostSellItem Item reference.
-+
-+		/*
+ 
  		for (int i = 0; i < 39; i++) {
-+		*/
-+		for (int i = 0; i < 38; i++) {
- 			if (item[i] == null || item[i].type == 0) {
+-			if (item[i] == null || item[i].type == 0) {
++			if (item[i] == null || item[i].type == 0 || i == 38) {
  				item[i] = newItem.Clone();
  				item[i].favorited = false;
-@@ -651,9 +_,15 @@
+ 				item[i].buyOnce = true;
  				item[i].stack -= num;
  				_ = item[i].value;
  				_ = 0;
@@ -663,7 +666,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2996,7 +_,30 @@
+@@ -2996,7 +_,33 @@
  		}
  	}
  
@@ -680,11 +683,14 @@
 +			}
 +		}
 +
++		foreach (ref var item in item.AsSpan()) {
++			item ??= new Item();
++		}
++
 +		if (npc != null) // not that it's valid to call SetupShop without an npc, except when testing
 +			NPCLoader.ModifyActiveShop(npc, shopName, item);
 +
 +		foreach (ref var item in item.AsSpan()) {
-+			item ??= new Item();
 +			item.isAShopItem = true;
 +		}
 +	}

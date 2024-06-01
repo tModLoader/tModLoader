@@ -46,6 +46,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short MagicMissile = 9;
 	/// <summary>
+	/// Falling tiles like Sand spawn falling tile projectiles with this aiStyle. Item drop and placed tile can customized using <see cref="ProjectileID.Sets.FallingBlockTileItem"/>.<para/>
 	/// Used by: <see cref="ProjectileID.DirtBall"/>, <see cref="ProjectileID.SandBallFalling"/>, <see cref="ProjectileID.MudBall"/>, <see cref="ProjectileID.AshBallFalling"/>, <see cref="ProjectileID.SandBallGun"/>, <see cref="ProjectileID.EbonsandBallFalling"/>, <see cref="ProjectileID.EbonsandBallGun"/>, <see cref="ProjectileID.PearlSandBallFalling"/>, <see cref="ProjectileID.PearlSandBallGun"/>, <see cref="ProjectileID.SiltBall"/>, <see cref="ProjectileID.SnowBallHostile"/>, <see cref="ProjectileID.SlushBall"/>, <see cref="ProjectileID.CrimsandBallFalling"/>, <see cref="ProjectileID.CrimsandBallGun"/>, <see cref="ProjectileID.CopperCoinsFalling"/>, <see cref="ProjectileID.SilverCoinsFalling"/>, <see cref="ProjectileID.GoldCoinsFalling"/>, <see cref="ProjectileID.PlatinumCoinsFalling"/>, <see cref="ProjectileID.BlueDungeonDebris"/>, <see cref="ProjectileID.GreenDungeonDebris"/>, <see cref="ProjectileID.PinkDungeonDebris"/>, <see cref="ProjectileID.ShellPileFalling"/>
 	/// </summary>
 	public const short FallingTile = 10;
@@ -787,5 +788,40 @@ public class ProjAIStyleID
 	/// Used by: <see cref="ProjectileID.PrincessWeapon"/>
 	/// </summary>
 	public const short PrincessWeapon = 186;
-
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.InsanityShadowFriendly"/>, <see cref="ProjectileID.InsanityShadowHostile"/>
+	/// </summary>
+	public const short ShadowHand = 187;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.LightsBane"/>
+	/// </summary>
+	public const short LightsBane = 188;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.Volcano"/>
+	/// </summary>
+	public const short Volcano = 189;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.NightsEdge"/>,<see cref="ProjectileID.Excalibur"/>,<see cref="ProjectileID.TrueExcalibur"/>,<see cref="ProjectileID.TerraBlade2"/>,<see cref="ProjectileID.TheHorsemansBlade"/>
+	/// </summary>
+	public const short NightsEdge = 190;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.TrueNightsEdge"/>, <see cref="ProjectileID.TerraBlade2Shot"/>
+	/// </summary>
+	public const short TrueNightsEdge = 191;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.JuminoStardropAnimation"/>
+	/// </summary>
+	public const short JuminoAnimation = 192;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.Flames"/>
+	/// </summary>
+	public const short Flamethrower = 193;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.HorsemanPumpkin"/>
+	/// </summary>
+	public const short HorsemanPumpkin = 194;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.JimsDrone"/>
+	/// </summary>
+	public const short JimsDrone = 195;
 }

@@ -1,17 +1,19 @@
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.EmoteBubbles;
 using ExampleMod.Content.Items;
+using ExampleMod.Content.Items.Weapons;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Terraria.GameContent.Bestiary;
-using System.Collections.Generic;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ExampleMod.Content.Items.Weapons;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -23,6 +25,11 @@ namespace ExampleMod.Content.NPCs
 	public class ExampleBoneMerchant : ModNPC
 	{
 		private static Profiles.StackedNPCProfile NPCProfile;
+		private static Asset<Texture2D> shimmerGun;
+
+		public override void Load() {
+			shimmerGun = ModContent.Request<Texture2D>(Texture + "_Shimmer_Gun");
+		}
 
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
@@ -49,12 +56,16 @@ namespace ExampleMod.Content.NPCs
 			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;
 
+			// Connects this NPC with a custom emote.
+			// This makes it when the NPC is in the world, other NPCs will "talk about him".
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExampleBoneMerchantEmote>();
+
 			//The vanilla Bone Merchant cannot interact with doors (open or close them, specifically), but if you want your NPC to be able to interact with them despite this,
 			//uncomment this line below.
 			//NPCID.Sets.AllowDoorInteraction[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
 			};
@@ -221,7 +232,7 @@ namespace ExampleMod.Content.NPCs
 			}
 			else {
 				// This texture isn't actually an existing item, but can still be used.
-				item = ModContent.Request<Texture2D>(Texture + "_Shimmer_Gun").Value;
+				item = shimmerGun.Value;
 				itemFrame = item.Frame();
 				horizontalHoldoutOffset = -2;
 			}

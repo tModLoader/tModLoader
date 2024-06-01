@@ -275,7 +275,6 @@ public static class ItemIO
 
 	public static Item FromBase64(string base64)
 	{
-		MemoryStream ms = new MemoryStream(Convert.FromBase64String(base64));
-		return Load(TagIO.FromStream(ms, true));
+		return Load(TagIO.FromStream(Convert.FromBase64String(base64).ToMemoryStream(), true));
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
@@ -96,6 +97,8 @@ public static class InfoDisplayLoader
 		return active;
 	}
 
+	// Remove in 2023_10
+	[Obsolete("Use ModifyDisplayParameters instead")]
 	public static void ModifyDisplayName(InfoDisplay info, ref string displayName)
 	{
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
@@ -103,6 +106,8 @@ public static class InfoDisplayLoader
 		}
 	}
 
+	// Remove in 2023_10
+	[Obsolete("Use ModifyDisplayParameters instead")]
 	public static void ModifyDisplayValue(InfoDisplay info, ref string displayName)
 	{
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
@@ -110,10 +115,19 @@ public static class InfoDisplayLoader
 		}
 	}
 
-	public static void ModifyDisplayColor(InfoDisplay info, ref Color displayColor)
+	// Remove in 2023_10
+	[Obsolete("Use ModifyDisplayParameters instead")]
+	public static void ModifyDisplayColor(InfoDisplay info, ref Color displayColor, ref Color displayShadowColor)
 	{
 		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
-			global.ModifyDisplayColor(info, ref displayColor);
+			global.ModifyDisplayColor(info, ref displayColor, ref displayShadowColor);
+		}
+	}
+
+	public static void ModifyDisplayParameters(InfoDisplay info, ref string displayValue, ref string displayName, ref Color displayColor, ref Color displayShadowColor)
+	{
+		foreach (GlobalInfoDisplay global in globalInfoDisplays) {
+			global.ModifyDisplayParameters(info, ref displayValue, ref displayName, ref displayColor, ref displayShadowColor);
 		}
 	}
 }

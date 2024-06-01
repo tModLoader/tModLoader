@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/GenVars.cs
++++ src/tModLoader/Terraria/WorldBuilding/GenVars.cs
+@@ -8,6 +_,7 @@
+ public static class GenVars
+ {
+ 	public static WorldGenConfiguration configuration;
++	/// <inheritdoc cref="StructureMap"/>
+ 	public static StructureMap structures;
+ 	public static int copper;
+ 	public static int iron;
+@@ -154,7 +_,13 @@
+ 	public static readonly int oasisHeight = 20;
+ 	public static int hellChest;
+ 	public static int[] hellChestItem;
++	/// <summary>
++	/// Statue options for natural world generation placement. Each Point16 corresponds to a tile type and tile style pair.
++	/// </summary>
+ 	public static Point16[] statueList;
++	/// <summary>
++	/// Statues in this list will be generated with a connecting wire terminating in a pressure plate tile. The values in this list correspond to the indexes of the statue options within <see cref="statueList"/>. Make sure to also set <see cref="ID.TileID.Sets.IsAMechanism"/> for the tile type, otherwise the trap and wires will be removed during the "Remove Broken Traps" world generation step.
++	/// </summary>
+ 	public static List<int> StatuesWithTraps = new List<int>(new int[4] {
+ 		4,
+ 		7,

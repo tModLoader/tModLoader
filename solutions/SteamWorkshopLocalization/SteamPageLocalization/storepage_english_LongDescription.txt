@@ -1,0 +1,36 @@
+Dig, Fight, and Build your way through the world of player-created mods on Terraria with tModLoader - this DLC makes modding Terraria a reality!
+
+tModLoader (TML) is an open-source, community-driven modification and expansion of the Terraria game that makes it possible to make and play mods. TML expands your Terraria adventures with new content to explore created by the Terraria community! TML allows players to create and play Terraria mods and is designed in such a way so that you can play alone or together with friends - with one mod or with multiple, choose to play however you like!  
+
+NOTE: It is required that all your friends also install TML if you want to play together; it is not possible for vanilla users to play with TML users.
+
+---
+
+[b][u][h2]SUPPORT[/h2][/u][/b]
+Looking for some help? You can receive support on our forum thread on Terraria Community Forums or our Discord server! These are our best places to get support, and they are both linked directly from our Website, which you will find below on our Steam Store Page.
+
+tModLoader is an open-source project. This means the code is publicly available and anyone can make contributions to the project. Our project can be found on Github, linked via our Website.
+
+Do you want to learn more about the inner workings for tModLoader? Maybe you want to use tModLoader right now? You can get started with our guide for players linked below on our Steam Page under "View the Manual". There are also pages for developers and contributors. Our wiki is filled with guides that learn you how to mod using tModLoader.
+
+---
+
+[b][u][h2]FAQ[/h2][/u][/b]
+Here are some important things to know when you Install and get ready to dive into tModLoader:
+
+[b][list][*]You do not have to make any backups
+[*]Simply update Terraria to 1.4 and install tModLoader on Steam
+[*]You can play vanilla Terraria and TML alongside each other; tModLoader through Steam is treated as a separate game.
+[*]tModLoader supports Terraria 1.3 and 1.4
+[*]Steam Workshop is supported (but not required, we have an in-game mod browser)
+[*]With the new release, tModLoader can be installed anywhere regardless of location or whether it is a Steam install.
+[*]tModLoader will work for Windows, Mac and Linux[/list][/b]
+
+[b]How will this affect me? Will my mods still work when Terraria 1.4 is released?[/b]
+Because this update brought many changes to tModLoader, a lot of mods if not all will be broken. Even though we've given modders time to update their mods, it is likely some mods will never be updated to this version. So please keep in mind you may not be able to use all mods you were able to in 1.3
+
+[b]Does this mean tModLoader has updated to 1.4?[/b]
+tModLoader on Steam supports Terraria 1.3.5 and Terraria 1.4.
+
+[b]What about Steam workshop support?[/b]
+Steam Workshop is supported.

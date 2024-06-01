@@ -244,7 +244,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual float UseSpeedMultiplier(Player player) => 1f;
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
+	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healLife"/> value.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -254,7 +254,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
+	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healMana"/> value.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -265,6 +265,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana this item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.mana"/>, modify the <paramref name="reduce"/> and <paramref name="mult"/> parameters.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
@@ -296,6 +297,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
@@ -305,6 +307,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to set an item's sorting group in Journey Mode's duplication menu. This is useful for setting custom item types that group well together, or whenever the default vanilla sorting doesn't sort the way you want it.
+	/// <para/> Note that this affects the order of the item in the listing, not which filters the item satisfies.
 	/// </summary>
 	/// <param name="itemGroup">The item group this item is being assigned to</param>
 	public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
@@ -339,6 +342,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.knockBack"/>, modify the <paramref name="knockback"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
@@ -349,6 +353,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.crit"/>, modify the <paramref name="crit"/> parameter.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
@@ -543,6 +548,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.
+	/// <br/><br/> <b>Do not</b> modify <see cref="Item.scale"/>, modify the <paramref name="scale"/> parameter.
 	/// </summary>
 	/// <param name="player">The player wielding this item.</param>
 	/// <param name="scale">
@@ -1148,7 +1154,9 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to disallow the player from equipping this accessory. Return false to disallow equipping this accessory. Returns true by default.
+	/// Allows you to disallow the player from equipping this accessory. Return false to disallow equipping this accessory.
+	/// <para/> Do not use this to check for mutually exclusive accessories being equipped, that check is only possible via <see cref="CanAccessoryBeEquippedWith(Item, Item, Player)"/>
+	/// <para/> Returns <see langword="true"/> by default.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
@@ -1161,6 +1169,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
 	/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+	/// <para/> This method exists because manually checking <see cref="Player.armor"/> in <see cref="CanEquipAccessory(Player, int, bool)"/> will not correctly account for modded accessory slots.
 	/// </summary>
 	public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
 	{
@@ -1168,18 +1177,27 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to modify what item, and in what quantity, is obtained when any item belonging to the extractinator type corresponding to this item is fed into the Extractinator.
-	/// <br/> This method is only called if <c>ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;</c> in used in SetStaticDefaults. Other items belonging to the same extractinator group should use <c>ItemID.Sets.ExtractinatorMode[Item.type] = ModContent.ItemType&lt;IconicItemForThisExtractinatorType&gt;();</c> to indicate that they share the same extractinator output pool and to avoid code duplication.
-	/// <br/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
-	/// <br/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
-	/// <br/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in ExampleAdvancedFlail.cs.
-	/// <br/> 
-	/// <br/> This method is not instanced.
+	/// Allows you to modify what item, and in what quantity, is obtained when any item belonging to the extractinator type corresponding to this item is fed into the Extractinator. Use <see cref="ItemID.Sets.ExtractinatorMode"/> to allow an item to be fed into the Extractinator.
+	/// <para/> This method is only called if <c>ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;</c> in used in SetStaticDefaults. Other items belonging to the same extractinator group should use <c>ItemID.Sets.ExtractinatorMode[Item.type] = ModContent.ItemType&lt;IconicItemForThisExtractinatorType&gt;();</c> to indicate that they share the same extractinator output pool and to avoid code duplication.
+	/// <para/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
+	/// <para/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
+	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see>.
+	/// <para/> This method is not instanced.
 	/// </summary>
 	/// <param name="extractinatorBlockType">Which Extractinator tile is being used, <see cref="TileID.Extractinator"/> or <see cref="TileID.ChlorophyteExtractinator"/>.</param>
 	/// <param name="resultType">Type of the result.</param>
 	/// <param name="resultStack">The result stack.</param>
 	public virtual void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack)
+	{
+	}
+
+	/// <summary>
+	/// If this item is a fishing pole, allows you to modify the origin and color of its fishing line.
+	/// </summary>
+	/// <param name="bobber">The bobber projectile</param>
+	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
+	/// <param name="lineColor"> The fishing line's color, before being overridden by string color accessories. </param>
+	public virtual void ModifyFishingLine(Projectile bobber, ref Vector2 lineOriginOffset, ref Color lineColor)
 	{
 	}
 
@@ -1314,7 +1332,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to modify all the tooltips that display for this item. See here for information about TooltipLine.
+	/// Allows you to modify all the tooltips that display for this item. See here for information about TooltipLine. To hide tooltips, please use <see cref="TooltipLine.Hide"/> and defensive coding.
 	/// </summary>
 	/// <param name="tooltips">The tooltips.</param>
 	public virtual void ModifyTooltips(List<TooltipLine> tooltips)

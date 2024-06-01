@@ -76,15 +76,17 @@
  	public OverheadMessage chatOverhead;
  	public SelectionRadial DpadRadial = new SelectionRadial();
  	public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -484,7 +_,7 @@
+@@ -484,8 +_,8 @@
  	public int HotbarOffset;
  	public bool GoingDownWithGrapple;
  	public byte spelunkerTimer;
 -	public bool[] hideInfo = new bool[13];
 +	public bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
- 	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
+-	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
++	public int[] builderAccStatus = new int[BuilderToggleLoader.BuilderToggleCount];
  	public long lostCoins;
  	public string lostCoinString = "";
+ 	public int soulDrain;
 @@ -496,10 +_,18 @@
  	private static float _blizzardSoundVolume;
  	private static SlotId _strongBlizzardSound = SlotId.Invalid;
@@ -106,7 +108,7 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
-@@ -589,10 +_,40 @@
+@@ -589,20 +_,81 @@
  	public int ropeCount;
  	public int manaRegenBonus;
  	public float manaRegenDelayBonus;
@@ -147,7 +149,15 @@
  	public int dashDelay;
  	public int eocDash;
  	public int eocHit;
-@@ -601,6 +_,24 @@
++	/// <summary>
++	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running. 
++	/// <para/> Defaults to 3f. Accessories set this to specific values, resulting in the last equipped accessories to dictate the final value. Vanilla shoe accessories set this to <c>6f</c> (<see cref="ItemID.HermesBoots"/>) or <c>6.75</c> (<see cref="ItemID.LightningBoots"/>). This assignment should happen in <see cref="ModItem.UpdateEquip(Player)"/>.
++	/// <para/> This value is later multiplied by other effects in the same manner as <see cref="maxRunSpeed"/>. They are usually modified in tandem, but not always depending on the desired result. For example, asphalt triples maxRunSpeed but does not affect accRunSpeed, whereas Shadow Armor affects both equally.
++	/// <para/> These multiplicative adjustments should only be done in <see cref="ModPlayer.PostUpdateRunSpeeds"/> or <see cref="ModItem.HorizontalWingSpeeds"/> to correctly function.
++	/// <para/> When on a mount, all other modifiers are ignored and it is set to <see cref="Mount.DashSpeed"/>
++	/// </summary>
+ 	public float accRunSpeed;
+ 	public bool cordage;
  	public int gem = -1;
  	public int gemCount;
  	public BitsByte ownedLargeGems;
@@ -170,10 +180,21 @@
 +	// Concrete use cases exist. Just gotta find a way to make a system for them intuitive.
 +	// - Thomas
  	public byte meleeEnchant;
++	/// <summary>
++	/// While attached to a rope or similar tile (<see cref="pulley"/>), this value represents the how close to the rope the player is. A value of 1 means the player is centered on the rope, while a value of 2 represents that the player has nudged away from the rope but is still attached. <see cref="Entity.direction"/> is used still for the players direction.
++	/// </summary>
  	public byte pulleyDir;
++	/// <summary>
++	/// If true, the player is attached to a rope or similar tile.
++	/// </summary>
  	public bool pulley;
-@@ -612,6 +_,13 @@
+ 	public int pulleyFrame;
+ 	public float pulleyFrameCounter;
+@@ -610,8 +_,16 @@
+ 	public bool sliding;
+ 	public int slideDir;
  	public int snowBallLauncherInteractionCooldown;
++	/// <summary> Grant the player improved speed on ice and not breaking thin ice when falling onto it </summary>
  	public bool iceSkate;
  	public bool carpet;
 +
@@ -186,6 +207,30 @@
  	public int spikedBoots;
  	public int carpetFrame = -1;
  	public float carpetFrameCounter;
+@@ -621,13 +_,22 @@
+ 	public int infernoCounter;
+ 	public int insanityShadowCooldown;
+ 	public int starCloakCooldown;
+-	public bool sandStorm;
++	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behavior
++	private bool _sandStormLogicEnabled;
++	public bool sandStorm {
++		get => _sandStormLogicEnabled && GetJumpState<SandstormInABottleJump>().Active;
++		set => _sandStormLogicEnabled = value;
++	}
+ 	public bool crimsonRegen;
+ 	public bool ghostHeal;
+ 	public bool ghostHurt;
++	/// <summary> Player is on <see cref="TileID.HoneyBlock"/>. Affects movement parameters. </summary>
+ 	public bool sticky;
++	/// <summary> Player is on a <see cref="TileID.Sets.IceSkateSlippery"/> tile. Affects movement parameters. </summary>
+ 	public bool slippy;
++	/// <summary> Player is on <see cref="TileID.FrozenSlimeBlock"/>. Affects movement parameters. </summary>
+ 	public bool slippy2;
++	/// <summary> Player is on <see cref="TileID.Asphalt"/>. Affects movement parameters. </summary>
+ 	public bool powerrun;
+ 	public bool runningOnSand;
+ 	public bool flapSound;
 @@ -635,11 +_,22 @@
  	public bool dangerSense;
  	public byte luckPotion;
@@ -267,7 +312,7 @@
  	public Item[] miscEquips = new Item[5];
  	public Item[] miscDyes = new Item[5];
  	public Item trashItem = new Item();
-@@ -781,9 +_,34 @@
+@@ -781,16 +_,48 @@
  	public bool poundRelease;
  	public float ghostFade;
  	public float ghostDir = 1f;
@@ -300,8 +345,22 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool[] buffImmune = new bool[BuffID.Count];
++	/// <summary>
++	/// The index of the projectile (<see cref="Entity.whoAmI"/>) currently being "held" by the player as if it were an item. Set during projectile AI. Held projectiles will be drawn during player rendering over the player's arms.
++	/// <para/> When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and adjust <see cref="Player.RotatedRelativePoint"/>, <see cref="Player.gfxOffY"/> or <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> accordingly if the draw location is incorrect.
++	/// <para/> Defaults to -1.
++	/// </summary>
  	public int heldProj = -1;
  	public int breathCD;
+ 	public int breathMax = 200;
+ 	public int breath = 200;
+ 	public int lavaCD;
++	/// <summary> The max amount of lava immunity time (in ticks) the player can have. <see cref="ItemID.LavaCharm"/> and many other accessories add 420 do this, or 7 seconds. </summary>
+ 	public int lavaMax;
++	/// <summary> The remaining amount of lava immunity time (in ticks) the player has. </summary>
+ 	public int lavaTime;
+ 	public bool ignoreWater;
+ 	public bool armorEffectDrawShadow;
 @@ -813,7 +_,16 @@
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
@@ -361,7 +420,7 @@
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
-@@ -943,6 +_,11 @@
+@@ -943,7 +_,13 @@
  	public Vector2[] shadowOrigin = new Vector2[3];
  	public int[] shadowDirection = new int[3];
  	public int shadowCount;
@@ -371,9 +430,11 @@
 +	/// <br/> Cannot reduce an item's mana cost below <c>0</c>.
 +	/// </summary>
  	public float manaCost = 1f;
++	/// <summary> Grants the player immunity from <see cref="TileID.Sets.TouchDamageHot"/> applying the <see cref="BuffID.Burning"/> buff. Given by <see cref="ItemID.ObsidianSkull"/> and many other items. </summary>
  	public bool fireWalk;
  	public bool channel;
-@@ -961,16 +_,89 @@
+ 	public int step = -1;
+@@ -961,23 +_,97 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -440,7 +501,7 @@
  	public int statManaMax2;
 +
 +	/// <summary>
-+	/// The rate of this player's life regeneration in health/ticks, divided by <c>120</c>.
++	/// The rate of this player's life regeneration in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs and life regeneration accessories such as <see cref="ItemID.BandofRegeneration"/>.
 +	/// <br/> For example, adding <c>10</c> to this value regenerates <c>10 / 120</c> = <c>1/6</c> health per tick, or 5 health per second.
 +	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
 +	/// <br/> This value should be subtracted from in <see cref="ModPlayer.UpdateBadLifeRegen"/> and added to in <see cref="ModPlayer.UpdateLifeRegen"/>.
@@ -451,6 +512,7 @@
 +	/// This player's accumulated life regeneration.
 +	/// <br/> If this value reaches or exceeds <c>120</c>, the player gains <c><see cref="lifeRegenCount"/> / 120</c> health and this value decreases until it no longer exceeds <c>120</c>.
 +	/// <br/> If this value reaches or exceeds <c>-120</c>, the player loses health in the same way.
++	/// <br/> In either case, text will appear above the player indicating the life regeneration or life loss.
 +	/// </summary>
  	public int lifeRegenCount;
 +
@@ -464,7 +526,22 @@
  	public float lifeRegenTime;
  	public int manaRegen;
  	public int manaRegenCount;
-@@ -993,6 +_,10 @@
+ 	public float manaRegenDelay;
+ 	public bool manaRegenBuff;
+ 	public bool noKnockback;
+-	private bool shimmerImmune;
++	public bool shimmerImmune;
+ 	public bool spaceGun;
+ 	public float gravDir = 1f;
+ 	public bool chloroAmmoCost80;
+@@ -987,12 +_,17 @@
+ 	public int stickyBreak;
+ 	public bool magicQuiver;
+ 	public bool magmaStone;
++	/// <summary> Reduces damage from touching lava and halves the duration of lava inflicted <see cref="BuffID.OnFire"/>, such as given by <see cref="ItemID.ObsidianRose"/> and many other items. </summary>
+ 	public bool lavaRose;
+ 	public bool hasMoltenQuiver;
+ 	public int phantasmTime;
  	public bool ammoBox;
  	public bool ammoPotion;
  	public bool chaosState;
@@ -491,7 +568,7 @@
  	public bool enabledSuperCart = true;
  	public bool suspiciouslookingTentacle;
  	public bool crimsonHeart;
-@@ -1053,6 +_,11 @@
+@@ -1053,6 +_,12 @@
  	public bool cartFlip;
  	public float trackBoost;
  	public Vector2 lastBoost = Vector2.Zero;
@@ -499,11 +576,20 @@
 +	/// <summary>
 +	/// This player's <see cref="Mount"/>.
 +	/// <br/> <strong>Do not overwrite this value.</strong> Instead, call <see cref="Mount.SetMount(int, Player, bool)"/> or <see cref="Mount.Dismount(Player)"/> on it.
++	/// <para/> Check <see cref="Mount.Active"/> (via <c>Player.mount.Active</c>) to determine if the player is currently using a mount.
 +	/// </summary>
  	public Mount mount;
  	public bool blackCat;
  	public bool spider;
-@@ -1194,21 +_,63 @@
+@@ -1111,6 +_,7 @@
+ 	public bool coldDash;
+ 	public bool sailDash;
+ 	public bool desertDash;
++	/// <summary> Grants the player increased movement speed while running on sand </summary>
+ 	public bool desertBoots;
+ 	public bool eyeSpring;
+ 	public bool snowman;
+@@ -1194,21 +_,73 @@
  	public bool parryDamageBuff;
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
@@ -562,12 +648,22 @@
 +
 +	// TML: Should these be StatModifiers?
 +	/// <summary>
-+	/// The multiplier on this player's <see cref="maxRunSpeed"/> and <see cref="runAcceleration"/>.
++	/// The multiplier on this player's <see cref="maxRunSpeed"/> and <see cref="runAcceleration"/>. This affects how quickly the player reaches max speed as well as the max speed itself.
++	/// This is typically modified in <see cref="ModBuff.Update(Player, ref int)"/>, <see cref="ModItem.UpdateEquip(Player)"/>, <see cref="ModItem.UpdateAccessory(Player, bool)"/>, or <see cref="ModPlayer.PostUpdateMiscEffects"/>. <see cref="ModPlayer.PostUpdateRunSpeeds"/> is too late to have any effect.
++	/// <para/> Defaults to 1f. Effects typically add to or subtract from this, typically expressed as "X% increased movement speed" in tooltips. Some examples:
++	/// <para/> Swiftness potion (<see cref="BuffID.Swiftness"/>): <c>+= 0.25f</c>
++	/// <br/> Webbed buff (<see cref="BuffID.Webbed"/>): <c>= 0f</c>
++	/// <br/> Titanium Leggings: <c>+= 0.06f</c>
++	/// <br/> Frostspark Boots: <c>+= 0.08f</c>
++	/// <para/> Some effects apply multiplicatively, these must be applied later on in the update process to work correctly, <see cref="ModPlayer.PostUpdateMiscEffects"/> or <see cref="ModPlayer.UpdateBadLifeRegen"/> are suitable places for this. Some examples:
++	/// <para/> Oozed buff (<see cref="slowOgreSpit"/>): <c>*= 1/3f</c>
++	/// <br/> Slow buff (<see cref="slow"/>): <c>*= 0.5f</c>
++	/// <br/> Chilled buff (<see cref="chilled"/>): <c>*= 0.75f</c>
 +	/// </summary>
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1231,24 +_,61 @@
+@@ -1231,24 +_,77 @@
  	public static int tileTargetY;
  	public static float defaultGravity = 0.4f;
  	public static int jumpHeight = 15;
@@ -580,13 +676,29 @@
  	public float maxFallSpeed = 10f;
 +
 +	/// <summary>
-+	/// The maximum speed, in pixels/tick, that this player can reach by just running.
++	/// The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to that speed is a separate stat (<see cref="runAcceleration"/>).
++	/// <para/> This should only be modified in <see cref="ModPlayer.PostUpdateRunSpeeds"/>, <see cref="ModItem.HorizontalWingSpeeds"/>, or <see cref="ExtraJump.UpdateHorizontalSpeeds(Player)"/> to correctly function. <see cref="accRunSpeed"/> is commonly adjusted in tandem if suitable.
++	/// <para/> Defaults to 3f, which is then multiplied by <see cref="moveSpeed"/>. Effects typically multiply this by some factor. Some examples:
++	/// <para/> On ice with Ice Skates: <c>*= 1.25f</c>
++	/// <br/> On honey block (<see cref="sticky"/>): <c>*= 0.25f</c>
++	/// <br/> On asphalt block (<see cref="powerrun"/>): <c>*= 3.5f</c>
++	/// <br/> Shadow Armor (<see cref="shadowArmor"/>): <c>*= 1.15f</c>
++	/// <br/> Extra jumps: Typically <c>*= 1.5f</c>, see <see cref="ExtraJump.UpdateHorizontalSpeeds"/>
++	/// <para/> When on a mount, all other modifiers are ignored and it is set to <see cref="Mount.RunSpeed"/>
 +	/// </summary>
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float maxRunSpeed = 3f;
 +
 +	/// <summary>
-+	/// The acceleration, in pixels/ticks^2, that this player experiences while running.
++	/// The acceleration, in pixels/ticks^2, that this player experiences while running. This affects how quickly the player reaches max speed, not the max speed (<see cref="maxRunSpeed"/>) itself.
++	/// <para/> This should only be modified in <see cref="ModPlayer.PostUpdateRunSpeeds"/>, <see cref="ModItem.HorizontalWingSpeeds"/>, or <see cref="ExtraJump.UpdateHorizontalSpeeds(Player)"/> to correctly function.
++	/// <para/> Defaults to 0.08f, which is then multiplied by <see cref="moveSpeed"/>. Effects typically multiply this by some factor. Some examples:
++	/// <para/> On ice (<see cref="slippy"/>): <c>*= 0.7f</c> (or <c>*= 2.1f</c> if wearing Ice Skates)
++	/// <br/> On honey block (<see cref="sticky"/>): <c>*= 0.25f</c>
++	/// <br/> Shadow Armor (<see cref="shadowArmor"/>): <c>*= 1.75f</c>
++	/// <br/> Wings: <c>*= <see cref="WingStats.AccRunAccelerationMult"/></c>
++	/// <br/> Extra jumps: Typically <c>*= 3f</c>, see <see cref="ExtraJump.UpdateHorizontalSpeeds"/>
++	/// <para/> When on a mount, all other modifiers are ignored and it is set to <see cref="Mount.Acceleration"/>
 +	/// </summary>
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float runAcceleration = 0.08f;
@@ -632,7 +744,47 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
-@@ -1330,7 +_,18 @@
+@@ -1297,9 +_,24 @@
+ 	public Item boneGloveItem;
+ 	public bool goldRing;
+ 	public bool accDivingHelm;
+-	public bool accFlipper;
++	//public bool accFlipper;
++	public bool accFlipper {
++		get {
++			return GetJumpState<FlipperJump>().Enabled;
++		}
++		set {
++			ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
++			if (value) {
++				state.Enable();
++				// Allow equipping flippers while "midair" to still let the player use them
++				state.Available = true;
++			} else
++				state.Disable();
++		}
++	}
+ 	public bool hasLuck_LuckyCoin;
+ 	public bool hasLuck_LuckyHorseshoe;
++	/*
+ 	public bool hasJumpOption_Cloud;
+ 	public bool canJumpAgain_Cloud;
+ 	public bool isPerformingJump_Cloud;
+@@ -1327,10 +_,32 @@
+ 	public bool hasJumpOption_Basilisk;
+ 	public bool canJumpAgain_Basilisk;
+ 	public bool isPerformingJump_Basilisk;
++	*/
++	internal bool hasJumpOption_Cloud { set { if (value) GetJumpState<CloudInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sandstorm { set { if (value) GetJumpState<SandstormInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Blizzard { set { if (value) GetJumpState<BlizzardInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Fart { set { if (value) GetJumpState<FartInAJarJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sail { set { if (value) GetJumpState<TsunamiInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Unicorn { set { if (value) GetJumpState<UnicornMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Santank { set { if (value) GetJumpState<SantankMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_WallOfFleshGoat { set { if (value) GetJumpState<GoatMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Basilisk { set { if (value) GetJumpState<BasiliskMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++
  	public bool isPerformingPogostickTricks;
  	public bool autoJump;
  	public bool justJumped;
@@ -643,7 +795,7 @@
  	public float jumpSpeedBoost;
 +
 +	/// <summary>
-+	/// The number of extra tiles this player can fall before they start taking fall damage.
++	/// The number of extra tiles this player can fall before they start taking fall damage. For example <see cref="ItemID.FrogLeg"/> adds 10 to extraFall.
 +	/// </summary>
 +	/// <remarks>
 +	/// If you want to prevent fall damage entirely, use <see cref="noFallDmg"/>.
@@ -651,18 +803,40 @@
  	public int extraFall;
  	public bool canFloatInWater;
  	public bool hasFloatingTube;
-@@ -1351,6 +_,10 @@
+@@ -1347,10 +_,17 @@
+ 	public int rocketSoundDelay;
+ 	public bool rocketRelease;
+ 	public bool rocketFrame;
++	/// <summary> If greater than 0, the player can briefly fly using rocket boots. Is usually set to the same value as <see cref="vanityRocketBoots"/> </summary>
+ 	public int rocketBoots;
++	/// <summary> Controls which rocket boots visuals and sounds will be used: <para/> 1: Rocket Boots <br/> 2: Fairy Boots (plus <see cref="fairyBoots"/>), Spectre Boots, Lightning Boots <br/> 3: Frostspark Boots <br/> 4: Terraspark Boots <br/> 5: Hellfire Treads </summary>
  	public int vanityRocketBoots;
  	public bool canRocket;
  	public bool jumpBoost;
 +
 +	/// <summary>
-+	/// If <see langword="true"/>, this player will take no fall damage.
++	/// If <see langword="true"/>, this player will take no fall damage, such as the effect given by <see cref="ItemID.LuckyHorseshoe"/>.
++	/// <para/> If you want to increase the fall height required for fall damage, use <see cref="extraFall"/> instead.
 +	/// </summary>
  	public bool noFallDmg;
  	public int swimTime;
  	public bool killGuide;
-@@ -1397,11 +_,20 @@
+@@ -1358,6 +_,7 @@
+ 	public float equipmentBasedLuckBonus;
+ 	public float lastEquipmentBasedLuckBonus;
+ 	public bool hasCreditsSceneMusicBox;
++	/// <summary> Complete lava immunity, such as given by <see cref="ItemID.ObsidianSkinPotion"/>. </summary>
+ 	public bool lavaImmune;
+ 	public bool gills;
+ 	public bool slowFall;
+@@ -1392,16 +_,27 @@
+ 	public int maxTurrets = 1;
+ 	public int maxTurretsOld = 1;
+ 	public bool vortexStealthActive;
++	/// <summary> Allows the player to walk on water, honey, and shimmer, such as given by <see cref="ItemID.WaterWalkingBoots"/>. </summary>
+ 	public bool waterWalk;
++	/// <summary> Allows the player to walk on water, honey, lava, and shimmer, such as given by <see cref="ItemID.LavaWaders"/>. </summary>
+ 	public bool waterWalk2;
  	public int forcedGravity;
  	public bool gravControl;
  	public bool gravControl2;
@@ -683,6 +857,34 @@
  	public int chest = -1;
  	public int chestX;
  	public int chestY;
+@@ -1423,8 +_,11 @@
+ 	public PlayerInteractionAnchor tileEntityAnchor;
+ 	public DoorOpeningHelper doorHelper;
+ 	public ShoppingSettings currentShoppingSettings = ShoppingSettings.NotInShop;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Head"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cHead;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Body"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cBody;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Legs"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLegs;
+ 	public int cHandOn;
+ 	public int cHandOff;
+@@ -1445,10 +_,15 @@
+ 	public int cBackpack;
+ 	public int cTail;
+ 	public int cShieldFallback;
++	/// <summary>The armor shader ID applied to the Hook equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cGrapple;
++	/// <summary>The armor shader ID applied to the Mount equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMount;
++	/// <summary>The armor shader ID applied to the Minecart equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMinecart;
++	/// <summary>The armor shader ID applied to the Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cPet;
++	/// <summary>The armor shader ID applied to the Light Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLight;
+ 	public int cYorai;
+ 	public int cPortableStool;
 @@ -1458,6 +_,12 @@
  	public int cMinion;
  	public int cLeinShampoo;
@@ -1074,6 +1276,22 @@
  			item.stack--;
  			if (item.stack <= 0)
  				item.TurnToAir();
+@@ -3186,13 +_,13 @@
+ 	public Item QuickMana_GetItemToUse()
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+-			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion))
++			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && CombinedHooks.CanUseItem(this, inventory[i]))
+ 				return inventory[i];
+ 		}
+ 
+ 		if (useVoidBag()) {
+ 			for (int j = 0; j < 40; j++) {
+-				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, inventory[j]))
+ 					return bank4.item[j];
+ 			}
+ 		}
 @@ -3226,7 +_,7 @@
  		if (cursed || CCed || dead)
  			return;
@@ -1294,7 +1512,7 @@
  	{
 +		DropFromItem(type);
 +
-+		if ((!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++		if (!ItemID.Sets.PreHardmodeLikeBossBag[type]) {
 +			TryGettingDevArmor(GetItemSource_OpenItem(type));
 +		}
 +
@@ -2081,11 +2299,29 @@
  		}
  
  		if (armorPiece.type == 3374)
-@@ -9811,10 +_,13 @@
+@@ -9799,22 +_,31 @@
+ 		}
+ 
+ 		if (armorPiece.type == 100 || armorPiece.type == 101 || armorPiece.type == 102) {
++			allCrit += 5;
++			/*
+ 			magicCrit += 5;
+ 			meleeCrit += 5;
+ 			rangedCrit += 5;
++			*/
+ 		}
+ 
+ 		if (armorPiece.type == 956 || armorPiece.type == 957 || armorPiece.type == 958) {
++			allCrit += 5;
++			/*
+ 			magicCrit += 5;
+ 			meleeCrit += 5;
+ 			rangedCrit += 5;
++			*/
  		}
  
  		if (armorPiece.type == 792 || armorPiece.type == 793 || armorPiece.type == 794) {
-+			allDamage += 0.02f;
++			allDamage += 0.03f;
 +			/*
  			meleeDamage += 0.03f;
  			rangedDamage += 0.03f;
@@ -2196,7 +2432,7 @@
  		}
  
  		if (armorPiece.type == 1210) {
-@@ -9970,9 +_,12 @@
+@@ -9970,17 +_,23 @@
  		}
  
  		if (armorPiece.type == 1213) {
@@ -2209,6 +2445,17 @@
  		}
  
  		if (armorPiece.type == 1214) {
+ 			moveSpeed += 0.11f;
++			allDamage += 0.08f;
++			/*
+ 			meleeDamage += 0.08f;
+ 			rangedDamage += 0.08f;
+ 			magicDamage += 0.08f;
+ 			minionDamage += 0.08f;
++			*/
+ 		}
+ 
+ 		if (armorPiece.type == 1215) {
 @@ -10001,6 +_,9 @@
  		}
  
@@ -2321,7 +2568,7 @@
  		}
  
  		if (armorPiece.type == 1549) {
-@@ -10365,14 +_,17 @@
+@@ -10365,14 +_,21 @@
  			minionDamage += 0.11f;
  		}
  
@@ -2331,6 +2578,10 @@
  			maxMinions++;
  			minionDamage += 0.11f;
  		}
++
++		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
++			hasGemRobe = true;
 +
 +		ItemLoader.UpdateEquip(armorPiece, this);
  	}
@@ -2673,11 +2924,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13287,6 +_,7 @@
+@@ -13287,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		selectItemOnNextUse = false; // Added by TML
  		ResetVisibleAccessories();
  		poisoned = false;
  		venom = false;
@@ -2691,17 +2943,24 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
-@@ -13538,6 +_,16 @@
+@@ -13522,6 +_,10 @@
+ 
+ 	public void SmartSelectLookup()
+ 	{
++		// Added by TML to preserve mouse item with moved call location
++		if (selectedItem == 58)
++			return;
++
+ 		if (mouseInterface)
+ 			controlTorch = false;
+ 
+@@ -13538,6 +_,12 @@
  					toolStrategy = 5;
  			}
  
 +			int modSelect = TileLoader.AutoSelect(tX, tY, this);
-+
 +			if (modSelect >= 0) {
-+				if (nonTorch == -1)
-+					nonTorch = selectedItem;
-+
-+				selectedItem = modSelect;
++				SmartSelect_SelectItem(modSelect);
 +				return;
 +			}
 +
@@ -2864,6 +3123,15 @@
  		hasFootball = false;
  		drawingFootball = false;
  		minionKB = 0f;
+@@ -14250,7 +_,7 @@
+ 		frogLegJumpBoost = false;
+ 		skyStoneEffects = false;
+ 		noFallDmg = false;
+-		accFlipper = false;
++		//accFlipper = false;
+ 		spawnMax = false;
+ 		spaceGun = false;
+ 		killGuide = false;
 @@ -14275,18 +_,33 @@
  
  		honeyCombItem = null;
@@ -2908,14 +3176,35 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
-@@ -14540,6 +_,7 @@
+@@ -14538,8 +_,10 @@
+ 		witheredWeapon = false;
+ 		parryDamageBuff = false;
  		slowOgreSpit = false;
++		hasGemRobe = false; // Added by TML.
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML.
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
+@@ -14597,6 +_,9 @@
+ 		boneGloveItem = null;
+ 		hasLuck_LuckyCoin = false;
+ 		hasLuck_LuckyHorseshoe = false;
++		blockExtraJumps = false;
++		ExtraJumpLoader.ResetEnableFlags(this);
++		/*
+ 		hasJumpOption_Cloud = false;
+ 		hasJumpOption_Sail = false;
+ 		hasJumpOption_Sandstorm = false;
+@@ -14606,6 +_,7 @@
+ 		hasJumpOption_Santank = false;
+ 		hasJumpOption_WallOfFleshGoat = false;
+ 		hasJumpOption_Basilisk = false;
++		*/
+ 		defendedByPaladin = false;
+ 		hasPaladinShield = false;
+ 		hasLucyTheAxe = false;
 @@ -14652,18 +_,23 @@
  			}
  		}
@@ -3204,6 +3493,64 @@
  
  					nPC.immune[whoAmI] = 10;
  					velocity.Y = -10f;
+@@ -15987,8 +_,10 @@
+ 				autoJump = false;
+ 
+ 			bool flag = false;
++			/*
+ 			bool flag2 = wet && accFlipper;
+ 			bool flag3 = !mount.Active || !mount.Cart;
++			*/
+ 			if (mount.Active && mount.IsConsideredASlimeMount && wetSlime > 0) {
+ 				wetSlime = 0;
+ 				flag = true;
+@@ -16012,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-			else if ((sliding || velocity.Y == 0f || flag || canJumpAgain_Cloud || canJumpAgain_Sandstorm || canJumpAgain_Blizzard || canJumpAgain_Fart || canJumpAgain_Sail || canJumpAgain_Unicorn || canJumpAgain_Santank || canJumpAgain_WallOfFleshGoat || canJumpAgain_Basilisk || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
++			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpUsable()) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
+ 				if (mount.Active && MountID.Sets.Cart[mount.Type])
+ 					position.Y -= 0.001f;
+ 
+@@ -16020,6 +_,7 @@
+ 					justJumped = true;
+ 
+ 				bool flag4 = false;
++				/*
+ 				if (wet && accFlipper) {
+ 					if (swimTime == 0)
+ 						swimTime = 30;
+@@ -16073,6 +_,10 @@
+ 						canJumpAgain_Cloud = false;
+ 					}
+ 				}
++				*/
++
++				// Patch context: flag
++				bool attemptDoubleJumps = !flag;
+ 
+ 				canRocket = false;
+ 				rocketRelease = false;
+@@ -16093,6 +_,10 @@
+ 					if (sliding)
+ 						velocity.X = 3 * -slideDir;
+ 				}
++				else if (attemptDoubleJumps && !blockExtraJumps) {
++					ExtraJumpLoader.ProcessJumps(this);
++				}
++				/*
+ 				else if (flag5) {
+ 					isPerformingJump_Sandstorm = true;
+ 					_ = height;
+@@ -16303,6 +_,7 @@
+ 					Main.gore[num25].velocity.X = Main.gore[num25].velocity.X * 0.1f - velocity.X * 0.1f;
+ 					Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - velocity.Y * 0.05f;
+ 				}
++				*/
+ 			}
+ 
+ 			releaseJump = false;
 @@ -16334,16 +_,24 @@
  
  					Rectangle rect = nPC.getRect();
@@ -3290,6 +3637,32 @@
  	private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
  	{
  		dir = 0;
+@@ -16745,7 +_,7 @@
+ 	public void CarpetMovement()
+ 	{
+ 		bool flag = false;
+-		if (grappling[0] == -1 && carpet && !canJumpAgain_Cloud && !canJumpAgain_Sandstorm && !canJumpAgain_Blizzard && !canJumpAgain_Fart && !canJumpAgain_Sail && !canJumpAgain_Unicorn && !canJumpAgain_Santank && !canJumpAgain_WallOfFleshGoat && !canJumpAgain_Basilisk && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
++		if (grappling[0] == -1 && carpet && !AnyExtraJumpUsable() && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
+ 			if (controlJump && canCarpet) {
+ 				canCarpet = false;
+ 				carpetTime = 300;
+@@ -16783,6 +_,8 @@
+ 
+ 	public void DoubleJumpVisuals()
+ 	{
++		ExtraJumpLoader.JumpVisuals(this);
++		/*
+ 		if (isPerformingJump_Cloud && hasJumpOption_Cloud && !canJumpAgain_Cloud && (canJumpAgain_Sandstorm || !hasJumpOption_Sandstorm) && ((gravDir == 1f && velocity.Y < 0f) || (gravDir == -1f && velocity.Y > 0f))) {
+ 			int num = height;
+ 			if (gravDir == -1f)
+@@ -16894,6 +_,7 @@
+ 			Main.dust[num15].noGravity = true;
+ 			Main.dust[num15].noLight = true;
+ 		}
++		*/
+ 	}
+ 
+ 	public void WingMovement()
 @@ -16930,6 +_,7 @@
  			if (wingsLogic == 26) {
  				num2 = 0.75f;
@@ -3358,6 +3731,43 @@
  	{
  		wingTime = wingTimeMax;
  		rocketTime = rocketTimeMax;
+@@ -17491,6 +_,7 @@
+ 
+ 	private void RefreshDoubleJumps()
+ 	{
++		/*
+ 		if (hasJumpOption_Cloud)
+ 			canJumpAgain_Cloud = true;
+ 
+@@ -17517,6 +_,28 @@
+ 
+ 		if (hasJumpOption_Basilisk)
+ 			canJumpAgain_Basilisk = true;
++		*/
++		RefreshExtraJumps();
++	}
++
++	/// <summary>
++	/// For each extra jump that is <see cref="ExtraJumpState.Enabled"/>, its <see cref="ExtraJumpState.Available"/> property set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
++	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
++	/// </summary>
++	public void RefreshExtraJumps()
++	{
++		ExtraJumpLoader.RefreshJumps(this);
++	}
++
++	/// <summary>
++	/// Sets the <see cref="ExtraJumpState.Available"/> flag for all extra jumps to <see langword="false"/>.<br/>
++	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
++	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
++	/// </summary>
++	public void ConsumeAllExtraJumps()
++	{
++		// Included to make consuming all extra jumps easier to write
++		ExtraJumpLoader.ConsumeAllJumps(this);
+ 	}
+ 
+ 	public void StickyMovement()
 @@ -18269,10 +_,10 @@
  		if (gravDir == -1f)
  			num2 = (int)(position.Y - 0.1f) / 16;
@@ -3387,11 +3797,14 @@
  	}
  
  	public void ResetFloorFlags()
-@@ -18303,9 +_,10 @@
+@@ -18303,9 +_,13 @@
  		runningOnSand = false;
  	}
  
 +	//TML: Made return value nullable.
++	/// <summary>
++	/// Gets a solid, unactuated tile at the tile coordinates provided. Will fallback to the tile to the left or right if necessary. Returns null if no suitable tile is found. Typically used to retrieve the tile a player is standing on by passing in the tile coordinates directly below the player.
++	/// </summary>
 -	public static Tile GetFloorTile(int x, int y)
 +	public static Tile? GetFloorTile(int x, int y)
  	{
@@ -3473,6 +3886,20 @@
  				if (controlInv) {
  					if (releaseInventory)
  						ToggleInv();
+@@ -19323,8 +_,12 @@
+ 							DpadRadial.ChangeSelection(-1);
+ 							CircularRadial.ChangeSelection(-1);
+ 						}
+-
++						/*
+ 						if (controlTorch && flag7) {
++						*/
++						// TML: minor tweak, smart select item is held with controlUse even when item cannot be used right now.
++						// In any case where nonTorch has a value, we should be setting nonTorch instead of selectedItem
++						if (nonTorch != -1 && flag7) {
+ 							if (selectedItem != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
 @@ -19357,6 +_,7 @@
  						CaptureManager.Instance.Scrolling();
  					}
@@ -3481,7 +3908,7 @@
  						if (!Main.playerInventory) {
  							HandleHotbar();
  						}
-@@ -19397,10 +_,13 @@
+@@ -19397,62 +_,66 @@
  								if (Main.focusRecipe > Main.numAvailableRecipes - 1)
  									Main.focusRecipe = Main.numAvailableRecipes - 1;
  
@@ -3495,6 +3922,87 @@
  					}
  				}
  				else {
+ 					bool flag10 = false;
+ 					if (!Main.drawingPlayerChat && selectedItem != 58 && !Main.editSign && !Main.editChest) {
+ 						int num15 = -1;
+-						if (Main.keyState.IsKeyDown(Keys.D1)) {
++						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
++						if (PlayerInput.Triggers.Current.Hotbar1) { 
+ 							num15 = 0;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D2)) {
++						if (PlayerInput.Triggers.Current.Hotbar2) {
+ 							num15 = 1;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D3)) {
++						if (PlayerInput.Triggers.Current.Hotbar3) {
+ 							num15 = 2;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D4)) {
++						if (PlayerInput.Triggers.Current.Hotbar4) {
+ 							num15 = 3;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D5)) {
++						if (PlayerInput.Triggers.Current.Hotbar5) {
+ 							num15 = 4;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D6)) {
++						if (PlayerInput.Triggers.Current.Hotbar6) {
+ 							num15 = 5;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D7)) {
++						if (PlayerInput.Triggers.Current.Hotbar7) {
+ 							num15 = 6;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D8)) {
++						if (PlayerInput.Triggers.Current.Hotbar8) {
+ 							num15 = 7;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D9)) {
++						if (PlayerInput.Triggers.Current.Hotbar9) {
+ 							num15 = 8;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D0)) {
++						if (PlayerInput.Triggers.Current.Hotbar10) {
+ 							num15 = 9;
+ 							flag10 = true;
+ 						}
+@@ -19461,14 +_,17 @@
+ 							if (num15 != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
++							selectItemOnNextUse = true; // Added by TML
+ 							nonTorch = num15;
+ 						}
+ 					}
+ 				}
+ 			}
+ 
++			/* Moved into ItemCheck
+ 			if (selectedItem != 58)
+ 				SmartSelectLookup();
++			*/
+ 
+ 			if (stoned != lastStoned) {
+ 				if (whoAmI == Main.myPlayer && stoned) {
 @@ -19566,11 +_,14 @@
  					}
  				}
@@ -3656,6 +4164,56 @@
  		}
  
  		lastTileRangeX = tileRangeX;
+@@ -20085,6 +_,8 @@
+ 			movementAbilitiesCache.PasteInto(this);
+ 
+ 		if (mount.Active && mount.BlockExtraJumps) {
++			ConsumeAllExtraJumps();
++			/*
+ 			canJumpAgain_Cloud = false;
+ 			canJumpAgain_Sandstorm = false;
+ 			canJumpAgain_Blizzard = false;
+@@ -20094,11 +_,14 @@
+ 			canJumpAgain_Santank = false;
+ 			canJumpAgain_WallOfFleshGoat = false;
+ 			canJumpAgain_Basilisk = false;
++			*/
+ 		}
+ 		else if (velocity.Y == 0f || sliding) {
+ 			RefreshDoubleJumps();
+ 		}
+ 		else {
++			ExtraJumpLoader.ConsumeAndStopUnavailableJumps(this);
++			/*
+ 			if (!hasJumpOption_Cloud)
+ 				canJumpAgain_Cloud = false;
+ 
+@@ -20125,6 +_,7 @@
+ 
+ 			if (!hasJumpOption_Basilisk)
+ 				canJumpAgain_Basilisk = false;
++			*/
+ 		}
+ 
+ 		if (!carpet) {
+@@ -20511,6 +_,7 @@
+ 				}
+ 			}
+ 
++			/*
+ 			if (sandStorm) {
+ 				runAcceleration *= 1.5f;
+ 				maxRunSpeed *= 2f;
+@@ -20550,6 +_,9 @@
+ 				runAcceleration *= 1.5f;
+ 				maxRunSpeed *= 1.25f;
+ 			}
++			*/
++
++			ExtraJumpLoader.UpdateHorizontalSpeeds(this);
+ 
+ 			if (carpetFrame != -1) {
+ 				runAcceleration *= 1.25f;
 @@ -20594,6 +_,8 @@
  					mount.UpdateDrill(this, controlUp, controlDown);
  			}
@@ -3688,6 +4246,15 @@
  				if (flag21 && wings != 4 && wings != 22 && wings != 0 && wings != 24 && wings != 28 && wings != 30 && wings != 33 && wings != 45) {
  					bool flag22 = wingFrame == 3;
  					if (wings == 43 || wings == 44)
+@@ -20722,7 +_,7 @@
+ 				if (empressBrooch)
+ 					rocketTime = rocketTimeMax;
+ 
+-				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !canJumpAgain_Cloud) {
++				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpUsable()) {
+ 					if (rocketTime > 0) {
+ 						rocketTime--;
+ 						rocketDelay = 10;
 @@ -20916,6 +_,7 @@
  								Main.dust[num59].shader = GameShaders.Armor.GetSecondaryShader(cWings, this);
  							}
@@ -4082,7 +4649,7 @@
  			if (base.Hitbox.Intersects(hitbox)) {
 -				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
 +				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					if (!ItemLoader.OnPickup(Main.item[j], this)) {
++					if (!CombinedHooks.OnPickup(Main.item[j], this)) {
 +						Main.item[j] = new Item();
 +						if (Main.netMode == 1)
 +							NetMessage.SendData(21, -1, -1, null, j);
@@ -4369,6 +4936,27 @@
  		if (legs == 140) {
  			legFrameCounter = 0.0;
  			legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
+@@ -28403,6 +_,8 @@
+ 
+ 	private void CancelAllJumpVisualEffects()
+ 	{
++		ExtraJumpLoader.StopActiveJump(this, out _);
++		/*
+ 		isPerformingJump_Cloud = false;
+ 		isPerformingJump_Sandstorm = false;
+ 		isPerformingJump_Blizzard = false;
+@@ -28410,9 +_,10 @@
+ 		isPerformingJump_Sail = false;
+ 		isPerformingJump_Unicorn = false;
+ 		isPerformingJump_Santank = false;
++		*/
+ 	}
+ 
+-	private void CancelAllBootRunVisualEffects()
++	public void CancelAllBootRunVisualEffects()
+ 	{
+ 		sailDash = false;
+ 		coldDash = false;
 @@ -28501,6 +_,7 @@
  
  	private void UpdateVisibleAccessories()
@@ -5011,6 +5599,23 @@
  		}
  
  		if (newItem.CanFillEmptyAmmoSlot()) {
+@@ -30325,6 +_,16 @@
+ 		return newItem;
+ 	}
+ 
++	/// <summary>
++	/// Places the <paramref name="newItem"/> directly into this player's inventory. The <paramref name="settings"/> dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <see cref="GetItemSettings"/> for this parameter to match vanilla behavior. The <paramref name="plr"/> parameter should always be set to the whoAmI of this player.
++	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
++	/// <para/> The return value is an Item instance containing the overflow. If the full stack of <paramref name="newItem"/> is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <paramref name="newItem"/> fit in the inventory, the return value will be the Item that didn't fit. If the returned <see cref="Item"/> isn't <see cref="Item.IsAir"/>, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <paramref name="newItem"/> came from.
++	/// <para/> Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.
++	/// </summary>
++	/// <param name="plr"></param>
++	/// <param name="newItem"></param>
++	/// <param name="settings"></param>
++	/// <returns></returns>
+ 	public Item GetItem(int plr, Item newItem, GetItemSettings settings)
+ 	{
+ 		bool isACoin = newItem.IsACoin;
 @@ -30416,11 +_,16 @@
  	private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
@@ -5113,7 +5718,7 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
-@@ -30673,6 +_,7 @@
+@@ -30673,9 +_,13 @@
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
@@ -5121,6 +5726,12 @@
  			if (overrideCanPlace.HasValue) {
  				canPlace = overrideCanPlace.Value;
  			}
++			else if (!TileLoader.CanPlace(tileTargetX, tileTargetY, tileToCreate)) {
++				canPlace = false;
++			}
+ 			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
+ 				newObjectType = true;
+ 				canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, previewPlaceStyle, direction, out objectData, onlyCheck: false, forcedRandom);
 @@ -30757,9 +_,15 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
@@ -5299,6 +5910,17 @@
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
  			}
+@@ -31729,7 +_,10 @@
+ 		else if (inventory[selectedItem].createTile == 275 || inventory[selectedItem].createTile == 276 || inventory[selectedItem].createTile == 277) {
+ 			canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 51 || inventory[selectedItem].createTile == 330 || inventory[selectedItem].createTile == 331 || inventory[selectedItem].createTile == 332 || inventory[selectedItem].createTile == 333 || inventory[selectedItem].createTile == 336 || inventory[selectedItem].createTile == 340 || inventory[selectedItem].createTile == 342 || inventory[selectedItem].createTile == 341 || inventory[selectedItem].createTile == 343 || inventory[selectedItem].createTile == 344 || inventory[selectedItem].createTile == 379 || inventory[selectedItem].createTile == 351) {
++		*/
++		else if (TileID.Sets.CanPlaceNextToNonSolidTile[inventory[selectedItem].createTile]) {
+ 			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
+ 				canPlace = true;
+ 		}
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {
@@ -5361,6 +5983,41 @@
  		if (num8 > 0)
  			DropItemFromExtractinator(num8, num9);
  	}
+@@ -32782,8 +_,16 @@
+ 			NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 	}
+ 
++	/// <summary>
++	/// Changes the player's direction (<see cref="Entity.direction"/>) while adjusting arm and item rotations to be consistent. Will also account for <see cref="pulley"/> and <see cref="pulleyDir"/>. The player direction change will be prevented if the player is on a rope but there isn't space for the player to face the new direction.
++	/// </summary>
++	/// <param name="dir"></param>
+ 	public void ChangeDir(int dir)
+ 	{
++		// added by TML, forward port from 1.4.5
++		if (dir == direction)
++			return;
++
+ 		if (!pulley || pulleyDir != 2) {
+ 			direction = dir;
+ 		}
+@@ -32800,7 +_,17 @@
+ 				position.X = num;
+ 				direction = dir;
+ 			}
++			// added by TML, forward port from 1.4.5
++			else {
++				return;
++			}
+ 		}
++
++		// Added by TML, forward port from 1.4.5
++		compositeBackArm.rotation *= -1;
++		compositeFrontArm.rotation *= -1;
++		itemRotation *= -1;
++		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
+ 	}
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
 @@ -32875,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
@@ -5375,7 +6032,14 @@
  		if (result.BaitItemType == 2673)
  			return result;
  
-@@ -32894,12 +_,15 @@
+@@ -32890,16 +_,22 @@
+ 		if (canFloatInWater && wet)
+ 			num += 5;
+ 
++		/*
+ 		if (sitting.TryGetSittingBlock(this, out var tile) && ((tile.type == 15 && tile.frameY / 40 == 1) || tile.type == 497))
++		*/
++		if (sitting.TryGetSittingBlock(this, out var _) && sitting.details.IsAToilet) // Make modded toilets give the fishing boost as well
  			num += 5;
  
  		int num2 = result.BaitPower + result.PolePower + fishingSkill + num;
@@ -5525,7 +6189,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,54 @@
+@@ -33268,6 +_,70 @@
  			}
  		}
  
@@ -5577,6 +6241,22 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
++
++		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
++		if (itemAnimation == 0 && reuseDelay == 0 && (!controlUseItem || selectItemOnNextUse)) {
++			selectItemOnNextUse = false;
++
++			int oldSelect = selectedItem;
++			SmartSelectLookup();
++			if (selectedItem != oldSelect) {
++				item = inventory[selectedItem];
++				// TML feature, allow the item to be instantly used
++				releaseUseItem = true;
++				// prevent remaining item time carrying over to new weapon (for items like starfury with less than one shot per use)
++				itemTime = itemTimeMax = 0;
++			}
++		}
++
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
  		ItemCheck_HandleMPItemAnimation(item);
@@ -5589,17 +6269,19 @@
  				FreeUpPetsAndMinions(item);
  
  			if (flag3)
-@@ -33323,6 +_,9 @@
- 		if (!flag4)
- 			channel = false;
- 
+@@ -33339,13 +_,25 @@
+ 				itemHeight = drawHitbox.Height;
+ 				itemWidth = drawHitbox.Width;
+ 			}
++		// The itemAnimation > 0 block has been split in 2 parts (above and below) to allow for the insertion of labels
++		}
 +		goto ReleaseUseItem;
-+
+ 
 +		DecrementItemAnimation:
- 		Item item2 = ((itemAnimation > 0) ? lastVisualizedSelectedItem : item);
- 		Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
- 		compositeFrontArm.enabled = false;
-@@ -33345,7 +_,13 @@
++
++		if (itemAnimation > 0) {
+ 			itemAnimation--;
+ 			if (itemAnimation == 0 && whoAmI == Main.myPlayer)
  				PlayerInput.TryEndingFastUse();
  		}
  
@@ -5804,6 +6486,15 @@
  		ItemCheck_UseWiringTools(sItem);
  		ItemCheck_UseLawnMower(sItem);
  		ItemCheck_PlayInstruments(sItem);
+@@ -33858,7 +_,7 @@
+ 		else {
+ 			toolTime--;
+ 			if (toolTime < 0)
+-				toolTime = sItem.useTime;
++				toolTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem); //sItem.useTime;
+ 		}
+ 
+ 		ItemCheck_TryDestroyingDrones(sItem);
 @@ -33898,7 +_,10 @@
  			Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
  		}
@@ -6352,6 +7043,16 @@
  		KnockBack = GetWeaponKnockback(sItem, KnockBack);
  		IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  		if (projToShoot == 228)
+@@ -36708,7 +_,8 @@
+ 		Vector2 pointPoisition = RotatedRelativePoint(MountedCenter);
+ 		bool flag = true;
+ 		int type = sItem.type;
+-		if (type == 723 || type == 3611)
++		//if (type == 723 || type == 3611)
++		if (!sItem.ChangePlayerDirectionOnShoot)
+ 			flag = false;
+ 
+ 		Vector2 value = Vector2.UnitX.RotatedBy(fullRotation);
 @@ -36824,6 +_,16 @@
  			num3 = vector5.Y;
  		}
@@ -6471,6 +7172,15 @@
  		if (isPettingAnimal) {
  			int num = miscCounter % 14 / 7;
  			CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
+@@ -38798,7 +_,7 @@
+ 				itemLocation.X = position.X + (float)width * 0.5f + 20f * (float)direction;
+ 			}
+ 			else if (sItem.type == 930) {
+-				itemLocation.X = position.X + (float)(width / 2) * 0.5f - 12f - (float)(2 * direction);
++				itemLocation.X = position.X + width * 0.5f - 2 * direction; // forward port from 1.4.5
+ 				float x = position.X + (float)(width / 2) + (float)(38 * direction);
+ 				if (direction == 1)
+ 					x -= 10f;
 @@ -38865,7 +_,7 @@
  					if (Main.tile[num5, num6] == null)
  						Main.tile[num5, num6] = new Tile();
@@ -6480,6 +7190,15 @@
  						miscTimer++;
  						if (Main.rand.Next(5) == 0)
  							miscTimer++;
+@@ -38982,7 +_,7 @@
+ 		}
+ 		else if (sItem.holdStyle == 3 && !pulley) {
+ 			if (!Main.dedServ) {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 				itemRotation = 0f;
+ 			}
 @@ -39041,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
@@ -6504,6 +7223,33 @@
  		if (Main.dedServ)
  			return;
  
+@@ -39456,7 +_,7 @@
+ 			}
+ 			else if (sItem.type == 4262) {
+ 				itemRotation = 0f;
+-				itemLocation.X = base.Center.X + (float)(-heldItemFrame.Width) * 0.5f + (float)(direction * -6);
++				itemLocation.X = base.Center.X + (float)(direction * -6); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - 6f;
+ 				if (Main.rand.Next(20) == 0) {
+ 					int num21 = Main.rand.Next(570, 573);
+@@ -39482,7 +_,7 @@
+ 				itemLocation += (itemRotation.ToRotationVector2() * num22 * direction).Floor();
+ 			}
+ 			else {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 			}
+ 
+@@ -39713,7 +_,7 @@
+ 		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
+ 			toolTime = 1;
+ 
+-		if (grappling[0] > -1) {
++		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
+ 			pulley = false;
+ 			pulleyDir = 1;
+ 			if (controlRight)
 @@ -39780,7 +_,10 @@
  			}
  
@@ -6523,8 +7269,8 @@
  		int num = item.healLife;
  		int healMana = item.healMana;
 +		*/
-+		int num = GetHealLife(item, true);
-+		int healMana = GetHealMana(item, true);
++		int num = item.healLife > 0 ? GetHealLife(item, true) : 0;
++		int healMana = item.healMana > 0 ? GetHealMana(item, true) : 0;
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
@@ -6878,6 +7624,27 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
+@@ -41015,6 +_,7 @@
+ 			projToShoot = 117;
+ 
+ 		if (projToShoot == 42) {
++			/*
+ 			if (item.type == 370) {
+ 				projToShoot = 65;
+ 				Damage += 5;
+@@ -41027,6 +_,12 @@
+ 				projToShoot = 354;
+ 				Damage += 5;
+ 			}
++			*/
++
++			if (ItemID.Sets.SandgunAmmoProjectileData[item.type] is ItemID.Sets.SandgunAmmoInfo data) {
++				projToShoot = data.ProjectileType;
++				Damage += data.BonusDamage;
++			}
+ 		}
+ 
+ 		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
 @@ -41043,6 +_,9 @@
  			speed *= 1.1f;
  		}
@@ -7302,56 +8069,68 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,52 @@
+@@ -41979,11 +_,33 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
++		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Moved to the bottom
++		// Moved to SavePlayerFile_Write
 +		/*
  		if (FileUtilities.Exists(path, isCloudSave))
  			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +		*/
++
++		PlayerLoader.PreSavePlayer(player);
++		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
++		PlayerLoader.PostSavePlayer(player);
++
++		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
++		TagCompound tplrData = PlayerIO.SaveData(player);
++
++		SavePlayerFile_Write(playerFile, plrData, tplrData);
++	}
++
++	public static byte[] SavePlayerFile_Vanilla(PlayerFileData playerFile)
++	{
++		var player = playerFile.Player;
  
  		RijndaelManaged rijndaelManaged = new RijndaelManaged();
-+
 +		/*
  		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
 +		*/
 +		using Stream stream = new MemoryStream(2000);
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
-+
-+		PlayerLoader.PreSavePlayer(player);
-+
  		binaryWriter.Write(279);
- 		playerFile.Metadata.Write(binaryWriter);
- 		Serialize(playerFile, player, binaryWriter);
+@@ -41992,8 +_,30 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
 +
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Replaced with FileUtilities.WriteAllBytes at the bottom
++		// Replaced with FileUtilities.WriteAllBytes in SavePlayerFile_Write
 +		/*
  		if (isCloudSave && SocialAPI.Cloud != null)
  			SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
 +		*/
 +
-+		byte[] bytes = ((MemoryStream)stream).ToArray();
++		return ((MemoryStream)stream).ToArray();
++	}
 +
-+		PlayerLoader.PostSavePlayer(player); // For native data only
-+
-+		//TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		var tag = PlayerIO.SaveData(player);
++	private static void SavePlayerFile_Write(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
++	{
++		string path = playerFile.Path;
++		bool isCloudSave = playerFile.IsCloudSave;
++		if (string.IsNullOrEmpty(path))
++			return;
 +
 +		BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +
-+		FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
-+
-+		PlayerIO.Save(tag, path, isCloudSave);
++		FileUtilities.WriteAllBytes(path, plrData, isCloudSave);
++		PlayerIO.Save(tplrData, path, isCloudSave);
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
@@ -7470,8 +8249,28 @@
  			fileIO.Write(newPlayer.hideInfo[num7]);
  		}
  
-@@ -42272,6 +_,10 @@
+@@ -42139,7 +_,7 @@
+ 			fileIO.Write(newPlayer.DpadRadial.Bindings[num8]);
+ 		}
  
+-		for (int num9 = 0; num9 < newPlayer.builderAccStatus.Length; num9++) {
++		for (int num9 = 0; num9 < BuilderToggleLoader.DefaultDisplayCount; num9++) {
+ 			fileIO.Write(newPlayer.builderAccStatus[num9]);
+ 		}
+ 
+@@ -42270,12 +_,28 @@
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 
++		var plrData = FileUtilities.ReadAllBytes(playerPath, cloudSave);
++		var tplrData = PlayerIO.ReadDataBytes(playerPath, cloudSave);
++		return LoadPlayerFromStream(playerFileData, plrData, tplrData);
++	}
++
++	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData)
++	{
++		string playerPath = playerFileData.Path;
++
  		Player player = new Player();
  		bool gotToReadName = false;
 +
@@ -7481,6 +8280,22 @@
  		try {
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
  			rijndaelManaged.Padding = PaddingMode.None;
++			/*
+ 			using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++			*/
++			using (MemoryStream stream = new MemoryStream(plrData)) {
+ 				using CryptoStream input = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Read);
+ 				using BinaryReader binaryReader = new BinaryReader(input);
+ 				int num = binaryReader.ReadInt32();
+@@ -42291,7 +_,7 @@
+ 					return playerFileData;
+ 				}
+ 
+-				Deserialize(playerFileData, player, binaryReader, num, out gotToReadName);
++				Deserialize(playerFileData, player, binaryReader, tplrData, num, out gotToReadName); // Added tplrData argument
+ 			}
+ 
+ 			player.PlayerFrame();
 @@ -42299,6 +_,9 @@
  			playerFileData.Player = player;
  			return playerFileData;
@@ -7491,28 +8306,41 @@
  		catch {
  		}
  
-@@ -42322,12 +_,20 @@
+@@ -42322,8 +_,33 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
-+		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		try {
++			Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		}
++		catch (CustomModDataException) {
++			// Same exception should already be caught in LoadPlayerFromStream
++		}
  		return player;
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, tplrData);
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, byte[] tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, TagIO.FromStream(tplrData.ToMemoryStream()));
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
  	}
  
  	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
- 	{
-+		if (!PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
-+			tag = null;
-+
-+		Deserialize(data, newPlayer, fileIO, tag, release, out gotToReadName);
-+	}
-+
-+	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName)
-+	{
- 		gotToReadName = false;
- 		newPlayer.name = fileIO.ReadString();
- 		gotToReadName = true;
 @@ -42394,8 +_,16 @@
  		if (newPlayer.statManaMax > 200)
  			newPlayer.statManaMax = 200;
@@ -7530,16 +8358,26 @@
  
  		if (release >= 125)
  			newPlayer.extraAccessory = fileIO.ReadBoolean();
-@@ -42795,6 +_,9 @@
+@@ -42795,7 +_,10 @@
  			}
  		}
  
-+		if (modData != null)
-+			PlayerIO.Load(newPlayer, modData);
-+
++		// Moved to the tplr variants of Deserialize, after modded data is read
++		/*
  		LoadPlayer_LastMinuteFixes(newPlayer);
++		*/
  	}
  
+ 	private static void AdjustRespawnTimerForWorldJoining(Player newPlayer)
+@@ -42834,7 +_,7 @@
+ 	{
+ 		for (int i = 3; i < 10; i++) {
+ 			Item item = armorArray[i];
+-			if (item.IsAir)
++			if (item.IsAir || item._globals.Length > 0)
+ 				continue;
+ 
+ 			for (int j = i + 1; j < 10; j++) {
 @@ -42856,7 +_,29 @@
  	private static void LoadPlayer_LastMinuteFixes(Player newPlayer)
  	{

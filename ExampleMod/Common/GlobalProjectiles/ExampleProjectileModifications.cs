@@ -1,8 +1,8 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.GlobalNPCs;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using ExampleMod.Common.GlobalNPCs;
 
 namespace ExampleMod.Common.GlobalProjectiles
 {

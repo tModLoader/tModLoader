@@ -73,6 +73,7 @@ Mods: {
 
 			MinionBossMinion.DisplayName: Minion Boss Minion
 			PartyZombie.DisplayName: Party Zombie
+			ExampleCritterNPC.DisplayName: Lava Frog
 		}
 
 		Tiles: {
@@ -81,7 +82,6 @@ Mods: {
 			ExampleAnimatedTile.MapEntry: Red Firefly in a Bottle
 			ExampleFishingCrate.MapEntry: Crate
 			ExampleHerb.MapEntry: Example Herb
-			ExampleMusicBoxTile.MapEntry: Music Box
 			ExampleOre.MapEntry: ExampleOre
 
 			ExampleChest: {
@@ -93,6 +93,20 @@ Mods: {
 		}
 
 		Items: {
+			ExampleStaff: {
+				DisplayName: Example Staff
+				Tooltip: This is a modded magic staff weapon
+			}
+
+			ExampleLastPrism: {
+				DisplayName: Example Last Prism
+				Tooltip:
+					'''
+					A slightly different laser-firing Prism
+					Ignores NPC immunity frames and fires 10 beams at once instead of 6
+					'''
+			}
+
 			ExamplePetItem: {
 				# This example omits "Mods.ExampleMod." from the substitution key and still works. The game will test variations of the translation key to check for other keys in the scope.
 				DisplayName: "{$Common.PaperAirplane}"
@@ -174,6 +188,7 @@ Mods: {
 					{6} magic armor penetration
 					{7}% increased example knockback
 					{8}% increased crit damage
+					Increased movement speed and acceleration
 					'''
 			}
 
@@ -230,11 +245,13 @@ Mods: {
 			ExampleHelmet: {
 				DisplayName: Example Helmet
 				Tooltip: This is a modded helmet.
+				SetBonus: Increases dealt damage by {0}%
 			}
 
 			ExampleHood: {
 				DisplayName: Example Hood
 				Tooltip: This is a modded hood.
+				SetBonus: "{$CommonItemTooltip.PercentReducedManaCost}"
 			}
 
 			ExampleLeggings: {
@@ -835,6 +852,69 @@ Mods: {
 				DisplayName: Example Campfire
 				Tooltip: "{$ItemTooltip.Campfire}"
 			}
+
+			ExampleExtraJumpAccessory: {
+				DisplayName: Example Extra Jump Accessory
+				Tooltip: Allows the user to perform an example mid-air extra jump
+			}
+
+			ExampleMultiExtraJumpAccessory: {
+				DisplayName: Example Multiple-Use Extra Jump Accessory
+				Tooltip:
+					'''
+					Allows the user to perform an example mid-air extra jump
+					This accessory has <JUMPS> jumps remaining
+					'''
+			}
+
+			ExampleSwingingEnergySword: {
+				DisplayName: Example Swinging Energy Sword
+				Tooltip: ""
+			}
+
+			ExampleLivingFire: {
+				DisplayName: Example Living Fire Block
+				Tooltip: ""
+			}
+
+			ExampleCritterItem: {
+				DisplayName: Lava Frog
+				Tooltip: A spicy boi
+			}
+
+			ExampleCritterCageItem: {
+				DisplayName: Lava Frog Cage
+				Tooltip: A sad spicy boi
+			}
+
+			ExampleStatue: {
+				DisplayName: Example Statue
+				Tooltip: The power of examplium flows in this inanimate fish
+			}
+
+			ExampleSandBlock: {
+				DisplayName: Example Sand Block
+				Tooltip: This is a modded sand block
+			}
+
+			ExampleBoots: {
+				DisplayName: Example Boots
+				Tooltip:
+					'''
+					Allows flight, super fast running, even faster running on sand, and extra mobility on ice
+					{$CommonItemTooltip.PercentIncreasedMovementSpeed}
+					Provides the ability to walk on water, honey, lava, and shimmer
+					Grants immunity to fire blocks and {1} seconds of immunity to lava
+					Reduces damage from touching lava
+					Prevents fall damage
+					Leaves a trail of flames in your wake
+					'''
+			}
+
+			ExampleArrow: {
+				DisplayName: Example Arrow
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -871,6 +951,12 @@ Mods: {
 			ExampleJavelinProjectile.DisplayName: Example Javelin Projectile
 			ActiveSoundShowcaseProjectile.DisplayName: Active Sound Showcase Projectile
 			ExampleGravityDebuffBullet.DisplayName: Example Gravity Debuff Bullet
+			ExampleSwingingEnergySwordProjectile.DisplayName: Example Swinging Energy Sword Projectile
+			ExampleLastPrismHoldout.DisplayName: Example Last Prism
+			ExampleLastPrismBeam.DisplayName: Example Prism Beam
+			ExampleSandBallFallingProjectile.DisplayName: Example Sand Ball
+			ExampleSandBallGunProjectile.DisplayName: "{$ExampleSandBallFallingProjectile.DisplayName}"
+			ExampleArrowProjectile.DisplayName: Example Arrow Projectile
 		}
 
 		Buffs: {
@@ -1007,6 +1093,7 @@ Mods: {
 				StandardDialogue1: Sometimes I feel like I'm different from everyone else here.
 				StandardDialogue2: What's your favorite color? My favorite colors are white and black.
 				StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
+				StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
 				CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
 				RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
 				TalkALot: I'm getting tired of talking to you. I have to go.
@@ -1042,6 +1129,7 @@ Mods: {
 			PlayerHasLifeforceBuff: When the player has the Lifeforce buff
 			InExampleBiome: In the Example biome
 			NotSellingExampleItem: When not selling Example Item
+			DownedMinionBoss: After defeating {$NPCs.MinionBossBody.DisplayName}
 		}
 
 		DropConditions: {
@@ -1050,7 +1138,39 @@ Mods: {
 			Example: Drops during daytime
 		}
 
-		UI.ExampleResource: Example Resource: {0} / {1}
+		UI: {
+			ExampleResource: Example Resource: {0} / {1}
+			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+		}
+
+		WorldGen: {
+			ExampleOrePassMessage: Example Mod Ores
+			BlessedWithExampleOreMessage: Your world has been blessed with Example Ore!
+		}
+
+		BuilderToggles: {
+			ExampleBuilderToggleDimmedLight: {
+				OnText: Example On
+				OffText: Example Off
+			}
+
+			FreeBaitBuilderToggle.NameText: Free Bait: {0}
+		}
+
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
+		Emotes: {
+			ExampleBiomeEmote.Command: exbiome
+			ExampleBoneMerchantEmote.Command: exbonemerchant
+			ExampleItemEmote.Command: exitem
+			ExamplePersonEmote.Command: experson
+			ExamplePickaxeEmote.Command: expickaxe
+			ExampleTravellingMerchantEmote.Command: extravelingmerchant
+			MinionBossEmote.Command: exminionboss
+		}
+
+		NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 	}
 }
 

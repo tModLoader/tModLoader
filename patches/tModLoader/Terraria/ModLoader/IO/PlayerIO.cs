@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoMod.Core.Platforms;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
-using Terraria.Social;
+using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO;
@@ -32,11 +34,7 @@ internal static class PlayerIO
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-		using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
-			TagIO.ToStream(tag, stream);
-			if (isCloudSave && SocialAPI.Cloud != null)
-				SocialAPI.Cloud.Write(path, ((MemoryStream)stream).ToArray());
-		}
+		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
 
 	internal static TagCompound SaveData(Player player)
@@ -60,6 +58,7 @@ internal static class PlayerIO
 			["modData"] = SaveModData(player),
 			["modBuffs"] = SaveModBuffs(player),
 			["infoDisplays"] = SaveInfoDisplays(player),
+			["builderToggles"] = SaveBuilderToggles(player),
 			["usedMods"] = SaveUsedMods(player),
 			["usedModPack"] = SaveUsedModPack(player),
 			["hair"] = SaveHair(player.hair)
@@ -85,28 +84,19 @@ internal static class PlayerIO
 		LoadModData(player, tag.GetList<TagCompound>("modData"));
 		LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 		LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
+		LoadBuilderToggles(player, tag.GetList<TagCompound>("builderToggles"));
 		LoadUsedMods(player, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(player, tag.GetString("usedModPack"));
 		LoadHair(player, tag.GetString("hair"));
 	}
 
-	internal static bool TryLoadData(string path, bool isCloudSave, out TagCompound tag)
+	internal static byte[] ReadDataBytes(string path, bool isCloudSave)
 	{
 		path = Path.ChangeExtension(path, ".tplr");
-		tag = new TagCompound();
-
 		if (!FileUtilities.Exists(path, isCloudSave))
-			return false;
+			return null;
 
-		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
-
-		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			//LoadLegacy(player, buf);
-			return false;
-		}
-
-		tag = TagIO.FromStream(new MemoryStream(buf));
-		return true;
+		return FileUtilities.ReadAllBytes(path, isCloudSave);
 	}
 
 	public static List<TagCompound> SaveInventory(Item[] inv)
@@ -222,7 +212,23 @@ internal static class PlayerIO
 		var saveData = new TagCompound();
 
 		foreach (var modPlayer in player.modPlayers) {
-			modPlayer.SaveData(saveData);
+			try {
+				modPlayer.SaveData(saveData);
+			}
+			catch (Exception e) {
+				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
+				var message = NetworkText.FromKey("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name, "\n\n" + e.ToString());
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: false);
+
+				list.Add(new TagCompound {
+					["mod"] = modPlayer.Mod.Name,
+					["name"] = modPlayer.Name,
+					["error"] = e.ToString()
+				});
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 
 			if (saveData.Count == 0)
 				continue;
@@ -243,6 +249,11 @@ internal static class PlayerIO
 		foreach (var tag in list) {
 			string modName = tag.GetString("mod");
 			string modPlayerName = tag.GetString("name");
+
+			if (tag.TryGet<string>("error", out string errorMessage)) {
+				player.ModSaveErrors[$"{modName}/{modPlayerName}.SaveData"] = errorMessage;
+				continue;
+			}
 
 			if (ModContent.TryFind<ModPlayer>(modName, modPlayerName, out var modPlayerBase)) {
 				var modPlayer = player.GetModPlayer(modPlayerBase);
@@ -350,6 +361,36 @@ internal static class PlayerIO
 		}
 	}
 
+	internal static List<TagCompound> SaveBuilderToggles(Player player)
+	{
+		return BuilderToggleLoader.BuilderToggles
+			.Where(x=> x is not VanillaBuilderToggle)
+			.Select(x=> new TagCompound {
+				["fullName"] = x.FullName,
+				["currentState"] = player.builderAccStatus[x.Type] // Can't use x.CurrentState, that is LocalPlayer.
+			}).ToList();
+	}
+
+	internal static void LoadBuilderToggles(Player player, IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			var fullname = tag.GetString("fullName");
+			var entryIndex = BuilderToggleLoader.BuilderToggles.FindIndex(x => x.FullName == fullname);
+			if (entryIndex != -1) {
+				player.builderAccStatus[entryIndex] = tag.GetInt("currentState");
+			}
+		}
+
+		// Could revert state to 0 if state is now invalid. This approach probably won't work since ModifyNumberOfStates probably relies on player inventory update.
+		/*for (int i = 0; i < BuilderToggleLoader.BuilderToggles.Count; i++) {
+			BuilderToggle builderToggle = BuilderToggleLoader.BuilderToggles[i];
+			int numberOfStates = builderToggle.NumberOfStates;
+			BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
+			if (player.builderAccStatus[i] >= numberOfStates)
+				player.builderAccStatus[i] = 0;
+		}*/
+	}
+
 	internal static void LoadUsedMods(Player player, IList<string> usedMods)
 	{
 		player.usedMods = usedMods;
@@ -362,7 +403,7 @@ internal static class PlayerIO
 
 	internal static void LoadUsedModPack(Player player, string modpack)
 	{
-		player.modPack = modpack;
+		player.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null 
 	}
 
 	internal static string SaveUsedModPack(Player player)

@@ -19,7 +19,7 @@ namespace ExampleMod.Common.Players
 		// These 3 fields relate to the Example Dodge. Example Dodge is modeled after the dodge ability of the Hallowed armor set bonus.
 		// exampleDodge indicates if the player actively has the ability to dodge the next attack. This is set by ExampleDodgeBuff, which in this example is applied by the HitModifiersShowcase weapon. The buff is only applied if exampleDodgeCooldown is 0 and will be cleared automatically if an attack is dodged or if the player is no longer holding HitModifiersShowcase.
 		public bool exampleDodge; // TODO: Example of custom player render
-		// Used to add a delay between Example Dodge being consumed and the next time the dodge buff can be aquired.
+		// Used to add a delay between Example Dodge being consumed and the next time the dodge buff can be acquired.
 		public int exampleDodgeCooldown;
 		// Controls the intensity of the visual effect of the dodge.
 		public int exampleDodgeVisualCounter;
@@ -57,11 +57,11 @@ namespace ExampleMod.Common.Players
 
 		public override void PostUpdateEquips() {
 			// If the conditions for the player having the buff are no longer true, remove the buff.
-			// This could could techinically go in ExampleDodgeBuff.Update, but typically these effects are given by armor or accessories, so showing this example here is more useful.
+			// This could could technically go in ExampleDodgeBuff.Update, but typically these effects are given by armor or accessories, so showing this example here is more useful.
 			if (exampleDodge && Player.HeldItem.type != ModContent.ItemType<HitModifiersShowcase>()) {
 				Player.ClearBuff(ModContent.BuffType<ExampleDodgeBuff>());
 			}
-			
+
 			// exampleDodgeVisualCounter should be updated here, not in DrawEffects, to work properly
 			exampleDodgeVisualCounter = Math.Clamp(exampleDodgeVisualCounter + (exampleDodge ? 1 : -1), 0, 30);
 		}
@@ -150,7 +150,7 @@ namespace ExampleMod.Common.Players
 				// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
 				// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
 				// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
-				// Working throught the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
+				// Working through the math, the amount of damage that was reduced is equal to: damage * (percent / (1 - percent))
 				float percent = AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 				int damage = (int)(info.Damage * (percent / (1 - percent)));
 
@@ -162,9 +162,8 @@ namespace ExampleMod.Common.Players
 		}
 
 		private bool TeammateCanAbsorbDamage() {
-			for (int i = 0; i < Main.maxPlayers; i++) {
-				Player otherPlayer = Main.player[i];
-				if (i != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, Player.team)) {
+			foreach (var otherPlayer in Main.ActivePlayers) {
+				if (otherPlayer.whoAmI != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, Player.team)) {
 					return true;
 				}
 			}
@@ -187,15 +186,14 @@ namespace ExampleMod.Common.Players
 			}
 
 			float distance = player.Distance(target);
-			if (distance > AbsorbTeamDamageAccessory.DamageAbsorbtionRange) {
+			if (distance > AbsorbTeamDamageAccessory.DamageAbsorptionRange) {
 				return false; // player we're out of range, so can't take the hit
 			}
 
-			for (int i = 0; i < Main.maxPlayers; i++) {
-				Player otherPlayer = Main.player[i];
-				if (i != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, team)) {
+			foreach (var otherPlayer in Main.ActivePlayers) {
+				if (otherPlayer.whoAmI != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, team)) {
 					float otherPlayerDistance = otherPlayer.Distance(target);
-					if (distance > otherPlayerDistance || (distance == otherPlayerDistance && i < Main.myPlayer)) {
+					if (distance > otherPlayerDistance || (distance == otherPlayerDistance && otherPlayer.whoAmI < Main.myPlayer)) {
 						return false;
 					}
 				}

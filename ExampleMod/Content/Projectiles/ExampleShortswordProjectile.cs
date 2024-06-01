@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Projectiles
 	// Shortsword projectiles are handled in a special way with how they draw and damage things
 	// The "hitbox" itself is closer to the player, the sprite is centered on it
 	// However the interactions with the world will occur offset from this hitbox, closer to the sword's tip (CutTiles, Colliding)
-	// Values chosen mostly correspond to Iron Shortword
+	// Values chosen mostly correspond to Iron Shortsword
 	public class ExampleShortswordProjectile : ModProjectile
 	{
 		public const int FadeInDuration = 7;
@@ -43,12 +43,12 @@ namespace ExampleMod.Content.Projectiles
 
 			Timer += 1;
 			if (Timer >= TotalDuration) {
-				// Kill the projectile if it reaches it's intented lifetime
+				// Kill the projectile if it reaches it's intended lifetime
 				Projectile.Kill();
 				return;
 			}
 			else {
-				// Important so that the sprite draws "in" the player's hand and not fully infront or behind the player
+				// Important so that the sprite draws "in" the player's hand and not fully in front or behind the player
 				player.heldProj = Projectile.whoAmI;
 			}
 

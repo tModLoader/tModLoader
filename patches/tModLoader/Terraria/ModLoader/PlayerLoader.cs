@@ -368,6 +368,81 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate void DelegateModifyExtraJumpDuration(ExtraJump jump, ref float duration);
+	private static HookList HookModifyExtraJumpDurationMultiplier = AddHook<DelegateModifyExtraJumpDuration>(p => p.ModifyExtraJumpDurationMultiplier);
+
+	public static void ModifyExtraJumpDurationMultiplier(ExtraJump jump, Player player, ref float duration)
+	{
+		foreach (var modPlayer in HookModifyExtraJumpDurationMultiplier.Enumerate(player)) {
+			try { modPlayer.ModifyExtraJumpDurationMultiplier(jump, ref duration); } catch { }
+		}
+	}
+
+	private static HookList HookCanStartExtraJump = AddHook<Func<ExtraJump, bool>>(p => p.CanStartExtraJump);
+
+	public static bool CanStartExtraJump(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookCanStartExtraJump.Enumerate(player)) {
+			try {
+				if (!modPlayer.CanStartExtraJump(jump))
+					return false;
+			} catch { }
+		}
+
+		return true;
+	}
+
+	private delegate void DelegateOnExtraJumpStarted(ExtraJump jump, ref bool playSound);
+	private static HookList HookOnExtraJumpStarted = AddHook<DelegateOnExtraJumpStarted>(p => p.OnExtraJumpStarted);
+
+	public static void OnExtraJumpStarted(ExtraJump jump, Player player, ref bool playSound)
+	{
+		foreach (var modPlayer in HookOnExtraJumpStarted.Enumerate(player)) {
+			try { modPlayer.OnExtraJumpStarted(jump, ref playSound); } catch { }
+		}
+	}
+
+	private static HookList HookOnExtraJumpEnded = AddHook<Action<ExtraJump>>(p => p.OnExtraJumpEnded);
+
+	public static void OnExtraJumpEnded(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookOnExtraJumpEnded.Enumerate(player)) {
+			try { modPlayer.OnExtraJumpEnded(jump); } catch { }
+		}
+	}
+
+	private static HookList HookOnExtraJumpRefreshed = AddHook<Action<ExtraJump>>(p => p.OnExtraJumpRefreshed);
+
+	public static void OnExtraJumpRefreshed(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookOnExtraJumpRefreshed.Enumerate(player)) {
+			try { modPlayer.OnExtraJumpRefreshed(jump); } catch { }
+		}
+	}
+
+	private static HookList HookExtraJumpVisuals = AddHook<Action<ExtraJump>>(p => p.ExtraJumpVisuals);
+
+	public static void ExtraJumpVisuals(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookExtraJumpVisuals.Enumerate(player)) {
+			try { modPlayer.ExtraJumpVisuals(jump); } catch { }
+		}
+	}
+
+	private static HookList HookCanShowExtraJumpVisuals = AddHook<Func<ExtraJump, bool>>(p => p.CanShowExtraJumpVisuals);
+
+	public static bool CanShowExtraJumpVisuals(ExtraJump jump, Player player)
+	{
+		foreach (var modPlayer in HookCanShowExtraJumpVisuals.Enumerate(player)) {
+			try {
+				if (!modPlayer.CanShowExtraJumpVisuals(jump))
+					return false;
+			} catch { }
+		}
+
+		return true;
+	}
+
 	private static HookList HookFrameEffects = AddHook<Action>(p => p.FrameEffects);
 
 	public static void FrameEffects(Player player)
@@ -1360,5 +1435,18 @@ public static class PlayerLoader
 			if (items != null)
 				yield return (items, onUsedForCrafting);
 		}
+	}
+
+	private static HookList HookOnPickup = AddHook<Func<Item, bool>>(p => p.OnPickup);
+
+	public static bool OnPickup(Player player, Item item)
+	{
+		foreach (var modPlayer in HookOnPickup.Enumerate(player)) {
+			if (!modPlayer.OnPickup(item)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

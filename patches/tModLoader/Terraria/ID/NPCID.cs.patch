@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,29 +_,109 @@
+@@ -3,29 +_,110 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -14,11 +14,12 @@
 -	public static class Sets
 +	public static partial class Sets
  	{
+-		public struct NPCBestiaryDrawModifiers
 +		/// <summary>
 +		/// Stores the draw parameters for an NPC type (<see cref="NPC.type"/>) in the Bestiary.
-+		/// <br/> <strong>Do not use the parameterless constructor or <c>default</c> to create this struct.</strong> Use <see cref="NPCBestiaryDrawModifiers(int)"/> instead with any parameter -- it sets proper default values.
++		/// <br/> <strong>Do not use <see langword="default" /> to create this struct.</strong> Use <see langword="new"/> <see cref="NPCBestiaryDrawModifiers()"/> instead to set proper default values.
 +		/// </summary>
- 		public struct NPCBestiaryDrawModifiers
++		public partial struct NPCBestiaryDrawModifiers
  		{
 +			/// <summary>
 +			/// The offset of this <see cref="NPC"/>'s Bestiary image in pixels.
@@ -109,6 +110,7 @@
 +			/// Creates a new <see cref="NPCBestiaryDrawModifiers"/> with default values.
 +			/// </summary>
 +			/// <param name="seriouslyWhyCantStructsHaveParameterlessConstructors">Unused.</param>
++			[Obsolete("Use the no argument constructor instead")]
  			public NPCBestiaryDrawModifiers(int seriouslyWhyCantStructsHaveParameterlessConstructors)
  			{
  				Position = default(Vector2);
@@ -127,7 +129,7 @@
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },
  			{ 260, 0 },
-@@ -73,7 +_,16 @@
+@@ -73,8 +_,18 @@
  			{ 56, 0 },
  			{ 101, 0 }
  		};
@@ -138,12 +140,15 @@
  		public static Dictionary<int, NPCBestiaryDrawModifiers> NPCBestiaryDrawOffset = NPCBestiaryDrawOffsetCreation();
 +
 +		/// <summary>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="ImmuneToAllBuffs "/>, and <see cref="ImmuneToRegularBuffs"/><br/><br/>
 +		/// The default debuff immunities for a given NPC type (<see cref="NPC.type"/>).
 +		/// </summary>
 +		/// <remarks><see cref="NPC.buffImmune"/> can still be manually changed to grant temporary immunity.</remarks>
- 		public static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
+-		public static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
++		private static Dictionary<int, NPCDebuffImmunityData> DebuffImmunitySets = new Dictionary<int, NPCDebuffImmunityData> {
  			{ 0, null },
  			{
+ 				1,
 @@ -4756,6 +_,10 @@
  				}
  			}
@@ -248,7 +253,7 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -4980,53 +_,360 @@
+@@ -4980,53 +_,361 @@
  			{ 622, 621 },
  			{ 623, 621 }
  		};
@@ -397,7 +402,7 @@
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a critter that can spawn in towns.
 +		/// <br/> Town critters use <see cref="NPCAIStyleID.Passive"/>.
-+		/// <br/> Defauts to <see langword="false"/>.
++		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>Make sure to also set <see cref="CountsAsCritter"/> for NPCs in this set.</remarks>
  		public static bool[] TownCritter = Factory.CreateBoolSet(46, 148, 149, 230, 299, 300, 303, 337, 361, 362, 364, 366, 367, 443, 445, 447, 538, 539, 540, 583, 584, 585, 592, 593, 602, 607, 608, 610, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 687);
@@ -455,11 +460,13 @@
  		public static int[] DangerDetectRange = Factory.CreateIntSet(-1, 38, 300, 17, 320, 107, 300, 19, 900, 22, 700, 124, 800, 228, 800, 178, 900, 18, 300, 229, 1000, 209, 1000, 54, 700, 108, 700, 160, 700, 20, 1200, 369, 300, 453, 300, 368, 900, 207, 60, 227, 800, 208, 400, 142, 500, 441, 50, 353, 60, 633, 100, 550, 120, 588, 120, 663, 700, 638, 250, 637, 250, 656, 250, 670, 250, 678, 250, 679, 250, 680, 250, 681, 250, 682, 250, 683, 250, 684, 250);
 +
 +		/// <summary>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/><br/><br/>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is immune to the effects of the shimmer.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>To make an NPC ignore the player's shimmer invulnerability, use <see cref="CanHitPastShimmer"/> instead.</remarks>
- 		public static bool[] ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578);
+-		public static bool[] ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578);
++		private static bool[] ShimmerImmunity = Factory.CreateBoolSet(637, 638, 656, 670, 684, 678, 679, 680, 681, 682, 683, 356, 669, 676, 244, 677, 594, 667, 662, 5, 115, 116, 139, 245, 247, 248, 246, 249, 344, 325, 50, 535, 657, 658, 659, 660, 668, 25, 30, 33, 70, 72, 665, 666, 112, 516, 517, 518, 519, 520, 521, 522, 523, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 423, 424, 425, 426, 427, 428, 429, 548, 549, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578);
 +
 +		/// <summary>
 +		/// If not <c>-1</c> for a given NPC type (<see cref="NPC.type"/>), then that NPC will transform into the retrieved item type (<see cref="Item.type"/>) when touching shimmer.
@@ -496,17 +503,17 @@
  		public static int[] AttackAverageChance = Factory.CreateIntSet(1, 38, 40, 17, 30, 107, 60, 19, 30, 22, 30, 124, 30, 228, 50, 178, 50, 18, 60, 229, 40, 209, 30, 54, 30, 108, 30, 160, 60, 20, 60, 369, 50, 453, 30, 368, 40, 207, 1, 227, 30, 208, 50, 142, 50, 441, 1, 353, 1, 633, 1, 550, 40, 588, 20, 663, 1, 638, 1, 637, 1, 656, 1, 670, 1, 678, 1, 679, 1, 680, 1, 681, 1, 682, 1, 683, 1, 684, 1);
 +
 +		/// <summary>
-+		/// Determines how a town NPC with the given NPC type (<see cref="NPC.type"/>) attacks.
-+		/// <br/> For <c>-1</c>, this NPC won't attack.
-+		/// <br/> For <c>0</c>, this NPC will throw a projectile.
-+		/// <br/> For <c>1</c>, this NPC will shoot a weapon.
-+		/// <br/> For <c>2</c>, this NPC will use magic.
-+		/// <br/> For <c>3</c>, this NPC will swing a weapon.
-+		/// <br/> Defaults to <c>-1</c>.
++		/// Determines how a town NPC with the given NPC type (<see cref="NPC.type"/>) attacks. Use the corresponding hooks to implement and customize the attack.
++		/// <para/> For <c>-1</c>, this NPC won't attack.
++		/// <para/> For <c>0</c>, this NPC will throw a projectile. <see cref="ModNPC.TownNPCAttackProj(ref int, ref int)"/>, <see cref="ModNPC.TownNPCAttackProjSpeed(ref float, ref float, ref float)"/>
++		/// <para/> For <c>1</c>, this NPC will shoot a weapon. <see cref="ModNPC.TownNPCAttackProj(ref int, ref int)"/>, <see cref="ModNPC.TownNPCAttackProjSpeed(ref float, ref float, ref float)"/>, <see cref="ModNPC.TownNPCAttackShoot(ref bool)"/>, <see cref="ModNPC.DrawTownAttackGun(ref Microsoft.Xna.Framework.Graphics.Texture2D, ref Rectangle, ref float, ref int)"/>
++		/// <para/> For <c>2</c>, this NPC will use magic. <see cref="ModNPC.TownNPCAttackProj(ref int, ref int)"/>, <see cref="ModNPC.TownNPCAttackProjSpeed(ref float, ref float, ref float)"/>, <see cref="ModNPC.TownNPCAttackMagic(ref float)"/>
++		/// <para/> For <c>3</c>, this NPC will swing a weapon. <see cref="ModNPC.TownNPCAttackSwing(ref int, ref int)"/>, <see cref="ModNPC.DrawTownAttackSwing(ref Microsoft.Xna.Framework.Graphics.Texture2D, ref Rectangle, ref int, ref float, ref Vector2)"/>
++		/// <para/> Defaults to <c>-1</c>.
 +		/// </summary>
 +		/// <remarks>
 +		/// You can modify most aspects of a town NPC's attack, including the item used and projectile shot, using any of the "TownNPCAttack" or "TownAttack" hooks in <see cref="ModNPC"/> or <see cref="GlobalNPC"/>.
-+		/// <br/> You can change the color of a magic (<c>3</c>) NPC's aura using <see cref="MagicAuraColor"/>.
++		/// <br/> You can change the color of a magic (<c>2</c>) NPC's aura using <see cref="MagicAuraColor"/>.
 +		/// </remarks>
  		public static int[] AttackType = Factory.CreateIntSet(-1, 38, 0, 17, 0, 107, 0, 19, 1, 22, 1, 124, 0, 228, 1, 178, 1, 18, 0, 229, 1, 209, 1, 54, 2, 108, 2, 160, 2, 20, 2, 369, 0, 453, 0, 368, 1, 207, 3, 227, 1, 208, 0, 142, 0, 441, 3, 353, 3, 633, 0, 550, 0, 588, 0, 663, 2, 638, -1, 637, -1, 656, -1, 670, -1, 678, -1, 679, -1, 680, -1, 681, -1, 682, -1, 683, -1, 684, -1);
 +
@@ -610,7 +617,7 @@
  		public static int[][] TownNPCsFramingGroups = new int[8][] {
  			new int[26] {
  				0,
-@@ -5246,16 +_,28 @@
+@@ -5246,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> dictionary = new Dictionary<int, NPCBestiaryDrawModifiers>();
@@ -642,3 +649,17 @@
  			}
  
  			return dictionary;
+ 		}
+ 
++#pragma warning disable CS0618
+ 		private static Dictionary<int, NPCBestiaryDrawModifiers> GetRedigitEntries()
+ 		{
+ 			return new Dictionary<int, NPCBestiaryDrawModifiers> {
+@@ -9972,6 +_,7 @@
+ 				}
+ 			};
+ 		}
++#pragma warning restore CS0618
+ 	}
+ 
+ 	private static readonly int[] NetIdMap = new int[65] {

@@ -17,7 +17,7 @@
  
  	public LogitechDeviceGroup(VendorColorProfile colorProfiles)
  	{
-@@ -18,6 +_,25 @@
+@@ -18,6 +_,21 @@
  	{
  		if (_isInitialized)
  			return;
@@ -26,15 +26,11 @@
 +		if (_initializationFailed)
 +			return;
 +
-+		try {
-+			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
-+				_initializationFailed = true;
-+
-+				return;
-+			}
-+		}
-+		catch (Exception e) {
-+			Console.WriteLine("Logitech RGB failed to initialize: " + e);
++		// TML: Added additional parameters to make the dll actually load. See changes in NativeMethods.
++		/*
++		if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++		*/
++		if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, System.Reflection.Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
 +			_initializationFailed = true;
 +
 +			return;

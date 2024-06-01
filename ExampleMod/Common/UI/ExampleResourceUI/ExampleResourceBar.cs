@@ -1,14 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Players;
+using ExampleMod.Content.Items.Weapons;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using ExampleMod.Common.Players;
-using ExampleMod.Content.Items.Weapons;
-using Terraria.GameContent;
-using System.Collections.Generic;
-using Terraria.Localization;
 
 namespace ExampleMod.Common.UI.ExampleResourceUI
 {
@@ -114,7 +114,7 @@ namespace ExampleMod.Common.UI.ExampleResourceUI
 			ExampleResourceBarUserInterface.SetState(ExampleResourceBar);
 
 			string category = "UI";
-			ExampleResourceText ??= Language.GetOrRegister(Mod.GetLocalizationKey($"{category}.ExampleResource"));
+			ExampleResourceText ??= Mod.GetLocalization($"{category}.ExampleResource");
 		}
 
 		public override void UpdateUI(GameTime gameTime) {

@@ -61,8 +61,8 @@ public class UICycleImage : UIElement
 		base.RightClick(evt);
 	}
 
-	internal void SetCurrentState(int sortMode)
+	internal void SetCurrentState(int state)
 	{
-		CurrentState = sortMode;
+		CurrentState = state;
 	}
 }

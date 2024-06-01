@@ -26,6 +26,33 @@
  		if (sticky) {
  			if (DeactivateIfOutsideOfWorld())
  				return;
+@@ -316,7 +_,7 @@
+ 			sticky = false;
+ 			rotation = velocity.X * 0.1f;
+ 		}
+-		else if ((type >= 706 && type <= 717) || type == 943 || type == 1147 || (type >= 1160 && type <= 1162)) {
++		else if (GoreID.Sets.LiquidDroplet[type]) {
+ 			if (type == 943 || (type >= 1160 && type <= 1162))
+ 				alpha = 0;
+ 			else if ((double)position.Y < Main.worldSurface * 16.0 + 8.0)
+@@ -360,7 +_,7 @@
+ 					frameCounter = 0;
+ 					frame++;
+ 					if (frame == 5) {
+-						int num5 = NewGore(position, velocity, type);
++						int num5 = NewGore(position, velocity, realType != 0 ? realType : type); // Modded droplets should spawn themselves for drops.
+ 						Main.gore[num5].frame = 9;
+ 						Main.gore[num5].velocity *= 0f;
+ 					}
+@@ -743,7 +_,7 @@
+ 			}
+ 		}
+ 		else if (GoreID.Sets.SpecialAI[type] != 3 && GoreID.Sets.SpecialAI[type] != 1) {
+-			if ((type >= 706 && type <= 717) || type == 943 || type == 1147 || (type >= 1160 && type <= 1162)) {
++			if (GoreID.Sets.LiquidDroplet[type]) {
+ 				if (type == 716) {
+ 					float num30 = 1f;
+ 					float num31 = 1f;
 @@ -857,11 +_,14 @@
  				num38 *= 0.3f;
  			}
@@ -106,23 +133,33 @@
  	{
  		if (Main.netMode == 2)
  			return 600;
-@@ -1074,6 +_,16 @@
+@@ -1047,7 +_,8 @@
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom();
+ 
+-		if (Type == -1)
++		// Changed from '== -1'.
++		if (Type <= 0)
+ 			return 600;
+ 
+ 		int num = 600;
+@@ -1074,6 +_,7 @@
  		Main.gore[num].alpha = 0;
  		Main.gore[num].rotation = 0f;
  		Main.gore[num].scale = Scale;
 +
-+		var gore = Main.gore[num];
-+
-+		// Reset TML's added fields to reuse the gore instance.
-+		gore.ResetNewFields();
-+
-+		// Initialize ModGore objects.
-+		gore.ModGore = GoreLoader.GetModGore(gore.type);
-+		gore.ModGore?.OnSpawn(gore, source ?? IEntitySource.GetGoreFallback());
-+
  		if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  			Main.gore[num].type = Main.rand.Next(11, 14);
  			Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;
+@@ -1092,7 +_,7 @@
+ 			Main.gore[num].timeLeft = goreTime;
+ 		}
+ 
+-		if ((Type >= 706 && Type <= 717) || Type == 943 || Type == 1147 || (Type >= 1160 && Type <= 1162)) {
++		if (GoreID.Sets.LiquidDroplet[Type]) {
+ 			Main.gore[num].numFrames = 15;
+ 			Main.gore[num].behindTiles = true;
+ 			Main.gore[num].timeLeft = goreTime * 3;
 @@ -1126,7 +_,8 @@
  		int num2 = GoreID.Sets.SpecialAI[Type];
  		if (num2 == 3) {
@@ -133,6 +170,22 @@
  			Gore obj = Main.gore[num];
  			SpriteFrame spriteFrame = new SpriteFrame((byte)((!flag) ? 1u : 32u), 8) {
  				CurrentRow = (byte)Main.rand.Next(8)
+@@ -1186,6 +_,15 @@
+ 			Main.gore[num].timeLeft = 480;
+ 		}
+ 
++		var gore = Main.gore[num];
++
++		// Reset TML's added fields to reuse the gore instance.
++		gore.ResetNewFields();
++
++		// Initialize ModGore objects.
++		gore.ModGore = GoreLoader.GetModGore(gore.type);
++		gore.ModGore?.OnSpawn(gore, source ?? IEntitySource.GetGoreFallback());
++
+ 		if (Main.gore[num].DeactivateIfOutsideOfWorld())
+ 			return 600;
+ 
 @@ -1194,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)

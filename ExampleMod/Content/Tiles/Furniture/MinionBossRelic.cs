@@ -1,14 +1,14 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Enums;
-using System;
-using ReLogic.Content;
-using Terraria.Localization;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -32,15 +32,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override string Texture => "ExampleMod/Content/Tiles/Furniture/RelicPedestal";
 
 		public override void Load() {
-			if (!Main.dedServ) {
-				// Cache the extra texture displayed on the pedestal
-				RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
-			}
-		}
-
-		public override void Unload() {
-			// Unload the extra texture displayed on the pedestal
-			RelicTexture = null;
+			// Cache the extra texture displayed on the pedestal
+			RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
 		}
 
 		public override void SetStaticDefaults() {

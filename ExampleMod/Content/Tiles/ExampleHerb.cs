@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Metadata;
 using Terraria.ID;
 using Terraria.Localization;
@@ -134,7 +133,7 @@ namespace ExampleMod.Content.Tiles
 			int seedItemType = ModContent.ItemType<ExampleHerbSeeds>();
 			int seedItemStack = 1;
 
-			if (nearestPlayer.active && nearestPlayer.HeldItem.type == ItemID.StaffofRegrowth) {
+			if (nearestPlayer.active && (nearestPlayer.HeldItem.type == ItemID.StaffofRegrowth || nearestPlayer.HeldItem.type == ItemID.AcornAxe)) {
 				// Increased yields with Staff of Regrowth, even when not fully grown
 				herbItemStack = Main.rand.Next(1, 3);
 				seedItemStack = Main.rand.Next(1, 6);

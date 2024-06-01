@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.Drawing;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -49,13 +50,13 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(254, 121, 2), Language.GetText("ItemName.Campfire"));
 
 			// Assets
-			if (!Main.dedServ) {
-				flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
-			}
+			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
 		}
 
 		public override void NearbyEffects(int i, int j, bool closer) {
-			Main.SceneMetrics.HasCampfire = true;
+			if (Main.tile[i, j].TileFrameY < 36) {
+				Main.SceneMetrics.HasCampfire = true;
+			}
 		}
 
 		public override void MouseOver(int i, int j) {
@@ -157,7 +158,12 @@ namespace ExampleMod.Content.Tiles
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 			var tile = Main.tile[i, j];
-			if(tile.TileFrameY < 36) {
+
+			if (!TileDrawing.IsVisible(tile)) {
+				return;
+			}
+
+			if (tile.TileFrameY < 36) {
 				Color color = new Color(255, 255, 255, 0);
 
 				Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
@@ -179,7 +185,7 @@ namespace ExampleMod.Content.Tiles
 				Rectangle drawRectangle = new Rectangle(tile.TileFrameX, tile.TileFrameY + addFrY, 16, 16);
 
 				// The flame is manually drawn separate from the tile texture so that it can be drawn at full brightness.
-				Main.spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + offsetY) + zero , drawRectangle, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + offsetY) + zero, drawRectangle, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 			}
 		}
 	}

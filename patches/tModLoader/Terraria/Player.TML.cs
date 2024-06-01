@@ -14,10 +14,23 @@ namespace Terraria;
 public partial class Player : IEntityWithInstances<ModPlayer>
 {
 	internal IList<string> usedMods;
+	/// <summary> Contains error messages from ModPlayer.SaveData from a previous player save retrieved from the .tplr. Shown when entering a world and on player select menu. Maps ModSystem.FullName.MethodName to exception string.</summary>
+	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();
 	internal string modPack;
 	internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
 	public Item equippedWings = null;
+
+	/// <summary>
+	/// Set by any gem robe when worn by the player in the functional armor slot. Increases the spawn rate of <see cref="NPCID.Tim"/>.
+	/// </summary>
+	public bool hasGemRobe = false;
+
+	/// <summary>
+	/// Causes <see cref="SmartSelectLookup"/> to run the next time an item animation is finished, even if <see cref="controlUseItem"/> is held. <br/>
+	/// Used internally by tML to when a hotbar key is pressed while using an item.
+	/// </summary>
+	public bool selectItemOnNextUse;
 
 	private int consumedLifeCrystals;
 
@@ -195,12 +208,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <summary>
 	/// Gets the crit chance modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance.
 	/// </summary>
 	public ref float GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the crit chance modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that crit values are percentage values ranging from 0 to 100, unlike damage multipliers. Adding 4, for example, would add 4% to the crit chance.
 	/// </summary>
 	public ref float GetCritChance(DamageClass damageClass) => ref damageData[damageClass.Type].critChance;
 
@@ -209,36 +224,42 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// This returns a reference, and as such, you can freely modify this method's return values with operators.
 	/// Setting this such that it results in zero or a negative value will throw an exception.
 	/// NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier.
+	/// <para/> Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat.
 	/// </summary>
 	public ref float GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the attack speed modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return values with operators.
+	/// <para/> Note that attack speed is a multiplier. Adding 0.15f, for example, would add 15% to the attack speed stat.
 	/// </summary>
 	public ref float GetAttackSpeed(DamageClass damageClass) => ref damageData[damageClass.Type].attackSpeed;
 
 	/// <summary>
 	/// Gets the armor penetration modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory.
 	/// </summary>
 	public ref float GetArmorPenetration<T>() where T : DamageClass => ref GetArmorPenetration(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the armor penetration modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that armor penetration value are typically whole numbers. Adding 5, for example, would add 5 to the armor penetration stat, similar to the Shark Tooth Necklace accessory.
 	/// </summary>
 	public ref float GetArmorPenetration(DamageClass damageClass) => ref damageData[damageClass.Type].armorPen;
 
 	/// <summary>
 	/// Gets the knockback modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat.
 	/// </summary>
 	public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
 
 	/// <summary>
 	/// Gets the knockback modifier for this damage type on this player.
 	/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+	/// <para/> Note that knockback values are multipliers. Adding 0.12f, for example, would add 12% to the knockback stat.
 	/// </summary>
 	public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
@@ -506,8 +527,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		float reduce = manaCost;
 		float mult = 1;
-		// TODO: Make a space gun set
-		if (spaceGun && (item.type == ItemID.SpaceGun || item.type == ItemID.ZapinatorGray || item.type == ItemID.ZapinatorOrange))
+
+		if (spaceGun && ItemID.Sets.IsSpaceGun[item.type])
 			mult = 0;
 
 		if(item.type == ItemID.BookStaff && altFunctionUse == 2)
@@ -593,5 +614,55 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		else {
 			hurtCooldowns[cooldownCounterId] += immuneTime;
 		}
+	}
+
+	// Extra jumps
+	private ExtraJumpState[] extraJumps = new ExtraJumpState[ExtraJumpLoader.ExtraJumpCount];
+
+	public ref ExtraJumpState GetJumpState<T>(T baseInstance) where T : ExtraJump => ref extraJumps[baseInstance.Type];
+
+	public ref ExtraJumpState GetJumpState<T>() where T : ExtraJump => ref GetJumpState(ModContent.GetInstance<T>());
+
+	public Span<ExtraJumpState> ExtraJumps => extraJumps.AsSpan();
+
+	/// <summary>
+	/// When <see langword="true"/>, all extra jumps will be blocked, including Flipper usage.<br/>
+	/// Setting this field to <see langword="true"/> will not stop any currently active extra jumps.
+	/// </summary>
+	public bool blockExtraJumps;
+
+	/// <summary>
+	/// Returns <see langword="true"/> if any extra jump is <see cref="ExtraJumpState.Available"/> and <see cref="ExtraJump.CanStart"/>.<br/>
+	/// Setting <see cref="blockExtraJumps"/> will cause this method to return <see langword="false"/> instead.
+	/// </summary>
+	public bool AnyExtraJumpUsable()
+	{
+		if (blockExtraJumps)
+			return false;
+
+		foreach (ExtraJump jump in ExtraJumpLoader.OrderedJumps) {
+			if (GetJumpState(jump).Available && jump.CanStart(this) && PlayerLoader.CanStartExtraJump(jump, this))
+				return true;
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	/// Cancels any extra jump in progress.<br/>
+	/// Sets all <see cref="ExtraJumpState.Active"/> flags to <see langword="false"/> and calls OnExtraJumpEnded hooks.<br/>
+	/// Also sets <see cref="jump"/> to 0 if a an extra jump was active.<br/><br/>
+	///
+	/// Used by vanilla when performing an action which would cancel jumping, such as grappling, grabbing a rope or getting frozen.<br/><br/>
+	///
+	/// To prevent the use of remaining jumps, use <see cref="ConsumeAllExtraJumps"/> or <see cref="blockExtraJumps"/>.<br/>
+	/// To cancel a regular jump as well, do <c>Player.jump = 0;</c>
+	/// </summary>
+	public void StopExtraJumpInProgress()
+	{
+		ExtraJumpLoader.StopActiveJump(this, out bool anyJumpCancelled);
+
+		if (anyJumpCancelled)
+			jump = 0;
 	}
 }
