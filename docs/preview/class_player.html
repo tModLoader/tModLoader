@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -277,6 +277,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAfford</b> (long p
 <tr class="memitem:a9ac578501aae761ea441a8c79f710c7e"><td class="memItemLeft" align="right" valign="top"><a id="a9ac578501aae761ea441a8c79f710c7e" name="a9ac578501aae761ea441a8c79f710c7e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAutoReuseItem</b> (<a class="el" href="class_item.html">Item</a> sItem)</td></tr>
 <tr class="separator:a9ac578501aae761ea441a8c79f710c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69cfbda37160e4d72488952dbf296a4d"><td class="memItemLeft" align="right" valign="top"><a id="a69cfbda37160e4d72488952dbf296a4d" name="a69cfbda37160e4d72488952dbf296a4d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CancelAllBootRunVisualEffects</b> ()</td></tr>
+<tr class="separator:a69cfbda37160e4d72488952dbf296a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cec688c58bf6f163b80887138934dbc"><td class="memItemLeft" align="right" valign="top"><a id="a7cec688c58bf6f163b80887138934dbc" name="a7cec688c58bf6f163b80887138934dbc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDemonHeartAccessoryBeShown</b> ()</td></tr>
 <tr class="separator:a7cec688c58bf6f163b80887138934dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1574,6 +1577,7 @@ static <a class="el" href="class_player_file_data.html">PlayerFileData</a>&#160;
 <tr class="separator:a528115f89cf9e7527ec153863a12a921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab11a6584b2f3643391bd944e654ed9e0"><td class="memItemLeft" align="right" valign="top"><a id="ab11a6584b2f3643391bd944e654ed9e0" name="ab11a6584b2f3643391bd944e654ed9e0"></a>
 static ? <a class="el" href="struct_tile.html">Tile</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFloorTile</b> (int x, int y)</td></tr>
+<tr class="memdesc:ab11a6584b2f3643391bd944e654ed9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a solid, unactuated tile at the tile coordinates provided. Will fallback to the tile to the left or right if necessary. Returns null if no suitable tile is found. Typically used to retrieve the tile a player is standing on by passing in the tile coordinates directly below the player. <br /></td></tr>
 <tr class="separator:ab11a6584b2f3643391bd944e654ed9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e9847136ce5717f65719c466daf113e"><td class="memItemLeft" align="right" valign="top"><a id="a2e9847136ce5717f65719c466daf113e" name="a2e9847136ce5717f65719c466daf113e"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetFloorTileType</b> (int x, int y)</td></tr>
@@ -1681,6 +1685,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>accOreFinder</b></td>
 <tr class="separator:a9fa916913adf4c631049d91927374833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54ce5e7bc42e96c763212c81ad63acfe"><td class="memItemLeft" align="right" valign="top"><a id="a54ce5e7bc42e96c763212c81ad63acfe" name="a54ce5e7bc42e96c763212c81ad63acfe"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>accRunSpeed</b></td></tr>
+<tr class="memdesc:a54ce5e7bc42e96c763212c81ad63acfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8" title="The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to th...">maxRunSpeed</a>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running. Defaults to 3f. Accessories set this to specific values, resulting in the last equipped accessories to dictate the final value. Vanilla shoe accessories set this to <code>6f</code> (ItemID.HermesBoots) or <code>6.75</code> (ItemID.LightningBoots). This assignment should happen in <a class="el" href="class_mod_item.html#aba46b7861cb531ddf4e9aeaea3f827ba" title="Allows you to give effects to this armor or accessory, such as increased damage.">ModItem.UpdateEquip(Player)</a>. This value is later multiplied by other effects in the same manner as <a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8" title="The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to th...">maxRunSpeed</a>. They are usually modified in tandem, but not always depending on the desired result. For example, asphalt triples maxRunSpeed but does not affect accRunSpeed, whereas Shadow Armor affects both equally. These multiplicative adjustments should only be done in <a class="el" href="class_mod_player.html#a5293087b6fee40f0c032ef901800ed69" title="This is called after the player&#39;s horizontal speeds are modified, which is sometime after PostUpdateM...">ModPlayer.PostUpdateRunSpeeds</a> or <a class="el" href="class_mod_item.html#a2efe38fe8dcda065568f4a360266f70f" title="Allows you to modify these wing&#39;s horizontal flight speed and acceleration.">ModItem.HorizontalWingSpeeds</a> to correctly function. When on a mount, all other modifiers are ignored and it is set to Mount.DashSpeed <br /></td></tr>
 <tr class="separator:a54ce5e7bc42e96c763212c81ad63acfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732d17192d6450010a6624a4c4f294bf"><td class="memItemLeft" align="right" valign="top"><a id="a732d17192d6450010a6624a4c4f294bf" name="a732d17192d6450010a6624a4c4f294bf"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>accStopwatch</b></td></tr>
@@ -2384,6 +2389,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>delayUseItem</b></td>
 <tr class="separator:aa2223941cda50ce05a8715e9b3cee216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a84fc35f17128097b7cf36ce55f4e51"><td class="memItemLeft" align="right" valign="top"><a id="a0a84fc35f17128097b7cf36ce55f4e51" name="a0a84fc35f17128097b7cf36ce55f4e51"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>desertBoots</b></td></tr>
+<tr class="memdesc:a0a84fc35f17128097b7cf36ce55f4e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grants the player increased movement speed while running on sand <br /></td></tr>
 <tr class="separator:a0a84fc35f17128097b7cf36ce55f4e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e2b4bc53125269509f700f0f31ba13b"><td class="memItemLeft" align="right" valign="top"><a id="a0e2b4bc53125269509f700f0f31ba13b" name="a0e2b4bc53125269509f700f0f31ba13b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>desertDash</b></td></tr>
@@ -2527,7 +2533,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>extraAccessory</b></t
 int&#160;</td><td class="memItemRight" valign="bottom"><b>extraAccessorySlots</b> = 2</td></tr>
 <tr class="separator:a467bf52d787e6335e3575d8e8b776213"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23faed31e665fce3f3e2c418374b1eb5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a23faed31e665fce3f3e2c418374b1eb5">extraFall</a></td></tr>
-<tr class="memdesc:a23faed31e665fce3f3e2c418374b1eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of extra tiles this player can fall before they start taking fall damage.  <a href="class_player.html#a23faed31e665fce3f3e2c418374b1eb5">More...</a><br /></td></tr>
+<tr class="memdesc:a23faed31e665fce3f3e2c418374b1eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of extra tiles this player can fall before they start taking fall damage. For example ItemID.FrogLeg adds 10 to extraFall.  <a href="class_player.html#a23faed31e665fce3f3e2c418374b1eb5">More...</a><br /></td></tr>
 <tr class="separator:a23faed31e665fce3f3e2c418374b1eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24f9f40e55e56327c8acfa97f09dd7c1"><td class="memItemLeft" align="right" valign="top"><a id="a24f9f40e55e56327c8acfa97f09dd7c1" name="a24f9f40e55e56327c8acfa97f09dd7c1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>eyebrellaCloud</b></td></tr>
@@ -2567,6 +2573,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>findTreasure</b></td>
 <tr class="separator:a429fd1e7e9fc321eba999104d1b00bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b852d436d29ae006bfdf83f6c60a8f1"><td class="memItemLeft" align="right" valign="top"><a id="a6b852d436d29ae006bfdf83f6c60a8f1" name="a6b852d436d29ae006bfdf83f6c60a8f1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>fireWalk</b></td></tr>
+<tr class="memdesc:a6b852d436d29ae006bfdf83f6c60a8f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grants the player immunity from <a class="el" href="class_tile_i_d_1_1_sets.html#a1b940df5c7dbff2bcf89e2213d421638" title="Applies the BuffID.Burning buff to any player touching the tile without Player.fireWalk....">TileID.Sets.TouchDamageHot</a> applying the BuffID.Burning buff. Given by ItemID.ObsidianSkull and many other items. <br /></td></tr>
 <tr class="separator:a6b852d436d29ae006bfdf83f6c60a8f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae90eee30038c5d17f86187bffce6191b"><td class="memItemLeft" align="right" valign="top"><a id="ae90eee30038c5d17f86187bffce6191b" name="ae90eee30038c5d17f86187bffce6191b"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>firstFractalAfterImageOpacity</b></td></tr>
@@ -2806,6 +2813,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>heartyMeal</b></td></
 <tr class="separator:a28e76260ab463acfc33593a73bb8a71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9042ba8e38e5b9640358f736f6fbc83a"><td class="memItemLeft" align="right" valign="top"><a id="a9042ba8e38e5b9640358f736f6fbc83a" name="a9042ba8e38e5b9640358f736f6fbc83a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>heldProj</b> = -1</td></tr>
+<tr class="memdesc:a9042ba8e38e5b9640358f736f6fbc83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of the projectile (<a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a>) currently being "held" by the player as if it were an item. Set during projectile AI. Held projectiles will be drawn during player rendering over the player's arms. When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and adjust <a class="el" href="class_player.html#a4d51c1bc55b3d00e19042581d56e2dab" title="Takes an input position and returns the position adjusted to the players visual rotation and offset....">Player.RotatedRelativePoint</a>, <a class="el" href="class_player.html#a50056c148e9e99495fa90b3698bf0825" title="An offset from the actual position of the player that will be added to the draw position....">Player.gfxOffY</a> or <a class="el" href="class_projectile_i_d_1_1_sets.html#a0fe48a56f4c77cb9bf1767301495ea02" title="If true for a given projectile type (Projectile.type), then that projectile will not be visually offs...">ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY</a> accordingly if the draw location is incorrect. Defaults to -1. <br /></td></tr>
 <tr class="separator:a9042ba8e38e5b9640358f736f6fbc83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a252c318449a1ef46025aa6e4e7eadca2"><td class="memItemLeft" align="right" valign="top"><a id="a252c318449a1ef46025aa6e4e7eadca2" name="a252c318449a1ef46025aa6e4e7eadca2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hellfireTreads</b></td></tr>
@@ -2882,6 +2890,7 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>iceBarrierFrameCounte
 <tr class="separator:a6f7e482c5f38123dc1fbb0c019e69e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c801ca91e9ad4a2ea2a259f78125b60"><td class="memItemLeft" align="right" valign="top"><a id="a5c801ca91e9ad4a2ea2a259f78125b60" name="a5c801ca91e9ad4a2ea2a259f78125b60"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>iceSkate</b></td></tr>
+<tr class="memdesc:a5c801ca91e9ad4a2ea2a259f78125b60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grant the player improved speed on ice and not breaking thin ice when falling onto it <br /></td></tr>
 <tr class="separator:a5c801ca91e9ad4a2ea2a259f78125b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14b76e1875ccf84f47671ec57235fb7"><td class="memItemLeft" align="right" valign="top"><a id="ad14b76e1875ccf84f47671ec57235fb7" name="ad14b76e1875ccf84f47671ec57235fb7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ichor</b></td></tr>
@@ -3069,15 +3078,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>lavaCD</b></td></tr>
 <tr class="separator:ae79abdbd0edde380893e1561cc0f1e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac87e9a8cd933daa13b16f84f73f8d816"><td class="memItemLeft" align="right" valign="top"><a id="ac87e9a8cd933daa13b16f84f73f8d816" name="ac87e9a8cd933daa13b16f84f73f8d816"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>lavaImmune</b></td></tr>
+<tr class="memdesc:ac87e9a8cd933daa13b16f84f73f8d816"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete lava immunity, such as given by ItemID.ObsidianSkinPotion. <br /></td></tr>
 <tr class="separator:ac87e9a8cd933daa13b16f84f73f8d816"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7170d10978db162f2a360d182a82aac"><td class="memItemLeft" align="right" valign="top"><a id="ae7170d10978db162f2a360d182a82aac" name="ae7170d10978db162f2a360d182a82aac"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lavaMax</b></td></tr>
+<tr class="memdesc:ae7170d10978db162f2a360d182a82aac"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max amount of lava immunity time (in ticks) the player can have. ItemID.LavaCharm and many other accessories add 420 do this, or 7 seconds. <br /></td></tr>
 <tr class="separator:ae7170d10978db162f2a360d182a82aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae610f665b99ea080e886103e9e901064"><td class="memItemLeft" align="right" valign="top"><a id="ae610f665b99ea080e886103e9e901064" name="ae610f665b99ea080e886103e9e901064"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>lavaRose</b></td></tr>
+<tr class="memdesc:ae610f665b99ea080e886103e9e901064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduces damage from touching lava and halves the duration of lava inflicted BuffID.OnFire, such as given by ItemID.ObsidianRose and many other items. <br /></td></tr>
 <tr class="separator:ae610f665b99ea080e886103e9e901064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8080daf41df7d036c6a24f54b40ee1e"><td class="memItemLeft" align="right" valign="top"><a id="ad8080daf41df7d036c6a24f54b40ee1e" name="ad8080daf41df7d036c6a24f54b40ee1e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>lavaTime</b></td></tr>
+<tr class="memdesc:ad8080daf41df7d036c6a24f54b40ee1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The remaining amount of lava immunity time (in ticks) the player has. <br /></td></tr>
 <tr class="separator:ad8080daf41df7d036c6a24f54b40ee1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4a33dc57a835edffae571a5d45e6900"><td class="memItemLeft" align="right" valign="top"><a id="ad4a33dc57a835edffae571a5d45e6900" name="ad4a33dc57a835edffae571a5d45e6900"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>leftTimer</b></td></tr>
@@ -3248,7 +3261,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>maxMinions</b> = 1</td
 float&#160;</td><td class="memItemRight" valign="bottom"><b>maxRegenDelay</b></td></tr>
 <tr class="separator:adae9df93b313071f522f1a92e8077b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a398564ff7e39b984e797dc78b5cda8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8">maxRunSpeed</a> = 3f</td></tr>
-<tr class="memdesc:a4a398564ff7e39b984e797dc78b5cda8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum speed, in pixels/tick, that this player can reach by just running.  <a href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8">More...</a><br /></td></tr>
+<tr class="memdesc:a4a398564ff7e39b984e797dc78b5cda8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to that speed is a separate stat (<a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3" title="The acceleration, in pixels/ticks^2, that this player experiences while running. This affects how qui...">runAcceleration</a>). This should only be modified in <a class="el" href="class_mod_player.html#a5293087b6fee40f0c032ef901800ed69" title="This is called after the player&#39;s horizontal speeds are modified, which is sometime after PostUpdateM...">ModPlayer.PostUpdateRunSpeeds</a>, <a class="el" href="class_mod_item.html#a2efe38fe8dcda065568f4a360266f70f" title="Allows you to modify these wing&#39;s horizontal flight speed and acceleration.">ModItem.HorizontalWingSpeeds</a>, or ExtraJump.UpdateHorizontalSpeeds(Player) to correctly function. <a class="el" href="class_player.html#a54ce5e7bc42e96c763212c81ad63acfe" title="Similar to maxRunSpeed, except this is usually set to a specific value for the active shoe accessory....">accRunSpeed</a> is commonly adjusted in tandem if suitable. Defaults to 3f, which is then multiplied by <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration. This affects how quickly the player ...">moveSpeed</a>. Effects typically multiply this by some factor. Some examples: On ice with Ice Skates: <code>*= 1.25f</code> <br  />
+ On honey block (<a class="el" href="class_player.html#a8034204eb0f461fc99666601b2c2dfc1" title="Player is on TileID.HoneyBlock. Affects movement parameters.">sticky</a>): <code>*= 0.25f</code> <br  />
+ On asphalt block (<a class="el" href="class_player.html#af466ce5c40e1413df8fe4e99c45a249d" title="Player is on TileID.Asphalt. Affects movement parameters.">powerrun</a>): <code>*= 3.5f</code> <br  />
+ Shadow Armor (shadowArmor): <code>*= 1.15f</code> <br  />
+ Extra jumps: Typically <code>*= 1.5f</code>, see ExtraJump.UpdateHorizontalSpeeds When on a mount, all other modifiers are ignored and it is set to Mount.RunSpeed  <a href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8">More...</a><br /></td></tr>
 <tr class="separator:a4a398564ff7e39b984e797dc78b5cda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30be644a8aa902a3e60a116a4ac5b607"><td class="memItemLeft" align="right" valign="top"><a id="a30be644a8aa902a3e60a116a4ac5b607" name="a30be644a8aa902a3e60a116a4ac5b607"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>maxTurrets</b> = 1</td></tr>
@@ -3317,7 +3334,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>moonLordMonolithShade
 <tr class="memitem:a6e30147feb0b6e19d26e518939c3381b"><td class="memItemLeft" align="right" valign="top"><a id="a6e30147feb0b6e19d26e518939c3381b" name="a6e30147feb0b6e19d26e518939c3381b"></a>
 <a class="el" href="class_mount.html">Mount</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mount</b></td></tr>
 <tr class="memdesc:a6e30147feb0b6e19d26e518939c3381b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This player's <a class="el" href="class_mount.html">Mount</a>. <br  />
- <b>Do not overwrite this value.</b> Instead, call Mount.SetMount(int, Player, bool) or Mount.Dismount(Player) on it. <br /></td></tr>
+ <b>Do not overwrite this value.</b> Instead, call Mount.SetMount(int, Player, bool) or Mount.Dismount(Player) on it. Check <a class="el" href="class_mount.html#aa483adda277f6331faff69109f6b7b50" title="True if the player is currently using a mount.">Mount.Active</a> (via <code>Player.mount.Active</code>) to determine if the player is currently using a mount. <br /></td></tr>
 <tr class="separator:a6e30147feb0b6e19d26e518939c3381b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33e2343b5ad31c0bd4a634550fb3fa81"><td class="memItemLeft" align="right" valign="top"><a id="a33e2343b5ad31c0bd4a634550fb3fa81" name="a33e2343b5ad31c0bd4a634550fb3fa81"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>MountFishronSpecialCounter</b></td></tr>
@@ -3330,7 +3347,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mouseInterface</b></t
 <tr class="separator:a335a4709d5eec6aca2c78acfd51d4bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af75dce28d0c467e06f984717a283ebcb"><td class="memItemLeft" align="right" valign="top"><a id="af75dce28d0c467e06f984717a283ebcb" name="af75dce28d0c467e06f984717a283ebcb"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>moveSpeed</b> = 1f</td></tr>
-<tr class="memdesc:af75dce28d0c467e06f984717a283ebcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The multiplier on this player's <a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8" title="The maximum speed, in pixels/tick, that this player can reach by just running.">maxRunSpeed</a> and <a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3" title="The acceleration, in pixels/ticks^2, that this player experiences while running.">runAcceleration</a>. <br /></td></tr>
+<tr class="memdesc:af75dce28d0c467e06f984717a283ebcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The multiplier on this player's <a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8" title="The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to th...">maxRunSpeed</a> and <a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3" title="The acceleration, in pixels/ticks^2, that this player experiences while running. This affects how qui...">runAcceleration</a>. This affects how quickly the player reaches max speed as well as the max speed itself. This is typically modified in <a class="el" href="class_mod_buff.html#a03f24b9c5cfae72b1217c156e4e80d7a" title="Allows you to make this buff give certain effects to the given player. If you remove the buff from th...">ModBuff.Update(Player, ref int)</a>, <a class="el" href="class_mod_item.html#aba46b7861cb531ddf4e9aeaea3f827ba" title="Allows you to give effects to this armor or accessory, such as increased damage.">ModItem.UpdateEquip(Player)</a>, <a class="el" href="class_mod_item.html#ac7af055d3befc9d7cd9bab9d63ad0b94" title="Allows you to give effects to this accessory. The hideVisual parameter is whether the player has mark...">ModItem.UpdateAccessory(Player, bool)</a>, or <a class="el" href="class_mod_player.html#ac6c4289ad533aa0df42de9d29a5864be" title="This is called after miscellaneous update code is called in Player.Update, which is sometime after Po...">ModPlayer.PostUpdateMiscEffects</a>. <a class="el" href="class_mod_player.html#a5293087b6fee40f0c032ef901800ed69" title="This is called after the player&#39;s horizontal speeds are modified, which is sometime after PostUpdateM...">ModPlayer.PostUpdateRunSpeeds</a> is too late to have any effect. Defaults to 1f. Effects typically add to or subtract from this, typically expressed as "X% increased movement speed" in tooltips. Some examples: Swiftness potion (BuffID.Swiftness): <code>+= 0.25f</code> <br  />
+ Webbed buff (BuffID.Webbed): <code>= 0f</code> <br  />
+ Titanium Leggings: <code>+= 0.06f</code> <br  />
+ Frostspark Boots: <code>+= 0.08f</code> Some effects apply multiplicatively, these must be applied later on in the update process to work correctly, <a class="el" href="class_mod_player.html#ac6c4289ad533aa0df42de9d29a5864be" title="This is called after miscellaneous update code is called in Player.Update, which is sometime after Po...">ModPlayer.PostUpdateMiscEffects</a> or <a class="el" href="class_mod_player.html#a3677653797230c347c635eff2ee5fdb5" title="Allows you to give the player a negative life regeneration based on its state (for example,...">ModPlayer.UpdateBadLifeRegen</a> are suitable places for this. Some examples: Oozed buff (slowOgreSpit): <code>*= 1/3f</code> <br  />
+ Slow buff (slow): <code>*= 0.5f</code> <br  />
+ Chilled buff (chilled): <code>*= 0.75f</code> <br /></td></tr>
 <tr class="separator:af75dce28d0c467e06f984717a283ebcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0001ed0b6bda554ae87f8256d8777103"><td class="memItemLeft" align="right" valign="top"><a id="a0001ed0b6bda554ae87f8256d8777103" name="a0001ed0b6bda554ae87f8256d8777103"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mushroomDelayTime</b> = <a class="el" href="class_item.html#afe89f43c2dab80619ef8867972f333cf">Item.mushroomDelay</a></td></tr>
@@ -3393,7 +3415,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>noBuilding</b></td></
 <tr class="separator:ab98951c35afcbbdf6f85bceda744d1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a0e46984916ed72788c5be69a464cd2"><td class="memItemLeft" align="right" valign="top"><a id="a1a0e46984916ed72788c5be69a464cd2" name="a1a0e46984916ed72788c5be69a464cd2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noFallDmg</b></td></tr>
-<tr class="memdesc:a1a0e46984916ed72788c5be69a464cd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this player will take no fall damage. <br /></td></tr>
+<tr class="memdesc:a1a0e46984916ed72788c5be69a464cd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code>, this player will take no fall damage, such as the effect given by ItemID.LuckyHorseshoe. If you want to increase the fall height required for fall damage, use <a class="el" href="class_player.html#a23faed31e665fce3f3e2c418374b1eb5" title="The number of extra tiles this player can fall before they start taking fall damage....">extraFall</a> instead. <br /></td></tr>
 <tr class="separator:a1a0e46984916ed72788c5be69a464cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb714314eee507cd3c917e6b1425320"><td class="memItemLeft" align="right" valign="top"><a id="afeb714314eee507cd3c917e6b1425320" name="afeb714314eee507cd3c917e6b1425320"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noItems</b></td></tr>
@@ -3696,6 +3718,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>poundRelease</b></td>
 <tr class="separator:a30631223d96a1585a59652ed99ca4cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af466ce5c40e1413df8fe4e99c45a249d"><td class="memItemLeft" align="right" valign="top"><a id="af466ce5c40e1413df8fe4e99c45a249d" name="af466ce5c40e1413df8fe4e99c45a249d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>powerrun</b></td></tr>
+<tr class="memdesc:af466ce5c40e1413df8fe4e99c45a249d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_player.html">Player</a> is on TileID.Asphalt. Affects movement parameters. <br /></td></tr>
 <tr class="separator:af466ce5c40e1413df8fe4e99c45a249d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af01d98f601682e0989e97079891557aa"><td class="memItemLeft" align="right" valign="top"><a id="af01d98f601682e0989e97079891557aa" name="af01d98f601682e0989e97079891557aa"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>preventAllItemPickups</b></td></tr>
@@ -3813,6 +3836,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rightTimer</b></td></t
 <tr class="separator:a28c2fadec1ea1ee31a45d72e8eb124a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae629f5d3baad307b61c9f3042e790ac3"><td class="memItemLeft" align="right" valign="top"><a id="ae629f5d3baad307b61c9f3042e790ac3" name="ae629f5d3baad307b61c9f3042e790ac3"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>rocketBoots</b></td></tr>
+<tr class="memdesc:ae629f5d3baad307b61c9f3042e790ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">If greater than 0, the player can briefly fly using rocket boots. Is usually set to the same value as <a class="el" href="class_player.html#ab45fdb5dce9afc829648a873291ee75a" title="Controls which rocket boots visuals and sounds will be used: 1: Rocket Boots   2: Fairy Boots (plus f...">vanityRocketBoots</a> <br /></td></tr>
 <tr class="separator:ae629f5d3baad307b61c9f3042e790ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68d19be40fab6e77c33215e999c5139d"><td class="memItemLeft" align="right" valign="top"><a id="a68d19be40fab6e77c33215e999c5139d" name="a68d19be40fab6e77c33215e999c5139d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>rocketDelay</b></td></tr>
@@ -3845,7 +3869,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>rulerGrid</b></td></t
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>rulerLine</b></td></tr>
 <tr class="separator:a5e2be113bc5c12fd6acd244ba9b62da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3">runAcceleration</a> = 0.08f</td></tr>
-<tr class="memdesc:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The acceleration, in pixels/ticks^2, that this player experiences while running.  <a href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3">More...</a><br /></td></tr>
+<tr class="memdesc:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The acceleration, in pixels/ticks^2, that this player experiences while running. This affects how quickly the player reaches max speed, not the max speed (<a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8" title="The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to th...">maxRunSpeed</a>) itself. This should only be modified in <a class="el" href="class_mod_player.html#a5293087b6fee40f0c032ef901800ed69" title="This is called after the player&#39;s horizontal speeds are modified, which is sometime after PostUpdateM...">ModPlayer.PostUpdateRunSpeeds</a>, <a class="el" href="class_mod_item.html#a2efe38fe8dcda065568f4a360266f70f" title="Allows you to modify these wing&#39;s horizontal flight speed and acceleration.">ModItem.HorizontalWingSpeeds</a>, or ExtraJump.UpdateHorizontalSpeeds(Player) to correctly function. Defaults to 0.08f, which is then multiplied by <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration. This affects how quickly the player ...">moveSpeed</a>. Effects typically multiply this by some factor. Some examples: On ice (<a class="el" href="class_player.html#a522530d42c25063e4534dbd6c82afe9a" title="Player is on a TileID.Sets.IceSkateSlippery tile. Affects movement parameters.">slippy</a>): <code>*= 0.7f</code> (or <code>*= 2.1f</code> if wearing Ice Skates) <br  />
+ On honey block (<a class="el" href="class_player.html#a8034204eb0f461fc99666601b2c2dfc1" title="Player is on TileID.HoneyBlock. Affects movement parameters.">sticky</a>): <code>*= 0.25f</code> <br  />
+ Shadow Armor (shadowArmor): <code>*= 1.75f</code> <br  />
+ Wings: <code>*= <a class="el" href="struct_wing_stats.html#afb5122ef5b805cf2a526235908bf7c29" title="A multiplier applied to Player.runAcceleration while the player is in the air.">WingStats.AccRunAccelerationMult</a></code> <br  />
+ Extra jumps: Typically <code>*= 3f</code>, see ExtraJump.UpdateHorizontalSpeeds When on a mount, all other modifiers are ignored and it is set to Mount.Acceleration  <a href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3">More...</a><br /></td></tr>
 <tr class="separator:ac1bad9de388fc5f76bd1bdf1837dfbd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99e2ef1cd00046df1f16291965cea776"><td class="memItemLeft" align="right" valign="top"><a id="a99e2ef1cd00046df1f16291965cea776" name="a99e2ef1cd00046df1f16291965cea776"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>runningOnSand</b></td></tr>
@@ -4038,9 +4066,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>slime</b></td></tr>
 <tr class="separator:a0c51deb8d5c4a8438fb2d0cc79c80441"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a522530d42c25063e4534dbd6c82afe9a"><td class="memItemLeft" align="right" valign="top"><a id="a522530d42c25063e4534dbd6c82afe9a" name="a522530d42c25063e4534dbd6c82afe9a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>slippy</b></td></tr>
+<tr class="memdesc:a522530d42c25063e4534dbd6c82afe9a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_player.html">Player</a> is on a <a class="el" href="class_tile_i_d_1_1_sets.html#a38c57298977bbdfc47182befc869a9e2" title="If true for a given tile type (Tile.TileType), then players will slip on that tile....">TileID.Sets.IceSkateSlippery</a> tile. Affects movement parameters. <br /></td></tr>
 <tr class="separator:a522530d42c25063e4534dbd6c82afe9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acabd5d5a82464135a725cc63efed8ea7"><td class="memItemLeft" align="right" valign="top"><a id="acabd5d5a82464135a725cc63efed8ea7" name="acabd5d5a82464135a725cc63efed8ea7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>slippy2</b></td></tr>
+<tr class="memdesc:acabd5d5a82464135a725cc63efed8ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_player.html">Player</a> is on TileID.FrozenSlimeBlock. Affects movement parameters. <br /></td></tr>
 <tr class="separator:acabd5d5a82464135a725cc63efed8ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b007a1f5a7f446e1d90d16e69ef4fac"><td class="memItemLeft" align="right" valign="top"><a id="a5b007a1f5a7f446e1d90d16e69ef4fac" name="a5b007a1f5a7f446e1d90d16e69ef4fac"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>sloping</b></td></tr>
@@ -4241,6 +4271,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>stepSpeed</b> = 1f</
 <tr class="separator:af27b9a003fd992b4f251407c5d846c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8034204eb0f461fc99666601b2c2dfc1"><td class="memItemLeft" align="right" valign="top"><a id="a8034204eb0f461fc99666601b2c2dfc1" name="a8034204eb0f461fc99666601b2c2dfc1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>sticky</b></td></tr>
+<tr class="memdesc:a8034204eb0f461fc99666601b2c2dfc1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_player.html">Player</a> is on TileID.HoneyBlock. Affects movement parameters. <br /></td></tr>
 <tr class="separator:a8034204eb0f461fc99666601b2c2dfc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa06664f9550f504b19d0424c5d83da30"><td class="memItemLeft" align="right" valign="top"><a id="aa06664f9550f504b19d0424c5d83da30" name="aa06664f9550f504b19d0424c5d83da30"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>stickyBreak</b></td></tr>
@@ -4423,6 +4454,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>vampireFrog</b></td><
 <tr class="separator:ab69d8ef076d540026dc4ad9f19143028"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab45fdb5dce9afc829648a873291ee75a"><td class="memItemLeft" align="right" valign="top"><a id="ab45fdb5dce9afc829648a873291ee75a" name="ab45fdb5dce9afc829648a873291ee75a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>vanityRocketBoots</b></td></tr>
+<tr class="memdesc:ab45fdb5dce9afc829648a873291ee75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls which rocket boots visuals and sounds will be used: 1: Rocket Boots <br  />
+ 2: Fairy Boots (plus fairyBoots), Spectre Boots, Lightning Boots <br  />
+ 3: Frostspark Boots <br  />
+ 4: Terraspark Boots <br  />
+ 5: Hellfire Treads <br /></td></tr>
 <tr class="separator:ab45fdb5dce9afc829648a873291ee75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af94260b8d5e73c3d1bf01ba561df2264"><td class="memItemLeft" align="right" valign="top"><a id="af94260b8d5e73c3d1bf01ba561df2264" name="af94260b8d5e73c3d1bf01ba561df2264"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>venom</b></td></tr>
@@ -4456,9 +4492,11 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>wallSpeed</b> = 1f</
 <tr class="separator:a1ecfcba0c9cefb16a8c21b896ff219cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba06eb50e0081d0173176b938ed04c3b"><td class="memItemLeft" align="right" valign="top"><a id="aba06eb50e0081d0173176b938ed04c3b" name="aba06eb50e0081d0173176b938ed04c3b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>waterWalk</b></td></tr>
+<tr class="memdesc:aba06eb50e0081d0173176b938ed04c3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the player to walk on water, honey, and shimmer, such as given by ItemID.WaterWalkingBoots. <br /></td></tr>
 <tr class="separator:aba06eb50e0081d0173176b938ed04c3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af982b7f819405f5b8351d288ac9a6731"><td class="memItemLeft" align="right" valign="top"><a id="af982b7f819405f5b8351d288ac9a6731" name="af982b7f819405f5b8351d288ac9a6731"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>waterWalk2</b></td></tr>
+<tr class="memdesc:af982b7f819405f5b8351d288ac9a6731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the player to walk on water, honey, lava, and shimmer, such as given by ItemID.LavaWaders. <br /></td></tr>
 <tr class="separator:af982b7f819405f5b8351d288ac9a6731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7703d604a6ff0c4806b1f509ea0dcf8b"><td class="memItemLeft" align="right" valign="top"><a id="a7703d604a6ff0c4806b1f509ea0dcf8b" name="a7703d604a6ff0c4806b1f509ea0dcf8b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>wearsRobe</b></td></tr>
@@ -4553,7 +4591,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>zephyrfish</b></td></
 <tr class="inherit_header pub_attribs_class_entity"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_entity')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_entity.html">Entity</a></td></tr>
 <tr class="memitem:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="ad61f0c48735980e78778b90b6b4c8667" name="ad61f0c48735980e78778b90b6b4c8667"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
-<tr class="memdesc:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the <a class="el" href="class_entity.html">Entity</a> actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array. <br /></td></tr>
+<tr class="memdesc:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the <a class="el" href="class_entity.html">Entity</a> actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array. Another option for iterating is to use <a class="el" href="class_main.html#aa9306db95b98d19297cf4cf9c4f6dd27" title="Use to iterate over active players. Game logic is usually only interested in Entity....">Main.ActivePlayers</a>, <a class="el" href="class_main.html#a55969af8fef5fd9819d1854403cf794b" title="Use to iterate over active players. Game logic is usually only interested in Entity....">Main.ActiveNPCs</a>, <a class="el" href="class_main.html#ab4646d8c91e9c4d9eebb6355cbeda8f9" title="Use to iterate over active projectiles. Game logic is usually only interested in Entity....">Main.ActiveProjectiles</a>, or <a class="el" href="class_main.html#a607e325ba26d67f18452a649dd715de9" title="Use to iterate over active items. Game logic is usually only interested in Entity....">Main.ActiveItems</a> instead for simpler code. <br /></td></tr>
 <tr class="separator:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a6bcffb2620b7dbf790114c5fea1bc50b" name="a6bcffb2620b7dbf790114c5fea1bc50b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>direction</b> = 1</td></tr>
@@ -6991,8 +7029,8 @@ Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html
       </table>
 </div><div class="memdoc">
 
-<p>The number of extra tiles this player can fall before they start taking fall damage. </p>
-<p >If you want to prevent fall damage entirely, use <a class="el" href="class_player.html#a1a0e46984916ed72788c5be69a464cd2" title="If true, this player will take no fall damage.">noFallDmg</a>. </p>
+<p>The number of extra tiles this player can fall before they start taking fall damage. For example ItemID.FrogLeg adds 10 to extraFall. </p>
+<p >If you want to prevent fall damage entirely, use <a class="el" href="class_player.html#a1a0e46984916ed72788c5be69a464cd2" title="If true, this player will take no fall damage, such as the effect given by ItemID....">noFallDmg</a>. </p>
 
 </div>
 </div>
@@ -7046,8 +7084,12 @@ Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html
       </table>
 </div><div class="memdoc">
 
-<p>The maximum speed, in pixels/tick, that this player can reach by just running. </p>
-<p >To apply a global run speed modifier, use <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration.">moveSpeed</a>.</p>
+<p>The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to that speed is a separate stat (<a class="el" href="class_player.html#ac1bad9de388fc5f76bd1bdf1837dfbd3" title="The acceleration, in pixels/ticks^2, that this player experiences while running. This affects how qui...">runAcceleration</a>). This should only be modified in <a class="el" href="class_mod_player.html#a5293087b6fee40f0c032ef901800ed69" title="This is called after the player&#39;s horizontal speeds are modified, which is sometime after PostUpdateM...">ModPlayer.PostUpdateRunSpeeds</a>, <a class="el" href="class_mod_item.html#a2efe38fe8dcda065568f4a360266f70f" title="Allows you to modify these wing&#39;s horizontal flight speed and acceleration.">ModItem.HorizontalWingSpeeds</a>, or ExtraJump.UpdateHorizontalSpeeds(Player) to correctly function. <a class="el" href="class_player.html#a54ce5e7bc42e96c763212c81ad63acfe" title="Similar to maxRunSpeed, except this is usually set to a specific value for the active shoe accessory....">accRunSpeed</a> is commonly adjusted in tandem if suitable. Defaults to 3f, which is then multiplied by <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration. This affects how quickly the player ...">moveSpeed</a>. Effects typically multiply this by some factor. Some examples: On ice with Ice Skates: <code>*= 1.25f</code> <br  />
+ On honey block (<a class="el" href="class_player.html#a8034204eb0f461fc99666601b2c2dfc1" title="Player is on TileID.HoneyBlock. Affects movement parameters.">sticky</a>): <code>*= 0.25f</code> <br  />
+ On asphalt block (<a class="el" href="class_player.html#af466ce5c40e1413df8fe4e99c45a249d" title="Player is on TileID.Asphalt. Affects movement parameters.">powerrun</a>): <code>*= 3.5f</code> <br  />
+ Shadow Armor (shadowArmor): <code>*= 1.15f</code> <br  />
+ Extra jumps: Typically <code>*= 1.5f</code>, see ExtraJump.UpdateHorizontalSpeeds When on a mount, all other modifiers are ignored and it is set to Mount.RunSpeed </p>
+<p >To apply a global run speed modifier, use <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration. This affects how quickly the player ...">moveSpeed</a>.</p>
 
 </div>
 </div>
@@ -7063,8 +7105,12 @@ Sets Player.chestX, and Player.chestY, and <a class="el" href="class_player.html
       </table>
 </div><div class="memdoc">
 
-<p>The acceleration, in pixels/ticks^2, that this player experiences while running. </p>
-<p >To apply a global run speed modifier, use <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration.">moveSpeed</a>.</p>
+<p>The acceleration, in pixels/ticks^2, that this player experiences while running. This affects how quickly the player reaches max speed, not the max speed (<a class="el" href="class_player.html#a4a398564ff7e39b984e797dc78b5cda8" title="The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to th...">maxRunSpeed</a>) itself. This should only be modified in <a class="el" href="class_mod_player.html#a5293087b6fee40f0c032ef901800ed69" title="This is called after the player&#39;s horizontal speeds are modified, which is sometime after PostUpdateM...">ModPlayer.PostUpdateRunSpeeds</a>, <a class="el" href="class_mod_item.html#a2efe38fe8dcda065568f4a360266f70f" title="Allows you to modify these wing&#39;s horizontal flight speed and acceleration.">ModItem.HorizontalWingSpeeds</a>, or ExtraJump.UpdateHorizontalSpeeds(Player) to correctly function. Defaults to 0.08f, which is then multiplied by <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration. This affects how quickly the player ...">moveSpeed</a>. Effects typically multiply this by some factor. Some examples: On ice (<a class="el" href="class_player.html#a522530d42c25063e4534dbd6c82afe9a" title="Player is on a TileID.Sets.IceSkateSlippery tile. Affects movement parameters.">slippy</a>): <code>*= 0.7f</code> (or <code>*= 2.1f</code> if wearing Ice Skates) <br  />
+ On honey block (<a class="el" href="class_player.html#a8034204eb0f461fc99666601b2c2dfc1" title="Player is on TileID.HoneyBlock. Affects movement parameters.">sticky</a>): <code>*= 0.25f</code> <br  />
+ Shadow Armor (shadowArmor): <code>*= 1.75f</code> <br  />
+ Wings: <code>*= <a class="el" href="struct_wing_stats.html#afb5122ef5b805cf2a526235908bf7c29" title="A multiplier applied to Player.runAcceleration while the player is in the air.">WingStats.AccRunAccelerationMult</a></code> <br  />
+ Extra jumps: Typically <code>*= 3f</code>, see ExtraJump.UpdateHorizontalSpeeds When on a mount, all other modifiers are ignored and it is set to Mount.Acceleration </p>
+<p >To apply a global run speed modifier, use <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration. This affects how quickly the player ...">moveSpeed</a>.</p>
 
 </div>
 </div>
