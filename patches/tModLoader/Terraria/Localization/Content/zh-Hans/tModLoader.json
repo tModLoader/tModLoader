@@ -1,4 +1,4 @@
-// Terraria字体“。” “】”后没有留有足够的空位，请看实际情况来补充空格。
+// Terraria字体“。” “】”后没有留有足够的空位，请按实际情况来补充空格。
 // 如：tModloader本体报错时使用系统字体（无需加空格）| tModloader内报错时使用Terraria字体（需要加空格）
 {
 	"tModLoader": {
