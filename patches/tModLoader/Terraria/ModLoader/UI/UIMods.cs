@@ -14,6 +14,7 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Audio;
 using Terraria.ID;
+using System;
 
 namespace Terraria.ModLoader.UI;
 
@@ -27,6 +28,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIList modList;
 	private float modListViewPosition;
 	private readonly List<UIModItem> items = new List<UIModItem>();
+	private Task<List<UIModItem>> modItemsTask;
 	private bool updateNeeded;
 	public bool loading;
 	private UIInputTextField filterTextBox;
@@ -336,6 +338,17 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		if (modItemsTask is { IsCompleted: true }) {
+			var result = modItemsTask.Result;
+			items.AddRange(result);
+			foreach (var item in items) {
+				item.Activate(); // Activate must happen after all UIModItem are in `items`
+			}
+			needToRemoveLoading = true;
+			updateNeeded = true;
+			loading = false;
+			modItemsTask = null;
+		}
 		if (needToRemoveLoading) {
 			needToRemoveLoading = false;
 			uIPanel.RemoveChild(uiLoader);
@@ -428,19 +441,15 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	internal void Populate()
 	{
-		Task.Run(() => {
+		modItemsTask = Task.Run(() => {
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
+			var pendingUIModItems = new List<UIModItem>();
 			foreach (var mod in mods) {
 				UIModItem modItem = new UIModItem(mod);
-				items.Add(modItem);
+				pendingUIModItems.Add(modItem);
 			}
-			foreach (var modItem in items) {
-				modItem.Activate();
-			}
-			needToRemoveLoading = true;
-			updateNeeded = true;
-			loading = false;
-		});
+			return pendingUIModItems;
+		}, _cts.Token);
 	}
 }
 
