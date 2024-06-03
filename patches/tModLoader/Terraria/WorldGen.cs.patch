@@ -2500,8 +2500,12 @@
  				}
  
  				break;
-@@ -47861,10 +_,13 @@
- 	private static bool KillTile_ShouldDropSeeds(int x, int y)
+@@ -47858,13 +_,16 @@
+ 		}
+ 	}
+ 
+-	private static bool KillTile_ShouldDropSeeds(int x, int y)
++	public static bool KillTile_ShouldDropSeeds(int x, int y)
  	{
  		if (Main.rand.Next(2) == 0) {
 +			/*
