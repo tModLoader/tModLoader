@@ -9,6 +9,12 @@ partial class ProjectileID
 		/// </summary>
 		public static bool[] SingleGrappleHook = Factory.CreateBoolSet(false, 13, 315, 230, 231, 232, 233, 234, 235, 331, 753, 865, 935);
 
+		// Values taken from Player.ItemCheck_Shoot type == 3029 check
+		/// <summary>
+		/// Set of Projectile IDs that will fire 1 less from <see cref="ItemID.DaedalusStormbow"/>
+		/// </summary>
+		public static bool[] FiresLessFromDaedalusStormbow = Factory.CreateBoolSet(false, 91, 4, 5, 41);
+
 		/// <summary>
 		/// Used to scale down summon tag damage for fast hitting minions and sentries. 
 		/// </summary>
