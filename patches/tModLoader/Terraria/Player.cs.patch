@@ -434,7 +434,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -961,23 +_,97 @@
+@@ -961,24 +_,99 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -532,8 +532,10 @@
 -	private bool shimmerImmune;
 +	public bool shimmerImmune;
  	public bool spaceGun;
++	/// <summary> The players gravity direction. <b>1</b> if normal, <b>-1</b> if reversed. <para/> Defaults to <b>1</b>.</summary>
  	public float gravDir = 1f;
  	public bool chloroAmmoCost80;
+ 	public bool huntressAmmoCost90;
 @@ -987,12 +_,17 @@
  	public int stickyBreak;
  	public bool magicQuiver;
