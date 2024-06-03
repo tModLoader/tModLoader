@@ -118,25 +118,25 @@
 +
 +	/// <summary>
 +	/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] persistentBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
-+	/// Defaults to false; all vanilla vanity pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla vanity pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] vanityPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
-+	/// Defaults to false; all vanilla light pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla light pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] lightPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] meleeBuff = new bool[BuffID.Count];
 +
@@ -267,7 +267,7 @@
 +	public static string statusText {
 +		get => _statusText;
 +		set {
-+			Logging.LogStatusChange(_statusText, value);
++			Logging.LogStatusChange(value);
 +			_statusText = value;
 +		}
 +	}
@@ -346,7 +346,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,29 +_,67 @@
+@@ -829,39 +_,102 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -364,7 +364,7 @@
 +	/// </summary>
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles.
++	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles. <see cref="ModProjectile.CanCutTiles"/> can be used to customize if a projectile should destroy tiles with this property.
 +	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
@@ -386,6 +386,7 @@
  	public static bool[] tileStone = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileAxe = new bool[TileID.Count];
  	public static bool[] tileHammer = new bool[TileID.Count];
@@ -395,9 +396,17 @@
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile type will be considered a table for the purposes of tile placement. Tiles such as <see cref="TileID.Tables"/> and <see cref="TileID.WorkBenches"/> set this. Some tiles such as <see cref="TileID.PiggyBank"/>, <see cref="TileID.Bowls"/>, and <see cref="TileID.Candles"/> can only be placed on tiles designated as a Table.
++	/// <para/> Note that a separate system is used for counting a tile as a table for housing purposes. Use <c>AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);</c> in a ModTile class to designate the tile as a table.
++	/// </summary>
  	public static bool[] tileTable = new bool[TileID.Count];
++	/// <summary>
++	/// If true, light is blocked by this tile and the light values will decrease as it passes through. Most <see cref="Main.tileSolid"/> tiles will set this to true. <see cref="TileID.Glass"/> is an example of a tile that is solid but doesn't block light.
++	/// </summary>
  	public static bool[] tileBlockLight = new bool[TileID.Count];
  	public static bool[] tileNoSunLight = new bool[TileID.Count];
  	public static bool[] tileDungeon = new bool[TileID.Count];
@@ -405,7 +414,14 @@
 +	/// If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
 +	/// </summary>
  	public static bool[] tileSpelunker = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile can be stood on despite not being <see cref="tileSolid"/>. The player can pass down through the tile by pressing down. <see cref="TileID.Tables"/>, <see cref="TileID.Anvils"/>, and <see cref="TileID.Platforms"/> are some example.
++	/// </summary>
  	public static bool[] tileSolidTop = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
++	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
  	public static bool[] tileBouncy = new bool[TileID.Count];
 +	/// <summary>
@@ -414,12 +430,18 @@
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
-@@ -861,7 +_,12 @@
+ 	public static bool[] tileRope = new bool[TileID.Count];
+ 	public static bool[] tileBrick = new bool[TileID.Count];
+ 	public static bool[] tileMoss = new bool[TileID.Count];
++	/// <summary>
++	/// If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange. 
++	/// </summary>
  	public static bool[] tileNoAttach = new bool[TileID.Count];
  	public static bool[] tileNoFail = new bool[TileID.Count];
  	public static bool[] tileCracked = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
@@ -427,7 +449,7 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
-@@ -941,7 +_,15 @@
+@@ -941,9 +_,23 @@
  	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
@@ -441,9 +463,17 @@
 +	/// These NPC will be forced <see cref="NPC.friendly"/> for 1.5 seconds if naturally spawned.<br/>
 +	/// </summary>
  	public static bool[] npcCatchable = new bool[NPCID.Count];
++	/// <summary>
++	/// Tracks the current animation frame for a specific tile type. This value is shared for all tiles of the type. The frame parameter in <see cref="ModTile.AnimateTile(ref int, ref int)"/> is equivalent to this value. Animation variation for a specific tile can be done with <see cref="ModTile.AnimateIndividualTile(int, int, int, ref int, ref int)"/>.
++	/// </summary>
  	public static int[] tileFrame = new int[TileID.Count];
++	/// <summary>
++	/// Used to time how long the current animation frame for a specific tile type has been shown. This value is shared for all tiles of the type. The frameCounter parameter in <see cref="ModTile.AnimateTile(ref int, ref int)"/> is equivalent to this value.
++	/// </summary>
  	public static int[] tileFrameCounter = new int[TileID.Count];
-@@ -952,7 +_,10 @@
+ 	public static byte[] wallFrame = new byte[WallID.Count];
+ 	public static byte[] wallFrameCounter = new byte[WallID.Count];
+@@ -952,18 +_,39 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
@@ -453,7 +483,36 @@
 +	public static Tilemap tile = new((ushort)maxTilesX, (ushort)maxTilesY);
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
++	/// <summary>
++	/// Contains all the <see cref="Item"/>s in the game world. Items should only be spawned via <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/> or similar methods. <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> is an option that is safe to call from client code.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all items should use <see cref="ActiveItems"/> to iterate over the Main.item entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
  	public static Item[] item = new Item[401];
+ 	public static int[] timeItemSlotCannotBeReusedFor = new int[401];
++	/// <summary>
++	/// Contains all the <see cref="NPC"/>s in the game world. NPC are spawned via the <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/> method.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each NPC has an <see cref="Entity.whoAmI"/> corresponding to their index within Main.npc. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all NPCs should use <see cref="ActiveNPCs"/> to iterate over the Main.npc entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static NPC[] npc = new NPC[201];
+ 	public static Gore[] gore = new Gore[601];
+ 	public static Rain[] rain = new Rain[maxRain + 1];
++	/// <summary>
++	/// Contains all the <see cref="Projectile"/>s in the game world. Projectiles should only be spawned via <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/> or similar methods. Projectile ordering is <b>not</b> consistent between multiplayer clients.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each projectile has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.projectile. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Modders seeking to run logic on all projectiles should use <see cref="ActiveProjectiles"/> to iterate over the Main.projectile entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
+ 	public static Projectile[] projectile = new Projectile[1001];
+ 	public static int[,] projectileIdentity = new int[256, 1001];
+ 	public static CombatText[] combatText = new CombatText[100];
+ 	public static PopupText[] popupText = new PopupText[20];
++	/// <summary>
++	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
++	/// </summary>
+ 	public static Chest[] chest = new Chest[8000];
+ 	public static Sign[] sign = new Sign[1000];
+ 	public static int[] itemFrame = new int[401];
 @@ -972,6 +_,10 @@
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
@@ -476,7 +535,7 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
-@@ -1026,6 +_,11 @@
+@@ -1026,7 +_,18 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
  	public static int focusRecipe;
@@ -484,10 +543,17 @@
 +	/// <summary>
 +	/// The index in <see cref="player"/> of this client's Player.
 +	/// <br/> If this is <c>255</c>, this client is the server.
++	/// <para/> <see cref="Main.LocalPlayer"/> is shorthand for <c>Main.player[Main.myPlayer]</c> and retrieves the local Player object.
 +	/// </summary>
  	public static int myPlayer;
++	/// <summary>
++	/// Contains all the <see cref="Player"/>s in the game world.
++	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each player has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.player. <see cref="myPlayer"/> is the index of the local player as well. The last entry is a dummy entry used for server operations and should not be accessed.
++	/// <para/> Modders seeking to run logic on all players should use <see cref="ActivePlayers"/> to iterate over the Main.player entries to easily account for inactive entries and the dummy entry.
++	/// </summary>
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
+ 	public static bool[] countsAsHostForGameplay = new bool[256];
 @@ -1044,8 +_,11 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -632,6 +698,22 @@
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2221,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if the world is a Master Mode world. Note that the <see cref="expertMode"/> will also be true. </summary>
+ 	public static bool masterMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
+@@ -2236,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds. </summary>
+ 	public static bool expertMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
 @@ -2268,8 +_,16 @@
  	[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
  	public static Matrix Transform => GameViewMatrix.TransformationMatrix;
@@ -656,7 +738,7 @@
 +	/// <summary>
 +	/// The y-coordinate of the top of the underworld, in tile coordinates.
 +	/// </summary>
-+	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworld"/> set to <see langword="true"/>.</remarks>
++	/// <remarks>Player in this layer will have <see cref="Player.ZoneUnderworldHeight"/> set to <see langword="true"/>.</remarks>
  	public static int UnderworldLayer => maxTilesY - 200;
  
  	public static float WindForVisuals => windSpeedCurrent;
@@ -853,7 +935,7 @@
 +		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
-+		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
++		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 +			ModLoader.ModLoader.MigrateSettings();
  			SaveSettings();
 +		}
@@ -1050,8 +1132,8 @@
  				textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
-+				Console.WriteLine("m\t\tMods Menu");
-+				//Console.WriteLine("b\t\tMod Browser"); // Not functional in the 1.4 Steam Workshop Environment 
++				Console.WriteLine("m\t\t" + Language.GetTextValue("tModLoader.ModsModsList"));
++				//Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();
@@ -1168,13 +1250,12 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4563,6 +_,11 @@
+@@ -4563,6 +_,10 @@
  		catch {
  		}
  
 +		// Run one tick to JIT all the game content now rather than when a player connects
 +		Logging.ServerConsoleLine("Running one update...");
-+		Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +		Update(new GameTime());
 +
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
@@ -1355,7 +1436,7 @@
  			return;
  		}
  
-@@ -4976,9 +_,11 @@
+@@ -4976,9 +_,12 @@
  
  		dayRate = num;
  		desiredWorldTilesUpdateRate = num;
@@ -1364,6 +1445,7 @@
  			dayRate = 1;
  			desiredWorldTilesUpdateRate = 1;
 +			desiredWorldEventsUpdateRate = 1;
++			worldEventUpdates = 1;
  		}
  	}
  
@@ -2390,6 +2472,24 @@
  		wallFrameCounter[144]++;
  		int num3 = 5;
  		int num4 = 10;
+@@ -15815,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Clears text input from any keys pressed since the last time <see cref="GetInputText"/> was called. Call when activating a menu with text input or focusing an element with text input to prevent keys pressed beforehand to be immediately captured as input. </summary>
+ 	public static void clrInput()
+ 	{
+ 		keyCount = 0;
+@@ -15840,7 +_,8 @@
+ 			text = "";
+ 
+ 		bool flag = false;
+-		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
++		// Old code prevented users from using AltGr modifier key. Needed to type chars such as []{}\| on many languages keyboard layouts. Windows interprets Ctrl + Alt as AltGr.
++		if ((inputText.IsKeyDown(Keys.LeftControl) || inputText.IsKeyDown(Keys.RightControl)) && !(inputText.IsKeyDown(Keys.LeftAlt) || inputText.IsKeyDown(Keys.RightAlt))) {
+ 			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
+ 				text = "";
+ 			}
 @@ -15989,15 +_,19 @@
  			X += 34;
  
@@ -2831,8 +2931,12 @@
  				numLines++;
  			}
  
-@@ -16536,36 +_,51 @@
- 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
+@@ -16533,39 +_,54 @@
+ 					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLifeRange", healLife, num7);
+ 				}
+ 				else {
+-					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
++					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", player[myPlayer].GetHealLife(item));
  				}
  
 +				toolTipNames[numLines] = "HealLife";
@@ -2840,7 +2944,8 @@
  			}
  
  			if (item.healMana > 0) {
- 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
+-				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", player[myPlayer].GetHealMana(item));
 +				toolTipNames[numLines] = "HealMana";
  				numLines++;
  			}
@@ -3320,7 +3425,7 @@
 +			/*
  			if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9))
 +			*/
-+			if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9))
++			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9))
  				flag = true;
  
  			if (flag) {
@@ -3347,7 +3452,7 @@
 +			/*
  			if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
 +			*/
-+			if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9)) {
++			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9)) { 
  				drawBackGore = true;
  				continue;
  			}
@@ -3676,11 +3781,12 @@
  				if (proj.type == 312) {
  					ulong seed3 = TileFrameSeed;
  					for (int num439 = 0; num439 < 4; num439++) {
-@@ -28416,6 +_,8 @@
+@@ -28416,6 +_,9 @@
  		if (type == 4442)
  			stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
  
 +		ProjectileLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
++		ItemLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
 +
  		stringColor = TryApplyingPlayerStringColor(Main.player[proj.owner].stringColor, stringColor);
  		float gravDir = Main.player[proj.owner].gravDir;
@@ -5232,23 +5338,24 @@
  			}
  		}
  		else if (menuMode == 15) {
-@@ -39931,16 +_,27 @@
- 		else if (menuMode == 200) {
- 			num5 = 3;
- 			array9[0] = Lang.menu[9].Value;
-+
-+			if (WorldIO.customDataFail != null)
-+				array9[0] = $"{WorldIO.customDataFail.modName}: {array9[0]}";
-+
- 			array[0] = true;
- 			num2 -= 30;
- 			array4[1] = 70;
+@@ -39937,10 +_,28 @@
  			array4[2] = 50;
  			array9[1] = Lang.menu[10].Value;
  			array9[2] = Lang.menu[6].Value;
 +
-+			if (WorldIO.customDataFail != null)
-+				array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
++			// menuMode 200: Load failed!, Load Backup, Cancel, Open Logs
++			if (WorldIO.customDataFail != null) {
++				array9[0] = $"{WorldIO.customDataFail.modName}: {array9[0]}";
++
++				num5 = 4;
++				array4[3] = 50;
++				array9[3] = Language.GetTextValue("tModLoader.OpenLogs");
++			}
++			if (selectedMenu == 3) {
++				Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++				SoundEngine.PlaySound(SoundID.MenuOpen);
++				Utils.OpenFolder(Logging.LogDir);
++			}
 +
  			if (selectedMenu == 1) {
  				if (FileUtilities.Exists(worldPathName + ".bak", ActiveWorldFileData.IsCloudSave)) {
@@ -5260,60 +5367,36 @@
  					SoundEngine.PlaySound(10);
  					WorldGen.playWorld();
  					menuMode = 10;
-@@ -39955,13 +_,29 @@
- 			if (selectedMenu == 2 || flag5) {
- 				flag5 = false;
- 				SoundEngine.PlaySound(11);
-+
-+				/*
- 				menuMode = 0;
-+				*/
-+				if (WorldIO.customDataFail == null) {
-+					menuMode = 0;
-+				}
-+				else {
-+					Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
-+					SoundEngine.PlaySound(SoundID.MenuOpen);
-+					Utils.OpenFolder(Logging.LogDir);
-+				}
-+
- 				netMode = 0;
- 			}
- 		}
- 		else if (menuMode == 201) {
- 			num5 = 3;
- 			array9[0] = Lang.menu[9].Value;
-+
-+			if (WorldIO.customDataFail != null)
-+				array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
-+
- 			array[0] = true;
- 			array[1] = true;
- 			num2 -= 30;
-@@ -39969,9 +_,23 @@
+@@ -39969,6 +_,21 @@
  			array4[2] = 50;
  			array9[1] = Lang.menu[11].Value;
  			array9[2] = Lang.menu[5].Value;
 +
-+			if (WorldIO.customDataFail != null)
-+				array9[2] = Language.GetTextValue("tModLoader.OpenLogs");
++			// menuMode 201: Load failed!, No backup found, Back, Open Logs
++			if (WorldIO.customDataFail != null) {
++				array9[0] = WorldIO.customDataFail.modName + ": " + array9[0];
++
++				num5 = 4;
++				array4[3] = 50;
++				array9[3] = Language.GetTextValue("tModLoader.OpenLogs");
++			}
++			if (selectedMenu == 3) {
++				Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
++				SoundEngine.PlaySound(SoundID.MenuOpen);
++				Utils.OpenFolder(Logging.LogDir);
++			}
 +
  			if (selectedMenu == 2 || flag5) {
  				flag5 = false;
  				SoundEngine.PlaySound(11);
-+
-+				if (WorldIO.customDataFail == null) {
-+					menuMode = 0;
-+				}
-+				else {
-+					Logging.tML.Error(Language.GetTextValue("tModLoader.WorldIODataException"), WorldIO.customDataFail.InnerException);
-+					SoundEngine.PlaySound(SoundID.MenuOpen);
-+					Utils.OpenFolder(Logging.LogDir);
-+				}
-+
- 				menuMode = 0;
- 				netMode = 0;
+@@ -40011,6 +_,7 @@
+ 				SoundEngine.PlaySound(10);
+ 				ClearPendingPlayerSelectCallbacks();
+ 				menuMode = 1;
++				PrepareLoadedModsAndConfigsForSingleplayer();
  			}
+ 
+ 			num11++;
 @@ -40029,7 +_,9 @@
  			}
  
@@ -5335,6 +5418,17 @@
  			array9[num11] = Lang.menu[14].Value;
  			if (selectedMenu == num11) {
  				SoundEngine.PlaySound(10);
+@@ -40068,6 +_,10 @@
+ 				GameAskedToQuit = true;
+ 
+ 			num11++;
++
++			if (Interface.pendingErrorMessages.Count > 0) {
++				Interface.errorMessage.Show(Interface.pendingErrorMessages.Pop(), 0);
++			}
+ 		}
+ 		else if (menuMode == 1) {
+ 			OpenCharacterSelectUI();
 @@ -40676,6 +_,8 @@
  				num2 = 210;
  				num4 = 37;
@@ -5472,13 +5566,19 @@
  		if (menuMode == num)
  			GamepadMainMenuHandler.LastDrew = num;
  	}
-@@ -42624,7 +_,15 @@
+@@ -42624,7 +_,21 @@
  
  		text = ((!ActiveWorldFileData.IsCloudSave) ? (text + SanitizePathArgument("world", worldPathName)) : (text + SanitizePathArgument("cloudworld", worldPathName)));
  		text = text + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
 +
 +		// TML options
 +		text += $@" -modpath ""{ModOrganizer.modPath}""";
++
++		if (Program.LaunchParameters.TryGetValue("-tmlsavedirectory", out var tmlsavedirectory)) 
++			text += $@" -tmlsavedirectory ""{tmlsavedirectory}""";
++		else if (Program.LaunchParameters.TryGetValue("-savedirectory", out var savedirectory)) 
++			text += $@" -savedirectory ""{savedirectory}""";
++
 +		if (showServerConsole)
 +			text += " -showserverconsole";
 +
@@ -5829,6 +5929,63 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
+@@ -48744,18 +_,33 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Loads the item texture if needed. All modded item textures are already loaded during mod loading so this is only needed before accessing vanilla item textures.
++	/// <para/> Use <see cref="TextureAssets.Item"/> to access the item texture: <c>TextureAssets.Item[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadItem(int i)
+ 	{
+ 		if (TextureAssets.Item[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Item[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the NPC texture if needed. All modded NPC textures are already loaded during mod loading so this is only needed before accessing vanilla NPC textures.
++	/// <para/> Use <see cref="TextureAssets.Npc"/> to access the NPC texture: <c>TextureAssets.Npc[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadNPC(int i)
+ 	{
+ 		if (TextureAssets.Npc[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Npc[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the projectile texture if needed. All modded projectile textures are already loaded during mod loading so this is only needed before accessing vanilla projectile textures.
++	/// <para/> Use <see cref="TextureAssets.Projectile"/> to access the projectile texture: <c>TextureAssets.Projectile[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadProjectile(int i)
+ 	{
+ 		if (TextureAssets.Projectile[i].State == AssetState.NotLoaded)
+@@ -48768,12 +_,22 @@
+ 			Assets.Request<Texture2D>(TextureAssets.Gore[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the wall texture if needed. All modded wall textures are already loaded during mod loading so this is only needed before accessing vanilla wall textures.
++	/// <para/> Use <see cref="TextureAssets.Wall"/> to access the tile texture: <c>TextureAssets.Wall[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadWall(int i)
+ 	{
+ 		if (TextureAssets.Wall[i].State == AssetState.NotLoaded)
+ 			Assets.Request<Texture2D>(TextureAssets.Wall[i].Name);
+ 	}
+ 
++	/// <summary>
++	/// Loads the tile texture if needed. All modded tile textures are already loaded during mod loading so this is only needed before accessing vanilla tile textures.
++	/// <para/> Use <see cref="TextureAssets.Tile"/> to access the tile texture: <c>TextureAssets.Tile[Type].Value</c>
++	/// </summary>
++	/// <param name="i"></param>
+ 	public void LoadTiles(int i)
+ 	{
+ 		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
 @@ -48974,12 +_,12 @@
  		if (!WorldGen.drunkWorldGen && flag && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  			if (BackgroundEnabled) {
@@ -6164,6 +6321,20 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
+@@ -51883,6 +_,13 @@
+ 			num = Utils.Clamp(num, 0, 8);
+ 
+ 		Texture2D value2 = TextureAssets.Moon[num].Value;
++
++		if (gameMenu) {
++			ModMenu menu = MenuLoader.CurrentMenu;
++			value = menu.SunTexture?.Value ?? value;
++			value2 = menu.MoonTexture?.Value ?? value2;
++		}
++
+ 		int num2 = sceneArea.bgTopY;
+ 		int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
+ 		int num4 = 0;
 @@ -51988,6 +_,8 @@
  				spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  			else if (snowMoon)
@@ -6333,7 +6504,7 @@
  					Netplay.Clients[k].PendingTerminationApproved = true;
  				}
  			}
-@@ -53384,6 +_,19 @@
+@@ -53384,6 +_,22 @@
  		}
  	}
  
@@ -6346,7 +6517,10 @@
 +	}
 +
 +	/// <summary>
-+	/// Spawns chat text on the local client. Does nothing on the server. <br/>
++	/// Spawns chat text on the local client. Does nothing on the server. <para/>
++	/// To send chat text from the server, use one of the following:<br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.BroadcastChatMessage(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for all clients. <br/>
++	/// • <see cref="Terraria.Chat.ChatHelper.SendChatMessageToClient(NetworkText, Color, int)"/> sends a message from the server to be displayed in chat for a specific client. <para/>
 +	/// For floating text, such as damage, see <see cref="CombatText"/> <br/>
 +	/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
 +	/// </summary>

@@ -6,6 +6,29 @@ partial class ItemID
 {
 	partial class Sets
 	{
+		/// <summary>Used in <see cref="SandgunAmmoProjectileData"/>.</summary>
+		public class SandgunAmmoInfo
+		{
+			public SandgunAmmoInfo(int ProjectileType, int BonusDamage = 0)
+			{
+				this.ProjectileType = ProjectileType;
+				this.BonusDamage = BonusDamage;
+			}
+
+			public int ProjectileType { get; set; }
+			public int BonusDamage { get; set; }
+		}
+		/// <summary>
+		/// The projectile type and associated bonus damage for the specified sandgun ammo item (an item with <c>Item.ammo = AmmoID.Sand;</c>).
+		/// <para/> If undefined, the projectile will default to 42 (<see cref = "ProjectileID.SandBallGun" />), as this is the normal sandgun sand projectile. The bonus damage will default to 0.
+		/// <para/> The projectile shouldn't be your falling sand projectile - you need to create a second projectile for the sandgun.
+		/// </summary>
+		public static SandgunAmmoInfo[] SandgunAmmoProjectileData = Factory.CreateCustomSet<SandgunAmmoInfo>(null,
+			EbonsandBlock, new SandgunAmmoInfo(ProjectileID.EbonsandBallGun, 5),
+			PearlsandBlock, new SandgunAmmoInfo(ProjectileID.PearlSandBallGun, 5),
+			CrimsandBlock, new SandgunAmmoInfo(ProjectileID.CrimsandBallGun, 5)
+		);
+
 		/// <summary>
 		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
 		/// <br/> Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player.
@@ -15,11 +38,72 @@ partial class ItemID
 
 		/// <summary>
 		/// Set for pre-hardmode boss bags, except it also contains the Queen Slime's Boss Bag. Affects the way dev armor drops function, making it only drop in special world seeds.
-		/// <br/> Don't forget to use the <see cref="BossBag"/> set in conjuction with this one.
+		/// <br/> Don't forget to use the <see cref="BossBag"/> set in conjunction with this one.
 		/// </summary>
 		public static bool[] PreHardmodeLikeBossBag = Factory.CreateBoolSet(
 			KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,
 			SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag, DeerclopsBossBag
+		);
+
+		/// <summary> Indicates that an item is to be filtered under the "Tools" filter in Journey Mode's duplication menu.
+		/// <br/> Useful for manually setting an item to be filtered under the "Tools" filter, if your item does not meet the automatic criteria for the "Tools" filter.
+		/// <br/> See the code of <see cref="GameContent.Creative.ItemFilters.Tools.FitsFilter(Item)"/> to check if your item meets the automatic criteria.
+		/// </summary>
+		public static bool[] DuplicationMenuToolsFilter = Factory.CreateBoolSet(
+			509,
+			850,
+			851,
+			3612,
+			3625,
+			3611,
+			510,
+			849,
+			3620,
+			1071,
+			1543,
+			1072,
+			1544,
+			1100,
+			1545,
+			50,
+			3199,
+			3124,
+			5358,
+			5359,
+			5360,
+			5361,
+			5437,
+			1326,
+			5335,
+			3384,
+			4263,
+			4819,
+			4262,
+			946,
+			4707,
+			205,
+			206,
+			207,
+			1128,
+			3031,
+			4820,
+			5302,
+			5364,
+			4460,
+			4608,
+			4872,
+			3032,
+			5303,
+			5304,
+			1991,
+			4821,
+			3183,
+			779,
+			5134,
+			1299,
+			4711,
+			4049,
+			114
 		);
 
 		/// <summary>

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace ExampleMod.Content.Mounts
 	// This mount is a car with wheels which behaves similarly to the unicorn mount. The car has 3 balloons attached to the back.
 	public class ExampleMount : ModMount
 	{
+		private Asset<Texture2D> balloonTexture;
+
 		// Since only a single instance of ModMountData ever exists, we can use player.mount._mountSpecificData to store additional data related to a specific mount.
 		// Using something like this for gameplay effects would require ModPlayer syncing, but this example is purely visual.
 		protected class CarSpecificData
@@ -84,6 +87,8 @@ namespace ExampleMod.Content.Mounts
 				MountData.textureWidth = MountData.backTexture.Width() + 20;
 				MountData.textureHeight = MountData.backTexture.Height();
 			}
+
+			balloonTexture = Mod.Assets.Request<Texture2D>("Content/Items/Armor/SimpleAccessory_Balloon");
 		}
 
 		public override void UpdateEffects(Player player) {
@@ -129,15 +134,15 @@ namespace ExampleMod.Content.Mounts
 				// We draw some extra balloons before _Back texture
 				var balloons = (CarSpecificData)drawPlayer.mount._mountSpecificData;
 				int timer = DateTime.Now.Millisecond % 800 / 200;
-				Texture2D balloonTexture = Mod.Assets.Request<Texture2D>("Content/Items/Armor/SimpleAccessory_Balloon").Value;
+				Texture2D balloon = balloonTexture.Value;
 
 				for (int i = 0; i < balloons.count; i++) {
 					var position = drawPosition + new Vector2((-36 + CarSpecificData.offsets[i]) * drawPlayer.direction, 14);
-					var srcRect = new Rectangle(28, balloonTexture.Height / 4 * ((timer + i) % 4), 28, 42);
+					var srcRect = new Rectangle(28, balloon.Height / 4 * ((timer + i) % 4), 28, 42);
 					float drawRotation = rotation + balloons.rotations[i];
 					var origin = new Vector2(14 + drawPlayer.direction * 7, 42);
 
-					playerDrawData.Add(new DrawData(balloonTexture, position, srcRect, drawColor, drawRotation, origin, drawScale, spriteEffects ^ SpriteEffects.FlipHorizontally, 0));
+					playerDrawData.Add(new DrawData(balloon, position, srcRect, drawColor, drawRotation, origin, drawScale, spriteEffects ^ SpriteEffects.FlipHorizontally, 0));
 				}
 			}
 

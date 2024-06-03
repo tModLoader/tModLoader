@@ -12,6 +12,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// This is the class that keeps track of all modded background textures and their slots/IDs.
+/// <para/> Remember that unless you manually register backgrounds via <see cref="AddBackgroundTexture(Mod, string)"/>, only files found in a folder or subfolder of a folder named "Backgrounds" will be autoloaded as background textures.
 /// </summary>
 //TODO: Further documentation.
 [Autoload(Side = ModSide.Client)]
@@ -40,6 +41,7 @@ public sealed class BackgroundTextureLoader : Loader
 
 	/// <summary>
 	/// Adds a texture to the list of background textures and assigns it a background texture slot.
+	/// <para/> Use this for any background textures not autoloaded by the <see cref="Mod.BackgroundAutoloadingEnabled"/> logic.
 	/// </summary>
 	/// <param name="mod">The mod that owns this background.</param>
 	/// <param name="texture">The texture.</param>

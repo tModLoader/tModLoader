@@ -588,7 +588,7 @@
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  				continue;
  
-@@ -1396,23 +_,41 @@
+@@ -1396,23 +_,45 @@
  					SoundEngine.PlaySound(7);
  			}
  
@@ -596,6 +596,10 @@
 +			Item boughtItem = inv[slot].Clone();
 +			boughtItem.buyOnce = false;
 +			boughtItem.isAShopItem = false;
++			if (boughtItem.shopSpecialCurrency != -1) {
++				boughtItem.shopSpecialCurrency = -1;
++				boughtItem.shopCustomPrice = null;
++			}
 +			boughtItem.stack = 1;
 +			boughtItem.OnCreated(new BuyItemCreationContext(Main.mouseItem, localPlayer.TalkNPC));
 +

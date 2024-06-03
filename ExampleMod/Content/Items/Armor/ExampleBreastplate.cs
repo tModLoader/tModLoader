@@ -10,8 +10,8 @@ namespace ExampleMod.Content.Items.Armor
 	[AutoloadEquip(EquipType.Body)]
 	public class ExampleBreastplate : ModItem
 	{
-		public static int MaxManaIncrease = 20;
-		public static int MaxMinionIncrease = 1;
+		public static readonly int MaxManaIncrease = 20;
+		public static readonly int MaxMinionIncrease = 1;
 
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MaxManaIncrease, MaxMinionIncrease);
 

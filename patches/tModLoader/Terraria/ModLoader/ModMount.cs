@@ -128,6 +128,12 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	/// <summary>
 	/// Allows for manual updating of mount frame. Return false to stop the default frame behavior. Returns true by default.
+	/// <para/>Possible values for <paramref name="state"/> include:
+	/// <br/> 0. Standing still on the ground or sliding
+	/// <br/> 1. Moving on the ground
+	/// <br/> 2. In the air, not flying. Hovering counts as this as well.
+	/// <br/> 3. In the air, flying 
+	/// <br/> 4. Flying in water
 	/// </summary>
 	/// <param name="mountedPlayer"></param>
 	/// <param name="state"></param>

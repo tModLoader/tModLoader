@@ -8,6 +8,7 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader;
 
@@ -141,6 +142,11 @@ public static partial class Logging
 
 			if (oom) {
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.OutOfMemory"));
+			}
+
+			if (args.Exception.Data.Contains("dump") && args.Exception.Data["dump"] is string opt) {
+				args.Exception.Data.Remove("dump");
+				CrashDump.WriteException(opt switch { "full" => CrashDump.Options.WithFullMemory, _ => CrashDump.Options.Normal });
 			}
 		}
 		catch (Exception e) {

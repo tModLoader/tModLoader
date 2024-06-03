@@ -3,6 +3,7 @@ using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -107,7 +108,7 @@ public static class MonoModHooks
 
 		foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name)) {
 			if (assemblyDetours.TryGetValue(asm, out var list)) {
-				Logging.tML.Debug($"Unloading {list.ilHooks.Count} IL hooks, {list.detours.Count} detours from {asm.GetName().Name} in {mod.DisplayName}");
+				Logging.tML.Debug($"Unloading {list.ilHooks.Count} IL hooks, {list.detours.Count} detours from {asm.GetName().Name} in {mod.Name}");
 
 				foreach (var detour in list.detours)
 					if (detour.IsApplied)
@@ -125,6 +126,17 @@ public static class MonoModHooks
 		HookEndpointManager.Clear();
 		assemblyDetours.Clear();
 		_hookCache.Clear();
+
+		// #4220 - Mitigation for bugs in reflection cache with mod reloads, and helps with assembly unloading
+		var type = typeof(ReflectionHelper);
+		FieldInfo[] caches = [
+			type.GetField("AssemblyCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("AssembliesCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("ResolveReflectionCache", BindingFlags.NonPublic | BindingFlags.Static),
+		];
+		foreach (var cache in caches) {
+			((IDictionary)cache.GetValue(null)).Clear();
+		}
 	}
 
 	#region Obsolete HookEndpointManager method replacement

@@ -11,6 +11,11 @@ using Terraria.ObjectData;
 namespace ExampleMod.Content.Tiles.Furniture
 {
 	//TODO: Smart Cursor Outlines and tModLoader support
+
+	// You might have noticed that ExampleDoorClosed.png has 3 copies of the same sprite. These allow for random variation.
+	// Each time a door is closed, the game logic randomly chooses a random sprite for each of the 3 tiles.
+	// The random variation should be very subtle. Each tile is randomized independently.
+	// All doors do this, but the feature can be ignored by just repeating the same sprite 3 times as this example does.
 	public class ExampleDoorClosed : ModTile
 	{
 		public override void SetStaticDefaults() {

@@ -69,6 +69,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to change how many dust particles are created when the tile/wall at the given coordinates is hit.
+	/// <para/> Use <see cref="CreateDust(int, int, ref int)"/> to customize the dust spawned.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -80,6 +81,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the default type of dust created when the tile/wall at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.
+	/// <para/> The <paramref name="type"/> parameter defaults to <see cref="DustType"/>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -90,7 +92,9 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to stop this tile/wall from being placed at the given coordinates. Return false to stop the tile/wall from being placed. Returns true by default.
+	/// Allows you to stop this tile/wall from being placed at the given coordinates. This method is called on the local client.
+	/// <para/> For tiles this is also checked during block replacement, but <see cref="ModTile.CanReplace(int, int, int)"/> should be used for replace-specific logic.
+	/// <para/> Return false to stop the tile/wall from being placed. Returns true by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

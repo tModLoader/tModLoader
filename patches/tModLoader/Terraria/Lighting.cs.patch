@@ -1,5 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Lighting.cs
 +++ src/tModLoader/Terraria/Lighting.cs
+@@ -7,6 +_,9 @@
+ 
+ namespace Terraria;
+ 
++/// <summary>
++/// This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use GetColor methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the AddLight methods.
++/// </summary>
+ public class Lighting
+ {
+ 	private const float DEFAULT_GLOBAL_BRIGHTNESS = 1.2f;
 @@ -14,8 +_,8 @@
  	[Old]
  	public static int OffScreenTiles = 45;
@@ -11,6 +21,17 @@
  	private static ILightingEngine _activeEngine;
  
  	public static float GlobalBrightness { get; set; }
+@@ -100,6 +_,10 @@
+ 		return GlobalBrightness * (color.X + color.Y + color.Z) / 3f;
+ 	}
+ 
++	/// <summary>
++	/// Gets the lighting color at the specified World coordinate location. The value is calculated through bilinear interpolation of the nearby tile coordinates.
++	/// <include file = 'CommonDocs.xml' path='Common/LightingGetColor' />
++	/// </summary>
+ 	public static Vector3 GetSubLight(Vector2 position)
+ 	{
+ 		Vector2 vector = position / 16f - new Vector2(0.5f, 0.5f);
 @@ -115,11 +_,27 @@
  		return Vector3.Lerp(value, value2, vector2.Y);
  	}
@@ -55,3 +76,41 @@
  	public static void AddLight(int i, int j, float r, float g, float b)
  	{
  		if (!Main.gamePaused && Main.netMode != 2)
+@@ -157,6 +_,7 @@
+ 		_activeEngine.Clear();
+ 	}
+ 
++	/// <summary> <inheritdoc cref="GetColor(int, int)"/> </summary>
+ 	public static Color GetColor(Point tileCoords)
+ 	{
+ 		if (Main.gameMenu)
+@@ -165,6 +_,10 @@
+ 		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * GlobalBrightness);
+ 	}
+ 
++	/// <summary>
++	/// Gets the lighting color at the specified Tile coordinate location, then multiplies it by the provided Color.
++	/// <include file = 'CommonDocs.xml' path='Common/LightingGetColor' />
++	/// </summary>
+ 	public static Color GetColor(Point tileCoords, Color originalColor)
+ 	{
+ 		if (Main.gameMenu)
+@@ -173,6 +_,7 @@
+ 		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * originalColor.ToVector3());
+ 	}
+ 
++	/// <summary> <inheritdoc cref="GetColor(Point, Color)"/> </summary>
+ 	public static Color GetColor(int x, int y, Color oldColor)
+ 	{
+ 		if (Main.gameMenu)
+@@ -191,6 +_,10 @@
+ 		return new Color(color * oldColor.ToVector3());
+ 	}
+ 
++	/// <summary>
++	/// Gets the lighting color at the specified Tile coordinate location.
++	/// <include file = 'CommonDocs.xml' path='Common/LightingGetColor' />
++	/// </summary>
+ 	public static Color GetColor(int x, int y)
+ 	{
+ 		if (Main.gameMenu)

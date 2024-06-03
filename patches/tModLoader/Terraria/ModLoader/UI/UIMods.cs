@@ -13,6 +13,8 @@ using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Audio;
+using Terraria.ID;
+using System;
 
 namespace Terraria.ModLoader.UI;
 
@@ -26,6 +28,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIList modList;
 	private float modListViewPosition;
 	private readonly List<UIModItem> items = new List<UIModItem>();
+	private Task<List<UIModItem>> modItemsTask;
 	private bool updateNeeded;
 	public bool loading;
 	private UIInputTextField filterTextBox;
@@ -133,7 +136,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 
-		buttonB.OnLeftClick += BackClick;
+		buttonB.OnLeftClick += (_, _) => HandleBackButtonUsage();
 
 		uIElement.Append(buttonB);
 		buttonOMF = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenModsFolders"));
@@ -265,7 +268,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 	}
 
-	internal void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	public void HandleBackButtonUsage()
 	{
 		// To prevent entering the game with Configs that violate ReloadRequired
 		if (ConfigManager.AnyModNeedsReload()) {
@@ -281,7 +284,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		ConfigManager.OnChangedAll();
 
-		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+		IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 	}
 
 	private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
@@ -305,15 +308,17 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
+			if (modItem.tMLUpdateRequired != null)
+				continue;
 			modItem.Enable();
 		}
 	}
 
 	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}
@@ -333,11 +338,23 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		if (modItemsTask is { IsCompleted: true }) {
+			var result = modItemsTask.Result;
+			items.AddRange(result);
+			foreach (var item in items) {
+				item.Activate(); // Activate must happen after all UIModItem are in `items`
+			}
+			needToRemoveLoading = true;
+			updateNeeded = true;
+			loading = false;
+			modItemsTask = null;
+		}
 		if (needToRemoveLoading) {
 			needToRemoveLoading = false;
 			uIPanel.RemoveChild(uiLoader);
 		}
-		if (!updateNeeded) return;
+		if (!updateNeeded)
+			return;
 		updateNeeded = false;
 		filter = filterTextBox.Text;
 		modList.Clear();
@@ -371,7 +388,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 102;
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		base.Draw(spriteBatch);
 		for (int i = 0; i < _categoryButtons.Count; i++) {
 			if (_categoryButtons[i].IsMouseHovering) {
@@ -393,12 +410,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 						text = "None";
 						break;
 				}
-				UICommon.DrawHoverStringInBounds(spriteBatch, text);
+				UICommon.TooltipMouseText(text);
 				return;
 			}
 		}
-		if(buttonOMF.IsMouseHovering)
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
+		if (buttonOMF.IsMouseHovering)
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 	}
 
 	public override void OnActivate()
@@ -424,17 +441,15 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	internal void Populate()
 	{
-		Task.Run(() => {
+		modItemsTask = Task.Run(() => {
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
+			var pendingUIModItems = new List<UIModItem>();
 			foreach (var mod in mods) {
 				UIModItem modItem = new UIModItem(mod);
-				modItem.Activate();
-				items.Add(modItem);
+				pendingUIModItems.Add(modItem);
 			}
-			needToRemoveLoading = true;
-			updateNeeded = true;
-			loading = false;
-		});
+			return pendingUIModItems;
+		}, _cts.Token);
 	}
 }
 
