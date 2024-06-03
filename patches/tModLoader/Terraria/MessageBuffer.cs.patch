@@ -124,13 +124,15 @@
  				ReadAccessoryVisibility(reader, player14.hideVisibleAccessory);
  				player14.hideMisc = reader.ReadByte();
  				player14.hairColor = reader.ReadRGB();
-@@ -319,9 +_,9 @@
+@@ -319,9 +_,14 @@
  				Player player17 = Main.player[num258];
  				lock (player17) {
  					int num259 = reader.ReadInt16();
--					int stack7 = reader.ReadInt16();
--					int num260 = reader.ReadByte();
--					int type16 = reader.ReadInt16();
++					/*
+ 					int stack7 = reader.ReadInt16();
+ 					int num260 = reader.ReadByte();
+ 					int type16 = reader.ReadInt16();
++					*/
 +					int stack7 = -1;
 +					int num260 = -1;
 +					int type16 = -1;
@@ -356,13 +358,15 @@
  				if (Main.npc[num190].life <= 0)
  					NetMessage.TrySendData(23, -1, -1, null, num190);
  				else
-@@ -1625,9 +_,9 @@
+@@ -1625,9 +_,14 @@
  			case 32: {
  				int num164 = reader.ReadInt16();
  				int num165 = reader.ReadByte();
--				int stack5 = reader.ReadInt16();
--				int prefixWeWant3 = reader.ReadByte();
--				int type8 = reader.ReadInt16();
++				/*
+ 				int stack5 = reader.ReadInt16();
+ 				int prefixWeWant3 = reader.ReadByte();
+ 				int type8 = reader.ReadInt16();
++				*/
 +				int stack5 = -1;
 +				int prefixWeWant3 = -1;
 +				int type8 = -1;
