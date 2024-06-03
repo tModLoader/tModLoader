@@ -2500,6 +2500,20 @@
  				}
  
  				break;
+@@ -47861,10 +_,13 @@
+ 	private static bool KillTile_ShouldDropSeeds(int x, int y)
+ 	{
+ 		if (Main.rand.Next(2) == 0) {
++			/*
+ 			if (!GetPlayerForTile(x, y).HasItem(281))
+ 				return GetPlayerForTile(x, y).HasItem(986);
+ 
+ 			return true;
++			*/
++			return GetPlayerForTile(x, y).HasItem(ItemID.Sets.DropSeedsIfInInventory);
+ 		}
+ 
+ 		return false;
 @@ -47881,7 +_,12 @@
  
  					if (Main.tile[i, k] != null) {

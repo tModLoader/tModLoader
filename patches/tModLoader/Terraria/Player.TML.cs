@@ -665,4 +665,20 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		if (anyJumpCancelled)
 			jump = 0;
 	}
+
+	/// <summary>
+	/// Checks if the player has an item that fulfills <paramref name="set"/>[type] == <see langword="true"/> in their <see cref="inventory"/>. <br/>
+	/// Does not check Void Bag. <br/>
+	/// </summary>
+	/// <param name="set">A set of length <see cref="ItemLoader.ItemCount"/> to check against</param>
+	/// <returns>True if the player has such an item</returns>
+	public bool HasItem(bool[] set)
+	{
+		for (int i = 0; i < 58; i++) {
+			if (set[inventory[i].type] && inventory[i].stack > 0)
+				return true;
+		}
+
+		return false;
+	}
 }
