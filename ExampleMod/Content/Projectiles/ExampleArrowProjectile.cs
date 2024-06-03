@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire 1 less projectile like this:
+			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire 1 less projectile  from Daedalus Stormbow like this:
 			//ProjectileID.Sets.FiresLessFromDaedalusStormbow[Projectile.type] = true;
 		}
 
