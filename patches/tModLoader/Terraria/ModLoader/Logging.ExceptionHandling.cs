@@ -8,6 +8,7 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
@@ -93,6 +94,7 @@ public static partial class Logging
 		bool oom = args.Exception is OutOfMemoryException;
 		if (oom) {
 			TryFreeingMemory();
+			Logging.tML.Info($"tModLoader RAM usage during OutOfMemoryException: {UIMemoryBar.SizeSuffix(Process.GetCurrentProcess().PrivateMemorySize64)}");
 		}
 
 		try {
