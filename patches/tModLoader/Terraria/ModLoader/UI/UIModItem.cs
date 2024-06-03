@@ -398,7 +398,7 @@ internal class UIModItem : UIPanel
 
 		// TODO: These should just be UITexts
 		if (_mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload)) {
-			drawPos += new Vector2(_uiModStateText.Width.Pixels + left2ndLine, 0f);
+			drawPos += new Vector2((_uiModStateText?.Width.Pixels ?? 0) + left2ndLine, 0f);
 			Utils.DrawBorderString(spriteBatch, _configChangesRequireReload ? Language.GetTextValue("tModLoader.ModReloadForced") : Language.GetTextValue("tModLoader.ModReloadRequired"), drawPos, Color.White, 1f, 0f, 0f, -1);
 		}
 		if (_mod.properties.side == ModSide.Server) {
