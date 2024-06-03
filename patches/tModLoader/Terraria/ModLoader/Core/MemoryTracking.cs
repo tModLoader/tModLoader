@@ -51,11 +51,9 @@ internal static class MemoryTracking
 		if (!modMemoryUsageEstimates.TryGetValue(modName, out var usage))
 			modMemoryUsageEstimates[modName] = usage = new ModMemoryUsage();
 
-		if (ModLoader.showMemoryEstimates) {
-			var newMemory = GC.GetTotalMemory(accurate);
-			usage.managed += Math.Max(0, newMemory - previousMemory);
-			previousMemory = newMemory;
-		}
+		var newMemory = GC.GetTotalMemory(accurate);
+		usage.managed += Math.Max(0, newMemory - previousMemory);
+		previousMemory = newMemory;
 
 		return usage;
 	}
@@ -63,8 +61,7 @@ internal static class MemoryTracking
 	internal static void Checkpoint()
 	{
 		// Sets new baseline prior to mod-specific loading
-		if (ModLoader.showMemoryEstimates)
-			previousMemory = GC.GetTotalMemory(accurate);
+		previousMemory = GC.GetTotalMemory(accurate);
 	}
 
 	internal static void Finish()

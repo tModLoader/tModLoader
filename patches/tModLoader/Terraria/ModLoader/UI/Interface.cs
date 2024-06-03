@@ -295,7 +295,7 @@ internal static class Interface
 		else if (Main.menuMode == tModLoaderSettingsID) {
 			offY = 210;
 			spacing = 42;
-			numButtons = 10;
+			numButtons = 9;
 			buttonVerticalSpacing[numButtons - 1] = 18;
 			for (int i = 0; i < numButtons; i++) {
 				buttonScales[i] = 0.75f;
@@ -350,13 +350,6 @@ internal static class Interface
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				ModLoader.attackSpeedScalingTooltipVisibility = (ModLoader.attackSpeedScalingTooltipVisibility + 1) % 3;
-			}
-
-			buttonIndex++;
-			buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowMemoryEstimates{(ModLoader.showMemoryEstimates ? "Yes" : "No")}");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				ModLoader.showMemoryEstimates = !ModLoader.showMemoryEstimates;
 			}
 
 			buttonIndex++;
