@@ -1250,13 +1250,12 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4563,6 +_,11 @@
+@@ -4563,6 +_,10 @@
  		catch {
  		}
  
 +		// Run one tick to JIT all the game content now rather than when a player connects
 +		Logging.ServerConsoleLine("Running one update...");
-+		Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +		Update(new GameTime());
 +
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
