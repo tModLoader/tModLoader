@@ -666,7 +666,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2996,7 +_,30 @@
+@@ -2996,7 +_,33 @@
  		}
  	}
  
@@ -683,11 +683,14 @@
 +			}
 +		}
 +
++		foreach (ref var item in item.AsSpan()) {
++			item ??= new Item();
++		}
++
 +		if (npc != null) // not that it's valid to call SetupShop without an npc, except when testing
 +			NPCLoader.ModifyActiveShop(npc, shopName, item);
 +
 +		foreach (ref var item in item.AsSpan()) {
-+			item ??= new Item();
 +			item.isAShopItem = true;
 +		}
 +	}

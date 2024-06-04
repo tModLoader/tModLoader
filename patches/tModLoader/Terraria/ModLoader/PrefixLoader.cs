@@ -33,9 +33,6 @@ public static class PrefixLoader
 
 	internal static int ReservePrefixID()
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding items breaks vanilla client compatibility");
-
 		return PrefixCount++;
 	}
 

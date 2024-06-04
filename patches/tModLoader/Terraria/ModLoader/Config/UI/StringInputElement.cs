@@ -1,4 +1,5 @@
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -11,7 +12,7 @@ internal class StringInputElement : ConfigElement<string>
 
 		UIPanel textBoxBackground = new UIPanel();
 		textBoxBackground.SetPadding(0);
-		UIFocusInputTextField uIInputTextField = new UIFocusInputTextField("Type here");
+		UIFocusInputTextField uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
 		textBoxBackground.Top.Set(0f, 0f);
 		textBoxBackground.Left.Set(-190, 1f);
 		textBoxBackground.Width.Set(180, 0f);

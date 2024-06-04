@@ -123,6 +123,8 @@
 		//Mod Config
 		"ModConfigs": "Configurações",
 		"ModConfigFilterOptions": "Filtrar Opções",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Notificação: ",
 		"ModConfigModConfig": "Config. do Mod",
 		"ModConfigSaveConfig": "Salvar Config.",
@@ -141,6 +143,7 @@
 		"ModConfigCollapse": "Recolher",
 		"ModConfigScaleUp": "Aumentar",
 		"ModConfigScaleDown": "Diminuir",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Resposta do servidor: {0}",
 		"ModConfigServerRejectedChanges": "O servidor rejeitou as mudanças: {0}",
 		"ModConfigSharedConfigChanged": "Config. compartilhada mudou: Mensagem: {0}, Mod: {1}, Config.: {2}",
@@ -171,6 +174,7 @@
 		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Download {0}% concluído",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
@@ -472,6 +476,19 @@
 		"DownloadNetSDK": "Baixar SDK do .NET",
 		"DevModsInSandbox": "tModLoader não consegue desenvolver mods quando executado em um sandbox (como Flatpak). Certifique-se de instalar o Steam diretamente no seu sistema.",
 
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "Bibliotecas extras são necessárias para construir mods. (Pasta ModCompile não encontrada)",
 		"DMModCompileUpdate": "Incompatibilidade de versão da pasta ModCompile. Terraria: {0}, ModCompile: {1}",
@@ -543,6 +560,7 @@
 		// Memory bar
 		"LastLoadRamUsage": "Uso estimado de RAM no último carregamento: {0}",
 		"AvailableMemory": "Memória Disponível: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + outros: {0}",
 		"ManagedMemory": "Gerenciado: {0}",
 		"CodeMemory": "Código: {0}",

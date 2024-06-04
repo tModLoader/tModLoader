@@ -498,7 +498,7 @@ public partial class Main
 		}
 
 		// Canary file for legacy Terraria branches.
-		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_56.xnb"))) {
+		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_112.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
 		}

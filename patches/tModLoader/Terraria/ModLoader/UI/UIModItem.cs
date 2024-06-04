@@ -74,7 +74,7 @@ internal class UIModItem : UIPanel
 	{
 		_mod = mod;
 		BorderColor = new Color(89, 116, 213) * 0.7f;
-		Height.Pixels = 90;
+		Height.Pixels = 92;
 		Width.Percent = 1f;
 		SetPadding(6f);
 		DisplayNameClean = _mod.DisplayNameClean;
@@ -162,6 +162,7 @@ internal class UIModItem : UIPanel
 
 		int bottomRightRowOffset = -36;
 		_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
+			RemoveFloatingPointsFromDrawPosition = true,
 			Width = { Pixels = 36 },
 			Height = { Pixels = 36 },
 			Left = { Pixels = bottomRightRowOffset, Precent = 1 },
@@ -173,6 +174,7 @@ internal class UIModItem : UIPanel
 		if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
 			bottomRightRowOffset -= 36;
 			_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36f },
 				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1f },
@@ -233,6 +235,7 @@ internal class UIModItem : UIPanel
 		if (!string.IsNullOrWhiteSpace(_modRequiresTooltip)) {
 			var icon = UICommon.ButtonDepsTexture;
 			_modReferenceIcon = new UIImage(icon) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
 				Top = { Pixels = 42.5f }
 			};
@@ -245,6 +248,7 @@ internal class UIModItem : UIPanel
 		if (_mod.properties.RefNames(true).Any() && _mod.properties.translationMod) {
 			var icon = UICommon.ButtonTranslationModTexture;
 			_translationModIcon = new UIImage(icon) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
 				Top = { Pixels = 42.5f }
 			};
@@ -252,19 +256,10 @@ internal class UIModItem : UIPanel
 			Append(_translationModIcon);
 		}
 
-		/*
-		if (_mod.modFile.ValidModBrowserSignature) {
-			_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.GoldenKey].Name), Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
-				Left = { Pixels = -20, Percent = 1f }
-			};
-
-			Append(_keyImage);
-		}
-		*/
-
 		// TODO: Keep this feature locked to Dev for now until we are sure modders are at fault for this warning.
 		if (BuildInfo.IsDev && ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 			_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = { Pixels = _modIconAdjust + PADDING },
 				Top = { Pixels = 3 }
 			};
@@ -287,12 +282,14 @@ internal class UIModItem : UIPanel
 
 		if (_mod.location == ModLocation.Workshop) {
 			var steamIcon = new UIImage(TextureAssets.Extra[243]) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = { Pixels = -22, Percent = 1f }
 			};
 			Append(steamIcon);
 		}
 		else if (_mod.location == ModLocation.Modpack) {
 			var modpackIcon = new UIImage(UICommon.ModLocationModPackIcon) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = { Pixels = -22, Percent = 1f }
 			};
 			Append(modpackIcon);
@@ -308,6 +305,7 @@ internal class UIModItem : UIPanel
 			for (int i = 0; i < values.Length; i++) {
 				if (values[i] > 0) {
 					_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.InfoIcon[i].Name), Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
+						RemoveFloatingPointsFromDrawPosition = true,
 						Left = { Pixels = xOffset, Percent = 1f }
 					};
 
@@ -328,6 +326,7 @@ internal class UIModItem : UIPanel
 		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
 			bottomRightRowOffset -= 36;
 			_deleteModButton = new UIImage(TextureAssets.Trash) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
