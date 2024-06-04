@@ -58,7 +58,7 @@ internal class UIModDownloadItem : UIPanel
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 		_dividerTexture = UICommon.DividerTexture;
 		_innerPanelTexture = UICommon.InnerPanelTexture;
-		Height.Pixels = 90;
+		Height.Pixels = 92;
 		Width.Percent = 1f;
 		SetPadding(6f);
 
@@ -71,6 +71,7 @@ internal class UIModDownloadItem : UIPanel
 		Append(_modName);
 
 		_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
+			RemoveFloatingPointsFromDrawPosition = true,
 			Width = { Pixels = 36 },
 			Height = { Pixels = 36 },
 			Left = { Pixels = leftOffset },
@@ -111,6 +112,7 @@ internal class UIModDownloadItem : UIPanel
 		if (ModDownload.ModReferencesBySlug?.Length > 0) {
 			var icon = UICommon.ButtonDepsTexture;
 			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim())))) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				UseTooltipMouseText = true,
 				Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
 			};

@@ -127,6 +127,7 @@ internal class UIModSourceItem : UIPanel
 		string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 		if (File.Exists(csprojFile)) {
 			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, Language.GetTextValue("tModLoader.MSOpenCSProj")) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
 				Top = { Pixels = 4 }
 			};
@@ -154,6 +155,7 @@ internal class UIModSourceItem : UIPanel
 
 		if (File.Exists(csprojFile)) {
 			var openFolderButton = new UIHoverImage(UICommon.ButtonOpenFolder, Lang.inter[110].Value) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
 				Top = { Pixels = 4 }
 			};
@@ -353,6 +355,7 @@ internal class UIModSourceItem : UIPanel
 	{
 		var icon = UICommon.ButtonUpgradeLang;
 		var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
+			RemoveFloatingPointsFromDrawPosition = true,
 			Left = { Pixels = contextButtonsLeft, Percent = 1f },
 			Top = { Pixels = 4 }
 		};
@@ -376,6 +379,7 @@ internal class UIModSourceItem : UIPanel
 	{
 		var icon = UICommon.ButtonUpgradeCsproj;
 		var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
+			RemoveFloatingPointsFromDrawPosition = true,
 			Left = { Pixels = contextButtonsLeft, Percent = 1f },
 			Top = { Pixels = 4 }
 		};
@@ -401,6 +405,7 @@ internal class UIModSourceItem : UIPanel
 	{
 		var pIcon = UICommon.ButtonRunTModPorter;
 		var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
+			RemoveFloatingPointsFromDrawPosition = true,
 			Left = { Pixels = contextButtonsLeft, Percent = 1f },
 			Top = { Pixels = 4 }
 		};
