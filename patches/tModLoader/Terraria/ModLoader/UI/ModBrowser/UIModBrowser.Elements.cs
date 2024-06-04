@@ -40,7 +40,7 @@ internal partial class UIModBrowser
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
-		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
+		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyPublished);
 	}
 
 	private void UpdateHandler(object sender, EventArgs e)
@@ -187,7 +187,7 @@ internal partial class UIModBrowser
 		SearchFilterToggle.SetCurrentState(SearchFilter.Name);
 		UpdateFilterToggle.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
-		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
+		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.RecentlyPublished);
 
 		_browserStatus = new UIBrowserStatus() {
 			VAlign = 1f,
