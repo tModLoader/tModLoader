@@ -603,6 +603,7 @@ public static class ModContent
 			// player.whoAmI is only set for active players
 		}
 
+		Main.dresserInterfaceDummy = null;
 		Main.clientPlayer = new Player();
 		Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 		Main._characterSelectMenu._playerList?.Clear();

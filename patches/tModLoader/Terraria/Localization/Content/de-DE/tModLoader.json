@@ -123,6 +123,8 @@
 		//Mod Config
 		"ModConfigs": "Konfiguration",
 		"ModConfigFilterOptions": "Filtereinstellungen",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Benachrichtigung: ",
 		"ModConfigModConfig": "Modkonfiguration",
 		"ModConfigSaveConfig": "Konfiguration speichern",
@@ -141,6 +143,7 @@
 		"ModConfigCollapse": "Zusammenklappen",
 		"ModConfigScaleUp": "Vergrößern",
 		"ModConfigScaleDown": "Verkleinern",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Server Antwort: {0}",
 		"ModConfigServerRejectedChanges": "Der Server hat folgende Änderungen abgelehnt: {0}",
 		"ModConfigSharedConfigChanged": "Geteilte Konfiguration verändert: Meldung: {0}, Mod: {1}, Konfiguration: {2}",
@@ -171,6 +174,7 @@
 		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Zu {0}% heruntergeladen",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
@@ -470,6 +474,19 @@
 		"MSNetSDKNotFound": "Um Mods zu erstellen, muss die .NET {0} SDK installiert sein, diese wurde aber nicht erkannt. Klicke die  „.NET SDK herunterladen“  Schaltfläche unten, um zu Installationsanweisungen zu gelangen. Nach dem Installieren muss tModLoader möglicherweise neu gestartet werden.",
 		"DownloadNetSDK": ".NET SDK herunterladen",
 		"DevModsInSandbox": "tModLoader kann keine Mods entwickeln, während er in einer Sandbox läuft (wie Flatpak). Bitte stell sicher dass Steam direkt auf dem System installiert ist.",
+
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Ein extra Ordner ist für Mods benötigt. (Fehlender ModCompile-Ordner)",

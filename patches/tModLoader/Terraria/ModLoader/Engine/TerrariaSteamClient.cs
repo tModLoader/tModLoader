@@ -16,7 +16,7 @@ internal class TerrariaSteamClient
 	private static ILog Logger { get; } = LogManager.GetLogger("TerrariaSteamClient");
 
 	private const int LatestTerrariaBuildID = 9653812; // Currently v1.4.4.4. Update this when any Terraria update changes any asset. Also update InitTMLContentManager with a newly added file
-	private static int[] LegacyTerrariaBuildIDs = new int[] { 13650765 }; // Terraria legacy branch build IDs (v1.0.6.1)
+	private static int[] LegacyTerrariaBuildIDs = new int[] { 14381608, 14381510 }; // Terraria legacy branch build IDs (v1.0.6.1, v1.1.2)
 	private static AnonymousPipeServerStream serverPipe;
 
 	private static string MsgInitFailed = "init_failed";
