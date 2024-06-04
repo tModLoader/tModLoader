@@ -176,6 +176,7 @@
 		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		// "DownloadProgress": "Download {0}% Complete",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		// "LoadError": "An error occurred while loading {0}",

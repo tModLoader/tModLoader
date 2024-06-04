@@ -174,6 +174,7 @@
 		"PublishUpdateButton": "Zaktualizuj istniejący",
 		"PublishNewButton": "Opublikuj nowy",
 		"DownloadProgress": "Pobrano {0}%",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",

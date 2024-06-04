@@ -9,6 +9,7 @@ using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 using Terraria.Localization;
+using System.Collections;
 
 namespace Terraria.Social.Steam;
 
@@ -62,8 +63,8 @@ public partial class WorkshopSocialModule
 		try {
 			return _PublishMod(modFile, buildData, settings);
 		}
-		catch {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+		catch (Exception e) {
+			IssueReporter.ReportInstantUploadProblem(e.Message);
 			return false;
 		}
 	}
@@ -108,12 +109,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
-		ModCompile.UpdateSubstitutedDescriptionValues(ref description, buildData["trueversion"], buildData["homepage"]);
-		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			return false;
-		}
+		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -243,6 +239,41 @@ public partial class WorkshopSocialModule
 		}
 	}
 
+	private static string CalculateDescriptionAndChangeNotes(bool isCi, NameValueCollection buildData, ref string changeNotes)
+	{
+		string workshopDescFile = Path.Combine(buildData["sourcesfolder"], "description_workshop.txt");
+		string workshopDesc;
+		if (!File.Exists(workshopDescFile))
+			workshopDesc = buildData["description"];
+		else
+			workshopDesc = File.ReadAllText(workshopDescFile);
+
+		// Add version metadata override to allow CI publishing
+		string descriptionFinal = "";
+		if (isCi)
+			descriptionFinal += $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]";
+
+		descriptionFinal += $"{workshopDesc}" + $"[quote=tModLoader {buildData["name"]}]\nDeveloped By {buildData["author"]}[/quote]";
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
+
+		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
+		}
+
+		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
+		if (string.IsNullOrWhiteSpace(changeNotes)) {
+			changeNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(buildData["homepage"]))
+				changeNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
+
+		return descriptionFinal;
+	}
+
 	public static void SteamCMDPublishPreparer(string modFolder)
 	{
 		if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
@@ -270,7 +301,8 @@ public partial class WorkshopSocialModule
 			["version"] = newMod.Version.ToString(),
 			["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.Version}",
 			["description"] = newMod.properties.description,
-			["homepage"] = newMod.properties.homepage
+			["homepage"] = newMod.properties.homepage,
+			["sourcesfolder"] = modFolder
 		};
 
 		// Needed for backwards compat from previous version metadata
@@ -298,18 +330,7 @@ public partial class WorkshopSocialModule
 		ModOrganizer.CleanupOldPublish(publishFolder);
 
 		// Assign Workshop Description
-		string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
-		string workshopDesc;
-		if (!File.Exists(workshopDescFile))
-			workshopDesc = buildData["description"];
-		else
-			workshopDesc = File.ReadAllText(workshopDescFile);
-
-		// Add version metadata override to allow CI publishing
-		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
-			$"{workshopDesc}";
-
-		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
+		string descriptionFinal = CalculateDescriptionAndChangeNotes(isCi: true, buildData, ref changeNotes);
 
 		// Make the publish.vdf file
 		string manifest = Path.Combine(publishedModFiles, "workshop.json");
