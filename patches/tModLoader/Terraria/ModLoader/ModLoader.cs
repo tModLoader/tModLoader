@@ -351,7 +351,6 @@ public static class ModLoader
 	{
 		Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
 		Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
-		Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
 		Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
@@ -379,7 +378,6 @@ public static class ModLoader
 	{
 		Main.Configuration.Get("ModBrowserPassphrase", ref modBrowserPassphrase);
 		Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
-		Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
 		Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);

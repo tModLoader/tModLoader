@@ -1250,13 +1250,12 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4563,6 +_,11 @@
+@@ -4563,6 +_,10 @@
  		catch {
  		}
  
 +		// Run one tick to JIT all the game content now rather than when a player connects
 +		Logging.ServerConsoleLine("Running one update...");
-+		Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +		Update(new GameTime());
 +
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
@@ -2473,6 +2472,14 @@
  		wallFrameCounter[144]++;
  		int num3 = 5;
  		int num4 = 10;
+@@ -15815,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Clears text input from any keys pressed since the last time <see cref="GetInputText"/> was called. Call when activating a menu with text input or focusing an element with text input to prevent keys pressed beforehand to be immediately captured as input. </summary>
+ 	public static void clrInput()
+ 	{
+ 		keyCount = 0;
 @@ -15840,7 +_,8 @@
  			text = "";
  

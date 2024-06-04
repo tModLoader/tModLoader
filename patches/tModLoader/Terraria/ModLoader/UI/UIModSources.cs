@@ -231,6 +231,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	public override void OnActivate()
 	{
 		_cts = new CancellationTokenSource();
+		Main.clrInput();
 		ModCompile.UpdateReferencesFolder();
 		_uIPanel.Append(_uiLoader);
 		_modList.Clear();
@@ -391,7 +392,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			foreach (string sourcePath in modSources) {
 				var modName = Path.GetFileName(sourcePath);
 				var builtMod = modFiles.Where(m => m.Name == modName).Where(m => m.location == ModLocation.Local).OrderByDescending(m => m.Version).FirstOrDefault();
-				_items.Add(new UIModSourceItem(sourcePath, builtMod));
+				_items.Add(new UIModSourceItem(sourcePath, builtMod, _cts.Token));
 			}
 			_updateNeeded = true;
 		});
