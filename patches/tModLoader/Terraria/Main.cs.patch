@@ -2153,11 +2153,12 @@
  			CinematicManager.Instance.Update(gameTime);
  			if (netMode == 2) {
  				for (int i = 0; i < 256; i++) {
-@@ -13526,6 +_,7 @@
+@@ -13526,6 +_,8 @@
  			}
  		}
  
 +		LocalizationLoader.Update();
++		MemoryTracking.InGameUpdate();
  		DoUpdate_AutoSave();
  		if (!dedServ) {
  			ChromaInitializer.UpdateEvents();

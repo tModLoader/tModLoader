@@ -176,6 +176,7 @@
 		"PublishUpdateButton": "更新现有模组",
 		"PublishNewButton": "发布新模组",
 		"DownloadProgress": "下载完成 {0}%",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
@@ -560,6 +561,7 @@
 		// Memory bar
 		"LastLoadRamUsage": "上次加载时的内存占用：{0}",
 		"AvailableMemory": "可用内存：{0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "泰拉瑞亚及杂项：{0}",
 		"ManagedMemory": "托管内存占用：{0}",
 		"CodeMemory": "代码：{0}",
