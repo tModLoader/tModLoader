@@ -346,13 +346,6 @@ internal static class Interface
 			}
 
 			buttonIndex++;
-			buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowMemoryEstimates{(ModLoader.showMemoryEstimates ? "Yes" : "No")}");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				ModLoader.showMemoryEstimates = !ModLoader.showMemoryEstimates;
-			}
-
-			buttonIndex++;
 			buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowModMenuNotifications{(ModLoader.notifyNewMainMenuThemes ? "Yes" : "No")}");
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(SoundID.MenuTick);

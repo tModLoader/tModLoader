@@ -62,7 +62,6 @@ public static class ModLoader
 	internal static bool autoReloadRequiredModsLeavingModsScreen = true;
 	internal static bool removeForcedMinimumZoom;
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
-	internal static bool showMemoryEstimates = false;
 	internal static bool notifyNewMainMenuThemes = true;
 	internal static bool showNewUpdatedModsInfo = true;
 	internal static bool skipLoad;
@@ -355,7 +354,6 @@ public static class ModLoader
 		Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
 		Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 		Main.Configuration.Put(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), attackSpeedScalingTooltipVisibility);
-		Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 		Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 		Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
@@ -382,7 +380,6 @@ public static class ModLoader
 		Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
 		Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 		Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
-		//Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 		Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 		Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
@@ -403,9 +400,6 @@ public static class ModLoader
 
 	internal static void MigrateSettings()
 	{
-		if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
-			showMemoryEstimates = true;
-
 		// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.
 		if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 			ShowWhatsNew = true;
