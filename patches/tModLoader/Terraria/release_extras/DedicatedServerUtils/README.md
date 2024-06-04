@@ -27,7 +27,7 @@ To install and run the container:
 1. Install `docker` from your package manager or [Docker's Official Page](https://docs.docker.com/engine/install/)
    * **To check if Compose V2 is installed in this package**, run `docker compose version`. If the command errors, your manager still uses V1 and will need to additionally install the `docker-compose` package. All commands below assume Compose V2 is installed, so if you have V1 replace any `docker compose` commands with `docker-compose`
 2. Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Dockerfile)
-3. If you would like to install mods or use existing worlds, create a folder named `tModLoader`. In that directory setup a proper [folder structure](#folder-structure) 
+3. Create an empty folder named `tModLoader`. This is **required**. If you would like to install mods or use existing worlds then setup a proper [folder structure](#folder-structure) in that directory
 4. Edit `docker-compose.yml` with your GID and UID. These can be found by running `id`, and generally default to 1000
    * You can also add the `TML_VERSION` arg to your compose file to set a specific tModLoader version. Read about how to set build arguments [here](https://docs.docker.com/compose/compose-file/build/#args)
    * Uncomment the `restart` line to have the server automatically restart if it crashes

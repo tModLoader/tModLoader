@@ -98,11 +98,6 @@ internal class TMLContentManager : ContentManager
 
 	private static void TryFixFileCasings(string rootDirectory)
 	{
-		// Windows stale resource file case workaround
-		if (!Platform.IsWindows) {
-			return;
-		}
-
 		// The file listed below will be checked and fixed for case on disk
 		// this method does not work on UNC paths (don't think remote path Terraria
 		// installs will be present in a long time, but good to keep this logged)
@@ -116,7 +111,7 @@ internal class TMLContentManager : ContentManager
 			"Images/Projectile_189.xnb",
 			"Images/Projectile_618.xnb",
 			"Images/Tiles_650.xnb",
-			"Images/Item_2648"
+			"Images/Item_2648.xnb"
 		};
 
 		foreach (string problematicAsset in problematicAssets) {
@@ -124,28 +119,39 @@ internal class TMLContentManager : ContentManager
 			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
 			var faultyAssetInfo = new FileInfo(Path.Combine(rootDirectory, problematicAsset));
 
-			// faultyAssetInfo.Name should be the system file cased name, but this is not the case
-			// don't rely to that either way to be sure
-			if (!faultyAssetInfo.Exists) {
-				continue;
+			string actualFullPath;
+
+			// If the file exists - double-check its returned path, we may be in a case-insensitive filesystem.
+			if (faultyAssetInfo.Exists) {
+				// This assetInfo is correct cased (but only the name, need recursive if you want full case,
+				// nothing more is needed in this case though
+				var assetInfo = faultyAssetInfo.Directory.EnumerateFileSystemInfos(faultyAssetInfo.Name).First();
+
+				if (expectedName == assetInfo.Name) {
+					continue;
+				}
+
+				actualFullPath = assetInfo.FullName;
 			}
+			// If it's missing - search for it while ignoring case, we're likely in a case-sensitive filesystem.
+			else {
+				var assetInfo = faultyAssetInfo.Directory.EnumerateFileSystemInfos().FirstOrDefault(p => p.Name.Equals(expectedName, StringComparison.InvariantCultureIgnoreCase));
 
-			// This assetInfo is correct cased (but only the name, need recursive if you want full case,
-			// nothing more is needed in this case though
-			var assetInfo = faultyAssetInfo.Directory.EnumerateFileSystemInfos(faultyAssetInfo.Name).First();
-			string realName = assetInfo.Name;
+				if (assetInfo == null) {
+					Logging.tML.Info($"An expected vanilla asset is missing: (from {rootDirectory}) {problematicAsset}");
+					continue;
+				}
 
-			if (expectedName == realName) {
-				continue;
+				actualFullPath = assetInfo.FullName;
 			}
 
 			// The asset is wrongfully cased, fix that,
 			// changing a vanilla file name is something to log for sure
-			string relativeRealPath = Path.GetRelativePath(rootDirectory, assetInfo.FullName);
+			string relativeActualPath = Path.GetRelativePath(rootDirectory, actualFullPath);
 
-			Logging.tML.Info($"Found vanilla asset with wrong case, renaming: (from {rootDirectory}) {relativeRealPath} -> {problematicAsset}");
+			Logging.tML.Info($"Found vanilla asset with wrong case, renaming: (from {rootDirectory}) {relativeActualPath} -> {problematicAsset}");
 			// Programmatically move with different case works
-			File.Move(assetInfo.FullName, expectedFullPath);
+			File.Move(actualFullPath, expectedFullPath);
 		}
 	}
 }

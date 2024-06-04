@@ -13,6 +13,8 @@ using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Audio;
+using Terraria.ID;
+using System;
 
 namespace Terraria.ModLoader.UI;
 
@@ -24,9 +26,13 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UILoaderAnimatedImage uiLoader;
 	private bool needToRemoveLoading;
 	private UIList modList;
+	private UIScrollbar uIScrollbar;
 	private float modListViewPosition;
 	private readonly List<UIModItem> items = new List<UIModItem>();
+	private Task<List<UIModItem>> modItemsTask;
 	private bool updateNeeded;
+	private UIMemoryBar ramUsage;
+	private bool showRamUsage;
 	public bool loading;
 	private UIInputTextField filterTextBox;
 	public UICycleImage SearchFilterToggle;
@@ -67,23 +73,19 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		modList = new UIList {
 			Width = { Pixels = -25, Percent = 1f },
-			Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
-			Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
+			Height = { Pixels = -50, Percent = 1f },
+			Top = { Pixels = 50 },
 			ListPadding = 5f
 		};
 		uIPanel.Append(modList);
 
-		if (ModLoader.showMemoryEstimates) {
-			var ramUsage = new UIMemoryBar() {
-				Top = { Pixels = 45 },
-			};
-			ramUsage.Width.Pixels = -25;
-			uIPanel.Append(ramUsage);
-		}
+		ramUsage = new UIMemoryBar() {
+			Top = { Pixels = 44 },
+		};
 
-		var uIScrollbar = new UIScrollbar {
-			Height = { Pixels = ModLoader.showMemoryEstimates ? -72 : -50, Percent = 1f },
-			Top = { Pixels = ModLoader.showMemoryEstimates ? 72 : 50 },
+		uIScrollbar = new UIScrollbar {
+			Height = { Pixels = -50, Percent = 1f },
+			Top = { Pixels = 50 },
 			HAlign = 1f
 		}.WithView(100f, 1000f);
 		uIPanel.Append(uIScrollbar);
@@ -133,7 +135,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 
-		buttonB.OnLeftClick += BackClick;
+		buttonB.OnLeftClick += (_, _) => HandleBackButtonUsage();
 
 		uIElement.Append(buttonB);
 		buttonOMF = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenModsFolders"));
@@ -151,7 +153,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		};
 
 		UICycleImage toggleImage;
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 4; j++) {
 			if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 				toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
 				toggleImage.SetCurrentState((int)sortMode);
@@ -176,7 +178,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 					updateNeeded = true;
 				};
 			}
-			else {
+			else if (j == 2) {
 				toggleImage = new UICycleImage(texture, 5, 32, 32, 34 * 5, 0);
 				toggleImage.SetCurrentState((int)modSideFilterMode);
 				toggleImage.OnLeftClick += (a, b) => {
@@ -188,14 +190,34 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 					updateNeeded = true;
 				};
 			}
-			toggleImage.Left.Pixels = j * 36 + 8;
+			else {
+				toggleImage = new UICycleImage(texture, 2, 32, 32, 34 * 7, 0);
+				toggleImage.SetCurrentState(showRamUsage.ToInt());
+				toggleImage.OnLeftClick += (a, b) => ToggleRamButtonAction();
+				toggleImage.OnRightClick += (a, b) => ToggleRamButtonAction();
+				void ToggleRamButtonAction()
+				{
+					showRamUsage = !showRamUsage;
+					uIPanel.AddOrRemoveChild(ramUsage, showRamUsage);
+					if (showRamUsage) {
+						ramUsage.Show();
+					}
+					int ramUsageSpace = showRamUsage ? 72 : 50;
+					modList.Height.Pixels = -ramUsageSpace;
+					modList.Top.Pixels = ramUsageSpace;
+					uIScrollbar.Height.Pixels = -ramUsageSpace;
+					uIScrollbar.Top.Pixels = ramUsageSpace;
+					uIScrollbar.Recalculate();
+				}
+			}
+			toggleImage.Left.Pixels = j * 36;
 			_categoryButtons.Add(toggleImage);
 			upperMenuContainer.Append(toggleImage);
 		}
 
 		var filterTextBoxBackground = new UIPanel {
 			Top = { Percent = 0f },
-			Left = { Pixels = -185, Percent = 1f },
+			Left = { Pixels = -186, Percent = 1f },
 			Width = { Pixels = 150 },
 			Height = { Pixels = 40 }
 		};
@@ -224,7 +246,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		filterTextBoxBackground.Append(clearSearchButton);
 
 		SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
-			Left = { Pixels = 545 }
+			Left = { Pixels = 544 }
 		};
 		SearchFilterToggle.SetCurrentState((int)searchFilterMode);
 		SearchFilterToggle.OnLeftClick += (a, b) => {
@@ -265,7 +287,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 	}
 
-	internal void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	public void HandleBackButtonUsage()
 	{
 		// To prevent entering the game with Configs that violate ReloadRequired
 		if (ConfigManager.AnyModNeedsReload()) {
@@ -281,7 +303,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		ConfigManager.OnChangedAll();
 
-		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+		IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 	}
 
 	private void ReloadMods(UIMouseEvent evt, UIElement listeningElement)
@@ -305,15 +327,17 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
+			if (modItem.tMLUpdateRequired != null)
+				continue;
 			modItem.Enable();
 		}
 	}
 
 	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(12, -1, -1, 1);
+		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}
@@ -333,11 +357,23 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		if (modItemsTask is { IsCompleted: true }) {
+			var result = modItemsTask.Result;
+			items.AddRange(result);
+			foreach (var item in items) {
+				item.Activate(); // Activate must happen after all UIModItem are in `items`
+			}
+			needToRemoveLoading = true;
+			updateNeeded = true;
+			loading = false;
+			modItemsTask = null;
+		}
 		if (needToRemoveLoading) {
 			needToRemoveLoading = false;
 			uIPanel.RemoveChild(uiLoader);
 		}
-		if (!updateNeeded) return;
+		if (!updateNeeded)
+			return;
 		updateNeeded = false;
 		filter = filterTextBox.Text;
 		modList.Clear();
@@ -371,7 +407,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 102;
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		base.Draw(spriteBatch);
 		for (int i = 0; i < _categoryButtons.Count; i++) {
 			if (_categoryButtons[i].IsMouseHovering) {
@@ -387,18 +423,21 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 						text = modSideFilterMode.ToFriendlyString();
 						break;
 					case 3:
+						text = Language.GetTextValue("tModLoader.ShowMemoryEstimates" + (showRamUsage ? "Yes" : "No"));
+						break;
+					case 4:
 						text = searchFilterMode.ToFriendlyString();
 						break;
 					default:
 						text = "None";
 						break;
 				}
-				UICommon.DrawHoverStringInBounds(spriteBatch, text);
+				UICommon.TooltipMouseText(text);
 				return;
 			}
 		}
-		if(buttonOMF.IsMouseHovering)
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
+		if (buttonOMF.IsMouseHovering)
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
 	}
 
 	public override void OnActivate()
@@ -424,17 +463,15 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	internal void Populate()
 	{
-		Task.Run(() => {
+		modItemsTask = Task.Run(() => {
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
+			var pendingUIModItems = new List<UIModItem>();
 			foreach (var mod in mods) {
 				UIModItem modItem = new UIModItem(mod);
-				modItem.Activate();
-				items.Add(modItem);
+				pendingUIModItems.Add(modItem);
 			}
-			needToRemoveLoading = true;
-			updateNeeded = true;
-			loading = false;
-		});
+			return pendingUIModItems;
+		}, _cts.Token);
 	}
 }
 

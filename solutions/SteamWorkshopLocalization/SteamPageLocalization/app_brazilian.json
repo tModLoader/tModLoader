@@ -1,0 +1,15 @@
+{
+	"HomePage": {
+		"AreaTitle": "Escolhas dos Desenvolvedores",
+		"AreaDescription": "Estes mods foram escolhidos à mão pelos desenvolvedores do tModLoader, que buscam trazer à luz mods do Terraria menos conhecidos, porém de alta qualidade.",
+	},
+	"General": {
+		"WorkshopTitle": "Mods do tModLoader",
+		// Max Length: 200
+		"WorkshopDescription": "Visualize e baixe mods do tModLoader pela Oficina Steam. Os mods listados aqui são utilizáveis apenas no ramo principal do tModLoader. Mods utilizáveis na 1.3-legacy são encontrados em outro lugar.",
+	},
+	"StorePage": {
+		// Max Length: 300
+		"ShortDescription": "Cave, lute e construa pelo mundo de mods criados por jogadores de Terraria como você usando o tModLoader - esta DLC torna a criação de mods uma realidade!",
+	},
+}}

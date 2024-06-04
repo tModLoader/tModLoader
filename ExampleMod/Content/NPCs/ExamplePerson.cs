@@ -172,12 +172,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) { // Requirements for the town NPC to spawn.
-			for (int k = 0; k < Main.maxPlayers; k++) {
-				Player player = Main.player[k];
-				if (!player.active) {
-					continue;
-				}
-
+			foreach (var player in Main.ActivePlayers) {
 				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
 				if (player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>() || item.type == ModContent.ItemType<Items.Placeable.ExampleBlock>())) {
 					return true;
@@ -310,7 +305,7 @@ namespace ExampleMod.Content.NPCs
 				.Add<Items.Weapons.ExampleSword>(Condition.MoonPhasesQuarter0)
 				//.Add<ExampleGun>(Condition.MoonPhasesQuarter1)
 				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
-				//.Add<ExampleStaff>(Condition.MoonPhasesQuarter2)
+				.Add<Items.Weapons.ExampleStaff>(ExampleConditions.DownedMinionBoss)
 				.Add<ExampleOnBuyItem>()
 				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 

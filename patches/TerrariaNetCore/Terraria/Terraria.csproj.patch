@@ -133,8 +133,8 @@
 +	<!-- Organize output copies of Project, NuGet, and directly referenced libraries under a single tidy folder. -->
 +	<Target Name="OrganizeAllReferences" AfterTargets="ResolveAssemblyReferences" BeforeTargets="GenerateBuildDependencyFile;CopyFilesToOutputDirectory">
 +		<!-- Run the task. -->
-+		<OrganizeReferenceDestinations BaseDirectory="$(LibrariesDirectory)" ReferenceCopyLocalPaths="@(ReferenceCopyLocalPaths)">
-+			<Output TaskParameter="ReferenceCopyLocalPaths" ItemName="ReferenceCopyLocalPaths_New" />
++		<OrganizeReferenceDestinations BaseDirectory="$(LibrariesDirectory)" Items="@(ReferenceCopyLocalPaths)">
++			<Output TaskParameter="Items" ItemName="ReferenceCopyLocalPaths_New" />
 +		</OrganizeReferenceDestinations>
 +
 +		<!-- This has to be done because the Output element above can only append items, and is unable to replace them. -->

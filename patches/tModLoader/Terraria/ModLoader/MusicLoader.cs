@@ -24,11 +24,13 @@ public sealed class MusicLoader : ILoader
 
 	public static int MusicCount { get; private set; } = MusicID.Count;
 
-	/// <summary> Gets the music id of the track with the specified mod path. The path must not have a file extension. </summary>
+	/// <summary> Gets the music id of the track with the specified mod path. The path must not have a file extension.
+	/// <para/> <include file = 'CommonDocs.xml' path='Common/MusicAutoloadReminder' /> </summary>
 	public static int GetMusicSlot(Mod mod, string musicPath)
 		=> GetMusicSlot($"{mod.Name}/{musicPath}");
 
-	/// <summary> Gets the music id of the track with the specified full path. The path must be prefixed with a mod name and must not have a file extension. </summary>
+	/// <summary> Gets the music id of the track with the specified full path. The path must be prefixed with a mod name and must not have a file extension.
+	/// <para/> <include file = 'CommonDocs.xml' path='Common/MusicAutoloadReminder' /> </summary>
 	public static int GetMusicSlot(string musicPath)
 	{
 		if (musicByPath.ContainsKey(musicPath)) {
@@ -68,6 +70,7 @@ public sealed class MusicLoader : ILoader
 
 	/// <summary>
 	/// Registers a new music track with the provided mod and its local path to the sound file.
+	/// <para/> Use this for any music not autoloaded by the <see cref="Mod.MusicAutoloadingEnabled"/> logic.
 	/// </summary>
 	/// <param name="mod"> The mod that owns the music track. </param>
 	/// <param name="musicPath"> The provided mod's local path to the music track file, case-sensitive and without extensions. </param>
@@ -129,8 +132,11 @@ public sealed class MusicLoader : ILoader
 		//if (!mod.loading)
 		//	throw new Exception($"{nameof(AddMusicBox)} can only be called during mod loading.");
 
-		if (musicSlot < Main.maxMusic && !(Main.dedServ && musicSlot == 0))
+		if (musicSlot < Main.maxMusic && !(Main.dedServ && musicSlot == 0)) {
+			if (musicSlot == 0)
+				throw new ArgumentOutOfRangeException($"An invalid music audio file was provided. Note that when using GetMusicSlot the file extension should not be included and that by default only .mp3, .wav, and .ogg are supported audio file formats. Double check the GetMusicSlot documentation to ensure that the path you are providing matches the expected input.");
 			throw new ArgumentOutOfRangeException($"Cannot assign music box to vanilla music ID {musicSlot}");
+		}
 
 		if (musicSlot >= MusicCount)
 			throw new ArgumentOutOfRangeException($"Music ID {musicSlot} does not exist");

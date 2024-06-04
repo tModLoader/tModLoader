@@ -12,6 +12,10 @@ using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Ionic.Zip;
+using MonoMod.RuntimeDetour;
 
 namespace Terraria.ModLoader.Core;
 
@@ -100,6 +104,9 @@ public static class AssemblyManager
 
 		protected override Assembly Load(AssemblyName assemblyName)
 		{
+			if (AssemblyRedirects.GetAssembly(assemblyName.Name) is Assembly redirected)
+				return redirected;
+
 			if (assemblies.TryGetValue(assemblyName.Name, out var asm))
 				return asm;
 
@@ -139,6 +146,30 @@ public static class AssemblyManager
 		}
 	}
 
+	private static class AssemblyRedirects
+	{
+		private static Dictionary<string, Assembly> _redirects = new() {
+			["tModLoader"] = Assembly.GetExecutingAssembly(), // Unsure if still needed, but lets us ignore versioning when mods resolve
+			["FNA"] = typeof(Vector2).Assembly, // Unsure if still needed, but lets us ignore versioning when mods resolve
+			["Ionic.Zip.Reduced"] = typeof(ZipFile).Assembly, // Assembly name changed to DotNetZip
+		};
+
+		private static Hook _hook = new Hook(
+			typeof(AssemblyLoadContext).GetMethod("ValidateAssemblyNameWithSimpleName", BindingFlags.Static | BindingFlags.NonPublic),
+			hook_ValidateAssemblyNameWithSimpleName);
+
+		private delegate Assembly orig_ValidateAssemblyNameWithSimpleName(Assembly assembly, string? requestedSimpleName);
+		private static Assembly hook_ValidateAssemblyNameWithSimpleName(orig_ValidateAssemblyNameWithSimpleName orig, Assembly assembly, string? requestedSimpleName)
+		{
+			if (_redirects.TryGetValue(requestedSimpleName, out var redirect) && assembly == redirect)
+				return assembly;
+
+			return orig(assembly, requestedSimpleName);
+		}
+
+		public static Assembly GetAssembly(string name) => _redirects.TryGetValue(name, out var asm) ? asm : null;
+	}
+
 	[MethodImpl(MethodImplOptions.NoInlining)]
 	internal static void Unload() {
 		foreach (var alc in loadedModContexts.Values) {
@@ -166,30 +197,6 @@ public static class AssemblyManager
 	private static readonly Dictionary<string, ModLoadContext> loadedModContexts = new();
 
 	//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
-
-	private static bool assemblyResolverAdded;
-	private static void AddAssemblyResolver()
-	{
-		if (assemblyResolverAdded)
-			return;
-		assemblyResolverAdded = true;
-
-		AppDomain.CurrentDomain.AssemblyResolve += TmlCustomResolver;
-	}
-
-	private static Assembly TmlCustomResolver(object sender, ResolveEventArgs args)
-	{
-		//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
-		// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan
-		var name = new AssemblyName(args.Name).Name;
-		if (name.Contains("tModLoader") || name == "Terraria")
-			return Assembly.GetExecutingAssembly();
-
-		if (name == "FNA")
-			return typeof(Vector2).Assembly;
-
-		return null;
-	}
 
 	private static Mod Instantiate(ModLoadContext mod)
 	{
@@ -235,8 +242,6 @@ public static class AssemblyManager
 
 	internal static List<Mod> InstantiateMods(List<LocalMod> modsToLoad, CancellationToken token)
 	{
-		AddAssemblyResolver();
-
 		var modList = modsToLoad.Select(m => new ModLoadContext(m)).ToList();
 		foreach (var mod in modList)
 			loadedModContexts.Add(mod.Name, mod);
@@ -330,7 +335,7 @@ public static class AssemblyManager
 		}
 		catch (Exception e) {
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n" + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] is Type type ? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
@@ -338,65 +343,107 @@ public static class AssemblyManager
 
 	private static bool IsLoadable(ModLoadContext mod, Type type)
 	{
-		foreach (var attr in type.GetCustomAttributesData()) {
-			if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
-				var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
-				if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
-					return false;
+		try {
+			foreach (var attr in type.GetCustomAttributesData()) {
+				if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
+					var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
+					if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
+						return false;
+				}
 			}
+
+			if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
+				return false;
+
+			if (type.DeclaringType != null && !IsLoadable(mod, type.DeclaringType))
+				return false;
+
+			return type.GetInterfaces().All(i => IsLoadable(mod, i));
 		}
-
-		if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
-			return false;
-
-		return type.GetInterfaces().All(i => IsLoadable(mod, i));
+		catch (FileNotFoundException e) {
+			e.Data["type"] = type;
+			throw;
+		}
 	}
 
+	internal static Task JITModAsync(Mod mod, CancellationToken token) => JITAssembliesAsync(GetModAssemblies(mod.Name), mod.PreJITFilter, token);
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
 
 	public static void JITAssemblies(IEnumerable<Assembly> assemblies, PreJITFilter filter)
-	{
+		=> JITAssembliesAsync(assemblies, filter, CancellationToken.None).GetAwaiter().GetResult();
+
+	public static async Task JITAssembliesAsync(IEnumerable<Assembly> assemblies, PreJITFilter filter, CancellationToken token)
+{
+		const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+
+		bool ShouldJITRecursive(Type type) => filter.ShouldJIT(type) && (type.DeclaringType is null || ShouldJITRecursive(type.DeclaringType));
+
+		var methodsToJIT =
+			assemblies.SelectMany(GetLoadableTypes)
+			.Where(ShouldJITRecursive)
+			.SelectMany(type =>
+				type.GetMethods(ALL)
+					.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
+					.Concat<MethodBase>(type.GetConstructors(ALL))
+					.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
+					.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.DeclaringType == type)
+					.Where(filter.ShouldJIT)
+			)
+			.ToArray();
+
 		var exceptions = new System.Collections.Concurrent.ConcurrentQueue<(Exception exception, MethodBase method)>();
-		foreach (var assembly in assemblies) {
-			const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
-
-			var methodsToJIT = GetLoadableTypes(assembly)
-				.Where(filter.ShouldJIT)
-				.SelectMany(type =>
-					type.GetMethods(ALL)
-						.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
-						.Concat<MethodBase>(type.GetConstructors(ALL))
-						.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
-						.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.DeclaringType == type)
-						.Where(filter.ShouldJIT)
-				)
-				.ToArray();
-
-			if (Environment.ProcessorCount > 1) {
-				methodsToJIT.AsParallel().AsUnordered().ForAll(method => {
-					try {
-						ForceJITOnMethod(method);
-					}
-					catch (Exception e) {
-						exceptions.Enqueue((e, method));
-					}
-				});
+		await ForEachAsync(methodsToJIT, method => {
+			try {
+				ForceJITOnMethod(method);
 			}
-			else {
-				foreach (var method in methodsToJIT) {
-					try {
-						ForceJITOnMethod(method);
-					}
-					catch (Exception e) {
-						exceptions.Enqueue((e, method));
-					}
-				}
+			catch (Exception e) {
+				if (AssemblyManager.GetAssemblyOwner(method.DeclaringType.Assembly, out string modName))
+					e.Data["mod"] = modName;
+				exceptions.Enqueue((e, method));
+			}
+		}, token).ConfigureAwait(false);
+
+		if (exceptions.IsEmpty)
+			return;
+
+		var message = "\n";
+		if (exceptions.Select(x => x.exception).OfType<FileNotFoundException>().FirstOrDefault() is Exception ex && Regex.Match(ex.Message, "'(\\w+), Version=") is { Success: true } m) {
+			var modName = m.Groups[1].Value;
+			message += $"If {modName} is an assembly from a weak-referenced mod consider adding a [JitWhenModsEnabled(\"ModName\")] attribute to the method, property, lambda or containing class.\n";
+
+			if (exceptions.Any(x => x.exception is FileNotFoundException && x.method.Name.Contains("<lambda>")))
+				message += "Make sure to apply the [JitWhenModsEnabled] attribute directly to the lambda or a containing class. Attributes on methods do not apply to lambdas inside them.\n";
+
+			message += "\n";
+		}
+
+		message += string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
+		var jitException = new Exceptions.JITException(message);
+		if(exceptions.Any(e => e.exception.Data.Contains("mod")))
+			jitException.Data["mods"] = exceptions.Select(e => (string)e.exception.Data["mod"]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+		throw jitException;
+	}
+
+	private static async Task ForEachAsync<T>(IEnumerable<T> elements, Action<T> action, CancellationToken token)
+	{
+		// Quick and easy parallel work processor.
+		// Uses the ThreadPool instead of dedicated threads to reduce contention and improve cooperation with other parallel work such as asset loading.
+		// Avoids flooding the ThreadPool.
+		// No need to await each action because they don't throw
+		int concurrentQueueLimit = Environment.ProcessorCount * 2;
+		var queued = new List<Task>(concurrentQueueLimit);
+		foreach (var element in elements) {
+			token.ThrowIfCancellationRequested();
+			queued.Add(Task.Run(() => action(element)));
+
+			if (queued.Count >= concurrentQueueLimit) {
+				// Waiting on just the first 2 tasks provides a good balance between scheduling overhead and throughput
+				await Task.WhenAny(queued[0], queued[1]).ConfigureAwait(false);
+				queued.RemoveAll(t => t.IsCompleted);
 			}
 		}
-		if (exceptions.Count > 0) {
-			var message = "\n" + string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
-			throw new Exceptions.JITException(message);
-		}
+
+		await Task.WhenAll(queued).ConfigureAwait(false);
 	}
 
 	private static void ForceJITOnMethod(MethodBase method)

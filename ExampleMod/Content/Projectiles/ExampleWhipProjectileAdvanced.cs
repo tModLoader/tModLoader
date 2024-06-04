@@ -166,7 +166,6 @@ namespace ExampleMod.Content.Projectiles
 
 			SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-			Main.instance.LoadProjectile(Type);
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
 			Vector2 pos = list[0];

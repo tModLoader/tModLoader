@@ -175,22 +175,15 @@ public partial class WorkshopHelper
 		else
 			changeLog = "";
 
-		var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
-		string workshopDesc;
-		if (File.Exists(workshopDescFile))
-			workshopDesc = File.ReadAllText(workshopDescFile);
-		else
-			workshopDesc = bp.description;
-
 		var values = new NameValueCollection
 		{
 			{ "displayname", bp.displayName },
-			{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
+			{ "displaynameclean", Utils.CleanChatTags(bp.displayName) },
 			{ "name", modFile.Name },
 			{ "version", $"{bp.version}" },
 			{ "author", bp.author },
 			{ "homepage", bp.homepage },
-			{ "description", workshopDesc },
+			{ "description", bp.description },
 			{ "iconpath", iconPath },
 			{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 			{ "modloaderversion", $"{modFile.TModLoaderVersion}" },
