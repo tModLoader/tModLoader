@@ -11,7 +11,7 @@ partial class ProjectileID
 
 		// Values taken from Player.ItemCheck_Shoot type == 3029 check
 		/// <summary>
-		/// Set of Projectile IDs that will fire 1 less from <see cref="ItemID.DaedalusStormbow"/>
+		/// Set of Projectile IDs that will fire less from <see cref="ItemID.DaedalusStormbow"/>
 		/// </summary>
 		public static bool[] FiresLessFromDaedalusStormbow = Factory.CreateBoolSet(false, 91, 4, 5, 41);
 
