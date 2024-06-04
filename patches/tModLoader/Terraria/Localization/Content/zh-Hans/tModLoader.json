@@ -175,6 +175,7 @@
 		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "下载完成 {0}%",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",

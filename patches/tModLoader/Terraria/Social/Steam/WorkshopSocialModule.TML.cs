@@ -63,8 +63,8 @@ public partial class WorkshopSocialModule
 		try {
 			return _PublishMod(modFile, buildData, settings);
 		}
-		catch {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+		catch (Exception e) {
+			IssueReporter.ReportInstantUploadProblem(e.Message);
 			return false;
 		}
 	}
@@ -259,7 +259,7 @@ public partial class WorkshopSocialModule
 
 		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			throw new Exception("tModLoader.DescriptionLengthExceedLimit");
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
 		}
 
 		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
