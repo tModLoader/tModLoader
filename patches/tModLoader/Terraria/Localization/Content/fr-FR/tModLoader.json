@@ -190,6 +190,8 @@
 		"LoadErrorHashMismatchCorrupted": "Le hachage ne correspond pas, les données ont été modifiées ou corrompues",
 		"LoadErrorDependencyVersionTooLow": "{0} requiert la version {1} de {2} mais la version {3} est installée",
 		"LoadErrorMajorVersionMismatch": "{0} requiert la version {1} de {2} mais la version {3} est installée, ce qui peut être incompatible. {0} doit être mis à jour.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0} : {1}. Vous avez un ModNPC.banner ou ModNPC.bannerItem, mais pas l'autre correspondant. Soyez certain d'avoir les deux, verifiez les noms et que l'objet existe si vous utilisez mod.ItemType(). Reportez cette erreur aux développeurs de {0}.",
 		"UnloadError": "Des erreurs se sont produites pendant la désactivation et tModLoader doit être redémarré pour prévenir d'autres erreurs.",
 		"DefensiveUnload": "{0} n'a pas été désactivé correctement. Les Moddeurs doivent utiliser une programmation défensive afin d'assurer une désactivation complète malgré de potentielles erreurs pendant le chargement.",
