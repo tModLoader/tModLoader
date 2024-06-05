@@ -11,7 +11,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers;
-@@ -25,13 +_,55 @@
+@@ -25,13 +_,58 @@
  		string s;
  		if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out var result))
  			Netplay.ListenPort = result;
@@ -19,6 +19,9 @@
 +		// Added by TML.
 +		if (TryParameter("-modpack") is string modPack)
 +			ModOrganizer.commandLineModPack = modPack;
++
++		if (HasParameter("-accuratememorytracking"))
++			MemoryTracking.accurate = true;
 +
 +		// Added by TML.
 +		if (HasParameter("-skipselect")) {

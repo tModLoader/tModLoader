@@ -16,7 +16,7 @@ internal class TerrariaSteamClient
 	private static ILog Logger { get; } = LogManager.GetLogger("TerrariaSteamClient");
 
 	private const int LatestTerrariaBuildID = 9653812; // Currently v1.4.4.4. Update this when any Terraria update changes any asset. Also update InitTMLContentManager with a newly added file
-	private static int[] LegacyTerrariaBuildIDs = new int[] { 13650765 }; // Terraria legacy branch build IDs (v1.0.6.1)
+	private static int[] LegacyTerrariaBuildIDs = new int[] { 14381608, 14381510 }; // Terraria legacy branch build IDs (v1.0.6.1, v1.1.2)
 	private static AnonymousPipeServerStream serverPipe;
 
 	private static string MsgInitFailed = "init_failed";
@@ -42,7 +42,10 @@ internal class TerrariaSteamClient
 
 	internal static LaunchResult Launch()
 	{
-		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
+		// To Disable Playtime tracking without breaking the family share workaround,
+		// we continue if SteamAppId not set (which should not yet be set for Family Shared) && SteamClientLaunch is set
+		// Inverting the output for when abort, we get !(SCL && !SA) -> !SCL || SA
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" /*|| Environment.GetEnvironmentVariable("STEAMAPPID") != null*/) {
 			Logger.Debug("Disabled. Launched outside steam client.");
 			return LaunchResult.Ok;
 		}

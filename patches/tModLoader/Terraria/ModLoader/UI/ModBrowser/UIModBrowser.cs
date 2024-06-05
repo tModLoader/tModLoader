@@ -173,8 +173,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		// @TODO: Why this is done on Draw? (plus hard coded 101 :|)
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
+		// @TODO: Why this is done on Draw?
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 
 		base.Draw(spriteBatch);
 		for (int i = 0; i < CategoryButtons.Count; i++)
@@ -198,11 +198,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 						break;
 				}
 
-				UICommon.DrawHoverStringInBounds(spriteBatch, text);
+				UICommon.TooltipMouseText(text);
 				break;
 			}
 		if (_browserStatus.IsMouseHovering && ModList.State != AsyncProviderState.Completed) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, ModList.GetEndItemText());
+			UICommon.TooltipMouseText(ModList.GetEndItemText());
 		}
 	}
 

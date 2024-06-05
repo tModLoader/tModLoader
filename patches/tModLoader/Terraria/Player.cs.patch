@@ -312,7 +312,7 @@
  	public Item[] miscEquips = new Item[5];
  	public Item[] miscDyes = new Item[5];
  	public Item trashItem = new Item();
-@@ -781,16 +_,43 @@
+@@ -781,16 +_,48 @@
  	public bool poundRelease;
  	public float ghostFade;
  	public float ghostDir = 1f;
@@ -345,6 +345,11 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool[] buffImmune = new bool[BuffID.Count];
++	/// <summary>
++	/// The index of the projectile (<see cref="Entity.whoAmI"/>) currently being "held" by the player as if it were an item. Set during projectile AI. Held projectiles will be drawn during player rendering over the player's arms.
++	/// <para/> When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and adjust <see cref="Player.RotatedRelativePoint"/>, <see cref="Player.gfxOffY"/> or <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> accordingly if the draw location is incorrect.
++	/// <para/> Defaults to -1.
++	/// </summary>
  	public int heldProj = -1;
  	public int breathCD;
  	public int breathMax = 200;
@@ -429,7 +434,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -961,23 +_,97 @@
+@@ -961,24 +_,99 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -527,8 +532,10 @@
 -	private bool shimmerImmune;
 +	public bool shimmerImmune;
  	public bool spaceGun;
++	/// <summary> The players gravity direction. <b>1</b> if normal, <b>-1</b> if reversed. <para/> Defaults to <b>1</b>.</summary>
  	public float gravDir = 1f;
  	public bool chloroAmmoCost80;
+ 	public bool huntressAmmoCost90;
 @@ -987,12 +_,17 @@
  	public int stickyBreak;
  	public bool magicQuiver;

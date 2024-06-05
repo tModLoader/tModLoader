@@ -33,7 +33,7 @@
  	public int frameCounter;
  	public int frame;
  	public const int EMOTE_SHEET_HORIZONTAL_FRAMES = 8;
-@@ -64,7 +_,23 @@
+@@ -64,7 +_,21 @@
  			else if (anch.entity is Projectile)
  				item = 2;
  
@@ -46,11 +46,9 @@
 +			// This adds an overhead of a byte to the message 91 (SyncEmoteBubble) in case of Projectile.
 +			// tl;dr: byte type -> ushort packedOwnerType [owner << 8 | type] (only if it's a projectile)
 +			int whoAmI = anch.entity.whoAmI;
-+			if (!ModNet.AllowVanillaClients) {
-+				if (anch.entity is Projectile projectile) {
-+					whoAmI = projectile.identity; // This is the meta parameter in DeserializeNetAnchor
-+					item = projectile.owner << 8 | item;
-+				}
++			if (anch.entity is Projectile projectile) {
++				whoAmI = projectile.identity; // This is the meta parameter in DeserializeNetAnchor
++				item = projectile.owner << 8 | item;
 +			}
 +
 -			return Tuple.Create(item, anch.entity.whoAmI);
@@ -58,7 +56,7 @@
  		}
  
  		return Tuple.Create(0, 0);
-@@ -72,12 +_,33 @@
+@@ -72,13 +_,31 @@
  
  	public static WorldUIAnchor DeserializeNetAnchor(int type, int meta)
  	{
@@ -73,25 +71,24 @@
  			case 1:
  				return new WorldUIAnchor(Main.player[meta]);
  			case 2:
-+				if (!ModNet.AllowVanillaClients) {
-+					// meta represents the identity here
-+					int owner = packedOwnerType >> 8;
++				// meta represents the identity here
++				int owner = packedOwnerType >> 8;
 +
-+					// identity matching code taken from MessageBuffer.GetData case 27
-+					int whoAmI = Main.maxProjectiles;
-+					for (int i = 0; i < Main.maxProjectiles; i++) {
-+						Projectile projectile = Main.projectile[i];
-+						if (projectile.owner == owner && projectile.identity == meta && projectile.active) {
-+							whoAmI = i;
-+							break;
-+						}
++				// identity matching code taken from MessageBuffer.GetData case 27
++				int whoAmI = Main.maxProjectiles;
++				for (int i = 0; i < Main.maxProjectiles; i++) {
++					Projectile projectile = Main.projectile[i];
++					if (projectile.owner == owner && projectile.identity == meta && projectile.active) {
++						whoAmI = i;
++						break;
 +					}
-+
-+					return new WorldUIAnchor(Main.projectile[whoAmI]);
 +				}
- 				return new WorldUIAnchor(Main.projectile[meta]);
++
+-				return new WorldUIAnchor(Main.projectile[meta]);
++				return new WorldUIAnchor(Main.projectile[whoAmI]);
  			default:
  				throw new Exception("How did you end up getting this?");
+ 		}
 @@ -86,6 +_,13 @@
  
  	public static int AssignNewID() => NextID++;

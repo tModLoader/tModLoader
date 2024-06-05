@@ -123,6 +123,8 @@
 		//Mod Config
 		// "ModConfigs": "Configs",
 		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		// "ModConfigNotification": "Notification: ",
 		// "ModConfigModConfig": "Mod Config",
 		// "ModConfigSaveConfig": "Save Config",
@@ -141,6 +143,7 @@
 		// "ModConfigCollapse": "Collapse",
 		// "ModConfigScaleUp": "Scale Up",
 		// "ModConfigScaleDown": "Scale Down",
+		// "ModConfigTypeHere": "Type Here",
 		// "ModConfigServerResponse": "Server response: {0}",
 		// "ModConfigServerRejectedChanges": "Server rejected changes: {0}",
 		// "ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
@@ -168,7 +171,10 @@
 		"UpdateItem": "Mise à jour d'un Élément {0}",
 		"PublishItem": "Tentative d'Élément de Publication {0}",
 		"SteamDownloader": "Téléchargement en file d'attente avec le gestionnaire de téléchargement Steam...",
+		// "PublishUpdateButton": "Update Existing",
+		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Téléchargement {0}% Terminé",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Une erreur s'est produite lors en lançant {0}",
@@ -471,6 +477,19 @@
 		// "DownloadNetSDK": "Download .NET SDK",
 		// "DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "Des bibliothèques logicielles supplémentaires sont requises pour compiler des Mods. (Dossier ModCompile manquant)",
 		"DMModCompileUpdate": "La version du dossier ModCompile ne correspond pas. Terraria : {0}, ModCompile : {1}",
@@ -542,6 +561,7 @@
 		// Memory bar
 		// "LastLoadRamUsage": "Estimated last load RAM usage: {0}",
 		// "AvailableMemory": "Available Memory: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		// "TerrariaMemory": "Terraria + misc: {0}",
 		// "ManagedMemory": "Managed: {0}",
 		// "CodeMemory": "Code: {0}",

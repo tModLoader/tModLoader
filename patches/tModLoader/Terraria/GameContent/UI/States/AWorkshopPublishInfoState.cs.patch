@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Social.Base;
  using Terraria.UI;
-@@ -34,20 +_,36 @@
+@@ -34,20 +_,37 @@
  	private UIElement _publishButton;
  	private WorkshopItemPublicSettingId _optionPublicity = WorkshopItemPublicSettingId.Public;
  	private GroupOptionButton<WorkshopItemPublicSettingId>[] _publicityOptions;
@@ -30,6 +30,7 @@
 +	protected UIElement _tMLDisclaimerButton;
 +
 +	private bool _isMod;
++	private bool _isUpdate;
 +
 +	public UIState PreviousUIState {
 +		get => _previousUIState;
@@ -48,7 +49,22 @@
  	}
  
  	public override void OnInitialize()
-@@ -80,13 +_,23 @@
+@@ -66,8 +_,7 @@
+ 		uIPanel.Width.Set(0f, 1f);
+ 		uIPanel.Height.Set(-num3, 1f);
+ 		uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
+-		AddBackButton(num, uIElement);
++		AddBackButton(num, uIElement);	
+-		AddPublishButton(num, uIElement);
+ 		int num5 = 6 + num4;
+ 		UIList uiList = AddUIList(uIPanel, num5);
+ 		FillUIList(uiList);
+@@ -76,17 +_,28 @@
+ 		uIElement.Append(uIPanel);
+ 		Append(uIElement);
+ 		SetDefaultOptions();
++		AddPublishButton(num, uIElement);
+ 	}
  
  	private void SetDefaultOptions()
  	{
@@ -108,6 +124,15 @@
  		_previewImageUIElement = uIImage;
  		UICharacterNameButton uICharacterNameButton = new UICharacterNameButton(Language.GetText("Workshop.PreviewImagePathTitle"), Language.GetText("Workshop.PreviewImagePathEmpty"), Language.GetText("Workshop.PreviewImagePathDescription")) {
  			Width = StyleDimension.FromPixelsAndPercent(0f - num, 1f),
+@@ -161,6 +_,8 @@
+ 		if (!TryFindingTags(out var info))
+ 			return;
+ 
++		_isUpdate = true;
++
+ 		if (info.tags != null) {
+ 			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
+ 				bool flag = info.tags.Contains(tagOption.OptionValue.InternalNameForAPIs);
 @@ -169,10 +_,14 @@
  			}
  		}
@@ -226,23 +251,16 @@
  			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (num - 1), 1f / (float)num * num4);
  			groupOptionButton.HAlign = (float)num6 / (float)(num - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num4) * (1f - groupOptionButton.HAlign * 2f));
-@@ -538,14 +_,14 @@
- 		container.Append(uISlicedImage);
- 		UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
- 			HAlign = 0f,
--			VAlign = 1f,
-+			VAlign = 0.5f, // 1f,
- 			Width = new StyleDimension(0f, 1f),
- 			Height = new StyleDimension(0f, 1f)
- 		};
+@@ -593,7 +_,8 @@
  
- 		uIText.PaddingLeft = 4f;
- 		uIText.PaddingRight = 4f;
--		uIText.PaddingTop = 4f;
-+		uIText.PaddingTop = 24f; // 4f;
- 		uIText.IsWrapped = true;
- 		uISlicedImage.Append(uIText);
- 		_descriptionText = uIText;
+ 	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)
+ 	{
+-		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText("Workshop.Publish"), 0.7f, large: true);
++		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText(_isUpdate ? "tModLoader.PublishUpdateButton" : "tModLoader.PublishNewButton"), 0.7f, large: true);
++		uITextPanel.TextColor = _isUpdate ? Color.White : Color.Orange;
+ 		uITextPanel.Width.Set(-10f, 0.5f);
+ 		uITextPanel.Height.Set(50f, 0f);
+ 		uITextPanel.VAlign = 1f;
 @@ -643,7 +_,9 @@
  			UsedTags = (from x in _tagOptions
  						where x.IsSelected
