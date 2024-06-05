@@ -188,8 +188,8 @@
 		"LoadErrorHashMismatchCorrupted": "校验码不匹配, 模组文件已损坏",
 		"LoadErrorDependencyVersionTooLow": "{0} 需要 {2}（v{1} 或以上），但你安装的是 v{3}。", // {0}为被依赖的Mod，{1}为需要版本号，{2}为依赖的Mod，{3}为当前版本号
 		"LoadErrorMajorVersionMismatch": "{0} 需要 {2}（v{1}），和你安装的版本（{3}）可能存在兼容问题。 {0} 需要更新。", // {0}为依赖的Mod，{1}为需要版本号，{2}为被依赖的Mod，{3}为当前版本号
-		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.",
-		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}：{1}。 你已设置[ModNPC.banner]或[ModNPC.bannerItem]中的一个，但没有设置另一个。 请确保两者都已设置，拼写没有错误，且如果你正在使用[mod.ItemType()]时该物品确实存在。 请将此错误报告发送给 {0} 开发者。",
 		"UnloadError": "卸载时发生一个或多个错误，必须重新启动tModLoader以防止发生更多问题。",
 		"DefensiveUnload": "{0} 无法正常卸载。无论加载过程中是否有任何错误，模组作者都必须使用防御性编程（Defensive Programming）来确保卸载完成。",

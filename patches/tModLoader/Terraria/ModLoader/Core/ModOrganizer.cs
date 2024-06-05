@@ -459,14 +459,17 @@ internal static class ModOrganizer
 	
 	private static void EnsureRecentlyBuildModsAreLoading(List<LocalMod> mods)
 	{
-		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. ModCompile.modsBuiltThisSession does the same but for in-game builds. We throw an error because this is definitely not desired.
+		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. We throw an error because this is definitely not desired.
 		foreach (var mod in mods) {
 			var localMod = AllFoundMods.SingleOrDefault(x => x.Name == mod.Name && x.location == ModLocation.Local);
 
+			// If Local mod is newer than selected Workshop/Modpack mod...
 			if (localMod == null || localMod == mod || localMod.lastModified.CompareTo(mod.lastModified) <= 0) {
 				continue;
 			}
-			if (Debugger.IsAttached && File.Exists(localMod.properties.eacPath) && (Process.GetCurrentProcess().StartTime - File.GetLastWriteTime(localMod.properties.eacPath)).TotalSeconds < 60 || ModCompile.modsBuiltThisSessionThatWontBeSelectedToLoad.Contains(mod.Name)) {
+
+			// and is newer than directly before game launch and last time a mod was synced, it is assumed to be a mod built by this modder.
+			if (localMod.lastModified.CompareTo(ModCompile.recentlyBuiltModCheckTimeCutoff) > 0) {
 				var e = new Exception(Language.GetTextValue("tModLoader.LoadErrorRecentlyBuiltLocalModWithLowerVersion" + mod.location.ToString(), localMod.Name, localMod.Version, mod.Version));
 				e.Data["mod"] = mod.Name;
 				e.Data["hideStackTrace"] = true;

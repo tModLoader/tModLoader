@@ -64,7 +64,7 @@ internal class ModCompile
 
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
-	internal static HashSet<string> modsBuiltThisSessionThatWontBeSelectedToLoad = new HashSet<string>();
+	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
 	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
@@ -225,13 +225,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			mod.modFile.Save();
 			ModLoader.EnableMod(mod.Name);
-
-			modsBuiltThisSessionThatWontBeSelectedToLoad.Remove(mod.Name);
-			var availableMods = ModOrganizer.FindMods();
-			var modToLoad = availableMods.SingleOrDefault(x => x.Name == mod.Name);
-			if (modToLoad != null && modToLoad.location != ModLocation.Local) {
-				modsBuiltThisSessionThatWontBeSelectedToLoad.Add(mod.Name);
-			}
 
 			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);
