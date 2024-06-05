@@ -234,7 +234,8 @@ public static class ModLoader
 		// Getting Real Technical Section
 
 		sb.AppendLine($"For Support, Include Files at \"Open Logs\" and Information Below");
-		sb.AppendLine($"   Error(s)::\n{exception.Message}");
+		string exceptionDetails = exception.Data.Contains("hideStackTrace") ? exception.Message : exception.ToString();
+		sb.AppendLine($"   Error(s)::\n{exceptionDetails}");
 
 		if (exception is Exceptions.JITException)
 			sb.AppendLine($"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.");
@@ -290,6 +291,10 @@ public static class ModLoader
 			if (e.Data.Contains("mod"))
 				msg += "\n" + Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"]);
 
+			msg += $"For Support, Include Files at \"Open Logs\" and Information Below";
+			string exceptionDetails = e.Data.Contains("hideStackTrace") ? e.Message : e.ToString();
+			msg += $"\n   Error(s)::\n{exceptionDetails}";
+
 			DisplayLoadError(msg, e, true);
 
 			return false;
@@ -333,9 +338,9 @@ public static class ModLoader
 	private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
 	{
 		if (fatal)
-			Logging.tML.Fatal(msg, e);
+			Logging.tML.Fatal(msg);
 		else
-			Logging.tML.Error(msg, e);
+			Logging.tML.Error(msg);
 
 		if (Main.dedServ) {
 			Console.ForegroundColor = ConsoleColor.Red;
