@@ -146,6 +146,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
 			SteamUGC.SetReturnKeyValueTags(qHandle, true);
@@ -154,6 +155,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
 			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
@@ -231,8 +233,9 @@ public static class SteamedWraps
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
 		return (qParams.sortingParamater) switch {
+			ModBrowserSortMode.Hot when qParams.days == 0 => EUGCQuery.k_EUGCQuery_RankedByVote, // Corresponds to "Most Popular" for "All Time" on workshop website
 			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
-			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
+			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByTrend, // Corresponds to "Most Popular" on workshop website
 			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
 			ModBrowserSortMode.RecentlyPublished => EUGCQuery.k_EUGCQuery_RankedByPublicationDate,
 			_ => EUGCQuery.k_EUGCQuery_RankedByTextSearch

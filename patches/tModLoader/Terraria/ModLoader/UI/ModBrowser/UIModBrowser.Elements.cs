@@ -30,6 +30,7 @@ internal partial class UIModBrowser
 
 	/* Filters */
 	public UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle;
+	public UIBrowserFilterToggle<ModBrowserTimePeriod> TimePeriodToggle;
 	public UIBrowserFilterToggle<UpdateFilter> UpdateFilterToggle;
 	public UIBrowserFilterToggle<SearchFilter> SearchFilterToggle;
 	public UIBrowserFilterToggle<ModSideFilter> ModSideFilterToggle;
@@ -38,9 +39,10 @@ internal partial class UIModBrowser
 	{
 		ModList?.SetEnumerable(null);
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
+		TimePeriodToggle?.SetCurrentState(ModBrowserTimePeriod.OneWeek);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
-		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyPublished);
+		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.Hot);
 	}
 
 	private void UpdateHandler(object sender, EventArgs e)
@@ -175,19 +177,23 @@ internal partial class UIModBrowser
 		SortModeFilterToggle = new UIBrowserFilterToggle<ModBrowserSortMode>(0, 0) {
 			Left = new StyleDimension { Pixels = 0 * 36 + 8 }
 		};
-		UpdateFilterToggle = new UIBrowserFilterToggle<UpdateFilter>(34, 0) {
+		TimePeriodToggle = new UIBrowserFilterToggle<ModBrowserTimePeriod>(34 * 8, 0) {
 			Left = new StyleDimension { Pixels = 1 * 36 + 8 }
+		};
+		UpdateFilterToggle = new UIBrowserFilterToggle<UpdateFilter>(34, 0) {
+			Left = new StyleDimension { Pixels = 2 * 36 + 8 }
 		};
 		SearchFilterToggle = new UIBrowserFilterToggle<SearchFilter>(34 * 2, 0) {
 			Left = new StyleDimension { Pixels = 545f }
 		};
 		ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
-			Left = new StyleDimension { Pixels = 2 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 3 * 36 + 8 }
 		};
 		SearchFilterToggle.SetCurrentState(SearchFilter.Name);
+		TimePeriodToggle.SetCurrentState(ModBrowserTimePeriod.OneWeek);
 		UpdateFilterToggle.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
-		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.RecentlyPublished);
+		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.Hot);
 
 		_browserStatus = new UIBrowserStatus() {
 			VAlign = 1f,
@@ -201,6 +207,8 @@ internal partial class UIModBrowser
 
 		CategoryButtons.Add(SortModeFilterToggle);
 		_upperMenuContainer.Append(SortModeFilterToggle);
+		CategoryButtons.Add(TimePeriodToggle);
+		_upperMenuContainer.Append(TimePeriodToggle);
 		CategoryButtons.Add(UpdateFilterToggle);
 		_upperMenuContainer.Append(UpdateFilterToggle);
 		CategoryButtons.Add(ModSideFilterToggle);
