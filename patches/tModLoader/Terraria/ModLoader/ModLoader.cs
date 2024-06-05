@@ -19,6 +19,9 @@ using ReLogic.Content;
 using System.Runtime.CompilerServices;
 using Terraria.Social.Steam;
 using Terraria.ModLoader.Exceptions;
+using System.Text;
+using ReLogic.Localization.IME.WinImm32;
+using Terraria.Social.Base;
 
 namespace Terraria.ModLoader;
 
@@ -184,35 +187,65 @@ public static class ModLoader
 
 	private static string CalculateLoadExceptionMessage(Exception exception, List<string> responsibleMods, LocalMod[] availableMods)
 	{
-		var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
+		var sb = new StringBuilder();
+		sb.AppendLine("Mod(s) Failed To Load");
 
-		if (responsibleMods.Count == 1) {
-			var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
-			if (mod != null)
-				msg += $" v{mod.Version}";
+		List<LocalMod> erroringMods = new List<LocalMod>();
 
-			if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
-				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
-			else if (mod != null)
-				// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
-				SteamedWraps.QueueForceValidateSteamInstall();
+		// Player First Impression Section
+		if (responsibleMods.Count == 0) {
+			sb.AppendLine(Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown"));
+		}
+		else {
+			erroringMods = availableMods.Where(mod => responsibleMods.Contains(mod.Name)).ToList();
 
-			if (exception is Exceptions.JITException)
-				msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
+			foreach (var item in erroringMods) {
+				sb.AppendLine($"   {item.DisplayName}, v{item.Version}, tML v{item.tModLoaderVersion}");
+			}
+
+			sb.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDisabled"));
 		}
 
-		if (responsibleMods.Count > 0)
-			msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
-		else
-			msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown");
+		sb.AppendLine("-----------------------------------------------");
+
+		// Player Possible Fixes Section
+		sb.AppendLine("Possible Load Issue Causes Are:");
+
+		(bool relevant, string desc)[] commonIssues = {
+			(false, "The dependency mod has updated and this mod is out of date with the dependency"),
+			(false, "You attempted to load a Stable Mod on Dev tModLoader"),
+			(false, "You attempted to load a 1.3/1.4.3 Mod on 1.4.4"),
+			(false, "You are using a different tML version than the 'Frozen' modpack"),
+		};
+
+		foreach (var item in erroringMods) {
+			commonIssues[0].relevant |= item.properties.modReferences.Length > 0;
+			commonIssues[1].relevant |= BuildInfo.IsDev && item.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
+			commonIssues[2].relevant |= SocialBrowserModule.GetBrowserVersionNumber(item.tModLoaderVersion) != SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
+			commonIssues[3].relevant |= item.location == ModLocation.Modpack;
+		}
+
+		foreach (var item in commonIssues.Where(item => item.relevant)) {
+			sb.AppendLine($"   {item.desc}");
+		}
+
+		sb.AppendLine("-----------------------------------------------");
+
+		// Getting Real Technical Section
+
+		sb.AppendLine($"For Support, Include Files at \"Open Logs\" and Information Below");
+		sb.AppendLine($"   Error(s)::\n{exception.Message}");
+
+		if (exception is Exceptions.JITException)
+			sb.AppendLine($"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.");
 
 		if (exception is ReflectionTypeLoadException reflectionTypeLoadException)
-			msg += "\n\n" + string.Join("\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message));
+			sb.AppendLine("\n" + string.Join("\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message)));
 
 		if (exception.Data.Contains("contentType") && exception.Data["contentType"] is Type contentType)
-			msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
+			sb.AppendLine(Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName));
 
-		return msg;
+		return sb.ToString();
 	} 
 
 	private static void DisableErroringMods(List<string> responsibleMods, LocalMod[] availableMods)
@@ -299,9 +332,6 @@ public static class ModLoader
 
 	private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
 	{
-		//msg += "\n\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
-		msg += "\n\n" + $"For Detailed Support, Please Include the File {Logging.LogPath}\n\nError:: {e.Message}";
-
 		if (fatal)
 			Logging.tML.Fatal(msg, e);
 		else
