@@ -420,7 +420,7 @@ public static class AssemblyManager
 		message += string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
 		var jitException = new Exceptions.JITException(message);
 		if(exceptions.Any(e => e.exception.Data.Contains("mod")))
-			jitException.Data["mods"] = exceptions.Select(e => (string)e.exception.Data["mod"]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+			jitException.Data["mods"] = exceptions.Select(e => (string)e.exception.Data["mod"]).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
 		throw jitException;
 	}
 
