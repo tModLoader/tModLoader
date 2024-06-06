@@ -34,6 +34,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
+	/// <summary>
+	/// Called when the <paramref name="item"/> is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
+	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft the <paramref name="item"/>.
+	/// </summary>
 	public virtual void OnCreated(Item item, ItemCreationContext context)
 	{
 	}

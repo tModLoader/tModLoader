@@ -378,5 +378,8 @@ public static class TagIO
 		if (compress) stream.Close();
 	}
 
+	/// <summary>
+	/// Writes the TagCompound to the writer. Please don't use this to send TagCompound over the network if you can avoid it. If you have to, consider using <see cref="ToStream(TagCompound, Stream, bool)"/>/<see cref="FromStream(Stream, bool)"/> with <c>compress: true</c>.
+	/// </summary>
 	public static void Write(TagCompound root, BinaryWriter writer) => WriteTag("", root, writer);
 }

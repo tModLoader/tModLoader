@@ -47,7 +47,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
 
 	/// <summary>
-	/// The file name of this type's texture file in the mod loader's file space.
+	/// The file name of this type's texture file in the mod loader's file space. <br/>
+	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Projectile"/> indexed by <see cref="Type"/> if needed. <br/>
+	/// You can use a vanilla texture by returning <c>$"Terraria/Images/Projectile_{ProjectileID.ProjectileNameHere}"</c> <br/>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
