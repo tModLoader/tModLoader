@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Изменение этой настройки требует перезагрузки мода.",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "Автор: {0}",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из «Браузера модов»",
@@ -277,6 +280,7 @@
 		"InstallPackLocal": "Установить сборку (Локально)",
 		"InstallPackLocalDesc": "Выключает абсолютно все моды и включает сборку\nс замороженными версиями модов, найденных в сборке",
 		"ModPackMismatch": "Последняя сборка модов: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Синхронизация модов",

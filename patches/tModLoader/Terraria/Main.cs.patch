@@ -551,7 +551,7 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
-@@ -1001,6 +_,10 @@
+@@ -1001,10 +_,15 @@
  		0.75f,
  		0.75f
  	};
@@ -562,6 +562,11 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
+ 	public static bool mouseRightRelease;
++	/// <summary> Indicates if the full player inventory is currently showing. </summary>
+ 	public static bool playerInventory;
+ 	public static int stackSplit;
+ 	public static bool preventStackSplitReset;
 @@ -1026,7 +_,18 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -599,7 +604,7 @@
  	public static int[] displayWidth = new int[99];
  	public static int[] displayHeight = new int[99];
 +	/// <summary>
-+	/// If true, the game in on the menus. If false the game is in the game world.
++	/// If true, the game is currently in the main menus. If false the game is in the game world.
 +	/// </summary>
  	public static bool gameMenu = true;
  	public static bool menuBGChangedDay = false;

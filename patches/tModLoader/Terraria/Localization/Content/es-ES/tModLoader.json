@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Cambiar esto requerirá recargar tModLoader",
 		"ModReloadForced": "Recarga forzada",
 		"ModIsServerSide": "Este es un mod del lado del servidor",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "De: {0}",
 		"ModsMoreInfo": "Información",
 		"ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
@@ -277,6 +280,7 @@
 		"InstallPackLocal": "Importar paquete (Local)",
 		"InstallPackLocalDesc": "Desactiva todos los mods y activa el paquete\nusando versiones de mods congelados del paquete de mods",
 		"ModPackMismatch": "Último paquete de mods: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Sincronizando mods",

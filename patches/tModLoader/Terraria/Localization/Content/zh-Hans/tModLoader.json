@@ -78,6 +78,9 @@
 		"ModReloadRequiredMemberTooltip": "若要更改此项，必须重新加载",
 		"ModReloadForced": "强制重新加载",
 		"ModIsServerSide": "这是一个服务器的模组",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "作者：{0}",
 		"ModsMoreInfo": "更多信息",
 		"ModsOriginatedFromModBrowser": "该模组来源于模组浏览器",
@@ -279,6 +282,7 @@
 		"InstallPackLocal": "加载整合包（本地）",
 		"InstallPackLocalDesc": "禁用所有模组且启用整合包里的所有模组（按整合包里指定的版本）",
 		"ModPackMismatch": "上次使用的模组包：{0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",

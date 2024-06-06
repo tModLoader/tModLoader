@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Dies zu ändern macht es erforderlich neuzuladen",
 		"ModReloadForced": "Neu laden erzwingen",
 		"ModIsServerSide": "Dies ist ein serverseitiger Mod",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "Mod von: {0}",
 		"ModsMoreInfo": "Mehr Info",
 		"ModsOriginatedFromModBrowser": "Dieser Mod ist aus dem Mod-Browser",
@@ -277,6 +280,7 @@
 		// "InstallPackLocal": "Import Pack (Local)",
 		// "InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		"ModPackMismatch": "Letztes Modpacket: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisiere Mods",
