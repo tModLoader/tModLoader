@@ -203,24 +203,24 @@ public static class ModLoader
 				sb.AppendLine($"   {item.DisplayName}, v{item.Version}, tML v{item.tModLoaderVersion}");
 			}
 
-			sb.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDisabled"));
+			sb.AppendLine("\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled"));
 		}
 
 		sb.AppendLine("-----------------------------------------------");
 
 		// Player Possible Fixes Section
-		sb.AppendLine("Possible Load Issue Causes Are:");
+		sb.AppendLine("Possible load issue causes are:");
 
 		(bool relevant, string desc)[] commonIssues = {
-			(false, "The dependency mod has updated and this mod is out of date with the dependency"),
-			(false, "You attempted to load a Stable Mod on Dev tModLoader"),
+			(false, "A dependency mod has updated and this mod is out of date with the dependency"),
+			(false, $"You attempted to load a Stable mod on {BuildInfo.Purpose} tModLoader"),
 			(false, "You attempted to load a 1.3/1.4.3 Mod on 1.4.4"),
 			(false, "You are using a different tML version than the 'Frozen' modpack"),
 		};
 
 		foreach (var item in erroringMods) {
 			commonIssues[0].relevant |= item.properties.modReferences.Length > 0;
-			commonIssues[1].relevant |= BuildInfo.IsDev && item.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
+			commonIssues[1].relevant |= !BuildInfo.IsStable && item.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
 			commonIssues[2].relevant |= SocialBrowserModule.GetBrowserVersionNumber(item.tModLoaderVersion) != SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
 			commonIssues[3].relevant |= item.location == ModLocation.Modpack;
 		}
@@ -234,8 +234,7 @@ public static class ModLoader
 		// Getting Real Technical Section
 
 		sb.AppendLine($"For Support, Include Files at \"Open Logs\" and Information Below");
-		string exceptionDetails = exception.Data.Contains("hideStackTrace") ? exception.Message : exception.ToString();
-		sb.AppendLine($"   Error(s)::\n{exceptionDetails}");
+		sb.AppendLine($"   Error(s):");
 
 		if (exception is Exceptions.JITException)
 			sb.AppendLine($"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.");
@@ -291,10 +290,6 @@ public static class ModLoader
 			if (e.Data.Contains("mod"))
 				msg += "\n" + Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"]);
 
-			msg += $"For Support, Include Files at \"Open Logs\" and Information Below";
-			string exceptionDetails = e.Data.Contains("hideStackTrace") ? e.Message : e.ToString();
-			msg += $"\n   Error(s)::\n{exceptionDetails}";
-
 			DisplayLoadError(msg, e, true);
 
 			return false;
@@ -337,10 +332,14 @@ public static class ModLoader
 
 	private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
 	{
+		// These being first ensure that even if the 'hideStackTrace' is 'SET' (ie hide stack) that the trace still shows in the log.
 		if (fatal)
-			Logging.tML.Fatal(msg);
+			Logging.tML.Fatal(msg, e);
 		else
-			Logging.tML.Error(msg);
+			Logging.tML.Error(msg, e);
+
+		// tML uses hideStackTrace internally on errors where the stack trace would be all tML, and just detract from the message. - CB
+		msg += "\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
 
 		if (Main.dedServ) {
 			Console.ForegroundColor = ConsoleColor.Red;
