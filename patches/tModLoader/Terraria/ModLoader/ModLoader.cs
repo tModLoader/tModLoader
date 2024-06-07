@@ -214,9 +214,9 @@ public static class ModLoader
 		sb.AppendLine("Possible load issue causes are:");
 
 		(bool relevant, string desc)[] commonIssues = {
-			(false, "A dependency mod has updated and this mod is out of date with the dependency"),
+			(false, "A dependency mod may have updated and this mod is out of date with the dependency"),
 			(false, $"You attempted to load a Stable mod on {BuildInfo.Purpose} tModLoader"),
-			(false, "You attempted to load a 1.3/1.4.3 Mod on 1.4.4"),
+			(false, $"You attempted to load a {"1.3/1.4.3"} mod on {SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion)}"),
 			(false, "You are using a different tML version than the 'Frozen' modpack"),
 		};
 
@@ -224,12 +224,7 @@ public static class ModLoader
 			commonIssues[0].relevant |= item.properties.modReferences.Length > 0;
 			commonIssues[1].relevant |= !BuildInfo.IsStable && item.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
 			commonIssues[2].relevant |= SocialBrowserModule.GetBrowserVersionNumber(item.tModLoaderVersion) != SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
-
-			if (item.location == ModLocation.Modpack) {
-				var ss = File.ReadLines(Path.Combine(ModOrganizer.ModPackActive, "Mods", "tmlversion.txt")).FirstOrDefault();
-				commonIssues[3].relevant |= item.location == ModLocation.Modpack && new Version(ss).MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
-			}
-			
+			commonIssues[3].relevant |= item.location == ModLocation.Modpack && new Version(File.ReadLines(Path.Combine(ModOrganizer.ModPackActive, "Mods", "tmlversion.txt")).FirstOrDefault()).MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
 		}
 
 		foreach (var item in commonIssues.Where(item => item.relevant)) {
