@@ -37,6 +37,7 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			string pathInPackage = item.GetMetadata("PathInPackage");
 			//string fileName = item.GetMetadata("Filename");
 			//string runtimeIdentifier = item.GetMetadata("RuntimeIdentifier");
+			string dllDirectoryInPackage = null;
 
 			// PDBs & XMLs lack some metadata, attempt to get it from the paired .dll.
 			if (string.IsNullOrEmpty(fusionName) && !".dll".Equals(fileExtension, StringComparison.OrdinalIgnoreCase)) {
@@ -44,6 +45,8 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 
 				if (items.FirstOrDefault(i => dllSpec.Equals(i.ItemSpec, StringComparison.OrdinalIgnoreCase)) is ITaskItem dllItem) {
 					fusionName = dllItem.GetMetadata("FusionName");
+					string dllPathInPackage = dllItem.GetMetadata("PathInPackage");
+					dllDirectoryInPackage = !string.IsNullOrEmpty(dllPathInPackage) ? Path.GetDirectoryName(dllPathInPackage) : string.Empty;
 				}
 			}
 
@@ -65,6 +68,10 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			// NuGet Packages - This is used for all NuGet libraries, whether native or managed, whether rid-specific or agnostic.
 			else if (!string.IsNullOrEmpty(nugetPackageId)) {
 				string? directoryInPackage = !string.IsNullOrEmpty(pathInPackage) ? Path.GetDirectoryName(pathInPackage) : string.Empty;
+
+				if (string.IsNullOrEmpty(directoryInPackage) && !string.IsNullOrEmpty(dllDirectoryInPackage)) {
+					directoryInPackage = dllDirectoryInPackage;
+				}
 
 				// NuGet package IDs are lowercased in folder repositories.
 				string? nugetPackageIdLower = nugetPackageId.ToLower();
