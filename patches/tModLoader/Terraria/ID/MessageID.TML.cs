@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using ReLogic.Reflection;
 
 namespace Terraria.ID;
@@ -39,6 +35,8 @@ partial class MessageID
 	public const byte KeepAliveDuringModReload = 253;
 
 	public static readonly IdDictionary Search = IdDictionary.Create<MessageID, byte>();
-	public static string GetName(int id) => Search.TryGetName(id, out string name) ? name : "Unknown";
-}
 
+#if !TMLANALYZER
+	public static string GetName(int id) => Search.TryGetName(id, out string name) ? name : "Unknown";
+#endif
+}

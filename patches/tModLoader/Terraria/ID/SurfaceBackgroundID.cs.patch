@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/ID/SurfaceBackgroundID.cs
++++ src/tModLoader/Terraria/ID/SurfaceBackgroundID.cs
+@@ -1,6 +_,8 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+-public static class SurfaceBackgroundID
++public class SurfaceBackgroundID
+ {
+ 	public const int Forest1 = 0;
+ 	public const int Corruption = 1;
+@@ -16,4 +_,5 @@
+ 	public const int Forest3 = 11;
+ 	public const int Forest4 = 12;
+ 	public const int Empty = 13;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(SurfaceBackgroundID), typeof(int)); // TML
+ }

@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/PlayerDifficultyID.cs
++++ src/tModLoader/Terraria/ID/PlayerDifficultyID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public class PlayerDifficultyID
+@@ -6,4 +_,5 @@
+ 	public const byte MediumCore = 1;
+ 	public const byte Hardcore = 2;
+ 	public const byte Creative = 3;
++	public static readonly IdDictionary Search = IdDictionary.Create<PlayerDifficultyID, byte>(); // TML
+ }

@@ -1,16 +1,25 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,29 +_,110 @@
+@@ -1,31 +_,119 @@
++#if !TMLANALYZER
+ using System;
++#endif
+ using System.Collections.Generic;
++#if !TMLANALYZER
  using Microsoft.Xna.Framework;
++#endif
  using ReLogic.Reflection;
++#if !TMLANALYZER
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
++#endif
  
  namespace Terraria.ID;
  
 -public class NPCID
 +public partial class NPCID
  {
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -655,11 +664,13 @@
  		private static Dictionary<int, NPCBestiaryDrawModifiers> GetRedigitEntries()
  		{
  			return new Dictionary<int, NPCBestiaryDrawModifiers> {
-@@ -9972,6 +_,7 @@
+@@ -9972,7 +_,9 @@
  				}
  			};
  		}
 +#pragma warning restore CS0618
  	}
++#endif
  
  	private static readonly int[] NetIdMap = new int[65] {
+ 		81,

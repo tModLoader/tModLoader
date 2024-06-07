@@ -1,4 +1,4 @@
-using System;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
@@ -6,7 +6,7 @@ namespace Terraria.ID;
 /// Enumerates the different immunity cooldown options for damage affecting a player. Most damage uses <see cref="General"/> and applies immunity via <see cref="Player.immune"/>. Other damage immunity cooldowns are tracked in <see cref="Player.hurtCooldowns"/> indexed by these values.<para/>
 /// Correct usage of <see cref="ImmunityCooldownID"/> in <see cref="ModLoader.ModProjectile.CooldownSlot"/>, <see cref="ModLoader.ModNPC.CanHitPlayer(Terraria.Player, ref int)"/>, and <see cref="Player.Hurt(DataStructures.PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float)"/> are essential for correctly applying damage to the player.
 /// </summary>
-public static class ImmunityCooldownID
+public class ImmunityCooldownID
 {
 	/// <summary>
 	/// Default, no special slot, just <see cref="Player.immuneTime"/>
@@ -30,4 +30,5 @@ public static class ImmunityCooldownID
 	/// Damage from lava
 	/// </summary>
 	public const int Lava = 4;
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(ImmunityCooldownID), typeof(int)); // TML
 }

@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/ExtrasID.cs
++++ src/tModLoader/Terraria/ID/ExtrasID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public class ExtrasID
+@@ -269,4 +_,5 @@
+ 	public const short GuideShimmerFrontal = 264;
+ 	public const short TravellingMerchantShimmerFrontal = 265;
+ 	public static readonly short Count = 266;
++	public static IdDictionary Search = IdDictionary.Create<ExtrasID, int>(); // TML
+ }

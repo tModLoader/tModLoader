@@ -1,8 +1,8 @@
-using System;
+using ReLogic.Reflection;
 
 namespace Terraria.ID;
 
-public static class MusicID
+public class MusicID
 {
 	// Names derived from the music box that plays each: https://terraria.wiki.gg/wiki/Music_Box
 	public const short OverworldDay = 1;
@@ -95,4 +95,5 @@ public static class MusicID
 	public const short Deerclops = 90;
 	public const short Shimmer = 91;
 	public const short Count = 92;
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(MusicID), typeof(short)); // TML
 }

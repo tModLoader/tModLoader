@@ -1,6 +1,8 @@
+using ReLogic.Reflection;
+
 namespace Terraria.ID;
 
-public static partial class DustID
+partial class DustID
 {
 	// Naming is based on the best approximation of the earliest or most popular implementation.
 	// There are a few duplicates, unlike other ID classes, since some dust are used for different purposes.
@@ -270,4 +272,5 @@ public static partial class DustID
 	/// Lingers and scales with gravity enabled
 	/// </summary>
 	public const short LastPrism = 267;
+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(DustID), typeof(short));
 }

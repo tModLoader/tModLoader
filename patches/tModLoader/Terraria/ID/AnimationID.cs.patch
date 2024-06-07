@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/AnimationID.cs
++++ src/tModLoader/Terraria/ID/AnimationID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public class AnimationID
+@@ -7,4 +_,5 @@
+ 	public const short FakeChestOpening = 2;
+ 	public const short VolcanosTurningOn = 3;
+ 	public const short VolcanosTurningOff = 4;
++	public static readonly IdDictionary Search = IdDictionary.Create<AnimationID, short>(); // TML
+ }

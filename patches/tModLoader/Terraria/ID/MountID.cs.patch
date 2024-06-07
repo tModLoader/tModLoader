@@ -1,12 +1,17 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,11 +_,25 @@
+@@ -1,13 +_,32 @@
++using ReLogic.Reflection;
++#if !TMLANALYZER
 +using Terraria.ModLoader;
++#endif
 +
  namespace Terraria.ID;
  
- public static class MountID
+-public static class MountID
++public class MountID
  {
++#if !TMLANALYZER
  	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
@@ -26,4 +31,15 @@
 +		/// </summary>
  		public static bool[] FacePlayersVelocity = Factory.CreateBoolSet(15, 16, 11, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 51, 53);
  	}
++#endif
  
+ 	public const int None = -1;
+ 	public const int Rudolph = 0;
+@@ -64,5 +_,6 @@
+ 	public const int FartMinecart = 51;
+ 	public const int Wolf = 52;
+ 	public const int TerraFartMinecart = 53;
+-	public static int Count = 54;
++	public static readonly int Count = 54;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(MountID), typeof(int)); // TML
+ }

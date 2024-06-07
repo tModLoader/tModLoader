@@ -1,15 +1,20 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,12 @@
+@@ -1,11 +_,17 @@
++#if !TMLANALYZER
  using System.Collections.Generic;
++#endif
  using ReLogic.Reflection;
++#if !TMLANALYZER
 +using Terraria.ModLoader;
++#endif
  
  namespace Terraria.ID;
  
 -public class TileID
 +public partial class TileID
  {
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -160,7 +165,7 @@
  		public static bool[] GeneralPlacementTiles = Factory.CreateBoolSet(true, 225, 41, 481, 43, 482, 44, 483, 226, 203, 112, 25, 70, 151, 21, 31, 467, 12, 665, 639);
  		public static bool[] BasicChest = Factory.CreateBoolSet(21, 467);
  		public static bool[] BasicChestFake = Factory.CreateBoolSet(441, 468);
-@@ -238,21 +_,56 @@
+@@ -238,27 +_,63 @@
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
  		public static bool[] FramesOnKillWall = Factory.CreateBoolSet(440, 240, 241, 242, 245, 246, 4, 136, 334, 132, 55, 395, 425, 440, 471, 510, 511, 573, 630, 631);
@@ -217,3 +222,10 @@
  		public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 441, 468);
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
+ 		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633);
+ 		public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 661, 109, 199, 662, 60, 70, 633);
+ 	}
++#endif
+ 
+ 	public const ushort Dirt = 0;
+ 	public const ushort Stone = 1;

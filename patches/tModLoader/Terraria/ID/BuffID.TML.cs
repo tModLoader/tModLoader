@@ -1,9 +1,12 @@
+#if !TMLANALYZER
 using System.Collections.Generic;
+#endif
 
 namespace Terraria.ID;
 
 public partial class BuffID
 {
+#if !TMLANALYZER
 	public partial class Sets
 	{
 		// Created based on 'Player.AddBuff_DetermineBuffTimeToAdd'.
@@ -39,4 +42,5 @@ public partial class BuffID
 			}
 		}
 	}
+#endif
 }

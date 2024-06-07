@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/RecipeGroupID.cs
 +++ src/tModLoader/Terraria/ID/RecipeGroupID.cs
-@@ -1,5 +_,9 @@
+@@ -1,5 +_,11 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
 +/// <summary>
@@ -20,3 +22,9 @@
  	public static int GoldenCritter = 9;
  	public static int Dragonflies = 10;
  	public static int Turtles = 11;
+@@ -28,4 +_,5 @@
+ 	public static int SandstormBalloons = 23;
+ 	public static int CritterGuides = 24;
+ 	public static int NatureGuides = 25;
++	public static readonly IdDictionary Search = IdDictionary.Create<RecipeGroupID, int>(); // TML
+ }

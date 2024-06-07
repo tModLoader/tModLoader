@@ -1,9 +1,12 @@
+#if !TMLANALYZER
 using System.Collections.Generic;
+#endif
 
 namespace Terraria.ID;
 
 partial class ItemID
 {
+#if !TMLANALYZER
 	partial class Sets
 	{
 		/// <summary>Used in <see cref="SandgunAmmoProjectileData"/>.</summary>
@@ -210,4 +213,5 @@ partial class ItemID
 		/// </summary>
 		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
 	}
+#endif
 }
