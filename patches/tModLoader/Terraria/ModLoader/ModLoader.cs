@@ -22,6 +22,7 @@ using Terraria.ModLoader.Exceptions;
 using System.Text;
 using ReLogic.Localization.IME.WinImm32;
 using Terraria.Social.Base;
+using System.IO;
 
 namespace Terraria.ModLoader;
 
@@ -200,7 +201,8 @@ public static class ModLoader
 			erroringMods = availableMods.Where(mod => responsibleMods.Contains(mod.Name)).ToList();
 
 			foreach (var item in erroringMods) {
-				sb.AppendLine($"   {item.DisplayName}, v{item.Version}, tML v{item.tModLoaderVersion}");
+				// For whatever reason \t doesn't work here? - Solxan, June 7 2024
+				sb.AppendLine($"   {item.DisplayName} v{item.Version}, built for tML v{item.tModLoaderVersion}");
 			}
 
 			sb.AppendLine("\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled"));
@@ -222,7 +224,12 @@ public static class ModLoader
 			commonIssues[0].relevant |= item.properties.modReferences.Length > 0;
 			commonIssues[1].relevant |= !BuildInfo.IsStable && item.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
 			commonIssues[2].relevant |= SocialBrowserModule.GetBrowserVersionNumber(item.tModLoaderVersion) != SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
-			commonIssues[3].relevant |= item.location == ModLocation.Modpack;
+
+			if (item.location == ModLocation.Modpack) {
+				var ss = File.ReadLines(Path.Combine(ModOrganizer.ModPackActive, "Mods", "tmlversion.txt")).FirstOrDefault();
+				commonIssues[3].relevant |= item.location == ModLocation.Modpack && new Version(ss).MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
+			}
+			
 		}
 
 		foreach (var item in commonIssues.Where(item => item.relevant)) {
@@ -233,8 +240,7 @@ public static class ModLoader
 
 		// Getting Real Technical Section
 
-		sb.AppendLine($"For Support, Include Files at \"Open Logs\" and Information Below");
-		sb.AppendLine($"   Error(s):");
+		sb.AppendLine($"For Support, Include Files at \"Open Logs\" and errors below");
 
 		if (exception is Exceptions.JITException)
 			sb.AppendLine($"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.");
