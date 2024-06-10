@@ -280,20 +280,18 @@ internal class UIModItem : UIPanel
 			Append(_keyImage);
 		}
 
-		if (_mod.location == ModLocation.Workshop) {
-			var steamIcon = new UIImage(TextureAssets.Extra[243]) {
-				RemoveFloatingPointsFromDrawPosition = true,
-				Left = { Pixels = -22, Percent = 1f }
-			};
-			Append(steamIcon);
-		}
-		else if (_mod.location == ModLocation.Modpack) {
-			var modpackIcon = new UIImage(UICommon.ModLocationModPackIcon) {
-				RemoveFloatingPointsFromDrawPosition = true,
-				Left = { Pixels = -22, Percent = 1f }
-			};
-			Append(modpackIcon);
-		}
+		var modLocationIconTexture = _mod.location switch {
+			ModLocation.Workshop => TextureAssets.Extra[243],
+			ModLocation.Modpack => UICommon.ModLocationModPackIcon,
+			ModLocation.Local => UICommon.ModLocationLocalIcon,
+			_ => throw new NotImplementedException(),
+		};
+		var modLocationIcon = new UIHoverImage(modLocationIconTexture, Language.GetTextValue("tModLoader.ModFrom" + _mod.location)) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = -22, Percent = 1f }
+		};
+		Append(modLocationIcon);
 
 		if (loadedMod != null) {
 			_loaded = true;

@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Reload Forced",
 		"ModIsServerSide": "This is a server side mod",
+		"ModFromWorkshop": "Loading from workshop",
+		"ModFromModpack": "Loading from active mod pack",
+		"ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "By: {0}",
 		"ModsMoreInfo": "More Info",
 		"ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
@@ -190,6 +193,8 @@
 		"LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
 		"LoadErrorDependencyVersionTooLow": "{0} requires {2} version {1} or greater but version {3} is installed",
 		"LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
+		"LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		"LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
 		"UnloadError": "One or more errors occurred while unloading and tModLoader must be restarted to prevent further issues.",
 		"DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
@@ -275,6 +280,7 @@
 		"InstallPackLocal": "Import Pack (Local)",
 		"InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		"ModPackMismatch": "Last Mod Pack: {0}",
+		"ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Syncing Mods",

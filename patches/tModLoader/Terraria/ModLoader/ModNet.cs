@@ -457,6 +457,8 @@ public static class ModNet
 			if (downloadingFile.Position == downloadingLength) {
 				downloadingFile.Close();
 
+				ModCompile.recentlyBuiltModCheckTimeCutoff = DateTime.Now + TimeSpan.FromSeconds(10);
+
 				var mod = new TmodFile(downloadingMod.path);
 
 				using (mod.Open()) { }

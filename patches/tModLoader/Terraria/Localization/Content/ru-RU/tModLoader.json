@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Изменение этой настройки требует перезагрузки мода.",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "Автор: {0}",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из «Браузера модов»",
@@ -190,6 +193,8 @@
 		"LoadErrorHashMismatchCorrupted": "Несоответствие хэшей, массив данных был изменён или повреждён",
 		"LoadErrorDependencyVersionTooLow": "Для {0} необходим {2} версии {1} или выше, но у вас установлена версия {3}.",
 		"LoadErrorMajorVersionMismatch": "{0} поддерживает {2} версии {1}, но у вас установлено новое крупное обновление с версией ({3}), которая может быть несовместима. {0} необходимо обновить.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Вы объявили свойство ModNPC.banner или ModNPC.bannerItem, но не указали один из них. Убедитесь, что вы указали оба в своём коде: проверьте правописание и убедитесь, что предметы существуют, когда вы используете mod.ItemType(). Сообщите об этой ошибке разработчикам мода {0}.",
 		"UnloadError": "Во время выгрузки модов возникла одна или несколько ошибок. Во избежание дальнейших проблем необходимо перезапустить tModLoader.",
 		"DefensiveUnload": "Мод {0} не смог правильно выгрузиться. Разработчики модов должны использовать безопасное программирование для гарантии завершения выгрузки даже в случае ошибок во время их загрузки.",
@@ -275,6 +280,7 @@
 		"InstallPackLocal": "Установить сборку (Локально)",
 		"InstallPackLocalDesc": "Выключает абсолютно все моды и включает сборку\nс замороженными версиями модов, найденных в сборке",
 		"ModPackMismatch": "Последняя сборка модов: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Синхронизация модов",

@@ -64,6 +64,7 @@ internal class ModCompile
 
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
+	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
 	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
@@ -212,7 +213,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
 			BuildMod(mod, out var code, out var pdb);
-			mod.modFile.AddFile(mod.Name+".dll", code);
+			mod.modFile.AddFile(mod.Name + ".dll", code);
 			if (pdb != null)
 				mod.modFile.AddFile(mod.Name + ".pdb", pdb);
 

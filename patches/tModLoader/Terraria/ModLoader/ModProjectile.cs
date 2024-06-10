@@ -47,7 +47,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
 
 	/// <summary>
-	/// The file name of this type's texture file in the mod loader's file space.
+	/// The file name of this type's texture file in the mod loader's file space. <br/>
+	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Projectile"/> indexed by <see cref="Type"/> if needed. <br/>
+	/// You can use a vanilla texture by returning <c>$"Terraria/Images/Projectile_{ProjectileID.ProjectileNameHere}"</c> <br/>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
@@ -326,7 +328,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind this projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+	/// Allows you to draw things behind this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 	/// </summary>
 	public virtual bool PreDrawExtras()
 	{
@@ -334,7 +336,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
+	/// Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 	/// </summary>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
 	public virtual bool PreDraw(ref Color lightColor)
@@ -343,7 +345,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of this projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
+	/// Allows you to draw things in front of this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. This method is called even if PreDraw returns false.
 	/// </summary>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
 	public virtual void PostDraw(Color lightColor)

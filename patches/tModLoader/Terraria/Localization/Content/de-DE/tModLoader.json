@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Dies zu ändern macht es erforderlich neuzuladen",
 		"ModReloadForced": "Neu laden erzwingen",
 		"ModIsServerSide": "Dies ist ein serverseitiger Mod",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "Mod von: {0}",
 		"ModsMoreInfo": "Mehr Info",
 		"ModsOriginatedFromModBrowser": "Dieser Mod ist aus dem Mod-Browser",
@@ -190,6 +193,8 @@
 		"LoadErrorHashMismatchCorrupted": "Hash unpassend, data blob wurde verändert.",
 		"LoadErrorDependencyVersionTooLow": "{0} benötigt Version {1} von {2}, aber Version {3} ist installiert",
 		"LoadErrorMajorVersionMismatch": "{0} zielt auf {2} Version {1}, aber Sie haben eine neuere Hauptversion ({3}), die möglicherweise nicht kompatibel ist. {0} muss aktualisiert werden",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Du hast ModNPC.banner oder ModNPC.banneritem definiert, aber nicht beide. Stelle sicher, dass du beide definierst, überprüfe deine Rechtschreibung, dass der Gegenstand existiert. Wenn du mod.ItemType() benutzt, melde das den {0} Entwicklern.",
 		"UnloadError": "Ein oder mehrere Fehler sind beim Laden aufgetreten und tModLoader muss neu gestartet werden, um weitere Fehler zu verhindern.",
 		"DefensiveUnload": "{0} konnte nicht korrekt entladen werden. Modder müssen eine defensive Programmierung verwenden, um sicherzustellen, dass der Entladevorgang unabhängig von Fehlern beim Laden abgeschlossen wird.",
@@ -275,6 +280,7 @@
 		// "InstallPackLocal": "Import Pack (Local)",
 		// "InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		"ModPackMismatch": "Letztes Modpacket: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisiere Mods",

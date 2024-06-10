@@ -75,7 +75,25 @@
  			}
  		}
  	}
-@@ -258,7 +_,7 @@
+@@ -248,17 +_,25 @@
+ 	};
+ 	private static bool? _overrideForExpertMode = null;
+ 	private static bool? _overrideForMasterMode = null;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="WorldGen.drunkWorldGen"/>. </summary>
+ 	public static bool drunkWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/For_the_worthy">For the worthy</see> secret world seed. See also <see cref="WorldGen.getGoodWorldGen"/>. </summary>
+ 	public static bool getGoodWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Celebrationmk10">Celebrationmk10</see> secret world seed. See also <see cref="WorldGen.tenthAnniversaryWorldGen"/>. </summary>
+ 	public static bool tenthAnniversaryWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/The_Constant">The Constant</see> secret world seed. See also <see cref="WorldGen.dontStarveWorldGen"/>. </summary>
+ 	public static bool dontStarveWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Not_the_bees">Not the bees</see> secret world seed. See also <see cref="WorldGen.notTheBees"/>. </summary>
+ 	public static bool notTheBeesWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up (aka Remix)</see> secret world seed. See also <see cref="WorldGen.remixWorldGen"/>. </summary>
+ 	public static bool remixWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/No_traps">No traps</see> secret world seed. See also <see cref="WorldGen.noTrapsWorldGen"/>. </summary>
+ 	public static bool noTrapsWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Get_fixed_boi">Get fixed boi (aka Zenith)</see> secret world seed. This seed combines multiple secret seeds. Note that the other secret world seed bools inherited by this seed will be set as well, so there is no need to specifically check both those bools and this bool. See also <see cref="WorldGen.everythingWorldGen"/>. </summary>
  	public static bool zenithWorld = false;
  	public static Vector2 destroyerHB = new Vector2(0f, 0f);
  	public static FavoritesFile LocalFavoriteData = new FavoritesFile(SavePath + "/favorites.json", isCloud: false);
@@ -256,6 +274,15 @@
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
  	public static int maxRain = 750;
+@@ -727,6 +_,8 @@
+ 	public static int dungeonY;
+ 	public static Liquid[] liquid = new Liquid[Liquid.maxLiquid];
+ 	public static LiquidBuffer[] liquidBuffer = new LiquidBuffer[50000];
++	/// <summary> True on the server process, false on the client. Use this to selectively run code on server or client, such as loading texture assets.
++	/// <para/> <see cref="dedServ"/> is the same as <c><see cref="netMode"/> == <see cref="ID.NetmodeID.Server"/></c>. </summary>
+ 	public static bool dedServ;
+ 	public static int spamCount = 0;
+ 	public static int curMusic;
 @@ -743,19 +_,48 @@
  	public static int LogoA = 255;
  	public static int LogoB;
@@ -524,7 +551,7 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
-@@ -1001,6 +_,10 @@
+@@ -1001,10 +_,15 @@
  		0.75f,
  		0.75f
  	};
@@ -535,6 +562,11 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
+ 	public static bool mouseRightRelease;
++	/// <summary> Indicates if the full player inventory is currently showing. </summary>
+ 	public static bool playerInventory;
+ 	public static int stackSplit;
+ 	public static bool preventStackSplitReset;
 @@ -1026,7 +_,18 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -567,6 +599,16 @@
  	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
  	public static int[] travelShop = new int[40];
  	public static List<string> anglerWhoFinishedToday = new List<string>();
+@@ -1127,6 +_,9 @@
+ 	public static int numDisplayModes;
+ 	public static int[] displayWidth = new int[99];
+ 	public static int[] displayHeight = new int[99];
++	/// <summary>
++	/// If true, the game is currently in the main menus. If false the game is in the game world.
++	/// </summary>
+ 	public static bool gameMenu = true;
+ 	public static bool menuBGChangedDay = false;
+ 	public static bool menuBGChangedNight = false;
 @@ -1139,9 +_,9 @@
  	public static List<WorldFileData> WorldList = new List<WorldFileData>();
  	public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -579,7 +621,7 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
-@@ -1860,11 +_,19 @@
+@@ -1860,11 +_,20 @@
  	public static float exitScale = 0.8f;
  	public static bool mouseReforge;
  	public static float reforgeScale = 0.8f;
@@ -594,7 +636,8 @@
 +	/// <summary>
 +	/// Denotes the current network mode: <b>0</b> for single player client, <b>1</b> for multiplayer client, and <b>2</b> for server.<br/>
 +	/// Using <see cref="ID.NetmodeID"/> entries instead of 0, 1, and 2 will greatly enhance code readability.<br/>
-+	/// Modders must properly use netMode to selectively run code. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// Modders must properly use netMode to selectively run code, such as code affecting the game world. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// <see cref="dedServ"/> is the same as <c><see cref="netMode"/> == <see cref="ID.NetmodeID.Server"/></c>
 +	/// </summary>
  	public static int netMode;
  	private static int _targetNetMode;
@@ -698,6 +741,14 @@
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2212,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if any <see href="https://terraria.wiki.gg/wiki/Secret_world_seeds">secret world seed</see> is active for this world. </summary>
+ 	public static bool specialSeedWorld {
+ 		get {
+ 			if (!drunkWorld && !getGoodWorld && !tenthAnniversaryWorld && !notTheBeesWorld && !dontStarveWorld && !remixWorld && !noTrapsWorld)
 @@ -2221,6 +_,7 @@
  		}
  	}
