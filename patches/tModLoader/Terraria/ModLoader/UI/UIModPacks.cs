@@ -208,6 +208,13 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	public UIModPackItem LoadModernModPack(string folderPath)
 	{
 		string enabledJson = Path.Combine(folderPath, "Mods", "enabled.json");
+		string configsPath = Path.Combine(folderPath, "ModConfigs");
+
+		var configFilesFromPack = Directory.EnumerateFiles(configsPath);
+		foreach (string configFile in configFilesFromPack) {
+			string configName = Path.GetFileName(configFile);
+			File.Copy(configFile, Path.Combine(Config.ConfigManager.ModConfigPath, configName), true);
+		}
 
 		string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
 		if (modPackMods == null) {
@@ -243,6 +250,11 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 
 		File.WriteAllText(Path.Combine(modsPath, "tmlversion.txt"), BuildInfo.tMLVersion.ToString());
 
+		// Remove existing configuration files since they will be copied again from source
+		foreach (string configFile in Directory.EnumerateFiles(configsPath)) {
+			File.Delete(configFile);
+		}
+
 		// Export Mods Utilized
 		var workshopIds = new List<string>();
 		foreach (var mod in ModLoader.Mods) {
@@ -250,12 +262,10 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 				continue; // internal ModLoader mod
 
 			// Export Config Files
-			/*
 			foreach (var config in configsAll.Where(c => Path.GetFileName(c).StartsWith(mod.Name + '_'))) {
 				// Overwrite existing config file to fix config collisions (#2661)
 				File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)), true);
 			}
-			*/
 
 			// Export Publish ID information from Steam Workshop mods for easy re-downloading/downloading
 			if (ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.File.path), out var info)) {
