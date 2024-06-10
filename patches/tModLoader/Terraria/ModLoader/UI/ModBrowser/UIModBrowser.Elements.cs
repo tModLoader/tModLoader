@@ -156,7 +156,7 @@ internal partial class UIModBrowser
 
 		FilterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
 			Top = { Pixels = 5 },
-			Left = { Pixels = -160, Percent = 1f },
+			Left = { Pixels = -161, Percent = 1f },
 			Width = { Pixels = 100 },
 			Height = { Pixels = 20 }
 		};
@@ -175,19 +175,19 @@ internal partial class UIModBrowser
 		};
 
 		SortModeFilterToggle = new UIBrowserFilterToggle<ModBrowserSortMode>(0, 0) {
-			Left = new StyleDimension { Pixels = 0 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 0 * 36 }
 		};
 		TimePeriodToggle = new UIBrowserFilterToggle<ModBrowserTimePeriod>(34 * 8, 0) {
-			Left = new StyleDimension { Pixels = 1 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 1 * 36 }
 		};
 		UpdateFilterToggle = new UIBrowserFilterToggle<UpdateFilter>(34, 0) {
-			Left = new StyleDimension { Pixels = 2 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 2 * 36 }
 		};
 		SearchFilterToggle = new UIBrowserFilterToggle<SearchFilter>(34 * 2, 0) {
-			Left = new StyleDimension { Pixels = 545f }
+			Left = new StyleDimension { Pixels = 544f }
 		};
 		ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
-			Left = new StyleDimension { Pixels = 3 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 3 * 36 }
 		};
 		SearchFilterToggle.SetCurrentState(SearchFilter.Name);
 		TimePeriodToggle.SetCurrentState(ModBrowserTimePeriod.OneWeek);
