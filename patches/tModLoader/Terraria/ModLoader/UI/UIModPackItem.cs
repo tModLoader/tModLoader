@@ -16,6 +16,7 @@ using Terraria.UI;
 using Terraria.Audio;
 using ReLogic.Content;
 using ReLogic.OS;
+using Newtonsoft.Json;
 
 namespace Terraria.ModLoader.UI;
 
@@ -420,12 +421,18 @@ internal class UIModPackItem : UIPanel
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		UIModPacks.SaveModPack(modpack._filename);
 
+		// It might be better to use modpack._mods instead of reading from the file,
+		// but there is an issue where modpack._mods is not updated when File.Delete is called,
+		// resulting in wrong files being deleted
+		string enabledJson = Path.Combine(UIModPacks.ModPackModsPath(modpack._filepath), "enabled.json");
+		string[] currentMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
+
 		if (modpack._filepath == ModOrganizer.ModPackActive) {
 			ModLoader.DisableAllMods();
 			Logging.tML.Info($"Cleaning up removed tmods {modpack._filename}");
 			ModLoader.OnSuccessfulLoad += () => {
 				foreach (var file in Directory.EnumerateFiles(UIModPacks.ModPackModsPath(modpack._filename), "*.tmod"))
-					if (!modpack._mods.Contains(Path.GetFileNameWithoutExtension(file)))
+					if (!currentMods.Contains(Path.GetFileNameWithoutExtension(file)))
 						File.Delete(file);
 
 				EnableList(evt, listeningElement);
@@ -434,7 +441,7 @@ internal class UIModPackItem : UIPanel
 		}
 		else {
 			foreach (var file in Directory.EnumerateFiles(UIModPacks.ModPackModsPath(modpack._filename), "*.tmod"))
-				if (!modpack._mods.Contains(Path.GetFileNameWithoutExtension(file)))
+				if (!currentMods.Contains(Path.GetFileNameWithoutExtension(file)))
 					File.Delete(file);
 		}
 
