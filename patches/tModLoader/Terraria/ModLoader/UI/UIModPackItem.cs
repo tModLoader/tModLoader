@@ -366,6 +366,13 @@ internal class UIModPackItem : UIPanel
 			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", string.Join("\n", modListItem._missing)), Interface.modPacksMenuID);
 		}
 
+		string configsPath = Path.Combine(modListItem._filepath, "ModConfigs");
+		var configFilesFromPack = Directory.EnumerateFiles(configsPath);
+		foreach (string configFile in configFilesFromPack) {
+			string configName = Path.GetFileName(configFile);
+			File.Copy(configFile, Path.Combine(Config.ConfigManager.ModConfigPath, configName), true);
+		}
+
 		Logging.tML.Info($"Enabled Collection of mods defined in  Mod Pack {modListItem._filename}");
 		ModLoader.OnSuccessfulLoad += () => Main.menuMode = Interface.modPacksMenuID;
 		ModLoader.Reload();

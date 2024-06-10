@@ -208,14 +208,6 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	public UIModPackItem LoadModernModPack(string folderPath)
 	{
 		string enabledJson = Path.Combine(folderPath, "Mods", "enabled.json");
-		string configsPath = Path.Combine(folderPath, "ModConfigs");
-
-		var configFilesFromPack = Directory.EnumerateFiles(configsPath);
-		foreach (string configFile in configFilesFromPack) {
-			string configName = Path.GetFileName(configFile);
-			File.Copy(configFile, Path.Combine(Config.ConfigManager.ModConfigPath, configName), true);
-		}
-
 		string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
 		if (modPackMods == null) {
 			Utils.LogAndConsoleInfoMessage($"No contents in enabled.json at: {folderPath}. Is this correct?");
