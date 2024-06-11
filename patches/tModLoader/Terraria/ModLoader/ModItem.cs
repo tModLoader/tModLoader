@@ -1006,6 +1006,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows you to do various things before the vanilla wings are drawn. Use this to manually draw your wings. Returning false stops the vanilla wings from being drawn. Return true to continue drawing vanilla wings.
+	/// </summary>
+	/// <param name="drawInfo">The player drawset. Add your custom draw operations to this.</param>
+	/// <returns>True by default</returns>
+	public virtual bool PreDrawWings(ref PlayerDrawSet drawInfo)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to customize this item's movement when lying in the world. Note that this will not be called if this item is currently being grabbed by a player.
 	/// </summary>
 	/// <param name="gravity">The gravity.</param>

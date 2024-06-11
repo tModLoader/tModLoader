@@ -1776,6 +1776,13 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
+	public static bool PreDrawWings(ref PlayerDrawSet drawInfo)
+	{
+		EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, drawInfo.drawPlayer.wings);
+
+		return texture?.PreDrawWings(ref drawInfo) ?? true;
+	}
+
 	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
 
