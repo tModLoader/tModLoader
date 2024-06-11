@@ -28,23 +28,16 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(0, 5));
 		}
 
-		public override void OnConsumeItem(Player player) {
+		public override bool? UseItem(Player player) {
+			// Only do something if the License hasn't been used before or the Town Pet exists in the world.
 			int npcType = ModContent.NPCType<ExampleTownPet>(); // The NPC Type for the Town Pet.
-			if (player.whoAmI == Main.myPlayer && player.itemAnimation > 0) {
-				// Only do something if the License hasn't been used before or the Town Pet exists in the world.
-				if (!ExampleTownPetSystem.boughtExampleTownPet || NPC.AnyNPCs(npcType)) {
-					player.ApplyItemTime(Item); // Make it so the player uses the item for the useAnimation.
+			if (player.ItemAnimationJustStarted && (!ExampleTownPetSystem.boughtExampleTownPet || NPC.AnyNPCs(npcType))) {
+				if (player.whoAmI == Main.myPlayer) {
 					ExampleTownPetUnlockOrExchangePet(ref ExampleTownPetSystem.boughtExampleTownPet, npcType, this.GetLocalizationKey("LicenseExampleTownPetUse")); // Modified NPC.UnlockOrExchangePet method.
 				}
-			}
-		}
-
-		public override bool? UseItem(Player player) {
-			// Only consume the item if it is going to do something.
-			if (!ExampleTownPetSystem.boughtExampleTownPet || NPC.AnyNPCs(ModContent.NPCType<ExampleTownPet>())) {
 				return true;
 			}
-			return null;
+			return false;
 		}
 
 		/// <summary>

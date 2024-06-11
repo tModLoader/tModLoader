@@ -67,6 +67,7 @@ namespace ExampleMod.Content.NPCs.TownPets
 
 			NPCProfile = new ExampleTownPetProfile(); // Assign our profile.
 		}
+
 		public override void SetDefaults() {
 			NPC.townNPC = true; // Town Pets are still considered Town NPCs
 			NPC.friendly = true;
