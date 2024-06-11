@@ -21,13 +21,13 @@ namespace ExampleMod.Content.Projectiles.Rockets
 		public override void SetDefaults() {
 			Projectile.width = 14;
 			Projectile.height = 14;
-			// Proximity Mines use explosive AI, ProjAIStyleID.Explosive (16). You could use that instead here with the correct AIType.
-			// But, using our own AI allows us to customize things like the dusts that the mine creates.
-			Projectile.aiStyle = -1;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1; // Infinite penetration so that the blast can hit all enemies within its radius.
 			Projectile.DamageType = DamageClass.Ranged;
 
+			// Proximity Mines use explosive AI, ProjAIStyleID.Explosive (16). You could use that instead here with the correct AIType.
+			// But, using our own AI allows us to customize things like the dusts that the mine creates.
+			// Projectile.aiStyle = ProjAIStyleID.Explosive;
 			// AIType = ProjectileID.ProximityMineI;
 		}
 		public override void AI() {

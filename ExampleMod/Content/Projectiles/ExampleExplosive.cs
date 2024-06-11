@@ -2,7 +2,6 @@
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -54,7 +53,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// The projectile is very bouncy, but the spawned children projectiles shouldn't bounce at all.
 		public override bool OnTileCollide(Vector2 oldVelocity) {
-			// Die immediately if localAI[0] is 1 (We set this to 1 for the 5 extra explosives we spawn in Kill)
+			// Die immediately if IsChild is true (We set this to true for the 5 extra explosives we spawn in OnKill)
 			if (IsChild) {
 				// These two are so the bomb will damage the player correctly.
 				Projectile.timeLeft = 0;
@@ -121,7 +120,6 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
 		}
 
-		/// <summary> Resizes the projectile for the explosion blast radius. </summary>
 		public override void PrepareBombToBlow() {
 			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the bomb explodes on slopes.
 			Projectile.alpha = 255; // Set to transparent. This projectile technically lives as transparent for about 3 frames
@@ -134,25 +132,12 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void OnKill(int timeLeft) {
-
-			// Damage the player who threw the bomb.
-			if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
-				Projectile.HurtPlayer(Projectile.Hitbox);
-				CutTiles(); // Destroy tall grass and flowers around the explosion.
-			}
-
-			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
-			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer && Main.netMode == NetmodeID.MultiplayerClient && Projectile.friendly && !Projectile.npcProj) {
-				Projectile.PrepareBombToBlow();
-				Projectile.HurtPlayer(Projectile.Hitbox);
-			}
-
 			// If we are the original projectile running on the owner, spawn the 5 child projectiles.
 			if (Projectile.owner == Main.myPlayer && !IsChild) {
 				for (int i = 0; i < 5; i++) {
 					// Random upward vector.
 					Vector2 launchVelocity = new Vector2(Main.rand.NextFloat(-3, 3), Main.rand.NextFloat(-10, -8));
-					// Importantly, ai1 is set to 1 here. This is checked in OnTileCollide to prevent bouncing and here in Kill to prevent an infinite chain of splitting projectiles.
+					// Importantly, IsChild is set to true here. This is checked in OnTileCollide to prevent bouncing and here in OnKill to prevent an infinite chain of splitting projectiles.
 					Projectile child = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, launchVelocity, Projectile.type, Projectile.damage, Projectile.knockBack, Main.myPlayer, 0, 1);
 					(child.ModProjectile as ExampleExplosive).IsChild = true;
 					// Usually editing a projectile after NewProjectile would require sending MessageID.SyncProjectile, but IsChild only affects logic running for the owner so it is not necessary here.

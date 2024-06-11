@@ -22,13 +22,14 @@ namespace ExampleMod.Content.Projectiles.Rockets
 		public override void SetDefaults() {
 			Projectile.width = 14;
 			Projectile.height = 14;
-			// Rockets use explosive AI, ProjAIStyleID.Explosive (16). You could use that instead here with the correct AIType.
-			// But, using our own AI allows us to customize things like the dusts that the rocket creates.
-			Projectile.aiStyle = -1;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1; // Infinite penetration so that the blast can hit all enemies within its radius.
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.scale = 0.9f; // All snowmen rockets are 0.9f scale.
+
+			// Rockets use explosive AI, ProjAIStyleID.Explosive (16). You could use that instead here with the correct AIType.
+			// But, using our own AI allows us to customize things like the dusts that the rocket creates.
+			// Projectile.aiStyle = ProjAIStyleID.Explosive;
 			// AIType = ProjectileID.RocketSnowmanI;
 		}
 		public override void AI() {
