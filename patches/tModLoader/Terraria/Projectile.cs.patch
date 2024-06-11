@@ -1613,7 +1613,7 @@
 +	public void PrepareBombToBlow()
  	{
  		tileCollide = false;
-+		if(type >= ProjectileID.Count) // This seems unused and could cause issues for modded projectiles.
++		if(type < ProjectileID.Count) // This seems unused and could cause issues for modded projectiles.
 -		ai[1] = 0f;
 +			ai[1] = 0f;
  		alpha = 255;
