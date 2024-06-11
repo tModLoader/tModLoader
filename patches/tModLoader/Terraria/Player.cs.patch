@@ -7494,7 +7494,17 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -40945,15 +_,68 @@
+@@ -40942,18 +_,78 @@
+ 		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
+ 			return true;
+ 
++		// Added fallback functionality for mod compatibility
++		launcher = AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[launcher];
++		if (launcher != -1) {
++			if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var fallbackValue) && fallbackValue.TryGetValue(ammo, out pickedProjectileId))
++				return true;
++		}
++
  		return false;
  	}
  

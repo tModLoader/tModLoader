@@ -8,11 +8,24 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Projectiles
 {
 	// This projectile demonstrates exploding tiles (like a bomb or dynamite), spawning child projectiles, and explosive visual effects.
-	// TODO: This projectile does not currently damage the owner, or damage other players on the For the worthy secret seed.
 	public class ExampleExplosive : ModProjectile
 	{
 		private const int DefaultWidthHeight = 15;
 		private const int ExplosionWidthHeight = 250;
+
+		private bool IsChild {
+			get => Projectile.localAI[0] == 1;
+			set => Projectile.localAI[0] = value.ToInt();
+		}
+
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
+
+			// This set handles some things for us already:
+			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
+			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+			ProjectileID.Sets.Explosive[Type] = true;
+		}
 
 		public override void SetDefaults() {
 			// While the sprite is actually bigger than 15x15, we use 15x15 since it lets the projectile clip into tiles as it bounces. It looks better.
@@ -40,8 +53,11 @@ namespace ExampleMod.Content.Projectiles
 
 		// The projectile is very bouncy, but the spawned children projectiles shouldn't bounce at all.
 		public override bool OnTileCollide(Vector2 oldVelocity) {
-			// Die immediately if ai[1] isn't 0 (We set this to 1 for the 5 extra explosives we spawn in Kill)
-			if (Projectile.ai[1] != 0) {
+			// Die immediately if IsChild is true (We set this to true for the 5 extra explosives we spawn in OnKill)
+			if (IsChild) {
+				// These two are so the bomb will damage the player correctly.
+				Projectile.timeLeft = 0;
+				Projectile.PrepareBombToBlow();
 				return true;
 			}
 			// OnTileCollide can trigger quite frequently, so using soundDelay helps prevent the sound from overlapping too much.
@@ -68,15 +84,7 @@ namespace ExampleMod.Content.Projectiles
 		public override void AI() {
 			// The projectile is in the midst of exploding during the last 3 updates.
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				Projectile.tileCollide = false;
-				// Set to transparent. This projectile technically lives as transparent for about 3 frames
-				Projectile.alpha = 255;
-
-				// change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
-				Projectile.Resize(ExplosionWidthHeight, ExplosionWidthHeight);
-
-				Projectile.damage = 250;
-				Projectile.knockBack = 10f;
+				Projectile.PrepareBombToBlow(); // Get ready to explode.
 			}
 			else {
 				// Smoke and fuse dust spawn. The position is calculated to spawn the dust directly on the fuse.
@@ -112,14 +120,27 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
 		}
 
+		public override void PrepareBombToBlow() {
+			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the bomb explodes on slopes.
+			Projectile.alpha = 255; // Set to transparent. This projectile technically lives as transparent for about 3 frames
+
+			// Change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
+			Projectile.Resize(ExplosionWidthHeight, ExplosionWidthHeight);
+
+			Projectile.damage = 250; // Bomb: 100, Dynamite: 250
+			Projectile.knockBack = 10f; // Bomb: 8f, Dynamite: 10f
+		}
+
 		public override void OnKill(int timeLeft) {
 			// If we are the original projectile running on the owner, spawn the 5 child projectiles.
-			if (Projectile.owner == Main.myPlayer && Projectile.ai[1] == 0) {
+			if (Projectile.owner == Main.myPlayer && !IsChild) {
 				for (int i = 0; i < 5; i++) {
 					// Random upward vector.
 					Vector2 launchVelocity = new Vector2(Main.rand.NextFloat(-3, 3), Main.rand.NextFloat(-10, -8));
-					// Importantly, ai1 is set to 1 here. This is checked in OnTileCollide to prevent bouncing and here in Kill to prevent an infinite chain of splitting projectiles.
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, launchVelocity, Projectile.type, Projectile.damage, Projectile.knockBack, Main.myPlayer, 0, 1);
+					// Importantly, IsChild is set to true here. This is checked in OnTileCollide to prevent bouncing and here in OnKill to prevent an infinite chain of splitting projectiles.
+					Projectile child = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, launchVelocity, Projectile.type, Projectile.damage, Projectile.knockBack, Main.myPlayer, 0, 1);
+					(child.ModProjectile as ExampleExplosive).IsChild = true;
+					// Usually editing a projectile after NewProjectile would require sending MessageID.SyncProjectile, but IsChild only affects logic running for the owner so it is not necessary here.
 				}
 			}
 
@@ -165,7 +186,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Finally, actually explode the tiles and walls. Run this code only for the owner
 			if (Projectile.owner == Main.myPlayer) {
-				int explosionRadius = 7;
+				int explosionRadius = 7; // Bomb: 4, Dynamite: 7, Explosives & TNT Barrel: 10
 				int minTileX = (int)(Projectile.Center.X / 16f - explosionRadius);
 				int maxTileX = (int)(Projectile.Center.X / 16f + explosionRadius);
 				int minTileY = (int)(Projectile.Center.Y / 16f - explosionRadius);
