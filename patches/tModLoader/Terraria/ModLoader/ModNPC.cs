@@ -900,4 +900,49 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual void LoadData(TagCompound tag)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to change the location and sprite direction of the chat bubble that shows up while hovering over a Town NPC.
+	/// </summary>
+	/// <param name="position">
+	/// <br>The default position is:</br>
+	/// <br>The X component is set to the NPC's Center - half the width of the chat bubble texture. Then +/- half of the NPC's width + 8 pixels for facing right/left respectively.</br>
+	/// <br>Code: <c>npc.Center.X - screenPosition.X - (TextureAssets.Chat.Width() / 2f) +/- (npc.width / 2f + 8)</c></br>
+	/// <br>The Y component is set to the top of the NPC - the height of the chat bubble texture. (Negative Y is up.)</br>
+	/// <br>Code: <c>npc.position.Y - TextureAssets.Chat.Height() - (float)(int)screenPosition.Y</c></br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the chat bubble is flipped.</param>
+	public virtual void ChatBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <summary>
+	/// <br>Allows you to fully control the location of the party and sprite direction of the party while an NPC is wearing it.</br>
+	/// <br><seealso cref="NPCID.Sets.HatOffsetY"/> can be used instead of this hook for a constant Y offset.</br>
+	/// <br><seealso cref="NPCID.Sets.NPCFramingGroup"/> can be additionally be used for the Y offset for the Town NPC's animations.</br>
+	/// </summary>
+	/// <param name="position">
+	/// <br>This is the final position right before the party hat gets drawn which is generally the top center of the NPC's hitbox.</br>
+	/// <br><seealso cref="NPCID.Sets.HatOffsetY"/> and <seealso cref="NPCID.Sets.NPCFramingGroup"/> are already taken into account.</br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the party hat is flipped.</param>
+	public virtual void PartyHatPosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to change the location and sprite direction of the emote bubble when anchored to an NPC.
+	/// </summary>
+	/// <param name="position">
+	/// <br>The default position is:</br>
+	/// <br>The X component is set to the NPC's Top + 75% of their width.</br>
+	/// <br>Code: <c>entity.Top.X + ((-entity.direction * entity.width) * 0.75f)</c></br>
+	/// <br>The Y component is set to the NPC's Y position + 2 pixels. (Positive Y is down.)</br>
+	/// <br>Code: <c>entity.VisualPosition.Y + 2f</c></br>
+	/// <br>(<seealso cref="Entity.VisualPosition"/> is only used for the player for <seealso cref="Player.gfxOffY"/>)</br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the emote bubble is flipped.</param>
+	public virtual void EmoteBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
 }

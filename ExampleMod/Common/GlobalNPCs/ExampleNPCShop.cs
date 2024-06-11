@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Content.Items;
+using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Ammo;
 using ExampleMod.Content.Items.Mounts;
 using ExampleMod.Content.NPCs;
@@ -36,6 +37,9 @@ namespace ExampleMod.Common.GlobalNPCs
 			}
 			else if (shop.NpcType == NPCID.Stylist) {
 				shop.Add<ExampleHairDye>();
+			}
+			else if (shop.NpcType == NPCID.BestiaryGirl) {
+				shop.Add<ExampleTownPetLicense>(Condition.BestiaryFilledPercent(50));
 			}
 			else if (shop.NpcType == NPCID.Cyborg) {
 				shop.Add<ExampleRocket>(Condition.NpcIsPresent(ModContent.NPCType<ExamplePerson>()));

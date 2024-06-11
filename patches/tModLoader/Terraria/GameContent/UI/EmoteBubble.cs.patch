@@ -164,6 +164,19 @@
  			frameCounter = 0;
  			if (++frame >= 2)
  				frame = 0;
+@@ -157,7 +_,12 @@
+ 		Texture2D value = TextureAssets.Extra[48].Value;
+ 		SpriteEffects effect = SpriteEffects.None;
+ 		Vector2 position = GetPosition(out effect);
++
++		if (anchor.type == WorldUIAnchor.AnchorType.Entity && anchor.entity is NPC npc) {
++			NPCLoader.EmoteBubblePosition(npc, ref position, ref effect);
++		}
+ 		position = position.Floor();
++
+ 		bool flag = lifeTime < 6 || lifeTimeStart - lifeTime < 6;
+ 		Rectangle value2 = value.Frame(8, EMOTE_SHEET_VERTICAL_FRAMES, (!flag) ? 1 : 0);
+ 		Vector2 origin = new Vector2(value2.Width / 2, value2.Height);
 @@ -167,7 +_,28 @@
  			position = Main.ReverseGravitySupport(position);
  		}

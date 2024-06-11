@@ -3617,6 +3617,15 @@
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
+@@ -21928,6 +_,8 @@
+ 			if (n.shimmerTransparency > 0f)
+ 				num8 *= 1f - n.shimmerTransparency;
+ 
++			NPCLoader.PartyHatPosition(n, ref vector, ref spriteEffects);
++
+ 			spriteBatch.Draw(value, new Vector2(vector.X - screenPosition.X, vector.Y - screenPosition.Y), rectangle, npcColor * n.Opacity * num8, 0f, origin, n.scale, spriteEffects, 0f);
+ 		}
+ 
 @@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
@@ -4742,6 +4751,14 @@
  						Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)(player.position.X + (float)(player.width / 2) - (float)(Player.tileRangeX * 16)), (int)(player.position.Y + (float)(player.height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  						Microsoft.Xna.Framework.Rectangle value2 = new Microsoft.Xna.Framework.Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  						if (rectangle.Intersects(value2))
+@@ -34950,6 +_,7 @@
+ 		}
+ 
+ 		Vector2 position = new Vector2(npc[i].position.X + (float)(npc[i].width / 2) - screenPosition.X - (float)(TextureAssets.Chat.Width() / 2) - (float)num, num2);
++		NPCLoader.ChatBubblePosition(npc[i], ref position, ref spriteEffects);
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, GameViewMatrix.ZoomMatrix);
+ 		PlayerInput.SetZoom_UI();
 @@ -35027,10 +_,18 @@
  			if (num5 == 147)
  				bannerMouseOver = true;

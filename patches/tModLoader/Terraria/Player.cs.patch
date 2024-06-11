@@ -4607,6 +4607,24 @@
  	{
  		short frameX = Main.tile[myX, myY].frameX;
  		bool flag = frameX / 72 == 1;
+@@ -25243,6 +_,9 @@
+ 	{
+ 		NPC nPC = Main.npc[animalNpcIndex];
+ 		targetDirection = ((nPC.Center.X > base.Center.X) ? 1 : (-1));
++		int num = NPCID.Sets.PlayerDistanceWhilePetting[nPC.type];
++		isPetSmall = NPCID.Sets.IsPetSmallForPetting[nPC.type];
++		/*
+ 		int num = 36;
+ 		isPetSmall = false;
+ 		switch (nPC.type) {
+@@ -25272,6 +_,7 @@
+ 				num = 20;
+ 				break;
+ 		}
++		*/
+ 
+ 		playerPositionWhenPetting = nPC.Bottom + new Vector2(-targetDirection * num, 0f);
+ 	}
 @@ -25345,7 +_,14 @@
  			StopPettingAnimal();
  	}
