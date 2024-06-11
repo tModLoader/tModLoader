@@ -12,6 +12,10 @@ namespace ExampleMod.Content.Items.Consumables
 {
 	public class ExampleTownPetLicense : ModItem
 	{
+		public override void SetStaticDefaults() {
+			Item.ResearchUnlockCount = 5;
+		}
+
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.consumable = true;
@@ -30,10 +34,11 @@ namespace ExampleMod.Content.Items.Consumables
 				// Only do something if the License hasn't been used before or the Town Pet exists in the world.
 				if (!ExampleTownPetSystem.boughtExampleTownPet || NPC.AnyNPCs(npcType)) {
 					player.ApplyItemTime(Item); // Make it so the player uses the item for the useAnimation.
-					ExampleTownPetUnlockOrExchangePet(ref ExampleTownPetSystem.boughtExampleTownPet, npcType, "Mods.ExampleMod.UI.LicenseExampleTownPetUse"); // Modified NPC.UnlockOrExchangePet method.
+					ExampleTownPetUnlockOrExchangePet(ref ExampleTownPetSystem.boughtExampleTownPet, npcType, this.GetLocalizationKey("LicenseExampleTownPetUse")); // Modified NPC.UnlockOrExchangePet method.
 				}
 			}
 		}
+
 		public override bool? UseItem(Player player) {
 			// Only consume the item if it is going to do something.
 			if (!ExampleTownPetSystem.boughtExampleTownPet || NPC.AnyNPCs(ModContent.NPCType<ExampleTownPet>())) {

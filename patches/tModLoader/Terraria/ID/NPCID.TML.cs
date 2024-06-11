@@ -166,7 +166,7 @@ public partial class NPCID
 
 		// IDs taken from Player.GetPettingInfo
 		/// <summary>
-		/// While petting, the player's arm will be angled up by default. If the NPC is in this set, the player's armor will be angled down instead.
+		/// While petting, the player's arm will be angled up by default. If the NPC is in this set, the player's armor will be angled down instead. Defaults to false.
 		/// </summary>
 		public static bool[] IsPetSmallForPetting = Factory.CreateBoolSet(TownCat, TownBunny, TownSlimeBlue, TownSlimeGreen, TownSlimeOld, TownSlimePurple, TownSlimeRainbow, TownSlimeYellow, TownSlimeRed, TownSlimeCopper);
 	}

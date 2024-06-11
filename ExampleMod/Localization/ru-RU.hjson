@@ -77,8 +77,18 @@ Mods: {
 
 			ExampleTownPet: {
 				// DisplayName: Example Town Pet
-				// NameVariant2_6: Pine
 				// Census.SpawnCondition: Use an [i:ExampleMod/ExampleTownPetLicense] Example Town Pet License. Purchased from the Zoologist at 50% Bestiary completetion.
+
+				Names: {
+					Green: {
+						// Green: Green
+						// Jade: Jade
+						// Lime: Lime
+						// Mint: Mint
+						// Olive: Olive
+						// Pine: Pine
+					}
+				}
 			}
 		}
 
@@ -931,6 +941,7 @@ Mods: {
 					Use additional licenses to activate the Pet Exchange Program!
 					Find the perfect fit for you and your Example Town Pet!
 					''' */
+				// LicenseExampleTownPetUse: The license teleports away to the Example Town Pet delivery service...
 			}
 		}
 
@@ -1159,7 +1170,6 @@ Mods: {
 		UI: {
 			// ExampleResource: Example Resource: {0} / {1}
 			// InGameNotificationTitle: Welcome to the world, you are using Example Mod!
-			// LicenseExampleTownPetUse: The license teleports away to the Example Town Pet delivery service...
 		}
 
 		WorldGen: {

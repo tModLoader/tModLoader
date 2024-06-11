@@ -10,6 +10,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using ExampleMod.Common.Systems;
+using System.Linq;
 
 namespace ExampleMod.Content.NPCs.TownPets
 {
@@ -112,9 +113,6 @@ namespace ExampleMod.Content.NPCs.TownPets
 		public readonly List<string> NameList1 = new() {
 			"Red", "Crimson", "Cinnabar", "Maroon", "Scarlet"
 		};
-		public readonly List<string> NameList2 = new() {
-			"Green", "Jade", "Lime", "Mint", "Olive", Language.GetTextValue("Mods.ExampleMod.NPCs.ExampleTownPet.NameVariant2_6") // We can use localization, too!
-		};
 		public readonly List<string> NameList3 = new() {
 			"Blue", "Azure", "Sky", "Ultramarine", "Navy"
 		};
@@ -132,7 +130,9 @@ namespace ExampleMod.Content.NPCs.TownPets
 			return NPC.townNpcVariationIndex switch { // Change the name based on the variation.
 				0 => NameList0,
 				1 => NameList1, // Variant 1 will be the Shimmered variant if your NPC has a shimmer variant.
-				2 => NameList2,
+				// The Green (2) variant shows one approach to localizing Town NPC names.
+				// One additional benefit of this approach is a separate mod can add a Mods.ExampleMod.NPCs.ExampleTownPet.Names.Green.Emerald key and it will automatically be used as an name option.
+				2 => Language.FindAll(Lang.CreateDialogFilter(this.GetLocalizationKey("Names.Green"))).Select(x => x.Value).ToList(),
 				3 => NameList3,
 				4 => NameList4,
 				5 => NameList5,
@@ -180,16 +180,18 @@ namespace ExampleMod.Content.NPCs.TownPets
 			}
 		}
 
-		// public override void EmoteBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects) {
+		/*
+		public override void EmoteBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects) {
 			// Here is an example of how we can modify the emote bubble.
 
 			// Flip the emote bubble and move it.
-			// spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			// position.X += NPC.width * NPC.direction;
+			spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			position.X += NPC.width * NPC.direction;
 
 			// (Town Pets can't use emotes, so this example here won't actually do anything.)
 			// (For a working example, see ExampleMod/Common/GlobalNPCs/GuideGlobalNPC.cs)
-		// }
+		}
+		*/
 
 		public override void PartyHatPosition(ref Vector2 position, ref SpriteEffects spriteEffects) {
 			// With this hook, we have full control over the position of the party hat.
