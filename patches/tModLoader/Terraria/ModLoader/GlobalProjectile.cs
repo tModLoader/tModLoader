@@ -388,4 +388,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	{
 		return null;
 	}
+
+	/// <inheritdoc cref="ModProjectile.PrepareBombToBlow"/>
+	public virtual void PrepareBombToBlow(Projectile projectile)
+	{
+	}
 }

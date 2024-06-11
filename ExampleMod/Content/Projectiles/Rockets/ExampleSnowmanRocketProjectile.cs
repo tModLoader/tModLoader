@@ -152,8 +152,7 @@ namespace ExampleMod.Content.Projectiles.Rockets
 			return false; // Returning false is important here. Otherwise the projectile will die without being resized (no blast radius).
 		}
 
-		/// <summary> Resizes the projectile for the explosion blast radius. </summary>
-		private void PrepareBombToBlow() {
+		public override void PrepareBombToBlow() {
 			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the rocket explodes on slopes.
 			Projectile.alpha = 255; // Make the rocket invisible.
 

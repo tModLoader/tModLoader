@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Projectiles.Rockets
 		public override void AI() {
 			// If timeLeft is <= 3, then explode the mine.
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				PrepareBombToBlow();
+				Projectile.PrepareBombToBlow();
 			}
 			else {
 				// If the mine is not moving or barely moving, make it turn almost invisible.
@@ -83,7 +83,7 @@ namespace ExampleMod.Content.Projectiles.Rockets
 			return false;
 		}
 
-		private void PrepareBombToBlow() {
+		public override void PrepareBombToBlow() {
 			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the mine explodes on slopes.
 			Projectile.alpha = 255; // Make the mine invisible.
 
@@ -97,19 +97,6 @@ namespace ExampleMod.Content.Projectiles.Rockets
 		}
 
 		public override void OnKill(int timeLeft) {
-
-			// Damage the player who fired the mine.
-			if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
-				Projectile.HurtPlayer(Projectile.Hitbox);
-				CutTiles(); // Destroy tall grass and flowers around the explosion.
-			}
-
-			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
-			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer && Main.netMode == NetmodeID.MultiplayerClient && Projectile.friendly && !Projectile.npcProj) {
-				PrepareBombToBlow();
-				Projectile.HurtPlayer(Projectile.Hitbox);
-			}
-
 			// Play an exploding sound.
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 

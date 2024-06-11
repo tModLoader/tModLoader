@@ -769,4 +769,15 @@ public static class ProjectileLoader
 			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 		}
 	}
+
+	private static HookList HookPrepareBombToBlow = AddHook<Action<Projectile>>(g => g.PrepareBombToBlow);
+
+	internal static void PrepareBombToBlow(Projectile projectile)
+	{
+		projectile.ModProjectile?.PrepareBombToBlow();
+
+		foreach (var g in HookPrepareBombToBlow.Enumerate(projectile)) {
+			g.PrepareBombToBlow(projectile);
+		}
+	}
 }

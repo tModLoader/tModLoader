@@ -202,7 +202,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// This is used to check if the projectile is considered to be a member of a specified <see cref="DamageClass"/>.
 	/// </summary>
 	/// <param name="damageClass">The DamageClass to compare with the one assigned to this projectile.</param>
-	/// <returns><see langword="true"/> if this projectiles's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
+	/// <returns><see langword="true"/> if this projectile's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	/// <seealso cref="CountsAsClass{T}"/>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
@@ -216,7 +216,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <summary>
 	/// Hurts the local player if the player intersects the specified hitbox.
 	/// </summary>
-	/// <param name="hitbox">Typically the <see cref="Projectile.Hitbox"/>, but any other Rectangle can be passed.</param>
+	/// <param name="hitbox">Typically the <see cref="Entity.Hitbox"/>, but any other Rectangle can be passed.</param>
 	public void HurtPlayer(Rectangle hitbox)
 	{
 		Player targetPlayer = Main.LocalPlayer;

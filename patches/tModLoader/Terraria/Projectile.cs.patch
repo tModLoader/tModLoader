@@ -1601,6 +1601,32 @@
  			Kill();
  
  		rotation = (float)Math.Atan2(velocity.Y, velocity.X) + 2.355f;
+@@ -32823,10 +_,15 @@
+ 			Kill();
+ 	}
+ 
++	/// <summary>
++	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. By defaults tileCollide is set to false and alpha is set to 255.
++	/// <para/> Calls the <see cref="ProjectileLoader.PrepareBombToBlow(Projectile)"/> method.
++	/// </summary>
+-	private void PrepareBombToBlow()
++	public void PrepareBombToBlow()
+ 	{
+ 		tileCollide = false;
++		if(type >= ProjectileID.Count) // This seems unused and could cause issues for modded projectiles.
+-		ai[1] = 0f;
++			ai[1] = 0f;
+ 		alpha = 255;
+ 		if (type == 28 || type == 37 || type == 516 || type == 519) {
+ 			Resize(128, 128);
+@@ -32878,6 +_,7 @@
+ 			Resize(200, 200);
+ 			knockBack = 10f;
+ 		}
++		ProjectileLoader.PrepareBombToBlow(this);
+ 	}
+ 
+ 	private void AI_016()
 @@ -33733,6 +_,13 @@
  	public static void GetWhipSettings(Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier)
  	{

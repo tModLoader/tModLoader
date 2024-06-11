@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Projectiles.Rockets
 		public override void AI() {
 			// If timeLeft is <= 3, then explode the grenade.
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				PrepareBombToBlow();
+				Projectile.PrepareBombToBlow();
 			}
 			else {
 				// Spawn a smoke dust.
@@ -80,7 +80,7 @@ namespace ExampleMod.Content.Projectiles.Rockets
 			return false;
 		}
 
-		private void PrepareBombToBlow() {
+		public override void PrepareBombToBlow() {
 			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the grenade explodes on slopes.
 			Projectile.alpha = 255; // Make the grenade invisible.
 
@@ -94,19 +94,6 @@ namespace ExampleMod.Content.Projectiles.Rockets
 		}
 
 		public override void OnKill(int timeLeft) {
-
-			// Damage the player who fired the grenade.
-			if (Projectile.friendly && Projectile.owner == Main.myPlayer && !Projectile.npcProj) {
-				Projectile.HurtPlayer(Projectile.Hitbox);
-				CutTiles(); // Destroy tall grass and flowers around the explosion.
-			}
-
-			// If in For the Worthy or Get Fixed Boi worlds, the blast damage can damage other players.
-			if (Main.getGoodWorld && Projectile.owner != Main.myPlayer && Main.netMode == NetmodeID.MultiplayerClient && Projectile.friendly && !Projectile.npcProj) {
-				PrepareBombToBlow();
-				Projectile.HurtPlayer(Projectile.Hitbox);
-			}
-
 			// Play an exploding sound.
 			SoundEngine.PlaySound(SoundID.Item62, Projectile.position);
 
