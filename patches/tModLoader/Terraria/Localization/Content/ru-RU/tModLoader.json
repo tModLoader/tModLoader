@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Изменение этой настройки требует перезагрузки мода.",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "Автор: {0}",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из «Браузера модов»",
@@ -123,6 +126,8 @@
 		//Mod Config
 		"ModConfigs": "Конфигурации",
 		"ModConfigFilterOptions": "Фильтр",
+		"ModConfigFilterByName": "Фильтр по имени",
+		"ModConfigFilterByMod": "Фильтр по моду",
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация модов",
 		"ModConfigSaveConfig": "Сохранить",
@@ -141,6 +146,7 @@
 		"ModConfigCollapse": "Свернуть",
 		"ModConfigScaleUp": "Увеличить масштаб",
 		"ModConfigScaleDown": "Уменьшить масштаб",
+		"ModConfigTypeHere": "Напишите здесь",
 		"ModConfigServerResponse": "Ответ сервера: {0}",
 		"ModConfigServerRejectedChanges": "Сервер отклонил изменения: {0}",
 		"ModConfigSharedConfigChanged": "Изменена общая конфигурация: Сообщение: {0}, Мод: {1}, Конфигурация: {2}",
@@ -168,9 +174,10 @@
 		"UpdateItem": "Обновление {0}",
 		"PublishItem": "Попытка публикации {0}",
 		"SteamDownloader": "Постановка скачивания в очередь менеджера загрузок Steam...",
-		// "PublishUpdateButton": "Update Existing",
-		// "PublishNewButton": "Publish New",
+		"PublishUpdateButton": "Обновить существующий",
+		"PublishNewButton": "Опубликовать новый",
 		"DownloadProgress": "Скачано {0}%",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
@@ -186,6 +193,8 @@
 		"LoadErrorHashMismatchCorrupted": "Несоответствие хэшей, массив данных был изменён или повреждён",
 		"LoadErrorDependencyVersionTooLow": "Для {0} необходим {2} версии {1} или выше, но у вас установлена версия {3}.",
 		"LoadErrorMajorVersionMismatch": "{0} поддерживает {2} версии {1}, но у вас установлено новое крупное обновление с версией ({3}), которая может быть несовместима. {0} необходимо обновить.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Вы объявили свойство ModNPC.banner или ModNPC.bannerItem, но не указали один из них. Убедитесь, что вы указали оба в своём коде: проверьте правописание и убедитесь, что предметы существуют, когда вы используете mod.ItemType(). Сообщите об этой ошибке разработчикам мода {0}.",
 		"UnloadError": "Во время выгрузки модов возникла одна или несколько ошибок. Во избежание дальнейших проблем необходимо перезапустить tModLoader.",
 		"DefensiveUnload": "Мод {0} не смог правильно выгрузиться. Разработчики модов должны использовать безопасное программирование для гарантии завершения выгрузки даже в случае ошибок во время их загрузки.",
@@ -271,6 +280,7 @@
 		"InstallPackLocal": "Установить сборку (Локально)",
 		"InstallPackLocalDesc": "Выключает абсолютно все моды и включает сборку\nс замороженными версиями модов, найденных в сборке",
 		"ModPackMismatch": "Последняя сборка модов: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Синхронизация модов",
@@ -329,9 +339,12 @@
 		"MBCancelLoading": "Отмена загрузки",
 		"MBPopulatingBrowser": "Наполнение Браузера...",
 		"MBSortByRecentlyUpdated": "Сортировка: Последние обновлённые моды",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Сортировка: Моды по популярности",
 		"MBSortDownloadDesc": "Сортировка: Моды по убыванию количества скачиваний",
 		"MBSortDownloadAsc": "Сортировка: Моды по возрастанию количества скачиваний",
+		// "MBTimePeriodToggleDisabled": "[c/{0}:{1} (Disabled in this sort mode)]",
+		// "MBSortByRelevance": "Sort by text relevance",
 		"MBShowAllMods": "Сортировка: Все моды",
 		"MBShowNotInstalledUpdates": "Отображать неустановленные или не обновлённые моды",
 		"MBShowUpdates": "Сортировка: Не обновлённые моды",
@@ -360,6 +373,12 @@
 		"XDaysAgo": "{0} дн. назад",
 		"XMonthsAgo": "{0} мес. назад",
 		"XYearsAgo": "{0} {^0:год;года;лет} назад",
+		// "Today": "Today",
+		// "OneWeek": "One Week",
+		// "ThreeMonths": "Three Months",
+		// "SixMonths": "Six Months",
+		// "OneYear": "One Year",
+		// "AllTime": "All Time",
 		"MBServerReturnToMenu": "Вернуться к меню выбора мира",
 		"MBServerAskForModName": "Введите точное название мода для скачивания: ",
 
@@ -373,8 +392,8 @@
 		"EnterSteamID": "Пожалуйста, введите свой SteamID",
 		"PasteSteamID": "Вставить SteamID (ctrl-v)",
 		"MBServerResponse": "Ответ сервера «Браузера модов»:\n\n{0}",
-		// "SettingsPublicityUnlisted": "Unlisted",
-		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
+		"SettingsPublicityUnlisted": "Не в списке",
+		"SettingsPublicityUnlistedDescription": "Мод не отображается в общедоступных результатах поиска, если на него не подписаны.\nВы можете изменить настройку видимости на странице Мастерской в любое время.",
 
 		// TML Options
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
@@ -471,6 +490,19 @@
 		"DownloadNetSDK": "Загрузить .NET SDK",
 		"DevModsInSandbox": "tModLoader не может разрабатывать моды в среде песочницы (например, в Flatpak). Пожалуйста, убедитесь, что вы установили Steam непосредственно на вашу систему.",
 
+		// Create Mod
+		"CreateModName": "Имя мода (без пробелов)",
+		"CreateModDisplayName": "Отображаемое имя мода",
+		"CreateModAuthor": "Автор мода",
+		"CreateModBasicSword": "Базовый меч (без пробелов)",
+		"CreateModBasicSwordHint": "Оставьте пустым, чтобы пропустить",
+		"CreateModFolderAlreadyExists": "Папка уже существует",
+		"CreateModNameInvalid": "Имя мода не является допустимым идентификатором C#. Удалите пробелы.",
+		"CreateModNameReserved": "Имя мода является зарезервированным. Выберите другое имя.",
+		"CreateModBasicSwordInvalid": "Базовый меч не является допустимым идентификатором C#. Удалите пробелы.",
+		"CreateModDisplayNameEmpty": "Отображаемое имя не может быть пустым.",
+		"CreateModAuthorEmpty": "Автор мода не может быть пустым.",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "Для сборки модов требуются дополнительные библиотеки. (Отсутствует папка ModCompile)",
 		"DMModCompileUpdate": "Версия папки ModCompile не совпадает. Версия Terraria: {0}, версия ModCompile: {1}",
@@ -542,6 +574,7 @@
 		// Memory bar
 		"LastLoadRamUsage": "Примерное использование ОЗУ при последнем запуске: {0}",
 		"AvailableMemory": "Доступно ОЗУ: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + Прочее: {0}",
 		"ManagedMemory": "Управляемая: {0}",
 		"CodeMemory": "Код: {0}",

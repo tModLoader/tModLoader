@@ -22,15 +22,13 @@ public static class ModNet
 		public string name;
 		public Version version;
 		public byte[] hash;
-		public bool signed;
 		public string path;
 
-		public ModHeader(string name, Version version, byte[] hash, bool signed)
+		public ModHeader(string name, Version version, byte[] hash)
 		{
 			this.name = name;
 			this.version = version;
 			this.hash = hash;
-			this.signed = signed;
 			path = Path.Combine(ModLoader.ModPath, name + ".tmod");
 		}
 
@@ -58,7 +56,6 @@ public static class ModNet
 	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
 	internal static bool downloadModsFromServers = true;
-	internal static bool onlyDownloadSignedMods = false;
 
 	internal static bool[] isModdedClient = new bool[256];
 
@@ -98,8 +95,6 @@ public static class ModNet
 	{
 		kickMsg = null;
 		isModded = clientVersion.StartsWith("tModLoader");
-		if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
-			return true;
 
 		if (clientVersion == NetVersionString)
 			return true;
@@ -130,15 +125,12 @@ public static class ModNet
 	internal static void Unload()
 	{
 		netMods = null;
-		if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
-			AllowVanillaClients = false;
 		ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 	}
 
 	internal static void SyncMods(int clientIndex)
 	{
 		var p = new ModPacket(MessageID.SyncMods);
-		p.Write(AllowVanillaClients);
 
 		var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToList();
 		AddNoSyncDeps(syncMods);
@@ -148,7 +140,6 @@ public static class ModNet
 			p.Write(mod.Name);
 			p.Write(mod.Version.ToString());
 			p.Write(mod.File.Hash);
-			p.Write(mod.File.ValidModBrowserSignature);
 			SendServerConfigs(p, mod);
 		}
 
@@ -200,9 +191,6 @@ public static class ModNet
 	// This method is split so that the local variables aren't held by the GC when reloading
 	internal static bool SyncClientMods(BinaryReader reader, out bool needsReload)
 	{
-		AllowVanillaClients = reader.ReadBoolean();
-		Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
-
 		Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 		Mod[] clientMods = ModLoader.Mods;
 		LocalMod[] modFiles = ModOrganizer.FindAllMods();
@@ -216,7 +204,7 @@ public static class ModNet
 
 		int n = reader.ReadInt32();
 		for (int i = 0; i < n; i++) {
-			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
+			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20));
 			SyncModHeaders.Add(header);
 
 			int configCount = reader.ReadInt32();
@@ -238,7 +226,7 @@ public static class ModNet
 				continue;
 			}
 
-			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
+			if (downloadModsFromServers) {
 				downloadQueue.Enqueue(header);
 				reloadRequiredExplanationEntries.Add(MakeDownloadModExplanation(modFiles, header, clientMod));
 			}
@@ -469,15 +457,14 @@ public static class ModNet
 			if (downloadingFile.Position == downloadingLength) {
 				downloadingFile.Close();
 
+				ModCompile.recentlyBuiltModCheckTimeCutoff = DateTime.Now + TimeSpan.FromSeconds(10);
+
 				var mod = new TmodFile(downloadingMod.path);
 
 				using (mod.Open()) { }
 
 				if (!downloadingMod.Matches(mod))
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
-
-				if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
-					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 				ModLoader.EnableMod(mod.Name);
 

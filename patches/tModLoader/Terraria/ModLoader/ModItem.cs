@@ -102,6 +102,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	{
 	}
 
+	/// <summary>
+	/// Called when this item is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
+	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft this created item.
+	/// </summary>
 	public virtual void OnCreated(ItemCreationContext context)
 	{
 	}
@@ -1287,7 +1291,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to make anything happen when the player crafts this item using the given recipe.
 	/// </summary>
 	/// <param name="recipe">The recipe that was used to craft this item.</param>
-	[Obsolete("Use OnCreate and check if context is RecipeCreationContext", true)]
+	[Obsolete("Use OnCreate and check if context is RecipeItemCreationContext", true)]
 	public virtual void OnCraft(Recipe recipe)
 	{
 	}

@@ -99,7 +99,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void OnWorldUnload() { }
 
 	/// <summary>
-	/// Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br/>
+	/// Called whenever the world is cleared. Use this to reset world-related data structures before world-gen or loading in both single and multiplayer. <br/>
 	/// Also called just before mods are unloaded.
 	/// </summary>
 	public virtual void ClearWorld() { }

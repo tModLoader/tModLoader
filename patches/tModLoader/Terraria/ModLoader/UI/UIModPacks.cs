@@ -114,6 +114,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(11);
+		Main.clrInput();
 		VirtualKeyboard.Text = "";
 		Main.MenuUI.SetState(VirtualKeyboard);
 		Main.menuMode = 888;

@@ -99,9 +99,6 @@ public static class TileLoader
 
 	internal static int ReserveTileID()
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding tiles breaks vanilla client compatibility");
-
 		int reserveID = nextTile;
 		nextTile++;
 		return reserveID;

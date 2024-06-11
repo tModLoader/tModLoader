@@ -251,23 +251,6 @@
  			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (num - 1), 1f / (float)num * num4);
  			groupOptionButton.HAlign = (float)num6 / (float)(num - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num4) * (1f - groupOptionButton.HAlign * 2f));
-@@ -538,14 +_,14 @@
- 		container.Append(uISlicedImage);
- 		UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
- 			HAlign = 0f,
--			VAlign = 1f,
-+			VAlign = 0.5f, // 1f,
- 			Width = new StyleDimension(0f, 1f),
- 			Height = new StyleDimension(0f, 1f)
- 		};
- 
- 		uIText.PaddingLeft = 4f;
- 		uIText.PaddingRight = 4f;
--		uIText.PaddingTop = 4f;
-+		uIText.PaddingTop = 24f; // 4f;
- 		uIText.IsWrapped = true;
- 		uISlicedImage.Append(uIText);
- 		_descriptionText = uIText;
 @@ -593,7 +_,8 @@
  
  	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)

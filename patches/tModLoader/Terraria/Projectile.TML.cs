@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.GameContent.Achievements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
@@ -201,7 +202,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// This is used to check if the projectile is considered to be a member of a specified <see cref="DamageClass"/>.
 	/// </summary>
 	/// <param name="damageClass">The DamageClass to compare with the one assigned to this projectile.</param>
-	/// <returns><see langword="true"/> if this projectiles's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
+	/// <returns><see langword="true"/> if this projectile's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	/// <seealso cref="CountsAsClass{T}"/>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
@@ -210,4 +211,39 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// Checks if the projectile is a minion, sentry, minion shot, or sentry shot. <br/>
 	/// </summary>
 	public bool IsMinionOrSentryRelated => minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type];
+
+	// Simplified version of Projectile.BombsHurtPlayers
+	/// <summary>
+	/// Hurts the local player if the player intersects the specified hitbox.
+	/// </summary>
+	/// <param name="hitbox">Typically the <see cref="Entity.Hitbox"/>, but any other Rectangle can be passed.</param>
+	public void HurtPlayer(Rectangle hitbox)
+	{
+		Player targetPlayer = Main.LocalPlayer;
+		// Check that the player should receive damage in the first place. If not, return.
+		if (!targetPlayer.active || targetPlayer.dead || targetPlayer.immune) {
+			return;
+		}
+
+		// Check that the hitbox radius intersects the player's hitbox. If not, return.
+		if (!hitbox.Intersects(targetPlayer.Hitbox)) {
+			return;
+		}
+
+		// Set the direction of the projectile so the knockback is always in the correct direction.
+		direction = (targetPlayer.Center.X > Center.X).ToDirectionInt();
+
+		int damageVariation = Main.DamageVar(damage, 0f - targetPlayer.luck); // Get the damage variation (affected by luck).
+		PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(owner, whoAmI); // Get the death message.
+
+		// Apply damage to the player.
+		if (targetPlayer.Hurt(damageSource, damageVariation, direction, pvp: true, quiet: false, Crit: false, -1, dodgeable: IsDamageDodgable(), armorPenetration: ArmorPenetration) > 0.0 && !targetPlayer.dead)
+			StatusPlayer(targetPlayer.whoAmI);
+
+		if (trap) {
+			targetPlayer.trapDebuffSource = true;
+			if (targetPlayer.dead)
+				AchievementsHelper.HandleSpecialEvent(targetPlayer, 4);
+		}
+	}
 }

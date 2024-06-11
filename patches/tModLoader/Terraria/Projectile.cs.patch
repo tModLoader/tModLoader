@@ -106,7 +106,7 @@
 +	/// </summary>
  	public float gfxOffY;
 +	/// <summary>
-+	/// Has nothing to do with the speed that this projectile travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
++	/// Has nothing to do with the speed that this projectile travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>. This affects how quickly <see cref="gfxOffY"/> is adjusted.
 +	/// </summary>
  	public float stepSpeed = 1f;
 +
@@ -740,7 +740,7 @@
  		return num;
  	}
  
-@@ -9760,7 +_,14 @@
+@@ -9760,11 +_,18 @@
  
  	public void Damage()
  	{
@@ -755,6 +755,11 @@
  			return;
  
  		Rectangle rectangle = Damage_GetHitbox();
+-		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
++		if (friendly && Main.getGoodWorld && (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
+ 			BombsHurtPlayers(rectangle, Main.myPlayer);
+ 			return;
+ 		}
 @@ -9899,6 +_,14 @@
  					if (!((!Main.npc[i].dontTakeDamage || NPCID.Sets.ZappingJellyfish[Main.npc[i].type]) && flag5) || (Main.npc[i].aiStyle == 112 && Main.npc[i].ai[2] > 1f))
  						continue;
@@ -924,6 +929,15 @@
  									if (type == 1002)
  										num19 /= 2;
  
+@@ -10364,7 +_,7 @@
+ 										else
+ 											direction = -1;
+ 									}
+-									else if (aiStyle == 16) {
++									else if (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) {
+ 										if (timeLeft > 3)
+ 											timeLeft = 3;
+ 
 @@ -10496,9 +_,12 @@
  									}
  
@@ -1087,6 +1101,15 @@
  					if (aiStyle == 3) {
  						if (ai[0] == 0f) {
  							velocity.X = 0f - velocity.X;
+@@ -11116,7 +_,7 @@
+ 
+ 						ai[0] = 1f;
+ 					}
+-					else if (aiStyle == 16) {
++					else if (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) {
+ 						if (timeLeft > 3)
+ 							timeLeft = 3;
+ 
 @@ -11144,11 +_,14 @@
  						timeLeft = 1;
  
@@ -1154,7 +1177,7 @@
  				StatusPlayer(myPlayer);
  
  			if (trap) {
-@@ -11348,6 +_,7 @@
+@@ -11348,12 +_,13 @@
  		if (type == 967)
  			result.Inflate(10, 10);
  
@@ -1162,6 +1185,13 @@
  		return result;
  	}
  
+ 	private void BombsHurtPlayers(Rectangle projRectangle, int j)
+ 	{
+-		if (aiStyle != 16 || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
++		if (!(aiStyle == 16 || ProjectileID.Sets.Explosive[type]) || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
+ 			return;
+ 
+ 		Rectangle value = new Rectangle((int)Main.player[j].position.X, (int)Main.player[j].position.Y, Main.player[j].width, Main.player[j].height);
 @@ -11378,7 +_,8 @@
  
  		bool dodgeable = IsDamageDodgable();
@@ -1290,6 +1320,15 @@
  				if (type == 663 || type == 665 || type == 667 || type == 677 || type == 678 || type == 679 || type == 691 || type == 692 || type == 693 || type == 688 || type == 689 || type == 690) {
  					position += velocity;
  					velocity = Vector2.Zero;
+@@ -14493,7 +_,7 @@
+ 								}
+ 							}
+ 						}
+-						else if (aiStyle == 16) {
++						else if (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) {
+ 							if (velocity.X != lastVelocity.X) {
+ 								velocity.X = lastVelocity.X * -0.4f;
+ 								if (type == 29)
 @@ -14643,6 +_,9 @@
  		if (aiStyle == 4 || aiStyle == 38 || aiStyle == 84 || aiStyle == 148 || (aiStyle == 7 && ai[0] == 2f) || ((type == 440 || type == 449 || type == 606) && ai[1] == 1f) || (aiStyle == 93 && ai[0] < 0f) || type == 540 || type == 756 || type == 818 || type == 856 || type == 961 || type == 933 || ProjectileID.Sets.IsAGolfBall[type])
  			return;
@@ -1398,6 +1437,24 @@
  	public void Resize(int newWidth, int newHeight)
  	{
  		position = base.Center;
+@@ -15977,7 +_,7 @@
+ 		else if (type == 819 || type == 117 || type == 474 || type == 225 || type == 103 || type == 2 || type == 82 || type == 120 || type == 172 || type == 41 || type == 91 || type == 278 || type == 5 || type == 639 || type == 631 || type == 495 || type == 4 || type == 282 || type == 1 || type == 81) {
+ 			velocity.Y -= 0.4f;
+ 		}
+-		else if (aiStyle == 1 || aiStyle == 16 || aiStyle == 40) {
++		else if (aiStyle == 1 || (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) || aiStyle == 40) {
+ 			int num = (int)(base.Center.X / 16f);
+ 			int num2 = (int)(position.Y / 16f);
+ 			if (WorldGen.InWorld(num, num2) && Main.tile[num, num2] != null && Main.tile[num, num2].liquid == byte.MaxValue && Main.tile[num, num2].shimmer() && WorldGen.InWorld(num, num2 - 1) && Main.tile[num, num2 - 1] != null && Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 1].shimmer()) {
+@@ -16051,7 +_,7 @@
+ 				timeLeft -= 20;
+ 			}
+ 		}
+-		else if (aiStyle == 14 || aiStyle == 16) {
++		else if (aiStyle == 14 || (aiStyle == 16 || ProjectileID.Sets.Explosive[type])) {
+ 			if (timeLeft > 3000)
+ 				timeLeft -= 60;
+ 
 @@ -16069,6 +_,11 @@
  
  	public void AI()
@@ -1544,6 +1601,32 @@
  			Kill();
  
  		rotation = (float)Math.Atan2(velocity.Y, velocity.X) + 2.355f;
+@@ -32823,10 +_,15 @@
+ 			Kill();
+ 	}
+ 
++	/// <summary>
++	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. By defaults tileCollide is set to false and alpha is set to 255.
++	/// <para/> Calls the <see cref="ProjectileLoader.PrepareBombToBlow(Projectile)"/> method.
++	/// </summary>
+-	private void PrepareBombToBlow()
++	public void PrepareBombToBlow()
+ 	{
+ 		tileCollide = false;
++		if(type < ProjectileID.Count) // This seems unused and could cause issues for modded projectiles.
+-		ai[1] = 0f;
++			ai[1] = 0f;
+ 		alpha = 255;
+ 		if (type == 28 || type == 37 || type == 516 || type == 519) {
+ 			Resize(128, 128);
+@@ -32878,6 +_,7 @@
+ 			Resize(200, 200);
+ 			knockBack = 10f;
+ 		}
++		ProjectileLoader.PrepareBombToBlow(this);
+ 	}
+ 
+ 	private void AI_016()
 @@ -33733,6 +_,13 @@
  	public static void GetWhipSettings(Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier)
  	{
@@ -1774,7 +1857,7 @@
  	{
  		Vector2 spinningpoint = new Vector2(7f, 0f);
  		Vector2 vector = new Vector2(1f, 0.7f);
-@@ -49971,12 +_,17 @@
+@@ -49971,13 +_,18 @@
  		int num = timeLeft;
  		timeLeft = 0;
  		bool flag = true;
@@ -1785,14 +1868,16 @@
  		if (owner == Main.myPlayer && flag)
  			Main.player[owner].TryCancelChannel(this);
  
+-		if (Main.getGoodWorld && aiStyle == 16)
 +		if (!ProjectileLoader.PreKill(this, num)) {
 +			active = false;
 +			return;
 +		}
 +
- 		if (Main.getGoodWorld && aiStyle == 16)
++		if (Main.getGoodWorld && (aiStyle == 16 || ProjectileID.Sets.Explosive[type]))
  			TryGettingHitByOtherPlayersExplosives();
  
+ 		if (Main.netMode != 1 && Main.getGoodWorld) {
 @@ -50953,7 +_,14 @@
  
  		if (Main.myPlayer == owner && bobber) {

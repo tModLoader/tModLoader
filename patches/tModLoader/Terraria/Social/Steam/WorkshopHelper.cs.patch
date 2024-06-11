@@ -271,19 +271,19 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -261,23 +_,63 @@
+@@ -261,23 +_,61 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
 +				*/
 +
-+				var uGCUpdateHandle_t = GenerateUgcUpdateHandle(out var patchNotes);
++				var uGCUpdateHandle_t = GenerateUgcUpdateHandle();
 +				_updateCallback = EResult.k_EResultNone;
 +				Logging.tML.Info("Submitting workshop update handle to Steam");
  
  				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
 -				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
-+				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, patchNotes);
++				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, _entryData.ChangeNotes);
  				_updateHandle = uGCUpdateHandle_t;
  				_updateItemHook.Set(hAPICall, UpdateItemResult);
  				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
@@ -301,19 +301,17 @@
 +				while (_updateCallback == EResult.k_EResultNone);
 +			}
 +
-+			internal UGCUpdateHandle_t GenerateUgcUpdateHandle(out string patchNotes)
++			internal UGCUpdateHandle_t GenerateUgcUpdateHandle()
 +			{
 +				var uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
 +
 +				SteamedWraps.ModifyUgcUpdateHandleCommon(ref uGCUpdateHandle_t, _entryData);
 +
-+				patchNotes = "";
-+
 +				if (_entryData.BuildData != null) {
 +					// Needed for backwards compat on version metadata change
 +					_entryData.BuildData["version"] = "0.0.0";
 +
-+					SteamedWraps.ModifyUgcUpdateHandleTModLoader(ref uGCUpdateHandle_t, ref patchNotes, _entryData, _publishedFileID);
++					SteamedWraps.ModifyUgcUpdateHandleTModLoader(ref uGCUpdateHandle_t, _entryData, _publishedFileID);
 +				}
 +
 +				return uGCUpdateHandle_t;

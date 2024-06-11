@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Cambiar esto requerirá recargar tModLoader",
 		"ModReloadForced": "Recarga forzada",
 		"ModIsServerSide": "Este es un mod del lado del servidor",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "De: {0}",
 		"ModsMoreInfo": "Información",
 		"ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
@@ -123,6 +126,8 @@
 		//Mod Config
 		"ModConfigs": "Configuración de mods",
 		"ModConfigFilterOptions": "Opciones de filtro",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Notificación: ",
 		"ModConfigModConfig": "Config. del mod",
 		"ModConfigSaveConfig": "Guardar config.",
@@ -141,6 +146,7 @@
 		"ModConfigCollapse": "Colapsar",
 		"ModConfigScaleUp": "Ampliar",
 		"ModConfigScaleDown": "Reducir",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Respuesta del servidor: {0}",
 		"ModConfigServerRejectedChanges": "El servidor rechazó los cambios: {0}",
 		"ModConfigSharedConfigChanged": "La configuración compartida ha cambiado: Mensaje: {0}, Mod: {1}, Configuración: {2}",
@@ -171,6 +177,7 @@
 		// "PublishUpdateButton": "Update Existing",
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Progreso de descarga: {0}%",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Se ha producido un error al cargar {0}",
@@ -186,6 +193,8 @@
 		"LoadErrorHashMismatchCorrupted": "El hash no coincide, los datos se han modificado o corrompido",
 		"LoadErrorDependencyVersionTooLow": "{0} requiere la versión {1} de {2} o mayor, pero está instalada la versión {3}",
 		"LoadErrorMajorVersionMismatch": "{0} usa {2} con la versión {1}, pero tienes una versión más reciente ({3}), que puede no ser compatible. Debes actualizar {0}",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Has puesto ModNPC.banner o ModNPC.bannerItem, pero no el otro. Asegúrate de configurar ambos, revisa la ortografía y que el elemento exista si estás usando mod.ItemType(). Reporta esto a los desarrolladores de {0}.",
 		"UnloadError": "Uno o más errores ocurrieron durante la desactivación y tModLoader debe reiniciarse para evitar más problemas.",
 		"DefensiveUnload": "{0} no se ha desactivado correctamente. Los modders deben usar programación defensiva para asegurar que la desactivación se complete sin importar los errores durante la carga.",
@@ -271,6 +280,7 @@
 		"InstallPackLocal": "Importar paquete (Local)",
 		"InstallPackLocalDesc": "Desactiva todos los mods y activa el paquete\nusando versiones de mods congelados del paquete de mods",
 		"ModPackMismatch": "Último paquete de mods: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Sincronizando mods",
@@ -329,9 +339,12 @@
 		"MBCancelLoading": "Detener carga",
 		"MBPopulatingBrowser": "Rellenando navegador...",
 		"MBSortByRecentlyUpdated": "Ordenar por actualizaciones recientes",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Ordenar por popularidad",
 		"MBSortDownloadDesc": "Ordenar por descargas (descendente)",
 		"MBSortDownloadAsc": "Ordenar por descargas (ascendente)",
+		// "MBTimePeriodToggleDisabled": "[c/{0}:{1} (Disabled in this sort mode)]",
+		// "MBSortByRelevance": "Sort by text relevance",
 		"MBShowAllMods": "Mostrar todos los mods",
 		"MBShowNotInstalledUpdates": "Mostrar mods sin instalar y actualizaciones",
 		"MBShowUpdates": "Mostrar solo actualizaciones",
@@ -360,6 +373,12 @@
 		"XDaysAgo": "Hace {0} {^0:día;días}",
 		"XMonthsAgo": "Hace {0} {^0:mes;meses}",
 		"XYearsAgo": "Hace {0} {^0:año;años}",
+		// "Today": "Today",
+		// "OneWeek": "One Week",
+		// "ThreeMonths": "Three Months",
+		// "SixMonths": "Six Months",
+		// "OneYear": "One Year",
+		// "AllTime": "All Time",
 		"MBServerReturnToMenu": "Volver al menú de mundos",
 		"MBServerAskForModName": "Escribe el nombre exacto del mod a descargar: ",
 
@@ -471,6 +490,19 @@
 		"DownloadNetSDK": "Descargar el SDK de .NET",
 		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
 
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",
 		"DMModCompileUpdate": "La versión de la carpeta de ModCompile no coincide. Terraria: {0}, ModCompile: {1}",
@@ -542,6 +574,7 @@
 		// Memory bar
 		"LastLoadRamUsage": "Uso de RAM estimado en la última carga: {0}",
 		"AvailableMemory": "Memoria disponible: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + misc.: {0}",
 		"ManagedMemory": "Administrado: {0}",
 		"CodeMemory": "Código: {0}",

@@ -835,7 +835,7 @@ Mods: {
 
 			ExampleExplosive: {
 				DisplayName: Example Explosive
-				Tooltip: ""
+				Tooltip: "{$ItemTooltip.Dynamite}"
 			}
 
 			ExampleJavelin: {
@@ -913,6 +913,16 @@ Mods: {
 				Tooltip: This is a modded sand block
 			}
 
+			ExampleRocket: {
+				DisplayName: Example Rocket
+				Tooltip: "{$ItemTooltip.RocketI}"
+			}
+
+			ExampleRocketLauncher: {
+				DisplayName: Example Rocket Launcher
+				Tooltip: ""
+			}
+
 			ExampleBoots: {
 				DisplayName: Example Boots
 				Tooltip:
@@ -984,6 +994,10 @@ Mods: {
 			ExampleLastPrismBeam.DisplayName: Example Prism Beam
 			ExampleSandBallFallingProjectile.DisplayName: Example Sand Ball
 			ExampleSandBallGunProjectile.DisplayName: "{$ExampleSandBallFallingProjectile.DisplayName}"
+			ExampleGrenadeProjectile.DisplayName: Example Grenade Projectile
+			ExampleProximityMineProjectile.DisplayName: Example Proximity Mine Projectile
+			ExampleRocketProjectile.DisplayName: Example Rocket Projectile
+			ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
 			ExampleArrowProjectile.DisplayName: Example Arrow Projectile
 		}
 

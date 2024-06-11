@@ -109,6 +109,8 @@ internal class BuildProperties
 				continue;
 			}
 			int split = line.IndexOf('=');
+			if (split < 0)
+				continue; // lines without an '=' are ignored
 			string property = line.Substring(0, split).Trim();
 			string value = line.Substring(split + 1).Trim();
 			if (value.Length == 0) {

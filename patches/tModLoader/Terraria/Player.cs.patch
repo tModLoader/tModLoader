@@ -378,7 +378,7 @@
  	public Item[] inventory = new Item[59];
  	public bool[] inventoryChestStack = new bool[59];
  	public Item lastVisualizedSelectedItem;
-@@ -836,6 +_,9 @@
+@@ -836,7 +_,13 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
  	public int nonTorch = -1;
@@ -386,8 +386,12 @@
 +	/// An offset from the actual position of the player that will be added to the draw position. Used to fake the effect of the player smoothly traveling up single block obstacles.
 +	/// </summary>
  	public float gfxOffY;
++	/// <summary>
++	/// Has nothing to do with the speed that this player travels, that is dictated by <see cref="moveSpeed"/> and related fields. This affects how quickly <see cref="gfxOffY"/> is adjusted.
++	/// </summary>
  	public float stepSpeed = 1f;
  	public static bool deadForGood = false;
+ 	public bool dead;
 @@ -853,6 +_,7 @@
  	public int head = -1;
  	public int body = -1;
@@ -434,7 +438,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -961,23 +_,97 @@
+@@ -961,24 +_,99 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -532,8 +536,10 @@
 -	private bool shimmerImmune;
 +	public bool shimmerImmune;
  	public bool spaceGun;
++	/// <summary> The players gravity direction. <b>1</b> if normal, <b>-1</b> if reversed. <para/> Defaults to <b>1</b>.</summary>
  	public float gravDir = 1f;
  	public bool chloroAmmoCost80;
+ 	public bool huntressAmmoCost90;
 @@ -987,12 +_,17 @@
  	public int stickyBreak;
  	public bool magicQuiver;
@@ -7506,7 +7512,17 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -40945,15 +_,68 @@
+@@ -40942,18 +_,78 @@
+ 		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
+ 			return true;
+ 
++		// Added fallback functionality for mod compatibility
++		launcher = AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[launcher];
++		if (launcher != -1) {
++			if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var fallbackValue) && fallbackValue.TryGetValue(ammo, out pickedProjectileId))
++				return true;
++		}
++
  		return false;
  	}
  

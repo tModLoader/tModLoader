@@ -146,6 +146,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
 			SteamUGC.SetReturnKeyValueTags(qHandle, true);
@@ -154,6 +155,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
 			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
@@ -231,9 +233,11 @@ public static class SteamedWraps
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
 		return (qParams.sortingParamater) switch {
+			ModBrowserSortMode.Hot when qParams.days == 0 => EUGCQuery.k_EUGCQuery_RankedByVote, // Corresponds to "Most Popular" for "All Time" on workshop website
 			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
-			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
+			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByTrend, // Corresponds to "Most Popular" on workshop website
 			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
+			ModBrowserSortMode.RecentlyPublished => EUGCQuery.k_EUGCQuery_RankedByPublicationDate,
 			_ => EUGCQuery.k_EUGCQuery_RankedByTextSearch
 		};
 	}
@@ -626,7 +630,7 @@ public static class SteamedWraps
 		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
 	}
 
-	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, ref string patchNotes, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
+	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
 	{
 		if (!SteamClient)
 			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
@@ -636,16 +640,6 @@ public static class SteamedWraps
 			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
-
-		patchNotes = _entryData.ChangeNotes;
-		// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
-		if (string.IsNullOrWhiteSpace(patchNotes)) {
-			patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
-			if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
-				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
-		}
-
-		ModCompile.UpdateSubstitutedDescriptionValues(ref patchNotes, _entryData.BuildData["trueversion"], _entryData.BuildData["homepage"]);
 
 		string refs = _entryData.BuildData["workshopdeps"];
 
