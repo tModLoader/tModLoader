@@ -1,6 +1,8 @@
 using ExampleMod.Common.Configs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -13,14 +15,13 @@ namespace ExampleMod.Content.Items.Accessories
 	[AutoloadEquip(EquipType.Wings)]
 	public class ExampleCustomDrawnWings : ModItem
 	{
+		private static Asset<Texture2D> wingTexture;
+		private static Vector2 _wingFrameSize;
+
 		private int _wingFrame;
 		private int _wingFrameCount;
 		private int _frameCounter;
 		private int _animationDelay;
-
-		private Texture2D wingTexture;
-		private Vector2 _wingFrameSize;
-
 
 		// To see how this config option was added, see ExampleModConfig.cs
 		public override bool IsLoadingEnabled(Mod mod) {
@@ -33,6 +34,14 @@ namespace ExampleMod.Content.Items.Accessories
 			// Fly speed: 9
 			// Acceleration multiplier: 2.5
 			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 9f, 2.5f);
+
+
+			wingTexture = TextureAssets.Wings[Item.wingSlot];
+
+			_animationDelay = 8;
+
+			_wingFrameCount = 4;
+			_wingFrameSize = new Vector2(wingTexture.Width(), wingTexture.Height() / _wingFrameCount);
 		}
 
 		public override void SetDefaults() {
@@ -41,12 +50,6 @@ namespace ExampleMod.Content.Items.Accessories
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;
-
-			_animationDelay = 8;
-
-			wingTexture = TextureAssets.Wings[Item.wingSlot].Value;
-			_wingFrameCount = 4;
-			_wingFrameSize = new Vector2(wingTexture.Width, wingTexture.Height / _wingFrameCount);
 		}
 
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
@@ -58,6 +61,23 @@ namespace ExampleMod.Content.Items.Accessories
 			constantAscend = 0.135f;
 		}
 
+		public override bool WingUpdate(Player player, bool inUse) {
+			if (!player.ShouldDrawWingsThatAreAlwaysAnimated()) {
+				_wingFrame = 0;
+			}
+			else if (!inUse) {
+				_wingFrame = 2;
+			}
+			else if (_frameCounter++ == _animationDelay) {
+				_wingFrame++;
+				_wingFrame %= _wingFrameCount;
+				_frameCounter = 0;
+			}
+
+			// Returning true to skip vanilla animations
+			return true;
+		}
+
 		public override bool PreDrawWings(ref PlayerDrawSet drawInfo) {
 			// The Floor() call is important to avoid jittering.
 			var position = (drawInfo.Position - Main.screenPosition).Floor();
@@ -67,22 +87,10 @@ namespace ExampleMod.Content.Items.Accessories
 			position += (new Vector2(-7, 4) * drawInfo.drawPlayer.Directions);
 
 
-			if (!drawInfo.drawPlayer.ShouldDrawWingsThatAreAlwaysAnimated()) {
-				_wingFrame = 0;
-			}
-			else if (!WingsInUse()) {
-				_wingFrame = 2;
-			}
-			else if (_frameCounter++ == _animationDelay) {
-				_wingFrame++;
-				_wingFrame %= _wingFrameCount;
-				_frameCounter = 0;
-			}
-
 			var sourceRect = wingTexture.Frame(1, _wingFrameCount, 0, _wingFrame);
 
 			var drawData = new DrawData(
-				wingTexture,
+				wingTexture.Value,
 				position,
 				sourceRect,
 				Color.White
@@ -98,6 +106,16 @@ namespace ExampleMod.Content.Items.Accessories
 			return false;
 		}
 
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write(_wingFrame);
+			writer.Write(_frameCounter);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			_wingFrame = reader.ReadInt32();
+			_frameCounter = reader.ReadInt32();
+		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
@@ -107,13 +125,6 @@ namespace ExampleMod.Content.Items.Accessories
 					recipe.createItem.wingSlot !=
 					-1)) // Places this recipe before any wing so every wing stays together in the crafting menu.
 				.Register();
-		}
-
-		// This is how vanilla determines whether the wings are currently 'in use'. This is the same as the parameter passed in 'wingUpdate()'.
-		private bool WingsInUse() {
-			var player = Main.CurrentPlayer;
-
-			return (player.controlJump && player.wingTime > 0f && player.jump == 0 && player.velocity.Y != 0f);
 		}
 	}
 }
