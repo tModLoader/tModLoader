@@ -295,6 +295,17 @@
  	public float townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
+@@ -754,6 +_,10 @@
+ 	public int aggro;
+ 	public float nearbyActiveNPCs;
+ 	public bool creativeInterface;
++	/// <summary>
++	/// If true, the mouse is currently overlapping with a user interface so any mouse interaction should be not be interpreted as gameplay input, such as using items.
++	/// <para/> UIElements that should block user interaction typically check <c>ContainsPoint(Main.MouseScreen)</c> in the Update method to determine if mouseInterface should be set to true.
++	/// </summary>
+ 	public bool mouseInterface;
+ 	public bool lastMouseInterface;
+ 	public int noThrow;
 @@ -769,8 +_,16 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;

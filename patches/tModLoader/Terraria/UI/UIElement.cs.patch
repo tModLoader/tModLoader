@@ -9,6 +9,17 @@
  {
  	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
  
+@@ -58,6 +_,10 @@
+ 
+ 	public IEnumerable<UIElement> Children => Elements;
+ 
++	/// <summary>
++	/// True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or drawing hover visual indicators.
++	/// <para/> Note that this is only true for the single element that is hovered, not all elements in the heiarchy below the mouse cursor. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button but not the panel. Use <c>ContainsPoint(Main.MouseScreen)</c> for behaviors that require that logic, such as setting <see cref="Player.mouseInterface"/>.
++	/// </summary>
+ 	public bool IsMouseHovering { get; private set; }
+ 
+ 	public event MouseEvent OnLeftMouseDown;
 @@ -167,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();

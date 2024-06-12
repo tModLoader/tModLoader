@@ -567,6 +567,14 @@
  	public static bool playerInventory;
  	public static int stackSplit;
  	public static bool preventStackSplitReset;
+@@ -1012,6 +_,7 @@
+ 	public static int timesTriedToFastStack;
+ 	public static int stackDelay = 7;
+ 	public static int superFastStack;
++	/// <summary> The item currently being carried by the mouse. </summary>
+ 	public static Item mouseItem = new Item();
+ 	public static Item guideItem = new Item();
+ 	public static Item reforgeItem = new Item();
 @@ -1026,7 +_,18 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -599,6 +607,16 @@
  	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
  	public static int[] travelShop = new int[40];
  	public static List<string> anglerWhoFinishedToday = new List<string>();
+@@ -1119,6 +_,9 @@
+ 	public static bool temporaryGUIScaleSliderUpdate = false;
+ 	public static bool InGuideCraftMenu;
+ 	public static bool InReforgeMenu;
++	/// <summary>
++	/// The item to be displayed as an item tooltip. Set to a <see cref="Item.Clone"/> of an existing item instance. Needs to be set in conjunction with <see cref="hoverItemName"/> to work, although the <see cref="Item.HoverName"/> will actually be shown. Use <see cref="Item.SetNameOverride(string)"/> to customize the item name shown.
++	/// </summary>
+ 	public static Item HoverItem = new Item();
+ 	private static int backSpaceCount;
+ 	private static float backSpaceRate;
 @@ -1127,6 +_,9 @@
  	public static int numDisplayModes;
  	public static int[] displayWidth = new int[99];
@@ -685,7 +703,7 @@
  	public TilePaintSystemV2 TilePaintSystem;
  	public TileDrawing TilesRenderer;
  	public WallDrawing WallsRenderer;
-@@ -2036,7 +_,7 @@
+@@ -2036,17 +_,21 @@
  	private bool _imeToggle;
  	private static int _lastHoveredLoadoutIndex = -1;
  	private List<int> _npcTypesThatAlreadyDrewAHead = new List<int>();
@@ -694,7 +712,13 @@
  	private static List<string> _requiredObjecsForCraftingText = new List<string>();
  	private static bool _preventCraftingBecauseClickWasUsedToChangeFocusedRecipe;
  	private static int _currentRecipeBeingCrafted = -1;
-@@ -2046,7 +_,7 @@
+ 	private static bool hidePVPIcons = false;
+ 	public static bool HoveringOverAnNPC;
++	/// <summary>
++	/// Sets the tooltip text to be drawn next to the cursor. Will be ignored if <see cref="Main.mouseItem"/> is not air, meaning the player is holding an item on the mouse. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> except it won't show if an item is held on the mouse.
++	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
++	/// </summary>
+ 	public static string hoverItemName = "";
  	public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
  	public static bool mouseText;
  	private static int mH;
@@ -2542,6 +2566,23 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -15938,11 +_,16 @@
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride: true);
+ 	}
+ 
++	/// <summary>
++	/// Sets the tooltip text to be drawn next to the cursor. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.hoverItemName"/> except it will still show if an item is held on the mouse.
++	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
++	/// </summary>
+ 	public void MouseText(string cursorText, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0)
+ 	{
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX);
+ 	}
+ 
++	/// <inheritdoc cref="MouseText(string, int, byte, int, int, int, int, int)"/>
+ 	public void MouseText(string cursorText, string buffTooltip, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0, bool noOverride = false)
+ 	{
+ 		if (!_mouseTextCache.noOverride) {
 @@ -15989,15 +_,19 @@
  			X += 34;
  
