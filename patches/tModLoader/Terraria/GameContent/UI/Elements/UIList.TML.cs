@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.GameInput;
 using Terraria.UI;
 
@@ -23,9 +24,10 @@ public partial class UIList : UIElement, IEnumerable<UIElement>, IEnumerable
 		_innerList.Recalculate();
 	}
 
-	public override void MouseOver(UIMouseEvent evt)
+	public override void Update(GameTime gameTime)
 	{
-		base.MouseOver(evt);
-		PlayerInput.LockVanillaMouseScroll("ModLoader/UIList");
+		base.Update(gameTime);
+		if (IsMouseHovering)
+			PlayerInput.LockVanillaMouseScroll("ModLoader/UIList");
 	}
 }

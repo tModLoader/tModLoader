@@ -15,11 +15,21 @@
  
 +	/// <summary>
 +	/// True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or drawing hover visual indicators.
-+	/// <para/> Note that this is only true for the single element that is hovered, not all elements in the heiarchy below the mouse cursor. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button but not the panel. Use <c>ContainsPoint(Main.MouseScreen)</c> for behaviors that require that logic, such as setting <see cref="Player.mouseInterface"/>.
++	/// <para/> Note that this is true for all elements in the heiarchy that are hovered, not just the topmost element. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button and the panel. Use this or <c>ContainsPoint(Main.MouseScreen)</c> for behaviors that use this logic, such as setting <see cref="Player.mouseInterface"/> to true.
 +	/// </summary>
  	public bool IsMouseHovering { get; private set; }
  
  	public event MouseEvent OnLeftMouseDown;
+@@ -68,7 +_,9 @@
+ 	public event MouseEvent OnRightMouseUp;
+ 	public event MouseEvent OnRightClick;
+ 	public event MouseEvent OnRightDoubleClick;
++	/// <summary> Called by <see cref="MouseOver(UIMouseEvent)"/>. Use this event instead of inheritance if suitable. </summary>
+ 	public event MouseEvent OnMouseOver;
++	/// <summary> Called by <see cref="MouseOut(UIMouseEvent)"/>. Use this event instead of inheritance if suitable. </summary>
+ 	public event MouseEvent OnMouseOut;
+ 	public event ScrollWheelEvent OnScrollWheel;
+ 	public event ElementEvent OnUpdate;
 @@ -167,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();
@@ -43,3 +53,28 @@
  			spriteBatch.End();
  			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
+@@ -406,6 +_,12 @@
+ 			Parent.RightDoubleClick(evt);
+ 	}
+ 
++	/// <summary>
++	/// Called once when this UIElement becomes moused over (hovered). Default implementation sets <see cref="IsMouseHovering"/> to true, calls <see cref="OnMouseOver"/> event, then calls this same method on the <see cref="Parent"/> element.
++	/// <para/> Useful for changing visuals to indicate the element is interactable, as is the <see cref="OnMouseOver"/> event.
++	/// <para/> Any code that needs to run as long as the element is hovered should use check <see cref="IsMouseHovering"/> in <see cref="Update(GameTime)"/>.
++	/// <para/> <see cref="MouseOut(UIMouseEvent)"/> will be called when it no longer hovered.
++	/// </summary>
+ 	public virtual void MouseOver(UIMouseEvent evt)
+ 	{
+ 		IsMouseHovering = true;
+@@ -416,6 +_,11 @@
+ 			Parent.MouseOver(evt);
+ 	}
+ 
++	/// <summary>
++	/// Called once when this UIElement is no longer moused over. Default implementation sets <see cref="IsMouseHovering"/> to false, calls <see cref="OnMouseOut"/> event, then calls this same method on the <see cref="Parent"/> element.
++	/// <para/> Useful for changing visuals to indicate the element is no longer interactable, as is the <see cref="OnMouseOut"/> event.
++	/// <para/> <see cref="MouseOver(UIMouseEvent)"/> will be called when it is hovered once again.
++	/// </summary>
+ 	public virtual void MouseOut(UIMouseEvent evt)
+ 	{
+ 		IsMouseHovering = false;
