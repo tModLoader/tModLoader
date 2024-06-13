@@ -36,6 +36,8 @@ namespace ExampleMod.Content.Items.Armor
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Head}", EquipType.Head, name: "BlockyAlt", equipTexture: new BlockyHead());
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Body}", EquipType.Body, name: "BlockyAlt");
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Legs}", EquipType.Legs, name: "BlockyAlt");
+
+			// I think technically we can pass in Item instance and not break anything, allowing code to run on ModItem, last to register is "default". Need to pass in custom name still to not cause issue/loss. Would want to change logic to 1st to register, don't overwrite.
 		}
 
 		// Called in SetStaticDefaults

@@ -48,5 +48,42 @@ namespace ExampleMod.Content.Items.Accessories
 				.SortBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)) // Places this recipe before any wing so every wing stays together in the crafting menu.
 				.Register();
 		}
+
+		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string memberName) {
+
+			drawData.sourceRect = new(0, drawData.texture.Height / 7 * drawInfo.drawPlayer.wingFrame, drawData.texture.Width, drawData.texture.Height / 7);
+
+			if (drawInfo.drawPlayer.direction == 1)
+				drawData.position += Main.rand.NextVector2CircularEdge(10, 10);
+
+			return true;
+		}
+
+		public override bool WingUpdate(Player player, bool inUse) {
+			if (inUse || player.jump > 0) {
+				player.wingFrameCounter++;
+				if (player.wingFrameCounter > 3) {
+					player.wingFrame++;
+					player.wingFrameCounter = 0;
+					if (player.wingFrame >= 7)
+						player.wingFrame = 1;
+				}
+			}
+			else if (player.velocity.Y != 0f) {
+				player.wingFrame = 2;
+				if (player.ShouldFloatInWater && player.wet)
+					player.wingFrame = 0;
+			}
+			else {
+				player.wingFrame = 0;
+			}
+
+			if (!inUse && player.wingsLogic > 0 && player.controlJump && player.velocity.Y > 0f) {
+				player.wingFrame = 1;
+			}
+
+			// Returning true to skip vanilla animations
+			return true;
+		}
 	}
 }

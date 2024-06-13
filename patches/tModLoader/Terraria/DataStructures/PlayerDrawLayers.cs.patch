@@ -65,7 +65,36 @@
  			int num = drawinfo.drawPlayer.bodyFrame.Y / 56;
  			if (num < 1 || num > 5) {
  				drawinfo.armorAdjust = 10;
-@@ -842,7 +_,7 @@
+@@ -493,7 +_,8 @@
+ 		vec = vec.Floor();
+ 		DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.back].Value, vec, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cBack;
++		if(ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back))
+-		drawinfo.DrawDataCache.Add(item);
++			drawinfo.DrawDataCache.Add(item);
+ 		if (drawinfo.drawPlayer.back == 36) {
+ 			Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
+ 			Rectangle value = bodyFrame;
+@@ -744,7 +_,8 @@
+ 		Vector2 vector12 = vector + new Vector2(num12 - 9, num11 + 2) * directions;
+ 		item = new DrawData(TextureAssets.Wings[drawinfo.drawPlayer.wings].Value, vector12.Floor(), new Rectangle(0, TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num13 * drawinfo.drawPlayer.wingFrame, TextureAssets.Wings[drawinfo.drawPlayer.wings].Width(), TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num13), color7, drawinfo.drawPlayer.bodyRotation, new Vector2(TextureAssets.Wings[drawinfo.drawPlayer.wings].Width() / 2, TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num13 / 2), 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cWings;
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Wings, drawinfo.drawPlayer.wings))
+-		drawinfo.DrawDataCache.Add(item);
++			drawinfo.DrawDataCache.Add(item);
+ 		if (drawinfo.drawPlayer.wings == 43 && drawinfo.shadow == 0f) {
+ 			Vector2 vector13 = vector12;
+ 			Vector2 origin = new Vector2(TextureAssets.Wings[drawinfo.drawPlayer.wings].Width() / 2, TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num13 / 2);
+@@ -752,7 +_,7 @@
+ 			for (int l = 0; l < 2; l++) {
+ 				item = new DrawData(position: vector13 + new Vector2((float)Main.rand.Next(-10, 10) * 0.125f, (float)Main.rand.Next(-10, 10) * 0.125f), texture: TextureAssets.GlowMask[272].Value, sourceRect: value5, color: new Color(230, 230, 230, 60), rotation: drawinfo.drawPlayer.bodyRotation, origin: origin, scale: 1f, effect: drawinfo.playerEffect);
+ 				item.shader = drawinfo.cWings;
+-				drawinfo.DrawDataCache.Add(item);
++				// drawinfo.DrawDataCache.Add(item);
+ 			}
+ 		}
+ 
+@@ -842,14 +_,15 @@
  
  	public static void DrawPlayer_12_1_BalloonFronts(ref PlayerDrawSet drawinfo)
  	{
@@ -74,7 +103,23 @@
  			return;
  
  		DrawData item;
-@@ -872,7 +_,7 @@
+ 		if (ArmorIDs.Balloon.Sets.UsesTorsoFraming[drawinfo.drawPlayer.balloonFront]) {
+ 			item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + drawinfo.bodyVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBalloonFront;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront))
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 			return;
+ 		}
+ 
+@@ -867,19 +_,21 @@
+ 		vector3 = vector3.Floor();
+ 		item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Value, vector3, new Rectangle(0, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Height() / 4 * num, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Width(), TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Height() / 4), drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, new Vector2(26 + drawinfo.drawPlayer.direction * 4, 28f + drawinfo.drawPlayer.gravDir * 6f), 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cBalloonFront;
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront))
+-		drawinfo.DrawDataCache.Add(item);
++			drawinfo.DrawDataCache.Add(item);
+ 	}
  
  	public static void DrawPlayer_11_Balloons(ref PlayerDrawSet drawinfo)
  	{
@@ -83,6 +128,25 @@
  			return;
  
  		DrawData item;
+ 		if (ArmorIDs.Balloon.Sets.UsesTorsoFraming[drawinfo.drawPlayer.balloon]) {
+ 			item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + drawinfo.bodyVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBalloon;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon))
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 			return;
+ 		}
+ 
+@@ -897,7 +_,8 @@
+ 		vector3 = vector3.Floor();
+ 		item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Value, vector3, new Rectangle(0, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4 * num, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Width(), TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4), drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, new Vector2(26 + drawinfo.drawPlayer.direction * 4, 28f + drawinfo.drawPlayer.gravDir * 6f), 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cBalloon;
++		if(ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon))
+-		drawinfo.DrawDataCache.Add(item);
++			drawinfo.DrawDataCache.Add(item);
+ 	}
+ 
+ 	public static void DrawPlayer_12_Skin(ref PlayerDrawSet drawinfo)
 @@ -919,7 +_,7 @@
  			drawinfo.Position.Y -= drawinfo.torsoOffset;
  		}
@@ -186,7 +250,14 @@
  			if (drawinfo.drawPlayer.invis)
  				return;
  
-@@ -1295,7 +_,7 @@
+@@ -1289,13 +_,14 @@
+ 			position.Y += num5;
+ 			DrawData item = new DrawData(textureToDraw, position, value, matchingColor, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 			item.shader = shaderIndex;
++			// TODO: ItemLoader.ModifyEquipTextureDraw for shoes and legs.
+ 			drawinfo.DrawDataCache.Add(item);
+ 		}
+ 	}
  
  	public static void DrawPlayer_14_Shoes(ref PlayerDrawSet drawinfo)
  	{
@@ -195,7 +266,16 @@
  			return;
  
  		int num = drawinfo.cShoe;
-@@ -1316,6 +_,10 @@
+@@ -1309,13 +_,18 @@
+ 
+ 		DrawData item = new DrawData(TextureAssets.AccShoes[drawinfo.drawPlayer.shoe].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.colorArmorLegs, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 		item.shader = num;
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Shoes, drawinfo.drawPlayer.shoe))
+-		drawinfo.DrawDataCache.Add(item);
++			drawinfo.DrawDataCache.Add(item);
+ 		if (drawinfo.drawPlayer.shoe == 25 || drawinfo.drawPlayer.shoe == 26)
+ 			DrawPlayer_14_2_GlassSlipperSparkles(ref drawinfo);
+ 	}
  
  	public static void DrawPlayer_14_2_GlassSlipperSparkles(ref PlayerDrawSet drawinfo)
  	{
@@ -251,7 +331,7 @@
  			Rectangle value = drawinfo.drawPlayer.legFrame;
  			if (ArmorIDs.Waist.Sets.UsesTorsoFraming[drawinfo.drawPlayer.waist])
  				value = drawinfo.drawPlayer.bodyFrame;
-@@ -1560,7 +_,7 @@
+@@ -1560,10 +_,11 @@
  
  	public static void DrawPlayer_20_NeckAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -259,7 +339,12 @@
 +		if (drawinfo.drawPlayer.neck > 0) {
  			DrawData item = new DrawData(TextureAssets.AccNeck[drawinfo.drawPlayer.neck].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cNeck;
- 			drawinfo.DrawDataCache.Add(item);
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Neck, drawinfo.drawPlayer.neck))
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 		}
+ 	}
+ 
 @@ -1571,7 +_,7 @@
  	{
  		Vector2 helmetOffset = drawinfo.helmetOffset;
