@@ -78,7 +78,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string memberName) {
 			if (drawInfo.drawPlayer.direction == -1) {
-				drawData.color = Color.Blue;
+				drawData.color = Color.Green;
 			}
 			if(drawInfo.drawPlayer.direction == 1 && Main.mouseLeft) {
 				drawData.texture = backB.Value;
