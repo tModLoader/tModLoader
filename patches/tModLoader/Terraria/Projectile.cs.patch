@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,332 @@
+@@ -63,79 +_,341 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -313,7 +313,16 @@
 +	}
 +
  	public bool coldDamage;
++	/// <summary>
++	/// If true, this projectile will not benefit from weapon enchantments such as flasks, frost armor, or magma stone effects. This means the projectile won't inflict associated buffs or spawn associated visuals.
++	/// <para/> Defaults to false.
++	/// </summary>
  	public bool noEnchantments;
++	/// <summary>
++	/// If true, this projectile will not have <see cref="EmitEnchantmentVisualsAt(Vector2, int, int)"/> called automatically. This can be set to true for projectiles that wish to manually call <see cref="EmitEnchantmentVisualsAt(Vector2, int, int)"/> in AI methods for finer control over the spawn location of enchantment visuals.
++	/// <para/> Use <see cref="noEnchantments"/> instead to indicate that the projectile is not suitable for weapon enchantment effects at all and shouldn't inflict associated buffs either.
++	/// <para/> Defaults to false.
++	/// </summary>
  	public bool noEnchantmentVisuals;
 +
 +	/// <summary>
@@ -1269,6 +1278,23 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
+@@ -12965,9 +_,16 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Spawns weapon enchantment visuals the specified location. <paramref name="boxPosition"/> is the top left corner of the intended spawn area and <paramref name="boxWidth"/> and <paramref name="boxHeight"/> dictate the spawn area.
++	/// <para/> This method is automatically called for all projectiles that are not <see cref="npcProj"/> and not <see cref="noEnchantmentVisuals"/>. Modders can use <see cref="noEnchantmentVisuals"/> to prevent the automatic calling of this method and manually call this method in <see cref="ModProjectile.AI"/> to customize the intended enchantment visuals position. Set <see cref="noEnchantments"/> to true on projectiles that shouldn't have enchantment visuals or effects at all.
++	/// </summary>
+ 	public void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
+ 	{
++		CombinedHooks.EmitEnchantmentVisualsAt(this, boxPosition, boxWidth, boxHeight);
++
+ 		Player player = Main.player[owner];
++
+ 		if (player.frostBurn && (melee || ranged) && friendly && !hostile && !noEnchantments && Main.rand.Next(2 * (1 + extraUpdates)) == 0) {
+ 			int num = Dust.NewDust(boxPosition, boxWidth, boxHeight, 135, velocity.X * 0.2f + (float)(direction * 3), velocity.Y * 0.2f, 100, default(Color), 2f);
+ 			Main.dust[num].noGravity = true;
 @@ -13278,8 +_,24 @@
  				overrideHeight = 4;
  			}

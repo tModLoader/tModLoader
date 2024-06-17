@@ -393,4 +393,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual void PrepareBombToBlow(Projectile projectile)
 	{
 	}
+
+	/// <inheritdoc cref="ModProjectile.EmitEnchantmentVisualsAt"/>
+	public virtual void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+	}
 }

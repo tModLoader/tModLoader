@@ -953,6 +953,11 @@ Mods: {
 					'''
 				LicenseExampleTownPetUse: The license teleports away to the Example Town Pet delivery service...
 			}
+
+			ExampleFlask: {
+				DisplayName: Flask of Example
+				Tooltip: Melee and Whip attacks decrease enemies defense
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1085,6 +1090,11 @@ Mods: {
 			ExampleJavelinDebuff: {
 				DisplayName: Example Javelin Debuff
 				Description: Losing life
+			}
+
+			ExampleWeaponImbue: {
+				DisplayName: Example Weapon Imbue
+				Description: "{$Items.ExampleFlask.Tooltip}"
 			}
 		}
 

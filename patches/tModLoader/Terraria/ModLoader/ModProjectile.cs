@@ -427,4 +427,12 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual void PrepareBombToBlow()
 	{
 	}
+
+	/// <summary>
+	/// Called when <see cref="Projectile.EmitEnchantmentVisualsAt(Vector2, int, int)"/> is called. Typically used to spawn visual effects (Dust) indicating weapon enchantments such as flasks, frost armor, or magma stone effects. This is similar to how items spawn visual effects in <see cref="CombinedHooks.MeleeEffects(Player, Item, Rectangle)"/>, but for projectiles instead. A typical weapon enchantment would likely include similar code in both to support weapon enchantment visuals for both items and projectiles.
+	/// <para/> Projectiles can use <see cref="Projectile.noEnchantments"/> to indicate that a projectile should not be considered for enchantment visuals, so check that field if relevant.
+	/// </summary>
+	public virtual void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+	}
 }
