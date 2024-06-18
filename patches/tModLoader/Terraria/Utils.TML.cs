@@ -259,4 +259,16 @@ partial class Utils
 		string separator = doubleNewline ? "\n\n" : "\n";
 		return NetworkText.FromKey(localizationKey, separator + string.Join(separator, errors.Select(x => $"{x.Key}:\n{x.Value}")));
 	}
+
+	private static void AddArgToDictionary(string text, ref string text2, ref Dictionary<string, string> dictionary)
+	{
+		if (text == null)
+			return;
+
+		// In case someone has a cli-ArgsConfig.txt for mod development and does host&play, we should TryAdd
+		if (!dictionary.TryAdd(text.ToLower(), text2))
+			Console.WriteLine($"Unexpected Issue with Launch Arguments: Duplicate Launch Arg \"{text}\"");
+
+		text2 = "";
+	}
 }

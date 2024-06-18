@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
+@@ -18,6 +_,7 @@
+ using ReLogic.Utilities;
+ using Terraria.DataStructures;
+ using Terraria.GameContent;
++using Terraria.ModLoader.Engine;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.Utilities;
 @@ -25,7 +_,7 @@
  
  namespace Terraria;
@@ -9,6 +17,34 @@
  {
  	public delegate bool TileActionAttempt(int x, int y);
  
+@@ -75,10 +_,13 @@
+ 				continue;
+ 
+ 			if (args[i][0] == '-' || args[i][0] == '+') {
++				/*
+ 				if (text != null) {
+ 					dictionary.Add(text.ToLower(), text2);
+ 					text2 = "";
+ 				}
++				*/
++				AddArgToDictionary(text, ref text2, ref dictionary);
+ 
+ 				text = args[i];
+ 				text2 = "";
+@@ -91,10 +_,13 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (text != null) {
+ 			dictionary.Add(text.ToLower(), text2);
+ 			text2 = "";
+ 		}
++		*/
++		AddArgToDictionary(text, ref text2, ref dictionary);
+ 
+ 		return dictionary;
+ 	}
 @@ -294,7 +_,8 @@
  		ArrayList arrayList = new ArrayList();
  		string text = "";
