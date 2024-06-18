@@ -66,7 +66,7 @@
 +	/// </summary>
  	public float gfxOffY;
 +	/// <summary>
-+	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
++	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>. This affects how quickly <see cref="gfxOffY"/> is adjusted.
 +	/// </summary>
  	public float stepSpeed;
 +	/*

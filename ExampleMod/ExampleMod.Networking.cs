@@ -1,12 +1,17 @@
 using ExampleMod.Common.Players;
+using ExampleMod.Common.Systems;
+using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod
 {
 	// This is a partial class, meaning some of its parts were split into other files. See ExampleMod.*.cs for other portions.
+	// The class is partial to organize similar code together to clarify what is related.
+	// This class extends from the Mod class as seen in ExampleMod.cs. Make sure to extend from the mod class, ": Mod", in your own code if using this file as a template for you mods Mod class.
 	partial class ExampleMod
 	{
 		internal enum MessageType : byte
@@ -14,6 +19,7 @@ namespace ExampleMod
 			ExampleStatIncreasePlayerSync,
 			ExampleTeleportToStatue,
 			ExampleDodge,
+			ExampleTownPetUnlockOrExchange,
 			ExampleResourceEffect
 		}
 
@@ -42,6 +48,10 @@ namespace ExampleMod
 					break;
 				case MessageType.ExampleDodge:
 					ExampleDamageModificationPlayer.HandleExampleDodgeMessage(reader, whoAmI);
+					break;
+				case MessageType.ExampleTownPetUnlockOrExchange:
+					// Call a custom function that we made in our License item.
+					ExampleTownPetLicense.ExampleTownPetUnlockOrExchangePet(ref ExampleTownPetSystem.boughtExampleTownPet, ModContent.NPCType<Content.NPCs.TownPets.ExampleTownPet>(), ModContent.GetInstance<ExampleTownPetLicense>().GetLocalizationKey("LicenseExampleTownPetUse"));
 					break;
 				case MessageType.ExampleResourceEffect:
 					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);

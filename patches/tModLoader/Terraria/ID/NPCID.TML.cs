@@ -157,5 +157,17 @@ public partial class NPCID
 		///	Note: Even though this defaults to 1, this set should only be checked if <see cref="NPC.GetNPCInvasionGroup(int)"/> is above 0 or if any BelongsToInvasion sets are <see langword="true"/>.
 		/// </remarks>
 		public static int[] InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0);
+
+		// IDs taken from Player.GetPettingInfo
+		/// <summary>
+		/// While petting, the number of pixels away the player stands from the NPC. Defaults to 36 pixels.
+		/// </summary>
+		public static int[] PlayerDistanceWhilePetting = Factory.CreateIntSet(36, TownCat, 28, TownBunny, 24, TownSlimeBlue, 26, TownSlimeGreen, 26, TownSlimeOld, 26, TownSlimePurple, 26, TownSlimeRainbow, 26, TownSlimeYellow, 26, TownSlimeRed, 22, TownSlimeCopper, 20);
+
+		// IDs taken from Player.GetPettingInfo
+		/// <summary>
+		/// While petting, the player's arm will be angled up by default. If the NPC is in this set, the player's armor will be angled down instead. Defaults to false.
+		/// </summary>
+		public static bool[] IsPetSmallForPetting = Factory.CreateBoolSet(TownCat, TownBunny, TownSlimeBlue, TownSlimeGreen, TownSlimeOld, TownSlimePurple, TownSlimeRainbow, TownSlimeYellow, TownSlimeRed, TownSlimeCopper);
 	}
 }

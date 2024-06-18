@@ -62,7 +62,6 @@ public static class ModLoader
 	internal static bool autoReloadRequiredModsLeavingModsScreen = true;
 	internal static bool removeForcedMinimumZoom;
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
-	internal static bool showMemoryEstimates = true;
 	internal static bool notifyNewMainMenuThemes = true;
 	internal static bool showNewUpdatedModsInfo = true;
 	internal static bool skipLoad;
@@ -98,7 +97,10 @@ public static class ModLoader
 
 	internal static void PrepareAssets()
 	{
-		ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
+		ManifestContentSource = new AssemblyResourcesContentSource(
+			Assembly.GetExecutingAssembly(),
+			excludedStartingPaths: new[] { "Terraria/ModLoader/Templates/" }
+		);
 		ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, new[] { ManifestContentSource }) {
 			AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
 		};
@@ -166,7 +168,7 @@ public static class ModLoader
 				else if (mod != null)
 					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
 					SteamedWraps.QueueForceValidateSteamInstall();
-					
+
 				if (e is Exceptions.JITException)
 					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
 			}
@@ -181,10 +183,23 @@ public static class ModLoader
 			if (e.Data.Contains("contentType") && e.Data["contentType"] is Type contentType)
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
-			Logging.tML.Error(msg, e);
-
-			foreach (var mod in responsibleMods)
+			foreach (var mod in responsibleMods) {
+				DisableModAndDependents(mod);
+			}
+			void DisableModAndDependents(string mod)
+			{
 				DisableMod(mod);
+
+				var dependents = availableMods
+					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
+					.Select(m => m.Name);
+
+				foreach (var dependent in dependents) {
+					DisableModAndDependents(dependent);
+				}
+			}
+			
+			Logging.tML.Error(msg, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
 			DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
@@ -335,12 +350,10 @@ public static class ModLoader
 	{
 		Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
 		Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
-		Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
 		Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 		Main.Configuration.Put(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), attackSpeedScalingTooltipVisibility);
-		Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 		Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 		Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
@@ -363,12 +376,10 @@ public static class ModLoader
 	{
 		Main.Configuration.Get("ModBrowserPassphrase", ref modBrowserPassphrase);
 		Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
-		Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
 		Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 		Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
-		Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 		Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 		Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
@@ -389,9 +400,6 @@ public static class ModLoader
 
 	internal static void MigrateSettings()
 	{
-		if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
-			showMemoryEstimates = true;
-
 		// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.
 		if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 			ShowWhatsNew = true;

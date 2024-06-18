@@ -54,5 +54,23 @@ partial class ProjectileID
 			PlatinumCoinsFalling, new FallingBlockTileItemInfo(TileID.PlatinumCoinPile, ItemID.PlatinumCoin),
 			ShellPileFalling, new FallingBlockTileItemInfo(TileID.ShellPile, ItemID.ShellPileBlock)
 		);
+
+		// Data taken from all projectiles who use aiStyle = 16
+		// That means this excludes some things like Fireworks and Celebration Mk2 rockets
+		/// <summary>
+		/// Contains all of the projectiles that are classified as explosives. This includes all vanilla projectiles using <see cref="ProjAIStyleID.Explosive"/> and any modded projectiles that should be regarded as explosives that do not necessarily use that aiStyle. This set facilitates implementing explosive projectiles without limiting them to using <see cref="ProjAIStyleID.Explosive"/> directly, allowing for custom AI code to be used without sacrificing other expected behaviors. Projectiles using this set need to also use <see cref="ModLoader.ModProjectile.PrepareBombToBlow"/>.
+		/// <para/> Several shared behaviors of explosive projectiles will be automatically applied to projectiles using this set:
+		/// <para/> Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
+		/// <para/> Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+		/// <para/> Note that code should check both <c>(projectile.aiStyle == ProjAIStyleID.Explosive || ProjectileID.Sets.Explosive[projectile.type])</c> for any code targeting explosive projectiles since this set might not be complete.
+		/// </summary>
+		public static bool[] Explosive = Factory.CreateBoolSet(false, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives,
+			GrenadeI, RocketI, ProximityMineI, GrenadeII, RocketII, ProximityMineII, GrenadeIII, RocketIII, ProximityMineIII, GrenadeIV, RocketIV, ProximityMineIV,
+			Landmine, RocketSkeleton, RocketSnowmanI, RocketSnowmanII, RocketSnowmanIII, RocketSnowmanIV, StickyGrenade, StickyDynamite, BouncyBomb, BouncyGrenade,
+			BombFish, PartyGirlGrenade, BouncyDynamite, DD2GoblinBomb, ScarabBomb, ClusterRocketI, ClusterGrenadeI, ClusterMineI, ClusterFragmentsI, ClusterRocketII,
+			ClusterRocketII, ClusterMineII, ClusterFragmentsII, WetRocket, WetGrenade, WetMine, LavaRocket, LavaGrenade, LavaMine, HoneyRocket, HoneyGrenade, HoneyMine,
+			MiniNukeRocketI, MiniNukeGrenadeI, MiniNukeMineI, MiniNukeRocketII, MiniNukeGrenadeII, MiniNukeMineII, DryRocket, DryGrenade, DryMine, ClusterSnowmanRocketI,
+			ClusterSnowmanRocketII, WetSnowmanRocket, LavaSnowmanRocket, HoneySnowmanRocket, MiniNukeSnowmanRocketI, MiniNukeSnowmanRocketII, DrySnowmanRocket,
+			ClusterSnowmanFragmentsI, ClusterSnowmanFragmentsII, WetBomb, LavaBomb, HoneyBomb, DryBomb, DirtBomb, DirtStickyBomb, SantankMountRocket, TNTBarrel);
 	}
 }

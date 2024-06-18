@@ -112,10 +112,11 @@ public class UIGrid : UIElement
 		this.UpdateScrollbar();
 	}
 
-	public override void MouseOver(UIMouseEvent evt)
+	public override void Update(GameTime gameTime)
 	{
-		base.MouseOver(evt);
-		PlayerInput.LockVanillaMouseScroll("ModLoader/UIGrid");
+		base.Update(gameTime);
+		if (IsMouseHovering)
+			PlayerInput.LockVanillaMouseScroll("ModLoader/UIList");
 	}
 
 	public override void ScrollWheel(UIScrollWheelEvent evt)

@@ -26,6 +26,29 @@
  {
  	public static class WorldSize
  	{
+@@ -889,14 +_,22 @@
+ 	public static int SmallConsecutivesFound = 0;
+ 	public static int SmallConsecutivesEliminated = 0;
+ 	public static bool tempRemixWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up (aka Remix)</see> secret world seed. See also <see cref="Main.remixWorld"/>. </summary>
+ 	public static bool remixWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Get_fixed_boi">Get fixed boi (aka Zenith)</see> secret world seed. This seed combines multiple secret seeds. Note that the other secret world seed bools inherited by this seed will be set as well, so there is no need to specifically check both those bools and this bool. See also <see cref="Main.zenithWorld"/>. </summary>
+ 	public static bool everythingWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/No_traps">No traps</see> secret world seed. See also <see cref="Main.noTrapsWorld"/>. </summary>
+ 	public static bool noTrapsWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="Main.drunkWorld"/>. </summary>
+ 	public static bool drunkWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/For_the_worthy">For the worthy</see> secret world seed. See also <see cref="Main.getGoodWorld"/>. </summary>
+ 	public static bool getGoodWorldGen = false;
+ 	public static bool tempTenthAnniversaryWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Celebrationmk10">Celebrationmk10</see> secret world seed. See also <see cref="Main.tenthAnniversaryWorld"/>. </summary>
+ 	public static bool tenthAnniversaryWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/The_Constant">The Constant</see> secret world seed. See also <see cref="Main.dontStarveWorld"/>. </summary>
+ 	public static bool dontStarveWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Not_the_bees">Not the bees</see> secret world seed. See also <see cref="Main.notTheBeesWorld"/>. </summary>
+ 	public static bool notTheBees = false;
+ 	public static bool drunkWorldGenText = false;
+ 	public static bool placingTraps = false;
 @@ -923,6 +_,9 @@
  	public static bool noMapUpdateRefresh = false;
  	private static bool skipFramingDuringGen = false;

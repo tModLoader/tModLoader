@@ -92,7 +92,7 @@ public class SummonMeleeSpeedDamageClass : VanillaDamageClass
 
 public class MagicSummonHybridDamageClass : VanillaDamageClass
 {
-	protected override string LangKey => "magic or summon damage";
+	protected override string LangKey => "tModLoader.MagicSummonHybridDamageClass";
 
 	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass)
 	{

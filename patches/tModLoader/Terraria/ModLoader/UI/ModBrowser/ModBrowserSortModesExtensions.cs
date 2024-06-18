@@ -18,7 +18,11 @@ public static class ModBrowserSortModesExtensions
 			case ModBrowserSortMode.RecentlyUpdated:
 				return Language.GetTextValue("tModLoader.MBSortByRecentlyUpdated");
 			case ModBrowserSortMode.Hot:
+				if (!string.IsNullOrEmpty(Interface.modBrowser.Filter))
+					return Language.GetTextValue("tModLoader.MBSortByRelevance");
 				return Language.GetTextValue("tModLoader.MBSortByPopularity");
+			case ModBrowserSortMode.RecentlyPublished:
+				return Language.GetTextValue("tModLoader.MBSortByRecentlyPublished");
 		}
 		return "Unknown Sort";
 	}

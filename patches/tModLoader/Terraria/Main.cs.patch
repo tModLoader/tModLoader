@@ -75,7 +75,25 @@
  			}
  		}
  	}
-@@ -258,7 +_,7 @@
+@@ -248,17 +_,25 @@
+ 	};
+ 	private static bool? _overrideForExpertMode = null;
+ 	private static bool? _overrideForMasterMode = null;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="WorldGen.drunkWorldGen"/>. </summary>
+ 	public static bool drunkWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/For_the_worthy">For the worthy</see> secret world seed. See also <see cref="WorldGen.getGoodWorldGen"/>. </summary>
+ 	public static bool getGoodWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Celebrationmk10">Celebrationmk10</see> secret world seed. See also <see cref="WorldGen.tenthAnniversaryWorldGen"/>. </summary>
+ 	public static bool tenthAnniversaryWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/The_Constant">The Constant</see> secret world seed. See also <see cref="WorldGen.dontStarveWorldGen"/>. </summary>
+ 	public static bool dontStarveWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Not_the_bees">Not the bees</see> secret world seed. See also <see cref="WorldGen.notTheBees"/>. </summary>
+ 	public static bool notTheBeesWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up (aka Remix)</see> secret world seed. See also <see cref="WorldGen.remixWorldGen"/>. </summary>
+ 	public static bool remixWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/No_traps">No traps</see> secret world seed. See also <see cref="WorldGen.noTrapsWorldGen"/>. </summary>
+ 	public static bool noTrapsWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Get_fixed_boi">Get fixed boi (aka Zenith)</see> secret world seed. This seed combines multiple secret seeds. Note that the other secret world seed bools inherited by this seed will be set as well, so there is no need to specifically check both those bools and this bool. See also <see cref="WorldGen.everythingWorldGen"/>. </summary>
  	public static bool zenithWorld = false;
  	public static Vector2 destroyerHB = new Vector2(0f, 0f);
  	public static FavoritesFile LocalFavoriteData = new FavoritesFile(SavePath + "/favorites.json", isCloud: false);
@@ -118,25 +136,25 @@
 +
 +	/// <summary>
 +	/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] persistentBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
-+	/// Defaults to false; all vanilla vanity pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla vanity pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] vanityPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
-+	/// Defaults to false; all vanilla light pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla light pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] lightPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] meleeBuff = new bool[BuffID.Count];
 +
@@ -256,6 +274,15 @@
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
  	public static int maxRain = 750;
+@@ -727,6 +_,8 @@
+ 	public static int dungeonY;
+ 	public static Liquid[] liquid = new Liquid[Liquid.maxLiquid];
+ 	public static LiquidBuffer[] liquidBuffer = new LiquidBuffer[50000];
++	/// <summary> True on the server process, false on the client. Use this to selectively run code on server or client, such as loading texture assets.
++	/// <para/> <see cref="dedServ"/> is the same as <c><see cref="netMode"/> == <see cref="ID.NetmodeID.Server"/></c>. </summary>
+ 	public static bool dedServ;
+ 	public static int spamCount = 0;
+ 	public static int curMusic;
 @@ -743,19 +_,48 @@
  	public static int LogoA = 255;
  	public static int LogoB;
@@ -267,7 +294,7 @@
 +	public static string statusText {
 +		get => _statusText;
 +		set {
-+			Logging.LogStatusChange(_statusText, value);
++			Logging.LogStatusChange(value);
 +			_statusText = value;
 +		}
 +	}
@@ -346,7 +373,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,39 +_,99 @@
+@@ -829,39 +_,102 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -386,6 +413,7 @@
  	public static bool[] tileStone = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileAxe = new bool[TileID.Count];
  	public static bool[] tileHammer = new bool[TileID.Count];
@@ -395,6 +423,7 @@
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
 +	/// <summary>
@@ -439,6 +468,7 @@
  	public static bool[] tileCracked = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
@@ -521,7 +551,7 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
-@@ -1001,6 +_,10 @@
+@@ -1001,10 +_,15 @@
  		0.75f,
  		0.75f
  	};
@@ -532,6 +562,19 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
+ 	public static bool mouseRightRelease;
++	/// <summary> Indicates if the full player inventory is currently showing. </summary>
+ 	public static bool playerInventory;
+ 	public static int stackSplit;
+ 	public static bool preventStackSplitReset;
+@@ -1012,6 +_,7 @@
+ 	public static int timesTriedToFastStack;
+ 	public static int stackDelay = 7;
+ 	public static int superFastStack;
++	/// <summary> The item currently being carried by the mouse. </summary>
+ 	public static Item mouseItem = new Item();
+ 	public static Item guideItem = new Item();
+ 	public static Item reforgeItem = new Item();
 @@ -1026,7 +_,18 @@
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
  	public static int numAvailableRecipes;
@@ -564,6 +607,26 @@
  	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
  	public static int[] travelShop = new int[40];
  	public static List<string> anglerWhoFinishedToday = new List<string>();
+@@ -1119,6 +_,9 @@
+ 	public static bool temporaryGUIScaleSliderUpdate = false;
+ 	public static bool InGuideCraftMenu;
+ 	public static bool InReforgeMenu;
++	/// <summary>
++	/// The item to be displayed as an item tooltip. Set to a <see cref="Item.Clone"/> of an existing item instance. Needs to be set in conjunction with <see cref="hoverItemName"/> to work, although the <see cref="Item.HoverName"/> will actually be shown. Use <see cref="Item.SetNameOverride(string)"/> to customize the item name shown.
++	/// </summary>
+ 	public static Item HoverItem = new Item();
+ 	private static int backSpaceCount;
+ 	private static float backSpaceRate;
+@@ -1127,6 +_,9 @@
+ 	public static int numDisplayModes;
+ 	public static int[] displayWidth = new int[99];
+ 	public static int[] displayHeight = new int[99];
++	/// <summary>
++	/// If true, the game is currently in the main menus. If false the game is in the game world.
++	/// </summary>
+ 	public static bool gameMenu = true;
+ 	public static bool menuBGChangedDay = false;
+ 	public static bool menuBGChangedNight = false;
 @@ -1139,9 +_,9 @@
  	public static List<WorldFileData> WorldList = new List<WorldFileData>();
  	public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -576,7 +639,7 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
-@@ -1860,11 +_,19 @@
+@@ -1860,11 +_,20 @@
  	public static float exitScale = 0.8f;
  	public static bool mouseReforge;
  	public static float reforgeScale = 0.8f;
@@ -591,7 +654,8 @@
 +	/// <summary>
 +	/// Denotes the current network mode: <b>0</b> for single player client, <b>1</b> for multiplayer client, and <b>2</b> for server.<br/>
 +	/// Using <see cref="ID.NetmodeID"/> entries instead of 0, 1, and 2 will greatly enhance code readability.<br/>
-+	/// Modders must properly use netMode to selectively run code. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// Modders must properly use netMode to selectively run code, such as code affecting the game world. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// <see cref="dedServ"/> is the same as <c><see cref="netMode"/> == <see cref="ID.NetmodeID.Server"/></c>
 +	/// </summary>
  	public static int netMode;
  	private static int _targetNetMode;
@@ -639,7 +703,7 @@
  	public TilePaintSystemV2 TilePaintSystem;
  	public TileDrawing TilesRenderer;
  	public WallDrawing WallsRenderer;
-@@ -2036,7 +_,7 @@
+@@ -2036,17 +_,21 @@
  	private bool _imeToggle;
  	private static int _lastHoveredLoadoutIndex = -1;
  	private List<int> _npcTypesThatAlreadyDrewAHead = new List<int>();
@@ -648,7 +712,13 @@
  	private static List<string> _requiredObjecsForCraftingText = new List<string>();
  	private static bool _preventCraftingBecauseClickWasUsedToChangeFocusedRecipe;
  	private static int _currentRecipeBeingCrafted = -1;
-@@ -2046,7 +_,7 @@
+ 	private static bool hidePVPIcons = false;
+ 	public static bool HoveringOverAnNPC;
++	/// <summary>
++	/// Sets the tooltip text to be drawn next to the cursor. Will be ignored if <see cref="Main.mouseItem"/> is not air, meaning the player is holding an item on the mouse. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> except it won't show if an item is held on the mouse.
++	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
++	/// </summary>
+ 	public static string hoverItemName = "";
  	public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
  	public static bool mouseText;
  	private static int mH;
@@ -695,6 +765,14 @@
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2212,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if any <see href="https://terraria.wiki.gg/wiki/Secret_world_seeds">secret world seed</see> is active for this world. </summary>
+ 	public static bool specialSeedWorld {
+ 		get {
+ 			if (!drunkWorld && !getGoodWorld && !tenthAnniversaryWorld && !notTheBeesWorld && !dontStarveWorld && !remixWorld && !noTrapsWorld)
 @@ -2221,6 +_,7 @@
  		}
  	}
@@ -1247,13 +1325,12 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4563,6 +_,11 @@
+@@ -4563,6 +_,10 @@
  		catch {
  		}
  
 +		// Run one tick to JIT all the game content now rather than when a player connects
 +		Logging.ServerConsoleLine("Running one update...");
-+		Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +		Update(new GameTime());
 +
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
@@ -1434,7 +1511,7 @@
  			return;
  		}
  
-@@ -4976,9 +_,11 @@
+@@ -4976,9 +_,12 @@
  
  		dayRate = num;
  		desiredWorldTilesUpdateRate = num;
@@ -1443,6 +1520,7 @@
  			dayRate = 1;
  			desiredWorldTilesUpdateRate = 1;
 +			desiredWorldEventsUpdateRate = 1;
++			worldEventUpdates = 1;
  		}
  	}
  
@@ -2150,11 +2228,12 @@
  			CinematicManager.Instance.Update(gameTime);
  			if (netMode == 2) {
  				for (int i = 0; i < 256; i++) {
-@@ -13526,6 +_,7 @@
+@@ -13526,6 +_,8 @@
  			}
  		}
  
 +		LocalizationLoader.Update();
++		MemoryTracking.InGameUpdate();
  		DoUpdate_AutoSave();
  		if (!dedServ) {
  			ChromaInitializer.UpdateEvents();
@@ -2469,6 +2548,14 @@
  		wallFrameCounter[144]++;
  		int num3 = 5;
  		int num4 = 10;
+@@ -15815,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Clears text input from any keys pressed since the last time <see cref="GetInputText"/> was called. Call when activating a menu with text input or focusing an element with text input to prevent keys pressed beforehand to be immediately captured as input. </summary>
+ 	public static void clrInput()
+ 	{
+ 		keyCount = 0;
 @@ -15840,7 +_,8 @@
  			text = "";
  
@@ -2479,6 +2566,23 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -15938,11 +_,16 @@
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride: true);
+ 	}
+ 
++	/// <summary>
++	/// Sets the tooltip text to be drawn next to the cursor. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.hoverItemName"/> except it will still show if an item is held on the mouse.
++	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
++	/// </summary>
+ 	public void MouseText(string cursorText, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0)
+ 	{
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX);
+ 	}
+ 
++	/// <inheritdoc cref="MouseText(string, int, byte, int, int, int, int, int)"/>
+ 	public void MouseText(string cursorText, string buffTooltip, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0, bool noOverride = false)
+ 	{
+ 		if (!_mouseTextCache.noOverride) {
 @@ -15989,15 +_,19 @@
  			X += 34;
  
@@ -3414,7 +3518,7 @@
 +			/*
  			if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9))
 +			*/
-+			if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9))
++			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9))
  				flag = true;
  
  			if (flag) {
@@ -3441,7 +3545,7 @@
 +			/*
  			if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
 +			*/
-+			if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9)) {
++			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9)) { 
  				drawBackGore = true;
  				continue;
  			}
@@ -3554,6 +3658,15 @@
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
+@@ -21928,6 +_,8 @@
+ 			if (n.shimmerTransparency > 0f)
+ 				num8 *= 1f - n.shimmerTransparency;
+ 
++			NPCLoader.PartyHatPosition(n, ref vector, ref spriteEffects);
++
+ 			spriteBatch.Draw(value, new Vector2(vector.X - screenPosition.X, vector.Y - screenPosition.Y), rectangle, npcColor * n.Opacity * num8, 0f, origin, n.scale, spriteEffects, 0f);
+ 		}
+ 
 @@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
@@ -4679,6 +4792,14 @@
  						Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)(player.position.X + (float)(player.width / 2) - (float)(Player.tileRangeX * 16)), (int)(player.position.Y + (float)(player.height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  						Microsoft.Xna.Framework.Rectangle value2 = new Microsoft.Xna.Framework.Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  						if (rectangle.Intersects(value2))
+@@ -34950,6 +_,7 @@
+ 		}
+ 
+ 		Vector2 position = new Vector2(npc[i].position.X + (float)(npc[i].width / 2) - screenPosition.X - (float)(TextureAssets.Chat.Width() / 2) - (float)num, num2);
++		NPCLoader.ChatBubblePosition(npc[i], ref position, ref spriteEffects);
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, GameViewMatrix.ZoomMatrix);
+ 		PlayerInput.SetZoom_UI();
 @@ -35027,10 +_,18 @@
  			if (num5 == 147)
  				bannerMouseOver = true;
@@ -5555,13 +5676,19 @@
  		if (menuMode == num)
  			GamepadMainMenuHandler.LastDrew = num;
  	}
-@@ -42624,7 +_,15 @@
+@@ -42624,7 +_,21 @@
  
  		text = ((!ActiveWorldFileData.IsCloudSave) ? (text + SanitizePathArgument("world", worldPathName)) : (text + SanitizePathArgument("cloudworld", worldPathName)));
  		text = text + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
 +
 +		// TML options
 +		text += $@" -modpath ""{ModOrganizer.modPath}""";
++
++		if (Program.LaunchParameters.TryGetValue("-tmlsavedirectory", out var tmlsavedirectory)) 
++			text += $@" -tmlsavedirectory ""{tmlsavedirectory}""";
++		else if (Program.LaunchParameters.TryGetValue("-savedirectory", out var savedirectory)) 
++			text += $@" -savedirectory ""{savedirectory}""";
++
 +		if (showServerConsole)
 +			text += " -showserverconsole";
 +

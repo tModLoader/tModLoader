@@ -18,7 +18,7 @@
 	<ItemGroup>
 		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
 		<PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
-		<PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="22.5.1.1" />
+		<PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="22.7.31.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.3.1" />
 		<!-- Preview is needed for https://github.com/icsharpcode/ILSpy/commit/8dd721a -->

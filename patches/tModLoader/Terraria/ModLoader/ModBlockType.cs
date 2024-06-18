@@ -92,7 +92,9 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to stop this tile/wall from being placed at the given coordinates. Return false to stop the tile/wall from being placed. Returns true by default.
+	/// Allows you to stop this tile/wall from being placed at the given coordinates. This method is called on the local client.
+	/// <para/> For tiles this is also checked during block replacement, but <see cref="ModTile.CanReplace(int, int, int)"/> should be used for replace-specific logic.
+	/// <para/> Return false to stop the tile/wall from being placed. Returns true by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

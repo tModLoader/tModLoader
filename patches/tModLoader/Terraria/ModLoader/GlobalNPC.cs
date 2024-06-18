@@ -36,7 +36,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Called after SetDefaults for NPCs with a negative <see cref="NPC.netID"/><br/>
 	/// This hook is required because <see cref="NPC.SetDefaultsFromNetId"/> only sets <see cref="NPC.netID"/> after SetDefaults<br/>
-	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but differet netID<br/>
+	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but different netID<br/>
 	/// </summary>
 	public virtual void SetDefaultsFromNetId(NPC npc)
 	{
@@ -861,5 +861,20 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public virtual int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor)
 	{
 		return null;
+	}
+
+	/// <inheritdoc cref="ModNPC.ChatBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void ChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <inheritdoc cref="ModNPC.PartyHatPosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void PartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <inheritdoc cref="ModNPC.EmoteBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void EmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
 	}
 }

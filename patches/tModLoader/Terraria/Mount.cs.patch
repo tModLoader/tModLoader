@@ -91,6 +91,14 @@
  	public static float SuperCartRunSpeed = 20f;
  	public static float SuperCartDashSpeed = 20f;
  	public static float SuperCartAcceleration = 0.1f;
+@@ -212,6 +_,7 @@
+ 	public static float SuperCartJumpSpeed = 5.15f;
+ 	private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
+ 
++	/// <summary> True if the player is currently using a mount. </summary>
+ 	public bool Active => _active;
+ 
+ 	public int Type => _type;
 @@ -2013,7 +_,7 @@
  		}
  	}

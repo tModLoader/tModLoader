@@ -241,12 +241,7 @@ internal class UIModPackItem : UIPanel
 		_tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(_tooltip)) {
-			byte temp = Main.mouseTextColor;
-			Main.mouseTextColor = 160;
-			var bounds = GetOuterDimensions().ToRectangle();
-			bounds.Height += 16;
-			UICommon.DrawHoverStringInBounds(spriteBatch, _tooltip, bounds);
-			Main.mouseTextColor = temp;
+			UICommon.TooltipMouseText(_tooltip);
 		}
 	}
 
@@ -310,6 +305,9 @@ internal class UIModPackItem : UIPanel
 		}
 		else if (_updateListWithEnabledButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabledDesc");
+		}
+		else if (_deleteButton?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.ModPackDelete");
 		}
 	}
 
@@ -448,6 +446,7 @@ internal class UIModPackItem : UIPanel
 	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = modpack._filepath;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 
@@ -460,6 +459,7 @@ internal class UIModPackItem : UIPanel
 		// Clear active Mod Pack 
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = null;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 

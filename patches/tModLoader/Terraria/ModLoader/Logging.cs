@@ -14,6 +14,7 @@ using log4net.Layout;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
@@ -35,6 +36,7 @@ public static partial class Logging
 	private static readonly Encoding encoding = new UTF8Encoding(false);
 	private static readonly List<string> initWarnings = new();
 	private static readonly Regex statusRegex = new(@"(.+?)[: \d]*%$");
+	private static readonly Regex statusGeneratingWorld = new(@"\d+\.\d% - (.+?) - \d+\.\d%$");
 
 	public static string LogPath { get; private set; }
 
@@ -73,6 +75,7 @@ public static partial class Logging
 		tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 		tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 		tML.InfoFormat("Running on {0} (v{1}) {2} {3} {4}", ReLogic.OS.Platform.Current.Type, Environment.OSVersion.Version, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
+		tML.InfoFormat("CPU: {0} processors. RAM: {1}", Environment.ProcessorCount, UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory()));
 		tML.InfoFormat("FrameworkDescription: {0}", RuntimeInformation.FrameworkDescription);
 		tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 		tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
@@ -233,14 +236,30 @@ public static partial class Logging
 		Main.soundVolume = soundVolume;
 	}
 
-	internal static void LogStatusChange(string oldStatusText, string newStatusText)
+	[ThreadStatic]
+	private static string lastStatusLogged; // Needs to be ThreadStatic so competing threads don't spam logs, such as during world gen saving.
+	internal static void LogStatusChange(string newStatusText)
 	{
-		// Trim numbers and percentage to reduce log spam
-		string oldBase = statusRegex.Match(oldStatusText).Groups[1].Value;
-		string newBase = statusRegex.Match(newStatusText).Groups[1].Value;
+		lastStatusLogged ??= string.Empty;
 
-		if (newBase != oldBase && newBase.Length > 0)
+		// Trim numbers and percentage to reduce log spam
+		string newBase = newStatusText;
+
+		if (statusRegex.Match(newStatusText) is { Success: true } statusMatchNew) {
+			newBase = statusMatchNew.Groups[1].Value;
+		}
+
+		if (WorldGen.generatingWorld) {
+			// 21.2% - Adding more grass - 90.3%
+			if (statusGeneratingWorld.Match(newStatusText) is { Success: true } statusGenMatchNew) {
+				newBase = statusGenMatchNew.Groups[1].Value;
+			}
+		}
+
+		if (newBase != lastStatusLogged && newBase.Length > 0) {
 			LogManager.GetLogger("StatusText").Info(newBase);
+			lastStatusLogged = newBase;
+		}
 	}
 
 	internal static void ServerConsoleLine(string msg)

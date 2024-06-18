@@ -64,6 +64,7 @@ internal class ModCompile
 
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
+	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
 	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
@@ -212,7 +213,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
 			BuildMod(mod, out var code, out var pdb);
-			mod.modFile.AddFile(mod.Name+".dll", code);
+			mod.modFile.AddFile(mod.Name + ".dll", code);
 			if (pdb != null)
 				mod.modFile.AddFile(mod.Name + ".pdb", pdb);
 
@@ -224,6 +225,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			mod.modFile.Save();
 			ModLoader.EnableMod(mod.Name);
+			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);
 		}
 		catch (Exception e) {
@@ -465,7 +467,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
 		var refs = references.Select(s => MetadataReference.CreateFromFile(s));
-		refs = refs.Concat(Net60.All);
+		refs = refs.Concat(Net80.References.All);
 
 		var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
