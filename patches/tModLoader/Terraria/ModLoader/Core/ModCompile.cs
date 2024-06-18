@@ -416,7 +416,12 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 		if (numErrors > 0) {
 			var firstError = results.First(e => e.Severity == DiagnosticSeverity.Error);
-			throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
+			var buildException = new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name + ".dll", numErrors, numWarnings) + $"\nError: {firstError}");
+			if(firstError.ToString().Contains("'LocalizedText' does not contain a definition for 'SetDefault'")) {
+				buildException.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#localizedtext-does-not-contain-a-definition-for-setdefault";
+				buildException.Data["showTModPorterHint"] = true;
+			}
+			throw buildException;
 		}
 	}
 
