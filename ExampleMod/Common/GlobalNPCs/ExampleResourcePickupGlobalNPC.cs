@@ -15,8 +15,8 @@ namespace ExampleMod.Common.GlobalNPCs
 			Player closestPlayer = Main.player[Player.FindClosest(npc.position, npc.width, npc.height)];
 			ExampleResourcePlayer exampleResourcePlayer = closestPlayer.GetModPlayer<ExampleResourcePlayer>();
 
-			// MotherSlime, CorruptSlime, and Slimer do not count as dying for the purposes of resource drops because they spawn other enemies when they die.
-			if (npc.type != NPCID.MotherSlime && npc.type != NPCID.CorruptSlime && npc.type != NPCID.Slimer && closestPlayer.RollLuck(6) == 0 && npc.lifeMax > 1 && npc.damage > 0 && Main.rand.NextBool(2) && exampleResourcePlayer.exampleResourceCurrent < exampleResourcePlayer.exampleResourceMax2) {
+			// These conditions match the Heart and Star drop logic, but can be adjusted based on the intended rarity of the resource.
+			if (!NPCID.Sets.NeverDropsResourcePickups[npc.type] && closestPlayer.RollLuck(6) == 0 && npc.lifeMax > 1 && npc.damage > 0 && Main.rand.NextBool(2) && exampleResourcePlayer.exampleResourceCurrent < exampleResourcePlayer.exampleResourceMax2) {
 				Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ModContent.ItemType<ExampleResourcePickup>());
 			}
 		}

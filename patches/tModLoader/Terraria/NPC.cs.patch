@@ -22,6 +22,19 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
+@@ -55,6 +_,12 @@
+ 	public const float nameOverIncrement = 0.025f;
+ 	public const float nameOverDistance = 350f;
+ 	public float nameOver;
++	/// <summary>
++	/// Indicates that this NPC was spawned by a statue. Mainly affects item drops.
++	/// <para/> Prevents item drops in pre-hardmode if <see cref="NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue"/> is true. Also prevents item drops if <see cref="NPCID.Sets.StatueSpawnedDropRarity"/> isn't -1 and either a random value is higher than that chance or the npc was not damaged by a player.
++	/// <para/> Prevents <see cref="NPC.CatchNPC(int, int)"/>.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool SpawnedFromStatue;
+ 	public bool CanBeReplacedByOtherNPCs;
+ 	public bool dripping;
 @@ -65,19 +_,52 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
@@ -1802,6 +1815,23 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(7);
  		}
+@@ -59829,14 +_,14 @@
+ 
+ 	private void NPCLoot_DropCommonLifeAndMana(Player closestPlayer)
+ 	{
+-		if (type != 16 && type != 81 && type != 121 && closestPlayer.RollLuck(6) == 0 && lifeMax > 1 && damage > 0) {
++		if (!NPCID.Sets.NeverDropsResourcePickups[type] && closestPlayer.RollLuck(6) == 0 && lifeMax > 1 && damage > 0) {
+ 			if (Main.rand.Next(2) == 0 && closestPlayer.statMana < closestPlayer.statManaMax2)
+ 				Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 184);
+ 			else if (Main.rand.Next(2) == 0 && closestPlayer.statLife < closestPlayer.statLifeMax2)
+ 				Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 58);
+ 		}
+ 
+-		if (type != 16 && type != 81 && type != 121 && closestPlayer.RollLuck(2) == 0 && lifeMax > 1 && damage > 0 && closestPlayer.statMana < closestPlayer.statManaMax2)
++		if (!NPCID.Sets.NeverDropsResourcePickups[type] && closestPlayer.RollLuck(2) == 0 && lifeMax > 1 && damage > 0 && closestPlayer.statMana < closestPlayer.statManaMax2)
+ 			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 184);
+ 	}
+ 
 @@ -59945,6 +_,7 @@
  		}
  	}

@@ -327,7 +327,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+	/// Allows you to make things happen when this NPC dies (for example, dropping items manually and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// <para/> Most item drops should be done via drop rules registered in <see cref="ModifyNPCLoot(NPCLoot)"/>. Some dynamic NPC drops, such as additional hearts, are more suited for OnKill instead. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossMinion.cs#L101">MinionBossMinion.cs</see> shows an example of an NPC that drops additional hearts.
+	/// <para/> Bosses need to set flags when they are defeated, and some bosses run world generation code such as spawning new ore. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossBody.cs#L218">MinionBossMinion.cs</see> shows an example of these effects.
 	/// </summary>
 	public virtual void OnKill()
 	{

@@ -169,5 +169,11 @@ public partial class NPCID
 		/// While petting, the player's arm will be angled up by default. If the NPC is in this set, the player's armor will be angled down instead. Defaults to false.
 		/// </summary>
 		public static bool[] IsPetSmallForPetting = Factory.CreateBoolSet(TownCat, TownBunny, TownSlimeBlue, TownSlimeGreen, TownSlimeOld, TownSlimePurple, TownSlimeRainbow, TownSlimeYellow, TownSlimeRed, TownSlimeCopper);
+
+		/// <summary>
+		/// NPC in this set do not drop resource pickups, such as hearts or star items. Vanilla entries in this set include MotherSlime, CorruptSlime, and Slimer, all of which spawn other NPC when killed, suggesting that they split apart rather than died, hinting at why they shouldn't drop resource pickups.
+		/// <para/> Defaults to false.
+		/// </summary>
+		public static bool[] NeverDropsResourcePickups = Factory.CreateBoolSet(MotherSlime, CorruptSlime, Slimer);
 	}
 }
