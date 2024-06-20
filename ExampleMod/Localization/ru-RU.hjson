@@ -178,6 +178,7 @@ Mods: {
 
 					Drastically increases example resource regen rate
 					{$CommonItemTooltip.IncreasesMaxExampleResourceBy}
+					Increases pickup range for Example Resource Pickup
 					''' */
 			}
 
@@ -958,6 +959,8 @@ Mods: {
 				// DisplayName: Flask of Example
 				// Tooltip: Melee and Whip attacks decrease enemies defense
 			}
+
+			// ExampleResourcePickup.DisplayName: Example Resource Pickup
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

@@ -19,7 +19,8 @@ namespace ExampleMod
 			ExampleStatIncreasePlayerSync,
 			ExampleTeleportToStatue,
 			ExampleDodge,
-			ExampleTownPetUnlockOrExchange
+			ExampleTownPetUnlockOrExchange,
+			ExampleResourceEffect
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -51,6 +52,9 @@ namespace ExampleMod
 				case MessageType.ExampleTownPetUnlockOrExchange:
 					// Call a custom function that we made in our License item.
 					ExampleTownPetLicense.ExampleTownPetUnlockOrExchangePet(ref ExampleTownPetSystem.boughtExampleTownPet, ModContent.NPCType<Content.NPCs.TownPets.ExampleTownPet>(), ModContent.GetInstance<ExampleTownPetLicense>().GetLocalizationKey("LicenseExampleTownPetUse"));
+					break;
+				case MessageType.ExampleResourceEffect:
+					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
