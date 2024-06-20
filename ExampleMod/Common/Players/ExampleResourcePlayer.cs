@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -16,7 +17,9 @@ namespace ExampleMod.Common.Players
 		public int exampleResourceMax2; // Maximum amount of our example resource. We will change that variable to increase maximum amount of our resource
 		public float exampleResourceRegenRate; // By changing that variable we can increase/decrease regeneration rate of our resource
 		internal int exampleResourceRegenTimer = 0; // A variable that is required for our timer
-		public static readonly Color HealExampleResource = new(187, 91, 201); // We can use this for CombatText, if you create an item that replenishes exampleResourceCurrent.
+		public bool exampleResourceMagnet = false;
+		public static readonly int exampleResourceMagnetGrabRange = 300;
+		public static readonly Color HealExampleResourceColor = new(187, 91, 201); // We can use this for CombatText, if you create an item that replenishes exampleResourceCurrent. ...
 
 		// In order to make the Example Resource example straightforward, several things have been left out that would be needed for a fully functional resource similar to mana and health. 
 		// Here are additional things you might need to implement if you intend to make a custom resource:
@@ -40,6 +43,7 @@ namespace ExampleMod.Common.Players
 		private void ResetVariables() {
 			exampleResourceRegenRate = 1f;
 			exampleResourceMax2 = exampleResourceMax;
+			exampleResourceMagnet = false;
 		}
 
 		public override void PostUpdateMiscEffects() {
@@ -71,25 +75,46 @@ namespace ExampleMod.Common.Players
 			}
 		}
 
+		// HealExampleResource will increase the actual ExampleResource stat, then HealExampleResourceEffect spawns a CombatText visual and SendExampleResourceEffectMessage/HandleExampleResourceEffectMessage handle syncing that visual to other players.
+		public void HealExampleResource(int healAmount) {
+			exampleResourceCurrent = Math.Clamp(exampleResourceCurrent + healAmount, 0, exampleResourceMax2);
+			if (Main.myPlayer == Player.whoAmI) {
+				HealExampleResourceEffect(healAmount);
+			}
+		}
+
+		// Responsible for spawning and syncing just the CombatText
+		public void HealExampleResourceEffect(int healAmount) {
+			CombatText.NewText(Player.getRect(), HealExampleResourceColor, healAmount);
+			if (Main.netMode == NetmodeID.MultiplayerClient && Player.whoAmI == Main.myPlayer) {
+				SendExampleResourceEffectMessage(Player.whoAmI, healAmount);
+			}
+		}
+
+		// These methods handle syncing the CombatText that indicates that the player has healed some amount of ExampleResource
 		public static void HandleExampleResourceEffectMessage(BinaryReader reader, int whoAmI) {
 			int player = reader.ReadByte();
 			if (Main.netMode == NetmodeID.Server) {
 				player = whoAmI;
 			}
 
-			Main.player[player].GetModPlayer<ExampleResourcePlayer>().ExampleDodgeEffects();
+			int healAmount = reader.ReadInt32();
+			if (player != Main.myPlayer) {
+				Main.player[player].GetModPlayer<ExampleResourcePlayer>().HealExampleResourceEffect(healAmount);
+			}
 
 			if (Main.netMode == NetmodeID.Server) {
 				// If the server receives this message, it sends it to all other clients to sync the effects.
-				SendExampleResourceEffectMessage(player);
+				SendExampleResourceEffectMessage(player, healAmount);
 			}
 		}
 
-		public static void SendExampleResourceEffectMessage(int whoAmI) {
+		public static void SendExampleResourceEffectMessage(int whoAmI, int healAmount) {
 			// This code is called by both the initial 
 			ModPacket packet = ModContent.GetInstance<ExampleMod>().GetPacket();
 			packet.Write((byte)ExampleMod.MessageType.ExampleResourceEffect);
 			packet.Write((byte)whoAmI);
+			packet.Write(healAmount);
 			packet.Send(ignoreClient: whoAmI);
 		}
 	}
