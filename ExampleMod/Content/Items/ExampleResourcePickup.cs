@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Items
 
 		// Since ItemID.Sets.IsAPickup is true, we don't need to override the ItemSpace hook to allow picking up the item when inventory is full
 
-		// We can override CanPickup to prevent attempting to pick up this item, but hearts and stars do not do this so we won't either.
+		// We can override CanPickup to prevent attempting to pick up this item when at max ExampleResource, but hearts and stars do not do this so we won't either.
 
 		// GrabRange can be used to implement effects similar to Heartreach potion or Celestial Magnet.
 		public override void GrabRange(Player player, ref int grabRange) {

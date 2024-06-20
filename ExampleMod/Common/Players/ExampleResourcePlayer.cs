@@ -19,13 +19,12 @@ namespace ExampleMod.Common.Players
 		internal int exampleResourceRegenTimer = 0; // A variable that is required for our timer
 		public bool exampleResourceMagnet = false;
 		public static readonly int exampleResourceMagnetGrabRange = 300;
-		public static readonly Color HealExampleResourceColor = new(187, 91, 201); // We can use this for CombatText, if you create an item that replenishes exampleResourceCurrent. ...
+		public static readonly Color HealExampleResourceColor = new(187, 91, 201); // The color to use with CombatText when replenishing exampleResourceCurrent
 
 		// In order to make the Example Resource example straightforward, several things have been left out that would be needed for a fully functional resource similar to mana and health. 
 		// Here are additional things you might need to implement if you intend to make a custom resource:
 		// - Multiplayer Syncing: The current example doesn't require MP code, but pretty much any additional functionality will require this. ModPlayer.SendClientChanges and CopyClientState will be necessary, as well as SyncPlayer if you allow the user to increase exampleResourceMax.
 		// - Save/Load permanent changes to max resource: You'll need to implement Save/Load to remember increases to your exampleResourceMax cap.
-		// - Resource replenishment item: Use GlobalNPC.OnKill to drop the item. ModItem.OnPickup and ModItem.ItemSpace will allow it to behave like Mana Star or Heart. Use code similar to Player.HealEffect to spawn (and sync) a colored number suitable to your resource. Hmm...
 
 		public override void Initialize() {
 			exampleResourceMax = DefaultExampleResourceMax;
