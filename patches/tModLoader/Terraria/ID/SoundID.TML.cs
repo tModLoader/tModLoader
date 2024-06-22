@@ -71,12 +71,12 @@ partial class SoundID
 	};
 	public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13", SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f) };
 	public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew };
-	public static readonly SoundStyle Bird14 = Bird with { SoundPath = $"{Prefix}Zombie_14" };
-	public static readonly SoundStyle Bird15 = Bird with { SoundPath = $"{Prefix}Zombie_15" };
-	public static readonly SoundStyle Bird16 = Bird with { SoundPath = $"{Prefix}Zombie_16" };
-	public static readonly SoundStyle Bird17 = Bird with { SoundPath = $"{Prefix}Zombie_17" };
-	public static readonly SoundStyle Bird18 = Bird with { SoundPath = $"{Prefix}Zombie_18" };
-	public static readonly SoundStyle Bird19 = Bird with { SoundPath = $"{Prefix}Zombie_19" };
+	public static readonly SoundStyle Bird14 = Bird with { Variants = [14] };
+	public static readonly SoundStyle Bird15 = Bird with { Variants = [15] };
+	public static readonly SoundStyle Bird16 = Bird with { Variants = [16] };
+	public static readonly SoundStyle Bird17 = Bird with { Variants = [17] };
+	public static readonly SoundStyle Bird18 = Bird with { Variants = [18] };
+	public static readonly SoundStyle Bird19 = Bird with { Variants = [19] };
 	public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15", SoundType.Ambient) { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0", SoundType.Ambient) { Volume = 0.2f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1", SoundType.Ambient) { Volume = 0.65f, SoundLimitBehavior = IgnoreNew };
