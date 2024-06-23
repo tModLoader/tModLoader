@@ -154,6 +154,7 @@
 		"ModConfigSharedConfigChanged": "模组共享配置已更改：消息：{0}，模组：{1}，配置：{2}",
 		"ModConfigAccepted": "已接受更改",
 		"ModConfigRejectChangesNotHost": "只有主机才可以更改此配置",
+		// "ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Boss 血条样式：{0}",

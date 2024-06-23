@@ -152,6 +152,7 @@
 		"ModConfigSharedConfigChanged": "Wspólna konfiguracja zmieniona: Wiadomość: {0}, Mod: {1}, Konfiguracja: {2}",
 		"ModConfigAccepted": "Zaakceptowane",
 		"ModConfigRejectChangesNotHost": "Tylko gospodarz może zmienić tę konfigurację",
+		// "ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",

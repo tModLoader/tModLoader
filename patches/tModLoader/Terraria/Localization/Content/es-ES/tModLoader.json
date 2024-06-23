@@ -152,6 +152,7 @@
 		"ModConfigSharedConfigChanged": "La configuración compartida ha cambiado: Mensaje: {0}, Mod: {1}, Configuración: {2}",
 		"ModConfigAccepted": "Aceptado",
 		"ModConfigRejectChangesNotHost": "Solo el anfitrión puede cambiar esta configuración",
+		// "ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Estilo de barra de jefes: {0}",

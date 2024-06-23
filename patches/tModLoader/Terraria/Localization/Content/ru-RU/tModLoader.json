@@ -152,6 +152,7 @@
 		"ModConfigSharedConfigChanged": "Изменена общая конфигурация: Сообщение: {0}, Мод: {1}, Конфигурация: {2}",
 		"ModConfigAccepted": "Изменения приняты",
 		"ModConfigRejectChangesNotHost": "Изменение конфигурации доступно только для хоста",
+		// "ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Стиль шкалы здоровья босса: {0}",

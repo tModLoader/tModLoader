@@ -152,6 +152,7 @@
 		"ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
 		"ModConfigAccepted": "Accepted",
 		"ModConfigRejectChangesNotHost": "Only the host can change this config",
+		"ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",
