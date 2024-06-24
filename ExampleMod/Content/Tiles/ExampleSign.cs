@@ -13,12 +13,15 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleSign : ModTile
 	{
+		public static LocalizedText DefaultSignText { get; private set; }
+
 		public override void SetStaticDefaults()
 		{
-			// Note: The max amount of signs in a world is 1000 (the size of the tileSign array).
 			Main.tileSign[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
+			TileID.Sets.DisableSmartCursor[Type] = true;
+			AdjTiles = new int[] { Type };
 
 			// Use the vanilla sign style as our foundation.
 			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Signs, 0));
@@ -33,24 +36,24 @@ namespace ExampleMod.Content.Tiles
             TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newSubTile.Origin = new Point16(0, 0);
             TileObjectData.newSubTile.AnchorBottom = AnchorData.Empty;
-            TileObjectData.newSubTile.AnchorRight = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree, TileObjectData.newSubTile.Width, 0);
             TileObjectData.addSubTile(3);
             TileObjectData.addTile(Type);
 
 			RegisterItemDrop(ModContent.ItemType<ExampleSignItem>());
 
-            AddMapEntry(new Color(200, 200, 200));
-			TileID.Sets.DisableSmartCursor[Type] = true;
-			AdjTiles = new int[] { Type };
+			LocalizedText name = CreateMapEntryName();
+			AddMapEntry(new Color(200, 200, 200), name);
+			DefaultSignText ??= this.GetLocalization("DefaultSignText");
 		}
 
 		public override void PlaceInWorld(int i, int j, Item item)
         {
-            // When the third param is true, ReadSign() initializes a new Sign object and returns an ID.
-            // The ID is the array index for our new Sign in the Main.sign[] array.
-            int signId = Sign.ReadSign(i, j, true);
+			// When the third param is true, ReadSign() initializes a new Sign object and returns an ID.
+			// The ID is the array index for our new Sign in the Main.sign[] array.
+			// Note: The max amount of signs that can be stored in a world is 1000 (the size of the Main.sign[] array).
+			int signId = Sign.ReadSign(i, j, true);
 
-            Main.sign[signId].text = "I am a sign, right-click me!";
+            Main.sign[signId].text = DefaultSignText.Value;
 		}
 
 		public override bool RightClick(int i, int j)
