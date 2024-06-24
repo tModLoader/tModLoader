@@ -4,6 +4,8 @@ using Terraria.Audio;
 using static Terraria.Audio.SoundLimitBehavior;
 using static Terraria.ID.SoundID.SoundStyleDefaults;
 
+#pragma warning disable IDE0047 // Parentheses can be removed.
+
 namespace Terraria.ID;
 
 partial class SoundID
@@ -64,8 +66,12 @@ partial class SoundID
 
 	//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
 	
-	// Explanation: There is a 1 in 300 chance for a duck to play a 'funni' easter egg sound variant.
-	public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (10, 300f), (11, 300f), (12, 1f), }, SoundType.Ambient) {
+	// There is a 1 in 300 chance for a duck to play an easter egg sound variant.
+	public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", stackalloc (int, float)[] {
+		(10, (299f / 300f) * (1f / 2f)),
+		(11, (299f / 300f) * (1f / 2f)),
+		(12, (1.0f / 300f)),
+	}, SoundType.Ambient) {
 		Volume = 0.75f,
 		PitchRange = (-0.7f, 0.0f)
 	};
@@ -92,8 +98,14 @@ partial class SoundID
 	public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { MaxInstances = 7, PitchVariance = 0.2f, };
 	public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) };
 	public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
-	// Explanation: There is a 1 in 300 chance for an owl to play a 'funni' easter egg sound variant.
-	public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (110, 300f), (111, 300f), (112, 1f), (113, 1f), (114, 1f), }) {
+	// There is a 1 in 300 chance for an owl to play one of 3 easter egg sound variants, one of which is rolled for before the other two.
+	public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] {
+		(110, (299f / 300f) * (1f / 2f)),
+		(111, (299f / 300f) * (1f / 2f)),
+		(112, (1.0f / 300f) * (2f / 3f) * (1f / 2f)),
+		(113, (1.0f / 300f) * (2f / 3f) * (1f / 2f)),
+		(114, (1.0f / 300f) * (1f / 3f)),
+	}) {
 		PitchVariance = 0.2f
 	};
 	public static readonly SoundStyle GuitarC = new($"{Prefix}Item_133") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
