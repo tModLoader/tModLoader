@@ -313,7 +313,7 @@ partial class SoundID
 	public static readonly SoundStyle Item52 = ItemSound(52) with { Volume = 0.35f };
 	public static readonly SoundStyle Item53 = ItemSound(53) with { Volume = 0.75f, PitchRange = (-0.4f, -0.2f), SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Item54 = ItemSound(54);
-	public static readonly SoundStyle Item55 = ItemSound(55) with { Volume = 0.75f * 0.75f, PitchRange = (-0.4f, -0.2f), SoundLimitBehavior = IgnoreNew };
+	public static readonly SoundStyle Item55 = ItemSound(55) with { Volume = 0.75f * 0.75f, PitchRange = (0.2f, 0.4f), SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Item56 = ItemSound(56);
 	public static readonly SoundStyle Item57 = ItemSound(57);
 	public static readonly SoundStyle Item58 = ItemSound(58);
