@@ -106,7 +106,8 @@ partial class SoundID
 		(113, (1.0f / 300f) * (2f / 3f) * (1f / 2f)),
 		(114, (1.0f / 300f) * (1f / 3f)),
 	}) {
-		PitchVariance = 0.2f
+		PitchVariance = 0.2f,
+		SoundLimitBehavior = IgnoreNew,
 	};
 	public static readonly SoundStyle GuitarC = new($"{Prefix}Item_133") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
 	public static readonly SoundStyle GuitarD = new($"{Prefix}Item_134") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
