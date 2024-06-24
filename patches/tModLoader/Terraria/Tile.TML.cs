@@ -24,8 +24,8 @@ public readonly partial struct Tile
 
 #if !TILE_X_Y
 	// TileId = y + x * tilemap.Height
-	public readonly int X() => TileId / Main.tile.Height;
-	public readonly int Y() => TileId % Main.tile.Height;
+	public readonly int X => (int)(TileId / Main.tile.Height);
+	public readonly int Y => (int)(TileId % Main.tile.Height);
 #endif
 
 	// General state
