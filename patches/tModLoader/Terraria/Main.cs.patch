@@ -373,7 +373,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,39 +_,102 @@
+@@ -829,44 +_,112 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -476,6 +476,16 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
+ 	public static short[] tileGlowMask = new short[TileID.Count];
+ 	public static bool[] tileContainer = new bool[TileID.Count];
++	/// <summary>
++	/// Indicates that a tile is a "sign" and will be paired with a <see cref="Sign"/> instance. Right click, hover, saving, and network syncing behaviors are all handled automatically. Note that signs are expected to be 2x2 tiles with pixel dimensions 36x36 and will likely not work correctly for other dimensions.
++	/// <para/> Be sure to also set <see cref="TileID.Sets.TileInteractRead"/>.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public static bool[] tileSign = new bool[TileID.Count];
+ 	public static bool[][] tileMerge = new bool[TileID.Count][];
+ 	public static int cageFrames = 25;
 @@ -941,9 +_,23 @@
  	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
@@ -500,7 +510,7 @@
  	public static int[] tileFrameCounter = new int[TileID.Count];
  	public static byte[] wallFrame = new byte[WallID.Count];
  	public static byte[] wallFrameCounter = new byte[WallID.Count];
-@@ -952,18 +_,39 @@
+@@ -952,19 +_,43 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
@@ -538,8 +548,12 @@
 +	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
 +	/// </summary>
  	public static Chest[] chest = new Chest[8000];
++	/// <summary>
++	/// Contains all the signs in the world. There can be at most 1000 signs in the world.
++	/// </summary>
  	public static Sign[] sign = new Sign[1000];
  	public static int[] itemFrame = new int[401];
+ 	public static int[] itemFrameCounter = new int[401];
 @@ -972,6 +_,10 @@
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
