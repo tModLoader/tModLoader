@@ -146,6 +146,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to do something when this tile/wall is placed. Called on the local Client and Single Player.
+	/// <para/> Note that the coordinates in this method account for the placement origin and are not necessarily the coordinates of the top left tile of a multi-tile.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
 	/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
