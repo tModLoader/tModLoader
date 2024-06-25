@@ -99,9 +99,6 @@ public static class TileLoader
 
 	internal static int ReserveTileID()
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding tiles breaks vanilla client compatibility");
-
 		int reserveID = nextTile;
 		nextTile++;
 		return reserveID;
@@ -319,7 +316,7 @@ public static class TileLoader
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
 		int partY = 0;
-		for (int remainingFrameY = partFrameY; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
+		for (int remainingFrameY = partFrameY; partY + 1 < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] - tileData.CoordinatePadding >= 0; partY++) {
 			remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 		}
 		// We need to use the tile that trigger this, since it still has the tile type instead of air
@@ -773,7 +770,7 @@ public static class TileLoader
 			TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
 			if (tileData != null) {
 				int partY = 0;
-				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
+				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY + 1 < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] - tileData.CoordinatePadding >= 0; partY++) {
 					remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 				}
 				width = tileData.CoordinateWidth;

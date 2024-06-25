@@ -73,6 +73,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	}
 
 	/// <summary>
+	/// Checks or sets <see cref="meleeEnchant"/>, indicating if a melee enchantment is active or not. Mods can check the <see cref="meleeEnchant"/> value directly to act on existing melee enchantments, but modded melee enchantments do not have specific assigned values.
+	/// </summary>
+	public bool MeleeEnchantActive {
+		get => meleeEnchant > 0;
+		set => meleeEnchant = 255;
+	}
+
+	/// <summary>
 	/// The maximum amount of Mana Crystals this player is allowed to consume total
 	/// </summary>
 	public const int ManaCrystalMax = 9;

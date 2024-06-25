@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Biomes
 		}
 
 		public override int GetDropletGore() {
-			return ModContent.Find<ModGore>("ExampleMod/MinionBossBody_Back").Type;
+			return ModContent.GoreType<ExampleDroplet>();
 		}
 
 		public override void LightColorMultiplier(ref float r, ref float g, ref float b) {

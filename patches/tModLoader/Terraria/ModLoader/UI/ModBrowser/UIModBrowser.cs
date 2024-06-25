@@ -78,6 +78,15 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		sortingParamater = SortMode,
 		updateStatusFilter = UpdateFilterMode,
 		modSideFilter = ModSideFilterMode,
+		days = TimePeriodMode switch {
+			ModBrowserTimePeriod.Today => 1,
+			ModBrowserTimePeriod.OneWeek => 7,
+			ModBrowserTimePeriod.ThreeMonths => 90,
+			ModBrowserTimePeriod.SixMonths => 180,
+			ModBrowserTimePeriod.OneYear => 365,
+			ModBrowserTimePeriod.AllTime => 0,
+			_ => throw new NotImplementedException(),
+		},
 
 		queryType = QueryType.SearchAll
 	};
@@ -87,6 +96,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	public ModBrowserSortMode SortMode {
 		get => SortModeFilterToggle.State;
 		set => SortModeFilterToggle.SetCurrentState(value);
+	}
+
+	public ModBrowserTimePeriod TimePeriodMode {
+		get => TimePeriodToggle.State;
+		set => TimePeriodToggle.SetCurrentState(value);
 	}
 
 	public UpdateFilter UpdateFilterMode {
@@ -173,8 +187,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		// @TODO: Why this is done on Draw? (plus hard coded 101 :|)
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 101;
+		// @TODO: Why this is done on Draw?
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 
 		base.Draw(spriteBatch);
 		for (int i = 0; i < CategoryButtons.Count; i++)
@@ -185,12 +199,16 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 						text = SortMode.ToFriendlyString();
 						break;
 					case 1:
-						text = UpdateFilterMode.ToFriendlyString();
+						string timePeriodText = TimePeriodMode.ToFriendlyString();
+						text = TimePeriodToggle.Disabled ? Language.GetTextValue("tModLoader.MBTimePeriodToggleDisabled", "646464", timePeriodText) : timePeriodText;
 						break;
 					case 2:
-						text = ModSideFilterMode.ToFriendlyString();
+						text = UpdateFilterMode.ToFriendlyString();
 						break;
 					case 3:
+						text = ModSideFilterMode.ToFriendlyString();
+						break;
+					case 4:
 						text = SearchFilterMode.ToFriendlyString();
 						break;
 					default:
@@ -198,11 +216,11 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 						break;
 				}
 
-				UICommon.DrawHoverStringInBounds(spriteBatch, text);
+				UICommon.TooltipMouseText(text);
 				break;
 			}
 		if (_browserStatus.IsMouseHovering && ModList.State != AsyncProviderState.Completed) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, ModList.GetEndItemText());
+			UICommon.TooltipMouseText(ModList.GetEndItemText());
 		}
 	}
 
@@ -332,6 +350,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				DebounceTimer = new();
 				DebounceTimer.Start();
 			}
+
+			TimePeriodToggle.Disabled = !(SortMode == ModBrowserSortMode.Hot && string.IsNullOrEmpty(Filter));
 		}
 	}
 

@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Changing this will necessitate a reload",
 		"ModReloadForced": "Reload Forced",
 		"ModIsServerSide": "This is a server side mod",
+		"ModFromWorkshop": "Loading from workshop",
+		"ModFromModpack": "Loading from active mod pack",
+		"ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "By: {0}",
 		"ModsMoreInfo": "More Info",
 		"ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
@@ -123,6 +126,8 @@
 		//Mod Config
 		"ModConfigs": "Configs",
 		"ModConfigFilterOptions": "Filter Options",
+		"ModConfigFilterByName": "Filter by Name",
+		"ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Notification: ",
 		"ModConfigModConfig": "Mod Config",
 		"ModConfigSaveConfig": "Save Config",
@@ -141,11 +146,13 @@
 		"ModConfigCollapse": "Collapse",
 		"ModConfigScaleUp": "Scale Up",
 		"ModConfigScaleDown": "Scale Down",
+		"ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Server response: {0}",
 		"ModConfigServerRejectedChanges": "Server rejected changes: {0}",
 		"ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
 		"ModConfigAccepted": "Accepted",
 		"ModConfigRejectChangesNotHost": "Only the host can change this config",
+		"ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",
@@ -168,7 +175,10 @@
 		"UpdateItem": "Updating Item {0}",
 		"PublishItem": "Attempting Publishing Item {0}",
 		"SteamDownloader": "Queuing download with Steam download manager...",
+		"PublishUpdateButton": "Update Existing",
+		"PublishNewButton": "Publish New",
 		"DownloadProgress": "Download {0}% Complete",
+		"DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
@@ -184,6 +194,8 @@
 		"LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
 		"LoadErrorDependencyVersionTooLow": "{0} requires {2} version {1} or greater but version {3} is installed",
 		"LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
+		"LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		"LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
 		"UnloadError": "One or more errors occurred while unloading and tModLoader must be restarted to prevent further issues.",
 		"DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
@@ -269,6 +281,7 @@
 		"InstallPackLocal": "Import Pack (Local)",
 		"InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		"ModPackMismatch": "Last Mod Pack: {0}",
+		"ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Syncing Mods",
@@ -327,9 +340,12 @@
 		"MBCancelLoading": "Cancel loading",
 		"MBPopulatingBrowser": "Populating browser...",
 		"MBSortByRecentlyUpdated": "Sort by recently updated",
+		"MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Sort by popularity",
 		"MBSortDownloadDesc": "Sort by downloads descending",
 		"MBSortDownloadAsc": "Sort by downloads ascending",
+		"MBTimePeriodToggleDisabled": "[c/{0}:{1} (Disabled in this sort mode)]",
+		"MBSortByRelevance": "Sort by text relevance",
 		"MBShowAllMods": "Show all mods",
 		"MBShowNotInstalledUpdates": "Show mods not installed and updates",
 		"MBShowUpdates": "Show only updates",
@@ -358,6 +374,12 @@
 		"XDaysAgo": "{0} {^0:day;days} ago",
 		"XMonthsAgo": "{0} {^0:month;months} ago",
 		"XYearsAgo": "{0} {^0:year;years} ago",
+		"Today": "Today",
+		"OneWeek": "One Week",
+		"ThreeMonths": "Three Months",
+		"SixMonths": "Six Months",
+		"OneYear": "One Year",
+		"AllTime": "All Time",
 		"MBServerReturnToMenu": "Return to world menu",
 		"MBServerAskForModName": "Type an exact ModName to download: ",
 
@@ -371,6 +393,8 @@
 		"EnterSteamID": "Please Enter Your SteamID",
 		"PasteSteamID": "Paste SteamID (ctrl-v)",
 		"MBServerResponse": "The Mod Browser server response:\n\n{0}",
+		"SettingsPublicityUnlisted": "Unlisted",
+		"SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Download Mods From Servers: On",
@@ -467,6 +491,19 @@
 		"DownloadNetSDK": "Download .NET SDK",
 		"DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 
+		// Create Mod
+		"CreateModName": "ModName (no spaces)",
+		"CreateModDisplayName": "Mod DisplayName",
+		"CreateModAuthor": "Mod Author",
+		"CreateModBasicSword": "BasicSword (no spaces)",
+		"CreateModBasicSwordHint": "Leave Blank to Skip",
+		"CreateModFolderAlreadyExists": "Folder already exists",
+		"CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		"CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		"CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		"CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		"CreateModAuthorEmpty": "Author can't be empty",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
 		"DMModCompileUpdate": "ModCompile folder version mismatch. Terraria: {0}, ModCompile: {1}",
@@ -538,6 +575,7 @@
 		// Memory bar
 		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",
 		"AvailableMemory": "Available Memory: {0}",
+		"InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + misc: {0}",
 		"ManagedMemory": "Managed: {0}",
 		"CodeMemory": "Code: {0}",
@@ -585,6 +623,7 @@
 		"AntivirusHint": "Tip: If you have an antivirus, try adding Terraria to its whitelist/exclusion list",
 		"TypeInitializationHint": "Tip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader",
 		"TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+		"TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Mod Features",

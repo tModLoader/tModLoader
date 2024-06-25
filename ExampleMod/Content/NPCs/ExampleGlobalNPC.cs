@@ -17,7 +17,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
-			if (projectile.owner != 255) {
+			if (projectile.owner != 255 && projectile.friendly) {
 				HasBeenHitByPlayer = true;
 			}
 		}
@@ -26,7 +26,7 @@ namespace ExampleMod.Content.NPCs
 			HasBeenHitByPlayer = true;
 		}
 
-		//If the merchant has been hit by a player, they will double their sell price
+		// If the merchant has been hit by a player, they will double their sell price
 		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
 			if (!npc.GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
 				return;

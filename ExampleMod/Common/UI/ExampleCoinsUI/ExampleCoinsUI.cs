@@ -12,7 +12,7 @@ using Terraria.UI;
 
 namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
-	// ExampleUIs visibility is toggled by typing "/coin" in chat (See CoinCommand.cs)
+	// ExampleUIs visibility is toggled by typing "/coins" in chat (See CoinCommand.cs)
 	// ExampleCoinsUI is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement
 	// For more info about UI you can check https://github.com/tModLoader/tModLoader/wiki/Basic-UI-Element and https://github.com/tModLoader/tModLoader/wiki/Advanced-guide-to-custom-UI 
 	internal class ExampleCoinsUIState : UIState

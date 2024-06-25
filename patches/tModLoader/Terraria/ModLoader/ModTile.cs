@@ -268,6 +268,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// This hook is called exactly once whenever a block encompassing multiple tiles is destroyed. Use this to clean up extra data such as Chests, Signs, or TileEntities. For tiles that are 1x1, use <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/>.
+	/// <para/> The <paramref name="i"/> and <paramref name="j"/> coordinates will be the top left tile of a multi-tile.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

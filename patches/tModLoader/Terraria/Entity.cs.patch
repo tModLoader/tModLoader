@@ -18,7 +18,7 @@
  	public int whoAmI;
 +
 +	/// <summary>
-+	/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array.
++	/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array. Another option for iterating is to use <see cref="Main.ActivePlayers"/>, <see cref="Main.ActiveNPCs"/>, <see cref="Main.ActiveProjectiles"/>, or <see cref="Main.ActiveItems"/> instead for simpler code.
 +	/// </summary>
  	public bool active;
  	internal long entityId;

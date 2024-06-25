@@ -57,14 +57,14 @@
 		"DownloadMissingMods": "Скачать недостающие моды",
 		"ModsDisable": "Нажмите, чтобы выключить",
 		"ModsEnable": "Нажмите, чтобы включить",
-		// "ModsDisableAndDependents": "Click to disable {0} and {1} {^1:dependent;dependents}",
-		// "ModsEnableAndDependencies": "Click to enable {0} and {1} {^1:dependency;dependencies}",
+		"ModsDisableAndDependents": "Нажмите, чтобы выключить {0} и {1} {^1:зависимость;зависимости;зависимостей}",
+		"ModsEnableAndDependencies": "Нажмите, чтобы включить {0} и {1} {^1:зависимость;зависимости;зависимостей}",
 		"ModConfiguration": "Конфигурация модов",
 		"ModsOpenConfig": "Нажмите, чтобы открыть конфигурацию мода",
 		"ModOldWarning": "Устаревший мод, включайте на свой страх и риск",
 		"ModStableOnPreviewWarning": "Не подходит для Preview-версии.\nВключайте на свой страх и риск",
-		"ModDependencyTooltip": "Этот мод требует установки: {0}\n (Они будут автоматически включены)",
-		// "ModDependentsTooltip": "Required by:\n{0}",
+		"ModDependencyTooltip": "Требует:\n{0}",
+		"ModDependentsTooltip": "Требуется для:\n{0}",
 		"TranslationModTooltip": "В этом моде доступны переводы для таких языков: {0}",
 		"ModDependencyClickTooltip": "Запуск этого мода невозможен без:\n{0}\n(нажмите, чтобы включить зависимости)",
 		"ModDependencyModsNotFound": "Следующие моды не найдены: {0}",
@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Изменение этой настройки требует перезагрузки мода.",
 		"ModReloadForced": "Принудительная перезагрузка",
 		"ModIsServerSide": "Это серверный мод",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "Автор: {0}",
 		"ModsMoreInfo": "Подробнее",
 		"ModsOriginatedFromModBrowser": "Этот мод установлен из «Браузера модов»",
@@ -123,6 +126,8 @@
 		//Mod Config
 		"ModConfigs": "Конфигурации",
 		"ModConfigFilterOptions": "Фильтр",
+		"ModConfigFilterByName": "Фильтр по имени",
+		"ModConfigFilterByMod": "Фильтр по моду",
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация модов",
 		"ModConfigSaveConfig": "Сохранить",
@@ -141,11 +146,13 @@
 		"ModConfigCollapse": "Свернуть",
 		"ModConfigScaleUp": "Увеличить масштаб",
 		"ModConfigScaleDown": "Уменьшить масштаб",
+		"ModConfigTypeHere": "Напишите здесь",
 		"ModConfigServerResponse": "Ответ сервера: {0}",
 		"ModConfigServerRejectedChanges": "Сервер отклонил изменения: {0}",
 		"ModConfigSharedConfigChanged": "Изменена общая конфигурация: Сообщение: {0}, Мод: {1}, Конфигурация: {2}",
 		"ModConfigAccepted": "Изменения приняты",
 		"ModConfigRejectChangesNotHost": "Изменение конфигурации доступно только для хоста",
+		// "ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Стиль шкалы здоровья босса: {0}",
@@ -153,7 +160,7 @@
 
 		// Workshop
 		"WorkshopDisclaimer": "Опубликовывая этот контент, вы соглашаетесь с правилами пользования tModLoader",
-		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
+		"NonModOwnerPublishWarning": "Мод с таким же названием \"{0}\" уже был опубликован в Мастерской другим автором. Если вы не являетесь соавтором этого мода, попытка его публикации не удастся. Если же это ваш мод, пожалуйста, убедитесь, что вы авторизованы в правильном аккаунте Steam. У каждого мода должно быть уникальное внутреннее название.",
 		"SteamPublishingLimit": "Ошибка: Публикация контента в Мастерской возможна только для пользователей Steam-версии tModLoader.",
 		"NoWorkshopAccess": "Ошибка: Невозможно подключиться к Мастерской Steam.\n\nДля использования внутриигрового «Браузера модов» у вас должен быть установлен Steam.\n\nОБРАТИТЕ ВНИМАНИЕ: Обладатели GOG-версии могут использовать внутриигровой «Браузер модов» только после установки Steam.",
 		"ModAlreadyUploaded": "Ошибка: Мод уже существует в Мастерской",
@@ -168,11 +175,14 @@
 		"UpdateItem": "Обновление {0}",
 		"PublishItem": "Попытка публикации {0}",
 		"SteamDownloader": "Постановка скачивания в очередь менеджера загрузок Steam...",
+		"PublishUpdateButton": "Обновить существующий",
+		"PublishNewButton": "Опубликовать новый",
 		"DownloadProgress": "Скачано {0}%",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
-		"LoadErrorDisabled": "Мод(ы) был(и) автоматически выключен(ы).",
+		"LoadErrorDisabled": "Мод(ы) и любые зависимости был(и) автоматически выключен(ы).",
 		"LoadErrorCulpritUnknown": "Виновный мод неизвестен. Следует перезапустить tModLoader.",
 		"LoadErrorContentType": "Возникла ошибка из-за класса \"{0}\".",
 		"LoadErrorMissingModQualifier": "В пути ресурса \"{0}\" отсутствует квалификатор мода. При загрузке ресурсов необходимо указывать имя мода или \"Terraria\" в начале пути, за которым следует слэш (\"/\").",
@@ -184,6 +194,8 @@
 		"LoadErrorHashMismatchCorrupted": "Несоответствие хэшей, массив данных был изменён или повреждён",
 		"LoadErrorDependencyVersionTooLow": "Для {0} необходим {2} версии {1} или выше, но у вас установлена версия {3}.",
 		"LoadErrorMajorVersionMismatch": "{0} поддерживает {2} версии {1}, но у вас установлено новое крупное обновление с версией ({3}), которая может быть несовместима. {0} необходимо обновить.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Вы объявили свойство ModNPC.banner или ModNPC.bannerItem, но не указали один из них. Убедитесь, что вы указали оба в своём коде: проверьте правописание и убедитесь, что предметы существуют, когда вы используете mod.ItemType(). Сообщите об этой ошибке разработчикам мода {0}.",
 		"UnloadError": "Во время выгрузки модов возникла одна или несколько ошибок. Во избежание дальнейших проблем необходимо перезапустить tModLoader.",
 		"DefensiveUnload": "Мод {0} не смог правильно выгрузиться. Разработчики модов должны использовать безопасное программирование для гарантии завершения выгрузки даже в случае ошибок во время их загрузки.",
@@ -192,7 +204,7 @@
 		"BuildErrorModNameEmpty": "У модов не может быть пустое название",
 		"BuildErrorModNamedTerraria": "Моды не могут иметь название Terraria",
 		"BuildErrorModNameHasPeriod": "Внутреннее название мода не может содержать символ точки",
-		"BuildErrorTwoModsSameName": "У двух разных модов обнаружено одно и то же внутреннее имя {0}",
+		"BuildErrorTwoModsSameName": "У двух разных модов обнаружено одно и то же внутреннее название {0}",
 		"BuildErrorModReference": "Не удалось прочесть ссылку на мод {0}",
 		"BuildErrorMissingNoCompile": "У вас отсутствуют dll файлы для параметра noCompile: {0} или {1}\n\nОбратите внимание, что All.dll не должен содержать ссылок на Microsoft.Xna.Framework или FNA\nXNA.dll должен ссылаться на правильный tModLoader.exe и фреймворк.",
 		"BuildErrorModNameDoesntMatchAssemblyName": "Название мода {0} не совпадает с названием сборки {1}",
@@ -269,6 +281,7 @@
 		"InstallPackLocal": "Установить сборку (Локально)",
 		"InstallPackLocalDesc": "Выключает абсолютно все моды и включает сборку\nс замороженными версиями модов, найденных в сборке",
 		"ModPackMismatch": "Последняя сборка модов: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Синхронизация модов",
@@ -327,9 +340,12 @@
 		"MBCancelLoading": "Отмена загрузки",
 		"MBPopulatingBrowser": "Наполнение Браузера...",
 		"MBSortByRecentlyUpdated": "Сортировка: Последние обновлённые моды",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Сортировка: Моды по популярности",
 		"MBSortDownloadDesc": "Сортировка: Моды по убыванию количества скачиваний",
 		"MBSortDownloadAsc": "Сортировка: Моды по возрастанию количества скачиваний",
+		// "MBTimePeriodToggleDisabled": "[c/{0}:{1} (Disabled in this sort mode)]",
+		// "MBSortByRelevance": "Sort by text relevance",
 		"MBShowAllMods": "Сортировка: Все моды",
 		"MBShowNotInstalledUpdates": "Отображать неустановленные или не обновлённые моды",
 		"MBShowUpdates": "Сортировка: Не обновлённые моды",
@@ -358,6 +374,12 @@
 		"XDaysAgo": "{0} дн. назад",
 		"XMonthsAgo": "{0} мес. назад",
 		"XYearsAgo": "{0} {^0:год;года;лет} назад",
+		// "Today": "Today",
+		// "OneWeek": "One Week",
+		// "ThreeMonths": "Three Months",
+		// "SixMonths": "Six Months",
+		// "OneYear": "One Year",
+		// "AllTime": "All Time",
 		"MBServerReturnToMenu": "Вернуться к меню выбора мира",
 		"MBServerAskForModName": "Введите точное название мода для скачивания: ",
 
@@ -371,6 +393,8 @@
 		"EnterSteamID": "Пожалуйста, введите свой SteamID",
 		"PasteSteamID": "Вставить SteamID (ctrl-v)",
 		"MBServerResponse": "Ответ сервера «Браузера модов»:\n\n{0}",
+		"SettingsPublicityUnlisted": "Не в списке",
+		"SettingsPublicityUnlistedDescription": "Мод не отображается в общедоступных результатах поиска, если на него не подписаны.\nВы можете изменить настройку видимости на странице Мастерской в любое время.",
 
 		// TML Options
 		"DownloadFromServersYes": "Скачивать моды с серверов: Да",
@@ -467,6 +491,19 @@
 		"DownloadNetSDK": "Загрузить .NET SDK",
 		"DevModsInSandbox": "tModLoader не может разрабатывать моды в среде песочницы (например, в Flatpak). Пожалуйста, убедитесь, что вы установили Steam непосредственно на вашу систему.",
 
+		// Create Mod
+		"CreateModName": "Имя мода (без пробелов)",
+		"CreateModDisplayName": "Отображаемое имя мода",
+		"CreateModAuthor": "Автор мода",
+		"CreateModBasicSword": "Базовый меч (без пробелов)",
+		"CreateModBasicSwordHint": "Оставьте пустым, чтобы пропустить",
+		"CreateModFolderAlreadyExists": "Папка уже существует",
+		"CreateModNameInvalid": "Имя мода не является допустимым идентификатором C#. Удалите пробелы.",
+		"CreateModNameReserved": "Имя мода является зарезервированным. Выберите другое имя.",
+		"CreateModBasicSwordInvalid": "Базовый меч не является допустимым идентификатором C#. Удалите пробелы.",
+		"CreateModDisplayNameEmpty": "Отображаемое имя не может быть пустым.",
+		"CreateModAuthorEmpty": "Автор мода не может быть пустым.",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "Для сборки модов требуются дополнительные библиотеки. (Отсутствует папка ModCompile)",
 		"DMModCompileUpdate": "Версия папки ModCompile не совпадает. Версия Terraria: {0}, версия ModCompile: {1}",
@@ -533,10 +570,12 @@
 		"SpecialAttackSpeedScaling": "Получает {0}% от суммарного бонуса скорости атаки",
 		"ModifiedByModsHoldSHIFT": "Изменён модом (удерживайте SHIFT для информации)",
 		"ModifiedByMods": "Изменён модами: ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Примерное использование ОЗУ при последнем запуске: {0}",
 		"AvailableMemory": "Доступно ОЗУ: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + Прочее: {0}",
 		"ManagedMemory": "Управляемая: {0}",
 		"CodeMemory": "Код: {0}",
@@ -584,6 +623,7 @@
 		"AntivirusHint": "Совет: Если у вас установлен антивирус, попробуйте добавить Terraria в список исключений/белый список антивируса.",
 		"TypeInitializationHint": "Совет: Перезапустите игру. Если проблема не исчезла, то попробуйте полностью удалить Terraria, а затем повторно установить игру через Steam, после чего переустановите tModLoader.",
 		"TerrariaOutOfDateMessage": "Ваша версия Terraria устарела, пожалуйста, обновите её через Steam.",
+		"TerrariaLegacyBranchMessage": "В данный момент Terraria запущена с использованием устаревшей версии. Для корректной работы tModLoader необходимо переключиться на стандартную версию Terraria в Steam.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		"TagsCategoryModFeatures": "Особенности мода",
