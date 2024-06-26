@@ -62,7 +62,8 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newAlternate.AnchorWall = true;
 			TileObjectData.addAlternate(4);
 
-			TileObjectData.newTile.AnchorBottom = SolidOrSolidSideAnchor2TilesLong; // Finally, we restore the default AnchorBottom. 
+			// Finally, we restore the default AnchorBottom, the extra AnchorTypes here allow placing on tables, platforms, and other tiles.
+			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table | AnchorType.SolidSide, 2, 0);
 			TileObjectData.addTile(Type);
 
 			// Map entry and extra localization
