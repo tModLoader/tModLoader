@@ -2150,11 +2150,12 @@
  								SquareTileFrame(i, j);
  							}
  
-@@ -42866,6 +_,9 @@
+@@ -42866,6 +_,10 @@
  										case 314:
  											Minecart.PlaceTrack(tile, style);
  											break;
 +										case int _ when num >= TileID.Count && TileObjectData.GetTileData(num, style) != null:
++											// TODO: Can we pass in direction = Main.player[plr].direction; to support it for modded PlaceTile without breaking anything?
 +											PlaceObject(i, j, (ushort)num, mute, style);
 +											break;
  										default:

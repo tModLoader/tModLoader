@@ -108,6 +108,14 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
+@@ -567,6 +_,7 @@
+ 	public bool manaSick;
+ 	public int afkCounter;
+ 	public bool stairFall;
++	/// <summary> 0: Success <br/> 1: Future version <br/> 2: Read error </summary>;
+ 	public int loadStatus;
+ 	public Vector2[] itemFlamePos = new Vector2[7];
+ 	public int itemFlameCount;
 @@ -589,20 +_,81 @@
  	public int ropeCount;
  	public int manaRegenBonus;
