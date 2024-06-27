@@ -73,3 +73,17 @@
  			float num34 = num22 / num23;
  			if (num34 == 1f && num25 == 0f) {
  				num23 = 1f;
+@@ -601,8 +_,13 @@
+ 				Point16 objectStart = TileObjectPreviewData.randomCache.ObjectStart;
+ 				int num36 = coordinates.X + objectStart.X;
+ 				int num37 = coordinates.Y + objectStart.Y;
++				int num38 = x - tileObjectData.Origin.X;
++				int num39 = y - tileObjectData.Origin.Y;
++				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD 
+ 				int num38 = x - tileData.Origin.X;
+ 				int num39 = y - tileData.Origin.Y;
++				*/
++
+ 				if (num36 != num38 || num37 != num39)
+ 					flag9 = true;
+ 			}
