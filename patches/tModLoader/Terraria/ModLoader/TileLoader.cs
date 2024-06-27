@@ -304,6 +304,7 @@ public static class TileLoader
 		int styleLineSkip = tileData.StyleLineSkip;
 		int subTile = tileData.StyleHorizontal ? subY / styleLineSkip * wrap + subX : subX / styleLineSkip * wrap + subY;
 		int style = subTile / tileData.StyleMultiplier;
+		/*
 		int alternate = subTile % tileData.StyleMultiplier;
 		for (int k = 0; k < tileData.AlternatesCount; k++) {
 			if (alternate >= tileData.Alternates[k].Style && alternate <= tileData.Alternates[k].Style + tileData.RandomStyleRange) {
@@ -311,7 +312,8 @@ public static class TileLoader
 				break;
 			}
 		}
-		tileData = TileObjectData.GetTileData(type, style, alternate + 1);
+		*/
+		tileData = TileObjectData.GetTileData(Main.tile[i, j]);
 		int partFrameX = frameX % tileData.CoordinateFullWidth;
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);

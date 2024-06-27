@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newAlternate.Direction = TileObjectDirection.PlaceRight;
 			TileObjectData.addAlternate(4); // This alternate starts at placement style 4 because the left alternate has 4 random placements. These alternate placements will be "Alt 4", "Alt 5", "Alt 6", and "Alt 7" in the spritesheet.
 
-			// These additional alternates reuse the same placement styles of the the normal placement and alternate placements above, but have a different Origin to make placing the tile easier. This is completely optional and serves as an example of how multiple alternates can share placement styles. With these additional alternates, the player can position the tile by the bottom left or bottom right corner of the tile. Try it out for yourself in-game to see. This is similar to how doors can be placed by placing the mouse in any of the 3 tiles of a doorway.
+			// These additional alternates reuse the same placement styles of the the normal placement and alternate placements above, but have a different Origin to make placing the tile easier. The tile placement preview will seem to "snap" to valid locations. This is completely optional and serves as an example of how multiple alternates can share placement styles. With these additional alternates, the player can position the tile by the bottom left or bottom right corner of the tile. Try it out for yourself in-game to see. This is similar to how doors can be placed by placing the mouse in any of the 3 tiles of a doorway.
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newAlternate.Origin = new Point16(1, 1);
 			TileObjectData.addAlternate(0);
@@ -87,8 +87,17 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addTile(Type);
 		}
 
+		// Displays various info about the tile placement in chat.
 		private int PostPlaceMethod(int x, int y, int type, int style, int direction, int alternate) {
-			Main.NewText($"Style: {style}, Direction: {direction}, Alternate: {alternate},");
+			// Note that alternate here is the alternate index, not the alternate placement style. We'll use some math to calculate the random offset and placement style values
+			var tileData = TileObjectData.GetTileData(type, style, alternate);
+
+			int alternatePlacement = -1;
+			int unused = -1;
+			TileObjectData.GetTileInfo(Main.tile[x, y], ref unused, ref alternatePlacement);
+
+			Main.NewText($"Style: {style}, Alternate Offset: {tileData.Style}, Random Offset: {alternatePlacement - tileData.Style}, Placement Style: {alternatePlacement}, Full Placement Style: {style * tileData.StyleMultiplier + alternatePlacement}, Direction: {direction}, Alternate Index: {alternate}, Origin: ({tileData.Origin.X}, {tileData.Origin.Y})");
+
 			return 0;
 		}
 

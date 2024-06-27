@@ -39,10 +39,6 @@ namespace ExampleMod.Content.Tiles
 			AnchorData SolidOrSolidSideAnchor2TilesLong = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide, 2, 0);
 
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
-			TileObjectData.newAlternate.AnchorBottom = SolidOrSolidSideAnchor2TilesLong;
-			TileObjectData.addAlternate(0); // Due to a bug in TileLoader.CheckModTile, we need a separate alternate for the normal placement
-
-			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newAlternate.Origin = Point16.Zero;
 			TileObjectData.newAlternate.AnchorTop = SolidOrSolidSideAnchor2TilesLong;
 			TileObjectData.addAlternate(1);
@@ -79,7 +75,6 @@ namespace ExampleMod.Content.Tiles
 			if (signId != -1) {
 				Sign.TextSign(signId, DefaultSignText.Value);
 			}
-
 		}
 
 		public override bool RightClick(int i, int j) {
