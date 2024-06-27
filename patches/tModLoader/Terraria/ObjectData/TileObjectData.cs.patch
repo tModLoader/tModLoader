@@ -353,7 +353,7 @@
  	}
  
 +	/// <summary>
-+	/// If true, the tile placement preview will draw this tile flipped horizontally at even X tile coordinates. This effect must be replicated in <see cref="ModTile.DrawEffects(int, int, Microsoft.Xna.Framework.Graphics.SpriteBatch, ref TileDrawInfo)"/> to work for the placed tile. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Plants/ExampleLamp.cs#L66">ExampleLamp.SetSpriteEffects method</see> shows an example of this required code.
++	/// If true, the tile placement preview will draw this tile flipped horizontally at even X tile coordinates. This effect must be replicated in <see cref="ModTile.SetSpriteEffects(int, int, ref Microsoft.Xna.Framework.Graphics.SpriteEffects)"/> to work for the placed tile. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L66">ExampleLamp.SetSpriteEffects method</see> shows an example of this required code.
 +	/// <para/> Use this for visual variety and to break up visual repetition. Tiles with normal left and right placements, such as <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChair.cs">ExampleChair</see>, will use alternate placements influenced by the player direction rather than this.
 +	/// <para/> Note that this should only be used for multitiles that are 1 tile wide, the effect will not work correctly for wider tiles.
 +	/// <para/> Defaults to false.
@@ -366,7 +366,7 @@
  	}
  
 +	/// <summary>
-+	/// If true, the tile placement preview will draw this tile flipped vertically at even Y tile coordinates. This effect must be replicated in <see cref="ModTile.DrawEffects(int, int, Microsoft.Xna.Framework.Graphics.SpriteBatch, ref TileDrawInfo)"/> to work for the placed tile. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L66">ExampleLamp.SetSpriteEffects method</see> shows an example of this required code, albeit the example is for DrawFlipHorizontal usage.
++	/// If true, the tile placement preview will draw this tile flipped vertically at even Y tile coordinates. This effect must be replicated in <see cref="ModTile.SetSpriteEffects(int, int, ref Microsoft.Xna.Framework.Graphics.SpriteEffects)"/> to work for the placed tile. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L66">ExampleLamp.SetSpriteEffects method</see> shows an example of this required code, albeit the example is for DrawFlipHorizontal usage.
 +	/// <para/> Use this for visual variety and to break up visual repetition.
 +	/// <para/> Note that this should only be used for multitiles that are 1 tile high, the effect will not work correctly for taller tiles.
 +	/// <para/> Defaults to false.
@@ -806,8 +806,8 @@
  	}
  
 +	/// <summary>
-+	/// Registers <see cref="newAlternate"/> as an alternate placement of <see cref="newTile"/>. The <paramref name="baseStyle"/> parameter corresponds to which alternate placement sprite this alternate placement will use. This value will apply an offset to the tile style being placed. 
-+	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L44">ExampleTorch</see>, for example, shows alternate placements using the 0, 1, and 2 alternate placement sprites, showing how different anchors can result in different placements sprites. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleDoorClosed.cs#L59">ExampleDoorClosed</see>, on the other hand, adds multiple alternates all using the same 0 placement sprite but different <see cref="Origin"/> to allow the user an easier time placing the door in a doorway.
++	/// Registers <see cref="newAlternate"/> as an alternate placement of <see cref="newTile"/>. The <paramref name="baseStyle"/> parameter corresponds to which placement style sprite this alternate placement will use. This value will apply an offset to the tile style being placed. 
++	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L44">ExampleTorch</see>, for example, shows alternate placements using the 0, 1, and 2 placement style sprites, showing how different anchors can result in different placements sprites. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleDoorClosed.cs#L59">ExampleDoorClosed</see>, on the other hand, adds multiple alternates all using the same 0 placement sprite but different <see cref="Origin"/> to allow the user an easier time placing the door in a doorway.
 +	/// <para/> <see cref="StyleMultiplier"/> is usually used to account for alternate placements to allow them to be considered the same tile style. If <see cref="RandomStyleRange"/> is used, the random style will be added after the alternate placement style has been applied, so usually multiples of RandomStyleRange would be used for each addAlternate parameter. (For example, if RandomStyleRange is 5 for a tile with left and right placements, addAlternate(5) could be used for the right facing placement and StyleMultiplier should be set to 10.)
 +	/// </summary>
 -	private static void addAlternate(int baseStyle)
@@ -858,7 +858,7 @@
  
 +	/// <summary>
 +	/// Retrieves the TileObjectData corresponding to the passed in tile <paramref name="type"/>, tile <paramref name="style"/>, and optional <paramref name="alternate"/> parameter. Terrain tiles will return null.
-+	/// <para/> Note that the alternate parameter in this method retrieves the alternate TileObjectData according to the order that they were registered, not according to a calculated alternate placement style. This parameter counts from 1, not 0, so the default parameter value of 0 will not attempt to retrieve and alternate TileObjectData. As such, it is not suitable for retrieving the TileObjectData of a placed Tile, other methods are more suitable.
++	/// <para/> Note that the alternate parameter in this method retrieves the alternate TileObjectData according to the order that they were registered, not according to a calculated alternate placement style. This parameter counts from 1, not 0, so the default parameter value of 0 will not attempt to retrieve an alternate TileObjectData. As such, it is not suitable for retrieving the TileObjectData of a placed Tile, use  <see cref="GetTileData(Tile)"/> for that.
 +	/// <para/> Other related methods include <see cref="GetTileData(Tile)"/>, <see cref="GetTileInfo(Tile, ref int, ref int)"/>, and <see cref="GetTileStyle(Tile)"/>.
 +	/// </summary>
  	public static TileObjectData GetTileData(int type, int style, int alternate = 0)
