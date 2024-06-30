@@ -1262,6 +1262,14 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type)
  				DelBuff(i);
+@@ -3105,6 +_,7 @@
+ 		if (item.potion)
+ 			ApplyPotionDelay(item);
+ 
++		ItemLoader.UseItem(item, this);
+ 		ApplyLifeAndOrMana(item);
+ 		if (item.type == 5)
+ 			TryToResetHungerToNeutral();
 @@ -3117,6 +_,7 @@
  			AddBuff(item.buffType, num);
  		}
@@ -1284,9 +1292,11 @@
  			if (item.type == 227 && num4 < 0) {
  				num4 += 30;
  				if (num4 > 0)
-@@ -3175,6 +_,8 @@
+@@ -3174,7 +_,10 @@
+ 			if (item.potion)
  				ApplyPotionDelay(item);
  
++			ItemLoader.UseItem(item, this);
  			ApplyLifeAndOrMana(item);
 +
 +			if (item.consumable && ItemLoader.ConsumeItem(item, this))
