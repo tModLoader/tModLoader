@@ -646,7 +646,7 @@
  					bool flag2 = TileID.Sets.Dirt[tile2.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile2.type];
-@@ -13849,12 +_,34 @@
+@@ -13849,12 +_,35 @@
  			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
@@ -655,6 +655,7 @@
 +	private static void AddGenPassesFromLoadTime()
 +	{
 +		foreach (var pass in _vanillaGenPasses) {
++			pass.Value.Reset();
 +			_generator.Append(pass.Value);
 +		}
 +	}
