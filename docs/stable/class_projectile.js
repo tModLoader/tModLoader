@@ -20,6 +20,7 @@ var class_projectile =
     [ "aiStyle", "class_projectile.html#a0f5a8d3314bda6bb32403d60071451b1", null ],
     [ "alpha", "class_projectile.html#abca5cdec0d37c34c2604d20e8721b890", null ],
     [ "appliesImmunityTimeOnSingleHits", "class_projectile.html#aea7754bae8b733ff4cdcfb8e8f379777", null ],
+    [ "arrow", "class_projectile.html#a216398584913137aec429a3778202f2f", null ],
     [ "damage", "class_projectile.html#a4274f7b3ad22794f7cc4be95da235bf4", null ],
     [ "extraUpdates", "class_projectile.html#a32f4240d9f1ab45a43a819b4c7362a3f", null ],
     [ "frame", "class_projectile.html#a234e32aabc957d838eaef2522e328450", null ],

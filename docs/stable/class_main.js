@@ -5,6 +5,7 @@ var class_main =
     [ "InfoToSetBackColor", "struct_main_1_1_info_to_set_back_color.html", null ],
     [ "SceneArea", "struct_main_1_1_scene_area.html", null ],
     [ "TextDisplayCache", "class_main_1_1_text_display_cache.html", null ],
+    [ "clrInput", "class_main.html#a238b234362a3970c732ac814b2c23369", null ],
     [ "DamageVar", "class_main.html#a4f02e6297c668111515ccde9946f51a3", null ],
     [ "DrawBuffIcon", "class_main.html#af23ea00e4170728943478ab8a741893c", null ],
     [ "DrawHealthBar", "class_main.html#aa82ef182eb900b40f557dee09347103e", null ],

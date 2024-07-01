@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1018,7 +1018,7 @@ int?&#160;</td><td class="memItemRight" valign="bottom"><b>shopCustomPrice</b></
  Used for assigning a non-default price to an item in shops.<br  />
  Can be used with <a class="el" href="class_item.html#a20d6efe0a3c858d2f9e7a5c9e8316a77" title="The numerical ID of the special currency this item is bought using.  To make an item bought using Def...">shopSpecialCurrency</a> to assign a price in terms of a custom currency instead of coins.<br  />
  To get the raw price of an item, use GetStoreValue.<br  />
- To get the price of an item after discounts, use Player.GetItemExpectedPrice. Be careful of setting a custom price far below the normal <a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>, it could result in an infinite money exploit. Defaults to <code>null</code>. <br /></td></tr>
+ To get the price of an item after discounts, use Player.GetItemExpectedPrice. Be careful of setting a custom price far below the normal <a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>, it could result in an infinite money exploit. For example, with maximum happiness and a discount card, a custom price 0.44 times the regular value would allow the user to sell the item for just barely more than it was bought for after leaving and reentering the world. Defaults to <code>null</code>. <br /></td></tr>
 <tr class="separator:ac60bb6a29b6e60906e67472d6da06a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20d6efe0a3c858d2f9e7a5c9e8316a77"><td class="memItemLeft" align="right" valign="top"><a id="a20d6efe0a3c858d2f9e7a5c9e8316a77" name="a20d6efe0a3c858d2f9e7a5c9e8316a77"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>shopSpecialCurrency</b> = -1</td></tr>
@@ -1145,7 +1145,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>wornArmor</b></td></t
 <tr class="inherit_header pub_attribs_class_entity"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_entity')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_entity.html">Entity</a></td></tr>
 <tr class="memitem:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="ad61f0c48735980e78778b90b6b4c8667" name="ad61f0c48735980e78778b90b6b4c8667"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>active</b></td></tr>
-<tr class="memdesc:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the <a class="el" href="class_entity.html">Entity</a> actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array. <br /></td></tr>
+<tr class="memdesc:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the <a class="el" href="class_entity.html">Entity</a> actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array. Another option for iterating is to use <a class="el" href="class_main.html#aa9306db95b98d19297cf4cf9c4f6dd27" title="Use to iterate over active players. Game logic is usually only interested in Entity....">Main.ActivePlayers</a>, <a class="el" href="class_main.html#a55969af8fef5fd9819d1854403cf794b" title="Use to iterate over active players. Game logic is usually only interested in Entity....">Main.ActiveNPCs</a>, <a class="el" href="class_main.html#ab4646d8c91e9c4d9eebb6355cbeda8f9" title="Use to iterate over active projectiles. Game logic is usually only interested in Entity....">Main.ActiveProjectiles</a>, or <a class="el" href="class_main.html#a607e325ba26d67f18452a649dd715de9" title="Use to iterate over active items. Game logic is usually only interested in Entity....">Main.ActiveItems</a> instead for simpler code. <br /></td></tr>
 <tr class="separator:ad61f0c48735980e78778b90b6b4c8667 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bcffb2620b7dbf790114c5fea1bc50b inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a6bcffb2620b7dbf790114c5fea1bc50b" name="a6bcffb2620b7dbf790114c5fea1bc50b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>direction</b> = 1</td></tr>

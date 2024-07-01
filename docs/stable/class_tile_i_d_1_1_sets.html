@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -403,7 +403,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Ices</b> = F
 <tr class="memitem:a38c57298977bbdfc47182befc869a9e2"><td class="memItemLeft" align="right" valign="top"><a id="a38c57298977bbdfc47182befc869a9e2" name="a38c57298977bbdfc47182befc869a9e2"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IceSkateSlippery</b> = Factory.CreateBoolSet(161, 162, 127, 163, 164, 200, 659)</td></tr>
 <tr class="memdesc:a38c57298977bbdfc47182befc869a9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given tile type (<a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">Tile.TileType</a>), then players will slip on that tile. <br  />
- If players have Ice Skates (Player.iceSkate) equipped, however, they will be much faster on this tile. <br  />
+ If players have Ice Skates (<a class="el" href="class_player.html#a5c801ca91e9ad4a2ea2a259f78125b60" title="Grant the player improved speed on ice and not breaking thin ice when falling onto it">Player.iceSkate</a>) equipped, however, they will be much faster on this tile. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a38c57298977bbdfc47182befc869a9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59f02470fd84c2e80b43d23e98a94f67"><td class="memItemLeft" align="right" valign="top"><a id="a59f02470fd84c2e80b43d23e98a94f67" name="a59f02470fd84c2e80b43d23e98a94f67"></a>
@@ -620,7 +620,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageD
 <tr class="separator:a431d9d385af80c1a91537c64edf70fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b940df5c7dbff2bcf89e2213d421638"><td class="memItemLeft" align="right" valign="top"><a id="a1b940df5c7dbff2bcf89e2213d421638" name="a1b940df5c7dbff2bcf89e2213d421638"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageHot</b> = Factory.CreateBoolSet(37, 58, 76, 684, 230)</td></tr>
-<tr class="memdesc:a1b940df5c7dbff2bcf89e2213d421638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the BuffID.Burning buff to any player touching the tile without Player.fireWalk. Used by TileID.Meteorite, TileID.Hellstone, TileID.HellstoneBrick, TileID.CrispyHoneyBlock, and TileID.AncientHellstoneBrick <br /></td></tr>
+<tr class="memdesc:a1b940df5c7dbff2bcf89e2213d421638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the BuffID.Burning buff to any player touching the tile without <a class="el" href="class_player.html#a6b852d436d29ae006bfdf83f6c60a8f1" title="Grants the player immunity from TileID.Sets.TouchDamageHot applying the BuffID.Burning buff....">Player.fireWalk</a>. Used by TileID.Meteorite, TileID.Hellstone, TileID.HellstoneBrick, TileID.CrispyHoneyBlock, and TileID.AncientHellstoneBrick <br /></td></tr>
 <tr class="separator:a1b940df5c7dbff2bcf89e2213d421638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7f7367d1a857087d390d3c4f2d6d561"><td class="memItemLeft" align="right" valign="top"><a id="ae7f7367d1a857087d390d3c4f2d6d561" name="ae7f7367d1a857087d390d3c4f2d6d561"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>TouchDamageImmediate</b> = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10, 655, 100, 48, 60, 232, 80, 484, 25)</td></tr>
