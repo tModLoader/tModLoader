@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"class_u_i_bestiary_entry_button.html":[3,0,1300],
+"class_u_i_bestiary_entry_grid.html":[3,0,1301],
 "class_u_i_bestiary_entry_icon.html":[3,0,1302],
 "class_u_i_bestiary_entry_info_page.html":[3,0,1303],
 "class_u_i_bestiary_filtering_options_grid.html":[3,0,1304],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "class_wire_visibility_builder_toggle.html":[3,0,1477],
 "class_wires_u_i.html":[3,0,1476],
 "class_wires_u_i_1_1_settings.html":[3,0,1476,0],
-"class_wires_u_i_1_1_wires_radial.html":[3,0,1476,1],
-"class_wiring.html":[3,0,1478],
-"class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89":[3,0,1478,1]
+"class_wires_u_i_1_1_wires_radial.html":[3,0,1476,1]
 };

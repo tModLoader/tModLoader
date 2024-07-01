@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"class_stray_methods.html":[3,0,1180],
+"class_structure_map.html":[3,0,1181],
 "class_structure_map.html#a746436c215907a8e40f9a7c610b74684":[3,0,1181,2],
 "class_structure_map.html#a8f93887496f32259130515e961b91f86":[3,0,1181,3],
 "class_structure_map.html#aaf6e15771f6cea1274dc89f7efe27f66":[3,0,1181,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "class_u_i_async_list.html":[3,0,1297],
 "class_u_i_async_list.html#a6550efdf7b228ac37f7475c448cb8a15":[3,0,1297,0],
 "class_u_i_auto_scale_text_text_panel.html":[3,0,1298],
-"class_u_i_bestiary_bar.html":[3,0,1299],
-"class_u_i_bestiary_entry_button.html":[3,0,1300],
-"class_u_i_bestiary_entry_grid.html":[3,0,1301]
+"class_u_i_bestiary_bar.html":[3,0,1299]
 };

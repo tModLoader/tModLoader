@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"class_projectile_i_d_1_1_sets.html#ac7ed1f1aa4f77dc27bc8861761606216":[3,0,1023,0,21],
+"class_projectile_i_d_1_1_sets.html#aeb9103d8037bfdd777e9bd9e600d1703":[3,0,1023,0,14],
 "class_projectile_i_d_1_1_sets.html#af38fa705ece65d7f941a93a0df36fcbe":[3,0,1023,0,10],
 "class_projectile_i_d_1_1_sets.html#af59e06fddaa7b5693ccc09343aa54e44":[3,0,1023,0,15],
 "class_projectile_i_d_1_1_sets.html#afbaef65e8e6c93acda4f938196f87d5b":[3,0,1023,0,24],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "class_steam_p2_p_writer_1_1_write_information.html":[3,0,1178,0],
 "class_steamed_wraps.html":[3,0,1176],
 "class_stopwatch_info_display.html":[3,0,1179],
-"class_stopwatch_info_display.html#a10031152437ee1fa39696762bfd75e6c":[3,0,1179,0],
-"class_stray_methods.html":[3,0,1180],
-"class_structure_map.html":[3,0,1181]
+"class_stopwatch_info_display.html#a10031152437ee1fa39696762bfd75e6c":[3,0,1179,0]
 };

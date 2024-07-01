@@ -64,14 +64,14 @@ var NAVTREEINDEX =
 "class_mod_tile_entity.html#a4a3657e1593a657423e23e7ac5fc6596",
 "class_n_p_c.html#ad1a9e862349fa127242f49048f3a5789",
 "class_n_p_c_portrait_info_element.html",
-"class_player.html#aea15e151924b16ef09be8a53aecf0fe1",
-"class_proj_a_i_style_i_d.html#a3e846dd95d935448182cbe4d342ce3d6",
-"class_projectile_i_d_1_1_sets.html#af38fa705ece65d7f941a93a0df36fcbe",
-"class_structure_map.html#a746436c215907a8e40f9a7c610b74684",
-"class_u_i_bestiary_entry_icon.html",
-"class_wiring.html#a8e927d8b5fd1f4d376de9f0aa97d467a",
-"interface_i_plant.html#a13408aac65ca46d54e759970e8b15d83",
-"struct_n_p_c_spawn_info.html#a43d099598f4d626d847274e9dbdce963"
+"class_player.html#ae629f5d3baad307b61c9f3042e790ac3",
+"class_proj_a_i_style_i_d.html#a3d43fdff9f9801317a7a320900f874be",
+"class_projectile_i_d_1_1_sets.html#ac7ed1f1aa4f77dc27bc8861761606216",
+"class_stray_methods.html",
+"class_u_i_bestiary_entry_button.html",
+"class_wiring.html",
+"interface_i_persistent_per_world_content.html",
+"struct_n_p_c_spawn_info.html#a2639f3b35ad5f88ffe1a5d87e599a6e3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

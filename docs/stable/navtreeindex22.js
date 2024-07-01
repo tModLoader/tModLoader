@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"interface_i_persistent_per_world_content.html":[3,0,597],
+"interface_i_plant.html":[3,0,598],
 "interface_i_plant.html#a13408aac65ca46d54e759970e8b15d83":[3,0,598,1],
 "interface_i_plant.html#ad6ce56565217464f2fa894aa72c00e5a":[3,0,598,0],
 "interface_i_player_renderer.html":[3,0,599],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "struct_n_p_c_loot.html":[3,0,908],
 "struct_n_p_c_spawn_info.html":[3,0,915],
 "struct_n_p_c_spawn_info.html#a0e8769976f0f0bfaec1759f726885812":[3,0,915,13],
-"struct_n_p_c_spawn_info.html#a1a49661456fde97e15a15875819965df":[3,0,915,9],
-"struct_n_p_c_spawn_info.html#a2639f3b35ad5f88ffe1a5d87e599a6e3":[3,0,915,1],
-"struct_n_p_c_spawn_info.html#a42f731d043522a38513b94962d9ab2e5":[3,0,915,0]
+"struct_n_p_c_spawn_info.html#a1a49661456fde97e15a15875819965df":[3,0,915,9]
 };
