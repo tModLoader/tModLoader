@@ -746,7 +746,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
 	/// To create a shop, use <see cref="AddShops"/> <br/>
-	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// <para/> Also note that unused slots in <paramref name="items"/> are null while <see cref="Item.IsAir"/> entries are entries that have a reserved slot (<see cref="NPCShop.Entry.SlotReserved"/>) but did not have their conditions met. These should not be overwritten.
 	/// </summary>
 	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
 	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
