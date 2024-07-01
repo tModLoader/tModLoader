@@ -25,6 +25,7 @@ var class_mod_player =
     [ "ConsumableDodge", "class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf", null ],
     [ "CopyClientState", "class_mod_player.html#a99b4decd672a09196ad922ccdf4d03ec", null ],
     [ "DrawEffects", "class_mod_player.html#ad0ee4c692fb63a5feacc4844676f0c8d", null ],
+    [ "EmitEnchantmentVisualsAt", "class_mod_player.html#aa89ef88fba5ce8cf9e833c5d6b6e31e5", null ],
     [ "ExtraJumpVisuals", "class_mod_player.html#a1deae1ee6ed9060a66034fa0592b4773", null ],
     [ "FrameEffects", "class_mod_player.html#a4c43f816c48cdfdfab5ffe524f27ec3e", null ],
     [ "FreeDodge", "class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618", null ],

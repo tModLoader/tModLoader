@@ -107,6 +107,7 @@ var class_n_p_c =
     [ "realLife", "class_n_p_c.html#afcca3c242b80ef23de93ebb6135acc9c", null ],
     [ "releaseOwner", "class_n_p_c.html#ad22e85ca1fd0c717d9d54eb91179c86c", null ],
     [ "scale", "class_n_p_c.html#ab1f93bb1a24d42e6550580e20c5b7566", null ],
+    [ "SpawnedFromStatue", "class_n_p_c.html#a812ebc3481e74e5a77367d709a491dc3", null ],
     [ "stepSpeed", "class_n_p_c.html#a9011dc0f3ca9494b5dae4f034a301016", null ],
     [ "type", "class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b", null ],
     [ "value", "class_n_p_c.html#a561c4d93c6f0ece100ea64c264589e33", null ],

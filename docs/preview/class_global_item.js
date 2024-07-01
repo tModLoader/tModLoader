@@ -67,6 +67,7 @@ var class_global_item =
     [ "OnConsumedAsAmmo", "class_global_item.html#afd12f59ecaad2ea25679d4084e69957f", null ],
     [ "OnConsumeItem", "class_global_item.html#ab6bea31c63fa29faa0fbcd63a63497e2", null ],
     [ "OnConsumeMana", "class_global_item.html#ac1f89045d16cd837b4c680785959f3f9", null ],
+    [ "OnCreated", "class_global_item.html#a79c4f8f0cdacca104aeb3d73edfdb377", null ],
     [ "OnHitNPC", "class_global_item.html#ad4d19038db2a83e8d9bd0b21dce89758", null ],
     [ "OnHitPvp", "class_global_item.html#a95b11431be30e18a269d623674470f4d", null ],
     [ "OnMissingMana", "class_global_item.html#ab72228117854476e7a1f03e928391515", null ],

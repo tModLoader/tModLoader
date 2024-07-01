@@ -76,6 +76,7 @@ var class_mod_item =
     [ "OnConsumeItem", "class_mod_item.html#a93c204625ea233343c100eb2e9b5f629", null ],
     [ "OnConsumeMana", "class_mod_item.html#ae05f70a9a71a8a3bac5ea9eadb2bdbc2", null ],
     [ "OnCraft", "class_mod_item.html#a44335a4cb0096527824a56e993cfe0b4", null ],
+    [ "OnCreated", "class_mod_item.html#ac9bdc2b854e7d169abc1f544ded45c95", null ],
     [ "OnHitNPC", "class_mod_item.html#ada827c002db2588cdfe24cfc8c09f6cd", null ],
     [ "OnHitPvp", "class_mod_item.html#a03dbf1b8afc9db73fe7680dc129e7fab", null ],
     [ "OnMissingMana", "class_mod_item.html#a551a0902b2fa7ab8b5c60b9f18f7b783", null ],

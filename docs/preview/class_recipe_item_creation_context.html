@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('class_recipe_item_creation_context.htm
 </div><!--header-->
 <div class="contents">
 
+<p>Provides the context of an item being crafted from a recipe. Includes the recipe, consumed items, and destination, facilitating features using data from consumed items to affect the final crafted item.  
+ <a href="class_recipe_item_creation_context.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_item_creation_context.html">ItemCreationContext</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -108,13 +111,15 @@ readonly <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="c
 <tr class="separator:aa2b9da98834baa9b9ae680809949fe55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60773124af2c51df837b7691e6d393d3"><td class="memItemLeft" align="right" valign="top"><a id="a60773124af2c51df837b7691e6d393d3" name="a60773124af2c51df837b7691e6d393d3"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DestinationStack</b></td></tr>
-<tr class="memdesc:a60773124af2c51df837b7691e6d393d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">An item stack that the created item will be combined with (via OnStack). For normal crafting, this is Main.mouseItem <br /></td></tr>
+<tr class="memdesc:a60773124af2c51df837b7691e6d393d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">An item stack that the created item will be combined with (via OnStack). For normal crafting, this is <a class="el" href="class_main.html#af70a76ebce386d5f000d30bc07e4608c" title="The item currently being carried by the mouse.">Main.mouseItem</a> <br /></td></tr>
 <tr class="separator:a60773124af2c51df837b7691e6d393d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a970fe472555638fe0a829be6771bbd10"><td class="memItemLeft" align="right" valign="top"><a id="a970fe472555638fe0a829be6771bbd10" name="a970fe472555638fe0a829be6771bbd10"></a>
 readonly <a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Recipe</b></td></tr>
 <tr class="separator:a970fe472555638fe0a829be6771bbd10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Provides the context of an item being crafted from a recipe. Includes the recipe, consumed items, and destination, facilitating features using data from consumed items to affect the final crafted item. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

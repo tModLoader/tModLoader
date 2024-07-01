@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -304,6 +304,10 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ImmuneToRegu
 <tr class="memdesc:a71f6e0f48654fbfd02617d9a3ef69d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is categorized as a dragonfly. <br  />
  Defaults to <code>false</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a71f6e0f48654fbfd02617d9a3ef69d73">More...</a><br /></td></tr>
 <tr class="separator:a71f6e0f48654fbfd02617d9a3ef69d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fafc000a731dac1bbe07ef8684984da"><td class="memItemLeft" align="right" valign="top"><a id="a6fafc000a731dac1bbe07ef8684984da" name="a6fafc000a731dac1bbe07ef8684984da"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsPetSmallForPetting</b> = Factory.CreateBoolSet(TownCat, TownBunny, TownSlimeBlue, TownSlimeGreen, TownSlimeOld, TownSlimePurple, TownSlimeRainbow, TownSlimeYellow, TownSlimeRed, TownSlimeCopper)</td></tr>
+<tr class="memdesc:a6fafc000a731dac1bbe07ef8684984da"><td class="mdescLeft">&#160;</td><td class="mdescRight">While petting, the player's arm will be angled up by default. If the <a class="el" href="class_n_p_c.html">NPC</a> is in this set, the player's armor will be angled down instead. Defaults to false. <br /></td></tr>
+<tr class="separator:a6fafc000a731dac1bbe07ef8684984da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04ebfeaf9e6bee36b7175079dd1246bf"><td class="memItemLeft" align="right" valign="top"><a id="a04ebfeaf9e6bee36b7175079dd1246bf" name="a04ebfeaf9e6bee36b7175079dd1246bf"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsTownPet</b> = Factory.CreateBoolSet(637, 638, 656, 670, 678, 679, 680, 681, 682, 683, 684)</td></tr>
 <tr class="memdesc:a04ebfeaf9e6bee36b7175079dd1246bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is categorized as a town pet. <br  />
@@ -338,9 +342,13 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>MustAlwaysDr
 <tr class="memdesc:a7f752a893020dca9a88c513d4b5b1c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> will receive stat scaling in Expert Mode, even if its normal stats would prevent that. <br  />
  Defaults to <code>false</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a7f752a893020dca9a88c513d4b5b1c03">More...</a><br /></td></tr>
 <tr class="separator:a7f752a893020dca9a88c513d4b5b1c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2cd0b2d26ca66d6f3e12eaae8219628"><td class="memItemLeft" align="right" valign="top"><a id="af2cd0b2d26ca66d6f3e12eaae8219628" name="af2cd0b2d26ca66d6f3e12eaae8219628"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NeverDropsResourcePickups</b> = Factory.CreateBoolSet(MotherSlime, CorruptSlime, Slimer)</td></tr>
+<tr class="memdesc:af2cd0b2d26ca66d6f3e12eaae8219628"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_n_p_c.html">NPC</a> in this set do not drop resource pickups, such as hearts or star items. Vanilla entries in this set include MotherSlime, CorruptSlime, and Slimer, all of which spawn other <a class="el" href="class_n_p_c.html">NPC</a> when killed, suggesting that they split apart rather than died, hinting at why they shouldn't drop resource pickups. Defaults to false. <br /></td></tr>
+<tr class="separator:af2cd0b2d26ca66d6f3e12eaae8219628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad5305202f4d313bb5084dae67f92151"><td class="memItemLeft" align="right" valign="top"><a id="aad5305202f4d313bb5084dae67f92151" name="aad5305202f4d313bb5084dae67f92151"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>NoEarlymodeLootWhenSpawnedFromStatue</b> = Factory.CreateBoolSet(480, 82, 86, 170, 180, 171)</td></tr>
-<tr class="memdesc:aad5305202f4d313bb5084dae67f92151"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (NPC.SpawnedFromStatue), it will not drop loot in pre-hardmode. <br  />
+<tr class="memdesc:aad5305202f4d313bb5084dae67f92151"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (<a class="el" href="class_n_p_c.html#a812ebc3481e74e5a77367d709a491dc3" title="Indicates that this NPC was spawned by a statue. Mainly affects item drops. Prevents item drops in pr...">NPC.SpawnedFromStatue</a>), it will not drop loot in pre-hardmode. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aad5305202f4d313bb5084dae67f92151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addc99a9e61b7e69850e692359ee0b7aa"><td class="memItemLeft" align="right" valign="top"><a id="addc99a9e61b7e69850e692359ee0b7aa" name="addc99a9e61b7e69850e692359ee0b7aa"></a>
@@ -374,6 +382,10 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>NPCFramingGro
 <tr class="memdesc:a9a56c75e3bdeb6fa201030fc0d12a59a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index for <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93" title="The vertical offset, in pixels, that this NPC&#39;s party hat will draw. Indexed using values from NPCFra...">TownNPCsFramingGroups</a> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). See <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93" title="The vertical offset, in pixels, that this NPC&#39;s party hat will draw. Indexed using values from NPCFra...">TownNPCsFramingGroups</a> for more info. <br  />
  Defaults to <code>0</code>. <br /></td></tr>
 <tr class="separator:a9a56c75e3bdeb6fa201030fc0d12a59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5e3fe457903434554b7714bcaae8482"><td class="memItemLeft" align="right" valign="top"><a id="ab5e3fe457903434554b7714bcaae8482" name="ab5e3fe457903434554b7714bcaae8482"></a>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerDistanceWhilePetting</b> = Factory.CreateIntSet(36, TownCat, 28, TownBunny, 24, TownSlimeBlue, 26, TownSlimeGreen, 26, TownSlimeOld, 26, TownSlimePurple, 26, TownSlimeRainbow, 26, TownSlimeYellow, 26, TownSlimeRed, 22, TownSlimeCopper, 20)</td></tr>
+<tr class="memdesc:ab5e3fe457903434554b7714bcaae8482"><td class="mdescLeft">&#160;</td><td class="mdescRight">While petting, the number of pixels away the player stands from the <a class="el" href="class_n_p_c.html">NPC</a>. Defaults to 36 pixels. <br /></td></tr>
+<tr class="separator:ab5e3fe457903434554b7714bcaae8482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdc23a61d8661a464b33d5a404facebd"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#afdc23a61d8661a464b33d5a404facebd">PositiveNPCTypesExcludedFromDeathTally</a> = Factory.CreateBoolSet(121, 384, 478, 479, 410, 472, 378)</td></tr>
 <tr class="memdesc:afdc23a61d8661a464b33d5a404facebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> will not have its kills counted. <br  />
  Used in vanilla for special projectile-like NPCs (not found in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#afc59e68f338a7d543adafe0d8f748e9c" title="If true for a given NPC type (NPC.type), then that NPC is treated specially for difficulty scaling....">ProjectileNPC</a>), for NPCs that turn into another <a class="el" href="class_n_p_c.html">NPC</a> on death, and for temporary NPCs, like the MothronEgg. <br  />
@@ -455,7 +467,7 @@ static ? bool[][]&#160;</td><td class="memItemRight" valign="bottom"><b>Specific
  <br /></td></tr>
 <tr class="separator:a05f57493f54c2153fab5a4c4254defb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af82e5d780fe41c1b14d430a5181c3490"><td class="memItemLeft" align="right" valign="top">static float[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#af82e5d780fe41c1b14d430a5181c3490">StatueSpawnedDropRarity</a> = Factory.CreateCustomSet(-1f, (short)480, 0.05f, (short)82, 0.05f, (short)86, 0.05f, (short)48, 0.05f, (short)490, 0.05f, (short)489, 0.05f, (short)170, 0.05f, (short)180, 0.05f, (short)171, 0.05f, (short)167, 0.25f, (short)73, 0.01f, (short)24, 0.05f, (short)481, 0.05f, (short)42, 0.05f, (short)6, 0.05f, (short)2, 0.05f, (short)49, 0.2f, (short)3, 0.2f, (short)58, 0.2f, (short)21, 0.2f, (short)65, 0.2f, (short)449, 0.2f, (short)482, 0.2f, (short)103, 0.2f, (short)64, 0.2f, (short)63, 0.2f, (short)85, 0f)</td></tr>
-<tr class="memdesc:af82e5d780fe41c1b14d430a5181c3490"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>!= -1f</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (NPC.SpawnedFromStatue), it will have a (retrieved value)% chance to actually drop loot when killed. <br  />
+<tr class="memdesc:af82e5d780fe41c1b14d430a5181c3490"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>!= -1f</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (<a class="el" href="class_n_p_c.html#a812ebc3481e74e5a77367d709a491dc3" title="Indicates that this NPC was spawned by a statue. Mainly affects item drops. Prevents item drops in pr...">NPC.SpawnedFromStatue</a>), it will have a (retrieved value)% chance to actually drop loot when killed. <br  />
  Defaults to <code>-1f</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#af82e5d780fe41c1b14d430a5181c3490">More...</a><br /></td></tr>
 <tr class="separator:af82e5d780fe41c1b14d430a5181c3490"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8990bb80ffa4470f3a386c343cefe4a7"><td class="memItemLeft" align="right" valign="top"><a id="a8990bb80ffa4470f3a386c343cefe4a7" name="a8990bb80ffa4470f3a386c343cefe4a7"></a>
@@ -478,7 +490,16 @@ static <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td 
 <tr class="memdesc:aad6c94c4ba3ad2d009181da48028785c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The order of town <a class="el" href="class_n_p_c.html">NPC</a> <a class="el" href="class_n_p_c.html">NPC</a> types (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) in the Bestiary. <br /></td></tr>
 <tr class="separator:aad6c94c4ba3ad2d009181da48028785c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f47d761e0730a2fe873d91ad2276b93"><td class="memItemLeft" align="right" valign="top">static int[][]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93">TownNPCsFramingGroups</a></td></tr>
-<tr class="memdesc:a6f47d761e0730a2fe873d91ad2276b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vertical offset, in pixels, that this <a class="el" href="class_n_p_c.html">NPC</a>'s party hat will draw. Indexed using values from <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a" title="The index for TownNPCsFramingGroups for a given NPC type (NPC.type). See TownNPCsFramingGroups for mo...">NPCFramingGroup</a>.  <a href="class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93">More...</a><br /></td></tr>
+<tr class="memdesc:a6f47d761e0730a2fe873d91ad2276b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vertical offset, in pixels, that this <a class="el" href="class_n_p_c.html">NPC</a>'s party hat will draw. Indexed using values from <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a" title="The index for TownNPCsFramingGroups for a given NPC type (NPC.type). See TownNPCsFramingGroups for mo...">NPCFramingGroup</a>. <br  />
+Group 0: The default for all Town NPCs. This group matches up with the standard walking animations which are the same animations that the player uses. <br  />
+Group 1: Used by Nurse, Dryad, Party Girl, Steampunker, Mechanic, Stylist, Zoologist. These Town NPCs have only 12 walking frames. <br  />
+Group 2: Used by Angler. <br  />
+Group 3: Used by Truffle. <br  />
+Group 4: Used by Town Cat. <br  />
+Group 5: Used by Town Dog. <br  />
+Group 6: Used by Town Bunny. <br  />
+Group 7: Used by all Town Slimes. <br  />
+Group 8: No offset (added by tModLoader).  <a href="class_n_p_c_i_d_1_1_sets.html#a6f47d761e0730a2fe873d91ad2276b93">More...</a><br /></td></tr>
 <tr class="separator:a6f47d761e0730a2fe873d91ad2276b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c130ae4488340d4ad3988d7768a7421"><td class="memItemLeft" align="right" valign="top"><a id="a5c130ae4488340d4ad3988d7768a7421" name="a5c130ae4488340d4ad3988d7768a7421"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>TrailCacheLength</b> = Factory.CreateIntSet(10, 402, 36, 519, 20, 522, 20, 620, 20, 677, 60, 685, 10)</td></tr>
@@ -1037,7 +1058,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 </table>
 </div><div class="memdoc">
 
-<p>If <code>!= -1f</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (NPC.SpawnedFromStatue), it will have a (retrieved value)% chance to actually drop loot when killed. <br  />
+<p>If <code>!= -1f</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then if that <a class="el" href="class_n_p_c.html">NPC</a> was spawned from a statue (<a class="el" href="class_n_p_c.html#a812ebc3481e74e5a77367d709a491dc3" title="Indicates that this NPC was spawned by a statue. Mainly affects item drops. Prevents item drops in pr...">NPC.SpawnedFromStatue</a>), it will have a (retrieved value)% chance to actually drop loot when killed. <br  />
  Defaults to <code>-1f</code>. </p>
 <p >NPCs in this set will never drop loot unless interacted with by a player (<a class="el" href="class_n_p_c.html#abe60ba5bdf081fffe741c01d43494f23" title="Returns true if any player has damaged this NPC. Individual player participation can be determined by...">NPC.AnyInteractions</a>).</p>
 
@@ -1116,7 +1137,16 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 </table>
 </div><div class="memdoc">
 
-<p>The vertical offset, in pixels, that this <a class="el" href="class_n_p_c.html">NPC</a>'s party hat will draw. Indexed using values from <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a" title="The index for TownNPCsFramingGroups for a given NPC type (NPC.type). See TownNPCsFramingGroups for mo...">NPCFramingGroup</a>. </p>
+<p>The vertical offset, in pixels, that this <a class="el" href="class_n_p_c.html">NPC</a>'s party hat will draw. Indexed using values from <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a" title="The index for TownNPCsFramingGroups for a given NPC type (NPC.type). See TownNPCsFramingGroups for mo...">NPCFramingGroup</a>. <br  />
+Group 0: The default for all Town NPCs. This group matches up with the standard walking animations which are the same animations that the player uses. <br  />
+Group 1: Used by Nurse, Dryad, Party Girl, Steampunker, Mechanic, Stylist, Zoologist. These Town NPCs have only 12 walking frames. <br  />
+Group 2: Used by Angler. <br  />
+Group 3: Used by Truffle. <br  />
+Group 4: Used by Town Cat. <br  />
+Group 5: Used by Town Dog. <br  />
+Group 6: Used by Town Bunny. <br  />
+Group 7: Used by all Town Slimes. <br  />
+Group 8: No offset (added by tModLoader). </p>
 <p ><a class="el" href="class_n_p_c_i_d_1_1_sets.html#ac5dc5c374fcf0ea44b57c6c4279522d2" title="The vertical offset, in pixels, that an NPC&#39;s party hat will draw with.   Defaults to 0.">HatOffsetY</a> applies the same offset to all frames, this applies a specific offset per frame.</p>
 
 </div>

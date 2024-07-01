@@ -11,6 +11,7 @@ var class_projectile_i_d_1_1_sets =
     [ "DontAttachHideToAlpha", "class_projectile_i_d_1_1_sets.html#a774753b1d78fcec262c277869e7447fe", null ],
     [ "DontCancelChannelOnKill", "class_projectile_i_d_1_1_sets.html#a9bf7d9d0c2d7d0c1b166ff1bc025c740", null ],
     [ "DrawScreenCheckFluff", "class_projectile_i_d_1_1_sets.html#af38fa705ece65d7f941a93a0df36fcbe", null ],
+    [ "Explosive", "class_projectile_i_d_1_1_sets.html#a7350c2bce03eca2dc7c4e7d5f1043539", null ],
     [ "ExtendedCanHitCheckRange", "class_projectile_i_d_1_1_sets.html#a8427c47b8da4c8536a23eb090cad0cd5", null ],
     [ "ExtendedCanHitCheckSearch", "class_projectile_i_d_1_1_sets.html#a55510f0139e16d3251fa9eb51690d38e", null ],
     [ "FallingBlockDoesNotFallThroughPlatforms", "class_projectile_i_d_1_1_sets.html#a935f885823fca92a7aa292ba6f107691", null ],

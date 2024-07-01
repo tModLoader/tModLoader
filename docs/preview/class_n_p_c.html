@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1341,6 +1341,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>soundDelay</b></td></t
 <tr class="separator:a4ebbb3952c039c7160953db38e72322b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a812ebc3481e74e5a77367d709a491dc3"><td class="memItemLeft" align="right" valign="top"><a id="a812ebc3481e74e5a77367d709a491dc3" name="a812ebc3481e74e5a77367d709a491dc3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnedFromStatue</b></td></tr>
+<tr class="memdesc:a812ebc3481e74e5a77367d709a491dc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this <a class="el" href="class_n_p_c.html">NPC</a> was spawned by a statue. Mainly affects item drops. Prevents item drops in pre-hardmode if <a class="el" href="class_n_p_c_i_d_1_1_sets.html#aad5305202f4d313bb5084dae67f92151" title="If true for a given NPC type (NPC.type), then if that NPC was spawned from a statue (NPC....">NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue</a> is true. Also prevents item drops if <a class="el" href="class_n_p_c_i_d_1_1_sets.html#af82e5d780fe41c1b14d430a5181c3490" title="If != -1f for a given NPC type (NPC.type), then if that NPC was spawned from a statue (NPC....">NPCID.Sets.StatueSpawnedDropRarity</a> isn't -1 and either a random value is higher than that chance or the npc was not damaged by a player. Prevents NPC.CatchNPC(int, int). Defaults to false. <br /></td></tr>
 <tr class="separator:a812ebc3481e74e5a77367d709a491dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1eb6650f234ff3c3b61790fb134bb3f4"><td class="memItemLeft" align="right" valign="top"><a id="a1eb6650f234ff3c3b61790fb134bb3f4" name="a1eb6650f234ff3c3b61790fb134bb3f4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>spriteDirection</b> = -1</td></tr>
@@ -1353,7 +1354,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>statsAreScaledForThisM
 <tr class="separator:a2f6b7429bde2546db3eedce1a340734c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9011dc0f3ca9494b5dae4f034a301016"><td class="memItemLeft" align="right" valign="top"><a id="a9011dc0f3ca9494b5dae4f034a301016" name="a9011dc0f3ca9494b5dae4f034a301016"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>stepSpeed</b></td></tr>
-<tr class="memdesc:a9011dc0f3ca9494b5dae4f034a301016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has nothing to do with the speed that this <a class="el" href="class_n_p_c.html">NPC</a> travels, that is dictated by AI code adjusting <a class="el" href="class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168" title="The velocity of this Entity in world coordinates per tick.">Entity.velocity</a>. <br /></td></tr>
+<tr class="memdesc:a9011dc0f3ca9494b5dae4f034a301016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has nothing to do with the speed that this <a class="el" href="class_n_p_c.html">NPC</a> travels, that is dictated by AI code adjusting <a class="el" href="class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168" title="The velocity of this Entity in world coordinates per tick.">Entity.velocity</a>. This affects how quickly <a class="el" href="class_n_p_c.html#a7f796a0ac2fe61dea6f6975552f4b59b" title="An offset from the actual position of the npc that will be added to the draw position....">gfxOffY</a> is adjusted. <br /></td></tr>
 <tr class="separator:a9011dc0f3ca9494b5dae4f034a301016"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cbc3c9f70fbfa3620b0d0030301a326"><td class="memItemLeft" align="right" valign="top"><a id="a1cbc3c9f70fbfa3620b0d0030301a326" name="a1cbc3c9f70fbfa3620b0d0030301a326"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>stinky</b></td></tr>

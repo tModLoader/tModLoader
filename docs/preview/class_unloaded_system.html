@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('class_unloaded_system.html',''); initR
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3510182e44e2eff13cfd9d187cccce79"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_system.html#a3510182e44e2eff13cfd9d187cccce79">ClearWorld</a> ()</td></tr>
-<tr class="memdesc:a3510182e44e2eff13cfd9d187cccce79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
+<tr class="memdesc:a3510182e44e2eff13cfd9d187cccce79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world is cleared. Use this to reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
  Also called just before mods are unloaded.  <a href="class_unloaded_system.html#a3510182e44e2eff13cfd9d187cccce79">More...</a><br /></td></tr>
 <tr class="separator:a3510182e44e2eff13cfd9d187cccce79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e1d5a525659cd8b49d4fc286299dc92"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_unloaded_system.html#a2e1d5a525659cd8b49d4fc286299dc92">LoadWorldData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
@@ -131,7 +131,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanWorldBePla
 <tr class="memdesc:a7038131d8d178a6a07f427a57965cc39 inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing. <br /></td></tr>
 <tr class="separator:a7038131d8d178a6a07f427a57965cc39 inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa557dc13d8b04def150ba29ab407e2e3 inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#aa557dc13d8b04def150ba29ab407e2e3">ClearWorld</a> ()</td></tr>
-<tr class="memdesc:aa557dc13d8b04def150ba29ab407e2e3 inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
+<tr class="memdesc:aa557dc13d8b04def150ba29ab407e2e3 inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the world is cleared. Use this to reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
  Also called just before mods are unloaded.  <a href="class_mod_system.html#aa557dc13d8b04def150ba29ab407e2e3">More...</a><br /></td></tr>
 <tr class="separator:aa557dc13d8b04def150ba29ab407e2e3 inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b117373c4a4f0cf900e7935d1e55785 inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a9b117373c4a4f0cf900e7935d1e55785">HijackGetData</a> (ref byte messageType, ref BinaryReader reader, int playerNumber)</td></tr>
@@ -150,7 +150,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>HijackSendDat
 <tr class="separator:a84b01505699245fb95b9c0a0df5944fa inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3224849ab5d16570434c13e66a4eb9e inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top"><a id="ab3224849ab5d16570434c13e66a4eb9e" name="ab3224849ab5d16570434c13e66a4eb9e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHardmodeTasks</b> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_gen_pass.html">GenPass</a> &gt; list)</td></tr>
-<tr class="memdesc:ab3224849ab5d16570434c13e66a4eb9e inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to ModifyWorldGenTasks(List&lt;GenPass&gt;, ref double), but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 5 items, the vanilla hardmode tasks called "Hardmode Good Remix", "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement". "Hardmode Good Remix" will only be enabled on Don't dig upworlds (Main.remixWorld) while "Hardmode Good" and "Hardmode Evil" will be enabled otherwise.To disable or hide tasks, please use GenPass.Disable and defensive coding. <br /></td></tr>
+<tr class="memdesc:ab3224849ab5d16570434c13e66a4eb9e inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to ModifyWorldGenTasks(List&lt;GenPass&gt;, ref double), but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 5 items, the vanilla hardmode tasks called "Hardmode Good Remix", "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement". "Hardmode Good Remix" will only be enabled on Don't dig upworlds (<a class="el" href="class_main.html#a708d2384cde853b30a44025fb114cabf" title="If true, the world was generated with the Don&#39;t dig up (aka Remix)secret world seed....">Main.remixWorld</a>) while "Hardmode Good" and "Hardmode Evil" will be enabled otherwise.To disable or hide tasks, please use GenPass.Disable and defensive coding. <br /></td></tr>
 <tr class="separator:ab3224849ab5d16570434c13e66a4eb9e inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895054130daea8301afbd74af6168490 inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_system.html#a895054130daea8301afbd74af6168490">ModifyInterfaceLayers</a> (<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_game_interface_layer.html">GameInterfaceLayer</a> &gt; layers)</td></tr>
 <tr class="memdesc:a895054130daea8301afbd74af6168490 inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the elements of the in-game interface that get drawn. <a class="el" href="class_game_interface_layer.html">GameInterfaceLayer</a> can be found in the Terraria.UI namespace. Check the Vanilla Interface layers values wiki pagefor vanilla interface layer names  <a href="class_mod_system.html#a895054130daea8301afbd74af6168490">More...</a><br /></td></tr>
@@ -203,7 +203,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnModUnload</
 <tr class="memitem:ad6a150f64d282a855c4b9c6dbe8347b6 inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top"><a id="ad6a150f64d282a855c4b9c6dbe8347b6" name="ad6a150f64d282a855c4b9c6dbe8347b6"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnWorldLoad</b> ()</td></tr>
 <tr class="memdesc:ad6a150f64d282a855c4b9c6dbe8347b6 inherit pub_methods_class_mod_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever a world is loaded, before <a class="el" href="class_unloaded_system.html#a2e1d5a525659cd8b49d4fc286299dc92" title="Allows you to load custom data you have saved for this system in the currently loading world....">LoadWorldData</a> <br  />
- If you need to initialize tile or other world related data-structures, use <a class="el" href="class_unloaded_system.html#a3510182e44e2eff13cfd9d187cccce79" title="Called whenever the world is cleared. Use this reset world-related data structures before world-gen o...">ClearWorld</a> instead <br /></td></tr>
+ If you need to initialize tile or other world related data-structures, use <a class="el" href="class_unloaded_system.html#a3510182e44e2eff13cfd9d187cccce79" title="Called whenever the world is cleared. Use this to reset world-related data structures before world-ge...">ClearWorld</a> instead <br /></td></tr>
 <tr class="separator:ad6a150f64d282a855c4b9c6dbe8347b6 inherit pub_methods_class_mod_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a953bc06309d50d385ffa4e4a6ea15dd9 inherit pub_methods_class_mod_system"><td class="memItemLeft" align="right" valign="top"><a id="a953bc06309d50d385ffa4e4a6ea15dd9" name="a953bc06309d50d385ffa4e4a6ea15dd9"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnWorldUnload</b> ()</td></tr>
@@ -546,7 +546,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Called whenever the world is cleared. Use this reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
+<p>Called whenever the world is cleared. Use this to reset world-related data structures before world-gen or loading in both single and multiplayer. <br  />
  Also called just before mods are unloaded. </p>
 
 <p>Reimplemented from <a class="el" href="class_mod_system.html#aa557dc13d8b04def150ba29ab407e2e3">ModSystem</a>.</p>
@@ -581,7 +581,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
   </table>
   </dd>
 </dl>
@@ -621,7 +621,7 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 <b>NOTE:</b> Try to only save data that isn't default values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
   </table>
   </dd>
 </dl>

@@ -69,5 +69,7 @@ var searchData=
   ['bunnykillingiscruel_66',['BunnyKillingIsCruel',['../class_game_tip_i_d.html#a1faab886775c62eefc442cde2c259627',1,'GameTipID']]],
   ['butterfly_67',['Butterfly',['../class_n_p_c_a_i_style_i_d.html#a01733088b02859aadd3bf4c95d749c90',1,'NPCAIStyleID']]],
   ['buttonremappingincontrolsmenu_68',['ButtonRemappingInControlsMenu',['../class_game_tip_i_d.html#a6359e4caae3a1709315294456c14507a',1,'GameTipID']]],
-  ['buyonce_69',['buyOnce',['../class_item.html#a9a9a58fd3ed77b2235265d3a9b41ba92',1,'Item']]]
+  ['buyonce_69',['buyOnce',['../class_item.html#a9a9a58fd3ed77b2235265d3a9b41ba92',1,'Item']]],
+  ['byid_70',['ByID',['../class_tile_entity.html#ab7804011f0846b3cc67f83b55f5b766a',1,'TileEntity']]],
+  ['byposition_71',['ByPosition',['../class_tile_entity.html#a85c0c3f8d2b5645dc89880c75e59dc2e',1,'TileEntity']]]
 ];

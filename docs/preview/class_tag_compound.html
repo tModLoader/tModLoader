@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,13 +92,12 @@ $(document).ready(function(){initNavTree('class_tag_compound.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
-<p>Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page<br  />
+<p>Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page<br  />
  All primitive data types are supported as well as byte[], int[] and Lists of other supported data types <br  />
  Lists of Lists are internally stored as IList&lt;IList&gt; <br  />
- Modification of lists stored in a <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> will only work if there were no type conversions involved and is not advised <br  />
- bool is supported using TagConverter, serialised as a byte. IList&lt;bool&gt; will serialise as IList&lt;byte&gt; (quite inefficient) <br  />
- Additional conversions can be added using TagConverter <br  />
-  
+ Modification of lists stored in a <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> will only work if there were no type conversions involved and is not advised <br  />
+ bool is supported using TagConverter, serialized as a byte. IList&lt;bool&gt; will serialize as IList&lt;byte&gt; (quite inefficient) <br  />
+ Additional conversions can be added using TagConverter The Saving and loading using <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a>teaches how to properly use the <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> class.  
  <a href="class_tag_compound.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_i_enumerable.html">IEnumerable&lt; KeyValuePair&lt; string, object &gt; &gt;</a>, and <a class="el" href="class_i_cloneable.html">ICloneable</a>.</p>
@@ -107,9 +106,11 @@ $(document).ready(function(){initNavTree('class_tag_compound.html',''); initResi
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a707b0fcd952dc2c79152a059d670777a"><td class="memItemLeft" align="right" valign="top"><a id="a707b0fcd952dc2c79152a059d670777a" name="a707b0fcd952dc2c79152a059d670777a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (KeyValuePair&lt; string, object &gt; entry)</td></tr>
+<tr class="memdesc:a707b0fcd952dc2c79152a059d670777a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to add a KeyValuePair to the <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a>. <br /></td></tr>
 <tr class="separator:a707b0fcd952dc2c79152a059d670777a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a543b53042a1ce134e9ab9e4cce9014ab"><td class="memItemLeft" align="right" valign="top"><a id="a543b53042a1ce134e9ab9e4cce9014ab" name="a543b53042a1ce134e9ab9e4cce9014ab"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (string key, object value)</td></tr>
+<tr class="memdesc:a543b53042a1ce134e9ab9e4cce9014ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to add values to the <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> indexed by the specified <em>key</em> . <br /></td></tr>
 <tr class="separator:a543b53042a1ce134e9ab9e4cce9014ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf22aea9f00421765dc2da64f1618550"><td class="memItemLeft" align="right" valign="top"><a id="aaf22aea9f00421765dc2da64f1618550" name="aaf22aea9f00421765dc2da64f1618550"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr>
@@ -119,9 +120,10 @@ object&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></
 <tr class="separator:a9913ac1e718862a3f33ccafb15e549d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdbea95bdb6b4e393d5c64dd5aeb38fe"><td class="memItemLeft" align="right" valign="top"><a id="abdbea95bdb6b4e393d5c64dd5aeb38fe" name="abdbea95bdb6b4e393d5c64dd5aeb38fe"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ContainsKey</b> (string key)</td></tr>
+<tr class="memdesc:abdbea95bdb6b4e393d5c64dd5aeb38fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if an entry with specified key exists. This is useful to check if a key is present prior to retrieving the value in the case that key potentially won't exist and the default behavior of <a class="el" href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b" title="Retrieves the value corresponding to the key  of the Type T . If no entry is found,...">Get&lt;T&gt;(string)</a> would be undesirable. The <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> Version Updates section of the wiki guideshows an example of one such situation. <br /></td></tr>
 <tr class="separator:abdbea95bdb6b4e393d5c64dd5aeb38fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a1a7dd6c64def6f4a1e063a9f6b566b"><td class="memItemLeft" align="right" valign="top"><a id="a2a1a7dd6c64def6f4a1e063a9f6b566b" name="a2a1a7dd6c64def6f4a1e063a9f6b566b"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>Get&lt; T &gt;</b> (string key)</td></tr>
+<tr class="memitem:a2a1a7dd6c64def6f4a1e063a9f6b566b"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b">Get&lt; T &gt;</a> (string key)</td></tr>
+<tr class="memdesc:a2a1a7dd6c64def6f4a1e063a9f6b566b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the value corresponding to the <em>key</em>  of the Type <em>T</em> . If no entry is found, a default value will be returned. For primitives this will be the typical default value for that primitive (0, false, ""). For classes and structs the returned value will be the result of calling the appropriate deserialize method with an empty <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a>. This will usually be a default instance of that class or struct. For List&lt;T&gt;, an empty list is returned. For arrays, an empty array would be returned. If the found entry is not of the Type <em>T</em>  an exception will be thrown.  <a href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b">More...</a><br /></td></tr>
 <tr class="separator:a2a1a7dd6c64def6f4a1e063a9f6b566b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9207d6a8539ad07ea61673e6b219244"><td class="memItemLeft" align="right" valign="top"><a id="ac9207d6a8539ad07ea61673e6b219244" name="ac9207d6a8539ad07ea61673e6b219244"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>GetAsDouble</b> (string key)</td></tr>
@@ -146,6 +148,7 @@ byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>GetByteArray</b> (s
 <tr class="separator:a023eb820d3a6998aa756fed3643079f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae34d3cfc994d9b32ed8df9d9d0d0422a"><td class="memItemLeft" align="right" valign="top"><a id="ae34d3cfc994d9b32ed8df9d9d0d0422a" name="ae34d3cfc994d9b32ed8df9d9d0d0422a"></a>
 <a class="el" href="class_tag_compound.html">TagCompound</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetCompound</b> (string key)</td></tr>
+<tr class="memdesc:ae34d3cfc994d9b32ed8df9d9d0d0422a"><td class="mdescLeft">&#160;</td><td class="mdescRight">GetCompound can be used to retrieve nested TagCompounds. This can be useful for saving complex data. An empty <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> is returned if not present. <br /></td></tr>
 <tr class="separator:ae34d3cfc994d9b32ed8df9d9d0d0422a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a598c3248e1832d934f4c151766058840"><td class="memItemLeft" align="right" valign="top"><a id="a598c3248e1832d934f4c151766058840" name="a598c3248e1832d934f4c151766058840"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>GetDouble</b> (string key)</td></tr>
@@ -176,15 +179,17 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>GetString</b> (stri
 <tr class="separator:ab09fc9f6066b61d65425137278f8ef1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b33815f5427b9f2f1820bc9584eef36"><td class="memItemLeft" align="right" valign="top"><a id="a6b33815f5427b9f2f1820bc9584eef36" name="a6b33815f5427b9f2f1820bc9584eef36"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Remove</b> (string key)</td></tr>
+<tr class="memdesc:a6b33815f5427b9f2f1820bc9584eef36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removed the entry corresponding to the <em>key</em> . Returns true if the element is successfully found and removed; otherwise, false. <br /></td></tr>
 <tr class="separator:a6b33815f5427b9f2f1820bc9584eef36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cbe8137158c967445a08b265e3fef64"><td class="memItemLeft" align="right" valign="top"><a id="a2cbe8137158c967445a08b265e3fef64" name="a2cbe8137158c967445a08b265e3fef64"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Set</b> (string key, object value, bool replace=false)</td></tr>
+<tr class="memdesc:a2cbe8137158c967445a08b265e3fef64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to set values to the <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> indexed by the specified <em>key</em> . <br /></td></tr>
 <tr class="separator:a2cbe8137158c967445a08b265e3fef64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedd9b620735e8e2403612d83dca11da1"><td class="memItemLeft" align="right" valign="top"><a id="aedd9b620735e8e2403612d83dca11da1" name="aedd9b620735e8e2403612d83dca11da1"></a>
 override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
 <tr class="separator:aedd9b620735e8e2403612d83dca11da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01f035ee747e11ce8d9deecf8779855f"><td class="memItemLeft" align="right" valign="top"><a id="a01f035ee747e11ce8d9deecf8779855f" name="a01f035ee747e11ce8d9deecf8779855f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGet&lt; T &gt;</b> (string key, out T value)</td></tr>
+<tr class="memitem:a01f035ee747e11ce8d9deecf8779855f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tag_compound.html#a01f035ee747e11ce8d9deecf8779855f">TryGet&lt; T &gt;</a> (string key, out T value)</td></tr>
+<tr class="memdesc:a01f035ee747e11ce8d9deecf8779855f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to retrieve the value corresponding to the provided <em>key</em>  and sets it to <em>value</em> . If found, true is returned by this method, otherwise false is returned. Unlike <a class="el" href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b" title="Retrieves the value corresponding to the key  of the Type T . If no entry is found,...">Get&lt;T&gt;(string)</a>, TryGet will not attempt to set <em>value</em>  to a valid fallback default created by the deserialize method of classes and structs in the case where the key is not found. Use this instead of <a class="el" href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b" title="Retrieves the value corresponding to the key  of the Type T . If no entry is found,...">Get&lt;T&gt;(string)</a> in situations where falling back to the default value for missing entries would be undesirable.  <a href="class_tag_compound.html#a01f035ee747e11ce8d9deecf8779855f">More...</a><br /></td></tr>
 <tr class="separator:a01f035ee747e11ce8d9deecf8779855f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -194,18 +199,110 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Count</b><code> [get]<
 <tr class="separator:a4a9dfca6fc2c8bdb12f18a9faffea4d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c122c389dc387a855dafde2510d6167"><td class="memItemLeft" align="right" valign="top"><a id="a6c122c389dc387a855dafde2510d6167" name="a6c122c389dc387a855dafde2510d6167"></a>
 object&#160;</td><td class="memItemRight" valign="bottom"><b>this[string key]</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a6c122c389dc387a855dafde2510d6167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to add values to the <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a>, similar to working with a Dictionary&lt;TKey, TValue&gt;. An alternate to this is calling <a class="el" href="class_tag_compound.html#a543b53042a1ce134e9ab9e4cce9014ab" title="Use this to add values to the TagCompound indexed by the specified key .">Add(string, object)</a> directly. If is also possible to use this to retrieve entries from the <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> directly, but since the return value is Object this is rarely the best approach. Usually one of the <a class="el" href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b" title="Retrieves the value corresponding to the key  of the Type T . If no entry is found,...">Get&lt;T&gt;(string)</a> methods should be used for this. One situation where this is necessary is described in the Updates to data Type section of the wiki guide. <br /></td></tr>
 <tr class="separator:a6c122c389dc387a855dafde2510d6167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page</p>
+<div class="textblock"><p >Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page</p>
 <p ><br  />
  All primitive data types are supported as well as byte[], int[] and Lists of other supported data types <br  />
  Lists of Lists are internally stored as IList&lt;IList&gt; <br  />
- Modification of lists stored in a <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> will only work if there were no type conversions involved and is not advised <br  />
- bool is supported using TagConverter, serialised as a byte. IList&lt;bool&gt; will serialise as IList&lt;byte&gt; (quite inefficient) <br  />
- Additional conversions can be added using TagConverter <br  />
- </p>
-</div></div><!-- contents -->
+ Modification of lists stored in a <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> will only work if there were no type conversions involved and is not advised <br  />
+ bool is supported using TagConverter, serialized as a byte. IList&lt;bool&gt; will serialize as IList&lt;byte&gt; (quite inefficient) <br  />
+ Additional conversions can be added using TagConverter </p>
+<p >The Saving and loading using <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a></p>
+<p >teaches how to properly use the <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> class. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2a1a7dd6c64def6f4a1e063a9f6b566b" name="a2a1a7dd6c64def6f4a1e063a9f6b566b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a1a7dd6c64def6f4a1e063a9f6b566b">&#9670;&nbsp;</a></span>Get&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">T TagCompound.Get&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the value corresponding to the <em>key</em>  of the Type <em>T</em> . If no entry is found, a default value will be returned. For primitives this will be the typical default value for that primitive (0, false, ""). For classes and structs the returned value will be the result of calling the appropriate deserialize method with an empty <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a>. This will usually be a default instance of that class or struct. For List&lt;T&gt;, an empty list is returned. For arrays, an empty array would be returned. If the found entry is not of the Type <em>T</em>  an exception will be thrown. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_i_o_exception.html">IOException</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a01f035ee747e11ce8d9deecf8779855f" name="a01f035ee747e11ce8d9deecf8779855f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01f035ee747e11ce8d9deecf8779855f">&#9670;&nbsp;</a></span>TryGet&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TagCompound.TryGet&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out T&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attempts to retrieve the value corresponding to the provided <em>key</em>  and sets it to <em>value</em> . If found, true is returned by this method, otherwise false is returned. Unlike <a class="el" href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b" title="Retrieves the value corresponding to the key  of the Type T . If no entry is found,...">Get&lt;T&gt;(string)</a>, TryGet will not attempt to set <em>value</em>  to a valid fallback default created by the deserialize method of classes and structs in the case where the key is not found. Use this instead of <a class="el" href="class_tag_compound.html#a2a1a7dd6c64def6f4a1e063a9f6b566b" title="Retrieves the value corresponding to the key  of the Type T . If no entry is found,...">Get&lt;T&gt;(string)</a> in situations where falling back to the default value for missing entries would be undesirable. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+    <tr><td class="paramname">value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="class_i_o_exception.html">IOException</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -141,9 +141,19 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>ClientUUID</b> 
 <tr class="separator:a7e3ca8dab64d0210c3fd3f2154c0f984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8f6712b71742c1756050ad73b4470ca"><td class="memItemLeft" align="right" valign="top"><a id="ad8f6712b71742c1756050ad73b4470ca" name="ad8f6712b71742c1756050ad73b4470ca"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>CombatTextInt</b> = 81</td></tr>
+<tr class="memdesc:ad8f6712b71742c1756050ad73b4470ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> from the server to clients. Sends a number, use <a class="el" href="class_message_i_d.html#a2076661fc313d5a07c7abe39dc8aa2c7" title="Sends a CombatText from the server to clients. Sends a string, use CombatTextInt instead for the int ...">CombatTextString</a> instead for the string version. Used automatically by <a class="el" href="class_player.html#ad5922ca66e5256559454706dcd24fbd8" title="Spawns a CombatText indicating the player healed healAmount  life and syncs it if broadcast  is true....">Player.HealEffect(int, bool)</a>, but custom <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> would need to manually sync using this message. NetMessage.SendData parameters, correlating to CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, int, bool, bool) parameters: <br  />
+<b>number:</b> The text color: Microsoft.Xna.Framework.Color.PackedValue <br  />
+<b>number2:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center X coordinate <br  />
+<b>number3:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center Y coordinate <br  />
+<b>number4:</b> The number shown by the <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> <br /></td></tr>
 <tr class="separator:ad8f6712b71742c1756050ad73b4470ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2076661fc313d5a07c7abe39dc8aa2c7"><td class="memItemLeft" align="right" valign="top"><a id="a2076661fc313d5a07c7abe39dc8aa2c7" name="a2076661fc313d5a07c7abe39dc8aa2c7"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>CombatTextString</b> = 119</td></tr>
+<tr class="memdesc:a2076661fc313d5a07c7abe39dc8aa2c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> from the server to clients. Sends a string, use <a class="el" href="class_message_i_d.html#ad8f6712b71742c1756050ad73b4470ca" title="Sends a CombatText from the server to clients. Sends a number, use CombatTextString instead for the s...">CombatTextInt</a> instead for the int version. Used automatically by <a class="el" href="class_player.html#ad5922ca66e5256559454706dcd24fbd8" title="Spawns a CombatText indicating the player healed healAmount  life and syncs it if broadcast  is true....">Player.HealEffect(int, bool)</a>, but custom <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> would need to manually sync using this message. NetMessage.SendData parameters, correlating to CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, string, bool, bool) parameters: <br  />
+<b>number:</b> The text color: Microsoft.Xna.Framework.Color.PackedValue <br  />
+<b>number2:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center X coordinate <br  />
+<b>number3:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center Y coordinate <br  />
+<b>text:</b> The text shown by the <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> <br /></td></tr>
 <tr class="separator:a2076661fc313d5a07c7abe39dc8aa2c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ed034de6bb3fb416e45524677789bb2"><td class="memItemLeft" align="right" valign="top"><a id="a8ed034de6bb3fb416e45524677789bb2" name="a8ed034de6bb3fb416e45524677789bb2"></a>
 static readonly byte&#160;</td><td class="memItemRight" valign="bottom"><b>Count</b> = 149</td></tr>

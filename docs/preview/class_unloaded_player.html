@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -179,7 +179,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="separator:a4fea8cca07ffc958393215da13f5c9ca inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2900167a2517c5017d997dd87e97243 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#aa2900167a2517c5017d997dd87e97243">CanShowExtraJumpVisuals</a> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump)</td></tr>
 <tr class="memdesc:aa2900167a2517c5017d997dd87e97243 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return <code>false</code> to prevent <a class="el" href="class_unicorn_mount_jump.html#abe6498ea95f70746779ff6a5cd303364" title="Spawn effects that should appear while the player is performing this jump here.  Only runs while the ...">ExtraJump.ShowVisuals(Player)</a> from executing on <em>jump</em> .<br  />
- By default, this hook returns whether the player is moving upwards with respect to Player.gravDir  <a href="class_mod_player.html#aa2900167a2517c5017d997dd87e97243">More...</a><br /></td></tr>
+ By default, this hook returns whether the player is moving upwards with respect to <a class="el" href="class_player.html#a51fc417963886ca80af4eaf5005b76d9" title="The players gravity direction. 1 if normal, -1 if reversed. Defaults to 1.">Player.gravDir</a>  <a href="class_mod_player.html#aa2900167a2517c5017d997dd87e97243">More...</a><br /></td></tr>
 <tr class="separator:aa2900167a2517c5017d997dd87e97243 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec723167088d7619ec79bd5f261013e6 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#aec723167088d7619ec79bd5f261013e6">CanStartExtraJump</a> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump)</td></tr>
 <tr class="memdesc:aec723167088d7619ec79bd5f261013e6 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">An extra condition for whether an extra jump can be started. Returns <code>true</code> by default.  <a href="class_mod_player.html#aec723167088d7619ec79bd5f261013e6">More...</a><br /></td></tr>
@@ -212,6 +212,9 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memdesc:ad0ee4c692fb63a5feacc4844676f0c8d inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br  />
  This will be called multiple times a frame if a player afterimage is being drawn. Check  <a href="class_mod_player.html#ad0ee4c692fb63a5feacc4844676f0c8d">More...</a><br /></td></tr>
 <tr class="separator:ad0ee4c692fb63a5feacc4844676f0c8d inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89ef88fba5ce8cf9e833c5d6b6e31e5 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top"><a id="aa89ef88fba5ce8cf9e833c5d6b6e31e5" name="aa89ef88fba5ce8cf9e833c5d6b6e31e5"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>EmitEnchantmentVisualsAt</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, Vector2 boxPosition, int boxWidth, int boxHeight)</td></tr>
+<tr class="separator:aa89ef88fba5ce8cf9e833c5d6b6e31e5 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1deae1ee6ed9060a66034fa0592b4773 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top"><a id="a1deae1ee6ed9060a66034fa0592b4773" name="a1deae1ee6ed9060a66034fa0592b4773"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraJumpVisuals</b> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump)</td></tr>
 <tr class="memdesc:a1deae1ee6ed9060a66034fa0592b4773 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effects that should appear while the player is performing an extra jump should happen here.<br  />
@@ -273,7 +276,7 @@ See ID.CursorOverrideID for cursor override style IDs  <a href="class_mod_player
 <b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_mod_player.html#af5ed4f9aec0aafb9197fc93b62737264">More...</a><br /></td></tr>
 <tr class="separator:af5ed4f9aec0aafb9197fc93b62737264 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94faf1f54d833cf14b17ee9c127cc547 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a94faf1f54d833cf14b17ee9c127cc547">MeleeEffects</a> (<a class="el" href="class_item.html">Item</a> item, Rectangle hitbox)</td></tr>
-<tr class="memdesc:a94faf1f54d833cf14b17ee9c127cc547 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this player's melee weapon special effects, such as creating light or dust.  <a href="class_mod_player.html#a94faf1f54d833cf14b17ee9c127cc547">More...</a><br /></td></tr>
+<tr class="memdesc:a94faf1f54d833cf14b17ee9c127cc547 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give this player's melee weapon special effects, such as creating light or dust. This is typically used to implement a weapon enchantment, similar to flasks, frost armor, or magma stone effects. If implementing a weapon enchantment, also implement <a class="el" href="class_mod_player.html#aa89ef88fba5ce8cf9e833c5d6b6e31e5">EmitEnchantmentVisualsAt(Projectile, Vector2, int, int)</a> to support enchantment visuals for projectiles as well.  <a href="class_mod_player.html#a94faf1f54d833cf14b17ee9c127cc547">More...</a><br /></td></tr>
 <tr class="separator:a94faf1f54d833cf14b17ee9c127cc547 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b4238ff5f74b99b28bd583e80303bf0 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a3b4238ff5f74b99b28bd583e80303bf0">ModifyCaughtFish</a> (<a class="el" href="class_item.html">Item</a> fish)</td></tr>
 <tr class="memdesc:a3b4238ff5f74b99b28bd583e80303bf0 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the item caught by the fishing player, including stack  <a href="class_mod_player.html#a3b4238ff5f74b99b28bd583e80303bf0">More...</a><br /></td></tr>
@@ -779,7 +782,7 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
 <b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
   </table>
   </dd>
 </dl>
@@ -847,7 +850,7 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
 <b>NOTE:</b> Try to only save data that isn't default values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
   </table>
   </dd>
 </dl>
