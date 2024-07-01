@@ -1,5 +1,7 @@
 var NAVTREEINDEX24 =
 {
+"struct_sound_style.html#a962caebf253b04e394b5400150cb343a":[3,0,1156,6],
+"struct_sound_style.html#a9bbc4e8110bbab57351c8100ba17ed1f":[3,0,1156,3],
 "struct_sound_style.html#ad12afc077a47e80bc201345e1c8a9871":[3,0,1156,10],
 "struct_sound_style.html#adc51a634f4a7cc2725f6881b0afce994":[3,0,1156,2],
 "struct_sprite_frame.html":[3,0,1164],

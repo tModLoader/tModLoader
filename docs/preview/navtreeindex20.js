@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html":[3,0,1239,0,1],
+"class_tile_i_d_1_1_sets_1_1_for_advanced_collision.html":[3,0,1239,0,2],
 "class_tile_i_d_1_1_sets_1_1_room_needs.html":[3,0,1239,0,3],
 "class_tile_i_d_1_1_sets_1_1_tile_cut_ignore.html":[3,0,1239,0,4],
 "class_tile_light_scanner.html":[3,0,1240],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "class_unloaded_global_item.html#a4924c96de0a247d8e257958023cbbd2c":[3,0,1409,1],
 "class_unloaded_global_item.html#abdbdf089a40637872b52fbaba9462fab":[3,0,1409,0],
 "class_unloaded_global_n_p_c.html":[3,0,1410],
-"class_unloaded_global_n_p_c.html#a0492e4711916e5570c2e7656b9e49d60":[3,0,1410,2],
-"class_unloaded_global_n_p_c.html#a05843235eacb651ed397380a2aa47e94":[3,0,1410,0],
-"class_unloaded_global_n_p_c.html#a8fcbb5c6f276252463ebc4a7546fd0fb":[3,0,1410,1]
+"class_unloaded_global_n_p_c.html#a0492e4711916e5570c2e7656b9e49d60":[3,0,1410,2]
 };

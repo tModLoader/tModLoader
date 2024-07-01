@@ -64,15 +64,15 @@ var NAVTREEINDEX =
 "class_mod_tile.html#a5b8ac3afe10944cf94c39fb87cd6bf1d",
 "class_n_p_c.html#a812ebc3481e74e5a77367d709a491dc3",
 "class_n_p_c_i_d_1_1_sets.html#a8990bb80ffa4470f3a386c343cefe4a7",
-"class_player.html#aa0ceee81c432120bde935869d62f944e",
-"class_proj_a_i_style_i_d.html#a043a66d71e4ae7268a4cd8befdb89ffa",
-"class_projectile.html#acb1e424d762f2cfe6a4d25fb20cf7167",
-"class_solar_flare_pillar_big_progress_bar.html",
-"class_tile_i_d_1_1_sets_1_1_room_needs.html",
-"class_unloaded_item.html",
-"functions_prop_s.html",
-"struct_final_fractal_helper.html",
-"struct_sound_style.html#ad12afc077a47e80bc201345e1c8a9871"
+"class_player.html#aa034767b10491263e6f56bdbb30d54c3",
+"class_proj_a_i_style_i_d.html#a03f07c7e9f5913ea4f894f716f9e0d84",
+"class_projectile.html#ac64a90bef6c47cf5804770e63f522a87",
+"class_social_browser_exception.html",
+"class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html",
+"class_unloaded_global_n_p_c.html#a05843235eacb651ed397380a2aa47e94",
+"functions_prop_p.html",
+"struct_filtered_array_enumerator.html",
+"struct_sound_style.html#a962caebf253b04e394b5400150cb343a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

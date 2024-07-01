@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"class_social_browser_exception.html":[3,0,1145],
+"class_social_socket.html":[3,0,1147],
 "class_solar_flare_pillar_big_progress_bar.html":[3,0,1148],
 "class_solar_sky.html":[3,0,1149],
 "class_sorting_steps.html":[3,0,1150],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "class_tile_i_d_1_1_sets.html#af6d219061ccc5d59b713d81ef0767c67":[3,0,1239,0,43],
 "class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b":[3,0,1239,0,56],
 "class_tile_i_d_1_1_sets.html#aff1403f322dfd6e9126e89ef2d1de620":[3,0,1239,0,61],
-"class_tile_i_d_1_1_sets_1_1_conversion.html":[3,0,1239,0,0],
-"class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html":[3,0,1239,0,1],
-"class_tile_i_d_1_1_sets_1_1_for_advanced_collision.html":[3,0,1239,0,2]
+"class_tile_i_d_1_1_sets_1_1_conversion.html":[3,0,1239,0,0]
 };

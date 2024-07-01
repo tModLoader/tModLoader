@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"class_projectile.html#ac64a90bef6c47cf5804770e63f522a87":[3,0,1021,29],
+"class_projectile.html#ac8b4d04688f594237d173222401fc3b1":[3,0,1021,62],
 "class_projectile.html#acb1e424d762f2cfe6a4d25fb20cf7167":[3,0,1021,72],
 "class_projectile.html#acf73b38dd6006395707713d1afb995ea":[3,0,1021,73],
 "class_projectile.html#acfca3a77d8685f83d806ea045399c3a7":[3,0,1021,60],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "class_smart_select_gamepad_pointer.html":[3,0,1141],
 "class_snap_point.html":[3,0,1142],
 "class_snow_biome.html":[3,0,1143],
-"class_social_a_p_i.html":[3,0,1144],
-"class_social_browser_exception.html":[3,0,1145],
-"class_social_socket.html":[3,0,1147]
+"class_social_a_p_i.html":[3,0,1144]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX23 =
 {
+"struct_filtered_array_enumerator.html":[3,0,387],
+"struct_filtered_span_enumerator.html":[3,0,388],
 "struct_final_fractal_helper.html":[3,0,392],
 "struct_final_fractal_helper_1_1_final_fractal_profile.html":[3,0,392,0],
 "struct_fishing_attempt.html":[3,0,394],
@@ -247,7 +249,5 @@ var NAVTREEINDEX23 =
 "struct_sound_style.html#a69d7ee6ec7278e9c00fb3051e9f2a225":[3,0,1156,1],
 "struct_sound_style.html#a80d0ec72d506be9b268f13d87dac01d2":[3,0,1156,4],
 "struct_sound_style.html#a87ddc4142df801a259b3c4e510d8f40d":[3,0,1156,7],
-"struct_sound_style.html#a89eebee91ea59d9c7caef248cd6a6522":[3,0,1156,9],
-"struct_sound_style.html#a962caebf253b04e394b5400150cb343a":[3,0,1156,6],
-"struct_sound_style.html#a9bbc4e8110bbab57351c8100ba17ed1f":[3,0,1156,3]
+"struct_sound_style.html#a89eebee91ea59d9c7caef248cd6a6522":[3,0,1156,9]
 };
