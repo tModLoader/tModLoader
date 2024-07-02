@@ -392,8 +392,8 @@
  	}
  
 +	/// <summary>
-+	/// If true, tile styles are arranged one after the other horizontally in the spritesheet, otherwise they are arranged vertically.
-+	/// <para/> Some tiles use a small <see cref="StyleWrapLimit"/> and <see cref="StyleMultiplier"/> value to provide space for a alternate placements, resulting in the tile styles themselves appearing to be arranged horizontally in the resulting spritesheet with the alternate placements below.  
++	/// If true, tile styles are arranged one after the other horizontally in the spritesheet, otherwise they are arranged vertically. New lines of styles will roll over to the next row once <see cref="StyleWrapLimit"/> is reached, if defined.
++	/// <para/> Some tiles keep this false but use a small <see cref="StyleWrapLimit"/> and <see cref="StyleMultiplier"/> value to provide space for alternate placements, resulting in the tile styles themselves appearing to be arranged horizontally in the resulting spritesheet with the alternate placements below.  
 +	/// <para/> Defaults to <c>false</c>.
 +	/// </summary>
  	public bool StyleHorizontal {
@@ -416,7 +416,7 @@
  	}
  
 +	/// <summary>
-+	/// Defines how many tile placement styles (Number of styles times <see cref="StyleMultiplier"/>) will fit into a line (row if <see cref="StyleHorizontal"/> is true, column if StyleHorizontal is false) of the spritesheet before wrapping to the next line. This is used for organizational purposes and to keep spritesheets easy to work with. Any tile with multiple styles should set this or the math will not work as expected.
++	/// Defines how many tile placement styles (Number of styles times <see cref="StyleMultiplier"/>) will fit into a line (row if <see cref="StyleHorizontal"/> is true, column if StyleHorizontal is false) of the spritesheet before wrapping to the next line. This is used for organizational purposes and to keep spritesheets easy to work with.
 +	/// <para/> Defaults to 0, which will be interpreted as 1.
 +	/// </summary>
  	public int StyleWrapLimit {
@@ -443,7 +443,7 @@
  	}
  
 +	/// <summary>
-+	/// How many lines (rows if StyleHorizontal is true, columns if StyleHorizontal is false) will be skipped between each line of styles when wrapping to the next line due to <see cref="StyleWrapLimit"/>. Skipping lines allows tile spritesheets to have space for animations or toggled states. For example, <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleCampfire.cs">ExampleCampfire</see> sets this to 9 because it has 8 animation frames and an off state taking up additional lines. Failure to set this for a tile that can change states will result in tile drops being incorrectly calculated.
++	/// How many lines (rows if StyleHorizontal is true, columns if StyleHorizontal is false) will be skipped between each line of styles when wrapping to the next line due to <see cref="StyleWrapLimit"/>. Skipping lines allows tile spritesheets to have space for animations or toggled states (manual changes to TileFrameX and TileFrameY). For example, <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleCampfire.cs">ExampleCampfire</see> sets this to 9 because it has 8 animation frames and an off state taking up additional lines. Failure to set this for a tile that can change states will result in tile drops being incorrectly calculated.
 +	/// <para/> Defaults to 1, meaning no lines are skipped.
 +	/// </summary>
  	public int StyleLineSkip {
@@ -454,7 +454,7 @@
  	}
  
 +	/// <summary>
-+	/// Applies a multiplier to style calculations to account for alternate placements (<see cref="addAlternate(int)"/>) and <see cref="RandomStyleRange"/>. For example, chair tiles can be placed facing left or right. These are intended to share the same style (<see cref="Item.placeStyle"/>) value, but will have different placement style values. The multiplier accounts for these alternate placements allowing tile styles to be properly determined.
++	/// Applies a multiplier to style calculations to account for alternate placements (<see cref="addAlternate(int)"/>) and <see cref="RandomStyleRange"/>. For example, chair tiles can be placed facing left or right. These are intended to share the same style (<see cref="Item.placeStyle"/>) value, but will have different placement style values. The multiplier accounts for these alternate placements allowing tile styles to be properly determined and consequently the correct item to drop when the tile is destroyed.
 +	/// <para/> If tiles are mistakenly dropping items from different styles, StyleMultiplier might have the incorrect value.
 +	/// <para/> Defaults to 1.
 +	/// </summary>
