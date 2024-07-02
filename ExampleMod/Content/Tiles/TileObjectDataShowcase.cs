@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Tiles
 	// This tile serves as a showcase for TileObjectData.
 	// In particular, this contrived example shows how styles are laid out in the spritesheet when multiple styles, multiple alternate placements, random style range, animations, and toggle states are all desired.
 	// If you place this tile, you'll noticed that it has both left and right variants depending on the player direction. You'll also notice that there are 4 random style variations for left and right. Once placed, the tile will animate through 3 frames of animation. Right clicking on the tile will change the tile to an "off" state, halting the animation and showing the 4th frame of animation. There are 4 tile styles contained in this example as well.
+	// The StyleMultiplier section of the Tile wiki page, https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#stylemultiplier, has a simpler visualization only showing alternate placements and random style variations.
 	// Please experiment by placing this tile using both the "TileObjectData Showcase Style 3 - ExampleBlock" item and one of the other TileObjectData Showcase items. By doing this you should be able to visualize the full potential of TileObjectData.
 	// Not many tiles will require such complicated layout, but this serves as example of how each feature affects the resulting spritesheet.
 	// Since this tile is "StyleHorizontal = true", styles in the spritesheet are positioned left to right. Each alternate placement and

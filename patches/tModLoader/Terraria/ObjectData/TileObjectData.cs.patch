@@ -22,7 +22,7 @@
  	private bool _linkedAlternates;
  	private bool _usesCustomCanPlace;
  	private TileObjectAlternatesModule _alternates;
-@@ -35,34 +_,66 @@
+@@ -35,34 +_,68 @@
  	private bool _hasOwnTileObjectDraw;
  	private bool _hasOwnTileObjectStyle;
  	private bool _hasOwnTileObjectCoords;
@@ -43,6 +43,7 @@
 +	/// <summary>
 +	/// Contains the tile properties specific to a subtile, also known as a tile style, of the current <see cref="newTile"/>.
 +	/// <para/> Subtiles allow placed tile styles to have specific behaviors. This is most commonly used to declare certain tile styles as immune to lava or water. Another common usage is to declare specific tiles a tile style can anchor to.
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#newsubtile---tile-styles">newSubTile section of the Tile wiki page</see> has more information about subtiles.
 +	/// <para/> Calling <see cref="addSubTile(int)"/> registers the alternate placement.
 +	/// <para/> If there are alternate placements (<see cref="addAlternate(int)"/>) for this tile, make sure to register those first and to set <see cref="LinkedAlternates"/> to true after copying the base tile.
 +	/// </summary>
@@ -50,6 +51,7 @@
 +	/// <summary>
 +	/// Contains the tile properties specific to an alternate placement of the current <see cref="newTile"/>.
 +	/// <para/> Alternate placements allow each style to be placed in multiple ways, using alternate sprites or alternate anchors.  Mostly useful for tiles that can anchor in multiple ways, such as how torches can anchor to tiles to the left, right, or bottom as well as to walls.
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#newalternate---alternate-placement-styles">newAlternate section of the Tile wiki page</see> has more information about alternate placements.
 +	/// <para/> Calling <see cref="addAlternate(int)"/> registers the alternate placement.
 +	/// <para/> If there are subtiles (<see cref="addSubTile(int)"/>) for this tile, make sure to do those after alternates are registered and to set <see cref="LinkedAlternates"/> to true on newSubTile after copying the base tile.
 -	private static TileObjectData newTile;
@@ -452,7 +454,7 @@
  	}
  
 +	/// <summary>
-+	/// Applies a multiplier to style calculations to account for alternate placements and <see cref="RandomStyleRange"/>. For example, chair tiles can be placed facing left or right. These are intended to share the same style (<see cref="Item.placeStyle"/>) value, but will have different placement style values. The multiplier accounts for these alternate placements allowing tile styles to be properly determined.
++	/// Applies a multiplier to style calculations to account for alternate placements (<see cref="addAlternate(int)"/>) and <see cref="RandomStyleRange"/>. For example, chair tiles can be placed facing left or right. These are intended to share the same style (<see cref="Item.placeStyle"/>) value, but will have different placement style values. The multiplier accounts for these alternate placements allowing tile styles to be properly determined.
 +	/// <para/> If tiles are mistakenly dropping items from different styles, StyleMultiplier might have the incorrect value.
 +	/// <para/> Defaults to 1.
 +	/// </summary>
@@ -774,7 +776,7 @@
  	}
  
 +	/// <summary>
-+	/// Registers the current <see cref="newTile"/> with the supplied tile type. Make sure to call this method last after all edits to newTile, newAlternate, and newSubTile.
++	/// Registers the current <see cref="newTile"/> with the supplied tile type. Make sure to call this method last after all edits to <see cref="newTile"/>, <see cref="newAlternate"/>, and <see cref="newSubTile"/>.
 +	/// </summary>
 -	private static void addTile(int tileType)
 +	public static void addTile(int tileType)
