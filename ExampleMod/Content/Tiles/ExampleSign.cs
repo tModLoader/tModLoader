@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 
 			// TileObjectData assignment
-			// The TileID.Signs TileObjectData is incorrect, as they sometimes are, so we will not be copying from it in this case
+			// The TileID.Signs TileObjectData doesn't set StyleMultiplier to 5, so we will not be copying from it in this case
 			// Using Style2x2 as a base, we will create a TileObjectData with 5 alternate placements, each anchoring to a different anchor.
 			// We also adjust the Origin for the alternates to match vanilla. Style2x2 starts with a origin at 0, 1 and a AnchorBottom, these will both be adjusted in the alternates.
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);

@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Door"));
 
 			// Placement
-			// The TileID.OpenDoor TileObjectData is incorrect, as they sometimes are, so we will not be copying from it in this case
+			// The TileID.OpenDoor TileObjectData has incorrect anchor and StyleMultiplier values, so we will not be copying from it in this case
 			// TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.OpenDoor, 0));
 			TileObjectData.newTile.Width = 2;
 			TileObjectData.newTile.Height = 3;
