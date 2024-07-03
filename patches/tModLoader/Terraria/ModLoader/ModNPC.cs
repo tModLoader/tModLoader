@@ -675,12 +675,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to define special conditions required for this town NPC's house. For example, Truffle requires the house to be in an aboveground mushroom biome.
+	/// <para/> The <paramref name="left"/>, <paramref name="right"/>, <paramref name="top"/>, and <paramref name="bottom"/> parameters define the bounds of the room being checked.
+	/// <para/> Methods like <see cref="WorldGen.Housing_GetTestedRoomBounds(out int, out int, out int, out int)"/> and <see cref="WorldGen.CountTileTypesInArea(int[], int, int, int, int)"/> can facilitate implementing specific checks.
+	/// <para/> Return false to prevent the npc from spawning due to failed condition checks.
 	/// </summary>
-	/// <param name="left"></param>
-	/// <param name="right"></param>
-	/// <param name="top"></param>
-	/// <param name="bottom"></param>
-	/// <returns></returns>
 	public virtual bool CheckConditions(int left, int right, int top, int bottom)
 	{
 		return true;
