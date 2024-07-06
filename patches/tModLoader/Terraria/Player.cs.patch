@@ -190,7 +190,7 @@
  	public bool pulley;
  	public int pulleyFrame;
  	public float pulleyFrameCounter;
-@@ -610,8 +_,16 @@
+@@ -610,24 +_,44 @@
  	public bool sliding;
  	public int slideDir;
  	public int snowBallLauncherInteractionCooldown;
@@ -207,7 +207,12 @@
  	public int spikedBoots;
  	public int carpetFrame = -1;
  	public float carpetFrameCounter;
-@@ -621,13 +_,22 @@
+ 	public bool canCarpet;
+ 	public int carpetTime;
++	/// <summary>
++	/// Counts updates from 0 up to 299 and then resets back to 0. Can be used to drive visuals and other player effects. The <see href="https://github.com/tModLoader/tModLoader/wiki/Time-and-Timers#modulo-timer">Modulo Timer section of the Time and Timers wiki page</see> has more details about how to use a counter like this.
++	/// </summary>
+ 	public int miscCounter;
  	public int infernoCounter;
  	public int insanityShadowCooldown;
  	public int starCloakCooldown;
