@@ -15,6 +15,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private int currentUseAnimationCompensation;
 
+	/// <summary> The ModItem instance attached to this Item. All modded items will have an appropriate instance of the ModItem-inheriting class assigned to this field. Will be null for vanilla items. Can be used to check if an Item is a modded item or not. </summary>
 	public ModItem ModItem { get; internal set; }
 
 #region Globals

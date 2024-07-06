@@ -11,6 +11,7 @@ namespace Terraria.ModLoader;
 /// This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to Mod.AddMount.
 /// Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good.
 /// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
+/// <para/> Note that texture autoloading is unique for ModMount, see <see cref="Texture"/> for more information.
 /// </summary>
 public abstract class ModMount : ModType<Mount.MountData, ModMount>
 {
@@ -26,6 +27,8 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.
+	/// <para/> For mounts, this path isn't used directly to autoload a texture, but it is combined with <see cref="MountTextureType"/> values to autoload textures for each of the different layers that mounts support, if that texture exists.
+	/// <para/> ModMount typically want at least one of either a "Back" or "Front" texture. For example, a mount named "MyMount" would need to include a "MyMount_Back.png" or "MyMount_Front.png" texture.
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
