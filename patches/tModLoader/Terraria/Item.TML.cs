@@ -15,7 +15,16 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private int currentUseAnimationCompensation;
 
-	/// <summary> The ModItem instance attached to this Item. All modded items will have an appropriate instance of the ModItem-inheriting class assigned to this field. Will be null for vanilla items. Can be used to check if an Item is a modded item or not. </summary>
+	/// <summary>
+	/// The ModItem instance attached to this Item. All modded items will have an appropriate instance of the ModItem-inheriting class assigned to this field. Will be null for vanilla items. Can be used to check if an Item is a modded item or not.
+	/// <para/> If you need to access members of a specific ModItem class from code outside of the ModItem, you can cast to your class:
+	/// <code>
+	/// if (item.ModItem is MyItem myItem)
+	/// {
+	///     myItem.myField = 5;
+	/// }
+	/// </code>
+	/// </summary>
 	public ModItem ModItem { get; internal set; }
 
 #region Globals

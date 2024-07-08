@@ -361,7 +361,6 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. This is called once an update. Use AnimateIndividualTile to animate specific tile instances directly.
-	/// </summary>
 	/// <example><code>if (++frameCounter > 8)
 	///{
 	///	frameCounter = 0;
@@ -372,6 +371,7 @@ public abstract class ModTile : ModBlockType
 	///}</code>
 	///	or, to mimic another tile, simply:
 	///	<code>frame = Main.tileFrame[TileID.FireflyinaBottle];</code></example>
+	/// </summary>
 	public virtual void AnimateTile(ref int frame, ref int frameCounter)
 	{
 	}
