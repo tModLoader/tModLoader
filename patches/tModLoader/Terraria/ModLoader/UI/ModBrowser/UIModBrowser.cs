@@ -309,6 +309,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		PageUpDownSupport(ModList);
 
 		/* Old Code for Triggering an Update to tModLoader based on detecting a mod is for a newer version.
 		 * Unfortunately, this is broken as of the revampt of ModBrowser under PR #3346, and not sure how to-readd relative to current environment
@@ -352,6 +353,16 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			}
 
 			TimePeriodToggle.Disabled = !(SortMode == ModBrowserSortMode.Hot && string.IsNullOrEmpty(Filter));
+		}
+	}
+
+	internal static void PageUpDownSupport(GameContent.UI.Elements.UIList list)
+	{
+		if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PageDown) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PageDown)) {
+			list.ViewPosition += list.GetInnerDimensions().Height;
+		}
+		if (Main.inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PageUp) && !Main.oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.PageUp)) {
+			list.ViewPosition -= list.GetInnerDimensions().Height;
 		}
 	}
 

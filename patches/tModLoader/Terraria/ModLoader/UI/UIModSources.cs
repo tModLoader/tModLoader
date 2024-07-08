@@ -402,6 +402,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		ModBrowser.UIModBrowser.PageUpDownSupport(_modList);
 		if (!_updateNeeded)
 			return;
 		_updateNeeded = false;
