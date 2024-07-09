@@ -15,10 +15,10 @@ public abstract class ModEntry : TagSerializable
 		modName = block.Mod.Name;
 		name = block.Name;
 		vanillaReplacementType = block.VanillaFallbackOnModDeletion;
-		unloadedType = GetUnloadedType(block.Type);
+		unloadedType = GetUnloadedPlaceholder(block.Type).FullName;
 	}
 
-	protected abstract string GetUnloadedType(ushort type);
+	protected virtual ModBlockType GetUnloadedPlaceholder(ushort type) => DefaultUnloadedPlaceholder;
 
 	protected ModEntry(TagCompound tag)
 	{
@@ -26,12 +26,12 @@ public abstract class ModEntry : TagSerializable
 		modName = tag.Get<string>("mod");
 		name = tag.Get<string>("name");
 		vanillaReplacementType = tag.Get<ushort>("fallbackID");
-		unloadedType = tag.Get<string>("uType") ?? DefaultUnloadedType;
+		unloadedType = tag.Get<string>("uType");
 	}
 
 	public bool IsUnloaded => loadedType != type;
 
-	public abstract string DefaultUnloadedType { get; }
+	public abstract ModBlockType DefaultUnloadedPlaceholder { get; }
 
 	public virtual TagCompound SerializeData()
 	{

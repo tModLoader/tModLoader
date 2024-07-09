@@ -11,7 +11,5 @@ internal class WallEntry : ModEntry
 
 	public WallEntry(TagCompound tag) : base(tag) {}
 
-	public override string DefaultUnloadedType => ModContent.GetInstance<UnloadedWall>().FullName;
-
-	protected override string GetUnloadedType(ushort type) => DefaultUnloadedType;
+	public override ModBlockType DefaultUnloadedPlaceholder => ModContent.GetInstance<UnloadedWall>();
 }

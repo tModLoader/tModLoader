@@ -63,9 +63,12 @@ internal static partial class TileIO
 					if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
 						entry.type = entry.loadedType = block.Type;
 					}
+					else if (canPurgeOldData) {
+						entry.type = entry.loadedType = entry.vanillaReplacementType;
+					}
 					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
 						entry.type = (ushort)entries.Count;
-						entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(string.IsNullOrEmpty(entry.unloadedType) ? entry.DefaultUnloadedType : entry.unloadedType).Type;
+						entry.loadedType = (ModContent.TryFind(entry.unloadedType, out TBlock unloadedBlock) ? unloadedBlock : entry.DefaultUnloadedPlaceholder).Type;
 						entries.Add(entry);
 					}
 				}
@@ -93,13 +96,13 @@ internal static partial class TileIO
 					}
 
 					var entry = savedEntryLookup[saveType];
+					ReadData(Main.tile[x, y], entry, reader);
 
-					// Set the type to either the existing type or the unloaded type
-					if (entry.IsUnloaded && !canPurgeOldData) {
+					if (entry.IsUnloaded) {
+						// When an entry is using an unloaded placeholder, the saved entry is copied to the end of our current entries list (after all loaded tiles)
+						// We store this 'type' (index of the copied entry) in sparse tile data storage, and use it to retrieve the correct entry at saving time (rather than saving an unloaded tile permanently)
 						builder.Add(x, y, entry.type);
 					}
-
-					ReadData(Main.tile[x, y], entry, reader);
 				}
 			}
 
