@@ -3,7 +3,7 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO;
 
-internal class WallEntry : ModEntry
+internal class WallEntry : ModBlockEntry
 {
 	public static Func<TagCompound, WallEntry> DESERIALIZER = tag => new WallEntry(tag);
 

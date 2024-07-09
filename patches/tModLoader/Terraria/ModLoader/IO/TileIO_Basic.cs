@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.IO;
 
 internal static partial class TileIO
 {
-	public abstract class IOImpl<TBlock, TEntry> where TBlock : ModBlockType where TEntry : ModEntry
+	public abstract class IOImpl<TBlock, TEntry> where TBlock : ModBlockType where TEntry : ModBlockEntry
 	{
 		public readonly string entriesKey;
 		public readonly string dataKey;
