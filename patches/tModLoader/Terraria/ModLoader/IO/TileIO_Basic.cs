@@ -59,9 +59,9 @@ internal static partial class TileIO
 				foreach (var entry in savedEntryList) {
 					savedEntryLookup[entry.type] = entry;
 
-					// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
+					// If the saved entry can be found among the loaded blocks, then use its loadedType
 					if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
-						entry.loadedType = block.Type;
+						entry.type = entry.loadedType = block.Type;
 					}
 					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
 						entry.type = (ushort)entries.Count;
