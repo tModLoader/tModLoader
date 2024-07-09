@@ -57,12 +57,13 @@ internal static partial class TileIO
 
 				// Check saved entries
 				foreach (var entry in savedEntryList) {
-					// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
+					savedEntryLookup[entry.type] = entry;
+
+					// If the saved entry can be found among the loaded blocks, then use its loadedType
 					if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
-						savedEntryLookup[entry.type] = entries[block.Type];
+						entry.type = entry.loadedType = block.Type;
 					}
 					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
-						savedEntryLookup[entry.type] = entry;
 						entry.type = (ushort)entries.Count;
 						entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(string.IsNullOrEmpty(entry.unloadedType) ? entry.DefaultUnloadedType : entry.unloadedType).Type;
 						entries.Add(entry);
