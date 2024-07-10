@@ -11,6 +11,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.Elements;
+using Terraria.Social;
 using Terraria.Social.Base;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -70,7 +71,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 	/* Filters */
 	private QueryParameters FilterParameters => new() {
-		searchTags = new string[] { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) },
+		searchTags = GetSearchTags(),
 		searchModIds = SpecialModPackFilter?.ToArray(),
 		searchModSlugs = null,
 		searchGeneric = SearchFilterMode == SearchFilter.Name ? Filter : null,
@@ -90,6 +91,18 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 
 		queryType = QueryType.SearchAll
 	};
+
+	private string[] GetSearchTags()
+	{
+		var tags = new List<string>() { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) };
+		foreach (var tagIndex in CategoryTagsFilter) {
+			tags.Add(SocialAPI.Workshop.SupportedTags.ModTags[tagIndex].InternalNameForAPIs);
+		}
+		if(LanguageTagFilter != -1) {
+			tags.Add(SocialAPI.Workshop.SupportedTags.ModTags[LanguageTagFilter].InternalNameForAPIs);
+		}
+		return tags.ToArray();
+	}
 
 	internal string Filter => FilterTextBox.Text;
 
@@ -117,6 +130,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		get => ModSideFilterToggle.State;
 		set => ModSideFilterToggle.SetCurrentState(value);
 	}
+
+	public HashSet<int> CategoryTagsFilter = new HashSet<int>();
+	public int LanguageTagFilter = -1;
 
 	internal string SpecialModPackFilterTitle {
 		get => _specialModPackFilterTitle;
@@ -219,14 +235,28 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 				UICommon.TooltipMouseText(text);
 				break;
 			}
+		if (TagFilterToggle.IsMouseHovering) {
+			if (CategoryTagsFilter.Any() || LanguageTagFilter != -1) {
+				string tagFilterHoverText = Language.GetTextValue("tModLoader.MBTagsSelected");
+				if (CategoryTagsFilter.Any())
+					tagFilterHoverText += $"\n  {Language.GetTextValue("tModLoader.MBTagsCategories", string.Join(", ", CategoryTagsFilter.Select(x => Language.GetTextValue(SocialAPI.Workshop.SupportedTags.ModTags[x].NameKey))))}";
+				if (LanguageTagFilter != -1)
+					tagFilterHoverText += $"\n  {Language.GetTextValue("tModLoader.MBTagsLanguage", Language.GetTextValue(SocialAPI.Workshop.SupportedTags.ModTags[LanguageTagFilter].NameKey))}";
+				UICommon.TooltipMouseText(tagFilterHoverText);
+			}
+			else {
+				UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.MBTagsSelected") + " " + Lang.inter[23].Value); // None
+			}
+		}
 		if (_browserStatus.IsMouseHovering && ModList.State != AsyncProviderState.Completed) {
 			UICommon.TooltipMouseText(ModList.GetEndItemText());
 		}
 	}
 
-	public void HandleBackButtonUsage()	
+	public void HandleBackButtonUsage()
 	{
 		try {
+			CloseTagFilterDropdown();
 			if (reloadOnExit) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
@@ -250,7 +280,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (Loading) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			ModList.Cancel();
-		} else {
+		}
+		else {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			PopulateModBrowser();
 		}
@@ -425,7 +456,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		var set = mods.ToHashSet();
 		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(set);
-		
+
 		var fullList = ModDownloadItem.NeedsInstallOrUpdate(set).ToList();
 		if (!fullList.Any())
 			return true;
@@ -465,7 +496,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			return false;
 		}
 		finally {
-			ModOrganizer.LocalModsChanged(downloadedList, isDeletion:false);
+			ModOrganizer.LocalModsChanged(downloadedList, isDeletion: false);
 		}
 	}
 
@@ -473,6 +504,13 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		HeaderTextPanel.SetText(heading, 0.8f, true);
 		HeaderTextPanel.Recalculate();
+	}
+
+	internal void ResetTagFilters()
+	{
+		CategoryTagsFilter?.Clear();
+		LanguageTagFilter = -1;
+		modTagFilterDropdown?.RefreshSelectionStates();
 	}
 
 	internal static void LogModBrowserException(Exception e, int returnToMenu)

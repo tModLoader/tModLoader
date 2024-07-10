@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
-using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -27,6 +27,7 @@ internal partial class UIModBrowser
 	private UIPanel _filterTextBoxBackground;
 	internal UIInputTextField FilterTextBox;
 	private UIBrowserStatus _browserStatus;
+	private UIModTagFilterDropdown modTagFilterDropdown;
 
 	/* Filters */
 	public UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle;
@@ -34,6 +35,7 @@ internal partial class UIModBrowser
 	public UIBrowserFilterToggle<UpdateFilter> UpdateFilterToggle;
 	public UIBrowserFilterToggle<SearchFilter> SearchFilterToggle;
 	public UIBrowserFilterToggle<ModSideFilter> ModSideFilterToggle;
+	public UICycleImage TagFilterToggle;
 
 	internal void Reset()
 	{
@@ -43,6 +45,7 @@ internal partial class UIModBrowser
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.Hot);
+		ResetTagFilters();
 	}
 
 	private void UpdateHandler(object sender, EventArgs e)
@@ -189,16 +192,37 @@ internal partial class UIModBrowser
 		ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
 			Left = new StyleDimension { Pixels = 3 * 36 }
 		};
+		TagFilterToggle = new UICycleImage(UICommon.ModBrowserIconsTexture, 2, 32, 32, 34 * 9, 0, 2) {
+			Left = new StyleDimension { Pixels = 4 * 36 }
+		};
+		TagFilterToggle.OnLeftClick += OpenOrCloseTagFilterDropdown;
+		TagFilterToggle.OnLeftClick += (a, b) => RefreshTagFilterState(); // Undo the automatic state cycle rather than modify existing public UIElement class.
+		TagFilterToggle.OnRightClick += (a, b) => RefreshTagFilterState();
+
 		SearchFilterToggle.SetCurrentState(SearchFilter.Name);
 		TimePeriodToggle.SetCurrentState(ModBrowserTimePeriod.OneWeek);
 		UpdateFilterToggle.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
 		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.Hot);
+		ResetTagFilters();
+
+		modTagFilterDropdown = new UIModTagFilterDropdown();
+		modTagFilterDropdown.OnLeftClick += (a, b) => {
+			if (a.Target == modTagFilterDropdown) {
+				CloseTagFilterDropdown();
+			}
+		};
+		OnLeftClick += (a, b) => {
+			if (a.Target == this) {
+				CloseTagFilterDropdown();
+			}
+		};
+		modTagFilterDropdown.OnClickingTag += () => UpdateNeeded = true; // Triggers a workshop refresh
 
 		_browserStatus = new UIBrowserStatus() {
 			VAlign = 1f,
-			Top = { Pixels = -65 +25 -32 }, // Allign with _reloadButton
-			Left = { Pixels = 545f } // Allign with SearchFilterToggle
+			Top = { Pixels = -65 + 25 - 32 }, // Align with _reloadButton
+			Left = { Pixels = 545f } // Align with SearchFilterToggle
 		};
 		_rootElement.Append(_browserStatus);
 
@@ -213,6 +237,7 @@ internal partial class UIModBrowser
 		_upperMenuContainer.Append(UpdateFilterToggle);
 		CategoryButtons.Add(ModSideFilterToggle);
 		_upperMenuContainer.Append(ModSideFilterToggle);
+		_upperMenuContainer.Append(TagFilterToggle);
 		CategoryButtons.Add(SearchFilterToggle);
 		_upperMenuContainer.Append(SearchFilterToggle);
 
@@ -223,5 +248,27 @@ internal partial class UIModBrowser
 		_backgroundElement.Append(_upperMenuContainer);
 
 		Append(_rootElement);
+	}
+
+	private void CloseTagFilterDropdown()
+	{
+		_backgroundElement.RemoveChild(modTagFilterDropdown);
+		// We could do UpdateNeeded = true; here instead of in modTagFilterDropdown.OnClickingTag for responsiveness. It won't update until the drop down is closed. However, the responsiveness is only an issue in debug.
+	}
+
+	private void OpenOrCloseTagFilterDropdown(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (modTagFilterDropdown.Parent != null) {
+			CloseTagFilterDropdown();
+			return;
+		}
+
+		_backgroundElement.RemoveChild(modTagFilterDropdown);
+		_backgroundElement.Append(modTagFilterDropdown);
+	}
+
+	internal void RefreshTagFilterState()
+	{
+		TagFilterToggle.SetCurrentState(CategoryTagsFilter.Any() || LanguageTagFilter != -1 ? 1 : 0);
 	}
 }
