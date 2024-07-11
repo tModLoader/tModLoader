@@ -45,18 +45,18 @@ namespace ExampleMod.Content.NPCs
 			AnimationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code. Important to also match Main.npcFrameCount[NPC.type] in SetStaticDefaults.
 			Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
 			BannerItem = Item.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
-			SpawnModBiomes = new int[] { ModContent.GetInstance<ExampleSurfaceBiome>().Type }; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
+			SpawnModBiomes = [ModContent.GetInstance<ExampleSurfaceBiome>().Type]; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
 
 				// Sets the description of this NPC that is listed in the bestiary.
 				new FlavorTextBestiaryInfoElement("This type of zombie really like Example Items. They steal them as soon as they find some."),
-			});
+			]);
 		}
 
 		public override void AI() {

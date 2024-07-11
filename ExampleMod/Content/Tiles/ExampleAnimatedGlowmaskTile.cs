@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles
 			// Modifies which part of the tile is centered on the mouse, in tile coordinates, from the top right corner
 			TileObjectData.newTile.Origin = new Point16(1, 2);
 			// Setting the height of the tiles individually for each
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 16, 18];
 			// Finally adding newTile
 			TileObjectData.addTile(Type);
 

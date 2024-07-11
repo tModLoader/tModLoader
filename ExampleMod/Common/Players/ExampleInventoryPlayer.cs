@@ -18,12 +18,12 @@ namespace ExampleMod.Common.Players
 		// If you know what 'yield return' is, you can also use that here, if you prefer so.
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			if (mediumCoreDeath) {
-				return new[] {
+				return [
 					new Item(ItemID.HealingPotion)
-				};
+				];
 			}
 
-			return new[] {
+			return [
 				new Item(ModContent.ItemType<ExampleItem>()),
 				new Item(ItemID.GoldOre, 256),
 				new Item(ModContent.ItemType<ExampleBlock>(), 256),
@@ -33,7 +33,7 @@ namespace ExampleMod.Common.Players
 				new Item(ModContent.ItemType<ExampleTable>(), 99),
 				new Item(ModContent.ItemType<ExampleChest>(), 99),
 				new Item(ModContent.ItemType<ExamplePlatform>(), 256)
-			};
+			];
 		}
 
 		// ModifyStartingItems is a more elaborate version of AddStartingItems, which lets you remove items

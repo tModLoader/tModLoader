@@ -41,12 +41,12 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
 		// TODO: Not working. Won't restore defaults
-		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
+		[OptionStrings(["Win", "Lose", "Give Up"])]
 		[DefaultValue(new string[] { "Give Up", "Give Up" })]
 		public string[] ArrayOfString;
 
 		[DrawTicks]
-		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasaur", "Squirtle" })]
+		[OptionStrings(["Pikachu", "Charmander", "Bulbasaur", "Squirtle"])]
 		[DefaultValue("Bulbasaur")]
 		public string FavoritePokemon;
 

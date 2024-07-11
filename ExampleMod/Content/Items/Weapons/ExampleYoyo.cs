@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Items.Weapons
 		// Here is an example of blacklisting certain modifiers. Remove this section for standard vanilla behavior.
 		// In this example, we are blacklisting the ones that reduce damage of a melee weapon.
 		// Make sure that your item can even receive these prefixes (check the vanilla wiki on prefixes).
-		private static readonly int[] unwantedPrefixes = new int[] { PrefixID.Terrible, PrefixID.Dull, PrefixID.Shameful, PrefixID.Annoying, PrefixID.Broken, PrefixID.Damaged, PrefixID.Shoddy };
+		private static readonly int[] unwantedPrefixes = [PrefixID.Terrible, PrefixID.Dull, PrefixID.Shameful, PrefixID.Annoying, PrefixID.Broken, PrefixID.Damaged, PrefixID.Shoddy];
 
 		public override bool AllowPrefix(int pre) {
 			// return false to make the game reroll the prefix.

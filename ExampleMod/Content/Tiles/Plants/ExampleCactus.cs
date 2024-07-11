@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetStaticDefaults() {
 			// Makes Example Cactus grow on ExampleOre
-			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleOre>() };
+			GrowsOnTileId = [ModContent.TileType<ExampleOre>()];
 			texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleCactus");
 		}
 

@@ -28,11 +28,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair); // Beds count as chairs for the purpose of suitable room creation
 
 			DustType = ModContent.DustType<Sparkle>();
-			AdjTiles = new int[] { TileID.Beds };
+			AdjTiles = [TileID.Beds];
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); // this style already takes care of direction for us
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.CoordinatePaddingFix = new Point16(0, -2);
 			TileObjectData.addTile(Type);
 

@@ -33,14 +33,14 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
 
 				// Sets the description of this NPC that is listed in the bestiary.
 				new FlavorTextBestiaryInfoElement("Looks like a Digger fell into some aqua-colored paint. Oh well.")
-			});
+			]);
 		}
 
 		public override void Init() {

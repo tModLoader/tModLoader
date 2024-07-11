@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileFrameImportant[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.addTile(Type);
 
 			AddMapEntry(new Color(100, 100, 100), Language.GetText("MapObject.Sink"));

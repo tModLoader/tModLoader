@@ -18,12 +18,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.Clock[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
-			AdjTiles = new int[] { TileID.GrandfatherClocks };
+			AdjTiles = [TileID.GrandfatherClocks];
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 5;
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16, 16];
 			TileObjectData.addTile(Type);
 
 			// Etc

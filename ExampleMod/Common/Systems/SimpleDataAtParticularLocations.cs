@@ -31,7 +31,7 @@ namespace ExampleMod.Common.Systems
 
 		// Next, we ensure we initialize the map on world load to an empty map.
 		public override void ClearWorld() {
-			myMap = new PosData<byte>[0];
+			myMap = [];
 		}
 
 		// We save our data sets using TagCompounds.

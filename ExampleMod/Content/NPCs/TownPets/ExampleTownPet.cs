@@ -84,11 +84,11 @@ namespace ExampleMod.Content.NPCs.TownPets
 			AnimationType = NPCID.TownBunny; // This example matches the animations of the Town Bunny.
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-			{
+			bestiaryEntry.Info.AddRange(
+			[
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExampleTownPet")
-			});
+			]);
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs) {

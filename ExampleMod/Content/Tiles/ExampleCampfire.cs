@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.Campfire[Type] = true;
 
 			DustType = -1; // No dust when mined.
-			AdjTiles = new int[] { TileID.Campfire };
+			AdjTiles = [TileID.Campfire];
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Campfire, 0));
