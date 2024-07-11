@@ -287,14 +287,14 @@ jobs:
           STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}
                     
       #- name: Upload Debug Build Artifact
-      #  uses: actions/upload-artifact@v2
+      #  uses: actions/upload-artifact@v4
       #  with:
       #    name: Debug Build
       #    path: |
       #      ./artifacts/Debug/
             
       - name: Upload Release Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Release Build
           path: |
@@ -302,7 +302,7 @@ jobs:
            
       - name: Upload temporary encrypted src artifact
         if: env.IsVersioned == 'true'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
@@ -369,7 +369,7 @@ jobs:
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           
       - name: Upload ExampleMod Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ExampleMod Build
           path: |
@@ -414,7 +414,7 @@ jobs:
           fetch-depth: 0
           
       - name: Download temporary encrypted src artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: temporary-src
           
@@ -516,7 +516,7 @@ jobs:
           done
           
       - name: Download build artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           # Change this next line to switch between uploading Release and Debug if desired. 
           name: Release Build
@@ -605,7 +605,7 @@ jobs:
           
       - name: Download ExampleMod build artifact from build job
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ExampleMod Build
           path: artifacts/ExampleMod
