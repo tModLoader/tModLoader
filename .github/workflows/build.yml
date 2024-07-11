@@ -16,7 +16,7 @@ on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [gh_actions_test, stable, preview, 1.4.4, feature/dotnet8]
+    branches: [githubActionsMaintenance, stable, preview, 1.4.4, feature/dotnet8]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
@@ -83,7 +83,7 @@ jobs:
           
           version="$oldate.$feature.$patch"
           echo "New version is '$version'"
-          echo "::set-output name=new_version::$version"
+          echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
           branch: ${{github.ref}}
         
@@ -124,7 +124,7 @@ jobs:
           fi
           
           echo "Stable Version is '$stableVer'"
-          echo "::set-output name=stable_version::$stableVer"
+          echo "stable_version=$stableVer" >> $GITHUB_OUTPUT
       
       # Get the base branch for build steps
       - name: Re:Check out base branch
@@ -287,14 +287,14 @@ jobs:
           STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}
                     
       #- name: Upload Debug Build Artifact
-      #  uses: actions/upload-artifact@v2
+      #  uses: actions/upload-artifact@v4
       #  with:
       #    name: Debug Build
       #    path: |
       #      ./artifacts/Debug/
             
       - name: Upload Release Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Release Build
           path: |
@@ -302,7 +302,7 @@ jobs:
            
       - name: Upload temporary encrypted src artifact
         if: env.IsVersioned == 'true'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
@@ -369,7 +369,7 @@ jobs:
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           
       - name: Upload ExampleMod Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ExampleMod Build
           path: |
@@ -414,7 +414,7 @@ jobs:
           fetch-depth: 0
           
       - name: Download temporary encrypted src artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: temporary-src
           
@@ -516,7 +516,7 @@ jobs:
           done
           
       - name: Download build artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           # Change this next line to switch between uploading Release and Debug if desired. 
           name: Release Build
@@ -566,6 +566,7 @@ jobs:
           version=$(git describe --tags --abbrev=0)
           echo "Current Version is: $version"
           echo "::set-output name=new_version::$version"
+          echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
           branch: ${{github.ref}}
       
@@ -604,7 +605,7 @@ jobs:
           
       - name: Download ExampleMod build artifact from build job
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ExampleMod Build
           path: artifacts/ExampleMod
