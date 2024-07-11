@@ -96,6 +96,7 @@ internal class UIModTagFilterDropdown : UIPanel
 			Top = new StyleDimension(5 + buttonHeight * maxColumnCount, 0f),
 			Left = new StyleDimension(8 + labelWidth / 2, 0f)
 		};
+		clearTagsButton.SetColor(new Color(226, 49, 85), 1f);
 		clearTagsButton.ShowHighlightWhenSelected = false;
 		clearTagsButton.OnLeftClick += (a, b) => {
 			Interface.modBrowser.ResetTagFilters();
