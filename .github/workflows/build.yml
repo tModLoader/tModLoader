@@ -16,7 +16,7 @@ on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [gh_actions_test, stable, preview, 1.4.4, feature/dotnet8]
+    branches: [githubActionsMaintenance, stable, preview, 1.4.4, feature/dotnet8]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
@@ -83,7 +83,7 @@ jobs:
           
           version="$oldate.$feature.$patch"
           echo "New version is '$version'"
-          echo "::set-output name=new_version::$version"
+          echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
           branch: ${{github.ref}}
         
@@ -124,7 +124,7 @@ jobs:
           fi
           
           echo "Stable Version is '$stableVer'"
-          echo "::set-output name=stable_version::$stableVer"
+          echo "stable_version=$stableVer" >> $GITHUB_OUTPUT
       
       # Get the base branch for build steps
       - name: Re:Check out base branch
@@ -566,6 +566,7 @@ jobs:
           version=$(git describe --tags --abbrev=0)
           echo "Current Version is: $version"
           echo "::set-output name=new_version::$version"
+          echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
           branch: ${{github.ref}}
       
