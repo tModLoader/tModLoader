@@ -424,6 +424,43 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allows you to modify the frame of a tile after the vanilla framing code has set <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>. Useful for offsetting the final frame position without entirely overriding the vanilla framing logic
+	/// <br/> Only called if <see cref="TileFrame(int, int, ref bool, ref bool)"/> returns true
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="up">The merge type of the tile above. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="down">The merge type of the tile below. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="left">The merge type of the tile to the left. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="right">The merge type of the tile to the right. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="upLeft">The merge type of the tile on the top left. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="upRight">The merge type of the tile on the top right. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="downLeft">The merge type of the tile on the bottom left. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="downRight">The merge type of the tile on the bottom right. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	public virtual void PostTileFrame(int i, int j, int up, int down, int left, int right, int upLeft, int upRight, int downLeft, int downRight)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to change the merge type of the adjacent tiles before <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/> is picked by vanilla framing code. Useful to make tiles that only selectively connect with others, or for tiles
+	/// <br/> Tiles can be easily made to use custom merge frames with non-dirt tiles by using <see cref="TileID.Sets.ChecksForMerge"/> in combination with <see cref="WorldGen.TileMergeAttempt(int, bool[], ref int, ref int, ref int, ref int, ref int, ref int, ref int, ref int)"/> to set the adjacent tile's merge type to -2
+	/// <br/> Only called if <see cref="TileFrame(int, int, ref bool, ref bool)"/> returns true
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="up">The merge type of the tile above. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	/// <param name="down">The merge type of the tile below. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	/// <param name="left">The merge type of the tile to the keft. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	/// <param name="right">The merge type of the tile to the right. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	/// <param name="upLeft">The merge type of the tile on the top left. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	/// <param name="upRight">The merge type of the tile on the top right. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	/// <param name="downLeft">The merge type of the tile on the bottom left. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	/// <param name="downRight">The merge type of the tile on the bottom right. The tile will merge with it if the value is the same as its tile type <br/>-1 Means it'll consider the tile empty, and -2 means tiles that use <see cref="Main.tileMergeDirt"/> or <see cref="TileID.Sets.ChecksForMerge"/> will attempt to use their custom merge frames with that tile</param>
+	public virtual void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targeting from happening. Returns false by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>

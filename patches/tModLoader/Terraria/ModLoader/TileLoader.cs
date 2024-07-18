@@ -878,6 +878,22 @@ public static class TileLoader
 		return flag;
 	}
 
+	public static void PostTileFrame(int type, int i, int j, int up, int down, int left, int right, int upLeft, int upRight, int downLeft, int downRight)
+	{
+		ModTile modTile = GetTile(type);
+		if (modTile != null) {
+			modTile.PostTileFrame(i, j, up, down, left, right, upLeft, upRight, downLeft, downRight);
+		}
+	}
+
+	public static void ModifyFrameMerge(int type, int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
+	{
+		ModTile modTile = GetTile(type);
+		if (modTile != null) {
+			modTile.ModifyFrameMerge(i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+		}
+	}
+
 	public static void PickPowerCheck(Tile target, int pickPower, ref int damage)
 	{
 		ModTile modTile = GetTile(target.type);
