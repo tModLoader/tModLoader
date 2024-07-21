@@ -28,6 +28,8 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 
 	private void ProcessItems(ITaskItem[] items)
 	{
+		char sep = Path.DirectorySeparatorChar;
+
 		foreach (var item in items) {
 			string fileExtension = item.GetMetadata("Extension");
 			string nugetPackageId = item.GetMetadata("NuGetPackageId");
@@ -37,11 +39,12 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			string pathInPackage = item.GetMetadata("PathInPackage");
 			//string fileName = item.GetMetadata("Filename");
 			//string runtimeIdentifier = item.GetMetadata("RuntimeIdentifier");
-			string dllDirectoryInPackage = null;
+			string? dllDirectoryInPackage = null;
 
 			// PDBs & XMLs lack some metadata, attempt to get it from the paired .dll.
 			if (string.IsNullOrEmpty(fusionName) && !".dll".Equals(fileExtension, StringComparison.OrdinalIgnoreCase)) {
-				string dllSpec = Path.ChangeExtension(item.ItemSpec, ".dll");
+				string libSpec = item.ItemSpec.Replace($"{sep}{nugetPackageVersion}{sep}ref{sep}", $"{sep}{nugetPackageVersion}{sep}lib{sep}");
+				string dllSpec = Path.ChangeExtension(libSpec, ".dll");
 
 				if (items.FirstOrDefault(i => dllSpec.Equals(i.ItemSpec, StringComparison.OrdinalIgnoreCase)) is ITaskItem dllItem) {
 					fusionName = dllItem.GetMetadata("FusionName");
