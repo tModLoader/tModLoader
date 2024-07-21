@@ -10,7 +10,8 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
+/// This class allows you to modify and use hooks for all projectiles, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 {
