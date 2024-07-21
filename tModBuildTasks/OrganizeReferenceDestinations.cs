@@ -43,7 +43,7 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 
 			// PDBs & XMLs lack some metadata, attempt to get it from the paired .dll.
 			if (string.IsNullOrEmpty(fusionName) && !".dll".Equals(fileExtension, StringComparison.OrdinalIgnoreCase)) {
-				string libSpec = item.ItemSpec.Replace($"{sep}{nugetPackageVersion}{sep}ref{sep}", $"{sep}{nugetPackageVersion}{sep}lib{sep}");
+				string libSpec = ReplaceLast(item.ItemSpec, $"{sep}{nugetPackageVersion}{sep}ref{sep}", $"{sep}{nugetPackageVersion}{sep}lib{sep}");
 				string dllSpec = Path.ChangeExtension(libSpec, ".dll");
 
 				if (items.FirstOrDefault(i => dllSpec.Equals(i.ItemSpec, StringComparison.OrdinalIgnoreCase)) is ITaskItem dllItem) {
@@ -103,4 +103,7 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			item.SetMetadata("DestinationSubDirectory", destinationSubDirectory);
 		}
 	}
+
+	private static string ReplaceLast(string str, string match, string replacement)
+		=> str.LastIndexOf(match) is int index and not -1 ? str.Remove(index, match.Length).Insert(index, replacement) : str;
 }
