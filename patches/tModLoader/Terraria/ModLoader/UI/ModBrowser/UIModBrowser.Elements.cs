@@ -199,12 +199,7 @@ internal partial class UIModBrowser
 		TagFilterToggle.OnLeftClick += (a, b) => RefreshTagFilterState(); // Undo the automatic state cycle rather than modify existing public UIElement class.
 		TagFilterToggle.OnRightClick += (a, b) => RefreshTagFilterState();
 
-		SearchFilterToggle.SetCurrentState(SearchFilter.Name);
-		TimePeriodToggle.SetCurrentState(ModBrowserTimePeriod.OneWeek);
-		UpdateFilterToggle.SetCurrentState(UpdateFilter.All);
-		ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
-		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.Hot);
-		ResetTagFilters();
+		Reset(); // Set filters to default states
 
 		modTagFilterDropdown = new UIModTagFilterDropdown();
 		modTagFilterDropdown.OnLeftClick += (a, b) => {
