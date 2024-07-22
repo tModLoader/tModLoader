@@ -147,6 +147,7 @@ internal class UIModDownloadItem : UIPanel
 		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferenceByModId.ToList();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 		Interface.modBrowser.FilterTextBox.Text = "";
+		Interface.modBrowser.ResetTagFilters();
 		Interface.modBrowser.UpdateNeeded = true; // Is done by updating the above but not in case of modpacks
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 	}
