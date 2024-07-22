@@ -395,6 +395,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to determine whether an NPC can be collided with the player melee weapon when swung. <br/>
 	/// Use <see cref="CanBeHitByItem(NPC, Player, Item)"/> instead for Guide Voodoo Doll-type effects.
 	/// </summary>
+	/// <param name="npc">The NPC being collided with</param>
 	/// <param name="player">The player wielding this item.</param>
 	/// <param name="item">The weapon item the player is holding.</param>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
