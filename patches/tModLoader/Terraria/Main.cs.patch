@@ -1104,6 +1104,15 @@
  					}
  				}
  
+@@ -4010,7 +_,7 @@
+ 					LanguageManager.Instance.SetLanguage(Convert.ToInt32(value5));
+ 				}
+ 
+-				if (text.Length > 5 && text.Substring(0, 5).ToLower() == "language=") {
++				if (text.Length > 9 && text.Substring(0, 9).ToLower() == "language=") {
+ 					string language = text.Substring(9);
+ 					LanguageManager.Instance.SetLanguage(language);
+ 				}
 @@ -4023,6 +_,14 @@
  				if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  					worldName = text.Substring(10);
