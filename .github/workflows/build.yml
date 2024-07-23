@@ -88,7 +88,7 @@ jobs:
           branch: ${{github.ref}}
         
         # Apply new Tag for the current commit
-      - uses: mathieudutour/github-tag-action@v6.0
+      - uses: mathieudutour/github-tag-action@v6.2
         if: ${{ steps.version.outputs.new_version != null}}
         with:
            custom_tag: ${{ steps.version.outputs.new_version }}
