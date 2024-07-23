@@ -160,7 +160,7 @@ jobs:
       # A cache allows the build to skip the decompile step
       - name: Retrieve encrypted decompiled zip cache
         id: cache-decompiled
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
