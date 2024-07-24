@@ -120,9 +120,15 @@ public struct StatModifier
 	public float ApplyTo(float baseValue) =>
 		(baseValue + Base) * Additive * Multiplicative + Flat;
 
+	/// <summary>
+	/// Combines the components of two StatModifiers. Typically used to apply the effects of ammo-specific StatModifier to the DamageClass StatModifier values.
+	/// </summary>
 	public StatModifier CombineWith(StatModifier m)
 		=> new StatModifier(Additive + m.Additive - 1, Multiplicative * m.Multiplicative, Flat + m.Flat, Base + m.Base);
 
+	/// <summary>
+	/// Scales all components of this StatModifier for the purposes of applying damage class modifier inheritance.<para/>This is <b>NOT</b> intended for typical modding usage, if you are looking to increase this stat by some percentage, use the addition (<c>+</c>) operator.
+	/// </summary>
 	public StatModifier Scale(float scale)
 		=> new StatModifier(1 + (Additive - 1) * scale, 1 + (Multiplicative - 1) * scale, Flat * scale, Base * scale);
 }
