@@ -919,6 +919,26 @@ Mods: {
 				Tooltip: This is a modded sand block
 			}
 
+			TileObjectDataShowcaseStyle0: {
+				DisplayName: TileObjectData Showcase Style 0 - Gold
+				Tooltip: Place between gold ore tiles
+			}
+
+			TileObjectDataShowcaseStyle1: {
+				DisplayName: TileObjectData Showcase Style 1 - Silver
+				Tooltip: Place between silver ore tiles
+			}
+
+			TileObjectDataShowcaseStyle2: {
+				DisplayName: TileObjectData Showcase Style 2 - Copper
+				Tooltip: Place between copper ore tiles
+			}
+
+			TileObjectDataShowcaseStyle3: {
+				DisplayName: TileObjectData Showcase Style 3 - ExampleBlock
+				Tooltip: Place between ExampleBlock tiles
+			}
+
 			ExampleRocket: {
 				DisplayName: Example Rocket
 				Tooltip: "{$ItemTooltip.RocketI}"

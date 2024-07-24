@@ -446,7 +446,7 @@
 +	/// </summary>
  	public static bool[] tileSolidTop = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
++	/// If true, this tile will be solid (unless <see cref="tileSolidTop"/> is also true). Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
 +	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
 +	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
