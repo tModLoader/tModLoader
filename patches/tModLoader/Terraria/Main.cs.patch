@@ -820,6 +820,16 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
+@@ -2300,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Counts game updates since the world was loaded. Updates even while gameplay is paused, but does not update on the main menus. Can be used to drive regular logic that doesn't need to run every update. The <see href="https://github.com/tModLoader/tModLoader/wiki/Time-and-Timers#modulo-timer">Modulo Timer section of the Time and Timers wiki page</see> has examples. <see cref="Player.miscCounter"/> is a similar counter that should be used specifically for player effects.
++	/// </summary>
+ 	public static uint GameUpdateCount => _gameUpdateCount;
+ 
+ 	public static SamplerState DefaultSamplerState {
 @@ -2311,15 +_,23 @@
  		}
  	}
@@ -1094,6 +1104,15 @@
  					}
  				}
  
+@@ -4010,7 +_,7 @@
+ 					LanguageManager.Instance.SetLanguage(Convert.ToInt32(value5));
+ 				}
+ 
+-				if (text.Length > 5 && text.Substring(0, 5).ToLower() == "language=") {
++				if (text.Length > 9 && text.Substring(0, 9).ToLower() == "language=") {
+ 					string language = text.Substring(9);
+ 					LanguageManager.Instance.SetLanguage(language);
+ 				}
 @@ -4023,6 +_,14 @@
  				if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  					worldName = text.Substring(10);

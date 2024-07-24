@@ -133,7 +133,7 @@
  	public bool canDisplayBuffs = true;
  	public bool midas;
  	public bool ichor;
-@@ -136,7 +_,19 @@
+@@ -136,14 +_,34 @@
  	public bool shadowFlame;
  	public bool soulDrain;
  	public bool shimmering;
@@ -153,6 +153,21 @@
  	public int lifeRegenCount;
  	public int lifeRegenExpectedLossPerSecond = -1;
  	public bool confused;
+ 	public bool loveStruck;
+ 	public bool stinky;
+ 	public bool dryadWard;
++	/// <summary>
++	/// Indicates that damage dealt to this NPC will not cause its life to go down. It can still receive hits and damage numbers will be shown, but the damage will not be applied to <see cref="life"/>. Only used by <see cref="NPCID.TargetDummy"/>.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool immortal;
++	/// <summary>
++	/// If false, this NPC will be ignored by <see cref="CanBeChasedBy"/>, meaning that entities won't specifically target this NPC. The cultists set this to true, helping ensure that they are not accidentally killed by minions or homing weapons. Duke Fishron uses this during his 3rd phase while he is invisible, resulting in homing weapons and minions being unable to target him effectively. 
++	/// <para/> Defaults to true.
++	/// </summary>
+ 	public bool chaseable = true;
+ 	public bool canGhostHeal = true;
+ 	public bool javelined;
 @@ -182,35 +_,149 @@
  	public static bool unlockedArmsDealerSpawn = false;
  	public static bool unlockedNurseSpawn = false;
@@ -329,7 +344,7 @@
  	public static bool downedMechBoss3 = false;
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,177 @@
+@@ -233,51 +_,181 @@
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -500,6 +515,10 @@
 +	/// </summary>
  	public float value;
  	public int extraValue;
++	/// <summary>
++	/// Indicates that this NPC does not currently take damage, attacks won't hit it. Some example usage includes Blazing Wheel, Spike Ball, Golem Head during 2nd phase, Jellyfish while electrified, and Granite Golem while shielding.
++	/// <para/> Defaults to false.
++	/// </summary>
  	public bool dontTakeDamage;
  	private int catchableNPCTempImmunityCounter;
 +	/// <summary>
@@ -2551,6 +2570,20 @@
  	public void DelBuff(int buffIndex)
  	{
  		buffTime[buffIndex] = 0;
+@@ -72274,6 +_,13 @@
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+ 
++	/// <summary>
++	/// Returns true if this NPC should be considered an enemy to attack. Used by various player, projectile, mount, and town npc logic. For example homing projectiles like Chlorophyte bullet won't target friendly NPC, critters, or NPC that are currently flagged as invulnerable. Note that the <paramref name="attacker"/> parameter is unused.
++	/// <para/> The logic checks that the NPC meets all of the following criteria: <see cref="Entity.active"/>, <see cref="chaseable"/>, <see cref="lifeMax"/> > 5 (to ignore critters), <see cref="dontTakeDamage"/> (unless <paramref name="ignoreDontTakeDamage"/>) is true), not <see cref="friendly"/>, and not <see cref="immortal"/>.
++	/// </summary>
++	/// <param name="attacker"></param>
++	/// <param name="ignoreDontTakeDamage"></param>
++	/// <returns></returns>
+ 	public bool CanBeChasedBy(object attacker = null, bool ignoreDontTakeDamage = false)
+ 	{
+ 		if (active && chaseable && lifeMax > 5 && (!dontTakeDamage || ignoreDontTakeDamage) && !friendly)
 @@ -72432,9 +_,16 @@
  	public void UpdateNPC(int i)
  	{

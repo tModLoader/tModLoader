@@ -16,7 +16,9 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
+/// This class serves as a place for you to place all your properties and hooks for each NPC.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC">Basic NPC Guide</see> teaches the basics of making a modded NPC.
 /// </summary>
 public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 {
@@ -675,12 +677,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to define special conditions required for this town NPC's house. For example, Truffle requires the house to be in an aboveground mushroom biome.
+	/// <para/> The <paramref name="left"/>, <paramref name="right"/>, <paramref name="top"/>, and <paramref name="bottom"/> parameters define the bounds of the room being checked.
+	/// <para/> Methods like <see cref="WorldGen.Housing_GetTestedRoomBounds(out int, out int, out int, out int)"/> and <see cref="WorldGen.CountTileTypesInArea(int[], int, int, int, int)"/> can facilitate implementing specific checks.
+	/// <para/> Return false to prevent the npc from spawning due to failed condition checks.
 	/// </summary>
-	/// <param name="left"></param>
-	/// <param name="right"></param>
-	/// <param name="top"></param>
-	/// <param name="bottom"></param>
-	/// <returns></returns>
 	public virtual bool CheckConditions(int left, int right, int top, int bottom)
 	{
 		return true;
@@ -746,7 +746,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
 	/// To create a shop, use <see cref="AddShops"/> <br/>
-	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// <para/> Also note that unused slots in <paramref name="items"/> are null while <see cref="Item.IsAir"/> entries are entries that have a reserved slot (<see cref="NPCShop.Entry.SlotReserved"/>) but did not have their conditions met. These should not be overwritten.
 	/// </summary>
 	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
 	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>

@@ -18,8 +18,9 @@ using Terraria.Utilities;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
-/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
+/// This class serves as a place for you to place all your properties and hooks for each item.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 /// </summary>
 public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 {
