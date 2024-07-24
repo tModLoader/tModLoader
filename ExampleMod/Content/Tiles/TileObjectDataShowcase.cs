@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Tiles
 	// In particular, this contrived example shows how styles are laid out in the spritesheet when multiple styles, multiple alternate placements, random style range, animations, and toggle states are all desired.
 	// If you place this tile, you'll noticed that it has both left and right variants depending on the player direction. You'll also notice that there are 4 random style variations for left and right. Once placed, the tile will animate through 3 frames of animation. Right clicking on the tile will change the tile to an "off" state, halting the animation and showing the 4th frame of animation. There are 4 tile styles contained in this example as well.
 	// The StyleMultiplier section of the Tile wiki page, https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#stylemultiplier, has a simpler visualization only showing alternate placements and random style variations.
-	// Please experiment by placing this tile using both the "TileObjectData Showcase Style 3 - ExampleBlock" item and one of the other TileObjectData Showcase items. By doing this you should be able to visualize the full potential of TileObjectData.
+	// Please experiment by placing this tile using both the "TileObjectData Showcase Style 3 - ExampleBlock" item and one of the other TileObjectData Showcase items. This tile anchors to specific tiles to the left and right, you'll need to place this tile between pillars of those specific tiles. By doing this you should be able to visualize the full potential of TileObjectData.
 	// Not many tiles will require such complicated layout, but this serves as example of how each feature affects the resulting spritesheet.
 	// Since this tile is "StyleHorizontal = true", styles in the spritesheet are positioned left to right. Each alternate placement and
 	// random style are also placed in-line with the styles. Toggled states and animations are placed vertically below their corresponding placement. In the corresponding spritesheet, the styles, alternate placements, and animation frames are all labeled to make this layout clearer.
@@ -63,7 +63,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addAlternate(4);
 
 			// Next, we initialize subtiles. These are tile style specific tile properties.
-			// Each of these subtiles define their own AnchorAlternateTiles array to showcase this capability, but subtiles are typically just used for water and lava behaviors.
+			// Each of these subtiles define their own AnchorAlternateTiles array to showcase this capability, but subtiles are typically just used for water and lava behaviors. This tile anchors to these specific tiles to the left and right, meaning that pillars of those tiles are needed to place this tile into the world.
 			// Look for "Sty 0", "Sty 1", and "Sty 2" in the spritesheet.
 			TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newSubTile.LinkedAlternates = true;
@@ -86,6 +86,9 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.addSubTile(3);
 
 			TileObjectData.addTile(Type);
+
+			// We can automatically set the animation frame height from CoordinateFullHeight for any typical tile that uses the expected layout.
+			AnimationFrameHeight = TileObjectData.GetTileData(Type, 0).CoordinateFullHeight;
 		}
 
 		// Displays various info about the tile placement in chat.
@@ -111,6 +114,7 @@ namespace ExampleMod.Content.Tiles
 			int topX = i - (tile.TileFrameX % 256) % 32 / 16;
 			int topY = j - (tile.TileFrameY % 128) % 32 / 16;
 
+			// 96 is the Y position of the "Fra 3" sprites in the spritesheet. (32 * 3)
 			short frameAdjustment = (short)(tile.TileFrameY % 128 >= 96 ? -96 : 96);
 
 			for (int x = topX; x < topX + 2; x++) {
@@ -127,16 +131,20 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
+			// Cycle between frames 0, 1, and 2 every 16 ticks
 			if (++frameCounter >= 16) {
 				frameCounter = 0;
 				frame = ++frame % 3;
 			}
 		}
+
 		public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
 			var tile = Main.tile[i, j];
-			if (tile.TileFrameY % 128 < 32) {
-				// If the tile is "on", then the tile will animate between the "Fra 0", "Fra 1", and "Fra 2" sprites.
-				frameYOffset = Main.tileFrame[type] * 32;
+			// If the tile is "on", then the tile will animate between the "Fra 0", "Fra 1", and "Fra 2" sprites. This is already applied because we set AnimationFrameHeight in SetStaticDefaults and adjust frame in AnimateTile.
+
+			// If the tile is "off", however, then we set frameYOffset to 0 to disable the automatic animation for this specific tile. 96 is the Y position of the "Fra 3" sprites in the spritesheet. (32 * 3)
+			if (tile.TileFrameY % 128 >= 96) {
+				frameYOffset = 0;
 			}
 		}
 	}

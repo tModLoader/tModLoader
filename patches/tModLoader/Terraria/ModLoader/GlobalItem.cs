@@ -694,8 +694,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Allows you to determine special visual effects a vanity has on the player without having to code them yourself.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
+	/// </summary>
 	public virtual void ArmorSetShadows(Player player, string set)
 	{
 	}
@@ -975,8 +975,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Return null to use the item's default holdout offset; returns null by default.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>return new Vector2(10, 0);</code></example>
+	/// </summary>
 	public virtual Vector2? HoldoutOffset(int type)
 	{
 		return null;
