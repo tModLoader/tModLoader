@@ -45,6 +45,17 @@
  
  		return dictionary;
  	}
+@@ -278,6 +_,10 @@
+ 		return (t - from) / (to - from);
+ 	}
+ 
++	/// <summary>
++	/// Returns the current world time in a 24 hour clock representation. This value is derived from <see cref="Main.dayTime"/> and <see cref="Main.time"/>.
++	/// <para/> For example <c>Utils.GetDayTimeAs24FloatStartingFromMidnight() &lt; 6.50f</c> would check if the time is before 6:30 AM.
++	/// </summary>
+ 	public static float GetDayTimeAs24FloatStartingFromMidnight()
+ 	{
+ 		if (Main.dayTime)
 @@ -294,7 +_,8 @@
  		ArrayList arrayList = new ArrayList();
  		string text = "";

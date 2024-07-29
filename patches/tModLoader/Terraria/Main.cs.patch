@@ -283,7 +283,7 @@
  	public static bool dedServ;
  	public static int spamCount = 0;
  	public static int curMusic;
-@@ -743,19 +_,48 @@
+@@ -743,19 +_,52 @@
  	public static int LogoA = 255;
  	public static int LogoB;
  	public static bool LogoT;
@@ -320,6 +320,10 @@
  	public static Microsoft.Xna.Framework.Color[] teamColor = new Microsoft.Xna.Framework.Color[6];
  	public const double dayLength = 54000.0;
  	public const double nightLength = 32400.0;
++	/// <summary>
++	/// True during the day hours (4:30 AM to 7:30 PM), false during night hours (7:30 PM to 4:30 AM). In conjunction with <see cref="time"/> these represent the in-game time of the world.
++	/// <para/> Note that <see cref="IsItDay"/> additionally takes into account the constant night state of <see cref="remixWorld"/> worlds and should be used instead for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
  	public static bool dayTime = true;
 +
 +	/// <summary>
@@ -6455,7 +6459,7 @@
  				}
  			}
  		}
-@@ -51850,6 +_,8 @@
+@@ -51850,11 +_,16 @@
  		}
  
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
@@ -6464,6 +6468,14 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="dayTime"/>, but always returns false in <see cref="remixWorld"/> worlds. This should be used instead of <see cref="dayTime"/> for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
+ 	public static bool IsItDay()
+ 	{
+ 		if (remixWorld)
 @@ -51883,6 +_,13 @@
  			num = Utils.Clamp(num, 0, 8);
  
