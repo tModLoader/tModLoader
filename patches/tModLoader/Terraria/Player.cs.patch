@@ -7101,6 +7101,16 @@
  		KnockBack = GetWeaponKnockback(sItem, KnockBack);
  		IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  		if (projToShoot == 228)
+@@ -36695,6 +_,9 @@
+ 		if (sItem.type == 2796)
+ 			projToShoot = 442;
+ 
++		if (sItem.type == ItemID.FireworksLauncher)
++			projToShoot = ProjectileID.RocketFireworkRed; // Make sure Celebration has correct projectile set for logic.
++
+ 		if (sItem.type == 2223)
+ 			projToShoot = 357;
+ 
 @@ -36708,7 +_,8 @@
  		Vector2 pointPoisition = RotatedRelativePoint(MountedCenter);
  		bool flag = true;
@@ -7648,7 +7658,7 @@
  					item = inventory[k];
  					canShoot = true;
  					break;
-@@ -40981,10 +_,43 @@
+@@ -40981,17 +_,52 @@
  			}
  		}
  
@@ -7692,6 +7702,15 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
++		/* These 2 are unused and will never be right for modded rocket ammo. Following check is kept in to preserve existing behavior if being relied on.
+ 		else if (sItem.type == 1946)
+ 			projToShoot = 338 + item.type - 771;
+ 		else if (sItem.type == 3930)
+ 			projToShoot = 715 + item.type - AmmoID.Rocket;
++		*/
+ 		else if (sItem.useAmmo == AmmoID.Rocket)
+ 			projToShoot += item.shoot;
+ 		else if (sItem.useAmmo == AmmoID.Solution)
 @@ -41015,6 +_,7 @@
  			projToShoot = 117;
  
