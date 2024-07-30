@@ -5,7 +5,7 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO;
 
-public class TileEntry : ModBlockEntry
+internal class TileEntry : ModBlockEntry
 {
 	public static Func<TagCompound, TileEntry> DESERIALIZER = tag => new TileEntry(tag);
 
