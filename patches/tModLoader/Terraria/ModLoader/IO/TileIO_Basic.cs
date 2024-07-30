@@ -260,7 +260,7 @@ internal static partial class TileIO
 		return tag;
 	}
 
-	internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
+	internal static bool canPurgeOldData => Main.keyState.PressingShift(); //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
 	internal static void ResetUnloadedTypes()
 	{

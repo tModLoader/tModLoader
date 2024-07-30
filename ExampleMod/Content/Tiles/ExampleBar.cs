@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -18,6 +19,8 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.addTile(Type);
+
+			VanillaFallbackOnModDeletion = TileID.MetalBars;
 
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.MetalBar")); // localized text for "Metal Bar"
 		}

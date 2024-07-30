@@ -22,7 +22,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
 	public int DustType { get; set; }
 
-	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
+	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to <see cref="TileID.Dirt"/> (0). </summary>
 	public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
 	public abstract string LocalizationCategory { get; }
