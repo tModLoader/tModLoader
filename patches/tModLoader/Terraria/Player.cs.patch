@@ -7099,7 +7099,7 @@
  			int num11 = 3;
 -			if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41) {
 +			//if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41)
-+			if (ProjectileID.Sets.FiresLessFromDaedalusStormbow[projToShoot])
++			if (ProjectileID.Sets.FiresFewerFromDaedalusStormbow[projToShoot])
 +			{
  				if (Main.rand.Next(3) == 0)
  					num11--;
