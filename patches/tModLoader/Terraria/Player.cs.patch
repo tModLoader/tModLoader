@@ -7161,6 +7161,17 @@
  		if (projToShoot == 76) {
  			projToShoot += Main.rand.Next(3);
  			float num7 = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
+@@ -36895,7 +_,9 @@
+ 		}
+ 		else if (sItem.type == 3029) {
+ 			int num11 = 3;
+-			if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41) {
++			//if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41)
++			if (ProjectileID.Sets.FiresFewerFromDaedalusStormbow[projToShoot])
++			{
+ 				if (Main.rand.Next(3) == 0)
+ 					num11--;
+ 			}
 @@ -38410,10 +_,14 @@
  		projType = 721;
  		Item item = inventory[selectedItem];

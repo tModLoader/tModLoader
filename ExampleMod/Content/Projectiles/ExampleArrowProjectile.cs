@@ -9,6 +9,12 @@ namespace ExampleMod.Content.Projectiles
 	// This example is similar to the Wooden Arrow projectile
 	public class ExampleArrowProjectile : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire fewer projectiles from Daedalus Stormbow for game balance considerations like this:
+			//ProjectileID.Sets.FiresFewerFromDaedalusStormbow[Type] = true;
+		}
+
 		public override void SetDefaults() {
 			Projectile.width = 10; // The width of projectile hitbox
 			Projectile.height = 10; // The height of projectile hitbox
