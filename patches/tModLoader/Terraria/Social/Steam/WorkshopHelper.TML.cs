@@ -35,16 +35,18 @@ public partial class WorkshopHelper
 	}
 
 	/// <summary>
+	/// <code>
 	/// Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found
-	/// If SteamClient is true (ie it is a steam user running a client or host&play),
+	/// If SteamClient is true (ie it is a steam user running a client or host and play),
 	///		InstallDir: SteamFiles/Steamapps/common/tModLoader is GetAppInstallDir
 	///		WorkshopFolder: SteamFiles/Steamapps/workshop is Path.Combine(GetAppInstallDir, .., .., Workshop)
 	///	If SteamClient is false, SteamAvailable = True -> Is FamilyShare or GoG Client. SteamedWraps.FamilyShare differentiates if needed
 	///		InstallDir: anywhere, manual.
 	///		WorkshopFolder: InstallDir/Steamapps/workshop
 	///	If Main.DedServ is true
-	///		Use SteamClient reference path if it exists && Not "-nosteam" supplied
+	///		Use SteamClient reference path if it exists &amp;&amp; Not "-nosteam" supplied
 	///		Use NotSteamClient working folder path if "-nosteam" supplied or SteamClient ref path not exists
+	/// </code>
 	/// </summary>
 	public static string GetWorkshopFolder(AppId_t app)
 	{

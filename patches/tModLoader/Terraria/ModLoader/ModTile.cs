@@ -17,7 +17,11 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class ModTile : ModBlockType
 {
-	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. </summary>
+	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. 
+	/// <para/> Used in conjunction with <see cref="AnimateTile(ref int, ref int)"/> to automatically animate tiles. Use <see cref="AnimateIndividualTile(int, int, int, ref int, ref int)"/> as well if needed.
+	/// <para/> An easy way to set this correctly without doing any math is to set this to the value of <see cref="TileObjectData.CoordinateFullHeight"/>.
+	/// <para/> Note that this assumes animation frames are laid out vertically in the tile spritesheet, if that is not the case then <see cref="AnimateIndividualTile"/> will need to be used to apply AnimationFrameHeight to X coordinates instead.
+	/// </summary>
 	public int AnimationFrameHeight { get; set; }
 
 	/// <summary> A multiplier describing how much this block resists harvesting. Higher values will make it take longer to harvest. <br/> Defaults to 1f.
@@ -360,14 +364,19 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. This is called once an update. Use AnimateIndividualTile to animate specific tile instances directly.
-	/// <example><code>if (++frameCounter > 8)
-	///{
+	/// Allows you to animate your tile. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. This is called once an update.
+	/// <para/> <see cref="AnimationFrameHeight"/> must be set for the animation timing set in this method to actually apply to the tile drawing. Use <see cref="AnimateIndividualTile(int, int, int, ref int, ref int)"/> to animate specific tile instances directly.
+	/// <example><code>// Cycle 5 frames of animation spending 8 ticks on each
+	///if (++frameCounter >= 8) {
 	///	frameCounter = 0;
-	///	if (++frame > 5)
-	///	{
+	///	if (++frame >= 5) {
 	///		frame = 0;
 	///	}
+	///}</code>
+	/// or, more compactly:
+	/// <code>if (++frameCounter >= 8) {
+	/// 	frameCounter = 0;
+	/// 	frame = ++frame % 5;
 	///}</code>
 	///	or, to mimic another tile, simply:
 	///	<code>frame = Main.tileFrame[TileID.FireflyinaBottle];</code></example>
@@ -377,8 +386,8 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile.
-	/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw.
+	/// Animates an individual tile. <paramref name="i"/> and <paramref name="j"/> are the coordinates of the Tile in question. <paramref name="frameXOffset"/> and <paramref name="frameYOffset"/> should be used to specify an offset from the tiles <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>. <c>frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];</c> will already be set before this hook is called, taking into account the TileID-wide animation set via <see cref="AnimateTile(ref int, ref int)"/>.
+	/// <para/> Use this hook for off-sync animations (lightning bug in a bottle), state specific animations (campfires), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
 	/// </summary>
 	/// <param name="type">The tile type.</param>
 	/// <param name="i">The x position in tile coordinates.</param>

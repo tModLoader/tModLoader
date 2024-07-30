@@ -8,9 +8,10 @@ using Terraria.ID;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to Mod.AddMount.
-/// Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good.
-/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
+/// This class serves as a place for you to place all your properties and hooks for each mount.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <para/> Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good.
+/// Modders can use <i>player.mount._mountSpecificData</i> or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 /// <para/> Note that texture autoloading is unique for ModMount, see <see cref="Texture"/> for more information.
 /// </summary>
 public abstract class ModMount : ModType<Mount.MountData, ModMount>

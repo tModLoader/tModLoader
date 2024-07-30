@@ -130,7 +130,7 @@ namespace ExampleMod.Content.Tiles
 
 			SpriteEffects effects = SpriteEffects.None;
 
-			if (i % 2 == 1) {
+			if (i % 2 == 0) {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 

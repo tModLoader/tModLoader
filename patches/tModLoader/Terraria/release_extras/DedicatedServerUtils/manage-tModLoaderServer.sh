@@ -24,7 +24,7 @@ function try_make_link {
 # NOTE: There is seemingly no official documentation on this file but other more "official" software does this same check.
 # See: https://github.com/moby/moby/blob/v24.0.5/libnetwork/drivers/bridge/setup_bridgenetfiltering.go#L162-L165
 function is_in_docker {
-	if [[ -f /.dockerenv ]]; then
+	if ([[ -f /.dockerenv ]] || [[ -f /run/.containerenv ]]); then
 		return 0
 	fi
 	return 1
