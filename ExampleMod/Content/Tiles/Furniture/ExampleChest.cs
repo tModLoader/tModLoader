@@ -196,7 +196,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				if (isLocked) {
 					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
 					int key = ModContent.ItemType<ExampleChestKey>();
-					if (player.ConsumeItem(key, includeVoidBag: true) && Chest.Unlock(left, top)) {
+					if (Chest.Unlock(left, top) && player.ConsumeItem(key, includeVoidBag: true)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
 							NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
 						}
