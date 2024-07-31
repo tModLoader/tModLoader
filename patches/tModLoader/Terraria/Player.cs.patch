@@ -1981,6 +1981,24 @@
  			}
  			else if (buffType[j] == 116) {
  				inferno = true;
+@@ -7363,7 +_,7 @@
+ 				bool flag = infernoCounter % 60 == 0;
+ 				int damage = 20;
+ 				if (whoAmI != Main.myPlayer)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int k = 0; k < 200; k++) {
+ 					NPC nPC = Main.npc[k];
+@@ -7377,7 +_,7 @@
+ 				}
+ 
+ 				if (!hostile)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int l = 0; l < 255; l++) {
+ 					Player player = Main.player[l];
 @@ -7388,19 +_,22 @@
  						player.AddBuff(num2, 120);
  
@@ -2034,6 +2052,43 @@
  			}
  			else if (buffType[j] == 41) {
  				buffTime[j] = 18000;
+@@ -8598,18 +_,19 @@
+ 				frozen = true;
+ 				fallStart = (int)(position.Y / 16f);
+ 				if (Main.myPlayer != whoAmI)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				if (position.Y / 16f > (float)Main.UnderworldLayer) {
+-					if (Main.myPlayer == whoAmI)
++					if (Main.myPlayer == whoAmI) {
+ 						DelBuff(j);
+-
+-					continue;
++						j--;
++					}
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				if (shimmerWet) {
+ 					buffTime[j] = 60;
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				bool flag32 = false;
+@@ -8622,8 +_,10 @@
+ 
+ 				if (flag32)
+ 					buffTime[j] = 6;
+-				else
++				else {
+ 					DelBuff(j);
++					j--;
++				}
+ 			}
+ 			else if (buffType[j] == 163) {
+ 				headcovered = true;
 @@ -8708,14 +_,20 @@
  			else if (buffType[j] == 26) {
  				wellFed = true;
@@ -2138,11 +2193,12 @@
  				minionKB -= 1f;
  				pickSpeed += 0.15f;
  			}
-@@ -8805,6 +_,9 @@
+@@ -8805,6 +_,10 @@
  			else if (buffType[j] == 79) {
  				meleeEnchant = 8;
  			}
 +
++			UpdateBuffsLoopEnd:
 +			if (j == originalIndex)
 +				BuffLoader.Update(buffType[j], this, ref j);
  		}
