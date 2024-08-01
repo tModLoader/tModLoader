@@ -107,7 +107,8 @@ var NAVTREEINDEX0 =
 "class_ammo_i_d.html":[3,0,36],
 "class_ammo_i_d.html#a20ae918609752fbe60c7a815aa58accb":[3,0,36,1],
 "class_ammo_i_d_1_1_sets.html":[3,0,36,0],
-"class_ammo_i_d_1_1_sets.html#a73bd056b114fdd98efd4adf68ab980a6":[3,0,36,0,3],
+"class_ammo_i_d_1_1_sets.html#a73bd056b114fdd98efd4adf68ab980a6":[3,0,36,0,4],
+"class_ammo_i_d_1_1_sets.html#a858da587d6b196948d27ac8eedd7e1c3":[3,0,36,0,3],
 "class_ammo_i_d_1_1_sets.html#aa460d6262ba47215727b76d32a116813":[3,0,36,0,0],
 "class_ammo_i_d_1_1_sets.html#aa9646bfa248e310e03f257eeea7660a7":[3,0,36,0,1],
 "class_ammo_i_d_1_1_sets.html#aaaf5c74febfd5e2931212d21f06810ac":[3,0,36,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f":[3,0,91,0],
 "class_binary_i_o.html":[3,0,92],
 "class_biome_conversion_i_d.html":[3,0,94],
-"class_biome_loader.html":[3,0,95],
-"class_biome_preference_list_trait.html":[3,0,96]
+"class_biome_loader.html":[3,0,95]
 };

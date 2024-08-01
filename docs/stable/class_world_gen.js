@@ -19,5 +19,13 @@ var class_world_gen =
     [ "PlaceTile", "class_world_gen.html#a6d89efc164bd01b5920d1f761df42565", null ],
     [ "RandomWorldPoint", "class_world_gen.html#a89f0e44198e319e4f3429bb6fd00f291", null ],
     [ "TileRunner", "class_world_gen.html#a05e507c099b90c1b023918b42e032909", null ],
+    [ "dontStarveWorldGen", "class_world_gen.html#a5f4ccd1d115e584d95a56738c8fc48a9", null ],
+    [ "drunkWorldGen", "class_world_gen.html#ab2e8f72eb26ec239698178fbaa98cbd4", null ],
+    [ "everythingWorldGen", "class_world_gen.html#a218ab12f8deb325ccfb2203cca0d64fa", null ],
+    [ "getGoodWorldGen", "class_world_gen.html#af96414843997b19669ddb0a1ae0d0ac1", null ],
+    [ "noTrapsWorldGen", "class_world_gen.html#a7a46291428d2eae010959c6694310adf", null ],
+    [ "notTheBees", "class_world_gen.html#afe0d69c99d8a68c35388fc091a92e63d", null ],
+    [ "remixWorldGen", "class_world_gen.html#abac3b0245f83c0a7a386367c779ba4e8", null ],
+    [ "tenthAnniversaryWorldGen", "class_world_gen.html#a9fd1a8ed4e82033e43d20836c0af9dbd", null ],
     [ "genRand", "class_world_gen.html#a34f743211761187fd9e9cc61f6efad13", null ]
 ];

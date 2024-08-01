@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -102,14 +102,16 @@ override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1f062d26bf77dee4ef19fc838fd3bdf9"><td class="memItemLeft" align="right" valign="top"><a id="a1f062d26bf77dee4ef19fc838fd3bdf9" name="a1f062d26bf77dee4ef19fc838fd3bdf9"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>KillSign</b> (int x, int y)</td></tr>
+<tr class="memitem:a1f062d26bf77dee4ef19fc838fd3bdf9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sign.html#a1f062d26bf77dee4ef19fc838fd3bdf9">KillSign</a> (int x, int y)</td></tr>
+<tr class="memdesc:a1f062d26bf77dee4ef19fc838fd3bdf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kills the <a class="el" href="class_sign.html">Sign</a> at the provided coordinates. Call this in ModLoader.ModTile.KillMultiTile(int, int, int, int) to clean up the <a class="el" href="class_sign.html">Sign</a> instance corresponding to a <a class="el" href="class_main.html#a7c4bc12068c82e52b5dde10648cc9793" title="Indicates that a tile is a &quot;sign&quot; and will be paired with a Sign instance. Right click,...">Main.tileSign</a> tile.  <a href="class_sign.html#a1f062d26bf77dee4ef19fc838fd3bdf9">More...</a><br /></td></tr>
 <tr class="separator:a1f062d26bf77dee4ef19fc838fd3bdf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0a8676844348ece5b252271ae0ab505"><td class="memItemLeft" align="right" valign="top"><a id="ae0a8676844348ece5b252271ae0ab505" name="ae0a8676844348ece5b252271ae0ab505"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>ReadSign</b> (int i, int j, bool CreateIfMissing=true)</td></tr>
+<tr class="memdesc:ae0a8676844348ece5b252271ae0ab505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the index of the <a class="el" href="class_sign.html">Sign</a> within the <a class="el" href="class_main.html#a7d66269aa58bd46ed6c7d11616b8fc98" title="Contains all the signs in the world. There can be at most 1000 signs in the world.">Main.sign</a> array that exists at the coordinates provided. Any tile of the 2x2 sign can be passed in. The actual <a class="el" href="class_sign.html">Sign</a> instance is located at the top left corner of the multi-tile. If <em>CreateIfMissing</em>  is true the sign will be initialized at the coordinates if it does not exist. Returns -1 if there is no <a class="el" href="class_main.html#a7c4bc12068c82e52b5dde10648cc9793" title="Indicates that a tile is a &quot;sign&quot; and will be paired with a Sign instance. Right click,...">Main.tileSign</a> tile at the provided coordinate, if <em>CreateIfMissing</em>  is false and no sign is initialized at the location, or if the sign limit for the world has been reached. <br /></td></tr>
 <tr class="separator:ae0a8676844348ece5b252271ae0ab505"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1dfbcf8d796031770f1c5cf213dee56"><td class="memItemLeft" align="right" valign="top"><a id="ae1dfbcf8d796031770f1c5cf213dee56" name="ae1dfbcf8d796031770f1c5cf213dee56"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>TextSign</b> (int i, string text)</td></tr>
+<tr class="memdesc:ae1dfbcf8d796031770f1c5cf213dee56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the text of the sign corresponding to the given index. Use <a class="el" href="class_sign.html#ae0a8676844348ece5b252271ae0ab505" title="Retrieves the index of the Sign within the Main.sign array that exists at the coordinates provided....">ReadSign(int, int, bool)</a> to retrieve the index. Behaves similar to <code><a class="el" href="class_main.html#a7d66269aa58bd46ed6c7d11616b8fc98" title="Contains all the signs in the world. There can be at most 1000 signs in the world.">Main.sign</a>[i].text = text;</code> except it also handles nulling the sign if it is no longer valid for some reason. <br /></td></tr>
 <tr class="separator:ae1dfbcf8d796031770f1c5cf213dee56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -130,6 +132,52 @@ Static Public Attributes</h2></td></tr>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>maxSigns</b> = 1000</td></tr>
 <tr class="separator:aa9dc2e73fc3cbdb0bd665de96f4e800b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1f062d26bf77dee4ef19fc838fd3bdf9" name="a1f062d26bf77dee4ef19fc838fd3bdf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f062d26bf77dee4ef19fc838fd3bdf9">&#9670;&nbsp;</a></span>KillSign()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Sign.KillSign </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Kills the <a class="el" href="class_sign.html">Sign</a> at the provided coordinates. Call this in ModLoader.ModTile.KillMultiTile(int, int, int, int) to clean up the <a class="el" href="class_sign.html">Sign</a> instance corresponding to a <a class="el" href="class_main.html#a7c4bc12068c82e52b5dde10648cc9793" title="Indicates that a tile is a &quot;sign&quot; and will be paired with a Sign instance. Right click,...">Main.tileSign</a> tile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramname">y</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

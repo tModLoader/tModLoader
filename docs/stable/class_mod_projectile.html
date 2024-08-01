@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -142,6 +142,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>CutTiles</b> 
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawBehind</b> (int index, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindNPCsAndTiles, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindNPCs, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindProjectiles, <a class="el" href="class_list.html">List</a>&lt; int &gt; overPlayers, <a class="el" href="class_list.html">List</a>&lt; int &gt; overWiresUI)</td></tr>
 <tr class="memdesc:ac731237c8770d1ac6f67ac5c22558d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with <code><a class="el" href="class_projectile.html#a2101c172912b39aac39b6c064ee064f0" title="Projectile is not drawn normally. Held projectiles (Player.heldProj) and projectiles specified to be ...">Projectile.hide</a> = true</code> (<a class="el" href="class_projectile.html#a2101c172912b39aac39b6c064ee064f0" title="Projectile is not drawn normally. Held projectiles (Player.heldProj) and projectiles specified to be ...">Projectile.hide</a>), allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. <br /></td></tr>
 <tr class="separator:ac731237c8770d1ac6f67ac5c22558d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350eab2d1922b8049a18af8e1c7376ba"><td class="memItemLeft" align="right" valign="top"><a id="a350eab2d1922b8049a18af8e1c7376ba" name="a350eab2d1922b8049a18af8e1c7376ba"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>EmitEnchantmentVisualsAt</b> (Vector2 boxPosition, int boxWidth, int boxHeight)</td></tr>
+<tr class="memdesc:a350eab2d1922b8049a18af8e1c7376ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when <a class="el" href="class_projectile.html#aa66acc1f00862c2a8057513498e452d9" title="Spawns weapon enchantment visuals the specified location. boxPosition  is the top left corner of the ...">Projectile.EmitEnchantmentVisualsAt(Vector2, int, int)</a> is called. Typically used to spawn visual effects (<a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a>) indicating weapon enchantments such as flasks, frost armor, or magma stone effects. This is similar to how items spawn visual effects in CombinedHooks.MeleeEffects(Player, Item, Rectangle), but for projectiles instead. A typical weapon enchantment would likely include similar code in both to support weapon enchantment visuals for both items and projectiles. Projectiles can use <a class="el" href="class_projectile.html#a23046e06b5013cd46e42576bb467cfba" title="If true, this projectile will not benefit from weapon enchantments such as flasks,...">Projectile.noEnchantments</a> to indicate that a projectile should not be considered for enchantment visuals, so check that field if relevant. <br /></td></tr>
+<tr class="separator:a350eab2d1922b8049a18af8e1c7376ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06bc673759fe0d67576f5e657e093e2c"><td class="memItemLeft" align="right" valign="top"><a id="a06bc673759fe0d67576f5e657e093e2c" name="a06bc673759fe0d67576f5e657e093e2c"></a>
 virtual ? Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlpha</b> (Color lightColor)</td></tr>
 <tr class="memdesc:a06bc673759fe0d67576f5e657e093e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. <br /></td></tr>
@@ -216,22 +220,26 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostAI</b> ()
 <tr class="memdesc:a758f3b5889016d47306072f362e9457e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this projectile behaves. This will be called regardless of what PreAI returns. <br /></td></tr>
 <tr class="separator:a758f3b5889016d47306072f362e9457e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14eb5ac3aaf04a71da2994c1f88d986"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#ad14eb5ac3aaf04a71da2994c1f88d986">PostDraw</a> (Color lightColor)</td></tr>
-<tr class="memdesc:ad14eb5ac3aaf04a71da2994c1f88d986"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of this projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.  <a href="class_mod_projectile.html#ad14eb5ac3aaf04a71da2994c1f88d986">More...</a><br /></td></tr>
+<tr class="memdesc:ad14eb5ac3aaf04a71da2994c1f88d986"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of this projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. This method is called even if PreDraw returns false.  <a href="class_mod_projectile.html#ad14eb5ac3aaf04a71da2994c1f88d986">More...</a><br /></td></tr>
 <tr class="separator:ad14eb5ac3aaf04a71da2994c1f88d986"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a077985011dabd4cf2647c124cf105720"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a077985011dabd4cf2647c124cf105720">PreAI</a> ()</td></tr>
 <tr class="memdesc:a077985011dabd4cf2647c124cf105720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.  <a href="class_mod_projectile.html#a077985011dabd4cf2647c124cf105720">More...</a><br /></td></tr>
 <tr class="separator:a077985011dabd4cf2647c124cf105720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affad3a0951d8c55b4cd2541378b8dc99"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#affad3a0951d8c55b4cd2541378b8dc99">PreDraw</a> (ref Color lightColor)</td></tr>
-<tr class="memdesc:affad3a0951d8c55b4cd2541378b8dc99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.  <a href="class_mod_projectile.html#affad3a0951d8c55b4cd2541378b8dc99">More...</a><br /></td></tr>
+<tr class="memdesc:affad3a0951d8c55b4cd2541378b8dc99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.  <a href="class_mod_projectile.html#affad3a0951d8c55b4cd2541378b8dc99">More...</a><br /></td></tr>
 <tr class="separator:affad3a0951d8c55b4cd2541378b8dc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ce72498f51c6595019b268918df2313"><td class="memItemLeft" align="right" valign="top"><a id="a4ce72498f51c6595019b268918df2313" name="a4ce72498f51c6595019b268918df2313"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreDrawExtras</b> ()</td></tr>
-<tr class="memdesc:a4ce72498f51c6595019b268918df2313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default. <br /></td></tr>
+<tr class="memdesc:a4ce72498f51c6595019b268918df2313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default. <br /></td></tr>
 <tr class="separator:a4ce72498f51c6595019b268918df2313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d2b130e96ab74a148bc69b040a8d839"><td class="memItemLeft" align="right" valign="top"><a id="a8d2b130e96ab74a148bc69b040a8d839" name="a8d2b130e96ab74a148bc69b040a8d839"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreKill</b> (int timeLeft)</td></tr>
 <tr class="memdesc:a8d2b130e96ab74a148bc69b040a8d839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying. <br /></td></tr>
 <tr class="separator:a8d2b130e96ab74a148bc69b040a8d839"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e1c1e626e9d70055081f7492728e4f8"><td class="memItemLeft" align="right" valign="top"><a id="a3e1c1e626e9d70055081f7492728e4f8" name="a3e1c1e626e9d70055081f7492728e4f8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrepareBombToBlow</b> ()</td></tr>
+<tr class="memdesc:a3e1c1e626e9d70055081f7492728e4f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <a class="el" href="class_proj_a_i_style_i_d.html#a1516383015bc0311f5003dc05905bd92" title="Note that projectiles using ProjectileID.Sets.Explosive will utilize much of the custom logic corresp...">ProjAIStyleID.Explosive</a> aiStyle or projectiles that are contained in the <a class="el" href="class_projectile_i_d_1_1_sets.html#a7350c2bce03eca2dc7c4e7d5f1043539" title="Contains all of the projectiles that are classified as explosives. This includes all vanilla projecti...">ProjectileID.Sets.Explosive</a> set. By defaults tileCollide is set to false and alpha is set to 255. Use this to adjust damage, knockBack, and the projectile hitbox (<a class="el" href="class_projectile.html#a8072b57da2e5bf37a03de842c2d60058" title="Changes the Entity.width and Entity.height of the projectile while preserving the Entity....">Projectile.Resize</a>). Called during <a class="el" href="class_projectile.html#a3741d0a9228a5aa38b97732f659236cb" title="Used to adjust projectile properties immediately before the projectile becomes an explosion....">Projectile.PrepareBombToBlow</a>, which is called by default during Projectile.AI_016 and during Projectile.Kill for the aforementioned projectiles. <br /></td></tr>
+<tr class="separator:a3e1c1e626e9d70055081f7492728e4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6df7860f82a22578b166b03838fa487a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a6df7860f82a22578b166b03838fa487a">ReceiveExtraAI</a> (BinaryReader reader)</td></tr>
 <tr class="memdesc:a6df7860f82a22578b166b03838fa487a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_mod_projectile.html#abed0119b6752f522f1ca54f3efd656f5" title="If you are storing AI information outside of the Projectile.ai array, use this to send that AI inform...">SendExtraAI</a>. <br  />
 Called whenever MessageID.SyncProjectile is successfully received. <br  />
@@ -366,7 +374,10 @@ virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>GlowTexture
 <tr class="separator:a3dc7232386718dacd571cf54b990315d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ca732aa351a6f08a92412c12b48015b"><td class="memItemLeft" align="right" valign="top"><a id="a4ca732aa351a6f08a92412c12b48015b" name="a4ca732aa351a6f08a92412c12b48015b"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b><code> [get]</code></td></tr>
-<tr class="memdesc:a4ca732aa351a6f08a92412c12b48015b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space. <br /></td></tr>
+<tr class="memdesc:a4ca732aa351a6f08a92412c12b48015b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space. <br  />
+ The resulting Asset&lt;Texture2D&gt; can be retrieved using TextureAssets.Projectile indexed by <a class="el" href="class_mod_projectile.html#aeff3a47d89479ccce075059cd4fd2c70" title="Shorthand for Projectile.type;">Type</a> if needed. <br  />
+ You can use a vanilla texture by returning <code>$"Terraria/Images/Projectile_{ProjectileID.ProjectileNameHere}"</code> <br  />
+ <br /></td></tr>
 <tr class="separator:a4ca732aa351a6f08a92412c12b48015b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeff3a47d89479ccce075059cd4fd2c70"><td class="memItemLeft" align="right" valign="top"><a id="aeff3a47d89479ccce075059cd4fd2c70" name="aeff3a47d89479ccce075059cd4fd2c70"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</code></td></tr>
@@ -869,7 +880,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things in front of this projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false. </p>
+<p>Allows you to draw things in front of this projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. This method is called even if PreDraw returns false. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lightColor</td><td>The color of the light at the projectile's center, after being modified by vanilla and other mods. </td></tr>
@@ -931,7 +942,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default. </p>
+<p>Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lightColor</td><td>The color of the light at the projectile's center. </td></tr>

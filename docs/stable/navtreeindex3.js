@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_dust.html#af80c445e506df08a3f7fd46cb7b04aa6":[3,0,293,12],
 "class_dust.html#afa20260dc72a4f7e30d95d778eec78c4":[3,0,293,3],
 "class_dust_i_d.html":[3,0,294],
 "class_dust_i_d.html#a07acb16baff2b81d98769f3e50f7f122":[3,0,294,12],
@@ -44,6 +45,8 @@ var NAVTREEINDEX3 =
 "class_emote_bubble_loader.html":[3,0,301],
 "class_emote_bubble_loader.html#af7f41a3aafdadb01ed0d4bafe40fad0f":[3,0,301,0],
 "class_emote_button.html":[3,0,302],
+"class_emote_button.html#a8a3e32b6c074facc577bad3b31202696":[3,0,302,0],
+"class_emote_button.html#ab7312f19fe1a2e2d86034ecdd7ce0c1d":[3,0,302,1],
 "class_emote_command.html":[3,0,303],
 "class_emote_i_d.html":[3,0,304],
 "class_emote_i_d_1_1_category.html":[3,0,304,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "class_forest_biome.html":[3,0,407],
 "class_found_workshop_entry_info.html":[3,0,408],
 "class_frame_skip_test.html":[3,0,410],
-"class_framework_version.html":[3,0,411],
-"class_framing.html":[3,0,412],
-"class_friends_social_module.html":[3,0,413],
-"class_from_options_without_repeats_drop_rule.html":[3,0,414]
+"class_framework_version.html":[3,0,411]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -102,7 +102,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddOrRemoveChi
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawHoverStringInBounds</b> (SpriteBatch spriteBatch, string text, Rectangle? bounds=null)</td></tr>
 <tr class="separator:a7547c822bf2af4cc07ecb2c791d2f841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5d01f7b8213dfe546b0b210b19d446b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_i_common.html#ae5d01f7b8213dfe546b0b210b19d446b">TooltipMouseText</a> (string text)</td></tr>
-<tr class="memdesc:ae5d01f7b8213dfe546b0b210b19d446b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Functions like Main.instance.MouseText, but adds the same background seen in tooltips to the text  <a href="class_u_i_common.html#ae5d01f7b8213dfe546b0b210b19d446b">More...</a><br /></td></tr>
+<tr class="memdesc:ae5d01f7b8213dfe546b0b210b19d446b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a tooltip on the mouse cursor. Functions like <a class="el" href="class_main.html#ac7053526b696695cc4ca5efc035fd83a" title="Sets the tooltip text to be drawn next to the cursor. If used in conjunction with Main....">Main.MouseText(string, int, byte, int, int, int, int, int)</a> and <a class="el" href="class_main.html#afdcdab1d09721f9468fed4d2e562e47c" title="Sets the tooltip text to be drawn next to the cursor. Will be ignored if Main.mouseItem is not air,...">Main.hoverItemName</a>, but adds the same background seen in item tooltips behind the text.  <a href="class_u_i_common.html#ae5d01f7b8213dfe546b0b210b19d446b">More...</a><br /></td></tr>
 <tr class="separator:ae5d01f7b8213dfe546b0b210b19d446b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57fce6df553b6c72b0d3fd4c8269f0f1"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_i_common.html#a57fce6df553b6c72b0d3fd4c8269f0f1">WithFadedMouseOver&lt; T &gt;</a> (this T elem, Color overColor=default, Color outColor=default, Color overBorderColor=default, Color outBorderColor=default)</td></tr>
 <tr class="separator:a57fce6df553b6c72b0d3fd4c8269f0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,6 +214,9 @@ static Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="botto
 <tr class="memitem:aaf0ac736e9da4b2227610ca74200c2af"><td class="memItemLeft" align="right" valign="top"><a id="aaf0ac736e9da4b2227610ca74200c2af" name="aaf0ac736e9da4b2227610ca74200c2af"></a>
 static Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ModBrowserIconsTexture</b><code> [get, set]</code></td></tr>
 <tr class="separator:aaf0ac736e9da4b2227610ca74200c2af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a042e4c32210ed2ab75a8db5613ad17b6"><td class="memItemLeft" align="right" valign="top"><a id="a042e4c32210ed2ab75a8db5613ad17b6" name="a042e4c32210ed2ab75a8db5613ad17b6"></a>
+static Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ModLocationLocalIcon</b><code> [get, set]</code></td></tr>
+<tr class="separator:a042e4c32210ed2ab75a8db5613ad17b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6f2faa4c50cdf6945a0a2723ae07fe6"><td class="memItemLeft" align="right" valign="top"><a id="af6f2faa4c50cdf6945a0a2723ae07fe6" name="af6f2faa4c50cdf6945a0a2723ae07fe6"></a>
 static Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ModLocationModPackIcon</b><code> [get, set]</code></td></tr>
 <tr class="separator:af6f2faa4c50cdf6945a0a2723ae07fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,7 +249,7 @@ static Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="botto
 </table>
 </div><div class="memdoc">
 
-<p>Functions like Main.instance.MouseText, but adds the same background seen in tooltips to the text </p>
+<p>Draws a tooltip on the mouse cursor. Functions like <a class="el" href="class_main.html#ac7053526b696695cc4ca5efc035fd83a" title="Sets the tooltip text to be drawn next to the cursor. If used in conjunction with Main....">Main.MouseText(string, int, byte, int, int, int, int, int)</a> and <a class="el" href="class_main.html#afdcdab1d09721f9468fed4d2e562e47c" title="Sets the tooltip text to be drawn next to the cursor. Will be ignored if Main.mouseItem is not air,...">Main.hoverItemName</a>, but adds the same background seen in item tooltips behind the text. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">text</td><td></td></tr>

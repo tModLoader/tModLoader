@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -180,6 +180,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultToWhip</b> ()<
 <tr class="separator:a92b89002ab9eab96b10ff83f5209e040"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa66acc1f00862c2a8057513498e452d9"><td class="memItemLeft" align="right" valign="top"><a id="aa66acc1f00862c2a8057513498e452d9" name="aa66acc1f00862c2a8057513498e452d9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>EmitEnchantmentVisualsAt</b> (Vector2 boxPosition, int boxWidth, int boxHeight)</td></tr>
+<tr class="memdesc:aa66acc1f00862c2a8057513498e452d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns weapon enchantment visuals the specified location. <em>boxPosition</em>  is the top left corner of the intended spawn area and <em>boxWidth</em>  and <em>boxHeight</em>  dictate the spawn area. This method is automatically called for all projectiles that are not <a class="el" href="class_projectile.html#abe3803a7cad9a036d46d49a07cfed50a" title="If true, this projectile was spawned by a friendly Town NPC.">npcProj</a> and not <a class="el" href="class_projectile.html#aa0caf8d064a681508017326f184f489d" title="If true, this projectile will not have EmitEnchantmentVisualsAt(Vector2, int, int) called automatical...">noEnchantmentVisuals</a>. Modders can use <a class="el" href="class_projectile.html#aa0caf8d064a681508017326f184f489d" title="If true, this projectile will not have EmitEnchantmentVisualsAt(Vector2, int, int) called automatical...">noEnchantmentVisuals</a> to prevent the automatic calling of this method and manually call this method in <a class="el" href="class_mod_projectile.html#a83a2115efe34d20f142aaaec797d22d1" title="Allows you to determine how this projectile behaves. This will only be called if PreAI returns true....">ModProjectile.AI</a> to customize the intended enchantment visuals position. Set <a class="el" href="class_projectile.html#a23046e06b5013cd46e42576bb467cfba" title="If true, this projectile will not benefit from weapon enchantments such as flasks,...">noEnchantments</a> to true on projectiles that shouldn't have enchantment visuals or effects at all. <br /></td></tr>
 <tr class="separator:aa66acc1f00862c2a8057513498e452d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a950102069b0188eadb3bab914754c239"><td class="memItemLeft" align="right" valign="top"><a id="a950102069b0188eadb3bab914754c239" name="a950102069b0188eadb3bab914754c239"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ExplodeCrackedTiles</b> (Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)</td></tr>
@@ -230,6 +231,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ghostHeal</b> (int dm
 <tr class="memitem:a1fe3aef3a052eee68c6be9a7c475da24"><td class="memItemLeft" align="right" valign="top"><a id="a1fe3aef3a052eee68c6be9a7c475da24" name="a1fe3aef3a052eee68c6be9a7c475da24"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ghostHurt</b> (int dmg, Vector2 Position, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
 <tr class="separator:a1fe3aef3a052eee68c6be9a7c475da24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40ec930728c7494383d7b9e88d7cd1c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#a40ec930728c7494383d7b9e88d7cd1c9">HurtPlayer</a> (Rectangle hitbox)</td></tr>
+<tr class="memdesc:a40ec930728c7494383d7b9e88d7cd1c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hurts the local player if the player intersects the specified hitbox.  <a href="class_projectile.html#a40ec930728c7494383d7b9e88d7cd1c9">More...</a><br /></td></tr>
+<tr class="separator:a40ec930728c7494383d7b9e88d7cd1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9394d7c09a01d27d53e42746d7f7f479"><td class="memItemLeft" align="right" valign="top"><a id="a9394d7c09a01d27d53e42746d7f7f479" name="a9394d7c09a01d27d53e42746d7f7f479"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Interrupt</b> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:a9394d7c09a01d27d53e42746d7f7f479"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,6 +261,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Kill_DirtAndFluidProj
 <tr class="memitem:a48e1fa3aef564a625b503bc6d507ca21"><td class="memItemLeft" align="right" valign="top"><a id="a48e1fa3aef564a625b503bc6d507ca21" name="a48e1fa3aef564a625b503bc6d507ca21"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Minion_FindTargetInRange</b> (int startAttackRange, ref int attackTarget, bool skipIfCannotHitWithOwnBody, Func&lt; <a class="el" href="class_entity.html">Entity</a>, int, bool &gt; customEliminationCheck=null)</td></tr>
 <tr class="separator:a48e1fa3aef564a625b503bc6d507ca21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3741d0a9228a5aa38b97732f659236cb"><td class="memItemLeft" align="right" valign="top"><a id="a3741d0a9228a5aa38b97732f659236cb" name="a3741d0a9228a5aa38b97732f659236cb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PrepareBombToBlow</b> ()</td></tr>
+<tr class="memdesc:a3741d0a9228a5aa38b97732f659236cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <a class="el" href="class_proj_a_i_style_i_d.html#a1516383015bc0311f5003dc05905bd92" title="Note that projectiles using ProjectileID.Sets.Explosive will utilize much of the custom logic corresp...">ProjAIStyleID.Explosive</a> aiStyle or projectiles that are contained in the <a class="el" href="class_projectile_i_d_1_1_sets.html#a7350c2bce03eca2dc7c4e7d5f1043539" title="Contains all of the projectiles that are classified as explosives. This includes all vanilla projecti...">ProjectileID.Sets.Explosive</a> set. By defaults tileCollide is set to false and alpha is set to 255. Calls the ProjectileLoader.PrepareBombToBlow(Projectile) method. <br /></td></tr>
+<tr class="separator:a3741d0a9228a5aa38b97732f659236cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accddeb879568b5ebf45059df902e0a48"><td class="memItemLeft" align="right" valign="top"><a id="accddeb879568b5ebf45059df902e0a48" name="accddeb879568b5ebf45059df902e0a48"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ProjectileFixDesperation</b> ()</td></tr>
 <tr class="separator:accddeb879568b5ebf45059df902e0a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,8 +309,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetContainerIndex<
 <tr class="memitem:a8af7eeb8df132127746791f7593072fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#a8af7eeb8df132127746791f7593072fa">TryGetGlobalProjectile&lt; T &gt;</a> (T baseInstance, out T result)</td></tr>
 <tr class="memdesc:a8af7eeb8df132127746791f7593072fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to get the local instance of the type of the specified <a class="el" href="class_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a> instance.  <a href="class_projectile.html#a8af7eeb8df132127746791f7593072fa">More...</a><br /></td></tr>
 <tr class="separator:a8af7eeb8df132127746791f7593072fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62c8f3abdb1edf184940b112369fbded"><td class="memItemLeft" align="right" valign="top"><a id="a62c8f3abdb1edf184940b112369fbded" name="a62c8f3abdb1edf184940b112369fbded"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetOwner</b> ([NotNullWhen(true)] out <a class="el" href="class_player.html">Player</a>? player)</td></tr>
+<tr class="memitem:a62c8f3abdb1edf184940b112369fbded"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#a62c8f3abdb1edf184940b112369fbded">TryGetOwner</a> ([NotNullWhen(true)] out <a class="el" href="class_player.html">Player</a>? player)</td></tr>
+<tr class="memdesc:a62c8f3abdb1edf184940b112369fbded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to get the owner player of this projectile. Returns null for projectiles spawned by TownNPC (<a class="el" href="class_projectile.html#abe3803a7cad9a036d46d49a07cfed50a" title="If true, this projectile was spawned by a friendly Town NPC.">npcProj</a>) and trap projectiles (<a class="el" href="class_projectile.html#a246379dc8ed501ac730e304d2d883c38" title="If true, this projectile was spawned by a trap tile.">trap</a>). Returns <code><a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a>[owner]</code> otherwise. Note that this logic assumes that projectiles have the correct fields set, which might not always be true. Also note that in single player enemy projectiles are also "owned" by the player, so this alone isn't sufficient to know which projectiles were spawned by the player. Additional <a class="el" href="class_projectile.html#ac64a90bef6c47cf5804770e63f522a87" title="If True, this projectile will hurt enemies (!NPC.friendly)   Defaults to false.">friendly</a> checks would be needed for that.  <a href="class_projectile.html#a62c8f3abdb1edf184940b112369fbded">More...</a><br /></td></tr>
 <tr class="separator:a62c8f3abdb1edf184940b112369fbded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a093adf0629e541ce7cf668eba1d3e2c7"><td class="memItemLeft" align="right" valign="top"><a id="a093adf0629e541ce7cf668eba1d3e2c7" name="a093adf0629e541ce7cf668eba1d3e2c7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TurretShouldPersist</b> ()</td></tr>
@@ -645,9 +653,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>noDropItem</b></td></
 <tr class="separator:a95a0fb8d78cb68614912e58eb4442d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23046e06b5013cd46e42576bb467cfba"><td class="memItemLeft" align="right" valign="top"><a id="a23046e06b5013cd46e42576bb467cfba" name="a23046e06b5013cd46e42576bb467cfba"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noEnchantments</b></td></tr>
+<tr class="memdesc:a23046e06b5013cd46e42576bb467cfba"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this projectile will not benefit from weapon enchantments such as flasks, frost armor, or magma stone effects. This means the projectile won't inflict associated buffs or spawn associated visuals. Defaults to false. <br /></td></tr>
 <tr class="separator:a23046e06b5013cd46e42576bb467cfba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0caf8d064a681508017326f184f489d"><td class="memItemLeft" align="right" valign="top"><a id="aa0caf8d064a681508017326f184f489d" name="aa0caf8d064a681508017326f184f489d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noEnchantmentVisuals</b></td></tr>
+<tr class="memdesc:aa0caf8d064a681508017326f184f489d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this projectile will not have <a class="el" href="class_projectile.html#aa66acc1f00862c2a8057513498e452d9" title="Spawns weapon enchantment visuals the specified location. boxPosition  is the top left corner of the ...">EmitEnchantmentVisualsAt(Vector2, int, int)</a> called automatically. This can be set to true for projectiles that wish to manually call <a class="el" href="class_projectile.html#aa66acc1f00862c2a8057513498e452d9" title="Spawns weapon enchantment visuals the specified location. boxPosition  is the top left corner of the ...">EmitEnchantmentVisualsAt(Vector2, int, int)</a> in AI methods for finer control over the spawn location of enchantment visuals. Use <a class="el" href="class_projectile.html#a23046e06b5013cd46e42576bb467cfba" title="If true, this projectile will not benefit from weapon enchantments such as flasks,...">noEnchantments</a> instead to indicate that the projectile is not suitable for weapon enchantment effects at all and shouldn't inflict associated buffs either. Defaults to false. <br /></td></tr>
 <tr class="separator:aa0caf8d064a681508017326f184f489d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe3803a7cad9a036d46d49a07cfed50a"><td class="memItemLeft" align="right" valign="top"><a id="abe3803a7cad9a036d46d49a07cfed50a" name="abe3803a7cad9a036d46d49a07cfed50a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>npcProj</b></td></tr>
@@ -739,7 +749,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>spriteDirection</b> = 
 <tr class="separator:adcfa852c26b6a7bb3896d3e27d97acc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfca3a77d8685f83d806ea045399c3a7"><td class="memItemLeft" align="right" valign="top"><a id="acfca3a77d8685f83d806ea045399c3a7" name="acfca3a77d8685f83d806ea045399c3a7"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>stepSpeed</b> = 1f</td></tr>
-<tr class="memdesc:acfca3a77d8685f83d806ea045399c3a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has nothing to do with the speed that this projectile travels, that is dictated by AI code adjusting <a class="el" href="class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168" title="The velocity of this Entity in world coordinates per tick.">Entity.velocity</a>. <br /></td></tr>
+<tr class="memdesc:acfca3a77d8685f83d806ea045399c3a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has nothing to do with the speed that this projectile travels, that is dictated by AI code adjusting <a class="el" href="class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168" title="The velocity of this Entity in world coordinates per tick.">Entity.velocity</a>. This affects how quickly <a class="el" href="class_projectile.html#a8086d1cdae48cc3a28cce5ec592b6684" title="An offset from the actual position of the projectile that will be added to the draw position....">gfxOffY</a> is adjusted. <br /></td></tr>
 <tr class="separator:acfca3a77d8685f83d806ea045399c3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a429ede72a0f9a3eec95ab976b8510551"><td class="memItemLeft" align="right" valign="top"><a id="a429ede72a0f9a3eec95ab976b8510551" name="a429ede72a0f9a3eec95ab976b8510551"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>stopsDealingDamageAfterPenetrateHits</b></td></tr>
@@ -1025,7 +1035,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>true</code> if this projectiles's <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> matches <em>damageClass</em> , <code>false</code> otherwise</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if this projectile's <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> matches <em>damageClass</em> , <code>false</code> otherwise</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_projectile.html#aa563376ec59229db5f0f0be3c8ac3f9b">CountsAsClass&lt;T&gt;</a></dd></dl>
 
 </div>
@@ -1204,6 +1214,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a40ec930728c7494383d7b9e88d7cd1c9" name="a40ec930728c7494383d7b9e88d7cd1c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40ec930728c7494383d7b9e88d7cd1c9">&#9670;&nbsp;</a></span>HurtPlayer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Projectile.HurtPlayer </td>
+          <td>(</td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>hitbox</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Hurts the local player if the player intersects the specified hitbox. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hitbox</td><td>Typically the Entity.Hitbox, but any other Rectangle can be passed.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1492,6 +1528,33 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a62c8f3abdb1edf184940b112369fbded" name="a62c8f3abdb1edf184940b112369fbded"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62c8f3abdb1edf184940b112369fbded">&#9670;&nbsp;</a></span>TryGetOwner()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Projectile.TryGetOwner </td>
+          <td>(</td>
+          <td class="paramtype">[NotNullWhen(true)] out <a class="el" href="class_player.html">Player</a>?&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attempts to get the owner player of this projectile. Returns null for projectiles spawned by TownNPC (<a class="el" href="class_projectile.html#abe3803a7cad9a036d46d49a07cfed50a" title="If true, this projectile was spawned by a friendly Town NPC.">npcProj</a>) and trap projectiles (<a class="el" href="class_projectile.html#a246379dc8ed501ac730e304d2d883c38" title="If true, this projectile was spawned by a trap tile.">trap</a>). Returns <code><a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a>[owner]</code> otherwise. Note that this logic assumes that projectiles have the correct fields set, which might not always be true. Also note that in single player enemy projectiles are also "owned" by the player, so this alone isn't sufficient to know which projectiles were spawned by the player. Additional <a class="el" href="class_projectile.html#ac64a90bef6c47cf5804770e63f522a87" title="If True, this projectile will hurt enemies (!NPC.friendly)   Defaults to false.">friendly</a> checks would be needed for that. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

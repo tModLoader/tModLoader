@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -195,9 +195,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (Bin
 Public Attributes</h2></td></tr>
 <tr class="memitem:a359aa4330130859cf7fe59a3fc8e0f12"><td class="memItemLeft" align="right" valign="top"><a id="a359aa4330130859cf7fe59a3fc8e0f12" name="a359aa4330130859cf7fe59a3fc8e0f12"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ID</b></td></tr>
+<tr class="memdesc:a359aa4330130859cf7fe59a3fc8e0f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">A unique ID for each <a class="el" href="class_tile_entity.html">TileEntity</a> instance in the world. <br /></td></tr>
 <tr class="separator:a359aa4330130859cf7fe59a3fc8e0f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a081b9deb4499fb7629a1ad5d54e0dedb"><td class="memItemLeft" align="right" valign="top"><a id="a081b9deb4499fb7629a1ad5d54e0dedb" name="a081b9deb4499fb7629a1ad5d54e0dedb"></a>
 <a class="el" href="struct_point16.html">Point16</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Position</b></td></tr>
+<tr class="memdesc:a081b9deb4499fb7629a1ad5d54e0dedb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tile coordinate location of this <a class="el" href="class_tile_entity.html">TileEntity</a>. Will typically be the top left corner of the corresponding multitile, but not necessarily. <br /></td></tr>
 <tr class="separator:a081b9deb4499fb7629a1ad5d54e0dedb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a185b8c59d1b23dc1c3588f5af6562d56"><td class="memItemLeft" align="right" valign="top"><a id="a185b8c59d1b23dc1c3588f5af6562d56" name="a185b8c59d1b23dc1c3588f5af6562d56"></a>
 byte&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
@@ -207,9 +209,11 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ab7804011f0846b3cc67f83b55f5b766a"><td class="memItemLeft" align="right" valign="top"><a id="ab7804011f0846b3cc67f83b55f5b766a" name="ab7804011f0846b3cc67f83b55f5b766a"></a>
 static Dictionary&lt; int, <a class="el" href="class_tile_entity.html">TileEntity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ByID</b> = new Dictionary&lt;int, <a class="el" href="class_tile_entity.html">TileEntity</a>&gt;()</td></tr>
+<tr class="memdesc:ab7804011f0846b3cc67f83b55f5b766a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps <a class="el" href="class_tile_entity.html#a359aa4330130859cf7fe59a3fc8e0f12" title="A unique ID for each TileEntity instance in the world.">ID</a> to <a class="el" href="class_tile_entity.html">TileEntity</a> instances. <br /></td></tr>
 <tr class="separator:ab7804011f0846b3cc67f83b55f5b766a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85c0c3f8d2b5645dc89880c75e59dc2e"><td class="memItemLeft" align="right" valign="top"><a id="a85c0c3f8d2b5645dc89880c75e59dc2e" name="a85c0c3f8d2b5645dc89880c75e59dc2e"></a>
 static Dictionary&lt; <a class="el" href="struct_point16.html">Point16</a>, <a class="el" href="class_tile_entity.html">TileEntity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ByPosition</b> = new Dictionary&lt;<a class="el" href="struct_point16.html">Point16</a>, <a class="el" href="class_tile_entity.html">TileEntity</a>&gt;()</td></tr>
+<tr class="memdesc:a85c0c3f8d2b5645dc89880c75e59dc2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps tile coordinate locations to the <a class="el" href="class_tile_entity.html">TileEntity</a> at that location. <br /></td></tr>
 <tr class="separator:a85c0c3f8d2b5645dc89880c75e59dc2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7506b3f655c66a6db9c5b2d3b1eb368"><td class="memItemLeft" align="right" valign="top"><a id="aa7506b3f655c66a6db9c5b2d3b1eb368" name="aa7506b3f655c66a6db9c5b2d3b1eb368"></a>
 static object&#160;</td><td class="memItemRight" valign="bottom"><b>EntityCreationLock</b> = new object()</td></tr>
@@ -300,7 +304,7 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 <b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
   </table>
   </dd>
 </dl>
@@ -491,7 +495,7 @@ Only called on the server. </p>
 <b>NOTE:</b> Try to only save data that isn't default values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
   </table>
   </dd>
 </dl>

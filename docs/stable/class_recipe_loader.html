@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -106,7 +106,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:aeaaa89370b17536181962f67826a9a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list  <a href="class_recipe_loader.html#aeaaa89370b17536181962f67826a9a96">More...</a><br /></td></tr>
 <tr class="separator:aeaaa89370b17536181962f67826a9a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fbc49b0d67cab5ad394254ac71ace11"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_loader.html#a9fbc49b0d67cab5ad394254ac71ace11">OnCraft</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_recipe.html">Recipe</a> recipe, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_item.html">Item</a> &gt; consumedItems, <a class="el" href="class_item.html">Item</a> destinationStack)</td></tr>
-<tr class="memdesc:a9fbc49b0d67cab5ad394254ac71ace11"><td class="mdescLeft">&#160;</td><td class="mdescRight">recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeCreationContext  <a href="class_recipe_loader.html#a9fbc49b0d67cab5ad394254ac71ace11">More...</a><br /></td></tr>
+<tr class="memdesc:a9fbc49b0d67cab5ad394254ac71ace11"><td class="mdescLeft">&#160;</td><td class="mdescRight">recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a <a class="el" href="class_recipe_item_creation_context.html" title="Provides the context of an item being crafted from a recipe. Includes the recipe, consumed items,...">RecipeItemCreationContext</a>  <a href="class_recipe_loader.html#a9fbc49b0d67cab5ad394254ac71ace11">More...</a><br /></td></tr>
 <tr class="separator:a9fbc49b0d67cab5ad394254ac71ace11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1ba4f356bc304c908e6fb81c26acf35"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_loader.html#ac1ba4f356bc304c908e6fb81c26acf35">RecipeAvailable</a> (<a class="el" href="class_recipe.html">Recipe</a> recipe)</td></tr>
 <tr class="memdesc:ac1ba4f356bc304c908e6fb81c26acf35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not the conditions are met for this recipe to be available for the player to use.  <a href="class_recipe_loader.html#ac1ba4f356bc304c908e6fb81c26acf35">More...</a><br /></td></tr>
@@ -300,7 +300,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeCreationContext </p>
+<p>recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a <a class="el" href="class_recipe_item_creation_context.html" title="Provides the context of an item being crafted from a recipe. Includes the recipe, consumed items,...">RecipeItemCreationContext</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item crafted.</td></tr>

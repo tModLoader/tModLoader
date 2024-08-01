@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -2692,6 +2692,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>gravControl2</b></td>
 <tr class="separator:a86e664f3e0618f1b7778f5f3883f77b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51fc417963886ca80af4eaf5005b76d9"><td class="memItemLeft" align="right" valign="top"><a id="a51fc417963886ca80af4eaf5005b76d9" name="a51fc417963886ca80af4eaf5005b76d9"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>gravDir</b> = 1f</td></tr>
+<tr class="memdesc:a51fc417963886ca80af4eaf5005b76d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The players gravity direction. <b>1</b> if normal, <b>-1</b> if reversed. Defaults to <b>1</b>.<br /></td></tr>
 <tr class="separator:a51fc417963886ca80af4eaf5005b76d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade14f7db2c11604e57d2010ae2586834"><td class="memItemLeft" align="right" valign="top"><a id="ade14f7db2c11604e57d2010ae2586834" name="ade14f7db2c11604e57d2010ae2586834"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>gravity</b> = defaultGravity</td></tr>
@@ -3341,6 +3342,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>MountFishronSpecialC
 <tr class="separator:a33e2343b5ad31c0bd4a634550fb3fa81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa535eb16289ef45e6af555a9307b286a"><td class="memItemLeft" align="right" valign="top"><a id="aa535eb16289ef45e6af555a9307b286a" name="aa535eb16289ef45e6af555a9307b286a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>mouseInterface</b></td></tr>
+<tr class="memdesc:aa535eb16289ef45e6af555a9307b286a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the mouse is currently overlapping with a user interface so any mouse interaction should be not be interpreted as gameplay input, such as using items. UIElements that should block user interaction typically check <code>ContainsPoint(<a class="el" href="class_main.html#a4061437db22d405c4ca0303118ddc190" title="Fetches the position of the mouse cursor on the screen.  Useful for making things visually happen nea...">Main.MouseScreen</a>)</code> in the Update method to determine if mouseInterface should be set to true. <br /></td></tr>
 <tr class="separator:aa535eb16289ef45e6af555a9307b286a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a335a4709d5eec6aca2c78acfd51d4bec"><td class="memItemLeft" align="right" valign="top"><a id="a335a4709d5eec6aca2c78acfd51d4bec" name="a335a4709d5eec6aca2c78acfd51d4bec"></a>
 <a class="el" href="struct_player_movement_accs_cache.html">PlayerMovementAccsCache</a>&#160;</td><td class="memItemRight" valign="bottom"><b>movementAbilitiesCache</b></td></tr>
@@ -4268,6 +4270,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>step</b> = -1</td></tr
 <tr class="separator:a4328a2737318d925ecf41577fbbf4cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af27b9a003fd992b4f251407c5d846c59"><td class="memItemLeft" align="right" valign="top"><a id="af27b9a003fd992b4f251407c5d846c59" name="af27b9a003fd992b4f251407c5d846c59"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>stepSpeed</b> = 1f</td></tr>
+<tr class="memdesc:af27b9a003fd992b4f251407c5d846c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has nothing to do with the speed that this player travels, that is dictated by <a class="el" href="class_player.html#af75dce28d0c467e06f984717a283ebcb" title="The multiplier on this player&#39;s maxRunSpeed and runAcceleration. This affects how quickly the player ...">moveSpeed</a> and related fields. This affects how quickly <a class="el" href="class_player.html#a50056c148e9e99495fa90b3698bf0825" title="An offset from the actual position of the player that will be added to the draw position....">gfxOffY</a> is adjusted. <br /></td></tr>
 <tr class="separator:af27b9a003fd992b4f251407c5d846c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8034204eb0f461fc99666601b2c2dfc1"><td class="memItemLeft" align="right" valign="top"><a id="a8034204eb0f461fc99666601b2c2dfc1" name="a8034204eb0f461fc99666601b2c2dfc1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>sticky</b></td></tr>
@@ -4922,6 +4925,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Male</b><code> [get, 
 <tr class="memitem:a29a7fbf2aa0149211bd938bf0b00485b"><td class="memItemLeft" align="right" valign="top"><a id="a29a7fbf2aa0149211bd938bf0b00485b" name="a29a7fbf2aa0149211bd938bf0b00485b"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxBuffs</b><code> [get]</code></td></tr>
 <tr class="separator:a29a7fbf2aa0149211bd938bf0b00485b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91fe76cd61dbf75ebd41d60c9ee1e7dd"><td class="memItemLeft" align="right" valign="top"><a id="a91fe76cd61dbf75ebd41d60c9ee1e7dd" name="a91fe76cd61dbf75ebd41d60c9ee1e7dd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>MeleeEnchantActive</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a91fe76cd61dbf75ebd41d60c9ee1e7dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks or sets <a class="el" href="class_player.html#a3c875d8d31efcf7202eff6d30b24814d" title="The vanilla flask effect which the player currently has active; these affect all melee weapons and wh...">meleeEnchant</a>, indicating if a melee enchantment is active or not. Mods can check the <a class="el" href="class_player.html#a3c875d8d31efcf7202eff6d30b24814d" title="The vanilla flask effect which the player currently has active; these affect all melee weapons and wh...">meleeEnchant</a> value directly to act on existing melee enchantments, but modded melee enchantments do not have specific assigned values. <br /></td></tr>
+<tr class="separator:a91fe76cd61dbf75ebd41d60c9ee1e7dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a958291d722f4d80aa62bfa46ec031856"><td class="memItemLeft" align="right" valign="top"><a id="a958291d722f4d80aa62bfa46ec031856" name="a958291d722f4d80aa62bfa46ec031856"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>miscCounterNormalized</b><code> [get]</code></td></tr>
 <tr class="separator:a958291d722f4d80aa62bfa46ec031856"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -393,6 +393,7 @@ Can be called on both server and client.  <a href="class_mod_item.html#a80e9898e
 <tr class="separator:a44335a4cb0096527824a56e993cfe0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9bdc2b854e7d169abc1f544ded45c95"><td class="memItemLeft" align="right" valign="top"><a id="ac9bdc2b854e7d169abc1f544ded45c95" name="ac9bdc2b854e7d169abc1f544ded45c95"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreated</b> (<a class="el" href="class_item_creation_context.html">ItemCreationContext</a> context)</td></tr>
+<tr class="memdesc:ac9bdc2b854e7d169abc1f544ded45c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when this item is created. The <em>context</em>  parameter indicates the context of the item creation and can be used in logic for the desired effect. Known <a class="el" href="class_item_creation_context.html">ItemCreationContext</a> include: <a class="el" href="class_initialization_item_creation_context.html">InitializationItemCreationContext</a>, <a class="el" href="class_buy_item_creation_context.html" title="Created in the context of a player buying an item from a shop. Very similar to RecipeItemCreationCont...">BuyItemCreationContext</a>, <a class="el" href="class_journey_duplication_item_creation_context.html">JourneyDuplicationItemCreationContext</a>, and <a class="el" href="class_recipe_item_creation_context.html" title="Provides the context of an item being crafted from a recipe. Includes the recipe, consumed items,...">RecipeItemCreationContext</a>. Some of these provide additional context such as how <a class="el" href="class_recipe_item_creation_context.html" title="Provides the context of an item being crafted from a recipe. Includes the recipe, consumed items,...">RecipeItemCreationContext</a> includes the items consumed to craft this created item. <br /></td></tr>
 <tr class="separator:ac9bdc2b854e7d169abc1f544ded45c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada827c002db2588cdfe24cfc8c09f6cd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#ada827c002db2588cdfe24cfc8c09f6cd">OnHitNPC</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_n_p_c.html">NPC</a> target, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit, int damageDone)</td></tr>
 <tr class="memdesc:ada827c002db2588cdfe24cfc8c09f6cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this melee weapon hits an <a class="el" href="class_n_p_c.html">NPC</a> (for example how the Pumpkin Sword creates pumpkin heads). <br  />
@@ -2515,7 +2516,7 @@ This is only called when attempting to stack with an item of the same type. </p>
 <b>Try to write defensive loading code that won't crash if something's missing.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to load data from. </td></tr>
   </table>
   </dd>
 </dl>
@@ -4486,7 +4487,7 @@ Can be called on both server and client. </p>
 <b>NOTE:</b> Try to only save data that isn't default values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </td></tr>
   </table>
   </dd>
 </dl>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -175,6 +175,9 @@ Return true to allow this <a class="el" href="class_n_p_c.html">NPC</a> to fall 
 <tr class="memitem:adee4ae354ba3ad2285be2cf7a3ab3234"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#adee4ae354ba3ad2285be2cf7a3ab3234">CanTownNPCSpawn</a> (int numTownNPCs)</td></tr>
 <tr class="memdesc:adee4ae354ba3ad2285be2cf7a3ab3234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the conditions have been met for this town <a class="el" href="class_n_p_c.html">NPC</a> to be able to move into town. For example, the Demolitionist requires that any player has an explosive.  <a href="class_mod_n_p_c.html#adee4ae354ba3ad2285be2cf7a3ab3234">More...</a><br /></td></tr>
 <tr class="separator:adee4ae354ba3ad2285be2cf7a3ab3234"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac16303f877056c0683199c9e0e7eaccd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ac16303f877056c0683199c9e0e7eaccd">ChatBubblePosition</a> (ref Vector2 position, ref SpriteEffects spriteEffects)</td></tr>
+<tr class="memdesc:ac16303f877056c0683199c9e0e7eaccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the location and sprite direction of the chat bubble that shows up while hovering over a Town <a class="el" href="class_n_p_c.html">NPC</a>.  <a href="class_mod_n_p_c.html#ac16303f877056c0683199c9e0e7eaccd">More...</a><br /></td></tr>
+<tr class="separator:ac16303f877056c0683199c9e0e7eaccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8690e744dc2cd66099c9d52799f00366"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">CheckActive</a> ()</td></tr>
 <tr class="memdesc:a8690e744dc2cd66099c9d52799f00366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to run the code for checking whether this <a class="el" href="class_n_p_c.html">NPC</a> will remain active. Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being despawned and to stop this <a class="el" href="class_n_p_c.html">NPC</a> from counting towards the limit for how many NPCs can exist near a player. Returns true by default.  <a href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">More...</a><br /></td></tr>
 <tr class="separator:a8690e744dc2cd66099c9d52799f00366"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,6 +203,9 @@ Return true to allow this <a class="el" href="class_n_p_c.html">NPC</a> to fall 
 <tr class="memitem:a69ca86691d005cfad6822f3e1bf12d33"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a69ca86691d005cfad6822f3e1bf12d33">DrawTownAttackSwing</a> (ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)</td></tr>
 <tr class="memdesc:a69ca86691d005cfad6822f3e1bf12d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize how this town <a class="el" href="class_n_p_c.html">NPC</a>'s weapon is drawn when this <a class="el" href="class_n_p_c.html">NPC</a> is swinging it (this <a class="el" href="class_n_p_c.html">NPC</a> must have an attack type (<a class="el" href="class_n_p_c_i_d_1_1_sets.html#a00330581d37514acedb24a24afda2a4f" title="Determines how a town NPC with the given NPC type (NPC.type) attacks. Use the corresponding hooks to ...">NPCID.Sets.AttackType</a>) of 3). <em>item</em>  is the Texture2D instance of the item to be drawn, <em>itemFrame</em>  is the section of the texture to draw, <em>itemSize</em>  is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), <em>scale</em>  is the multiplier for the item's drawing size, and <em>offset</em>  is the offset from which to draw the item from its normal position. The item texture can be any texture, but if it is an item texture you can use Main.GetItemDrawFrame(int, out Texture2D, out Rectangle) to set <em>item</em>  and <em>itemFrame</em>  easily.  <a href="class_mod_n_p_c.html#a69ca86691d005cfad6822f3e1bf12d33">More...</a><br /></td></tr>
 <tr class="separator:a69ca86691d005cfad6822f3e1bf12d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98e81e477e67592627123b794590f900"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a98e81e477e67592627123b794590f900">EmoteBubblePosition</a> (ref Vector2 position, ref SpriteEffects spriteEffects)</td></tr>
+<tr class="memdesc:a98e81e477e67592627123b794590f900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the location and sprite direction of the emote bubble when anchored to an <a class="el" href="class_n_p_c.html">NPC</a>.  <a href="class_mod_n_p_c.html#a98e81e477e67592627123b794590f900">More...</a><br /></td></tr>
+<tr class="separator:a98e81e477e67592627123b794590f900"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af372ab81defe98db878f181a8c66978c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#af372ab81defe98db878f181a8c66978c">FindFrame</a> (int frameHeight)</td></tr>
 <tr class="memdesc:af372ab81defe98db878f181a8c66978c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the frame from this <a class="el" href="class_n_p_c.html">NPC</a>'s texture that is drawn, which is necessary in order to animate NPCs.  <a href="class_mod_n_p_c.html#af372ab81defe98db878f181a8c66978c">More...</a><br /></td></tr>
 <tr class="separator:af372ab81defe98db878f181a8c66978c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -296,12 +302,19 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>NeedSaving</b
 <tr class="separator:a58ae99ead1ed73f15da32317d262176b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c1ad109db9314006a395886a967fe07"><td class="memItemLeft" align="right" valign="top"><a id="a2c1ad109db9314006a395886a967fe07" name="a2c1ad109db9314006a395886a967fe07"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKill</b> ()</td></tr>
-<tr class="memdesc:a2c1ad109db9314006a395886a967fe07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this <a class="el" href="class_n_p_c.html">NPC</a> dies (for example, dropping items and setting <a class="el" href="class_mod_system.html" title="ModSystem is an abstract class that your classes can derive from. It contains general-use hooks,...">ModSystem</a> fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect <br /></td></tr>
+<tr class="memdesc:a2c1ad109db9314006a395886a967fe07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this <a class="el" href="class_n_p_c.html">NPC</a> dies (for example, dropping items manually and setting <a class="el" href="class_mod_system.html" title="ModSystem is an abstract class that your classes can derive from. It contains general-use hooks,...">ModSystem</a> fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect. Most item drops should be done via drop rules registered in <a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304" title="Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary....">ModifyNPCLoot(NPCLoot)</a>. Some dynamic <a class="el" href="class_n_p_c.html">NPC</a> drops, such as additional hearts, are more suited for OnKill instead. MinionBossMinion.csshows an example of an <a class="el" href="class_n_p_c.html">NPC</a> that drops additional hearts. Bosses need to set flags when they are defeated, and some bosses run world generation code such as spawning new ore. MinionBossMinion.csshows an example of these effects. <br /></td></tr>
 <tr class="separator:a2c1ad109db9314006a395886a967fe07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f4875e42ba28150c072e4829261cba2"><td class="memItemLeft" align="right" valign="top"><a id="a7f4875e42ba28150c072e4829261cba2" name="a7f4875e42ba28150c072e4829261cba2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
 <tr class="memdesc:a7f4875e42ba28150c072e4829261cba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when your <a class="el" href="class_n_p_c.html">NPC</a> spawns in world <br /></td></tr>
 <tr class="separator:a7f4875e42ba28150c072e4829261cba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d490a106075934c826923f2229754b1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a6d490a106075934c826923f2229754b1">PartyHatPosition</a> (ref Vector2 position, ref SpriteEffects spriteEffects)</td></tr>
+<tr class="memdesc:a6d490a106075934c826923f2229754b1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+Allows you to fully control the location of the party and sprite direction of the party while an <a class="el" href="class_n_p_c.html">NPC</a> is wearing it. <br  />
+</p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_n_p_c_i_d_1_1_sets.html#ac5dc5c374fcf0ea44b57c6c4279522d2" title="The vertical offset, in pixels, that an NPC&#39;s party hat will draw with.   Defaults to 0.">NPCID.Sets.HatOffsetY</a>, <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a" title="The index for TownNPCsFramingGroups for a given NPC type (NPC.type). See TownNPCsFramingGroups for mo...">NPCID.Sets.NPCFramingGroup</a></dd></dl>
+<p>can be used instead of this hook for a constant Y offset. <br  />
+ can be additionally be used for the Y offset for the Town <a class="el" href="class_n_p_c.html">NPC</a>'s animations.  <a href="class_mod_n_p_c.html#a6d490a106075934c826923f2229754b1">More...</a><br /></td></tr>
+<tr class="separator:a6d490a106075934c826923f2229754b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc0c36e6b2f6b1ca72df7322e1ae2de9"><td class="memItemLeft" align="right" valign="top">virtual ? int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#acc0c36e6b2f6b1ca72df7322e1ae2de9">PickEmote</a> (<a class="el" href="class_player.html">Player</a> closestPlayer, <a class="el" href="class_list.html">List</a>&lt; int &gt; emoteList, <a class="el" href="class_world_u_i_anchor.html">WorldUIAnchor</a> otherAnchor)</td></tr>
 <tr class="memdesc:acc0c36e6b2f6b1ca72df7322e1ae2de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the emote that the <a class="el" href="class_n_p_c.html">NPC</a> will pick  <a href="class_mod_n_p_c.html#acc0c36e6b2f6b1ca72df7322e1ae2de9">More...</a><br /></td></tr>
 <tr class="separator:acc0c36e6b2f6b1ca72df7322e1ae2de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -517,7 +530,10 @@ int[]&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnModBiomes</b> =
 <tr class="separator:a393ace1e7d24a06a5fe8c480035aae9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe9614f80696a16a3077c59798c79de1"><td class="memItemLeft" align="right" valign="top"><a id="afe9614f80696a16a3077c59798c79de1" name="afe9614f80696a16a3077c59798c79de1"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b><code> [get]</code></td></tr>
-<tr class="memdesc:afe9614f80696a16a3077c59798c79de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space. <br /></td></tr>
+<tr class="memdesc:afe9614f80696a16a3077c59798c79de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space.<br  />
+ The resulting Asset&lt;Texture2D&gt; can be retrieved using TextureAssets.Npc indexed by <a class="el" href="class_mod_n_p_c.html#a059a3450ea046edaccbae919ad402dd2" title="Shorthand for NPC.type;">Type</a> if needed. <br  />
+ You can use a vanilla texture by returning <code>$"Terraria/Images/NPC_{NPCID.NPCNameHere}"</code> <br  />
+ <br /></td></tr>
 <tr class="separator:afe9614f80696a16a3077c59798c79de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afae30a515fd028d186975bdad2495c52"><td class="memItemLeft" align="right" valign="top"><a id="afae30a515fd028d186975bdad2495c52" name="afae30a515fd028d186975bdad2495c52"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TownNPCStayingHomeless</b><code> [get, set]</code></td></tr>
@@ -1173,6 +1189,56 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 
 </div>
 </div>
+<a id="ac16303f877056c0683199c9e0e7eaccd" name="ac16303f877056c0683199c9e0e7eaccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac16303f877056c0683199c9e0e7eaccd">&#9670;&nbsp;</a></span>ChatBubblePosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModNPC.ChatBubblePosition </td>
+          <td>(</td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref SpriteEffects&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to change the location and sprite direction of the chat bubble that shows up while hovering over a Town <a class="el" href="class_n_p_c.html">NPC</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td><br  />
+The default position is: <br  />
+The X component is set to the <a class="el" href="class_n_p_c.html">NPC</a>'s Center - half the width of the chat bubble texture. Then +/- half of the <a class="el" href="class_n_p_c.html">NPC</a>'s width + 8 pixels for facing right/left respectively. <br  />
+Code: <code>npc.Center.X - screenPosition.X - (TextureAssets.Chat.Width() / 2f) +/- (npc.width / 2f + 8)</code> <br  />
+The Y component is set to the top of the <a class="el" href="class_n_p_c.html">NPC</a> - the height of the chat bubble texture. (Negative Y is up.) <br  />
+Code: <code>npc.position.Y - TextureAssets.Chat.Height() - (float)(int)screenPosition.Y</code> </td></tr>
+    <tr><td class="paramname">spriteEffects</td><td>Allows you to change which way the chat bubble is flipped.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8690e744dc2cd66099c9d52799f00366" name="a8690e744dc2cd66099c9d52799f00366"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8690e744dc2cd66099c9d52799f00366">&#9670;&nbsp;</a></span>CheckActive()</h2>
 
@@ -1558,6 +1624,58 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
     <tr><td class="paramname">itemSize</td><td></td></tr>
     <tr><td class="paramname">scale</td><td></td></tr>
     <tr><td class="paramname">offset</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a98e81e477e67592627123b794590f900" name="a98e81e477e67592627123b794590f900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98e81e477e67592627123b794590f900">&#9670;&nbsp;</a></span>EmoteBubblePosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModNPC.EmoteBubblePosition </td>
+          <td>(</td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref SpriteEffects&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to change the location and sprite direction of the emote bubble when anchored to an <a class="el" href="class_n_p_c.html">NPC</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td><br  />
+The default position is: <br  />
+The X component is set to the <a class="el" href="class_n_p_c.html">NPC</a>'s Top + 75% of their width. <br  />
+Code: <code>entity.Top.X + ((-entity.direction * entity.width) * 0.75f)</code> <br  />
+The Y component is set to the <a class="el" href="class_n_p_c.html">NPC</a>'s Y position + 2 pixels. (Positive Y is down.) <br  />
+Code: <code>entity.VisualPosition.Y + 2f</code> <br  />
+(<dl class="section see"><dt>See also</dt><dd>Entity.VisualPosition, <a class="el" href="class_player.html#a50056c148e9e99495fa90b3698bf0825" title="An offset from the actual position of the player that will be added to the draw position....">Player.gfxOffY</a></dd></dl>
+is only used for the player for ) </td></tr>
+    <tr><td class="paramname">spriteEffects</td><td>Allows you to change which way the emote bubble is flipped.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2438,6 +2556,58 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 
 </div>
 </div>
+<a id="a6d490a106075934c826923f2229754b1" name="a6d490a106075934c826923f2229754b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d490a106075934c826923f2229754b1">&#9670;&nbsp;</a></span>PartyHatPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModNPC.PartyHatPosition </td>
+          <td>(</td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref SpriteEffects&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+Allows you to fully control the location of the party and sprite direction of the party while an <a class="el" href="class_n_p_c.html">NPC</a> is wearing it. <br  />
+</p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_n_p_c_i_d_1_1_sets.html#ac5dc5c374fcf0ea44b57c6c4279522d2" title="The vertical offset, in pixels, that an NPC&#39;s party hat will draw with.   Defaults to 0.">NPCID.Sets.HatOffsetY</a>, <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a" title="The index for TownNPCsFramingGroups for a given NPC type (NPC.type). See TownNPCsFramingGroups for mo...">NPCID.Sets.NPCFramingGroup</a></dd></dl>
+<p>can be used instead of this hook for a constant Y offset. <br  />
+ can be additionally be used for the Y offset for the Town <a class="el" href="class_n_p_c.html">NPC</a>'s animations. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td><br  />
+This is the final position right before the party hat gets drawn which is generally the top center of the <a class="el" href="class_n_p_c.html">NPC</a>'s hitbox. <br  />
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_n_p_c_i_d_1_1_sets.html#ac5dc5c374fcf0ea44b57c6c4279522d2" title="The vertical offset, in pixels, that an NPC&#39;s party hat will draw with.   Defaults to 0.">NPCID.Sets.HatOffsetY</a>, <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a9a56c75e3bdeb6fa201030fc0d12a59a" title="The index for TownNPCsFramingGroups for a given NPC type (NPC.type). See TownNPCsFramingGroups for mo...">NPCID.Sets.NPCFramingGroup</a></dd></dl>
+and  are already taken into account. </td></tr>
+    <tr><td class="paramname">spriteEffects</td><td>Allows you to change which way the party hat is flipped.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="acc0c36e6b2f6b1ca72df7322e1ae2de9" name="acc0c36e6b2f6b1ca72df7322e1ae2de9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc0c36e6b2f6b1ca72df7322e1ae2de9">&#9670;&nbsp;</a></span>PickEmote()</h2>
 
@@ -2748,7 +2918,7 @@ Only called on the client. </p>
 <b>NOTE:</b> The npc may be saved even if NeedSaving returns false and this is not a townNPC, if another mod returns true on NeedSaving. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serialisable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument</td></tr>
+    <tr><td class="paramname">tag</td><td>The <a class="el" href="class_tag_compound.html" title="Tag compounds contained named values, serializable as per the NBT spec: NBT spec wiki page  All primi...">TagCompound</a> to save data into. Note that this is always empty by default, and is provided as an argument</td></tr>
   </table>
   </dd>
 </dl>
