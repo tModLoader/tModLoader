@@ -657,6 +657,16 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
+@@ -1165,6 +_,9 @@
+ 	public static float invasionProgressAlpha;
+ 	public static bool HasInteractibleObjectThatIsNotATile = false;
+ 	public int currentNPCShowingChatBubble = -1;
++	/// <summary>
++	/// The number of animation frames this NPC's texture has. ModNPC should use <see cref="ModNPC.FindFrame(int)"/> to adjust <c>NPC.frame.Y</c> to change the drawn frame.
++	/// </summary>
+ 	public static int[] npcFrameCount = new int[688] {
+ 		1,
+ 		2,
 @@ -1860,11 +_,20 @@
  	public static float exitScale = 0.8f;
  	public static bool mouseReforge;
