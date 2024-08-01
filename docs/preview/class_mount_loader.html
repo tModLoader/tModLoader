@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -117,7 +117,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>JumpHeight</b>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>JumpSpeed</b> (<a class="el" href="class_player.html">Player</a> mountedPlayer, <a class="el" href="class_mount_1_1_mount_data.html">Mount.MountData</a> mount, ref float jumpSpeed, float xVelocity)</td></tr>
 <tr class="separator:a96601e5de3a62e644654a57a89fdc308"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9cb6f8f51d3530bd64c286387e0aec6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mount_loader.html#ae9cb6f8f51d3530bd64c286387e0aec6">SetMount</a> (<a class="el" href="class_mount.html">Mount</a> mount, <a class="el" href="class_player.html">Player</a> player, ref bool skipDust)</td></tr>
-<tr class="memdesc:ae9cb6f8f51d3530bd64c286387e0aec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class since <a class="el" href="class_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> is shared between all players. Custom dust spawning logic is also possible via the skipDust parameter.  <a href="class_mount_loader.html#ae9cb6f8f51d3530bd64c286387e0aec6">More...</a><br /></td></tr>
+<tr class="memdesc:ae9cb6f8f51d3530bd64c286387e0aec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a> class since <a class="el" href="class_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> is shared between all players. Custom dust spawning logic is also possible via the skipDust parameter.  <a href="class_mount_loader.html#ae9cb6f8f51d3530bd64c286387e0aec6">More...</a><br /></td></tr>
 <tr class="separator:ae9cb6f8f51d3530bd64c286387e0aec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1292c05c0abb03fd28d61cf56ba23bb7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mount_loader.html#a1292c05c0abb03fd28d61cf56ba23bb7">UseAbility</a> (<a class="el" href="class_player.html">Player</a> player, Vector2 mousePosition, bool toggleOn)</td></tr>
 <tr class="memdesc:a1292c05c0abb03fd28d61cf56ba23bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen while the mouse is pressed while the mount is active. Called each tick the mouse is pressed.  <a href="class_mount_loader.html#a1292c05c0abb03fd28d61cf56ba23bb7">More...</a><br /></td></tr>
@@ -311,7 +311,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>MountCount</b> 
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class since <a class="el" href="class_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> is shared between all players. Custom dust spawning logic is also possible via the skipDust parameter. </p>
+<p>Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a> class since <a class="el" href="class_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> is shared between all players. Custom dust spawning logic is also possible via the skipDust parameter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mount</td><td></td></tr>

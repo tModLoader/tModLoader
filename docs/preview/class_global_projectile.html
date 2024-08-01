@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,7 +92,8 @@ $(document).ready(function(){initNavTree('class_global_projectile.html',''); ini
 </div><!--header-->
 <div class="contents">
 
-<p>This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.  
+<p>This class allows you to modify and use hooks for all projectiles, both vanilla and modded. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically.  
  <a href="class_global_projectile.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_global_type.html">GlobalType&lt; Projectile, GlobalProjectile &gt;</a>.</p>
@@ -329,7 +330,8 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 <tr class="separator:a7d522f091015ff89f0840eaa0df53a28 inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this. </p>
+<div class="textblock"><p >This class allows you to modify and use hooks for all projectiles, both vanilla and modded. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae382cd43946d98f63705ba53f11e95c4" name="ae382cd43946d98f63705ba53f11e95c4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae382cd43946d98f63705ba53f11e95c4">&#9670;&nbsp;</a></span>AI()</h2>

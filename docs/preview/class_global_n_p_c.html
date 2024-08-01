@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,7 +92,8 @@ $(document).ready(function(){initNavTree('class_global_n_p_c.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
-<p>This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.  
+<p>This class allows you to modify and use hooks for all NPCs, both vanilla and modded. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically.  
  <a href="class_global_n_p_c.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_global_type.html">GlobalType&lt; NPC, GlobalNPC &gt;</a>.</p>
@@ -489,7 +490,8 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 <tr class="separator:a7d522f091015ff89f0840eaa0df53a28 inherit properties_class_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. </p>
+<div class="textblock"><p >This class allows you to modify and use hooks for all NPCs, both vanilla and modded. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5f17cdba8428c9d491606d38e7386f26" name="a5f17cdba8428c9d491606d38e7386f26"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f17cdba8428c9d491606d38e7386f26">&#9670;&nbsp;</a></span>AI()</h2>
@@ -1059,6 +1061,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
  Use <a class="el" href="class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5" title="Allows you to determine whether an NPC can be hit by the given melee weapon when swung....">CanBeHitByItem(NPC, Player, Item)</a> instead for Guide Voodoo Doll-type effects. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_n_p_c.html">NPC</a> being collided with</td></tr>
     <tr><td class="paramname">player</td><td>The player wielding this item.</td></tr>
     <tr><td class="paramname">item</td><td>The weapon item the player is holding.</td></tr>
     <tr><td class="paramname">meleeAttackHitbox</td><td>Hitbox of melee attack.</td></tr>

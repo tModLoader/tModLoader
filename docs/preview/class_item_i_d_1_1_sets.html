@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -463,7 +463,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>SkipsInitial
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:abf431702232e28d72d569b672ac9a0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c1c466289a06c38810b3d5e1d862cd7"><td class="memItemLeft" align="right" valign="top"><a id="a6c1c466289a06c38810b3d5e1d862cd7" name="a6c1c466289a06c38810b3d5e1d862cd7"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>SortingPriorityBossSpawns</b> = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, 2495, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32)</td></tr>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>SortingPriorityBossSpawns</b> = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, PirateMap, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32)</td></tr>
 <tr class="memdesc:a6c1c466289a06c38810b3d5e1d862cd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the sorting order of miscellaneous important items, such as boss/event spawners, permanent stat upgrades, and MagicMirror-like items. <br  />
  If <code>!= -1</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will fall into the "gameplay" tab of the Journey Mode menu <br  />
  Defaults to <code>-1</code>. <br /></td></tr>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"class_framework_version.html":[3,0,411],
 "class_framing.html":[3,0,412],
 "class_friends_social_module.html":[3,0,413],
 "class_from_options_without_repeats_drop_rule.html":[3,0,414],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "class_global_item.html#a2848d1b6955448e14b2705c1c1d73e52":[3,0,457,33],
 "class_global_item.html#a2a050f8dc04b0b6acc4f7147453a1fc9":[3,0,457,106],
 "class_global_item.html#a2b84026237a348162d582af8efb69b86":[3,0,457,59],
-"class_global_item.html#a33e5bd665370eb317fdb03140e17b7e2":[3,0,457,112],
-"class_global_item.html#a36d9e69d9571c38e679a4e99b6b26f38":[3,0,457,43]
+"class_global_item.html#a33e5bd665370eb317fdb03140e17b7e2":[3,0,457,112]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -98,6 +98,7 @@ $(document).ready(function(){initNavTree('struct_placement_hook.html',''); initR
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4600e2c0b32bf0edd0aa0844dc281a45"><td class="memItemLeft" align="right" valign="top"><a id="a4600e2c0b32bf0edd0aa0844dc281a45" name="a4600e2c0b32bf0edd0aa0844dc281a45"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PlacementHook</b> (Func&lt; int, int, int, int, int, int, int &gt; hook, int badReturn, int badResponse, bool processedCoordinates)</td></tr>
+<tr class="memdesc:a4600e2c0b32bf0edd0aa0844dc281a45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by ObjectData.TileObjectData to provide custom logic to tile placement. <em>hook</em> : The method to call. The return value will be compared against badReturn if relevant. The parameters are: X tile coordinate, Y tile coordinate, tile type, tile style, direction, and alternate index. Use these parameters to execute extra logic for this tile placement. ModLoader.ModTileEntity has a few existing methods to use for various placement hooks. <em>badReturn</em> : Declares what return value from the hook should be interpreted as a failure. Typically -1. <em>badResponse</em> : Set to 0. <em>processedCoordinates</em> : If true, the top left corner coordinates of the tile will be passed into hook rather than the placement coordinate (the placement coordinate is where the mouse would be (Player.tileTargetX and Player.tileTargetY), accounting for the ObjectData.TileObjectData.Origin offset). Typically a true value will make all the logic in the <em>hook</em>  method much simpler. <br /></td></tr>
 <tr class="separator:a4600e2c0b32bf0edd0aa0844dc281a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9256703b992fb36d30f4d4f88e029b"><td class="memItemLeft" align="right" valign="top"><a id="acd9256703b992fb36d30f4d4f88e029b" name="acd9256703b992fb36d30f4d4f88e029b"></a>
 override bool&#160;</td><td class="memItemRight" valign="bottom"><b>Equals</b> (object obj)</td></tr>

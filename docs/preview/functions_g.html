@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -110,6 +110,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GamePadTorchRemoval&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#abc2ea2a9f548986c7e95caf10a866cf9">GameTipID</a></li>
 <li>GamePadTrash&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#adb4f130c8d44b5fc3937488a3967aa05">GameTipID</a></li>
 <li>GamepadWholeScreenUseRange&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a80bc6931916d232f4c31254af30be4d0">ItemID.Sets</a></li>
+<li>GameUpdateCount&#160;:&#160;<a class="el" href="class_main.html#a9c29c880afca6562ffe9cba3c752e2fe">Main</a></li>
 <li>GemStaffBolt&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#aaea7d5440d014b394b4d93ec3716d889">ProjAIStyleID</a></li>
 <li>General&#160;:&#160;<a class="el" href="class_emote_i_d_1_1_category.html#a200f4766a70cd7a6bbf5237a2706ae17">EmoteID.Category</a>, <a class="el" href="class_immunity_cooldown_i_d.html#ae14f52b47e4eb9c982285938a383bd8e">ImmunityCooldownID</a></li>
 <li>GeneralPlacementTiles&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#af10fec8c6cff941d6b7409a43b518a68">TileID.Sets</a></li>
@@ -135,7 +136,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetByte()&#160;:&#160;<a class="el" href="class_tag_compound.html#adfc537900e480afddac428b5964ce611">TagCompound</a></li>
 <li>GetByteArray()&#160;:&#160;<a class="el" href="class_tag_compound.html#a023eb820d3a6998aa756fed3643079f7">TagCompound</a></li>
 <li>GetChat()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#af21083d8a27d30ce0d150a8a4983c154">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a89a98a8894fe9bbf1cfa5da5e5676d43">ModNPC</a></li>
-<li>GetColor()&#160;:&#160;<a class="el" href="class_lighting.html#a2d4dad695635fc155f6a05af9a63348d">Lighting</a></li>
+<li>GetColor()&#160;:&#160;<a class="el" href="class_lighting.html#afefe893018692f523bdd8abd8430b4c6">Lighting</a></li>
 <li>GetCompletedPercentByMod()&#160;:&#160;<a class="el" href="class_bestiary_database.html#a4f9b9553af2cee692447b8fa465a6178">BestiaryDatabase</a></li>
 <li>GetCompound()&#160;:&#160;<a class="el" href="class_tag_compound.html#ae34d3cfc994d9b32ed8df9d9d0d0422a">TagCompound</a></li>
 <li>GetContent()&#160;:&#160;<a class="el" href="class_mod.html#a5db06c11402aaed3e9dbcb26ebbc3abb">Mod</a></li>
@@ -146,6 +147,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetDamage()&#160;:&#160;<a class="el" href="class_player.html#afb5ba132b05a7e2abf19f970eefd4634">Player</a></li>
 <li>GetDamage&lt; T &gt;()&#160;:&#160;<a class="el" href="class_player.html#a927f1454f1a2d12a612959bb7b5cefd1">Player</a></li>
 <li>GetDamageClass()&#160;:&#160;<a class="el" href="class_damage_class_loader.html#a221801c4da12ec95a30e463b09590319">DamageClassLoader</a></li>
+<li>GetDayTimeAs24FloatStartingFromMidnight()&#160;:&#160;<a class="el" href="class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723">Utils</a></li>
 <li>GetDefaultPosition()&#160;:&#160;<a class="el" href="class_extra_jump.html#af1dab013ba93bcdad238c9b21fa264f4">ExtraJump</a>, <a class="el" href="class_player_draw_layer.html#ad1abf53d0ac67bbd2cc16b1ee91d1c81">PlayerDrawLayer</a>, <a class="el" href="class_vanilla_extra_jump.html#a4f8e2eddf78bb1ea731c1696dbb5d98c">VanillaExtraJump</a></li>
 <li>GetDefaultVisibility()&#160;:&#160;<a class="el" href="class_player_draw_layer.html#aace7bac01413c45ecaa2464d31105cf5">PlayerDrawLayer</a></li>
 <li>GetDouble()&#160;:&#160;<a class="el" href="class_tag_compound.html#a598c3248e1832d934f4c151766058840">TagCompound</a></li>
@@ -249,10 +251,13 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetSubLight()&#160;:&#160;<a class="el" href="class_lighting.html#a071b92fde6c0634bad0ffd1ab5c66991">Lighting</a></li>
 <li>GetText()&#160;:&#160;<a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc">Language</a></li>
 <li>GetTexture()&#160;:&#160;<a class="el" href="class_boss_bar_loader.html#ae8acbfc5f163abff32bfcee29a598b99">BossBarLoader</a></li>
-<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#ae2cefca59ea518398c2a740b1098376c">Language</a></li>
+<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408">Language</a></li>
 <li>GetTextValueWith()&#160;:&#160;<a class="el" href="class_language.html#ac8d9b980c93eddf3589cc778348bf8cd">Language</a></li>
 <li>GetTile()&#160;:&#160;<a class="el" href="class_tile_loader.html#a7538e67b4dca6b9aa9505afbf94a7486">TileLoader</a></li>
+<li>GetTileData()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a933bdc3aca3d7e261f93169b143785c1">TileObjectData</a></li>
 <li>GetTileEntity&lt; T &gt;()&#160;:&#160;<a class="el" href="class_tile_entities_manager.html#acce9e0b7fa32ed7b97ce52d78c4cd370">TileEntitiesManager</a></li>
+<li>GetTileInfo()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a5e0af20cb560f52935caa4a1284e80b1">TileObjectData</a></li>
+<li>GetTileStyle()&#160;:&#160;<a class="el" href="class_tile_object_data.html#aa00109a7846b843f13b42570b4ed0099">TileObjectData</a></li>
 <li>GetTooltipLines()&#160;:&#160;<a class="el" href="class_mod_prefix.html#a5c299a109fe33f0481c453ae7a27796f">ModPrefix</a></li>
 <li>GetTopTextures()&#160;:&#160;<a class="el" href="class_mod_palm_tree.html#a919ab040d289423c8c7e3edcc4a8b7a0">ModPalmTree</a>, <a class="el" href="class_mod_tree.html#ab46a6e35fd9abec17a39127b8e82cb99">ModTree</a></li>
 <li>GetTorchLuck()&#160;:&#160;<a class="el" href="class_mod_tile.html#a5739b252ebd7654008f2281770087fc0">ModTile</a></li>

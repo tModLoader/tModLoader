@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -285,7 +285,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>RightClick</b>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SaplingGrowthType</b> (int soilType, ref int saplingType, ref int style)</td></tr>
 <tr class="separator:a437ee69c6963a9836d6d527a6038722d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3057a7f8fce273523a722ce3309de01"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_loader.html#ad3057a7f8fce273523a722ce3309de01">SetAnimationFrame</a> (int type, int i, int j, ref int frameXOffset, ref int frameYOffset)</td></tr>
-<tr class="memdesc:ad3057a7f8fce273523a722ce3309de01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * <a class="el" href="class_main.html#a100bedd6671b6f033589ec96ba200db8" title="Tracks the current animation frame for a specific tile type. This value is shared for all tiles of th...">Main.tileFrame</a>[type]; and then calls <a class="el" href="class_mod_tile.html#a967ddb5e5295a387c7146f9a4f86f89c" title="Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and fr...">ModTile.AnimateIndividualTile</a>  <a href="class_tile_loader.html#ad3057a7f8fce273523a722ce3309de01">More...</a><br /></td></tr>
+<tr class="memdesc:ad3057a7f8fce273523a722ce3309de01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * <a class="el" href="class_main.html#a100bedd6671b6f033589ec96ba200db8" title="Tracks the current animation frame for a specific tile type. This value is shared for all tiles of th...">Main.tileFrame</a>[type]; and then calls <a class="el" href="class_mod_tile.html#a967ddb5e5295a387c7146f9a4f86f89c" title="Animates an individual tile. i  and j  are the coordinates of the Tile in question....">ModTile.AnimateIndividualTile</a>  <a href="class_tile_loader.html#ad3057a7f8fce273523a722ce3309de01">More...</a><br /></td></tr>
 <tr class="separator:ad3057a7f8fce273523a722ce3309de01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33ad07a56edc300dcda0e34b5184ede5"><td class="memItemLeft" align="right" valign="top"><a id="a33ad07a56edc300dcda0e34b5184ede5" name="a33ad07a56edc300dcda0e34b5184ede5"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDrawPositions</b> (int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)</td></tr>
@@ -298,7 +298,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Slope</b> (int
 <tr class="separator:a9d8f191a1609addcfd26d812fa17d16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e5a6496b43162b1885292a581ca97a0"><td class="memItemLeft" align="right" valign="top"><a id="a9e5a6496b43162b1885292a581ca97a0" name="a9e5a6496b43162b1885292a581ca97a0"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SpecialDraw</b> (int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch)</td></tr>
-<tr class="memdesc:a9e5a6496b43162b1885292a581ca97a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special Draw calls <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a> and <a class="el" href="class_global_tile.html" title="This class allows you to modify the behavior of any tile in the game. Create an instance of an overri...">GlobalTile</a> SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw. <br /></td></tr>
+<tr class="memdesc:a9e5a6496b43162b1885292a581ca97a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special Draw calls <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a> and <a class="el" href="class_global_tile.html" title="This class allows you to modify the behavior of any tile in the game, both vanilla and modded....">GlobalTile</a> SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw. <br /></td></tr>
 <tr class="separator:a9e5a6496b43162b1885292a581ca97a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58297200d4201801ce17f33a52c0da43"><td class="memItemLeft" align="right" valign="top"><a id="a58297200d4201801ce17f33a52c0da43" name="a58297200d4201801ce17f33a52c0da43"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TileFrame</b> (int i, int j, int type, ref bool resetFrame, ref bool noBreak)</td></tr>
@@ -457,7 +457,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * <a class="el" href="class_main.html#a100bedd6671b6f033589ec96ba200db8" title="Tracks the current animation frame for a specific tile type. This value is shared for all tiles of th...">Main.tileFrame</a>[type]; and then calls <a class="el" href="class_mod_tile.html#a967ddb5e5295a387c7146f9a4f86f89c" title="Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and fr...">ModTile.AnimateIndividualTile</a> </p>
+<p>Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * <a class="el" href="class_main.html#a100bedd6671b6f033589ec96ba200db8" title="Tracks the current animation frame for a specific tile type. This value is shared for all tiles of th...">Main.tileFrame</a>[type]; and then calls <a class="el" href="class_mod_tile.html#a967ddb5e5295a387c7146f9a4f86f89c" title="Animates an individual tile. i  and j  are the coordinates of the Tile in question....">ModTile.AnimateIndividualTile</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">type</td><td>The tile type.</td></tr>

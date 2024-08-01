@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -117,6 +117,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>GetDamage()&#160;:&#160;<a class="el" href="class_player.html#afb5ba132b05a7e2abf19f970eefd4634">Player</a></li>
 <li>GetDamage&lt; T &gt;()&#160;:&#160;<a class="el" href="class_player.html#a927f1454f1a2d12a612959bb7b5cefd1">Player</a></li>
 <li>GetDamageClass()&#160;:&#160;<a class="el" href="class_damage_class_loader.html#a221801c4da12ec95a30e463b09590319">DamageClassLoader</a></li>
+<li>GetDayTimeAs24FloatStartingFromMidnight()&#160;:&#160;<a class="el" href="class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723">Utils</a></li>
 <li>GetDefaultPosition()&#160;:&#160;<a class="el" href="class_extra_jump.html#af1dab013ba93bcdad238c9b21fa264f4">ExtraJump</a>, <a class="el" href="class_player_draw_layer.html#ad1abf53d0ac67bbd2cc16b1ee91d1c81">PlayerDrawLayer</a>, <a class="el" href="class_vanilla_extra_jump.html#a4f8e2eddf78bb1ea731c1696dbb5d98c">VanillaExtraJump</a></li>
 <li>GetDefaultVisibility()&#160;:&#160;<a class="el" href="class_player_draw_layer.html#aace7bac01413c45ecaa2464d31105cf5">PlayerDrawLayer</a></li>
 <li>GetDouble()&#160;:&#160;<a class="el" href="class_tag_compound.html#a598c3248e1832d934f4c151766058840">TagCompound</a></li>
@@ -140,7 +141,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>GetFrame()&#160;:&#160;<a class="el" href="class_global_emote_bubble.html#a211dd4b8505e54ce1328bd8c02a02f00">GlobalEmoteBubble</a>, <a class="el" href="class_mod_emote_bubble.html#a5ef2a2875786440b25fac89c1d52899d">ModEmoteBubble</a></li>
 <li>GetFrameInEmoteMenu()&#160;:&#160;<a class="el" href="class_global_emote_bubble.html#ac04d13e37c96487dc8fddc357d108e93">GlobalEmoteBubble</a>, <a class="el" href="class_mod_emote_bubble.html#aa581a7eb850b5ac07c5c4354d597b649">ModEmoteBubble</a></li>
 <li>GetFullnameByID()&#160;:&#160;<a class="el" href="class_n_p_c.html#ae0c0fec13f68fb0ec581f938f7d68708">NPC</a></li>
-<li>GetGlobalItem&lt; T &gt;()&#160;:&#160;<a class="el" href="class_item.html#a237076cb25906bd3030199fe430868d9">Item</a></li>
+<li>GetGlobalItem&lt; T &gt;()&#160;:&#160;<a class="el" href="class_item.html#a46460b23a0f4435c6c7af34a1dbf21ab">Item</a></li>
 <li>GetGlobalNPC&lt; T &gt;()&#160;:&#160;<a class="el" href="class_n_p_c.html#af1195fe993cfaabb9904add0ac83a9e2">NPC</a></li>
 <li>GetGlobalProjectile&lt; T &gt;()&#160;:&#160;<a class="el" href="class_projectile.html#a170b569b76e182d7456ec8536b475ca6">Projectile</a></li>
 <li>GetHeadSlot()&#160;:&#160;<a class="el" href="class_n_p_c_head_loader.html#a21dad1ad1f42ad387cfcfd1cf956fbe3">NPCHeadLoader</a></li>
@@ -189,7 +190,7 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>GetModWaterfallStyle()&#160;:&#160;<a class="el" href="class_mod_content.html#a97d1bf62f276adea1d63e2dc8e06d1cf">ModContent</a></li>
 <li>GetModWaterStyle()&#160;:&#160;<a class="el" href="class_mod_content.html#a1abefa2b5cba22c776809bbd6b56e41a">ModContent</a></li>
 <li>GetMount()&#160;:&#160;<a class="el" href="class_mount_loader.html#a2b0bb0a7bf494770c051926ba099ec10">MountLoader</a></li>
-<li>GetMusic()&#160;:&#160;<a class="el" href="class_music_loader.html#aa379fdba1da078a00d0d0de8ca62c9d4">MusicLoader</a></li>
+<li>GetMusic()&#160;:&#160;<a class="el" href="class_music_loader.html#a101a6b62f1a72d401603ef9156e20dab">MusicLoader</a></li>
 <li>GetMusicSlot()&#160;:&#160;<a class="el" href="class_music_loader.html#a6f10534a3f624119790340431f9d7481">MusicLoader</a></li>
 <li>GetNPC()&#160;:&#160;<a class="el" href="class_n_p_c_loader.html#a1a8675596a73cde0a76c1c01ba5ed5bd">NPCLoader</a></li>
 <li>GetNPCInvasionGroup()&#160;:&#160;<a class="el" href="class_n_p_c.html#a4489312fd829c0cdf3947d195d7150a5">NPC</a></li>
@@ -218,10 +219,13 @@ $(document).ready(function(){initNavTree('functions_func_g.html',''); initResiza
 <li>GetSubLight()&#160;:&#160;<a class="el" href="class_lighting.html#a071b92fde6c0634bad0ffd1ab5c66991">Lighting</a></li>
 <li>GetText()&#160;:&#160;<a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc">Language</a></li>
 <li>GetTexture()&#160;:&#160;<a class="el" href="class_boss_bar_loader.html#ae8acbfc5f163abff32bfcee29a598b99">BossBarLoader</a></li>
-<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408">Language</a></li>
+<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#a1d9e47c4293041f4c411232c895e45b6">Language</a></li>
 <li>GetTextValueWith()&#160;:&#160;<a class="el" href="class_language.html#ac8d9b980c93eddf3589cc778348bf8cd">Language</a></li>
 <li>GetTile()&#160;:&#160;<a class="el" href="class_tile_loader.html#a7538e67b4dca6b9aa9505afbf94a7486">TileLoader</a></li>
+<li>GetTileData()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a933bdc3aca3d7e261f93169b143785c1">TileObjectData</a></li>
 <li>GetTileEntity&lt; T &gt;()&#160;:&#160;<a class="el" href="class_tile_entities_manager.html#acce9e0b7fa32ed7b97ce52d78c4cd370">TileEntitiesManager</a></li>
+<li>GetTileInfo()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a5e0af20cb560f52935caa4a1284e80b1">TileObjectData</a></li>
+<li>GetTileStyle()&#160;:&#160;<a class="el" href="class_tile_object_data.html#aa00109a7846b843f13b42570b4ed0099">TileObjectData</a></li>
 <li>GetTooltipLines()&#160;:&#160;<a class="el" href="class_mod_prefix.html#a5c299a109fe33f0481c453ae7a27796f">ModPrefix</a></li>
 <li>GetTopTextures()&#160;:&#160;<a class="el" href="class_mod_palm_tree.html#a919ab040d289423c8c7e3edcc4a8b7a0">ModPalmTree</a>, <a class="el" href="class_mod_tree.html#ab46a6e35fd9abec17a39127b8e82cb99">ModTree</a></li>
 <li>GetTorchLuck()&#160;:&#160;<a class="el" href="class_mod_tile.html#a5739b252ebd7654008f2281770087fc0">ModTile</a></li>

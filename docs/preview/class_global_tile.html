@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,7 +92,8 @@ $(document).ready(function(){initNavTree('class_global_tile.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
-<p>This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this.  
+<p>This class allows you to modify the behavior of any tile in the game, both vanilla and modded. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically.  
  <a href="class_global_tile.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_global_block_type.html">GlobalBlockType</a>.</p>
@@ -385,7 +386,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="separator:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this. </p>
+<div class="textblock"><p >This class allows you to modify the behavior of any tile in the game, both vanilla and modded. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aea608ce8272f12ebcdfa5c31ff873b38" name="aea608ce8272f12ebcdfa5c31ff873b38"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea608ce8272f12ebcdfa5c31ff873b38">&#9670;&nbsp;</a></span>AddToArray()</h2>

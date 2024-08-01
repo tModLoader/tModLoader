@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -151,7 +151,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AttemptToConvertNPCTo
 int&#160;</td><td class="memItemRight" valign="bottom"><b>BannerID</b> ()</td></tr>
 <tr class="separator:ae5f8517b9d4a7a2715f1d941911d7f53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47734a424b7de36e26c312f21a1e78de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de">BecomeImmuneTo</a> (int buffType)</td></tr>
-<tr class="memdesc:a47734a424b7de36e26c312f21a1e78de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> to make this <a class="el" href="class_n_p_c.html">NPC</a> immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>). This method can be followed by <a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">ClearImmuneToBuffs(out bool)</a> if the <a class="el" href="class_n_p_c.html">NPC</a> should clear any buff it currently has that it is now immune to.  <a href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de">More...</a><br /></td></tr>
+<tr class="memdesc:a47734a424b7de36e26c312f21a1e78de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> to make this <a class="el" href="class_n_p_c.html">NPC</a> immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>). This method can be followed by <a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808" title="Clears all buffs on this NPC that the NPC is currently immune (buffImmune) to. The buff types and tim...">ClearImmuneToBuffs(out bool)</a> if the <a class="el" href="class_n_p_c.html">NPC</a> should clear any buff it currently has that it is now immune to.  <a href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de">More...</a><br /></td></tr>
 <tr class="separator:a47734a424b7de36e26c312f21a1e78de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb9c4dce59daec3e1d29539c558117f"><td class="memItemLeft" align="right" valign="top"><a id="a8eb9c4dce59daec3e1d29539c558117f" name="a8eb9c4dce59daec3e1d29539c558117f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>BigMimicSpawnSmoke</b> ()</td></tr>
@@ -170,8 +170,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Boss_CanShootExtraAt<
 <tr class="memitem:a2b296f26e12edaedac912cddd7691525"><td class="memItemLeft" align="right" valign="top"><a id="a2b296f26e12edaedac912cddd7691525" name="a2b296f26e12edaedac912cddd7691525"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanApplyHunterPotionEffects</b> ()</td></tr>
 <tr class="separator:a2b296f26e12edaedac912cddd7691525"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a495a1e3f088cfae6405d641d623321c4"><td class="memItemLeft" align="right" valign="top"><a id="a495a1e3f088cfae6405d641d623321c4" name="a495a1e3f088cfae6405d641d623321c4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeChasedBy</b> (object attacker=null, bool ignoreDontTakeDamage=false)</td></tr>
+<tr class="memitem:a495a1e3f088cfae6405d641d623321c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a495a1e3f088cfae6405d641d623321c4">CanBeChasedBy</a> (object attacker=null, bool ignoreDontTakeDamage=false)</td></tr>
+<tr class="memdesc:a495a1e3f088cfae6405d641d623321c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="class_n_p_c.html">NPC</a> should be considered an enemy to attack. Used by various player, projectile, mount, and town npc logic. For example homing projectiles like Chlorophyte bullet won't target friendly <a class="el" href="class_n_p_c.html">NPC</a>, critters, or <a class="el" href="class_n_p_c.html">NPC</a> that are currently flagged as invulnerable. Note that the <em>attacker</em>  parameter is unused. The logic checks that the <a class="el" href="class_n_p_c.html">NPC</a> meets all of the following criteria: <a class="el" href="class_entity.html#ad61f0c48735980e78778b90b6b4c8667" title="If true, the Entity actually exists within the game world. Within the specific entity array,...">Entity.active</a>, <a class="el" href="class_n_p_c.html#a1da4ee190169363d9e6aeecf9dbf6c7c" title="If false, this NPC will be ignored by CanBeChasedBy, meaning that entities won&#39;t specifically target ...">chaseable</a>, <a class="el" href="class_n_p_c.html#ab2b2b7364c7f40539661033876cf9f1e" title="The maximum life of this NPC.">lifeMax</a> &gt; 5 (to ignore critters), <a class="el" href="class_n_p_c.html#a895fd9b64bc33c11957cefebe239ce56" title="Indicates that this NPC does not currently take damage, attacks won&#39;t hit it. Some example usage incl...">dontTakeDamage</a> (unless <em>ignoreDontTakeDamage</em> ) is true), not <a class="el" href="class_n_p_c.html#a0d0e747e4548ea459606bcbb92b96c96" title="Indicates that an NPC is friendly to players. If true, a player won&#39;t damage the NPC and the NPC won&#39;...">friendly</a>, and not <a class="el" href="class_n_p_c.html#a2da9304fef64e72d2a5b6ede4743646a" title="Indicates that damage dealt to this NPC will not cause its life to go down. It can still receive hits...">immortal</a>.  <a href="class_n_p_c.html#a495a1e3f088cfae6405d641d623321c4">More...</a><br /></td></tr>
 <tr class="separator:a495a1e3f088cfae6405d641d623321c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36785dba125e0a45da6ba0f54ff93c07"><td class="memItemLeft" align="right" valign="top"><a id="a36785dba125e0a45da6ba0f54ff93c07" name="a36785dba125e0a45da6ba0f54ff93c07"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanReflectProjectile</b> (<a class="el" href="class_projectile.html">Projectile</a> proj)</td></tr>
@@ -186,6 +186,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>checkDead</b> ()</td>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckDrowning</b> ()</td></tr>
 <tr class="separator:ae346fe07a46972ce8ce9317878ab222d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2bbac57680c18975aa4570d63b0d808"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">ClearImmuneToBuffs</a> (out bool anyBuffsCleared)</td></tr>
+<tr class="memdesc:ad2bbac57680c18975aa4570d63b0d808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all buffs on this <a class="el" href="class_n_p_c.html">NPC</a> that the <a class="el" href="class_n_p_c.html">NPC</a> is currently immune (<a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a>) to. The buff types and times will then be synced to clients. Use after manually changing <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> or using <a class="el" href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de" title="Adjusts buffImmune to make this NPC immune to the provided buff as well as all other buffs that inher...">BecomeImmuneTo(int)</a>.<br  />
+<br  />
+ <em>anyBuffsCleared</em>  will be true if any buffs have been cleared by this method, it can be used to decide to spawn visual effects. Since this method should not be called on multiplayer clients, modders will need to manually sync any visual effects of this. <br  />
+<br  />
+ This should not be called on multiplayer clients.  <a href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">More...</a><br /></td></tr>
 <tr class="separator:ad2bbac57680c18975aa4570d63b0d808"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d07abe0af162a753b3e337b51893ff3"><td class="memItemLeft" align="right" valign="top"><a id="a5d07abe0af162a753b3e337b51893ff3" name="a5d07abe0af162a753b3e337b51893ff3"></a>
 object&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
@@ -284,10 +289,10 @@ Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (Color 
 <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetGivenOrTypeNetName</b> ()</td></tr>
 <tr class="separator:a32d4b5dc9da4d57166bfc37654669e38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1195fe993cfaabb9904add0ac83a9e2"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#af1195fe993cfaabb9904add0ac83a9e2">GetGlobalNPC&lt; T &gt;</a> ()</td></tr>
-<tr class="memdesc:af1195fe993cfaabb9904add0ac83a9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> type. This will throw exceptions on failure.  <a href="class_n_p_c.html#af1195fe993cfaabb9904add0ac83a9e2">More...</a><br /></td></tr>
+<tr class="memdesc:af1195fe993cfaabb9904add0ac83a9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> type. This will throw exceptions on failure.  <a href="class_n_p_c.html#af1195fe993cfaabb9904add0ac83a9e2">More...</a><br /></td></tr>
 <tr class="separator:af1195fe993cfaabb9904add0ac83a9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae160f9e9e481a06229d679a7ef5374f1"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ae160f9e9e481a06229d679a7ef5374f1">GetGlobalNPC&lt; T &gt;</a> (T baseInstance)</td></tr>
-<tr class="memdesc:ae160f9e9e481a06229d679a7ef5374f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> instance. This will throw exceptions on failure.  <a href="class_n_p_c.html#ae160f9e9e481a06229d679a7ef5374f1">More...</a><br /></td></tr>
+<tr class="memdesc:ae160f9e9e481a06229d679a7ef5374f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> instance. This will throw exceptions on failure.  <a href="class_n_p_c.html#ae160f9e9e481a06229d679a7ef5374f1">More...</a><br /></td></tr>
 <tr class="separator:ae160f9e9e481a06229d679a7ef5374f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ff9f1ca30bd9e108b5f6384b9f33cf4"><td class="memItemLeft" align="right" valign="top"><a id="a6ff9f1ca30bd9e108b5f6384b9f33cf4" name="a6ff9f1ca30bd9e108b5f6384b9f33cf4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetImmuneTime</b> (int fromWho, int time)</td></tr>
@@ -496,10 +501,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Transform</b> (int ne
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TransformVisuals</b> (int oldType, int newType)</td></tr>
 <tr class="separator:a05c1ce6468ef491300bc67583f00d853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6a243b739b2a8e89b1534131a219de1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ae6a243b739b2a8e89b1534131a219de1">TryGetGlobalNPC&lt; T &gt;</a> (out T result)</td></tr>
-<tr class="memdesc:ae6a243b739b2a8e89b1534131a219de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> type.  <a href="class_n_p_c.html#ae6a243b739b2a8e89b1534131a219de1">More...</a><br /></td></tr>
+<tr class="memdesc:ae6a243b739b2a8e89b1534131a219de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> type.  <a href="class_n_p_c.html#ae6a243b739b2a8e89b1534131a219de1">More...</a><br /></td></tr>
 <tr class="separator:ae6a243b739b2a8e89b1534131a219de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18f67f03259864860afd737f2cc7236d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a18f67f03259864860afd737f2cc7236d">TryGetGlobalNPC&lt; T &gt;</a> (T baseInstance, out T result)</td></tr>
-<tr class="memdesc:a18f67f03259864860afd737f2cc7236d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to get the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> instance.  <a href="class_n_p_c.html#a18f67f03259864860afd737f2cc7236d">More...</a><br /></td></tr>
+<tr class="memdesc:a18f67f03259864860afd737f2cc7236d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to get the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> instance.  <a href="class_n_p_c.html#a18f67f03259864860afd737f2cc7236d">More...</a><br /></td></tr>
 <tr class="separator:a18f67f03259864860afd737f2cc7236d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b146376e3fa7cc97214d292a0c60d41"><td class="memItemLeft" align="right" valign="top"><a id="a0b146376e3fa7cc97214d292a0c60d41" name="a0b146376e3fa7cc97214d292a0c60d41"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TryPortalJumping</b> ()</td></tr>
@@ -953,6 +958,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>celled</b></td></tr>
 <tr class="separator:ad7ec0dee310d85fafdf292ed119725af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1da4ee190169363d9e6aeecf9dbf6c7c"><td class="memItemLeft" align="right" valign="top"><a id="a1da4ee190169363d9e6aeecf9dbf6c7c" name="a1da4ee190169363d9e6aeecf9dbf6c7c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>chaseable</b> = true</td></tr>
+<tr class="memdesc:a1da4ee190169363d9e6aeecf9dbf6c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If false, this <a class="el" href="class_n_p_c.html">NPC</a> will be ignored by <a class="el" href="class_n_p_c.html#a495a1e3f088cfae6405d641d623321c4" title="Returns true if this NPC should be considered an enemy to attack. Used by various player,...">CanBeChasedBy</a>, meaning that entities won't specifically target this <a class="el" href="class_n_p_c.html">NPC</a>. The cultists set this to true, helping ensure that they are not accidentally killed by minions or homing weapons. Duke Fishron uses this during his 3rd phase while he is invisible, resulting in homing weapons and minions being unable to target him effectively. Defaults to true. <br /></td></tr>
 <tr class="separator:a1da4ee190169363d9e6aeecf9dbf6c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdb2cdc371cb1913d6eb2e7f1c399768"><td class="memItemLeft" align="right" valign="top"><a id="abdb2cdc371cb1913d6eb2e7f1c399768" name="abdb2cdc371cb1913d6eb2e7f1c399768"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>closeDoor</b></td></tr>
@@ -1015,6 +1021,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>dontCountMe</b></td><
 <tr class="separator:ad03def041c9ee6c0503e85a6c97a9088"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895fd9b64bc33c11957cefebe239ce56"><td class="memItemLeft" align="right" valign="top"><a id="a895fd9b64bc33c11957cefebe239ce56" name="a895fd9b64bc33c11957cefebe239ce56"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>dontTakeDamage</b></td></tr>
+<tr class="memdesc:a895fd9b64bc33c11957cefebe239ce56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this <a class="el" href="class_n_p_c.html">NPC</a> does not currently take damage, attacks won't hit it. Some example usage includes Blazing Wheel, Spike Ball, Golem Head during 2nd phase, Jellyfish while electrified, and Granite Golem while shielding. Defaults to false. <br /></td></tr>
 <tr class="separator:a895fd9b64bc33c11957cefebe239ce56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c4fa8a7f6b595175a19e13691d80d98"><td class="memItemLeft" align="right" valign="top"><a id="a5c4fa8a7f6b595175a19e13691d80d98" name="a5c4fa8a7f6b595175a19e13691d80d98"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>dontTakeDamageFromHostiles</b></td></tr>
@@ -1117,6 +1124,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ichor</b></td></tr>
 <tr class="separator:aa5b0832032240ca09a1ff290cc995a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2da9304fef64e72d2a5b6ede4743646a"><td class="memItemLeft" align="right" valign="top"><a id="a2da9304fef64e72d2a5b6ede4743646a" name="a2da9304fef64e72d2a5b6ede4743646a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>immortal</b></td></tr>
+<tr class="memdesc:a2da9304fef64e72d2a5b6ede4743646a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that damage dealt to this <a class="el" href="class_n_p_c.html">NPC</a> will not cause its life to go down. It can still receive hits and damage numbers will be shown, but the damage will not be applied to <a class="el" href="class_n_p_c.html#a067a1a8a65adff35ccb1d12cd1a2c04a" title="The current life of the NPC. Automatically set to the value of lifeMax at the end of SetDefaults.">life</a>. Only used by NPCID.TargetDummy. Defaults to false. <br /></td></tr>
 <tr class="separator:a2da9304fef64e72d2a5b6ede4743646a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4d5cb97dff20ac9a01c5915e4f75837"><td class="memItemLeft" align="right" valign="top"><a id="aa4d5cb97dff20ac9a01c5915e4f75837" name="aa4d5cb97dff20ac9a01c5915e4f75837"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>immune</b> = new int[256]</td></tr>
@@ -1951,7 +1959,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasValidTarget</b><co
 <tr class="memitem:ab1718bfe78a370411b1108fb52b909a3"><td class="memItemLeft" align="right" valign="top"><a id="ab1718bfe78a370411b1108fb52b909a3" name="ab1718bfe78a370411b1108fb52b909a3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HideStrikeDamage</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:ab1718bfe78a370411b1108fb52b909a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, damage combat text will not be shown by <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> and dps meter will not record damage against this <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
- Recommended for use with NPC.immortal <br /></td></tr>
+ Recommended for use with <a class="el" href="class_n_p_c.html#a2da9304fef64e72d2a5b6ede4743646a" title="Indicates that damage dealt to this NPC will not cause its life to go down. It can still receive hits...">NPC.immortal</a> <br /></td></tr>
 <tr class="separator:ab1718bfe78a370411b1108fb52b909a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7798c8b14d3137de83b367fbd4be4bba"><td class="memItemLeft" align="right" valign="top"><a id="a7798c8b14d3137de83b367fbd4be4bba" name="a7798c8b14d3137de83b367fbd4be4bba"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLikeATownNPC</b><code> [get]</code></td></tr>
@@ -2006,7 +2014,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>TranslatedTargetIndex<
 string&#160;</td><td class="memItemRight" valign="bottom"><b>TypeName</b><code> [get]</code></td></tr>
 <tr class="memdesc:a09c175501070c7191444ec85c132280e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The TYPE name of this <a class="el" href="class_n_p_c.html">NPC</a>.<br  />
  Type names are the base titles given to any <a class="el" href="class_n_p_c.html">NPC</a>, and are typically shared amongst all instances of an <a class="el" href="class_n_p_c.html">NPC</a>. For example, the Stylist's type name will always be "Stylist".<br  />
- To modify the type name of a specific <a class="el" href="class_n_p_c.html">NPC</a>, make use of the ModifyTypeName hooks in <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> and ModLoader.ModNPC, according to your needs.<br  />
+ To modify the type name of a specific <a class="el" href="class_n_p_c.html">NPC</a>, make use of the ModifyTypeName hooks in <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> and ModLoader.ModNPC, according to your needs.<br  />
  <br /></td></tr>
 <tr class="separator:a09c175501070c7191444ec85c132280e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa692f779ff79a9fffc4fafb2437498be"><td class="memItemLeft" align="right" valign="top"><a id="aa692f779ff79a9fffc4fafb2437498be" name="aa692f779ff79a9fffc4fafb2437498be"></a>
@@ -2176,7 +2184,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
       </table>
 </div><div class="memdoc">
 
-<p>Adjusts <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> to make this <a class="el" href="class_n_p_c.html">NPC</a> immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>). This method can be followed by <a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808">ClearImmuneToBuffs(out bool)</a> if the <a class="el" href="class_n_p_c.html">NPC</a> should clear any buff it currently has that it is now immune to. </p>
+<p>Adjusts <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> to make this <a class="el" href="class_n_p_c.html">NPC</a> immune to the provided buff as well as all other buffs that inherit the immunity of that buff (via <a class="el" href="class_buff_i_d_1_1_sets.html#a6e5b6b563b38ef01fa787b0733b3c4a8" title="An NPC will automatically become immune (NPC.buffImmune) to the indexed buff type if it is already im...">BuffID.Sets.GrantImmunityWith</a>). This method can be followed by <a class="el" href="class_n_p_c.html#ad2bbac57680c18975aa4570d63b0d808" title="Clears all buffs on this NPC that the NPC is currently immune (buffImmune) to. The buff types and tim...">ClearImmuneToBuffs(out bool)</a> if the <a class="el" href="class_n_p_c.html">NPC</a> should clear any buff it currently has that it is now immune to. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buffType</td><td></td></tr>
@@ -2258,6 +2266,44 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a> for use with <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> and <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a></dd></dl>
+
+</div>
+</div>
+<a id="a495a1e3f088cfae6405d641d623321c4" name="a495a1e3f088cfae6405d641d623321c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a495a1e3f088cfae6405d641d623321c4">&#9670;&nbsp;</a></span>CanBeChasedBy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool NPC.CanBeChasedBy </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>attacker</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ignoreDontTakeDamage</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="class_n_p_c.html">NPC</a> should be considered an enemy to attack. Used by various player, projectile, mount, and town npc logic. For example homing projectiles like Chlorophyte bullet won't target friendly <a class="el" href="class_n_p_c.html">NPC</a>, critters, or <a class="el" href="class_n_p_c.html">NPC</a> that are currently flagged as invulnerable. Note that the <em>attacker</em>  parameter is unused. The logic checks that the <a class="el" href="class_n_p_c.html">NPC</a> meets all of the following criteria: <a class="el" href="class_entity.html#ad61f0c48735980e78778b90b6b4c8667" title="If true, the Entity actually exists within the game world. Within the specific entity array,...">Entity.active</a>, <a class="el" href="class_n_p_c.html#a1da4ee190169363d9e6aeecf9dbf6c7c" title="If false, this NPC will be ignored by CanBeChasedBy, meaning that entities won&#39;t specifically target ...">chaseable</a>, <a class="el" href="class_n_p_c.html#ab2b2b7364c7f40539661033876cf9f1e" title="The maximum life of this NPC.">lifeMax</a> &gt; 5 (to ignore critters), <a class="el" href="class_n_p_c.html#a895fd9b64bc33c11957cefebe239ce56" title="Indicates that this NPC does not currently take damage, attacks won&#39;t hit it. Some example usage incl...">dontTakeDamage</a> (unless <em>ignoreDontTakeDamage</em> ) is true), not <a class="el" href="class_n_p_c.html#a0d0e747e4548ea459606bcbb92b96c96" title="Indicates that an NPC is friendly to players. If true, a player won&#39;t damage the NPC and the NPC won&#39;...">friendly</a>, and not <a class="el" href="class_n_p_c.html#a2da9304fef64e72d2a5b6ede4743646a" title="Indicates that damage dealt to this NPC will not cause its life to go down. It can still receive hits...">immortal</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attacker</td><td></td></tr>
+    <tr><td class="paramname">ignoreDontTakeDamage</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -2346,7 +2392,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Clears all buffs on this <a class="el" href="class_n_p_c.html">NPC</a> that the <a class="el" href="class_n_p_c.html">NPC</a> is currently immune (<a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a>) to. The buff types and times will then be synced to clients. Use after manually changing <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> or using <a class="el" href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de" title="Adjusts buffImmune to make this NPC immune to the provided buff as well as all other buffs that inher...">BecomeImmuneTo(int)</a>.<br  />
+
+<p>Clears all buffs on this <a class="el" href="class_n_p_c.html">NPC</a> that the <a class="el" href="class_n_p_c.html">NPC</a> is currently immune (<a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a>) to. The buff types and times will then be synced to clients. Use after manually changing <a class="el" href="class_n_p_c.html#ad19fc84eb9f1df055f4ce033fb091243" title="Contains the NPC buff immunities for this NPC. The default values in this array are populated from NP...">buffImmune</a> or using <a class="el" href="class_n_p_c.html#a47734a424b7de36e26c312f21a1e78de" title="Adjusts buffImmune to make this NPC immune to the provided buff as well as all other buffs that inher...">BecomeImmuneTo(int)</a>.<br  />
 <br  />
  <em>anyBuffsCleared</em>  will be true if any buffs have been cleared by this method, it can be used to decide to spawn visual effects. Since this method should not be called on multiplayer clients, modders will need to manually sync any visual effects of this. <br  />
 <br  />
@@ -2541,7 +2588,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
       </table>
 </div><div class="memdoc">
 
-<p>Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> type. This will throw exceptions on failure. </p>
+<p>Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> type. This will throw exceptions on failure. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">KeyNotFoundException</td><td><dl class="exception"><dt>Exceptions</dt><dd>
@@ -2584,7 +2631,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
       </table>
 </div><div class="memdoc">
 
-<p>Gets the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> instance. This will throw exceptions on failure. </p>
+<p>Gets the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> instance. This will throw exceptions on failure. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">KeyNotFoundException</td><td><dl class="exception"><dt>Exceptions</dt><dd>
@@ -3216,7 +3263,7 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
       </table>
 </div><div class="memdoc">
 
-<p>Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> type. </p>
+<p>Gets the instance of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> type. </p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -3259,7 +3306,7 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
       </table>
 </div><div class="memdoc">
 
-<p>Safely attempts to get the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> instance. </p>
+<p>Safely attempts to get the local instance of the type of the specified <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a> instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not the requested instance has been found. </dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>

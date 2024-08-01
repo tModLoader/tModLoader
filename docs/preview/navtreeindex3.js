@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_dust.html#af706fbc49c4f3b906a51c97dc608d7a1":[3,0,293,7],
 "class_dust.html#af80c445e506df08a3f7fd46cb7b04aa6":[3,0,293,12],
 "class_dust.html#afa20260dc72a4f7e30d95d778eec78c4":[3,0,293,3],
 "class_dust_i_d.html":[3,0,294],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_font_assets.html":[3,0,406],
 "class_forest_biome.html":[3,0,407],
 "class_found_workshop_entry_info.html":[3,0,408],
-"class_frame_skip_test.html":[3,0,410],
-"class_framework_version.html":[3,0,411]
+"class_frame_skip_test.html":[3,0,410]
 };

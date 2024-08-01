@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -93,8 +93,8 @@ $(document).ready(function(){initNavTree('class_mod_item.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
-<p>This class serves as a place for you to place all your properties and hooks for each item. Create instances of <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> (preferably overriding this class) to pass as parameters to Mod.AddItem.<br  />
- The Basic <a class="el" href="class_item.html">Item</a> Guideteaches the basics of making a modded item.  
+<p>This class serves as a place for you to place all your properties and hooks for each item. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. The Basic <a class="el" href="class_item.html">Item</a> Guideteaches the basics of making a modded item.  
  <a href="class_mod_item.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_mod_type.html">ModType&lt; Item, ModItem &gt;</a>, and <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
@@ -194,7 +194,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="separator:a50028cc3352564a003aa64f147c33bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aa0c33fb9f8487b9fcb83a803873099"><td class="memItemLeft" align="right" valign="top"><a id="a3aa0c33fb9f8487b9fcb83a803873099" name="a3aa0c33fb9f8487b9fcb83a803873099"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanReforge</b> ()</td></tr>
-<tr class="memdesc:a3aa0c33fb9f8487b9fcb83a803873099"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook gets called when the player clicks on the reforge button and can afford the reforge. Returns whether the reforge will take place. If false is returned by this or any <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a>, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called. Reforging preserves modded data on the item. <br /></td></tr>
+<tr class="memdesc:a3aa0c33fb9f8487b9fcb83a803873099"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook gets called when the player clicks on the reforge button and can afford the reforge. Returns whether the reforge will take place. If false is returned by this or any <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, both vanilla and modded....">GlobalItem</a>, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called. Reforging preserves modded data on the item. <br /></td></tr>
 <tr class="separator:a3aa0c33fb9f8487b9fcb83a803873099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad85e8cb411b7f946f0c05a80c2718085"><td class="memItemLeft" align="right" valign="top"><a id="ad85e8cb411b7f946f0c05a80c2718085" name="ad85e8cb411b7f946f0c05a80c2718085"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanResearch</b> ()</td></tr>
@@ -696,8 +696,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="separator:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class serves as a place for you to place all your properties and hooks for each item. Create instances of <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> (preferably overriding this class) to pass as parameters to Mod.AddItem.<br  />
- The Basic <a class="el" href="class_item.html">Item</a> Guide</p>
+<div class="textblock"><p >This class serves as a place for you to place all your properties and hooks for each item. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. </p>
+<p >The Basic <a class="el" href="class_item.html">Item</a> Guide</p>
 <p >teaches the basics of making a modded item. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0d3d79e855102eb25e0075daffcb13ab" name="a0d3d79e855102eb25e0075daffcb13ab"></a>
@@ -864,8 +865,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </div><div class="memdoc">
 
 <p>Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. Note that this hook is only ever called through this item's associated equipment texture. Use the player.armorEffectDraw bools to activate the desired effects. </p>
-<div class="fragment"><div class="line">player.armorEffectDrawShadow = <span class="keyword">true</span>;</div>
-</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+<p ><code>player.armorEffectDrawShadow = true;</code></p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>
   </table>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -103,11 +103,39 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e95bb6ab5530638124e67d61e8dbf7c"><td class="memItemLeft" align="right" valign="top"><a id="a6e95bb6ab5530638124e67d61e8dbf7c" name="a6e95bb6ab5530638124e67d61e8dbf7c"></a>
-static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetWorkshopFolder</b> (AppId_t app)</td></tr>
-<tr class="memdesc:a6e95bb6ab5530638124e67d61e8dbf7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found If SteamClient is true (ie it is a steam user running a client or host&amp;play), InstallDir: SteamFiles/Steamapps/common/tModLoader is GetAppInstallDir WorkshopFolder: SteamFiles/Steamapps/workshop is Path.Combine(GetAppInstallDir, .., .., Workshop) If SteamClient is false, SteamAvailable = True -&gt; Is FamilyShare or GoG Client. SteamedWraps.FamilyShare differentiates if needed InstallDir: anywhere, manual. WorkshopFolder: InstallDir/Steamapps/workshop If Main.DedServ is true Use SteamClient reference path if it exists &amp;&amp; Not "-nosteam" supplied Use NotSteamClient working folder path if "-nosteam" supplied or SteamClient ref path not exists <br /></td></tr>
+<tr class="memitem:a6e95bb6ab5530638124e67d61e8dbf7c"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_workshop_helper.html#a6e95bb6ab5530638124e67d61e8dbf7c">GetWorkshopFolder</a> (AppId_t app)</td></tr>
 <tr class="separator:a6e95bb6ab5530638124e67d61e8dbf7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6e95bb6ab5530638124e67d61e8dbf7c" name="a6e95bb6ab5530638124e67d61e8dbf7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e95bb6ab5530638124e67d61e8dbf7c">&#9670;&nbsp;</a></span>GetWorkshopFolder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string WorkshopHelper.GetWorkshopFolder </td>
+          <td>(</td>
+          <td class="paramtype">AppId_t&#160;</td>
+          <td class="paramname"><em>app</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p></p>
+<p ><code> Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found If SteamClient is true (ie it is a steam user running a client or host and play), InstallDir: SteamFiles/Steamapps/common/tModLoader is GetAppInstallDir WorkshopFolder: SteamFiles/Steamapps/workshop is Path.Combine(GetAppInstallDir, .., .., Workshop) If SteamClient is false, SteamAvailable = True -&gt; Is FamilyShare or GoG Client. SteamedWraps.FamilyShare differentiates if needed InstallDir: anywhere, manual. WorkshopFolder: InstallDir/Steamapps/workshop If Main.DedServ is true Use SteamClient reference path if it exists &amp;&amp; Not "-nosteam" supplied Use NotSteamClient working folder path if "-nosteam" supplied or SteamClient ref path not exists </code> </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
