@@ -36,7 +36,7 @@ jobs:
         - name: Merge
           run: |
             month=$(date +%m)
-            if [[ $((month%2)) -eq 0 || "${{env.SkipOddMonths}}"=="false" ]]; then
+            if [[ 10#$((month%2)) -eq 0 || "${{env.SkipOddMonths}}"=="false" ]]; then
                 token=${{ secrets.TMODLOADERBOT_TOKEN }}
                 repo=$GITHUB_REPOSITORY
                 git config user.name github-actions
