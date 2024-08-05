@@ -246,24 +246,38 @@ public static class SteamedWraps
 
 	public static SteamAPICall_t GenerateAndSubmitModBrowserQuery(uint page, QueryParameters qP, string internalName = null)
 	{
-		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		var qHandle = GetQueryHandle(page, qP);
+		if (qHandle == default)
+			return new();
 
+		if (SteamClient) {
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
-		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
-
+		else { // assumes SteamAvailable as GetQueryHandle already checks this and is a required pre-req
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 			
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
+	}
 
-		return new();
+	public static UGCQueryHandle_t GetQueryHandle(uint page, QueryParameters qP)
+	{
+		// To find unlisted / private / friends only mods on Steam Workshop that user can see but QueryAll does not, we have to side step to a custom query. - Solxan, July 30 2024
+		if (SteamClient && qP.queryType == QueryType.SearchUserPublishedOnly) {
+			return SteamUGC.CreateQueryUserUGCRequest(SteamUser.GetSteamID().GetAccountID(), EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		}
+
+		// These will only return visibility = public - Solxan, July 30 2024
+		if (SteamClient)
+			return SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		else if (SteamAvailable)
+			return SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+
+		return default;
 	}
 
 	public static void FetchPlayTimeStats(UGCQueryHandle_t handle, uint index, out ulong hot, out ulong downloads)
