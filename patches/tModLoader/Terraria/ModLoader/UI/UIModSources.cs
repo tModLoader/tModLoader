@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -178,7 +179,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		link.OnMouseOut += delegate (UIMouseEvent evt, UIElement listeningElement) {
 			link.TextColor = Color.White;
 		};
-		link.OnLeftClick += delegate(UIMouseEvent evt, UIElement listeningElement) {
+		link.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Utils.OpenToURL(url);
 		};
@@ -231,6 +232,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	public override void OnActivate()
 	{
 		_cts = new CancellationTokenSource();
+		Main.clrInput();
 		ModCompile.UpdateReferencesFolder();
 		_uIPanel.Append(_uiLoader);
 		_modList.Clear();
@@ -262,7 +264,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.DevModsInSandbox"), 888, PreviousUIState);
 			}
 			else {
-				ShowWelcomeMessage("tModLoader.MSNetSDKNotFound", "tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-6-sdk", 888, PreviousUIState);
+				ShowWelcomeMessage("tModLoader.MSNetSDKNotFound", "tModLoader.DownloadNetSDK", "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk", 888, PreviousUIState);
 			}
 
 			return true;
@@ -273,7 +275,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 	private void ShowWelcomeMessage(string messageKey, string altButtonTextKey, string url, int gotoMenu = Interface.modSourcesID, UIState state = null)
 	{
-		Interface.infoMessage.Show(Language.GetTextValue(messageKey), gotoMenu, state, Language.GetTextValue(altButtonTextKey), () => Utils.OpenToURL(url));
+		var dotnetVersion = Environment.Version.MajorMinor().ToString();
+		Interface.infoMessage.Show(Language.GetTextValue(messageKey, dotnetVersion), gotoMenu, state, Language.GetTextValue(altButtonTextKey, dotnetVersion), () => Utils.OpenToURL(url));
 	}
 
 	private static string GetCommandToFindPathOfExecutable()
@@ -298,7 +301,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				Arguments = "dotnet",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
-			}).StandardOutput.ReadToEnd().Trim();
+			}).StandardOutput.ReadToEnd().Split("\n")[0].Trim();
 		}
 
 		// OSX fallback
@@ -331,7 +334,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				return path;
 			}
 		}
-		catch (Exception) {}
+		catch (Exception) { }
 
 		Logging.tML.Debug("Finding dotnet on PATH failed");
 		return null;
@@ -343,13 +346,18 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			return true;
 
 		try {
+			string dotnetFilename = GetSystemDotnetPath() ?? "dotnet";
 			string output = Process.Start(new ProcessStartInfo {
-				FileName = GetSystemDotnetPath() ?? "dotnet",
+				FileName = dotnetFilename,
 				Arguments = "--list-sdks",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd();
 			Logging.tML.Info("\n" + output);
+
+			if (Platform.IsWindows && dotnetFilename.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86))) {
+				Logging.tML.Warn("Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK was found on the PATH. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. This will prevent you from debugging or building mods in Visual Studio or any other IDE. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk");
+			}
 
 			foreach (var line in output.Split('\n')) {
 				var dotnetVersion = new Version(new Regex("([0-9.]+).*").Match(line).Groups[1].Value);
@@ -385,7 +393,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			foreach (string sourcePath in modSources) {
 				var modName = Path.GetFileName(sourcePath);
 				var builtMod = modFiles.Where(m => m.Name == modName).Where(m => m.location == ModLocation.Local).OrderByDescending(m => m.Version).FirstOrDefault();
-				_items.Add(new UIModSourceItem(sourcePath, builtMod));
+				_items.Add(new UIModSourceItem(sourcePath, builtMod, _cts.Token));
 			}
 			_updateNeeded = true;
 		});
@@ -394,6 +402,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		ModBrowser.UIModBrowser.PageUpDownSupport(_modList);
 		if (!_updateNeeded)
 			return;
 		_updateNeeded = false;

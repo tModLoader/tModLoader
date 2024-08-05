@@ -6,7 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
+using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -19,21 +21,26 @@ partial class Utils
 {
 	//Conversions
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Point p, Vector2 autoAddXY)
 		=> ToWorldCoordinates(p, autoAddXY.X, autoAddXY.Y);
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Point16 p, Vector2 autoAddXY)
 		=> p.ToVector2().ToWorldCoordinates(autoAddXY);
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Vector2 v, float autoAddX = 8f, float autoAddY = 8f)
 		=> v.ToWorldCoordinates(new Vector2(autoAddX, autoAddY));
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Vector2 v, Vector2 autoAddXY)
 		=> v * 16f + autoAddXY;
 
 	public static Point ToPoint(this Point16 p)
 		=> new Point(p.X, p.Y);
 
+	/// <summary> Converts this Vector2 to a Point16, resulting in X and Y values rounded towards 0. If the intention is to convert to Tile coordinates from World coordinates, use <see cref="ToTileCoordinates16(Vector2)"/> instead. </summary>
 	public static Point16 ToPoint16(this Vector2 v)
 		=> new Point16((short)v.X, (short)v.Y);
 
@@ -48,7 +55,7 @@ partial class Utils
 	public static T NextEnum<T>(this T src) where T : struct
 	{
 		if(!typeof(T).IsEnum)
-			throw new ArgumentException($"Argumnent {typeof(T).FullName} is not an Enum");
+			throw new ArgumentException($"Argument {typeof(T).FullName} is not an Enum");
 
 		T[] Arr = (T[])Enum.GetValues(src.GetType());
 		int j = Array.IndexOf(Arr, src) + 1;
@@ -59,7 +66,7 @@ partial class Utils
 	public static T PreviousEnum<T>(this T src) where T : struct
 	{
 		if(!typeof(T).IsEnum)
-			throw new ArgumentException($"Argumnent {typeof(T).FullName} is not an Enum");
+			throw new ArgumentException($"Argument {typeof(T).FullName} is not an Enum");
 
 		T[] Arr = (T[])Enum.GetValues(src.GetType());
 		int j = Array.IndexOf(Arr, src) - 1;
@@ -229,5 +236,39 @@ partial class Utils
 		return string.Join("", ChatManager.ParseMessage(text, Color.White)
 				.Where(x => x.GetType() == typeof(TextSnippet))
 				.Select(x => x.Text));
+	}
+
+	internal static void HandleSaveErrorMessageLogging(NetworkText message, bool broadcast)
+	{
+		Utils.LogAndConsoleInfoMessage(message.ToString());
+		if (Main.gameMenu && Main.menuMode == 10) {
+			// Save and Quit. Due to multithreading we need to queue up the message window instead of Interface.errorMessage.Show immediately.
+			Interface.pendingErrorMessages.Push(message.ToString());
+		}
+		else if (!Main.gameMenu) {
+			// In-game autosave
+			if (broadcast)
+				ChatHelper.BroadcastChatMessage(message, Color.OrangeRed); // Handles SP and Server cases.
+			else
+				Main.NewText(message, Color.OrangeRed);
+		}
+	}
+
+	internal static NetworkText CreateSaveErrorMessage(string localizationKey, Dictionary<string, string> errors, bool doubleNewline = false)
+	{
+		string separator = doubleNewline ? "\n\n" : "\n";
+		return NetworkText.FromKey(localizationKey, separator + string.Join(separator, errors.Select(x => $"{x.Key}:\n{x.Value}")));
+	}
+
+	private static void AddArgToDictionary(string text, ref string text2, ref Dictionary<string, string> dictionary)
+	{
+		if (text == null)
+			return;
+
+		// In case someone has a cli-ArgsConfig.txt for mod development and does host&play, we should TryAdd
+		if (!dictionary.TryAdd(text.ToLower(), text2))
+			Console.WriteLine($"Unexpected Issue with Launch Arguments: Duplicate Launch Arg \"{text}\"");
+
+		text2 = "";
 	}
 }

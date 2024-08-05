@@ -241,12 +241,7 @@ internal class UIModPackItem : UIPanel
 		_tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(_tooltip)) {
-			byte temp = Main.mouseTextColor;
-			Main.mouseTextColor = 160;
-			var bounds = GetOuterDimensions().ToRectangle();
-			bounds.Height += 16;
-			UICommon.DrawHoverStringInBounds(spriteBatch, _tooltip, bounds);
-			Main.mouseTextColor = temp;
+			UICommon.TooltipMouseText(_tooltip);
 		}
 	}
 
@@ -310,6 +305,9 @@ internal class UIModPackItem : UIPanel
 		}
 		else if (_updateListWithEnabledButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabledDesc");
+		}
+		else if (_deleteButton?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.ModPackDelete");
 		}
 	}
 
@@ -381,7 +379,7 @@ internal class UIModPackItem : UIPanel
 		}
 
 		var query = new QueryParameters() { searchModSlugs = _mods };
-		if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+		if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 			return new List<ModPubId_t>(); // query failed. TODO, actually show an error UI instead
 
 		var output = new List<ModPubId_t>();
@@ -402,6 +400,7 @@ internal class UIModPackItem : UIPanel
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 		Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 		Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
+		Interface.modBrowser.ResetTagFilters();
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 
 		Interface.modBrowser.PreviousUIState = Interface.modPacksMenu;
@@ -448,6 +447,7 @@ internal class UIModPackItem : UIPanel
 	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = modpack._filepath;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 
@@ -460,6 +460,7 @@ internal class UIModPackItem : UIPanel
 		// Clear active Mod Pack 
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = null;
+		Main.SaveSettings();
 
 		//TODO: Add code to utilize the saved configs
 

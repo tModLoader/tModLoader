@@ -25,6 +25,7 @@ namespace ExampleMod.Content.Items.Accessories
 			var modPlayer = player.GetModPlayer<ExampleResourcePlayer>();
 			modPlayer.exampleResourceMax2 += ResourceBoost; // add 100 to the exampleResourceMax2, which is our max for example resource.
 			modPlayer.exampleResourceRegenRate *= 6f; // multiply our resource regeneration speed by 6.
+			modPlayer.exampleResourceMagnet = true; // Boosts pickup range for ExampleResourcePickup
 		}
 	}
 }

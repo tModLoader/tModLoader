@@ -99,9 +99,6 @@ public static class TileLoader
 
 	internal static int ReserveTileID()
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding tiles breaks vanilla client compatibility");
-
 		int reserveID = nextTile;
 		nextTile++;
 		return reserveID;
@@ -304,8 +301,10 @@ public static class TileLoader
 		if (wrap == 0) {
 			wrap = 1;
 		}
-		int subTile = tileData.StyleHorizontal ? subY * wrap + subX : subX * wrap + subY;
+		int styleLineSkip = tileData.StyleLineSkip;
+		int subTile = tileData.StyleHorizontal ? subY / styleLineSkip * wrap + subX : subX / styleLineSkip * wrap + subY;
 		int style = subTile / tileData.StyleMultiplier;
+		/*
 		int alternate = subTile % tileData.StyleMultiplier;
 		for (int k = 0; k < tileData.AlternatesCount; k++) {
 			if (alternate >= tileData.Alternates[k].Style && alternate <= tileData.Alternates[k].Style + tileData.RandomStyleRange) {
@@ -313,12 +312,13 @@ public static class TileLoader
 				break;
 			}
 		}
-		tileData = TileObjectData.GetTileData(type, style, alternate + 1);
+		*/
+		tileData = TileObjectData.GetTileData(Main.tile[i, j]);
 		int partFrameX = frameX % tileData.CoordinateFullWidth;
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
 		int partY = 0;
-		for (int remainingFrameY = partFrameY; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
+		for (int remainingFrameY = partFrameY; partY + 1 < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] - tileData.CoordinatePadding >= 0; partY++) {
 			remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 		}
 		// We need to use the tile that trigger this, since it still has the tile type instead of air
@@ -340,6 +340,7 @@ public static class TileLoader
 				break;
 			}
 		}
+		// TODO: Placed modded tiles can't automatically reorient themselves to an alternate placement, like Torch and Sign do. 
 		if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out TileObject objectData, onlyCheck: true, checkStay: true)) {
 			WorldGen.destroyObject = true;
 			// First the Items to drop are tallied and spawned, then Kill each tile, then KillMultiTile can clean up TileEntities or Chests
@@ -772,7 +773,7 @@ public static class TileLoader
 			TileObjectData tileData = TileObjectData.GetTileData(tile.type, 0, 0);
 			if (tileData != null) {
 				int partY = 0;
-				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] + tileData.CoordinatePadding >= 0; partY++) {
+				for (int remainingFrameY = tile.frameY % tileData.CoordinateFullHeight; partY + 1 < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] - tileData.CoordinatePadding >= 0; partY++) {
 					remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 				}
 				width = tileData.CoordinateWidth;

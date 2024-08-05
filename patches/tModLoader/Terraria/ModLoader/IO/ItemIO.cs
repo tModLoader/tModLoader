@@ -185,7 +185,7 @@ public static class ItemIO
 	public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 	{
 		item.netDefaults(reader.Read7BitEncodedInt());
-		item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt());
+		item.Prefix(reader.Read7BitEncodedInt());
 
 		if (readStack)
 			item.stack = reader.Read7BitEncodedInt();

@@ -242,7 +242,7 @@ public class TileDefinition : EntityDefinition
 	public override string DisplayName
 		=> IsUnloaded || Type == -1
 		? Language.GetTextValue("Mods.ModLoader.Unloaded")
-		: (string.IsNullOrEmpty(Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0)))
+		: (Main.dedServ || (string.IsNullOrEmpty(Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0))))
 		? Name
 		: $"{Name} \"{Lang.GetMapObjectName(MapHelper.TileToLookup(Type, 0))}\"");
 }

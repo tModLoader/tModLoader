@@ -388,9 +388,18 @@
  	public const byte ChestName = 69;
  	public const byte BugCatching = 70;
  	public const byte BugReleasing = 71;
-@@ -92,14 +_,30 @@
+@@ -91,15 +_,39 @@
+ 	public const byte InvasionProgressReport = 78;
  	public const byte PlaceObject = 79;
  	public const byte SyncPlayerChestIndex = 80;
++	/// <summary>
++	/// Sends a <see cref="CombatText"/> from the server to clients. Sends a number, use <see cref="CombatTextString"/> instead for the string version. Used automatically by <see cref="Player.HealEffect(int, bool)"/>, but custom <see cref="CombatText"/> would need to manually sync using this message.
++	/// <para/> NetMessage.SendData parameters, correlating to <see cref="CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, int, bool, bool)"/> parameters:
++	/// <br/><b>number:</b> The text color: <see cref="Microsoft.Xna.Framework.Color.PackedValue"/>
++	/// <br/><b>number2:</b> The CombatText center X coordinate
++	/// <br/><b>number3:</b> The CombatText center Y coordinate
++	/// <br/><b>number4:</b> The number shown by the CombatText
++	/// </summary>
  	public const byte CombatTextInt = 81;
 +
 +	// Used by NetModule, NetMaager and NetPacket for a more extensible packet system.
@@ -419,3 +428,18 @@
  	public const byte InstancedItem = 90;
  	public const byte SyncEmoteBubble = 91;
  	public const byte SyncExtraValue = 92;
+@@ -129,6 +_,14 @@
+ 	public const byte CrystalInvasionSendWaitTime = 116;
+ 	public const byte PlayerHurtV2 = 117;
+ 	public const byte PlayerDeathV2 = 118;
++	/// <summary>
++	/// Sends a <see cref="CombatText"/> from the server to clients. Sends a string, use <see cref="CombatTextInt"/> instead for the int version. Used automatically by <see cref="Player.HealEffect(int, bool)"/>, but custom <see cref="CombatText"/> would need to manually sync using this message.
++	/// <para/> NetMessage.SendData parameters, correlating to <see cref="CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, string, bool, bool)"/> parameters:
++	/// <br/><b>number:</b> The text color: <see cref="Microsoft.Xna.Framework.Color.PackedValue"/>
++	/// <br/><b>number2:</b> The CombatText center X coordinate
++	/// <br/><b>number3:</b> The CombatText center Y coordinate
++	/// <br/><b>text:</b> The text shown by the CombatText
++	/// </summary>
+ 	public const byte CombatTextString = 119;
+ 	public const byte Emoji = 120;
+ 	public const byte TEDisplayDollItemSync = 121;

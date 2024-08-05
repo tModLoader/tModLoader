@@ -1,0 +1,20 @@
+--- src/TerrariaNetCore/Terraria/Enums/AnchorType.cs
++++ src/tModLoader/Terraria/Enums/AnchorType.cs
+@@ -6,12 +_,17 @@
+ public enum AnchorType
+ {
+ 	None = 0,
++	/// <summary> Solid tiles: <see cref="Main.tileSolid"/> but not <see cref="Main.tileSolidTop"/>, <see cref="Main.tileNoAttach"/>, or sloped (unless <see cref="ObjectData.TileObjectData.FlattenAnchors"/> is true). </summary>
+ 	SolidTile = 1,
++	/// <summary> Platforms with a top surface and tiles that are <see cref="Main.tileSolid"/> and <see cref="Main.tileSolidTop"/> (such as <see cref="ID.TileID.PlanterBox"/> and <see cref="ID.TileID.MetalBars"/>) </summary>
+ 	SolidWithTop = 2,
++	/// <summary> Table tiles: <see cref="Main.tileTable"/> but not <see cref="ID.TileID.Sets.Platforms"/>. Also includes <see cref="SolidWithTop"/> tiles. </summary>
+ 	Table = 4,
+ 	SolidSide = 8,
+ 	Tree = 0x10,
++	/// <summary> The tile is contained in <see cref="ObjectData.TileObjectData.AnchorAlternateTiles"/> </summary>
+ 	AlternateTile = 0x20,
++	/// <summary> Either no tile exists or the tile is actuated </summary>
+ 	EmptyTile = 0x40,
+ 	SolidBottom = 0x80,
+ 	Platform = 0x100,

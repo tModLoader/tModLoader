@@ -58,6 +58,7 @@ namespace Terraria.ModLoader.Setup
             this.buttonDiffTerrariaNetCore = new System.Windows.Forms.Button();
             this.buttonPatchTerrariaNetCore = new System.Windows.Forms.Button();
             this.labelWorkingDirectory = new System.Windows.Forms.Label();
+            this.updateLocalizationFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -267,7 +268,8 @@ namespace Terraria.ModLoader.Setup
             this.decompileServerToolStripMenuItem,
             this.formatCodeToolStripMenuItem,
             this.hookGenToolStripMenuItem,
-            this.simplifierToolStripMenuItem});
+            this.simplifierToolStripMenuItem,
+            this.updateLocalizationFilesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -299,6 +301,13 @@ namespace Terraria.ModLoader.Setup
             this.simplifierToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.simplifierToolStripMenuItem.Text = "Simplifier";
             this.simplifierToolStripMenuItem.Click += new System.EventHandler(this.simplifierToolStripMenuItem_Click);
+            // 
+            // updateLocalizationFilesToolStripMenuItem
+            // 
+            this.updateLocalizationFilesToolStripMenuItem.Name = "updateLocalizationFilesToolStripMenuItem";
+            this.updateLocalizationFilesToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.updateLocalizationFilesToolStripMenuItem.Text = "Update Localization Files";
+            this.updateLocalizationFilesToolStripMenuItem.Click += new System.EventHandler(this.updateLocalizationFilesToolStripMenuItem_Click);
             // 
             // patchToolStripMenuItem
             // 
@@ -432,6 +441,7 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.Button buttonDiffTerrariaNetCore;
 		private System.Windows.Forms.Button buttonPatchTerrariaNetCore;
 		private System.Windows.Forms.Label labelWorkingDirectory;
+		private System.Windows.Forms.ToolStripMenuItem updateLocalizationFilesToolStripMenuItem;
 	}
 }
 

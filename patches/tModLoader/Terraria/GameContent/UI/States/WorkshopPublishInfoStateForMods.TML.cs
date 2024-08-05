@@ -8,8 +8,10 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social;
 using Terraria.Social.Base;
+using Terraria.Social.Steam;
 using Terraria.UI;
 
 namespace Terraria.GameContent.UI.States;
@@ -161,5 +163,66 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 				}
 			}
 		}
+	}
+
+	internal void AddNonModOwnerPublishWarning(UIList uiList)
+	{
+		var query = new QueryParameters() {
+			searchModSlugs = new string[] { _dataObject.Name },
+			queryType = QueryType.SearchDirect
+		};
+
+		if (!WorkshopHelper.TryGetModDownloadItem(_dataObject.Name, out var mod) || mod == null) {
+			return;
+		}
+
+		ulong existingAuthorID = ulong.Parse(mod.OwnerId);
+		if (existingAuthorID == 0 || existingAuthorID == Steamworks.SteamUser.GetSteamID().m_SteamID) {
+			return;
+		}
+
+		float num = 180f;
+		float num2 = 0f + num;
+
+		GroupOptionButton<bool> groupOptionButton = new GroupOptionButton<bool>(option: true, null, null, Color.White, null, 1f, 0.5f, 16f) {
+			HAlign = 0.5f,
+			VAlign = 0f,
+			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
+			Left = StyleDimension.FromPixels(0f),
+			Height = StyleDimension.FromPixelsAndPercent(num2 + 4f, 0f),
+			Top = StyleDimension.FromPixels(0f),
+			ShowHighlightWhenSelected = false
+		};
+
+		groupOptionButton.SetCurrentOption(option: false);
+		groupOptionButton.Width.Set(0f, 1f);
+
+		UIElement uIElement = new UIElement {
+			HAlign = 0.5f,
+			VAlign = 1f,
+			Width = new StyleDimension(0f, 1f),
+			Height = new StyleDimension(num, 0f)
+		};
+		uIElement.OnLeftClick += (sender, e) => Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Workshop#renaming-a-mod");
+
+		groupOptionButton.Append(uIElement);
+
+		UIText uIText = new UIText(Language.GetTextValue("tModLoader.NonModOwnerPublishWarning", _dataObject.Name)) {
+			HAlign = 0f,
+			VAlign = 0f,
+			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
+			Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
+			TextColor = Color.Yellow,
+			IgnoresMouseInteraction = true
+		};
+
+		uIText.PaddingLeft = 20f;
+		uIText.PaddingRight = 20f;
+		uIText.PaddingTop = 4f;
+		uIText.IsWrapped = true;
+
+		uIElement.Append(uIText);
+		uIText.SetSnapPoint("warning", 0);
+		uiList.Add(groupOptionButton);
 	}
 }
