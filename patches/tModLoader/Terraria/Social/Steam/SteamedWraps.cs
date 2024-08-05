@@ -269,6 +269,11 @@ public static class SteamedWraps
 			return SteamUGC.CreateQueryUserUGCRequest(SteamUser.GetSteamID().GetAccountID(), EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, new AppId_t(thisApp), new AppId_t(thisApp), page);
 		}
 
+		// Search by author steamid64, can be used to find friends-only mods in-game, normal search through the API doesn't seem to show them
+		if (SteamClient && qP.searchAuthor?.Length == 17 && ulong.TryParse(qP.searchAuthor, out ulong steamID64)) {
+			return SteamUGC.CreateQueryUserUGCRequest(new AccountID_t((uint)(steamID64 & 0xFFFFFFFFu)), EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		}
+
 		// These will only return visibility = public - Solxan, July 30 2024
 		if (SteamClient)
 			return SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
