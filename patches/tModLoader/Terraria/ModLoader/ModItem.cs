@@ -18,8 +18,9 @@ using Terraria.Utilities;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
-/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
+/// This class serves as a place for you to place all your properties and hooks for each item.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 /// </summary>
 public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 {
@@ -102,6 +103,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	{
 	}
 
+	/// <summary>
+	/// Called when this item is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
+	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft this created item.
+	/// </summary>
 	public virtual void OnCreated(ItemCreationContext context)
 	{
 	}
@@ -819,8 +824,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. Note that this hook is only ever called through this item's associated equipment texture. Use the player.armorEffectDraw bools to activate the desired effects.
-	/// </summary>
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
+	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void ArmorSetShadows(Player player)
 	{
@@ -1287,7 +1292,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to make anything happen when the player crafts this item using the given recipe.
 	/// </summary>
 	/// <param name="recipe">The recipe that was used to craft this item.</param>
-	[Obsolete("Use OnCreate and check if context is RecipeCreationContext", true)]
+	[Obsolete("Use OnCreate and check if context is RecipeItemCreationContext", true)]
 	public virtual void OnCraft(Recipe recipe)
 	{
 	}

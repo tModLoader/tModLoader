@@ -5,7 +5,6 @@ env:
     DevBranch: 1.4.4
     StableBranch: stable
     PreviewBranch: preview
-    SkipOddMonths: false
 
 # Controls when the action will run. 
 on:
@@ -35,18 +34,13 @@ jobs:
             
         - name: Merge
           run: |
-            month=$(date +%m)
-            if [[ $((month%2)) -eq 0 || "${{env.SkipOddMonths}}"=="false" ]]; then
-                token=${{ secrets.TMODLOADERBOT_TOKEN }}
-                repo=$GITHUB_REPOSITORY
-                git config user.name github-actions
-                git config user.email github-actions@github.com
-                git remote set-url origin https://x-access-token:$token@github.com/$repo.git
-                git reset --hard origin/${{env.PreviewBranch}}
-                git push --force origin ${{env.StableBranch}}
-            else
-                echo "Skipping merge to stable as this is an odd month (Jan, Mar, May, Jul, Sept, Nov)"
-            fi
+            token=${{ secrets.TMODLOADERBOT_TOKEN }}
+            repo=$GITHUB_REPOSITORY
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git remote set-url origin https://x-access-token:$token@github.com/$repo.git
+            git reset --hard origin/${{env.PreviewBranch}}
+            git push --force origin ${{env.StableBranch}}
             
   # This workflow replaces $PreviewBranch with a copy of $DevBranch, destroying anything on it prior
   MergeToPreview:

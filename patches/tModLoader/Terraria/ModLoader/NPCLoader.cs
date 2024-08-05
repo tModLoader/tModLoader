@@ -1464,4 +1464,40 @@ public static class NPCLoader
 	}
 
 	internal static HookList HookSaveData = AddHook<Action<NPC, TagCompound>>(g => g.SaveData);
+
+	private delegate void DelegateChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookChatBubblePosition = AddHook<DelegateChatBubblePosition>(g => g.ChatBubblePosition);
+
+	public static void ChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.ChatBubblePosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookChatBubblePosition.Enumerate(npc)) {
+			g.ChatBubblePosition(npc, ref position, ref spriteEffects);
+		}
+	}
+
+	private delegate void DelegatePartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookPartyHatPosition = AddHook<DelegatePartyHatPosition>(g => g.PartyHatPosition);
+
+	public static void PartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.PartyHatPosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookPartyHatPosition.Enumerate(npc)) {
+			g.PartyHatPosition(npc, ref position, ref spriteEffects);
+		}
+	}
+
+	private delegate void DelegateEmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookEmoteBubblePosition = AddHook<DelegateEmoteBubblePosition>(g => g.EmoteBubblePosition);
+
+	public static void EmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.EmoteBubblePosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookEmoteBubblePosition.Enumerate(npc)) {
+			g.EmoteBubblePosition(npc, ref position, ref spriteEffects);
+		}
+	}
 }

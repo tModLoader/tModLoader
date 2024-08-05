@@ -35,16 +35,18 @@ public partial class WorkshopHelper
 	}
 
 	/// <summary>
+	/// <code>
 	/// Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found
-	/// If SteamClient is true (ie it is a steam user running a client or host&play),
+	/// If SteamClient is true (ie it is a steam user running a client or host and play),
 	///		InstallDir: SteamFiles/Steamapps/common/tModLoader is GetAppInstallDir
 	///		WorkshopFolder: SteamFiles/Steamapps/workshop is Path.Combine(GetAppInstallDir, .., .., Workshop)
 	///	If SteamClient is false, SteamAvailable = True -> Is FamilyShare or GoG Client. SteamedWraps.FamilyShare differentiates if needed
 	///		InstallDir: anywhere, manual.
 	///		WorkshopFolder: InstallDir/Steamapps/workshop
 	///	If Main.DedServ is true
-	///		Use SteamClient reference path if it exists && Not "-nosteam" supplied
+	///		Use SteamClient reference path if it exists &amp;&amp; Not "-nosteam" supplied
 	///		Use NotSteamClient working folder path if "-nosteam" supplied or SteamClient ref path not exists
+	/// </code>
 	/// </summary>
 	public static string GetWorkshopFolder(AppId_t app)
 	{
@@ -175,13 +177,6 @@ public partial class WorkshopHelper
 		else
 			changeLog = "";
 
-		var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
-		string workshopDesc;
-		if (File.Exists(workshopDescFile))
-			workshopDesc = File.ReadAllText(workshopDescFile);
-		else
-			workshopDesc = bp.description;
-
 		var values = new NameValueCollection
 		{
 			{ "displayname", bp.displayName },
@@ -190,7 +185,7 @@ public partial class WorkshopHelper
 			{ "version", $"{bp.version}" },
 			{ "author", bp.author },
 			{ "homepage", bp.homepage },
-			{ "description", workshopDesc },
+			{ "description", bp.description },
 			{ "iconpath", iconPath },
 			{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 			{ "modloaderversion", $"{modFile.TModLoaderVersion}" },

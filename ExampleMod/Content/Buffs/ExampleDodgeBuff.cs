@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Buffs
 {
 	/// <summary>
 	/// This buff is modeled after the "Holy Protection" buff given to the player by the Hallowed armor set bonus. <br/>
-	/// Use <see cref="Items.Weapons.HitModifiersShowcase"/> in mode 6 to apply this buff.
+	/// Use <see cref="Items.Weapons.HitModifiersShowcase"/> in mode 7 to apply this buff.
 	/// </summary>
 	internal class ExampleDodgeBuff : ModBuff
 	{

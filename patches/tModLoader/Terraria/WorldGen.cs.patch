@@ -26,6 +26,29 @@
  {
  	public static class WorldSize
  	{
+@@ -889,14 +_,22 @@
+ 	public static int SmallConsecutivesFound = 0;
+ 	public static int SmallConsecutivesEliminated = 0;
+ 	public static bool tempRemixWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up (aka Remix)</see> secret world seed. See also <see cref="Main.remixWorld"/>. </summary>
+ 	public static bool remixWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Get_fixed_boi">Get fixed boi (aka Zenith)</see> secret world seed. This seed combines multiple secret seeds. Note that the other secret world seed bools inherited by this seed will be set as well, so there is no need to specifically check both those bools and this bool. See also <see cref="Main.zenithWorld"/>. </summary>
+ 	public static bool everythingWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/No_traps">No traps</see> secret world seed. See also <see cref="Main.noTrapsWorld"/>. </summary>
+ 	public static bool noTrapsWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="Main.drunkWorld"/>. </summary>
+ 	public static bool drunkWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/For_the_worthy">For the worthy</see> secret world seed. See also <see cref="Main.getGoodWorld"/>. </summary>
+ 	public static bool getGoodWorldGen = false;
+ 	public static bool tempTenthAnniversaryWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Celebrationmk10">Celebrationmk10</see> secret world seed. See also <see cref="Main.tenthAnniversaryWorld"/>. </summary>
+ 	public static bool tenthAnniversaryWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/The_Constant">The Constant</see> secret world seed. See also <see cref="Main.dontStarveWorld"/>. </summary>
+ 	public static bool dontStarveWorldGen = false;
++	/// <summary> If true, the world is generating with the <see href="https://terraria.wiki.gg/wiki/Not_the_bees">Not the bees</see> secret world seed. See also <see cref="Main.notTheBeesWorld"/>. </summary>
+ 	public static bool notTheBees = false;
+ 	public static bool drunkWorldGenText = false;
+ 	public static bool placingTraps = false;
 @@ -923,6 +_,9 @@
  	public static bool noMapUpdateRefresh = false;
  	private static bool skipFramingDuringGen = false;
@@ -623,7 +646,7 @@
  					bool flag2 = TileID.Sets.Dirt[tile2.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile2.type];
-@@ -13849,12 +_,34 @@
+@@ -13849,12 +_,35 @@
  			skipFramingDuringGen = false;
  			progress.Message = Lang.gen[87].Value;
  		});
@@ -632,6 +655,7 @@
 +	private static void AddGenPassesFromLoadTime()
 +	{
 +		foreach (var pass in _vanillaGenPasses) {
++			pass.Value.Reset();
 +			_generator.Append(pass.Value);
 +		}
 +	}
@@ -2042,7 +2066,7 @@
  
 +	/// <summary>
 +	/// PlaceTile is the main way to place individual tiles while obeying anchor considerations. Most of the other PlaceX methods in the WorldGen class are called by this method. i and j are the tile coordinates. These coordinates relate to the origin of the tile, not necessarily the top left corner of the tile. Read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">the Basic Tile wiki guide</see> to familiarize yourself with the concepts of Anchors and Origins. <paramref name="mute"/> indicates if a sound should be made, this only applies to in-game usage as sounds are all muted during world gen. <paramref name="forced"/> attempts to place the tile even if other tiles are already at the coordinates, but it is unreliable. <paramref name="plr"/> does nothing except affect bathtubs. <paramref name="style"/> refers to the style of the tile type provided. Styles are explained in the Basic Tile guide.
-+	/// <para/> PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <c>if(Main.tile[x, y].type == TileID.Campfire)</c>
++	/// <para/> PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <c>if(Main.tile[x, y].TileType == TileID.Campfire)</c>
 +	/// <para/> PlaceTile doesn't expose everything. For example, attempting to place a tile with a specific style will be ignored by many of the underlying methods. Another issue is that it is impossible to place a tile that has left and right placement orientations facing right. In these situations, you might need to manually place each tile in the multitile or use <see cref="PlaceObject(int, int, int, bool, int, int, int, int)"/> instead. WorldGen.PlaceObject requires more input. For example, placing Coral with PlaceObject means you have to manually specify the style, as the random style (<see cref="TileObjectData.RandomStyleRange"/>) choosing is a feature of PlaceTile.
 +	/// <para/> If called in-game, the changed tiles would need to be synced if placement is successful. See <see cref="NetMessage.SendTileSquare(int, int, int, int, int, TileChangeType)"/> for more information and examples.
 +	/// </summary>
@@ -2127,11 +2151,12 @@
  								SquareTileFrame(i, j);
  							}
  
-@@ -42866,6 +_,9 @@
+@@ -42866,6 +_,10 @@
  										case 314:
  											Minecart.PlaceTrack(tile, style);
  											break;
 +										case int _ when num >= TileID.Count && TileObjectData.GetTileData(num, style) != null:
++											// TODO: Can we pass in direction = Main.player[plr].direction; to support it for modded PlaceTile without breaking anything?
 +											PlaceObject(i, j, (ushort)num, mute, style);
 +											break;
  										default:

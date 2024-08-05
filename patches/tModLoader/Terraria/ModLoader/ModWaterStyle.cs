@@ -51,7 +51,7 @@ public abstract class ModWaterStyle : ModTexturedType
 	public abstract int GetSplashDust();
 
 	/// <summary>
-	/// The ID of the gore that represents droplets of water falling down from a block.
+	/// The ID of the gore that represents droplets of water falling down from a block. Return <see cref="ID.GoreID.WaterDrip"/> (or another existing droplet gore) or make a custom ModGore that uses <see cref="ID.GoreID.Sets.LiquidDroplet"/>.
 	/// </summary>
 	public abstract int GetDropletGore();
 

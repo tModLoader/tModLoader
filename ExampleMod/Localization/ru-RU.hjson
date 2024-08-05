@@ -74,6 +74,22 @@ Mods: {
 			// MinionBossMinion.DisplayName: Minion Boss Minion
 			// PartyZombie.DisplayName: Party Zombie
 			// ExampleCritterNPC.DisplayName: Lava Frog
+
+			ExampleTownPet: {
+				// DisplayName: Example Town Pet
+				// Census.SpawnCondition: Use an [i:ExampleMod/ExampleTownPetLicense] Example Town Pet License. Purchased from the Zoologist at 50% Bestiary completetion.
+
+				Names: {
+					Green: {
+						// Green: Green
+						// Jade: Jade
+						// Lime: Lime
+						// Mint: Mint
+						// Olive: Olive
+						// Pine: Pine
+					}
+				}
+			}
 		}
 
 		Tiles: {
@@ -90,6 +106,11 @@ Mods: {
 			}
 
 			// ExampleDresser.MapEntry: Example Dresser
+
+			ExampleSign: {
+				// DefaultSignText: Right-click me!
+				// MapEntry: Example Sign
+			}
 		}
 
 		Items: {
@@ -162,6 +183,7 @@ Mods: {
 
 					Drastically increases example resource regen rate
 					{$CommonItemTooltip.IncreasesMaxExampleResourceBy}
+					Increases pickup range for Example Resource Pickup
 					''' */
 			}
 
@@ -188,6 +210,7 @@ Mods: {
 					{6} magic armor penetration
 					{7}% increased example knockback
 					{8}% increased crit damage
+					Increased movement speed and acceleration
 					''' */
 			}
 
@@ -818,7 +841,7 @@ Mods: {
 
 			ExampleExplosive: {
 				// DisplayName: Example Explosive
-				// Tooltip: ""
+				// Tooltip: "{$ItemTooltip.Dynamite}"
 			}
 
 			ExampleJavelin: {
@@ -895,6 +918,79 @@ Mods: {
 				// DisplayName: Example Sand Block
 				// Tooltip: This is a modded sand block
 			}
+
+			TileObjectDataShowcaseStyle0: {
+				// DisplayName: TileObjectData Showcase Style 0 - Gold
+				// Tooltip: Place between gold ore tiles
+			}
+
+			TileObjectDataShowcaseStyle1: {
+				// DisplayName: TileObjectData Showcase Style 1 - Silver
+				// Tooltip: Place between silver ore tiles
+			}
+
+			TileObjectDataShowcaseStyle2: {
+				// DisplayName: TileObjectData Showcase Style 2 - Copper
+				// Tooltip: Place between copper ore tiles
+			}
+
+			TileObjectDataShowcaseStyle3: {
+				// DisplayName: TileObjectData Showcase Style 3 - ExampleBlock
+				// Tooltip: Place between ExampleBlock tiles
+			}
+
+			ExampleRocket: {
+				// DisplayName: Example Rocket
+				// Tooltip: "{$ItemTooltip.RocketI}"
+			}
+
+			ExampleRocketLauncher: {
+				// DisplayName: Example Rocket Launcher
+				// Tooltip: ""
+			}
+
+			ExampleBoots: {
+				// DisplayName: Example Boots
+				/* Tooltip:
+					'''
+					Allows flight, super fast running, even faster running on sand, and extra mobility on ice
+					{$CommonItemTooltip.PercentIncreasedMovementSpeed}
+					Provides the ability to walk on water, honey, lava, and shimmer
+					Grants immunity to fire blocks and {1} seconds of immunity to lava
+					Reduces damage from touching lava
+					Prevents fall damage
+					Leaves a trail of flames in your wake
+					''' */
+			}
+
+			ExampleArrow: {
+				// DisplayName: Example Arrow
+				// Tooltip: ""
+			}
+
+			ExampleTownPetLicense: {
+				// DisplayName: Example Town Pet License
+				/* Tooltip:
+					'''
+					Use to adopt a Example Town Pet for your town
+					Already have a Example Town Pet?
+					Use additional licenses to activate the Pet Exchange Program!
+					Find the perfect fit for you and your Example Town Pet!
+					''' */
+				// LicenseExampleTownPetUse: The license teleports away to the Example Town Pet delivery service...
+			}
+
+			ExampleFlask: {
+				// DisplayName: Flask of Example
+				// Tooltip: Melee and Whip attacks decrease enemies defense
+			}
+
+			// ExampleResourcePickup.DisplayName: Example Resource Pickup
+
+			ExampleSignItem: {
+				// DisplayName: Example Sign
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -936,6 +1032,11 @@ Mods: {
 			// ExampleLastPrismBeam.DisplayName: Example Prism Beam
 			// ExampleSandBallFallingProjectile.DisplayName: Example Sand Ball
 			// ExampleSandBallGunProjectile.DisplayName: "{$ExampleSandBallFallingProjectile.DisplayName}"
+			// ExampleGrenadeProjectile.DisplayName: Example Grenade Projectile
+			// ExampleProximityMineProjectile.DisplayName: Example Proximity Mine Projectile
+			// ExampleRocketProjectile.DisplayName: Example Rocket Projectile
+			// ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
+			// ExampleArrowProjectile.DisplayName: Example Arrow Projectile
 		}
 
 		Buffs: {
@@ -1023,6 +1124,11 @@ Mods: {
 				// DisplayName: Example Javelin Debuff
 				// Description: Losing life
 			}
+
+			ExampleWeaponImbue: {
+				// DisplayName: Example Weapon Imbue
+				// Description: "{$Items.ExampleFlask.Tooltip}"
+			}
 		}
 
 		RecipeConditions.Night: С низким здоровьем
@@ -1031,6 +1137,7 @@ Mods: {
 		Bestiary: {
 			ExamplePerson: Построен из блоков, с руками из стали. Качает своё железо и днём и ночью.
 			// ExampleBoneMerchant: Built with bone blocks and arms of steel. Throws bones day and night.
+			// ExampleTownPet: A blocky Town Pet to bring extra cuteness to the town.
 		}
 
 		Biomes: {

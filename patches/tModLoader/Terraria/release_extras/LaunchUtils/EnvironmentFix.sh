@@ -20,6 +20,22 @@ if [ -d "$steamworksRename" ]; then
 	mv -v "$steamworksRename" "$root_dir/Libraries/steamworks.net" 2>&1 | tee -a "$LogFile"
 fi
 
+newtonsoftRename="$root_dir/Libraries/Newtonsoft.Json"
+if [ -d "$newtonsoftRename" ]; then
+	mv -v "$newtonsoftRename" "$root_dir/Libraries/newtonsoft.json" 2>&1 | tee -a "$LogFile"
+fi
+
+# Process Dump On Crash Configuration Options. 
+# DbgMini is a mini memory dump when dotnet crashes. 
+#	Dump diagnostics is diagnostic logging for that dumping Process
+# Enable Crash Report is a Unix based feature. Needs DbgMiniDumpName
+#export DOTNET_DbgEnableMiniDump=1
+#export DOTNET_DbgMiniDumpType=3
+#export DOTNET_DbgMiniDumpName="$LaunchLogs/CoreDump.%t"
+#export DOTNET_CreateDumpDiagnostics=1
+#export DOTNET_CreateDumpLogToFile="$LaunchLogs/CoreDumpDiagnostics.log"
+#export DOTNET_EnableCrashReport=1
+
 # The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
 # Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
 # without actually invoking managed NativeLibrary resolving events!

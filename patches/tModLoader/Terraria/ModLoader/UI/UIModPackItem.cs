@@ -241,12 +241,7 @@ internal class UIModPackItem : UIPanel
 		_tooltip = null;
 		base.Draw(spriteBatch);
 		if (!string.IsNullOrEmpty(_tooltip)) {
-			byte temp = Main.mouseTextColor;
-			Main.mouseTextColor = 160;
-			var bounds = GetOuterDimensions().ToRectangle();
-			bounds.Height += 16;
-			UICommon.DrawHoverStringInBounds(spriteBatch, _tooltip, bounds);
-			Main.mouseTextColor = temp;
+			UICommon.TooltipMouseText(_tooltip);
 		}
 	}
 
@@ -310,6 +305,9 @@ internal class UIModPackItem : UIPanel
 		}
 		else if (_updateListWithEnabledButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabledDesc");
+		}
+		else if (_deleteButton?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.ModPackDelete");
 		}
 	}
 
@@ -402,6 +400,7 @@ internal class UIModPackItem : UIPanel
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 		Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 		Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
+		Interface.modBrowser.ResetTagFilters();
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 
 		Interface.modBrowser.PreviousUIState = Interface.modPacksMenu;

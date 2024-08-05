@@ -230,5 +230,10 @@ namespace Terraria.ModLoader.Setup
 		private void menuItemTmlPath_Click(object sender, EventArgs e) {
 			Program.SelectTmlDirectoryDialog();
 		}
+
+		private void updateLocalizationFilesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RunTask(new UpdateLocalizationFilesTask(this));
+		}
 	}
 }

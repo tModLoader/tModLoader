@@ -34,9 +34,9 @@ internal class UIMemoryBar : UIElement
 	internal static bool RecalculateMemoryNeeded = true;
 
 	private readonly List<MemoryBarItem> _memoryBarItems = new List<MemoryBarItem>();
-	private long _maxMemory; //maximum memory Terraria could allocate before crashing if it was the only process on the system
+	private long allocatedMemory; // Total process memory usage, serves as total width value of memory bar.
 
-	public override void OnInitialize()
+	public UIMemoryBar()
 	{
 		Width.Set(0f, 1f);
 		Height.Set(20f, 0f);
@@ -46,6 +46,11 @@ internal class UIMemoryBar : UIElement
 	{
 		base.OnActivate();
 		// moved from constructor to avoid texture loading on JIT thread
+		Show();
+	}
+
+	internal void Show()
+	{
 		RecalculateMemoryNeeded = true;
 		Task.Run(RecalculateMemory);
 	}
@@ -63,7 +68,7 @@ internal class UIMemoryBar : UIElement
 
 		for (int i = 0; i < _memoryBarItems.Count; i++) {
 			var memoryBarData = _memoryBarItems[i];
-			int width = (int)(rectangle.Width * (memoryBarData.Memory / (float)_maxMemory));
+			int width = (int)(rectangle.Width * (memoryBarData.Memory / (float)allocatedMemory));
 			if (i == _memoryBarItems.Count - 1) { // Fix rounding errors on last entry for consistent right edge
 				width = rectangle.Right - xOffset - rectangle.X;
 			}
@@ -76,6 +81,11 @@ internal class UIMemoryBar : UIElement
 				hoverData = memoryBarData;
 			}
 		}
+
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X, rectangle.Y, 2, rectangle.Height), Color.Black);
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X, rectangle.Y, rectangle.Width, 2), Color.Black);
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X + rectangle.Width - 2, rectangle.Y, 2, rectangle.Height), Color.Black);
+		Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height - 2, rectangle.Width, 2), Color.Black);
 
 		if (drawHover && hoverData != null) {
 			UICommon.TooltipMouseText(hoverData.Tooltip);
@@ -95,47 +105,43 @@ internal class UIMemoryBar : UIElement
 	{
 		_memoryBarItems.Clear();
 
-#if WINDOWS //TODO: 64bit?
-		_maxMemory = Environment.Is64BitOperatingSystem ? 4294967296 : 3221225472;
-		long availableMemory = _maxMemory; // CalculateAvailableMemory(maxMemory); This is wrong, 4GB is not shared.
-#else
-		_maxMemory = GetTotalMemory();
-		long availableMemory = _maxMemory; //This is wrong; this is assuming tML is the only thing running. Can't find an alternative, but is less likely to confuse users under current design
-#endif
-
 		long totalModMemory = 0;
 		int i = 0;
 		foreach (var entry in MemoryTracking.modMemoryUsageEstimates.OrderBy(v => -v.Value.total)) {
 			var modName = entry.Key;
 			var usage = entry.Value;
-			if (usage.total <= 0 || modName == "tModLoader")
+			if (usage.total <= 0 || modName == "ModLoader")
 				continue;
 
 			totalModMemory += usage.total;
 			var sb = new StringBuilder();
 			sb.Append(ModLoader.GetMod(modName).DisplayName);
-			sb.Append($"\n{Language.GetTextValue("tModLoader.LastLoadRamUsage", SizeSuffix(usage.total))}");
+			sb.Append($"\n {Language.GetTextValue("tModLoader.LastLoadRamUsage", SizeSuffix(usage.total))}");
 			if (usage.managed > 0)
-				sb.Append($"\n {Language.GetTextValue("tModLoader.ManagedMemory", SizeSuffix(usage.managed))}");
-			if (usage.managed > 0)
-				sb.Append($"\n {Language.GetTextValue("tModLoader.CodeMemory", SizeSuffix(usage.code))}");
+				sb.Append($"\n  {Language.GetTextValue("tModLoader.ManagedMemory", SizeSuffix(usage.managed))}");
+			if (usage.code > 0)
+				sb.Append($"\n  {Language.GetTextValue("tModLoader.CodeMemory", SizeSuffix(usage.code))}");
 			if (usage.sounds > 0)
-				sb.Append($"\n {Language.GetTextValue("tModLoader.SoundMemory", SizeSuffix(usage.sounds))}");
+				sb.Append($"\n  {Language.GetTextValue("tModLoader.SoundMemory", SizeSuffix(usage.sounds))}");
 			if (usage.textures > 0)
-				sb.Append($"\n {Language.GetTextValue("tModLoader.TextureMemory", SizeSuffix(usage.textures))}");
+				sb.Append($"\n  {Language.GetTextValue("tModLoader.TextureMemory", SizeSuffix(usage.textures))}");
 			_memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, _colors[i++ % _colors.Length]));
 		}
 
-		long allocatedMemory = Process.GetCurrentProcess().WorkingSet64;
-		var nonModMemory = allocatedMemory - totalModMemory;
+		Process process = Process.GetCurrentProcess();
+		process.Refresh();
+		allocatedMemory = process.PrivateMemorySize64; // Use this rather than cache a value in MemoryTracking.Finish due to OS taking time to free memory
+		long nonModMemory = allocatedMemory - totalModMemory; // What we think tmod itself is using.
 		_memoryBarItems.Add(new MemoryBarItem(
-			$"{Language.GetTextValue("tModLoader.TerrariaMemory", SizeSuffix(nonModMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(allocatedMemory))}",
+			$"{Language.GetTextValue("tModLoader.TerrariaMemory", SizeSuffix(nonModMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(allocatedMemory))}\n\n{Language.GetTextValue("tModLoader.InstalledMemory", SizeSuffix(GetTotalMemory()))}",
 			nonModMemory, Color.DeepSkyBlue));
 
+		/*
 		var remainingMemory = availableMemory - allocatedMemory;
 		_memoryBarItems.Add(new MemoryBarItem(
-			$"{Language.GetTextValue("tModLoader.AvailableMemory", SizeSuffix(remainingMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(availableMemory))}",
+			$"{Language.GetTextValue("tModLoader.AvailableMemory", SizeSuffix(remainingMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffixavailableMemory))}",
 			remainingMemory, Color.Gray));
+		*/
 
 		//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;
 		//memoryBarItems.Add(new MemoryBarData($"Other programs: {SizeSuffix(maxMemory - availableMemory - meminuse)}", portion, Color.Black));
@@ -145,6 +151,7 @@ internal class UIMemoryBar : UIElement
 
 	private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
+	// TODO: These are binary, not decimal. Add parameter to support both? Which should be which?
 	internal static string SizeSuffix(long value, int decimalPlaces = 1)
 	{
 		if (value < 0) { return "-" + SizeSuffix(-value); }
@@ -179,6 +186,7 @@ internal class UIMemoryBar : UIElement
 	}
 	*/
 
+	/// <summary> Returns total installed RAM </summary>
 	public static long GetTotalMemory()
 	{
 		var gcMemInfo = GC.GetGCMemoryInfo();
