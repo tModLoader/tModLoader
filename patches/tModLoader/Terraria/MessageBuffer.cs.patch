@@ -388,6 +388,15 @@
  					Recipe.FindRecipes(canDelayCheck: true);
  				}
  
+@@ -1650,7 +_,7 @@
+ 				int num5 = reader.ReadByte();
+ 				string name = string.Empty;
+ 				if (num5 != 0) {
+-					if (num5 <= 20)
++					if (num5 <= Chest.MaxNameLength)
+ 						name = reader.ReadString();
+ 					else if (num5 != 255)
+ 						num5 = 0;
 @@ -1703,22 +_,49 @@
  				if (Main.netMode == 2)
  					num206 = 0;

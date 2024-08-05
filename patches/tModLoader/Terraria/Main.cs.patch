@@ -283,7 +283,7 @@
  	public static bool dedServ;
  	public static int spamCount = 0;
  	public static int curMusic;
-@@ -743,19 +_,48 @@
+@@ -743,19 +_,52 @@
  	public static int LogoA = 255;
  	public static int LogoB;
  	public static bool LogoT;
@@ -320,6 +320,10 @@
  	public static Microsoft.Xna.Framework.Color[] teamColor = new Microsoft.Xna.Framework.Color[6];
  	public const double dayLength = 54000.0;
  	public const double nightLength = 32400.0;
++	/// <summary>
++	/// True during the day hours (4:30 AM to 7:30 PM), false during night hours (7:30 PM to 4:30 AM). In conjunction with <see cref="time"/> these represent the in-game time of the world.
++	/// <para/> Note that <see cref="IsItDay"/> additionally takes into account the constant night state of <see cref="remixWorld"/> worlds and should be used instead for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
  	public static bool dayTime = true;
 +
 +	/// <summary>
@@ -446,7 +450,7 @@
 +	/// </summary>
  	public static bool[] tileSolidTop = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
++	/// If true, this tile will be solid (unless <see cref="tileSolidTop"/> is also true). Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
 +	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
 +	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
@@ -653,6 +657,16 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
+@@ -1165,6 +_,9 @@
+ 	public static float invasionProgressAlpha;
+ 	public static bool HasInteractibleObjectThatIsNotATile = false;
+ 	public int currentNPCShowingChatBubble = -1;
++	/// <summary>
++	/// The number of animation frames this NPC's texture has. ModNPC should use <see cref="ModNPC.FindFrame(int)"/> to adjust <c>NPC.frame.Y</c> to change the drawn frame.
++	/// </summary>
+ 	public static int[] npcFrameCount = new int[688] {
+ 		1,
+ 		2,
 @@ -1860,11 +_,20 @@
  	public static float exitScale = 0.8f;
  	public static bool mouseReforge;
@@ -1104,6 +1118,15 @@
  					}
  				}
  
+@@ -4010,7 +_,7 @@
+ 					LanguageManager.Instance.SetLanguage(Convert.ToInt32(value5));
+ 				}
+ 
+-				if (text.Length > 5 && text.Substring(0, 5).ToLower() == "language=") {
++				if (text.Length > 9 && text.Substring(0, 9).ToLower() == "language=") {
+ 					string language = text.Substring(9);
+ 					LanguageManager.Instance.SetLanguage(language);
+ 				}
 @@ -4023,6 +_,14 @@
  				if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  					worldName = text.Substring(10);
@@ -6446,7 +6469,7 @@
  				}
  			}
  		}
-@@ -51850,6 +_,8 @@
+@@ -51850,11 +_,16 @@
  		}
  
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
@@ -6455,6 +6478,14 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="dayTime"/>, but always returns false in <see cref="remixWorld"/> worlds. This should be used instead of <see cref="dayTime"/> for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
+ 	public static bool IsItDay()
+ 	{
+ 		if (remixWorld)
 @@ -51883,6 +_,13 @@
  			num = Utils.Clamp(num, 0, 8);
  

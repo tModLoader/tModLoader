@@ -379,7 +379,7 @@ internal class UIModPackItem : UIPanel
 		}
 
 		var query = new QueryParameters() { searchModSlugs = _mods };
-		if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+		if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 			return new List<ModPubId_t>(); // query failed. TODO, actually show an error UI instead
 
 		var output = new List<ModPubId_t>();
@@ -400,6 +400,7 @@ internal class UIModPackItem : UIPanel
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 		Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 		Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
+		Interface.modBrowser.ResetTagFilters();
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 
 		Interface.modBrowser.PreviousUIState = Interface.modPacksMenu;

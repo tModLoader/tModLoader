@@ -16,7 +16,7 @@ on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [githubActionsMaintenance, stable, preview, 1.4.4, feature/dotnet8]
+    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, feature/dotnet8]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
@@ -36,7 +36,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out base branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{github.ref}}
           persist-credentials: false
@@ -88,15 +88,15 @@ jobs:
           branch: ${{github.ref}}
         
         # Apply new Tag for the current commit
-      - uses: mathieudutour/github-tag-action@v6.0
+      - uses: mathieudutour/github-tag-action@v6.2
         if: ${{ steps.version.outputs.new_version != null}}
         with:
            custom_tag: ${{ steps.version.outputs.new_version }}
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      # Grab a Copy of Stable for determing what is the current stable version
+      # Grab a Copy of Stable for determining what is the current stable version
       - name: Check out ${{env.StableBranch}} branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: "${{env.StableBranch}}"
           persist-credentials: false
@@ -128,14 +128,14 @@ jobs:
       
       # Get the base branch for build steps
       - name: Re:Check out base branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{github.ref}}
           persist-credentials: false
           fetch-depth: 0
       
       - name: Check out pull request code to separate folder
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         if: github.event_name == 'pull_request_target'
         with:
           ref: ${{github.event.pull_request.head.ref}}
@@ -160,7 +160,7 @@ jobs:
       # A cache allows the build to skip the decompile step
       - name: Retrieve encrypted decompiled zip cache
         id: cache-decompiled
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
@@ -408,7 +408,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out base branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -485,7 +485,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out base branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           

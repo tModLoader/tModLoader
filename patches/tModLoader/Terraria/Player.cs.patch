@@ -108,6 +108,14 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
+@@ -567,6 +_,7 @@
+ 	public bool manaSick;
+ 	public int afkCounter;
+ 	public bool stairFall;
++	/// <summary> 0: Success <br/> 1: Future version <br/> 2: Read error </summary>;
+ 	public int loadStatus;
+ 	public Vector2[] itemFlamePos = new Vector2[7];
+ 	public int itemFlameCount;
 @@ -589,20 +_,81 @@
  	public int ropeCount;
  	public int manaRegenBonus;
@@ -300,8 +308,13 @@
  	public float townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
-@@ -754,6 +_,10 @@
+@@ -752,8 +_,15 @@
+ 	public bool editedChestName;
+ 	public int reuseDelay;
  	public int aggro;
++	/// <summary>
++	/// The sum of the <see cref="NPC.npcSlots"/> values of NPC within the active range of this Player. Used to set NPC spawn rates.
++	/// </summary>
  	public float nearbyActiveNPCs;
  	public bool creativeInterface;
 +	/// <summary>
@@ -311,7 +324,7 @@
  	public bool mouseInterface;
  	public bool lastMouseInterface;
  	public int noThrow;
-@@ -769,8 +_,16 @@
+@@ -769,9 +_,19 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
  	public const int SupportedMiscSlotCount = 5;
@@ -321,13 +334,16 @@
 +	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
 +	/// </summary>
  	public Item[] armor = new Item[20];
++	/// <summary> The dye items corresponding to the <see cref="armor"/> items. </summary>
  	public Item[] dye = new Item[10];
 +	/// <summary>
 +	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
 +	/// </summary>
  	public Item[] miscEquips = new Item[5];
++	/// <summary> The dye items corresponding to the <see cref="miscEquips"/> items. </summary>
  	public Item[] miscDyes = new Item[5];
  	public Item trashItem = new Item();
+ 	public float itemRotation;
 @@ -781,16 +_,48 @@
  	public bool poundRelease;
  	public float ghostFade;
@@ -377,7 +393,7 @@
  	public int lavaTime;
  	public bool ignoreWater;
  	public bool armorEffectDrawShadow;
-@@ -813,7 +_,16 @@
+@@ -813,13 +_,26 @@
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
  	public float firstFractalAfterImageOpacity;
@@ -394,7 +410,17 @@
  	public Item[] inventory = new Item[59];
  	public bool[] inventoryChestStack = new bool[59];
  	public Item lastVisualizedSelectedItem;
-@@ -836,7 +_,13 @@
++	/// <summary> Piggy Bank items </summary>
+ 	public Chest bank = new Chest(bank: true);
++	/// <summary> Safe items </summary>
+ 	public Chest bank2 = new Chest(bank: true);
++	/// <summary> Defender's Forge items </summary>
+ 	public Chest bank3 = new Chest(bank: true);
++	/// <summary> Void Vault items </summary>
+ 	public Chest bank4 = new Chest(bank: true);
+ 	public BitsByte voidVaultInfo;
+ 	public float headRotation;
+@@ -836,10 +_,18 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
  	public int nonTorch = -1;
@@ -407,7 +433,12 @@
 +	/// </summary>
  	public float stepSpeed = 1f;
  	public static bool deadForGood = false;
++	/// <summary> Indicates if this player is dead </summary>
  	public bool dead;
++	/// <summary> The amount of time in ticks before this player respawns after death. Most suitably modified in <see cref="ModPlayer.Kill(double, int, bool, PlayerDeathReason)"/> </summary>
+ 	public int respawnTimer;
+ 	public const int respawnTimerMax = 3600;
+ 	public long lastTimePlayerWasSaved;
 @@ -853,6 +_,7 @@
  	public int head = -1;
  	public int body = -1;
@@ -766,6 +797,14 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
+@@ -1260,6 +_,7 @@
+ 	public Color pantsColor = new Color(255, 230, 175);
+ 	public Color shoeColor = new Color(160, 105, 60);
+ 	public int hair;
++	/// <summary> If true, the player has PvP enabled </summary>
+ 	public bool hostile;
+ 	public SoundPlaySet hermesStepSound = new SoundPlaySet();
+ 	public Vector2 instantMovementAccumulatedThisFrame;
 @@ -1297,9 +_,24 @@
  	public Item boneGloveItem;
  	public bool goldRing;
@@ -1973,6 +2012,24 @@
  			}
  			else if (buffType[j] == 116) {
  				inferno = true;
+@@ -7363,7 +_,7 @@
+ 				bool flag = infernoCounter % 60 == 0;
+ 				int damage = 20;
+ 				if (whoAmI != Main.myPlayer)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int k = 0; k < 200; k++) {
+ 					NPC nPC = Main.npc[k];
+@@ -7377,7 +_,7 @@
+ 				}
+ 
+ 				if (!hostile)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int l = 0; l < 255; l++) {
+ 					Player player = Main.player[l];
 @@ -7388,19 +_,22 @@
  						player.AddBuff(num2, 120);
  
@@ -2026,6 +2083,43 @@
  			}
  			else if (buffType[j] == 41) {
  				buffTime[j] = 18000;
+@@ -8598,18 +_,19 @@
+ 				frozen = true;
+ 				fallStart = (int)(position.Y / 16f);
+ 				if (Main.myPlayer != whoAmI)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				if (position.Y / 16f > (float)Main.UnderworldLayer) {
+-					if (Main.myPlayer == whoAmI)
++					if (Main.myPlayer == whoAmI) {
+ 						DelBuff(j);
+-
+-					continue;
++						j--;
++					}
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				if (shimmerWet) {
+ 					buffTime[j] = 60;
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				bool flag32 = false;
+@@ -8622,8 +_,10 @@
+ 
+ 				if (flag32)
+ 					buffTime[j] = 6;
+-				else
++				else {
+ 					DelBuff(j);
++					j--;
++				}
+ 			}
+ 			else if (buffType[j] == 163) {
+ 				headcovered = true;
 @@ -8708,14 +_,20 @@
  			else if (buffType[j] == 26) {
  				wellFed = true;
@@ -2130,11 +2224,12 @@
  				minionKB -= 1f;
  				pickSpeed += 0.15f;
  			}
-@@ -8805,6 +_,9 @@
+@@ -8805,6 +_,10 @@
  			else if (buffType[j] == 79) {
  				meleeEnchant = 8;
  			}
 +
++			UpdateBuffsLoopEnd:
 +			if (j == originalIndex)
 +				BuffLoader.Update(buffType[j], this, ref j);
  		}
@@ -4756,7 +4851,7 @@
  		return num;
  	}
  
-@@ -27344,11 +_,26 @@
+@@ -27344,11 +_,29 @@
  		}
  	}
  
@@ -4778,6 +4873,9 @@
 +		return false;
 +	}
  
++	/// <summary>
++	/// Checks if the player has the provided amount of money or custom currency (if <paramref name="customCurrency"/> is set) in their inventory and banks combined. Use <see cref="BuyItem(long, int)"/> if the player does have enough money to take that money from the player.
++	/// </summary>
 +	public bool CanAfford(long price, int customCurrency = -1)
 +	{
 +		if (customCurrency != -1)
@@ -4785,13 +4883,20 @@
  		bool overFlowing;
  		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
  		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
-@@ -27357,7 +_,13 @@
+@@ -27357,7 +_,20 @@
  		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
  		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
  			return false;
 +		return true;
 +	}
  
++	/// <summary>
++	/// Attempts to "purchase" something that costs the given <paramref name="price"/>.<br/>
++	/// Items will be taken from all of the player inventories and banks combined.<br/>
++	/// If <paramref name="customCurrency"/> is provided, the price will be in terms of the custom currency instead of coins.<br/>
++	/// The currency will be taken from the inventories.
++	/// <para/> This method does not check if the player has enough currency (use <see cref="CanAfford(long, int)"/> to check that), the <b>game will crash if called on a player without enough currency</b>. Use <see cref="BuyItem(long, int)"/> instead for the more typical usage.
++	/// </summary>
 +	public bool PayCurrency(long price, int customCurrency = -1)
 +	{
 +		if (customCurrency != -1)
@@ -7093,6 +7198,16 @@
  		KnockBack = GetWeaponKnockback(sItem, KnockBack);
  		IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  		if (projToShoot == 228)
+@@ -36695,6 +_,9 @@
+ 		if (sItem.type == 2796)
+ 			projToShoot = 442;
+ 
++		if (sItem.type == ItemID.FireworksLauncher)
++			projToShoot = ProjectileID.RocketFireworkRed; // Make sure Celebration has correct projectile set for logic.
++
+ 		if (sItem.type == 2223)
+ 			projToShoot = 357;
+ 
 @@ -36708,7 +_,8 @@
  		Vector2 pointPoisition = RotatedRelativePoint(MountedCenter);
  		bool flag = true;
@@ -7143,6 +7258,17 @@
  		if (projToShoot == 76) {
  			projToShoot += Main.rand.Next(3);
  			float num7 = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
+@@ -36895,7 +_,9 @@
+ 		}
+ 		else if (sItem.type == 3029) {
+ 			int num11 = 3;
+-			if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41) {
++			//if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41)
++			if (ProjectileID.Sets.FiresFewerFromDaedalusStormbow[projToShoot])
++			{
+ 				if (Main.rand.Next(3) == 0)
+ 					num11--;
+ 			}
 @@ -38410,10 +_,14 @@
  		projType = 721;
  		Item item = inventory[selectedItem];
@@ -7640,7 +7766,7 @@
  					item = inventory[k];
  					canShoot = true;
  					break;
-@@ -40981,10 +_,43 @@
+@@ -40981,17 +_,52 @@
  			}
  		}
  
@@ -7684,6 +7810,15 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
++		/* These 2 are unused and will never be right for modded rocket ammo. Following check is kept in to preserve existing behavior if being relied on.
+ 		else if (sItem.type == 1946)
+ 			projToShoot = 338 + item.type - 771;
+ 		else if (sItem.type == 3930)
+ 			projToShoot = 715 + item.type - AmmoID.Rocket;
++		*/
+ 		else if (sItem.useAmmo == AmmoID.Rocket)
+ 			projToShoot += item.shoot;
+ 		else if (sItem.useAmmo == AmmoID.Solution)
 @@ -41015,6 +_,7 @@
  			projToShoot = 117;
  

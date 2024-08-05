@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,246 @@
+@@ -121,49 +_,247 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -724,7 +724,8 @@
 +
 +	/// <summary>
 +	/// A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items.
-+	/// <br/> Defaults to 0.
++	/// <para/> One notable example usage is the <see cref="ItemID.ClockworkAssaultRifle"/> with a value of 14, but most other usages are smaller values like 2.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int reuseDelay;
  	public bool newAndShiny;
@@ -1857,7 +1858,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,32 @@
+@@ -47318,14 +_,33 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1876,6 +1877,7 @@
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
 +		ChangePlayerDirectionOnShoot = true;
++		ArmorPenetration = 0;
 +
  		sentry = false;
  		hasVanityEffects = false;
