@@ -16,7 +16,9 @@ namespace ExampleMod.Content.Tiles
 			//This indicates the tile's spritesheet has extra frames for merging with adjacent tiles
 			//Main.tileMergeDirt[Type] = true can be used for merging with dirt automatically, but here we will be looking at making the tile merge with snow instead
 			TileID.Sets.ChecksForMerge[Type] = true;
-
+			//This is so that snow blocks try to connect to this tile
+			//Our custom framing code will make our tile have custom merging with snow, but we also need to specify this so the merging happens on the snow block side as well
+			Main.tileMerge[TileID.SnowBlock][Type] = true;
 			AddMapEntry(new Color(200, 200, 200));
 		}
 
