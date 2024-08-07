@@ -397,6 +397,11 @@ public partial class WorkshopHelper
 				return true;
 			}
 
+			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
+			/// <summary>
+			/// Only Use if we don't have a PublishID source.
+			/// Returns false if unable to check Workshop and outs item as null if item not found
+			/// </summary>
 			internal bool TrySearchByInternalName(string slug, out ModDownloadItem item)
 			{
 				item = null;

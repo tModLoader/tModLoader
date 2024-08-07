@@ -205,7 +205,7 @@ internal static class Interface
 				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
-						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
+						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item) || item == null) {
 							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
 							continue;
 						}
