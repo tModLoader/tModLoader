@@ -5079,7 +5079,7 @@
  		int num = -1;
  		int num2 = -10;
  		int num3 = 0;
-@@ -38068,12 +_,27 @@
+@@ -38068,12 +_,32 @@
  		}
  
  		Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(100, 100, 100, mouseTextColor);
@@ -5089,7 +5089,8 @@
 +		/*
  		for (int i = 0; i < 12; i++) {
 +		*/
-+		for (int i = startingDisplay; i < endingDisplay; i++) {
++		int showableCount = 0;
++		for (int i = 0; i < InfoDisplayLoader.InfoDisplayCount; i++) {
  			string text2 = "";
  			string text3 = "";
  			Microsoft.Xna.Framework.Color infoTextColor = new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
@@ -5098,6 +5099,10 @@
 +			InfoDisplay info = InfoDisplayLoader.InfoDisplays[i];
 +
 +			if (!InfoDisplayLoader.Active(info) || (player[myPlayer].hideInfo[info.Type] && !playerInventory))
++				continue;
++
++			showableCount++;
++			if (showableCount <= startingDisplay)
 +				continue;
 +
 +			/*
@@ -5315,7 +5320,7 @@
  
  			Vector2 scale = new Vector2(1f);
  			Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -38429,15 +_,20 @@
+@@ -38429,15 +_,22 @@
  				if (n == 4)
  					color3 = infoTextColor;
  
@@ -5335,6 +5340,8 @@
 +
 +			endThisIcon:
 +			drawnCount++; // Moved here due to calculation changes
++			if (drawnCount >= 12)
++				break;
  		}
  
  		if (!string.IsNullOrEmpty(text)) {
