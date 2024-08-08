@@ -476,9 +476,13 @@ public partial class WorkshopHelper
 
 				DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
 				string displayname = pDetails.m_rgchTitle;
+				bool banned = pDetails.m_bBanned;
 
-				// Item Tagged data
+				// Item Tagged data / Player metadata
 				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
+
+				// Developer Metadata
+				SteamedWraps.FetchDeveloperMetadata(_primaryUGCHandle, i, out string devMetadata);
 
 				// Backwards compat code for the metadata version change
 				if (metadata["versionsummary"] == null)
@@ -492,8 +496,7 @@ public partial class WorkshopHelper
 				}
 
 				if (string.IsNullOrWhiteSpace(metadata["name"])) {
-					Logging.tML.Warn($"Mod has no name: {id}"); // Somehow this happened before and broke mod downloads
-					return null;
+					throw new Exception($"Mod has no internal name / slug: {id}"); // Somehow this happened before and broke mod downloads
 				}
 
 				string[] refsById = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, i, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId.ToString()).ToArray();
@@ -521,7 +524,7 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById);
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata);
 			}
 		}
 	}

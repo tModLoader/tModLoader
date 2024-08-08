@@ -10,6 +10,7 @@ using Terraria.Social.Base;
 using Terraria.Utilities;
 using Terraria.Localization;
 using System.Collections;
+using Newtonsoft.Json;
 
 namespace Terraria.Social.Steam;
 
@@ -17,6 +18,8 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
+
+	private List<ModVersionHash> hashes;
 
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
@@ -31,12 +34,14 @@ public partial class WorkshopSocialModule
 		}
 
 		currPublishID = 0;
+		hashes = new List<ModVersionHash>() { new ModVersionHash(modFile) };
 
 		if (mod == null) {
 			return false;
 		}
 
 		currPublishID = ulong.Parse(mod.PublishId.m_ModPubId);
+		hashes.AddRange(mod.GetModVersionHashes());
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 		WorkshopBrowserModule.Instance.DownloadItem(mod, uiProgress: null);
@@ -100,6 +105,8 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
+
+		buildData["developermetadata"] = CalculateDeveloperMetadata(hashes);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -262,6 +269,19 @@ public partial class WorkshopSocialModule
 		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
 
 		return descriptionFinal;
+	}
+
+	private static string CalculateDeveloperMetadata(List<ModVersionHash> versionHashes)
+	{
+		string devMetadata;
+
+		do {
+			// code here for reducing total count over time
+
+			devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes });
+		} while (devMetadata.Length > Steamworks.Constants.k_cchDeveloperMetadataMax);
+
+		return devMetadata;
 	}
 
 	public static void SteamCMDPublishPreparer(string modFolder)
