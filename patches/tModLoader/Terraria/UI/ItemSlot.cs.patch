@@ -332,7 +332,7 @@
  		if (Main.npcShop > 0 && !inv[slot].favorited) {
  			Chest chest = Main.instance.shop[Main.npcShop];
  			if (inv[slot].type < 71 || inv[slot].type > 74) {
-+				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else				
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else
  				if (player.SellItem(inv[slot])) {
 +					// Moved below AnnounceTransfer
 +					/*
@@ -366,7 +366,7 @@
  				break;
  			case 10:
 -				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).CurrentLoadout.ExAccessorySlot).ToArray(), checkItem, slot)))
 +					result = 1;
 +				break;
 +			case Context.ModdedAccessorySlot:
@@ -380,7 +380,7 @@
  				break;
  			case 11:
 -				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).CurrentLoadout.ExAccessorySlot).ToArray(), checkItem, slot)))
  					result = 1;
  				break;
  			case 12:
@@ -518,7 +518,7 @@
 +		*/
 +
 +		if (flag && Math.Abs(context) == 11) {
-+			var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
++			var accessories = AccessorySlotLoader.ModSlotPlayer(player).CurrentLoadout.ExAccessorySlot;
 +			for (int invNum = 0; invNum < 2; invNum++) {
 +				var checkInv = player.armor;
 +				int startIndex = 3;
@@ -631,7 +631,7 @@
  		}
  	}
  
-@@ -1508,6 +_,11 @@
+@@ -1508,6 +_,12 @@
  					value = TextureAssets.InventoryBack13.Value;
  					color2 = GetColorByLoadout(slot, context);
  					break;
@@ -639,6 +639,7 @@
 +				case Context.ModdedVanityAccessorySlot:
 +				case Context.ModdedDyeSlot:
 +					value = LoaderManager.Get<AccessorySlotLoader>().GetBackgroundTexture(slot, context);
++					color2 = GetColorByLoadout(slot, Math.Abs(context));
 +					break;
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;

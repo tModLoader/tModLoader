@@ -158,7 +158,7 @@
  	public int eocDash;
  	public int eocHit;
 +	/// <summary>
-+	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running. 
++	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running.
 +	/// <para/> Defaults to 3f. Accessories set this to specific values, resulting in the last equipped accessories to dictate the final value. Vanilla shoe accessories set this to <c>6f</c> (<see cref="ItemID.HermesBoots"/>) or <c>6.75</c> (<see cref="ItemID.LightningBoots"/>). This assignment should happen in <see cref="ModItem.UpdateEquip(Player)"/>.
 +	/// <para/> This value is later multiplied by other effects in the same manner as <see cref="maxRunSpeed"/>. They are usually modified in tandem, but not always depending on the desired result. For example, asphalt triples maxRunSpeed but does not affect accRunSpeed, whereas Shadow Armor affects both equally.
 +	/// <para/> These multiplicative adjustments should only be done in <see cref="ModPlayer.PostUpdateRunSpeeds"/> or <see cref="ModItem.HorizontalWingSpeeds"/> to correctly function.
@@ -4054,7 +4054,7 @@
  						int num15 = -1;
 -						if (Main.keyState.IsKeyDown(Keys.D1)) {
 +						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
-+						if (PlayerInput.Triggers.Current.Hotbar1) { 
++						if (PlayerInput.Triggers.Current.Hotbar1) {
  							num15 = 0;
  							flag10 = true;
  						}
@@ -6746,7 +6746,7 @@
  			Rectangle rectangle = new Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  			bool flag = itemRectangle.Intersects(rectangle);
  			int type = sItem.type;
-@@ -34388,21 +_,39 @@
+@@ -34388,21 +_,38 @@
  				flag = ((!_spawnVolcanoExplosion) ? (flag || flag2) : flag2);
  			}
  
@@ -6771,9 +6771,8 @@
  			int weaponCrit = GetWeaponCrit(sItem);
  			if (Main.rand.Next(1, 101) <= weaponCrit)
  				flag3 = true;
-+			
-+			skipStandardCritCalcs:
  
++			skipStandardCritCalcs:
 +			/*
  			int num2 = Item.NPCtoBanner(nPC.BannerID());
  			if (num2 > 0 && HasNPCBannerBuff(num2))
@@ -8584,7 +8583,7 @@
 +
 +		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
 +		for (int i = 0; i < modSlotPlayer.SlotCount; i++) {
-+			LoadPlayer_LastMinuteFixes(newPlayer, modSlotPlayer.exAccessorySlot[i]);
++			LoadPlayer_LastMinuteFixes(newPlayer, modSlotPlayer.CurrentLoadout.ExAccessorySlot[i]);
 +		}
 +
 +		LoadPlayer_Finish(newPlayer);

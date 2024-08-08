@@ -38,23 +38,23 @@ public abstract class ModAccessorySlot : ModType
 
 	// Get/Set Properties for fetching slot information
 	public Item FunctionalItem {
-		get => ModSlotPlayer.exAccessorySlot[Type];
-		set => ModSlotPlayer.exAccessorySlot[Type] = value;
+		get => ModSlotPlayer.GetFunctionalItemForLoadout(Player.CurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetFunctionalItemForLoadout(Player.CurrentLoadoutIndex, Type, value);
 	}
 
 	public Item VanityItem {
-		get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount];
-		set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount] = value;
+		get => ModSlotPlayer.GetVanityItemForLoadout(Player.CurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetVanityItemForLoadout(Player.CurrentLoadoutIndex, Type, value);
 	}
 
 	public Item DyeItem {
-		get => ModSlotPlayer.exDyesAccessory[Type];
-		set => ModSlotPlayer.exDyesAccessory[Type] = value;
+		get => ModSlotPlayer.GetDyeItemForLoadout(Player.CurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetDyeItemForLoadout(Player.CurrentLoadoutIndex, Type, value);
 	}
 
 	public bool HideVisuals {
-		get => ModSlotPlayer.exHideAccessory[Type];
-		set => ModSlotPlayer.exHideAccessory[Type] = value;
+		get => ModSlotPlayer.GetHideAccessoryForLoadout(Player.CurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetHideAccessoryForLoadout(Player.CurrentLoadoutIndex, Type, value);
 	}
 
 	public bool IsEmpty => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;

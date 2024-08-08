@@ -11,7 +11,7 @@ public partial class ItemSlot
 		//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
 		accSlotToSwapTo = -1;
 		var accLoader = LoaderManager.Get<AccessorySlotLoader>();
-		var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
+		var accessories = AccessorySlotLoader.ModSlotPlayer(player).CurrentLoadout.ExAccessorySlot;
 
 		//TML: Check if there is an empty slot available in functional slots, and if not, track the last available slot
 		for (int i = 3; i < 10; i++) {
@@ -96,7 +96,7 @@ public partial class ItemSlot
 		Item item2 = item;
 		var msPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
 		int dyeSlotCount = 0;
-		var dyes = msPlayer.exDyesAccessory;
+		var dyes = msPlayer.CurrentLoadout.ExDyesAccessory;
 
 		for (int i = 0; i < dyeSlotCount; i++) {
 			if (dyes[i].type == 0) {
