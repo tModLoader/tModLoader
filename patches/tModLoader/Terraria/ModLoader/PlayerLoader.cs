@@ -1458,4 +1458,13 @@ public static class PlayerLoader
 
 		return true;
 	}
+
+	private static HookList HookOnEquipmentLoadoutSwitched = AddHook<Action<int>>(p => p.OnEquipmentLoadoutSwitched);
+
+	public static void OnEquipmentLoadoutSwitched(Player player, int loadoudIndex)
+	{
+		foreach (var modPlayer in HookOnEquipmentLoadoutSwitched.Enumerate(player)) {
+			modPlayer.OnEquipmentLoadoutSwitched(loadoudIndex);
+		}
+	}
 }

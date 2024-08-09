@@ -161,17 +161,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	public override void ProcessTriggers(TriggersSet triggersSet)
+	public override void OnEquipmentLoadoutSwitched(int loadoutIndex)
 	{
-		if (triggersSet.Loadout1) {
-			ModdedCurrentLoadoutIndex = 0;
-		}
-		else if (triggersSet.Loadout2) {
-			ModdedCurrentLoadoutIndex = 1;
-		}
-		else if (triggersSet.Loadout3) {
-			ModdedCurrentLoadoutIndex = 2;
-		}
+		ModdedCurrentLoadoutIndex = loadoutIndex;
 	}
 
 	public Item GetFunctionalItemForLoadout(int loadout, int slotType)

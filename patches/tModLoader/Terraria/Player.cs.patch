@@ -1363,6 +1363,15 @@
  					return bank4.item[j];
  			}
  		}
+@@ -3218,6 +_,8 @@
+ 					UniqueInfoPiece = loadoutIndex
+ 				}, whoAmI);
+ 			}
++
++			PlayerLoader.OnEquipmentLoadoutSwitched(this, loadoutIndex);
+ 		}
+ 	}
+ 
 @@ -3226,7 +_,7 @@
  		if (cursed || CCed || dead)
  			return;
