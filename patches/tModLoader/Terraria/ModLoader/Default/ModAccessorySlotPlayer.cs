@@ -125,6 +125,18 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
+	public override void UpdateDyes()
+	{
+		var loader = LoaderManager.Get<AccessorySlotLoader>();
+
+		for (int k = 0; k < SlotCount; k++) {
+			if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
+				Player.UpdateItemDye(true, CurrentLoadout.ExHideAccessory[k], CurrentLoadout.ExAccessorySlot[k], CurrentLoadout.ExDyesAccessory[k]);
+				Player.UpdateItemDye(false, CurrentLoadout.ExHideAccessory[k], CurrentLoadout.ExAccessorySlot[SlotCount + k], CurrentLoadout.ExDyesAccessory[k]);
+			}
+		}
+	}
+
 	/// <summary>
 	/// Mirrors Player.UpdateDyes() for modded slots
 	/// Runs On Player Select, so is Player instance sensitive!!!
