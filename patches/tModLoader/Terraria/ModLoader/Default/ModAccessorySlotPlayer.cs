@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
-using Terraria.GameInput;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default;
@@ -14,14 +13,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
 	private readonly Dictionary<string, int> slots = [];
-
-	private ExEquipmentLoadout[] exLoadouts = [
-		new ExEquipmentLoadout(1),
-		new ExEquipmentLoadout(2),
-		new ExEquipmentLoadout(3),
-	];
-
-	internal ExEquipmentLoadout CurrentLoadout => exLoadouts[ModdedCurrentLoadoutIndex];
+	private ExEquipmentLoadout[] exLoadouts;
 
 	// Setting toggle for stack or scroll accessories/npcHousing
 	internal bool scrollSlots;
@@ -35,13 +27,20 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public int SlotCount => slots.Count;
 	public int LoadedSlotCount => Loader.TotalCount;
 
+	internal ExEquipmentLoadout CurrentLoadout => exLoadouts[ModdedCurrentLoadoutIndex];
+
 	public ModAccessorySlotPlayer()
 	{
 		foreach (var slot in Loader.list) {
 			slots.Add(slot.FullName, slot.Type);
 		}
+	}
 
-		ResetAndSizeAccessoryArrays();
+	public override void Initialize()
+	{
+		exLoadouts = Enumerable.Range(0, Player.Loadouts.Length)
+			.Select(loadoutIndex => new ExEquipmentLoadout(loadoutIndex, SlotCount))
+			.ToArray();
 	}
 
 	/// <summary>
@@ -52,12 +51,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public void AppendAdditionalEquipmentLoadout()
 	{
 		Array.Resize(ref exLoadouts, exLoadouts.Length + 1);
-		ExEquipmentLoadout newLoadout = new(exLoadouts.Length);
-		newLoadout.ResetAndSizeAccessoryArrays(slots.Count);
+		ExEquipmentLoadout newLoadout = new(exLoadouts.Length, SlotCount);
 		exLoadouts[^1] = newLoadout;
 	}
 
-	private void ResetAndSizeAccessoryArrays()
+	internal void ResetAndSizeAccessoryArrays()
 	{
 		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 			equipmentLoadout.ResetAndSizeAccessoryArrays(slots.Count);
@@ -85,8 +83,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			if (!slots.ContainsKey(name))
 				slots.Add(name, slots.Count);
 		}
-
-		ResetAndSizeAccessoryArrays();
 
 		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 			equipmentLoadout.LoadData(tag, order, slots);
@@ -295,10 +291,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		private readonly int loadoutNumber;
 		private readonly string identifier;
 
-		public ExEquipmentLoadout(int loadoutNumber)
+		public ExEquipmentLoadout(int loadoutNumber, int slotCount)
 		{
 			this.loadoutNumber = loadoutNumber;
 			this.identifier = $"loadout_{loadoutNumber}";
+
+			this.ResetAndSizeAccessoryArrays(slotCount);
 		}
 
 		public Item[] ExAccessorySlot { get; private set; } = [];
