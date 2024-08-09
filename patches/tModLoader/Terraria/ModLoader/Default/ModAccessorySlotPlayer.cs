@@ -151,12 +151,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		for (int i = start; i < end; i++) {
 			if (loader.ModdedIsItemSlotUnlockedAndUsable(i, Player)) {
-				foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
-					int num = i % equipmentLoadout.ExDyesAccessory.Length;
-					Player.UpdateItemDye(i < equipmentLoadout.ExDyesAccessory.Length,
-						equipmentLoadout.ExHideAccessory[num], equipmentLoadout.ExAccessorySlot[i],
-						equipmentLoadout.ExDyesAccessory[num]);
-				}
+				int num = i % CurrentLoadout.ExDyesAccessory.Length;
+				Player.UpdateItemDye(
+					i < CurrentLoadout.ExDyesAccessory.Length,
+					CurrentLoadout.ExHideAccessory[num],
+					CurrentLoadout.ExAccessorySlot[i],
+					CurrentLoadout.ExDyesAccessory[num]);
 			}
 		}
 	}
