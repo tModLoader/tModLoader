@@ -1362,6 +1362,15 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -44338,6 +_,8 @@
+ 				value = sellPrice(0, 0, 50);
+ 				break;
+ 			case 5134:
++				consumeAmmoOnLastShotOnly = true; // Added by TML
++
+ 				useStyle = 5;
+ 				autoReuse = true;
+ 				useAnimation = 30;
 @@ -46345,6 +_,20 @@
  		}
  	}
