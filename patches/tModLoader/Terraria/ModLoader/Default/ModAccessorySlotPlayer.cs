@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameInput;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default;
@@ -13,17 +15,22 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 	private readonly Dictionary<string, int> slots = [];
 
-	internal ExEquipmentLoadout[] ExLoadouts { get; } = [
+	private ExEquipmentLoadout[] exLoadouts = [
 		new ExEquipmentLoadout(1),
 		new ExEquipmentLoadout(2),
 		new ExEquipmentLoadout(3),
 	];
 
-	internal ExEquipmentLoadout CurrentLoadout => ExLoadouts[Player.CurrentLoadoutIndex];
+	internal ExEquipmentLoadout CurrentLoadout => exLoadouts[ModdedCurrentLoadoutIndex];
 
 	// Setting toggle for stack or scroll accessories/npcHousing
 	internal bool scrollSlots;
 	internal int scrollbarSlotPosition;
+
+	/// <summary>
+	/// Gets or sets the modded current loadout index.
+	/// </summary>
+	public int ModdedCurrentLoadoutIndex { get; set; }
 
 	public int SlotCount => slots.Count;
 	public int LoadedSlotCount => Loader.TotalCount;
@@ -37,9 +44,22 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		ResetAndSizeAccessoryArrays();
 	}
 
+	/// <summary>
+	/// Appends an additional equipment loadout. By default, only the three vanilla equipment loadouts are supported.
+	/// If a mod adds additional loadouts, it must call this method for each one to add loadout support for any
+	/// <see cref="ModAccessorySlot"/> instances.
+	/// </summary>
+	public void AppendAdditionalEquipmentLoadout()
+	{
+		Array.Resize(ref exLoadouts, exLoadouts.Length + 1);
+		ExEquipmentLoadout newLoadout = new(exLoadouts.Length);
+		newLoadout.ResetAndSizeAccessoryArrays(slots.Count);
+		exLoadouts[^1] = newLoadout;
+	}
+
 	private void ResetAndSizeAccessoryArrays()
 	{
-		foreach (ExEquipmentLoadout equipmentLoadout in ExLoadouts) {
+		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 			equipmentLoadout.ResetAndSizeAccessoryArrays(slots.Count);
 		}
 	}
@@ -47,15 +67,18 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public override void SaveData(TagCompound tag)
 	{
 		// TODO, might be nice to only save acc slots which have something in them... particularly if they're unloaded. Otherwise old unloaded slots just bloat the array with empty entries forever
+		tag["loadout"] = ModdedCurrentLoadoutIndex;
 		tag["order"] = slots.Keys.ToList();
 
-		foreach (ExEquipmentLoadout equipmentLoadout in ExLoadouts) {
+		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 			equipmentLoadout.SaveData(tag);
 		}
 	}
 
 	public override void LoadData(TagCompound tag)
 	{
+		ModdedCurrentLoadoutIndex = tag.TryGet("loadout", out int loadoutIndex) ? loadoutIndex : Player.CurrentLoadoutIndex;
+
 		// Scan the saved slot names and add ids for any unloaded slots
 		var order = tag.GetList<string>("order").ToList();
 		foreach (var name in order) {
@@ -65,7 +88,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		ResetAndSizeAccessoryArrays();
 
-		foreach (ExEquipmentLoadout equipmentLoadout in ExLoadouts) {
+		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 			equipmentLoadout.LoadData(tag, order, slots);
 		}
 	}
@@ -116,7 +139,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		for (int i = start; i < end; i++) {
 			if (loader.ModdedIsItemSlotUnlockedAndUsable(i, Player)) {
-				foreach (ExEquipmentLoadout equipmentLoadout in ExLoadouts) {
+				foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 					int num = i % equipmentLoadout.ExDyesAccessory.Length;
 					Player.UpdateItemDye(i < equipmentLoadout.ExDyesAccessory.Length,
 						equipmentLoadout.ExHideAccessory[num], equipmentLoadout.ExAccessorySlot[i],
@@ -126,44 +149,57 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	public Item GetFunctionalItemForLoadout(int loadout, int slot)
+	public override void ProcessTriggers(TriggersSet triggersSet)
 	{
-		return ExLoadouts[loadout].ExAccessorySlot[slot];
+		if (triggersSet.Loadout1) {
+			ModdedCurrentLoadoutIndex = 0;
+		}
+		else if (triggersSet.Loadout2) {
+			ModdedCurrentLoadoutIndex = 1;
+		}
+		else if (triggersSet.Loadout3) {
+			ModdedCurrentLoadoutIndex = 2;
+		}
 	}
 
-	public void SetFunctionalItemForLoadout(int loadout, int slot, Item item)
+	public Item GetFunctionalItemForLoadout(int loadout, int slotType)
 	{
-		ExLoadouts[loadout].ExAccessorySlot[slot] = item;
+		return exLoadouts[loadout].ExAccessorySlot[slotType];
 	}
 
-	public Item GetVanityItemForLoadout(int loadout, int slot)
+	public void SetFunctionalItemForLoadout(int loadout, int slotType, Item item)
 	{
-		return ExLoadouts[loadout].ExAccessorySlot[slot + slots.Count];
+		exLoadouts[loadout].ExAccessorySlot[slotType] = item;
 	}
 
-	public void SetVanityItemForLoadout(int loadout, int slot, Item item)
+	public Item GetVanityItemForLoadout(int loadout, int slotType)
 	{
-		ExLoadouts[loadout].ExAccessorySlot[slot + slots.Count] = item;
+		return exLoadouts[loadout].ExAccessorySlot[slotType + slots.Count];
 	}
 
-	public Item GetDyeItemForLoadout(int loadout, int slot)
+	public void SetVanityItemForLoadout(int loadout, int slotType, Item item)
 	{
-		return ExLoadouts[loadout].ExDyesAccessory[slot];
+		exLoadouts[loadout].ExAccessorySlot[slotType + slots.Count] = item;
 	}
 
-	public void SetDyeItemForLoadout(int loadout, int slot, Item item)
+	public Item GetDyeItemForLoadout(int loadout, int slotType)
 	{
-		ExLoadouts[loadout].ExDyesAccessory[slot] = item;
+		return exLoadouts[loadout].ExDyesAccessory[slotType];
 	}
 
-	public bool GetHideAccessoryForLoadout(int loadout, int slot)
+	public void SetDyeItemForLoadout(int loadout, int slotType, Item item)
 	{
-		return ExLoadouts[loadout].ExHideAccessory[slot];
+		exLoadouts[loadout].ExDyesAccessory[slotType] = item;
 	}
 
-	public void SetHideAccessoryForLoadout(int loadout, int slot, bool hide)
+	public bool GetHideAccessoryForLoadout(int loadout, int slotType)
 	{
-		ExLoadouts[loadout].ExHideAccessory[slot] = hide;
+		return exLoadouts[loadout].ExHideAccessory[slotType];
+	}
+
+	public void SetHideAccessoryForLoadout(int loadout, int slotType, bool hide)
+	{
+		exLoadouts[loadout].ExHideAccessory[slotType] = hide;
 	}
 
 	/// <summary>
@@ -187,7 +223,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var pos = Player.position + Player.Size / 2;
 		for (int i = 0; i < SlotCount; i++) {
 			if (loader.ModdedIsItemSlotUnlockedAndUsable(i, Player)) {
-				foreach (ExEquipmentLoadout equipmentLoadout in ExLoadouts) {
+				foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 					Player.DropItem(itemSource, pos, ref equipmentLoadout.ExAccessorySlot[i]);
 					Player.DropItem(itemSource, pos, ref equipmentLoadout.ExAccessorySlot[i + SlotCount]);
 					Player.DropItem(itemSource, pos, ref equipmentLoadout.ExDyesAccessory[i]);
@@ -201,9 +237,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	{
 		var defaultInv = (ModAccessorySlotPlayer)targetCopy;
 		for (int i = 0; i < LoadedSlotCount; i++) {
-			for (int loadoutIndex = 0; loadoutIndex < ExLoadouts.Length; loadoutIndex++) {
-				ExEquipmentLoadout equipmentLoadout = ExLoadouts[loadoutIndex];
-				ExEquipmentLoadout targetEquipmentLoadout = defaultInv.ExLoadouts[loadoutIndex];
+			for (int loadoutIndex = 0; loadoutIndex < exLoadouts.Length; loadoutIndex++) {
+				ExEquipmentLoadout equipmentLoadout = exLoadouts[loadoutIndex];
+				ExEquipmentLoadout targetEquipmentLoadout = defaultInv.exLoadouts[loadoutIndex];
 				equipmentLoadout.ExAccessorySlot[i].CopyNetStateTo(targetEquipmentLoadout.ExAccessorySlot[i]);
 				equipmentLoadout.ExAccessorySlot[i + SlotCount].CopyNetStateTo(targetEquipmentLoadout.ExAccessorySlot[i + LoadedSlotCount]);
 				equipmentLoadout.ExDyesAccessory[i].CopyNetStateTo(targetEquipmentLoadout.ExDyesAccessory[i]);
@@ -215,8 +251,8 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 	{
 		for (int i = 0; i < LoadedSlotCount; i++) {
-			for (int loadoutIndex = 0; loadoutIndex < ExLoadouts.Length; loadoutIndex++) {
-				ExEquipmentLoadout equipmentLoadout = ExLoadouts[loadoutIndex];
+			for (int loadoutIndex = 0; loadoutIndex < exLoadouts.Length; loadoutIndex++) {
+				ExEquipmentLoadout equipmentLoadout = exLoadouts[loadoutIndex];
 
 				NetHandler.SendSlot(toWho, Player.whoAmI, loadoutIndex, i, equipmentLoadout.ExAccessorySlot[i]);
 				NetHandler.SendSlot(toWho, Player.whoAmI, loadoutIndex, i + LoadedSlotCount, equipmentLoadout.ExAccessorySlot[i + SlotCount]);
@@ -230,9 +266,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	{
 		var clientInv = (ModAccessorySlotPlayer)clientPlayer;
 		for (int i = 0; i < LoadedSlotCount; i++) {
-			for (int loadoutIndex = 0; loadoutIndex < ExLoadouts.Length; loadoutIndex++) {
-				ExEquipmentLoadout equipmentLoadout = ExLoadouts[loadoutIndex];
-				ExEquipmentLoadout clientEquipmentLoadout = clientInv.ExLoadouts[loadoutIndex];
+			for (int loadoutIndex = 0; loadoutIndex < exLoadouts.Length; loadoutIndex++) {
+				ExEquipmentLoadout equipmentLoadout = exLoadouts[loadoutIndex];
+				ExEquipmentLoadout clientEquipmentLoadout = clientInv.exLoadouts[loadoutIndex];
 
 				if (equipmentLoadout.ExAccessorySlot[i].IsNetStateDifferent(clientEquipmentLoadout.ExAccessorySlot[i]))
 					NetHandler.SendSlot(-1, Player.whoAmI, loadoutIndex, i, equipmentLoadout.ExAccessorySlot[i]);
@@ -311,10 +347,21 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			for (int i = 0; i < order.Count; i++) {
 				int type = slots[order[i]];
 
-				ExDyesAccessory[type] = dyes[i];
-				ExHideAccessory[type] = visible[i];
-				ExAccessorySlot[type] = items[i];
-				ExAccessorySlot[type + slots.Count] = items[i + order.Count];
+				if (i < dyes.Count) {
+					ExDyesAccessory[type] = dyes[i];
+				}
+
+				if (i < visible.Count) {
+					ExHideAccessory[type] = visible[i];
+				}
+
+				if (i < items.Count) {
+					ExAccessorySlot[type] = items[i];
+				}
+
+				if ((i + order.Count) < items.Count) {
+					ExAccessorySlot[type + slots.Count] = items[i + order.Count];
+				}
 			}
 		}
 	}
@@ -387,10 +434,10 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			sbyte loadout = r.ReadSByte();
 			sbyte slot = r.ReadSByte();
 
-			dPlayer.ExLoadouts[loadout].ExHideAccessory[slot] = r.ReadBoolean();
+			dPlayer.exLoadouts[loadout].ExHideAccessory[slot] = r.ReadBoolean();
 
 			if (Main.netMode == Server)
-				SendVisualState(-1, fromWho, loadout, slot, dPlayer.ExLoadouts[loadout].ExHideAccessory[slot]);
+				SendVisualState(-1, fromWho, loadout, slot, dPlayer.exLoadouts[loadout].ExHideAccessory[slot]);
 		}
 
 		public static void HandlePacket(BinaryReader r, int fromWho)
@@ -408,9 +455,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		public static void SetSlot(sbyte loadout, sbyte slot, Item item, ModAccessorySlotPlayer dPlayer)
 		{
 			if (slot < 0)
-				dPlayer.ExLoadouts[loadout].ExDyesAccessory[-(slot + 1)] = item;
+				dPlayer.exLoadouts[loadout].ExDyesAccessory[-(slot + 1)] = item;
 			else
-				dPlayer.ExLoadouts[loadout].ExAccessorySlot[slot] = item;
+				dPlayer.exLoadouts[loadout].ExAccessorySlot[slot] = item;
 		}
 	}
 }

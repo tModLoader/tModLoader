@@ -38,23 +38,23 @@ public abstract class ModAccessorySlot : ModType
 
 	// Get/Set Properties for fetching slot information
 	public Item FunctionalItem {
-		get => ModSlotPlayer.GetFunctionalItemForLoadout(Player.CurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetFunctionalItemForLoadout(Player.CurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetFunctionalItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetFunctionalItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
 	}
 
 	public Item VanityItem {
-		get => ModSlotPlayer.GetVanityItemForLoadout(Player.CurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetVanityItemForLoadout(Player.CurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetVanityItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetVanityItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
 	}
 
 	public Item DyeItem {
-		get => ModSlotPlayer.GetDyeItemForLoadout(Player.CurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetDyeItemForLoadout(Player.CurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetDyeItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetDyeItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
 	}
 
 	public bool HideVisuals {
-		get => ModSlotPlayer.GetHideAccessoryForLoadout(Player.CurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetHideAccessoryForLoadout(Player.CurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetHideAccessoryForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
+		set => ModSlotPlayer.SetHideAccessoryForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
 	}
 
 	public bool IsEmpty => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;
