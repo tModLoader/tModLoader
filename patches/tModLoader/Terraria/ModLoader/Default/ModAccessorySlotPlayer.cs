@@ -19,15 +19,13 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	internal bool scrollSlots;
 	internal int scrollbarSlotPosition;
 
-	/// <summary>
-	/// Gets or sets the modded current loadout index.
-	/// </summary>
-	public int ModdedCurrentLoadoutIndex { get; set; }
-
 	public int SlotCount => slots.Count;
+
 	public int LoadedSlotCount => Loader.TotalCount;
 
 	internal ExEquipmentLoadout CurrentLoadout => exLoadouts[ModdedCurrentLoadoutIndex];
+
+	internal int ModdedCurrentLoadoutIndex { get; private set; }
 
 	public ModAccessorySlotPlayer()
 	{
@@ -53,13 +51,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		Array.Resize(ref exLoadouts, exLoadouts.Length + 1);
 		ExEquipmentLoadout newLoadout = new(exLoadouts.Length, SlotCount);
 		exLoadouts[^1] = newLoadout;
-	}
-
-	internal void ResetAndSizeAccessoryArrays()
-	{
-		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
-			equipmentLoadout.ResetAndSizeAccessoryArrays(slots.Count);
-		}
 	}
 
 	public override void SaveData(TagCompound tag)
@@ -157,51 +148,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	public override void OnEquipmentLoadoutSwitched(int loadoutIndex)
-	{
-		ModdedCurrentLoadoutIndex = loadoutIndex;
-	}
-
-	public Item GetFunctionalItemForLoadout(int loadout, int slotType)
-	{
-		return exLoadouts[loadout].ExAccessorySlot[slotType];
-	}
-
-	public void SetFunctionalItemForLoadout(int loadout, int slotType, Item item)
-	{
-		exLoadouts[loadout].ExAccessorySlot[slotType] = item;
-	}
-
-	public Item GetVanityItemForLoadout(int loadout, int slotType)
-	{
-		return exLoadouts[loadout].ExAccessorySlot[slotType + slots.Count];
-	}
-
-	public void SetVanityItemForLoadout(int loadout, int slotType, Item item)
-	{
-		exLoadouts[loadout].ExAccessorySlot[slotType + slots.Count] = item;
-	}
-
-	public Item GetDyeItemForLoadout(int loadout, int slotType)
-	{
-		return exLoadouts[loadout].ExDyesAccessory[slotType];
-	}
-
-	public void SetDyeItemForLoadout(int loadout, int slotType, Item item)
-	{
-		exLoadouts[loadout].ExDyesAccessory[slotType] = item;
-	}
-
-	public bool GetHideAccessoryForLoadout(int loadout, int slotType)
-	{
-		return exLoadouts[loadout].ExHideAccessory[slotType];
-	}
-
-	public void SetHideAccessoryForLoadout(int loadout, int slotType, bool hide)
-	{
-		exLoadouts[loadout].ExHideAccessory[slotType] = hide;
-	}
-
 	/// <summary>
 	/// Runs a simplified version of Player.UpdateEquips for the Modded Accessory Slots
 	/// </summary>
@@ -284,7 +230,51 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			}
 		}
 	}
+	
+	public override void OnEquipmentLoadoutSwitched(int loadoutIndex)
+	{
+		ModdedCurrentLoadoutIndex = loadoutIndex;
+	}
 
+	internal Item GetFunctionalItemForLoadout(int loadout, int slotType)
+	{
+		return exLoadouts[loadout].ExAccessorySlot[slotType];
+	}
+
+	internal void SetFunctionalItemForLoadout(int loadout, int slotType, Item item)
+	{
+		exLoadouts[loadout].ExAccessorySlot[slotType] = item;
+	}
+
+	internal Item GetVanityItemForLoadout(int loadout, int slotType)
+	{
+		return exLoadouts[loadout].ExAccessorySlot[slotType + slots.Count];
+	}
+
+	internal void SetVanityItemForLoadout(int loadout, int slotType, Item item)
+	{
+		exLoadouts[loadout].ExAccessorySlot[slotType + slots.Count] = item;
+	}
+
+	internal Item GetDyeItemForLoadout(int loadout, int slotType)
+	{
+		return exLoadouts[loadout].ExDyesAccessory[slotType];
+	}
+
+	internal void SetDyeItemForLoadout(int loadout, int slotType, Item item)
+	{
+		exLoadouts[loadout].ExDyesAccessory[slotType] = item;
+	}
+
+	internal bool GetHideAccessoryForLoadout(int loadout, int slotType)
+	{
+		return exLoadouts[loadout].ExHideAccessory[slotType];
+	}
+
+	internal void SetHideAccessoryForLoadout(int loadout, int slotType, bool hide)
+	{
+		exLoadouts[loadout].ExHideAccessory[slotType] = hide;
+	}
 
 	internal record ExEquipmentLoadout
 	{
