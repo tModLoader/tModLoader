@@ -2910,7 +2910,7 @@
 +
 +																												//TODO: Test this. Not sure this is still correct.
 +																												TileLoader.CheckModTile(i, j, num);
-+
++																												TileLoader.PostTileFrame(num, i, j, 0, 0, 0, 0, 0, 0, 0, 0);
  																												return;
  																										}
  																									}
@@ -3058,7 +3058,7 @@
  											TileMergeAttempt(-2, 147, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  											break;
  										case 162:
-@@ -60829,7 +_,7 @@
+@@ -60829,11 +_,13 @@
  								else if (TileID.Sets.Ore[num])
  									TileMergeAttempt(num, TileID.Sets.Conversion.Grass, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
@@ -3067,6 +3067,12 @@
  									TileMergeAttempt(num, TileID.Sets.OreMergesWithMud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  								else if (TileID.Sets.OreMergesWithMud[num])
  									TileMergeAttempt(num, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 
++								TileLoader.ModifyFrameMerge(num, i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++								
+ 								bool flag = false;
+ 								TileMergeCullCache tileMergeCullCache = default(TileMergeCullCache);
+ 								if (!Main.ShouldShowInvisibleWalls()) {
 @@ -60848,11 +_,18 @@
  									tileMergeCullCache.CullBottomRight |= tile7 != null && tile7.invisibleBlock() != flag2;
  								}
@@ -3120,6 +3126,16 @@
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}
+@@ -63195,6 +_,9 @@
+ 
+ 								tile.frameX = (short)rectangle.X;
+ 								tile.frameY = (short)rectangle.Y;
++
++								TileLoader.PostTileFrame(num, i, j, up, down, left, right, upLeft, upRight, downLeft, downRight);
++
+ 								if (TileID.Sets.IsVine[num]) {
+ 									up = ((tile2 == null) ? num : ((!tile2.nactive()) ? (-1) : ((!tile2.bottomSlope()) ? tile2.type : (-1))));
+ 									if (num != up) {
 @@ -63321,7 +_,7 @@
  			currentMerge = -1;
  	}
