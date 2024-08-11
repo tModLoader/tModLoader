@@ -8591,8 +8591,9 @@
 +		}
 +
 +		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
++		Item[] modSlotAccessories = modSlotPlayer.GetAllModSlotAccessoriesForCurrentLoadout();
 +		for (int i = 0; i < modSlotPlayer.SlotCount; i++) {
-+			LoadPlayer_LastMinuteFixes(newPlayer, modSlotPlayer.GetAllModSlotAccessoriesForCurrentLoadout()[i]);
++			LoadPlayer_LastMinuteFixes(newPlayer, modSlotAccessories[i]);
 +		}
 +
 +		LoadPlayer_Finish(newPlayer);
