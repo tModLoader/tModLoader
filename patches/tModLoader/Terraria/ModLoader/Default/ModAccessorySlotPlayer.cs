@@ -138,7 +138,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		Item[] result = new Item[loadout.ExAccessorySlot.Length];
 
 		for (int slot = 0; slot < result.Length; slot++) {
-			ExEquipmentLoadout currentLoadout = sharedLoadoutSlotTypes.Contains(slot)
+			ExEquipmentLoadout currentLoadout = IsSharedSlot(slot)
 				? SharedLoadout
 				: loadout;
 
@@ -173,7 +173,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		Item[] result = new Item[SlotCount];
 
 		for (int slot = 0; slot < CurrentLoadout.ExDyesAccessory.Length; slot++) {
-			ExEquipmentLoadout loadout = sharedLoadoutSlotTypes.Contains(slot)
+			ExEquipmentLoadout loadout = IsSharedSlot(slot)
 				? SharedLoadout
 				: CurrentLoadout;
 
@@ -426,7 +426,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 	private ExEquipmentLoadout GetLoadout(int slotType)
 	{
-		return sharedLoadoutSlotTypes.Contains(slotType)
+		return IsSharedSlot(slotType)
 			? SharedLoadout
 			: ExLoadouts[ModdedCurrentLoadoutIndex];
 	}
