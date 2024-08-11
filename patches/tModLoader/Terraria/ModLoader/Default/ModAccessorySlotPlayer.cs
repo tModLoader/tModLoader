@@ -115,19 +115,8 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	{
 		return [
 			..(loadoutIndex == ModdedCurrentLoadoutIndex ? Player.armor : exLoadouts[loadoutIndex].LoadoutReference.Armor),
-			..GetAccessories(),
+			..GetAllModSlotAccessoriesForLoadout(loadoutIndex),
 		];
-
-		IEnumerable<Item> GetAccessories()
-		{
-			for (int slot = 0; slot < exLoadouts[loadoutIndex].ExAccessorySlot.Length; slot++) {
-				ExEquipmentLoadout currentLoadout = sharedLoadoutSlotTypes.Contains(slot)
-					? SharedLoadout
-					: exLoadouts[loadoutIndex];
-
-				yield return currentLoadout.ExAccessorySlot[slot];
-			}
-		}
 	}
 
 	/// <summary>
