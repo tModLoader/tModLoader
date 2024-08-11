@@ -147,6 +147,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetReturnMetadata(qHandle, true);
 			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
@@ -156,6 +157,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetReturnMetadata(qHandle, true);
 			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
@@ -694,7 +696,7 @@ public static class SteamedWraps
 		}
 	}
 
-	private static void AddDeveloperMetadata(ref UGCUpdateHandle_t uGCUpdateHandle_t, string developerMetadata)
+	private static bool AddDeveloperMetadata(ref UGCUpdateHandle_t uGCUpdateHandle_t, string developerMetadata)
 	{
 		if (!SteamClient)
 			throw new Exception("Invalid Call to AddDeveloperMetadata. Steam Client API not initialized!");
@@ -702,6 +704,6 @@ public static class SteamedWraps
 		if (developerMetadata.Length >= Constants.k_cchDeveloperMetadataMax)
 			throw new Exception($"Invalid Call to AddDeveloperMetadata. Developer Metadata exceeds {Constants.k_cchDeveloperMetadataMax} characters");
 
-		SteamUGC.SetItemMetadata(uGCUpdateHandle_t, developerMetadata);
+		return SteamUGC.SetItemMetadata(uGCUpdateHandle_t, developerMetadata);
 	}
 }

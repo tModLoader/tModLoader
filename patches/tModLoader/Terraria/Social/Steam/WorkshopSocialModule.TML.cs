@@ -28,7 +28,9 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod)) {
+		var state = WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod);
+
+		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed || state == WorkshopHelper.WorkshopSearchReturnState.SearchSuccessMatchUnusable) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
@@ -36,7 +38,7 @@ public partial class WorkshopSocialModule
 		currPublishID = 0;
 		hashes = new List<ModVersionHash>() { new ModVersionHash(modFile) };
 
-		if (mod == null) {
+		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchSuccessfulNoMatch) {
 			return false;
 		}
 
@@ -76,7 +78,8 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		if (BuildInfo.IsDev) {
+		//REMINDER TO REVERT THIS
+		if (             !BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
@@ -278,7 +281,7 @@ public partial class WorkshopSocialModule
 		do {
 			// code here for reducing total count over time
 
-			devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes });
+			devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
 		} while (devMetadata.Length > Steamworks.Constants.k_cchDeveloperMetadataMax);
 
 		return devMetadata;
