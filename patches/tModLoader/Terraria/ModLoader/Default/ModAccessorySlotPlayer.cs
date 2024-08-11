@@ -313,8 +313,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		for (int loadoutIndex = 0; loadoutIndex < ExLoadouts.Length; loadoutIndex++) {
 			CopyState(ExLoadouts[loadoutIndex], defaultInv.ExLoadouts[loadoutIndex]);
-			CopyState(SharedLoadout, defaultInv.SharedLoadout);
 		}
+
+		CopyState(SharedLoadout, defaultInv.SharedLoadout);
 
 		void CopyState(ExEquipmentLoadout equipmentLoadout, ExEquipmentLoadout targetEquipmentLoadout)
 		{
