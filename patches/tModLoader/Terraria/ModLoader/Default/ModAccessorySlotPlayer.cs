@@ -487,7 +487,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 			// Preserve backwards compatibility if data is stored in format pre loadout support
 			if (tag.TryGet("items", out IList<TagCompound> itemsTags)) {
-				if (LoadoutIndex != 0) {
+				if (LoadoutIndex is not 0 and not SharedLoadoutIndex) {
 					return;
 				}
 
