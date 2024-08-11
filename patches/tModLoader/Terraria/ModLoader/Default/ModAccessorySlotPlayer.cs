@@ -426,7 +426,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			bool isVanitySlot = slotType > SlotCount;
 			IEnumerable<Item> allEquippedItems = exLoadouts.SelectMany(x => x.ExAccessorySlot).Concat(exLoadouts.Select(x => x.LoadoutReference).SelectMany(x => x.Armor));
 
-			if (allEquippedItems.Any(equippedItem => item.IsTheSameAs(equippedItem) || (!isVanitySlot && item.wingSlot > 0 && equippedItem.wingSlot > 0)))
+			if (item.type > 0 && allEquippedItems.Any(equippedItem => item.IsTheSameAs(equippedItem) || (!isVanitySlot && item.wingSlot > 0 && equippedItem.wingSlot > 0)))
 			{
 				return false;
 			}
