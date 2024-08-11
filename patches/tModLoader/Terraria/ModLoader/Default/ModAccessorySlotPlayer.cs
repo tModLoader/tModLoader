@@ -506,7 +506,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 				if (LoadoutIndex == SharedLoadoutIndex && !sharedBetweenLoadouts
 				    || LoadoutIndex != SharedLoadoutIndex && sharedBetweenLoadouts) {
-					return;
+					continue;
 				}
 
 				if (i < dyes.Count) {
