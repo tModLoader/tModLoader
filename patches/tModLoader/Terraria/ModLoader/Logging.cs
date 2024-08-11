@@ -254,6 +254,8 @@ public static partial class Logging
 			if (statusGeneratingWorld.Match(newStatusText) is { Success: true } statusGenMatchNew) {
 				newBase = statusGenMatchNew.Groups[1].Value;
 			}
+			if (WorldGen.drunkWorldGenText && !Main.dedServ)
+				newBase = "Random Numbers (Drunk World)";
 		}
 
 		if (newBase != lastStatusLogged && newBase.Length > 0) {
