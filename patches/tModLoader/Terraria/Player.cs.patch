@@ -8592,7 +8592,7 @@
 +
 +		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
 +		for (int i = 0; i < modSlotPlayer.SlotCount; i++) {
-+			LoadPlayer_LastMinuteFixes(newPlayer, modSlotPlayer.CurrentLoadout.ExAccessorySlot[i]);
++			LoadPlayer_LastMinuteFixes(newPlayer, modSlotPlayer.GetAccessoriesForCurrentLoadout()[i]);
 +		}
 +
 +		LoadPlayer_Finish(newPlayer);

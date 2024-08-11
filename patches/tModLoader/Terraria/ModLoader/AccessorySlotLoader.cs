@@ -208,16 +208,26 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			}
 
 			var thisSlot = Get(slot);
+			ModAccessorySlotPlayer modSlotPlayer = ModSlotPlayer(Player);
 
 			if (thisSlot.DrawFunctionalSlot) {
-				bool skipMouse = DrawVisibility(ref ModSlotPlayer(Player).CurrentLoadout.ExHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
-				DrawSlot(ModSlotPlayer(Player).CurrentLoadout.ExAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
+				bool skipMouse = DrawVisibility(
+					modSlotPlayer.GetHideAccessoryForCurrentLoadout(slot),
+					visibility => modSlotPlayer.SetHideAccessoryForCurrentLoadout(slot, visibility),
+					-10,
+					xLoc,
+					yLoc,
+					out var xLoc2,
+					out var yLoc2,
+					out var value4);
+
+				DrawSlot(modSlotPlayer.GetAccessoriesForCurrentLoadout(), -10, slot, flag3, xLoc, yLoc, skipMouse);
 				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			}
 			if (thisSlot.DrawVanitySlot)
-				DrawSlot(ModSlotPlayer(Player).CurrentLoadout.ExAccessorySlot, -11, slot + ModSlotPlayer(Player).SlotCount, flag3, xLoc, yLoc);
+				DrawSlot(modSlotPlayer.GetAccessoriesForCurrentLoadout(), -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
 			if (thisSlot.DrawDyeSlot)
-				DrawSlot(ModSlotPlayer(Player).CurrentLoadout.ExDyesAccessory, -12, slot, flag3, xLoc, yLoc);
+				DrawSlot(modSlotPlayer.GetDyesForCurrentLoadout(), -12, slot, flag3, xLoc, yLoc);
 		}
 		else {
 			if (!customLoc && Main.EquipPage != 0) {
@@ -229,7 +239,15 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				return true;
 			}
 
-			bool skipMouse = DrawVisibility(ref Player.hideVisibleAccessory[slot], 10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
+			bool skipMouse = DrawVisibility(
+				Player.hideVisibleAccessory[slot],
+				visibility => Player.hideVisibleAccessory[slot] = visibility,
+				10,
+				xLoc,
+				yLoc,
+				out var xLoc2,
+				out var yLoc2,
+				out var value4);
 			DrawSlot(Player.armor, 10, slot, flag3, xLoc, yLoc, skipMouse);
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			DrawSlot(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
@@ -287,7 +305,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Is run in AccessorySlotLoader.Draw.
 	/// Creates &amp; sets up Hide Visibility Button.
 	/// </summary>
-	internal bool DrawVisibility(ref bool visbility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4)
+	internal bool DrawVisibility(bool visbility, Action<bool> setVisibility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4)
 	{
 		yLoc2 = yLoc - 2;
 		xLoc2 = xLoc - 58 + 64 + 28;
@@ -304,7 +322,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			Player.mouseInterface = true;
 
 			if (Main.mouseLeft && Main.mouseLeftRelease) {
-				visbility = !visbility;
+				setVisibility(!visbility);
 				SoundEngine.PlaySound(12);
 
 				if (Main.netMode == 1 && context > 0)
@@ -327,7 +345,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 	/// At the end, calls this.DrawRedirect to enable custom drawing
 	/// </summary>
-	internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
+	private void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
 	{
 		bool flag = flag3 && !Main.mouseItem.IsAir;
 		int xLoc1 = xLoc - 47 * (slotDrawLoopCounter++);
@@ -455,7 +473,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem
 	/// </summary>
 	public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
-		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).CurrentLoadout.ExAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
+		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).GetAccessoriesForCurrentLoadout()).ToArray(), checkItem, slot + Player.armor.Length);
 
 	/// <summary>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.
@@ -481,7 +499,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	{
 		for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {
 			if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
-				Item item2 = ModSlotPlayer(Player).GetFunctionalItemForLoadout(Player.CurrentLoadoutIndex, num);
+				Item item2 = ModSlotPlayer(Player).GetFunctionalItemForCurrentLoadout(num);
 				if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 					projType = item2.shoot;
 					return true;

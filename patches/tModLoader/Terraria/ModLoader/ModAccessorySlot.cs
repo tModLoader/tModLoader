@@ -36,25 +36,32 @@ public abstract class ModAccessorySlot : ModType
 	public virtual bool DrawVanitySlot => true;
 	public virtual bool DrawDyeSlot => true;
 
+	/// <summary>
+	/// Gets or sets a value indicating whether this slot's item is shared between loadouts or one item per loadout.
+	/// Defaults to one item per loadout. Changing this value requires a reload and will lead to the loss of equipped
+	/// items in the slot.
+	/// </summary>
+	public virtual bool SharedBetweenLoadouts => false;
+
 	// Get/Set Properties for fetching slot information
 	public Item FunctionalItem {
-		get => ModSlotPlayer.GetFunctionalItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetFunctionalItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetFunctionalItemForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetFunctionalItemForCurrentLoadout(Type, value);
 	}
 
 	public Item VanityItem {
-		get => ModSlotPlayer.GetVanityItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetVanityItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetVanityItemForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetVanityItemForCurrentLoadout(Type, value);
 	}
 
 	public Item DyeItem {
-		get => ModSlotPlayer.GetDyeItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetDyeItemForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetDyeItemForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetDyeItemForCurrentLoadout(Type, value);
 	}
 
 	public bool HideVisuals {
-		get => ModSlotPlayer.GetHideAccessoryForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type);
-		set => ModSlotPlayer.SetHideAccessoryForLoadout(ModSlotPlayer.ModdedCurrentLoadoutIndex, Type, value);
+		get => ModSlotPlayer.GetHideAccessoryForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetHideAccessoryForCurrentLoadout(Type, value);
 	}
 
 	public bool IsEmpty => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;

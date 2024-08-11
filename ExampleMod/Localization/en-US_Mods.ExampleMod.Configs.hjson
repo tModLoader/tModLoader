@@ -23,6 +23,11 @@ ExampleModConfig: {
 		Label: Weapon With Growing Damage Toggle
 		Tooltip: ""
 	}
+	
+	ToggleSharedLoadoutSlot: {
+	    Label: Set ExampleSharedModAccessorySlot shared
+	    Tooltip: Sets the ExampleSharedModAccessorySlot to shared between loadouts or instance per loadout
+	}
 
 	Headers.Items: Items
 }

@@ -1,6 +1,7 @@
 using System;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.UI;
 
@@ -11,7 +12,8 @@ public partial class ItemSlot
 		//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
 		accSlotToSwapTo = -1;
 		var accLoader = LoaderManager.Get<AccessorySlotLoader>();
-		var accessories = AccessorySlotLoader.ModSlotPlayer(player).CurrentLoadout.ExAccessorySlot;
+		ModAccessorySlotPlayer modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(player);
+		var accessories = modSlotPlayer.GetAccessoriesForCurrentLoadout();
 
 		//TML: Check if there is an empty slot available in functional slots, and if not, track the last available slot
 		for (int i = 3; i < 10; i++) {
@@ -69,8 +71,11 @@ public partial class ItemSlot
 				return false;
 			}
 
+			if (!modSlotPlayer.TrySetAccessoryForCurrentLoadout(num3, item.Clone())) {
+				return false;
+			}
+
 			result = accessories[num3].Clone();
-			accessories[num3] = item.Clone();
 		}
 		else {
 			int num3 = 3 + accSlotToSwapTo;
@@ -95,8 +100,8 @@ public partial class ItemSlot
 	{
 		Item item2 = item;
 		var msPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-		int dyeSlotCount = 0;
-		var dyes = msPlayer.CurrentLoadout.ExDyesAccessory;
+		var dyes = msPlayer.GetDyesForCurrentLoadout();
+		int dyeSlotCount = dyes.Length;
 
 		for (int i = 0; i < dyeSlotCount; i++) {
 			if (dyes[i].type == 0) {

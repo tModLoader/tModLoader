@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,6 +9,11 @@ namespace ExampleMod.Common.Players
 	public class ExampleModAccessorySlot1 : ModAccessorySlot
 	{
 		// If the class is empty, everything will default to a basic vanilla slot.
+	}
+
+	public class ExampleSharedModAccessorySlot : ModAccessorySlot
+	{
+		public override bool SharedBetweenLoadouts => ModContent.GetInstance<ExampleModConfig>().ToggleSharedLoadoutSlot;
 	}
 
 	public class ExampleCustomLocationAndTextureSlot : ModAccessorySlot
