@@ -47,13 +47,13 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			}
 		}
 
-		SharedLoadout = new ExEquipmentLoadout(SharedLoadoutIndex, slots.Count, new EquipmentLoadout());
+		SharedLoadout = new ExEquipmentLoadout(SharedLoadoutIndex, new EquipmentLoadout());
 	}
 
 	public override void Initialize()
 	{
 		ExLoadouts = Enumerable.Range(0, Player.Loadouts.Length)
-			.Select(loadoutIndex => new ExEquipmentLoadout(loadoutIndex, SlotCount, Player.Loadouts[loadoutIndex]))
+			.Select(loadoutIndex => new ExEquipmentLoadout(loadoutIndex, Player.Loadouts[loadoutIndex]))
 			.ToArray();
 	}
 
@@ -67,7 +67,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public int RegisterAdditionalEquipmentLoadout(EquipmentLoadout loadout)
 	{
 		Array.Resize(ref exLoadouts, ExLoadouts.Length + 1);
-		ExEquipmentLoadout newLoadout = new(ExLoadouts.Length - 1, SlotCount, loadout);
+		ExEquipmentLoadout newLoadout = new(ExLoadouts.Length - 1, loadout);
 		ExLoadouts[^1] = newLoadout;
 
 		return newLoadout.LoadoutIndex;
@@ -98,9 +98,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 
 		foreach (ExEquipmentLoadout equipmentLoadout in ExLoadouts) {
+			equipmentLoadout.ResetAndSizeAccessoryArrays(SlotCount);
 			equipmentLoadout.LoadData(tag, order, slots);
 		}
 
+		SharedLoadout.ResetAndSizeAccessoryArrays(SlotCount);
 		SharedLoadout.LoadData(tag, order, slots);
 	}
 
@@ -435,13 +437,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	{
 		private readonly string identifier;
 
-		public ExEquipmentLoadout(int loadoutIndex, int slotCount, EquipmentLoadout loadoutReference)
+		public ExEquipmentLoadout(int loadoutIndex, EquipmentLoadout loadoutReference)
 		{
 			this.LoadoutIndex = loadoutIndex;
 			this.LoadoutReference = loadoutReference;
 			this.identifier = $"loadout_{loadoutIndex}";
-
-			this.ResetAndSizeAccessoryArrays(slotCount);
 		}
 
 		public int LoadoutIndex { get; }
