@@ -98,11 +98,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 
 		foreach (ExEquipmentLoadout equipmentLoadout in ExLoadouts) {
-			equipmentLoadout.ResetAndSizeAccessoryArrays(SlotCount);
 			equipmentLoadout.LoadData(tag, order, slots);
 		}
 
-		SharedLoadout.ResetAndSizeAccessoryArrays(SlotCount);
 		SharedLoadout.LoadData(tag, order, slots);
 	}
 
@@ -456,21 +454,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		public bool[] ExHideAccessory { get; private set; } = [];
 
-		public void ResetAndSizeAccessoryArrays(int size)
-		{
-			ExAccessorySlot = new Item[2 * size];
-			ExDyesAccessory = new Item[size];
-			ExHideAccessory = new bool[size];
-
-			for (int i = 0; i < size; i++) {
-				ExDyesAccessory[i] = new Item();
-				ExHideAccessory[i] = false;
-
-				ExAccessorySlot[i * 2] = new Item();
-				ExAccessorySlot[i * 2 + 1] = new Item();
-			}
-		}
-
 		public void SaveData(TagCompound tag)
 		{
 			tag[$"items_{this.identifier}"] = ExAccessorySlot.Select(ItemIO.Save).ToList();
@@ -486,6 +469,8 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			IList<Item> items;
 			IList<Item> dyes;
 			IList<bool> visible;
+
+			this.ResetAndSizeAccessoryArrays(slots.Count);
 
 			// Preserve backwards compatibility if data is stored in format pre loadout support
 			if (tag.TryGet("items", out IList<TagCompound> itemsTags)) {
@@ -526,6 +511,21 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				if ((i + order.Count) < items.Count) {
 					ExAccessorySlot[type + slots.Count] = items[i + order.Count];
 				}
+			}
+		}
+
+		private void ResetAndSizeAccessoryArrays(int size)
+		{
+			ExAccessorySlot = new Item[2 * size];
+			ExDyesAccessory = new Item[size];
+			ExHideAccessory = new bool[size];
+
+			for (int i = 0; i < size; i++) {
+				ExDyesAccessory[i] = new Item();
+				ExHideAccessory[i] = false;
+
+				ExAccessorySlot[i * 2] = new Item();
+				ExAccessorySlot[i * 2 + 1] = new Item();
 			}
 		}
 	}
