@@ -78,8 +78,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		//REMINDER TO REVERT THIS
-		if (             !BuildInfo.IsDev) {
+		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
@@ -276,15 +275,33 @@ public partial class WorkshopSocialModule
 
 	private static string CalculateDeveloperMetadata(List<ModVersionHash> versionHashes)
 	{
-		string devMetadata;
+		// The following is the general spec of this method, in the event devMetadata is longer than Steam allows:
+		//	1st Pass: For non-current Mod Browser Version Groups (ie 1.3, 1.4.3, etc)
+		//		Keep 1x ModVersionHash for each of the last three YYYY.MM versions of tMod for that ModBrowserVersion group
+		//	2nd Pass: For current Mod Browser Version Group
+		//		If the YYYY.MM is more than N months ago, purge all but the 'newest' ModVersionHash per YYYY.MM tml version
+		//		N starts at 18 and decrements until the character limit is met
+		//	
 
-		do {
+		string devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
+		while (devMetadata.Length > Steamworks.Constants.k_cchDeveloperMetadataMax) {
+			
+
 			// code here for reducing total count over time
 
-			devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
-		} while (devMetadata.Length > Steamworks.Constants.k_cchDeveloperMetadataMax);
+			
+		}
 
 		return devMetadata;
+	}
+
+	//TODO: This needs additional thinking on how to implement.
+	// Currently have a sequence as if had an extended version of 'YYYY.MM.Mod.Version.Patch', essentially.
+	private static void DropOldestHashesForBrowserVersion(List<ModVersionHash> versionHashes, string modBrowserVersion)
+	{
+		versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == modBrowserVersion)
+			.OrderByDescending(t => t.tmlVersion.MajorMinor())
+			.ThenByDescending(v => v.modVersion);
 	}
 
 	public static void SteamCMDPublishPreparer(string modFolder)
