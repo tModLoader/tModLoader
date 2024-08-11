@@ -47,13 +47,13 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			}
 		}
 
-		SharedLoadout = new ExEquipmentLoadout(SharedLoadoutIndex, new EquipmentLoadout());
+		SharedLoadout = new ExEquipmentLoadout(SharedLoadoutIndex, SlotCount, new EquipmentLoadout());
 	}
 
 	public override void Initialize()
 	{
 		ExLoadouts = Enumerable.Range(0, Player.Loadouts.Length)
-			.Select(loadoutIndex => new ExEquipmentLoadout(loadoutIndex, Player.Loadouts[loadoutIndex]))
+			.Select(loadoutIndex => new ExEquipmentLoadout(loadoutIndex, SlotCount, Player.Loadouts[loadoutIndex]))
 			.ToArray();
 	}
 
@@ -67,7 +67,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public int RegisterAdditionalEquipmentLoadout(EquipmentLoadout loadout)
 	{
 		Array.Resize(ref exLoadouts, ExLoadouts.Length + 1);
-		ExEquipmentLoadout newLoadout = new(ExLoadouts.Length - 1, loadout);
+		ExEquipmentLoadout newLoadout = new(ExLoadouts.Length - 1, SlotCount, loadout);
 		ExLoadouts[^1] = newLoadout;
 
 		return newLoadout.LoadoutIndex;
@@ -437,11 +437,13 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	{
 		private readonly string identifier;
 
-		public ExEquipmentLoadout(int loadoutIndex, EquipmentLoadout loadoutReference)
+		public ExEquipmentLoadout(int loadoutIndex, int slotCount, EquipmentLoadout loadoutReference)
 		{
 			this.LoadoutIndex = loadoutIndex;
 			this.LoadoutReference = loadoutReference;
 			this.identifier = $"loadout_{loadoutIndex}";
+
+			this.ResetAndSizeAccessoryArrays(slotCount);
 		}
 
 		public int LoadoutIndex { get; }
