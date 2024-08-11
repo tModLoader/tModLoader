@@ -218,14 +218,12 @@
  					if (Main.mouseItem.stack == 1) {
  						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  						if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -628,9 +_,15 @@
+@@ -628,9 +_,13 @@
  						Recipe.FindRecipes();
  						SoundEngine.PlaySound(7);
  					}
 +					*/
-+
 +					inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
-+
 +					Recipe.FindRecipes();
 +					SoundEngine.PlaySound(7);
  
@@ -339,7 +337,7 @@
  		if (Main.npcShop > 0 && !inv[slot].favorited) {
  			Chest chest = Main.instance.shop[Main.npcShop];
  			if (inv[slot].type < 71 || inv[slot].type > 74) {
-+				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else				
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else
  				if (player.SellItem(inv[slot])) {
 +					// Moved below AnnounceTransfer
 +					/*
