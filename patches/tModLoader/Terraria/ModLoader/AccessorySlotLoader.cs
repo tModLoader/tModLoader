@@ -221,13 +221,28 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 					out var yLoc2,
 					out var value4);
 
-				DrawSlot(modSlotPlayer.GetAccessoriesForCurrentLoadout(), -10, slot, flag3, xLoc, yLoc, skipMouse);
+				Item[] accessories = modSlotPlayer.IsSharedSlot(slot)
+					? modSlotPlayer.SharedLoadout.ExAccessorySlot
+					: modSlotPlayer.CurrentLoadout.ExAccessorySlot;
+				DrawSlot(accessories, -10, slot, flag3, xLoc, yLoc, skipMouse);
+
 				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			}
-			if (thisSlot.DrawVanitySlot)
-				DrawSlot(modSlotPlayer.GetAccessoriesForCurrentLoadout(), -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
-			if (thisSlot.DrawDyeSlot)
-				DrawSlot(modSlotPlayer.GetDyesForCurrentLoadout(), -12, slot, flag3, xLoc, yLoc);
+
+			if (thisSlot.DrawVanitySlot) {
+				Item[] accessories = modSlotPlayer.IsSharedSlot(slot)
+					? modSlotPlayer.SharedLoadout.ExAccessorySlot
+					: modSlotPlayer.CurrentLoadout.ExAccessorySlot;
+				DrawSlot(accessories, -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
+			}
+
+			if (thisSlot.DrawDyeSlot) {
+				Item[] dyes = modSlotPlayer.IsSharedSlot(slot)
+					? modSlotPlayer.SharedLoadout.ExDyesAccessory
+					: modSlotPlayer.CurrentLoadout.ExDyesAccessory;
+
+				DrawSlot(dyes, -12, slot, flag3, xLoc, yLoc);
+			}
 		}
 		else {
 			if (!customLoc && Main.EquipPage != 0) {
@@ -472,8 +487,20 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
 	/// Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem
 	/// </summary>
-	public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
-		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).GetAccessoriesForCurrentLoadout()).ToArray(), checkItem, slot + Player.armor.Length);
+	public bool ModSlotCheck(Item checkItem, int slot, int context)
+	{
+		ModAccessorySlotPlayer modSlotPlayer = ModSlotPlayer(Player);
+
+		if (CanAcceptItem(slot, checkItem, context)) {
+			if (modSlotPlayer.IsSharedSlot(slot)) {
+				return modSlotPlayer.ExLoadouts.All(loadout => !ItemSlot.AccCheck_ForLocalPlayer(modSlotPlayer.GetAllAccessoriesForLoadout(loadout.LoadoutIndex), checkItem, slot + Player.armor.Length));
+			}
+
+			return !ItemSlot.AccCheck_ForLocalPlayer(modSlotPlayer.GetAllAccessoriesForLoadout(modSlotPlayer.ModdedCurrentLoadoutIndex), checkItem, slot + Player.armor.Length);
+		}
+
+		return false;
+	}
 
 	/// <summary>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.

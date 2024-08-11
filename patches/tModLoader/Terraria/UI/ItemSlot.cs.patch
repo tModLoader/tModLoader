@@ -114,20 +114,10 @@
  				item2.stack = item2.maxStack;
  				item2.OnCreated(new JourneyDuplicationItemCreationContext());
  				item2 = Main.player[Main.myPlayer].GetItem(Main.myPlayer, item2, GetItemSettings.InventoryEntityToPlayerInventorySettings);
-@@ -452,7 +_,16 @@
- 				return true;
+@@ -453,6 +_,7 @@
  			}
  
--			inv[slot] = Main.player[Main.myPlayer].GetItem(Main.myPlayer, inv[slot], GetItemSettings.InventoryEntityToPlayerInventorySettings);
-+			Item newItemForSlot = Main.player[Main.myPlayer].GetItem(Main.myPlayer, inv[slot], GetItemSettings.InventoryEntityToPlayerInventorySettings);
-+
-+			if (context is Context.ModdedAccessorySlot or Context.ModdedVanityAccessorySlot or Context.ModdedDyeSlot) {
-+				ModAccessorySlotPlayer modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.player[Main.myPlayer]);
-+				modSlotPlayer.TrySetItemForCurrentLoadout(slot, context, newItemForSlot);
-+			}
-+			else {
-+				inv[slot] = newItemForSlot;
-+			}
+ 			inv[slot] = Main.player[Main.myPlayer].GetItem(Main.myPlayer, inv[slot], GetItemSettings.InventoryEntityToPlayerInventorySettings);
 +
  			SoundEngine.PlaySound(12);
  			return true;
@@ -205,7 +195,7 @@
  					}
  				}
  				if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
-@@ -573,10 +_,30 @@
+@@ -573,10 +_,20 @@
  				break;
  			case 1:
  				if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem) && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
@@ -218,18 +208,7 @@
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
 +						break;
 +
-+					if (isModdedSlot) {
-+						Item temp = Main.mouseItem;
-+						if (!modSlotPlayer.TrySetItemForCurrentLoadout(slot, context, temp)) {
-+							break;
-+						}
-+
-+						Main.mouseItem = inv[slot];
-+					}
-+					else {
--					Utils.Swap(ref inv[slot], ref Main.mouseItem);
-+						Utils.Swap(ref inv[slot], ref Main.mouseItem);
-+					}
+ 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
 +
  					SoundEngine.PlaySound(7);
  					if (inv[slot].stack > 0) {
@@ -238,32 +217,14 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
-@@ -596,9 +_,26 @@
- 					}
+@@ -597,8 +_,10 @@
  				}
  				else if (Main.mouseItem.type == 0 && inv[slot].type > 0) {
--					Utils.Swap(ref inv[slot], ref Main.mouseItem);
+ 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
++
 -					if (inv[slot].type == 0 || inv[slot].stack < 1)
--						inv[slot] = new Item();
-+					if (isModdedSlot) {
-+						Item temp = Main.mouseItem;
-+						if (!modSlotPlayer.TrySetItemForCurrentLoadout(slot, context, temp)) {
-+							break;
-+						}
-+
-+						Main.mouseItem = inv[slot];
-+					}
-+					else {
-+						Utils.Swap(ref inv[slot], ref Main.mouseItem);
-+					}
-+
 +					if (inv[slot].type == 0 || inv[slot].stack < 1) {
-+						if (isModdedSlot) {
-+							modSlotPlayer.TrySetItemForCurrentLoadout(slot, context, new Item());
-+						}
-+						else {
-+							inv[slot] = new Item();
-+						}
+ 						inv[slot] = new Item();
 +					}
  
  					if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
@@ -284,21 +245,13 @@
  					if (Main.mouseItem.stack == 1) {
  						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  						if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -628,9 +_,23 @@
+@@ -628,9 +_,15 @@
  						Recipe.FindRecipes();
  						SoundEngine.PlaySound(7);
  					}
 +					*/
-+					if (isModdedSlot) {
-+						if (!modSlotPlayer.CanSetItemForCurrentLoadout(slot, context, Main.mouseItem)) {
-+							break;
-+						}
 +
-+						modSlotPlayer.TrySetItemForCurrentLoadout(slot, context, ItemLoader.TransferWithLimit(Main.mouseItem, 1));
-+					}
-+					else {
-+						inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
-+					}
++					inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
 +
 +					Recipe.FindRecipes();
 +					SoundEngine.PlaySound(7);
@@ -333,29 +286,14 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
-@@ -679,9 +_,23 @@
- 					}
+@@ -680,8 +_,10 @@
  				}
  				else if (Main.mouseItem.type == 0 && inv[slot].type > 0) {
--					Utils.Swap(ref inv[slot], ref Main.mouseItem);
--					if (inv[slot].type == 0 || inv[slot].stack < 1)
--						inv[slot] = new Item();
-+					if (isModdedSlot) {
-+						Item temp = Main.mouseItem;
-+						Main.mouseItem = inv[slot];
-+						msPlayer.SetDyeItemForCurrentLoadout(slot, temp);
-+					}
-+					else {
-+						Utils.Swap(ref inv[slot], ref Main.mouseItem);
-+					}
+ 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
 +
+-					if (inv[slot].type == 0 || inv[slot].stack < 1)
 +					if (inv[slot].type == 0 || inv[slot].stack < 1) {
-+						if (isModdedSlot) {
-+							msPlayer.SetDyeItemForCurrentLoadout(slot, new Item());
-+						}
-+						else {
-+							inv[slot] = new Item();
-+						}
+ 						inv[slot] = new Item();
 +					}
  
  					if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
@@ -368,18 +306,13 @@
  					if (Main.mouseItem.stack == 1) {
  						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  						if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -711,9 +_,20 @@
+@@ -711,9 +_,15 @@
  						Recipe.FindRecipes();
  						SoundEngine.PlaySound(7);
  					}
 +					*/
 +
-+					if (isModdedSlot) {
-+						msPlayer.SetDyeItemForCurrentLoadout(slot, ItemLoader.TransferWithLimit(Main.mouseItem, 1));
-+					}
-+					else {
-+						inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
-+					}
++					inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
 +
 +					Recipe.FindRecipes();
 +					SoundEngine.PlaySound(7);
@@ -493,7 +426,7 @@
  				break;
  			case 10:
 -				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).GetAccessoriesForCurrentLoadout()).ToArray(), checkItem, slot)))
++				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).GetAllAccessoriesForCurrentLoadout(), checkItem, slot)))
 +					result = 1;
 +				break;
 +			case Context.ModdedAccessorySlot:
@@ -507,7 +440,7 @@
  				break;
  			case 11:
 -				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).GetAccessoriesForCurrentLoadout()).ToArray(), checkItem, slot)))
++				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).GetAllAccessoriesForCurrentLoadout(), checkItem, slot)))
  					result = 1;
  				break;
  			case 12:
@@ -645,7 +578,7 @@
 +		*/
 +
 +		if (flag && Math.Abs(context) == 11) {
-+			var accessories = AccessorySlotLoader.ModSlotPlayer(player).GetAccessoriesForCurrentLoadout();
++			var accessories = AccessorySlotLoader.ModSlotPlayer(player).GetAllModSlotAccessoriesForCurrentLoadout();
 +			for (int invNum = 0; invNum < 2; invNum++) {
 +				var checkInv = player.armor;
 +				int startIndex = 3;
