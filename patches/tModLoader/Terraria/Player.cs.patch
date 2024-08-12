@@ -4871,6 +4871,17 @@
  		return num;
  	}
  
+@@ -27301,6 +_,10 @@
+ 		RefreshItems(bank3.item, onlyIfVariantChanged);
+ 		RefreshItems(bank4.item, onlyIfVariantChanged);
+ 		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
++
++		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
++			item.Refresh(onlyIfVariantChanged);
++		}
+ 	}
+ 
+ 	private void RefreshItems(Item[] array, bool onlyIfVariantChanged)
 @@ -27344,11 +_,29 @@
  		}
  	}

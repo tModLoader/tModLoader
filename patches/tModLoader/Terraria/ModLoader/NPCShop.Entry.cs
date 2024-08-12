@@ -9,23 +9,9 @@ public sealed partial class NPCShop
 {
 	public new sealed class Entry : AbstractNPCShop.Entry
 	{
-		private readonly Item item;
+		public Item Item { get; }
+
 		private readonly List<Condition> conditions;
-
-		public Item Item {
-			get {
-				Item actualItem = item;
-
-				ItemVariant itemVariant = ItemVariants.SelectVariant(item.type);
-				if (itemVariant != null) {
-					actualItem = new Item();
-					actualItem.SetDefaults(item.type, variant: itemVariant);
-				}
-
-				return actualItem;
-			}
-		}
-
 		public IEnumerable<Condition> Conditions => conditions;
 
 		private Action<Item, NPC> shopOpenedHooks;
@@ -42,7 +28,7 @@ public sealed partial class NPCShop
 		public Entry(Item item, params Condition[] condition)
 		{
 			Disabled = false;
-			this.item = item;
+			Item = item;
 			conditions = condition.ToList();
 		}
 
