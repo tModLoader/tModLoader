@@ -136,7 +136,7 @@ internal static class ModOrganizer
 		OrderByDescending(m => m.tModLoaderVersion, "a matching version for a newer tModLoader exists");
 		FilterOut(m => m.location != ModLocation.Workshop && list.Any(m2 => m2.location == ModLocation.Workshop && m2.modFile.Hash == m.modFile.Hash), "an identical copy exists in the workshop folder");
 		OrderByDescending(m => m.location == ModLocation.Local, "a local copy with the same version (but different hash) exists");
-		FilterOut(m => m.location == ModLocation.Local && Path.GetFileNameWithoutExtension(m.modFile.path) != m.Name && list.Any(m2 => m2.location == ModLocation.Local && Path.GetFileNameWithoutExtension(m2.modFile.path) == m.Name), "this is a renamed duplicate of another .tmod file in the local mods folder");
+		OrderByDescending(m => Path.GetFileNameWithoutExtension(m.modFile.path) == m.Name, "this .tmod has been renamed");
 
 		var selected = list.FirstOrDefault();
 
