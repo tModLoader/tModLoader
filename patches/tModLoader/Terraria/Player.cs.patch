@@ -8581,7 +8581,7 @@
  				continue;
  
  			for (int j = i + 1; j < 10; j++) {
-@@ -42856,7 +_,29 @@
+@@ -42856,7 +_,30 @@
  	private static void LoadPlayer_LastMinuteFixes(Player newPlayer)
  	{
  		newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, PlayerVariantID.Count - 1);
