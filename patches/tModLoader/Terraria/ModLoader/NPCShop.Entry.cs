@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Terraria.GameContent.Items;
+using System;
 
 namespace Terraria.ModLoader;
 
