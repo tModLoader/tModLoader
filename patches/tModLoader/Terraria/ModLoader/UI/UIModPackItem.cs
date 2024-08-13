@@ -50,10 +50,12 @@ internal class UIModPackItem : UIPanel
 	private readonly UIAutoScaleTextTextPanel<string> _importFromPackLocalButton;
 	private readonly UIAutoScaleTextTextPanel<string> _removePackLocalButton;
 	private readonly UIImageButton _deleteButton;
+	private readonly UIImageButton _fakeDeleteButton;
 	private readonly string _filename;
 	private readonly string _filepath;
 	private readonly bool _legacy;
 	private string _tooltip;
+	private bool IsLocalModPack => ModOrganizer.ModPackActive == _filepath;
 
 	public UIModPackItem(string name, string[] mods, bool legacy, IEnumerable<LocalMod> localMods)
 	{
@@ -82,6 +84,8 @@ internal class UIModPackItem : UIPanel
 		}
 
 		BorderColor = new Color(89, 116, 213) * 0.7f;
+		if (IsLocalModPack)
+			BackgroundColor = Color.MediumPurple * 0.7f;
 		_dividerTexture = UICommon.DividerTexture;
 		_innerPanelTexture = UICommon.InnerPanelTexture;
 		Height.Pixels = _legacy ? 126 : 210;
@@ -163,7 +167,13 @@ internal class UIModPackItem : UIPanel
 			Top = { Pixels = 40 }
 		};
 		_deleteButton.OnLeftClick += DeleteButtonClick;
-		Append(_deleteButton);
+		this.AddOrRemoveChild(_deleteButton, !IsLocalModPack);
+
+		_fakeDeleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
+			Top = { Pixels = 40 }
+		};
+		_fakeDeleteButton.SetVisibility(0.4f, 0.4f);
+		this.AddOrRemoveChild(_fakeDeleteButton, IsLocalModPack);
 
 		if (_legacy)
 			return;
@@ -309,6 +319,9 @@ internal class UIModPackItem : UIPanel
 		else if (_deleteButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModPackDelete");
 		}
+		else if (_fakeDeleteButton?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.ModPackDisableToDelete");
+		}
 	}
 
 	public override void MouseOver(UIMouseEvent evt)
@@ -328,13 +341,18 @@ internal class UIModPackItem : UIPanel
 		if (Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) == _filename)
 			BackgroundColor = Color.MediumPurple * 0.7f;
 		else
-			BackgroundColor = new Color(63, 82, 151) * 0.7f;
+			BackgroundColor = UICommon.DefaultUIBlueMouseOver;
 
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 	}
 
 	private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement)
 	{
+		if (IsLocalModPack) {
+			Logging.tML.Warn("Tried to delete active modpack somehow");
+			return;
+		}
+
 		UIModPackItem modPackItem = ((UIModPackItem)listeningElement.Parent);
 
 		if (_legacy) {

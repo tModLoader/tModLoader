@@ -284,6 +284,7 @@
 		"InstallPackLocalDesc": "禁用所有模组且启用整合包里的所有模组（按整合包里指定的版本）",
 		"ModPackMismatch": "上次使用的模组包：{0}",
 		"ModPackDelete": "删除整合包",
+		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",
