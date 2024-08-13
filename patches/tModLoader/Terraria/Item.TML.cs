@@ -316,7 +316,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public List<PrefixCategory> GetPrefixCategories() {
 		ref List<PrefixCategory> categories = ref PrefixLoader.itemPrefixesByType[type];
 		if (categories is not null) return categories;
-		categories = new List<PrefixCategory>();
+		categories = [];
 		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
 			categories.Add(PrefixCategory.Melee);
 

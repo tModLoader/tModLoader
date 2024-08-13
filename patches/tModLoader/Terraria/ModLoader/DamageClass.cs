@@ -81,6 +81,13 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit effects from.</param>
 	/// <returns><see langword="false"/> by default - which does not let any other classes' effects trigger on this <see cref="DamageClass"/>.</returns>
 	public virtual bool GetEffectInheritance(DamageClass damageClass) => false;
+	/// <summary> 
+	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of prefixes<br/>
+	/// </summary>
+	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
+	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit prefixes from.</param>
+	/// <returns><see langword="false"/> by default - which does not let any other classes' prefixes roll or remain on this <see cref="DamageClass"/>.</returns>
+	public virtual bool GetPrefixInheritance(DamageClass damageClass) => CountsAsClass(damageClass);
 
 	/// <summary> 
 	/// This lets you define default stat modifiers for all items of this class (e.g. base crit chance).
@@ -133,4 +140,15 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <returns><see langword="true"/> if this damage class is inheriting effects from <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[Type, damageClass.Type];
+
+	/// <inheritdoc cref="GetsPrefixesFor"/>
+	public bool GetsPrefixesFor<T>() where T : DamageClass
+		=> GetsPrefixesFor(ModContent.GetInstance<T>());
+	/// <summary>
+	/// This is used to check if this <see cref="DamageClass"/> has been set to inherit prefixes from the provided <see cref="DamageClass"/>, as dictated by <see cref="GetPrefixInheritance"/>
+	/// </summary>
+	/// <param name="damageClass">The DamageClass you want to check if prefixes are inherited by this DamageClass.</param>
+	/// <returns><see langword="true"/> if this damage class inherits prefixes from <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
+	public bool GetsPrefixesFor(DamageClass damageClass)
+		=> this == damageClass || GetPrefixInheritance(damageClass);
 }
