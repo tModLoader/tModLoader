@@ -12,7 +12,9 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
+/// A ModPlayer instance represents an extension of a Player instance.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <br/> You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 /// </summary>
 public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 {
@@ -43,7 +45,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
 		base.ValidateType();
 
-		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
+		LoaderUtils.MustOverrideTogether(this, p => p.SaveData, p => p.LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
 
@@ -699,11 +701,17 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to give this player's melee weapon special effects, such as creating light or dust.
+	/// Allows you to give this player's melee weapon special effects, such as creating light or dust. This is typically used to implement a weapon enchantment, similar to flasks, frost armor, or magma stone effects.
+	/// <para/> If implementing a weapon enchantment, also implement <see cref="EmitEnchantmentVisualsAt(Projectile, Vector2, int, int)"/> to support enchantment visuals for projectiles as well.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="hitbox"></param>
 	public virtual void MeleeEffects(Item item, Rectangle hitbox)
+	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.EmitEnchantmentVisualsAt"/>
+	public virtual void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
 	}
 

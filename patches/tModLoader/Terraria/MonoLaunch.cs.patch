@@ -65,7 +65,7 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,17 +_,17 @@
+@@ -57,25 +_,25 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  
@@ -79,9 +79,18 @@
  				return IntPtr.Zero;
  			}
  
+ 			// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario, but we still want exception info
 -			Console.WriteLine($"\tattempting load {path}");
 +			Logging.tML.Debug($"\tattempting load {path}");
- 			handle = NativeLibrary.Load(path);
+ 			try {
+ 				handle = NativeLibrary.Load(path);
+ 			}
+ 			catch (Exception e) {
+-				Console.WriteLine($"\t\tFailed to load {name}.\n{e}");
++				Logging.tML.Debug($"\t\tFailed to load {name}.\n{e}");
+ 				return IntPtr.Zero;
+ 			}
+ 
 -			Console.WriteLine("\tsuccess");
 +			Logging.tML.Debug("\tsuccess");
  			return assemblies[name] = handle;

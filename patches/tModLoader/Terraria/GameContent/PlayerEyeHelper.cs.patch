@@ -51,13 +51,13 @@
  		IsPoisoned
  	}
  
-@@ -25,7 +_,20 @@
+@@ -25,8 +_,22 @@
  	private int _timeInState;
  	private const int TimeToActDamaged = 20;
  
--	public int EyeFrameToShow { get; private set; }
-+	internal int EyeFrameToShow { get; private set; } // TML: Made internal
-+
++	[System.Obsolete("Use CurrentEyeFrame instead")]
+ 	public int EyeFrameToShow { get; private set; }
+ 
 +	public EyeState CurrentEyeState { // TML
 +		get => _state;
 +		set => _state = value;
@@ -70,9 +70,10 @@
 +		get => _timeInState;
 +		set => _timeInState = value;
 +	}
- 
++
  	public void Update(Player player)
  	{
+ 		SetStateByPlayerInfo(player);
 @@ -109,7 +_,7 @@
  		}
  	}

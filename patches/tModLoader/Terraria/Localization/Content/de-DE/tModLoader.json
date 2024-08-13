@@ -76,6 +76,9 @@
 		"ModReloadRequiredMemberTooltip": "Dies zu ändern macht es erforderlich neuzuladen",
 		"ModReloadForced": "Neu laden erzwingen",
 		"ModIsServerSide": "Dies ist ein serverseitiger Mod",
+		// "ModFromWorkshop": "Loading from workshop",
+		// "ModFromModpack": "Loading from active mod pack",
+		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "Mod von: {0}",
 		"ModsMoreInfo": "Mehr Info",
 		"ModsOriginatedFromModBrowser": "Dieser Mod ist aus dem Mod-Browser",
@@ -123,6 +126,8 @@
 		//Mod Config
 		"ModConfigs": "Konfiguration",
 		"ModConfigFilterOptions": "Filtereinstellungen",
+		// "ModConfigFilterByName": "Filter by Name",
+		// "ModConfigFilterByMod": "Filter by Mod",
 		"ModConfigNotification": "Benachrichtigung: ",
 		"ModConfigModConfig": "Modkonfiguration",
 		"ModConfigSaveConfig": "Konfiguration speichern",
@@ -141,11 +146,13 @@
 		"ModConfigCollapse": "Zusammenklappen",
 		"ModConfigScaleUp": "Vergrößern",
 		"ModConfigScaleDown": "Verkleinern",
+		// "ModConfigTypeHere": "Type Here",
 		"ModConfigServerResponse": "Server Antwort: {0}",
 		"ModConfigServerRejectedChanges": "Der Server hat folgende Änderungen abgelehnt: {0}",
 		"ModConfigSharedConfigChanged": "Geteilte Konfiguration verändert: Meldung: {0}, Mod: {1}, Konfiguration: {2}",
 		"ModConfigAccepted": "Akzeptiert",
 		"ModConfigRejectChangesNotHost": "Nur der Host kann diese Konfiguration ändern",
+		// "ModConfigModLoaderButNoConfigs": "This mod is loaded but has no config options",
 
 		// Interface
 		"BossBarStyle": "Bossleisten-Stil: {0}",
@@ -168,7 +175,10 @@
 		"UpdateItem": "Gegenstand {0} aktualisieren",
 		"PublishItem": "Versuche Gegenstand {0} zu veröffentlichen",
 		"SteamDownloader": "Download wird in die Warteschleife des Steam-Download-Managers gestellt...",
+		// "PublishUpdateButton": "Update Existing",
+		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Zu {0}% heruntergeladen",
+		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
 
 		// Mod Errors
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
@@ -184,6 +194,8 @@
 		"LoadErrorHashMismatchCorrupted": "Hash unpassend, data blob wurde verändert.",
 		"LoadErrorDependencyVersionTooLow": "{0} benötigt Version {1} von {2}, aber Version {3} ist installiert",
 		"LoadErrorMajorVersionMismatch": "{0} zielt auf {2} Version {1}, aber Sie haben eine neuere Hauptversion ({3}), die möglicherweise nicht kompatibel ist. {0} muss aktualisiert werden",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
+		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. Du hast ModNPC.banner oder ModNPC.banneritem definiert, aber nicht beide. Stelle sicher, dass du beide definierst, überprüfe deine Rechtschreibung, dass der Gegenstand existiert. Wenn du mod.ItemType() benutzt, melde das den {0} Entwicklern.",
 		"UnloadError": "Ein oder mehrere Fehler sind beim Laden aufgetreten und tModLoader muss neu gestartet werden, um weitere Fehler zu verhindern.",
 		"DefensiveUnload": "{0} konnte nicht korrekt entladen werden. Modder müssen eine defensive Programmierung verwenden, um sicherzustellen, dass der Entladevorgang unabhängig von Fehlern beim Laden abgeschlossen wird.",
@@ -269,6 +281,7 @@
 		// "InstallPackLocal": "Import Pack (Local)",
 		// "InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		"ModPackMismatch": "Letztes Modpacket: {0}",
+		// "ModPackDelete": "Delete Mod Pack",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisiere Mods",
@@ -327,9 +340,12 @@
 		"MBCancelLoading": "Laden abbrechen",
 		"MBPopulatingBrowser": "Browser aktivieren...",
 		"MBSortByRecentlyUpdated": "Nach kürzlich aktualisierten sortieren",
+		// "MBSortByRecentlyPublished": "Sort by recently published",
 		"MBSortByPopularity": "Nach Beliebtheit sortieren",
 		"MBSortDownloadDesc": "Nach absteigenden Downloads sortieren",
 		"MBSortDownloadAsc": "Nach aufsteigenden Downloads sortieren",
+		// "MBTimePeriodToggleDisabled": "[c/{0}:{1} (Disabled in this sort mode)]",
+		// "MBSortByRelevance": "Sort by text relevance",
 		"MBShowAllMods": "Alle Mods zeigen",
 		"MBShowNotInstalledUpdates": "Mods die nicht installiert sind und Aktualisierungen zeigen",
 		"MBShowUpdates": "Nur Aktualisierungen zeigen",
@@ -339,6 +355,10 @@
 		"MBShowMSClient": "Clientseitige Mods zeigen",
 		"MBShowMSServer": "Serverseitige Mods zeigen",
 		"MBShowMSNoSync": "Mods die keine Synchronisation benötigen zeigen",
+		// "MBTagsSelected": "Tags:",
+		// "MBTagsCategories": "Categories: {0}",
+		// "MBTagsLanguage": "Language: {0}",
+		// "MBTagsClear": "Clear all tag selections",
 		"MBClearSpecialFilter": "Filter leeren: {0}",
 		"MBOfflineWithReason": "OFFLINE ({0})",
 		"MBBusy": "Beschäftigt",
@@ -358,6 +378,12 @@
 		"XDaysAgo": "Vor {0} {^0:tag;tagen}",
 		"XMonthsAgo": "Vor {0} {^0:monat;monaten}",
 		"XYearsAgo": "Vor {0} {^0:jahr;jahren}",
+		// "Today": "Today",
+		// "OneWeek": "One Week",
+		// "ThreeMonths": "Three Months",
+		// "SixMonths": "Six Months",
+		// "OneYear": "One Year",
+		// "AllTime": "All Time",
 		"MBServerReturnToMenu": "Zum Weltenmenü zurückkehren",
 		"MBServerAskForModName": "Gib einen genauen Modnamen zum Herunterladen ein: ",
 
@@ -371,6 +397,8 @@
 		"EnterSteamID": "Bitte gib deine SteamID ein ",
 		"PasteSteamID": "SteamID kopieren (Strg-V)",
 		"MBServerResponse": "Antwort des Mod-Browser Servers:\n\n{0}",
+		// "SettingsPublicityUnlisted": "Unlisted",
+		// "SettingsPublicityUnlistedDescription": "Item does not show up in general searches unless subscribed to it.\nYou can adjust the visibility setting on the Workshop page at any time.",
 
 		// TML Options
 		"DownloadFromServersYes": "Mods vom Servern herunterladen: An",
@@ -467,6 +495,19 @@
 		"DownloadNetSDK": ".NET SDK herunterladen",
 		"DevModsInSandbox": "tModLoader kann keine Mods entwickeln, während er in einer Sandbox läuft (wie Flatpak). Bitte stell sicher dass Steam direkt auf dem System installiert ist.",
 
+		// Create Mod
+		// "CreateModName": "ModName (no spaces)",
+		// "CreateModDisplayName": "Mod DisplayName",
+		// "CreateModAuthor": "Mod Author",
+		// "CreateModBasicSword": "BasicSword (no spaces)",
+		// "CreateModBasicSwordHint": "Leave Blank to Skip",
+		// "CreateModFolderAlreadyExists": "Folder already exists",
+		// "CreateModNameInvalid": "ModName is invalid C# identifier. Remove spaces.",
+		// "CreateModNameReserved": "ModName is a reserved mod name. Choose a different name.",
+		// "CreateModBasicSwordInvalid": "BasicSword is invalid C# identifier. Remove spaces.",
+		// "CreateModDisplayNameEmpty": "DisplayName can't be empty",
+		// "CreateModAuthorEmpty": "Author can't be empty",
+
 		// Developer Mode UI
 		"DMModCompileMissing": "Ein extra Ordner ist für Mods benötigt. (Fehlender ModCompile-Ordner)",
 		"DMModCompileUpdate": "ModCompile-Ordner ist nicht auf dem neusten Stand.",
@@ -533,10 +574,12 @@
 		"SpecialAttackSpeedScaling": "{0}% Bonus durch erhöhte Angriffstempo",
 		"ModifiedByModsHoldSHIFT": "Ist modifiziert (halte SHIFT für mehr Information)",
 		"ModifiedByMods": "Ist modifiziert durch ",
+		// "MagicSummonHybridDamageClass": " magic or summon damage",
 
 		// Memory bar
 		"LastLoadRamUsage": "Geschätzte RAM-Nutzung beim letzten Laden: {0}",
 		"AvailableMemory": "Verfügbarer Arbeitsspeicher: {0}",
+		// "InstalledMemory": "Installed Memory: {0}",
 		"TerrariaMemory": "Terraria + Verschiedenes: {0}",
 		"ManagedMemory": "Verwaltet: {0}",
 		"CodeMemory": "Code: {0}",
@@ -584,6 +627,7 @@
 		"AntivirusHint": "Tipp: Falls du einen Antivirenprogramm hast, versuche Terraria zu dessen Whitelist/Ausschließungsliste hinzuzufügen.",
 		"TypeInitializationHint": "Tipp: Starte das Spiel neu. Wenn das Problem bestehen bleibt, versuche Terraria vollständig zu deinstallieren, es über Steam neu zu installieren und dann tModLoader erneut zu installieren.",
 		// "TerrariaOutOfDateMessage": "Terraria is out of date, you need to update Terraria in Steam.",
+		// "TerrariaLegacyBranchMessage": "Terraria is on a legacy version, you need to switch back to the normal Terraria version in Steam for tModLoader to load.",
 
 		// Tag categories are not displayed in game currently, but are shown on workshop
 		// "TagsCategoryModFeatures": "Mod Features",

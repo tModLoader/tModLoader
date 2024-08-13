@@ -269,7 +269,7 @@
 +	/// - <see cref="NPC.DropItemInstanced"/><br/>
 +	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
 +	/// - <see cref="MessageID.InstancedItem"/><br/>
-+	/// Defaults to false.<br/>
++	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool instanced;
  	public int ownIgnore = -1;
@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,245 @@
+@@ -121,49 +_,247 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -645,8 +645,9 @@
 +	/// Used for assigning a non-default price to an item in shops.<br/>
 +	/// Can be used with <see cref="shopSpecialCurrency"/> to assign a price in terms of a custom currency instead of coins.<br/>
 +	/// To get the raw price of an item, use <see cref="GetStoreValue"/>.<br/>
-+	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.<br/>
-+	/// Defaults to <see langword="null"/>.<br/>
++	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.
++	/// <para/> Be careful of setting a custom price far below the normal <see cref="Item.value"/>, it could result in an infinite money exploit. For example, with maximum happiness and a discount card, a custom price 0.44 times the regular value would allow the user to sell the item for just barely more than it was bought for after leaving and reentering the world.
++	/// <para/> Defaults to <see langword="null"/>.
 +	/// </summary>
  	public int? shopCustomPrice;
  	public bool shootsEveryUse;
@@ -723,7 +724,8 @@
 +
 +	/// <summary>
 +	/// A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items.
-+	/// <br/> Defaults to 0.
++	/// <para/> One notable example usage is the <see cref="ItemID.ClockworkAssaultRifle"/> with a value of 14, but most other usages are smaller values like 2.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int reuseDelay;
  	public bool newAndShiny;
@@ -1361,6 +1363,15 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -44338,6 +_,8 @@
+ 				value = sellPrice(0, 0, 50);
+ 				break;
+ 			case 5134:
++				consumeAmmoOnLastShotOnly = true; // Added by TML
++
+ 				useStyle = 5;
+ 				autoReuse = true;
+ 				useAnimation = 30;
 @@ -46345,6 +_,20 @@
  		}
  	}
@@ -1857,7 +1868,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,32 @@
+@@ -47318,14 +_,33 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1876,6 +1887,7 @@
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
 +		ChangePlayerDirectionOnShoot = true;
++		ArmorPenetration = 0;
 +
  		sentry = false;
  		hasVanityEffects = false;

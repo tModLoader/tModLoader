@@ -136,6 +136,7 @@ internal static class ModOrganizer
 		OrderByDescending(m => m.tModLoaderVersion, "a matching version for a newer tModLoader exists");
 		FilterOut(m => m.location != ModLocation.Workshop && list.Any(m2 => m2.location == ModLocation.Workshop && m2.modFile.Hash == m.modFile.Hash), "an identical copy exists in the workshop folder");
 		OrderByDescending(m => m.location == ModLocation.Local, "a local copy with the same version (but different hash) exists");
+		OrderByDescending(m => Path.GetFileNameWithoutExtension(m.modFile.path) == m.Name, "this .tmod has been renamed");
 
 		var selected = list.FirstOrDefault();
 
@@ -371,6 +372,7 @@ internal static class ModOrganizer
 
 		var modsToLoad = GetModsToLoad(availableMods);
 		try {
+			EnsureRecentlyBuildModsAreLoading(modsToLoad);
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
 			return Sort(modsToLoad);
@@ -451,6 +453,30 @@ internal static class ModOrganizer
 			var e = new Exception(string.Join("\n", errors));
 			e.Data["mods"] = erroredMods.Select(m => m.Name).ToArray();
 			throw e;
+		}
+	}
+
+	
+	private static void EnsureRecentlyBuildModsAreLoading(List<LocalMod> mods)
+	{
+		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. We throw an error because this is definitely not desired.
+		foreach (var mod in mods) {
+			var localMod = AllFoundMods.SingleOrDefault(x => x.Name == mod.Name && x.location == ModLocation.Local && Path.GetFileNameWithoutExtension(x.modFile.path) == mod.Name);
+
+			// If Local mod is newer than selected Workshop/Modpack mod...
+			if (localMod == null || localMod == mod || localMod.lastModified.CompareTo(mod.lastModified) <= 0) {
+				continue;
+			}
+
+			// and is newer than directly before game launch and last time a mod was synced, it is assumed to be a mod built by this modder.
+			if (localMod.lastModified.CompareTo(ModCompile.recentlyBuiltModCheckTimeCutoff) > 0) {
+				var e = new Exception(Language.GetTextValue("tModLoader.LoadErrorRecentlyBuiltLocalModWithLowerVersion" + mod.location.ToString(), localMod.Name, localMod.Version, mod.Version));
+				e.Data["mod"] = mod.Name;
+				e.Data["hideStackTrace"] = true;
+				throw e;
+			}
+
+			continue;
 		}
 	}
 

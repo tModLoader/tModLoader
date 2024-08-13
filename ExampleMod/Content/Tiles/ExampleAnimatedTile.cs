@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Tiles
 				uniqueAnimationFrame += 3;
 			uniqueAnimationFrame %= 6;
 
-			// frameYOffset = modTile.animationFrameHeight * Main.tileFrame [type] will already be set before this hook is called
+			// frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type] will already be set before this hook is called
 			// But we have a horizontal animated texture, so we use frameXOffset instead of frameYOffset
 			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
 		}

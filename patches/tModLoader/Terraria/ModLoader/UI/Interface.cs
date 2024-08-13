@@ -192,15 +192,20 @@ internal static class Interface
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
 				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}\n{string.Concat(missingDeps)}".Trim('\n');
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}";
+				if (promptDepDownloads) {
+					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
+				}
+				message = message.Trim('\n');
+
 
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
 				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
 
-				Action downloadAction = () => {
+				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
-						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
+						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item) || item == null) {
 							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
 							continue;
 						}
@@ -208,10 +213,15 @@ internal static class Interface
 						downloads.Add(item);
 					}
 
-					_ = UIModBrowser.DownloadMods(
+					await UIModBrowser.DownloadMods(
 						downloads,
 						loadModsID);
-                };
+
+					Main.QueueMainThreadAction(() => {
+						Main.menuMode = Interface.loadModsID;
+						Main.MenuUI.SetState(null);
+					});
+				};
 
 				if (!string.IsNullOrWhiteSpace(message)) {
 					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
@@ -285,7 +295,7 @@ internal static class Interface
 		else if (Main.menuMode == tModLoaderSettingsID) {
 			offY = 210;
 			spacing = 42;
-			numButtons = 10;
+			numButtons = 9;
 			buttonVerticalSpacing[numButtons - 1] = 18;
 			for (int i = 0; i < numButtons; i++) {
 				buttonScales[i] = 0.75f;
@@ -295,13 +305,6 @@ internal static class Interface
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
-			}
-
-			buttonIndex++;
-			buttonNames[buttonIndex] = (ModNet.onlyDownloadSignedMods ? Language.GetTextValue("tModLoader.DownloadSignedYes") : Language.GetTextValue("tModLoader.DownloadSignedNo"));
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				ModNet.onlyDownloadSignedMods = !ModNet.onlyDownloadSignedMods;
 			}
 
 			buttonIndex++;
@@ -340,13 +343,6 @@ internal static class Interface
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				ModLoader.attackSpeedScalingTooltipVisibility = (ModLoader.attackSpeedScalingTooltipVisibility + 1) % 3;
-			}
-
-			buttonIndex++;
-			buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowMemoryEstimates{(ModLoader.showMemoryEstimates ? "Yes" : "No")}");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(SoundID.MenuTick);
-				ModLoader.showMemoryEstimates = !ModLoader.showMemoryEstimates;
 			}
 
 			buttonIndex++;

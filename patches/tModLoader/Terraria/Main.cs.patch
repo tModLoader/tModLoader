@@ -75,7 +75,25 @@
  			}
  		}
  	}
-@@ -258,7 +_,7 @@
+@@ -248,17 +_,25 @@
+ 	};
+ 	private static bool? _overrideForExpertMode = null;
+ 	private static bool? _overrideForMasterMode = null;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="WorldGen.drunkWorldGen"/>. </summary>
+ 	public static bool drunkWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/For_the_worthy">For the worthy</see> secret world seed. See also <see cref="WorldGen.getGoodWorldGen"/>. </summary>
+ 	public static bool getGoodWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Celebrationmk10">Celebrationmk10</see> secret world seed. See also <see cref="WorldGen.tenthAnniversaryWorldGen"/>. </summary>
+ 	public static bool tenthAnniversaryWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/The_Constant">The Constant</see> secret world seed. See also <see cref="WorldGen.dontStarveWorldGen"/>. </summary>
+ 	public static bool dontStarveWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Not_the_bees">Not the bees</see> secret world seed. See also <see cref="WorldGen.notTheBees"/>. </summary>
+ 	public static bool notTheBeesWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up (aka Remix)</see> secret world seed. See also <see cref="WorldGen.remixWorldGen"/>. </summary>
+ 	public static bool remixWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/No_traps">No traps</see> secret world seed. See also <see cref="WorldGen.noTrapsWorldGen"/>. </summary>
+ 	public static bool noTrapsWorld = false;
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Get_fixed_boi">Get fixed boi (aka Zenith)</see> secret world seed. This seed combines multiple secret seeds. Note that the other secret world seed bools inherited by this seed will be set as well, so there is no need to specifically check both those bools and this bool. See also <see cref="WorldGen.everythingWorldGen"/>. </summary>
  	public static bool zenithWorld = false;
  	public static Vector2 destroyerHB = new Vector2(0f, 0f);
  	public static FavoritesFile LocalFavoriteData = new FavoritesFile(SavePath + "/favorites.json", isCloud: false);
@@ -84,6 +102,16 @@
  	public static FileMetadata WorldFileMetadata;
  	public static FileMetadata MapFileMetadata;
  	public static PingMapLayer Pings = new PingMapLayer();
+@@ -457,7 +_,9 @@
+ 	public static int jungleBackStyle;
+ 	public static string debugWords = "";
+ 	public static bool gamePad = false;
++	/// <summary> If true the <see href="https://terraria.wiki.gg/wiki/Christmas">Christmas</see> seasonal event is currently active. </summary>
+ 	public static bool xMas;
++	/// <summary> If true the <see href="https://terraria.wiki.gg/wiki/Halloween">Halloween</see> seasonal event is currently active. </summary>
+ 	public static bool halloween;
+ 	public static bool forceXMasForToday;
+ 	public static bool forceHalloweenForToday;
 @@ -487,12 +_,17 @@
  	public static bool showSplash = true;
  	public static bool ignoreErrors = true;
@@ -118,25 +146,25 @@
 +
 +	/// <summary>
 +	/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] persistentBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
-+	/// Defaults to false; all vanilla vanity pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla vanity pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] vanityPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
-+	/// Defaults to false; all vanilla light pets have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla light pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] lightPet = new bool[BuffID.Count];
 +
 +	/// <summary>
 +	/// Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br/>
-+	/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] meleeBuff = new bool[BuffID.Count];
 +
@@ -221,6 +249,16 @@
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
+@@ -625,6 +_,9 @@
+ 	public static float armorAlpha = 1f;
+ 	public static float[] buffAlpha = new float[BuffID.Count];
+ 	public static bool afterPartyOfDoom = false;
++	/// <summary>
++	/// True if the world is in hard mode. This doubles as an indicator if <see cref="NPCID.WallofFlesh"/> has been defeated since they are tied together.
++	/// </summary>
+ 	public static bool hardMode;
+ 	public float chestLootScale = 1f;
+ 	public bool chestLootHover;
 @@ -671,7 +_,15 @@
  	public static float rightWorld = 134400f;
  	public static float topWorld = 0f;
@@ -256,7 +294,16 @@
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
  	public static int maxRain = 750;
-@@ -743,19 +_,48 @@
+@@ -727,6 +_,8 @@
+ 	public static int dungeonY;
+ 	public static Liquid[] liquid = new Liquid[Liquid.maxLiquid];
+ 	public static LiquidBuffer[] liquidBuffer = new LiquidBuffer[50000];
++	/// <summary> True on the server process, false on the client. Use this to selectively run code on server or client, such as loading texture assets.
++	/// <para/> <see cref="dedServ"/> is the same as <c><see cref="netMode"/> == <see cref="ID.NetmodeID.Server"/></c>. </summary>
+ 	public static bool dedServ;
+ 	public static int spamCount = 0;
+ 	public static int curMusic;
+@@ -743,33 +_,71 @@
  	public static int LogoA = 255;
  	public static int LogoB;
  	public static bool LogoT;
@@ -293,6 +340,10 @@
  	public static Microsoft.Xna.Framework.Color[] teamColor = new Microsoft.Xna.Framework.Color[6];
  	public const double dayLength = 54000.0;
  	public const double nightLength = 32400.0;
++	/// <summary>
++	/// True during the day hours (4:30 AM to 7:30 PM), false during night hours (7:30 PM to 4:30 AM). In conjunction with <see cref="time"/> these represent the in-game time of the world.
++	/// <para/> Note that <see cref="IsItDay"/> additionally takes into account the constant night state of <see cref="remixWorld"/> worlds and should be used instead for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
  	public static bool dayTime = true;
 +
 +	/// <summary>
@@ -305,16 +356,27 @@
 +	/// </remarks>
  	public static double time = 13500.0;
  	public static double timeForVisualEffects;
++	/// <summary> The current <see href="https://terraria.wiki.gg/wiki/Moon_phase">moon phase</see> expressed as an int. Use <see cref="GetMoonPhase"/> to get the moon phase as a <see cref="MoonPhase"/> instead. </summary>
  	public static int moonPhase;
-@@ -768,7 +_,7 @@
+ 	public static short sunModY;
+ 	public static short moonModY;
+ 	public static bool alreadyGrabbingSunOrMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Blood_Moon">Blood Moon</see> is currently happening. </summary>
+ 	public static bool bloodMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Pumpkin_Moon">Pumpkin Moon</see> is currently happening. </summary>
+ 	public static bool pumpkinMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Frost_Moon">Frost Moon</see> is currently happening. </summary>
+ 	public static bool snowMoon;
  	public static float cloudAlpha;
  	public static float maxRaining;
  	public static float oldMaxRaining;
 -	public static int rainTime;
 +	public static double rainTime;
  	public static bool raining;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Solar_Eclipse">Solar Eclipse</see> is currently happening. </summary>
  	public static bool eclipse;
  	public static float eclipseLight;
+ 	public static int checkForSpawns;
 @@ -777,6 +_,13 @@
  	public static int BartenderHelpTextIndex = 0;
  	public static bool autoGen;
@@ -346,7 +408,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,39 +_,99 @@
+@@ -829,44 +_,112 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -386,6 +448,7 @@
  	public static bool[] tileStone = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type are mined using an axe instead of pickaxe.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileAxe = new bool[TileID.Count];
  	public static bool[] tileHammer = new bool[TileID.Count];
@@ -395,6 +458,7 @@
  	public static bool[] tileWaterDeath = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if in contact with lava. <see cref="TileObjectData.LavaDeath"/> supersedes this if a <see cref="TileObjectData"/> is available. Use <see cref="tileObsidianKill"/> instead if the tile should only be killed by obsidian forming over it.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileLavaDeath = new bool[TileID.Count];
 +	/// <summary>
@@ -417,7 +481,7 @@
 +	/// </summary>
  	public static bool[] tileSolidTop = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
++	/// If true, this tile will be solid (unless <see cref="tileSolidTop"/> is also true). Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
 +	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
 +	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
@@ -439,6 +503,7 @@
  	public static bool[] tileCracked = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it's location because of lava and water mixing. Automatically set to true if <see cref="tileLavaDeath"/> is true. Many tiles are immune to lava but break if obsidian kills it, such as Statues and Anvils.
++	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public static bool[] tileObsidianKill = new bool[TileID.Count];
 +	/// <summary> Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adjust their frame values to nearby tiles. They don't have a TileObjectData.
@@ -446,6 +511,16 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
+ 	public static short[] tileGlowMask = new short[TileID.Count];
+ 	public static bool[] tileContainer = new bool[TileID.Count];
++	/// <summary>
++	/// Indicates that a tile is a "sign" and will be paired with a <see cref="Sign"/> instance. Right click, hover, saving, and network syncing behaviors are all handled automatically. Note that signs are expected to be 2x2 tiles with pixel dimensions 36x36 and will likely not work correctly for other dimensions.
++	/// <para/> Be sure to also set <see cref="TileID.Sets.TileInteractRead"/>.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public static bool[] tileSign = new bool[TileID.Count];
+ 	public static bool[][] tileMerge = new bool[TileID.Count][];
+ 	public static int cageFrames = 25;
 @@ -941,9 +_,23 @@
  	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
@@ -470,7 +545,7 @@
  	public static int[] tileFrameCounter = new int[TileID.Count];
  	public static byte[] wallFrame = new byte[WallID.Count];
  	public static byte[] wallFrameCounter = new byte[WallID.Count];
-@@ -952,18 +_,39 @@
+@@ -952,19 +_,43 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
@@ -508,8 +583,12 @@
 +	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
 +	/// </summary>
  	public static Chest[] chest = new Chest[8000];
++	/// <summary>
++	/// Contains all the signs in the world. There can be at most 1000 signs in the world.
++	/// </summary>
  	public static Sign[] sign = new Sign[1000];
  	public static int[] itemFrame = new int[401];
+ 	public static int[] itemFrameCounter = new int[401];
 @@ -972,6 +_,10 @@
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
@@ -521,7 +600,7 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
-@@ -1001,6 +_,10 @@
+@@ -1001,10 +_,15 @@
  		0.75f,
  		0.75f
  	};
@@ -532,9 +611,40 @@
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
  	public static bool mouseLeftRelease;
-@@ -1026,7 +_,18 @@
+ 	public static bool mouseRightRelease;
++	/// <summary> Indicates if the full player inventory is currently showing. </summary>
+ 	public static bool playerInventory;
+ 	public static int stackSplit;
+ 	public static bool preventStackSplitReset;
+@@ -1012,6 +_,7 @@
+ 	public static int timesTriedToFastStack;
+ 	public static int stackDelay = 7;
+ 	public static int superFastStack;
++	/// <summary> The item currently being carried by the mouse. </summary>
+ 	public static Item mouseItem = new Item();
+ 	public static Item guideItem = new Item();
+ 	public static Item reforgeItem = new Item();
+@@ -1021,16 +_,46 @@
+ 	public static bool recFastScroll;
+ 	public static bool recBigList;
+ 	public static int recStart;
++	/// <summary>
++	/// Contains all the <see cref="Recipe"/> in the game. Be sure to read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">the Basic Recipes wiki page</see> to learn how to create and edit recipes.
++	/// <para/> Modders should not attempt to manually edit Main.recipe, doing so will break things. Recipes can be disabled or edited but should not be removed. Recipe ordering can be done through the sort methods, such as <see cref="Recipe.SortBefore(Recipe)"/>. Main.recipe is populated during mod loading and should not be changed in-game. Dynamic recipe availability is done through recipe conditions. 
++	/// </summary>
+ 	public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
++	/// <summary>
++	/// Contains recipe indexes (<see cref="Recipe.RecipeIndex"/>) of the recipes currently being shown in the UI, either for crafting or a Guide query.
++	/// </summary>
+ 	public static int[] availableRecipe = new int[Recipe.maxRecipes];
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
++	/// <summary>
++	/// The count of Recipes being shown. The length of <see cref="availableRecipe"/>.
++	/// </summary>
  	public static int numAvailableRecipes;
++	/// <summary>
++	/// An index into <see cref="availableRecipe"/> indicating the currently selected Recipe.
++	/// </summary>
  	public static int focusRecipe;
 +
 +	/// <summary>
@@ -551,6 +661,16 @@
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
  	public static bool[] countsAsHostForGameplay = new bool[256];
++	/// <summary>
++	/// The x tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnX"/>) will spawn at this location and invasions will target this location.
++	/// </summary>
+ 	public static int spawnTileX;
++	/// <summary>
++	/// The y tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnY"/>) will spawn at this location and invasions will target this location.
++	/// </summary>
+ 	public static int spawnTileY;
+ 	public static bool npcChatRelease;
+ 	public static bool editSign;
 @@ -1044,8 +_,11 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -564,6 +684,26 @@
  	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
  	public static int[] travelShop = new int[40];
  	public static List<string> anglerWhoFinishedToday = new List<string>();
+@@ -1119,6 +_,9 @@
+ 	public static bool temporaryGUIScaleSliderUpdate = false;
+ 	public static bool InGuideCraftMenu;
+ 	public static bool InReforgeMenu;
++	/// <summary>
++	/// The item to be displayed as an item tooltip. Set to a <see cref="Item.Clone"/> of an existing item instance. Needs to be set in conjunction with <see cref="hoverItemName"/> to work, although the <see cref="Item.HoverName"/> will actually be shown. Use <see cref="Item.SetNameOverride(string)"/> to customize the item name shown.
++	/// </summary>
+ 	public static Item HoverItem = new Item();
+ 	private static int backSpaceCount;
+ 	private static float backSpaceRate;
+@@ -1127,6 +_,9 @@
+ 	public static int numDisplayModes;
+ 	public static int[] displayWidth = new int[99];
+ 	public static int[] displayHeight = new int[99];
++	/// <summary>
++	/// If true, the game is currently in the main menus. If false the game is in the game world.
++	/// </summary>
+ 	public static bool gameMenu = true;
+ 	public static bool menuBGChangedDay = false;
+ 	public static bool menuBGChangedNight = false;
 @@ -1139,9 +_,9 @@
  	public static List<WorldFileData> WorldList = new List<WorldFileData>();
  	public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -576,7 +716,31 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
-@@ -1860,11 +_,19 @@
+@@ -1149,6 +_,13 @@
+ 	public static int PendingResolutionWidth = 800;
+ 	public static int PendingResolutionHeight = 600;
+ 	public static bool PendingBorderlessState;
++	/// <summary>
++	/// If not 0, an invasion event is currently active:
++	/// <br/> If 1 (<see cref="InvasionID.GoblinArmy"/>), a <see href="https://terraria.wiki.gg/wiki/Goblin_Army">Goblin Army</see> is happening.
++	/// <br/> If 2 (<see cref="InvasionID.SnowLegion"/>), a <see href="https://terraria.wiki.gg/wiki/Frost_Legion">Frost Legion</see> is happening.
++	/// <br/> If 3 (<see cref="InvasionID.PirateInvasion"/>), a <see href="https://terraria.wiki.gg/wiki/Pirate_Invasion">Pirate Invasion</see> is happening.
++	/// <br/> If 4 (<see cref="InvasionID.MartianMadness"/>), a <see href="https://terraria.wiki.gg/wiki/Martian_Madness">Martian Madness</see> is happening.
++	/// </summary>
+ 	public static int invasionType;
+ 	public static double invasionX;
+ 	public static int invasionSize;
+@@ -1165,6 +_,9 @@
+ 	public static float invasionProgressAlpha;
+ 	public static bool HasInteractibleObjectThatIsNotATile = false;
+ 	public int currentNPCShowingChatBubble = -1;
++	/// <summary>
++	/// The number of animation frames this NPC's texture has. ModNPC should use <see cref="ModNPC.FindFrame(int)"/> to adjust <c>NPC.frame.Y</c> to change the drawn frame.
++	/// </summary>
+ 	public static int[] npcFrameCount = new int[688] {
+ 		1,
+ 		2,
+@@ -1860,11 +_,20 @@
  	public static float exitScale = 0.8f;
  	public static bool mouseReforge;
  	public static float reforgeScale = 0.8f;
@@ -591,7 +755,8 @@
 +	/// <summary>
 +	/// Denotes the current network mode: <b>0</b> for single player client, <b>1</b> for multiplayer client, and <b>2</b> for server.<br/>
 +	/// Using <see cref="ID.NetmodeID"/> entries instead of 0, 1, and 2 will greatly enhance code readability.<br/>
-+	/// Modders must properly use netMode to selectively run code. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// Modders must properly use netMode to selectively run code, such as code affecting the game world. Following examples in ExampleMod and Terraria code as well as reading the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode guide</see> are the best way to learn how to use netMode correctly.<br/>
++	/// <see cref="dedServ"/> is the same as <c><see cref="netMode"/> == <see cref="ID.NetmodeID.Server"/></c>
 +	/// </summary>
  	public static int netMode;
  	private static int _targetNetMode;
@@ -639,7 +804,7 @@
  	public TilePaintSystemV2 TilePaintSystem;
  	public TileDrawing TilesRenderer;
  	public WallDrawing WallsRenderer;
-@@ -2036,7 +_,7 @@
+@@ -2036,17 +_,21 @@
  	private bool _imeToggle;
  	private static int _lastHoveredLoadoutIndex = -1;
  	private List<int> _npcTypesThatAlreadyDrewAHead = new List<int>();
@@ -648,7 +813,13 @@
  	private static List<string> _requiredObjecsForCraftingText = new List<string>();
  	private static bool _preventCraftingBecauseClickWasUsedToChangeFocusedRecipe;
  	private static int _currentRecipeBeingCrafted = -1;
-@@ -2046,7 +_,7 @@
+ 	private static bool hidePVPIcons = false;
+ 	public static bool HoveringOverAnNPC;
++	/// <summary>
++	/// Sets the tooltip text to be drawn next to the cursor. Will be ignored if <see cref="Main.mouseItem"/> is not air, meaning the player is holding an item on the mouse. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> except it won't show if an item is held on the mouse.
++	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
++	/// </summary>
+ 	public static string hoverItemName = "";
  	public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
  	public static bool mouseText;
  	private static int mH;
@@ -695,6 +866,14 @@
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2212,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Returns true if any <see href="https://terraria.wiki.gg/wiki/Secret_world_seeds">secret world seed</see> is active for this world. </summary>
+ 	public static bool specialSeedWorld {
+ 		get {
+ 			if (!drunkWorld && !getGoodWorld && !tenthAnniversaryWorld && !notTheBeesWorld && !dontStarveWorld && !remixWorld && !noTrapsWorld)
 @@ -2221,6 +_,7 @@
  		}
  	}
@@ -728,6 +907,16 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
+@@ -2300,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Counts game updates since the world was loaded. Updates even while gameplay is paused, but does not update on the main menus. Can be used to drive regular logic that doesn't need to run every update. The <see href="https://github.com/tModLoader/tModLoader/wiki/Time-and-Timers#modulo-timer">Modulo Timer section of the Time and Timers wiki page</see> has examples. <see cref="Player.miscCounter"/> is a similar counter that should be used specifically for player effects.
++	/// </summary>
+ 	public static uint GameUpdateCount => _gameUpdateCount;
+ 
+ 	public static SamplerState DefaultSamplerState {
 @@ -2311,15 +_,23 @@
  		}
  	}
@@ -753,6 +942,14 @@
  
  	public static string playerPathName => ActivePlayerFileData.Path;
  
+@@ -2506,6 +_,7 @@
+ 	[DllImport("kernel32.dll")]
+ 	public static extern IntPtr LoadLibrary(string dllToLoad);
+ 
++	/// <summary> The current <see href="https://terraria.wiki.gg/wiki/Moon_phase">moon phase</see> expressed as a <see cref="MoonPhase"/>. Use <see cref="moonPhase"/> to get the moon phase as an int instead. </summary>
+ 	public static MoonPhase GetMoonPhase() => (MoonPhase)moonPhase;
+ 
+ 	public static Vector2 DrawPlayerItemPos(float gravdir, int itemtype)
 @@ -2831,6 +_,8 @@
  		}
  
@@ -1002,6 +1199,15 @@
  					}
  				}
  
+@@ -4010,7 +_,7 @@
+ 					LanguageManager.Instance.SetLanguage(Convert.ToInt32(value5));
+ 				}
+ 
+-				if (text.Length > 5 && text.Substring(0, 5).ToLower() == "language=") {
++				if (text.Length > 9 && text.Substring(0, 9).ToLower() == "language=") {
+ 					string language = text.Substring(9);
+ 					LanguageManager.Instance.SetLanguage(language);
+ 				}
 @@ -4023,6 +_,14 @@
  				if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  					worldName = text.Substring(10);
@@ -1247,13 +1453,12 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4563,6 +_,11 @@
+@@ -4563,6 +_,10 @@
  		catch {
  		}
  
 +		// Run one tick to JIT all the game content now rather than when a player connects
 +		Logging.ServerConsoleLine("Running one update...");
-+		Logging.tML.Info($"Server starting with AllowVanillaClients set to {ModNet.AllowVanillaClients}");
 +		Update(new GameTime());
 +
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
@@ -2151,11 +2356,12 @@
  			CinematicManager.Instance.Update(gameTime);
  			if (netMode == 2) {
  				for (int i = 0; i < 256; i++) {
-@@ -13526,6 +_,7 @@
+@@ -13526,6 +_,8 @@
  			}
  		}
  
 +		LocalizationLoader.Update();
++		MemoryTracking.InGameUpdate();
  		DoUpdate_AutoSave();
  		if (!dedServ) {
  			ChromaInitializer.UpdateEvents();
@@ -2470,6 +2676,14 @@
  		wallFrameCounter[144]++;
  		int num3 = 5;
  		int num4 = 10;
+@@ -15815,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Clears text input from any keys pressed since the last time <see cref="GetInputText"/> was called. Call when activating a menu with text input or focusing an element with text input to prevent keys pressed beforehand to be immediately captured as input. </summary>
+ 	public static void clrInput()
+ 	{
+ 		keyCount = 0;
 @@ -15840,7 +_,8 @@
  			text = "";
  
@@ -2480,6 +2694,23 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -15938,11 +_,16 @@
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride: true);
+ 	}
+ 
++	/// <summary>
++	/// Sets the tooltip text to be drawn next to the cursor. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.hoverItemName"/> except it will still show if an item is held on the mouse.
++	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
++	/// </summary>
+ 	public void MouseText(string cursorText, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0)
+ 	{
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX);
+ 	}
+ 
++	/// <inheritdoc cref="MouseText(string, int, byte, int, int, int, int, int)"/>
+ 	public void MouseText(string cursorText, string buffTooltip, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0, bool noOverride = false)
+ 	{
+ 		if (!_mouseTextCache.noOverride) {
 @@ -15989,15 +_,19 @@
  			X += 34;
  
@@ -3415,7 +3646,7 @@
 +			/*
  			if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9))
 +			*/
-+			if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9))
++			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9))
  				flag = true;
  
  			if (flag) {
@@ -3442,7 +3673,7 @@
 +			/*
  			if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
 +			*/
-+			if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9)) {
++			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9)) { 
  				drawBackGore = true;
  				continue;
  			}
@@ -3555,6 +3786,15 @@
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
+@@ -21928,6 +_,8 @@
+ 			if (n.shimmerTransparency > 0f)
+ 				num8 *= 1f - n.shimmerTransparency;
+ 
++			NPCLoader.PartyHatPosition(n, ref vector, ref spriteEffects);
++
+ 			spriteBatch.Draw(value, new Vector2(vector.X - screenPosition.X, vector.Y - screenPosition.Y), rectangle, npcColor * n.Opacity * num8, 0f, origin, n.scale, spriteEffects, 0f);
+ 		}
+ 
 @@ -21985,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
@@ -4680,6 +4920,14 @@
  						Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)(player.position.X + (float)(player.width / 2) - (float)(Player.tileRangeX * 16)), (int)(player.position.Y + (float)(player.height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  						Microsoft.Xna.Framework.Rectangle value2 = new Microsoft.Xna.Framework.Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  						if (rectangle.Intersects(value2))
+@@ -34950,6 +_,7 @@
+ 		}
+ 
+ 		Vector2 position = new Vector2(npc[i].position.X + (float)(npc[i].width / 2) - screenPosition.X - (float)(TextureAssets.Chat.Width() / 2) - (float)num, num2);
++		NPCLoader.ChatBubblePosition(npc[i], ref position, ref spriteEffects);
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, GameViewMatrix.ZoomMatrix);
+ 		PlayerInput.SetZoom_UI();
 @@ -35027,10 +_,18 @@
  			if (num5 == 147)
  				bannerMouseOver = true;
@@ -4912,7 +5160,7 @@
  		int num = -1;
  		int num2 = -10;
  		int num3 = 0;
-@@ -38068,12 +_,27 @@
+@@ -38068,12 +_,32 @@
  		}
  
  		Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(100, 100, 100, mouseTextColor);
@@ -4922,7 +5170,8 @@
 +		/*
  		for (int i = 0; i < 12; i++) {
 +		*/
-+		for (int i = startingDisplay; i < endingDisplay; i++) {
++		int showableCount = 0;
++		for (int i = 0; i < InfoDisplayLoader.InfoDisplayCount; i++) {
  			string text2 = "";
  			string text3 = "";
  			Microsoft.Xna.Framework.Color infoTextColor = new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
@@ -4931,6 +5180,10 @@
 +			InfoDisplay info = InfoDisplayLoader.InfoDisplays[i];
 +
 +			if (!InfoDisplayLoader.Active(info) || (player[myPlayer].hideInfo[info.Type] && !playerInventory))
++				continue;
++
++			showableCount++;
++			if (showableCount <= startingDisplay)
 +				continue;
 +
 +			/*
@@ -5148,7 +5401,7 @@
  
  			Vector2 scale = new Vector2(1f);
  			Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -38429,15 +_,20 @@
+@@ -38429,15 +_,22 @@
  				if (n == 4)
  					color3 = infoTextColor;
  
@@ -5168,6 +5421,8 @@
 +
 +			endThisIcon:
 +			drawnCount++; // Moved here due to calculation changes
++			if (drawnCount >= 12)
++				break;
  		}
  
  		if (!string.IsNullOrEmpty(text)) {
@@ -6302,7 +6557,7 @@
  				}
  			}
  		}
-@@ -51850,6 +_,8 @@
+@@ -51850,11 +_,16 @@
  		}
  
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
@@ -6311,6 +6566,14 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="dayTime"/>, but always returns false in <see cref="remixWorld"/> worlds. This should be used instead of <see cref="dayTime"/> for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
+ 	public static bool IsItDay()
+ 	{
+ 		if (remixWorld)
 @@ -51883,6 +_,13 @@
  			num = Utils.Clamp(num, 0, 8);
  

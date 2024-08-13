@@ -98,6 +98,15 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return true;
 		}
 
+		public override void OnKill() {
+			// Boss minions typically have a chance to drop an additional heart item in addition to the default chance
+			Player closestPlayer = Main.player[Player.FindClosest(NPC.position, NPC.width, NPC.height)];
+
+			if (Main.rand.NextBool(2) && closestPlayer.statLife < closestPlayer.statLifeMax2) {
+				Item.NewItem(NPC.GetSource_Loot(), NPC.getRect(), ItemID.Heart);
+			}
+		}
+
 		public override void HitEffect(NPC.HitInfo hit) {
 			if (NPC.life <= 0) {
 				// If this NPC dies, spawn some visuals

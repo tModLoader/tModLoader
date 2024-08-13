@@ -99,6 +99,7 @@ public partial class Mod
 
 	public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
 
+	/// <inheritdoc cref="Terraria.ModLoader.PreJITFilter"/>
 	public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
 
 	public Mod() {

@@ -12,7 +12,8 @@ using Terraria.ModLoader.Core;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
+/// This class allows you to modify and use hooks for all items, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 {
@@ -34,6 +35,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
+	/// <summary>
+	/// Called when the <paramref name="item"/> is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
+	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft the <paramref name="item"/>.
+	/// </summary>
 	public virtual void OnCreated(Item item, ItemCreationContext context)
 	{
 	}
@@ -690,8 +695,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Allows you to determine special visual effects a vanity has on the player without having to code them yourself.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
+	/// </summary>
 	public virtual void ArmorSetShadows(Player player, string set)
 	{
 	}
@@ -971,8 +976,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Return null to use the item's default holdout offset; returns null by default.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>return new Vector2(10, 0);</code></example>
+	/// </summary>
 	public virtual Vector2? HoldoutOffset(int type)
 	{
 		return null;

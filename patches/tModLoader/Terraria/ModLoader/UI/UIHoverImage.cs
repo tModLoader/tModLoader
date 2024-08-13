@@ -7,6 +7,7 @@ namespace Terraria.ModLoader.UI;
 internal class UIHoverImage : UIImage
 {
 	internal string HoverText;
+	internal bool UseTooltipMouseText; // Not sure if all would benefit from this, opt in.
 
 	public UIHoverImage(Asset<Texture2D> texture, string hoverText) : base(texture)
 	{
@@ -21,7 +22,10 @@ internal class UIHoverImage : UIImage
 			var bounds = Parent.GetDimensions().ToRectangle();
 			bounds.Y = 0;
 			bounds.Height = Main.screenHeight;
-			UICommon.DrawHoverStringInBounds(spriteBatch, HoverText, bounds);
+			if(UseTooltipMouseText)
+				UICommon.TooltipMouseText(HoverText);
+			else
+				UICommon.DrawHoverStringInBounds(spriteBatch, HoverText, bounds);
 		}
 	}
 }

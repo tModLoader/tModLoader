@@ -14,6 +14,7 @@ using log4net.Layout;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
@@ -74,6 +75,7 @@ public static partial class Logging
 		tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 		tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 		tML.InfoFormat("Running on {0} (v{1}) {2} {3} {4}", ReLogic.OS.Platform.Current.Type, Environment.OSVersion.Version, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
+		tML.InfoFormat("CPU: {0} processors. RAM: {1}", Environment.ProcessorCount, UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory()));
 		tML.InfoFormat("FrameworkDescription: {0}", RuntimeInformation.FrameworkDescription);
 		tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 		tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
@@ -252,6 +254,8 @@ public static partial class Logging
 			if (statusGeneratingWorld.Match(newStatusText) is { Success: true } statusGenMatchNew) {
 				newBase = statusGenMatchNew.Groups[1].Value;
 			}
+			if (WorldGen.drunkWorldGenText && !Main.dedServ)
+				newBase = "Random Numbers (Drunk World)";
 		}
 
 		if (newBase != lastStatusLogged && newBase.Length > 0) {

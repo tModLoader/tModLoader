@@ -177,21 +177,19 @@ public partial class Main
 
 	public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay)
 	{
+		// Note that these are not indexes exactly, but count drawn elements (meaning active if inventory is open)
 		startingDisplay = 0;
 		endingDisplay = InfoDisplayLoader.InfoDisplayCount;
 
-		if (playerInventory && InfoDisplayLoader.ActiveDisplays() > 12) {
+		if (!playerInventory)
+			return;
+
+		int activeDisplays = InfoDisplayLoader.ActiveDisplays();
+		InfoDisplayLoader.InfoDisplayPage = Utils.Clamp(InfoDisplayLoader.InfoDisplayPage, 0, (activeDisplays - 1) / 12);
+
+		if (activeDisplays > 12) {
 			startingDisplay = 12 * InfoDisplayLoader.InfoDisplayPage;
-
-			if (InfoDisplayLoader.ActiveDisplays() - startingDisplay <= 12)
-				endingDisplay = InfoDisplayLoader.ActiveDisplays();
-			else
-				endingDisplay = startingDisplay + 12;
-
-			if (startingDisplay >= 8)
-				startingDisplay += 1;
-
-			endingDisplay += 1;
+			endingDisplay = Utils.Clamp(startingDisplay + 12, startingDisplay, activeDisplays);
 
 			Texture2D buttonTexture = UICommon.InfoDisplayPageArrowTexture.Value;
 			bool hovering = false;
@@ -497,8 +495,15 @@ public partial class Main
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 		}
 
+		// Canary file for legacy Terraria branches.
+		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_112.xnb"))) {
+			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
+			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
+		}
+
 		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
 		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
+			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
 		}
 

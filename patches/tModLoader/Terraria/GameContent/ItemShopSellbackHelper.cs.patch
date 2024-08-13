@@ -1,0 +1,29 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemShopSellbackHelper.cs
++++ src/tModLoader/Terraria/GameContent/ItemShopSellbackHelper.cs
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ 
+ namespace Terraria.GameContent;
+@@ -9,16 +_,21 @@
+ 		public readonly int itemNetID;
+ 		public readonly int itemPrefix;
+ 		public int stack;
++		public int value; // Added value to prevent exploits from shopCustomPrice being reasonably lower than value. (Buy a discounted 2nd item, sellback original for its full value)
+ 
+ 		public ItemMemo(Item item)
+ 		{
+ 			itemNetID = item.netID;
+ 			itemPrefix = item.prefix;
+ 			stack = item.stack;
++			value = item.shopSpecialCurrency == -1 ? item.GetStoreValue() : item.value; // Since you can't sell to get special currency back, we track the coin value since that is what will be used to sell back. In vanilla you can sell back at full coin value after buying from tavernkeep.
+ 		}
+ 
+ 		public bool Matches(Item item)
+ 		{
++			if (item.GetStoreValue() != value)
++				return false;
++
+ 			if (item.netID == itemNetID)
+ 				return item.prefix == itemPrefix;
+ 
