@@ -916,10 +916,11 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
+-			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
+-				rolledPrefix = 0;
 +
 +			if (applyPrefixOverride is true) { } else
- 			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
--				rolledPrefix = 0;
++			if (prefixWeWant == -1 && unifiedRandom.Next(4) == 0)
 +				return true; //rolledPrefix = 0;
  
  			if (prefixWeWant < -1)
