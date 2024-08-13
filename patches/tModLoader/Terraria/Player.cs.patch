@@ -4871,6 +4871,33 @@
  		return num;
  	}
  
+@@ -27286,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="Item.Refresh(bool)"/> on all player-owned storage (inventory, banks, equipment). Also refreshes recipe and shop entries.
++	/// <para/> This is called when entering a world and serves to ensure that items with <see cref="ItemVariants"/> have the correct stats.
++	/// </summary>
+ 	public void RefreshItems(bool onlyIfVariantChanged = true)
+ 	{
+ 		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
+@@ -27301,6 +_,15 @@
+ 		RefreshItems(bank3.item, onlyIfVariantChanged);
+ 		RefreshItems(bank4.item, onlyIfVariantChanged);
+ 		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
++
++		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
++			// Don't adjust custom prices, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
++			var originalCustomPrice = item.shopCustomPrice;
++			var originalSpecialCurrency = item.shopSpecialCurrency;
++			item.Refresh(onlyIfVariantChanged);
++			item.shopCustomPrice = originalCustomPrice;
++			item.shopSpecialCurrency = originalSpecialCurrency;
++		}
+ 	}
+ 
+ 	private void RefreshItems(Item[] array, bool onlyIfVariantChanged)
 @@ -27344,11 +_,29 @@
  		}
  	}
