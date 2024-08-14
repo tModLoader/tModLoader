@@ -273,35 +273,61 @@ public partial class WorkshopSocialModule
 		return descriptionFinal;
 	}
 
+	//TODO: Add a Spec for what this is supposed to be doing
 	private static string CalculateDeveloperMetadata(List<ModVersionHash> versionHashes)
 	{
-		// The following is the general spec of this method, in the event devMetadata is longer than Steam allows:
-		//	1st Pass: For non-current Mod Browser Version Groups (ie 1.3, 1.4.3, etc)
-		//		Keep 1x ModVersionHash for each of the last three YYYY.MM versions of tMod for that ModBrowserVersion group
-		//	2nd Pass: For current Mod Browser Version Group
-		//		If the YYYY.MM is more than N months ago, purge all but the 'newest' ModVersionHash per YYYY.MM tml version
-		//		N starts at 18 and decrements until the character limit is met
-		//	
-
 		string devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
 		while (devMetadata.Length > Steamworks.Constants.k_cchDeveloperMetadataMax) {
-			
+			// If we had any reserved metadata space, we would process that first.
 
-			// code here for reducing total count over time
-
-			
+			// We don't have any reserved metadata space, so we can set availableChars to DeveloperMetadataMax
+			StripOldHashes(versionHashes, Steamworks.Constants.k_cchDeveloperMetadataMax);
 		}
 
 		return devMetadata;
 	}
 
-	//TODO: This needs additional thinking on how to implement.
-	// Currently have a sequence as if had an extended version of 'YYYY.MM.Mod.Version.Patch', essentially.
-	private static void DropOldestHashesForBrowserVersion(List<ModVersionHash> versionHashes, string modBrowserVersion)
+	private static void StripOldHashes(List<ModVersionHash> versionHashes, int availableCharacters)
 	{
-		versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == modBrowserVersion)
+		// Calculate the reserved portion of hashes for old browser versions, keeping only mature copies
+		List<ModVersionHash> reserved = new List<ModVersionHash>();
+
+		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.3", amountToKeep: 1));
+		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.4.3", amountToKeep: 1));
+		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.4.4-transitive", amountToKeep: 1));
+
+		string reservedJson = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = reserved.Select(h => h.ToString()).ToList() });
+
+		// Calculate the 'right' amount of hashes to store of the remaining space
+		string devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
+		List<ModVersionHash> current = versionHashes;
+
+		int index = 100;
+		while (devMetadata.Length > availableCharacters) {
+			current = OptimizeHashesForCurrentBrowserVersion(versionHashes, index-- - reserved.Count());
+			current.AddRange(reserved);
+
+			devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = current.Select(h => h.ToString()).ToList() });
+		}
+
+		// Assign the new version of versionHashes before exiting
+		versionHashes = current;
+	}
+
+	private static List<ModVersionHash> OptimizeHashesForOldBrowserVersion(List<ModVersionHash> versionHashes, string appliesToModBrowserVersion, int amountToKeep)
+	{
+		return versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == appliesToModBrowserVersion)
+			.GroupBy(t => t.tmlVersion.MajorMinor())
+			.Select(g => g.OrderByDescending(v => v.modVersion).First())
+			.Take(amountToKeep).ToList();
+	}
+
+	private static List<ModVersionHash> OptimizeHashesForCurrentBrowserVersion(List<ModVersionHash> versionHashes, int amountToKeep)
+	{
+		return versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion))
 			.OrderByDescending(t => t.tmlVersion.MajorMinor())
-			.ThenByDescending(v => v.modVersion);
+			.ThenByDescending(v => v.modVersion)
+			.Take(amountToKeep).ToList();
 	}
 
 	public static void SteamCMDPublishPreparer(string modFolder)
