@@ -167,6 +167,9 @@ internal static class InstallVerifier
 		}
 		yield return vanillaPath;
 
+		if (Platform.IsLinux)
+			yield return Path.Combine(vanillaPath, "game"); // GOG+Linux installs exe to Terraria/game/
+
 		// Fallback to default GOG install locations
 		if (Platform.IsWindows) {
 			yield return Path.Combine(@"c:\", "Program Files (x86)", "GOG Galaxy", "Games", "Terraria");
