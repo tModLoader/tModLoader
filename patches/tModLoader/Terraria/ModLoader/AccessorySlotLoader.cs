@@ -478,7 +478,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// </summary>
 	public bool ModSlotCheck(Item checkItem, int slot, int context)
 	{
-		return CanAcceptItem(slot, checkItem, context) && !ModSlotPlayer(Player).CanItemBeEquippedInSlot(checkItem, slot);
+		return CanAcceptItem(slot, checkItem, context) && ModSlotPlayer(Player).CanItemBeEquippedInSlot(checkItem, slot);
 	}
 
 	/// <summary>
