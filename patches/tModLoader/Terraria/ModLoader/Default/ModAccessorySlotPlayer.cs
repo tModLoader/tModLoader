@@ -597,15 +597,15 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 	internal sealed record SlotInfo
 	{
-		public int Slot { get; init; }
+		public required int Slot { get; init; }
 
-		public Item Dye { get; init; }
+		public required Item Dye { get; init; }
 
-		public Item VanityItem { get; init; }
+		public required Item VanityItem { get; init; }
 
-		public Item Accessory { get; init; }
+		public required Item Accessory { get; init; }
 
-		public bool HideAccessory { get; init; }
+		public required bool HideAccessory { get; init; }
 	}
 
 	internal static class NetHandler
