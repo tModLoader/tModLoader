@@ -97,11 +97,26 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				slots.Add(name, (slots.Count, true));
 		}
 
-		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
-			equipmentLoadout.LoadData(tag, order, slots);
-		}
+		IDictionary<int,SlotInfo> noLongerSharedSlots = sharedLoadout.LoadData(tag, order, slots);
 
-		sharedLoadout.LoadData(tag, order, slots);
+		for (int index = 0; index < exLoadouts.Length; index++) {
+			ExEquipmentLoadout equipmentLoadout = exLoadouts[index];
+			equipmentLoadout.LoadData(tag, order, slots);
+
+			if (index == 0) {
+				AddPreviouslySharedItemsToLoadout(noLongerSharedSlots, equipmentLoadout);
+			}
+		}
+	}
+
+	private void AddPreviouslySharedItemsToLoadout(IDictionary<int, SlotInfo> noLongerSharedSlots, ExEquipmentLoadout equipmentLoadout)
+	{
+		foreach ((int slot, SlotInfo slotInfo) in noLongerSharedSlots) {
+			equipmentLoadout.ExDyesAccessory[slot] = slotInfo.Dye;
+			equipmentLoadout.ExAccessorySlot[slot + SlotCount] = slotInfo.VanityItem;
+			equipmentLoadout.ExAccessorySlot[slot] = slotInfo.Accessory;
+			equipmentLoadout.ExHideAccessory[slot] = slotInfo.HideAccessory;
+		}
 	}
 
 	/// <summary>
@@ -480,11 +495,24 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			tag[$"visible_{this.identifier}"] = ExHideAccessory.ToList();
 		}
 
-		public void LoadData(
+		/// <summary>
+		/// Loads data for this loadout and updates this instance accordingly.
+		/// Returns a dictionary of slot to <see cref="SlotInfo"/> mappings for slots, which are not added to the loadout,
+		/// because <see cref="ModAccessorySlot.HasEquipmentLoadoutSupport"/> changed since the last save.
+		/// </summary>
+		/// <param name="tag">The <see cref="TagCompound"/> from which to load the data</param>
+		/// <param name="order">Saved slot names in order.</param>
+		/// <param name="slots">Slot name to slot info mapping.</param>
+		/// <returns>
+		/// A dictionary of slot to <see cref="SlotInfo"/> mappings for slots, which are not added to the loadout,
+		/// because <see cref="ModAccessorySlot.HasEquipmentLoadoutSupport"/> changed since the last save.
+		/// </returns>
+		public IDictionary<int, SlotInfo> LoadData(
 			TagCompound tag,
 			List<string> order,
 			Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots)
 		{
+			Dictionary<int, SlotInfo> result = [];
 			IList<Item> items;
 			IList<Item> dyes;
 			IList<bool> visible;
@@ -494,7 +522,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			// Preserve backwards compatibility if data is stored in format pre loadout support
 			if (tag.TryGet("items", out IList<TagCompound> itemsTags)) {
 				if (LoadoutIndex is not 0 and not SharedLoadoutIndex) {
-					return;
+					return result;
 				}
 
 				items = itemsTags.Select(ItemIO.Load).ToList();
@@ -509,28 +537,31 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 			for (int i = 0; i < order.Count; i++) {
 				(int type, bool hasLoadoutSupport) = slots[order[i]];
+				bool loadoutSupportSettingOfSlotChanged = LoadoutIndex == SharedLoadoutIndex && hasLoadoutSupport
+				                      || LoadoutIndex != SharedLoadoutIndex && !hasLoadoutSupport;
 
-				if (LoadoutIndex == SharedLoadoutIndex && hasLoadoutSupport
-				    || LoadoutIndex != SharedLoadoutIndex && !hasLoadoutSupport) {
+				Item dye = dyes.ElementAtOrDefault(i) ?? new Item();
+				Item accessory = items.ElementAtOrDefault(i) ?? new Item();
+				Item vanityItem = items.ElementAtOrDefault(i + order.Count) ?? new Item();
+				bool isHidden = visible.ElementAtOrDefault(i);
+
+				if (loadoutSupportSettingOfSlotChanged) {
+					result[type] = new SlotInfo {
+						Dye = dye,
+						VanityItem = vanityItem,
+						Accessory = accessory,
+						HideAccessory = isHidden,
+					};
 					continue;
 				}
 
-				if (i < dyes.Count) {
-					ExDyesAccessory[type] = dyes[i];
-				}
-
-				if (i < visible.Count) {
-					ExHideAccessory[type] = visible[i];
-				}
-
-				if (i < items.Count) {
-					ExAccessorySlot[type] = items[i];
-				}
-
-				if ((i + order.Count) < items.Count) {
-					ExAccessorySlot[type + slots.Count] = items[i + order.Count];
-				}
+				ExDyesAccessory[type] = dye;
+				ExAccessorySlot[type + slots.Count] = vanityItem;
+				ExAccessorySlot[type] = accessory;
+				ExHideAccessory[type] = isHidden;
 			}
+
+			return result;
 		}
 
 		private void ResetAndSizeAccessoryArrays(int size)
@@ -547,6 +578,17 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				ExAccessorySlot[i * 2 + 1] = new Item();
 			}
 		}
+	}
+
+	internal sealed record SlotInfo
+	{
+		public Item Dye { get; init; }
+
+		public Item VanityItem { get; init; }
+
+		public Item Accessory { get; init; }
+
+		public bool HideAccessory { get; init; }
 	}
 
 	internal static class NetHandler
