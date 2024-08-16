@@ -212,18 +212,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			var loadout = modSlotPlayer.GetLoadoutBySlot(slot);
 
 			if (thisSlot.DrawFunctionalSlot) {
-				bool skipMouse = DrawVisibility(
-					modSlotPlayer.GetHideAccessoryForCurrentLoadout(slot),
-					visibility => modSlotPlayer.SetHideAccessoryForCurrentLoadout(slot, visibility),
-					-10,
-					xLoc,
-					yLoc,
-					out var xLoc2,
-					out var yLoc2,
-					out var value4);
-
+				bool skipMouse = DrawVisibility(ref loadout.ExHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
 				DrawSlot(loadout.ExAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
-
 				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			}
 
@@ -243,15 +233,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				return true;
 			}
 
-			bool skipMouse = DrawVisibility(
-				Player.hideVisibleAccessory[slot],
-				visibility => Player.hideVisibleAccessory[slot] = visibility,
-				10,
-				xLoc,
-				yLoc,
-				out var xLoc2,
-				out var yLoc2,
-				out var value4);
+			bool skipMouse = DrawVisibility(ref Player.hideVisibleAccessory[slot], 10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
 			DrawSlot(Player.armor, 10, slot, flag3, xLoc, yLoc, skipMouse);
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			DrawSlot(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
@@ -309,7 +291,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Is run in AccessorySlotLoader.Draw.
 	/// Creates &amp; sets up Hide Visibility Button.
 	/// </summary>
-	internal bool DrawVisibility(bool visbility, Action<bool> setVisibility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4)
+	internal bool DrawVisibility(ref bool visbility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4)
 	{
 		yLoc2 = yLoc - 2;
 		xLoc2 = xLoc - 58 + 64 + 28;
@@ -326,7 +308,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			Player.mouseInterface = true;
 
 			if (Main.mouseLeft && Main.mouseLeftRelease) {
-				setVisibility(!visbility);
+				visbility = !visbility;
 				SoundEngine.PlaySound(12);
 
 				if (Main.netMode == 1 && context > 0)

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using rail;
 using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
@@ -79,11 +78,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		tag["loadout"] = ModdedCurrentLoadoutIndex;
 		tag["order"] = slots.Keys.ToList();
 
+		sharedLoadout.SaveData(tag);
+
 		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 			equipmentLoadout.SaveData(tag);
 		}
-
-		sharedLoadout.SaveData(tag);
 	}
 
 	public override void LoadData(TagCompound tag)
@@ -99,11 +98,10 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		IDictionary<int,SlotInfo> noLongerSharedSlots = sharedLoadout.LoadData(tag, order, slots);
 
-		for (int index = 0; index < exLoadouts.Length; index++) {
-			ExEquipmentLoadout equipmentLoadout = exLoadouts[index];
+		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
 			equipmentLoadout.LoadData(tag, order, slots);
 
-			if (index == 0) {
+			if (equipmentLoadout.LoadoutIndex == 0) {
 				AddPreviouslySharedItemsToLoadout(noLongerSharedSlots, equipmentLoadout);
 			}
 		}
@@ -135,11 +133,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	}
 
 	/// <summary>
-	/// Returns a list of all items including items from non-modded slots for the <see cref="CurrentLoadout"/>.
+	/// Returns a list of all items including items from non-modded slots for the current loadout.
 	/// The list contains items from vanilla slots first, followed by items from modded slots.
 	/// Do not modify this array to set an item for a loadout, it will have no effect.
 	/// </summary>
-	/// <returns>A list of all items including items from non-modded slots for the <see cref="CurrentLoadout"/></returns>
+	/// <returns>A list of all items including items from non-modded slots for the current loadout.</returns>
 	internal Item[] GetAllAccessoriesForCurrentLoadout() => GetAllAccessoriesForLoadout(ModdedCurrentLoadoutIndex);
 
 	/// <summary>
@@ -160,10 +158,10 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	}
 
 	/// <summary>
-	/// Returns a list of all items from mod slots including from shared slots for the <see cref="CurrentLoadout"/>.
+	/// Returns a list of all items from mod slots including from shared slots for the current loadout.
 	/// Do not modify this array to set an item for a loadout, it will have no effect.
 	/// </summary>
-	/// <returns>A list of all items from mod slots including from shared slots for the <see cref="CurrentLoadout"/></returns>
+	/// <returns>A list of all items from mod slots including from shared slots for the current loadout.</returns>
 	internal Item[] GetAllModSlotAccessoriesForCurrentLoadout() => GetAllModSlotAccessoriesForLoadout(ModdedCurrentLoadoutIndex);
 
 	/// <summary>
@@ -444,8 +442,15 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			: exLoadouts[loadoutIndex ?? ModdedCurrentLoadoutIndex];
 	}
 
+	internal ExEquipmentLoadout GetLoadout(int loadoutIndex)
+	{
+		return loadoutIndex == SharedLoadoutIndex
+			? sharedLoadout
+			: exLoadouts[loadoutIndex];
+	}
+
 	/// <summary>
-	/// Checks if equipping <paramref name="checkItem"/> can be equipped in <paramref name="slot"/> without
+	/// Checks if <paramref name="checkItem"/> can be equipped in <paramref name="slot"/> without
 	/// conflicting with any other currently equipped items.
 	/// </summary>
 	/// <param name="checkItem">The item for which to check if it can be equipped.</param>
@@ -488,11 +493,17 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		public bool[] ExHideAccessory { get; private set; } = [];
 
+		private string ItemsTagKey => $"items_{this.identifier}";
+
+		private string DyesTagKey => $"dyes_{this.identifier}";
+
+		private string AccessoryHiddenTagKey => $"hidden_{this.identifier}";
+
 		public void SaveData(TagCompound tag)
 		{
-			tag[$"items_{this.identifier}"] = ExAccessorySlot.Select(ItemIO.Save).ToList();
-			tag[$"dyes_{this.identifier}"] = ExDyesAccessory.Select(ItemIO.Save).ToList();
-			tag[$"visible_{this.identifier}"] = ExHideAccessory.ToList();
+			tag[this.ItemsTagKey] = ExAccessorySlot.Select(ItemIO.Save).ToList();
+			tag[this.DyesTagKey] = ExDyesAccessory.Select(ItemIO.Save).ToList();
+			tag[this.AccessoryHiddenTagKey] = ExHideAccessory.ToList();
 		}
 
 		/// <summary>
@@ -530,9 +541,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				visible = tag.GetList<bool>("visible");
 			}
 			else {
-				items = tag.GetList<TagCompound>($"items_{this.identifier}").Select(ItemIO.Load).ToList();
-				dyes = tag.GetList<TagCompound>($"dyes_{this.identifier}").Select(ItemIO.Load).ToList();
-				visible = tag.GetList<bool>($"visible_{this.identifier}").ToList();
+				items = tag.GetList<TagCompound>(this.ItemsTagKey).Select(ItemIO.Load).ToList();
+				dyes = tag.GetList<TagCompound>(this.DyesTagKey).Select(ItemIO.Load).ToList();
+				visible = tag.GetList<bool>(this.AccessoryHiddenTagKey).ToList();
 			}
 
 			for (int i = 0; i < order.Count; i++) {
@@ -659,10 +670,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			sbyte loadout = r.ReadSByte();
 			sbyte slot = r.ReadSByte();
 
-			dPlayer.exLoadouts[loadout].ExHideAccessory[slot] = r.ReadBoolean();
+			ExEquipmentLoadout equipmentLoadout = dPlayer.GetLoadout(loadout);
+			equipmentLoadout.ExHideAccessory[slot] = r.ReadBoolean();
 
 			if (Main.netMode == Server)
-				SendVisualState(-1, fromWho, loadout, slot, dPlayer.exLoadouts[loadout].ExHideAccessory[slot]);
+				SendVisualState(-1, fromWho, loadout, slot, equipmentLoadout.ExHideAccessory[slot]);
 		}
 
 		public static void HandlePacket(BinaryReader r, int fromWho)
@@ -679,9 +691,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		public static void SetSlot(sbyte loadout, sbyte slot, Item item, ModAccessorySlotPlayer dPlayer)
 		{
-			ExEquipmentLoadout equipmentLoadout = loadout < 0
-				? dPlayer.sharedLoadout
-				: dPlayer.exLoadouts[loadout];
+			ExEquipmentLoadout equipmentLoadout = dPlayer.GetLoadout(loadout);
 
 			if (slot < 0)
 				equipmentLoadout.ExDyesAccessory[-(slot + 1)] = item;
