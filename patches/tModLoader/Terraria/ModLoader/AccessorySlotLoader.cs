@@ -209,6 +209,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 			var thisSlot = Get(slot);
 			ModAccessorySlotPlayer modSlotPlayer = ModSlotPlayer(Player);
+			var loadout = modSlotPlayer.GetLoadoutBySlot(slot);
 
 			if (thisSlot.DrawFunctionalSlot) {
 				bool skipMouse = DrawVisibility(
@@ -221,28 +222,16 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 					out var yLoc2,
 					out var value4);
 
-				Item[] accessories = modSlotPlayer.IsSharedSlot(slot)
-					? modSlotPlayer.SharedLoadout.ExAccessorySlot
-					: modSlotPlayer.CurrentLoadout.ExAccessorySlot;
-				DrawSlot(accessories, -10, slot, flag3, xLoc, yLoc, skipMouse);
+				DrawSlot(loadout.ExAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
 
 				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			}
 
-			if (thisSlot.DrawVanitySlot) {
-				Item[] accessories = modSlotPlayer.IsSharedSlot(slot)
-					? modSlotPlayer.SharedLoadout.ExAccessorySlot
-					: modSlotPlayer.CurrentLoadout.ExAccessorySlot;
-				DrawSlot(accessories, -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
-			}
+			if (thisSlot.DrawVanitySlot)
+				DrawSlot(loadout.ExAccessorySlot, -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
 
-			if (thisSlot.DrawDyeSlot) {
-				Item[] dyes = modSlotPlayer.IsSharedSlot(slot)
-					? modSlotPlayer.SharedLoadout.ExDyesAccessory
-					: modSlotPlayer.CurrentLoadout.ExDyesAccessory;
-
-				DrawSlot(dyes, -12, slot, flag3, xLoc, yLoc);
-			}
+			if (thisSlot.DrawDyeSlot)
+				DrawSlot(loadout.ExDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 		}
 		else {
 			if (!customLoc && Main.EquipPage != 0) {
@@ -489,17 +478,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// </summary>
 	public bool ModSlotCheck(Item checkItem, int slot, int context)
 	{
-		ModAccessorySlotPlayer modSlotPlayer = ModSlotPlayer(Player);
-
-		if (CanAcceptItem(slot, checkItem, context)) {
-			if (modSlotPlayer.IsSharedSlot(slot)) {
-				return modSlotPlayer.ExLoadouts.All(loadout => !ItemSlot.AccCheck_ForLocalPlayer(modSlotPlayer.GetAllAccessoriesForLoadout(loadout.LoadoutIndex), checkItem, slot + Player.armor.Length));
-			}
-
-			return !ItemSlot.AccCheck_ForLocalPlayer(modSlotPlayer.GetAllAccessoriesForLoadout(modSlotPlayer.ModdedCurrentLoadoutIndex), checkItem, slot + Player.armor.Length);
-		}
-
-		return false;
+		return CanAcceptItem(slot, checkItem, context) && !ModSlotPlayer(Player).CanItemBeEquippedInSlot(checkItem, slot);
 	}
 
 	/// <summary>
