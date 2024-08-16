@@ -136,6 +136,7 @@ internal static class ModOrganizer
 		OrderByDescending(m => m.tModLoaderVersion, "a matching version for a newer tModLoader exists");
 		FilterOut(m => m.location != ModLocation.Workshop && list.Any(m2 => m2.location == ModLocation.Workshop && m2.modFile.Hash == m.modFile.Hash), "an identical copy exists in the workshop folder");
 		OrderByDescending(m => m.location == ModLocation.Local, "a local copy with the same version (but different hash) exists");
+		OrderByDescending(m => Path.GetFileNameWithoutExtension(m.modFile.path) == m.Name, "this .tmod has been renamed");
 
 		var selected = list.FirstOrDefault();
 
@@ -460,7 +461,7 @@ internal static class ModOrganizer
 	{
 		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. We throw an error because this is definitely not desired.
 		foreach (var mod in mods) {
-			var localMod = AllFoundMods.SingleOrDefault(x => x.Name == mod.Name && x.location == ModLocation.Local);
+			var localMod = AllFoundMods.SingleOrDefault(x => x.Name == mod.Name && x.location == ModLocation.Local && Path.GetFileNameWithoutExtension(x.modFile.path) == mod.Name);
 
 			// If Local mod is newer than selected Workshop/Modpack mod...
 			if (localMod == null || localMod == mod || localMod.lastModified.CompareTo(mod.lastModified) <= 0) {

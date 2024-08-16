@@ -657,6 +657,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Whether or not the conditions have been met for this town NPC to be able to move into town. For example, the Demolitionist requires that any player has an explosive.
 	/// <para/> Town NPC spawn conditions typically check if specific bosses have been defeated (<see cref="NPC.downedGolemBoss"/>), the npc has been "saved" somewhere in the world, or any player has specific items in their inventory. To check for inventory items, iterate over <see cref="Main.ActivePlayers"/> and check <see cref="Player.HasItem(int)"/> or <see cref="Player.CountItem(int, int)"/>, returning true if any player satisfies the requirement.
+	/// <para/> To support allowing town NPC to respawn without needing to meet the original respawn requirements, a feature added in Terraria v1.4.4, store a bool in a <see cref="ModSystem"/> and check it. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExamplePerson.cs#L184">ExamplePerson.CanTownNPCSpawn</see> and <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Systems/TownNPCRespawnSystem.cs">TownNPCRespawnSystem.cs</see> show an example of this.
 	/// <para/> Returns false by default, preventing the town NPC from spawning.
 	/// </summary>
 	/// <param name="numTownNPCs"></param>

@@ -282,6 +282,7 @@
 		"InstallPackLocalDesc": "Desactiva todos los mods y activa el paquete\nusando versiones de mods congelados del paquete de mods",
 		"ModPackMismatch": "Último paquete de mods: {0}",
 		// "ModPackDelete": "Delete Mod Pack",
+		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Sincronizando mods",

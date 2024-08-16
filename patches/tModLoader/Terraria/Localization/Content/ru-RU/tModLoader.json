@@ -282,6 +282,7 @@
 		"InstallPackLocalDesc": "Выключает абсолютно все моды и включает сборку\nс замороженными версиями модов, найденных в сборке",
 		"ModPackMismatch": "Последняя сборка модов: {0}",
 		"ModPackDelete": "Удалить сборку модов",
+		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Синхронизация модов",

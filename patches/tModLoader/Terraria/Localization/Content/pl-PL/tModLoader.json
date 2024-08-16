@@ -282,6 +282,7 @@
 		"InstallPackLocalDesc": "Wyłącza wszystkie mody i włącza zestaw modów, używając\nzamrożonych wersji modów znajdujących się w Paczce Modów",
 		"ModPackMismatch": "Ostatnia Paczka Modów: {0}",
 		// "ModPackDelete": "Delete Mod Pack",
+		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronizowanie modów",

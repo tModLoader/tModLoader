@@ -102,6 +102,16 @@
  	public static FileMetadata WorldFileMetadata;
  	public static FileMetadata MapFileMetadata;
  	public static PingMapLayer Pings = new PingMapLayer();
+@@ -457,7 +_,9 @@
+ 	public static int jungleBackStyle;
+ 	public static string debugWords = "";
+ 	public static bool gamePad = false;
++	/// <summary> If true the <see href="https://terraria.wiki.gg/wiki/Christmas">Christmas</see> seasonal event is currently active. </summary>
+ 	public static bool xMas;
++	/// <summary> If true the <see href="https://terraria.wiki.gg/wiki/Halloween">Halloween</see> seasonal event is currently active. </summary>
+ 	public static bool halloween;
+ 	public static bool forceXMasForToday;
+ 	public static bool forceHalloweenForToday;
 @@ -487,12 +_,17 @@
  	public static bool showSplash = true;
  	public static bool ignoreErrors = true;
@@ -239,6 +249,16 @@
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
+@@ -625,6 +_,9 @@
+ 	public static float armorAlpha = 1f;
+ 	public static float[] buffAlpha = new float[BuffID.Count];
+ 	public static bool afterPartyOfDoom = false;
++	/// <summary>
++	/// True if the world is in hard mode. This doubles as an indicator if <see cref="NPCID.WallofFlesh"/> has been defeated since they are tied together.
++	/// </summary>
+ 	public static bool hardMode;
+ 	public float chestLootScale = 1f;
+ 	public bool chestLootHover;
 @@ -671,7 +_,15 @@
  	public static float rightWorld = 134400f;
  	public static float topWorld = 0f;
@@ -283,7 +303,7 @@
  	public static bool dedServ;
  	public static int spamCount = 0;
  	public static int curMusic;
-@@ -743,19 +_,52 @@
+@@ -743,33 +_,71 @@
  	public static int LogoA = 255;
  	public static int LogoB;
  	public static bool LogoT;
@@ -336,16 +356,27 @@
 +	/// </remarks>
  	public static double time = 13500.0;
  	public static double timeForVisualEffects;
++	/// <summary> The current <see href="https://terraria.wiki.gg/wiki/Moon_phase">moon phase</see> expressed as an int. Use <see cref="GetMoonPhase"/> to get the moon phase as a <see cref="MoonPhase"/> instead. </summary>
  	public static int moonPhase;
-@@ -768,7 +_,7 @@
+ 	public static short sunModY;
+ 	public static short moonModY;
+ 	public static bool alreadyGrabbingSunOrMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Blood_Moon">Blood Moon</see> is currently happening. </summary>
+ 	public static bool bloodMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Pumpkin_Moon">Pumpkin Moon</see> is currently happening. </summary>
+ 	public static bool pumpkinMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Frost_Moon">Frost Moon</see> is currently happening. </summary>
+ 	public static bool snowMoon;
  	public static float cloudAlpha;
  	public static float maxRaining;
  	public static float oldMaxRaining;
 -	public static int rainTime;
 +	public static double rainTime;
  	public static bool raining;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Solar_Eclipse">Solar Eclipse</see> is currently happening. </summary>
  	public static bool eclipse;
  	public static float eclipseLight;
+ 	public static int checkForSpawns;
 @@ -777,6 +_,13 @@
  	public static int BartenderHelpTextIndex = 0;
  	public static bool autoGen;
@@ -593,9 +624,27 @@
  	public static Item mouseItem = new Item();
  	public static Item guideItem = new Item();
  	public static Item reforgeItem = new Item();
-@@ -1026,7 +_,18 @@
+@@ -1021,16 +_,46 @@
+ 	public static bool recFastScroll;
+ 	public static bool recBigList;
+ 	public static int recStart;
++	/// <summary>
++	/// Contains all the <see cref="Recipe"/> in the game. Be sure to read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">the Basic Recipes wiki page</see> to learn how to create and edit recipes.
++	/// <para/> Modders should not attempt to manually edit Main.recipe, doing so will break things. Recipes can be disabled or edited but should not be removed. Recipe ordering can be done through the sort methods, such as <see cref="Recipe.SortBefore(Recipe)"/>. Main.recipe is populated during mod loading and should not be changed in-game. Dynamic recipe availability is done through recipe conditions. 
++	/// </summary>
+ 	public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
++	/// <summary>
++	/// Contains recipe indexes (<see cref="Recipe.RecipeIndex"/>) of the recipes currently being shown in the UI, either for crafting or a Guide query.
++	/// </summary>
+ 	public static int[] availableRecipe = new int[Recipe.maxRecipes];
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
++	/// <summary>
++	/// The count of Recipes being shown. The length of <see cref="availableRecipe"/>.
++	/// </summary>
  	public static int numAvailableRecipes;
++	/// <summary>
++	/// An index into <see cref="availableRecipe"/> indicating the currently selected Recipe.
++	/// </summary>
  	public static int focusRecipe;
 +
 +	/// <summary>
@@ -612,6 +661,16 @@
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
  	public static bool[] countsAsHostForGameplay = new bool[256];
++	/// <summary>
++	/// The x tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnX"/>) will spawn at this location and invasions will target this location.
++	/// </summary>
+ 	public static int spawnTileX;
++	/// <summary>
++	/// The y tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnY"/>) will spawn at this location and invasions will target this location.
++	/// </summary>
+ 	public static int spawnTileY;
+ 	public static bool npcChatRelease;
+ 	public static bool editSign;
 @@ -1044,8 +_,11 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -657,6 +716,20 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
+@@ -1149,6 +_,13 @@
+ 	public static int PendingResolutionWidth = 800;
+ 	public static int PendingResolutionHeight = 600;
+ 	public static bool PendingBorderlessState;
++	/// <summary>
++	/// If not 0, an invasion event is currently active:
++	/// <br/> If 1 (<see cref="InvasionID.GoblinArmy"/>), a <see href="https://terraria.wiki.gg/wiki/Goblin_Army">Goblin Army</see> is happening.
++	/// <br/> If 2 (<see cref="InvasionID.SnowLegion"/>), a <see href="https://terraria.wiki.gg/wiki/Frost_Legion">Frost Legion</see> is happening.
++	/// <br/> If 3 (<see cref="InvasionID.PirateInvasion"/>), a <see href="https://terraria.wiki.gg/wiki/Pirate_Invasion">Pirate Invasion</see> is happening.
++	/// <br/> If 4 (<see cref="InvasionID.MartianMadness"/>), a <see href="https://terraria.wiki.gg/wiki/Martian_Madness">Martian Madness</see> is happening.
++	/// </summary>
+ 	public static int invasionType;
+ 	public static double invasionX;
+ 	public static int invasionSize;
 @@ -1165,6 +_,9 @@
  	public static float invasionProgressAlpha;
  	public static bool HasInteractibleObjectThatIsNotATile = false;
@@ -869,6 +942,14 @@
  
  	public static string playerPathName => ActivePlayerFileData.Path;
  
+@@ -2506,6 +_,7 @@
+ 	[DllImport("kernel32.dll")]
+ 	public static extern IntPtr LoadLibrary(string dllToLoad);
+ 
++	/// <summary> The current <see href="https://terraria.wiki.gg/wiki/Moon_phase">moon phase</see> expressed as a <see cref="MoonPhase"/>. Use <see cref="moonPhase"/> to get the moon phase as an int instead. </summary>
+ 	public static MoonPhase GetMoonPhase() => (MoonPhase)moonPhase;
+ 
+ 	public static Vector2 DrawPlayerItemPos(float gravdir, int itemtype)
 @@ -2831,6 +_,8 @@
  		}
  
@@ -5079,7 +5160,7 @@
  		int num = -1;
  		int num2 = -10;
  		int num3 = 0;
-@@ -38068,12 +_,27 @@
+@@ -38068,12 +_,32 @@
  		}
  
  		Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(100, 100, 100, mouseTextColor);
@@ -5089,7 +5170,8 @@
 +		/*
  		for (int i = 0; i < 12; i++) {
 +		*/
-+		for (int i = startingDisplay; i < endingDisplay; i++) {
++		int showableCount = 0;
++		for (int i = 0; i < InfoDisplayLoader.InfoDisplayCount; i++) {
  			string text2 = "";
  			string text3 = "";
  			Microsoft.Xna.Framework.Color infoTextColor = new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
@@ -5098,6 +5180,10 @@
 +			InfoDisplay info = InfoDisplayLoader.InfoDisplays[i];
 +
 +			if (!InfoDisplayLoader.Active(info) || (player[myPlayer].hideInfo[info.Type] && !playerInventory))
++				continue;
++
++			showableCount++;
++			if (showableCount <= startingDisplay)
 +				continue;
 +
 +			/*
@@ -5315,7 +5401,7 @@
  
  			Vector2 scale = new Vector2(1f);
  			Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -38429,15 +_,20 @@
+@@ -38429,15 +_,22 @@
  				if (n == 4)
  					color3 = infoTextColor;
  
@@ -5335,6 +5421,8 @@
 +
 +			endThisIcon:
 +			drawnCount++; // Moved here due to calculation changes
++			if (drawnCount >= 12)
++				break;
  		}
  
  		if (!string.IsNullOrEmpty(text)) {

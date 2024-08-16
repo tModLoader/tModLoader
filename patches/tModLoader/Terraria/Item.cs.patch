@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,247 @@
+@@ -121,49 +_,248 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -580,6 +580,7 @@
 +	/// <summary>
 +	/// The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <c>10462</c> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer.
 +	/// <br/> For convenience, you can also use the <see cref="Item.buyPrice(int, int, int, int)"/> method for setting values: <c>Item.value = Item.buyPrice(0, 1, 4, 62);</c> You can also use the <see cref="Item.sellPrice(int, int, int, int)"/> method if you would rather think about an item's value the other way. Both <c>Item.buyPrice(0, 0, 10, 55)</c> and <c>Item.sellPrice(0, 0, 2, 11)</c> would set the value to <c>1055</c>.
++	/// <para/> If custom purchase prices disconnected from the item value are needed, <see cref="shopCustomPrice"/> should be set for the item instance added to a shop entry.
 +	/// </summary>
  	public int value;
  	public bool buy;
@@ -778,7 +779,7 @@
  	public bool PaintOrCoating {
  		get {
  			if (paint <= 0)
-@@ -196,11 +_,19 @@
+@@ -196,12 +_,24 @@
  
  	public bool FitsAccessoryVanitySlot => true;
  
@@ -789,15 +790,20 @@
  
  	public int OriginalDefense => ContentSamples.ItemsByType[type].defense;
 +	*/
-+
+ 
 +	public int OriginalRarity => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.rare : 0;
 +
 +	public int OriginalDamage => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.damage : 0;
 +
 +	public int OriginalDefense => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.defense : 0;
- 
++
++	/// <summary>
++	/// If not null, indicates that this item has a special seed variant active.
++	/// <para/> Item variants are not supported for modded items.
++	/// </summary>
  	public ItemVariant Variant { get; private set; }
  
+ 	public bool IsACoin {
 @@ -254,12 +_,27 @@
  		}
  	}
@@ -1358,6 +1364,15 @@
  			case 4953:
 +				useLimitPerAnimation = 5; // Added by TML.
 +				consumeAmmoOnLastShotOnly = true; // Added by TML.
++
+ 				useStyle = 5;
+ 				autoReuse = true;
+ 				useAnimation = 30;
+@@ -44338,6 +_,8 @@
+ 				value = sellPrice(0, 0, 50);
+ 				break;
+ 			case 5134:
++				consumeAmmoOnLastShotOnly = true; // Added by TML
 +
  				useStyle = 5;
  				autoReuse = true;
@@ -2287,7 +2302,15 @@
  			TurnToAir();
  	}
  
-@@ -49359,6 +_,7 @@
+@@ -49356,9 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Resets the stats of this item while preserving modded data, prefix, stack, and favorited. Used to update the stats of this item to facilitate <see cref="ItemVariants"/>. This is called on most items when a player enters a world to ensure that their stats match the variant expected for the world seed.
++	/// <para/> If <paramref name="onlyIfVariantChanged"/> is true (it usually is), then the item is only refreshed if <see cref="Item.Variant"/> and <see cref="ItemVariants.SelectVariant(int)"/> differ.
++	/// </summary>
++	/// <param name="onlyIfVariantChanged"></param>
  	public void Refresh(bool onlyIfVariantChanged = true)
  	{
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {
