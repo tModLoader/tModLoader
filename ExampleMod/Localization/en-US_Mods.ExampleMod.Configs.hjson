@@ -24,9 +24,9 @@ ExampleModConfig: {
 		Tooltip: ""
 	}
 	
-	ToggleSharedLoadoutSlot: {
-	    Label: Set ExampleSharedModAccessorySlot shared
-	    Tooltip: Sets the ExampleSharedModAccessorySlot to shared between loadouts or instance per loadout
+	LoadoutSupportToggle: {
+	    Label: Enable loadout support for ExampleLoadoutSupportModAccessorySlot
+	    Tooltip: Disabling will discard any equipped items in the slot!
 	}
 
 	Headers.Items: Items

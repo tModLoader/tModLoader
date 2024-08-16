@@ -11,9 +11,9 @@ namespace ExampleMod.Common.Players
 		// If the class is empty, everything will default to a basic vanilla slot.
 	}
 
-	public class ExampleSharedModAccessorySlot : ModAccessorySlot
+	public class ExampleLoadoutSupportModAccessorySlot : ModAccessorySlot
 	{
-		public override bool SharedBetweenLoadouts => ModContent.GetInstance<ExampleModConfig>().ToggleSharedLoadoutSlot;
+		public override bool HasEquipmentLoadoutSupport => ModContent.GetInstance<ExampleModConfig>().LoadoutSupportToggle;
 	}
 
 	public class ExampleCustomLocationAndTextureSlot : ModAccessorySlot

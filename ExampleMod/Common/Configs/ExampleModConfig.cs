@@ -23,6 +23,6 @@ namespace ExampleMod.Common.Configs
 
 		[DefaultValue(true)]
 		[ReloadRequired]
-		public bool ToggleSharedLoadoutSlot;
+		public bool LoadoutSupportToggle;
 	}
 }

@@ -14,7 +14,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	private const int SharedLoadoutIndex = -1;
 	internal static AccessorySlotLoader Loader => LoaderManager.Get<AccessorySlotLoader>();
 
-	private readonly Dictionary<string, (int SlotType, bool SharedBetweenLoadouts)> slots = [];
+	private readonly Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots = [];
 	private readonly HashSet<int> sharedLoadoutSlotTypes = [];
 	private ExEquipmentLoadout[] exLoadouts;
 
@@ -39,9 +39,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public ModAccessorySlotPlayer()
 	{
 		foreach (var slot in Loader.list) {
-			slots.Add(slot.FullName, (slot.Type, slot.SharedBetweenLoadouts));
+			slots.Add(slot.FullName, (slot.Type, slot.HasEquipmentLoadoutSupport));
 
-			if (slot.SharedBetweenLoadouts) {
+			if (!slot.HasEquipmentLoadoutSupport) {
 				sharedLoadoutSlotTypes.Add(slot.Type);
 				sharedLoadoutSlotTypes.Add(slot.Type + Loader.list.Count);
 			}
@@ -464,7 +464,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		public void LoadData(
 			TagCompound tag,
 			List<string> order,
-			Dictionary<string, (int SlotType, bool SharedBetweenLoadouts)> slots)
+			Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots)
 		{
 			IList<Item> items;
 			IList<Item> dyes;
@@ -489,10 +489,10 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			}
 
 			for (int i = 0; i < order.Count; i++) {
-				(int type, bool sharedBetweenLoadouts) = slots[order[i]];
+				(int type, bool hasLoadoutSupport) = slots[order[i]];
 
-				if (LoadoutIndex == SharedLoadoutIndex && !sharedBetweenLoadouts
-				    || LoadoutIndex != SharedLoadoutIndex && sharedBetweenLoadouts) {
+				if (LoadoutIndex == SharedLoadoutIndex && hasLoadoutSupport
+				    || LoadoutIndex != SharedLoadoutIndex && !hasLoadoutSupport) {
 					continue;
 				}
 

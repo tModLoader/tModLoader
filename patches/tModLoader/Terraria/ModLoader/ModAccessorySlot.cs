@@ -37,11 +37,15 @@ public abstract class ModAccessorySlot : ModType
 	public virtual bool DrawDyeSlot => true;
 
 	/// <summary>
-	/// Gets or sets a value indicating whether this slot's item is shared between loadouts or one item per loadout.
-	/// Defaults to one item per loadout. Changing this value requires a reload and will lead to the loss of equipped
-	/// items in the slot.
+	/// Gets or sets a value indicating whether this slot supports equipment loadouts. If <see langword="false"/>,
+	/// the slot's item is shared between all loadouts. Defaults to <see langword="false"/>.
+	/// Changing this value requires a reload.
+	/// Changing the value from <see langword="true"/> to <see langword="false"/> will discard any item currently
+	/// equipped in the slot in any loadout.
+	/// Changing the value from <see langword="false"/> to <see langword="true"/> moves items from the previously shared
+	/// slot to the first loadout.
 	/// </summary>
-	public virtual bool SharedBetweenLoadouts => false;
+	public virtual bool HasEquipmentLoadoutSupport => false;
 
 	// Get/Set Properties for fetching slot information
 	public Item FunctionalItem {
