@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Terraria.ModLoader.IO;
 
@@ -10,6 +11,22 @@ public static class BinaryIO
 
 	[Obsolete("Use Read7BitEncodedInt", true)]
 	public static int ReadVarInt(this BinaryReader reader) => reader.Read7BitEncodedInt();
+
+	public static BitsByte ReadBitsByte(this BinaryReader reader) => reader.ReadByte();
+
+	public static void ReadBits(this BinaryReader reader, ref bool b0) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0);
+	public static void ReadBits(this BinaryReader reader, ref bool b0, ref bool b1) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0, ref b1);
+	public static void ReadBits(this BinaryReader reader, ref bool b0, ref bool b1, ref bool b2) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0, ref b1, ref b2);
+	public static void ReadBits(this BinaryReader reader, ref bool b0, ref bool b1, ref bool b2, ref bool b3) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0, ref b1, ref b2, ref b3);
+	public static void ReadBits(this BinaryReader reader, ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4);
+	public static void ReadBits(this BinaryReader reader, ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref b5);
+	public static void ReadBits(this BinaryReader reader, ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5, ref bool b6) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref b5, ref b6);
+	public static void ReadBits(this BinaryReader reader, ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5, ref bool b6, ref bool b7) => ((BitsByte)reader.ReadByte()).Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref b5, ref b6, ref b7);
+
+	/// <summary>
+	/// Efficiently writes up to 8 bools as a single byte.
+	/// </summary>
+	public static void Write(this BinaryWriter writer, bool b1 = false, bool b2 = false, bool b3 = false, bool b4 = false, bool b5 = false, bool b6 = false, bool b7 = false, bool b8 = false) => writer.Write(new BitsByte(b1, b2, b3, b4, b5, b6, b7, b8));
 
 	public static void SafeWrite(this BinaryWriter writer, Action<BinaryWriter> write)
 	{
