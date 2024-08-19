@@ -73,10 +73,14 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 	public float DrawOffsetY { get; set; }
 
-	/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type. </summary>
+	/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type.
+	/// <para/> TODO: Mention sharing banners and show examples, link to wiki.
+	/// </summary>
 	public int Banner { get; set; }
 
-	/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner. </summary>
+	/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner.
+	/// <para/> TODO: Mention sharing banners and show examples, link to wiki. Not 50 times, ItemID.Sets.KillsToBanner times...
+	/// </summary>
 	public int BannerItem { get; set; }
 
 	//TODO: Find a better solution in the future.

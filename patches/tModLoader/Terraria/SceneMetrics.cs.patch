@@ -8,9 +8,17 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria;
-@@ -29,12 +_,13 @@
+@@ -27,14 +_,21 @@
+ 	public static int GraveyardTileMin = 16;
+ 	public static int GraveyardTileThreshold = 28;
  	public bool CanPlayCreditsRoll;
++	/// <summary>
++	/// 
++	/// </summary>
  	public bool[] NPCBannerBuff = new bool[290];
++	/// <summary>
++	/// 
++	/// </summary>
  	public bool hasBanner;
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];
