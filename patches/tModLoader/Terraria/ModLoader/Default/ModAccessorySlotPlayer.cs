@@ -551,15 +551,18 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 			for (int i = 0; i < order.Count; i++) {
 				(int type, bool hasLoadoutSupport) = slots[order[i]];
-				bool loadoutSupportSettingOfSlotChanged = LoadoutIndex == SharedLoadoutIndex && hasLoadoutSupport
-				                                          || LoadoutIndex != SharedLoadoutIndex && !hasLoadoutSupport;
 
 				Item dye = dyes.ElementAtOrDefault(i) ?? new Item();
 				Item accessory = items.ElementAtOrDefault(i) ?? new Item();
 				Item vanityItem = items.ElementAtOrDefault(i + order.Count) ?? new Item();
 				bool isHidden = visible.ElementAtOrDefault(i);
 
-				if (loadoutSupportSettingOfSlotChanged) {
+				bool slotBelongsToDifferentLoadout = LoadoutIndex == SharedLoadoutIndex && hasLoadoutSupport
+				                                     || LoadoutIndex != SharedLoadoutIndex && !hasLoadoutSupport;
+				bool hasLoadoutSupportSettingForSlotChanged = slotBelongsToDifferentLoadout
+				                                              && (!dye.IsAir || !accessory.IsAir || !vanityItem.IsAir);
+
+				if (hasLoadoutSupportSettingForSlotChanged) {
 					result.Add(new SlotInfo {
 						Slot = type,
 						Dye = dye,
