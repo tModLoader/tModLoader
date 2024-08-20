@@ -111,4 +111,5 @@ public class MagicSummonHybridDamageClass : VanillaDamageClass
 public class ThrowingDamageClass : VanillaDamageClass
 {
 	protected override string LangKey => "LegacyTooltip.58";
+	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Ranged;
 }
