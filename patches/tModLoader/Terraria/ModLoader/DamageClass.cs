@@ -76,6 +76,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <summary> 
 	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br/>
 	/// For a more in-depth explanation and demonstration, see <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>
+	/// This method is only meant to be overridden. Modders should call <see cref="CountsAsClass"> to query effect inheritance
 	/// </summary>
 	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit effects from.</param>
@@ -83,10 +84,11 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	public virtual bool GetEffectInheritance(DamageClass damageClass) => false;
 	/// <summary> 
 	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of prefixes<br/>
+	/// This method is only meant to be overridden. Modders should call <see cref="GetsPrefixesFor"> to query prefix inheritance
 	/// </summary>
 	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit prefixes from.</param>
-	/// <returns><see langword="false"/> by default - which does not let any other classes' prefixes roll or remain on this <see cref="DamageClass"/>.</returns>
+	/// <returns><see cref="GetEffectInheritance"/> by default - which lets the prefixes of any class this class inherits effects from roll and remain on items of this <see cref="DamageClass"/>.</returns>
 	public virtual bool GetPrefixInheritance(DamageClass damageClass) => GetEffectInheritance(damageClass);
 
 	/// <summary> 
