@@ -87,7 +87,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit prefixes from.</param>
 	/// <returns><see langword="false"/> by default - which does not let any other classes' prefixes roll or remain on this <see cref="DamageClass"/>.</returns>
-	public virtual bool GetPrefixInheritance(DamageClass damageClass) => CountsAsClass(damageClass);
+	public virtual bool GetPrefixInheritance(DamageClass damageClass) => GetEffectInheritance(damageClass);
 
 	/// <summary> 
 	/// This lets you define default stat modifiers for all items of this class (e.g. base crit chance).
