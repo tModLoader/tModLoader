@@ -912,16 +912,16 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -318,12 +_,18 @@
+@@ -318,12 +_,20 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
--			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
--				rolledPrefix = 0;
-+
-+			if (applyPrefixOverride is true) { } else
-+			if (prefixWeWant == -1 && unifiedRandom.Next(4) == 0)
-+				return true; //rolledPrefix = 0;
++			/*
+ 			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
+ 				rolledPrefix = 0;
++			*/
++			if (applyPrefixOverride is not true && rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
++				return true;
  
  			if (prefixWeWant < -1)
  				rolledPrefix = -1;

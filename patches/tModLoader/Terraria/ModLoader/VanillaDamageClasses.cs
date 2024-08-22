@@ -47,7 +47,6 @@ public class MeleeNoSpeedDamageClass : VanillaDamageClass
 	}
 
 	public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Melee;
-	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Melee;
 }
 
 public class RangedDamageClass : VanillaDamageClass
