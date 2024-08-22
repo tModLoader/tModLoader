@@ -149,6 +149,7 @@ partial class Utils
 
 	/// <summary>
 	/// Bit packs a BitArray in to a Byte Array and then sends the byte array
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static void SendBitArray(BitArray arr, BinaryWriter writer)
 	{
@@ -159,6 +160,7 @@ partial class Utils
 
 	/// <summary>
 	/// Receives the result of SendBitArray, and returns the corresponding BitArray
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static BitArray ReceiveBitArray(int BitArrLength, BinaryReader reader)
 	{

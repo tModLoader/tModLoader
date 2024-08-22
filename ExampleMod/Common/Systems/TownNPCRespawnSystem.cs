@@ -33,13 +33,11 @@ namespace ExampleMod.Common.Systems
 		}
 
 		public override void NetSend(BinaryWriter writer) {
-			writer.Write(
-				unlockedExamplePersonSpawn
-			);
+			writer.WriteFlags(unlockedExamplePersonSpawn);
 		}
 
 		public override void NetReceive(BinaryReader reader) {
-			(unlockedExamplePersonSpawn, savedExamplePerson) = reader.ReadBitsByte();
+			reader.ReadFlags(out unlockedExamplePersonSpawn);
 		}
 	}
 }
