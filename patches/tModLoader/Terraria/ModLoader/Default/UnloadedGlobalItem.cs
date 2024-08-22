@@ -9,9 +9,9 @@ public class UnloadedGlobalItem : GlobalItem
 	[CloneByReference] // safe to share between clones, because it cannot be changed after creation/load
 	internal IList<TagCompound> data = new List<TagCompound>();
 
-	[CloneByReference] // safe to share between clones, because it cannot be changed after creation/load
+	[CloneByReference]
 	internal string modPrefixMod = null;
-	[CloneByReference] // safe to share between clones, because it cannot be changed after creation/load
+	[CloneByReference]
 	internal string modPrefixName = null;
 
 	public override bool InstancePerEntity => true;
