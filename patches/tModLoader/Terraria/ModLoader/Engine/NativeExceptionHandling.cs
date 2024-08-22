@@ -51,7 +51,7 @@ internal static class NativeExceptionHandling
 
 		// Delete old .dmp.zip files
 		Logging.tML.Fatal("Attempting to save minidump...");
-		string minidumpPath = CrashDump.WriteExceptionAsZipAndClearOld(CrashDump.Options.Normal);
+		string minidumpPath = CrashDump.WriteExceptionAsZipAndClearOld(CrashDump.Options.Normal, exceptionInfo);
 		if (minidumpPath == null) {
 			Logging.tML.Fatal($"Minidump saving failed, either this isn't Windows or the logs folder could not be created."); // Shouldn't be possible with current code.
 		}

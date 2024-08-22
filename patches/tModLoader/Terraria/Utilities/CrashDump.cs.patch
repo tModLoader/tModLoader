@@ -20,7 +20,7 @@
 +	/// <summary>
 +	/// Writes a dump to the logs folder, zips it, and deletes old dumps. Intended to preserve a single dump for client and server to not waste harddrive space.
 +	/// </summary>
-+	public static string WriteExceptionAsZipAndClearOld(Options options)
++	public static string WriteExceptionAsZipAndClearOld(Options options, IntPtr exceptionPointers)
 +	{
 +		if (!Platform.IsWindows)
 +			return null;
@@ -42,7 +42,7 @@
 +		}
 +
 +		using (FileStream fileStream = File.Create(path)) {
-+			Write(fileStream.SafeFileHandle, options, ExceptionInfo.Present);
++			Write(fileStream.SafeFileHandle, options, ExceptionInfo.None, exceptionPointers);
 +		}
 +
 +		string zipFilename = Path.ChangeExtension(path, ".dmp.zip");
@@ -65,3 +65,25 @@
  	}
  
  	private static bool Write(Options options, ExceptionInfo exceptionInfo, string outputDirectory)
+@@ -72,11 +_,10 @@
+ 		return Write(fileStream.SafeFileHandle, options, exceptionInfo);
+ 	}
+ 
+-	private static bool Write(SafeHandle fileHandle, Options options, ExceptionInfo exceptionInfo)
++	private static bool Write(SafeHandle fileHandle, Options options, ExceptionInfo exceptionInfo, IntPtr exceptionPointers = 0)
+ 	{
+ 		if (!Platform.IsWindows)
+ 			return false;
+-
+ 		Process currentProcess = Process.GetCurrentProcess();
+ 		IntPtr handle = currentProcess.Handle;
+ 		uint id = (uint)currentProcess.Id;
+@@ -86,6 +_,8 @@
+ 		expParam.ExceptionPointers = IntPtr.Zero;
+ 		if (exceptionInfo == ExceptionInfo.Present)
+ 			expParam.ExceptionPointers = Marshal.GetExceptionPointers();
++		if(exceptionPointers != IntPtr.Zero)
++			expParam.ExceptionPointers = exceptionPointers;
+ 
+ 		bool flag = false;
+ 		if (expParam.ExceptionPointers == IntPtr.Zero)
