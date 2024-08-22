@@ -32,7 +32,7 @@
 +			return null;
 +
 +		string prefix = fileName.Split('_')[0];
-+		var extensions = new[] { ".dmp.zip", ".dmp" }; // Note: All zip files are deleted on launch anyway by LogArchiver.MoveZipsToArchiveDir
++		var extensions = new[] { ".dmp.zip", ".dmp" }; // Note: All zip files are deleted on launch anyway by LogArchiver.MoveZipsToArchiveDir, so this code doesn't usually do anything
 +		foreach (FileInfo file in new DirectoryInfo(Logging.LogDir).GetFiles()) {
 +			// Preserve one "server..." and "client..." dump
 +			if (extensions.Any(ext => file.Extension == ext) && file.Name.StartsWith(prefix)) {
