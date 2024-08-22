@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader.Engine;
 
@@ -45,6 +47,17 @@ internal static class NativeExceptionHandling
 		}
 		else {
 			Logging.tML.Fatal("Failed to retrieve module information.");
+		}
+
+		// Delete old .dmp.zip files
+		Logging.tML.Fatal("Attempting to save minidump...");
+		string minidumpPath = CrashDump.WriteExceptionAsZipAndClearOld(CrashDump.Options.Normal);
+		if (minidumpPath == null) {
+			Logging.tML.Fatal($"Minidump saving failed, either this isn't Windows or the logs folder could not be created."); // Shouldn't be possible with current code.
+		}
+		else {
+			Logging.tML.Fatal($"Minidump saved to: \'{Path.GetFullPath(minidumpPath)}\'");
+			Logging.tML.Fatal("This file can be provided to tModLoader developers to help diagnose the issue.");
 		}
 
 		// Return EXCEPTION_EXECUTE_HANDLER to let the OS handle the exception
