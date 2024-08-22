@@ -65,7 +65,7 @@
  	}
  
  	private static bool Write(Options options, ExceptionInfo exceptionInfo, string outputDirectory)
-@@ -72,11 +_,10 @@
+@@ -72,7 +_,7 @@
  		return Write(fileStream.SafeFileHandle, options, exceptionInfo);
  	}
  
@@ -74,10 +74,6 @@
  	{
  		if (!Platform.IsWindows)
  			return false;
--
- 		Process currentProcess = Process.GetCurrentProcess();
- 		IntPtr handle = currentProcess.Handle;
- 		uint id = (uint)currentProcess.Id;
 @@ -86,6 +_,8 @@
  		expParam.ExceptionPointers = IntPtr.Zero;
  		if (exceptionInfo == ExceptionInfo.Present)
