@@ -1,48 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Terraria.ModLoader.Setup.Properties;
-using static Terraria.ModLoader.Setup.Program;
+using DiffPatch;
+using PatchReviewer;
+using Terraria.ModLoader.Setup.Core;
+using Terraria.ModLoader.Setup.Core.Abstractions;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.GUI
 {
-	public partial class MainForm : Form, ITaskInterface
+	public partial class MainForm : Form, IProgress, IPatchReviewer
 	{
+		private readonly ProgramSettings programSettings;
+		private readonly TerrariaExecutableSetter terrariaExecutableSetter;
+		private readonly TargetsFilesUpdater targetsFilesUpdater;
+		private readonly IServiceProvider serviceProvider;
 		private CancellationTokenSource cancelSource;
 
 		private bool closeOnCancel;
 		private IDictionary<Button, Func<SetupOperation>> taskButtons = new Dictionary<Button, Func<SetupOperation>>();
 
-		public MainForm()
+		public MainForm(
+			ProgramSettings programSettings,
+			TerrariaExecutableSetter terrariaExecutableSetter,
+			TargetsFilesUpdater targetsFilesUpdater,
+			IServiceProvider serviceProvider)
 		{
+			this.programSettings = programSettings;
+			this.terrariaExecutableSetter = terrariaExecutableSetter;
+			this.targetsFilesUpdater = targetsFilesUpdater;
+			this.serviceProvider = serviceProvider;
 			InitializeComponent();
 
 			labelWorkingDirectory.Text = $"{Directory.GetCurrentDirectory()}";
 
-			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
+			taskButtons[buttonDecompile] = () => new DecompileTask(DecompileTaskParameters.CreateDefault(), serviceProvider);
 			// Terraria
-			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
-			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonDiffTerraria] = () => new DiffTask(DiffTaskParameters.ForTerraria(this.programSettings));
+			taskButtons[buttonPatchTerraria] = () => new PatchTask(PatchTaskParameters.ForTerraria(programSettings), serviceProvider);
 			// Terraria .NET Core
-			taskButtons[buttonDiffTerrariaNetCore] = () => new DiffTask(this, "src/Terraria", "src/TerrariaNetCore", "patches/TerrariaNetCore", new ProgramSetting<DateTime>("TerrariaNetCoreDiffCutoff"));
-			taskButtons[buttonPatchTerrariaNetCore] = () => new PatchTask(this, "src/Terraria", "src/TerrariaNetCore", "patches/TerrariaNetCore", new ProgramSetting<DateTime>("TerrariaNetCoreDiffCutoff"));
+			taskButtons[buttonDiffTerrariaNetCore] = () => new DiffTask(DiffTaskParameters.ForTerrariaNetCore(programSettings));
+			taskButtons[buttonPatchTerrariaNetCore] = () => new PatchTask(PatchTaskParameters.ForTerrariaNetCore(programSettings), serviceProvider);
 			// tModLoader
-			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/TerrariaNetCore", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
-			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/TerrariaNetCore", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
+			taskButtons[buttonDiffModLoader] = () => new DiffTask(DiffTaskParameters.ForTModLoader(programSettings));
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider);
 
-			taskButtons[buttonRegenSource] = () =>
-				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchTerrariaNetCore, buttonPatchModLoader }
-					.Select(b => taskButtons[b]()).ToArray());
+			taskButtons[buttonRegenSource] = () => new RegenSourceTask(serviceProvider);
 
-			taskButtons[buttonSetup] = () =>
-				new SetupTask(this, new[] { buttonDecompile, buttonRegenSource }
-					.Select(b => taskButtons[b]()).ToArray());
+			taskButtons[buttonSetup] = () => new SetupTask(DecompileTaskParameters.CreateDefault(), serviceProvider);
 
-			SetPatchMode(Settings.Default.PatchMode);
-			formatDecompiledOutputToolStripMenuItem.Checked = Settings.Default.FormatAfterDecompiling;
+			SetPatchMode(this.programSettings.PatchMode);
+			formatDecompiledOutputToolStripMenuItem.Checked = programSettings.FormatAfterDecompiling;
 
 			Closing += (sender, args) =>
 			{
@@ -55,32 +68,6 @@ namespace Terraria.ModLoader.Setup
 			};
 		}
 
-		public void SetMaxProgress(int max)
-		{
-			Invoke(new Action(() =>
-			{
-				progressBar.Maximum = max;
-			}));
-		}
-
-		public void SetStatus(string status)
-		{
-			Invoke(new Action(() =>
-			{
-				labelStatus.Text = status;
-			}));
-		}
-
-		public void SetProgress(int progress)
-		{
-			Invoke(new Action(() =>
-			{
-				progressBar.Value = progress;
-			}));
-		}
-
-		public CancellationToken CancellationToken => cancelSource.Token;
-
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{
 			cancelSource.Cancel();
@@ -88,31 +75,32 @@ namespace Terraria.ModLoader.Setup
 
 		private void menuItemTerraria_Click(object sender, EventArgs e)
 		{
-			SelectAndSetTerrariaDirectoryDialog();
+			terrariaExecutableSetter.SelectAndSetTerrariaDirectory();
 		}
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
 		{
-			Settings.Default.TerrariaDiffCutoff = new DateTime(2015, 1, 1);
-			Settings.Default.TerrariaNetCoreDiffCutoff = new DateTime(2015, 1, 1);
-			Settings.Default.tModLoaderDiffCutoff = new DateTime(2015, 1, 1);
-			Settings.Default.Save();
+			DateTime cutoffDate = new DateTime(2015, 1, 1);
+			programSettings.TerrariaDiffCutoff = cutoffDate;
+			programSettings.TerrariaNetCoreDiffCutoff = cutoffDate;
+			programSettings.TModLoaderDiffCutoff = cutoffDate;
+			programSettings.Save();
 		}
 
 		private void menuItemDecompileServer_Click(object sender, EventArgs e) {
-			RunTask(new DecompileTask(this, "src/decompiled_server", true));
+			RunTask(new DecompileTask(DecompileTaskParameters.CreateDefault(serverOnly: true), serviceProvider));
 		}
 
 		private void menuItemFormatCode_Click(object sender, EventArgs e) {
-			RunTask(new FormatTask(this));
+			RunTask(new FormatTask(serviceProvider));
 		}
 
 		private void menuItemHookGen_Click(object sender, EventArgs e) {
-			RunTask(new HookGenTask(this));
+			RunTask(new HookGenTask(serviceProvider));
 		}
 
 		private void simplifierToolStripMenuItem_Click(object sender, EventArgs e) {
-			RunTask(new SimplifierTask(this));
+			RunTask(new SimplifierTask(serviceProvider));
 		}
 
 		private void buttonTask_Click(object sender, EventArgs e)
@@ -122,21 +110,22 @@ namespace Terraria.ModLoader.Setup
 
 		private void RunTask(SetupOperation task)
 		{
+			cancelSource?.Dispose();
 			cancelSource = new CancellationTokenSource();
 			foreach (var b in taskButtons.Keys) b.Enabled = false;
 			buttonCancel.Enabled = true;
 
-			new Thread(() => RunTaskThread(task)).Start();
+			_ = RunTaskThread(task);
 		}
 
-		private void RunTaskThread(SetupOperation task)
+		private async Task RunTaskThread(SetupOperation task)
 		{
-			var errorLogFile = Path.Combine(Program.logsDir, "error.log");
+			var errorLogFile = Path.Combine(programSettings.LogsDir, "error.log");
 			try
 			{
 				SetupOperation.DeleteFile(errorLogFile);
 
-				if (!task.ConfigurationDialog())
+				if (!await task.ConfigurationPrompt(cancelSource.Token).ConfigureAwait(true))
 					return;
 
 				if (!task.StartupWarning())
@@ -144,7 +133,7 @@ namespace Terraria.ModLoader.Setup
 
 				try
 				{
-					task.Run();
+					await task.Run(this, cancelSource.Token).ConfigureAwait(true);
 
 					if (cancelSource.IsCancellationRequested)
 						throw new OperationCanceledException();
@@ -160,12 +149,12 @@ namespace Terraria.ModLoader.Setup
 					return;
 				}
 
-				if (task.Failed() || task.Warnings())
-					task.FinishedDialog();
+				task.FinishedPrompt();
 
 				Invoke(new Action(() =>
 				{
 					labelStatus.Text = task.Failed() ? "Failed" : "Done";
+					labelTask.Text = string.Empty;
 				}));
 			}
 			catch (Exception e)
@@ -174,10 +163,10 @@ namespace Terraria.ModLoader.Setup
 				Invoke(new Action(() =>
 				{
 					status = labelStatus.Text;
-					labelStatus.Text = "Error: " + e.Message.Trim();
+					labelStatus.Text = $"Error: {e.Message.Trim()}{Environment.NewLine}Log: {Path.GetFullPath(errorLogFile)}";
 				}));
 
-				SetupOperation.CreateDirectory(Program.logsDir);
+				SetupOperation.CreateDirectory(programSettings.LogsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
 			finally
@@ -192,30 +181,33 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		private void SetPatchMode(int mode) {
-			exactToolStripMenuItem.Checked = mode == 0;
-			offsetToolStripMenuItem.Checked = mode == 1;
-			fuzzyToolStripMenuItem.Checked = mode == 2;
-			Settings.Default.PatchMode = mode;
-			Settings.Default.Save();
+		private void SetPatchMode(Patcher.Mode mode) {
+			exactToolStripMenuItem.Checked = mode == Patcher.Mode.EXACT;
+			offsetToolStripMenuItem.Checked = mode == Patcher.Mode.OFFSET;
+			fuzzyToolStripMenuItem.Checked = mode == Patcher.Mode.FUZZY;
+
+			programSettings.PatchMode = mode;
+			programSettings.Save();
 		}
 
 		private void exactToolStripMenuItem_Click(object sender, EventArgs e) {
-			SetPatchMode(0);
+			SetPatchMode(Patcher.Mode.EXACT);
 		}
 
 		private void offsetToolStripMenuItem_Click(object sender, EventArgs e) {
-			SetPatchMode(1);
+			SetPatchMode(Patcher.Mode.OFFSET);
 		}
 
 		private void fuzzyToolStripMenuItem_Click(object sender, EventArgs e) {
-			SetPatchMode(2);
+			SetPatchMode(Patcher.Mode.FUZZY);
 		}
 
-		private void formatDecompiledOutputToolStripMenuItem_Click(object sender, EventArgs e) {
-			Settings.Default.FormatAfterDecompiling ^= true;
-			Settings.Default.Save();
-			formatDecompiledOutputToolStripMenuItem.Checked = Settings.Default.FormatAfterDecompiling;
+		private void formatDecompiledOutputToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			programSettings.FormatAfterDecompiling ^= true;
+			programSettings.Save();
+
+			formatDecompiledOutputToolStripMenuItem.Checked = programSettings.FormatAfterDecompiling;
 		}
 
 		private void mainMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
@@ -227,12 +219,79 @@ namespace Terraria.ModLoader.Setup
 		}
 
 		private void menuItemTmlPath_Click(object sender, EventArgs e) {
-			Program.SelectTmlDirectoryDialog();
+			while (true) {
+				var dialog = new OpenFileDialog {
+					InitialDirectory = Path.GetFullPath(Directory.Exists(programSettings.TerrariaSteamDir) ? programSettings.TerrariaSteamDir : "."),
+					ValidateNames = false,
+					CheckFileExists = false,
+					CheckPathExists = true,
+					FileName = "Folder Selection.",
+				};
+
+				if (dialog.ShowDialog() != DialogResult.OK)
+					return;
+
+				programSettings.TMLDevSteamDir = Path.GetDirectoryName(dialog.FileName);
+				programSettings.Save();
+				targetsFilesUpdater.Update();
+
+				return;
+			}
 		}
 
 		private void updateLocalizationFilesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RunTask(new UpdateLocalizationFilesTask(this));
+			RunTask(new UpdateLocalizationFilesTask());
+		}
+
+		public void Show(IReadOnlyCollection<FilePatcher> results, string commonBasePath = null)
+		{
+			Invoke(() => new ReviewWindow(results, commonBasePath) { AutoHeaders = true }.Show());
+		}
+
+		public ITaskProgress StartTask(string description)
+		{
+			Debug.Assert(description.Length <= 60);
+
+			Invoke(() => labelTask.Text = description);
+
+			return new TaskProgress(this);
+		}
+
+		private sealed class TaskProgress : ITaskProgress
+		{
+			private readonly MainForm mainForm;
+
+			public TaskProgress(MainForm mainForm)
+			{
+				this.mainForm = mainForm;
+			}
+
+			public void Dispose() { }
+
+			public void SetMaxProgress(int max) =>
+				mainForm.Invoke(() => {
+					mainForm.progressBar.Maximum = max;
+				});
+
+			public void SetCurrentProgress(int current) =>
+				mainForm.Invoke(() => {
+					mainForm.progressBar.Value = current;
+				});
+
+			public void ReportStatus(string status, bool overwrite = false)
+			{
+				mainForm.Invoke(() => {
+					if (overwrite) {
+						mainForm.labelStatus.Text = status;
+					}
+					else {
+						string[] parts = [mainForm.labelStatus.Text, status];
+						mainForm.labelStatus.Text =
+							string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrEmpty(x)));
+					}
+				});
+			}
 		}
 	}
 }

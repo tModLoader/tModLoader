@@ -39,7 +39,7 @@ namespace MonoMod.RuntimeDetour.HookGen
         static HookGenerator()
         {
             foreach (var pair in ReflTypeNameMap)
-                TypeNameMap[pair.Key.FullName] = pair.Value;
+                TypeNameMap[pair.Key.FullName!] = pair.Value;
         }
 
         public MonoModder Modder;
@@ -223,10 +223,13 @@ namespace MonoMod.RuntimeDetour.HookGen
                 suffix = false;
             }
 
-            IEnumerable<MethodDefinition> overloads = null;
+            ICollection<MethodDefinition>? overloads = null;
             if (suffix)
             {
-                overloads = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == name && other != method);
+                overloads = method.DeclaringType.Methods
+	                .Where(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == name && other != method)
+	                .ToArray();
+
                 if (!overloads.Any())
                 {
                     suffix = false;
@@ -242,7 +245,7 @@ namespace MonoMod.RuntimeDetour.HookGen
                     if (!TypeNameMap.TryGetValue(param.ParameterType.FullName, out var typeName))
                         typeName = GetFriendlyName(param.ParameterType, false);
 
-                    if (overloads.Any(other =>
+                    if (overloads!.Any(other =>
                     {
                         var otherParam = other.Parameters.ElementAtOrDefault(parami);
                         return

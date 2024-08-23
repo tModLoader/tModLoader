@@ -22,23 +22,23 @@ if NOT ["%errorlevel%"]==["0"] (
 )
 
 If "%1"=="auto" (
-	echo building setupAuto.csproj
-	dotnet build setup/GUI/Setup.Auto.csproj --output "setup/bin/Debug/net6.0-windows"
+	echo building Setup.CLI.csproj
+	dotnet build setup/CLI/Setup.CLI.csproj -c Release --output "setup/bin/Release/net8.0" -p:WarningLevel=0 -v q
 
 	if NOT ["%errorlevel%"]==["0"] (
 		pause
 		exit /b %errorlevel%
 	)
 
-	"setup/bin/Debug/net6.0-windows/setup-auto.exe" %2
+	"setup/bin/Release/net8.0/setup-cli.exe" "setup-auto" %2 "steam_build" "--plain-progress"
 ) Else (
-	echo building setup.csproj
-	dotnet build setup/GUI/Setup.GUI.csproj --output "setup/bin/Debug/net6.0-windows"
+	echo building Setup.GUI.csproj
+	dotnet build setup/GUI/Setup.GUI.csproj -c Release --output "setup/bin/Release/net8.0-windows" -p:WarningLevel=0 -v q
 
 	if NOT ["%errorlevel%"]==["0"] (
 		pause
 		exit /b %errorlevel%
 	)
 
-	start "" "setup/bin/Debug/net6.0-windows/setup-gui.exe" %*
+	start "" "setup/bin/Release/net8.0-windows/setup-gui.exe" %*
 )

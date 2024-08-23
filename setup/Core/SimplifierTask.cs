@@ -1,22 +1,30 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Simplification;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core;
+
+public sealed class SimplifierTask : RoslynTask
 {
-	public class SimplifierTask : RoslynTask
+	public SimplifierTask(IServiceProvider serviceProvider)
+		: base(serviceProvider.GetRequiredService<ICSharpProjectSelectionPrompt>()) { }
+
+	protected override string Status => "Simplifying";
+	protected override int MaxDegreeOfParallelism => 2;
+
+	protected override ITaskProgress GetTaskProgress(IProgress progress)
 	{
-		protected override string Status => "Simplifying";
-		protected override int MaxDegreeOfParallelism => 2;
+		return progress.StartTask($"Simplifying {Path.GetFileName(ProjectPath)}...");
+	}
 
-		public SimplifierTask(ITaskInterface taskInterface) : base(taskInterface) { }
-
-		protected override async Task<Document> Process(Document doc) {
-			if (!(await doc.GetSyntaxRootAsync() is SyntaxNode root))
-				return doc;
-
-			root = root.WithAdditionalAnnotations(Simplifier.Annotation);
-			return await Simplifier.ReduceAsync(doc.WithSyntaxRoot(root), cancellationToken: taskInterface.CancellationToken);
+	protected override async Task<Document> Process(Document doc, CancellationToken cancellationToken = default)
+	{
+		if (await doc.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is not { } root) {
+			return doc;
 		}
+
+		root = root.WithAdditionalAnnotations(Simplifier.Annotation);
+		return await Simplifier.ReduceAsync(doc.WithSyntaxRoot(root), cancellationToken: cancellationToken).ConfigureAwait(false);
 	}
 }

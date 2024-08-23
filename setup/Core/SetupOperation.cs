@@ -1,194 +1,206 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using ICSharpCode.Decompiler.Util;
+﻿using Terraria.ModLoader.Setup.Core.Abstractions;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core;
+
+public abstract class SetupOperation
 {
-	public abstract class SetupOperation
+	private int currentProgress;
+
+	protected async Task ExecuteParallel(
+		List<WorkItem> items,
+		ITaskProgress progress,
+		bool resetProgress = true,
+		int? maxDegreeOfParallelism = null,
+		CancellationToken cancellationToken = default)
 	{
-		protected delegate void UpdateStatus(string status);
-		protected delegate void Worker(UpdateStatus updateStatus);
-
-		protected class WorkItem
-		{
-			public readonly string status;
-			public readonly Worker worker;
-
-			public WorkItem(string status, Worker worker) {
-				this.status = status;
-				this.worker = worker;
+		try {
+			if (resetProgress) {
+				progress.SetCurrentProgress(0);
+				progress.SetMaxProgress(items.Count);
+				currentProgress = 0;
 			}
 
-			public WorkItem(string status, Action action) : this(status, _ => action()) { }
-		}
+			var working = new List<Ref<string>>();
 
-		protected void ExecuteParallel(List<WorkItem> items, bool resetProgress = true, int maxDegree = 0) {
-			try {
-				if (resetProgress) {
-					taskInterface.SetMaxProgress(items.Count());
-					progress = 0;
-				}
+			void UpdateStatus()
+			{
+				progress.ReportStatus(string.Join("\r\n", working.Select(r => r.item)), overwrite: true);
+			}
 
-				var working = new List<Ref<string>>();
-				void UpdateStatus() => taskInterface.SetStatus(string.Join("\r\n", working.Select(r => r.item)));
+			await Parallel.ForEachAsync(
+				items,
+				new ParallelOptions {
+					MaxDegreeOfParallelism = maxDegreeOfParallelism > 0 ? maxDegreeOfParallelism.Value : Environment.ProcessorCount,
+					CancellationToken = cancellationToken,
+				},
+				async (item, ct) => {
+					ct.ThrowIfCancellationRequested();
+					var status = new Ref<string>(item.Status);
+					lock (working) {
+						working.Add(status);
+						UpdateStatus();
+					}
 
-				Parallel.ForEach(Partitioner.Create(items, EnumerablePartitionerOptions.NoBuffering),
-					new ParallelOptions { MaxDegreeOfParallelism = maxDegree > 0 ? maxDegree : Environment.ProcessorCount },
-					item => {
-						taskInterface.CancellationToken.ThrowIfCancellationRequested();
-						var status = new Ref<string>(item.status);
+					void SetStatus(string s)
+					{
 						lock (working) {
-							working.Add(status);
+							status.item = s;
 							UpdateStatus();
 						}
+					}
 
-						void SetStatus(string s) {
-							lock(working) {
-								status.item = s;
-								UpdateStatus();
-							}
-						}
+					await item.Worker(SetStatus, ct).ConfigureAwait(false);
 
-						item.worker(SetStatus);
-
-						lock (working) {
-							working.Remove(status);
-							taskInterface.SetProgress(++progress);
-							UpdateStatus();
-						}
-					});
-			} catch (AggregateException ex) {
-				var actual = ex.Flatten().InnerExceptions.Where(e => !(e is OperationCanceledException));
-				if (!actual.Any())
-					throw new OperationCanceledException();
-
-				throw new AggregateException(actual);
-			}
+					lock (working) {
+						working.Remove(status);
+						progress.SetCurrentProgress(++currentProgress);
+						UpdateStatus();
+					}
+				}).ConfigureAwait(false);
 		}
-
-		public static string PreparePath(string path)
-			=> path.Replace('/', Path.DirectorySeparatorChar);
-
-		public static string RelPath(string basePath, string path) {
-			if (path.Last() == Path.DirectorySeparatorChar)
-				path = path.Substring(0, path.Length - 1);
-
-			if (basePath.Last() != Path.DirectorySeparatorChar)
-				basePath += Path.DirectorySeparatorChar;
-
-			if (path+Path.DirectorySeparatorChar == basePath) return "";
-
-			if (!path.StartsWith(basePath)) {
-				path = Path.GetFullPath(path);
-				basePath = Path.GetFullPath(basePath);
+		catch (AggregateException ex) {
+			IEnumerable<Exception> actual =
+				ex.Flatten().InnerExceptions.Where(e => !(e is OperationCanceledException));
+			if (!actual.Any()) {
+				throw new OperationCanceledException();
 			}
 
-			if(!path.StartsWith(basePath))
-				throw new ArgumentException("Path \""+path+"\" is not relative to \""+basePath+"\"");
+			throw new AggregateException(actual);
+		}
+	}
 
-			return path.Substring(basePath.Length);
+	public static void CreateDirectory(string dir)
+	{
+		if (!Directory.Exists(dir)) {
+			Directory.CreateDirectory(dir);
+		}
+	}
+
+	public static void CreateParentDirectory(string path) => CreateDirectory(Path.GetDirectoryName(path)!);
+
+	public static void DeleteFile(string path)
+	{
+		if (File.Exists(path)) {
+			File.SetAttributes(path, FileAttributes.Normal);
+			File.Delete(path);
+		}
+	}
+
+	protected static void Copy(string from, string to)
+	{
+		CreateParentDirectory(to);
+
+		if (File.Exists(to)) {
+			File.SetAttributes(to, FileAttributes.Normal);
 		}
 
-		public static void CreateDirectory(string dir) {
-			if (!Directory.Exists(dir))
-				Directory.CreateDirectory(dir);
-		}
+		File.Copy(from, to, true);
+	}
 
-		public static void CreateParentDirectory(string path) {
-			CreateDirectory(Path.GetDirectoryName(path));
-		}
+	protected static IEnumerable<(string file, string relPath)> EnumerateFiles(string dir) =>
+		Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
+			.Select(path => (file: PathUtils.SetCrossPlatformDirectorySeparators(path), relPath: PathUtils.SetCrossPlatformDirectorySeparators(RelPath(dir, path))));
 
-		public static void DeleteFile(string path) {
-			if (File.Exists(path)) {
-				File.SetAttributes(path,FileAttributes.Normal);
-				File.Delete(path);
-			}
-		}
-
-		public static void Copy(string from, string to) {
-			CreateParentDirectory(to);
-
-			if (File.Exists(to)) {
-				File.SetAttributes(to,FileAttributes.Normal);
-			}
-
-			File.Copy(from, to, true);
-		}
-
-		public static IEnumerable<(string file, string relPath)> EnumerateFiles(string dir) =>
-			Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
-			.Select(path => (file: path, relPath: RelPath(dir, path)));
-
-		public static void DeleteAllFiles(string dir) {
-			foreach (string file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)) {
-				File.SetAttributes(file,FileAttributes.Normal);
-				File.Delete(file);
-			}
-		}
-
-		public static bool DeleteEmptyDirs(string dir) {
-			if (!Directory.Exists(dir))
-				return true;
-
-			return DeleteEmptyDirsRecursion(dir);
-		}
-
-		private static bool DeleteEmptyDirsRecursion(string dir) {
-			bool allEmpty = true;
-
-			foreach (string subDir in Directory.EnumerateDirectories(dir))
-				allEmpty &= DeleteEmptyDirsRecursion(subDir);
-
-			if (!allEmpty || Directory.EnumerateFiles(dir).Any())
-				return false;
-
-			Directory.Delete(dir);
-
+	protected static bool DeleteEmptyDirs(string dir)
+	{
+		if (!Directory.Exists(dir)) {
 			return true;
 		}
 
-		protected readonly ITaskInterface taskInterface;
-		protected int progress;
+		return DeleteEmptyDirsRecursion(dir);
+	}
 
-		protected SetupOperation(ITaskInterface taskInterface) {
-			this.taskInterface = taskInterface;
+	private static string RelPath(string basePath, string path)
+	{
+		if (path.Last() == Path.DirectorySeparatorChar) {
+			path = path.Substring(0, path.Length - 1);
 		}
 
-		/// <summary>
-		/// Run the task, any exceptions thrown will be written to a log file and update the status label with the exception message
-		/// </summary>
-		public abstract void Run();
+		if (basePath.Last() != Path.DirectorySeparatorChar) {
+			basePath += Path.DirectorySeparatorChar;
+		}
 
-		/// <summary>
-		/// Display a configuration dialog. Return false if the operation should be cancelled.
-		/// </summary>
-		public virtual bool ConfigurationDialog() => true;
+		if (path + Path.DirectorySeparatorChar == basePath) {
+			return "";
+		}
 
-		/// <summary>
-		/// Display a startup warning dialog
-		/// </summary>
-		/// <returns>true if the task should continue</returns>
-		public virtual bool StartupWarning() => true;
+		if (!path.StartsWith(basePath)) {
+			path = Path.GetFullPath(path);
+			basePath = Path.GetFullPath(basePath);
+		}
 
-		/// <summary>
-		/// Will prevent successive tasks from executing and cause FinishedDialog to be called
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool Failed() => false;
+		if (!path.StartsWith(basePath)) {
+			throw new ArgumentException("Path \"" + path + "\" is not relative to \"" + basePath + "\"");
+		}
 
-		/// <summary>
-		/// Will cause FinishedDialog to be called if warnings are not supressed
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool Warnings() => false;
+		return path.Substring(basePath.Length);
+	}
 
-		/// <summary>
-		/// Called to display a finished dialog if Failures() || warnings are not supressed and Warnings()
-		/// </summary>
-		public virtual void FinishedDialog() {}
+	private static bool DeleteEmptyDirsRecursion(string dir)
+	{
+		bool allEmpty = true;
+
+		foreach (string subDir in Directory.EnumerateDirectories(dir)) {
+			allEmpty &= DeleteEmptyDirsRecursion(subDir);
+		}
+
+		if (!allEmpty || Directory.EnumerateFiles(dir).Any()) {
+			return false;
+		}
+
+		Directory.Delete(dir);
+
+		return true;
+	}
+
+	/// <summary>
+	///     Run the task, any exceptions thrown will be written to a log file and update the status label with the exception
+	///     message
+	/// </summary>
+	public abstract Task Run(IProgress progress, CancellationToken cancellationToken = default);
+
+	/// <summary>
+	///     Display a configuration dialog. Return false if the operation should be cancelled.
+	/// </summary>
+	/// <param name="cancellationToken"></param>
+	public virtual ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default) => ValueTask.FromResult(true);
+
+	/// <summary>
+	///     Display a startup warning dialog
+	/// </summary>
+	/// <returns>true if the task should continue</returns>
+	public virtual bool StartupWarning() => true;
+
+	/// <summary>
+	///     Will prevent successive tasks from executing and cause FinishedDialog to be called
+	/// </summary>
+	/// <returns></returns>
+	public virtual bool Failed() => false;
+
+	/// <summary>
+	///     Called to display a finished dialog if Failures() || warnings are not supressed and Warnings()
+	/// </summary>
+	public virtual void FinishedPrompt() { }
+
+	protected delegate void UpdateStatus(string status);
+
+	protected delegate ValueTask Worker(UpdateStatus updateStatus, CancellationToken cancellationToken = default);
+
+	protected class WorkItem
+	{
+		public WorkItem(string status, Worker worker)
+		{
+			this.Status = status;
+			this.Worker = worker;
+		}
+
+		public string Status { get; }
+
+		public Worker Worker { get; }
+
+		public WorkItem(string status, Func<CancellationToken, ValueTask> action) : this(status, (_, ct) => action(ct)) { }
+
+		public WorkItem(string status, Action action) : this(status, (_, _) => { action(); return ValueTask.CompletedTask; }) { }
 	}
 }

@@ -1,0 +1,24 @@
+using Spectre.Console.Cli;
+using Terraria.ModLoader.Setup.Core;
+
+namespace Terraria.ModLoader.Setup.CLI.Commands;
+
+public sealed class FormatCommand : CancellableAsyncCommand<BaseCommandSettings>
+{
+	private readonly TaskRunner taskRunner;
+	private readonly IServiceProvider serviceProvider;
+
+	public FormatCommand(TaskRunner taskRunner, IServiceProvider serviceProvider)
+	{
+		this.taskRunner = taskRunner;
+		this.serviceProvider = serviceProvider;
+	}
+
+	public override async Task<int> ExecuteAsync(
+		CommandContext context,
+		BaseCommandSettings settings,
+		CancellationToken cancellationToken)
+	{
+		return await taskRunner.Run(new FormatTask(serviceProvider), settings.PlainProgress, cancellationToken: cancellationToken);
+	}
+}

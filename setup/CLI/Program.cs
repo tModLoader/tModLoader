@@ -1,0 +1,104 @@
+﻿// See https://aka.ms/new-console-template for more information
+
+using System.Globalization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Spectre.Console.Cli;
+using Terraria.ModLoader.Setup.CLI;
+using Terraria.ModLoader.Setup.CLI.Commands;
+using Terraria.ModLoader.Setup.Core;
+using Terraria.ModLoader.Setup.Core.Abstractions;
+
+public static class Program
+{
+	public static async Task<int> Main(string[] args)
+	{
+		CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+		CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+
+		string userSettingsFilePath = Path.Combine("setup", "user.settings");
+		if (!File.Exists(userSettingsFilePath)) {
+			ProgramSettings.InitializeSettingsFile(userSettingsFilePath);
+		}
+
+		IConfigurationRoot configuration = new ConfigurationBuilder()
+			.AddJsonFile(Path.Combine(Environment.CurrentDirectory, userSettingsFilePath), false, true)
+			.Build();
+
+		IServiceCollection services = new ServiceCollection();
+		services
+			.AddCoreServices(configuration, userSettingsFilePath)
+			.AddTransient<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
+			.AddTransient<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
+			.AddTransient<IUserPrompt, UserPrompt>()
+			.AddTransient<TaskRunner>();
+
+		var app = new CommandApp(new TypeRegistrar(services));
+		app.Configure(config => {
+#if DEBUG
+			config.PropagateExceptions();
+			config.ValidateExamples();
+#endif
+
+			config.AddCommand<SetupCommand>("setup")
+				.WithDescription("Complete environment setup. Equivalent to Decompile + Regen Source");
+
+			config.AddCommand<SetupAutoCommand>("setup-auto")
+				.WithDescription("Setup without prompts and parallel decompilation. Intended for e.g. CI pipelines.")
+				.IsHidden();
+
+			config.AddCommand<DecompileCommand>("decompile")
+				.WithDescription("Decompiles Terraria. Outputs to src/decompiled. Currently Windows only.");
+
+			config.AddBranch("diff", x => {
+				x.SetDescription("Diffs the source to recalculate patches.");
+
+				x.AddCommand<DiffTerrariaCommand>("terraria")
+					.WithDescription("Diffs src/Terraria against src/decompiled");
+				x.AddCommand<DiffTerrariaNetCoreCommand>("terraria-net-core")
+					.WithDescription("Diffs src/TerrariaNetCore against src/Terraria");
+				x.AddCommand<DiffTModLoaderCommand>("tml")
+					.WithDescription("Diffs src/tModLoader against src/TerrariaNetCore. Use this after making changes and then commit the patches to git.");
+			});
+
+			config.AddBranch("patch", x => {
+				x.SetDescription("Applies patches.");
+
+				x.AddCommand<PatchTerrariaCommand>("terraria")
+					.WithDescription("Patches source in src/Terraria");
+				x.AddCommand<PatchTerrariaNetCoreCommand>("terraria-net-core")
+					.WithDescription("Patches source in src/TerrariaNetCore");
+				x.AddCommand<PatchTModLoaderCommand>("tml")
+					.WithDescription("Patches source in src/tModLoader. Edit the source code in src/tModLoader after this phase.");
+			});
+
+			config.AddCommand<RegenSourceCommand>("regen-source")
+				.WithDescription("Regenerates all source files. Use this after pulling. Equivalent to Setup without decompile.");
+
+			config.AddCommand<FormatCommand>("format")
+				.WithDescription("Formats source files for a given .csproj file.");
+
+			config.AddCommand<HookGenCommand>("hook-gen")
+				.WithDescription("Generates TerrariaHooks.dll.");
+
+			config.AddCommand<SimplifyCommand>("simplify")
+				.WithDescription("Uses Microsoft.CodeAnalysis.Simplification.Simplifier to reduce code in a project.");
+
+			config.AddCommand<UpdateLocalizationFilesCommand>("update-localization-files")
+				.WithDescription("Updates other localization files after adding new keys to en-US.tModLoader.json. Requires python 3.");
+		});
+
+		return await app.RunAsync(args);
+	}
+}
+
+// CoconaApp app = builder.Build();
+//
+// app.AddCommands<SetupCommands>();
+// app.AddCommands<DecompileCommand>();
+// app.AddSubCommand("patch", x => x.AddCommands<PatchSubCommands>()).WithDescription("Applies patches.");
+// app.AddSubCommand("diff", x => x.AddCommands<DiffSubCommands>()).WithDescription("Diffs the source to recalculate patches.");
+// app.AddCommands<RegenSourceCommand>();
+// app.AddCommands<OtherCommands>();
+//
+// await app.RunAsync();

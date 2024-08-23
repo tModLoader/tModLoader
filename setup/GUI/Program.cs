@@ -1,267 +1,154 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
-using Terraria.ModLoader.Setup.Properties;
-using Terraria.ModLoader.Setup.Utilities;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using DiffPatch;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Terraria.ModLoader.Setup.Core;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.GUI
 {
 	static class Program
 	{
-		public static readonly string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-		public static readonly string logsDir = Path.Combine("setup", "logs");
-
-		public static string TerrariaSteamDir => Settings.Default.TerrariaSteamDir;
-		public static string TMLDevSteamDir => Settings.Default.TMLDevSteamDir;
-		public static string TerrariaPath => Path.Combine(TerrariaSteamDir, "Terraria.exe");
-		public static string TerrariaServerPath => Path.Combine(TerrariaSteamDir, "TerrariaServer.exe");
-
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main(string[] args) {
+		static void Main(string[] args)
+		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-#if AUTO
-			Settings.Default.TerrariaSteamDir = Path.GetFullPath(args[0]);
-			Settings.Default.TMLDevSteamDir = Path.GetFullPath("steam_build");
-
-			if (!Directory.Exists(TMLDevSteamDir))
-				Directory.CreateDirectory(TMLDevSteamDir);
-#else
-			FindTerrariaDirectoryIfNecessary();
-			CreateTMLSteamDirIfNecessary();
-#endif
-			UpdateTargetsFiles();
-#if AUTO
-			Console.WriteLine("Automatic setup start");
-			new AutoSetup().DoAuto();
-			Console.WriteLine("Automatic setup finished");
-#else
-			Application.Run(new MainForm());
-#endif
-		}
-
-		public static int RunCmd(string dir, string cmd, string args, 
-				Action<string> output = null, 
-				Action<string> error = null,
-				string input = null,
-				CancellationToken cancel = default(CancellationToken)) {
-
-			using (var process = new Process()) {
-				process.StartInfo = new ProcessStartInfo {
-					FileName = cmd,
-					Arguments = args,
-					WorkingDirectory = dir,
-					UseShellExecute = false,
-					RedirectStandardInput = input != null,
-					CreateNoWindow = true
-				};
-
-				if (output != null) {
-					process.StartInfo.RedirectStandardOutput = true;
-					process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
-				}
-
-				if (error != null) {
-					process.StartInfo.RedirectStandardError = true;
-					process.StartInfo.StandardErrorEncoding = Encoding.UTF8;
-				}
-
-				if (!process.Start())
-					throw new Exception($"Failed to start process: \"{cmd} {args}\"");
-
-				if (input != null) {
-					var w = new StreamWriter(process.StandardInput.BaseStream, new UTF8Encoding(false));
-					w.Write(input);
-					w.Close();
-				}
-
-				while (!process.HasExited) {
-					if (cancel.IsCancellationRequested) {
-						process.Kill();
-						throw new OperationCanceledException(cancel);
-					}
-					process.WaitForExit(100);
-
-					output?.Invoke(process.StandardOutput.ReadToEnd());
-					error?.Invoke(process.StandardError.ReadToEnd());
-				}
-
-				return process.ExitCode;
-			}
-		}
-
-		public static bool SelectAndSetTerrariaDirectoryDialog() {
-			if (TrySelectTerrariaDirectoryDialog(out string path)) {
-				SetTerrariaDirectory(path);
-
-				return true;
+			string userSettingsFilePath = Path.Combine("setup", "user.settings");
+			if (!File.Exists(userSettingsFilePath)) {
+				ProgramSettings programSettings = ProgramSettings.InitializeSettingsFile(userSettingsFilePath);
+				MigrateSettings(programSettings);
 			}
 
-			return false;
+			IConfigurationRoot configuration = new ConfigurationBuilder()
+				.AddJsonFile(Path.Combine(Environment.CurrentDirectory, userSettingsFilePath), false, true)
+				.Build();
+
+			IServiceCollection services = new ServiceCollection();
+
+			services
+				.AddCoreServices(configuration, userSettingsFilePath)
+				.AddTransient<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
+				.AddTransient<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
+				.AddTransient<IUserPrompt, UserPrompt>()
+				.AddSingleton<MainForm>()
+				.AddSingleton<IPatchReviewer>(sp => sp.GetRequiredService<MainForm>());
+
+			IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+			TerrariaExecutableSetter terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
+			terrariaExecutableSetter.FindAndSetTerrariaDirectoryIfNecessary().GetAwaiter().GetResult();
+
+			TargetsFilesUpdater targetsFilesUpdater = serviceProvider.GetRequiredService<TargetsFilesUpdater>();
+			targetsFilesUpdater.Update();
+
+			Application.Run(serviceProvider.GetRequiredService<MainForm>());
 		}
 
-		public static bool TrySelectTerrariaDirectoryDialog(out string result) {
-			result = null;
+		private static void MigrateSettings(ProgramSettings programSettings)
+		{
+			string settingsRootFolder =
+				Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Terraria");
 
-			while (true) {
-				var dialog = new OpenFileDialog {
-					InitialDirectory = Path.GetFullPath(Directory.Exists(TerrariaSteamDir) ? TerrariaSteamDir : "."),
-					Filter = "Terraria|Terraria.exe",
-					Title = "Select Terraria.exe"
-				};
+			IEnumerable<string> directories = Directory
+				.EnumerateDirectories(settingsRootFolder, "setup_Url_*", SearchOption.TopDirectoryOnly).ToArray();
+			FileInfo fileInfo = directories
+				.Select(x => new DirectoryInfo(x))
+				.SelectMany(x => x.EnumerateFiles("user.config", SearchOption.AllDirectories))
+				.MaxBy(x => x?.LastWriteTimeUtc);
 
-				if (dialog.ShowDialog() != DialogResult.OK)
-					return false;
-
-				string err = null;
-
-				if (Path.GetFileName(dialog.FileName) != "Terraria.exe")
-					err = "File must be named Terraria.exe";
-				else if (!File.Exists(Path.Combine(Path.GetDirectoryName(dialog.FileName), "TerrariaServer.exe")))
-					err = "TerrariaServer.exe does not exist in the same directory";
-
-				if (err != null) {
-					if (MessageBox.Show(err, "Invalid Selection", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
-						return false;
-				}
-				else {
-					result = Path.GetDirectoryName(dialog.FileName);
-
-					return true;
-				}
-			}
-		}
-
-		private static void SetTerrariaDirectory(string path) {
-			Settings.Default.TerrariaSteamDir = path;
-			Settings.Default.TMLDevSteamDir = string.Empty;
-			Settings.Default.Save();
-
-			CreateTMLSteamDirIfNecessary();
-			UpdateTargetsFiles();
-		}
-
-		public static bool SelectTmlDirectoryDialog() {
-			while (true) {
-				var dialog = new OpenFileDialog {
-					InitialDirectory = Path.GetFullPath(Directory.Exists(TerrariaSteamDir) ? TerrariaSteamDir : "."),
-					ValidateNames = false,
-					CheckFileExists = false,
-					CheckPathExists = true,
-					FileName = "Folder Selection.",
-				};
-
-				if (dialog.ShowDialog() != DialogResult.OK)
-					return false;
-
-				Settings.Default.TMLDevSteamDir = Path.GetDirectoryName(dialog.FileName);
-				Settings.Default.Save();
-
-				UpdateTargetsFiles();
-				
-				return true;
-			}
-		}
-
-		private static void FindTerrariaDirectoryIfNecessary() {
-			if (!Directory.Exists(TerrariaSteamDir))
-				FindTerrariaDirectory();
-		}
-
-		private static void FindTerrariaDirectory() {
-			if (!SteamUtils.TryFindTerrariaDirectory(out string terrariaFolderPath)) {
-				const string MessageText = "Unable to automatically find Terraria's installation path. Please select it manually.";
-
-				Console.WriteLine(MessageText);
-
-				var messageResult = MessageBox.Show(MessageText, "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-
-				if (messageResult != DialogResult.OK || !TrySelectTerrariaDirectoryDialog(out terrariaFolderPath)) {
-					Console.WriteLine("User chose to not retry. Exiting.");
-					Environment.Exit(-1);
-				}
-			}
-
-			SetTerrariaDirectory(terrariaFolderPath);
-		}
-
-		private static void CreateTMLSteamDirIfNecessary() {
-			if (Directory.Exists(TMLDevSteamDir))
+			if (fileInfo == null) {
 				return;
-			
-			Settings.Default.TMLDevSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.TerrariaSteamDir, "..", "tModLoaderDev"));
-			Settings.Default.Save();
+			}
 
+			XDocument document = XDocument.Load(fileInfo.FullName);
+
+			MigrateDateTimes(document, programSettings);
+			MigrateStrings(document, programSettings);
+			MigratePatchMode(document, programSettings);
+			MigrateFormatAfterDecompiling(document, programSettings);
+			programSettings.Save();
+
+			CleanupDirectories(directories, settingsRootFolder);
+		}
+
+		private static void MigrateDateTimes(XDocument document, ProgramSettings programSettings)
+		{
+			Migration<DateTime>[] dateTimeMigrations = [
+				new(x => programSettings.TerrariaDiffCutoff = x, "TerrariaDiffCutoff"),
+				new(x => programSettings.TerrariaNetCoreDiffCutoff = x, "TerrariaNetCoreDiffCutoff"),
+				new(x => programSettings.TModLoaderDiffCutoff = x, "tModLoaderDiffCutoff"),
+			];
+
+			foreach (Migration<DateTime> migration in dateTimeMigrations) {
+				XElement element = GetElement(document, migration.SettingName);
+				if (element != null) {
+					migration.UpdateAction(DateTime.Parse(element.Value, CultureInfo.InvariantCulture));
+				}
+			}
+		}
+
+		private static void MigrateStrings(XDocument document, ProgramSettings programSettings)
+		{
+			Migration<string>[] stringMigrations = [
+				new(x => programSettings.TerrariaSteamDir = x, "TerrariaSteamDir"),
+				new(x => programSettings.TMLDevSteamDir = x, "TMLDevSteamDir"),
+			];
+
+			foreach (Migration<string> migration in stringMigrations) {
+				XElement element = GetElement(document, migration.SettingName);
+				if (element != null) {
+					migration.UpdateAction(element.Value);
+				}
+			}
+		}
+
+		private static void MigratePatchMode(XDocument document, ProgramSettings programSettings)
+		{
+			XElement element = GetElement(document, "PatchMode");
+			if (element != null) {
+				programSettings.PatchMode = (Patcher.Mode)int.Parse(element.Value);
+			}
+		}
+
+		private static void MigrateFormatAfterDecompiling(XDocument document, ProgramSettings programSettings)
+		{
+			XElement element = GetElement(document, "FormatAfterDecompiling");
+			if (element != null) {
+				programSettings.FormatAfterDecompiling = bool.Parse(element.Value);
+			}
+		}
+
+		private static XElement GetElement(XDocument document, string settingName)
+		{
+			return document.XPathSelectElement($"//setting[@name='{settingName}']/value");
+		}
+
+		private static void CleanupDirectories(IEnumerable<string> directories, string settingsRootFolder)
+		{
 			try {
-				Directory.CreateDirectory(TMLDevSteamDir);
+				foreach (string directory in directories) {
+					Directory.Delete(directory, true);
+				}
+
+				if (!Directory.EnumerateFileSystemEntries(settingsRootFolder).Any()) {
+					Directory.Delete(settingsRootFolder);
+				}
 			}
-			catch (Exception e) {
-				Console.WriteLine($"{e.GetType().Name}: {e.Message}");
-			}
+			catch { }
 		}
 
-		internal static void UpdateTargetsFiles() {
-			UpdateFileText("src/WorkspaceInfo.targets", GetWorkspaceInfoTargetsText());
-			string tMLModTargetsContents = File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets");
-
-			string TMLVERSION = Environment.GetEnvironmentVariable("TMLVERSION");
-			if (!string.IsNullOrWhiteSpace(TMLVERSION) && branch == "stable") {
-				// Convert 2012.4.x to 2012_4
-				Console.WriteLine($"TMLVERSION found: {TMLVERSION}");
-				string TMLVERSIONDefine = $"TML_{string.Join("_", TMLVERSION.Split('.').Take(2))}";
-				Console.WriteLine($"TMLVERSIONDefine: {TMLVERSIONDefine}");
-				tMLModTargetsContents = tMLModTargetsContents.Replace("<!-- TML stable version define placeholder -->", $"<DefineConstants>$(DefineConstants);{TMLVERSIONDefine}</DefineConstants>");
-				UpdateFileText("patches/tModLoader/Terraria/release_extras/tMLMod.targets", tMLModTargetsContents); // The patch file needs to be updated as well since it will be copied to src and the postbuild will copy it to the steam folder as well.
-			}
-			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), tMLModTargetsContents);
-		}
-
-		private static void UpdateFileText(string path, string text) {
-			SetupOperation.CreateParentDirectory(path);
-
-			if (!File.Exists(path) || text != File.ReadAllText(path))
-				File.WriteAllText(path, text);
-		}
-
-		static string branch = "";
-		private static string GetWorkspaceInfoTargetsText() {
-			string gitsha = "";
-			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
-
-			branch = "";
-			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
-
-			string GITHUB_HEAD_REF = Environment.GetEnvironmentVariable("GITHUB_HEAD_REF");
-			if (!string.IsNullOrWhiteSpace(GITHUB_HEAD_REF)) {
-				Console.WriteLine($"GITHUB_HEAD_REF found: {GITHUB_HEAD_REF}");
-				branch = GITHUB_HEAD_REF;
-			}
-			string HEAD_SHA = Environment.GetEnvironmentVariable("HEAD_SHA");
-			if (!string.IsNullOrWhiteSpace(HEAD_SHA)) {
-				Console.WriteLine($"HEAD_SHA found: {HEAD_SHA}");
-				gitsha = HEAD_SHA;
-			}
-
-			return
-$@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-  <!-- This file will always be overwritten, do not edit it manually. -->
-  <PropertyGroup>
-	<BranchName>{branch}</BranchName>
-	<CommitSHA>{gitsha}</CommitSHA>
-	<TerrariaSteamPath>{TerrariaSteamDir}</TerrariaSteamPath>
-    <tModLoaderSteamPath>{TMLDevSteamDir}</tModLoaderSteamPath>
-  </PropertyGroup>
-</Project>";
-		}
+		private sealed record Migration<T>(Action<T> UpdateAction, string SettingName);
 	}
 }

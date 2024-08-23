@@ -1,89 +1,91 @@
 ﻿using DiffPatch;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using Terraria.ModLoader.Setup.Core.Abstractions;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core;
+
+public sealed class DiffTask : SetupOperation
 {
-	public class DiffTask : SetupOperation
+	public const string RemovedFileList = "removed_files.list";
+
+	private static readonly string[] Extensions = [
+		".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".targets", ".txt", ".bat", ".sh",
+	];
+
+	private readonly DiffTaskParameters parameters;
+
+	public DiffTask(DiffTaskParameters parameters)
 	{
-		private static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".targets", ".txt", ".bat", ".sh" };
-		private static bool IsDiffable(string relPath) => extensions.Any(relPath.EndsWith);
+		this.parameters = parameters with {
+			BaseDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.BaseDir),
+			PatchedDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchedDir),
+			PatchDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchDir),
+		};
+	}
 
-		public static readonly string RemovedFileList = "removed_files.list";
-		public static readonly Regex HunkOffsetRegex = new Regex(@"@@ -(\d+),(\d+) \+([_\d]+),(\d+) @@", RegexOptions.Compiled);
-		
-		public readonly string baseDir;
-		public readonly string patchedDir;
-		public readonly string patchDir;
-		public readonly ProgramSetting<DateTime> cutoff;
+	private static bool IsDiffable(string relPath) => Extensions.Any(relPath.EndsWith);
 
-		public DiffTask(ITaskInterface taskInterface, string baseDir, string srcDir, string patchDir, 
-			ProgramSetting<DateTime> cutoff) : base(taskInterface)
-		{
-			this.baseDir = baseDir;
-			this.patchedDir = srcDir;
-			this.patchDir = patchDir;
-			this.cutoff = cutoff;
+	public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+	{
+		using var taskProgress = progress.StartTask($"Generating patches for {parameters.PatchedDir}...");
+		var items = new List<WorkItem>();
+
+		foreach ((string file, string relPath) in PatchTask.EnumerateSrcFiles(parameters.PatchedDir)) {
+			if (File.GetLastWriteTime(file) < parameters.Cutoff.Get()) {
+				continue;
+			}
+
+			if (!File.Exists(Path.Combine(parameters.BaseDir, relPath))) {
+				items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(parameters.PatchDir, relPath))));
+			}
+			else if (IsDiffable(relPath)) {
+				items.Add(new WorkItem("Diffing: " + relPath, () => Diff(relPath)));
+			}
 		}
 
-		public override void Run()
-		{
-			var items = new List<WorkItem>();
-			
-			foreach (var (file, relPath) in PatchTask.EnumerateSrcFiles(patchedDir))
-			{
-				if (File.GetLastWriteTime(file) < cutoff.Get())
-					continue;
+		await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-				if (!File.Exists(Path.Combine(baseDir, relPath)))
-					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(patchDir, relPath))));
-				else if (IsDiffable(relPath))
-					items.Add(new WorkItem("Diffing: " + relPath, () => Diff(relPath)));
+		taskProgress.ReportStatus("Deleting Unnecessary Patches", overwrite: true);
+		foreach ((string file, string relPath) in EnumerateFiles(parameters.PatchDir)) {
+			string targetPath = relPath.EndsWith(".patch") ? relPath.Substring(0, relPath.Length - 6) : relPath;
+			if (!File.Exists(Path.Combine(parameters.PatchedDir, targetPath))) {
+				DeleteFile(file);
 			}
-
-			ExecuteParallel(items);
-
-			taskInterface.SetStatus("Deleting Unnecessary Patches");
-			foreach (var (file, relPath) in EnumerateFiles(patchDir)) {
-				var targetPath = relPath.EndsWith(".patch") ? relPath.Substring(0, relPath.Length - 6) : relPath;
-				if (!File.Exists(Path.Combine(patchedDir, targetPath)))
-					DeleteFile(file);
-			}
-
-			DeleteEmptyDirs(patchDir);
-
-			taskInterface.SetStatus("Noting Removed Files");
-			var removedFiles = PatchTask.EnumerateSrcFiles(baseDir)
-				.Where(f => !File.Exists(Path.Combine(patchedDir, f.relPath)))
-				.Select(f => f.relPath)
-				.ToArray();
-
-			var removedFileList = Path.Combine(patchDir, RemovedFileList);
-			if (removedFiles.Length > 0)
-				File.WriteAllLines(removedFileList, removedFiles);
-			else
-				DeleteFile(removedFileList);
-
-			cutoff.Set(DateTime.Now);
 		}
 
-		private void Diff(string relPath)
-		{
-			var patchFile = Differ.DiffFiles(new LineMatchedDiffer(), 
-				Path.Combine(baseDir, relPath).Replace('\\', '/'), 
-				Path.Combine(patchedDir, relPath).Replace('\\', '/'));
+		DeleteEmptyDirs(parameters.PatchDir);
 
-			var patchPath = Path.Combine(patchDir, relPath + ".patch");
-			if (!patchFile.IsEmpty) {
-				CreateParentDirectory(patchPath);
-				File.WriteAllText(patchPath, patchFile.ToString(true));
-			}
-			else
-				DeleteFile(patchPath);
+		taskProgress.ReportStatus("Noting Removed Files", overwrite: false);
+		string[] removedFiles = PatchTask.EnumerateSrcFiles(parameters.BaseDir)
+			.Where(f => !File.Exists(Path.Combine(parameters.PatchedDir, f.relPath)))
+			.Select(f => PathUtils.SetCrossPlatformDirectorySeparators(f.relPath))
+			.Order()
+			.ToArray();
+
+		string removedFileList = Path.Combine(parameters.PatchDir, RemovedFileList);
+		if (removedFiles.Length > 0) {
+			await File.WriteAllLinesAsync(removedFileList, removedFiles, cancellationToken).ConfigureAwait(false);
+		}
+		else {
+			DeleteFile(removedFileList);
+		}
+
+		parameters.Cutoff.Set(DateTime.Now);
+	}
+
+	private void Diff(string relPath)
+	{
+		var patchFile = Differ.DiffFiles(new LineMatchedDiffer(),
+			PathUtils.SetCrossPlatformDirectorySeparators(Path.Combine(parameters.BaseDir, relPath)),
+			PathUtils.SetCrossPlatformDirectorySeparators(Path.Combine(parameters.PatchedDir, relPath)));
+
+		string patchPath = Path.Combine(parameters.PatchDir, relPath + ".patch");
+		if (!patchFile.IsEmpty) {
+			CreateParentDirectory(patchPath);
+			File.WriteAllText(patchPath, patchFile.ToString(true));
+		}
+		else {
+			DeleteFile(patchPath);
 		}
 	}
 }

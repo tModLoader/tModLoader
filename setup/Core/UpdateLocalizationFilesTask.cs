@@ -1,38 +1,34 @@
 ﻿using System.Diagnostics;
-using System.IO;
-using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup;
+namespace Terraria.ModLoader.Setup.Core;
 
-internal class UpdateLocalizationFilesTask : SetupOperation
+public sealed class UpdateLocalizationFilesTask : SetupOperation
 {
-	private const string UpdateLocalizationFilesPath = $"solutions/UpdateLocalizationFiles.py";
+	private const string UpdateLocalizationFilesPath = "solutions/UpdateLocalizationFiles.py";
 
-	public UpdateLocalizationFilesTask(ITaskInterface taskInterface) : base(taskInterface)
+	public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
 	{
-	}
+		using var taskProgress = progress.StartTask("Updating localization files...");
 
-	public override void Run()
-	{
-		int result = Program.RunCmd("", "where", "python");
+		int result = RunCmd.Run("", "where", "python");
 		if (result != 0) {
-			MessageBox.Show("python 3 is needed to run this command", "python not found on PATH", MessageBoxButton.OK);
-			taskInterface.SetStatus("Cancelled");
-			return;
+			throw new InvalidOperationException("python 3 is needed to run this command");
 		}
 
 		if (!File.Exists(UpdateLocalizationFilesPath)) {
-			MessageBox.Show("UpdateLocalizationFiles.py is missing somehow", "UpdateLocalizationFiles.py missing", MessageBoxButton.OK);
-			taskInterface.SetStatus("Cancelled");
-			return;
+			throw new InvalidOperationException("UpdateLocalizationFiles.py missing");
 		}
 
-		Process p = Process.Start(new ProcessStartInfo {
+		Process? p = Process.Start(new ProcessStartInfo {
 			FileName = "python",
 			Arguments = Path.GetFileName(UpdateLocalizationFilesPath),
-			WorkingDirectory = new FileInfo(UpdateLocalizationFilesPath).Directory.FullName,
+			WorkingDirectory = new FileInfo(UpdateLocalizationFilesPath).Directory!.FullName,
 		});
-		p.WaitForExit();
-		// MessageBox.Show("Success. Make sure you diff tModLoader after this");
+
+		if (p != null) {
+			await p.WaitForExitAsync(cancellationToken).ConfigureAwait(false);
+		}
 	}
 }

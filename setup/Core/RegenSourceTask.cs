@@ -1,33 +1,57 @@
-using System.Windows.Forms;
-using Terraria.ModLoader.Setup.Properties;
+using DiffPatch;
+using Microsoft.Extensions.DependencyInjection;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core;
+
+public class RegenSourceTask : CompositeTask
 {
-	public class RegenSourceTask : CompositeTask
+	private readonly ProgramSettings programSettings;
+	private readonly IUserPrompt userPrompt;
+
+	public RegenSourceTask(IServiceProvider serviceProvider) : base(GetOperations(serviceProvider))
 	{
-		public RegenSourceTask(ITaskInterface taskInterface, params SetupOperation[] tasks) : base(taskInterface, tasks) { }
+		this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+		this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
+	}
 
-		public override bool StartupWarning() {
-			if (Settings.Default.PatchMode == 2) {
-				if (MessageBox.Show(
-						"Patch mode will be reset from fuzzy to offset.\r\n",
-						"Strict Patch Mode", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK)
-					return false;
-			}
-
-			return MessageBox.Show(
-					"Any changes in /src will be lost.\r\n",
-					"Ready for Setup", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-				== DialogResult.OK;
+	public override bool StartupWarning()
+	{
+		if (programSettings.NoPrompts) {
+			return true;
 		}
 
-		public override void Run() {
-			if (Settings.Default.PatchMode == 2) {
-				Settings.Default.PatchMode = 1;
-				Settings.Default.Save();
-			}
-
-			base.Run();
+		if (programSettings.PatchMode == Patcher.Mode.FUZZY && !userPrompt.Prompt(
+			    "Strict Patch Mode",
+			    "Patch mode will be reset from fuzzy to offset.",
+			    PromptOptions.OKCancel)) {
+			return false;
 		}
+
+		return userPrompt.Prompt(
+			"Ready for Setup",
+			"Any changes in /src will be lost.",
+			PromptOptions.OKCancel);
+	}
+
+	public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+	{
+		if (programSettings.PatchMode == Patcher.Mode.FUZZY) {
+			programSettings.PatchMode = Patcher.Mode.OFFSET;
+			programSettings.Save();
+		}
+
+		await base.Run(progress, cancellationToken).ConfigureAwait(false);
+	}
+
+	private static SetupOperation[] GetOperations(IServiceProvider serviceProvider)
+	{
+		ProgramSettings programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+
+		return [
+			new PatchTask(PatchTaskParameters.ForTerraria(programSettings), serviceProvider),
+			new PatchTask(PatchTaskParameters.ForTerrariaNetCore(programSettings), serviceProvider),
+			new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider),
+		];
 	}
 }
