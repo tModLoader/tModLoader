@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 
 		public override void SetDefaults() {
-			Item.DamageType = ModContent.GetInstance<ExampleDamageClass>(); // Makes our item use our custom damage type.
+			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.Swing;
@@ -39,6 +39,10 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override bool MagicPrefix() {
 			return true;
+		}
+
+		public override bool RangedPrefix() {
+			return false;
 		}
 	}
 }
