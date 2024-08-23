@@ -996,6 +996,11 @@ Mods: {
 				DisplayName: Example Sign
 				Tooltip: ""
 			}
+
+			ExampleCustomFramingTileItem: {
+				DisplayName: Example Custom Framing Tile Item
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

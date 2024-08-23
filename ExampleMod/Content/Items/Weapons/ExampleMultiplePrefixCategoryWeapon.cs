@@ -8,7 +8,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleMultiplePrefixCategoryWeapon : ModItem
 	{
-
 		public override void SetDefaults() {
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
@@ -20,7 +19,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.damage = 70;
 			Item.knockBack = 4;
 			Item.crit = 6;
-			Item.mana = 6; // Makes the item use mana so it can receive magic prefixes
+			Item.mana = 6; // Makes the item use mana so it can receive all magic prefixes
 			Item.value = Item.buyPrice(gold: 1);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;
@@ -33,6 +32,7 @@ namespace ExampleMod.Content.Items.Weapons
 				.Register();
 		}
 
+		// These methods allows us to force this weapon to get melee and magic prefixes despite being a DamageClass.Ranged weapon. Ranged specific prefixes are also excluded.
 		public override bool MeleePrefix() {
 			return true;
 		}

@@ -76,15 +76,16 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <summary> 
 	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br/>
 	/// For a more in-depth explanation and demonstration, see <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>
-	/// This method is only meant to be overridden. Modders should call <see cref="CountsAsClass"> to query effect inheritance
+	/// This method is only meant to be overridden. Modders should call <see cref="CountsAsClass"/> to query effect inheritance.
 	/// </summary>
 	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit effects from.</param>
 	/// <returns><see langword="false"/> by default - which does not let any other classes' effects trigger on this <see cref="DamageClass"/>.</returns>
 	public virtual bool GetEffectInheritance(DamageClass damageClass) => false;
+
 	/// <summary> 
-	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of prefixes<br/>
-	/// This method is only meant to be overridden. Modders should call <see cref="GetsPrefixesFor"> to query prefix inheritance
+	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of prefixes.<br/>
+	/// This method is only meant to be overridden. Modders should call <see cref="GetsPrefixesFor"/> to query prefix inheritance.
 	/// </summary>
 	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit prefixes from.</param>
@@ -146,6 +147,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <inheritdoc cref="GetsPrefixesFor"/>
 	public bool GetsPrefixesFor<T>() where T : DamageClass
 		=> GetsPrefixesFor(ModContent.GetInstance<T>());
+
 	/// <summary>
 	/// This is used to check if this <see cref="DamageClass"/> has been set to inherit prefixes from the provided <see cref="DamageClass"/>, as dictated by <see cref="GetPrefixInheritance"/>
 	/// </summary>
