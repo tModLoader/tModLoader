@@ -6,12 +6,10 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
-	public class ExampleCustomDamageWeapon : ModItem
+	public class ExampleMultiplePrefixCategoryWeapon : ModItem
 	{
-		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword"; //TODO: remove when sprite is made for this
-
 		public override void SetDefaults() {
-			Item.DamageType = ModContent.GetInstance<ExampleDamageClass>(); // Makes our item use our custom damage type.
+			Item.DamageType = DamageClass.Ranged;
 			Item.width = 40;
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.Swing;
@@ -20,8 +18,8 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.autoReuse = true;
 			Item.damage = 70;
 			Item.knockBack = 4;
-			// Item.mana = 5; // ExampleDamageClass weapons should get magic and melee prefixes, but since this weapon doesn't have a mana cost all magic prefixes except Deranged can't be applied.
 			Item.crit = 6;
+			Item.mana = 6; // Makes the item use mana so it can receive all magic prefixes
 			Item.value = Item.buyPrice(gold: 1);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;
@@ -32,6 +30,19 @@ namespace ExampleMod.Content.Items.Weapons
 				.AddIngredient<ExampleItem>(20)
 				.AddTile<ExampleWorkbench>()
 				.Register();
+		}
+
+		// These methods allows us to force this weapon to get melee and magic prefixes despite being a DamageClass.Ranged weapon. Ranged specific prefixes are also excluded.
+		public override bool MeleePrefix() {
+			return true;
+		}
+
+		public override bool MagicPrefix() {
+			return true;
+		}
+
+		public override bool RangedPrefix() {
+			return false;
 		}
 	}
 }

@@ -711,6 +711,11 @@ Mods: {
 				// Tooltip: This is a modded sword.
 			}
 
+			ExampleMultiplePrefixCategoryWeapon: {
+				// DisplayName: Example Multiple Prefix Category Weapon
+				// Tooltip: This can receive and keep both melee and magic prefixes
+			}
+
 			ExampleWhip: {
 				// DisplayName: Example Whip
 				/* Tooltip:

@@ -141,31 +141,27 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not.
-	/// Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix
 	/// </summary>
 	public virtual bool MeleePrefix()
-		=> Item.melee && !Item.noUseGraphic;
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Melee) && !Item.noUseGraphic;
 
 	/// <summary>
-	/// Allows you to change whether or not a weapon only receives generic prefixes. Return true if the item should only receive generic prefixes and false if it should not.
-	/// Takes priority over RangedPrefix and MagicPrefix
-	/// Ignored if MeleePrefix returns true
+	/// Allows you to change whether or not a weapon receives generic prefixes. Return true if the item should receive generic prefixes and false if it should only receive them from another category.
 	/// </summary>
 	public virtual bool WeaponPrefix()
-		=> Item.melee && Item.noUseGraphic;
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Melee) && Item.noUseGraphic;
 
 	/// <summary>
 	/// Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not.
-	/// Takes priority over MagicPrefix
 	/// </summary>
 	public virtual bool RangedPrefix()
-		=> Item.ranged || Item.CountsAsClass(DamageClass.Throwing);
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Ranged);
 
 	/// <summary>
 	/// Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should receive magic prefixes and false if it should not.
 	/// </summary>
 	public virtual bool MagicPrefix()
-		=> Item.magic || Item.summon;
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Magic);
 
 	/// <summary>
 	/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
