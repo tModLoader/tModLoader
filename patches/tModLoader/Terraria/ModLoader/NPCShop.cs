@@ -88,8 +88,19 @@ public sealed partial class NPCShop : AbstractNPCShop
 		return this;
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="Add(int, Condition[])"/>
+	/// <para/> This overload takes an <see cref="Item"/> instance instead of just an item type. This Item can be customized prior to being registered. This is commonly used to provide a custom shop price or currency for this shop entry:
+	/// <code>npcShop.Add(new Item(ItemID.MagicDagger) {
+	///		shopCustomPrice = 2,
+	///		shopSpecialCurrency = ExampleMod.ExampleCustomCurrencyId
+	///	}, Condition.RemixWorld);
+	/// </code>
+	/// </summary>
 	public NPCShop Add(Item item, params Condition[] condition) => Add(new Entry(item, condition));
-	public NPCShop Add(int item, params Condition[] condition) => Add(ContentSamples.ItemsByType[item], condition);
+	/// <summary> Adds the specified item with the provided conditions to this shop. If all of the conditions are satisfied, the item will be available in the shop. </summary>
+	public NPCShop Add(int item, params Condition[] condition) => Add(new Entry(item, condition));
+	/// <inheritdoc cref="Add(int, Condition[])"/>
 	public NPCShop Add<T>(params Condition[] condition) where T : ModItem => Add(ModContent.ItemType<T>(), condition);
 
 	private NPCShop InsertAt(Entry targetEntry, bool after, Item item, params Condition[] condition) => Add(new Entry(item, condition).SetOrdering(targetEntry, after));
