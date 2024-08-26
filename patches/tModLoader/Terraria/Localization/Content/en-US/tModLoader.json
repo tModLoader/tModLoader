@@ -46,7 +46,9 @@
 		// Mods Menu
 		"ModsModsList": "Mods List",
 		"ModsEnableAll": "Enable All",
+		"ModsEnableAllConfirm": "Are you sure you want to enable all mods?",
 		"ModsDisableAll": "Disable All",
+		"ModsDisableAllConfirm": "Are you sure you want to disable all mods?",
 		"ModsReloadMods": "Reload Mods",
 		"ModsForceReload": "Force Reload",
 		"ModsOpenModsFolders": "Open Mods Folders",
