@@ -979,6 +979,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "卸载",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "愚人节玩笑",
 		"ModLoader.Items.StartBag.DisplayName": "起始包",
 		"ModLoader.Items.StartBag.Tooltip": "部分起始物品无法正常放入背包",

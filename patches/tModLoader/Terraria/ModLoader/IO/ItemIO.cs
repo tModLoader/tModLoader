@@ -106,6 +106,17 @@ public static class ItemIO
 			}
 		}
 
+		LoadModdedPrefix(item, tag);
+
+		item.stack = tag.Get<int?>("stack") ?? 1;
+		item.favorited = tag.GetBool("fav");
+
+		if (item.ModItem is not UnloadedItem)
+			LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
+	}
+
+	internal static void LoadModdedPrefix(Item item, TagCompound tag)
+	{
 		if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
 			string modPrefixMod = tag.GetString("modPrefixMod");
 			string modPrefixName = tag.GetString("modPrefixName");
@@ -122,12 +133,6 @@ public static class ItemIO
 		else if (tag.ContainsKey("prefix")) {
 			item.Prefix(tag.GetByte("prefix"));
 		}
-
-		item.stack = tag.Get<int?>("stack") ?? 1;
-		item.favorited = tag.GetBool("fav");
-
-		if (item.ModItem is not UnloadedItem)
-			LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
 	}
 
 	public static Item Load(TagCompound tag)

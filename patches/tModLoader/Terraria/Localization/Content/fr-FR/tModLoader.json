@@ -977,6 +977,7 @@
 	},
 	"Mods": {
 		// "ModLoader.Unloaded": "Unloaded",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "La Blague du Poisson D'Avril",
 		"ModLoader.Items.StartBag.DisplayName": "Sac de Départ",
 		"ModLoader.Items.StartBag.Tooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",
