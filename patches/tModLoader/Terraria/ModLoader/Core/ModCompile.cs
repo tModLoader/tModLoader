@@ -177,7 +177,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		}
 		catch (Exception e) {
 			Console.Error.WriteLine(e);
-			Environment.Exit(1);
+			Environment.Exit(e is IOException ? 1001 : 1); // Custom error code for tMLMod.targets custom warning.
 		}
 
 		Social.Steam.WorkshopSocialModule.SteamCMDPublishPreparer(modFolder);
