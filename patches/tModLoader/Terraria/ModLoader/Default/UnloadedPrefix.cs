@@ -8,7 +8,7 @@ public sealed class UnloadedPrefix : ModPrefix
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item)
 	{
 		UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
-		yield return new TooltipLine("UnloadedPrefix", this.GetLocalization("Tooltip").Format($"{unloadedGlobalItem.modPrefixMod}/{unloadedGlobalItem.modPrefixName}")) {
+		yield return new TooltipLine("UnloadedPrefix", this.GetLocalization("Tooltip").Format($"{unloadedGlobalItem.ModPrefixMod}/{unloadedGlobalItem.ModPrefixName}")) {
 			IsModifier = true,
 			OverrideColor = new(215, 123, 186)
 		};

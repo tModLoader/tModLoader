@@ -10,9 +10,9 @@ public class UnloadedGlobalItem : GlobalItem
 	internal IList<TagCompound> data = new List<TagCompound>();
 
 	[CloneByReference]
-	internal string modPrefixMod = null;
+	public string ModPrefixMod { get; internal set; } = null;
 	[CloneByReference]
-	internal string modPrefixName = null;
+	public string ModPrefixName { get; internal set; } = null;
 
 	public override bool InstancePerEntity => true;
 

@@ -61,8 +61,8 @@ public static class ItemIO
 		if (PrefixLoader.GetPrefix(item.prefix) is ModPrefix modPrefix) {
 			if (modPrefix is UnloadedPrefix) {
 				UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
-				tag.Set("modPrefixMod", unloadedGlobalItem.modPrefixMod);
-				tag.Set("modPrefixName", unloadedGlobalItem.modPrefixName);
+				tag.Set("modPrefixMod", unloadedGlobalItem.ModPrefixMod);
+				tag.Set("modPrefixName", unloadedGlobalItem.ModPrefixName);
 			}
 			else {
 				tag.Set("modPrefixMod", modPrefix.Mod.Name);
@@ -126,8 +126,8 @@ public static class ItemIO
 			else {
 				item.Prefix(ModContent.PrefixType<UnloadedPrefix>());
 				UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
-				unloadedGlobalItem.modPrefixMod = modPrefixMod;
-				unloadedGlobalItem.modPrefixName = modPrefixName;
+				unloadedGlobalItem.ModPrefixMod = modPrefixMod;
+				unloadedGlobalItem.ModPrefixName = modPrefixName;
 			}
 		}
 		else if (tag.ContainsKey("prefix")) {
