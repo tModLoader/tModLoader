@@ -977,6 +977,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Выгружено",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка",
 		"ModLoader.Items.StartBag.DisplayName": "Стартовая сумка",
 		"ModLoader.Items.StartBag.Tooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
