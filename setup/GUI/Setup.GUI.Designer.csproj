@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
-		<Nullable>enable</Nullable>
+		<OutputType>WinExe</OutputType>
 		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 </Project>
