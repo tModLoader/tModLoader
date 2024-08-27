@@ -85,7 +85,8 @@ public partial class Mod
 	/// <summary>
 	/// Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the <see cref="AssetRepository.Request{T}(string)"/> method to retrieve an Asset&lt;T&gt; instance:
 	/// <code>Asset&lt;Texture2D&gt; balloonTexture = Mod.Assets.Request&lt;Texture2D&gt;("Content/Items/Armor/SimpleAccessory_Balloon");</code>
-	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required. 
+	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required.
+	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Assets">Assets guide on the wiki</see> for more information.
 	/// </summary>
 	public AssetRepository Assets { get; private set; }
 
