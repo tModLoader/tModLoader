@@ -1,50 +1,51 @@
 ﻿using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup.Core;
-
-public class CompositeTask : SetupOperation
+namespace Terraria.ModLoader.Setup.Core
 {
-	private readonly SetupOperation[] tasks;
-	private SetupOperation? failed;
-
-	public CompositeTask(params SetupOperation[] tasks)
+	public class CompositeTask : SetupOperation
 	{
-		this.tasks = tasks;
-	}
+		private readonly SetupOperation[] tasks;
+		private SetupOperation? failed;
 
-	public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
-	{
-		foreach (var task in tasks) {
-			bool result = await task.ConfigurationPrompt(cancellationToken).ConfigureAwait(false);
-
-			if (!result) {
-				return false;
-			}
+		public CompositeTask(params SetupOperation[] tasks)
+		{
+			this.tasks = tasks;
 		}
 
-		return true;
-	}
+		public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
+		{
+			foreach (var task in tasks) {
+				bool result = await task.ConfigurationPrompt(cancellationToken).ConfigureAwait(false);
 
-	public override bool Failed()
-	{
-		return failed != null;
-	}
+				if (!result) {
+					return false;
+				}
+			}
 
-	public override void FinishedPrompt()
-	{
-		if (failed != null)
-			failed.FinishedPrompt();
-		else
-			foreach (var task in tasks)
-				task.FinishedPrompt();
-	}
+			return true;
+		}
 
-	public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
-	{
-		foreach (var task in tasks) {
-			await task.Run(progress, cancellationToken).ConfigureAwait(false);
-			if (task.Failed()) {
-				failed = task;
+		public override bool Failed()
+		{
+			return failed != null;
+		}
+
+		public override void FinishedPrompt()
+		{
+			if (failed != null)
+				failed.FinishedPrompt();
+			else
+				foreach (var task in tasks)
+					task.FinishedPrompt();
+		}
+
+		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+		{
+			foreach (var task in tasks) {
+				await task.Run(progress, cancellationToken).ConfigureAwait(false);
+				if (task.Failed()) {
+					failed = task;
+				}
 			}
 		}
 	}

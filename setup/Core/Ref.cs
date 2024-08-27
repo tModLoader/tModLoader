@@ -1,11 +1,12 @@
-﻿namespace Terraria.ModLoader.Setup.Core;
-
-public class Ref<T>
+﻿namespace Terraria.ModLoader.Setup.Core
 {
-	public T item;
-
-	public Ref(T item)
+	public class Ref<T>
 	{
-		this.item = item;
+		public T item;
+
+		public Ref(T item)
+		{
+			this.item = item;
+		}
 	}
 }

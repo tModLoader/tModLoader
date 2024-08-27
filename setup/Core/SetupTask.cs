@@ -1,31 +1,32 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup.Core;
-
-public sealed class SetupTask : CompositeTask
+namespace Terraria.ModLoader.Setup.Core
 {
-	private readonly IUserPrompt userPrompt;
-	private readonly ProgramSettings programSettings;
-
-	public SetupTask(
-		DecompileTaskParameters decompileTaskParameters,
-		IServiceProvider serviceProvider)
-		: base(new DecompileTask(decompileTaskParameters, serviceProvider), new RegenSourceTask(serviceProvider))
+	public sealed class SetupTask : CompositeTask
 	{
-		this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
-		this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
-	}
+		private readonly IUserPrompt userPrompt;
+		private readonly ProgramSettings programSettings;
 
-	public override bool StartupWarning()
-	{
-		if (programSettings.NoPrompts) {
-			return true;
+		public SetupTask(
+			DecompileTaskParameters decompileTaskParameters,
+			IServiceProvider serviceProvider)
+			: base(new DecompileTask(decompileTaskParameters, serviceProvider), new RegenSourceTask(serviceProvider))
+		{
+			this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
+			this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 		}
 
-		return userPrompt.Prompt(
-			"Ready for Setup",
-			"Any changes in /src will be lost.",
-			PromptOptions.OKCancel);
+		public override bool StartupWarning()
+		{
+			if (programSettings.NoPrompts) {
+				return true;
+			}
+
+			return userPrompt.Prompt(
+				"Ready for Setup",
+				"Any changes in /src will be lost.",
+				PromptOptions.OKCancel);
+		}
 	}
 }

@@ -2,56 +2,57 @@ using DiffPatch;
 using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup.Core;
-
-public class RegenSourceTask : CompositeTask
+namespace Terraria.ModLoader.Setup.Core
 {
-	private readonly ProgramSettings programSettings;
-	private readonly IUserPrompt userPrompt;
-
-	public RegenSourceTask(IServiceProvider serviceProvider) : base(GetOperations(serviceProvider))
+	public class RegenSourceTask : CompositeTask
 	{
-		this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
-		this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
-	}
+		private readonly ProgramSettings programSettings;
+		private readonly IUserPrompt userPrompt;
 
-	public override bool StartupWarning()
-	{
-		if (programSettings.NoPrompts) {
-			return true;
+		public RegenSourceTask(IServiceProvider serviceProvider) : base(GetOperations(serviceProvider))
+		{
+			this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+			this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 		}
 
-		if (programSettings.PatchMode == Patcher.Mode.FUZZY && !userPrompt.Prompt(
-			    "Strict Patch Mode",
-			    "Patch mode will be reset from fuzzy to offset.",
-			    PromptOptions.OKCancel)) {
-			return false;
+		public override bool StartupWarning()
+		{
+			if (programSettings.NoPrompts) {
+				return true;
+			}
+
+			if (programSettings.PatchMode == Patcher.Mode.FUZZY && !userPrompt.Prompt(
+				    "Strict Patch Mode",
+				    "Patch mode will be reset from fuzzy to offset.",
+				    PromptOptions.OKCancel)) {
+				return false;
+			}
+
+			return userPrompt.Prompt(
+				"Ready for Setup",
+				"Any changes in /src will be lost.",
+				PromptOptions.OKCancel);
 		}
 
-		return userPrompt.Prompt(
-			"Ready for Setup",
-			"Any changes in /src will be lost.",
-			PromptOptions.OKCancel);
-	}
+		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+		{
+			if (programSettings.PatchMode == Patcher.Mode.FUZZY) {
+				programSettings.PatchMode = Patcher.Mode.OFFSET;
+				programSettings.Save();
+			}
 
-	public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
-	{
-		if (programSettings.PatchMode == Patcher.Mode.FUZZY) {
-			programSettings.PatchMode = Patcher.Mode.OFFSET;
-			programSettings.Save();
+			await base.Run(progress, cancellationToken).ConfigureAwait(false);
 		}
 
-		await base.Run(progress, cancellationToken).ConfigureAwait(false);
-	}
+		private static SetupOperation[] GetOperations(IServiceProvider serviceProvider)
+		{
+			ProgramSettings programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 
-	private static SetupOperation[] GetOperations(IServiceProvider serviceProvider)
-	{
-		ProgramSettings programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
-
-		return [
-			new PatchTask(PatchTaskParameters.ForTerraria(programSettings), serviceProvider),
-			new PatchTask(PatchTaskParameters.ForTerrariaNetCore(programSettings), serviceProvider),
-			new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider),
-		];
+			return [
+				new PatchTask(PatchTaskParameters.ForTerraria(programSettings), serviceProvider),
+				new PatchTask(PatchTaskParameters.ForTerrariaNetCore(programSettings), serviceProvider),
+				new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider),
+			];
+		}
 	}
 }

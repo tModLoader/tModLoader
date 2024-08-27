@@ -7,94 +7,95 @@ using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Formatting;
 
-namespace Terraria.ModLoader.Setup.Core;
-
-public class FormatTask : SetupOperation
+namespace Terraria.ModLoader.Setup.Core
 {
-	private static readonly AdhocWorkspace Workspace = new();
-	private static string? ProjectPath; //persist across executions
-
-	private readonly ICSharpProjectSelectionPrompt projectSelectionPrompt;
-
-	static FormatTask()
+	public class FormatTask : SetupOperation
 	{
-		OptionSet optionSet = Workspace.CurrentSolution.Options;
+		private static readonly AdhocWorkspace Workspace = new();
+		private static string? ProjectPath; //persist across executions
 
-		// Essentials
-		optionSet = optionSet
-			.WithChangedOption(FormattingOptions.UseTabs, LanguageNames.CSharp, true);
+		private readonly ICSharpProjectSelectionPrompt projectSelectionPrompt;
 
-		// K&R
-		optionSet = optionSet
-			.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInProperties, false)
-			.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAccessors, false)
-			.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousMethods, false)
-			.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInControlBlocks, false)
-			.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousTypes, false)
-			.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers, false)
-			.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
+		static FormatTask()
+		{
+			OptionSet optionSet = Workspace.CurrentSolution.Options;
 
-		// Fix switch indentation
-		optionSet = optionSet
-			.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSection, true)
-			.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSectionWhenBlock, false);
+			// Essentials
+			optionSet = optionSet
+				.WithChangedOption(FormattingOptions.UseTabs, LanguageNames.CSharp, true);
 
-		Workspace.TryApplyChanges(Workspace.CurrentSolution.WithOptions(optionSet));
-	}
+			// K&R
+			optionSet = optionSet
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInProperties, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAccessors, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousMethods, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInControlBlocks, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousTypes, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers, false)
+				.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
 
-	public FormatTask(IServiceProvider serviceProvider)
-	{
-		this.projectSelectionPrompt = serviceProvider.GetRequiredService<ICSharpProjectSelectionPrompt>();
-	}
+			// Fix switch indentation
+			optionSet = optionSet
+				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSection, true)
+				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSectionWhenBlock, false);
 
-	public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
-	{
-		ProjectPath = await projectSelectionPrompt.Prompt(ProjectPath, cancellationToken).ConfigureAwait(false);
-
-		return File.Exists(ProjectPath);
-	}
-
-	public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
-	{
-		using var taskProgress = progress.StartTask($"Formatting {Path.GetFileName(ProjectPath)}...");
-
-		string dir = Path.GetDirectoryName(ProjectPath)!; //just format all files in the directory
-		IEnumerable<WorkItem> workItems = Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
-			.Select(path => new FileInfo(path))
-			.OrderByDescending(f => f.Length)
-			.Select(f => new WorkItem("Formatting: " + f.Name,
-				ct => FormatFile(f.FullName, false, ct)));
-
-
-		await ExecuteParallel(workItems.ToList(), taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
-	}
-
-	private static async ValueTask FormatFile(string path, bool aggressive, CancellationToken cancellationToken)
-	{
-		string source = await File.ReadAllTextAsync(path, cancellationToken).ConfigureAwait(false);
-		string formatted = Format(source, aggressive, cancellationToken);
-		if (source != formatted) {
-			await File.WriteAllTextAsync(path, formatted, cancellationToken).ConfigureAwait(false);
-		}
-	}
-
-	public static string Format(string source, bool aggressive, CancellationToken cancellationToken)
-	{
-		SyntaxTree tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
-		return Format(tree.GetRoot(), aggressive, cancellationToken).ToFullString();
-	}
-
-	private static SyntaxNode Format(SyntaxNode node, bool aggressive, CancellationToken cancellationToken)
-	{
-		if (aggressive) {
-			node = new NoNewlineBetweenFieldsRewriter().Visit(node);
-			node = new RemoveBracesFromSingleStatementRewriter().Visit(node);
+			Workspace.TryApplyChanges(Workspace.CurrentSolution.WithOptions(optionSet));
 		}
 
-		node = new AddVisualNewlinesRewriter().Visit(node)!;
-		node = new FileScopedNamespaceRewriter().Visit(node)!;
-		node = Formatter.Format(node, Workspace, cancellationToken: cancellationToken);
-		node = new CollectionInitializerFormatter().Visit(node);
-		return node;
+		public FormatTask(IServiceProvider serviceProvider)
+		{
+			this.projectSelectionPrompt = serviceProvider.GetRequiredService<ICSharpProjectSelectionPrompt>();
+		}
+
+		public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
+		{
+			ProjectPath = await projectSelectionPrompt.Prompt(ProjectPath, cancellationToken).ConfigureAwait(false);
+
+			return File.Exists(ProjectPath);
+		}
+
+		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+		{
+			using var taskProgress = progress.StartTask($"Formatting {Path.GetFileName(ProjectPath)}...");
+
+			string dir = Path.GetDirectoryName(ProjectPath)!; //just format all files in the directory
+			IEnumerable<WorkItem> workItems = Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
+				.Select(path => new FileInfo(path))
+				.OrderByDescending(f => f.Length)
+				.Select(f => new WorkItem("Formatting: " + f.Name,
+					ct => FormatFile(f.FullName, false, ct)));
+
+
+			await ExecuteParallel(workItems.ToList(), taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
+		}
+
+		private static async ValueTask FormatFile(string path, bool aggressive, CancellationToken cancellationToken)
+		{
+			string source = await File.ReadAllTextAsync(path, cancellationToken).ConfigureAwait(false);
+			string formatted = Format(source, aggressive, cancellationToken);
+			if (source != formatted) {
+				await File.WriteAllTextAsync(path, formatted, cancellationToken).ConfigureAwait(false);
+			}
+		}
+
+		public static string Format(string source, bool aggressive, CancellationToken cancellationToken)
+		{
+			SyntaxTree tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
+			return Format(tree.GetRoot(), aggressive, cancellationToken).ToFullString();
+		}
+
+		private static SyntaxNode Format(SyntaxNode node, bool aggressive, CancellationToken cancellationToken)
+		{
+			if (aggressive) {
+				node = new NoNewlineBetweenFieldsRewriter().Visit(node);
+				node = new RemoveBracesFromSingleStatementRewriter().Visit(node);
+			}
+
+			node = new AddVisualNewlinesRewriter().Visit(node)!;
+			node = new FileScopedNamespaceRewriter().Visit(node)!;
+			node = Formatter.Format(node, Workspace, cancellationToken: cancellationToken);
+			node = new CollectionInitializerFormatter().Visit(node);
+			return node;
+		}
 	}
 }

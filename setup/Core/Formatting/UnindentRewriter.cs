@@ -1,48 +1,49 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Terraria.ModLoader.Setup.Core.Formatting;
-
-public class UnindentRewriter : CSharpSyntaxRewriter
+namespace Terraria.ModLoader.Setup.Core.Formatting
 {
-	private bool nextTokenIsOnNewLine = true;
-
-	public override SyntaxToken VisitToken(SyntaxToken token)
+	public class UnindentRewriter : CSharpSyntaxRewriter
 	{
-		if (token.IsKind(SyntaxKind.None)) {
-			return token; // skip these? Annoying
-		}
+		private bool nextTokenIsOnNewLine = true;
 
-		if (nextTokenIsOnNewLine) {
-			token = Unindent(token);
-		}
-
-		nextTokenIsOnNewLine = EndsLine(token.TrailingTrivia);
-		return token;
-	}
-
-	private static SyntaxToken Unindent(SyntaxToken token)
-	{
-		SyntaxTriviaList triviaList = token.LeadingTrivia;
-		bool nextTriviaIsOnNewLine = true;
-		for (int i = 0; i < triviaList.Count; i++) {
-			SyntaxTrivia t = triviaList[i];
-			if (t.IsKind(SyntaxKind.EndOfLineTrivia)) {
-				nextTriviaIsOnNewLine = true;
-				continue;
+		public override SyntaxToken VisitToken(SyntaxToken token)
+		{
+			if (token.IsKind(SyntaxKind.None)) {
+				return token; // skip these? Annoying
 			}
 
-			if (nextTriviaIsOnNewLine && t.Span.Length > 0 && t.IsKind(SyntaxKind.WhitespaceTrivia) &&
-			    t.ToString()[0] == '\t') {
-				triviaList = triviaList.Replace(t, SyntaxFactory.Whitespace(t.ToString()[1..]));
+			if (nextTokenIsOnNewLine) {
+				token = Unindent(token);
 			}
 
-			nextTriviaIsOnNewLine = false;
+			nextTokenIsOnNewLine = EndsLine(token.TrailingTrivia);
+			return token;
 		}
 
-		return token.WithLeadingTrivia(triviaList);
-	}
+		private static SyntaxToken Unindent(SyntaxToken token)
+		{
+			SyntaxTriviaList triviaList = token.LeadingTrivia;
+			bool nextTriviaIsOnNewLine = true;
+			for (int i = 0; i < triviaList.Count; i++) {
+				SyntaxTrivia t = triviaList[i];
+				if (t.IsKind(SyntaxKind.EndOfLineTrivia)) {
+					nextTriviaIsOnNewLine = true;
+					continue;
+				}
 
-	private static bool EndsLine(SyntaxTriviaList trailingTrivia) =>
-		trailingTrivia.Count > 0 && trailingTrivia.Last().IsKind(SyntaxKind.EndOfLineTrivia);
+				if (nextTriviaIsOnNewLine && t.Span.Length > 0 && t.IsKind(SyntaxKind.WhitespaceTrivia) &&
+				    t.ToString()[0] == '\t') {
+					triviaList = triviaList.Replace(t, SyntaxFactory.Whitespace(t.ToString()[1..]));
+				}
+
+				nextTriviaIsOnNewLine = false;
+			}
+
+			return token.WithLeadingTrivia(triviaList);
+		}
+
+		private static bool EndsLine(SyntaxTriviaList trailingTrivia) =>
+			trailingTrivia.Count > 0 && trailingTrivia.Last().IsKind(SyntaxKind.EndOfLineTrivia);
+	}
 }
