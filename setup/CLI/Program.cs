@@ -91,14 +91,3 @@ public static class Program
 		return await app.RunAsync(args);
 	}
 }
-
-// CoconaApp app = builder.Build();
-//
-// app.AddCommands<SetupCommands>();
-// app.AddCommands<DecompileCommand>();
-// app.AddSubCommand("patch", x => x.AddCommands<PatchSubCommands>()).WithDescription("Applies patches.");
-// app.AddSubCommand("diff", x => x.AddCommands<DiffSubCommands>()).WithDescription("Diffs the source to recalculate patches.");
-// app.AddCommands<RegenSourceCommand>();
-// app.AddCommands<OtherCommands>();
-//
-// await app.RunAsync();
