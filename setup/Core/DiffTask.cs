@@ -57,8 +57,8 @@ public sealed class DiffTask : SetupOperation
 
 		taskProgress.ReportStatus("Noting Removed Files", overwrite: false);
 		string[] removedFiles = PatchTask.EnumerateSrcFiles(parameters.BaseDir)
-			.Where(f => !File.Exists(Path.Combine(parameters.PatchedDir, f.relPath)))
-			.Select(f => PathUtils.SetCrossPlatformDirectorySeparators(f.relPath))
+			.Select(f => f.relPath)
+			.Where(path => !File.Exists(Path.Combine(parameters.PatchedDir, path)))
 			.Order()
 			.ToArray();
 
