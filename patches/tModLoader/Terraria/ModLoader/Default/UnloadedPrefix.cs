@@ -10,7 +10,7 @@ public sealed class UnloadedPrefix : ModPrefix
 		UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
 		yield return new TooltipLine("UnloadedPrefix", this.GetLocalization("Tooltip").Format($"{unloadedGlobalItem.ModPrefixMod}/{unloadedGlobalItem.ModPrefixName}")) {
 			IsModifier = true,
-			OverrideColor = new(215, 123, 186)
+			OverrideColor = new(215, 123, 186) // This is the color used in our unloaded textures
 		};
 	}
 }
