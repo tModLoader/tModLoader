@@ -2,8 +2,7 @@
 
 	<!-- Common -->
 	<PropertyGroup>
-		<RootNamespace>Terraria.ModLoader</RootNamespace>
-		<ApplicationIcon>./Setup/tModLoaderSetup.ico</ApplicationIcon>
+		<RootNamespace>Terraria.ModLoader.Setup</RootNamespace>
 		<!-- Avoid weird 'Duplicate attribute' build errors -->
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
@@ -11,7 +10,7 @@
 
 	<!-- Project references -->
 	<ItemGroup>
-		<ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />
+		<ProjectReference Include="..\PatchReviewer\PatchReviewer.csproj" />
 	</ItemGroup>
 
 	<!-- Package references -->
@@ -31,12 +30,8 @@
 		<!-- Nothing! -->
 	</ItemGroup>
 
-	<!-- PatchReviewer exclusion -->
 	<ItemGroup>
-		<Page Remove="PatchReviewer\**" />
-		<Compile Remove="PatchReviewer\**" />
-		<EmbeddedResource Remove="PatchReviewer\**" />
-		<None Remove="PatchReviewer\**" />
+		<Compile Include="..\Core\**\*.cs" />
 	</ItemGroup>
 
 	<!-- Settings Generation -->

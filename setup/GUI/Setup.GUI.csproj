@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<!-- Import common setup values -->
-	<Import Project="setup.Common.targets" />
+	<Import Project="..\setup.Common.targets" />
 
 	<PropertyGroup>
 		<TargetFramework>net8.0-windows</TargetFramework>
+		<ApplicationIcon>tModLoaderSetup.ico</ApplicationIcon>
 		<UseWindowsForms>True</UseWindowsForms>
 		<UseWPF>True</UseWPF>
 		<OutputType>WinExe</OutputType>
 		<TieredCompilation>false</TieredCompilation> <!-- be nice if we didn't need this, but MonoMod.RuntimeDetour isn't compatible with tiered jit currently -->
+		<AssemblyName>setup-gui</AssemblyName>
 	</PropertyGroup>
 
 </Project>

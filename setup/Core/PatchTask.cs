@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using Terraria.ModLoader.Properties;
+using Terraria.ModLoader.Setup.Properties;
 using DiffPatch;
 using PatchReviewer;
 

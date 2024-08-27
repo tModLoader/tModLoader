@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<!-- Import common setup values -->
-	<Import Project="setup.Common.targets" />
+	<Import Project="..\setup.Common.targets" />
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
+		<AssemblyName>setup-auto</AssemblyName>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

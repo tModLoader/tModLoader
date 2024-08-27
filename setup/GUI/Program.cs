@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Terraria.ModLoader.Properties;
+using Terraria.ModLoader.Setup.Properties;
 using Terraria.ModLoader.Setup.Utilities;
 
 namespace Terraria.ModLoader.Setup
