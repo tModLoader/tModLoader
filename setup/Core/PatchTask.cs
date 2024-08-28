@@ -166,14 +166,12 @@ namespace Terraria.ModLoader.Setup.Core
 			foreach (var res in patcher.results)
 				log.AppendLine(res.Summary());
 
-			if (logFile != null) {
-				await logSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
-				try {
-					await logFile.WriteAsync(log.ToString()).ConfigureAwait(false);
-				}
-				finally {
-					logSemaphore.Release();
-				}
+			await logSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+			try {
+				await logFile!.WriteAsync(log.ToString()).ConfigureAwait(false);
+			}
+			finally {
+				logSemaphore.Release();
 			}
 
 			return patcher;
