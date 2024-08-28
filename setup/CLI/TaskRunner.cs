@@ -25,7 +25,7 @@ public sealed class TaskRunner
 		bool noPrompts = false,
 		CancellationToken cancellationToken = default)
 	{
-		var errorLogFile = Path.Combine(programSettings.LogsDir, "error.log");
+		var errorLogFile = Path.Combine(ProgramSettings.LogsDir, "error.log");
 
 		try {
 			programSettings.NoPrompts = noPrompts;
@@ -80,7 +80,7 @@ public sealed class TaskRunner
 		catch (Exception exception) when (exception is not OperationCanceledException) {
 			AnsiConsole.MarkupLineInterpolated($"[red]{exception.GetType().FullName}[/]: {exception.Message}");
 
-			SetupOperation.CreateDirectory(programSettings.LogsDir);
+			SetupOperation.CreateDirectory(ProgramSettings.LogsDir);
 			await File.WriteAllTextAsync(errorLogFile, exception.ToString(), cancellationToken);
 
 			AnsiConsole.MarkupLineInterpolated($"Log written to: {Path.GetFullPath(errorLogFile)}");

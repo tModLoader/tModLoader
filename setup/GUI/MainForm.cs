@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.Setup.GUI
 
 		private async void RunTaskThread(SetupOperation task)
 		{
-			var errorLogFile = Path.Combine(programSettings.LogsDir, "error.log");
+			var errorLogFile = Path.Combine(ProgramSettings.LogsDir, "error.log");
 			try
 			{
 				SetupOperation.DeleteFile(errorLogFile);
@@ -166,7 +166,7 @@ namespace Terraria.ModLoader.Setup.GUI
 					labelStatus.Text = $"Error: {e.Message.Trim()}{Environment.NewLine}Log: {Path.GetFullPath(errorLogFile)}";
 				}));
 
-				SetupOperation.CreateDirectory(programSettings.LogsDir);
+				SetupOperation.CreateDirectory(ProgramSettings.LogsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
 			finally

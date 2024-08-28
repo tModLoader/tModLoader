@@ -17,7 +17,7 @@ public sealed class ProgramSettings
 		this.jsonFilePath = jsonFilePath;
 	}
 
-	public string LogsDir { get; set; } = Path.Combine("setup", "logs");
+	public static string LogsDir { get; } = Path.Combine("setup", "logs");
 
 	public string? TerrariaSteamDir { get; set; }
 

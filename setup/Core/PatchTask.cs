@@ -95,8 +95,8 @@ namespace Terraria.ModLoader.Setup.Core
 			}
 
 			try {
-				CreateDirectory(programSettings.LogsDir);
-				logFile = new StreamWriter(Path.Combine(programSettings.LogsDir, "patch.log"));
+				CreateDirectory(ProgramSettings.LogsDir);
+				logFile = new StreamWriter(Path.Combine(ProgramSettings.LogsDir, "patch.log"));
 
 				await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
 			}
