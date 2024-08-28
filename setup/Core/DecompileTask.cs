@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.Setup.Core
 		{
 			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 			terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
-			this.parameters = parameters with { SrcDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.SrcDir) };
+			this.parameters = parameters with { SrcDir = PathUtils.WithUnixSeparators(parameters.SrcDir) };
 
 			CSharpFormattingOptions formatting = FormattingOptionsFactory.CreateKRStyle();
 

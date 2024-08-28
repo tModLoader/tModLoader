@@ -112,7 +112,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 		protected static IEnumerable<(string file, string relPath)> EnumerateFiles(string dir) =>
 			Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
-				.Select(path => (file: PathUtils.SetCrossPlatformDirectorySeparators(path), relPath: PathUtils.SetCrossPlatformDirectorySeparators(RelPath(dir, path))));
+				.Select(path => (file: PathUtils.WithUnixSeparators(path), relPath: PathUtils.WithUnixSeparators(RelPath(dir, path))));
 
 		private static string RelPath(string basePath, string path) {
 			if (path.Last() == Path.DirectorySeparatorChar)

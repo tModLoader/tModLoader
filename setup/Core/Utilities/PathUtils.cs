@@ -16,6 +16,8 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 			return Path.GetFullPath(result);
 		}
 
-		public static string SetCrossPlatformDirectorySeparators(string path) => path.Replace('\\', '/');
+		public static string WithUnixSeparators(string path) => path.Replace('\\', '/');
+
+		public static string UnixJoin(params string[] paths) => string.Join("/", paths.Where(x => x.Length > 0));
 	}
 }

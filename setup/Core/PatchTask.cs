@@ -34,9 +34,9 @@ namespace Terraria.ModLoader.Setup.Core
 			targetsFilesUpdater = serviceProvider.GetRequiredService<TargetsFilesUpdater>();
 			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 			this.parameters = parameters with {
-				BaseDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.BaseDir),
-				PatchedDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchedDir),
-				PatchDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchDir),
+				BaseDir = PathUtils.WithUnixSeparators(parameters.BaseDir),
+				PatchedDir = PathUtils.WithUnixSeparators(parameters.PatchedDir),
+				PatchDir = PathUtils.WithUnixSeparators(parameters.PatchDir),
 			};
 		}
 
@@ -62,7 +62,7 @@ namespace Terraria.ModLoader.Setup.Core
 			string removedFileList = Path.Combine(parameters.PatchDir, DiffTask.RemovedFileList);
 			HashSet<string> noCopy = File.Exists(removedFileList)
 				? [
-					..(await File.ReadAllLinesAsync(removedFileList, cancellationToken).ConfigureAwait(false)).Select(PathUtils.SetCrossPlatformDirectorySeparators),
+					..(await File.ReadAllLinesAsync(removedFileList, cancellationToken).ConfigureAwait(false)).Select(PathUtils.WithUnixSeparators),
 				]
 				: [];
 
@@ -73,12 +73,12 @@ namespace Terraria.ModLoader.Setup.Core
 				if (relPath.EndsWith(".patch")) {
 					items.Add(new WorkItem("Patching: " + relPath, async ct => {
 						FilePatcher filePatcher = await Patch(file, ct).ConfigureAwait(false);
-						newFiles.TryAdd(PathUtils.SetCrossPlatformDirectorySeparators(filePatcher.PatchedPath), null);
+						newFiles.TryAdd(PathUtils.WithUnixSeparators(filePatcher.PatchedPath), null);
 					}));
 					noCopy.Add(relPath.Substring(0, relPath.Length - 6));
 				}
 				else if (relPath != DiffTask.RemovedFileList) {
-					string destination = PathUtils.SetCrossPlatformDirectorySeparators(Path.Combine(parameters.PatchedDir, relPath));
+					string destination = PathUtils.UnixJoin(parameters.PatchedDir, relPath);
 
 					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, destination)));
 					newFiles.TryAdd(destination, null);
@@ -87,7 +87,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 			foreach ((string file, string relPath) in EnumerateSrcFiles(parameters.BaseDir)) {
 				if (!noCopy.Contains(relPath)) {
-					string destination = PathUtils.SetCrossPlatformDirectorySeparators(Path.Combine(parameters.PatchedDir, relPath));
+					string destination = PathUtils.UnixJoin(parameters.PatchedDir, relPath);
 
 					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, destination)));
 					newFiles.TryAdd(destination, null);

@@ -17,9 +17,9 @@ namespace Terraria.ModLoader.Setup.Core
 		public DiffTask(DiffTaskParameters parameters)
 		{
 			this.parameters = parameters with {
-				BaseDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.BaseDir),
-				PatchedDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchedDir),
-				PatchDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchDir),
+				BaseDir = PathUtils.WithUnixSeparators(parameters.BaseDir),
+				PatchedDir = PathUtils.WithUnixSeparators(parameters.PatchedDir),
+				PatchDir = PathUtils.WithUnixSeparators(parameters.PatchDir),
 			};
 		}
 
@@ -76,8 +76,8 @@ namespace Terraria.ModLoader.Setup.Core
 		private void Diff(string relPath)
 		{
 			var patchFile = Differ.DiffFiles(new LineMatchedDiffer(),
-				PathUtils.SetCrossPlatformDirectorySeparators(Path.Combine(parameters.BaseDir, relPath)),
-				PathUtils.SetCrossPlatformDirectorySeparators(Path.Combine(parameters.PatchedDir, relPath)));
+				PathUtils.UnixJoin(parameters.BaseDir, relPath),
+				PathUtils.UnixJoin(parameters.PatchedDir, relPath));
 
 			string patchPath = Path.Combine(parameters.PatchDir, relPath + ".patch");
 			if (!patchFile.IsEmpty) {
