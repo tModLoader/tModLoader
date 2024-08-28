@@ -1984,7 +1984,7 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
-@@ -47808,10 +_,40 @@
+@@ -47808,10 +_,34 @@
  			shimmered = true;
  		}
  		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
@@ -2015,12 +2015,6 @@
 +				item.wet = true;
 +				item.velocity *= 0.1f;
 +				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
-+				//if (flag) { vanilla uses this to keep different items from stacking not multiple of the same item. Changing here because this fix almost exclusively exists to unstack unstackable items like swords and it feels wrong to leave them stacked.
-+				item.velocity.X = 1f * (float)spawnCount;
-+				item.velocity.X *= 1f + (float)spawnCount * 0.05f;
-+				if (0 % 2 == 0) // Assumed bug in vanilla left in for parity. Vanilla uses if (num14 % 2 == 0) but num14 is only assigned 0 a value. I assume it's supposed to be num15 or 'spawnCount' here.
-+					item.velocity.X *= -1f;
-+				//}
 +
 +				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
 +			}
