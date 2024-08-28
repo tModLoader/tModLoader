@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
@@ -85,6 +86,7 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 		}
 
 		// Isolated to avoid loading Win32 stuff outside Windows.
+		[SupportedOSPlatform("windows")]
 		private static string? GetSteamDirectoryWindows() {
 			string keyPath = Environment.Is64BitOperatingSystem ? @"SOFTWARE\Wow6432Node\Valve\Steam" : @"SOFTWARE\Valve\Steam";
 
