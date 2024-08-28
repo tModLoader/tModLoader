@@ -20,7 +20,6 @@ namespace Terraria.ModLoader.Setup.Core
 		private readonly ProgramSettings programSettings;
 		private readonly PatchTaskParameters parameters;
 
-		private readonly ConcurrentBag<FilePatcher> results = new();
 		private int warnings;
 		private int failures;
 		private int fuzzy;
@@ -68,11 +67,13 @@ namespace Terraria.ModLoader.Setup.Core
 
 			var items = new List<WorkItem>();
 			var newFiles = new ConcurrentDictionary<string, object?>();
+			ConcurrentBag<FilePatcher> results = [];
 
 			foreach ((string file, string relPath) in EnumerateFiles(parameters.PatchDir)) {
 				if (relPath.EndsWith(".patch")) {
 					items.Add(new WorkItem("Patching: " + relPath, async ct => {
 						FilePatcher filePatcher = await Patch(file, ct).ConfigureAwait(false);
+						results.Add(filePatcher);
 						newFiles.TryAdd(PathUtils.WithUnixSeparators(filePatcher.PatchedPath), null);
 					}));
 					noCopy.Add(relPath.Substring(0, relPath.Length - 6));
@@ -142,7 +143,6 @@ namespace Terraria.ModLoader.Setup.Core
 		{
 			var patcher = FilePatcher.FromPatchFile(patchPath);
 			patcher.Patch(programSettings.PatchMode);
-			results.Add(patcher);
 			CreateParentDirectory(patcher.PatchedPath);
 			patcher.Save();
 
