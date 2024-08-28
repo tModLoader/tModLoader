@@ -4,7 +4,6 @@ setlocal enabledelayedexpansion
 where git >NUL
 if !errorlevel! neq 0 (
 	echo git not found on PATH
-    pause
     exit /b %errorlevel%
 )
 
@@ -16,7 +15,6 @@ if !errorlevel! neq 0 (
 	echo Restoring git submodules
 	git submodule update --init --recursive
 	if !errorlevel! neq 0 (
-		pause
 		exit /b %errorlevel%
 	)
 	%busybox% touch %submoduleupdatemarker%
@@ -25,7 +23,6 @@ if !errorlevel! neq 0 (
 where dotnet >NUL
 if !errorlevel! neq 0 (
 	echo dotnet not found on PATH. Install .NET Core!
-    pause
     exit /b %errorlevel%
 )
 
