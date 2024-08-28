@@ -39,7 +39,6 @@ namespace Terraria.ModLoader.Setup.GUI
 
 			services
 				.AddCoreServices(configuration, userSettingsFilePath)
-				.AddSingleton<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
 				.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
 				.AddSingleton<IUserPrompt, UserPrompt>()
 				.AddSingleton<MainForm>()

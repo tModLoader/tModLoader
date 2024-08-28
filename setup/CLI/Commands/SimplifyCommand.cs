@@ -3,7 +3,7 @@ using Terraria.ModLoader.Setup.Core;
 
 namespace Terraria.ModLoader.Setup.CLI.Commands;
 
-public sealed class SimplifyCommand : CancellableAsyncCommand<BaseCommandSettings>
+public sealed class SimplifyCommand : CancellableAsyncCommand<ProjectPathCommandSettings>
 {
 	private readonly TaskRunner taskRunner;
 	private readonly IServiceProvider serviceProvider;
@@ -16,9 +16,11 @@ public sealed class SimplifyCommand : CancellableAsyncCommand<BaseCommandSetting
 
 	public override async Task<int> ExecuteAsync(
 		CommandContext context,
-		BaseCommandSettings settings,
+		ProjectPathCommandSettings settings,
 		CancellationToken cancellationToken)
 	{
-		return await taskRunner.Run(new SimplifierTask(serviceProvider), settings.PlainProgress, cancellationToken: cancellationToken);
+		RoslynTaskParameters taskParameters = new() { ProjectPath = settings.ProjectPath };
+
+		return await taskRunner.Run(new SimplifierTask(taskParameters), settings.PlainProgress, cancellationToken: cancellationToken);
 	}
 }

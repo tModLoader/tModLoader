@@ -28,7 +28,6 @@ public static class Program
 		IServiceCollection services = new ServiceCollection();
 		services
 			.AddCoreServices(configuration, userSettingsFilePath)
-			.AddSingleton<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
 			.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
 			.AddSingleton<IUserPrompt, UserPrompt>()
 			.AddSingleton<TaskRunner>();

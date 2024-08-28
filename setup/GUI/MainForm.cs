@@ -23,6 +23,7 @@ namespace Terraria.ModLoader.Setup.GUI
 		private CancellationTokenSource cancelSource;
 
 		private bool closeOnCancel;
+		private string projectSelectionProjectPath;
 		private IDictionary<Button, Func<SetupOperation>> taskButtons = new Dictionary<Button, Func<SetupOperation>>();
 
 		public MainForm(
@@ -92,7 +93,8 @@ namespace Terraria.ModLoader.Setup.GUI
 		}
 
 		private void menuItemFormatCode_Click(object sender, EventArgs e) {
-			RunTask(new FormatTask(serviceProvider));
+			projectSelectionProjectPath = PromptForProjectPath(projectSelectionProjectPath);
+			RunTask(new FormatTask(new FormatTaskParameters { ProjectPath = projectSelectionProjectPath }));
 		}
 
 		private void menuItemHookGen_Click(object sender, EventArgs e) {
@@ -100,7 +102,22 @@ namespace Terraria.ModLoader.Setup.GUI
 		}
 
 		private void simplifierToolStripMenuItem_Click(object sender, EventArgs e) {
-			RunTask(new SimplifierTask(serviceProvider));
+			projectSelectionProjectPath = PromptForProjectPath(projectSelectionProjectPath);
+			RunTask(new SimplifierTask(new RoslynTaskParameters { ProjectPath = projectSelectionProjectPath }));
+		}
+
+		private static string PromptForProjectPath(string currentProjectPath)
+		{
+			var dialog = new OpenFileDialog {
+				FileName = currentProjectPath,
+				InitialDirectory = Path.GetDirectoryName(currentProjectPath) ?? Path.GetFullPath("."),
+				Filter = "C# Project|*.csproj",
+				Title = "Select C# Project"
+			};
+
+			var result = dialog.ShowDialog();
+
+			return result == DialogResult.OK ? dialog.FileName : null;
 		}
 
 		private void buttonTask_Click(object sender, EventArgs e)

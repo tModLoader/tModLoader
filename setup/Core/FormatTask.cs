@@ -12,9 +12,8 @@ namespace Terraria.ModLoader.Setup.Core
 	public class FormatTask : SetupOperation
 	{
 		private static readonly AdhocWorkspace Workspace = new();
-		private static string? ProjectPath; //persist across executions
 
-		private readonly ICSharpProjectSelectionPrompt projectSelectionPrompt;
+		private readonly FormatTaskParameters parameters;
 
 		static FormatTask()
 		{
@@ -42,23 +41,16 @@ namespace Terraria.ModLoader.Setup.Core
 			Workspace.TryApplyChanges(Workspace.CurrentSolution.WithOptions(optionSet));
 		}
 
-		public FormatTask(IServiceProvider serviceProvider)
+		public FormatTask(FormatTaskParameters parameters)
 		{
-			projectSelectionPrompt = serviceProvider.GetRequiredService<ICSharpProjectSelectionPrompt>();
-		}
-
-		public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
-		{
-			ProjectPath = await projectSelectionPrompt.Prompt(ProjectPath, cancellationToken).ConfigureAwait(false);
-
-			return File.Exists(ProjectPath);
+			this.parameters = parameters;
 		}
 
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
 		{
-			using var taskProgress = progress.StartTask($"Formatting {Path.GetFileName(ProjectPath)}...");
+			using var taskProgress = progress.StartTask($"Formatting {Path.GetFileName(parameters.ProjectPath)}...");
 
-			string dir = Path.GetDirectoryName(ProjectPath)!; //just format all files in the directory
+			string dir = Path.GetDirectoryName(parameters.ProjectPath)!; //just format all files in the directory
 			IEnumerable<WorkItem> workItems = Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
 				.Select(path => new FileInfo(path))
 				.OrderByDescending(f => f.Length)

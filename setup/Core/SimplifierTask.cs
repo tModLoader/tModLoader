@@ -1,21 +1,17 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Simplification;
-using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
 namespace Terraria.ModLoader.Setup.Core
 {
-	public sealed class SimplifierTask : RoslynTask
+	public sealed class SimplifierTask(RoslynTaskParameters parameters) : RoslynTask(parameters)
 	{
-		public SimplifierTask(IServiceProvider serviceProvider)
-			: base(serviceProvider.GetRequiredService<ICSharpProjectSelectionPrompt>()) { }
-
 		protected override string Status => "Simplifying";
 		protected override int MaxDegreeOfParallelism => 2;
 
 		protected override ITaskProgress GetTaskProgress(IProgress progress)
 		{
-			return progress.StartTask($"Simplifying {Path.GetFileName(ProjectPath)}...");
+			return progress.StartTask($"Simplifying {Path.GetFileName(Parameters.ProjectPath)}...");
 		}
 
 		protected override async Task<Document> Process(Document doc, CancellationToken cancellationToken = default)

@@ -7,25 +7,18 @@ namespace Terraria.ModLoader.Setup.Core
 {
 	public abstract class RoslynTask : SetupOperation
 	{
-		private static bool MSBuildFound = false;
+		private static bool MSBuildFound;
 
-		private readonly ICSharpProjectSelectionPrompt projectSelectionPrompt;
+		protected RoslynTask(RoslynTaskParameters parameters)
+		{
+			this.Parameters = parameters;
+		}
 
-		protected string? ProjectPath { get; private set; }
+		protected RoslynTaskParameters Parameters { get; }
+
 		protected abstract string Status { get; }
+
 		protected virtual int MaxDegreeOfParallelism => 0;
-
-		protected RoslynTask(ICSharpProjectSelectionPrompt projectSelectionPrompt)
-		{
-			this.projectSelectionPrompt = projectSelectionPrompt;
-		}
-
-		public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
-		{
-			ProjectPath = await projectSelectionPrompt.Prompt(ProjectPath, cancellationToken).ConfigureAwait(false);
-
-			return File.Exists(ProjectPath);
-		}
 
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
 		{
@@ -34,10 +27,10 @@ namespace Terraria.ModLoader.Setup.Core
 			// todo proper error log
 			workspace.WorkspaceFailed += (o, e) => Console.Error.WriteLine(e.Diagnostic.Message);
 
-			taskProgress.ReportStatus($"Loading project '{ProjectPath}'");
+			taskProgress.ReportStatus($"Loading project '{Parameters.ProjectPath}'...'");
 
 			// Attach progress reporter so we print projects as they are loaded.
-			var project = await workspace.OpenProjectAsync(ProjectPath!, cancellationToken: cancellationToken).ConfigureAwait(false);
+			var project = await workspace.OpenProjectAsync(Parameters.ProjectPath, cancellationToken: cancellationToken).ConfigureAwait(false);
 			var workItems = project.Documents.Select(doc => new WorkItem(Status + " " + doc.Name, async ct => {
 				var newDoc = await Process(doc, ct).ConfigureAwait(false);
 				var before = await doc.GetTextAsync(ct).ConfigureAwait(false);
