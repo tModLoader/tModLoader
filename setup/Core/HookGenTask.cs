@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Setup.Core
 			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 		}
 
-		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+		public override Task Run(IProgress progress, CancellationToken cancellationToken = default)
 		{
 			using var taskProgress = progress.StartTask("Generating Hooks...");
 			if (!File.Exists(TmlAssemblyPath)) {
@@ -44,6 +44,8 @@ namespace Terraria.ModLoader.Setup.Core
 			File.Delete(Path.ChangeExtension(outputPath, "pdb"));
 
 			success = true;
+
+			return Task.CompletedTask;
 		}
 
 		public override void FinishedPrompt()
