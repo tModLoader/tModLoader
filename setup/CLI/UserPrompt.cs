@@ -16,7 +16,7 @@ public class UserPrompt : IUserPrompt
 		PromptOptions options,
 		PromptSeverity severity = PromptSeverity.Information)
 	{
-		this.Inform(caption, text, severity);
+		Inform(caption, text, severity);
 
 		string answer = AnsiConsole.Prompt(
 			new SelectionPrompt<string>().AddChoices(options == PromptOptions.OKCancel ? OK : Retry, Cancel));

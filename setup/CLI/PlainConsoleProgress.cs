@@ -17,7 +17,7 @@ public sealed class PlainConsoleProgress : IProgress
 
 		public void Dispose() { }
 
-		public void SetMaxProgress(int max) => this.maxProgress = max;
+		public void SetMaxProgress(int max) => maxProgress = max;
 
 		public void SetCurrentProgress(int current)
 		{

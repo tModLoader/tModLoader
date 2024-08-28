@@ -10,17 +10,18 @@ namespace Terraria.ModLoader.Setup.Core
 
 		protected class WorkItem
 		{
-			public readonly string status;
-			public readonly Worker worker;
-
 			public WorkItem(string status, Worker worker) {
-				this.status = status;
-				this.worker = worker;
+				Status = status;
+				Worker = worker;
 			}
 
 			public WorkItem(string status, Func<CancellationToken, ValueTask> action) : this(status, (_, ct) => action(ct)) { }
 
 			public WorkItem(string status, Action action) : this(status, (_, _) => { action(); return ValueTask.CompletedTask; }) { }
+
+			public string Status { get; set; }
+
+			public Worker Worker { get; }
 		}
 
 		protected async Task ExecuteParallel(
@@ -38,11 +39,11 @@ namespace Terraria.ModLoader.Setup.Core
 					progress.SetMaxProgress(items.Count);
 				}
 
-				var working = new List<Ref<string>>();
+				var working = new List<WorkItem>();
 
 				void UpdateStatus()
 				{
-					progress.ReportStatus(string.Join("\r\n", working.Select(r => r.item)), overwrite: true);
+					progress.ReportStatus(string.Join("\r\n", working.Select(r => r.Status)), overwrite: true);
 				}
 
 				await Parallel.ForEachAsync(
@@ -52,24 +53,23 @@ namespace Terraria.ModLoader.Setup.Core
 						CancellationToken = cancellationToken,
 					},
 					async (item, ct) => {
-						var status = new Ref<string>(item.status);
 						lock (working) {
-							working.Add(status);
+							working.Add(item);
 							UpdateStatus();
 						}
 
 						void SetStatus(string s)
 						{
 							lock (working) {
-								status.item = s;
+								item.Status = s;
 								UpdateStatus();
 							}
 						}
 
-						await item.worker(SetStatus, ct).ConfigureAwait(false);
+						await item.Worker(SetStatus, ct).ConfigureAwait(false);
 
 						lock (working) {
-							working.Remove(status);
+							working.Remove(item);
 							progress.SetCurrentProgress(++currentProgress);
 							UpdateStatus();
 						}
