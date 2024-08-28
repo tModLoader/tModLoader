@@ -73,9 +73,9 @@ namespace Terraria.ModLoader.Setup.GUI
 			cancelSource.Cancel();
 		}
 
-		private void menuItemTerraria_Click(object sender, EventArgs e)
+		private async void menuItemTerraria_Click(object sender, EventArgs e)
 		{
-			terrariaExecutableSetter.SelectAndSetTerrariaDirectory();
+			await terrariaExecutableSetter.SelectAndSetTerrariaDirectory();
 		}
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
@@ -115,10 +115,10 @@ namespace Terraria.ModLoader.Setup.GUI
 			foreach (var b in taskButtons.Keys) b.Enabled = false;
 			buttonCancel.Enabled = true;
 
-			_ = RunTaskThread(task);
+			RunTaskThread(task);
 		}
 
-		private async Task RunTaskThread(SetupOperation task)
+		private async void RunTaskThread(SetupOperation task)
 		{
 			var errorLogFile = Path.Combine(programSettings.LogsDir, "error.log");
 			try
