@@ -17,8 +17,10 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public void Set(T value)
 		{
-			setter(programSettings, value);
-			programSettings.Save();
+			if (!Equals(getter(programSettings), value)) {
+				setter(programSettings, value);
+				programSettings.Save();
+			}
 		}
 
 		public T Get()
