@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! command -v git &> /dev/null
+if ! command -v git > /dev/null; 
 then
     echo "git not found in PATH"
     exit 1
@@ -13,7 +13,7 @@ then
     exit $?
 fi
 
-if ! command -v dotnet &> /dev/null
+if ! command -v dotnet > /dev/null
 then
     echo "dotnet not found in PATH"
     exit 1
