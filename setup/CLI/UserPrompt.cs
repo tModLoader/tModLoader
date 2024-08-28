@@ -19,7 +19,7 @@ public class UserPrompt : IUserPrompt
 		this.Inform(caption, text, severity);
 
 		string answer = AnsiConsole.Prompt(
-			new SelectionPrompt<string>().AddChoices(Cancel, options == PromptOptions.OKCancel ? OK : Retry));
+			new SelectionPrompt<string>().AddChoices(options == PromptOptions.OKCancel ? OK : Retry, Cancel));
 
 		if (answer != Cancel) {
 			return true;
