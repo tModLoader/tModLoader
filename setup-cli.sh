@@ -19,8 +19,5 @@ then
     exit 1
 fi
 
-echo "Building Setup.CLI.csproj"
-dotnet build setup/CLI/Setup.CLI.csproj -c Release --output "setup/bin/Release/net8.0" -p:WarningLevel=0 -v q
-
-./setup/bin/Release/net8.0/setup-cli $@
+dotnet run --project setup/CLI/Setup.CLI.csproj -c Release -p:WarningLevel=0 -v q -- $@
 

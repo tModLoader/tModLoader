@@ -21,12 +21,4 @@ if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
 
-echo building Setup.CLI.csproj
-dotnet build setup/CLI/Setup.CLI.csproj -c Release --output "setup/bin/Release/net8.0" -p:WarningLevel=0 -v q
-
-if NOT ["%errorlevel%"]==["0"] (
-	pause
-	exit /b %errorlevel%
-)
-
-"setup/bin/Release/net8.0/setup-cli.exe" %*
+dotnet run --project setup/CLI/Setup.CLI.csproj -c Release -p:WarningLevel=0 -v q -- %*
