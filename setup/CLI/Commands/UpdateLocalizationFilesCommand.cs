@@ -6,10 +6,12 @@ namespace Terraria.ModLoader.Setup.CLI.Commands;
 public sealed class UpdateLocalizationFilesCommand : CancellableAsyncCommand<BaseCommandSettings>
 {
 	private readonly TaskRunner taskRunner;
+	private readonly IServiceProvider serviceProvider;
 
-	public UpdateLocalizationFilesCommand(TaskRunner taskRunner)
+	public UpdateLocalizationFilesCommand(TaskRunner taskRunner, IServiceProvider serviceProvider)
 	{
 		this.taskRunner = taskRunner;
+		this.serviceProvider = serviceProvider;
 	}
 
 	public override async Task<int> ExecuteAsync(
@@ -17,6 +19,6 @@ public sealed class UpdateLocalizationFilesCommand : CancellableAsyncCommand<Bas
 		BaseCommandSettings settings,
 		CancellationToken cancellationToken)
 	{
-		return await taskRunner.Run(new UpdateLocalizationFilesTask(), settings.PlainProgress, cancellationToken: cancellationToken);
+		return await taskRunner.Run(new UpdateLocalizationFilesTask(serviceProvider), settings.PlainProgress, cancellationToken: cancellationToken);
 	}
 }

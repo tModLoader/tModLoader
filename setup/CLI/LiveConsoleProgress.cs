@@ -67,8 +67,10 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		public void Dispose()
 		{
-			parent.table.RemoveRow(detailsRow);
-			parent.context.Refresh();
+			if (detailsRow < parent.table.Rows.Count) {
+				parent.table.RemoveRow(detailsRow);
+				parent.context.Refresh();
+			}
 		}
 
 		public void SetMaxProgress(int max)

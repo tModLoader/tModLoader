@@ -241,7 +241,7 @@ namespace Terraria.ModLoader.Setup.GUI
 
 		private void updateLocalizationFilesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			RunTask(new UpdateLocalizationFilesTask());
+			RunTask(new UpdateLocalizationFilesTask(serviceProvider));
 		}
 
 		public void Show(IReadOnlyCollection<FilePatcher> results, string commonBasePath = null)
