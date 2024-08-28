@@ -29,10 +29,10 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public PatchTask(PatchTaskParameters parameters, IServiceProvider serviceProvider)
 		{
-			this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
-			this.patchReviewer = serviceProvider.GetService<IPatchReviewer>();
-			this.targetsFilesUpdater = serviceProvider.GetRequiredService<TargetsFilesUpdater>();
-			this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
+			patchReviewer = serviceProvider.GetService<IPatchReviewer>();
+			targetsFilesUpdater = serviceProvider.GetRequiredService<TargetsFilesUpdater>();
+			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 			this.parameters = parameters with {
 				BaseDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.BaseDir),
 				PatchedDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchedDir),
@@ -132,7 +132,7 @@ namespace Terraria.ModLoader.Setup.Core
 			if (fuzzy > 0 || (failures == 0 && warnings == 0))
 				return;
 
-			this.userPrompt.Inform(
+			userPrompt.Inform(
 				"Patch Results",
 				$"Patches applied with {failures} failures and {warnings} warnings.\nSee /logs/patch.log for details",
 				Failed() ? PromptSeverity.Error : PromptSeverity.Warning);
@@ -141,7 +141,7 @@ namespace Terraria.ModLoader.Setup.Core
 		private async Task<FilePatcher> Patch(string patchPath, CancellationToken cancellationToken = default)
 		{
 			var patcher = FilePatcher.FromPatchFile(patchPath);
-			patcher.Patch(this.programSettings.PatchMode);
+			patcher.Patch(programSettings.PatchMode);
 			results.Add(patcher);
 			CreateParentDirectory(patcher.PatchedPath);
 			patcher.Save();
@@ -158,7 +158,7 @@ namespace Terraria.ModLoader.Setup.Core
 				else if (result.mode == Patcher.Mode.OFFSET) offset++;
 				else if (result.mode == Patcher.Mode.FUZZY) fuzzy++;
 			}
-			
+
 			var log = new StringBuilder();
 			log.AppendLine(
 				$"{patcher.patchFile.basePath},\texact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}");

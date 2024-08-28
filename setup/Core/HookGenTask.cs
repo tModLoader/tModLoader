@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public HookGenTask(IServiceProvider serviceProvider)
 		{
-			this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
+			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 		}
 
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)

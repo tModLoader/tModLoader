@@ -13,8 +13,8 @@ namespace Terraria.ModLoader.Setup.Core
 			IServiceProvider serviceProvider)
 			: base(new DecompileTask(decompileTaskParameters, serviceProvider), new RegenSourceTask(serviceProvider))
 		{
-			this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
-			this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
+			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 		}
 
 		public override bool StartupWarning()

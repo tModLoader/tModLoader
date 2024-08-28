@@ -11,8 +11,8 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public RegenSourceTask(IServiceProvider serviceProvider) : base(GetOperations(serviceProvider))
 		{
-			this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
-			this.userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
+			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 		}
 
 		public override bool StartupWarning()

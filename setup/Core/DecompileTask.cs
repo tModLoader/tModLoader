@@ -41,8 +41,8 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public DecompileTask(DecompileTaskParameters parameters, IServiceProvider serviceProvider)
 		{
-			this.programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
-			this.terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
+			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+			terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
 			this.parameters = parameters with { SrcDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.SrcDir) };
 
 			CSharpFormattingOptions formatting = FormattingOptionsFactory.CreateKRStyle();

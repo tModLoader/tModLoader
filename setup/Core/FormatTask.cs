@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public FormatTask(IServiceProvider serviceProvider)
 		{
-			this.projectSelectionPrompt = serviceProvider.GetRequiredService<ICSharpProjectSelectionPrompt>();
+			projectSelectionPrompt = serviceProvider.GetRequiredService<ICSharpProjectSelectionPrompt>();
 		}
 
 		public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)

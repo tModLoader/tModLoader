@@ -17,15 +17,15 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 		this.context = context;
 		this.table = table;
 
-		this.timer = new Timer(TimeSpan.FromMilliseconds(50));
-		this.timer.Elapsed += RefreshTable;
+		timer = new Timer(TimeSpan.FromMilliseconds(50));
+		timer.Elapsed += RefreshTable;
 	}
 
 	public ITaskProgress StartTask(string description)
 	{
 		Debug.Assert(description.Length <= 60);
 
-		this.timer.Start();
+		timer.Start();
 
 		return new TaskProgress(description, table.Rows.Count, this);
 	}
@@ -59,43 +59,43 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 		{
 			this.description = description;
 			this.row = row;
-			this.detailsRow = row + 1;
+			detailsRow = row + 1;
 			this.parent = parent;
 
-			this.UpdateTaskRow();
+			UpdateTaskRow();
 		}
 
 		public void Dispose()
 		{
-			parent.table.RemoveRow(this.detailsRow);
+			parent.table.RemoveRow(detailsRow);
 			parent.context.Refresh();
 		}
 
 		public void SetMaxProgress(int max)
 		{
-			this.maxProgress = max;
-			this.UpdateTaskRow();
+			maxProgress = max;
+			UpdateTaskRow();
 		}
 
 		public void SetCurrentProgress(int current)
 		{
-			this.currentProgress = current;
-			this.UpdateTaskRow();
+			currentProgress = current;
+			UpdateTaskRow();
 		}
 
 		public void ReportStatus(string status, bool overwrite = false)
 		{
-			AddMissingRows(this.detailsRow);
+			AddMissingRows(detailsRow);
 
 			if (overwrite) {
 				lastStatus = Indent(status);
-				this.parent.table.UpdateCell(this.detailsRow, 0, new Text(lastStatus));
+				parent.table.UpdateCell(detailsRow, 0, new Text(lastStatus));
 			}
 			else {
 				string[] parts = [lastStatus, Indent(status)];
 				lastStatus = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
 
-				this.parent.table.UpdateCell(this.detailsRow, 0, new Text(lastStatus));
+				parent.table.UpdateCell(detailsRow, 0, new Text(lastStatus));
 			}
 		}
 
@@ -103,23 +103,23 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		private void UpdateTaskRow()
 		{
-			AddMissingRows(this.row);
+			AddMissingRows(row);
 
 			string progress = string.Empty;
 
-			if (this.currentProgress.HasValue && this.maxProgress.HasValue) {
-				string maxProgressString = this.maxProgress.ToString();
+			if (currentProgress.HasValue && maxProgress.HasValue) {
+				string maxProgressString = maxProgress.ToString();
 				progress = $"[{(currentProgress != maxProgress ? "red" : "green")}]{currentProgress.ToString().PadLeft(maxProgressString.Length)}[/]/[green]{maxProgressString}[/]";
 			}
 
-			this.parent.table.UpdateCell(this.row, 0, new Markup($"{this.description,-70}{progress}"));
+			parent.table.UpdateCell(row, 0, new Markup($"{description,-70}{progress}"));
 		}
 
 		private void AddMissingRows(int rowIndex)
 		{
-			int rowsCount = this.parent.table.Rows.Count;
+			int rowsCount = parent.table.Rows.Count;
 			for (int i = 0; i <= rowIndex - rowsCount; i++) {
-				this.parent.table.AddEmptyRow();
+				parent.table.AddEmptyRow();
 			}
 		}
 	}

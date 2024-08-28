@@ -29,7 +29,7 @@ public class TerrariaExecutableSetter
 		}
 
 		if (programSettings.NoPrompts) {
-			throw new InvalidOperationException($"Critical failure. Terraria steam directory '{this.programSettings.TerrariaSteamDir}' does not exist.");
+			throw new InvalidOperationException($"Critical failure. Terraria steam directory '{programSettings.TerrariaSteamDir}' does not exist.");
 		}
 
 		await FindTerrariaDirectory(cancellationToken).ConfigureAwait(false);
@@ -86,7 +86,7 @@ public class TerrariaExecutableSetter
 
 			bool continueSelection = userPrompt.Prompt("Error", messageText, PromptOptions.OKCancel, PromptSeverity.Error);
 			if (continueSelection) {
-				terrariaFolderPath = await this.TrySelectTerrariaDirectory(cancellationToken).ConfigureAwait(false);
+				terrariaFolderPath = await TrySelectTerrariaDirectory(cancellationToken).ConfigureAwait(false);
 			}
 
 			if (!continueSelection || string.IsNullOrEmpty(terrariaFolderPath)) {
@@ -95,7 +95,7 @@ public class TerrariaExecutableSetter
 			}
 		}
 
-		this.SetTerrariaDirectory(terrariaFolderPath);
+		SetTerrariaDirectory(terrariaFolderPath);
 	}
 
 	private void SetTerrariaDirectory(string path)

@@ -10,8 +10,8 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public ProgramSetting(Expression<Func<ProgramSettings, T>> expression, ProgramSettings programSettings)
 		{
-			this.getter = expression.Compile();
-			this.setter = MakeSetter(expression).Compile();
+			getter = expression.Compile();
+			setter = MakeSetter(expression).Compile();
 			this.programSettings = programSettings;
 		}
 
