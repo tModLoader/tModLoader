@@ -108,6 +108,14 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
+@@ -567,6 +_,7 @@
+ 	public bool manaSick;
+ 	public int afkCounter;
+ 	public bool stairFall;
++	/// <summary> 0: Success <br/> 1: Future version <br/> 2: Read error </summary>;
+ 	public int loadStatus;
+ 	public Vector2[] itemFlamePos = new Vector2[7];
+ 	public int itemFlameCount;
 @@ -589,20 +_,81 @@
  	public int ropeCount;
  	public int manaRegenBonus;
@@ -190,7 +198,7 @@
  	public bool pulley;
  	public int pulleyFrame;
  	public float pulleyFrameCounter;
-@@ -610,8 +_,16 @@
+@@ -610,24 +_,44 @@
  	public bool sliding;
  	public int slideDir;
  	public int snowBallLauncherInteractionCooldown;
@@ -207,7 +215,12 @@
  	public int spikedBoots;
  	public int carpetFrame = -1;
  	public float carpetFrameCounter;
-@@ -621,13 +_,22 @@
+ 	public bool canCarpet;
+ 	public int carpetTime;
++	/// <summary>
++	/// Counts updates from 0 up to 299 and then resets back to 0. Can be used to drive visuals and other player effects. The <see href="https://github.com/tModLoader/tModLoader/wiki/Time-and-Timers#modulo-timer">Modulo Timer section of the Time and Timers wiki page</see> has more details about how to use a counter like this.
++	/// </summary>
+ 	public int miscCounter;
  	public int infernoCounter;
  	public int insanityShadowCooldown;
  	public int starCloakCooldown;
@@ -295,8 +308,13 @@
  	public float townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
-@@ -754,6 +_,10 @@
+@@ -752,8 +_,15 @@
+ 	public bool editedChestName;
+ 	public int reuseDelay;
  	public int aggro;
++	/// <summary>
++	/// The sum of the <see cref="NPC.npcSlots"/> values of NPC within the active range of this Player. Used to set NPC spawn rates.
++	/// </summary>
  	public float nearbyActiveNPCs;
  	public bool creativeInterface;
 +	/// <summary>
@@ -306,7 +324,7 @@
  	public bool mouseInterface;
  	public bool lastMouseInterface;
  	public int noThrow;
-@@ -769,8 +_,16 @@
+@@ -769,9 +_,19 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
  	public const int SupportedMiscSlotCount = 5;
@@ -316,13 +334,16 @@
 +	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
 +	/// </summary>
  	public Item[] armor = new Item[20];
++	/// <summary> The dye items corresponding to the <see cref="armor"/> items. </summary>
  	public Item[] dye = new Item[10];
 +	/// <summary>
 +	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
 +	/// </summary>
  	public Item[] miscEquips = new Item[5];
++	/// <summary> The dye items corresponding to the <see cref="miscEquips"/> items. </summary>
  	public Item[] miscDyes = new Item[5];
  	public Item trashItem = new Item();
+ 	public float itemRotation;
 @@ -781,16 +_,48 @@
  	public bool poundRelease;
  	public float ghostFade;
@@ -372,7 +393,7 @@
  	public int lavaTime;
  	public bool ignoreWater;
  	public bool armorEffectDrawShadow;
-@@ -813,7 +_,16 @@
+@@ -813,13 +_,26 @@
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
  	public float firstFractalAfterImageOpacity;
@@ -389,7 +410,17 @@
  	public Item[] inventory = new Item[59];
  	public bool[] inventoryChestStack = new bool[59];
  	public Item lastVisualizedSelectedItem;
-@@ -836,7 +_,13 @@
++	/// <summary> Piggy Bank items </summary>
+ 	public Chest bank = new Chest(bank: true);
++	/// <summary> Safe items </summary>
+ 	public Chest bank2 = new Chest(bank: true);
++	/// <summary> Defender's Forge items </summary>
+ 	public Chest bank3 = new Chest(bank: true);
++	/// <summary> Void Vault items </summary>
+ 	public Chest bank4 = new Chest(bank: true);
+ 	public BitsByte voidVaultInfo;
+ 	public float headRotation;
+@@ -836,10 +_,18 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
  	public int nonTorch = -1;
@@ -402,7 +433,12 @@
 +	/// </summary>
  	public float stepSpeed = 1f;
  	public static bool deadForGood = false;
++	/// <summary> Indicates if this player is dead </summary>
  	public bool dead;
++	/// <summary> The amount of time in ticks before this player respawns after death. Most suitably modified in <see cref="ModPlayer.Kill(double, int, bool, PlayerDeathReason)"/> </summary>
+ 	public int respawnTimer;
+ 	public const int respawnTimerMax = 3600;
+ 	public long lastTimePlayerWasSaved;
 @@ -853,6 +_,7 @@
  	public int head = -1;
  	public int body = -1;
@@ -606,7 +642,7 @@
  	public bool desertBoots;
  	public bool eyeSpring;
  	public bool snowman;
-@@ -1194,21 +_,73 @@
+@@ -1194,28 +_,86 @@
  	public bool parryDamageBuff;
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
@@ -680,7 +716,20 @@
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1231,24 +_,77 @@
+ 	public float tileSpeed = 1f;
+ 	public bool autoPaint;
+ 	public bool autoActuator;
++	/// <summary>
++	/// The x tile coordinate of the bed spawn location for this player in this world. When -1 <see cref="Main.spawnTileX"/> is used instead.
++	/// </summary>
+ 	public int SpawnX = -1;
++	/// <summary>
++	/// The y tile coordinate of the bed spawn location for this player in this world. When -1 <see cref="Main.spawnTileY"/> is used instead.
++	/// </summary>
+ 	public int SpawnY = -1;
+ 	public Vector2? PotionOfReturnOriginalUsePosition;
+ 	public Vector2? PotionOfReturnHomePosition;
+@@ -1231,24 +_,84 @@
  	public static int tileTargetY;
  	public static float defaultGravity = 0.4f;
  	public static int jumpHeight = 15;
@@ -720,9 +769,13 @@
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float runAcceleration = 0.08f;
  	public float runSlowdown = 0.2f;
++	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterSource"/> tile. (adjWater stands for adjacent to water) </summary>
  	public bool adjWater;
++	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneySource"/> tile. (adjHoney stands for adjacent to honey) </summary>
  	public bool adjHoney;
++	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerSource"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
 +	public bool adjShimmer;
++	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaSource"/> tile. (adjLava stands for adjacent to lava) </summary>
  	public bool adjLava;
  	public bool oldAdjWater;
  	public bool oldAdjHoney;
@@ -732,6 +785,9 @@
 +	public bool oldAdjShimmer;
 +
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
++	/// <summary>
++	/// An array indexed by tile type (<see cref="Tile.TileType"/>, <see cref="TileID"/>) indicating if the player is within crafting range of each tile type. Used to determine if a player satisfies crafting station requirements for recipes. Note that this includes tiles acting like other tiles (<see cref="ModTile.AdjTiles"/>, <see cref="Player.AdjTiles"/>), so the player might not actually be near specific tiles. For example a player near a <see cref="TileID.MythrilAnvil"/> tile will count as being near <see cref="TileID.Anvils"/>.
++	/// </summary>
 +	public bool[] adjTile {
 +		get {
 +			if (_adjTile.Length != TileLoader.TileCount)
@@ -761,6 +817,14 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
+@@ -1260,6 +_,7 @@
+ 	public Color pantsColor = new Color(255, 230, 175);
+ 	public Color shoeColor = new Color(160, 105, 60);
+ 	public int hair;
++	/// <summary> If true, the player has PvP enabled </summary>
+ 	public bool hostile;
+ 	public SoundPlaySet hermesStepSound = new SoundPlaySet();
+ 	public Vector2 instantMovementAccumulatedThisFrame;
 @@ -1297,9 +_,24 @@
  	public Item boneGloveItem;
  	public bool goldRing;
@@ -1262,6 +1326,14 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type)
  				DelBuff(i);
+@@ -3105,6 +_,7 @@
+ 		if (item.potion)
+ 			ApplyPotionDelay(item);
+ 
++		ItemLoader.UseItem(item, this);
+ 		ApplyLifeAndOrMana(item);
+ 		if (item.type == 5)
+ 			TryToResetHungerToNeutral();
 @@ -3117,6 +_,7 @@
  			AddBuff(item.buffType, num);
  		}
@@ -1284,9 +1356,11 @@
  			if (item.type == 227 && num4 < 0) {
  				num4 += 30;
  				if (num4 > 0)
-@@ -3175,6 +_,8 @@
+@@ -3174,7 +_,10 @@
+ 			if (item.potion)
  				ApplyPotionDelay(item);
  
++			ItemLoader.UseItem(item, this);
  			ApplyLifeAndOrMana(item);
 +
 +			if (item.consumable && ItemLoader.ConsumeItem(item, this))
@@ -1958,6 +2032,24 @@
  			}
  			else if (buffType[j] == 116) {
  				inferno = true;
+@@ -7363,7 +_,7 @@
+ 				bool flag = infernoCounter % 60 == 0;
+ 				int damage = 20;
+ 				if (whoAmI != Main.myPlayer)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int k = 0; k < 200; k++) {
+ 					NPC nPC = Main.npc[k];
+@@ -7377,7 +_,7 @@
+ 				}
+ 
+ 				if (!hostile)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int l = 0; l < 255; l++) {
+ 					Player player = Main.player[l];
 @@ -7388,19 +_,22 @@
  						player.AddBuff(num2, 120);
  
@@ -2011,6 +2103,43 @@
  			}
  			else if (buffType[j] == 41) {
  				buffTime[j] = 18000;
+@@ -8598,18 +_,19 @@
+ 				frozen = true;
+ 				fallStart = (int)(position.Y / 16f);
+ 				if (Main.myPlayer != whoAmI)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				if (position.Y / 16f > (float)Main.UnderworldLayer) {
+-					if (Main.myPlayer == whoAmI)
++					if (Main.myPlayer == whoAmI) {
+ 						DelBuff(j);
+-
+-					continue;
++						j--;
++					}
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				if (shimmerWet) {
+ 					buffTime[j] = 60;
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				bool flag32 = false;
+@@ -8622,8 +_,10 @@
+ 
+ 				if (flag32)
+ 					buffTime[j] = 6;
+-				else
++				else {
+ 					DelBuff(j);
++					j--;
++				}
+ 			}
+ 			else if (buffType[j] == 163) {
+ 				headcovered = true;
 @@ -8708,14 +_,20 @@
  			else if (buffType[j] == 26) {
  				wellFed = true;
@@ -2115,11 +2244,12 @@
  				minionKB -= 1f;
  				pickSpeed += 0.15f;
  			}
-@@ -8805,6 +_,9 @@
+@@ -8805,6 +_,10 @@
  			else if (buffType[j] == 79) {
  				meleeEnchant = 8;
  			}
 +
++			UpdateBuffsLoopEnd:
 +			if (j == originalIndex)
 +				BuffLoader.Update(buffType[j], this, ref j);
  		}
@@ -4741,7 +4871,34 @@
  		return num;
  	}
  
-@@ -27344,11 +_,26 @@
+@@ -27286,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="Item.Refresh(bool)"/> on all player-owned storage (inventory, banks, equipment). Also refreshes recipe and shop entries.
++	/// <para/> This is called when entering a world and serves to ensure that items with <see cref="ItemVariants"/> have the correct stats.
++	/// </summary>
+ 	public void RefreshItems(bool onlyIfVariantChanged = true)
+ 	{
+ 		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
+@@ -27301,6 +_,15 @@
+ 		RefreshItems(bank3.item, onlyIfVariantChanged);
+ 		RefreshItems(bank4.item, onlyIfVariantChanged);
+ 		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
++
++		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
++			// Don't adjust custom prices, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
++			var originalCustomPrice = item.shopCustomPrice;
++			var originalSpecialCurrency = item.shopSpecialCurrency;
++			item.Refresh(onlyIfVariantChanged);
++			item.shopCustomPrice = originalCustomPrice;
++			item.shopSpecialCurrency = originalSpecialCurrency;
++		}
+ 	}
+ 
+ 	private void RefreshItems(Item[] array, bool onlyIfVariantChanged)
+@@ -27344,11 +_,29 @@
  		}
  	}
  
@@ -4763,6 +4920,9 @@
 +		return false;
 +	}
  
++	/// <summary>
++	/// Checks if the player has the provided amount of money or custom currency (if <paramref name="customCurrency"/> is set) in their inventory and banks combined. Use <see cref="BuyItem(long, int)"/> if the player does have enough money to take that money from the player.
++	/// </summary>
 +	public bool CanAfford(long price, int customCurrency = -1)
 +	{
 +		if (customCurrency != -1)
@@ -4770,13 +4930,20 @@
  		bool overFlowing;
  		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
  		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
-@@ -27357,7 +_,13 @@
+@@ -27357,7 +_,20 @@
  		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
  		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
  			return false;
 +		return true;
 +	}
  
++	/// <summary>
++	/// Attempts to "purchase" something that costs the given <paramref name="price"/>.<br/>
++	/// Items will be taken from all of the player inventories and banks combined.<br/>
++	/// If <paramref name="customCurrency"/> is provided, the price will be in terms of the custom currency instead of coins.<br/>
++	/// The currency will be taken from the inventories.
++	/// <para/> This method does not check if the player has enough currency (use <see cref="CanAfford(long, int)"/> to check that), the <b>game will crash if called on a player without enough currency</b>. Use <see cref="BuyItem(long, int)"/> instead for the more typical usage.
++	/// </summary>
 +	public bool PayCurrency(long price, int customCurrency = -1)
 +	{
 +		if (customCurrency != -1)
@@ -7078,6 +7245,16 @@
  		KnockBack = GetWeaponKnockback(sItem, KnockBack);
  		IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  		if (projToShoot == 228)
+@@ -36695,6 +_,9 @@
+ 		if (sItem.type == 2796)
+ 			projToShoot = 442;
+ 
++		if (sItem.type == ItemID.FireworksLauncher)
++			projToShoot = ProjectileID.RocketFireworkRed; // Make sure Celebration has correct projectile set for logic.
++
+ 		if (sItem.type == 2223)
+ 			projToShoot = 357;
+ 
 @@ -36708,7 +_,8 @@
  		Vector2 pointPoisition = RotatedRelativePoint(MountedCenter);
  		bool flag = true;
@@ -7128,6 +7305,17 @@
  		if (projToShoot == 76) {
  			projToShoot += Main.rand.Next(3);
  			float num7 = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
+@@ -36895,7 +_,9 @@
+ 		}
+ 		else if (sItem.type == 3029) {
+ 			int num11 = 3;
+-			if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41) {
++			//if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41)
++			if (ProjectileID.Sets.FiresFewerFromDaedalusStormbow[projToShoot])
++			{
+ 				if (Main.rand.Next(3) == 0)
+ 					num11--;
+ 			}
 @@ -38410,10 +_,14 @@
  		projType = 721;
  		Item item = inventory[selectedItem];
@@ -7625,7 +7813,7 @@
  					item = inventory[k];
  					canShoot = true;
  					break;
-@@ -40981,10 +_,43 @@
+@@ -40981,17 +_,52 @@
  			}
  		}
  
@@ -7669,6 +7857,15 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
++		/* These 2 are unused and will never be right for modded rocket ammo. Following check is kept in to preserve existing behavior if being relied on.
+ 		else if (sItem.type == 1946)
+ 			projToShoot = 338 + item.type - 771;
+ 		else if (sItem.type == 3930)
+ 			projToShoot = 715 + item.type - AmmoID.Rocket;
++		*/
+ 		else if (sItem.useAmmo == AmmoID.Rocket)
+ 			projToShoot += item.shoot;
+ 		else if (sItem.useAmmo == AmmoID.Solution)
 @@ -41015,6 +_,7 @@
  			projToShoot = 117;
  

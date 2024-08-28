@@ -282,6 +282,7 @@
 		// "InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		// "ModPackMismatch": "Last Mod Pack: {0}",
 		// "ModPackDelete": "Delete Mod Pack",
+		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisation des Mods",
@@ -355,6 +356,10 @@
 		"MBShowMSClient": "Montrer uniquement les Mods côté client",
 		"MBShowMSServer": "Montrer uniquement les Mods côté serveur",
 		"MBShowMSNoSync": "Montrer uniquement les Mods sans sync",
+		// "MBTagsSelected": "Tags:",
+		// "MBTagsCategories": "Categories: {0}",
+		// "MBTagsLanguage": "Language: {0}",
+		// "MBTagsClear": "Clear all tag selections",
 		"MBClearSpecialFilter": "Enlever les filtres spéciaux: {0}",
 		"MBOfflineWithReason": "DÉCONNECTÉ ({0})",
 		"MBBusy": "Occupé",
@@ -972,6 +977,7 @@
 	},
 	"Mods": {
 		// "ModLoader.Unloaded": "Unloaded",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "La Blague du Poisson D'Avril",
 		"ModLoader.Items.StartBag.DisplayName": "Sac de Départ",
 		"ModLoader.Items.StartBag.Tooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",

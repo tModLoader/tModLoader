@@ -205,7 +205,7 @@ internal static class Interface
 				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
-						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item)) {
+						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item) || item == null) {
 							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
 							continue;
 						}
@@ -551,7 +551,7 @@ internal static class Interface
 			int size = text.Length;
 			text = (variable.CanWrite ? key : "-") + "\t" + text + new string('\t', Math.Max((55 - size) / 8, 1));
 			if (!variable.CanWrite)
-				Console.ForegroundColor = ConsoleColor.DarkGray;
+				Console.ForegroundColor = (Console.BackgroundColor == ConsoleColor.DarkGray || Console.BackgroundColor == ConsoleColor.Gray) ? ConsoleColor.Blue : ConsoleColor.DarkGray;
 			text += JsonConvert.SerializeObject(variable.GetValue(config));
 			MethodInfo methodInfo = variable.Type.GetMethod("ToString", Array.Empty<Type>());
 			bool hasToString = methodInfo != null && methodInfo.DeclaringType != typeof(object);

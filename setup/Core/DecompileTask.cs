@@ -17,7 +17,7 @@ using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
 using ICSharpCode.Decompiler.CSharp.Transforms;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
-using Terraria.ModLoader.Properties;
+using Terraria.ModLoader.Setup.Properties;
 using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup

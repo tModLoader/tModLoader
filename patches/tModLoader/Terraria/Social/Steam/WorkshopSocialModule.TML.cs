@@ -22,34 +22,24 @@ public partial class WorkshopSocialModule
 	{
 		info = null;
 		var query = new QueryParameters() {
-			searchModSlugs = new string[] { modFile.Name },
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods)) {
+		if (!WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod)) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
 		currPublishID = 0;
 
-		if (!mods.Any() || mods[0] == null) {
-			// This logic is for using a local copy of Workshop.json to figure out what the publish ID is. 
-			// It is currently unused and would need modifications to get the 'mod download item' for later.
-			/*
-			if (!AWorkshopEntry.TryReadingManifest(  <GET PATH> + Path.DirectorySeparatorChar + "workshop.json", out info))
-				return false;
-
-			currPublishID = info.workshopEntryId;
-			mods[0] = Get Mod From Publish ID ()
-			*/
+		if (mod == null) {
 			return false;
 		}
 
-		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
+		currPublishID = ulong.Parse(mod.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
-		WorkshopBrowserModule.Instance.DownloadItem(mods[0], uiProgress: null);
+		WorkshopBrowserModule.Instance.DownloadItem(mod, uiProgress: null);
 
 		// Grab the tags from workshop.json
 		ModOrganizer.WorkshopFileFinder.Refresh(new WorkshopIssueReporter()); // Force detection in case mod wasn't installed
@@ -206,7 +196,7 @@ public partial class WorkshopSocialModule
 
 		if (buildData["modreferences"].Length > 0) {
 			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
-			if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+			if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 				return false;
 
 			foreach (string modRef in modIds) {

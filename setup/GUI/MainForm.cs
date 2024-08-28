@@ -4,8 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using System.Security.Cryptography;
-using Terraria.ModLoader.Properties;
+using Terraria.ModLoader.Setup.Properties;
 using static Terraria.ModLoader.Setup.Program;
 
 namespace Terraria.ModLoader.Setup

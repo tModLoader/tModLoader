@@ -106,6 +106,11 @@ Mods: {
 			}
 
 			ExampleDresser.MapEntry: Example Dresser
+
+			ExampleSign: {
+				DefaultSignText: Right-click me!
+				MapEntry: Example Sign
+			}
 		}
 
 		Items: {
@@ -706,6 +711,11 @@ Mods: {
 				Tooltip: This is a modded sword.
 			}
 
+			ExampleMultiplePrefixCategoryWeapon: {
+				DisplayName: Example Multiple Prefix Category Weapon
+				Tooltip: This can receive and keep both melee and magic prefixes
+			}
+
 			ExampleWhip: {
 				DisplayName: Example Whip
 				Tooltip:
@@ -914,6 +924,26 @@ Mods: {
 				Tooltip: This is a modded sand block
 			}
 
+			TileObjectDataShowcaseStyle0: {
+				DisplayName: TileObjectData Showcase Style 0 - Gold
+				Tooltip: Place between gold ore tiles
+			}
+
+			TileObjectDataShowcaseStyle1: {
+				DisplayName: TileObjectData Showcase Style 1 - Silver
+				Tooltip: Place between silver ore tiles
+			}
+
+			TileObjectDataShowcaseStyle2: {
+				DisplayName: TileObjectData Showcase Style 2 - Copper
+				Tooltip: Place between copper ore tiles
+			}
+
+			TileObjectDataShowcaseStyle3: {
+				DisplayName: TileObjectData Showcase Style 3 - ExampleBlock
+				Tooltip: Place between ExampleBlock tiles
+			}
+
 			ExampleRocket: {
 				DisplayName: Example Rocket
 				Tooltip: "{$ItemTooltip.RocketI}"
@@ -961,6 +991,16 @@ Mods: {
 			}
 
 			ExampleResourcePickup.DisplayName: Example Resource Pickup
+
+			ExampleSignItem: {
+				DisplayName: Example Sign
+				Tooltip: ""
+			}
+
+			ExampleCustomFramingTileItem: {
+				DisplayName: Example Custom Framing Tile Item
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

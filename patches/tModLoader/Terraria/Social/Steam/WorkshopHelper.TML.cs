@@ -35,16 +35,18 @@ public partial class WorkshopHelper
 	}
 
 	/// <summary>
+	/// <code>
 	/// Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found
-	/// If SteamClient is true (ie it is a steam user running a client or host&play),
+	/// If SteamClient is true (ie it is a steam user running a client or host and play),
 	///		InstallDir: SteamFiles/Steamapps/common/tModLoader is GetAppInstallDir
 	///		WorkshopFolder: SteamFiles/Steamapps/workshop is Path.Combine(GetAppInstallDir, .., .., Workshop)
 	///	If SteamClient is false, SteamAvailable = True -> Is FamilyShare or GoG Client. SteamedWraps.FamilyShare differentiates if needed
 	///		InstallDir: anywhere, manual.
 	///		WorkshopFolder: InstallDir/Steamapps/workshop
 	///	If Main.DedServ is true
-	///		Use SteamClient reference path if it exists && Not "-nosteam" supplied
+	///		Use SteamClient reference path if it exists &amp;&amp; Not "-nosteam" supplied
 	///		Use NotSteamClient working folder path if "-nosteam" supplied or SteamClient ref path not exists
+	/// </code>
 	/// </summary>
 	public static string GetWorkshopFolder(AppId_t app)
 	{
@@ -72,12 +74,19 @@ public partial class WorkshopHelper
 	{
 		item = null;
 
-		var query = new QueryHelper.AQueryInstance(new QueryParameters() { searchModSlugs = new string[] { modSlug } });
-		if (!query.TrySearchByInternalName(out var items))
+		var query = new QueryHelper.AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect });
+		if (!query.TrySearchByInternalName(modSlug, out item))
 			return false;
 
-		item = items[0];
-		return item != null; // TODO, return value is ambiguous between a connection error and the mod not existing on workshop, currently both are logged as an error and the item is skipped
+		if (item == null) {
+			// search of all mods that were published by this user - Does not work with co-published/non-owner
+			// this should catch private / friends-only visibility
+			query.queryParameters.queryType = QueryType.SearchUserPublishedOnly;
+			if (!query.TrySearchByInternalName(modSlug, out item))
+				return false;
+		}
+
+		return true;
 	}
 
 	// Should this be in SteamedWraps or here?
@@ -92,11 +101,13 @@ public partial class WorkshopHelper
 	}
 
 	/////// Used for Publishing ////////////////////
-	internal static bool TryGetPublishIdByInternalName(QueryParameters query, out List<string> modIds)
+	internal static bool TryGetGroupPublishIdsByInternalName(QueryParameters query, out List<string> modIds)
 	{
 		modIds = new List<string>();
 
-		if (!TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> items))
+		var queryHandle = new QueryHelper.AQueryInstance(query);
+		// default search of all public mods. If fails, returns false
+		if (!queryHandle.TryGroupSearchByInternalName(out var items))
 			return false;
 
 		for (int i = 0; i < query.searchModSlugs.Length; i++) {
@@ -107,15 +118,6 @@ public partial class WorkshopHelper
 			else
 				modIds.Add(items[i].PublishId.m_ModPubId);
 		}
-
-		return true;
-	}
-
-	internal static bool TryGetModDownloadItemsByInternalName(QueryParameters query, out List<ModDownloadItem> mods)
-	{
-		var queryHandle = new QueryHelper.AQueryInstance(query);
-		if (!queryHandle.TrySearchByInternalName(out mods))
-			return false;
 
 		return true;
 	}
@@ -381,32 +383,47 @@ public partial class WorkshopHelper
 			/// Outputs a List of ModDownloadItems of equal length to QueryParameters.SearchModSlugs
 			/// Uses null entries to fill gaps to ensure length consistency
 			/// </summary>
-			internal bool TrySearchByInternalName(out List<ModDownloadItem> items)
+			internal bool TryGroupSearchByInternalName(out List<ModDownloadItem> items)
 			{
 				items = new List<ModDownloadItem>();
 
 				foreach (var slug in queryParameters.searchModSlugs) {
-					try {
-						WaitForQueryResult(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug));
-
-						if (_queryReturnCount == 0) {
-							Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
-							items.Add(null);
-							continue;
-						}
-
-						items.Add(GenerateModDownloadItemFromQuery(0));
-					}
-					catch {
-						// If Query Fails, we can't publish
+					if (!TrySearchByInternalName(slug, out var item))
 						return false;
-					}
-					finally {
-						ReleaseWorkshopQuery();
-					}
+
+					items.Add(item);
 				}
 
 				return true;
+			}
+
+			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
+			/// <summary>
+			/// Only Use if we don't have a PublishID source.
+			/// Returns false if unable to check Workshop and outs item as null if item not found
+			/// </summary>
+			internal bool TrySearchByInternalName(string slug, out ModDownloadItem item)
+			{
+				item = null;
+
+				try {
+					WaitForQueryResult(SteamedWraps.GenerateAndSubmitModBrowserQuery(page: 1, queryParameters, internalName: slug));
+
+					if (_queryReturnCount == 0) {
+						Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
+						return true;
+					}
+
+					item = GenerateModDownloadItemFromQuery(0);
+					return true;
+				}
+				catch {
+					// If Query Fails, we can't publish
+					return false;
+				}
+				finally {
+					ReleaseWorkshopQuery();
+				}
 			}
 
 			/////// Run Queries ////////////////////
@@ -449,10 +466,6 @@ public partial class WorkshopHelper
 				SteamUGCDetails_t pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, i);
 
 				PublishedFileId_t id = pDetails.m_nPublishedFileId;
-
-				if (pDetails.m_eVisibility != ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic) {
-					return null;
-				}
 
 				if (pDetails.m_eResult != EResult.k_EResultOK) {
 					Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);

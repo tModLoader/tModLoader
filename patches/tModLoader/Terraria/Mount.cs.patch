@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -89,8 +_,10 @@
+@@ -89,12 +_,16 @@
  		}
  	}
  
@@ -17,9 +17,15 @@
  	{
 +		public ModMount ModMount { get; set; }
 +
++		/// <summary> Texture drawn behind the player while in use. </summary>
  		public Asset<Texture2D> backTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> backTextureExtra = Asset<Texture2D>.Empty;
+ 		public Asset<Texture2D> backTextureExtraGlow = Asset<Texture2D>.Empty;
++		/// <summary> Texture drawn in front of the player while in use. </summary>
+ 		public Asset<Texture2D> frontTexture = Asset<Texture2D>.Empty;
+ 		public Asset<Texture2D> frontTextureGlow = Asset<Texture2D>.Empty;
+ 		public Asset<Texture2D> frontTextureExtra = Asset<Texture2D>.Empty;
 @@ -150,7 +_,8 @@
  		public int dashingFrameCount;
  		public int dashingFrameDelay;

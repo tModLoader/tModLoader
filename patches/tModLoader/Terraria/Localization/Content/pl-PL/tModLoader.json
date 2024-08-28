@@ -282,6 +282,7 @@
 		"InstallPackLocalDesc": "Wyłącza wszystkie mody i włącza zestaw modów, używając\nzamrożonych wersji modów znajdujących się w Paczce Modów",
 		"ModPackMismatch": "Ostatnia Paczka Modów: {0}",
 		// "ModPackDelete": "Delete Mod Pack",
+		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronizowanie modów",
@@ -355,6 +356,10 @@
 		"MBShowMSClient": "Mody klienta",
 		"MBShowMSServer": "Mody serwera",
 		"MBShowMSNoSync": "Mody niesynchronizowane",
+		// "MBTagsSelected": "Tags:",
+		// "MBTagsCategories": "Categories: {0}",
+		// "MBTagsLanguage": "Language: {0}",
+		// "MBTagsClear": "Clear all tag selections",
 		"MBClearSpecialFilter": "Wyczyść filtr: {0}",
 		"MBOfflineWithReason": "NIEDOSTĘPNY ({0})",
 		"MBBusy": "Zajęty",
@@ -972,6 +977,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Niezaładowane",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis",
 		"ModLoader.Items.StartBag.DisplayName": "Początkowy ekwipunek",
 		"ModLoader.Items.StartBag.Tooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",

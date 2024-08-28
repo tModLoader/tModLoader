@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -76,7 +77,7 @@ public partial class UIManageControls : UIState
 				return result;
 			}
 			case ClearModKeybinds: {
-				var result = new UIKeybindingSimpleListItem(() => "Clear", color);
+				var result = new UIKeybindingSimpleListItem(() => Language.GetTextValue("tModLoader.ModConfigClear"), color);
 
 				result.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					foreach (var modKeybind in KeybindLoader.Keybinds) {

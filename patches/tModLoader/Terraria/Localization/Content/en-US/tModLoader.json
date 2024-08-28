@@ -282,6 +282,7 @@
 		"InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		"ModPackMismatch": "Last Mod Pack: {0}",
 		"ModPackDelete": "Delete Mod Pack",
+		"ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Syncing Mods",
@@ -355,6 +356,10 @@
 		"MBShowMSClient": "Show client side only mods",
 		"MBShowMSServer": "Show server side only mods",
 		"MBShowMSNoSync": "Show no sync only mods",
+		"MBTagsSelected": "Tags:",
+		"MBTagsCategories": "Categories: {0}",
+		"MBTagsLanguage": "Language: {0}",
+		"MBTagsClear": "Clear all tag selections",
 		"MBClearSpecialFilter": "Clear Special Filter: {0}",
 		"MBOfflineWithReason": "Offline ({0})",
 		"MBBusy": "Busy",
@@ -972,6 +977,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Unloaded",
+		"ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "April Fools Joke",
 		"ModLoader.Items.StartBag.DisplayName": "Starting Bag",
 		"ModLoader.Items.StartBag.Tooltip": "Some starting items couldn't fit in your inventory\n{$CommonItemTooltip.RightClickToOpen}",

@@ -282,6 +282,7 @@
 		// "InstallPackLocalDesc": "Disables all mods & enables the modpack using\nfrozen mod versions found in Mod Pack",
 		"ModPackMismatch": "Letztes Modpacket: {0}",
 		// "ModPackDelete": "Delete Mod Pack",
+		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronisiere Mods",
@@ -355,6 +356,10 @@
 		"MBShowMSClient": "Clientseitige Mods zeigen",
 		"MBShowMSServer": "Serverseitige Mods zeigen",
 		"MBShowMSNoSync": "Mods die keine Synchronisation benötigen zeigen",
+		// "MBTagsSelected": "Tags:",
+		// "MBTagsCategories": "Categories: {0}",
+		// "MBTagsLanguage": "Language: {0}",
+		// "MBTagsClear": "Clear all tag selections",
 		"MBClearSpecialFilter": "Filter leeren: {0}",
 		"MBOfflineWithReason": "OFFLINE ({0})",
 		"MBBusy": "Beschäftigt",
@@ -972,6 +977,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Entladen",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Aprilscherz",
 		"ModLoader.Items.StartBag.DisplayName": "Starterpaket",
 		"ModLoader.Items.StartBag.Tooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",

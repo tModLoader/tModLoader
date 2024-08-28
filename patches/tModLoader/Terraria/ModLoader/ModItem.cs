@@ -18,8 +18,9 @@ using Terraria.Utilities;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
-/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
+/// This class serves as a place for you to place all your properties and hooks for each item.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 /// </summary>
 public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 {
@@ -140,31 +141,27 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not.
-	/// Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix
 	/// </summary>
 	public virtual bool MeleePrefix()
-		=> Item.melee && !Item.noUseGraphic;
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Melee) && !Item.noUseGraphic;
 
 	/// <summary>
-	/// Allows you to change whether or not a weapon only receives generic prefixes. Return true if the item should only receive generic prefixes and false if it should not.
-	/// Takes priority over RangedPrefix and MagicPrefix
-	/// Ignored if MeleePrefix returns true
+	/// Allows you to change whether or not a weapon receives generic prefixes. Return true if the item should receive generic prefixes and false if it should only receive them from another category.
 	/// </summary>
 	public virtual bool WeaponPrefix()
-		=> Item.melee && Item.noUseGraphic;
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Melee) && Item.noUseGraphic;
 
 	/// <summary>
 	/// Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not.
-	/// Takes priority over MagicPrefix
 	/// </summary>
 	public virtual bool RangedPrefix()
-		=> Item.ranged || Item.CountsAsClass(DamageClass.Throwing);
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Ranged);
 
 	/// <summary>
 	/// Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should receive magic prefixes and false if it should not.
 	/// </summary>
 	public virtual bool MagicPrefix()
-		=> Item.magic || Item.summon;
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Magic);
 
 	/// <summary>
 	/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
@@ -823,8 +820,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. Note that this hook is only ever called through this item's associated equipment texture. Use the player.armorEffectDraw bools to activate the desired effects.
-	/// </summary>
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
+	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void ArmorSetShadows(Player player)
 	{

@@ -11,6 +11,8 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleWings : ModItem
 	{
 		// To see how this config option was added, see ExampleModConfig.cs
+		// This code allows users to toggle loading this content via a config. Another common usage of IsLoadingEnabled would be to use ModLoader.HasMod to check if another mod is enabled or not.
+		// Feel free to remove this method in your own Wings if using this as a template, it is superfluous.
 		public override bool IsLoadingEnabled(Mod mod) {
 			return ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle;
 		}

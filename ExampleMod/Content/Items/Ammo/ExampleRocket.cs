@@ -40,10 +40,8 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.maxStack = Item.CommonMaxStack;
 			Item.value = Item.buyPrice(copper: 50);
 			Item.ammo = AmmoID.Rocket; // The ammo type is Rocket Ammo
-
-			// The projectile that is set in Item.shoot will be the "default" projectile.
-			// i.e. if a launcher doesn't have this ammo defined in SpecificLauncherAmmoProjectileMatches, it'll use this projectile instead.
-			Item.shoot = ModContent.ProjectileType<ExampleRocketProjectile>();
+			// Unlike other ammo, we don't set Item.shoot to the projectile for rocket ammo due to the logic involved.
+			// AmmoID.Sets.SpecificLauncherAmmoProjectileMatches is used to determine the projectile spawned based on the weapon.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -79,6 +79,8 @@ public sealed class UnloadedItem : ModLoaderModItem
 
 		Item.SetDefaults(modItem.Type);
 
+		ItemIO.LoadModdedPrefix(Item, tag);
+
 		if (modData?.Count > 0) {
 			Item.ModItem.LoadData(modData);
 		}

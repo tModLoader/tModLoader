@@ -1,4 +1,4 @@
-﻿using Terraria.ModLoader.Properties;
+﻿using Terraria.ModLoader.Setup.Properties;
 
 namespace Terraria.ModLoader.Setup
 {

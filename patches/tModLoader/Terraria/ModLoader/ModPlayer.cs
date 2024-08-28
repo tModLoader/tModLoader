@@ -12,7 +12,9 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
+/// A ModPlayer instance represents an extension of a Player instance.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <br/> You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 /// </summary>
 public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 {

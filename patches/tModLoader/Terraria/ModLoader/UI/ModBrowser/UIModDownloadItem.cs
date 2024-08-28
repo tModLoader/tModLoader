@@ -84,8 +84,8 @@ internal class UIModDownloadItem : UIPanel
 		tMLNeedUpdate = !BuildInfo.IsDev && BuildInfo.tMLVersion.MajorMinorBuild() < modBuildVersion.MajorMinorBuild();
 		if (tMLNeedUpdate) {
 			string updateVersion = $"v{modBuildVersion}";
-			bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
-			if (BuildInfo.IsStable && new Version(modBuildVersion.Major, modBuildVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), lastMonth ? 1 : BuildInfo.tMLVersion.Minor + 1))
+
+			if (modBuildVersion.Build == 2)
 				updateVersion = $"Preview {updateVersion}";
 
 			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
@@ -147,6 +147,7 @@ internal class UIModDownloadItem : UIPanel
 		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferenceByModId.ToList();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 		Interface.modBrowser.FilterTextBox.Text = "";
+		Interface.modBrowser.ResetTagFilters();
 		Interface.modBrowser.UpdateNeeded = true; // Is done by updating the above but not in case of modpacks
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 	}

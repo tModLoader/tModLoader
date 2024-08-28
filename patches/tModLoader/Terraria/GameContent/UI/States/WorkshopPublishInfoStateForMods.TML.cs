@@ -172,11 +172,11 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods) || mods.Count != 1 || mods[0] == null) {
+		if (!WorkshopHelper.TryGetModDownloadItem(_dataObject.Name, out var mod) || mod == null) {
 			return;
 		}
 
-		ulong existingAuthorID = ulong.Parse(mods[0].OwnerId);
+		ulong existingAuthorID = ulong.Parse(mod.OwnerId);
 		if (existingAuthorID == 0 || existingAuthorID == Steamworks.SteamUser.GetSteamID().m_SteamID) {
 			return;
 		}

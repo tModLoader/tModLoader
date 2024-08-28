@@ -102,6 +102,16 @@
  	public static FileMetadata WorldFileMetadata;
  	public static FileMetadata MapFileMetadata;
  	public static PingMapLayer Pings = new PingMapLayer();
+@@ -457,7 +_,9 @@
+ 	public static int jungleBackStyle;
+ 	public static string debugWords = "";
+ 	public static bool gamePad = false;
++	/// <summary> If true the <see href="https://terraria.wiki.gg/wiki/Christmas">Christmas</see> seasonal event is currently active. </summary>
+ 	public static bool xMas;
++	/// <summary> If true the <see href="https://terraria.wiki.gg/wiki/Halloween">Halloween</see> seasonal event is currently active. </summary>
+ 	public static bool halloween;
+ 	public static bool forceXMasForToday;
+ 	public static bool forceHalloweenForToday;
 @@ -487,12 +_,17 @@
  	public static bool showSplash = true;
  	public static bool ignoreErrors = true;
@@ -239,6 +249,16 @@
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
+@@ -625,6 +_,9 @@
+ 	public static float armorAlpha = 1f;
+ 	public static float[] buffAlpha = new float[BuffID.Count];
+ 	public static bool afterPartyOfDoom = false;
++	/// <summary>
++	/// True if the world is in hard mode. This doubles as an indicator if <see cref="NPCID.WallofFlesh"/> has been defeated since they are tied together.
++	/// </summary>
+ 	public static bool hardMode;
+ 	public float chestLootScale = 1f;
+ 	public bool chestLootHover;
 @@ -671,7 +_,15 @@
  	public static float rightWorld = 134400f;
  	public static float topWorld = 0f;
@@ -283,7 +303,7 @@
  	public static bool dedServ;
  	public static int spamCount = 0;
  	public static int curMusic;
-@@ -743,19 +_,48 @@
+@@ -743,33 +_,71 @@
  	public static int LogoA = 255;
  	public static int LogoB;
  	public static bool LogoT;
@@ -320,6 +340,10 @@
  	public static Microsoft.Xna.Framework.Color[] teamColor = new Microsoft.Xna.Framework.Color[6];
  	public const double dayLength = 54000.0;
  	public const double nightLength = 32400.0;
++	/// <summary>
++	/// True during the day hours (4:30 AM to 7:30 PM), false during night hours (7:30 PM to 4:30 AM). In conjunction with <see cref="time"/> these represent the in-game time of the world.
++	/// <para/> Note that <see cref="IsItDay"/> additionally takes into account the constant night state of <see cref="remixWorld"/> worlds and should be used instead for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
  	public static bool dayTime = true;
 +
 +	/// <summary>
@@ -332,16 +356,27 @@
 +	/// </remarks>
  	public static double time = 13500.0;
  	public static double timeForVisualEffects;
++	/// <summary> The current <see href="https://terraria.wiki.gg/wiki/Moon_phase">moon phase</see> expressed as an int. Use <see cref="GetMoonPhase"/> to get the moon phase as a <see cref="MoonPhase"/> instead. </summary>
  	public static int moonPhase;
-@@ -768,7 +_,7 @@
+ 	public static short sunModY;
+ 	public static short moonModY;
+ 	public static bool alreadyGrabbingSunOrMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Blood_Moon">Blood Moon</see> is currently happening. </summary>
+ 	public static bool bloodMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Pumpkin_Moon">Pumpkin Moon</see> is currently happening. </summary>
+ 	public static bool pumpkinMoon;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Frost_Moon">Frost Moon</see> is currently happening. </summary>
+ 	public static bool snowMoon;
  	public static float cloudAlpha;
  	public static float maxRaining;
  	public static float oldMaxRaining;
 -	public static int rainTime;
 +	public static double rainTime;
  	public static bool raining;
++	/// <summary> If true a <see href="https://terraria.wiki.gg/wiki/Solar_Eclipse">Solar Eclipse</see> is currently happening. </summary>
  	public static bool eclipse;
  	public static float eclipseLight;
+ 	public static int checkForSpawns;
 @@ -777,6 +_,13 @@
  	public static int BartenderHelpTextIndex = 0;
  	public static bool autoGen;
@@ -373,7 +408,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,39 +_,102 @@
+@@ -829,44 +_,112 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -446,7 +481,7 @@
 +	/// </summary>
  	public static bool[] tileSolidTop = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, this tile will be solid. Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
++	/// If true, this tile will be solid (unless <see cref="tileSolidTop"/> is also true). Projectiles will collide with it and NPC and Players can stand on it and collide with it. Typical terrain tiles such as <see cref="TileID.Stone"/> and <see cref="TileID.Demonite"/> set this. Other examples include <see cref="TileID.ClosedDoor"/> and <see cref="TileID.Boulder"/>
 +	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
 +	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
@@ -476,6 +511,16 @@
  	public static bool[] tileFrameImportant = new bool[TileID.Count];
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
+ 	public static short[] tileGlowMask = new short[TileID.Count];
+ 	public static bool[] tileContainer = new bool[TileID.Count];
++	/// <summary>
++	/// Indicates that a tile is a "sign" and will be paired with a <see cref="Sign"/> instance. Right click, hover, saving, and network syncing behaviors are all handled automatically. Note that signs are expected to be 2x2 tiles with pixel dimensions 36x36 and will likely not work correctly for other dimensions.
++	/// <para/> Be sure to also set <see cref="TileID.Sets.TileInteractRead"/>.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public static bool[] tileSign = new bool[TileID.Count];
+ 	public static bool[][] tileMerge = new bool[TileID.Count][];
+ 	public static int cageFrames = 25;
 @@ -941,9 +_,23 @@
  	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
@@ -500,7 +545,7 @@
  	public static int[] tileFrameCounter = new int[TileID.Count];
  	public static byte[] wallFrame = new byte[WallID.Count];
  	public static byte[] wallFrameCounter = new byte[WallID.Count];
-@@ -952,18 +_,39 @@
+@@ -952,19 +_,43 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
@@ -538,8 +583,12 @@
 +	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
 +	/// </summary>
  	public static Chest[] chest = new Chest[8000];
++	/// <summary>
++	/// Contains all the signs in the world. There can be at most 1000 signs in the world.
++	/// </summary>
  	public static Sign[] sign = new Sign[1000];
  	public static int[] itemFrame = new int[401];
+ 	public static int[] itemFrameCounter = new int[401];
 @@ -972,6 +_,10 @@
  	private static DrawAnimation _coinOnWorldAnimation = new DrawAnimationVertical(6, 8);
  	private static DrawAnimation _monkStaffT3OnWorldAnimation = new DrawAnimationVertical(5, 3);
@@ -575,9 +624,27 @@
  	public static Item mouseItem = new Item();
  	public static Item guideItem = new Item();
  	public static Item reforgeItem = new Item();
-@@ -1026,7 +_,18 @@
+@@ -1021,16 +_,46 @@
+ 	public static bool recFastScroll;
+ 	public static bool recBigList;
+ 	public static int recStart;
++	/// <summary>
++	/// Contains all the <see cref="Recipe"/> in the game. Be sure to read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">the Basic Recipes wiki page</see> to learn how to create and edit recipes.
++	/// <para/> Modders should not attempt to manually edit Main.recipe, doing so will break things. Recipes can be disabled or edited but should not be removed. Recipe ordering can be done through the sort methods, such as <see cref="Recipe.SortBefore(Recipe)"/>. Main.recipe is populated during mod loading and should not be changed in-game. Dynamic recipe availability is done through recipe conditions. 
++	/// </summary>
+ 	public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
++	/// <summary>
++	/// Contains recipe indexes (<see cref="Recipe.RecipeIndex"/>) of the recipes currently being shown in the UI, either for crafting or a Guide query.
++	/// </summary>
+ 	public static int[] availableRecipe = new int[Recipe.maxRecipes];
  	public static float[] availableRecipeY = new float[Recipe.maxRecipes];
++	/// <summary>
++	/// The count of Recipes being shown. The length of <see cref="availableRecipe"/>.
++	/// </summary>
  	public static int numAvailableRecipes;
++	/// <summary>
++	/// An index into <see cref="availableRecipe"/> indicating the currently selected Recipe.
++	/// </summary>
  	public static int focusRecipe;
 +
 +	/// <summary>
@@ -594,6 +661,16 @@
  	public static Player[] player = new Player[256];
  	public static Player[] playerVisualClone = new Player[256];
  	public static bool[] countsAsHostForGameplay = new bool[256];
++	/// <summary>
++	/// The x tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnX"/>) will spawn at this location and invasions will target this location.
++	/// </summary>
+ 	public static int spawnTileX;
++	/// <summary>
++	/// The y tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnY"/>) will spawn at this location and invasions will target this location.
++	/// </summary>
+ 	public static int spawnTileY;
+ 	public static bool npcChatRelease;
+ 	public static bool editSign;
 @@ -1044,8 +_,11 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -639,6 +716,30 @@
  	public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  	public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  	public static KeyboardState inputText;
+@@ -1149,6 +_,13 @@
+ 	public static int PendingResolutionWidth = 800;
+ 	public static int PendingResolutionHeight = 600;
+ 	public static bool PendingBorderlessState;
++	/// <summary>
++	/// If not 0, an invasion event is currently active:
++	/// <br/> If 1 (<see cref="InvasionID.GoblinArmy"/>), a <see href="https://terraria.wiki.gg/wiki/Goblin_Army">Goblin Army</see> is happening.
++	/// <br/> If 2 (<see cref="InvasionID.SnowLegion"/>), a <see href="https://terraria.wiki.gg/wiki/Frost_Legion">Frost Legion</see> is happening.
++	/// <br/> If 3 (<see cref="InvasionID.PirateInvasion"/>), a <see href="https://terraria.wiki.gg/wiki/Pirate_Invasion">Pirate Invasion</see> is happening.
++	/// <br/> If 4 (<see cref="InvasionID.MartianMadness"/>), a <see href="https://terraria.wiki.gg/wiki/Martian_Madness">Martian Madness</see> is happening.
++	/// </summary>
+ 	public static int invasionType;
+ 	public static double invasionX;
+ 	public static int invasionSize;
+@@ -1165,6 +_,9 @@
+ 	public static float invasionProgressAlpha;
+ 	public static bool HasInteractibleObjectThatIsNotATile = false;
+ 	public int currentNPCShowingChatBubble = -1;
++	/// <summary>
++	/// The number of animation frames this NPC's texture has. ModNPC should use <see cref="ModNPC.FindFrame(int)"/> to adjust <c>NPC.frame.Y</c> to change the drawn frame.
++	/// </summary>
+ 	public static int[] npcFrameCount = new int[688] {
+ 		1,
+ 		2,
 @@ -1860,11 +_,20 @@
  	public static float exitScale = 0.8f;
  	public static bool mouseReforge;
@@ -806,6 +907,16 @@
  	public static Vector2 MouseWorld {
  		get {
  			Vector2 result = MouseScreen + screenPosition;
+@@ -2300,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Counts game updates since the world was loaded. Updates even while gameplay is paused, but does not update on the main menus. Can be used to drive regular logic that doesn't need to run every update. The <see href="https://github.com/tModLoader/tModLoader/wiki/Time-and-Timers#modulo-timer">Modulo Timer section of the Time and Timers wiki page</see> has examples. <see cref="Player.miscCounter"/> is a similar counter that should be used specifically for player effects.
++	/// </summary>
+ 	public static uint GameUpdateCount => _gameUpdateCount;
+ 
+ 	public static SamplerState DefaultSamplerState {
 @@ -2311,15 +_,23 @@
  		}
  	}
@@ -831,6 +942,14 @@
  
  	public static string playerPathName => ActivePlayerFileData.Path;
  
+@@ -2506,6 +_,7 @@
+ 	[DllImport("kernel32.dll")]
+ 	public static extern IntPtr LoadLibrary(string dllToLoad);
+ 
++	/// <summary> The current <see href="https://terraria.wiki.gg/wiki/Moon_phase">moon phase</see> expressed as a <see cref="MoonPhase"/>. Use <see cref="moonPhase"/> to get the moon phase as an int instead. </summary>
+ 	public static MoonPhase GetMoonPhase() => (MoonPhase)moonPhase;
+ 
+ 	public static Vector2 DrawPlayerItemPos(float gravdir, int itemtype)
 @@ -2831,6 +_,8 @@
  		}
  
@@ -1080,6 +1199,15 @@
  					}
  				}
  
+@@ -4010,7 +_,7 @@
+ 					LanguageManager.Instance.SetLanguage(Convert.ToInt32(value5));
+ 				}
+ 
+-				if (text.Length > 5 && text.Substring(0, 5).ToLower() == "language=") {
++				if (text.Length > 9 && text.Substring(0, 9).ToLower() == "language=") {
+ 					string language = text.Substring(9);
+ 					LanguageManager.Instance.SetLanguage(language);
+ 				}
 @@ -4023,6 +_,14 @@
  				if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  					worldName = text.Substring(10);
@@ -2762,7 +2890,7 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -16311,47 +_,92 @@
+@@ -16311,47 +_,93 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -2794,6 +2922,7 @@
 +				Color realLineColor = black;
 +
 +				if (overrideColor[k].HasValue) {
++					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
 +					realLineColor = overrideColor[k].Value * num4;
 +					drawableLines[k].OverrideColor = realLineColor;
 +				}
@@ -5032,7 +5161,7 @@
  		int num = -1;
  		int num2 = -10;
  		int num3 = 0;
-@@ -38068,12 +_,27 @@
+@@ -38068,12 +_,32 @@
  		}
  
  		Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(100, 100, 100, mouseTextColor);
@@ -5042,7 +5171,8 @@
 +		/*
  		for (int i = 0; i < 12; i++) {
 +		*/
-+		for (int i = startingDisplay; i < endingDisplay; i++) {
++		int showableCount = 0;
++		for (int i = 0; i < InfoDisplayLoader.InfoDisplayCount; i++) {
  			string text2 = "";
  			string text3 = "";
  			Microsoft.Xna.Framework.Color infoTextColor = new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
@@ -5051,6 +5181,10 @@
 +			InfoDisplay info = InfoDisplayLoader.InfoDisplays[i];
 +
 +			if (!InfoDisplayLoader.Active(info) || (player[myPlayer].hideInfo[info.Type] && !playerInventory))
++				continue;
++
++			showableCount++;
++			if (showableCount <= startingDisplay)
 +				continue;
 +
 +			/*
@@ -5268,7 +5402,7 @@
  
  			Vector2 scale = new Vector2(1f);
  			Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -38429,15 +_,20 @@
+@@ -38429,15 +_,22 @@
  				if (n == 4)
  					color3 = infoTextColor;
  
@@ -5288,6 +5422,8 @@
 +
 +			endThisIcon:
 +			drawnCount++; // Moved here due to calculation changes
++			if (drawnCount >= 12)
++				break;
  		}
  
  		if (!string.IsNullOrEmpty(text)) {
@@ -6422,7 +6558,7 @@
  				}
  			}
  		}
-@@ -51850,6 +_,8 @@
+@@ -51850,11 +_,16 @@
  		}
  
  		instance.CameraModifiers.ApplyTo(ref screenPosition);
@@ -6431,6 +6567,14 @@
  		screenPosition.X = (int)screenPosition.X;
  		screenPosition.Y = (int)screenPosition.Y;
  		ClampScreenPositionToWorld();
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="dayTime"/>, but always returns false in <see cref="remixWorld"/> worlds. This should be used instead of <see cref="dayTime"/> for logic taking into account the state of the world rather the specific hour. Some examples include boss spawners and boss despawn behaviors.
++	/// </summary>
+ 	public static bool IsItDay()
+ 	{
+ 		if (remixWorld)
 @@ -51883,6 +_,13 @@
  			num = Utils.Clamp(num, 0, 8);
  

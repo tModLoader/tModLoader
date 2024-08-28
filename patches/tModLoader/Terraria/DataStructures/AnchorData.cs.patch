@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/AnchorData.cs
++++ src/tModLoader/Terraria/DataStructures/AnchorData.cs
+@@ -9,6 +_,14 @@
+ 	public int checkStart;
+ 	public static AnchorData Empty;
+ 
++	/// <summary>
++	/// Defines an anchor, meaning the surrounding tiles required for a multitile to be placeable at a location. <paramref name="type"/> dictates which types of tiles are eligible for the anchor while <paramref name="start"/> and <paramref name="count"/> dictate how much of the multitile edge need to have that specific anchor.
++	/// For example, most furniture tiles will simply set a bottom anchor spanning the full width of the tile requiring solid tiles:
++	/// <br/><c>TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);</c>
++	/// <para/> <paramref name="type"/> can be defined using multiple options with the logical OR operator (<c>|</c>) to combine <see cref="AnchorType"/> values, allowing tiles satisfying any of the AnchorTypes to work:
++	/// <br/><c>AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide</c>
++	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#anchorbottomanchorleftanchorrightanchortop">Anchor section of the Basic Tile wiki guide</see> has more information and visualizations.
++	/// </summary>
+ 	public AnchorData(AnchorType type, int count, int start)
+ 	{
+ 		this.type = type;

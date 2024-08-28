@@ -201,6 +201,15 @@
  					break;
  				}
  				case 33: {
+@@ -757,7 +_,7 @@
+ 					if (number2 == 1f) {
+ 						string text3 = text.ToString();
+ 						num7 = (byte)text3.Length;
+-						if (num7 == 0 || num7 > 20)
++						if (num7 == 0 || num7 > Chest.MaxNameLength)
+ 							num7 = 255;
+ 						else
+ 							text2 = text3;
 @@ -785,6 +_,11 @@
  					else {
  						writer.Write((short)0);

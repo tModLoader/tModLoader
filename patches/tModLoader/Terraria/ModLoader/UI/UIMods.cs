@@ -357,6 +357,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		UIModBrowser.PageUpDownSupport(modList);
 		if (modItemsTask is { IsCompleted: true }) {
 			var result = modItemsTask.Result;
 			items.AddRange(result);

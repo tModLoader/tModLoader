@@ -62,7 +62,7 @@
 +		<PackageReference Include="DotNetZip" Version="1.16.0" />
  		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.5.0" />
-+		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.0" />
++		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.1" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
 +		<PackageReference Include="Hjson" Version="3.0.0" />
 +		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />
