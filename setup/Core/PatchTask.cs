@@ -11,18 +11,21 @@ namespace Terraria.ModLoader.Setup.Core
 	{
 		private static readonly string[] NonSourceDirs = ["bin", "obj", ".vs"];
 
+		public static IEnumerable<(string file, string relPath)> EnumerateSrcFiles(string dir) =>
+			EnumerateFiles(dir).Where(f => !f.relPath.Split('/').Any(NonSourceDirs.Contains));
+
 		private readonly IUserPrompt userPrompt;
 		private readonly IPatchReviewer? patchReviewer;
 		private readonly TargetsFilesUpdater targetsFilesUpdater;
 		private readonly ProgramSettings programSettings;
 		private readonly PatchTaskParameters parameters;
 
-		private readonly SemaphoreSlim logSemaphore = new(1, 1);
 		private readonly ConcurrentBag<FilePatcher> results = new();
+		private int warnings;
 		private int failures;
 		private int fuzzy;
 		private StreamWriter? logFile;
-		private int warnings;
+		private readonly SemaphoreSlim logSemaphore = new(1, 1);
 
 		public PatchTask(PatchTaskParameters parameters, IServiceProvider serviceProvider)
 		{
@@ -36,9 +39,6 @@ namespace Terraria.ModLoader.Setup.Core
 				PatchDir = PathUtils.SetCrossPlatformDirectorySeparators(parameters.PatchDir),
 			};
 		}
-
-		public static IEnumerable<(string file, string relPath)> EnumerateSrcFiles(string dir) =>
-			EnumerateFiles(dir).Where(f => !f.relPath.Split('/').Any(NonSourceDirs.Contains));
 
 		public override bool StartupWarning()
 		{
@@ -110,11 +110,9 @@ namespace Terraria.ModLoader.Setup.Core
 
 			taskProgress.ReportStatus("Deleting Old Src Files");
 
-			foreach ((string file, _) in EnumerateSrcFiles(parameters.PatchedDir)) {
-				if (!newFiles.ContainsKey(file)) {
+			foreach ((var file, _) in EnumerateSrcFiles(parameters.PatchedDir))
+				if (!newFiles.ContainsKey(file))
 					File.Delete(file);
-				}
-			}
 
 			taskProgress.ReportStatus("Deleting Old Src's Empty Directories", overwrite: false);
 			DeleteEmptyDirs(parameters.PatchedDir);
@@ -123,18 +121,16 @@ namespace Terraria.ModLoader.Setup.Core
 
 			//Show patch reviewer if there were any fuzzy patches.
 
-			if (fuzzy > 0 || (programSettings.PatchMode == Patcher.Mode.FUZZY && failures > 0)) {
-				this.patchReviewer?.Show(results, commonBasePath: parameters.BaseDir + '/');
-			}
+			if (fuzzy > 0 || programSettings.PatchMode == Patcher.Mode.FUZZY && failures > 0)
+				patchReviewer?.Show(results, commonBasePath: parameters.BaseDir + '/');
 		}
 
 		public override bool Failed() => failures > 0;
 
 		public override void FinishedPrompt()
 		{
-			if (fuzzy > 0 || (failures == 0 && warnings == 0)) {
+			if (fuzzy > 0 || (failures == 0 && warnings == 0))
 				return;
-			}
 
 			this.userPrompt.Inform(
 				"Patch Results",
@@ -144,41 +140,31 @@ namespace Terraria.ModLoader.Setup.Core
 
 		private async Task<FilePatcher> Patch(string patchPath, CancellationToken cancellationToken = default)
 		{
-			FilePatcher? patcher = FilePatcher.FromPatchFile(patchPath);
+			var patcher = FilePatcher.FromPatchFile(patchPath);
 			patcher.Patch(this.programSettings.PatchMode);
 			results.Add(patcher);
 			CreateParentDirectory(patcher.PatchedPath);
 			patcher.Save();
 
 			int exact = 0, offset = 0;
-			foreach (Patcher.Result? result in patcher.results) {
+			foreach (var result in patcher.results) {
 				if (!result.success) {
 					failures++;
 					continue;
 				}
 
-				if (result.mode == Patcher.Mode.FUZZY || result.offsetWarning) {
-					warnings++;
-				}
-
-				if (result.mode == Patcher.Mode.EXACT) {
-					exact++;
-				}
-				else if (result.mode == Patcher.Mode.OFFSET) {
-					offset++;
-				}
-				else if (result.mode == Patcher.Mode.FUZZY) {
-					fuzzy++;
-				}
+				if (result.mode == Patcher.Mode.FUZZY || result.offsetWarning) warnings++;
+				if (result.mode == Patcher.Mode.EXACT) exact++;
+				else if (result.mode == Patcher.Mode.OFFSET) offset++;
+				else if (result.mode == Patcher.Mode.FUZZY) fuzzy++;
 			}
-
+			
 			var log = new StringBuilder();
 			log.AppendLine(
 				$"{patcher.patchFile.basePath},\texact: {exact},\toffset: {offset},\tfuzzy: {fuzzy},\tfailed: {failures}");
 
-			foreach (Patcher.Result? res in patcher.results) {
+			foreach (var res in patcher.results)
 				log.AppendLine(res.Summary());
-			}
 
 			if (logFile != null) {
 				await logSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
