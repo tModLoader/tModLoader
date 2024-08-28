@@ -23,8 +23,6 @@ namespace Terraria.ModLoader.Setup.Core
 			public WorkItem(string status, Action action) : this(status, (_, _) => { action(); return ValueTask.CompletedTask; }) { }
 		}
 
-		private int currentProgress;
-
 		protected async Task ExecuteParallel(
 			List<WorkItem> items,
 			ITaskProgress progress,
@@ -33,10 +31,11 @@ namespace Terraria.ModLoader.Setup.Core
 			CancellationToken cancellationToken = default)
 		{
 			try {
+				int currentProgress = 0;
+
 				if (resetProgress) {
 					progress.SetCurrentProgress(0);
 					progress.SetMaxProgress(items.Count);
-					currentProgress = 0;
 				}
 
 				var working = new List<Ref<string>>();
@@ -53,7 +52,6 @@ namespace Terraria.ModLoader.Setup.Core
 						CancellationToken = cancellationToken,
 					},
 					async (item, ct) => {
-						ct.ThrowIfCancellationRequested();
 						var status = new Ref<string>(item.status);
 						lock (working) {
 							working.Add(status);
