@@ -6,11 +6,16 @@ then
     exit 1
 fi
 
-echo "Restoring git submodules"
-git submodule update --init --recursive
-if [ $? -ne 0 ]
+submoduleupdatemarker=".git/tml-setup-module-init.touch"
+if [ ".git/index" -ot "$submoduleupdatemarker" ]
 then
-    exit $?
+	echo "Restoring git submodules"
+	git submodule update --init --recursive
+	if [ $? -ne 0 ]
+	then
+		exit $?
+	fi
+	touch "$submoduleupdatemarker"
 fi
 
 if ! command -v dotnet > /dev/null
