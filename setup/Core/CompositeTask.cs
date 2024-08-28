@@ -45,6 +45,7 @@ namespace Terraria.ModLoader.Setup.Core
 				await task.Run(progress, cancellationToken).ConfigureAwait(false);
 				if (task.Failed()) {
 					failed = task;
+					break;
 				}
 			}
 		}
