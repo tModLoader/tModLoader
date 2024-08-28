@@ -16,9 +16,6 @@ public sealed class DiffTerrariaCommand(TaskRunner taskRunner, ProgramSettings p
 {
 	protected override DiffTaskParameters GetDiffTaskParameters(ProgramSettings programSettings) =>
 		DiffTaskParameters.ForTerraria(programSettings);
-
-	protected override void ResetTimestamp(ProgramSettings programSettings) =>
-		programSettings.TerrariaDiffCutoff = null;
 }
 
 public sealed class DiffTerrariaNetCoreCommand(TaskRunner taskRunner, ProgramSettings programSettings)
@@ -26,9 +23,6 @@ public sealed class DiffTerrariaNetCoreCommand(TaskRunner taskRunner, ProgramSet
 {
 	protected override DiffTaskParameters GetDiffTaskParameters(ProgramSettings programSettings) =>
 		DiffTaskParameters.ForTerrariaNetCore(programSettings);
-
-	protected override void ResetTimestamp(ProgramSettings programSettings) =>
-		programSettings.TerrariaNetCoreDiffCutoff = null;
 }
 
 public sealed class DiffTModLoaderCommand(TaskRunner taskRunner, ProgramSettings programSettings)
@@ -36,9 +30,6 @@ public sealed class DiffTModLoaderCommand(TaskRunner taskRunner, ProgramSettings
 {
 	protected override DiffTaskParameters GetDiffTaskParameters(ProgramSettings programSettings) =>
 		DiffTaskParameters.ForTModLoader(programSettings);
-
-	protected override void ResetTimestamp(ProgramSettings programSettings) =>
-		programSettings.TModLoaderDiffCutoff = null;
 }
 
 public abstract class DiffBaseCommand : CancellableAsyncCommand<DiffCommandSettings>
@@ -57,16 +48,16 @@ public abstract class DiffBaseCommand : CancellableAsyncCommand<DiffCommandSetti
 		DiffCommandSettings settings,
 		CancellationToken cancellationToken)
 	{
+		DiffTaskParameters diffTaskParameters = GetDiffTaskParameters(programSettings);
+
 		if (settings.ResetDiffTimestamp) {
-			ResetTimestamp(programSettings);
+			diffTaskParameters.Cutoff.Set(null);
 		}
 
-		DiffTask diffTask = new DiffTask(GetDiffTaskParameters(programSettings));
+		DiffTask diffTask = new DiffTask(diffTaskParameters);
 
 		return await taskRunner.Run(diffTask, settings.PlainProgress, cancellationToken: cancellationToken);
 	}
 
 	protected abstract DiffTaskParameters GetDiffTaskParameters(ProgramSettings programSettings);
-
-	protected abstract void ResetTimestamp(ProgramSettings programSettings);
 }
