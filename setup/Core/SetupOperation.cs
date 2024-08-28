@@ -5,6 +5,24 @@ namespace Terraria.ModLoader.Setup.Core
 {
 	public abstract class SetupOperation
 	{
+		protected delegate void UpdateStatus(string status);
+		protected delegate ValueTask Worker(UpdateStatus updateStatus, CancellationToken cancellationToken = default);
+
+		protected class WorkItem
+		{
+			public readonly string status;
+			public readonly Worker worker;
+
+			public WorkItem(string status, Worker worker) {
+				this.status = status;
+				this.worker = worker;
+			}
+
+			public WorkItem(string status, Func<CancellationToken, ValueTask> action) : this(status, (_, ct) => action(ct)) { }
+
+			public WorkItem(string status, Action action) : this(status, (_, _) => { action(); return ValueTask.CompletedTask; }) { }
+		}
+
 		private int currentProgress;
 
 		protected async Task ExecuteParallel(
@@ -36,7 +54,7 @@ namespace Terraria.ModLoader.Setup.Core
 					},
 					async (item, ct) => {
 						ct.ThrowIfCancellationRequested();
-						var status = new Ref<string>(item.Status);
+						var status = new Ref<string>(item.status);
 						lock (working) {
 							working.Add(status);
 							UpdateStatus();
@@ -50,7 +68,7 @@ namespace Terraria.ModLoader.Setup.Core
 							}
 						}
 
-						await item.Worker(SetStatus, ct).ConfigureAwait(false);
+						await item.worker(SetStatus, ct).ConfigureAwait(false);
 
 						lock (working) {
 							working.Remove(status);
@@ -60,39 +78,35 @@ namespace Terraria.ModLoader.Setup.Core
 					}).ConfigureAwait(false);
 			}
 			catch (AggregateException ex) {
-				IEnumerable<Exception> actual =
-					ex.Flatten().InnerExceptions.Where(e => !(e is OperationCanceledException));
-				if (!actual.Any()) {
+				var actual = ex.Flatten().InnerExceptions.Where(e => !(e is OperationCanceledException));
+				if (!actual.Any())
 					throw new OperationCanceledException();
-				}
 
 				throw new AggregateException(actual);
 			}
 		}
 
-		public static void CreateDirectory(string dir)
-		{
-			if (!Directory.Exists(dir)) {
+		public static void CreateDirectory(string dir) {
+			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
-			}
 		}
 
-		public static void CreateParentDirectory(string path) => CreateDirectory(Path.GetDirectoryName(path)!);
+		public static void CreateParentDirectory(string path) {
+			CreateDirectory(Path.GetDirectoryName(path)!);
+		}
 
-		public static void DeleteFile(string path)
-		{
+		public static void DeleteFile(string path) {
 			if (File.Exists(path)) {
-				File.SetAttributes(path, FileAttributes.Normal);
+				File.SetAttributes(path,FileAttributes.Normal);
 				File.Delete(path);
 			}
 		}
 
-		protected static void Copy(string from, string to)
-		{
+		protected static void Copy(string from, string to) {
 			CreateParentDirectory(to);
 
 			if (File.Exists(to)) {
-				File.SetAttributes(to, FileAttributes.Normal);
+				File.SetAttributes(to,FileAttributes.Normal);
 			}
 
 			File.Copy(from, to, true);
@@ -102,52 +116,40 @@ namespace Terraria.ModLoader.Setup.Core
 			Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories)
 				.Select(path => (file: PathUtils.SetCrossPlatformDirectorySeparators(path), relPath: PathUtils.SetCrossPlatformDirectorySeparators(RelPath(dir, path))));
 
-		protected static bool DeleteEmptyDirs(string dir)
-		{
-			if (!Directory.Exists(dir)) {
-				return true;
-			}
-
-			return DeleteEmptyDirsRecursion(dir);
-		}
-
-		private static string RelPath(string basePath, string path)
-		{
-			if (path.Last() == Path.DirectorySeparatorChar) {
+		private static string RelPath(string basePath, string path) {
+			if (path.Last() == Path.DirectorySeparatorChar)
 				path = path.Substring(0, path.Length - 1);
-			}
 
-			if (basePath.Last() != Path.DirectorySeparatorChar) {
+			if (basePath.Last() != Path.DirectorySeparatorChar)
 				basePath += Path.DirectorySeparatorChar;
-			}
 
-			if (path + Path.DirectorySeparatorChar == basePath) {
-				return "";
-			}
+			if (path+Path.DirectorySeparatorChar == basePath) return "";
 
 			if (!path.StartsWith(basePath)) {
 				path = Path.GetFullPath(path);
 				basePath = Path.GetFullPath(basePath);
 			}
 
-			if (!path.StartsWith(basePath)) {
-				throw new ArgumentException("Path \"" + path + "\" is not relative to \"" + basePath + "\"");
-			}
+			if(!path.StartsWith(basePath))
+				throw new ArgumentException("Path \""+path+"\" is not relative to \""+basePath+"\"");
 
 			return path.Substring(basePath.Length);
 		}
+		protected static bool DeleteEmptyDirs(string dir) {
+			if (!Directory.Exists(dir))
+				return true;
 
-		private static bool DeleteEmptyDirsRecursion(string dir)
-		{
+			return DeleteEmptyDirsRecursion(dir);
+		}
+
+		private static bool DeleteEmptyDirsRecursion(string dir) {
 			bool allEmpty = true;
 
-			foreach (string subDir in Directory.EnumerateDirectories(dir)) {
+			foreach (string subDir in Directory.EnumerateDirectories(dir))
 				allEmpty &= DeleteEmptyDirsRecursion(subDir);
-			}
 
-			if (!allEmpty || Directory.EnumerateFiles(dir).Any()) {
+			if (!allEmpty || Directory.EnumerateFiles(dir).Any())
 				return false;
-			}
 
 			Directory.Delete(dir);
 
@@ -182,26 +184,5 @@ namespace Terraria.ModLoader.Setup.Core
 		///     Called to display a finished dialog if Failures() || warnings are not supressed and Warnings()
 		/// </summary>
 		public virtual void FinishedPrompt() { }
-
-		protected delegate void UpdateStatus(string status);
-
-		protected delegate ValueTask Worker(UpdateStatus updateStatus, CancellationToken cancellationToken = default);
-
-		protected class WorkItem
-		{
-			public WorkItem(string status, Worker worker)
-			{
-				this.Status = status;
-				this.Worker = worker;
-			}
-
-			public string Status { get; }
-
-			public Worker Worker { get; }
-
-			public WorkItem(string status, Func<CancellationToken, ValueTask> action) : this(status, (_, ct) => action(ct)) { }
-
-			public WorkItem(string status, Action action) : this(status, (_, _) => { action(); return ValueTask.CompletedTask; }) { }
-		}
 	}
 }
