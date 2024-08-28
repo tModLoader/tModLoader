@@ -114,10 +114,10 @@ namespace Terraria.ModLoader.Setup.Core
 				if (!newFiles.ContainsKey(file))
 					File.Delete(file);
 
-			taskProgress.ReportStatus("Deleting Old Src's Empty Directories", overwrite: false);
+			taskProgress.ReportStatus("Deleting Old Src's Empty Directories");
 			DeleteEmptyDirs(parameters.PatchedDir);
 
-			taskProgress.ReportStatus("Old Src Removed", overwrite: false);
+			taskProgress.ReportStatus("Old Src Removed");
 
 			//Show patch reviewer if there were any fuzzy patches.
 

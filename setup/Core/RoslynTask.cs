@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.Setup.Core
 				taskProgress.ReportStatus("Finding MSBuild");
 				var vsInst = MSBuildLocator.QueryVisualStudioInstances().OrderByDescending(inst => inst.Version).First();
 				MSBuildLocator.RegisterInstance(vsInst);
-				taskProgress.ReportStatus($"Found MSBuild {vsInst.Version} at {vsInst.MSBuildPath}", overwrite: false);
+				taskProgress.ReportStatus($"Found MSBuild {vsInst.Version} at {vsInst.MSBuildPath}");
 				MSBuildFound = true;
 			}
 

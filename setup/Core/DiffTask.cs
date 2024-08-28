@@ -55,7 +55,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 			DeleteEmptyDirs(parameters.PatchDir);
 
-			taskProgress.ReportStatus("Noting Removed Files", overwrite: false);
+			taskProgress.ReportStatus("Noting Removed Files");
 			string[] removedFiles = PatchTask.EnumerateSrcFiles(parameters.BaseDir)
 				.Select(f => f.relPath)
 				.Where(path => !File.Exists(Path.Combine(parameters.PatchedDir, path)))
