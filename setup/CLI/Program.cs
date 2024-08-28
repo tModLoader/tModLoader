@@ -28,10 +28,10 @@ public static class Program
 		IServiceCollection services = new ServiceCollection();
 		services
 			.AddCoreServices(configuration, userSettingsFilePath)
-			.AddTransient<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
-			.AddTransient<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
-			.AddTransient<IUserPrompt, UserPrompt>()
-			.AddTransient<TaskRunner>();
+			.AddSingleton<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
+			.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
+			.AddSingleton<IUserPrompt, UserPrompt>()
+			.AddSingleton<TaskRunner>();
 
 		var app = new CommandApp(new TypeRegistrar(services));
 		app.Configure(config => {

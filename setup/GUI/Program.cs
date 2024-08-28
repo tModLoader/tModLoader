@@ -39,9 +39,9 @@ namespace Terraria.ModLoader.Setup.GUI
 
 			services
 				.AddCoreServices(configuration, userSettingsFilePath)
-				.AddTransient<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
-				.AddTransient<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
-				.AddTransient<IUserPrompt, UserPrompt>()
+				.AddSingleton<ICSharpProjectSelectionPrompt, CSharpProjectSelectionPrompt>()
+				.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
+				.AddSingleton<IUserPrompt, UserPrompt>()
 				.AddSingleton<MainForm>()
 				.AddSingleton<IPatchReviewer>(sp => sp.GetRequiredService<MainForm>());
 
