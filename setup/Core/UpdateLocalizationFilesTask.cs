@@ -20,11 +20,6 @@ public sealed class UpdateLocalizationFilesTask : SetupOperation
 	{
 		using var taskProgress = progress.StartTask("Updating localization files...");
 
-		int result = RunCmd.Run("", "where", "python", cancel: cancellationToken);
-		if (result != 0) {
-			throw new InvalidOperationException("python 3 is needed to run this command");
-		}
-
 		if (!File.Exists(UpdateLocalizationFilesPath)) {
 			throw new InvalidOperationException("UpdateLocalizationFiles.py missing");
 		}
