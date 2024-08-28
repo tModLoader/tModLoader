@@ -34,7 +34,7 @@ namespace Terraria.ModLoader.Setup.Core
 			// todo proper error log
 			workspace.WorkspaceFailed += (o, e) => Console.Error.WriteLine(e.Diagnostic.Message);
 
-			Console.WriteLine($"Loading project '{ProjectPath}'");
+			taskProgress.ReportStatus($"Loading project '{ProjectPath}'");
 
 			// Attach progress reporter so we print projects as they are loaded.
 			var project = await workspace.OpenProjectAsync(ProjectPath!, cancellationToken: cancellationToken).ConfigureAwait(false);
