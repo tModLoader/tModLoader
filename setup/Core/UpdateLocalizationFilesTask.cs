@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
@@ -20,23 +21,19 @@ public sealed class UpdateLocalizationFilesTask : SetupOperation
 	{
 		using var taskProgress = progress.StartTask("Updating localization files...");
 
-		if (!File.Exists(UpdateLocalizationFilesPath)) {
-			throw new InvalidOperationException("UpdateLocalizationFiles.py missing");
-		}
+		var err = new StringBuilder();
+		int exitCode = RunCmd.Run(
+			Path.GetDirectoryName(UpdateLocalizationFilesPath)!,
+			"python",
+			Path.GetFileName(UpdateLocalizationFilesPath),
+			output: s => taskProgress.ReportStatus(s),
+			error: s => err.Append(s),
+			cancel: cancellationToken);
 
-		Process? p = Process.Start(new ProcessStartInfo {
-			FileName = "python",
-			Arguments = Path.GetFileName(UpdateLocalizationFilesPath),
-			WorkingDirectory = new FileInfo(UpdateLocalizationFilesPath).Directory!.FullName,
-		});
+		if (err.Length > 0)
+			throw new Exception(err.ToString());
 
-		if (p == null) {
-			throw new Exception("Failed to start python process.");
-		}
-
-		await p.WaitForExitAsync(cancellationToken).ConfigureAwait(false);
-
-		success = p.ExitCode == 0;
+		success = exitCode == 0;
 	}
 
 	public override void FinishedPrompt()
