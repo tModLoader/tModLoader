@@ -27,13 +27,11 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		timer.Start();
 
-		return new TaskProgress(description, table.Rows.Count, this);
+		return new TaskProgress(description, table);
 	}
 
 	public void Dispose()
 	{
-		timer.Stop();
-		timer.Elapsed -= RefreshTable;
 		timer.Dispose();
 	}
 
@@ -45,28 +43,31 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 	private sealed class TaskProgress : ITaskProgress
 	{
 		private readonly string description;
+		private readonly Table table;
+
 		private readonly int row;
-		private readonly LiveConsoleProgress parent;
 		private readonly int detailsRow;
 
 		private int? maxProgress;
 		private int? currentProgress;
 		private string lastStatus = string.Empty;
 
-		public TaskProgress(string description, int row, LiveConsoleProgress parent)
+		public TaskProgress(string description, Table table)
 		{
 			this.description = description;
-			this.row = row;
+			this.table = table;
+
+			row = table.Rows.Count;
 			detailsRow = row + 1;
-			this.parent = parent;
+
+			table.AddEmptyRow().AddEmptyRow();
 
 			UpdateTaskRow();
 		}
 
 		public void Dispose()
 		{
-			if (detailsRow < parent.table.Rows.Count)
-				parent.table.RemoveRow(detailsRow);
+			table.RemoveRow(detailsRow);
 		}
 
 		public void SetMaxProgress(int max)
@@ -83,42 +84,29 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		public void ReportStatus(string status, bool overwrite = false)
 		{
-			AddMissingRows(detailsRow);
-
 			if (overwrite) {
 				lastStatus = Indent(status);
-				parent.table.UpdateCell(detailsRow, 0, new Text(lastStatus));
 			}
 			else {
 				string[] parts = [lastStatus, Indent(status)];
 				lastStatus = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
-
-				parent.table.UpdateCell(detailsRow, 0, new Text(lastStatus));
 			}
+
+			table.UpdateCell(detailsRow, 0, new Text(lastStatus));
 		}
 
 		private static string Indent(string status) => $"  {status.ReplaceLineEndings("\r\n  ")}";
 
 		private void UpdateTaskRow()
 		{
-			AddMissingRows(row);
-
 			string progress = string.Empty;
 
-			if (currentProgress.HasValue && maxProgress.HasValue) {
-				string maxProgressString = maxProgress.ToString();
-				progress = $"[{(currentProgress != maxProgress ? "red" : "green")}]{currentProgress.ToString().PadLeft(maxProgressString.Length)}[/]/[green]{maxProgressString}[/]";
+			if (currentProgress is int i && maxProgress is int n) {
+				string maxProgressString = n.ToString();
+				progress = $"[{(currentProgress != maxProgress ? "red" : "green")}]{i.ToString().PadLeft(maxProgressString.Length)}[/]/[green]{maxProgressString}[/]";
 			}
 
-			parent.table.UpdateCell(row, 0, new Markup($"{description,-70}{progress}"));
-		}
-
-		private void AddMissingRows(int rowIndex)
-		{
-			int rowsCount = parent.table.Rows.Count;
-			for (int i = 0; i <= rowIndex - rowsCount; i++) {
-				parent.table.AddEmptyRow();
-			}
+			table.UpdateCell(row, 0, new Markup($"{description,-70}{progress}"));
 		}
 	}
 }
