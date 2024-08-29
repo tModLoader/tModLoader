@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Core;
@@ -170,14 +171,19 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 		}
 		catch (BuildException e) {
-			Console.Error.WriteLine("Error: " + e.Message);
+			ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML002);
 			if (e.InnerException != null)
 				Console.Error.WriteLine(e.InnerException);
 			Environment.Exit(1);
 		}
 		catch (Exception e) {
-			Console.Error.WriteLine(e);
-			Environment.Exit(e is IOException ? 1001 : 1); // Custom error code for tMLMod.targets custom warning.
+			if (e is IOException iOException) {
+				ErrorReporting.LogStandardDiagnosticError("Please close tModLoader or disable the mod in-game to build mods directly.", ErrorReporting.TMLErrorCode.TML001);
+			}
+			else {
+				ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML003);
+			}
+			Environment.Exit(1);
 		}
 
 		Social.Steam.WorkshopSocialModule.SteamCMDPublishPreparer(modFolder);
