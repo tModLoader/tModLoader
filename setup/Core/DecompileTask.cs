@@ -32,7 +32,6 @@ namespace Terraria.ModLoader.Setup.Core
 			{
 				this.baseModule = baseModule;
 				_resolver = new UniversalAssemblyResolver(baseModule.FileName, true, targetFramework, streamOptions: PEStreamOptions.PrefetchMetadata);
-				_resolver.AddSearchDirectory(Path.GetDirectoryName(baseModule.FileName));
 			}
 
 			public PEFile? Resolve(IAssemblyReference name)
@@ -66,7 +65,7 @@ namespace Terraria.ModLoader.Setup.Core
 				=> Task.Run(() => ResolveModule(mainModule, moduleName));
 		}
 
-		// What function does this serve..?
+		// This exists solely to expose the IncludeTypeWhenDecompilingProject method, which is protected in WholeProjectDecompiler
 		private class ExtendedProjectDecompiler : WholeProjectDecompiler
 		{
 			public ExtendedProjectDecompiler(DecompilerSettings settings, IAssemblyResolver assemblyResolver)
