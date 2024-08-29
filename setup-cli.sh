@@ -7,7 +7,7 @@ then
 fi
 
 submoduleupdatemarker=".git/tml-setup-module-init.touch"
-if [ ".git/index" -ot "$submoduleupdatemarker" ]
+if ! [ ".git/index" -ot "$submoduleupdatemarker" ]
 then
 	echo "Restoring git submodules"
 	git submodule update --init --recursive
