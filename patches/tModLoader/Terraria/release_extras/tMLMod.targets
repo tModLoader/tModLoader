@@ -40,11 +40,10 @@
 
 	<Target Name="BuildMod" AfterTargets="Build">
 		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)" ConsoleToMSBuild="true" ContinueOnError="ErrorAndContinue">
-			<Output TaskParameter="ConsoleOutput" PropertyName="ModBuildOutput"/>
 			<Output TaskParameter="ExitCode" PropertyName="ModBuildExitCode"/>
 		</Exec>
 		<Error Text="Please close tModLoader or disable the mod in-game to build mods directly" Condition=" '$(ModBuildExitCode)' == '1001' "/>
-		<Error Text="Build failed, see output panel for details" Condition=" '$(ModBuildExitCode)' == '1' "/>
+		<Error Text="Build failed, see output panel for details" Condition=" '$(ModBuildExitCode)' != '0' "/>
 	</Target>
 
 </Project>
