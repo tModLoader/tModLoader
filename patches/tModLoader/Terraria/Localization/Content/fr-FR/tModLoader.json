@@ -46,7 +46,10 @@
 		// Mods Menu
 		"ModsModsList": "Liste des Mods",
 		"ModsEnableAll": "Tout activer",
+		// "ModsEnableAllConfirm": "Are you sure you want to enable all mods?",
 		"ModsDisableAll": "Tout désactiver",
+		// "ModsDisableAllConfirm": "Are you sure you want to disable all mods?",
+		// "YesDontAskAgain": "Yes, don't ask again",
 		"ModsReloadMods": "Relancer les Mods",
 		// "ModsForceReload": "Force Reload",
 		"ModsOpenModsFolders": "Dossier des Mods",
@@ -432,6 +435,8 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Activer et relancer automatiquement les Mods en quittant le navigateur : Non",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatically Reload Required Mods When Leaving Mods Screen: On",
 		// "AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatically Reload Required Mods When Leaving Mods Screen: Off",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsYes": "Show Confirmation Window For Enable/Disable All Mods: On",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsNo": "Show Confirmation Window For Enable/Disable All Mods: Off",
 		"DontShowAgain": "Ne pas montrer de nouveau",
 		"ModControls": "Contrôles pour les Mods",
 

@@ -359,6 +359,13 @@ internal static class Interface
 				ModLoader.showNewUpdatedModsInfo = !ModLoader.showNewUpdatedModsInfo;
 			}
 
+			buttonIndex++;
+			buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowConfirmationWindowWhenEnableDisableAllMods{(ModLoader.showConfirmationWindowWhenEnableDisableAllMods ? "Yes" : "No")}");
+			if (selectedMenu == buttonIndex) {
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				ModLoader.showConfirmationWindowWhenEnableDisableAllMods = !ModLoader.showConfirmationWindowWhenEnableDisableAllMods;
+			}
+
 			/*
 			buttonIndex++;
 			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");
