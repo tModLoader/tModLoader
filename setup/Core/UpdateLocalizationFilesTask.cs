@@ -17,7 +17,7 @@ public sealed class UpdateLocalizationFilesTask : SetupOperation
 		userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 	}
 
-	public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+	public override Task Run(IProgress progress, CancellationToken cancellationToken = default)
 	{
 		using var taskProgress = progress.StartTask("Updating localization files...");
 
@@ -34,6 +34,8 @@ public sealed class UpdateLocalizationFilesTask : SetupOperation
 			throw new Exception(err.ToString());
 
 		success = exitCode == 0;
+
+		return Task.CompletedTask;
 	}
 
 	public override void FinishedPrompt()
