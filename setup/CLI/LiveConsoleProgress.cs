@@ -45,8 +45,8 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 		private readonly string description;
 		private readonly Table table;
 
-		private readonly int row;
-		private readonly int detailsRow;
+		private readonly int HeaderRow;
+		private readonly int StatusRow;
 
 		private int? maxProgress;
 		private int? currentProgress;
@@ -57,8 +57,8 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 			this.description = description;
 			this.table = table;
 
-			row = table.Rows.Count;
-			detailsRow = row + 1;
+			HeaderRow = table.Rows.Count;
+			StatusRow = HeaderRow + 1;
 
 			table.AddEmptyRow().AddEmptyRow();
 
@@ -67,7 +67,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		public void Dispose()
 		{
-			table.RemoveRow(detailsRow);
+			table.RemoveRow(StatusRow);
 		}
 
 		public void SetMaxProgress(int max)
@@ -92,7 +92,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 				lastStatus = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
 			}
 
-			table.UpdateCell(detailsRow, 0, new Text(lastStatus));
+			table.UpdateCell(StatusRow, 0, new Text(lastStatus));
 		}
 
 		private static string Indent(string status) => $"  {status.ReplaceLineEndings("\r\n  ")}";
@@ -106,7 +106,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 				progress = $"[{(currentProgress != maxProgress ? "red" : "green")}]{i.ToString().PadLeft(maxProgressString.Length)}[/]/[green]{maxProgressString}[/]";
 			}
 
-			table.UpdateCell(row, 0, new Markup($"{description,-70}{progress}"));
+			table.UpdateCell(HeaderRow, 0, new Markup($"{description,-70}{progress}"));
 		}
 	}
 }
