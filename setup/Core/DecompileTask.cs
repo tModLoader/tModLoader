@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
@@ -114,16 +114,9 @@ namespace Terraria.ModLoader.Setup.Core
 			};
 		}
 
-		public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
+		public override async ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default)
 		{
-			if (File.Exists(programSettings.TerrariaPath) && File.Exists(programSettings.TerrariaServerPath))
-				return true;
-
-			if (programSettings.NoPrompts) {
-				throw new InvalidOperationException($"Critical failure, can't find both {programSettings.TerrariaPath} and {programSettings.TerrariaServerPath}");
-			}
-
-			return await terrariaExecutableSetter.SelectAndSetTerrariaDirectory(cancellationToken).ConfigureAwait(false);
+			await terrariaExecutableSetter.CheckTerrariaExecutablePathsAndPromptIfNecessary(cancellationToken).ConfigureAwait(false);
 		}
 
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)

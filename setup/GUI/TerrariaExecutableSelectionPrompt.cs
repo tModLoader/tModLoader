@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,10 @@ public class TerrariaExecutableSelectionPrompt : ITerrariaExecutableSelectionPro
 			Title = "Select Terraria.exe"
 		};
 
-		return Task.FromResult(dialog.ShowDialog() != DialogResult.OK ? null : dialog.FileName);
+		var result = dialog.ShowDialog();
+		if (result == DialogResult.OK)
+			return Task.FromResult(dialog.FileName);
+
+		throw new OperationCanceledException();
 	}
 }

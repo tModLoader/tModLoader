@@ -164,7 +164,7 @@ namespace Terraria.ModLoader.Setup.Core
 		///     Display a configuration dialog. Return false if the operation should be cancelled.
 		/// </summary>
 		/// <param name="cancellationToken"></param>
-		public virtual ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default) => ValueTask.FromResult(true);
+		public virtual ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default) => ValueTask.CompletedTask;
 
 		/// <summary>
 		///     Display a startup warning dialog

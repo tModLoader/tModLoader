@@ -35,8 +35,7 @@ public sealed class TaskRunner
 			await terrariaExecutableSetter.FindAndSetTerrariaDirectoryIfNecessary(cancellationToken);
 			targetsFilesUpdater.Update();
 
-			if (!await task.ConfigurationPrompt(cancellationToken))
-				return 0;
+			await task.ConfigurationPrompt(cancellationToken);
 
 			if (!task.StartupWarning())
 				return 0;

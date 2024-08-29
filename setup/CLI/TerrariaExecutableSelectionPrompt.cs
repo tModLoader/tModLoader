@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.Setup.CLI;
 
 public sealed class TerrariaExecutableSelectionPrompt : ITerrariaExecutableSelectionPrompt
 {
-	public async Task<string?> Prompt(CancellationToken cancellationToken = default)
+	public async Task<string> Prompt(CancellationToken cancellationToken = default)
 	{
 		TextPrompt<string> textPrompt = new TextPrompt<string>("Enter Terraria.exe path: ")
 			.Validate(path => IsTerrariaExe(TrimQuotationMarks(path)) && File.Exists(PreparePath(path)), "File is not Terraria.exe or does not exist.");

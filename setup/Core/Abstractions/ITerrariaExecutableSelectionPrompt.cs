@@ -11,5 +11,5 @@ public interface ITerrariaExecutableSelectionPrompt
 	/// </summary>
 	/// <param name="cancellationToken">A cancellation token.</param>
 	/// <returns>Path to the file that was selected by the user or <see langword="null"/> if no valid selection was made.</returns>
-	Task<string?> Prompt(CancellationToken cancellationToken = default);
+	Task<string> Prompt(CancellationToken cancellationToken = default);
 }

@@ -76,7 +76,10 @@ namespace Terraria.ModLoader.Setup.GUI
 
 		private async void menuItemTerraria_Click(object sender, EventArgs e)
 		{
-			await terrariaExecutableSetter.SelectAndSetTerrariaDirectory();
+			try {
+				await terrariaExecutableSetter.SelectAndSetTerrariaDirectory();
+			}
+			catch (OperationCanceledException) { }
 		}
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)
@@ -142,8 +145,7 @@ namespace Terraria.ModLoader.Setup.GUI
 			{
 				SetupOperation.DeleteFile(errorLogFile);
 
-				if (!await task.ConfigurationPrompt(cancelSource.Token).ConfigureAwait(true))
-					return;
+				await task.ConfigurationPrompt(cancelSource.Token).ConfigureAwait(true);
 
 				if (!task.StartupWarning())
 					return;

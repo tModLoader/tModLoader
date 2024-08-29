@@ -1,3 +1,4 @@
+using System.Threading;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -35,46 +36,46 @@ public class TerrariaExecutableSetter
 		await FindTerrariaDirectory(cancellationToken).ConfigureAwait(false);
 	}
 
-	public async Task<bool> SelectAndSetTerrariaDirectory(CancellationToken cancellationToken = default)
+	public async Task CheckTerrariaExecutablePathsAndPromptIfNecessary(CancellationToken cancellationToken = default)
 	{
-		string? directory = await TrySelectTerrariaDirectory(cancellationToken).ConfigureAwait(false);
-		if (!string.IsNullOrEmpty(directory)) {
-			SetTerrariaDirectory(directory);
+		string[] paths = [programSettings.TerrariaPath!, programSettings.TerrariaServerPath!];
+		if (paths.All(File.Exists))
+			return;
 
-			return true;
-		}
+		var missing = paths.First(f => !File.Exists(f));
+		if (programSettings.NoPrompts)
+			throw new FileNotFoundException(missing);
 
-		return false;
+		userPrompt.Inform("Missing required file", missing, PromptSeverity.Error);
+		await SelectAndSetTerrariaDirectory(cancellationToken).ConfigureAwait(false);
 	}
 
-	private async Task<string?> TrySelectTerrariaDirectory(CancellationToken cancellationToken = default)
+	public async Task SelectAndSetTerrariaDirectory(CancellationToken cancellationToken = default)
+	{
+		SetTerrariaDirectory(await PromptForTerrariaDirectory(cancellationToken).ConfigureAwait(false));
+	}
+
+	private async Task<string> PromptForTerrariaDirectory(CancellationToken cancellationToken = default)
 	{
 		while (true) {
-			string? executablePath = await terrariaExecutableSelectionPrompt.Prompt(cancellationToken).ConfigureAwait(false);
+			string executablePath = await terrariaExecutableSelectionPrompt.Prompt(cancellationToken).ConfigureAwait(false);
 
-			if (executablePath == null) {
-				return null;
-			}
-
-			string? errorText = null;
-
+			string errorText;
 			if (Path.GetFileName(executablePath) != "Terraria.exe") {
 				errorText = "File must be named Terraria.exe";
 			}
 			else if (!File.Exists(Path.Combine(Path.GetDirectoryName(executablePath)!, "TerrariaServer.exe"))) {
 				errorText = "TerrariaServer.exe does not exist in the same directory";
 			}
-
-			if (errorText != null) {
-				if (!userPrompt.Prompt(
-					    "Invalid Selection",
-					    errorText,
-					    PromptOptions.RetryCancel)) {
-					return null;
-				}
-			}
 			else {
-				return Path.GetDirectoryName(executablePath);
+				return Path.GetDirectoryName(executablePath)!;
+			}
+
+			if (!userPrompt.Prompt(
+					"Invalid Selection",
+					errorText,
+					PromptOptions.RetryCancel)) {
+				throw new OperationCanceledException();
 			}
 		}
 	}
@@ -85,14 +86,10 @@ public class TerrariaExecutableSetter
 			const string messageText = "Unable to automatically find Terraria's installation path. Please select it manually.";
 
 			bool continueSelection = userPrompt.Prompt("Error", messageText, PromptOptions.OKCancel, PromptSeverity.Error);
-			if (continueSelection) {
-				terrariaFolderPath = await TrySelectTerrariaDirectory(cancellationToken).ConfigureAwait(false);
-			}
+			if (!continueSelection)
+				throw new OperationCanceledException();
 
-			if (!continueSelection || string.IsNullOrEmpty(terrariaFolderPath)) {
-				Console.WriteLine("User chose to not retry. Exiting.");
-				Environment.Exit(-1);
-			}
+			terrariaFolderPath = await PromptForTerrariaDirectory(cancellationToken).ConfigureAwait(false);
 		}
 
 		SetTerrariaDirectory(terrariaFolderPath);

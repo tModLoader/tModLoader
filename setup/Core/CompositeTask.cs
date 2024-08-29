@@ -12,17 +12,11 @@ namespace Terraria.ModLoader.Setup.Core
 			this.tasks = tasks;
 		}
 
-		public override async ValueTask<bool> ConfigurationPrompt(CancellationToken cancellationToken = default)
+		public override async ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default)
 		{
 			foreach (var task in tasks) {
-				bool result = await task.ConfigurationPrompt(cancellationToken).ConfigureAwait(false);
-
-				if (!result) {
-					return false;
-				}
+				await task.ConfigurationPrompt(cancellationToken).ConfigureAwait(false);
 			}
-
-			return true;
 		}
 
 		public override bool Failed()
