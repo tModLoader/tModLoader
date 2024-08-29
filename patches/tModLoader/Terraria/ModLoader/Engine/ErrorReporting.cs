@@ -124,7 +124,7 @@ internal class ErrorReporting
 		return buttonID;
 	}
 
-	// Various error codes to show in Visual Studio. Mainly used to cross reference with source code. Subject to change if more granular error codes are needed.
+	/// <summary> Various error codes to show in Visual Studio. Mainly used to cross reference with source code. Subject to change if more granular error codes are needed. </summary>
 	internal enum TMLErrorCode
 	{
 		TML001, // tMod file in use
@@ -132,8 +132,8 @@ internal class ErrorReporting
 		TML003, // Other exception
 	}
 
-	// Writes an error to stderr using the "MSBuild and Visual Studio format for diagnostic messages": https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-diagnostic-format-for-tasks?view=vs-2022
-	// This means the error will show up in "Error List" in VS directly.
+	/// <summary> Writes an error to stderr using the <see href="https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-diagnostic-format-for-tasks?view=vs-2022">"MSBuild and Visual Studio format for diagnostic messages"</see>.
+	/// <para/> This means the error will show up in "Error List" in VS directly. </summary>
 	internal static void LogStandardDiagnosticError(string message, TMLErrorCode errorCode, bool error = true, string origin = "tModLoader", string subCategory = "Mod Build")
 	{
 		Console.Error.WriteLine($"{origin}: {subCategory} {(error ? "error" : "warning")} {errorCode}: {message}");
