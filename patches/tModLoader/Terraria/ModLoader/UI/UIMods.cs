@@ -343,60 +343,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private void QuickEnableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
 		bool shiftPressed = Main.keyState.PressingShift();
-		if (shiftPressed) {
+		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
 			EnableAll(evt, listeningElement);
 		}
 		else {
 			SoundEngine.PlaySound(10, -1, -1, 1);
-			_blockInput = new UIImage(TextureAssets.Extra[190]) {
-				Width = { Percent = 1 },
-				Height = { Percent = 1 },
-				Color = new Color(0, 0, 0, 0),
-				ScaleToFit = true
-			};
-			_blockInput.OnLeftMouseDown += CloseConfirmDialog;
-			Interface.modsMenu.Append(_blockInput);
-
-			_toggleModsDialog = new UIPanel() {
-				Width = { Percent = .30f },
-				Height = { Percent = .30f },
-				HAlign = .5f,
-				VAlign = .5f,
-				BackgroundColor = new Color(63, 82, 151),
-				BorderColor = Color.Black
-			};
-			_toggleModsDialog.SetPadding(6f);
-			Interface.modsMenu.Append(_toggleModsDialog);
-
-			_confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
-				TextColor = Color.White,
-				Width = new StyleDimension(-10f, 1f / 3f),
-				Height = { Pixels = 40 },
-				VAlign = .85f,
-				HAlign = .15f
-			}.WithFadedMouseOver();
-			_confirmDialogYesButton.OnLeftClick += EnableAll;
-			_confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
-			_toggleModsDialog.Append(_confirmDialogYesButton);
-
-			_confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
-				TextColor = Color.White,
-				Width = new StyleDimension(-10f, 1f / 3f),
-				Height = { Pixels = 40 },
-				VAlign = .85f,
-				HAlign = .85f
-			}.WithFadedMouseOver();
-			_confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
-			_toggleModsDialog.Append(_confirmDialogNoButton);
-
-			_confirmDialogText = new UIText(Language.GetTextValue("tModLoader.ModsEnableAllConfirm")) {
-				Width = { Percent = .75f },
-				HAlign = .5f,
-				VAlign = .3f,
-				IsWrapped = true
-			};
-			_toggleModsDialog.Append(_confirmDialogText);
-			Recalculate();
+			ShowConfirmationWindow(EnableAll, "tModLoader.ModsEnableAllConfirm");
 		}
 	}
 
@@ -412,61 +364,78 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private void QuickDisableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
 		bool shiftPressed = Main.keyState.PressingShift();
-		if (shiftPressed) {
-			EnableAll(evt, listeningElement);
+		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
+			DisableAll(evt, listeningElement);
 		}
 		else {
 			SoundEngine.PlaySound(10, -1, -1, 1);
-			_blockInput = new UIImage(TextureAssets.Extra[190]) {
-				Width = { Percent = 1 },
-				Height = { Percent = 1 },
-				Color = new Color(0, 0, 0, 0),
-				ScaleToFit = true
-			};
-			_blockInput.OnLeftMouseDown += CloseConfirmDialog;
-			Interface.modsMenu.Append(_blockInput);
-
-			_toggleModsDialog = new UIPanel() {
-				Width = { Percent = .30f },
-				Height = { Percent = .30f },
-				HAlign = .5f,
-				VAlign = .5f,
-				BackgroundColor = new Color(63, 82, 151),
-				BorderColor = Color.Black
-			};
-			_toggleModsDialog.SetPadding(6f);
-			Interface.modsMenu.Append(_toggleModsDialog);
-
-			_confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
-				TextColor = Color.White,
-				Width = new StyleDimension(-10f, 1f / 3f),
-				Height = { Pixels = 40 },
-				VAlign = .85f,
-				HAlign = .15f
-			}.WithFadedMouseOver();
-			_confirmDialogYesButton.OnLeftClick += DisableAll;
-			_confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
-			_toggleModsDialog.Append(_confirmDialogYesButton);
-
-			_confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
-				TextColor = Color.White,
-				Width = new StyleDimension(-10f, 1f / 3f),
-				Height = { Pixels = 40 },
-				VAlign = .85f,
-				HAlign = .85f
-			}.WithFadedMouseOver();
-			_confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
-			_toggleModsDialog.Append(_confirmDialogNoButton);
-
-			_confirmDialogText = new UIText(Language.GetTextValue("tModLoader.ModsDisableAllConfirm")) {
-				Width = { Percent = .75f },
-				HAlign = .5f,
-				VAlign = .3f,
-				IsWrapped = true
-			};
-			_toggleModsDialog.Append(_confirmDialogText);
-			Recalculate();
+			ShowConfirmationWindow(DisableAll, "tModLoader.ModsDisableAllConfirm");
 		}
+	}
+
+	private void ShowConfirmationWindow(MouseEvent yesAction, string confirmDialogTextKey)
+	{
+		_blockInput = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = new Color(0, 0, 0, 0),
+			ScaleToFit = true
+		};
+		_blockInput.OnLeftMouseDown += CloseConfirmDialog;
+		Interface.modsMenu.Append(_blockInput);
+
+		_toggleModsDialog = new UIPanel() {
+			Width = { Percent = .30f },
+			Height = { Percent = .30f },
+			HAlign = .5f,
+			VAlign = .5f,
+			BackgroundColor = new Color(63, 82, 151),
+			BorderColor = Color.Black
+		};
+		_toggleModsDialog.SetPadding(6f);
+		Interface.modsMenu.Append(_toggleModsDialog);
+
+		_confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .6f,
+			HAlign = .15f
+		}.WithFadedMouseOver();
+		_confirmDialogYesButton.OnLeftClick += yesAction;
+		_confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(_confirmDialogYesButton);
+
+		_confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .6f,
+			HAlign = .85f
+		}.WithFadedMouseOver();
+		_confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(_confirmDialogNoButton);
+
+		var yesDontAskAgainButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.YesDontAskAgain")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(0f, 2f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = 0.95f,
+			HAlign = .5f
+		}.WithFadedMouseOver();
+		yesDontAskAgainButton.OnLeftClick += (a, b) => ModLoader.showConfirmationWindowWhenEnableDisableAllMods = false;
+		yesDontAskAgainButton.OnLeftClick += yesAction;
+		yesDontAskAgainButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(yesDontAskAgainButton);
+
+		_confirmDialogText = new UIText(Language.GetTextValue(confirmDialogTextKey)) {
+			Width = { Percent = .75f },
+			HAlign = .5f,
+			VAlign = .2f,
+			IsWrapped = true
+		};
+		_toggleModsDialog.Append(_confirmDialogText);
+		Recalculate();
 	}
 
 	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
