@@ -2,7 +2,7 @@
   "profiles": {
     "setup": {
       "commandName": "Project",
-      "workingDirectory": "$(ProjectDir)\\.."
+      "workingDirectory": "$(ProjectDir)/../.."
     }
   }
 }
