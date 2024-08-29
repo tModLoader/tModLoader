@@ -982,6 +982,7 @@
 	},
 	"Mods": {
 		// "ModLoader.Unloaded": "Unloaded",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Chiste del Día de los Inocentes",
 		"ModLoader.Items.StartBag.DisplayName": "Bolsa de partida",
 		"ModLoader.Items.StartBag.Tooltip": "Algunos objetos de partida no cabían en tu inventario",

@@ -102,6 +102,7 @@ public static partial class Logging
 		AssemblyResolving.Init();
 		LoggingHooks.Init();
 		LogArchiver.ArchiveLogs();
+		NativeExceptionHandling.Init();
 	}
 
 	private static void ConfigureAppenders(LogFile logFile)

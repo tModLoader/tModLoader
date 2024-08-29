@@ -982,6 +982,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Descarregado",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Piada de 1° de Abril",
 		"ModLoader.Items.StartBag.DisplayName": "Bolsa Iniciante",
 		"ModLoader.Items.StartBag.Tooltip": "Alguns itens iniciais não cabem em seu inventário",

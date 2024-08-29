@@ -982,6 +982,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Entladen",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Aprilscherz",
 		"ModLoader.Items.StartBag.DisplayName": "Starterpaket",
 		"ModLoader.Items.StartBag.Tooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",

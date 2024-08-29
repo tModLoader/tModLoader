@@ -984,6 +984,7 @@
 	},
 	"Mods": {
 		// "ModLoader.Unloaded": "Unloaded",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		// "ModLoader.Items.AprilFools.DisplayName": "April Fools Joke",
 		// "ModLoader.Items.StartBag.DisplayName": "Starting Bag",
 		// "ModLoader.Items.StartBag.Tooltip": "Some starting items couldn't fit in your inventory\n{$CommonItemTooltip.RightClickToOpen}",

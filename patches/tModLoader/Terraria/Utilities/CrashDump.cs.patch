@@ -1,0 +1,85 @@
+--- src/TerrariaNetCore/Terraria/Utilities/CrashDump.cs
++++ src/tModLoader/Terraria/Utilities/CrashDump.cs
+@@ -3,8 +_,12 @@
+ using System.Globalization;
+ using System.IO;
+ using System.Runtime.InteropServices;
++using System.Text;
+ using System.Threading;
+ using ReLogic.OS;
++using Terraria.ModLoader;
++using Ionic.Zip;
++using System.Linq;
+ 
+ namespace Terraria.Utilities;
+ 
+@@ -53,10 +_,51 @@
+ 	public static bool WriteException(Options options, string outputDirectory = ".") => Write(options, ExceptionInfo.Present, outputDirectory);
+ 	public static bool Write(Options options, string outputDirectory = ".") => Write(options, ExceptionInfo.None, outputDirectory);
+ 
++	/// <summary>
++	/// Writes a dump to the logs folder, zips it, and deletes old dumps. Intended to preserve a single dump for client and server to not waste harddrive space.
++	/// </summary>
++	public static string WriteExceptionAsZipAndClearOld(Options options, IntPtr exceptionPointers)
++	{
++		if (!Platform.IsWindows)
++			return null;
++
++		string fileName = CreateDumpName();
++		string path = Path.Combine(Logging.LogDir, fileName);
++
++		if (!Utils.TryCreatingDirectory(Logging.LogDir))
++			return null;
++
++		string prefix = fileName.Split('_')[0];
++		var extensions = new[] { ".dmp.zip", ".dmp" }; // Note: All zip files are deleted on launch anyway by LogArchiver.MoveZipsToArchiveDir, so this code doesn't usually do anything
++		foreach (FileInfo file in new DirectoryInfo(Logging.LogDir).GetFiles()) {
++			// Preserve one "server..." and "client..." dump
++			if (extensions.Any(ext => file.Extension == ext) && file.Name.StartsWith(prefix)) {
++				Logging.tML.Info($"Deleting old dump file: {file.Name}");
++				file.Delete();
++			}
++		}
++
++		using (FileStream fileStream = File.Create(path)) {
++			Write(fileStream.SafeFileHandle, options, ExceptionInfo.None, exceptionPointers);
++		}
++
++		string zipFilename = Path.ChangeExtension(path, ".dmp.zip");
++		using (var zip = new ZipFile(zipFilename, Encoding.UTF8)) {
++			zip.AddFile(path, "");
++			zip.Save();
++			File.Delete(path);
++		}
++
++		return zipFilename;
++	}
++
+ 	private static string CreateDumpName()
+ 	{
+ 		DateTime dateTime = DateTime.Now.ToLocalTime();
++		return string.Format("{0}_{1}_{2}_{3}.dmp", Main.dedServ ? "server" : "client", BuildInfo.versionTag, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
++		/*
+ 		return string.Format("{0}_{1}_{2}_{3}.dmp", Main.dedServ ? "TerrariaServer" : "Terraria", Main.versionNumber, dateTime.ToString("MM-dd-yy_HH-mm-ss-ffff", CultureInfo.InvariantCulture), Thread.CurrentThread.ManagedThreadId);
++		*/
+ 	}
+ 
+ 	private static bool Write(Options options, ExceptionInfo exceptionInfo, string outputDirectory)
+@@ -72,7 +_,7 @@
+ 		return Write(fileStream.SafeFileHandle, options, exceptionInfo);
+ 	}
+ 
+-	private static bool Write(SafeHandle fileHandle, Options options, ExceptionInfo exceptionInfo)
++	private static bool Write(SafeHandle fileHandle, Options options, ExceptionInfo exceptionInfo, IntPtr exceptionPointers = 0)
+ 	{
+ 		if (!Platform.IsWindows)
+ 			return false;
+@@ -86,6 +_,8 @@
+ 		expParam.ExceptionPointers = IntPtr.Zero;
+ 		if (exceptionInfo == ExceptionInfo.Present)
+ 			expParam.ExceptionPointers = Marshal.GetExceptionPointers();
++		if(exceptionPointers != IntPtr.Zero)
++			expParam.ExceptionPointers = exceptionPointers;
+ 
+ 		bool flag = false;
+ 		if (expParam.ExceptionPointers == IntPtr.Zero)

@@ -285,7 +285,7 @@
 		"InstallPackLocalDesc": "Выключает абсолютно все моды и включает сборку\nс замороженными версиями модов, найденных в сборке",
 		"ModPackMismatch": "Последняя сборка модов: {0}",
 		"ModPackDelete": "Удалить сборку модов",
-		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
+		"ModPackDisableToDelete": "Чтобы удалить, сначала отключите сборку модов",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Синхронизация модов",
@@ -982,6 +982,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Выгружено",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка",
 		"ModLoader.Items.StartBag.DisplayName": "Стартовая сумка",
 		"ModLoader.Items.StartBag.Tooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
