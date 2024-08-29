@@ -80,6 +80,8 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 			}
 			else { // Some kind of linux?
 				path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local/share/Steam");
+				if (!Directory.Exists(path))
+					path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam/steam");
 			}
 
 			return path != null && Directory.Exists(path);
