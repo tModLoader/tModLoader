@@ -39,9 +39,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 	private void RefreshTable(object? sender, ElapsedEventArgs e)
 	{
-		if (table.Rows.Count > 0) {
-			context.Refresh();
-		}
+		context.Refresh();
 	}
 
 	private sealed class TaskProgress : ITaskProgress
@@ -67,10 +65,8 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		public void Dispose()
 		{
-			if (detailsRow < parent.table.Rows.Count) {
+			if (detailsRow < parent.table.Rows.Count)
 				parent.table.RemoveRow(detailsRow);
-				parent.context.Refresh();
-			}
 		}
 
 		public void SetMaxProgress(int max)

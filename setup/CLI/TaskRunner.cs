@@ -55,7 +55,7 @@ public sealed class TaskRunner
 
 				try {
 					await AnsiConsole
-						.Live(table)
+						.Live(new LiveTableRenderer(table))
 						.Overflow(VerticalOverflow.Visible)
 						.AutoClear(true)
 						.StartAsync(async ctx => {
