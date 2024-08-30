@@ -1,7 +1,7 @@
 {
 	"tModLoader": {
 		// Main Menu
-		"PatreonSupport": "Lütfen desteğinizi gösterin: ",
+		"PatreonSupport": "Lütfen bizi destekleyin: ",
 		"MenuModBrowser": "Mod Tarayıcısı",
 		"MenuDownloadMods": "Mod İndir",
 		"MenuDownloadModsDescription": "Modlarını bulmak, indirmek ve güncellemek için oyun içi Mod Tarayıcısı.",
