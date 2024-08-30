@@ -71,7 +71,7 @@ public sealed class TaskRunner
 			task.FinishedPrompt();
 
 			(string text, Color color) = GetCompletionText(task);
-			AnsiConsole.Write(new Text(text, new Style(foreground: color, decoration: Decoration.Bold)));
+			AnsiConsole.Write(new Text(text + '\n', new Style(foreground: color, decoration: Decoration.Bold)));
 
 			if (task.Failed() || (strict && task.Warnings())) {
 				return 1;
