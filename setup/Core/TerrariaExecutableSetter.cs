@@ -84,10 +84,7 @@ public class TerrariaExecutableSetter
 	{
 		if (!SteamUtils.TryFindTerrariaDirectory(out string? terrariaFolderPath)) {
 			const string messageText = "Unable to automatically find Terraria's installation path. Please select it manually.";
-
-			bool continueSelection = userPrompt.Prompt("Error", messageText, PromptOptions.OKCancel, PromptSeverity.Error);
-			if (!continueSelection)
-				throw new OperationCanceledException();
+			userPrompt.Inform("Error", messageText, PromptSeverity.Error);
 
 			terrariaFolderPath = await PromptForTerrariaDirectory(cancellationToken).ConfigureAwait(false);
 		}
