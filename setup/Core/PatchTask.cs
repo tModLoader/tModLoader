@@ -93,7 +93,8 @@ namespace Terraria.ModLoader.Setup.Core
 				}
 			}
 
-			try {
+			try
+			{
 				CreateDirectory(ProgramSettings.LogsDir);
 				logFile = new StreamWriter(Path.Combine(ProgramSettings.LogsDir, "patch.log"));
 

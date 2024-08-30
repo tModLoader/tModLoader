@@ -387,7 +387,7 @@ namespace MonoMod.RuntimeDetour.HookGen
 
         public TypeDefinition GenerateDelegateFor(MethodDefinition method)
         {
-            var name = GetFriendlyName(method);
+            var name = HookGenerator.GetFriendlyName(method);
             var index = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == name).ToList().IndexOf(method);
             if (index != 0)
             {
@@ -611,3 +611,5 @@ namespace MonoMod.RuntimeDetour.HookGen
 
     }
 }
+
+#nullable restore
