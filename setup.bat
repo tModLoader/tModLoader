@@ -30,24 +30,13 @@ if !errorlevel! neq 0 (
 )
 
 endlocal
-If "%1"=="auto" (
-	echo building Setup.CLI.csproj
-	dotnet build setup/CLI/Setup.CLI.csproj -c Release --output "setup/bin/Release/net8.0" -p:WarningLevel=0 -v q
 
-	if NOT ["%errorlevel%"]==["0"] (
-		pause
-		exit /b %errorlevel%
-	)
+echo building Setup.GUI.csproj
+dotnet build setup/GUI/Setup.GUI.csproj -c Release --output "setup/bin/Release/net8.0-windows" -p:WarningLevel=0 -v q
 
-	"setup/bin/Release/net8.0/setup-cli.exe" "setup-auto" %2 "steam_build" "--plain-progress"
-) Else (
-	echo building Setup.GUI.csproj
-	dotnet build setup/GUI/Setup.GUI.csproj -c Release --output "setup/bin/Release/net8.0-windows" -p:WarningLevel=0 -v q
-
-	if NOT ["%errorlevel%"]==["0"] (
-		pause
-		exit /b %errorlevel%
-	)
-
-	start "" "setup/bin/Release/net8.0-windows/setup-gui.exe" %*
+if NOT ["%errorlevel%"]==["0"] (
+	pause
+	exit /b %errorlevel%
 )
+
+start "" "setup/bin/Release/net8.0-windows/setup-gui.exe" %*
