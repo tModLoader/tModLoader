@@ -32,11 +32,11 @@ if !errorlevel! neq 0 (
 endlocal
 
 echo building Setup.GUI.csproj
-dotnet build setup/GUI/Setup.GUI.csproj -c Release --output "setup/bin/Release/net8.0-windows" -p:WarningLevel=0 -v q
+dotnet build setup/GUI/Setup.GUI.csproj -c Release -p:WarningLevel=0 -v q
 
 if NOT ["%errorlevel%"]==["0"] (
 	pause
 	exit /b %errorlevel%
 )
 
-start "" "setup/bin/Release/net8.0-windows/setup-gui.exe" %*
+start "" "setup/GUI/bin/Release/net8.0-windows/setup-gui.exe" %*
