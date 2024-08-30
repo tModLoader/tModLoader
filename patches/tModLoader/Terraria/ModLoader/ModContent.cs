@@ -510,6 +510,7 @@ public static class ModContent
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
+		ChestLootLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
