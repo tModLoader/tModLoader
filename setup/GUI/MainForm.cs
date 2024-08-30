@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -146,58 +146,36 @@ namespace Terraria.ModLoader.Setup.GUI
 			{
 				SetupOperation.DeleteFile(errorLogFile);
 
-				await task.ConfigurationPrompt(cancelSource.Token).ConfigureAwait(true);
+				await task.ConfigurationPrompt(cancelSource.Token);
 
 				if (!task.StartupWarning())
 					return;
 
-				try
-				{
-					await task.Run(this, cancelSource.Token).ConfigureAwait(true);
-
-					if (cancelSource.IsCancellationRequested)
-						throw new OperationCanceledException();
-				}
-				catch (OperationCanceledException e)
-				{
-					Invoke(new Action(() =>
-					{
-						labelStatus.Text = "Cancelled";
-						if (e.Message != new OperationCanceledException().Message)
-							labelStatus.Text += ": " + e.Message;
-					}));
-					return;
-				}
+				await task.Run(this, cancelSource.Token);
 
 				task.FinishedPrompt();
 
-				Invoke(new Action(() =>
-				{
-					labelStatus.Text = task.Failed() ? "Failed" : "Done";
-					labelTask.Text = string.Empty;
-				}));
+				labelStatus.Text = task.Failed() ? "Failed" : "Done";
+			}
+			catch (OperationCanceledException e) {
+				labelStatus.Text = "Cancelled";
+				if (e.Message != new OperationCanceledException().Message)
+					labelStatus.Text += ": " + e.Message;
 			}
 			catch (Exception e)
 			{
-				var status = "";
-				Invoke(new Action(() =>
-				{
-					status = labelStatus.Text;
-					labelStatus.Text = $"Error: {e.Message.Trim()}{Environment.NewLine}Log: {Path.GetFullPath(errorLogFile)}";
-				}));
-
+				var status = labelStatus.Text;
+				labelStatus.Text = $"Error: {e.Message.Trim()}{Environment.NewLine}Log: {Path.GetFullPath(errorLogFile)}";
 				SetupOperation.CreateDirectory(ProgramSettings.LogsDir);
 				File.WriteAllText(errorLogFile, status + "\r\n" + e);
 			}
 			finally
 			{
-				Invoke(new Action(() =>
-				{
-					foreach (var b in taskButtons.Keys) b.Enabled = true;
-					buttonCancel.Enabled = false;
-					progressBar.Value = 0;
-					if (closeOnCancel) Close();
-				}));
+				foreach (var b in taskButtons.Keys) b.Enabled = true;
+				buttonCancel.Enabled = false;
+				progressBar.Value = 0;
+				labelTask.Text = string.Empty;
+				if (closeOnCancel) Close();
 			}
 		}
 
