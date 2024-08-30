@@ -8,8 +8,8 @@ namespace Terraria.ModLoader.Setup.CLI;
 // Live display expects at least 2 line breaks
 internal class LiveTableRenderer : IRenderable
 {
-	private Table table;
-	
+	private readonly Table table;
+
 	public LiveTableRenderer(Table table)
 	{
 		this.table = table;
