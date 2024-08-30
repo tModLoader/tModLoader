@@ -48,7 +48,7 @@ public sealed class SetupAutoCommand : CancellableAsyncCommand<SetupAutoCommandS
 
 		SetupOperation setupTask = GetSetupOperation();
 
-		return await taskRunner.Run(setupTask, settings.PlainProgress, noPrompts: true, cancellationToken);
+		return await taskRunner.Run(setupTask, settings.PlainProgress, noPrompts: true, strict: true, cancellationToken);
 	}
 
 	public override ValidationResult Validate(CommandContext context, SetupAutoCommandSettings settings)

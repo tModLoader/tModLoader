@@ -173,10 +173,16 @@ namespace Terraria.ModLoader.Setup.Core
 		public virtual bool StartupWarning() => true;
 
 		/// <summary>
-		///     Will prevent successive tasks from executing and cause FinishedDialog to be called
+		///     Returns a value indicating whether the task failed.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>A value indicating whether the task failed</returns>
 		public virtual bool Failed() => false;
+		
+		/// <summary>
+		///     Returns a value indicating whether the task completed with warnings.
+		/// </summary>
+		/// <returns>A value indicating whether the task completed with warnings</returns>
+		public virtual bool Warnings() => false;
 
 		/// <summary>
 		///     Called to display a finished dialog if Failures() || warnings are not supressed and Warnings()

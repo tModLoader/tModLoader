@@ -127,9 +127,11 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public override bool Failed() => failures > 0;
 
+		public override bool Warnings() => warnings > 0;
+
 		public override void FinishedPrompt()
 		{
-			if (fuzzy > 0 || (failures == 0 && warnings == 0))
+			if (fuzzy > 0 || (!Failed() && !Warnings()))
 				return;
 
 			userPrompt.Inform(

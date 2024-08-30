@@ -19,10 +19,9 @@ namespace Terraria.ModLoader.Setup.Core
 			}
 		}
 
-		public override bool Failed()
-		{
-			return failed != null;
-		}
+		public override bool Failed() => failed != null;
+
+		public override bool Warnings() => tasks.Any(x => x.Warnings());
 
 		public override void FinishedPrompt()
 		{

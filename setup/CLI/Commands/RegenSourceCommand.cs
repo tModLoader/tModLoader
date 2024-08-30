@@ -26,6 +26,6 @@ public sealed class RegenSourceCommand : CancellableAsyncCommand<PatchCommandSet
 	{
 		programSettings.PatchMode = settings.PatchMode;
 
-		return await taskRunner.Run(new RegenSourceTask(serviceProvider), settings.PlainProgress, settings.NoPrompts, cancellationToken);
+		return await taskRunner.Run(new RegenSourceTask(serviceProvider), settings.PlainProgress, settings.NoPrompts, cancellationToken: cancellationToken);
 	}
 }

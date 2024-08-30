@@ -36,6 +36,6 @@ public sealed class DecompileCommand : CancellableAsyncCommand<DecompileCommandS
 			new DecompileTask(decompileTaskParameters, serviceProvider),
 			settings.PlainProgress,
 			settings.NoPrompts,
-			cancellationToken);
+			cancellationToken: cancellationToken);
 	}
 }

@@ -23,6 +23,7 @@ public sealed class TaskRunner
 		SetupOperation task,
 		bool plainProgress,
 		bool noPrompts = false,
+		bool strict = false,
 		CancellationToken cancellationToken = default)
 	{
 		var errorLogFile = Path.Combine(ProgramSettings.LogsDir, "error.log");
@@ -69,11 +70,12 @@ public sealed class TaskRunner
 
 			task.FinishedPrompt();
 
-			Text text = task.Failed()
-				? new Text("Failed", new Style(foreground: Color.Red, decoration: Decoration.Bold))
-				: new Text("Done", new Style(foreground: Color.Green, decoration: Decoration.Bold));
+			(string text, Color color) = GetCompletionText(task);
+			AnsiConsole.Write(new Text(text, new Style(foreground: color, decoration: Decoration.Bold)));
 
-			AnsiConsole.Write(text);
+			if (task.Failed() || (strict && task.Warnings())) {
+				Environment.Exit(1);
+			}
 		}
 		catch (OperationCanceledException) { Console.WriteLine("Cancelled"); }
 		catch (Exception exception) when (exception is not OperationCanceledException) {
@@ -88,5 +90,19 @@ public sealed class TaskRunner
 		}
 
 		return 0;
+	}
+
+	private static (string Text, Color Color) GetCompletionText(SetupOperation task)
+	{
+		if (task.Failed())
+		{
+			return ("Failed", Color.Red);
+		}
+
+		if (task.Warnings()) {
+			return ("Completed with warnings", Color.Yellow);
+		}
+
+		return ("Completed", Color.Green);
 	}
 }

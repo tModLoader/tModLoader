@@ -21,6 +21,6 @@ public sealed class SetupCommand : CancellableAsyncCommand<PatchCommandSettings>
 	{
 		var setupTask = new SetupTask(DecompileTaskParameters.CreateDefault(), serviceProvider);
 
-		return await taskRunner.Run(setupTask, settings.PlainProgress, settings.NoPrompts, cancellationToken);
+		return await taskRunner.Run(setupTask, settings.PlainProgress, settings.NoPrompts, cancellationToken: cancellationToken);
 	}
 }
