@@ -56,7 +56,7 @@ public sealed class TaskRunner
 				try {
 					await AnsiConsole
 						.Live(new LiveTableRenderer(table))
-						.Overflow(VerticalOverflow.Visible)
+						.Cropping(VerticalOverflowCropping.Bottom)
 						.AutoClear(true)
 						.StartAsync(async ctx => {
 							using LiveConsoleProgress progress = new LiveConsoleProgress(ctx, table);
