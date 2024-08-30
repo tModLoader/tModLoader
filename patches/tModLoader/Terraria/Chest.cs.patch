@@ -706,7 +706,7 @@
 +	/// <summary>
 +	/// Visually opens the chest at <paramref name="worldPosition"/> for <paramref name="duration"/> ticks.
 +	/// </summary>
-+	/// <param name="worldPosition">The position of the chest to ask, in tile coordinates.</param>
++	/// <param name="worldPosition">The position of the chest to ask, in world coordinates.</param>
 +	/// <param name="duration">The duration of the eating animation in ticks.</param>
  	public static void AskForChestToEatItem(Vector2 worldPosition, int duration)
  	{
