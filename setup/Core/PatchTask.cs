@@ -60,9 +60,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 			string removedFileList = Path.Combine(parameters.PatchDir, DiffTask.RemovedFileList);
 			HashSet<string> noCopy = File.Exists(removedFileList)
-				? [
-					..(await File.ReadAllLinesAsync(removedFileList, cancellationToken).ConfigureAwait(false)).Select(PathUtils.WithUnixSeparators),
-				]
+				? [..File.ReadAllLines(removedFileList).Select(PathUtils.WithUnixSeparators)]
 				: [];
 
 			var items = new List<WorkItem>();
