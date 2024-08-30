@@ -115,7 +115,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public override async ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default)
 		{
-			await terrariaExecutableSetter.CheckTerrariaExecutablePathsAndPromptIfNecessary(cancellationToken).ConfigureAwait(false);
+			await terrariaExecutableSetter.CheckTerrariaExecutablePathsAndPromptIfNecessary(cancellationToken);
 		}
 
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
@@ -154,7 +154,7 @@ namespace Terraria.ModLoader.Setup.Core
 			items.Add(WriteTerrariaProjectFile(mainModule, files, resources, decompiledLibraries));
 			items.Add(WriteCommonConfigurationFile());
 
-			await ExecuteParallel(items, taskProgress, maxDegreeOfParallelism: parameters.MaxDegreeOfParallelism, cancellationToken: cancellationToken).ConfigureAwait(false);
+			await ExecuteParallel(items, taskProgress, maxDegreeOfParallelism: parameters.MaxDegreeOfParallelism, cancellationToken: cancellationToken);
 		}
 
 		private void AddEmbeddedLibrary(Resource res, IAssemblyResolver resolver, List<WorkItem> items)
@@ -314,7 +314,7 @@ namespace Terraria.ModLoader.Setup.Core
 				var s = res.TryOpenStream()!;
 				s.Position = 0;
 				using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-					await s.CopyToAsync(fs, ct).ConfigureAwait(false);
+					await s.CopyToAsync(fs, ct);
 			});
 		}
 
@@ -354,7 +354,7 @@ namespace Terraria.ModLoader.Setup.Core
 						source = FormatTask.Format(source, true, cancellationToken);
 					}
 
-					await File.WriteAllTextAsync(path, source, cancellationToken).ConfigureAwait(false);
+					await File.WriteAllTextAsync(path, source, cancellationToken);
 				}
 			});
 		}

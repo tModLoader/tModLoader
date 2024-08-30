@@ -1,4 +1,4 @@
-﻿using DiffPatch;
+using DiffPatch;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.Setup.Core
 					items.Add(new WorkItem("Diffing: " + relPath, () => Diff(relPath)));
 			}
 
-			await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
+			await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken);
 
 			taskProgress.ReportStatus("Deleting Unnecessary Patches", overwrite: true);
 			foreach ((string file, string relPath) in EnumerateFiles(parameters.PatchDir)) {
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 			string removedFileList = Path.Combine(parameters.PatchDir, RemovedFileList);
 			if (removedFiles.Length > 0)
-				await File.WriteAllLinesAsync(removedFileList, removedFiles, cancellationToken).ConfigureAwait(false);
+				await File.WriteAllLinesAsync(removedFileList, removedFiles, cancellationToken);
 			else
 				DeleteFile(removedFileList);
 

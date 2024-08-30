@@ -30,16 +30,16 @@ namespace Terraria.ModLoader.Setup.Core
 			taskProgress.ReportStatus($"Loading project '{Parameters.ProjectPath}'...'");
 
 			// Attach progress reporter so we print projects as they are loaded.
-			var project = await workspace.OpenProjectAsync(Parameters.ProjectPath, cancellationToken: cancellationToken).ConfigureAwait(false);
+			var project = await workspace.OpenProjectAsync(Parameters.ProjectPath, cancellationToken: cancellationToken);
 			var workItems = project.Documents.Select(doc => new WorkItem(Status + " " + doc.Name, async ct => {
-				var newDoc = await Process(doc, ct).ConfigureAwait(false);
-				var before = await doc.GetTextAsync(ct).ConfigureAwait(false);
-				var after = await newDoc.GetTextAsync(ct).ConfigureAwait(false);
+				var newDoc = await Process(doc, ct);
+				var before = await doc.GetTextAsync(ct);
+				var after = await newDoc.GetTextAsync(ct);
 				if (before != after)
-					await File.WriteAllTextAsync(newDoc.FilePath!, after.ToString(), ct).ConfigureAwait(false);
+					await File.WriteAllTextAsync(newDoc.FilePath!, after.ToString(), ct);
 			}));
 
-			await ExecuteParallel(workItems.ToList(), taskProgress, maxDegreeOfParallelism: MaxDegreeOfParallelism, cancellationToken: cancellationToken).ConfigureAwait(false);
+			await ExecuteParallel(workItems.ToList(), taskProgress, maxDegreeOfParallelism: MaxDegreeOfParallelism, cancellationToken: cancellationToken);
 		}
 
 		private MSBuildWorkspace CreateWorkspace(ITaskProgress taskProgress) {

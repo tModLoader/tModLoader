@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Text;
 using DiffPatch;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.Setup.Core
 			foreach ((string file, string relPath) in EnumerateFiles(parameters.PatchDir)) {
 				if (relPath.EndsWith(".patch")) {
 					items.Add(new WorkItem("Patching: " + relPath, async ct => {
-						FilePatcher filePatcher = await Patch(file, ct).ConfigureAwait(false);
+						FilePatcher filePatcher = await Patch(file, ct);
 						results.Add(filePatcher);
 						newFiles.TryAdd(PathUtils.WithUnixSeparators(filePatcher.PatchedPath), null);
 					}));
@@ -98,7 +98,7 @@ namespace Terraria.ModLoader.Setup.Core
 				CreateDirectory(ProgramSettings.LogsDir);
 				logFile = new StreamWriter(Path.Combine(ProgramSettings.LogsDir, "patch.log"));
 
-				await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
+				await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken);
 			}
 			finally {
 				logFile?.Close();
@@ -167,9 +167,9 @@ namespace Terraria.ModLoader.Setup.Core
 			foreach (var res in patcher.results)
 				log.AppendLine(res.Summary());
 
-			await logSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+			await logSemaphore.WaitAsync(cancellationToken);
 			try {
-				await logFile!.WriteAsync(log.ToString()).ConfigureAwait(false);
+				await logFile!.WriteAsync(log.ToString());
 			}
 			finally {
 				logSemaphore.Release();

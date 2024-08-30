@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.Setup.Core
 				programSettings.Save();
 			}
 
-			await base.Run(progress, cancellationToken).ConfigureAwait(false);
+			await base.Run(progress, cancellationToken);
 		}
 
 		private static SetupOperation[] GetOperations(IServiceProvider serviceProvider)

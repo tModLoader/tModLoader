@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Setup.Core
 		public override async ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default)
 		{
 			foreach (var task in tasks) {
-				await task.ConfigurationPrompt(cancellationToken).ConfigureAwait(false);
+				await task.ConfigurationPrompt(cancellationToken);
 			}
 		}
 
@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.Setup.Core
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
 		{
 			foreach (var task in tasks) {
-				await task.Run(progress, cancellationToken).ConfigureAwait(false);
+				await task.Run(progress, cancellationToken);
 				if (task.Failed()) {
 					failed = task;
 					break;

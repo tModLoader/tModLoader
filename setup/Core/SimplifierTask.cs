@@ -16,12 +16,12 @@ namespace Terraria.ModLoader.Setup.Core
 
 		protected override async Task<Document> Process(Document doc, CancellationToken cancellationToken = default)
 		{
-			if (await doc.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) is not { } root) {
+			if (await doc.GetSyntaxRootAsync(cancellationToken) is not { } root) {
 				return doc;
 			}
 
 			root = root.WithAdditionalAnnotations(Simplifier.Annotation);
-			return await Simplifier.ReduceAsync(doc.WithSyntaxRoot(root), cancellationToken: cancellationToken).ConfigureAwait(false);
+			return await Simplifier.ReduceAsync(doc.WithSyntaxRoot(root), cancellationToken: cancellationToken);
 		}
 	}
 }

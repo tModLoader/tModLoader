@@ -66,14 +66,14 @@ namespace Terraria.ModLoader.Setup.Core
 							}
 						}
 
-						await item.Worker(SetStatus, ct).ConfigureAwait(false);
+						await item.Worker(SetStatus, ct);
 
 						lock (working) {
 							working.Remove(item);
 							progress.SetCurrentProgress(++currentProgress);
 							UpdateStatus();
 						}
-					}).ConfigureAwait(false);
+					});
 			}
 			catch (AggregateException ex) {
 				var actual = ex.Flatten().InnerExceptions.Where(e => !(e is OperationCanceledException));

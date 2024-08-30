@@ -33,7 +33,7 @@ public class TerrariaExecutableSetter
 			throw new InvalidOperationException($"Critical failure. Terraria steam directory '{programSettings.TerrariaSteamDir}' does not exist.");
 		}
 
-		await FindTerrariaDirectory(cancellationToken).ConfigureAwait(false);
+		await FindTerrariaDirectory(cancellationToken);
 	}
 
 	public async Task CheckTerrariaExecutablePathsAndPromptIfNecessary(CancellationToken cancellationToken = default)
@@ -47,18 +47,18 @@ public class TerrariaExecutableSetter
 			throw new FileNotFoundException(missing);
 
 		userPrompt.Inform("Missing required file", missing, PromptSeverity.Error);
-		await SelectAndSetTerrariaDirectory(cancellationToken).ConfigureAwait(false);
+		await SelectAndSetTerrariaDirectory(cancellationToken);
 	}
 
 	public async Task SelectAndSetTerrariaDirectory(CancellationToken cancellationToken = default)
 	{
-		SetTerrariaDirectory(await PromptForTerrariaDirectory(cancellationToken).ConfigureAwait(false));
+		SetTerrariaDirectory(await PromptForTerrariaDirectory(cancellationToken));
 	}
 
 	private async Task<string> PromptForTerrariaDirectory(CancellationToken cancellationToken = default)
 	{
 		while (true) {
-			string executablePath = await terrariaExecutableSelectionPrompt.Prompt(cancellationToken).ConfigureAwait(false);
+			string executablePath = await terrariaExecutableSelectionPrompt.Prompt(cancellationToken);
 
 			string errorText;
 			if (Path.GetFileName(executablePath) != "Terraria.exe") {
@@ -86,7 +86,7 @@ public class TerrariaExecutableSetter
 			const string messageText = "Unable to automatically find Terraria's installation path. Please select it manually.";
 			userPrompt.Inform("Error", messageText, PromptSeverity.Error);
 
-			terrariaFolderPath = await PromptForTerrariaDirectory(cancellationToken).ConfigureAwait(false);
+			terrariaFolderPath = await PromptForTerrariaDirectory(cancellationToken);
 		}
 
 		SetTerrariaDirectory(terrariaFolderPath);

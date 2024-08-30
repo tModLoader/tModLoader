@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.Formatting;
@@ -55,14 +55,14 @@ namespace Terraria.ModLoader.Setup.Core
 					ct => FormatFile(f.FullName, false, ct)));
 
 
-			await ExecuteParallel(workItems.ToList(), taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
+			await ExecuteParallel(workItems.ToList(), taskProgress, cancellationToken: cancellationToken);
 		}
 
 		private static async ValueTask FormatFile(string path, bool aggressive, CancellationToken cancellationToken) {
-			string source = await File.ReadAllTextAsync(path, cancellationToken).ConfigureAwait(false);
+			string source = await File.ReadAllTextAsync(path, cancellationToken);
 			string formatted = Format(source, aggressive, cancellationToken);
 			if (source != formatted) {
-				await File.WriteAllTextAsync(path, formatted, cancellationToken).ConfigureAwait(false);
+				await File.WriteAllTextAsync(path, formatted, cancellationToken);
 			}
 		}
 
