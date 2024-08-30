@@ -7,11 +7,11 @@ namespace Terraria.ModLoader.Setup.CLI.Commands;
 
 public sealed class SetupAutoCommandSettings : PatchCommandSettings
 {
-	[CommandArgument(0, "<TerrariaSteamDir>")]
+	[CommandArgument(0, "<TERRARIA_STEAM_DIR>")]
 	[Description("Path to the Terraria steam directory.")]
 	public string TerrariaSteamDir { get; set; } = string.Empty;
 
-	[CommandArgument(0, "<TMLDevSteamDir>")]
+	[CommandArgument(0, "<TML_DEV_STEAM_DIR>")]
 	[Description("Path to the TML dev steam directory.")]
 	public string TMLDevSteamDir { get; set; } = string.Empty;
 }
@@ -29,15 +29,11 @@ public sealed class SetupAutoCommand : CancellableAsyncCommand<SetupAutoCommandS
 		this.serviceProvider = serviceProvider;
 	}
 
-	public override async Task<int> ExecuteAsync(
+	protected override async Task<int> ExecuteAsync(
 		CommandContext context,
 		SetupAutoCommandSettings settings,
 		CancellationToken cancellationToken)
 	{
-		if (!string.IsNullOrWhiteSpace(settings.TerrariaSteamDir)) {
-			programSettings.TerrariaSteamDir = settings.TerrariaSteamDir;
-		}
-
 		programSettings.PatchMode = settings.PatchMode;
 		programSettings.TerrariaSteamDir = settings.TerrariaSteamDir;
 		programSettings.TMLDevSteamDir = settings.TMLDevSteamDir;

@@ -16,8 +16,8 @@ public static class ServiceCollectionExtensions
 		configuration.Bind(programSettings);
 
 		return serviceCollection
-			.AddTransient<TerrariaExecutableSetter>()
-			.AddTransient<TargetsFilesUpdater>()
+			.AddSingleton<TerrariaExecutableSetter>()
+			.AddSingleton<TargetsFilesUpdater>()
 			.AddSingleton(programSettings);
 	}
 }

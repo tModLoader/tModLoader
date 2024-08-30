@@ -19,13 +19,11 @@ public sealed class ProjectPathCommandSettings : BaseCommandSettings
 
 	public override ValidationResult Validate()
 	{
-		if (Path.GetExtension(projectPath) != ".csproj") {
+		if (Path.GetExtension(projectPath) != ".csproj")
 			return ValidationResult.Error("The project path must point to a .csproj file");
-		}
 
-		if (!File.Exists(projectPath)) {
+		if (!File.Exists(projectPath))
 			return ValidationResult.Error("The project path does not exist");
-		}
 
 		return ValidationResult.Success();
 	}

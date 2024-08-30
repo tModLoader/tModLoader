@@ -14,7 +14,7 @@ public sealed class UpdateLocalizationFilesCommand : CancellableAsyncCommand<Bas
 		this.serviceProvider = serviceProvider;
 	}
 
-	public override async Task<int> ExecuteAsync(
+	protected override async Task<int> ExecuteAsync(
 		CommandContext context,
 		BaseCommandSettings settings,
 		CancellationToken cancellationToken)

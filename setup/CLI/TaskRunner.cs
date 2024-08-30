@@ -95,13 +95,10 @@ public sealed class TaskRunner
 	private static (string Text, Color Color) GetCompletionText(SetupOperation task)
 	{
 		if (task.Failed())
-		{
 			return ("Failed", Color.Red);
-		}
 
-		if (task.Warnings()) {
+		if (task.Warnings())
 			return ("Completed with warnings", Color.Yellow);
-		}
 
 		return ("Completed", Color.Green);
 	}

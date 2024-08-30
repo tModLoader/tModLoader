@@ -14,7 +14,7 @@ public sealed class SetupCommand : CancellableAsyncCommand<PatchCommandSettings>
 		this.serviceProvider = serviceProvider;
 	}
 
-	public override async Task<int> ExecuteAsync(
+	protected override async Task<int> ExecuteAsync(
 		CommandContext context,
 		PatchCommandSettings settings,
 		CancellationToken cancellationToken)

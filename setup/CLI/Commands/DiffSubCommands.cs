@@ -6,7 +6,7 @@ namespace Terraria.ModLoader.Setup.CLI.Commands;
 
 public sealed class DiffCommandSettings : BaseCommandSettings
 {
-	[CommandOption("-r|--reset-diff-timestamps")]
+	[CommandOption("-r|--reset-diff-timestamp")]
 	[Description("Diff all files instead of only those which changed since the last diff/patch.")]
 	public bool ResetDiffTimestamp { get; set; }
 }
@@ -43,7 +43,7 @@ public abstract class DiffBaseCommand : CancellableAsyncCommand<DiffCommandSetti
 		this.programSettings = programSettings;
 	}
 
-	public override async Task<int> ExecuteAsync(
+	protected override async Task<int> ExecuteAsync(
 		CommandContext context,
 		DiffCommandSettings settings,
 		CancellationToken cancellationToken)

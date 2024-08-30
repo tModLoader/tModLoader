@@ -28,7 +28,7 @@ public sealed class DecompileCommand : CancellableAsyncCommand<DecompileCommandS
 		this.serviceProvider = serviceProvider;
 	}
 
-	public override async Task<int> ExecuteAsync(CommandContext context, DecompileCommandSettings settings, CancellationToken cancellationToken)
+	protected override async Task<int> ExecuteAsync(CommandContext context, DecompileCommandSettings settings, CancellationToken cancellationToken)
 	{
 		DecompileTaskParameters decompileTaskParameters = DecompileTaskParameters.CreateDefault(settings.ServerOnly);
 

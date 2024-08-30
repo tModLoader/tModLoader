@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public override void FinishedPrompt()
 		{
-			if (fuzzy > 0 || (!Failed() && !Warnings()))
+			if ((patchReviewer != null && fuzzy > 0) || (!Failed() && !Warnings()))
 				return;
 
 			userPrompt.Inform(

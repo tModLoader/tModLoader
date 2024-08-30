@@ -8,7 +8,7 @@ using Terraria.ModLoader.Setup.Core.Formatting;
 
 namespace Terraria.ModLoader.Setup.Core
 {
-	public class FormatTask : SetupOperation
+	public sealed class FormatTask : SetupOperation
 	{
 		private static readonly AdhocWorkspace Workspace = new();
 

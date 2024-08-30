@@ -12,7 +12,7 @@ public sealed class FormatCommand : CancellableAsyncCommand<ProjectPathCommandSe
 		this.taskRunner = taskRunner;
 	}
 
-	public override async Task<int> ExecuteAsync(
+	protected override async Task<int> ExecuteAsync(
 		CommandContext context,
 		ProjectPathCommandSettings settings,
 		CancellationToken cancellationToken)

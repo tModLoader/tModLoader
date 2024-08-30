@@ -19,7 +19,7 @@ public sealed class TypeRegistrar : ITypeRegistrar
 
 	public void Register(Type service, Type implementation)
 	{
-		services.AddTransient(service, implementation);
+		services.AddSingleton(service, implementation);
 	}
 
 	public void RegisterInstance(Type service, object implementation)
@@ -29,6 +29,6 @@ public sealed class TypeRegistrar : ITypeRegistrar
 
 	public void RegisterLazy(Type service, Func<object> factory)
 	{
-		services.AddTransient(service, _ => factory());
+		services.AddSingleton(service, _ => factory());
 	}
 }
