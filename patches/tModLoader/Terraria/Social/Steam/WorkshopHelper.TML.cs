@@ -34,6 +34,14 @@ public partial class WorkshopHelper
 		protected override void PrepareContentForUpdate() { }
 	}
 
+	internal enum WorkshopSearchReturnState
+	{
+		SearchSuccessfulNoMatch,
+		SearchFailed,
+		SearchSuccessMatchUseable,
+		SearchSuccessMatchUnusable
+	}
+
 	/// <summary>
 	/// <code>
 	/// Priority is given to "-steamworkshopfolder" argument to ensure if someone has a custom steamapps/workshop folder away from tml, it can be found
@@ -70,23 +78,19 @@ public partial class WorkshopHelper
 	}
 
 	/////// Others ////////////////////
-	internal static bool TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
+	internal static WorkshopSearchReturnState TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
 	{
-		item = null;
-
 		var query = new QueryHelper.AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect });
-		if (!query.TrySearchByInternalName(modSlug, out item))
-			return false;
+		var state = query.TrySearchByInternalName(modSlug, out item);
+		if (state == WorkshopSearchReturnState.SearchFailed || state == WorkshopSearchReturnState.SearchSuccessMatchUseable)
+			return state;
 
-		if (item == null) {
-			// search of all mods that were published by this user - Does not work with co-published/non-owner
-			// this should catch private / friends-only visibility
-			query.queryParameters.queryType = QueryType.SearchUserPublishedOnly;
-			if (!query.TrySearchByInternalName(modSlug, out item))
-				return false;
-		}
+		// search of all mods that were published by this user - Does not work with co-published/non-owner
+		// this should catch private / friends-only visibility
+		query.queryParameters.queryType = QueryType.SearchUserPublishedOnly;
+		state = query.TrySearchByInternalName(modSlug, out item);
 
-		return true;
+		return state;
 	}
 
 	// Should this be in SteamedWraps or here?
@@ -314,8 +318,8 @@ public partial class WorkshopHelper
 
 						for (int j = 0; j < _queryReturnCount; j++) {
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
-							var item = GenerateModDownloadItemFromQuery((uint)j);
-							if (item is null) {
+							var match = TryGenerateModDownloadItem((uint)j, out var item);
+							if (match != WorkshopSearchReturnState.SearchSuccessMatchUseable) {
 								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
 								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
 								missingMods.Add(idArray[j]);
@@ -369,8 +373,8 @@ public partial class WorkshopHelper
 			{
 				// Appx. 10 ms per page of 50 items
 				for (uint i = 0; i < _queryReturnCount; i++) {
-					var mod = GenerateModDownloadItemFromQuery(i);
-					if (mod == null)
+					var state = TryGenerateModDownloadItem(i, out var mod);
+					if (state != WorkshopSearchReturnState.SearchSuccessMatchUseable)
 						continue;
 
 					yield return mod;
@@ -388,21 +392,24 @@ public partial class WorkshopHelper
 				items = new List<ModDownloadItem>();
 
 				foreach (var slug in queryParameters.searchModSlugs) {
-					if (!TrySearchByInternalName(slug, out var item))
+					var state = TrySearchByInternalName(slug, out var item);
+					if (state == WorkshopSearchReturnState.SearchFailed)
 						return false;
 
-					items.Add(item);
+					if (state == WorkshopSearchReturnState.SearchSuccessMatchUseable)
+						items.Add(item);
+					else
+						items.Add(null);
+
 				}
 
 				return true;
 			}
 
-			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
-			/// Returns false if unable to check Workshop and outs item as null if item not found
 			/// </summary>
-			internal bool TrySearchByInternalName(string slug, out ModDownloadItem item)
+			internal WorkshopSearchReturnState TrySearchByInternalName(string slug, out ModDownloadItem item)
 			{
 				item = null;
 
@@ -411,15 +418,14 @@ public partial class WorkshopHelper
 
 					if (_queryReturnCount == 0) {
 						Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
-						return true;
+						return WorkshopSearchReturnState.SearchSuccessfulNoMatch;
 					}
 
-					item = GenerateModDownloadItemFromQuery(0);
-					return true;
+					return TryGenerateModDownloadItem(0, out item);
 				}
 				catch {
 					// If Query Fails, we can't publish
-					return false;
+					return WorkshopSearchReturnState.SearchFailed;
 				}
 				finally {
 					ReleaseWorkshopQuery();
@@ -459,8 +465,19 @@ public partial class WorkshopHelper
 
 			/////// Process Query Result per Item ////////////////////
 
-			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
-			internal ModDownloadItem GenerateModDownloadItemFromQuery(uint i)
+			internal WorkshopSearchReturnState TryGenerateModDownloadItem(uint index, out ModDownloadItem item)
+			{
+				item = null;
+				try {
+					item = GenerateModDownloadItemFromQuery(index);
+					return WorkshopSearchReturnState.SearchSuccessMatchUseable;
+				}
+				catch (Exception) {
+					return WorkshopSearchReturnState.SearchSuccessMatchUnusable;
+				}
+			}
+
+			private ModDownloadItem GenerateModDownloadItemFromQuery(uint i)
 			{
 				// Item Result call data
 				SteamUGCDetails_t pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, i);
@@ -468,17 +485,24 @@ public partial class WorkshopHelper
 				PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
 				if (pDetails.m_eResult != EResult.k_EResultOK) {
-					Logging.tML.Warn("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
-					return null;
+					throw new SocialBrowserException("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
 				}
 
 				string ownerId = pDetails.m_ulSteamIDOwner.ToString();
 
 				DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
 				string displayname = pDetails.m_rgchTitle;
+				bool banned = pDetails.m_bBanned;
 
-				// Item Tagged data
+				if (banned) {
+					throw new SocialBrowserException($"Item {id}: {displayname} is banned. Skipping...");
+				}
+
+				// Item Tagged data / Player metadata
 				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
+
+				// Developer Metadata
+				SteamedWraps.FetchDeveloperMetadata(_primaryUGCHandle, i, out string devMetadata);
 
 				// Backwards compat code for the metadata version change
 				if (metadata["versionsummary"] == null)
@@ -487,13 +511,11 @@ public partial class WorkshopHelper
 				string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
 
 				if (missingKeys.Length != 0) {
-					Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
-					return null;
+					throw new SocialBrowserException($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
 				}
 
 				if (string.IsNullOrWhiteSpace(metadata["name"])) {
-					Logging.tML.Warn($"Mod has no name: {id}"); // Somehow this happened before and broke mod downloads
-					return null;
+					throw new SocialBrowserException($"Mod has no internal name / slug: {id}"); // Somehow this happened before and broke mod downloads
 				}
 
 				string[] refsById = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, i, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId.ToString()).ToArray();
@@ -521,7 +543,7 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById);
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata);
 			}
 		}
 	}

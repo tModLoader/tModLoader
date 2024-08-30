@@ -1,6 +1,8 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
@@ -21,6 +23,8 @@ public class ModDownloadItem
 	public readonly string Author;
 	public readonly string ModIconUrl;
 	public readonly DateTime TimeStamp;
+	public readonly bool Banned;
+	public readonly string DevMetadata;
 
 	public readonly string ModReferencesBySlug;
 	public readonly ModPubId_t[] ModReferenceByModId;
@@ -37,7 +41,7 @@ public class ModDownloadItem
 
 	public bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, string devMetadata)
 	{
 		ModName = name;
 		DisplayName = displayName;
@@ -56,6 +60,8 @@ public class ModDownloadItem
 		TimeStamp = timeStamp;
 		Version = version;
 		ModloaderVersion = modloaderversion;
+		Banned = banned;
+		DevMetadata = devMetadata;
 	}
 
 	internal void UpdateInstallState()
@@ -92,6 +98,15 @@ public class ModDownloadItem
 	public override int GetHashCode()
 	{
 		return GetComparable().GetHashCode();
+	}
+
+	public IEnumerable<ModVersionHash> GetModVersionHashes()
+	{
+		var devMetadata = JsonConvert.DeserializeObject<DeveloperMetadata>(DevMetadata);
+		if (devMetadata == null)
+			return new List<ModVersionHash>();
+
+		return devMetadata.hashes.Select(h => new ModVersionHash(h));
 	}
 
 	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)

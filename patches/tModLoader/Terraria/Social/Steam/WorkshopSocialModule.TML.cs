@@ -10,6 +10,7 @@ using Terraria.Social.Base;
 using Terraria.Utilities;
 using Terraria.Localization;
 using System.Collections;
+using Newtonsoft.Json;
 
 namespace Terraria.Social.Steam;
 
@@ -18,6 +19,8 @@ public partial class WorkshopSocialModule
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
 
+	private List<ModVersionHash> hashes;
+
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
@@ -25,18 +28,22 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod)) {
+		var state = WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod);
+
+		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed || state == WorkshopHelper.WorkshopSearchReturnState.SearchSuccessMatchUnusable) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
 		currPublishID = 0;
+		hashes = new List<ModVersionHash>() { new ModVersionHash(modFile) };
 
-		if (mod == null) {
+		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchSuccessfulNoMatch) {
 			return false;
 		}
 
 		currPublishID = ulong.Parse(mod.PublishId.m_ModPubId);
+		hashes.AddRange(mod.GetModVersionHashes());
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
 		WorkshopBrowserModule.Instance.DownloadItem(mod, uiProgress: null);
@@ -100,6 +107,8 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
+
+		buildData["developermetadata"] = CalculateDeveloperMetadata(hashes);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -262,6 +271,63 @@ public partial class WorkshopSocialModule
 		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
 
 		return descriptionFinal;
+	}
+
+	//TODO: Add a Spec for what this is supposed to be doing
+	private static string CalculateDeveloperMetadata(List<ModVersionHash> versionHashes)
+	{
+		string devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
+		while (devMetadata.Length > Steamworks.Constants.k_cchDeveloperMetadataMax) {
+			// If we had any reserved metadata space, we would process that first.
+
+			// We don't have any reserved metadata space, so we can set availableChars to DeveloperMetadataMax
+			StripOldHashes(versionHashes, Steamworks.Constants.k_cchDeveloperMetadataMax);
+		}
+
+		return devMetadata;
+	}
+
+	private static void StripOldHashes(List<ModVersionHash> versionHashes, int availableCharacters)
+	{
+		// Calculate the reserved portion of hashes for old browser versions, keeping only mature copies
+		List<ModVersionHash> reserved = new List<ModVersionHash>();
+
+		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.3", amountToKeep: 1));
+		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.4.3", amountToKeep: 1));
+		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.4.4-transitive", amountToKeep: 1));
+
+		string reservedJson = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = reserved.Select(h => h.ToString()).ToList() });
+
+		// Calculate the 'right' amount of hashes to store of the remaining space
+		string devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
+		List<ModVersionHash> current = versionHashes;
+
+		int index = 100;
+		while (devMetadata.Length > availableCharacters) {
+			current = OptimizeHashesForCurrentBrowserVersion(versionHashes, index-- - reserved.Count());
+			current.AddRange(reserved);
+
+			devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = current.Select(h => h.ToString()).ToList() });
+		}
+
+		// Assign the new version of versionHashes before exiting
+		versionHashes = current;
+	}
+
+	private static List<ModVersionHash> OptimizeHashesForOldBrowserVersion(List<ModVersionHash> versionHashes, string appliesToModBrowserVersion, int amountToKeep)
+	{
+		return versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == appliesToModBrowserVersion)
+			.GroupBy(t => t.tmlVersion.MajorMinor())
+			.Select(g => g.OrderByDescending(v => v.modVersion).First())
+			.Take(amountToKeep).ToList();
+	}
+
+	private static List<ModVersionHash> OptimizeHashesForCurrentBrowserVersion(List<ModVersionHash> versionHashes, int amountToKeep)
+	{
+		return versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion))
+			.OrderByDescending(t => t.tmlVersion.MajorMinor())
+			.ThenByDescending(v => v.modVersion)
+			.Take(amountToKeep).ToList();
 	}
 
 	public static void SteamCMDPublishPreparer(string modFolder)

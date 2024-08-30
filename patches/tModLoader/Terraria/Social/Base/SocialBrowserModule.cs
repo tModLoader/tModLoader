@@ -8,12 +8,57 @@ using Terraria.ModLoader.UI.ModBrowser;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using Terraria.ModLoader.Config;
+using System.Text.RegularExpressions;
+using System.Text;
+using MonoMod.Core.Utils;
+using System.Drawing.Drawing2D;
 
 namespace Terraria.Social.Base;
 
 public struct ModPubId_t
 {
 	public string m_ModPubId;
+}
+
+public struct ModVersionHash
+{
+	public Version tmlVersion; // 7 chars, YYYY.MM
+	public Version modVersion;
+	private string hash; // 28+2 chars, SHA1. +2 is for string type
+
+	public override string ToString() => $"{tmlVersion.MajorMinor()}|{modVersion}|{hash}";
+
+	const string pattern = @"^([^\|]+)\|([^\|]+)\|([^\|]+)$";
+
+	public ModVersionHash(string serializedVersionHash)
+	{
+		var match = new Regex(pattern).Match(serializedVersionHash);
+
+		if (!match.Success)
+			throw new SocialBrowserException($"Malformed Hash Data Detected {serializedVersionHash}");
+
+		tmlVersion = new Version(match.Groups[1].Value);
+		modVersion = new Version(match.Groups[2].Value);
+		hash = match.Groups[3].Value;
+	}
+
+	public ModVersionHash(TmodFile modFile)
+	{
+		tmlVersion = modFile.TModLoaderVersion;
+		modVersion = modFile.Version;
+		hash = Encoding.UTF8.GetString(modFile.Hash);
+	}
+
+	internal byte[] GetHash()
+	{
+		return Encoding.UTF8.GetBytes(hash);
+	}
+}
+
+public class DeveloperMetadata
+{
+	public List<string> hashes;
 }
 
 public class SocialBrowserException : Exception

@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using ReLogic.OS;
 using Steamworks;
@@ -146,6 +147,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetReturnMetadata(qHandle, true);
 			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
@@ -155,6 +157,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetReturnMetadata(qHandle, true);
 			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
@@ -331,6 +334,16 @@ public static class SteamedWraps
 
 			metadata[key] = val;
 		}
+	}
+
+	public static bool FetchDeveloperMetadata(UGCQueryHandle_t handle, uint index, out string devMetadata)
+	{
+		if (SteamClient)
+			return SteamUGC.GetQueryUGCMetadata(handle, index, out devMetadata, Constants.k_cchDeveloperMetadataMax);
+		else if (SteamAvailable)
+			return SteamGameServerUGC.GetQueryUGCMetadata(handle, index, out devMetadata, Constants.k_cchDeveloperMetadataMax);
+
+		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
 	public static void RunCallbacks()
@@ -654,12 +667,17 @@ public static class SteamedWraps
 		if (!SteamClient)
 			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
 
+		// Add player metadata to the Workshop item
 		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
 		foreach (var key in WorkshopHelper.MetadataKeys) {
 			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
 
+		// Add developer metadata to the Workshop item
+		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData["developermetadata"]);
+
+		// Adde Dependencies to the Workshop item
 		string refs = _entryData.BuildData["workshopdeps"];
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
@@ -676,5 +694,16 @@ public static class SteamedWraps
 				}
 			}
 		}
+	}
+
+	private static bool AddDeveloperMetadata(ref UGCUpdateHandle_t uGCUpdateHandle_t, string developerMetadata)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to AddDeveloperMetadata. Steam Client API not initialized!");
+
+		if (developerMetadata.Length >= Constants.k_cchDeveloperMetadataMax)
+			throw new Exception($"Invalid Call to AddDeveloperMetadata. Developer Metadata exceeds {Constants.k_cchDeveloperMetadataMax} characters");
+
+		return SteamUGC.SetItemMetadata(uGCUpdateHandle_t, developerMetadata);
 	}
 }
