@@ -405,7 +405,7 @@ namespace Terraria.ModLoader.Setup.Core
 		{
 			var name = GetAssemblyTitle(module);
 			var filename = name + ".csproj";
-			return new WorkItem("Writing: " + filename, async _ =>
+			return new WorkItem("Writing: " + filename, _ =>
 			{
 				var path = Path.Combine(parameters.SrcDir, name, filename);
 				CreateParentDirectory(path);
@@ -444,6 +444,8 @@ namespace Terraria.ModLoader.Setup.Core
 					w.WriteEndElement(); // </Project>
 
 					sw.Write(Environment.NewLine);
+
+					return ValueTask.CompletedTask;
 				}
 			});
 		}
@@ -451,7 +453,8 @@ namespace Terraria.ModLoader.Setup.Core
 		private WorkItem WriteCommonConfigurationFile()
 		{
 			var filename = "Configuration.targets";
-			return new WorkItem("Writing: " + filename, async _ => {
+			return new WorkItem("Writing: " + filename, _ =>
+			{
 				var path = Path.Combine(parameters.SrcDir, filename);
 				CreateParentDirectory(path);
 
@@ -489,6 +492,8 @@ namespace Terraria.ModLoader.Setup.Core
 					w.WriteEndElement(); // </Project>
 
 					sw.Write(Environment.NewLine);
+
+					return ValueTask.CompletedTask;
 				}
 			});
 		}
