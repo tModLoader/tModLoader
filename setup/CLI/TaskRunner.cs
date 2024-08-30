@@ -74,7 +74,7 @@ public sealed class TaskRunner
 			AnsiConsole.Write(new Text(text, new Style(foreground: color, decoration: Decoration.Bold)));
 
 			if (task.Failed() || (strict && task.Warnings())) {
-				Environment.Exit(1);
+				return 1;
 			}
 		}
 		catch (OperationCanceledException) { Console.WriteLine("Cancelled"); }
