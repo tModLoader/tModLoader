@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using DiffPatch;
@@ -12,6 +13,7 @@ using PatchReviewer;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Terraria.ModLoader.Setup.GUI
 {
@@ -263,36 +265,42 @@ namespace Terraria.ModLoader.Setup.GUI
 		private sealed class TaskProgress : ITaskProgress
 		{
 			private readonly MainForm mainForm;
+			private Timer timer;
+
+			private record State(int max, int current, string status);
+			private State state = new State(1, 0, string.Empty);
 
 			public TaskProgress(MainForm mainForm)
 			{
 				this.mainForm = mainForm;
+				mainForm.Invoke(() => {
+					timer = new Timer(mainForm.components) { Interval = 20 };
+					timer.Tick += (_, _) => {
+						var s = state;
+						mainForm.progressBar.Maximum = s.max;
+						mainForm.progressBar.Value = s.current;
+						mainForm.labelStatus.Text = s.status;
+					};
+					timer.Start();
+				});
 			}
 
-			public void Dispose() { }
+			public void Dispose()
+			{
+				timer.Dispose();
+			}
 
-			public void SetMaxProgress(int max) =>
-				mainForm.Invoke(() => {
-					mainForm.progressBar.Maximum = max;
-				});
-
-			public void SetCurrentProgress(int current) =>
-				mainForm.Invoke(() => {
-					mainForm.progressBar.Value = current;
-				});
+			public void SetMaxProgress(int max) => state = state with { max = max };
+			public void SetCurrentProgress(int current) => state = state with { current = current };
 
 			public void ReportStatus(string status, bool overwrite = false)
 			{
-				mainForm.Invoke(() => {
-					if (overwrite) {
-						mainForm.labelStatus.Text = status;
-					}
-					else {
-						string[] parts = [mainForm.labelStatus.Text, status];
-						mainForm.labelStatus.Text =
-							string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrEmpty(x)));
-					}
-				});
+				if (!overwrite) {
+					string[] parts = [state.status, status];
+					status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
+				}
+
+				state = state with { status = status };
 			}
 		}
 	}

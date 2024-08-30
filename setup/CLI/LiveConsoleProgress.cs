@@ -84,15 +84,14 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		public void ReportStatus(string status, bool overwrite = false)
 		{
-			if (overwrite) {
-				lastStatus = Indent(status);
-			}
-			else {
-				string[] parts = [lastStatus, Indent(status)];
-				lastStatus = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
+			status = Indent(status);
+			if (!overwrite) {
+				string[] parts = [lastStatus, status];
+				status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
 			}
 
-			table.UpdateCell(statusRow, 0, new Text(lastStatus));
+			table.UpdateCell(statusRow, 0, new Text(status));
+			lastStatus = status;
 		}
 
 		private static string Indent(string status) => $"  {status.ReplaceLineEndings("\r\n  ")}";
