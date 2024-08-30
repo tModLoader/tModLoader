@@ -1,0 +1,39 @@
+--- src/TerrariaNetCore/Terraria/Chat/ChatHelper.cs
++++ src/tModLoader/Terraria/Chat/ChatHelper.cs
+@@ -8,6 +_,10 @@
+ 
+ namespace Terraria.Chat;
+ 
++/// <summary>
++/// Facilitates sending chat messages from the server to clients.
++/// <para/><see cref="BroadcastChatMessage(NetworkText, Color, int)"/> and <see cref="SendChatMessageToClient(NetworkText, Color, int)"/> are the most commonly used methods provided.
++/// </summary>
+ public static class ChatHelper
+ {
+ 	private static List<Tuple<string, Color>> _cachedMessages = new List<Tuple<string, Color>>();
+@@ -23,6 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Sends a message to the specified client to be displayed in their chat. Intended to be used from the server. Useful for the server replying to client actions. 
++	/// </summary>
++	/// <param name="text"></param>
++	/// <param name="color"></param>
++	/// <param name="playerId"></param>
+ 	public static void SendChatMessageToClient(NetworkText text, Color color, int playerId)
+ 	{
+ 		SendChatMessageToClientAs(byte.MaxValue, text, color, playerId);
+@@ -39,6 +_,12 @@
+ 			DisplayMessage(text, color, messageAuthor);
+ 	}
+ 
++	/// <summary>
++	/// Sends a message to all connected clients to be displayed in chat. Intended to be used from the server.
++	/// </summary>
++	/// <param name="text"></param>
++	/// <param name="color"></param>
++	/// <param name="excludedPlayer"></param>
+ 	public static void BroadcastChatMessage(NetworkText text, Color color, int excludedPlayer = -1)
+ 	{
+ 		BroadcastChatMessageAs(byte.MaxValue, text, color, excludedPlayer);

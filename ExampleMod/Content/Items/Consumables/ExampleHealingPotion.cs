@@ -7,6 +7,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Consumables
 {
+	// This item showcases some advanced capabilities of healing potions. It heals a dynamic amount and adjusts its tooltip accordingly.
+	// A typical healing potion can get rid of the ModifyTooltips and GetHealLife methods and just assign Item.healLife.
+	// A mana potion is exactly the same, except Item.healMana is used instead. (Also GetHealMana would be used for dynamic mana recovery values)
 	public class ExampleHealingPotion : ModItem
 	{
 		public static LocalizedText RestoreLifeText { get; private set; }
@@ -25,7 +28,7 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.useTime = 17;
 			Item.useTurn = true;
 			Item.UseSound = SoundID.Item3;
-			Item.maxStack = 30;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 1);

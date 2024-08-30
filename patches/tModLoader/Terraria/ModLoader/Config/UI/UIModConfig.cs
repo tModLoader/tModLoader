@@ -417,7 +417,7 @@ internal class UIModConfig : UIState
 
 		}
 		else {
-			throw new Exception($"There are no ModConfig for {mod.DisplayName}, how did this happen?");
+			throw new Exception($"There are no ModConfig for {mod.DisplayNameClean}, how did this happen?");
 		}
 	}
 
@@ -425,6 +425,7 @@ internal class UIModConfig : UIState
 
 	public override void OnActivate()
 	{
+		Interface.modConfigList.ModToSelectOnOpen = mod;
 		filterTextField.SetText("");
 
 		updateNeeded = false;
@@ -599,6 +600,9 @@ internal class UIModConfig : UIState
 		}
 		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
 			e = new DictionaryElement();
+		}
+		else if(type == typeof(object)) {
+			e = new UIText($"{memberInfo.Name} can't be of the Type Object.");
 		}
 		else if (type.IsClass) {
 			e = new ObjectElement(/*, ignoreSeparatePage: ignoreSeparatePage*/);

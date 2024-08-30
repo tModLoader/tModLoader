@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using ReLogic.OS;
 using Steamworks;
 using System;
@@ -7,6 +8,8 @@ using System.IO;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
@@ -49,6 +52,7 @@ public static class SteamedWraps
 			workshopLogLoc = "/home/user/.local/share/Steam/logs/workshop_log.txt";
 
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
+		Utils.LogAndConsoleInfoMessage("See https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#mod-browser for even more suggestions.");
 	}
 
 	public static void QueueForceValidateSteamInstall()
@@ -80,7 +84,7 @@ public static class SteamedWraps
 
 		// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 		if (!Main.dedServ && !TryInitViaGameServer())
-			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", 0);
+			Utils.ShowFancyErrorMessage("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed", Interface.loadModsID);
 	}
 
 	public static bool TryInitViaGameServer()
@@ -142,6 +146,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
 			SteamUGC.SetReturnKeyValueTags(qHandle, true);
@@ -150,6 +155,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
 			SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
@@ -222,37 +228,59 @@ public static class SteamedWraps
 
 	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
-		if (!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor))
+		// Only let steam rank by text when we want sorting for popularity, otherwise the results are not sorted when filtered by search term. 
+		if ((!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor)) && qParams.sortingParamater == ModBrowserSortMode.Hot)
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
 		return (qParams.sortingParamater) switch {
+			ModBrowserSortMode.Hot when qParams.days == 0 => EUGCQuery.k_EUGCQuery_RankedByVote, // Corresponds to "Most Popular" for "All Time" on workshop website
 			ModBrowserSortMode.DownloadsDescending => EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions,
-			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByPlaytimeTrend,
+			ModBrowserSortMode.Hot => EUGCQuery.k_EUGCQuery_RankedByTrend, // Corresponds to "Most Popular" on workshop website
 			ModBrowserSortMode.RecentlyUpdated => EUGCQuery.k_EUGCQuery_RankedByLastUpdatedDate,
+			ModBrowserSortMode.RecentlyPublished => EUGCQuery.k_EUGCQuery_RankedByPublicationDate,
 			_ => EUGCQuery.k_EUGCQuery_RankedByTextSearch
 		};
 	}
 
 	public static SteamAPICall_t GenerateAndSubmitModBrowserQuery(uint page, QueryParameters qP, string internalName = null)
 	{
-		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		var qHandle = GetQueryHandle(page, qP);
+		if (qHandle == default)
+			return new();
 
+		if (SteamClient) {
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
-		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
-
+		else { // assumes SteamAvailable as GetQueryHandle already checks this and is a required pre-req
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 			
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
+	}
 
-		return new();
+	public static UGCQueryHandle_t GetQueryHandle(uint page, QueryParameters qP)
+	{
+		// To find unlisted / private / friends only mods on Steam Workshop that user can see but QueryAll does not, we have to side step to a custom query. - Solxan, July 30 2024
+		if (SteamClient && qP.queryType == QueryType.SearchUserPublishedOnly) {
+			return SteamUGC.CreateQueryUserUGCRequest(SteamUser.GetSteamID().GetAccountID(), EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		}
+
+		// Search by author steamid64, can be used to find friends-only mods in-game, normal search through the API doesn't seem to show them
+		if (SteamClient && qP.searchAuthor?.Length == 17 && ulong.TryParse(qP.searchAuthor, out ulong steamID64)) {
+			return SteamUGC.CreateQueryUserUGCRequest(new AccountID_t((uint)(steamID64 & 0xFFFFFFFFu)), EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		}
+
+		// These will only return visibility = public - Solxan, July 30 2024
+		if (SteamClient)
+			return SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		else if (SteamAvailable)
+			return SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+
+		return default;
 	}
 
 	public static void FetchPlayTimeStats(UGCQueryHandle_t handle, uint index, out ulong hot, out ulong downloads)
@@ -315,6 +343,10 @@ public static class SteamedWraps
 
 	public static void StopPlaytimeTracking()
 	{
+		// Check for https://github.com/tModLoader/tModLoader/issues/4085
+		if (Program.LaunchParameters.ContainsKey("-disableugcplaytime"))
+			return;
+
 		// Call the appropriate variant
 		if (SteamClient)
 			SteamUGC.StopPlaytimeTrackingForAllItems();
@@ -326,7 +358,8 @@ public static class SteamedWraps
 
 	public static void BeginPlaytimeTracking()
 	{
-		if (!SteamAvailable)
+		// Second check is for https://github.com/tModLoader/tModLoader/issues/4085
+		if (!SteamAvailable || Program.LaunchParameters.ContainsKey("-disableugcplaytime"))
 			return;
 
 		List<PublishedFileId_t> list = new List<PublishedFileId_t>();
@@ -585,6 +618,7 @@ public static class SteamedWraps
 
 			if (_downloadCallback != EResult.k_EResultOK) {
 				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
+				ReportCheckSteamLogs();
 				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
 			}
 		}
@@ -615,7 +649,7 @@ public static class SteamedWraps
 		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
 	}
 
-	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, ref string patchNotes, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
+	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
 	{
 		if (!SteamClient)
 			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
@@ -626,15 +660,6 @@ public static class SteamedWraps
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
 
-		patchNotes = _entryData.ChangeNotes;
-		// If the modder hasn't supplied any change notes, then we wilil provde some default ones for them
-		if (string.IsNullOrWhiteSpace(patchNotes)) {
-			patchNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
-			if (!string.IsNullOrWhiteSpace(_entryData.BuildData["homepage"]))
-				patchNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
-		}
-
-		UpdatePatchNotesWithModData(ref patchNotes, _entryData.BuildData);	
 		string refs = _entryData.BuildData["workshopdeps"];
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
@@ -651,17 +676,5 @@ public static class SteamedWraps
 				}
 			}
 		}
-	}
-
-	internal static void UpdatePatchNotesWithModData(ref string patchNotes, NameValueCollection buildData)
-	{
-		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
-		// This allows us to use substitution keys such as {ModVersion}
-		patchNotes = Language.GetText(patchNotes).FormatWith(new {
-			ModVersion = buildData["trueversion"],
-			ModHomepage = buildData["homepage"],
-			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
-			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
-		});
 	}
 }

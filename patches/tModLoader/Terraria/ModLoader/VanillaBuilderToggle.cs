@@ -1,7 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -13,8 +17,10 @@ public abstract class VanillaBuilderToggle : BuilderToggle
 	public override int NumberOfStates => 2;
 	public override string DisplayValue() => "";
 
-	public override Color DisplayColorTexture() {
-		return CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
+		drawParams.Frame = Type < 10 ? new Rectangle(Type * 16, 16, 14, 14) : drawParams.Frame;
+		return true;
 	}
 }
 
@@ -139,24 +145,24 @@ public abstract class WireVisibilityBuilderToggle : VanillaBuilderToggle
 		return $"{text}: {text2}";
 	}
 
-	public override Color DisplayColorTexture() {
-		Color color = default;
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		base.Draw(spriteBatch, ref drawParams);
+		drawParams.Color = default;
 		switch (CurrentState) {
 			case 0:
-				color = Color.White;
+				drawParams.Color = Color.White;
 				break;
 			case 1:
-				color = new Color(127, 127, 127);
+				drawParams.Color = new Color(127, 127, 127);
 				break;
 			case 2:
-				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.66f, 0.66f, 0.66f));
+				drawParams.Color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.66f, 0.66f, 0.66f, 0.66f));
 				break;
 			case 3: //Should never reach here but vanilla has it
-				color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.33f, 0.33f, 0.33f));
+				drawParams.Color = new Color(127, 127, 127).MultiplyRGBA(new Color(0.33f, 0.33f, 0.33f, 0.33f));
 				break;
 		}
-
-		return color;
+		return true;
 	}
 }
 
@@ -192,6 +198,7 @@ public class ActuatorsVisibilityBuilderToggle : WireVisibilityBuilderToggle { }
 public class BlockSwapBuilderToggle : VanillaBuilderToggle
 {
 	public override string Texture => "Terraria/Images/UI/BlockReplace_0";
+	public override string HoverTexture => "Terraria/Images/UI/BlockReplace_0";
 	public override bool Active() => true;
 
 	public override string DisplayValue() {
@@ -208,12 +215,30 @@ public class BlockSwapBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override Color DisplayColorTexture() => Color.White;
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Color = Color.White;
+		drawParams.Frame = drawParams.Texture.Frame(3, 1, CurrentState == 0 ? 0 : 1);
+		drawParams.Position += new Vector2(1, 0);
+		return true;
+	}
+
+	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Frame = drawParams.Texture.Frame(3, 1, 2);
+		drawParams.Position += new Vector2(1, 0);
+		drawParams.Scale = 0.9f;
+		return true;
+	}
+
+	public override bool OnLeftClick(ref SoundStyle? sound) {
+		sound = SoundID.Unlock;
+		return true;
+	}
 }
 
 public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 {
 	public override string Texture => "Terraria/Images/Extra_211";
+	public override string HoverTexture => "Terraria/Images/Extra_211";
 	public override bool Active() => Main.player[Main.myPlayer].unlockedBiomeTorches;
 
 	public override string DisplayValue() {
@@ -230,5 +255,22 @@ public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override Color DisplayColorTexture() => Color.White;
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Color = Color.White;
+		drawParams.Frame = drawParams.Texture.Frame(4, 1, CurrentState == 0 ? 1 : 0);
+		drawParams.Position += new Vector2(1, 0);
+		return true;
+	}
+
+	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
+		drawParams.Frame = drawParams.Texture.Frame(4, 1, CurrentState == 0 ? 3 : 2);
+		drawParams.Position += new Vector2(1, 0);
+		drawParams.Scale = 0.9f;
+		return true;
+	}
+
+	public override bool OnLeftClick(ref SoundStyle? sound) {
+		sound = SoundID.Unlock;
+		return true;
+	}
 }

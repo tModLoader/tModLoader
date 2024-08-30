@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -45,7 +46,7 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 			string modname = option.Definition.Mod;
 
 			if (option.Type >= NPCID.Count) {
-				modname = NPCLoader.GetNPC(option.Type).Mod.DisplayName; // or internal name?
+				modname = NPCLoader.GetNPC(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
@@ -72,7 +73,8 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 
 		if (Definition != null) {
 			int type = Unloaded ? 0 : Type;
-			Main.instance.LoadNPC(type);
+			if (TextureAssets.Npc[type].State == AssetState.NotLoaded)
+				Main.Assets.Request<Texture2D>(TextureAssets.Npc[type].Name, AssetRequestMode.AsyncLoad);
 			Texture2D npcTexture = TextureAssets.Npc[type].Value;
 
 			int frameCounter = Interface.modConfig.UpdateCount / 8;

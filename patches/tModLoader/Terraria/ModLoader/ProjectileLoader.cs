@@ -572,6 +572,7 @@ public static class ProjectileLoader
 		}
 	}
 
+	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
 		if (projectile.ModProjectile == null)
@@ -583,8 +584,6 @@ public static class ProjectileLoader
 		projectile.ModProjectile?.ModifyFishingLine(ref lineOriginOffset, ref lineColor);
 
 		polePosX += lineOriginOffset.X * player.direction;
-		if (player.direction < 0)
-			polePosX -= 13f;
 		polePosY += lineOriginOffset.Y * player.gravDir;
 	}
 
@@ -768,6 +767,27 @@ public static class ProjectileLoader
 
 		foreach (var g in HookDrawBehind.Enumerate(projectile)) {
 			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
+		}
+	}
+
+	private static HookList HookPrepareBombToBlow = AddHook<Action<Projectile>>(g => g.PrepareBombToBlow);
+
+	internal static void PrepareBombToBlow(Projectile projectile)
+	{
+		projectile.ModProjectile?.PrepareBombToBlow();
+
+		foreach (var g in HookPrepareBombToBlow.Enumerate(projectile)) {
+			g.PrepareBombToBlow(projectile);
+		}
+	}
+
+	private static HookList HookEmitEnchantmentVisualsAt = AddHook<Action<Projectile, Vector2, int, int>>(g => g.EmitEnchantmentVisualsAt);
+
+	internal static void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight) {
+		projectile.ModProjectile?.EmitEnchantmentVisualsAt(boxPosition, boxWidth, boxHeight);
+
+		foreach (var g in HookEmitEnchantmentVisualsAt.Enumerate(projectile)) {
+			g.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
 		}
 	}
 }

@@ -16,7 +16,9 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
+/// This class serves as a place for you to place all your properties and hooks for each NPC.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC">Basic NPC Guide</see> teaches the basics of making a modded NPC.
 /// </summary>
 public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 {
@@ -32,7 +34,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
-	/// The file name of this type's texture file in the mod loader's file space.
+	/// The file name of this type's texture file in the mod loader's file space.<br/>
+	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Npc"/> indexed by <see cref="Type"/> if needed. <br/>
+	/// You can use a vanilla texture by returning <c>$"Terraria/Images/NPC_{NPCID.NPCNameHere}"</c> <br/>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
@@ -140,7 +144,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 			NPCLoader.bannerToItem[Banner] = BannerItem;
 		}
 		else if (Banner != 0 || BannerItem != 0) {
-			Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.DisplayName, Name));
+			Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.Name, Name));
 		}
 
 		if (NPC.lifeMax > 32767 || NPC.boss) {
@@ -325,7 +329,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this NPC dies (for example, dropping items and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+	/// Allows you to make things happen when this NPC dies (for example, dropping items manually and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// <para/> Most item drops should be done via drop rules registered in <see cref="ModifyNPCLoot(NPCLoot)"/>. Some dynamic NPC drops, such as additional hearts, are more suited for OnKill instead. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossMinion.cs#L101">MinionBossMinion.cs</see> shows an example of an NPC that drops additional hearts.
+	/// <para/> Bosses need to set flags when they are defeated, and some bosses run world generation code such as spawning new ore. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossBody.cs#L218">MinionBossMinion.cs</see> shows an example of these effects.
 	/// </summary>
 	public virtual void OnKill()
 	{
@@ -650,6 +656,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Whether or not the conditions have been met for this town NPC to be able to move into town. For example, the Demolitionist requires that any player has an explosive.
+	/// <para/> Town NPC spawn conditions typically check if specific bosses have been defeated (<see cref="NPC.downedGolemBoss"/>), the npc has been "saved" somewhere in the world, or any player has specific items in their inventory. To check for inventory items, iterate over <see cref="Main.ActivePlayers"/> and check <see cref="Player.HasItem(int)"/> or <see cref="Player.CountItem(int, int)"/>, returning true if any player satisfies the requirement.
+	/// <para/> To support allowing town NPC to respawn without needing to meet the original respawn requirements, a feature added in Terraria v1.4.4, store a bool in a <see cref="ModSystem"/> and check it. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExamplePerson.cs#L184">ExamplePerson.CanTownNPCSpawn</see> and <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Systems/TownNPCRespawnSystem.cs">TownNPCRespawnSystem.cs</see> show an example of this.
+	/// <para/> Returns false by default, preventing the town NPC from spawning.
 	/// </summary>
 	/// <param name="numTownNPCs"></param>
 	/// <returns></returns>
@@ -671,12 +680,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to define special conditions required for this town NPC's house. For example, Truffle requires the house to be in an aboveground mushroom biome.
+	/// <para/> The <paramref name="left"/>, <paramref name="right"/>, <paramref name="top"/>, and <paramref name="bottom"/> parameters define the bounds of the room being checked.
+	/// <para/> Methods like <see cref="WorldGen.Housing_GetTestedRoomBounds(out int, out int, out int, out int)"/> and <see cref="WorldGen.CountTileTypesInArea(int[], int, int, int, int)"/> can facilitate implementing specific checks.
+	/// <para/> Return false to prevent the npc from spawning due to failed condition checks.
 	/// </summary>
-	/// <param name="left"></param>
-	/// <param name="right"></param>
-	/// <param name="top"></param>
-	/// <param name="bottom"></param>
-	/// <returns></returns>
 	public virtual bool CheckConditions(int left, int right, int top, int bottom)
 	{
 		return true;
@@ -742,7 +749,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
 	/// To create a shop, use <see cref="AddShops"/> <br/>
-	/// Note that for special shops like travelling merchant, the <paramref name="shopId"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// <para/> Also note that unused slots in <paramref name="items"/> are null while <see cref="Item.IsAir"/> entries are entries that have a reserved slot (<see cref="NPCShop.Entry.SlotReserved"/>) but did not have their conditions met. These should not be overwritten.
 	/// </summary>
 	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
 	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
@@ -787,7 +795,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine the projectile type of this town NPC's attack, and how long it takes for the projectile to actually appear. This hook is only used when the town NPC has an attack type of 0 (throwing), 1 (shooting), or 2 (magic).
+	/// Allows you to determine the projectile type of this town NPC's attack, and how long it takes for the projectile to actually appear. This hook is only used when the town NPC has an attack type (<see cref="NPCID.Sets.AttackType"/>) of 0 (throwing), 1 (shooting), or 2 (magic).
 	/// </summary>
 	/// <param name="projType"></param>
 	/// <param name="attackDelay"></param>
@@ -796,7 +804,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine the speed at which this town NPC throws a projectile when it attacks. Multiplier is the speed of the projectile, gravityCorrection is how much extra the projectile gets thrown upwards, and randomOffset allows you to randomize the projectile's velocity in a square centered around the original velocity. This hook is only used when the town NPC has an attack type of 0 (throwing), 1 (shooting), or 2 (magic).
+	/// Allows you to determine the speed at which this town NPC throws a projectile when it attacks. Multiplier is the speed of the projectile, gravityCorrection is how much extra the projectile gets thrown upwards, and randomOffset allows you to randomize the projectile's velocity in a square centered around the original velocity. This hook is only used when the town NPC has an attack type (<see cref="NPCID.Sets.AttackType"/>) of 0 (throwing), 1 (shooting), or 2 (magic).
 	/// </summary>
 	/// <param name="multiplier"></param>
 	/// <param name="gravityCorrection"></param>
@@ -806,7 +814,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to tell the game that this town NPC has already created a projectile and will still create more projectiles as part of a single attack so that the game can animate the NPC's attack properly. Only used when the town NPC has an attack type of 1 (shooting).
+	/// Allows you to tell the game that this town NPC has already created a projectile and will still create more projectiles as part of a single attack so that the game can animate the NPC's attack properly. Only used when the town NPC has an attack type (<see cref="NPCID.Sets.AttackType"/>) of 1 (shooting).
 	/// </summary>
 	/// <param name="inBetweenShots"></param>
 	public virtual void TownNPCAttackShoot(ref bool inBetweenShots)
@@ -814,7 +822,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to control the brightness of the light emitted by this town NPC's aura when it performs a magic attack. Only used when the town NPC has an attack type of 2 (magic)
+	/// Allows you to control the brightness of the light emitted by this town NPC's aura when it performs a magic attack. Only used when the town NPC has an attack type (<see cref="NPCID.Sets.AttackType"/>) of 2 (magic)
 	/// </summary>
 	/// <param name="auraLightMultiplier"></param>
 	public virtual void TownNPCAttackMagic(ref float auraLightMultiplier)
@@ -822,7 +830,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine the width and height of the item this town NPC swings when it attacks, which controls the range of this NPC's swung weapon. Only used when the town NPC has an attack type of 3 (swinging).
+	/// Allows you to determine the width and height of the item this town NPC swings when it attacks, which controls the range of this NPC's swung weapon. Only used when the town NPC has an attack type (<see cref="NPCID.Sets.AttackType"/>) of 3 (swinging).
 	/// </summary>
 	/// <param name="itemWidth"></param>
 	/// <param name="itemHeight"></param>
@@ -831,7 +839,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.<br/>
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type (<see cref="NPCID.Sets.AttackType"/>) of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.<br/>
 	/// To use an actual item sprite, use <code>Main.GetItemDrawFrame(itemTypeHere, out item, out itemFrame);
 	/// horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, itemType).X - someOffsetHere</code>
 	/// </summary>
@@ -844,7 +852,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is swinging it (this NPC must have an attack type of 3). <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, <paramref name="itemSize"/> is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), <paramref name="scale"/> is the multiplier for the item's drawing size, and <paramref name="offset"/> is the offset from which to draw the item from its normal position. The item texture can be any texture, but if it is an item texture you can use  <see cref="Main.GetItemDrawFrame(int, out Texture2D, out Rectangle)"/> to set <paramref name="item"/> and <paramref name="itemFrame"/> easily.
+	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is swinging it (this NPC must have an attack type (<see cref="NPCID.Sets.AttackType"/>) of 3). <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, <paramref name="itemSize"/> is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), <paramref name="scale"/> is the multiplier for the item's drawing size, and <paramref name="offset"/> is the offset from which to draw the item from its normal position. The item texture can be any texture, but if it is an item texture you can use  <see cref="Main.GetItemDrawFrame(int, out Texture2D, out Rectangle)"/> to set <paramref name="item"/> and <paramref name="itemFrame"/> easily.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="itemFrame"></param>
@@ -896,6 +904,51 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="tag">The tag.</param>
 	public virtual void LoadData(TagCompound tag)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to change the location and sprite direction of the chat bubble that shows up while hovering over a Town NPC.
+	/// </summary>
+	/// <param name="position">
+	/// <br>The default position is:</br>
+	/// <br>The X component is set to the NPC's Center - half the width of the chat bubble texture. Then +/- half of the NPC's width + 8 pixels for facing right/left respectively.</br>
+	/// <br>Code: <c>npc.Center.X - screenPosition.X - (TextureAssets.Chat.Width() / 2f) +/- (npc.width / 2f + 8)</c></br>
+	/// <br>The Y component is set to the top of the NPC - the height of the chat bubble texture. (Negative Y is up.)</br>
+	/// <br>Code: <c>npc.position.Y - TextureAssets.Chat.Height() - (float)(int)screenPosition.Y</c></br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the chat bubble is flipped.</param>
+	public virtual void ChatBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <summary>
+	/// <br>Allows you to fully control the location of the party and sprite direction of the party while an NPC is wearing it.</br>
+	/// <br><seealso cref="NPCID.Sets.HatOffsetY"/> can be used instead of this hook for a constant Y offset.</br>
+	/// <br><seealso cref="NPCID.Sets.NPCFramingGroup"/> can be additionally be used for the Y offset for the Town NPC's animations.</br>
+	/// </summary>
+	/// <param name="position">
+	/// <br>This is the final position right before the party hat gets drawn which is generally the top center of the NPC's hitbox.</br>
+	/// <br><seealso cref="NPCID.Sets.HatOffsetY"/> and <seealso cref="NPCID.Sets.NPCFramingGroup"/> are already taken into account.</br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the party hat is flipped.</param>
+	public virtual void PartyHatPosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to change the location and sprite direction of the emote bubble when anchored to an NPC.
+	/// </summary>
+	/// <param name="position">
+	/// <br>The default position is:</br>
+	/// <br>The X component is set to the NPC's Top + 75% of their width.</br>
+	/// <br>Code: <c>entity.Top.X + ((-entity.direction * entity.width) * 0.75f)</c></br>
+	/// <br>The Y component is set to the NPC's Y position + 2 pixels. (Positive Y is down.)</br>
+	/// <br>Code: <c>entity.VisualPosition.Y + 2f</c></br>
+	/// <br>(<seealso cref="Entity.VisualPosition"/> is only used for the player for <seealso cref="Player.gfxOffY"/>)</br>
+	/// </param>
+	/// <param name="spriteEffects">Allows you to change which way the emote bubble is flipped.</param>
+	public virtual void EmoteBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
 	{
 	}
 }

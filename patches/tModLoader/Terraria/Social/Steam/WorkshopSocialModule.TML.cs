@@ -8,6 +8,8 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
 using Terraria.Utilities;
+using Terraria.Localization;
+using System.Collections;
 
 namespace Terraria.Social.Steam;
 
@@ -15,29 +17,29 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
-	private ulong existingAuthorID = 0;
 
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
 		var query = new QueryParameters() {
-			searchModSlugs = new string[] { modFile.Name },
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods)) {
+		if (!WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod)) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
-		if (!mods.Any())
-			return false;
+		currPublishID = 0;
 
-		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
-		existingAuthorID = ulong.Parse(mods[0].OwnerId);
+		if (mod == null) {
+			return false;
+		}
+
+		currPublishID = ulong.Parse(mod.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
-		WorkshopBrowserModule.Instance.DownloadItem(mods[0], uiProgress: null);
+		WorkshopBrowserModule.Instance.DownloadItem(mod, uiProgress: null);
 
 		// Grab the tags from workshop.json
 		ModOrganizer.WorkshopFileFinder.Refresh(new WorkshopIssueReporter()); // Force detection in case mod wasn't installed
@@ -51,8 +53,8 @@ public partial class WorkshopSocialModule
 		try {
 			return _PublishMod(modFile, buildData, settings);
 		}
-		catch {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+		catch (Exception e) {
+			IssueReporter.ReportInstantUploadProblem(e.Message);
 			return false;
 		}
 	}
@@ -80,21 +82,13 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			var currID = Steamworks.SteamUser.GetSteamID();
-
-			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			if (DateTime.Today < new DateTime(2023, 11, 21) && existingAuthorID != currID.m_SteamID) {
-				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
-				return false;
-			}
-
 			// Publish by updating the files available on the current published version
 			workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
 
 			FixErrorsInWorkshopFolder(workshopFolderPath);
 
-			if (!CalculateVersionsData(workshopFolderPath, ref buildData)) {
-				IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
+			if (!CalculateVersionsData(workshopFolderPath, ref buildData, out string failureMessage)) {
+				IssueReporter.ReportInstantUploadProblem(failureMessage);
 				return false;
 			}
 		}
@@ -105,11 +99,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
-		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			return false;
-		}
+		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -122,7 +112,6 @@ public partial class WorkshopSocialModule
 		
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
-		//TODO: We ought to delete the TemporaryFolder after successful publishing to prevent future issues if they delete and attempt to re-pub
 		if (MakeTemporaryFolder(contentFolderPath)) {
 			string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
 
@@ -148,21 +137,43 @@ public partial class WorkshopSocialModule
 		return false;
 	}
 
-	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20;0.2.1;2022.07.10.20:0.2.2"
+	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20:0.2.1;2022.07.10.20:0.2.2"
 	// Return False if the mod version did not increase for the particular tml version
+	// Return False if the mod version isn't less than releases on future tml version
 	// This will have up to 1 more version than is actually relevant, but that won't break anything
-	public static bool CalculateVersionsData(string workshopPath, ref NameValueCollection buildData)
+	public static bool CalculateVersionsData(string workshopPath, ref NameValueCollection buildData, out string failureMessage)
 	{
+		var buildVersion = new Version(buildData["version"]);
+
 		foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
 			var mod = OpenModFile(tmod);
-			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor())
-				if (mod.properties.version >= new Version(buildData["version"]))
+			// Mod must have a larger version than all releases on older (or this) tModLoader versions
+			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor()) {
+				if (mod.Version >= buildVersion) {
+					failureMessage = Language.GetTextValue("tModLoader.ModVersionTooSmall", buildVersion, mod.Version);
+					if (mod.Version.Minor > buildVersion.Minor)
+						failureMessage += $"\nThe 2nd number \"{buildVersion.Minor}\" is less than \"{mod.Version.Minor}\".";
+					else if (mod.Version.Revision > buildVersion.Revision)
+						failureMessage += $"\nThe 3rd number \"{buildVersion.Revision}\" is less than {mod.Version.Revision}\".";
+					else if (mod.Version.MinorRevision > buildVersion.MinorRevision)
+						failureMessage += $"\nThe 4th number \"{buildVersion.MinorRevision}\" is less than {mod.Version.MinorRevision}\".";
 					return false;
+				}
+			}
+
+			// The mod also can't have a larger version than releases on future tModLoader versions
+			if (mod.tModLoaderVersion.MajorMinor() > BuildInfo.tMLVersion.MajorMinor()) {
+				if (mod.Version < buildVersion) {
+					failureMessage = Language.GetTextValue("tModLoader.ModVersionLargerThanFutureVersions", buildVersion, mod.Version, mod.tModLoaderVersion.MajorMinor());
+					return false;
+				}
+			}
 
 			if (mod.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor())
-				buildData["versionsummary"] += $";{mod.tModLoaderVersion}:{mod.properties.version}";
+				buildData["versionsummary"] += $";{mod.tModLoaderVersion}:{mod.Version}";
 		}
 
+		failureMessage = string.Empty;
 		return true;
 	}
 
@@ -176,7 +187,7 @@ public partial class WorkshopSocialModule
 	{
 		var sModFile = new TmodFile(path);
 		using (sModFile.Open())
-			return new LocalMod(sModFile);
+			return new LocalMod(ModLocation.Workshop, sModFile);
 	}
 
 	private static bool TryCalculateWorkshopDeps(ref NameValueCollection buildData)
@@ -185,7 +196,7 @@ public partial class WorkshopSocialModule
 
 		if (buildData["modreferences"].Length > 0) {
 			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
-			if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+			if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 				return false;
 
 			foreach (string modRef in modIds) {
@@ -200,7 +211,7 @@ public partial class WorkshopSocialModule
 
 	public static void FixErrorsInWorkshopFolder(string workshopFolderPath)
 	{
-		// This eliminates uploaded mod source files that occured prior to the fix of #2263
+		// This eliminates uploaded mod source files that occurred prior to the fix of #2263
 		if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
 			foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
 				File.Delete(sourceFile);
@@ -216,6 +227,41 @@ public partial class WorkshopSocialModule
 		if (Directory.Exists(devRemnant)) {
 			Directory.Delete(devRemnant, true);
 		}
+	}
+
+	private static string CalculateDescriptionAndChangeNotes(bool isCi, NameValueCollection buildData, ref string changeNotes)
+	{
+		string workshopDescFile = Path.Combine(buildData["sourcesfolder"], "description_workshop.txt");
+		string workshopDesc;
+		if (!File.Exists(workshopDescFile))
+			workshopDesc = buildData["description"];
+		else
+			workshopDesc = File.ReadAllText(workshopDescFile);
+
+		// Add version metadata override to allow CI publishing
+		string descriptionFinal = "";
+		if (isCi)
+			descriptionFinal += $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]";
+
+		descriptionFinal += $"{workshopDesc}" + $"[quote=tModLoader {buildData["name"]}]\nDeveloped By {buildData["author"]}[/quote]";
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
+
+		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
+		}
+
+		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
+		if (string.IsNullOrWhiteSpace(changeNotes)) {
+			changeNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(buildData["homepage"]))
+				changeNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
+
+		return descriptionFinal;
 	}
 
 	public static void SteamCMDPublishPreparer(string modFolder)
@@ -242,18 +288,20 @@ public partial class WorkshopSocialModule
 		LocalMod newMod = OpenModFile(newModPath);
 
 		var buildData = new NameValueCollection() {
-			["version"] = newMod.properties.version.ToString(),
-			["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.properties.version}",
+			["version"] = newMod.Version.ToString(),
+			["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.Version}",
 			["description"] = newMod.properties.description,
-			["homepage"] = newMod.properties.homepage
+			["homepage"] = newMod.properties.homepage,
+			["sourcesfolder"] = modFolder
 		};
 
 		// Needed for backwards compat from previous version metadata
 		//TODO: why 'trueversion'?????
 		buildData["trueversion"] = buildData["version"];
 
-		if (!CalculateVersionsData(publishedModFiles, ref buildData)) {
-			Utils.LogAndConsoleErrorMessage($"Unable to update mod. {buildData["version"]} is not higher than existing version");
+		if (!CalculateVersionsData(publishedModFiles, ref buildData, out string failureMessage)) {
+			Utils.LogAndConsoleErrorMessage(failureMessage);
+			Console.WriteLine(failureMessage);
 			return;
 		}
 
@@ -272,18 +320,7 @@ public partial class WorkshopSocialModule
 		ModOrganizer.CleanupOldPublish(publishFolder);
 
 		// Assign Workshop Description
-		string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
-		string workshopDesc;
-		if (!File.Exists(workshopDescFile))
-			workshopDesc = buildData["description"];
-		else
-			workshopDesc = File.ReadAllText(workshopDescFile);
-
-		// Add version metadata override to allow CI publishing
-		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
-			$"{workshopDesc}";
-
-		SteamedWraps.UpdatePatchNotesWithModData(ref changeNotes, buildData);
+		string descriptionFinal = CalculateDescriptionAndChangeNotes(isCi: true, buildData, ref changeNotes);
 
 		// Make the publish.vdf file
 		string manifest = Path.Combine(publishedModFiles, "workshop.json");

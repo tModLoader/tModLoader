@@ -21,14 +21,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 
 		public override void Load() {
 			// load/cache the additional texture
-			if (!Main.dedServ) {
-				EyeAsset = ModContent.Request<Texture2D>(Texture + "_Eye");
-			}
-		}
-
-		public override void Unload() {
-			// Unload the additional texture
-			EyeAsset = null;
+			EyeAsset = ModContent.Request<Texture2D>(Texture + "_Eye");
 		}
 
 		public override void SetStaticDefaults() {

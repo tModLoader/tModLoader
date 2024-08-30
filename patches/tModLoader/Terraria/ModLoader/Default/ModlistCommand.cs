@@ -42,7 +42,7 @@ internal class ModlistCommand : ModCommand
 				caller.Reply(Language.GetTextValue("tModLoader.CommandModListModlist"), Color.Yellow);
 
 			foreach (var mod in mods)
-				caller.Reply(mod.DisplayName);
+				caller.Reply(caller.CommandType == CommandType.Chat ? mod.DisplayName : mod.DisplayNameClean);
 		}
 	}
 }

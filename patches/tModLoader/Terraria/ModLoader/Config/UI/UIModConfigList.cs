@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -6,14 +7,16 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
 
 internal class UIModConfigList : UIState
 {
-	public Mod SelectedMod;
+	public Mod ModToSelectOnOpen;
 
+	private Mod selectedMod;
 	private UIElement uIElement;
 	private UIPanel uIPanel;
 	private UITextPanel<LocalizedText> backButton;
@@ -119,7 +122,6 @@ internal class UIModConfigList : UIState
 		}.WithFadedMouseOver();
 		backButton.OnLeftClick += (_, _) => {
 			SoundEngine.PlaySound(SoundID.MenuClose);
-			SelectedMod = null;
 
 			if (Main.gameMenu)
 				Main.menuMode = Interface.modsMenuID;
@@ -134,16 +136,25 @@ internal class UIModConfigList : UIState
 	{
 		modList?.Clear();
 		configList?.Clear();
-		SelectedMod = null;
+		selectedMod = null;
+		ModToSelectOnOpen = null;
 	}
 
 	public override void OnActivate()
 	{
 		modList?.Clear();
 		configList?.Clear();
-		PopulateMods();
 
-		if (SelectedMod != null)
+		// Select the mod that we clicked on, otherwise don't select anything
+		selectedMod = null;
+		if (ModToSelectOnOpen != null) {
+			selectedMod = ModToSelectOnOpen;
+			ModToSelectOnOpen = null;
+		}
+
+		// Populate UI
+		PopulateMods();
+		if (selectedMod != null)
 			PopulateConfigs();
 	}
 
@@ -153,7 +164,7 @@ internal class UIModConfigList : UIState
 
 		// Have to sort by display name because normally mods are sorted by internal names
 		var mods = ModLoader.Mods.ToList();
-		mods.Sort((x, y) => x.DisplayName.CompareTo(y.DisplayName));
+		mods.Sort((x, y) => x.DisplayNameClean.CompareTo(y.DisplayNameClean));
 
 		foreach (var mod in mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
@@ -163,13 +174,30 @@ internal class UIModConfigList : UIState
 					ScalePanel = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
-					UseAltColors = () => SelectedMod != mod,
+					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-					SelectedMod = mod;
+					selectedMod = mod;
 					PopulateConfigs();
+				};
+
+				modList.Add(modPanel);
+			}
+			else {
+				if (mod.Name == "ModLoader")
+					continue;
+
+				var modPanel = new UIButton<string>(mod.DisplayName) {
+					MaxWidth = { Percent = 0.95f },
+					HAlign = 0.5f,
+					ScalePanel = true,
+					BackgroundColor = Color.Gray,
+					HoverPanelColor = Color.Gray,
+					HoverBorderColor = Color.Black,
+					TooltipText = true,
+					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
 				};
 
 				modList.Add(modPanel);
@@ -181,15 +209,15 @@ internal class UIModConfigList : UIState
 	{
 		configList?.Clear();
 
-		if (SelectedMod == null || !ConfigManager.Configs.TryGetValue(SelectedMod, out var configs))
+		if (selectedMod == null || !ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
 			return;
 
 		// Have to sort by display name because normally configs are sorted by internal names
 		// TODO: Support sort by attribute or some other custom ordering then replicate logic in UIModConfig.SetMod too
-		var sortedConfigs = configs.OrderBy(x => x.DisplayName.Value).ToList();
+		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			float indicatorOffset = 20;
+			float indicatorOffset = 24;
 
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
 				MaxWidth = { Percent = 0.95f },
@@ -201,7 +229,7 @@ internal class UIModConfigList : UIState
 			configPanel.PaddingRight += indicatorOffset;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
-				Interface.modConfig.SetMod(SelectedMod, config);
+				Interface.modConfig.SetMod(selectedMod, config);
 				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
 				else
@@ -211,16 +239,17 @@ internal class UIModConfigList : UIState
 			configList.Add(configPanel);
 
 			// ConfigScope indicator
-			var indicatorTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
-			var indicatorFrame = indicatorTexture.Frame(2, 1, 1, 0);
+			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
+			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0);
 			var serverColor = Colors.RarityRed;
 			var clientColor = Colors.RarityCyan;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
-				Color = config.Mode == ConfigScope.ServerSide ? serverColor : clientColor,
-				MarginRight = -indicatorOffset
+				Color = Color.White,
+				MarginRight = -indicatorOffset - 4,
+				MarginTop = -4,
 			};
 
 			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {

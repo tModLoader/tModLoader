@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
-@@ -6,9 +_,10 @@
+@@ -6,14 +_,20 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © Re-Logic 2017</Copyright>
  		<RootNamespace>ReLogic</RootNamespace>
@@ -8,11 +8,11 @@
  	</PropertyGroup>
  	<ItemGroup>
 -		<Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
-+		<Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
  		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
  		<Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
  		<Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
-@@ -16,4 +_,9 @@
++		<PackageReference Include="DotNetZip" Version="1.16.0" />
+ 	</ItemGroup>
  	<ItemGroup>
  		<EmbeddedResource Include="Microsoft/**" />
  	</ItemGroup>

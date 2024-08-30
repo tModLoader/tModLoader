@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using static Terraria.ModLoader.BuilderToggle;
 
 namespace Terraria.ModLoader;
 
@@ -24,6 +26,8 @@ public static class BuilderToggleLoader
 		BuilderToggle.YellowWireVisibility
 	};
 
+	private static List<BuilderToggle> _drawOrder;
+
 	internal static readonly int DefaultDisplayCount = BuilderToggles.Count;
 
 	public static int BuilderTogglePage = 0;
@@ -44,6 +48,43 @@ public static class BuilderToggleLoader
 		// globalBuilderToggles.Clear();
 	}
 
+	internal static void ResizeArrays() {
+		IEnumerable<BuilderToggle> moddedToggles = BuilderToggles.TakeLast(BuilderToggles.Count - DefaultDisplayCount);
+		List<BuilderToggle> sortedToggles = BuilderToggles.Take(DefaultDisplayCount).ToList();
+		foreach (BuilderToggle toggle in moddedToggles) {
+			switch (toggle.OrderPosition) {
+				case Before before: {
+					int index = sortedToggles.IndexOf(before.Toggle);
+					if (index is not -1) {
+						sortedToggles.Insert(index, toggle);
+					}
+					else {
+						sortedToggles.Add(toggle);
+					}
+
+					break;
+				}
+				case After after: {
+					int index = sortedToggles.IndexOf(after.Toggle);
+					if (index is not -1) {
+						sortedToggles.Insert(index + 1, toggle);
+					}
+					else {
+						sortedToggles.Add(toggle);
+					}
+
+					break;
+				}
+				default: {
+					sortedToggles.Add(toggle);
+					break;
+				}
+			}
+		}
+
+		_drawOrder = sortedToggles;
+	}
+
 	internal static void RegisterDefaultToggles() {
 		int[] defaultTogglesShowOrder = new[] {10, 11, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7};
 		int i = 0;
@@ -55,10 +96,10 @@ public static class BuilderToggleLoader
 	}
 
 	internal static List<BuilderToggle> ActiveBuilderTogglesList() {
-		List<BuilderToggle> activeToggles = new List<BuilderToggle>(BuilderToggleCount);
-		for (int i = 0; i < BuilderToggles.Count; i++) {
-			if (BuilderToggles[i].Active())
-				activeToggles.Add(BuilderToggles[i]);
+		List<BuilderToggle> activeToggles = new List<BuilderToggle>(_drawOrder.Count);
+		for (int i = 0; i < _drawOrder.Count; i++) {
+			if (_drawOrder[i].Active())
+				activeToggles.Add(_drawOrder[i]);
 		}
 
 		return activeToggles;

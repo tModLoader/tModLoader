@@ -121,6 +121,6 @@ internal static class FNALogging
 
 	internal static void PostAudioInit()
 	{
-		Logging.FNA.Info($"SDL Audio Diver: {SDL2.SDL.SDL_GetCurrentAudioDriver()}");
+		Logging.FNA.Info($"SDL Audio Driver: {SDL2.SDL.SDL_GetCurrentAudioDriver()}");
 	}
 }

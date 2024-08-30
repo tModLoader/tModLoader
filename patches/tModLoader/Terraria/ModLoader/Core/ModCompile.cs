@@ -45,7 +45,7 @@ internal class ModCompile
 	{
 		public string path;
 
-		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties)
+		public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(ModLocation.Local, modFile, properties)
 		{
 			this.path = path;
 		}
@@ -64,6 +64,7 @@ internal class ModCompile
 
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
+	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
 	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
@@ -212,7 +213,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
 			BuildMod(mod, out var code, out var pdb);
-			mod.modFile.AddFile(mod.Name+".dll", code);
+			mod.modFile.AddFile(mod.Name + ".dll", code);
 			if (pdb != null)
 				mod.modFile.AddFile(mod.Name + ".pdb", pdb);
 
@@ -224,6 +225,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			mod.modFile.Save();
 			ModLoader.EnableMod(mod.Name);
+			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);
 		}
 		catch (Exception e) {
@@ -414,7 +416,12 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 		if (numErrors > 0) {
 			var firstError = results.First(e => e.Severity == DiagnosticSeverity.Error);
-			throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
+			var buildException = new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name + ".dll", numErrors, numWarnings) + $"\nError: {firstError}");
+			if(firstError.ToString().Contains("'LocalizedText' does not contain a definition for 'SetDefault'")) {
+				buildException.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#localizedtext-does-not-contain-a-definition-for-setdefault";
+				buildException.Data["showTModPorterHint"] = true;
+			}
+			throw buildException;
 		}
 	}
 
@@ -465,7 +472,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
 		var refs = references.Select(s => MetadataReference.CreateFromFile(s));
-		refs = refs.Concat(Net60.All);
+		refs = refs.Concat(Net80.References.All);
 
 		var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
@@ -478,6 +485,18 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		code = peStream.ToArray();
 		pdb = pdbStream.ToArray();
 		return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
+	}
+
+	internal static void UpdateSubstitutedDescriptionValues(ref string description, string modVersion, string homepage)
+	{
+		// Language.GetText returns the given key if it can't be found, this way we can use LocalizedText.FormatWith
+		// This allows us to use substitution keys such as {ModVersion}
+		description = Language.GetText(description).FormatWith(new {
+			ModVersion = modVersion,
+			ModHomepage = homepage,
+			tMLVersion = BuildInfo.tMLVersion.MajorMinor().ToString(),
+			tMLBuildPurpose = BuildInfo.Purpose.ToString(),
+		});
 	}
 }
 #endif

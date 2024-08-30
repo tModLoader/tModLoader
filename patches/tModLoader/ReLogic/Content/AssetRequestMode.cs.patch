@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/ReLogic/Content/AssetRequestMode.cs
++++ src/tModLoader/ReLogic/Content/AssetRequestMode.cs
+@@ -1,5 +_,8 @@
+ namespace ReLogic.Content;
+ 
++/// <summary>
++/// Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Assets#assetrequestmode">AssetRequestMode section of the Assets guide on the wiki</see> for information on when to use each AssetRequestMode.
++/// </summary>
+ public enum AssetRequestMode
+ {
+ 	DoNotLoad,

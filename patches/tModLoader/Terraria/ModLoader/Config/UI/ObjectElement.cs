@@ -262,7 +262,7 @@ internal class ObjectElement : ConfigElement<object>
 			else {
 				int order = 0;
 				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
-					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)))
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 						continue;
 
 					int top = 0;

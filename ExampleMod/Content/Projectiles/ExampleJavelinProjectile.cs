@@ -35,6 +35,10 @@ namespace ExampleMod.Content.Projectiles
 			set => Projectile.localAI[0] = value;
 		}
 
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
+		}
+
 		public override void SetDefaults() {
 			Projectile.width = 16; // The width of projectile hitbox
 			Projectile.height = 16; // The height of projectile hitbox
