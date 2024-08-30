@@ -217,7 +217,7 @@ namespace MonoMod.RuntimeDetour.HookGen
             if (!HookPrivate && method.IsPrivate)
                 return false;
 
-            var name = GetFriendlyName(method);
+            var name = HookGenerator.GetFriendlyName(method);
             var suffix = true;
             if (method.Parameters.Count == 0)
             {
@@ -227,7 +227,7 @@ namespace MonoMod.RuntimeDetour.HookGen
             IEnumerable<MethodDefinition> overloads = null;
             if (suffix)
             {
-                overloads = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && GetFriendlyName(other) == name && other != method);
+                overloads = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == name && other != method);
                 if (!overloads.Any())
                 {
                     suffix = false;
@@ -388,14 +388,14 @@ namespace MonoMod.RuntimeDetour.HookGen
         public TypeDefinition GenerateDelegateFor(MethodDefinition method)
         {
             var name = GetFriendlyName(method);
-            var index = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && GetFriendlyName(other) == name).ToList().IndexOf(method);
+            var index = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == name).ToList().IndexOf(method);
             if (index != 0)
             {
                 var suffix = index.ToString(CultureInfo.InvariantCulture);
                 do
                 {
                     name = name + "_" + suffix;
-                } while (method.DeclaringType.Methods.Any(other => !other.HasGenericParameters && GetFriendlyName(other) == (name + suffix)));
+                } while (method.DeclaringType.Methods.Any(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == (name + suffix)));
             }
             name = "d_" + name;
 
@@ -537,7 +537,7 @@ namespace MonoMod.RuntimeDetour.HookGen
                 if (arg is GenericInstanceType argGen && !HasPublicArgs(argGen))
                     return false;
 
-                if (!IsPublic(arg.SafeResolve()))
+                if (!HookGenerator.IsPublic(arg.SafeResolve()))
                     return false;
             }
 
@@ -568,7 +568,7 @@ namespace MonoMod.RuntimeDetour.HookGen
             // Generic return / param types are too complicated at the moment and will be simplified.
             for (var parent = type; parent != null; parent = parent.DeclaringType)
             {
-                if (IsPublic(parent) && (parent == type || !parent.HasGenericParameters))
+                if (HookGenerator.IsPublic(parent) && (parent == type || !parent.HasGenericParameters))
                     continue;
                 // If it isn't public, ...
 
