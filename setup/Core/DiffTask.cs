@@ -30,17 +30,15 @@ namespace Terraria.ModLoader.Setup.Core
 			using var taskProgress = progress.StartTask($"Generating patches for {parameters.PatchedDir}...");
 			var items = new List<WorkItem>();
 
-			foreach ((string file, string relPath) in PatchTask.EnumerateSrcFiles(parameters.PatchedDir)) {
-				if (File.GetLastWriteTime(file) < parameters.Cutoff.Get()) {
+			foreach ((string file, string relPath) in PatchTask.EnumerateSrcFiles(parameters.PatchedDir))
+			{
+				if (File.GetLastWriteTime(file) < parameters.Cutoff.Get())
 					continue;
-				}
 
-				if (!File.Exists(Path.Combine(parameters.BaseDir, relPath))) {
+				if (!File.Exists(Path.Combine(parameters.BaseDir, relPath)))
 					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(parameters.PatchDir, relPath))));
-				}
-				else if (IsDiffable(relPath)) {
+				else if (IsDiffable(relPath))
 					items.Add(new WorkItem("Diffing: " + relPath, () => Diff(relPath)));
-				}
 			}
 
 			await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -48,9 +46,8 @@ namespace Terraria.ModLoader.Setup.Core
 			taskProgress.ReportStatus("Deleting Unnecessary Patches", overwrite: true);
 			foreach ((string file, string relPath) in EnumerateFiles(parameters.PatchDir)) {
 				string targetPath = relPath.EndsWith(".patch") ? relPath.Substring(0, relPath.Length - 6) : relPath;
-				if (!File.Exists(Path.Combine(parameters.PatchedDir, targetPath))) {
+				if (!File.Exists(Path.Combine(parameters.PatchedDir, targetPath)))
 					DeleteFile(file);
-				}
 			}
 
 			DeleteEmptyDirs(parameters.PatchDir);
@@ -63,12 +60,10 @@ namespace Terraria.ModLoader.Setup.Core
 				.ToArray();
 
 			string removedFileList = Path.Combine(parameters.PatchDir, RemovedFileList);
-			if (removedFiles.Length > 0) {
+			if (removedFiles.Length > 0)
 				await File.WriteAllLinesAsync(removedFileList, removedFiles, cancellationToken).ConfigureAwait(false);
-			}
-			else {
+			else
 				DeleteFile(removedFileList);
-			}
 
 			parameters.Cutoff.Set(DateTime.Now);
 		}

@@ -82,15 +82,13 @@ namespace Terraria.ModLoader.Setup.Core
 
 			var gen = new HookGenerator(mm, "TerrariaHooks") { HookPrivate = true };
 
-			foreach (TypeDefinition type in mm.Module.Types) {
-				if (!type.FullName.StartsWith("Terraria") || type.FullName.StartsWith("Terraria.ModLoader")) {
+			foreach (var type in mm.Module.Types) {
+				if (!type.FullName.StartsWith("Terraria") || type.FullName.StartsWith("Terraria.ModLoader"))
 					continue;
-				}
 
-				gen.GenerateFor(type, out TypeDefinition hookType, out TypeDefinition hookILType);
-				if (hookType == null || hookILType == null || hookType.IsNested) {
+				gen.GenerateFor(type, out var hookType, out var hookILType);
+				if (hookType == null || hookILType == null || hookType.IsNested)
 					continue;
-				}
 
 				AdjustNamespaceStyle(hookType);
 				AdjustNamespaceStyle(hookILType);
@@ -108,9 +106,8 @@ namespace Terraria.ModLoader.Setup.Core
 		//   IL.Namespace.Type -> Namespace.IL_Type
 		private static void AdjustNamespaceStyle(TypeDefinition type)
 		{
-			if (string.IsNullOrEmpty(type.Namespace)) {
+			if (string.IsNullOrEmpty(type.Namespace))
 				return;
-			}
 
 			type.Name = type.Namespace[..2] + '_' + type.Name;
 			type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];

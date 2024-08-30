@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Options;
-using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Formatting;
 
@@ -15,8 +14,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 		private readonly FormatTaskParameters parameters;
 
-		static FormatTask()
-		{
+		static FormatTask() {
 			OptionSet optionSet = Workspace.CurrentSolution.Options;
 
 			// Essentials
@@ -46,8 +44,7 @@ namespace Terraria.ModLoader.Setup.Core
 			this.parameters = parameters;
 		}
 
-		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
-		{
+		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default) {
 			using var taskProgress = progress.StartTask($"Formatting {Path.GetFileName(parameters.ProjectPath)}...");
 
 			string dir = Path.GetDirectoryName(parameters.ProjectPath)!; //just format all files in the directory
@@ -61,8 +58,7 @@ namespace Terraria.ModLoader.Setup.Core
 			await ExecuteParallel(workItems.ToList(), taskProgress, cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 
-		private static async ValueTask FormatFile(string path, bool aggressive, CancellationToken cancellationToken)
-		{
+		private static async ValueTask FormatFile(string path, bool aggressive, CancellationToken cancellationToken) {
 			string source = await File.ReadAllTextAsync(path, cancellationToken).ConfigureAwait(false);
 			string formatted = Format(source, aggressive, cancellationToken);
 			if (source != formatted) {
@@ -70,14 +66,12 @@ namespace Terraria.ModLoader.Setup.Core
 			}
 		}
 
-		public static string Format(string source, bool aggressive, CancellationToken cancellationToken)
-		{
+		public static string Format(string source, bool aggressive, CancellationToken cancellationToken) {
 			SyntaxTree tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
 			return Format(tree.GetRoot(), aggressive, cancellationToken).ToFullString();
 		}
 
-		private static SyntaxNode Format(SyntaxNode node, bool aggressive, CancellationToken cancellationToken)
-		{
+		private static SyntaxNode Format(SyntaxNode node, bool aggressive, CancellationToken cancellationToken) {
 			if (aggressive) {
 				node = new NoNewlineBetweenFieldsRewriter().Visit(node);
 				node = new RemoveBracesFromSingleStatementRewriter().Visit(node);
