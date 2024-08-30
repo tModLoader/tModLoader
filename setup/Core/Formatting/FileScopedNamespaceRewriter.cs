@@ -6,9 +6,8 @@ namespace Terraria.ModLoader.Setup.Core.Formatting
 {
 	public class FileScopedNamespaceRewriter : CSharpSyntaxRewriter
 	{
-		public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
-		{
-			FileScopedNamespaceDeclarationSyntax fs = SyntaxFactory.FileScopedNamespaceDeclaration(
+		public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node) {
+			var fs = SyntaxFactory.FileScopedNamespaceDeclaration(
 					node.AttributeLists,
 					node.Modifiers,
 					node.NamespaceKeyword,
@@ -22,7 +21,8 @@ namespace Terraria.ModLoader.Setup.Core.Formatting
 			return fs;
 		}
 
-		private static SyntaxList<MemberDeclarationSyntax> Unindent(SyntaxList<MemberDeclarationSyntax> members) =>
-			new UnindentRewriter().VisitList(members);
+		private static SyntaxList<MemberDeclarationSyntax> Unindent(SyntaxList<MemberDeclarationSyntax> members) {
+			return new UnindentRewriter().VisitList(members);
+		}
 	}
 }
