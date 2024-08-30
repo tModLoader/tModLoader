@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 using DiffPatch;
 using PatchReviewer;
 using Terraria.ModLoader.Setup.Core;
@@ -265,7 +266,11 @@ namespace Terraria.ModLoader.Setup.GUI
 
 		public void Show(IReadOnlyCollection<FilePatcher> results, string commonBasePath = null)
 		{
-			Invoke(() => new ReviewWindow(results, commonBasePath) { AutoHeaders = true }.Show());
+			Invoke(() => {
+				ReviewWindow window = new ReviewWindow(results, commonBasePath) { AutoHeaders = true };
+				ElementHost.EnableModelessKeyboardInterop(window);
+				window.Show();
+			});
 		}
 
 		public ITaskProgress StartTask(string description)
