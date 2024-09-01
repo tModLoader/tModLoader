@@ -2,6 +2,7 @@ var class_utils =
 [
     [ "ChaseResults", "struct_utils_1_1_chase_results.html", null ],
     [ "ClosestPointOnLine", "class_utils.html#a1aa7dde73333fb2204b3b115a6fc829a", null ],
+    [ "GetDayTimeAs24FloatStartingFromMidnight", "class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723", null ],
     [ "Next< T >", "class_utils.html#a89069d24f25560e0c9d565dd55e2187f", null ],
     [ "Next< T >", "class_utils.html#a20b08c978c09a4c4046fd34c2510df05", null ],
     [ "NextBool", "class_utils.html#a0f5347faf5b45c4175e236b265168370", null ],

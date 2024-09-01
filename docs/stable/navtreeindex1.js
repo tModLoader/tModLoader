@@ -45,6 +45,7 @@ var NAVTREEINDEX1 =
 "class_buff_loader.html#a4cc7ecf68d64e96827188c24189eec03":[3,0,120,0],
 "class_buffer_pool.html":[3,0,118],
 "class_build_info.html":[3,0,124],
+"class_build_info.html#a043967ec40ebdb12498ff6412d51fb1c":[3,0,124,1],
 "class_build_info.html#a8024b0e691747717f349b5145988c089":[3,0,124,0],
 "class_builder_toggle.html":[3,0,121],
 "class_builder_toggle.html#a010b7a1365fe6a93194dad5c9012d514":[3,0,121,19],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_is_tile.html":[3,0,191,36],
 "class_conditions_1_1_is_using_specific_a_i_values.html":[3,0,191,37],
 "class_conditions_1_1_jungle_key_condition.html":[3,0,191,38],
-"class_conditions_1_1_legacy_hack___is_a_boss.html":[3,0,191,39],
-"class_conditions_1_1_legacy_hack___is_boss_and_expert.html":[3,0,191,40]
+"class_conditions_1_1_legacy_hack___is_a_boss.html":[3,0,191,39]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('class_j_i_t_when_mods_enabled_attribut
 </div><!--header-->
 <div class="contents">
 
+<p>Excludes a class, method, or property from the load time JITunless the specified mods are also loaded. Use this on any member which directly references a Type from a weakly referenced modthat might not be present. See this wiki pagefor more information.  
+ <a href="class_j_i_t_when_mods_enabled_attribute.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_member_jit_attribute.html">MemberJitAttribute</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -111,7 +114,12 @@ Public Attributes</h2></td></tr>
 readonly string[]&#160;</td><td class="memItemRight" valign="bottom"><b>Names</b></td></tr>
 <tr class="separator:ab1e9d477a92abd4b4ad4e9324e0e6bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Excludes a class, method, or property from the load time JIT</p>
+<p >unless the specified mods are also loaded. Use this on any member which directly references a Type from a weakly referenced mod</p>
+<p >that might not be present. See this wiki page</p>
+<p >for more information. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a805c7c3bebee34d9ca3a00308f181698" name="a805c7c3bebee34d9ca3a00308f181698"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a805c7c3bebee34d9ca3a00308f181698">&#9670;&nbsp;</a></span>ShouldJIT()</h2>
 

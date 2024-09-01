@@ -160,6 +160,7 @@ var class_item =
     [ "DamageType", "class_item.html#ae3ded102ad76a38413d3cb8784e0d5b1", null ],
     [ "HoverName", "class_item.html#a2344c936885a4f4b07e3c7055118f070", null ],
     [ "InterruptChannelOnHurt", "class_item.html#a8850ce5ad4d5e594c2224b6e1d1431c6", null ],
+    [ "ModItem", "class_item.html#a69ef5e11e61212e557223bd2dfa8a48e", null ],
     [ "Name", "class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35", null ],
     [ "NetStateVersion", "class_item.html#a1de8c83868f78381c09d4822b5df0750", null ],
     [ "PaintOrCoating", "class_item.html#a6206f7bf649546467ee0b9e347fad5ba", null ],

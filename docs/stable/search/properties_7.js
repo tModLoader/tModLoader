@@ -6,11 +6,16 @@ var searchData=
   ['hastile_3',['HasTile',['../struct_tile.html#aac570981af830aa51c5a5280d624697d',1,'Tile']]],
   ['hasunactuatedtile_4',['HasUnactuatedTile',['../struct_tile.html#a2574be32ca43ff43f54a3faf33858c46',1,'Tile']]],
   ['headtexture_5',['HeadTexture',['../class_mod_n_p_c.html#ac9494535ea8899abfcf31cef2af42c14',1,'ModNPC']]],
-  ['hidestrikedamage_6',['HideStrikeDamage',['../class_n_p_c.html#ab1718bfe78a370411b1108fb52b909a3',1,'NPC']]],
-  ['highlighttexture_7',['HighlightTexture',['../class_mod_tile.html#ae12810d265c604e5a4941b299859fa85',1,'ModTile']]],
-  ['hitdirection_8',['HitDirection',['../struct_n_p_c_1_1_hit_modifiers.html#a5391fd24824e040dc7dc7931c3b01ed9',1,'NPC.HitModifiers.HitDirection()'],['../struct_player_1_1_hurt_modifiers.html#a45de05587597f4746aa93b9325f5ec6c',1,'Player.HurtModifiers.HitDirection()']]],
-  ['hitdirectionoverride_9',['HitDirectionOverride',['../struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf',1,'NPC.HitModifiers.HitDirectionOverride()'],['../struct_player_1_1_hurt_modifiers.html#a873d28ec48235b3cc3c4489cd9629133',1,'Player.HurtModifiers.HitDirectionOverride()']]],
-  ['hitsound_10',['HitSound',['../class_mod_block_type.html#aaf6985e10e0ba2cc9e28729604013f0d',1,'ModBlockType']]],
-  ['hovername_11',['HoverName',['../class_item.html#a2344c936885a4f4b07e3c7055118f070',1,'Item']]],
-  ['hovertexture_12',['HoverTexture',['../class_builder_toggle.html#ac5dfea70b309c652c505bf4f8de4fa9e',1,'BuilderToggle.HoverTexture()'],['../class_info_display.html#a8eabe8c9419823d27aca515d12e6030b',1,'InfoDisplay.HoverTexture()']]]
+  ['height_6',['Height',['../class_tile_object_data.html#a581d02f238636ecb9bbd2ca85990f1c2',1,'TileObjectData']]],
+  ['hidestrikedamage_7',['HideStrikeDamage',['../class_n_p_c.html#ab1718bfe78a370411b1108fb52b909a3',1,'NPC']]],
+  ['highlighttexture_8',['HighlightTexture',['../class_mod_tile.html#ae12810d265c604e5a4941b299859fa85',1,'ModTile']]],
+  ['hitdirection_9',['HitDirection',['../struct_player_1_1_hurt_modifiers.html#a45de05587597f4746aa93b9325f5ec6c',1,'Player.HurtModifiers.HitDirection()'],['../struct_n_p_c_1_1_hit_modifiers.html#a5391fd24824e040dc7dc7931c3b01ed9',1,'NPC.HitModifiers.HitDirection()']]],
+  ['hitdirectionoverride_10',['HitDirectionOverride',['../struct_n_p_c_1_1_hit_modifiers.html#aae3caf5dd5ff3b057ef7c979a4c090cf',1,'NPC.HitModifiers.HitDirectionOverride()'],['../struct_player_1_1_hurt_modifiers.html#a873d28ec48235b3cc3c4489cd9629133',1,'Player.HurtModifiers.HitDirectionOverride()']]],
+  ['hitsound_11',['HitSound',['../class_mod_block_type.html#aaf6985e10e0ba2cc9e28729604013f0d',1,'ModBlockType']]],
+  ['hookcheckifcanplace_12',['HookCheckIfCanPlace',['../class_tile_object_data.html#ab96eceff668c4fafe41c99dceef008ae',1,'TileObjectData']]],
+  ['hookplaceoverride_13',['HookPlaceOverride',['../class_tile_object_data.html#a8d3a81637285c79c66f4fb3ed283ae4d',1,'TileObjectData']]],
+  ['hookpostplaceeveryone_14',['HookPostPlaceEveryone',['../class_tile_object_data.html#a0458ff9c1a8b42c6899890cc76f1a258',1,'TileObjectData']]],
+  ['hookpostplacemyplayer_15',['HookPostPlaceMyPlayer',['../class_tile_object_data.html#a600d4b5d7201213b8891225de0a70086',1,'TileObjectData']]],
+  ['hovername_16',['HoverName',['../class_item.html#a2344c936885a4f4b07e3c7055118f070',1,'Item']]],
+  ['hovertexture_17',['HoverTexture',['../class_builder_toggle.html#ac5dfea70b309c652c505bf4f8de4fa9e',1,'BuilderToggle.HoverTexture()'],['../class_info_display.html#a8eabe8c9419823d27aca515d12e6030b',1,'InfoDisplay.HoverTexture()']]]
 ];

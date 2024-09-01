@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -93,7 +93,8 @@ $(document).ready(function(){initNavTree('class_mod_n_p_c.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 
-<p>This class serves as a place for you to place all your properties and hooks for each <a class="el" href="class_n_p_c.html">NPC</a>. Create instances of <a class="el" href="class_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC....">ModNPC</a> (preferably overriding this class) to pass as parameters to Mod.AddNPC.  
+<p>This class serves as a place for you to place all your properties and hooks for each <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. The Basic <a class="el" href="class_n_p_c.html">NPC</a> Guideteaches the basics of making a modded <a class="el" href="class_n_p_c.html">NPC</a>.  
  <a href="class_mod_n_p_c.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_mod_type.html">ModType&lt; NPC, ModNPC &gt;</a>, and <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
@@ -181,8 +182,9 @@ Return true to allow this <a class="el" href="class_n_p_c.html">NPC</a> to fall 
 <tr class="memitem:a8690e744dc2cd66099c9d52799f00366"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">CheckActive</a> ()</td></tr>
 <tr class="memdesc:a8690e744dc2cd66099c9d52799f00366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to run the code for checking whether this <a class="el" href="class_n_p_c.html">NPC</a> will remain active. Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being despawned and to stop this <a class="el" href="class_n_p_c.html">NPC</a> from counting towards the limit for how many NPCs can exist near a player. Returns true by default.  <a href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">More...</a><br /></td></tr>
 <tr class="separator:a8690e744dc2cd66099c9d52799f00366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7959b63210678df1758aa7443ee5fb89"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a7959b63210678df1758aa7443ee5fb89">CheckConditions</a> (int left, int right, int top, int bottom)</td></tr>
-<tr class="memdesc:a7959b63210678df1758aa7443ee5fb89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to define special conditions required for this town <a class="el" href="class_n_p_c.html">NPC</a>'s house. For example, Truffle requires the house to be in an aboveground mushroom biome.  <a href="class_mod_n_p_c.html#a7959b63210678df1758aa7443ee5fb89">More...</a><br /></td></tr>
+<tr class="memitem:a7959b63210678df1758aa7443ee5fb89"><td class="memItemLeft" align="right" valign="top"><a id="a7959b63210678df1758aa7443ee5fb89" name="a7959b63210678df1758aa7443ee5fb89"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConditions</b> (int left, int right, int top, int bottom)</td></tr>
+<tr class="memdesc:a7959b63210678df1758aa7443ee5fb89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to define special conditions required for this town <a class="el" href="class_n_p_c.html">NPC</a>'s house. For example, Truffle requires the house to be in an aboveground mushroom biome. The <em>left</em> , <em>right</em> , <em>top</em> , and <em>bottom</em>  parameters define the bounds of the room being checked. Methods like WorldGen.Housing_GetTestedRoomBounds(out int, out int, out int, out int) and WorldGen.CountTileTypesInArea(int[], int, int, int, int) can facilitate implementing specific checks. Return false to prevent the npc from spawning due to failed condition checks. <br /></td></tr>
 <tr class="separator:a7959b63210678df1758aa7443ee5fb89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97227f609d5ff431ab34b2e5f7f56376"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a97227f609d5ff431ab34b2e5f7f56376">CheckDead</a> ()</td></tr>
 <tr class="memdesc:a97227f609d5ff431ab34b2e5f7f56376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this <a class="el" href="class_n_p_c.html">NPC</a> should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being killed. Returns true by default.  <a href="class_mod_n_p_c.html#a97227f609d5ff431ab34b2e5f7f56376">More...</a><br /></td></tr>
@@ -340,7 +342,7 @@ Only called on the client.  <a href="class_mod_n_p_c.html#abb7c4468cbdba533146c4
 <tr class="separator:abb7c4468cbdba533146c4e35f3299a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f47391ac7ac27bfe3a1e80a4298d711"><td class="memItemLeft" align="right" valign="top"><a id="a9f47391ac7ac27bfe3a1e80a4298d711" name="a9f47391ac7ac27bfe3a1e80a4298d711"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetEffects</b> ()</td></tr>
-<tr class="memdesc:a9f47391ac7ac27bfe3a1e80a4298d711"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied. (Note: This hook is only really useful for <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a>, but is included in <a class="el" href="class_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC....">ModNPC</a> for completion.) <br /></td></tr>
+<tr class="memdesc:a9f47391ac7ac27bfe3a1e80a4298d711"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied. (Note: This hook is only really useful for <a class="el" href="class_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, both vanilla and modded....">GlobalNPC</a>, but is included in <a class="el" href="class_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC....">ModNPC</a> for completion.) <br /></td></tr>
 <tr class="separator:a9f47391ac7ac27bfe3a1e80a4298d711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff207f228cf852db45dd575591c4eb3b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#aff207f228cf852db45dd575591c4eb3b">SaveData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:aff207f228cf852db45dd575591c4eb3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for the given item. Allows you to save custom data for the given npc. <br  />
@@ -372,7 +374,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults</
 <tr class="memdesc:a0ca7d498f7836ff8a5c3cda4bd331cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_mod_type.html#a9c37299af884906efb2d1abf168ce603" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_mod_n_p_c.html#a0ca7d498f7836ff8a5c3cda4bd331cd8">More...</a><br /></td></tr>
 <tr class="separator:a0ca7d498f7836ff8a5c3cda4bd331cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eb89f7c9fa0eef966bc36a29f848cd6"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a9eb89f7c9fa0eef966bc36a29f848cd6">SpawnChance</a> (<a class="el" href="struct_n_p_c_spawn_info.html">NPCSpawnInfo</a> spawnInfo)</td></tr>
-<tr class="memdesc:a9eb89f7c9fa0eef966bc36a29f848cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this <a class="el" href="class_n_p_c.html">NPC</a> can spawn with the given spawning conditions. Return the weight for the chance of this <a class="el" href="class_n_p_c.html">NPC</a> to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use spawnInfo.player and not <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> when checking <a class="el" href="class_player.html">Player</a> or <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> fields, otherwise your mod won't work in Multiplayer.  <a href="class_mod_n_p_c.html#a9eb89f7c9fa0eef966bc36a29f848cd6">More...</a><br /></td></tr>
+<tr class="memdesc:a9eb89f7c9fa0eef966bc36a29f848cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this <a class="el" href="class_n_p_c.html">NPC</a> can spawn with the given spawning conditions. Return the weight for the chance of this <a class="el" href="class_n_p_c.html">NPC</a> to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use spawnInfo.player and not <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> when checking <a class="el" href="class_player.html">Player</a> or <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a> fields, otherwise your mod won't work in Multiplayer.  <a href="class_mod_n_p_c.html#a9eb89f7c9fa0eef966bc36a29f848cd6">More...</a><br /></td></tr>
 <tr class="separator:a9eb89f7c9fa0eef966bc36a29f848cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d93ba77c2e72e4d24608c4e8bcdb71d"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a4d93ba77c2e72e4d24608c4e8bcdb71d">SpawnNPC</a> (int tileX, int tileY)</td></tr>
 <tr class="memdesc:a4d93ba77c2e72e4d24608c4e8bcdb71d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize how this <a class="el" href="class_n_p_c.html">NPC</a> is created when it naturally spawns (for example, its position or ai array). Return the return value of <a class="el" href="class_n_p_c.html#a70912c867c179a198c4e0ab06e01996c" title="Spawns an NPC into the game world with the given type.   This method should not be called on multipla...">NPC.NewNPC</a>. By default this method spawns this <a class="el" href="class_n_p_c.html">NPC</a> on top of the tile at the given coordinates.  <a href="class_mod_n_p_c.html#a4d93ba77c2e72e4d24608c4e8bcdb71d">More...</a><br /></td></tr>
@@ -581,7 +583,10 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="separator:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class serves as a place for you to place all your properties and hooks for each <a class="el" href="class_n_p_c.html">NPC</a>. Create instances of <a class="el" href="class_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC....">ModNPC</a> (preferably overriding this class) to pass as parameters to Mod.AddNPC. </p>
+<div class="textblock"><p >This class serves as a place for you to place all your properties and hooks for each <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. </p>
+<p >The Basic <a class="el" href="class_n_p_c.html">NPC</a> Guide</p>
+<p >teaches the basics of making a modded <a class="el" href="class_n_p_c.html">NPC</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1f1472e775b679fbf20ae8ccfa5e8bfd" name="a1f1472e775b679fbf20ae8ccfa5e8bfd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f1472e775b679fbf20ae8ccfa5e8bfd">&#9670;&nbsp;</a></span>ApplyDifficultyAndPlayerScaling()</h2>
@@ -1263,66 +1268,6 @@ Code: <code>npc.position.Y - TextureAssets.Chat.Height() - (float)(int)screenPos
 </div><div class="memdoc">
 
 <p>Whether or not to run the code for checking whether this <a class="el" href="class_n_p_c.html">NPC</a> will remain active. Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being despawned and to stop this <a class="el" href="class_n_p_c.html">NPC</a> from counting towards the limit for how many NPCs can exist near a player. Returns true by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a7959b63210678df1758aa7443ee5fb89" name="a7959b63210678df1758aa7443ee5fb89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7959b63210678df1758aa7443ee5fb89">&#9670;&nbsp;</a></span>CheckConditions()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool ModNPC.CheckConditions </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>right</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>top</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>bottom</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to define special conditions required for this town <a class="el" href="class_n_p_c.html">NPC</a>'s house. For example, Truffle requires the house to be in an aboveground mushroom biome. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">left</td><td></td></tr>
-    <tr><td class="paramname">right</td><td></td></tr>
-    <tr><td class="paramname">top</td><td></td></tr>
-    <tr><td class="paramname">bottom</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
@@ -3133,7 +3078,7 @@ Only called on the server. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not this <a class="el" href="class_n_p_c.html">NPC</a> can spawn with the given spawning conditions. Return the weight for the chance of this <a class="el" href="class_n_p_c.html">NPC</a> to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use spawnInfo.player and not <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> when checking <a class="el" href="class_player.html">Player</a> or <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> fields, otherwise your mod won't work in Multiplayer. </p>
+<p>Whether or not this <a class="el" href="class_n_p_c.html">NPC</a> can spawn with the given spawning conditions. Return the weight for the chance of this <a class="el" href="class_n_p_c.html">NPC</a> to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use spawnInfo.player and not <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a> when checking <a class="el" href="class_player.html">Player</a> or <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a> fields, otherwise your mod won't work in Multiplayer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spawnInfo</td><td></td></tr>

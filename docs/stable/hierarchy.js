@@ -677,6 +677,7 @@ var hierarchy =
     [ "Gore", "class_gore.html", null ],
     [ "GoreID", "class_gore_i_d.html", null ],
     [ "GoreLoader", "class_gore_loader.html", null ],
+    [ "GroupOptionButton< int >", "class_group_option_button.html", null ],
     [ "GroupOptionButton< WorkshopItemPublicSettingId >", "class_group_option_button.html", null ],
     [ "GroupOptionButton< WorldDifficultyId >", "class_group_option_button.html", null ],
     [ "GroupOptionButton< WorldEvilId >", "class_group_option_button.html", null ],
@@ -2440,10 +2441,7 @@ var hierarchy =
         [ "ProjectileDefinition", "class_projectile_definition.html", null ],
         [ "TileDefinition", "class_tile_definition.html", null ]
       ] ],
-      [ "Item", "class_item.html", null ],
-      [ "ModEntry", "class_mod_entry.html", [
-        [ "TileEntry", "class_tile_entry.html", null ]
-      ] ]
+      [ "Item", "class_item.html", null ]
     ] ],
     [ "NPCUtils.TargetSearchResults", "struct_n_p_c_utils_1_1_target_search_results.html", null ],
     [ "TeleportationStyleID", "class_teleportation_style_i_d.html", null ],

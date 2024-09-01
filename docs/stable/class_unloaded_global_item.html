@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -192,7 +192,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPickup</b>
 <tr class="separator:aa4eb37d1ca50c0f798470faf344806d8 inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f5a5d167ad652b5de43ae418a3fff2a inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="a1f5a5d167ad652b5de43ae418a3fff2a" name="a1f5a5d167ad652b5de43ae418a3fff2a"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanReforge</b> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
-<tr class="memdesc:a1f5a5d167ad652b5de43ae418a3fff2a inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook gets called when the player clicks on the reforge button and can afford the reforge. Returns whether the reforge will take place. If false is returned by the <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or any <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a>, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called. Reforging preserves modded data on the item. <br /></td></tr>
+<tr class="memdesc:a1f5a5d167ad652b5de43ae418a3fff2a inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook gets called when the player clicks on the reforge button and can afford the reforge. Returns whether the reforge will take place. If false is returned by the <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or any <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, both vanilla and modded....">GlobalItem</a>, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called. Reforging preserves modded data on the item. <br /></td></tr>
 <tr class="separator:a1f5a5d167ad652b5de43ae418a3fff2a inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85aa9a75402379f875fd343f99558929 inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a85aa9a75402379f875fd343f99558929">CanResearch</a> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a85aa9a75402379f875fd343f99558929 inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent an item from being researched by returning false. True is the default behavior.  <a href="class_global_item.html#a85aa9a75402379f875fd343f99558929">More...</a><br /></td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -98,6 +98,9 @@ $(document).ready(function(){initNavTree('struct_anchor_data.html',''); initResi
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1beb4cc288b9cae4f95d606748352f5a"><td class="memItemLeft" align="right" valign="top"><a id="a1beb4cc288b9cae4f95d606748352f5a" name="a1beb4cc288b9cae4f95d606748352f5a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AnchorData</b> (AnchorType type, int count, int start)</td></tr>
+<tr class="memdesc:a1beb4cc288b9cae4f95d606748352f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an anchor, meaning the surrounding tiles required for a multitile to be placeable at a location. <em>type</em>  dictates which types of tiles are eligible for the anchor while <em>start</em>  and <em>count</em>  dictate how much of the multitile edge need to have that specific anchor. For example, most furniture tiles will simply set a bottom anchor spanning the full width of the tile requiring solid tiles: <br  />
+<code>TileObjectData.newTile.AnchorBottom = new <a class="el" href="struct_anchor_data.html">AnchorData</a>(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);</code> <em>type</em>  can be defined using multiple options with the logical OR operator (<code>|</code>) to combine AnchorType values, allowing tiles satisfying any of the AnchorTypes to work: <br  />
+<code>AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide</code> The Anchor section of the Basic <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> wiki guidehas more information and visualizations. <br /></td></tr>
 <tr class="separator:a1beb4cc288b9cae4f95d606748352f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72da8badf292c445241b64899401974d"><td class="memItemLeft" align="right" valign="top"><a id="a72da8badf292c445241b64899401974d" name="a72da8badf292c445241b64899401974d"></a>
 override bool&#160;</td><td class="memItemRight" valign="bottom"><b>Equals</b> (object obj)</td></tr>

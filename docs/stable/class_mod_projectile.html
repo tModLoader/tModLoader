@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -93,8 +93,8 @@ $(document).ready(function(){initNavTree('class_mod_projectile.html',''); initRe
 </div><!--header-->
 <div class="contents">
 
-<p>This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of <a class="el" href="class_mod_projectile.html" title="This class serves as a place for you to place all your properties and hooks for each projectile....">ModProjectile</a> (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br  />
- The Basic <a class="el" href="class_projectile.html">Projectile</a> Guideteaches the basics of making a modded projectile.  
+<p>This class serves as a place for you to place all your properties and hooks for each projectile. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. The Basic <a class="el" href="class_projectile.html">Projectile</a> Guideteaches the basics of making a modded projectile.  
  <a href="class_mod_projectile.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_mod_type.html">ModType&lt; Projectile, ModProjectile &gt;</a>, and <a class="el" href="interface_i_localized_mod_type.html">ILocalizedModType</a>.</p>
@@ -421,8 +421,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="separator:ac939fd71685c5b25062243257f03e1db inherit properties_interface_i_localized_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of <a class="el" href="class_mod_projectile.html" title="This class serves as a place for you to place all your properties and hooks for each projectile....">ModProjectile</a> (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br  />
- The Basic <a class="el" href="class_projectile.html">Projectile</a> Guide</p>
+<div class="textblock"><p >This class serves as a place for you to place all your properties and hooks for each projectile. <br  />
+ To use it, simply create a new class deriving from this one. Implementations will be registered automatically. </p>
+<p >The Basic <a class="el" href="class_projectile.html">Projectile</a> Guide</p>
 <p >teaches the basics of making a modded projectile. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a37d85baddaca58863fc6baa4ea38ad7c" name="a37d85baddaca58863fc6baa4ea38ad7c"></a>

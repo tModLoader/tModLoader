@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,6 +92,9 @@ $(document).ready(function(){initNavTree('class_extends_from_mod_attribute.html'
 </div><!--header-->
 <div class="contents">
 
+<p>Excludes a class from JIT and also from autoloading. Annotate classes that inherit from classes from weakly referenced modswith this attribute to prevent the game from attempting to autoload the class, which would cause load errors otherwise. See this wiki pagefor more information.  
+ <a href="class_extends_from_mod_attribute.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_attribute.html">Attribute</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -106,7 +109,11 @@ Public Attributes</h2></td></tr>
 readonly string[]&#160;</td><td class="memItemRight" valign="bottom"><b>Names</b></td></tr>
 <tr class="separator:a96f46f2f45f3dd513911f592f3ad7b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Excludes a class from JIT and also from autoloading. Annotate classes that inherit from classes from weakly referenced mods</p>
+<p >with this attribute to prevent the game from attempting to autoload the class, which would cause load errors otherwise. See this wiki page</p>
+<p >for more information. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

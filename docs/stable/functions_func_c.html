@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -88,12 +88,14 @@ $(document).ready(function(){initNavTree('functions_func_c.html',''); initResiza
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>CalculateHitInfo()&#160;:&#160;<a class="el" href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d">NPC</a></li>
+<li>CalculatePlacementStyle()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a404b964feec314331ac7bce10e6d5778">TileObjectData</a></li>
 <li>Call()&#160;:&#160;<a class="el" href="class_mod.html#aec0b3900a503ffa818c97a1f800d58be">Mod</a></li>
 <li>CanAcceptItem()&#160;:&#160;<a class="el" href="class_mod_accessory_slot.html#a8e8f1dd77f37ee279d21169747f9f268">ModAccessorySlot</a></li>
 <li>CanAccessoryBeEquippedWith()&#160;:&#160;<a class="el" href="class_global_item.html#a8e0e0c8d0f28dcdca0b487c00601d70c">GlobalItem</a>, <a class="el" href="class_mod_item.html#a3d45a378defd22de0298ee214bdc0ed5">ModItem</a></li>
 <li>CanApplyPrefix()&#160;:&#160;<a class="el" href="class_item.html#aed7ee0f67ec31f0674b4bebec7897acf">Item</a></li>
 <li>CanAutoReuseItem()&#160;:&#160;<a class="el" href="class_global_item.html#a0f1009cf480327bd9b6108359946d8a6">GlobalItem</a>, <a class="el" href="class_mod_item.html#ae606c65377a2b1d33596c78782f2fdd6">ModItem</a>, <a class="el" href="class_mod_player.html#a5ddd550c1c3a464c384977f3796ae85e">ModPlayer</a></li>
 <li>CanBeCaughtBy()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a194e835eb133064af83b2fd0a61feb4c">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a793385bf4916047912f89eb1c7fba755">ModNPC</a></li>
+<li>CanBeChasedBy()&#160;:&#160;<a class="el" href="class_n_p_c.html#a495a1e3f088cfae6405d641d623321c4">NPC</a></li>
 <li>CanBeChosenAsAmmo()&#160;:&#160;<a class="el" href="class_global_item.html#a84f3529493d56ae8fe20fe490acd8dd8">GlobalItem</a>, <a class="el" href="class_mod_item.html#af781ee0bd87a2f35a46a05d168e7177a">ModItem</a></li>
 <li>CanBeConsumedAsAmmo()&#160;:&#160;<a class="el" href="class_global_item.html#ac08f5038807e06a1296f815d722e1b4f">GlobalItem</a>, <a class="el" href="class_mod_item.html#adfc7a942d7964edd808be2ad13909908">ModItem</a></li>
 <li>CanBeHitByItem()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#aef6c246b055e01e0bc1d3afe570343a5">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a1ce9c287a1aa4575a2827b12c657f799">ModNPC</a></li>
@@ -184,6 +186,7 @@ $(document).ready(function(){initNavTree('functions_func_c.html',''); initResiza
 <li>clrInput()&#160;:&#160;<a class="el" href="class_main.html#a238b234362a3970c732ac814b2c23369">Main</a></li>
 <li>Colliding()&#160;:&#160;<a class="el" href="class_global_projectile.html#a879804e1fe16878669c695542bce30ac">GlobalProjectile</a>, <a class="el" href="class_mod_projectile.html#a3a9d755be9e1f31ceecd8b99f53703de">ModProjectile</a></li>
 <li>ColorMultiplier()&#160;:&#160;<a class="el" href="class_mod_waterfall_style.html#a131cbc0499db548575b1bffefa00a17c">ModWaterfallStyle</a></li>
+<li>CombineWith()&#160;:&#160;<a class="el" href="struct_stat_modifier.html#ae2073924c9fc57eb98feb36246ed8a55">StatModifier</a></li>
 <li>ConstructFromBase()&#160;:&#160;<a class="el" href="class_mod_tile_entity.html#ad373ed2d9adf27645bbd575c8aafd658">ModTileEntity</a></li>
 <li>ConstructFromType()&#160;:&#160;<a class="el" href="class_mod_tile_entity.html#af7238b15e8012a7506c9a789b94e2991">ModTileEntity</a></li>
 <li>ConsumableDodge()&#160;:&#160;<a class="el" href="class_mod_player.html#a4afd4db6bd12cec91f783a4bf0fd10bf">ModPlayer</a></li>
@@ -194,7 +197,7 @@ $(document).ready(function(){initNavTree('functions_func_c.html',''); initResiza
 <li>ConvertToRelativePath()&#160;:&#160;<a class="el" href="class_file_utilities.html#a52326b317f487061a491dc474577ce76">FileUtilities</a></li>
 <li>CoordsToPos()&#160;:&#160;<a class="el" href="struct_pos_data.html#ac88465266a438788d12582053b9f9932">PosData&lt; T &gt;</a></li>
 <li>CopyClientState()&#160;:&#160;<a class="el" href="class_mod_accessory_slot_player.html#a9e7da16b8540c42840b643b558a8bc94">ModAccessorySlotPlayer</a>, <a class="el" href="class_mod_player.html#a99b4decd672a09196ad922ccdf4d03ec">ModPlayer</a></li>
-<li>CopyFrom()&#160;:&#160;<a class="el" href="struct_tile.html#a81ca04988475532bbf0dd1dd2803b099">Tile</a></li>
+<li>CopyFrom()&#160;:&#160;<a class="el" href="struct_tile.html#a81ca04988475532bbf0dd1dd2803b099">Tile</a>, <a class="el" href="class_tile_object_data.html#a7a0b038a4c93c9e14fa502a102b44641">TileObjectData</a></li>
 <li>CopyNetStateTo()&#160;:&#160;<a class="el" href="class_item.html#a3cc4bce9d2b8ac615ad7460925df5ae4">Item</a></li>
 <li>CopyPaintAndCoating()&#160;:&#160;<a class="el" href="struct_tile.html#aa08a918d6dee2a9687a6b855cf81f0c0">Tile</a></li>
 <li>CountInWorld()&#160;:&#160;<a class="el" href="class_mod_tile_entity.html#a3dfc878cc8094fe9835ae95f4721d475">ModTileEntity</a></li>

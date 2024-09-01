@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -89,6 +89,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>cachedItemSpawnsByType&#160;:&#160;<a class="el" href="class_item.html#a93678c115261a95508cc016fa07518d6">Item</a></li>
 <li>CalculateHitInfo()&#160;:&#160;<a class="el" href="class_n_p_c.html#a77e09a18418cc3ce69c59f4fb9ada67d">NPC</a></li>
+<li>CalculatePlacementStyle()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a404b964feec314331ac7bce10e6d5778">TileObjectData</a></li>
 <li>Call()&#160;:&#160;<a class="el" href="class_mod.html#aec0b3900a503ffa818c97a1f800d58be">Mod</a></li>
 <li>CameraDark&#160;:&#160;<a class="el" href="class_cursor_override_i_d.html#a1ff03cee59107ce601f0de2943d4b666">CursorOverrideID</a></li>
 <li>CameraLight&#160;:&#160;<a class="el" href="class_cursor_override_i_d.html#a27eee5ebad2e5e2c4eb6329ff3f40ed6">CursorOverrideID</a></li>
@@ -99,6 +100,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CanApplyPrefix()&#160;:&#160;<a class="el" href="class_item.html#aed7ee0f67ec31f0674b4bebec7897acf">Item</a></li>
 <li>CanAutoReuseItem()&#160;:&#160;<a class="el" href="class_global_item.html#a0f1009cf480327bd9b6108359946d8a6">GlobalItem</a>, <a class="el" href="class_mod_item.html#ae606c65377a2b1d33596c78782f2fdd6">ModItem</a>, <a class="el" href="class_mod_player.html#a5ddd550c1c3a464c384977f3796ae85e">ModPlayer</a></li>
 <li>CanBeCaughtBy()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a194e835eb133064af83b2fd0a61feb4c">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a793385bf4916047912f89eb1c7fba755">ModNPC</a></li>
+<li>CanBeChasedBy()&#160;:&#160;<a class="el" href="class_n_p_c.html#a495a1e3f088cfae6405d641d623321c4">NPC</a></li>
 <li>CanBeChosenAsAmmo()&#160;:&#160;<a class="el" href="class_global_item.html#a84f3529493d56ae8fe20fe490acd8dd8">GlobalItem</a>, <a class="el" href="class_mod_item.html#af781ee0bd87a2f35a46a05d168e7177a">ModItem</a></li>
 <li>CanBeClearedDuringOreRunner&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36">TileID.Sets</a></li>
 <li>CanBeConsumedAsAmmo()&#160;:&#160;<a class="el" href="class_global_item.html#ac08f5038807e06a1296f815d722e1b4f">GlobalItem</a>, <a class="el" href="class_mod_item.html#adfc7a942d7964edd808be2ad13909908">ModItem</a></li>
@@ -189,6 +191,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>ChangeWaterfallStyle()&#160;:&#160;<a class="el" href="class_global_tile.html#adc7f9d3882d68ea2cb10f583bba375d3">GlobalTile</a>, <a class="el" href="class_mod_tile.html#aa7cbe122fd4aaa4b620a65b327dc8aff">ModTile</a></li>
 <li>channel&#160;:&#160;<a class="el" href="class_item.html#a74aac6f77dfaf0d7ce28ee534968fb09">Item</a></li>
 <li>CharacterPreviewAnimations&#160;:&#160;<a class="el" href="class_projectile_i_d_1_1_sets.html#aad62152f56e8850ca231e3ec5ec84e3f">ProjectileID.Sets</a></li>
+<li>chaseable&#160;:&#160;<a class="el" href="class_n_p_c.html#a1da4ee190169363d9e6aeecf9dbf6c7c">NPC</a></li>
 <li>ChatBubblePosition()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#aab3d0054332e1e0620b88a2b0bc6d4dc">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#ac16303f877056c0683199c9e0e7eaccd">ModNPC</a></li>
 <li>cHead&#160;:&#160;<a class="el" href="class_player.html#af256236fe3e68c7a679f4e2439977ab2">Player</a></li>
 <li>CheckActive()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#ad0d11e4b6e9a895707c2b927902a7a1a">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">ModNPC</a></li>
@@ -260,6 +263,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>combatBookWasUsed&#160;:&#160;<a class="el" href="class_n_p_c.html#a84f3eec5c9220eb61180cdda33a094e0">NPC</a></li>
 <li>CombatTextInt&#160;:&#160;<a class="el" href="class_message_i_d.html#ad8f6712b71742c1756050ad73b4470ca">MessageID</a></li>
 <li>CombatTextString&#160;:&#160;<a class="el" href="class_message_i_d.html#a2076661fc313d5a07c7abe39dc8aa2c7">MessageID</a></li>
+<li>CombineWith()&#160;:&#160;<a class="el" href="struct_stat_modifier.html#ae2073924c9fc57eb98feb36246ed8a55">StatModifier</a></li>
 <li>Command&#160;:&#160;<a class="el" href="class_mod_command.html#a0814d1ae7619161d0c17fe10b964f259">ModCommand</a>, <a class="el" href="class_mod_emote_bubble.html#ab28cc8274382d19e79a854d55e15c23d">ModEmoteBubble</a></li>
 <li>common&#160;:&#160;<a class="el" href="struct_fishing_attempt.html#a22881fb4004685c1f30107fc846fd94b">FishingAttempt</a></li>
 <li>CommonCoin&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#ab0266b89a1601891993c50c489cb9c96">ItemID.Sets</a></li>
@@ -290,9 +294,15 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CooldownCounter&#160;:&#160;<a class="el" href="struct_player_1_1_hurt_info.html#ab45ce066eaadcc876fa4ff86490f7e08">Player.HurtInfo</a>, <a class="el" href="struct_player_1_1_hurt_modifiers.html#abf162277c97c930f388a61d09ea165da">Player.HurtModifiers</a></li>
 <li>CooldownSlot&#160;:&#160;<a class="el" href="class_mod_projectile.html#a52704ee431cce07114d30042224ae148">ModProjectile</a></li>
 <li>CoolFlake&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#a17e20ac8ef27530d75d96b11c334f8cd">ProjAIStyleID</a></li>
+<li>CoordinateFullHeight&#160;:&#160;<a class="el" href="class_tile_object_data.html#aa2b7e923497f9d9dffaaf56b19aaaf9c">TileObjectData</a></li>
+<li>CoordinateFullWidth&#160;:&#160;<a class="el" href="class_tile_object_data.html#adbfae65780889c6d0bb3d0466119ce5a">TileObjectData</a></li>
+<li>CoordinateHeights&#160;:&#160;<a class="el" href="class_tile_object_data.html#a442581483804dffb7eba2e197e80748f">TileObjectData</a></li>
+<li>CoordinatePadding&#160;:&#160;<a class="el" href="class_tile_object_data.html#a339be2b96927244cb36b2cb1ec8ef3b9">TileObjectData</a></li>
+<li>CoordinatePaddingFix&#160;:&#160;<a class="el" href="class_tile_object_data.html#a3f02716ecec6b24fdefad2cb4f1760d7">TileObjectData</a></li>
+<li>CoordinateWidth&#160;:&#160;<a class="el" href="class_tile_object_data.html#a0d082f2f221b9660698a50e9f32d5a4a">TileObjectData</a></li>
 <li>CoordsToPos()&#160;:&#160;<a class="el" href="struct_pos_data.html#ac88465266a438788d12582053b9f9932">PosData&lt; T &gt;</a></li>
 <li>CopyClientState()&#160;:&#160;<a class="el" href="class_mod_accessory_slot_player.html#a9e7da16b8540c42840b643b558a8bc94">ModAccessorySlotPlayer</a>, <a class="el" href="class_mod_player.html#a99b4decd672a09196ad922ccdf4d03ec">ModPlayer</a></li>
-<li>CopyFrom()&#160;:&#160;<a class="el" href="struct_tile.html#a81ca04988475532bbf0dd1dd2803b099">Tile</a></li>
+<li>CopyFrom()&#160;:&#160;<a class="el" href="struct_tile.html#a81ca04988475532bbf0dd1dd2803b099">Tile</a>, <a class="el" href="class_tile_object_data.html#a7a0b038a4c93c9e14fa502a102b44641">TileObjectData</a></li>
 <li>CopyNetStateTo()&#160;:&#160;<a class="el" href="class_item.html#a3cc4bce9d2b8ac615ad7460925df5ae4">Item</a></li>
 <li>CopyPaintAndCoating()&#160;:&#160;<a class="el" href="struct_tile.html#aa08a918d6dee2a9687a6b855cf81f0c0">Tile</a></li>
 <li>Corite&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#a3b9462e836955b4dc0a6cdf8b5c84a74">NPCAIStyleID</a></li>

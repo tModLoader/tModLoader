@@ -16,6 +16,7 @@ var class_projectile_i_d_1_1_sets =
     [ "ExtendedCanHitCheckSearch", "class_projectile_i_d_1_1_sets.html#a55510f0139e16d3251fa9eb51690d38e", null ],
     [ "FallingBlockDoesNotFallThroughPlatforms", "class_projectile_i_d_1_1_sets.html#a935f885823fca92a7aa292ba6f107691", null ],
     [ "FallingBlockTileItem", "class_projectile_i_d_1_1_sets.html#aeb9103d8037bfdd777e9bd9e600d1703", null ],
+    [ "FiresFewerFromDaedalusStormbow", "class_projectile_i_d_1_1_sets.html#ab1f61c552473787fb139964439f5232c", null ],
     [ "ForcePlateDetection", "class_projectile_i_d_1_1_sets.html#af59e06fddaa7b5693ccc09343aa54e44", null ],
     [ "HeldProjDoesNotUsePlayerGfxOffY", "class_projectile_i_d_1_1_sets.html#a0fe48a56f4c77cb9bf1767301495ea02", null ],
     [ "ImmediatelyUpdatesNPCBuffFlags", "class_projectile_i_d_1_1_sets.html#a0aed86a0717c8b9a5a4f4375a615aca7", null ],
