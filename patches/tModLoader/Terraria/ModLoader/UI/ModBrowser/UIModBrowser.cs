@@ -13,6 +13,7 @@ using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.Social;
 using Terraria.Social.Base;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -96,10 +97,10 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		var tags = new List<string>() { SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion) };
 		foreach (var tagIndex in CategoryTagsFilter) {
-			tags.Add(SocialAPI.Workshop.SupportedTags.ModTags[tagIndex].InternalNameForAPIs);
+			tags.Add(SteamedWraps.ModTags[tagIndex].InternalNameForAPIs);
 		}
 		if(LanguageTagFilter != -1) {
-			tags.Add(SocialAPI.Workshop.SupportedTags.ModTags[LanguageTagFilter].InternalNameForAPIs);
+			tags.Add(SteamedWraps.ModTags[LanguageTagFilter].InternalNameForAPIs);
 		}
 		return tags.ToArray();
 	}
@@ -239,9 +240,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 			if (CategoryTagsFilter.Any() || LanguageTagFilter != -1) {
 				string tagFilterHoverText = Language.GetTextValue("tModLoader.MBTagsSelected");
 				if (CategoryTagsFilter.Any())
-					tagFilterHoverText += $"\n  {Language.GetTextValue("tModLoader.MBTagsCategories", string.Join(", ", CategoryTagsFilter.Select(x => Language.GetTextValue(SocialAPI.Workshop.SupportedTags.ModTags[x].NameKey))))}";
+					tagFilterHoverText += $"\n  {Language.GetTextValue("tModLoader.MBTagsCategories", string.Join(", ", CategoryTagsFilter.Select(x => Language.GetTextValue(SteamedWraps.ModTags[x].NameKey))))}";
 				if (LanguageTagFilter != -1)
-					tagFilterHoverText += $"\n  {Language.GetTextValue("tModLoader.MBTagsLanguage", Language.GetTextValue(SocialAPI.Workshop.SupportedTags.ModTags[LanguageTagFilter].NameKey))}";
+					tagFilterHoverText += $"\n  {Language.GetTextValue("tModLoader.MBTagsLanguage", Language.GetTextValue(SteamedWraps.ModTags[LanguageTagFilter].NameKey))}";
 				UICommon.TooltipMouseText(tagFilterHoverText);
 			}
 			else {
