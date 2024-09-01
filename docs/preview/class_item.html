@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -278,6 +278,9 @@ Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (Color 
 <tr class="memitem:a237076cb25906bd3030199fe430868d9"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a237076cb25906bd3030199fe430868d9">GetGlobalItem&lt; T &gt;</a> (T baseInstance)</td></tr>
 <tr class="memdesc:a237076cb25906bd3030199fe430868d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the local instance of the type of the specified <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, both vanilla and modded....">GlobalItem</a> instance. This will throw exceptions on failure.  <a href="class_item.html#a237076cb25906bd3030199fe430868d9">More...</a><br /></td></tr>
 <tr class="separator:a237076cb25906bd3030199fe430868d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae469eeb30bc2ddc4a934c25c7c64b155"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_list.html">List</a>&lt; PrefixCategory &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#ae469eeb30bc2ddc4a934c25c7c64b155">GetPrefixCategories</a> ()</td></tr>
+<tr class="memdesc:ae469eeb30bc2ddc4a934c25c7c64b155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the <a class="el" href="">prefix categories</a> of this <a class="el" href="class_item.html">Item</a>.  <a href="class_item.html#ae469eeb30bc2ddc4a934c25c7c64b155">More...</a><br /></td></tr>
+<tr class="separator:ae469eeb30bc2ddc4a934c25c7c64b155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af434c7f5ff93e08087fae8ae21afdd5e"><td class="memItemLeft" align="right" valign="top">PrefixCategory?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#af434c7f5ff93e08087fae8ae21afdd5e">GetPrefixCategory</a> ()</td></tr>
 <tr class="memdesc:af434c7f5ff93e08087fae8ae21afdd5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the PrefixCategory of this <a class="el" href="class_item.html">Item</a>.  <a href="class_item.html#af434c7f5ff93e08087fae8ae21afdd5e">More...</a><br /></td></tr>
 <tr class="separator:af434c7f5ff93e08087fae8ae21afdd5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -325,8 +328,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OnPurchase</b> (<a cl
 <tr class="memitem:a57b24a5e2f599a0bbafb4485c7f3c4b1"><td class="memItemLeft" align="right" valign="top"><a id="a57b24a5e2f599a0bbafb4485c7f3c4b1" name="a57b24a5e2f599a0bbafb4485c7f3c4b1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RebuildTooltip</b> ()</td></tr>
 <tr class="separator:a57b24a5e2f599a0bbafb4485c7f3c4b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a7bbb79a58b3903c04f6fdf5440f458"><td class="memItemLeft" align="right" valign="top"><a id="a4a7bbb79a58b3903c04f6fdf5440f458" name="a4a7bbb79a58b3903c04f6fdf5440f458"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Refresh</b> (bool onlyIfVariantChanged=true)</td></tr>
+<tr class="memitem:a4a7bbb79a58b3903c04f6fdf5440f458"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a4a7bbb79a58b3903c04f6fdf5440f458">Refresh</a> (bool onlyIfVariantChanged=true)</td></tr>
+<tr class="memdesc:a4a7bbb79a58b3903c04f6fdf5440f458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the stats of this item while preserving modded data, prefix, stack, and favorited. Used to update the stats of this item to facilitate <a class="el" href="class_item_variants.html" title="Handles conditional variants for Items, commonly used for secret seeds.">ItemVariants</a>. This is called on most items when a player enters a world to ensure that their stats match the variant expected for the world seed. If <em>onlyIfVariantChanged</em>  is true (it usually is), then the item is only refreshed if <a class="el" href="class_item.html#a2f3c4c189bf37852038ded6b11b910bb" title="If not null, indicates that this item has a special seed variant active. Item variants are not suppor...">Item.Variant</a> and <a class="el" href="class_item_variants.html#a096b5ba19426599fa27dd046f33371d7" title="Determines which ItemVariant should be applied to an item of type itemId .">ItemVariants.SelectVariant(int)</a> differ.  <a href="class_item.html#a4a7bbb79a58b3903c04f6fdf5440f458">More...</a><br /></td></tr>
 <tr class="separator:a4a7bbb79a58b3903c04f6fdf5440f458"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfbbab2aacb8f3664d98d1d36224b38d"><td class="memItemLeft" align="right" valign="top"><a id="acfbbab2aacb8f3664d98d1d36224b38d" name="acfbbab2aacb8f3664d98d1d36224b38d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetPrefix</b> ()</td></tr>
@@ -974,8 +977,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rare</b></td></tr>
 <tr class="separator:a145323c0b871d18ceb4f44f657f9fdac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f63868d44588200030b9d6abca20aef"><td class="memItemLeft" align="right" valign="top"><a id="a1f63868d44588200030b9d6abca20aef" name="a1f63868d44588200030b9d6abca20aef"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>reuseDelay</b></td></tr>
-<tr class="memdesc:a1f63868d44588200030b9d6abca20aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items. <br  />
- Defaults to 0. <br /></td></tr>
+<tr class="memdesc:a1f63868d44588200030b9d6abca20aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items. One notable example usage is the ItemID.ClockworkAssaultRifle with a value of 14, but most other usages are smaller values like 2. Defaults to 0. <br /></td></tr>
 <tr class="separator:a1f63868d44588200030b9d6abca20aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a514343cc52a2b9e69b46c7db6aaddb22"><td class="memItemLeft" align="right" valign="top"><a id="a514343cc52a2b9e69b46c7db6aaddb22" name="a514343cc52a2b9e69b46c7db6aaddb22"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> = 1f</td></tr>
@@ -1122,7 +1124,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>useTurn</b></td></tr>
 <tr class="memitem:a0495e4ae68c9b8eef643464e738ca1c0"><td class="memItemLeft" align="right" valign="top"><a id="a0495e4ae68c9b8eef643464e738ca1c0" name="a0495e4ae68c9b8eef643464e738ca1c0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
 <tr class="memdesc:a0495e4ae68c9b8eef643464e738ca1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <code>10462</code> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer. <br  />
- For convenience, you can also use the <a class="el" href="class_item.html#ae9396042f559601050ad34dfe823ee89" title="Converts the provided buy price into copper coins.   If assigned to Item.value, that item will be bou...">Item.buyPrice(int, int, int, int)</a> method for setting values: <code><a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a> = Item.buyPrice(0, 1, 4, 62);</code> You can also use the <a class="el" href="class_item.html#ad30ec39319d94558e35650cf2350e2cf" title="Converts the provided sell value into copper coins. This value is five times larger than buyPrice....">Item.sellPrice(int, int, int, int)</a> method if you would rather think about an item's value the other way. Both <code>Item.buyPrice(0, 0, 10, 55)</code> and <code>Item.sellPrice(0, 0, 2, 11)</code> would set the value to <code>1055</code>. <br /></td></tr>
+ For convenience, you can also use the <a class="el" href="class_item.html#ae9396042f559601050ad34dfe823ee89" title="Converts the provided buy price into copper coins.   If assigned to Item.value, that item will be bou...">Item.buyPrice(int, int, int, int)</a> method for setting values: <code><a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a> = Item.buyPrice(0, 1, 4, 62);</code> You can also use the <a class="el" href="class_item.html#ad30ec39319d94558e35650cf2350e2cf" title="Converts the provided sell value into copper coins. This value is five times larger than buyPrice....">Item.sellPrice(int, int, int, int)</a> method if you would rather think about an item's value the other way. Both <code>Item.buyPrice(0, 0, 10, 55)</code> and <code>Item.sellPrice(0, 0, 2, 11)</code> would set the value to <code>1055</code>. If custom purchase prices disconnected from the item value are needed, <a class="el" href="class_item.html#ac60bb6a29b6e60906e67472d6da06a4a" title="If not null, the custom value of the given item when being bought from a shop.  Used for assigning a ...">shopCustomPrice</a> should be set for the item instance added to a shop entry. <br /></td></tr>
 <tr class="separator:a0495e4ae68c9b8eef643464e738ca1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1acb85d0f70816b12d4f5a7ef8867a08"><td class="memItemLeft" align="right" valign="top"><a id="a1acb85d0f70816b12d4f5a7ef8867a08" name="a1acb85d0f70816b12d4f5a7ef8867a08"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>vanity</b></td></tr>
@@ -1447,6 +1449,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>useTurnOnAnimationSta
 <tr class="separator:a7b69df7f6c806d9bf33332a82d295234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f3c4c189bf37852038ded6b11b910bb"><td class="memItemLeft" align="right" valign="top"><a id="a2f3c4c189bf37852038ded6b11b910bb" name="a2f3c4c189bf37852038ded6b11b910bb"></a>
 <a class="el" href="class_item_variant.html">ItemVariant</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Variant</b><code> [get]</code></td></tr>
+<tr class="memdesc:a2f3c4c189bf37852038ded6b11b910bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If not null, indicates that this item has a special seed variant active. <a class="el" href="class_item.html">Item</a> variants are not supported for modded items. <br /></td></tr>
 <tr class="separator:a2f3c4c189bf37852038ded6b11b910bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_entity"><td colspan="2" onclick="javascript:toggleInherit('properties_class_entity')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_entity.html">Entity</a></td></tr>
 <tr class="memitem:a5a48c1f7ca1b1a7c0eaf99dc1f623f08 inherit properties_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a5a48c1f7ca1b1a7c0eaf99dc1f623f08" name="a5a48c1f7ca1b1a7c0eaf99dc1f623f08"></a>
@@ -2595,6 +2598,26 @@ UseSound = SoundID.Item5;</code><br  />
 
 </div>
 </div>
+<a id="ae469eeb30bc2ddc4a934c25c7c64b155" name="ae469eeb30bc2ddc4a934c25c7c64b155"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae469eeb30bc2ddc4a934c25c7c64b155">&#9670;&nbsp;</a></span>GetPrefixCategories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_list.html">List</a>&lt; PrefixCategory &gt; Item.GetPrefixCategories </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines the <a class="el" href="">prefix categories</a> of this <a class="el" href="class_item.html">Item</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>A List&lt;PrefixCategory&gt; of every category this <a class="el" href="class_item.html">Item</a> matches, the List&lt;PrefixCategory&gt; will be empty if this <a class="el" href="class_item.html">Item</a> doesn't have any categories.</dd></dl>
+
+</div>
+</div>
 <a id="af434c7f5ff93e08087fae8ae21afdd5e" name="af434c7f5ff93e08087fae8ae21afdd5e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af434c7f5ff93e08087fae8ae21afdd5e">&#9670;&nbsp;</a></span>GetPrefixCategory()</h2>
 
@@ -3575,6 +3598,32 @@ This particular overload uses a Vector2 instead of X, Y, Width, and Height to de
 <code><em>prefixWeWant</em>  == -1 or -2 or -3</code> and PrefixLoader.Roll(Item, UnifiedRandom, out int, bool) returns <code>false</code>. </li>
 </ul>
 Otherwise, return <code>true</code>. </dd></dl>
+
+</div>
+</div>
+<a id="a4a7bbb79a58b3903c04f6fdf5440f458" name="a4a7bbb79a58b3903c04f6fdf5440f458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a7bbb79a58b3903c04f6fdf5440f458">&#9670;&nbsp;</a></span>Refresh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Item.Refresh </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>onlyIfVariantChanged</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resets the stats of this item while preserving modded data, prefix, stack, and favorited. Used to update the stats of this item to facilitate <a class="el" href="class_item_variants.html" title="Handles conditional variants for Items, commonly used for secret seeds.">ItemVariants</a>. This is called on most items when a player enters a world to ensure that their stats match the variant expected for the world seed. If <em>onlyIfVariantChanged</em>  is true (it usually is), then the item is only refreshed if <a class="el" href="class_item.html#a2f3c4c189bf37852038ded6b11b910bb" title="If not null, indicates that this item has a special seed variant active. Item variants are not suppor...">Item.Variant</a> and <a class="el" href="class_item_variants.html#a096b5ba19426599fa27dd046f33371d7" title="Determines which ItemVariant should be applied to an item of type itemId .">ItemVariants.SelectVariant(int)</a> differ. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onlyIfVariantChanged</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

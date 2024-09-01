@@ -1445,7 +1445,9 @@ var hierarchy =
           ] ],
           [ "ModMapLayer", "class_mod_map_layer.html", null ],
           [ "ModMenu", "class_mod_menu.html", null ],
-          [ "ModPrefix", "class_mod_prefix.html", null ],
+          [ "ModPrefix", "class_mod_prefix.html", [
+            [ "UnloadedPrefix", "class_unloaded_prefix.html", null ]
+          ] ],
           [ "ModRarity", "class_mod_rarity.html", null ],
           [ "ModResourceDisplaySet", "class_mod_resource_display_set.html", null ],
           [ "ModResourceOverlay", "class_mod_resource_overlay.html", null ],

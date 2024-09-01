@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -109,11 +109,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad873ee1178673c074e86106a3aaa575f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77b2b674f7dce78e0087e4470ee82800"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_damage_class.html#a77b2b674f7dce78e0087e4470ee82800">GetEffectInheritance</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
 <tr class="memdesc:a77b2b674f7dce78e0087e4470ee82800"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br  />
- For a more in-depth explanation and demonstration, see ExampleMod's ExampleDamageClass.cs <a href="class_damage_class.html#a77b2b674f7dce78e0087e4470ee82800">More...</a><br /></td></tr>
+ For a more in-depth explanation and demonstration, see ExampleMod's ExampleDamageClass.csThis method is only meant to be overridden. Modders should call <a class="el" href="class_item.html#afa18d73137643eeff54c636e6728f6a9" title="This is used to check if this item benefits from the specified DamageClass.">CountsAsClass</a> to query effect inheritance.  <a href="class_damage_class.html#a77b2b674f7dce78e0087e4470ee82800">More...</a><br /></td></tr>
 <tr class="separator:a77b2b674f7dce78e0087e4470ee82800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab80440ac274eea48cfc06d12d292aab"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_stat_inheritance_data.html">StatInheritanceData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_damage_class.html#aab80440ac274eea48cfc06d12d292aab">GetModifierInheritance</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
 <tr class="memdesc:aab80440ac274eea48cfc06d12d292aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes' stat bonuses.  <a href="class_damage_class.html#aab80440ac274eea48cfc06d12d292aab">More...</a><br /></td></tr>
 <tr class="separator:aab80440ac274eea48cfc06d12d292aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ed05180259e2574ddf67e8bdf1ca8dd"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_damage_class.html#a2ed05180259e2574ddf67e8bdf1ca8dd">GetPrefixInheritance</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:a2ed05180259e2574ddf67e8bdf1ca8dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> will count as (other than itself) for the purpose of prefixes.<br  />
+ This method is only meant to be overridden. Modders should call <a class="el" href="class_damage_class.html#ace44c4c6f65270ce10df30201b20ff62" title="This is used to check if this DamageClass has been set to inherit prefixes from the provided DamageCl...">GetsPrefixesFor</a> to query prefix inheritance.  <a href="class_damage_class.html#a2ed05180259e2574ddf67e8bdf1ca8dd">More...</a><br /></td></tr>
+<tr class="separator:a2ed05180259e2574ddf67e8bdf1ca8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace44c4c6f65270ce10df30201b20ff62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_damage_class.html#ace44c4c6f65270ce10df30201b20ff62">GetsPrefixesFor</a> (<a class="el" href="class_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:ace44c4c6f65270ce10df30201b20ff62"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to check if this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has been set to inherit prefixes from the provided <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>, as dictated by <a class="el" href="class_summon_damage_class.html#aae5137b11f104318b423dbf5944ced6b" title="This lets you define the classes that this DamageClass will count as (other than itself) for the purp...">GetPrefixInheritance</a>  <a href="class_damage_class.html#ace44c4c6f65270ce10df30201b20ff62">More...</a><br /></td></tr>
+<tr class="separator:ace44c4c6f65270ce10df30201b20ff62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a780b06259f1b465137df4a4f674e66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_damage_class.html#a4a780b06259f1b465137df4a4f674e66">GetsPrefixesFor&lt; T &gt;</a> ()</td></tr>
+<tr class="separator:a4a780b06259f1b465137df4a4f674e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac18857b503c7bfeeaf508c8767306c22"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_damage_class.html#ac18857b503c7bfeeaf508c8767306c22">SetDefaultStats</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ac18857b503c7bfeeaf508c8767306c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define default stat modifiers for all items of this class (e.g. base crit chance).  <a href="class_damage_class.html#ac18857b503c7bfeeaf508c8767306c22">More...</a><br /></td></tr>
 <tr class="separator:ac18857b503c7bfeeaf508c8767306c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,7 +428,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </div><div class="memdoc">
 
 <p>This lets you define the classes that this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br  />
- For a more in-depth explanation and demonstration, see ExampleMod's ExampleDamageClass.cs</p>
+ For a more in-depth explanation and demonstration, see ExampleMod's ExampleDamageClass.csThis method is only meant to be overridden. Modders should call <a class="el" href="class_item.html#afa18d73137643eeff54c636e6728f6a9" title="This is used to check if this item benefits from the specified DamageClass.">CountsAsClass</a> to query effect inheritance. </p>
 <p >Return <code>true</code> for each <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> you want to inherit from</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -467,6 +476,101 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <dl class="section return"><dt>Returns</dt><dd>By default this will return StatInheritanceData.Full for <a class="el" href="class_damage_class.html#a6503fd93169adfe37c2a0a7f08d12e48" title="Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class....">DamageClass.Generic</a> and StatInheritanceData.None for any other.</dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_default_damage_class.html#a2be31e99383e3603168e382e969c8b8a">DefaultDamageClass</a>, <a class="el" href="class_generic_damage_class.html#a75f57f5741f579e866922b97dc554ad4">GenericDamageClass</a>, <a class="el" href="class_melee_no_speed_damage_class.html#a46afc156bc357723bf64d95e465b7255">MeleeNoSpeedDamageClass</a>, <a class="el" href="class_summon_melee_speed_damage_class.html#a82b3fefb7a33286a6d5ba5a9627913ac">SummonMeleeSpeedDamageClass</a>, and <a class="el" href="class_magic_summon_hybrid_damage_class.html#a3370b5404ad840d63267dcd6e9a79a8f">MagicSummonHybridDamageClass</a>.</p>
+
+</div>
+</div>
+<a id="a2ed05180259e2574ddf67e8bdf1ca8dd" name="a2ed05180259e2574ddf67e8bdf1ca8dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ed05180259e2574ddf67e8bdf1ca8dd">&#9670;&nbsp;</a></span>GetPrefixInheritance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool DamageClass.GetPrefixInheritance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageClass</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This lets you define the classes that this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> will count as (other than itself) for the purpose of prefixes.<br  />
+ This method is only meant to be overridden. Modders should call <a class="el" href="class_damage_class.html#ace44c4c6f65270ce10df30201b20ff62" title="This is used to check if this DamageClass has been set to inherit prefixes from the provided DamageCl...">GetsPrefixesFor</a> to query prefix inheritance. </p>
+<p >Return <code>true</code> for each <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> you want to inherit from</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> you want to inherit prefixes from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_melee_no_speed_damage_class.html#ad55950418511c652bdd2f5ab4389eb7f" title="This lets you define the classes that this DamageClass will count as (other than itself) for the purp...">GetEffectInheritance</a> by default - which lets the prefixes of any class this class inherits effects from roll and remain on items of this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>.</dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_summon_damage_class.html#aae5137b11f104318b423dbf5944ced6b">SummonDamageClass</a>, <a class="el" href="class_summon_melee_speed_damage_class.html#a114f303e6e2f98739959e4f9a5e8d481">SummonMeleeSpeedDamageClass</a>, and <a class="el" href="class_throwing_damage_class.html#ab68771ff449d0f330401a82123219532">ThrowingDamageClass</a>.</p>
+
+</div>
+</div>
+<a id="ace44c4c6f65270ce10df30201b20ff62" name="ace44c4c6f65270ce10df30201b20ff62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace44c4c6f65270ce10df30201b20ff62">&#9670;&nbsp;</a></span>GetsPrefixesFor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DamageClass.GetsPrefixesFor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageClass</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is used to check if this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> has been set to inherit prefixes from the provided <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>, as dictated by <a class="el" href="class_summon_damage_class.html#aae5137b11f104318b423dbf5944ced6b" title="This lets you define the classes that this DamageClass will count as (other than itself) for the purp...">GetPrefixInheritance</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> you want to check if prefixes are inherited by this <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if this damage class inherits prefixes from <em>damageClass</em> , <code>false</code> otherwise</dd></dl>
+
+</div>
+</div>
+<a id="a4a780b06259f1b465137df4a4f674e66" name="a4a780b06259f1b465137df4a4f674e66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a780b06259f1b465137df4a4f674e66">&#9670;&nbsp;</a></span>GetsPrefixesFor&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_damage_class.html#ace44c4c6f65270ce10df30201b20ff62">DamageClass.GetsPrefixesFor</a>&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_damage_class.html">DamageClass</a></em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GetsPrefixesFor</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>ModContent.GetInstance&lt;T&gt;()</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
 
 </div>
 </div>

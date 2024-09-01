@@ -77,10 +77,10 @@ var searchData=
   ['whip_74',['Whip',['../class_proj_a_i_style_i_d.html#adc8090a1cdf41e1218d3cde2cfeb5e24',1,'ProjAIStyleID']]],
   ['whipsettings_75',['WhipSettings',['../struct_whip_settings.html',1,'']]],
   ['white_76',['White',['../class_item_rarity_i_d.html#a0512de49930d571a81d992af8b4a5aed',1,'ItemRarityID']]],
-  ['whoami_77',['WhoAmI',['../class_emote_bubble.html#a22ac5b18c4d601e226340c74413fdb09',1,'EmoteBubble']]],
-  ['whoami_78',['whoAmI',['../class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db',1,'Entity']]],
-  ['width_79',['Width',['../class_tile_object_data.html#a16fbbed665281eabf059af144aa928fe',1,'TileObjectData']]],
-  ['width_80',['width',['../class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5',1,'Entity']]],
+  ['whoami_77',['whoAmI',['../class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db',1,'Entity']]],
+  ['whoami_78',['WhoAmI',['../class_emote_bubble.html#a22ac5b18c4d601e226340c74413fdb09',1,'EmoteBubble']]],
+  ['width_79',['width',['../class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5',1,'Entity']]],
+  ['width_80',['Width',['../class_tile_object_data.html#a16fbbed665281eabf059af144aa928fe',1,'TileObjectData']]],
   ['wind_81',['Wind',['../class_tile_drawing.html#aa6e95bf8aaced1dd91bc75f266b7727c',1,'TileDrawing']]],
   ['windgrid_82',['WindGrid',['../class_wind_grid.html',1,'']]],
   ['windowstatecontroller_83',['WindowStateController',['../class_window_state_controller.html',1,'']]],
@@ -141,8 +141,9 @@ var searchData=
   ['wormshader_138',['WormShader',['../class_worm_shader.html',1,'']]],
   ['wornarmor_139',['wornArmor',['../class_item.html#adbb756f77ffaa0ff6a047213b317e120',1,'Item']]],
   ['write_140',['Write',['../class_tag_i_o.html#a6d355fa18bcccb0ad0d44ba9360c4792',1,'TagIO']]],
-  ['writeextradata_141',['WriteExtraData',['../class_mod_tile_entity.html#a4a3657e1593a657423e23e7ac5fc6596',1,'ModTileEntity']]],
-  ['writeinformation_142',['WriteInformation',['../class_steam_p2_p_writer_1_1_write_information.html',1,'SteamP2PWriter.WriteInformation'],['../class_we_game_p2_p_writer_1_1_write_information.html',1,'WeGameP2PWriter.WriteInformation']]],
-  ['wrongbugnet_143',['WrongBugNet',['../class_immunity_cooldown_i_d.html#af1340bc2669d75ec90978ac7a1f9074f',1,'ImmunityCooldownID']]],
-  ['wscjsonobject_144',['WscJsonObject',['../class_wsc_json_object.html',1,'']]]
+  ['writeexceptionaszipandclearold_141',['WriteExceptionAsZipAndClearOld',['../class_crash_dump.html#a1188ad6628fff27a4ba35c73b07b2e94',1,'CrashDump']]],
+  ['writeextradata_142',['WriteExtraData',['../class_mod_tile_entity.html#a4a3657e1593a657423e23e7ac5fc6596',1,'ModTileEntity']]],
+  ['writeinformation_143',['WriteInformation',['../class_steam_p2_p_writer_1_1_write_information.html',1,'SteamP2PWriter.WriteInformation'],['../class_we_game_p2_p_writer_1_1_write_information.html',1,'WeGameP2PWriter.WriteInformation']]],
+  ['wrongbugnet_144',['WrongBugNet',['../class_immunity_cooldown_i_d.html#af1340bc2669d75ec90978ac7a1f9074f',1,'ImmunityCooldownID']]],
+  ['wscjsonobject_145',['WscJsonObject',['../class_wsc_json_object.html',1,'']]]
 ];

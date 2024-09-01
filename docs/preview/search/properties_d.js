@@ -1,7 +1,7 @@
 var searchData=
 [
   ['old_0',['Old',['../class_mod_keybind.html#a8c95db7234388e3c931bd37e3834ac72',1,'ModKeybind']]],
-  ['opacity_1',['Opacity',['../class_projectile.html#aaaef267521b5f0b04e58f12ec817da83',1,'Projectile']]],
+  ['opacity_1',['Opacity',['../class_n_p_c.html#aa66ce90acde6fe01338e59c8da821938',1,'NPC.Opacity()'],['../class_projectile.html#aaaef267521b5f0b04e58f12ec817da83',1,'Projectile.Opacity()']]],
   ['orderposition_2',['OrderPosition',['../class_builder_toggle.html#acc572585c9dd05fa410b8e2e68e3321d',1,'BuilderToggle']]],
   ['origin_3',['Origin',['../class_tile_object_data.html#a1c935925dacb9f62a1e8c5055cc47e01',1,'TileObjectData']]],
   ['originalarmorpenetration_4',['OriginalArmorPenetration',['../class_projectile.html#ab9b496d833e80e1b7a950e968ec3841c',1,'Projectile']]],

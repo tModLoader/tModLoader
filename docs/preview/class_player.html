@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -273,6 +273,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAcceptItemIntoInve
 <tr class="separator:a11b988c2747711732ee1dad45d69a0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53c084607e89da29f3b7da6964d49e83"><td class="memItemLeft" align="right" valign="top"><a id="a53c084607e89da29f3b7da6964d49e83" name="a53c084607e89da29f3b7da6964d49e83"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAfford</b> (long price, int customCurrency=-1)</td></tr>
+<tr class="memdesc:a53c084607e89da29f3b7da6964d49e83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player has the provided amount of money or custom currency (if <em>customCurrency</em>  is set) in their inventory and banks combined. Use <a class="el" href="class_player.html#a799f662fe42d4adb193a66bed79f3b47" title="Attempts to &quot;purchase&quot; something that costs the given price .  Items will be taken from all of the pl...">BuyItem(long, int)</a> if the player does have enough money to take that money from the player. <br /></td></tr>
 <tr class="separator:a53c084607e89da29f3b7da6964d49e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ac578501aae761ea441a8c79f710c7e"><td class="memItemLeft" align="right" valign="top"><a id="a9ac578501aae761ea441a8c79f710c7e" name="a9ac578501aae761ea441a8c79f710c7e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAutoReuseItem</b> (<a class="el" href="class_item.html">Item</a> sItem)</td></tr>
@@ -791,7 +792,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasEnoughPickPowerToH
 <tr class="separator:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a344519dc47381dd60771d75cb7660260"><td class="memItemLeft" align="right" valign="top"><a id="a344519dc47381dd60771d75cb7660260" name="a344519dc47381dd60771d75cb7660260"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItem</b> (int type, <a class="el" href="class_item.html">Item</a>[] collection)</td></tr>
-<tr class="memdesc:a344519dc47381dd60771d75cb7660260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">HasItem(int)</a>, but checks the provided <a class="el" href="class_item.html">Item</a>[] <em>collection</em>  for items instead. Useful for checking other <a class="el" href="class_item.html">Item</a> arrays, such as <a class="el" href="class_player.html#aa9e90c695978482773b3a294c7f6c814" title="The player&#39;s armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the...">Player.armor</a> or Player.bank. <br /></td></tr>
+<tr class="memdesc:a344519dc47381dd60771d75cb7660260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9" title="Checks if the player has the specified item in their inventory.   Does not check Void Bag....">HasItem(int)</a>, but checks the provided <a class="el" href="class_item.html">Item</a>[] <em>collection</em>  for items instead. Useful for checking other <a class="el" href="class_item.html">Item</a> arrays, such as <a class="el" href="class_player.html#aa9e90c695978482773b3a294c7f6c814" title="The player&#39;s armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the...">Player.armor</a> or <a class="el" href="class_player.html#aaf0dc6143fcb8419b194e6f59373c584" title="Piggy Bank items">Player.bank</a>. <br /></td></tr>
 <tr class="separator:a344519dc47381dd60771d75cb7660260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44bcd44e0fa2eacc3800a0f3c20e7330"><td class="memItemLeft" align="right" valign="top"><a id="a44bcd44e0fa2eacc3800a0f3c20e7330" name="a44bcd44e0fa2eacc3800a0f3c20e7330"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasItemInAnyInventory</b> (int type)</td></tr>
@@ -860,7 +861,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>InZonePurity</b> ()</
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsBlacklistedForGrappling</b> (Point p)</td></tr>
 <tr class="separator:a3e3d428b323e592618d1cf186d039d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dbf8764505580022e3e5d90afa1e5d3"><td class="memItemLeft" align="right" valign="top"><a id="a4dbf8764505580022e3e5d90afa1e5d3" name="a4dbf8764505580022e3e5d90afa1e5d3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsColorfulDye</b> (int dye)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsColorfulDye</b> (int <a class="el" href="class_player.html#a42fbc803cd2956863ddb91998491511b">dye</a>)</td></tr>
 <tr class="separator:a4dbf8764505580022e3e5d90afa1e5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14ef64731264c21c000a4f182a147785"><td class="memItemLeft" align="right" valign="top"><a id="a14ef64731264c21c000a4f182a147785" name="a14ef64731264c21c000a4f182a147785"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsInInteractionRangeToMultiTileHitbox</b> (int chestPointX, int chestPointY)</td></tr>
@@ -1012,6 +1013,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenShadowLockbox</b>
 <tr class="separator:a22f294d28b50826b894330f2009b4e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a408df3b999b8415a08076fe0ddadb40d"><td class="memItemLeft" align="right" valign="top"><a id="a408df3b999b8415a08076fe0ddadb40d" name="a408df3b999b8415a08076fe0ddadb40d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>PayCurrency</b> (long price, int customCurrency=-1)</td></tr>
+<tr class="memdesc:a408df3b999b8415a08076fe0ddadb40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to "purchase" something that costs the given <em>price</em> .<br  />
+ Items will be taken from all of the player inventories and banks combined.<br  />
+ If <em>customCurrency</em>  is provided, the price will be in terms of the custom currency instead of coins.<br  />
+ The currency will be taken from the inventories. This method does not check if the player has enough currency (use <a class="el" href="class_player.html#a53c084607e89da29f3b7da6964d49e83" title="Checks if the player has the provided amount of money or custom currency (if customCurrency  is set) ...">CanAfford(long, int)</a> to check that), the <b>game will crash if called on a player without enough currency</b>. Use <a class="el" href="class_player.html#a799f662fe42d4adb193a66bed79f3b47" title="Attempts to &quot;purchase&quot; something that costs the given price .  Items will be taken from all of the pl...">BuyItem(long, int)</a> instead for the more typical usage. <br /></td></tr>
 <tr class="separator:a408df3b999b8415a08076fe0ddadb40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e693991d406a52551646148b31f0c38"><td class="memItemLeft" align="right" valign="top"><a id="a7e693991d406a52551646148b31f0c38" name="a7e693991d406a52551646148b31f0c38"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PetAnimal</b> (int animalNpcIndex)</td></tr>
@@ -1116,6 +1121,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>RefreshInfoAccsFromTe
 <tr class="separator:aeeee5397cd692835cbe9dc26e5cada01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a144300a7a4facd17e60a373bfd9eb4e0"><td class="memItemLeft" align="right" valign="top"><a id="a144300a7a4facd17e60a373bfd9eb4e0" name="a144300a7a4facd17e60a373bfd9eb4e0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RefreshItems</b> (bool onlyIfVariantChanged=true)</td></tr>
+<tr class="memdesc:a144300a7a4facd17e60a373bfd9eb4e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_item.html#a4a7bbb79a58b3903c04f6fdf5440f458" title="Resets the stats of this item while preserving modded data, prefix, stack, and favorited....">Item.Refresh(bool)</a> on all player-owned storage (inventory, banks, equipment). Also refreshes recipe and shop entries. This is called when entering a world and serves to ensure that items with <a class="el" href="class_item_variants.html" title="Handles conditional variants for Items, commonly used for secret seeds.">ItemVariants</a> have the correct stats. <br /></td></tr>
 <tr class="separator:a144300a7a4facd17e60a373bfd9eb4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a611e7e4c263764c787d074be3957f047"><td class="memItemLeft" align="right" valign="top"><a id="a611e7e4c263764c787d074be3957f047" name="a611e7e4c263764c787d074be3957f047"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RefreshMechanicalAccsFromItemType</b> (int accType)</td></tr>
@@ -1716,15 +1722,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ActuationRodLockSetti
 <tr class="separator:a2b12f9d96cbbf155e8063efe916bca27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a602a4517e60f491a014dae8cf466660c"><td class="memItemLeft" align="right" valign="top"><a id="a602a4517e60f491a014dae8cf466660c" name="a602a4517e60f491a014dae8cf466660c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>adjHoney</b></td></tr>
+<tr class="memdesc:a602a4517e60f491a014dae8cf466660c"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the player is within crafting range of a tile with honey or a <a class="el" href="class_tile_i_d_1_1_sets.html#a3f3e2e8c8926d9e5ad8c550b434659f3" title="Whether or not this tile counts as a honey source for crafting purposes.">TileID.Sets.CountsAsHoneySource</a> tile. (adjHoney stands for adjacent to honey) <br /></td></tr>
 <tr class="separator:a602a4517e60f491a014dae8cf466660c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab87c309290f2d826e6306d155f740eed"><td class="memItemLeft" align="right" valign="top"><a id="ab87c309290f2d826e6306d155f740eed" name="ab87c309290f2d826e6306d155f740eed"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>adjLava</b></td></tr>
+<tr class="memdesc:ab87c309290f2d826e6306d155f740eed"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the player is within crafting range of a tile with lava or a <a class="el" href="class_tile_i_d_1_1_sets.html#a6330ee450e15a47d8d8fc6060523552f" title="Whether or not this tile counts as a lava source for crafting purposes.">TileID.Sets.CountsAsLavaSource</a> tile. (adjLava stands for adjacent to lava) <br /></td></tr>
 <tr class="separator:ab87c309290f2d826e6306d155f740eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72eeb766f99fc8bc230b29ba050d546d"><td class="memItemLeft" align="right" valign="top"><a id="a72eeb766f99fc8bc230b29ba050d546d" name="a72eeb766f99fc8bc230b29ba050d546d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>adjShimmer</b></td></tr>
+<tr class="memdesc:a72eeb766f99fc8bc230b29ba050d546d"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the player is within crafting range of a tile with shimmer or a <a class="el" href="class_tile_i_d_1_1_sets.html#ad3bf813696faf1254e7ea2c5f7bd94ef" title="Whether or not this tile counts as a shimmer source for crafting purposes.">TileID.Sets.CountsAsShimmerSource</a> tile. (adjShimmer stands for adjacent to shimmer) <br /></td></tr>
 <tr class="separator:a72eeb766f99fc8bc230b29ba050d546d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdf60df8256f681cd368925b2a2eb02b"><td class="memItemLeft" align="right" valign="top"><a id="acdf60df8256f681cd368925b2a2eb02b" name="acdf60df8256f681cd368925b2a2eb02b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>adjWater</b></td></tr>
+<tr class="memdesc:acdf60df8256f681cd368925b2a2eb02b"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the player is within crafting range of a tile with water or a <a class="el" href="class_tile_i_d_1_1_sets.html#a304253e883fca925c1e09382f562b50d" title="Whether or not this tile counts as a water source for crafting purposes.">TileID.Sets.CountsAsWaterSource</a> tile. (adjWater stands for adjacent to water) <br /></td></tr>
 <tr class="separator:acdf60df8256f681cd368925b2a2eb02b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92cf086a41d543d79484deddeafe8aca"><td class="memItemLeft" align="right" valign="top"><a id="a92cf086a41d543d79484deddeafe8aca" name="a92cf086a41d543d79484deddeafe8aca"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>afkCounter</b></td></tr>
@@ -1768,7 +1778,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>arcticDivingGear</b><
 <br  />
  Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how <a class="el" href="namespace_terraria.html">Terraria</a> is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <a class="el" href="class_mod_item.html#ac7af055d3befc9d7cd9bab9d63ad0b94" title="Allows you to give effects to this accessory. The hideVisual parameter is whether the player has mark...">ModItem.UpdateAccessory(Player, bool)</a> to set fields in a <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a> class, then use those values for gameplay effects. SimpleModPlayer.csshows the proper approach and explains this pattern.<br  />
 <br  />
- The corresponding dye items are found in dye. The player's inventory is <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. For equipment, see <a class="el" href="class_player.html#af958e9a0ef3bc5f086a73028ae170113" title="The player&#39;s equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.">miscEquips</a> and miscDyes. trashItem is the trash slot.<br  />
+ The corresponding dye items are found in <a class="el" href="class_player.html#a42fbc803cd2956863ddb91998491511b" title="The dye items corresponding to the armor items.">dye</a>. The player's inventory is <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. For equipment, see <a class="el" href="class_player.html#af958e9a0ef3bc5f086a73028ae170113" title="The player&#39;s equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.">miscEquips</a> and <a class="el" href="class_player.html#ad58357a17e414b8a111d613da003c5d2" title="The dye items corresponding to the miscEquips items.">miscDyes</a>. trashItem is the trash slot.<br  />
 <br  />
  <br /></td></tr>
 <tr class="separator:aa9e90c695978482773b3a294c7f6c814"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1846,15 +1856,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>balloonFront</b> = -1<
 <tr class="separator:a432ff00c10e67dc2a573ee20b2cc9229"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf0dc6143fcb8419b194e6f59373c584"><td class="memItemLeft" align="right" valign="top"><a id="aaf0dc6143fcb8419b194e6f59373c584" name="aaf0dc6143fcb8419b194e6f59373c584"></a>
 <a class="el" href="class_chest.html">Chest</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bank</b> = new <a class="el" href="class_chest.html">Chest</a>(bank: true)</td></tr>
+<tr class="memdesc:aaf0dc6143fcb8419b194e6f59373c584"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piggy Bank items <br /></td></tr>
 <tr class="separator:aaf0dc6143fcb8419b194e6f59373c584"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad316d9a99df7af02171c7154954f768b"><td class="memItemLeft" align="right" valign="top"><a id="ad316d9a99df7af02171c7154954f768b" name="ad316d9a99df7af02171c7154954f768b"></a>
 <a class="el" href="class_chest.html">Chest</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bank2</b> = new <a class="el" href="class_chest.html">Chest</a>(bank: true)</td></tr>
+<tr class="memdesc:ad316d9a99df7af02171c7154954f768b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safe items <br /></td></tr>
 <tr class="separator:ad316d9a99df7af02171c7154954f768b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49c06733415953c900583d332899904a"><td class="memItemLeft" align="right" valign="top"><a id="a49c06733415953c900583d332899904a" name="a49c06733415953c900583d332899904a"></a>
 <a class="el" href="class_chest.html">Chest</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bank3</b> = new <a class="el" href="class_chest.html">Chest</a>(bank: true)</td></tr>
+<tr class="memdesc:a49c06733415953c900583d332899904a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defender's Forge items <br /></td></tr>
 <tr class="separator:a49c06733415953c900583d332899904a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa895df56d20c45f89d0ee8c09192589"><td class="memItemLeft" align="right" valign="top"><a id="afa895df56d20c45f89d0ee8c09192589" name="afa895df56d20c45f89d0ee8c09192589"></a>
 <a class="el" href="class_chest.html">Chest</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bank4</b> = new <a class="el" href="class_chest.html">Chest</a>(bank: true)</td></tr>
+<tr class="memdesc:afa895df56d20c45f89d0ee8c09192589"><td class="mdescLeft">&#160;</td><td class="mdescRight">Void Vault items <br /></td></tr>
 <tr class="separator:afa895df56d20c45f89d0ee8c09192589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb0057f30508b7bd59d21bcac9804b3f"><td class="memItemLeft" align="right" valign="top"><a id="aeb0057f30508b7bd59d21bcac9804b3f" name="aeb0057f30508b7bd59d21bcac9804b3f"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>bartenderQuestLog</b></td></tr>
@@ -2371,6 +2385,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>dd2Accessory</b></td>
 <tr class="separator:a34811049b855c5e93543b756b4579e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90c72d76eee2ff83b328afaf463f78ed"><td class="memItemLeft" align="right" valign="top"><a id="a90c72d76eee2ff83b328afaf463f78ed" name="a90c72d76eee2ff83b328afaf463f78ed"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>dead</b></td></tr>
+<tr class="memdesc:a90c72d76eee2ff83b328afaf463f78ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if this player is dead <br /></td></tr>
 <tr class="separator:a90c72d76eee2ff83b328afaf463f78ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ac854141a650e23b4403719b162670e"><td class="memItemLeft" align="right" valign="top"><a id="a2ac854141a650e23b4403719b162670e" name="a2ac854141a650e23b4403719b162670e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>DeadlySphereMinion</b></td></tr>
@@ -2471,6 +2486,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>dryadWard</b></td></t
 <tr class="separator:ad52870d0182235323288a0e30a556b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42fbc803cd2956863ddb91998491511b"><td class="memItemLeft" align="right" valign="top"><a id="a42fbc803cd2956863ddb91998491511b" name="a42fbc803cd2956863ddb91998491511b"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>dye</b> = new <a class="el" href="class_item.html">Item</a>[10]</td></tr>
+<tr class="memdesc:a42fbc803cd2956863ddb91998491511b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dye items corresponding to the <a class="el" href="class_player.html#aa9e90c695978482773b3a294c7f6c814" title="The player&#39;s armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the...">armor</a> items. <br /></td></tr>
 <tr class="separator:a42fbc803cd2956863ddb91998491511b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3c6d7c2a7ff8714eabcff7d0fd19b8f"><td class="memItemLeft" align="right" valign="top"><a id="ac3c6d7c2a7ff8714eabcff7d0fd19b8f" name="ac3c6d7c2a7ff8714eabcff7d0fd19b8f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>eater</b></td></tr>
@@ -2867,6 +2883,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hornetMinion</b></td>
 <tr class="separator:a52553501d9c236335344962bb59a8f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3323cc53dd50a26dfcd15ebdcab5e121"><td class="memItemLeft" align="right" valign="top"><a id="a3323cc53dd50a26dfcd15ebdcab5e121" name="a3323cc53dd50a26dfcd15ebdcab5e121"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hostile</b></td></tr>
+<tr class="memdesc:a3323cc53dd50a26dfcd15ebdcab5e121"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the player has PvP enabled <br /></td></tr>
 <tr class="separator:a3323cc53dd50a26dfcd15ebdcab5e121"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af302d99105108f3970297d5fae8011e4"><td class="memItemLeft" align="right" valign="top"><a id="af302d99105108f3970297d5fae8011e4" name="af302d99105108f3970297d5fae8011e4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>HotbarOffset</b></td></tr>
@@ -2935,7 +2952,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>instantMovementAcc
 <tr class="memitem:a590dce4227b207c8976811be19f2cf64"><td class="memItemLeft" align="right" valign="top"><a id="a590dce4227b207c8976811be19f2cf64" name="a590dce4227b207c8976811be19f2cf64"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>inventory</b> = new <a class="el" href="class_item.html">Item</a>[59]</td></tr>
 <tr class="memdesc:a590dce4227b207c8976811be19f2cf64"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventory, 50-53 are coin slots, 54-57 are ammo slots. Index 58 is used to store the mouse item in some situations.<br  />
- Additional inventories are found in bank (Piggy Bank), bank2 (Safe), bank3 (Defender's Forge), and bank4 (Void Vault). For armor and accessories, see <a class="el" href="class_player.html#aa9e90c695978482773b3a294c7f6c814" title="The player&#39;s armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the...">armor</a> and dye. For equipment, see <a class="el" href="class_player.html#af958e9a0ef3bc5f086a73028ae170113" title="The player&#39;s equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.">miscEquips</a> and miscDyes. trashItem is the trash slot.<br  />
+ Additional inventories are found in <a class="el" href="class_player.html#aaf0dc6143fcb8419b194e6f59373c584" title="Piggy Bank items">bank</a> (Piggy Bank), <a class="el" href="class_player.html#ad316d9a99df7af02171c7154954f768b" title="Safe items">bank2</a> (Safe), <a class="el" href="class_player.html#a49c06733415953c900583d332899904a" title="Defender&#39;s Forge items">bank3</a> (Defender's Forge), and <a class="el" href="class_player.html#afa895df56d20c45f89d0ee8c09192589" title="Void Vault items">bank4</a> (Void Vault). For armor and accessories, see <a class="el" href="class_player.html#aa9e90c695978482773b3a294c7f6c814" title="The player&#39;s armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the...">armor</a> and <a class="el" href="class_player.html#a42fbc803cd2956863ddb91998491511b" title="The dye items corresponding to the armor items.">dye</a>. For equipment, see <a class="el" href="class_player.html#af958e9a0ef3bc5f086a73028ae170113" title="The player&#39;s equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.">miscEquips</a> and <a class="el" href="class_player.html#ad58357a17e414b8a111d613da003c5d2" title="The dye items corresponding to the miscEquips items.">miscDyes</a>. trashItem is the trash slot.<br  />
  <br /></td></tr>
 <tr class="separator:a590dce4227b207c8976811be19f2cf64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7be42c32dd31a507c65b4bbf6421435d"><td class="memItemLeft" align="right" valign="top"><a id="a7be42c32dd31a507c65b4bbf6421435d" name="a7be42c32dd31a507c65b4bbf6421435d"></a>
@@ -3318,6 +3335,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>miscCounter</b></td></
 <tr class="separator:a5bedc6fd55c5ada0eea747a1a6fb067a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad58357a17e414b8a111d613da003c5d2"><td class="memItemLeft" align="right" valign="top"><a id="ad58357a17e414b8a111d613da003c5d2" name="ad58357a17e414b8a111d613da003c5d2"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>miscDyes</b> = new <a class="el" href="class_item.html">Item</a>[5]</td></tr>
+<tr class="memdesc:ad58357a17e414b8a111d613da003c5d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dye items corresponding to the <a class="el" href="class_player.html#af958e9a0ef3bc5f086a73028ae170113" title="The player&#39;s equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.">miscEquips</a> items. <br /></td></tr>
 <tr class="separator:ad58357a17e414b8a111d613da003c5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af958e9a0ef3bc5f086a73028ae170113"><td class="memItemLeft" align="right" valign="top"><a id="af958e9a0ef3bc5f086a73028ae170113" name="af958e9a0ef3bc5f086a73028ae170113"></a>
 <a class="el" href="class_item.html">Item</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>miscEquips</b> = new <a class="el" href="class_item.html">Item</a>[5]</td></tr>
@@ -3372,6 +3390,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> = &quot;&q
 <tr class="separator:ac8bcb50bf826874dfa2d162af367d013"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f561320008c7a527b6b6c5f7159aecd"><td class="memItemLeft" align="right" valign="top"><a id="a7f561320008c7a527b6b6c5f7159aecd" name="a7f561320008c7a527b6b6c5f7159aecd"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>nearbyActiveNPCs</b></td></tr>
+<tr class="memdesc:a7f561320008c7a527b6b6c5f7159aecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of the <a class="el" href="class_n_p_c.html#ae1c91873c3b58b70afca2cfe7ddc8355" title="Represents how much this npc counts towards the npc spawn limit. Small critters like worms or flies h...">NPC.npcSlots</a> values of <a class="el" href="class_n_p_c.html">NPC</a> within the active range of this <a class="el" href="class_player.html">Player</a>. Used to set <a class="el" href="class_n_p_c.html">NPC</a> spawn rates. <br /></td></tr>
 <tr class="separator:a7f561320008c7a527b6b6c5f7159aecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e207c7a8995e791145df7396abee94d"><td class="memItemLeft" align="right" valign="top"><a id="a3e207c7a8995e791145df7396abee94d" name="a3e207c7a8995e791145df7396abee94d"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>nebulaCD</b></td></tr>
@@ -3829,6 +3848,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resistCold</b></td></
 <tr class="separator:a35399bea3ca0caff04615abdc7889d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a15148dacc30a8e8684df38f94ecb4a"><td class="memItemLeft" align="right" valign="top"><a id="a6a15148dacc30a8e8684df38f94ecb4a" name="a6a15148dacc30a8e8684df38f94ecb4a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>respawnTimer</b></td></tr>
+<tr class="memdesc:a6a15148dacc30a8e8684df38f94ecb4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of time in ticks before this player respawns after death. Most suitably modified in <a class="el" href="class_mod_player.html#a8b4a03441bc4c1c76268a048c7a952c2" title="Allows you to make anything happen when the player dies.">ModPlayer.Kill(double, int, bool, PlayerDeathReason)</a> <br /></td></tr>
 <tr class="separator:a6a15148dacc30a8e8684df38f94ecb4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa997bc863c20eec73c5047c018696f7a"><td class="memItemLeft" align="right" valign="top"><a id="aa997bc863c20eec73c5047c018696f7a" name="aa997bc863c20eec73c5047c018696f7a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>restorationDelayTime</b> = <a class="el" href="class_item.html#af1ae960811fed2407701b6689bb234ce">Item.restorationDelay</a></td></tr>
@@ -4147,9 +4167,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>spawnMax</b></td></tr
 <tr class="separator:accca94e4e5838a04a6af1650613b63b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a650d6eeb545288c6985a37847ed769be"><td class="memItemLeft" align="right" valign="top"><a id="a650d6eeb545288c6985a37847ed769be" name="a650d6eeb545288c6985a37847ed769be"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnX</b> = -1</td></tr>
+<tr class="memdesc:a650d6eeb545288c6985a37847ed769be"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x tile coordinate of the bed spawn location for this player in this world. When -1 <a class="el" href="class_main.html#aeac6d2a4742e9642d6a091205ebbc302" title="The x tile coordinate of the default spawn location of the world. Players without a bed spawn point (...">Main.spawnTileX</a> is used instead. <br /></td></tr>
 <tr class="separator:a650d6eeb545288c6985a37847ed769be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5133ed5c265480015eec33be169afd10"><td class="memItemLeft" align="right" valign="top"><a id="a5133ed5c265480015eec33be169afd10" name="a5133ed5c265480015eec33be169afd10"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnY</b> = -1</td></tr>
+<tr class="memdesc:a5133ed5c265480015eec33be169afd10"><td class="mdescLeft">&#160;</td><td class="mdescRight">The y tile coordinate of the bed spawn location for this player in this world. When -1 <a class="el" href="class_main.html#ad0219f2a3e73acb90d1a44350bf4304d" title="The y tile coordinate of the default spawn location of the world. Players without a bed spawn point (...">Main.spawnTileY</a> is used instead. <br /></td></tr>
 <tr class="separator:a5133ed5c265480015eec33be169afd10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5d989b8cffae615a6ca24ab5939e834"><td class="memItemLeft" align="right" valign="top"><a id="ae5d989b8cffae615a6ca24ab5939e834" name="ae5d989b8cffae615a6ca24ab5939e834"></a>
 <a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>specialistDamage</b> = StatModifier.Default</td></tr>
@@ -4818,6 +4840,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>accFlipper</b><code> 
 <tr class="separator:ae24a96800734406d818eb5121aa21a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fa0e95446dbfdadd6665973ee84bc02"><td class="memItemLeft" align="right" valign="top"><a id="a5fa0e95446dbfdadd6665973ee84bc02" name="a5fa0e95446dbfdadd6665973ee84bc02"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>adjTile</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a5fa0e95446dbfdadd6665973ee84bc02"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array indexed by tile type (<a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">Tile.TileType</a>, <a class="el" href="class_tile_i_d.html">TileID</a>) indicating if the player is within crafting range of each tile type. Used to determine if a player satisfies crafting station requirements for recipes. Note that this includes tiles acting like other tiles (<a class="el" href="class_global_tile.html#a8825daaed0c370e986a989b6d4ea0b02" title="Allows you to determine which tiles the given tile type can be considered as when looking for craftin...">ModTile.AdjTiles</a>, Player.AdjTiles), so the player might not actually be near specific tiles. For example a player near a TileID.MythrilAnvil tile will count as being near TileID.Anvils. <br /></td></tr>
 <tr class="separator:a5fa0e95446dbfdadd6665973ee84bc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55103513d96bc820345e45f34cad7c7a"><td class="memItemLeft" align="right" valign="top"><a id="a55103513d96bc820345e45f34cad7c7a" name="a55103513d96bc820345e45f34cad7c7a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>AnyThrownCostReduction</b><code> [get]</code></td></tr>

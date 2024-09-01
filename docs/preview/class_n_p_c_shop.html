@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -107,9 +107,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7474960bae8781f937b042feb214ae45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a589a145a73c4349ecd1160016b7892e6"><td class="memItemLeft" align="right" valign="top"><a id="a589a145a73c4349ecd1160016b7892e6" name="a589a145a73c4349ecd1160016b7892e6"></a>
 <a class="el" href="class_n_p_c_shop.html">NPCShop</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (int item, params Condition[] condition)</td></tr>
+<tr class="memdesc:a589a145a73c4349ecd1160016b7892e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the specified item with the provided conditions to this shop. If all of the conditions are satisfied, the item will be available in the shop. <br /></td></tr>
 <tr class="separator:a589a145a73c4349ecd1160016b7892e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58098cbffd10364a93d5d3e61cb538a5"><td class="memItemLeft" align="right" valign="top"><a id="a58098cbffd10364a93d5d3e61cb538a5" name="a58098cbffd10364a93d5d3e61cb538a5"></a>
-<a class="el" href="class_n_p_c_shop.html">NPCShop</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (<a class="el" href="class_item.html">Item</a> item, params Condition[] condition)</td></tr>
+<tr class="memitem:a58098cbffd10364a93d5d3e61cb538a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_n_p_c_shop.html">NPCShop</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_shop.html#a58098cbffd10364a93d5d3e61cb538a5">Add</a> (<a class="el" href="class_item.html">Item</a> item, params Condition[] condition)</td></tr>
+<tr class="memdesc:a58098cbffd10364a93d5d3e61cb538a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This overload takes an <a class="el" href="class_item.html">Item</a> instance instead of just an item type. This <a class="el" href="class_item.html">Item</a> can be customized prior to being registered. This is commonly used to provide a custom shop price or currency for this shop entry:  <a href="class_n_p_c_shop.html#a58098cbffd10364a93d5d3e61cb538a5">More...</a><br /></td></tr>
 <tr class="separator:a58098cbffd10364a93d5d3e61cb538a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fa8a0c9170b2813123c0696dd4f3fad"><td class="memItemLeft" align="right" valign="top"><a id="a2fa8a0c9170b2813123c0696dd4f3fad" name="a2fa8a0c9170b2813123c0696dd4f3fad"></a>
 <a class="el" href="class_n_p_c_shop.html">NPCShop</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (params <a class="el" href="class_n_p_c_shop_1_1_entry.html">Entry</a>[] entries)</td></tr>
@@ -196,6 +197,37 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>NpcType</b><code> [get
 <tr class="separator:aafac7ea6c03f43e254210d391b313a8d inherit properties_class_abstract_n_p_c_shop"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a58098cbffd10364a93d5d3e61cb538a5" name="a58098cbffd10364a93d5d3e61cb538a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58098cbffd10364a93d5d3e61cb538a5">&#9670;&nbsp;</a></span>Add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_n_p_c_shop.html">NPCShop</a> NPCShop.Add </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params Condition[]&#160;</td>
+          <td class="paramname"><em>condition</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This overload takes an <a class="el" href="class_item.html">Item</a> instance instead of just an item type. This <a class="el" href="class_item.html">Item</a> can be customized prior to being registered. This is commonly used to provide a custom shop price or currency for this shop entry: </p>
+<p ><code>npcShop.Add(new <a class="el" href="class_item.html">Item</a>(ItemID.MagicDagger) { shopCustomPrice = 2, shopSpecialCurrency = ExampleMod.ExampleCustomCurrencyId }, Condition.RemixWorld); </code> </p>
+
+</div>
+</div>
 <a id="a5d77b5537b50553e29fa60debdbb007c" name="a5d77b5537b50553e29fa60debdbb007c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d77b5537b50553e29fa60debdbb007c">&#9670;&nbsp;</a></span>Add&lt; T &gt;()</h2>
 
@@ -211,6 +243,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>NpcType</b><code> [get
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p></p>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

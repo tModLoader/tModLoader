@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -89,10 +89,12 @@ $(document).ready(function(){initNavTree('functions_h.html',''); initResizable()
 <h3><a id="index_h" name="index_h"></a>- h -</h3><ul>
 <li>HairBack&#160;:&#160;<a class="el" href="class_player_draw_layers.html#ad5d167ae7e71e43b1188105f3b851600">PlayerDrawLayers</a></li>
 <li>hairDye&#160;:&#160;<a class="el" href="class_item.html#a270b7ba785b394f34b82448bc62bb5cc">Item</a></li>
+<li>halloween&#160;:&#160;<a class="el" href="class_main.html#a31f2c73058366a51e308150a5f2981cc">Main</a></li>
 <li>hammer&#160;:&#160;<a class="el" href="class_item.html#acbd27cc5151658d1851d955f2d8a8a73">Item</a></li>
 <li>HandlePacket()&#160;:&#160;<a class="el" href="class_mod.html#a08e8033a39338a74eee50b782f451a47">Mod</a></li>
 <li>HandOnAcc&#160;:&#160;<a class="el" href="class_player_draw_layers.html#a0af7bf4bdd2a4773c5bd36ae472996c9">PlayerDrawLayers</a></li>
 <li>Happiness&#160;:&#160;<a class="el" href="class_n_p_c.html#a389ec7ffed5231b9500e1ed6cd974aee">NPC</a></li>
+<li>hardMode&#160;:&#160;<a class="el" href="class_main.html#a99f898cc8face9be1a31a18e4e48409a">Main</a></li>
 <li>Harpoon&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#ab67711faed9fd0546c7cde5047f29be6">ProjAIStyleID</a></li>
 <li>HasActuator&#160;:&#160;<a class="el" href="struct_tile.html#a6325ed8c780c63c155030661a5eda400">Tile</a></li>
 <li>HasAmmo()&#160;:&#160;<a class="el" href="class_player.html#ab85e25a272ce362ee7d9761c55a98369">Player</a></li>
@@ -103,7 +105,7 @@ $(document).ready(function(){initNavTree('functions_h.html',''); initResizable()
 <li>HasDownHoverStats&#160;:&#160;<a class="el" href="struct_wing_stats.html#abf355405085b9afc488a708364c3f8d2">WingStats</a></li>
 <li>hasGemRobe&#160;:&#160;<a class="el" href="class_player.html#ac70d43e2ec00efed1eb1d04f3c95ba54">Player</a></li>
 <li>HasGivenName&#160;:&#160;<a class="el" href="class_n_p_c.html#a2fbcfc2c2f29806bbf34cafa24910cfb">NPC</a></li>
-<li>HasItem()&#160;:&#160;<a class="el" href="class_player.html#a344519dc47381dd60771d75cb7660260">Player</a></li>
+<li>HasItem()&#160;:&#160;<a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9">Player</a></li>
 <li>HasItemInInventoryOrOpenVoidBag()&#160;:&#160;<a class="el" href="class_player.html#a3b1f18a7795a870bbd130ee923f6b13e">Player</a></li>
 <li>HasMod()&#160;:&#160;<a class="el" href="class_mod_loader.html#a16ee6317324ee835c2022569e3b998f4">ModLoader</a></li>
 <li>HasNoPartyText&#160;:&#160;<a class="el" href="class_n_p_c_i_d_1_1_sets.html#abee7cc8a21d5bc37d8f13e41d698542a">NPCID.Sets</a></li>
@@ -111,6 +113,7 @@ $(document).ready(function(){initNavTree('functions_h.html',''); initResizable()
 <li>HasSmartInteract()&#160;:&#160;<a class="el" href="class_mod_pylon.html#a5b0af8c33b2240dfa69baac2c24e9b65">ModPylon</a>, <a class="el" href="class_mod_tile.html#ab2f2edcfdbe4e44786c7694b074e5d25">ModTile</a></li>
 <li>HasTile&#160;:&#160;<a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d">Tile</a></li>
 <li>HasUnactuatedTile&#160;:&#160;<a class="el" href="struct_tile.html#a2574be32ca43ff43f54a3faf33858c46">Tile</a></li>
+<li>HasValidTarget&#160;:&#160;<a class="el" href="class_n_p_c.html#a107eea2ccf9aa77e2ebc83b18892e8ec">NPC</a></li>
 <li>hasVanityEffects&#160;:&#160;<a class="el" href="class_item.html#a60df2d8d6ebe0a18166ef84fddffb797">Item</a></li>
 <li>HasVariant()&#160;:&#160;<a class="el" href="class_item_variants.html#a9c3e63cebb9637350b019871fb411e05">ItemVariants</a></li>
 <li>HasWalkDust()&#160;:&#160;<a class="el" href="class_mod_tile.html#a8bc2e68dcc241caec4ff70215e295013">ModTile</a></li>
@@ -175,7 +178,7 @@ $(document).ready(function(){initNavTree('functions_h.html',''); initResizable()
 <li>HorizontalWingSpeeds()&#160;:&#160;<a class="el" href="class_equip_texture.html#a64a2fc6585ed6572c8ee6f9a38d58d6a">EquipTexture</a>, <a class="el" href="class_global_item.html#a474d8ac526b4825679fe0ffd1a3c8d75">GlobalItem</a>, <a class="el" href="class_item_loader.html#a63ab5851c7ca82709e87726764430b72">ItemLoader</a>, <a class="el" href="class_mod_item.html#a2efe38fe8dcda065568f4a360266f70f">ModItem</a></li>
 <li>Hornet&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#a1e70f6c9082dd4be7765fd717ed72eb4">ProjAIStyleID</a></li>
 <li>HorsemanPumpkin&#160;:&#160;<a class="el" href="class_proj_a_i_style_i_d.html#a743711a25ac0a68c8ab26957c27c0a24">ProjAIStyleID</a></li>
-<li>hostile&#160;:&#160;<a class="el" href="class_projectile.html#a7fb8914d4756cec3186cdb39dd0679b5">Projectile</a></li>
+<li>hostile&#160;:&#160;<a class="el" href="class_player.html#a3323cc53dd50a26dfcd15ebdcab5e121">Player</a>, <a class="el" href="class_projectile.html#a7fb8914d4756cec3186cdb39dd0679b5">Projectile</a></li>
 <li>HousesCanHavePlatformFloors&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#ac6bcc83aa1ab71cd8124d60102262be3">GameTipID</a></li>
 <li>HousingUIInEquipmentMenu&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#a9b28e6679d124474f35e89cbf94af8db">GameTipID</a></li>
 <li>HoveringFighter&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#aed416394b90812be02a66c71b53af301">NPCAIStyleID</a></li>

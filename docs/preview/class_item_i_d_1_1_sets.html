@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -167,7 +167,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ColorfulDyeV
 <tr class="separator:ab0266b89a1601891993c50c489cb9c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2292fa1f1cba386cc058689056163bcd"><td class="memItemLeft" align="right" valign="top"><a id="a2292fa1f1cba386cc058689056163bcd" name="a2292fa1f1cba386cc058689056163bcd"></a>
 static int[][]&#160;</td><td class="memItemRight" valign="bottom"><b>CraftingRecipeIndices</b></td></tr>
-<tr class="memdesc:a2292fa1f1cba386cc058689056163bcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this item is the result of at least 1 recipe that isn't disabled or set to not decraftable. The value corresponds to the index of the <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> that results in this item in Main.recipe array. Inner array contains multiple results for multiple recipes in order of creation<br /></td></tr>
+<tr class="memdesc:a2292fa1f1cba386cc058689056163bcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this item is the result of at least 1 recipe that isn't disabled or set to not decraftable. The value corresponds to the index of the <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> that results in this item in <a class="el" href="class_main.html#a4834a2b00d7f00d1f7ae9567baa03e22" title="Contains all the Recipe in the game. Be sure to read the Basic Recipes wiki pageto learn how to creat...">Main.recipe</a> array. Inner array contains multiple results for multiple recipes in order of creation<br /></td></tr>
 <tr class="separator:a2292fa1f1cba386cc058689056163bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fcd6cfb35dad45b9166ed4597892bf6"><td class="memItemLeft" align="right" valign="top"><a id="a9fcd6cfb35dad45b9166ed4597892bf6" name="a9fcd6cfb35dad45b9166ed4597892bf6"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultKillsForBannerNeeded</b> = 50</td></tr>
@@ -558,7 +558,7 @@ static short[]&#160;</td><td class="memItemRight" valign="bottom"><b>Workbenches
 <tr class="separator:a8c6936feb9fd9cb87b28acf72fc37990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74dd41a3534152768b00a423e4b26656"><td class="memItemLeft" align="right" valign="top"><a id="a74dd41a3534152768b00a423e4b26656" name="a74dd41a3534152768b00a423e4b26656"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WorksInVoidBag</b> = Factory.CreateBoolSet(true, 4346, 5095)</td></tr>
-<tr class="memdesc:a74dd41a3534152768b00a423e4b26656"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will have its in-inventory effects even when contained in the Void Vault (Player.bank4). Defaults to <code>true</code>. <br /></td></tr>
+<tr class="memdesc:a74dd41a3534152768b00a423e4b26656"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will have its in-inventory effects even when contained in the Void Vault (<a class="el" href="class_player.html#afa895df56d20c45f89d0ee8c09192589" title="Void Vault items">Player.bank4</a>). Defaults to <code>true</code>. <br /></td></tr>
 <tr class="separator:a74dd41a3534152768b00a423e4b26656"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad584336a6b1bc6869a14b100d44a2733"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#ad584336a6b1bc6869a14b100d44a2733">Yoyo</a> = Factory.CreateBoolSet(3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 3389, 5294)</td></tr>
 <tr class="memdesc:ad584336a6b1bc6869a14b100d44a2733"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then holding that item while using a yoyo string (Player.yoyoString) will allow the player to move the gamepad cursor an extra 5 tiles. <br  />

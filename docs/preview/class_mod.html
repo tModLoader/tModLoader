@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -856,6 +856,8 @@ If no existing localization exists for the key, it will be defined so it can be 
 
 <p>Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the AssetRepository.Request&lt;T&gt;(string) method to retrieve an Asset&lt;T&gt; instance: </p>
 <p ><code>Asset&lt;Texture2D&gt; balloonTexture = Mod.Assets.Request&lt;Texture2D&gt;("Content/Items/Armor/SimpleAccessory_Balloon");</code> Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <a class="el" href="class_mod_content.html#a24e36b809900269a1ecd3d1fb85a3a5f" title="Gets the asset with the specified name. Throws an Exception if the asset does not exist....">ModContent.Request&lt;T&gt;(string, AssetRequestMode)</a> where the mod name is required. </p>
+<p >Read the Assets guide on the wiki</p>
+<p >for more information. </p>
 
 </div>
 </div>

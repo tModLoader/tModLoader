@@ -25,5 +25,6 @@ var searchData=
   ['summonmeleespeed_22',['SummonMeleeSpeed',['../class_damage_class.html#af73ff3cb3f79309368ad6a09924c2af9',1,'DamageClass']]],
   ['suntexture_23',['SunTexture',['../class_mod_menu.html#a8cd0214f3296eb41025035ed0e8dc607',1,'ModMenu']]],
   ['superarmor_24',['SuperArmor',['../class_n_p_c.html#a75a027c492c900d13ee9d1eea8dad690',1,'NPC.SuperArmor()'],['../struct_n_p_c_1_1_hit_modifiers.html#af77c582a376918753e76b24f4fda031c',1,'NPC.HitModifiers.SuperArmor()']]],
-  ['surfacebackgroundstyle_25',['SurfaceBackgroundStyle',['../class_mod_scene_effect.html#a9395b27f140198bc74db76857312623b',1,'ModSceneEffect']]]
+  ['supportsnpctargets_25',['SupportsNPCTargets',['../class_n_p_c.html#ade5c0f25fd7b3e50fc5f73ed8c519c2b',1,'NPC']]],
+  ['surfacebackgroundstyle_26',['SurfaceBackgroundStyle',['../class_mod_scene_effect.html#a9395b27f140198bc74db76857312623b',1,'ModSceneEffect']]]
 ];

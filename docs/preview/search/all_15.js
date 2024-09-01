@@ -29,7 +29,7 @@ var searchData=
   ['vanity_26',['vanity',['../class_item.html#a1acb85d0f70816b12d4f5a7ef8867a08',1,'Item']]],
   ['vanitypet_27',['vanityPet',['../class_main.html#a610f0ef35769f577a8670ac04e86be9a',1,'Main']]],
   ['vanityrocketboots_28',['vanityRocketBoots',['../class_player.html#ab45fdb5dce9afc829648a873291ee75a',1,'Player']]],
-  ['variant_29',['Variant',['../class_actions_1_1_n_p_cs_1_1_variant.html',1,'Actions::NPCs']]],
+  ['variant_29',['Variant',['../class_actions_1_1_n_p_cs_1_1_variant.html',1,'Actions.NPCs.Variant'],['../class_item.html#a2f3c4c189bf37852038ded6b11b910bb',1,'Item.Variant()']]],
   ['variantentry_30',['VariantEntry',['../class_item_variants_1_1_variant_entry.html',1,'ItemVariants']]],
   ['variantnpcprofile_31',['VariantNPCProfile',['../class_profiles_1_1_variant_n_p_c_profile.html',1,'Profiles']]],
   ['variantorderfemale_32',['VariantOrderFemale',['../class_player_variant_i_d_1_1_sets.html#abae2063f8768558443f2fbc0e608f8b5',1,'PlayerVariantID::Sets']]],

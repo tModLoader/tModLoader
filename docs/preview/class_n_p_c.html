@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -479,8 +479,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StrikeInstantKill</b>
  Calls checkDead<br  />
  Does not automatically send packets. Use <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a> to synchronize hits.  <a href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79">More...</a><br /></td></tr>
 <tr class="separator:a99d0dc536e4ca397859fcb73a9871a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="memItemLeft" align="right" valign="top"><a id="ace46ba11f1b49ba040e73aed0b05b1d9" name="ace46ba11f1b49ba040e73aed0b05b1d9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>TargetClosest</b> (bool faceTarget=true)</td></tr>
+<tr class="memitem:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ace46ba11f1b49ba040e73aed0b05b1d9">TargetClosest</a> (bool faceTarget=true)</td></tr>
+<tr class="memdesc:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Targets the closest alive <a class="el" href="class_player.html">Player</a> and optionally faces towards that <a class="el" href="class_player.html">Player</a>. This will set <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a> to the targeted player, as well as <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a> if <em>faceTarget</em>  is true. Make sure to check <a class="el" href="class_n_p_c.html#a107eea2ccf9aa77e2ebc83b18892e8ec" title="Checks if target is a valid Player to target. This checks that target has a valid value and that the ...">HasValidTarget</a> before accessing <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a>.  <a href="class_n_p_c.html#ace46ba11f1b49ba040e73aed0b05b1d9">More...</a><br /></td></tr>
 <tr class="separator:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed221077237414bbb527e44b66aad5ff"><td class="memItemLeft" align="right" valign="top"><a id="aed221077237414bbb527e44b66aad5ff" name="aed221077237414bbb527e44b66aad5ff"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TargetClosest_WOF</b> (bool faceTarget=true)</td></tr>
@@ -531,7 +531,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsesPartyHat</b> ()</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaAI</b> ()</td></tr>
 <tr class="separator:a15ebd1488a5b3c91a26e3430a10b27d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3178217527e841bf5ef878053e5a743"><td class="memItemLeft" align="right" valign="top"><a id="ac3178217527e841bf5ef878053e5a743" name="ac3178217527e841bf5ef878053e5a743"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaFindFrame</b> (int num, bool isLikeATownNPC, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaFindFrame</b> (int num, bool <a class="el" href="class_n_p_c.html#a7798c8b14d3137de83b367fbd4be4bba">isLikeATownNPC</a>, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>)</td></tr>
 <tr class="separator:ac3178217527e841bf5ef878053e5a743"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_entity"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_entity')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_entity.html">Entity</a></td></tr>
 <tr class="memitem:ae7e77f5df4f008792410c2a44d652da3 inherit pub_methods_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="ae7e77f5df4f008792410c2a44d652da3" name="ae7e77f5df4f008792410c2a44d652da3"></a>
@@ -637,7 +637,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFoundNPCT
 <tr class="memdesc:a865f6d2c61c4ee05593397b3f990d165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#a865f6d2c61c4ee05593397b3f990d165">More...</a><br /></td></tr>
 <tr class="separator:a865f6d2c61c4ee05593397b3f990d165"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb199295917371439a62e20c31d7ca79"><td class="memItemLeft" align="right" valign="top"><a id="adb199295917371439a62e20c31d7ca79" name="adb199295917371439a62e20c31d7ca79"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncouragement_AIStyle2_FloatingEye_IsDiscouraged</b> (int npcID, Vector2 npcPosition, int target=255)</td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncouragement_AIStyle2_FloatingEye_IsDiscouraged</b> (int npcID, Vector2 npcPosition, int <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e">target</a>=255)</td></tr>
 <tr class="separator:adb199295917371439a62e20c31d7ca79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8ffa11d5ece8b27af99f5bbbfe394cf"><td class="memItemLeft" align="right" valign="top"><a id="ac8ffa11d5ece8b27af99f5bbbfe394cf" name="ac8ffa11d5ece8b27af99f5bbbfe394cf"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DespawnEncouragement_AIStyle3_Fighters_CanBeBusyWithAction</b> (int npcID)</td></tr>
@@ -740,13 +740,13 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NearSpikeBall<
  <code>&gt;ai0, ai1, ai2, ai3</code> will initialize the <a class="el" href="class_n_p_c.html#aa057189d345452f8afe82acb7a5dbec3" title="An array with 4 slots used for any sort of data storage, which is occasionally synced from the server...">NPC.ai</a>[] array with the supplied values. This can be used to pass in information to the <a class="el" href="class_n_p_c.html">NPC</a>. The <a class="el" href="class_n_p_c.html">NPC</a> AI code will have to be written to utilize those values. <br  />
   <a href="class_n_p_c.html#a70912c867c179a198c4e0ab06e01996c">More...</a><br /></td></tr>
 <tr class="separator:a70912c867c179a198c4e0ab06e01996c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e06da30b864a0cefc43ca3762d013e3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, int x, int y, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
+<tr class="memitem:a9e06da30b864a0cefc43ca3762d013e3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, int x, int y, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e">target</a>=255)</td></tr>
 <tr class="memdesc:a9e06da30b864a0cefc43ca3762d013e3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
 This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array. <br  />
  A short-hand for  <a href="class_n_p_c.html#a9e06da30b864a0cefc43ca3762d013e3">More...</a><br /></td></tr>
 <tr class="separator:a9e06da30b864a0cefc43ca3762d013e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a835e0dd6969506583b01b698b5b53f30"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">position</a>, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
+<tr class="memitem:a835e0dd6969506583b01b698b5b53f30"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a835e0dd6969506583b01b698b5b53f30">NewNPCDirect</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075">position</a>, int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e">target</a>=255)</td></tr>
 <tr class="memdesc:a835e0dd6969506583b01b698b5b53f30"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
 This particular overload returns the actual <a class="el" href="class_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
@@ -901,7 +901,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>aiStyle</b></td></tr>
 <tr class="memitem:a62b76723c81ba46dd6210c219769eaf6"><td class="memItemLeft" align="right" valign="top"><a id="a62b76723c81ba46dd6210c219769eaf6" name="a62b76723c81ba46dd6210c219769eaf6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
 <tr class="memdesc:a62b76723c81ba46dd6210c219769eaf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically expressed in computer graphics. Can be used to fade an <a class="el" href="class_n_p_c.html">NPC</a> in and out. <br  />
- Use Opacity instead for a 0f to 1f scaling that uses the high value for fully opaque, as is more typical in computer graphics. <br  />
+ Use <a class="el" href="class_n_p_c.html#aa66ce90acde6fe01338e59c8da821938" title="The transparency of the NPC expressed as a float value from 0f (transparent) to 1f (opaque)....">Opacity</a> instead for a 0f to 1f scaling that uses the high value for fully opaque, as is more typical in computer graphics. <br  />
  Defaults to 0. <br /></td></tr>
 <tr class="separator:a62b76723c81ba46dd6210c219769eaf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84a6ee1ee4aeac767425f0f8c3b69d0b"><td class="memItemLeft" align="right" valign="top"><a id="a84a6ee1ee4aeac767425f0f8c3b69d0b" name="a84a6ee1ee4aeac767425f0f8c3b69d0b"></a>
@@ -1055,6 +1055,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ForcePartyHatOn</b></
 <tr class="separator:a6e04ef7426e627cc8e7f402e0470acc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24fde10437c2dfa9d6217a3bc47b234"><td class="memItemLeft" align="right" valign="top"><a id="aa24fde10437c2dfa9d6217a3bc47b234" name="aa24fde10437c2dfa9d6217a3bc47b234"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>frame</b></td></tr>
+<tr class="memdesc:aa24fde10437c2dfa9d6217a3bc47b234"><td class="mdescLeft">&#160;</td><td class="mdescRight">The portion ("frame") of this <a class="el" href="class_n_p_c.html">NPC</a>'s spritesheet that will be drawn. <a class="el" href="class_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC....">ModNPC</a> should adjust this in <a class="el" href="class_mod_n_p_c.html#af372ab81defe98db878f181a8c66978c" title="Allows you to modify the frame from this NPC&#39;s texture that is drawn, which is necessary in order to ...">ModNPC.FindFrame(int)</a>. <br /></td></tr>
 <tr class="separator:aa24fde10437c2dfa9d6217a3bc47b234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49b5abd04d31a090c88a59f3ac7d07a6"><td class="memItemLeft" align="right" valign="top"><a id="a49b5abd04d31a090c88a59f3ac7d07a6" name="a49b5abd04d31a090c88a59f3ac7d07a6"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>frameCounter</b></td></tr>
@@ -1375,6 +1376,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>takenDamageMultiplie
 <tr class="separator:a2aa0340d4559be24c631a3d16121d2c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24627ed4a99fbc0555b1be4717a9335e"><td class="memItemLeft" align="right" valign="top"><a id="a24627ed4a99fbc0555b1be4717a9335e" name="a24627ed4a99fbc0555b1be4717a9335e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>target</b> = -1</td></tr>
+<tr class="memdesc:a24627ed4a99fbc0555b1be4717a9335e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_player.html">Player</a> that this <a class="el" href="class_n_p_c.html">NPC</a> is currently targeting, represented as the index of that <a class="el" href="class_player.html">Player</a> within <a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a> (the <a class="el" href="class_player.html">Player</a>'s <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a>). This is typically set by calling the <a class="el" href="class_n_p_c.html#ace46ba11f1b49ba040e73aed0b05b1d9" title="Targets the closest alive Player and optionally faces towards that Player. This will set target to th...">NPC.TargetClosest(bool)</a> method. Use <a class="el" href="class_n_p_c.html#a107eea2ccf9aa77e2ebc83b18892e8ec" title="Checks if target is a valid Player to target. This checks that target has a valid value and that the ...">HasValidTarget</a> to check if <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a> has a valid value before accessing <code><a class="el" href="class_main.html#a9687e7f510efb7175d2aa8c81cdcbf33" title="Contains all the Players in the game world. Only entries in this array that are Entity....">Main.player</a>[<a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">NPC.target</a>]</code> and doing logic dealing with the targeted player. Defaults to -1. Some <a class="el" href="class_n_p_c.html">NPC</a> support targeting other <a class="el" href="class_n_p_c.html">NPC</a> (<a class="el" href="class_n_p_c.html#ade5c0f25fd7b3e50fc5f73ed8c519c2b" title="Shorthand for checking NPCID.Sets.UsesNewTargetting.">SupportsNPCTargets</a>). For these <a class="el" href="class_n_p_c.html">NPC</a>, <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a> will be set to a value between 300 and 500. See HasNPCTarget, TranslatedTargetIndex, and <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6e612daf5a1d3b581d96ac94af578354" title="If true for a given NPC type (NPC.type), then that NPC can target other NPCs.   This set does not aut...">NPCID.Sets.UsesNewTargetting</a> for more information on that feature. <br /></td></tr>
 <tr class="separator:a24627ed4a99fbc0555b1be4717a9335e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a480c6dded48afc3eedf4daa2113270a8"><td class="memItemLeft" align="right" valign="top"><a id="a480c6dded48afc3eedf4daa2113270a8" name="a480c6dded48afc3eedf4daa2113270a8"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>targetRect</b></td></tr>
@@ -1391,8 +1393,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>teleportTime</b></td
 <tr class="memitem:a388b872e4f94ab3e7a482d7db1e4bc5e"><td class="memItemLeft" align="right" valign="top"><a id="a388b872e4f94ab3e7a482d7db1e4bc5e" name="a388b872e4f94ab3e7a482d7db1e4bc5e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>tentacleSpiked</b></td></tr>
 <tr class="separator:a388b872e4f94ab3e7a482d7db1e4bc5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1dc41e935373f0a30980e06b60e823b"><td class="memItemLeft" align="right" valign="top"><a id="ad1dc41e935373f0a30980e06b60e823b" name="ad1dc41e935373f0a30980e06b60e823b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>timeLeft</b></td></tr>
+<tr class="memitem:ad1dc41e935373f0a30980e06b60e823b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ad1dc41e935373f0a30980e06b60e823b">timeLeft</a></td></tr>
+<tr class="memdesc:ad1dc41e935373f0a30980e06b60e823b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Despawn timer in charge of determining when an <a class="el" href="class_n_p_c.html">NPC</a> that is offscreen but not far away enough to immediately despawn will despawn naturally. Gets set to <a class="el" href="class_n_p_c.html#a8914d2e4ca5a42c9473581607901981e" title="Default despawn time. Set to 750 or 12.5 seconds. Use to update timeLeft when the NPC is close to any...">activeTime</a> when near any player and decreases each update otherwise. The <a class="el" href="class_n_p_c.html">NPC</a> despawning wiki pagehas more information. <a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366" title="Whether or not to run the code for checking whether this NPC will remain active. Return false to stop...">ModNPC.CheckActive</a> can be used to prevent an <a class="el" href="class_n_p_c.html">NPC</a> outside the immediate despawn range from despawning.  <a href="class_n_p_c.html#ad1dc41e935373f0a30980e06b60e823b">More...</a><br /></td></tr>
 <tr class="separator:ad1dc41e935373f0a30980e06b60e823b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada99030b93a11b2198ddde81afa1fffe"><td class="memItemLeft" align="right" valign="top"><a id="ada99030b93a11b2198ddde81afa1fffe" name="ada99030b93a11b2198ddde81afa1fffe"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>townNPC</b></td></tr>
@@ -1482,6 +1484,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a8914d2e4ca5a42c9473581607901981e"><td class="memItemLeft" align="right" valign="top"><a id="a8914d2e4ca5a42c9473581607901981e" name="a8914d2e4ca5a42c9473581607901981e"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>activeTime</b> = 750</td></tr>
+<tr class="memdesc:a8914d2e4ca5a42c9473581607901981e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default despawn time. Set to 750 or 12.5 seconds. Use to update <a class="el" href="class_n_p_c.html#ad1dc41e935373f0a30980e06b60e823b" title="Despawn timer in charge of determining when an NPC that is offscreen but not far away enough to immed...">timeLeft</a> when the <a class="el" href="class_n_p_c.html">NPC</a> is close to any player. <br /></td></tr>
 <tr class="separator:a8914d2e4ca5a42c9473581607901981e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbacc72b09660ab245d9b14203b0d0f9"><td class="memItemLeft" align="right" valign="top"><a id="acbacc72b09660ab245d9b14203b0d0f9" name="acbacc72b09660ab245d9b14203b0d0f9"></a>
 static readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>AFKTimeNeededForNoWorms</b> = 300</td></tr>
@@ -1955,6 +1958,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasPlayerTarget</b><c
 <tr class="separator:a9e6bd0b09f8d618e21afa46da99598b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a107eea2ccf9aa77e2ebc83b18892e8ec"><td class="memItemLeft" align="right" valign="top"><a id="a107eea2ccf9aa77e2ebc83b18892e8ec" name="a107eea2ccf9aa77e2ebc83b18892e8ec"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasValidTarget</b><code> [get]</code></td></tr>
+<tr class="memdesc:a107eea2ccf9aa77e2ebc83b18892e8ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a> is a valid <a class="el" href="class_player.html">Player</a> to target. This checks that <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a> has a valid value and that the specified <a class="el" href="class_player.html">Player</a> is alive, active, not a ghost. If this <a class="el" href="class_n_p_c.html">NPC</a> supports targeting other <a class="el" href="class_n_p_c.html">NPC</a> (<a class="el" href="class_n_p_c.html#ade5c0f25fd7b3e50fc5f73ed8c519c2b" title="Shorthand for checking NPCID.Sets.UsesNewTargetting.">SupportsNPCTargets</a>), then this will check if that <a class="el" href="class_n_p_c.html">NPC</a> is still active. <br /></td></tr>
 <tr class="separator:a107eea2ccf9aa77e2ebc83b18892e8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1718bfe78a370411b1108fb52b909a3"><td class="memItemLeft" align="right" valign="top"><a id="ab1718bfe78a370411b1108fb52b909a3" name="ab1718bfe78a370411b1108fb52b909a3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HideStrikeDamage</b><code> [get, set]</code></td></tr>
@@ -1963,6 +1967,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HideStrikeDamage</b><
 <tr class="separator:ab1718bfe78a370411b1108fb52b909a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7798c8b14d3137de83b367fbd4be4bba"><td class="memItemLeft" align="right" valign="top"><a id="a7798c8b14d3137de83b367fbd4be4bba" name="a7798c8b14d3137de83b367fbd4be4bba"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLikeATownNPC</b><code> [get]</code></td></tr>
+<tr class="memdesc:a7798c8b14d3137de83b367fbd4be4bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if either <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a5ef43a2df24f7f513c6e607047d105df" title="Whether or not a given NPC will act like a town NPC in terms of AI, animations, and attacks,...">NPCID.Sets.ActsLikeTownNPC</a> or townNPC is true. <br /></td></tr>
 <tr class="separator:a7798c8b14d3137de83b367fbd4be4bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab260a3b36334bbbb6a44da691eaf9431"><td class="memItemLeft" align="right" valign="top"><a id="ab260a3b36334bbbb6a44da691eaf9431" name="ab260a3b36334bbbb6a44da691eaf9431"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMechQueenUp</b><code> [get]</code></td></tr>
@@ -1985,6 +1990,7 @@ static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>MaxFallSpee
 <tr class="separator:a0a5966f3995c783e132c8bc37d6f290c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa66ce90acde6fe01338e59c8da821938"><td class="memItemLeft" align="right" valign="top"><a id="aa66ce90acde6fe01338e59c8da821938" name="aa66ce90acde6fe01338e59c8da821938"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Opacity</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:aa66ce90acde6fe01338e59c8da821938"><td class="mdescLeft">&#160;</td><td class="mdescRight">The transparency of the <a class="el" href="class_n_p_c.html">NPC</a> expressed as a float value from 0f (transparent) to 1f (opaque). This property wraps <a class="el" href="class_n_p_c.html#a62b76723c81ba46dd6210c219769eaf6" title="0 is opaque, and 255 is transparent. Note that this is the opposite of how alpha is typically express...">alpha</a>. <br /></td></tr>
 <tr class="separator:aa66ce90acde6fe01338e59c8da821938"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62adfac920c5b282d0361dafa51c9ec7"><td class="memItemLeft" align="right" valign="top"><a id="a62adfac920c5b282d0361dafa51c9ec7" name="a62adfac920c5b282d0361dafa51c9ec7"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>ShieldStrengthTowerMax</b><code> [get]</code></td></tr>
@@ -2000,6 +2006,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>SuperArmor</b><code> 
 <tr class="separator:a75a027c492c900d13ee9d1eea8dad690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade5c0f25fd7b3e50fc5f73ed8c519c2b"><td class="memItemLeft" align="right" valign="top"><a id="ade5c0f25fd7b3e50fc5f73ed8c519c2b" name="ade5c0f25fd7b3e50fc5f73ed8c519c2b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SupportsNPCTargets</b><code> [get]</code></td></tr>
+<tr class="memdesc:ade5c0f25fd7b3e50fc5f73ed8c519c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for checking <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a6e612daf5a1d3b581d96ac94af578354" title="If true for a given NPC type (NPC.type), then that NPC can target other NPCs.   This set does not aut...">NPCID.Sets.UsesNewTargetting</a>. <br /></td></tr>
 <tr class="separator:ade5c0f25fd7b3e50fc5f73ed8c519c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75444236d78c53328f79f1cef51bc41b"><td class="memItemLeft" align="right" valign="top"><a id="a75444236d78c53328f79f1cef51bc41b" name="a75444236d78c53328f79f1cef51bc41b"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TooWindyForButterflies</b><code> [get]</code></td></tr>
@@ -2908,7 +2915,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
     <tr><td class="paramname">ai1</td><td></td></tr>
     <tr><td class="paramname">ai2</td><td></td></tr>
     <tr><td class="paramname">ai3</td><td></td></tr>
-    <tr><td class="paramname">Target</td><td>Optionally, provide a <code><a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Player.whoAmI</a></code> to set NPC.target to a specific <a class="el" href="class_player.html">Player</a> immediately on spawn.</td></tr>
+    <tr><td class="paramname">Target</td><td>Optionally, provide a <code><a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Player.whoAmI</a></code> to set <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">NPC.target</a> to a specific <a class="el" href="class_player.html">Player</a> immediately on spawn.</td></tr>
   </table>
   </dd>
 </dl>
@@ -3247,6 +3254,32 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 
 </div>
 </div>
+<a id="ace46ba11f1b49ba040e73aed0b05b1d9" name="ace46ba11f1b49ba040e73aed0b05b1d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace46ba11f1b49ba040e73aed0b05b1d9">&#9670;&nbsp;</a></span>TargetClosest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPC.TargetClosest </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>faceTarget</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Targets the closest alive <a class="el" href="class_player.html">Player</a> and optionally faces towards that <a class="el" href="class_player.html">Player</a>. This will set <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a> to the targeted player, as well as <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a> if <em>faceTarget</em>  is true. Make sure to check <a class="el" href="class_n_p_c.html#a107eea2ccf9aa77e2ebc83b18892e8ec" title="Checks if target is a valid Player to target. This checks that target has a valid value and that the ...">HasValidTarget</a> before accessing <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">faceTarget</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae6a243b739b2a8e89b1534131a219de1" name="ae6a243b739b2a8e89b1534131a219de1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae6a243b739b2a8e89b1534131a219de1">&#9670;&nbsp;</a></span>TryGetGlobalNPC&lt; T &gt;() <span class="overload">[1/2]</span></h2>
 
@@ -3369,6 +3402,24 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 <div class="line">        0</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="ad1dc41e935373f0a30980e06b60e823b" name="ad1dc41e935373f0a30980e06b60e823b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1dc41e935373f0a30980e06b60e823b">&#9670;&nbsp;</a></span>timeLeft</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NPC.timeLeft</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Despawn timer in charge of determining when an <a class="el" href="class_n_p_c.html">NPC</a> that is offscreen but not far away enough to immediately despawn will despawn naturally. Gets set to <a class="el" href="class_n_p_c.html#a8914d2e4ca5a42c9473581607901981e" title="Default despawn time. Set to 750 or 12.5 seconds. Use to update timeLeft when the NPC is close to any...">activeTime</a> when near any player and decreases each update otherwise. The <a class="el" href="class_n_p_c.html">NPC</a> despawning wiki pagehas more information. <a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366" title="Whether or not to run the code for checking whether this NPC will remain active. Return false to stop...">ModNPC.CheckActive</a> can be used to prevent an <a class="el" href="class_n_p_c.html">NPC</a> outside the immediate despawn range from despawning. </p>
+<p ><br  />
+ </p>
+
 </div>
 </div>
 <a id="acf886c9366b1f1ce9e2a278c21a9c78b" name="acf886c9366b1f1ce9e2a278c21a9c78b"></a>

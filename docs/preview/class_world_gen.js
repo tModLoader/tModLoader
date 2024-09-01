@@ -19,6 +19,7 @@ var class_world_gen =
     [ "PlaceTile", "class_world_gen.html#a6d89efc164bd01b5920d1f761df42565", null ],
     [ "RandomWorldPoint", "class_world_gen.html#a89f0e44198e319e4f3429bb6fd00f291", null ],
     [ "TileRunner", "class_world_gen.html#a05e507c099b90c1b023918b42e032909", null ],
+    [ "crimson", "class_world_gen.html#a8abf0ca117f4635fa2b505c6981197d8", null ],
     [ "dontStarveWorldGen", "class_world_gen.html#a5f4ccd1d115e584d95a56738c8fc48a9", null ],
     [ "drunkWorldGen", "class_world_gen.html#ab2e8f72eb26ec239698178fbaa98cbd4", null ],
     [ "everythingWorldGen", "class_world_gen.html#a218ab12f8deb325ccfb2203cca0d64fa", null ],
