@@ -208,16 +208,20 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			}
 
 			var thisSlot = Get(slot);
+			ModAccessorySlotPlayer modSlotPlayer = ModSlotPlayer(Player);
+			var loadout = modSlotPlayer.GetLoadoutBySlot(slot);
 
 			if (thisSlot.DrawFunctionalSlot) {
-				bool skipMouse = DrawVisibility(ref ModSlotPlayer(Player).exHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
-				DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
+				bool skipMouse = DrawVisibility(ref loadout.ExHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
+				DrawSlot(loadout.ExAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
 				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			}
+
 			if (thisSlot.DrawVanitySlot)
-				DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -11, slot + ModSlotPlayer(Player).SlotCount, flag3, xLoc, yLoc);
+				DrawSlot(loadout.ExAccessorySlot, -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
+
 			if (thisSlot.DrawDyeSlot)
-				DrawSlot(ModSlotPlayer(Player).exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
+				DrawSlot(loadout.ExDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 		}
 		else {
 			if (!customLoc && Main.EquipPage != 0) {
@@ -327,7 +331,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 	/// At the end, calls this.DrawRedirect to enable custom drawing
 	/// </summary>
-	internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
+	private void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
 	{
 		bool flag = flag3 && !Main.mouseItem.IsAir;
 		int xLoc1 = xLoc - 47 * (slotDrawLoopCounter++);
@@ -389,19 +393,18 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			case -10:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalBackgroundTexture, out var funcTexture))
 					return funcTexture.Value;
-				return TextureAssets.InventoryBack3.Value;
+				break;
 			case -11:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityBackgroundTexture, out var vanityTexture))
 					return vanityTexture.Value;
-				return TextureAssets.InventoryBack8.Value;
+				break;
 			case -12:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeBackgroundTexture, out var dyeTexture))
 					return dyeTexture.Value;
-				return TextureAssets.InventoryBack12.Value;
+				break;
 		}
 
-		// Default to a functional slot
-		return TextureAssets.InventoryBack3.Value;
+		return TextureAssets.InventoryBack13.Value;
 	}
 
 	internal void DrawSlotTexture(Texture2D value6, Vector2 position, Rectangle rectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, int slot, int context)
@@ -455,8 +458,10 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
 	/// Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem
 	/// </summary>
-	public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
-		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
+	public bool ModSlotCheck(Item checkItem, int slot, int context)
+	{
+		return CanAcceptItem(slot, checkItem, context) && ModSlotPlayer(Player).CanItemBeEquippedInSlot(checkItem, slot);
+	}
 
 	/// <summary>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.
@@ -482,7 +487,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	{
 		for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {
 			if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
-				Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];
+				Item item2 = ModSlotPlayer(Player).GetFunctionalItemForCurrentLoadout(num);
 				if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 					projType = item2.shoot;
 					return true;

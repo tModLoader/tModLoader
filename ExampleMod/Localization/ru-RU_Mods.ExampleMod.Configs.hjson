@@ -24,6 +24,11 @@ ExampleModConfig: {
 		// Tooltip: ""
 	}
 
+	LoadoutSupportToggle: {
+	    Label: Enable loadout support for ExampleLoadoutSupportModAccessorySlot
+	    Tooltip: Disabling will discard any equipped items in the slot!
+	}
+	
 	// Headers.Items: Items
 }
 

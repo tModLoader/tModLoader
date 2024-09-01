@@ -36,25 +36,36 @@ public abstract class ModAccessorySlot : ModType
 	public virtual bool DrawVanitySlot => true;
 	public virtual bool DrawDyeSlot => true;
 
+	/// <summary>
+	/// Gets or sets a value indicating whether this slot supports equipment loadouts. If <see langword="false"/>,
+	/// the slot's item is shared between all loadouts. Defaults to <see langword="false"/>.
+	/// Changing this value requires a reload.
+	/// Changing the value from <see langword="true"/> to <see langword="false"/> will discard any item currently
+	/// equipped in the slot in any loadout.
+	/// Changing the value from <see langword="false"/> to <see langword="true"/> moves items from the previously shared
+	/// slot to the first loadout.
+	/// </summary>
+	public virtual bool HasEquipmentLoadoutSupport => false;
+
 	// Get/Set Properties for fetching slot information
 	public Item FunctionalItem {
-		get => ModSlotPlayer.exAccessorySlot[Type];
-		set => ModSlotPlayer.exAccessorySlot[Type] = value;
+		get => ModSlotPlayer.GetFunctionalItemForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetFunctionalItemForCurrentLoadout(Type, value);
 	}
 
 	public Item VanityItem {
-		get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount];
-		set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount] = value;
+		get => ModSlotPlayer.GetVanityItemForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetVanityItemForCurrentLoadout(Type, value);
 	}
 
 	public Item DyeItem {
-		get => ModSlotPlayer.exDyesAccessory[Type];
-		set => ModSlotPlayer.exDyesAccessory[Type] = value;
+		get => ModSlotPlayer.GetDyeItemForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetDyeItemForCurrentLoadout(Type, value);
 	}
 
 	public bool HideVisuals {
-		get => ModSlotPlayer.exHideAccessory[Type];
-		set => ModSlotPlayer.exHideAccessory[Type] = value;
+		get => ModSlotPlayer.GetHideAccessoryForCurrentLoadout(Type);
+		set => ModSlotPlayer.SetHideAccessoryForCurrentLoadout(Type, value);
 	}
 
 	public bool IsEmpty => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;

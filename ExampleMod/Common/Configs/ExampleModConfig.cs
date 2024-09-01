@@ -11,7 +11,7 @@ namespace ExampleMod.Common.Configs
 
 		// The things in brackets are known as "Attributes".
 
-		[Header("Items")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category. 
+		[Header("Items")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category.
 		// [Label("$Some.Key")] // A label is the text displayed next to the option. This should usually be a short description of what it does. By default all ModConfig fields and properties have an automatic label translation key, but modders can specify a specific translation key.
 		// [Tooltip("$Some.Key")] // A tooltip is a description showed when you hover your mouse over the option. It can be used as a more in-depth explanation of the option. Like with Label, a specific key can be provided.
 		[DefaultValue(true)] // This sets the configs default value.
@@ -20,5 +20,9 @@ namespace ExampleMod.Common.Configs
 
 		[ReloadRequired]
 		public bool WeaponWithGrowingDamageToggle;
+
+		[DefaultValue(true)]
+		[ReloadRequired]
+		public bool LoadoutSupportToggle;
 	}
 }
