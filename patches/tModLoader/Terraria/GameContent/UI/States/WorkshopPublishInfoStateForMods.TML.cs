@@ -49,7 +49,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		}
 	}
 
-	protected override List<WorkshopTagOption> GetTagsToShow() => SocialAPI.Workshop.SupportedTags.ModTags;
+	protected override List<WorkshopTagOption> GetTagsToShow() => SteamedWraps.ModTags;
 
 	protected override bool TryFindingTags(out FoundWorkshopEntryInfo info) => SocialAPI.Workshop.TryGetInfoForMod(_dataObject, out info);
 

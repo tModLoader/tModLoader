@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
-using Terraria.Social;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
@@ -37,15 +37,15 @@ internal class UIModTagFilterDropdown : UIPanel
 	private void BuildGrid()
 	{
 		int labelWidth = 100;
-		foreach (var tag in SocialAPI.Workshop.SupportedTags.ModTags) {
+		foreach (var tag in SteamedWraps.ModTags) {
 			string tagName = Language.GetTextValue(tag.NameKey);
 			labelWidth = Math.Max(labelWidth, (int)ChatManager.GetStringSize(FontAssets.MouseText.Value, tagName, new Vector2(0.8f)).X + 10);
 		}
 
 		int padding = 2;
 		int buttonHeight = 26 + padding;
-		int tagCount = SocialAPI.Workshop.SupportedTags.ModTags.Count; // 17
-		indexOfLanguageTags = SocialAPI.Workshop.SupportedTags.ModTags.FindIndex(x => x.InternalNameForAPIs == "English"); // 8
+		int tagCount = SteamedWraps.ModTags.Count; // 17
+		indexOfLanguageTags = SteamedWraps.ModTags.FindIndex(x => x.InternalNameForAPIs == "English"); // 8
 		int maxColumnCount = Math.Max(indexOfLanguageTags, tagCount - indexOfLanguageTags);
 
 		UIPanel dropdownPanel = new UIPanel {
@@ -60,7 +60,7 @@ internal class UIModTagFilterDropdown : UIPanel
 		dropdownPanel.SetPadding(0f);
 		Append(dropdownPanel);
 		for (int j = 0; j < tagCount; j++) {
-			var tag = SocialAPI.Workshop.SupportedTags.ModTags[j];
+			var tag = SteamedWraps.ModTags[j];
 
 			int top = 5 + buttonHeight * j;
 			int left = 5;
@@ -108,7 +108,7 @@ internal class UIModTagFilterDropdown : UIPanel
 	private void ClickCategoryTag(UIMouseEvent evt, UIElement listeningElement)
 	{
 		int tagIndex = ((GroupOptionButton<int>)listeningElement).OptionValue;
-		string tagName = SocialAPI.Workshop.SupportedTags.ModTags[tagIndex].InternalNameForAPIs;
+		string tagName = SteamedWraps.ModTags[tagIndex].InternalNameForAPIs;
 
 		if (Interface.modBrowser.CategoryTagsFilter.Contains(tagIndex))
 			Interface.modBrowser.CategoryTagsFilter.Remove(tagIndex);
@@ -154,7 +154,7 @@ internal class UIModTagFilterDropdown : UIPanel
 		for (int i = 0; i < indexOfLanguageTags; i++) {
 			var item = tagButtons[i];
 			if (item.IsMouseHovering) {
-				UICommon.TooltipMouseText(Language.GetTextValue(SocialAPI.Workshop.SupportedTags.ModTags[item.OptionValue].NameKey + "Description"));
+				UICommon.TooltipMouseText(Language.GetTextValue(SteamedWraps.ModTags[item.OptionValue].NameKey + "Description"));
 			}
 		}
 		if(clearTagsButton.IsMouseHovering)
