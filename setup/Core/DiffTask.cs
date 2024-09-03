@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 			taskProgress.ReportStatus("Deleting Unnecessary Patches", overwrite: true);
 			foreach ((string file, string relPath) in EnumerateFiles(parameters.PatchDir)) {
-				string targetPath = relPath.EndsWith(".patch") ? relPath.Substring(0, relPath.Length - 6) : relPath;
+				var targetPath = relPath.EndsWith(".patch") ? relPath.Substring(0, relPath.Length - 6) : relPath;
 				if (!File.Exists(Path.Combine(parameters.PatchedDir, targetPath)))
 					DeleteFile(file);
 			}
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.Setup.Core
 			DeleteEmptyDirs(parameters.PatchDir);
 
 			taskProgress.ReportStatus("Noting Removed Files");
-			string[] removedFiles = PatchTask.EnumerateSrcFiles(parameters.BaseDir)
+			var removedFiles = PatchTask.EnumerateSrcFiles(parameters.BaseDir)
 				.Select(f => f.relPath)
 				.Where(path => !File.Exists(Path.Combine(parameters.PatchedDir, path)))
 				.Order()

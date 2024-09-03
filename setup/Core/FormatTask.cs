@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.Setup.Core
 		private readonly FormatTaskParameters parameters;
 
 		static FormatTask() {
-			OptionSet optionSet = Workspace.CurrentSolution.Options;
+			var optionSet = Workspace.CurrentSolution.Options;
 
 			// Essentials
 			optionSet = optionSet
@@ -47,8 +47,8 @@ namespace Terraria.ModLoader.Setup.Core
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default) {
 			using var taskProgress = progress.StartTask($"Formatting {Path.GetFileName(parameters.ProjectPath)}...");
 
-			string dir = Path.GetDirectoryName(parameters.ProjectPath)!; //just format all files in the directory
-			IEnumerable<WorkItem> workItems = Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
+			var dir = Path.GetDirectoryName(parameters.ProjectPath)!; //just format all files in the directory
+			var workItems = Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
 				.Select(path => new FileInfo(path))
 				.OrderByDescending(f => f.Length)
 				.Select(f => new WorkItem("Formatting: " + f.Name,
@@ -61,14 +61,8 @@ namespace Terraria.ModLoader.Setup.Core
 		private static async ValueTask FormatFile(string path, bool aggressive, CancellationToken cancellationToken) {
 			string source = await File.ReadAllTextAsync(path, cancellationToken);
 			string formatted = Format(source, aggressive, cancellationToken);
-			if (source != formatted) {
+			if (source != formatted)
 				await File.WriteAllTextAsync(path, formatted, cancellationToken);
-			}
-		}
-
-		public static string Format(string source, bool aggressive, CancellationToken cancellationToken) {
-			SyntaxTree tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
-			return Format(tree.GetRoot(), aggressive, cancellationToken).ToFullString();
 		}
 
 		private static SyntaxNode Format(SyntaxNode node, bool aggressive, CancellationToken cancellationToken) {
@@ -82,6 +76,11 @@ namespace Terraria.ModLoader.Setup.Core
 			node = Formatter.Format(node, Workspace, cancellationToken: cancellationToken);
 			node = new CollectionInitializerFormatter().Visit(node);
 			return node;
+		}
+
+		public static string Format(string source, bool aggressive, CancellationToken cancellationToken) {
+			SyntaxTree tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
+			return Format(tree.GetRoot(), aggressive, cancellationToken).ToFullString();
 		}
 	}
 }

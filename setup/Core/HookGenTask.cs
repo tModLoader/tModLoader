@@ -33,9 +33,8 @@ namespace Terraria.ModLoader.Setup.Core
 
 			string outputPath = Path.Combine(LibsPath, "Common", "TerrariaHooks.dll");
 
-			if (File.Exists(outputPath)) {
+			if (File.Exists(outputPath))
 				File.Delete(outputPath);
-			}
 
 			taskProgress.ReportStatus("Hooking: tModLoader.dll -> TerrariaHooks.dll");
 
@@ -80,7 +79,9 @@ namespace Terraria.ModLoader.Setup.Core
 
 			mm.Read();
 
-			var gen = new HookGenerator(mm, "TerrariaHooks") { HookPrivate = true };
+			var gen = new HookGenerator(mm, "TerrariaHooks") {
+				HookPrivate = true,
+			};
 
 			foreach (var type in mm.Module.Types) {
 				if (!type.FullName.StartsWith("Terraria") || type.FullName.StartsWith("Terraria.ModLoader"))
