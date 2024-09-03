@@ -213,9 +213,6 @@ jobs:
           echo Downloading Terraria Server zip
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
-          echo Extracting Setup Secret Assets
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./$TERRARIA_VERSION/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
           
           echo Installing XNA
           curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
@@ -223,7 +220,7 @@ jobs:
           echo XNA Installed
           
           echo ::group::Running setup-cli.bat
-          ./setup-cli.bat setup-auto ./$TERRARIA_VERSION/Windows steam_build --plain-progress
+          ./setup-cli.bat setup-auto --key $TERRARIA_OWNERSHIP_KEY ./$TERRARIA_VERSION/Windows steam_build --plain-progress
           echo ::endgroup::
           
           echo ::group::WorkspaceInfo.targets

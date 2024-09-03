@@ -36,11 +36,11 @@ public class TerrariaExecutableSetter
 		await FindTerrariaDirectory(cancellationToken);
 	}
 
-	public async Task CheckTerrariaExecutablePathsAndPromptIfNecessary(CancellationToken cancellationToken = default)
+	public async Task<string> CheckTerrariaExecutablePathsAndPromptIfNecessary(CancellationToken cancellationToken = default)
 	{
 		string[] paths = [programSettings.TerrariaPath!, programSettings.TerrariaServerPath!];
 		if (paths.All(File.Exists))
-			return;
+			return programSettings.TerrariaPath!;
 
 		var missing = paths.First(f => !File.Exists(f));
 		if (programSettings.NoPrompts)
@@ -48,6 +48,8 @@ public class TerrariaExecutableSetter
 
 		userPrompt.Inform("Missing required file", missing, PromptSeverity.Error);
 		await SelectAndSetTerrariaDirectory(cancellationToken);
+
+		return programSettings.TerrariaPath!;
 	}
 
 	public async Task SelectAndSetTerrariaDirectory(CancellationToken cancellationToken = default)

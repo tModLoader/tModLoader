@@ -85,6 +85,12 @@ public static class Program
 
 			config.AddCommand<UpdateLocalizationFilesCommand>("update-localization-files")
 				.WithDescription("Updates other localization files after adding new keys to en-US.tModLoader.json. Requires python 3.");
+
+			config.AddBranch("secret", x => {
+				x.AddCommand<SecretEncryptCommand>("encrypt");
+				x.AddCommand<SecretOwnershipCommand>("ownership");
+				x.AddCommand<RevealKeyCommand>("reveal");
+			});
 		});
 
 		return await app.RunAsync(args);
