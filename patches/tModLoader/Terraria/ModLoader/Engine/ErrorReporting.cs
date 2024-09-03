@@ -127,9 +127,9 @@ internal class ErrorReporting
 	/// <summary> Various error codes to show in Visual Studio. Mainly used to cross reference with source code. Subject to change if more granular error codes are needed. </summary>
 	internal enum TMLErrorCode
 	{
-		TML001, // tMod file in use
+		TML001, // Other exception
 		TML002, // Any BuildException
-		TML003, // Other exception
+		TML003, // tMod file in use
 	}
 
 	/// <summary> Writes an error to stderr using the <see href="https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-diagnostic-format-for-tasks?view=vs-2022">"MSBuild and Visual Studio format for diagnostic messages"</see>.

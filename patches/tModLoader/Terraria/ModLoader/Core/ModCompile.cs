@@ -178,10 +178,10 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		}
 		catch (Exception e) {
 			if (e is IOException iOException) {
-				ErrorReporting.LogStandardDiagnosticError("Please close tModLoader or disable the mod in-game to build mods directly.", ErrorReporting.TMLErrorCode.TML001);
+				ErrorReporting.LogStandardDiagnosticError("Please close tModLoader or disable the mod in-game to build mods directly.", ErrorReporting.TMLErrorCode.TML003);
 			}
 			else {
-				ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML003);
+				ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML001);
 			}
 			Environment.Exit(1);
 		}
