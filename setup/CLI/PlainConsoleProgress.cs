@@ -13,18 +13,11 @@ public sealed class PlainConsoleProgress : IProgress
 
 	private sealed class TaskProgress : ITaskProgress
 	{
-		private int? maxProgress;
-
 		public void Dispose() { }
 
-		public void SetMaxProgress(int max) => maxProgress = max;
+		public void SetMaxProgress(int max) { }
 
-		public void SetCurrentProgress(int current)
-		{
-			if (maxProgress.HasValue) {
-				Console.WriteLine(Indent($"Progress: {current}/{maxProgress.Value}"));
-			}
-		}
+		public void SetCurrentProgress(int current) { }
 
 		public void ReportStatus(string status, bool overwrite = false)
 		{
