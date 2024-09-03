@@ -278,7 +278,12 @@ namespace Terraria.ModLoader.Setup.GUI
 					timer.Tick += (_, _) => {
 						var s = state;
 						mainForm.progressBar.Maximum = s.max;
-						mainForm.progressBar.Value = s.current;
+						if (mainForm.progressBar.Value != s.current) {
+							// disable the progress bar animation by setting the value 'backwards'. The animation is often too slow and thus looks bad.
+							mainForm.progressBar.Value = s.max;
+							mainForm.progressBar.Value = s.current;
+						}
+
 						mainForm.labelStatus.Text = s.status;
 					};
 					timer.Start();
