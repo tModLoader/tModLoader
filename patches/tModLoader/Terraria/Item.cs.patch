@@ -1797,7 +1797,15 @@
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47101,8 +_,11 @@
+@@ -47095,14 +_,19 @@
+ 			return;
+ 		}
+ 
++		PopulateTaglistEarly();
++
+ 		if (Main.netMode == 1 || Main.netMode == 2)
+ 			playerIndexTheItemIsReservedFor = 255;
+ 		else
  			playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  		ResetStats(Type);
@@ -1829,7 +1837,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,19 +_,27 @@
+@@ -47297,19 +_,29 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
@@ -1839,6 +1847,8 @@
  		if (!noMatCheck)
  			material = ItemID.Sets.IsAMaterial[type];
  
++		PopulateTaglistLate();
++
  		RebuildTooltip();
 -		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
 +		if (type > 0 && ItemID.Sets.Deprecated[type]) {
