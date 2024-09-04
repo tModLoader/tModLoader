@@ -22,7 +22,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// Automagically partially populates an item's taglist BEFORE the rest of <see cref="SetDefaults(int)"/> is run.<br/>
 	/// Uses ID sets to help identify applicable tags for an item early.<br/>
 	/// </summary>
-	public void PopulateTaglistEarly()
+	public void InitializeTags()
 	{
 		Tags = [];
 
@@ -44,13 +44,18 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 				Tags.Add("boss_bag/prehardmode");
 		}
 
-		if (ItemID.Sets.IsChainsaw[type] || ItemID.Sets.IsDrill[type]) {
-			Tags.Add("motorized_tool");
+		if (ItemID.Sets.IsChainsaw[type] || ItemID.Sets.IsDrill[type] || type == ItemID.ChlorophyteJackhammer) {
+			Tags.Add("tool/motorized");
 			if (ItemID.Sets.IsChainsaw[type])
-				Tags.Add("motorized_tool/chainsaw");
+				Tags.Add("tool/motorized/chainsaw");
 			if (ItemID.Sets.IsDrill[type])
-				Tags.Add("motorized_tool/drill");
+				Tags.Add("tool/motorized/drill");
+			if (type == ItemID.ChlorophyteJackhammer)
+				Tags.Add("tool/motorized/jackhammer");
 		}
+
+		if (ItemID.Sets.IgnoresEncumberingStone[type])
+			Tags.Add("ignores_encumbering_stone");
 	}
 
 	/// <summary>
@@ -59,7 +64,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// - All applicable <see cref="GlobalType{TEntity, TGlobal}.SetDefaults(TEntity)"/> hooks, if any<br/>
 	/// Used for tags that cannot ask ID sets for help in the early stage or at all, such as tool or weapon type tags.<br/>
 	/// </summary>
-	public void PopulateTaglistLate()
+	public void DetermineAdditionalTags()
 	{
 		if (pick > 0 || axe > 0 || hammer > 0) {
 			Tags.Add("tool");
@@ -91,7 +96,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 			if (DamageType == DamageClass.Summon) {
 				if (shoot > 0 && ContentSamples.ProjectilesByType[shoot].minionSlots > 0)
 					Tags.Add("summon/minion");
-				if (shoot > 0 && ProjectileID.Sets.IsAWhip[shoot])
+				if (shoot > 0 && ContentSamples.ProjectilesByType[shoot].sentry)
 					Tags.Add("summon/sentry");
 				if (shoot > 0 && ProjectileID.Sets.IsAWhip[shoot])
 					Tags.Add("whip");
@@ -113,5 +118,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 				Tags.Add("placeable/background");
 			}
 		}
+
+		if (rare != ItemRarityID.White || ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type])
+			Tags.Add("lava_immune");
 	}
 }

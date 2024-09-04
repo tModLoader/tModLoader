@@ -1797,11 +1797,12 @@
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47095,14 +_,19 @@
+@@ -47095,14 +_,20 @@
  			return;
  		}
  
-+		PopulateTaglistEarly();
++		// tML: ID sets are...antiquated
++		InitializeTags();
 +
  		if (Main.netMode == 1 || Main.netMode == 2)
  			playerIndexTheItemIsReservedFor = 255;
@@ -1837,7 +1838,16 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,19 +_,29 @@
+@@ -47272,7 +_,7 @@
+ 			useAnimation = 0;
+ 		}
+ 
+-		if (ItemID.Sets.IsDrill[type] || ItemID.Sets.IsChainsaw[type] || type == 1262) {
++		if (Tags.Contains("tool/motorized")) {
+ 			useTime = (int)((double)useTime * 0.6);
+ 			if (useTime < 1)
+ 				useTime = 1;
+@@ -47297,19 +_,30 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
@@ -1847,7 +1857,8 @@
  		if (!noMatCheck)
  			material = ItemID.Sets.IsAMaterial[type];
  
-+		PopulateTaglistLate();
++		// tML: set tags which are determined by item stats
++		DetermineAdditionalTags();
 +
  		RebuildTooltip();
 -		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
@@ -2026,7 +2037,7 @@
  			NetMessage.SendData(21, -1, -1, null, i);
  		}
 -		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < ItemID.Count && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
-+		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
++		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !Tags.Contains("lava_immune")) {
  			active = false;
  			type = 0;
  			stack = 0;

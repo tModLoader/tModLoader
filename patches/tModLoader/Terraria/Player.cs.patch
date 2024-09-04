@@ -296,14 +296,26 @@
  	public float slotsMinions;
  	public bool pygmy;
  	public bool raven;
+@@ -722,6 +_,11 @@
+ 	public bool crystalLeaf;
+ 	public int crystalLeafCooldown;
+ 	public PortableStoolUsage portableStoolInfo;
++
++	/// <summary>
++	/// Prevents all items without the <c>"ignores_encumbering_stone"</c> tag from being picked up.<br/>
++	/// As the relevant tag implies, used in vanilla solely by the Encumbering Stone.<br/>
++	/// </summary>
+ 	public bool preventAllItemPickups;
+ 	public bool dontHurtCritters;
+ 	public bool hasLucyTheAxe;
 @@ -731,6 +_,11 @@
  	public bool defendedByPaladin;
  	public bool hasPaladinShield;
  	public float[] speedSlice = new float[60];
 +
 +	/// <summary>
-+	/// The sum of the <see cref="NPC.npcSlots"/> of all town NPCs near this player.
-+	/// <br/> If <c><see cref="townNPCs"/> &gt; 2f</c>, then this player is in a town.
++	/// The sum of the <see cref="NPC.npcSlots"/> of all town NPCs near this player.<br/>
++	/// If <c><see cref="townNPCs"/> &gt; 2f</c>, then this player is in a town.<br/>
 +	/// </summary>
  	public float townNPCs;
  	public double headFrameCounter;
@@ -4782,6 +4794,15 @@
  		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
+@@ -26955,7 +_,7 @@
+ 	public bool CanAcceptItemIntoInventory(Item item)
+ 	{
+ 		if (preventAllItemPickups)
+-			return ItemID.Sets.IgnoresEncumberingStone[item.type];
++			return item.Tags.Contains("ignores_encumbering_stone");
+ 
+ 		return true;
+ 	}
 @@ -26967,11 +_,23 @@
  			if (!item.active || item.shimmerTime != 0f || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item) || (item.shimmered && !((double)item.velocity.Length() < 0.2)))
  				continue;
