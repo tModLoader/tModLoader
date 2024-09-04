@@ -13,6 +13,7 @@ namespace ExampleMod
 
 		public override void Load() {
 			// Registers a new custom currency
+			CloudLoader.AddCloudFromTexture<SimpleModCloud>(this, AssetPath + "Textures/CloudsT/SimpleCloud");
 			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
 		}
 

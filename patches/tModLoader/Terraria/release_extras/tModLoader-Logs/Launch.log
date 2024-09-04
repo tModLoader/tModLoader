@@ -1,0 +1,86 @@
+Logging to E:/Code/tModLoader-ModCloud/src/tModLoader/Terraria/release_extras/tModLoader-Logs/Launch.log
+Fixing Environment Issues
+Windows Version 10.0
+Quick Edit Disabled
+Verifying installation directory...
+Success!
+Verifying .NET....
+Parsing .NET version requirements from runtimeconfig.json
+Success! dotnet_version=
+Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting
+Checking for old .NET versions to remove from folder
+Cleanup Complete
+Checking dotnet install...
+Update Required. Checking for Windows pre-deployed x64 dotnet files
+None Found. Attempting downloading win x64 portable dotnet runtime directly...
+This can take up to 5 minutes
+Extracting...
+unzip: short read
+Update Required. Will now attempt downloading using official scripts.
+This can take up to 5 minutes
+dotnet-install: Downloading from "primary" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404 Downloading from "primary" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404
+dotnet-install: Downloading from "primary" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404 Downloading from "primary" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404
+dotnet-install: Downloading from "primary" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404 Downloading from "primary" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404
+dotnet-install: Downloading from "primary" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetcli.azureedge.net/dotnet/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404 Downloading from "primary" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-runtime--win-x64.zip. Returned HTTP status code: 404 Downloading from "legacy" link has failed with error:
+Uri: https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip
+StatusCode: 404
+Error: Unable to download https://dotnetbuilds.azureedge.net/public/Runtime//dotnet-win-x64..zip. Returned HTTP status code: 404
+Could not find ".NET Core Runtime" with version = 
+Refer to: https://aka.ms/dotnet-os-lifecycle for information on .NET support
+At E:\Code\tModLoader-ModCloud\src\tModLoader\Terraria\release_extras\LaunchUtils\dotnet-install.ps1:1330 char:5
++     throw "Could not find `"$assetName`" with version = $($DownloadLi ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Could not find ...on .NET support:String) [], RuntimeException
+    + FullyQualifiedErrorId : Could not find ".NET Core Runtime" with version = 
+Refer to: https://aka.ms/dotnet-os-lifecycle for information on .NET support
+ 
+Dotnet should be present in "E:/Code/tModLoader-ModCloud/src/tModLoader/Terraria/release_extras/dotnet"
+[31mDownload of portable dotnet runtime seems to have failed,[0m
+[31mProceeding will probably fall back to system wide installed runtime[0m
+Attempting Launch...
+Launched Using System Dotnet. Launch command: dotnet tModLoader.dll ""
