@@ -1797,16 +1797,7 @@
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47095,14 +_,20 @@
- 			return;
- 		}
- 
-+		// tML: ID sets are...antiquated
-+		InitializeTags();
-+
- 		if (Main.netMode == 1 || Main.netMode == 2)
- 			playerIndexTheItemIsReservedFor = 255;
- 		else
+@@ -47101,8 +_,11 @@
  			playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  		ResetStats(Type);

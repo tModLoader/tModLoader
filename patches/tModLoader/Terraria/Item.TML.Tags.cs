@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,51 +13,17 @@ namespace Terraria;
 public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 {
 	/// <summary>
-	/// A list of all content tags that apply to this item.<br/>
-	/// Content tags are a wide variety of strings stored here, designed to help denote what an item is.<br/>
-	/// For a list of all available content tags please refer to [REDACTED].<br/>
+	/// A list of all dynamic content tags that apply to this item.<br/>
+	/// Content tags are a wide variety of strings stored here, designed to help denote important details about an item.<br/>
+	/// The tModLoader wiki provides a convenient list of content tags provided by tML, what they mean, and what effects they have, if any.<br/>
 	/// </summary>
-	public HashSet<string> Tags { get; set; }
+	public HashSet<string> DynamicTags { get; set; }
 
 	/// <summary>
-	/// Automagically partially populates an item's taglist BEFORE the rest of <see cref="SetDefaults(int)"/> is run.<br/>
-	/// Uses ID sets to help identify applicable tags for an item early.<br/>
+	/// Fetches tags for this item from both <see cref="ItemLoader.StaticItemTags"/> and <see cref="DynamicTags"/>.<br/>
+	/// Anything which checks against an item having a specific tag should check this instead of its constituent parts.
 	/// </summary>
-	public void InitializeTags()
-	{
-		Tags = [];
-
-		if (ItemID.Sets.IsFood[type])
-			Tags.Add("food");
-
-		if (ItemID.Sets.IsAKite[type])
-			Tags.Add("kite");
-
-		if (ItemID.Sets.IsFishingCrate[type]) {
-			Tags.Add("fishing_crate");
-			if (ItemID.Sets.IsFishingCrateHardmode[type])
-				Tags.Add("fishing_crate/hardmode");
-		}
-
-		if (ItemID.Sets.BossBag[type]) {
-			Tags.Add("boss_bag");
-			if (ItemID.Sets.PreHardmodeLikeBossBag[type])
-				Tags.Add("boss_bag/prehardmode");
-		}
-
-		if (ItemID.Sets.IsChainsaw[type] || ItemID.Sets.IsDrill[type] || type == ItemID.ChlorophyteJackhammer) {
-			Tags.Add("tool/motorized");
-			if (ItemID.Sets.IsChainsaw[type])
-				Tags.Add("tool/motorized/chainsaw");
-			if (ItemID.Sets.IsDrill[type])
-				Tags.Add("tool/motorized/drill");
-			if (type == ItemID.ChlorophyteJackhammer)
-				Tags.Add("tool/motorized/jackhammer");
-		}
-
-		if (ItemID.Sets.IgnoresEncumberingStone[type])
-			Tags.Add("ignores_encumbering_stone");
-	}
+	public HashSet<string> Tags => ItemLoader.StaticItemTags[type].Union(DynamicTags).ToHashSet();
 
 	/// <summary>
 	/// Automagically finishes population of an item's taglist AFTER <see cref="SetDefaults(int)"/> is run in full, including:<br/>
@@ -67,25 +34,25 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public void DetermineAdditionalTags()
 	{
 		if (pick > 0 || axe > 0 || hammer > 0) {
-			Tags.Add("tool");
+			DynamicTags.Add("tool");
 			if (pick > 0)
-				Tags.Add("tool/pickaxe");
+				DynamicTags.Add("tool/pickaxe");
 			if (axe > 0)
-				Tags.Add("tool/axe");
+				DynamicTags.Add("tool/axe");
 			if (hammer > 0)
-				Tags.Add("tool/hammer");
+				DynamicTags.Add("tool/hammer");
 		}
 
 		if (damage > 0) {
 			if (DamageType == DamageClass.Melee) {
-				if (useStyle == ItemUseStyleID.Swing && !noMelee && !noUseGraphic && !Tags.Contains("tool"))
-					Tags.Add("broadsword");
+				if (useStyle == ItemUseStyleID.Swing && !noMelee && !noUseGraphic && !DynamicTags.Contains("tool"))
+					DynamicTags.Add("broadsword");
 				if (shoot > 0 && ContentSamples.ProjectilesByType[shoot].aiStyle == ProjAIStyleID.ShortSword)
-					Tags.Add("shortsword");
+					DynamicTags.Add("shortsword");
 				if (shoot > 0 && ContentSamples.ProjectilesByType[shoot].aiStyle == ProjAIStyleID.Flail)
-					Tags.Add("flail");
+					DynamicTags.Add("flail");
 				if (shoot > 0 && ItemID.Sets.Yoyo[type] && ContentSamples.ProjectilesByType[shoot].aiStyle == ProjAIStyleID.Yoyo)
-					Tags.Add("yoyo");
+					DynamicTags.Add("yoyo");
 			}
 			if (DamageType == DamageClass.Ranged) {
 				
@@ -95,31 +62,31 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 			}
 			if (DamageType == DamageClass.Summon) {
 				if (shoot > 0 && ContentSamples.ProjectilesByType[shoot].minionSlots > 0)
-					Tags.Add("summon/minion");
+					DynamicTags.Add("summon/minion");
 				if (shoot > 0 && ContentSamples.ProjectilesByType[shoot].sentry)
-					Tags.Add("summon/sentry");
+					DynamicTags.Add("summon/sentry");
 				if (shoot > 0 && ProjectileID.Sets.IsAWhip[shoot])
-					Tags.Add("whip");
+					DynamicTags.Add("whip");
 			}
 		}
 
 		if (createTile > -1 || createWall > -1)
 		{
-			Tags.Add("placeable");
+			DynamicTags.Add("placeable");
 			if (createTile > -1) {
-				Tags.Add("placeable/foreground");
+				DynamicTags.Add("placeable/foreground");
 				if (ItemID.Sets.Torches[type] && TileID.Sets.Torch[createTile]) {
-					Tags.Add("placeable/foreground/torch");
+					DynamicTags.Add("placeable/foreground/torch");
 					if (ItemID.Sets.WaterTorches[type])
-						Tags.Add("placeable/foreground/torch/valid_in_water");
+						DynamicTags.Add("placeable/foreground/torch/valid_in_water");
 				}
 			}
 			if (createWall > -1) {
-				Tags.Add("placeable/background");
+				DynamicTags.Add("placeable/background");
 			}
 		}
 
 		if (rare != ItemRarityID.White || ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type])
-			Tags.Add("lava_immune");
+			DynamicTags.Add("lava_immune");
 	}
 }
