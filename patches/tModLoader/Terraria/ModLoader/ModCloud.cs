@@ -41,6 +41,6 @@ public abstract class ModCloud : ModTexturedType
 	/// <param name="color"></param>
 	/// <param name="cloudIndex">The index of the cloud in Main.cloud.</param>
 	/// <returns></returns>
-	public virtual bool Draw(SpriteBatch spriteBatch, Vector2 position,  Color color, int cloudIndex) => true;
+	public virtual bool Draw(SpriteBatch spriteBatch, Vector2 position, ref Color color, int cloudIndex) => true;
 	
 }
