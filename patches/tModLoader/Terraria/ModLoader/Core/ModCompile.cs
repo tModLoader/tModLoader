@@ -171,18 +171,13 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 		}
 		catch (BuildException e) {
-			ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML002);
+			ErrorReporting.LogStandardDiagnosticError(e.Message, e.errorCode);
 			if (e.InnerException != null)
 				Console.Error.WriteLine(e.InnerException);
 			Environment.Exit(1);
 		}
 		catch (Exception e) {
-			if (e is IOException iOException) {
-				ErrorReporting.LogStandardDiagnosticError("Please close tModLoader or disable the mod in-game to build mods directly.", ErrorReporting.TMLErrorCode.TML003);
-			}
-			else {
-				ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML001);
-			}
+			ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML001);
 			Environment.Exit(1);
 		}
 
@@ -229,7 +224,13 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				loadedMod.Close();
 			}
 
-			mod.modFile.Save();
+			try {
+				mod.modFile.Save();
+			}
+			catch (IOException e) {
+				throw new BuildException("Please close tModLoader or disable the mod in-game to build mods directly.", e, ErrorReporting.TMLErrorCode.TML003);
+			}
+
 			ModLoader.EnableMod(mod.Name);
 			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);
