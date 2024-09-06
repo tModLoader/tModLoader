@@ -1463,17 +1463,6 @@ public static class PlayerLoader
 
 	public static void ArmorSetBonusActivated(Player player)
 	{
-		int keyIndex = 0;
-		bool keyReleased = player.controlDown && player.releaseDown;
-
-		if (Main.ReversedUpDownArmorSetBonuses) {
-			keyIndex = 1;
-			keyReleased = player.controlUp && player.releaseUp;
-		}
-
-		if (!keyReleased || player.doubleTapCardinalTimer[keyIndex] <= 0)
-			return;
-
 		foreach (var modPlayer in HookArmorSetBonusActivated.Enumerate(player)) {
 			modPlayer.ArmorSetBonusActivated();
 		}

@@ -4023,12 +4023,9 @@
  		infernoCounter++;
  		if (infernoCounter >= 180)
  			infernoCounter = 0;
-@@ -19217,7 +_,12 @@
- 					}
+@@ -19218,6 +_,9 @@
  				}
  
-+				PlayerLoader.ArmorSetBonusActivated(this);
-+
  				controlDownHold = holdDownCardinalTimer[0] >= 45;
 +
 +				PlayerLoader.SetControls(this);
@@ -8970,6 +8967,15 @@
  		item.stack = 6;
  		item.position = base.Center;
  		Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
+@@ -43921,6 +_,8 @@
+ 		if (keyDir != num)
+ 			return;
+ 
++		PlayerLoader.ArmorSetBonusActivated(this);
++
+ 		if (setVortex && !mount.Active)
+ 			vortexStealthActive = !vortexStealthActive;
+ 
 @@ -44020,7 +_,10 @@
  			}
  		}
