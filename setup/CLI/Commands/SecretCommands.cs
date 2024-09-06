@@ -33,7 +33,7 @@ public sealed class SecretEncryptCommand : CancellableAsyncCommand<EncryptComman
 			return 0;
 		}
 		catch (Exception ex) {
-			AnsiConsole.MarkupLineInterpolated($"[red]{ex.GetType().FullName}[/]: {ex.Message}\n{ex.StackTrace}");
+			AnsiConsole.WriteException(ex);
 			return 1;
 		}
 	}
@@ -69,7 +69,7 @@ public sealed class SecretOwnershipCommand : CancellableAsyncCommand<OwnershipCo
 			return 0;
 		}
 		catch (Exception ex) {
-			AnsiConsole.MarkupLineInterpolated($"[red]{ex.GetType().FullName}[/]: {ex.Message}\n{ex.StackTrace}");
+			AnsiConsole.WriteException(ex);
 			return 1;
 		}
 	}
@@ -95,7 +95,7 @@ public sealed class RevealKeyCommand : CancellableAsyncCommand<RevealKeySettings
 			return 0;
 		}
 		catch (Exception ex) {
-			AnsiConsole.MarkupLineInterpolated($"[red]{ex.GetType().FullName}[/]: {ex.Message}\n{ex.StackTrace}");
+			AnsiConsole.WriteException(ex);
 			return 1;
 		}
 	}

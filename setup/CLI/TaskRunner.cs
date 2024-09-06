@@ -78,8 +78,19 @@ public sealed class TaskRunner
 			}
 		}
 		catch (OperationCanceledException) { Console.WriteLine("Cancelled"); }
-		catch (Exception exception) when (exception is not OperationCanceledException) {
-			AnsiConsole.MarkupLineInterpolated($"[red]{exception.GetType().FullName}[/]: {exception.Message}");
+		catch (Exception exception)
+		{
+			if (exception is AggregateException aggregateException) {
+				aggregateException = aggregateException.Flatten();
+
+				if (aggregateException.InnerExceptions.All(x => x is OperationCanceledException)) {
+					return 0;
+				}
+
+				exception = aggregateException;
+			}
+
+			AnsiConsole.WriteException(exception);
 
 			SetupOperation.CreateDirectory(ProgramSettings.LogsDir);
 			await File.WriteAllTextAsync(errorLogFile, exception.ToString(), cancellationToken);

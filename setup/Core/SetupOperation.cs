@@ -31,57 +31,59 @@ namespace Terraria.ModLoader.Setup.Core
 			int? maxDegreeOfParallelism = null,
 			CancellationToken cancellationToken = default)
 		{
-			try {
-				int currentProgress = 0;
+			int currentProgress = 0;
 
-				if (resetProgress) {
-					progress.SetCurrentProgress(0);
-					progress.SetMaxProgress(items.Count);
-				}
+			if (resetProgress) {
+				progress.SetCurrentProgress(0);
+				progress.SetMaxProgress(items.Count);
+			}
 
-				var working = new List<WorkItem>();
+			var working = new List<WorkItem>();
 
-				void UpdateStatus()
-				{
-					progress.ReportStatus(string.Join("\r\n", working.Select(r => r.Status)), overwrite: true);
-				}
+			void UpdateStatus()
+			{
+				progress.ReportStatus(string.Join("\r\n", working.Select(r => r.Status)), overwrite: true);
+			}
 
-				await Parallel.ForEachAsync(
-					items,
-					new ParallelOptions {
-						MaxDegreeOfParallelism = maxDegreeOfParallelism > 0 ? maxDegreeOfParallelism.Value : Environment.ProcessorCount,
-						CancellationToken = cancellationToken,
-					},
-					async (item, ct) => {
+			await Parallel.ForEachAsync(
+				items,
+				new ParallelOptions {
+					MaxDegreeOfParallelism = maxDegreeOfParallelism > 0 ? maxDegreeOfParallelism.Value : Environment.ProcessorCount,
+					CancellationToken = cancellationToken,
+				},
+				async (item, ct) => {
+					lock (working) {
+						working.Add(item);
+						UpdateStatus();
+					}
+
+					void SetStatus(string s)
+					{
 						lock (working) {
-							working.Add(item);
+							item.Status = s;
 							UpdateStatus();
 						}
+					}
 
-						void SetStatus(string s)
-						{
-							lock (working) {
-								item.Status = s;
-								UpdateStatus();
-							}
-						}
-
+					try {
 						await item.Worker(SetStatus, ct);
+					}
+					catch(OperationCanceledException) { }
+					catch (Exception exception) {
+						throw new Exception($"Work item failed: \"{item.Status}\"", exception);
+					}
 
-						lock (working) {
-							working.Remove(item);
-							progress.SetCurrentProgress(++currentProgress);
-							UpdateStatus();
-						}
-					});
-			}
-			catch (AggregateException ex) {
-				var actual = ex.Flatten().InnerExceptions.Where(e => !(e is OperationCanceledException));
-				if (!actual.Any())
-					throw new OperationCanceledException();
-
-				throw new AggregateException(actual);
-			}
+					lock (working) {
+						working.Remove(item);
+						progress.SetCurrentProgress(++currentProgress);
+						UpdateStatus();
+					}
+				})
+				.ContinueWith(t => {
+					if (t.IsFaulted) {
+						throw t.Exception;
+					}
+				}, cancellationToken);
 		}
 
 		public static void CreateDirectory(string dir) {
@@ -177,7 +179,7 @@ namespace Terraria.ModLoader.Setup.Core
 		/// </summary>
 		/// <returns>A value indicating whether the task failed</returns>
 		public virtual bool Failed() => false;
-		
+
 		/// <summary>
 		///     Returns a value indicating whether the task completed with warnings.
 		/// </summary>
