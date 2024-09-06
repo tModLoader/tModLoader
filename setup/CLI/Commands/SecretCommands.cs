@@ -8,12 +8,12 @@ namespace Terraria.ModLoader.Setup.CLI.Commands;
 
 public sealed class EncryptCommandSettings : BaseCommandSettings
 {
-	[CommandOption("--key")]
+	[CommandOption("-k|--key")]
 	[Description("Key in hexadecimal")]
-	public string Key { get; init; }
+	public string? Key { get; init; }
 
-	[CommandArgument(0, "<path>")]
-	public string Path { get; init; }
+	[CommandArgument(0, "<PATH>")]
+	public required string Path { get; init; }
 }
 
 public sealed class SecretEncryptCommand : CancellableAsyncCommand<EncryptCommandSettings>
@@ -41,15 +41,15 @@ public sealed class SecretEncryptCommand : CancellableAsyncCommand<EncryptComman
 
 public sealed class OwnershipCommandSettings : BaseCommandSettings
 {
-	[CommandOption("--key")]
+	[CommandOption("-k|--key")]
 	[Description("Key in hexadecimal")]
-	public string Key { get; init; }
+	public string? Key { get; init; }
 
-	[CommandArgument(0, "<name>")]
-	public string Identifier { get; init; }
+	[CommandArgument(0, "<IDENTIFIER>")]
+	public required string Identifier { get; init; }
 
-	[CommandArgument(1, "<path>")]
-	public string Path { get; init; }
+	[CommandArgument(1, "<PATH>")]
+	public required string Path { get; init; }
 }
 
 public sealed class SecretOwnershipCommand : CancellableAsyncCommand<OwnershipCommandSettings>
@@ -74,9 +74,8 @@ public sealed class SecretOwnershipCommand : CancellableAsyncCommand<OwnershipCo
 		}
 	}
 }
-public sealed class RevealKeySettings : BaseCommandSettings
-{
-}
+
+public sealed class RevealKeySettings : BaseCommandSettings;
 
 public sealed class RevealKeyCommand : CancellableAsyncCommand<RevealKeySettings>
 {
