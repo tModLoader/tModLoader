@@ -1,4 +1,3 @@
-using System.Threading;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -7,54 +6,63 @@ namespace Terraria.ModLoader.Setup.Core;
 public class TerrariaExecutableSetter
 {
 	private readonly ProgramSettings programSettings;
+	private readonly WorkspaceInfo workspaceInfo;
 	private readonly ITerrariaExecutableSelectionPrompt terrariaExecutableSelectionPrompt;
 	private readonly IUserPrompt userPrompt;
-	private readonly TargetsFilesUpdater targetsFilesUpdater;
 
 	public TerrariaExecutableSetter(
 		ITerrariaExecutableSelectionPrompt terrariaExecutableSelectionPrompt,
 		IUserPrompt userPrompt,
-		TargetsFilesUpdater targetsFilesUpdater,
-		ProgramSettings programSettings)
+		ProgramSettings programSettings,
+		WorkspaceInfo workspaceInfo)
 	{
 		this.terrariaExecutableSelectionPrompt = terrariaExecutableSelectionPrompt;
 		this.userPrompt = userPrompt;
-		this.targetsFilesUpdater = targetsFilesUpdater;
 		this.programSettings = programSettings;
+		this.workspaceInfo = workspaceInfo;
 	}
 
-	public async Task FindAndSetTerrariaDirectoryIfNecessary(CancellationToken cancellationToken = default)
+	public async Task FindAndSetTerrariaDirectoryIfNecessary(
+		string? terrariaSteamDirectoryOverride,
+		string? tmlDevSteamDirectoryOverride,
+		CancellationToken cancellationToken = default)
 	{
-		if (Directory.Exists(programSettings.TerrariaSteamDir)) {
+		string terrariaDirectory = terrariaSteamDirectoryOverride ?? workspaceInfo.TerrariaSteamDirectory;
+		string[] fileNames = ["Terraria.exe", "TerrariaServer.exe"];
+		string[] missingFiles = fileNames.Where(path => !File.Exists(Path.Combine(terrariaDirectory, path))).ToArray();
+
+		if (missingFiles.Length == 0) {
+			SetTerrariaDirectory(terrariaDirectory, tmlDevSteamDirectoryOverride);
 			return;
 		}
 
-		if (programSettings.NoPrompts) {
-			throw new InvalidOperationException($"Critical failure. Terraria steam directory '{programSettings.TerrariaSteamDir}' does not exist.");
+		if (!string.IsNullOrWhiteSpace(terrariaSteamDirectoryOverride)) {
+			throw new InvalidOperationException($"Directory '{terrariaSteamDirectoryOverride}' does not contain: {string.Join(", ", missingFiles)}.");
 		}
 
-		await FindTerrariaDirectory(cancellationToken);
+		await FindTerrariaDirectory(tmlDevSteamDirectoryOverride, cancellationToken);
 	}
 
 	public async Task<string> CheckTerrariaExecutablePathsAndPromptIfNecessary(CancellationToken cancellationToken = default)
 	{
-		string[] paths = [programSettings.TerrariaPath!, programSettings.TerrariaServerPath!];
-		if (paths.All(File.Exists))
-			return programSettings.TerrariaPath!;
+		string[] paths = [workspaceInfo.TerrariaPath, workspaceInfo.TerrariaServerPath];
+		string[] missingFiles = paths.Where(path => !File.Exists(path)).ToArray();
 
-		var missing = paths.First(f => !File.Exists(f));
+		if (missingFiles.Length == 0)
+			return workspaceInfo.TerrariaPath;
+
 		if (programSettings.NoPrompts)
-			throw new FileNotFoundException(missing);
+			throw new InvalidOperationException($"Missing required files: {string.Join(Environment.NewLine, missingFiles)}");
 
-		userPrompt.Inform("Missing required file", missing, PromptSeverity.Error);
+		userPrompt.Inform("Missing required files", string.Join(Environment.NewLine, missingFiles), PromptSeverity.Error);
 		await SelectAndSetTerrariaDirectory(cancellationToken);
 
-		return programSettings.TerrariaPath!;
+		return workspaceInfo.TerrariaPath;
 	}
 
 	public async Task SelectAndSetTerrariaDirectory(CancellationToken cancellationToken = default)
 	{
-		SetTerrariaDirectory(await PromptForTerrariaDirectory(cancellationToken));
+		SetTerrariaDirectory(await PromptForTerrariaDirectory(cancellationToken), null);
 	}
 
 	private async Task<string> PromptForTerrariaDirectory(CancellationToken cancellationToken = default)
@@ -82,24 +90,25 @@ public class TerrariaExecutableSetter
 		}
 	}
 
-	private async Task FindTerrariaDirectory(CancellationToken cancellationToken = default)
+	private async Task FindTerrariaDirectory(string? tmlDevSteamDirectoryOverride, CancellationToken cancellationToken = default)
 	{
 		if (!SteamUtils.TryFindTerrariaDirectory(out string? terrariaFolderPath)) {
 			const string messageText = "Unable to automatically find Terraria's installation path. Please select it manually.";
+
+			if (programSettings.NoPrompts) {
+				throw new InvalidOperationException(messageText);
+			}
+
 			userPrompt.Inform("Error", messageText, PromptSeverity.Error);
 
 			terrariaFolderPath = await PromptForTerrariaDirectory(cancellationToken);
 		}
 
-		SetTerrariaDirectory(terrariaFolderPath);
+		SetTerrariaDirectory(terrariaFolderPath, tmlDevSteamDirectoryOverride);
 	}
 
-	private void SetTerrariaDirectory(string path)
+	private void SetTerrariaDirectory(string terrariaSteamDirectory, string? tmlDevSteamDirectoryOverride)
 	{
-		programSettings.TerrariaSteamDir = path;
-		programSettings.TMLDevSteamDir = string.Empty;
-		programSettings.Save();
-
-		targetsFilesUpdater.Update();
+		workspaceInfo.UpdatePaths(terrariaSteamDirectory, tmlDevSteamDirectoryOverride ?? workspaceInfo.TMLDevSteamDirectory);
 	}
 }

@@ -56,8 +56,6 @@ namespace Terraria.ModLoader.Setup.Core
 		{
 			using var taskProgress = progress.StartTask($"Patching {parameters.PatchedDir}...");
 
-			targetsFilesUpdater.Update();
-
 			string removedFileList = Path.Combine(parameters.PatchDir, DiffTask.RemovedFileList);
 			HashSet<string> noCopy = File.Exists(removedFileList)
 				? [..File.ReadAllLines(removedFileList).Select(PathUtils.WithUnixSeparators)]

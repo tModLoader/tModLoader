@@ -26,9 +26,10 @@ namespace Terraria.ModLoader.Setup.GUI
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			string userSettingsFilePath = Path.Combine("setup", "user.settings");
+			WorkspaceInfo workspaceInfo = WorkspaceInfo.Initialize();
 			if (!File.Exists(userSettingsFilePath)) {
 				ProgramSettings programSettings = ProgramSettings.InitializeSettingsFile(userSettingsFilePath);
-				MigrateSettings(programSettings);
+				MigrateSettings(programSettings, workspaceInfo);
 			}
 
 			IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -42,20 +43,17 @@ namespace Terraria.ModLoader.Setup.GUI
 				.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
 				.AddSingleton<IUserPrompt, UserPrompt>()
 				.AddSingleton<MainForm>()
+				.AddSingleton(workspaceInfo)
 				.AddSingleton<IPatchReviewer>(sp => sp.GetRequiredService<MainForm>());
 
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-			TerrariaExecutableSetter terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
-			terrariaExecutableSetter.FindAndSetTerrariaDirectoryIfNecessary().GetAwaiter().GetResult();
-
-			TargetsFilesUpdater targetsFilesUpdater = serviceProvider.GetRequiredService<TargetsFilesUpdater>();
-			targetsFilesUpdater.Update();
+			workspaceInfo.UpdateGitInfo();
 
 			Application.Run(serviceProvider.GetRequiredService<MainForm>());
 		}
 
-		private static void MigrateSettings(ProgramSettings programSettings)
+		private static void MigrateSettings(ProgramSettings programSettings, WorkspaceInfo workspaceInfo)
 		{
 			string settingsRootFolder =
 				Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Terraria");
@@ -74,10 +72,11 @@ namespace Terraria.ModLoader.Setup.GUI
 			XDocument document = XDocument.Load(fileInfo.FullName);
 
 			MigrateDateTimes(document, programSettings);
-			MigrateStrings(document, programSettings);
 			MigratePatchMode(document, programSettings);
 			MigrateFormatAfterDecompiling(document, programSettings);
 			programSettings.Save();
+
+			MigrateWorkspaceInfo(document, workspaceInfo);
 
 			CleanupDirectories(directories, settingsRootFolder);
 		}
@@ -94,21 +93,6 @@ namespace Terraria.ModLoader.Setup.GUI
 				XElement element = GetElement(document, migration.SettingName);
 				if (element != null) {
 					migration.UpdateAction(DateTime.Parse(element.Value, CultureInfo.InvariantCulture));
-				}
-			}
-		}
-
-		private static void MigrateStrings(XDocument document, ProgramSettings programSettings)
-		{
-			Migration<string>[] stringMigrations = [
-				new(x => programSettings.TerrariaSteamDir = x, "TerrariaSteamDir"),
-				new(x => programSettings.TMLDevSteamDir = x, "TMLDevSteamDir"),
-			];
-
-			foreach (Migration<string> migration in stringMigrations) {
-				XElement element = GetElement(document, migration.SettingName);
-				if (element != null) {
-					migration.UpdateAction(element.Value);
 				}
 			}
 		}
@@ -146,6 +130,13 @@ namespace Terraria.ModLoader.Setup.GUI
 				}
 			}
 			catch { }
+		}
+
+		private static void MigrateWorkspaceInfo(XDocument document, WorkspaceInfo workspaceInfo)
+		{
+			workspaceInfo.UpdatePaths(
+				GetElement(document, "TerrariaSteamDir").Value,
+				GetElement(document, "TMLDevSteamDir").Value);
 		}
 
 		private sealed record Migration<T>(Action<T> UpdateAction, string SettingName);

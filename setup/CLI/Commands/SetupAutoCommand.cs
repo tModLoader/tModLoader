@@ -35,14 +35,12 @@ public sealed class SetupAutoCommand : CancellableAsyncCommand<SetupAutoCommandS
 		CancellationToken cancellationToken)
 	{
 		programSettings.PatchMode = settings.PatchMode;
-		programSettings.TerrariaSteamDir = settings.TerrariaSteamDir;
-		programSettings.TMLDevSteamDir = settings.TMLDevSteamDir;
 
 		if (!Directory.Exists(settings.TMLDevSteamDir)) {
 			Directory.CreateDirectory(settings.TMLDevSteamDir);
 		}
 
-		SetupOperation setupTask = GetSetupOperation();
+		SetupOperation setupTask = GetSetupOperation(settings);
 
 		return await taskRunner.Run(setupTask, settings.PlainProgress, noPrompts: true, strict: true, cancellationToken);
 	}
@@ -56,13 +54,18 @@ public sealed class SetupAutoCommand : CancellableAsyncCommand<SetupAutoCommandS
 		return ValidationResult.Success();
 	}
 
-	private SetupOperation GetSetupOperation()
+	private SetupOperation GetSetupOperation(SetupAutoCommandSettings settings)
 	{
 		if (Directory.Exists("src/decompiled")) {
 			Console.WriteLine("src/decompiled found. Skipping decompilation...");
 			return new RegenSourceTask(serviceProvider);
 		}
 
-		return new SetupTask(DecompileTaskParameters.CreateDefault(maxDegreeOfParallelism: 1), serviceProvider);
+		DecompileTaskParameters parameters = DecompileTaskParameters.CreateDefault(
+			settings.TerrariaSteamDir,
+			settings.TMLDevSteamDir,
+			maxDegreeOfParallelism: 1);
+
+		return new SetupTask(parameters, serviceProvider);
 	}
 }

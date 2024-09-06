@@ -6,17 +6,12 @@ namespace Terraria.ModLoader.Setup.CLI;
 public sealed class TaskRunner
 {
 	private readonly ProgramSettings programSettings;
-	private readonly TargetsFilesUpdater targetsFilesUpdater;
-	private readonly TerrariaExecutableSetter terrariaExecutableSetter;
+	private readonly WorkspaceInfo workspaceInfo;
 
-	public TaskRunner(
-		ProgramSettings programSettings,
-		TargetsFilesUpdater targetsFilesUpdater,
-		TerrariaExecutableSetter terrariaExecutableSetter)
+	public TaskRunner(ProgramSettings programSettings, WorkspaceInfo workspaceInfo)
 	{
 		this.programSettings = programSettings;
-		this.targetsFilesUpdater = targetsFilesUpdater;
-		this.terrariaExecutableSetter = terrariaExecutableSetter;
+		this.workspaceInfo = workspaceInfo;
 	}
 
 	public async Task<int> Run(
@@ -33,8 +28,7 @@ public sealed class TaskRunner
 
 			SetupOperation.DeleteFile(errorLogFile);
 
-			await terrariaExecutableSetter.FindAndSetTerrariaDirectoryIfNecessary(cancellationToken);
-			targetsFilesUpdater.Update();
+			workspaceInfo.UpdateGitInfo();
 
 			await task.ConfigurationPrompt(cancellationToken);
 

@@ -10,17 +10,17 @@ namespace Terraria.ModLoader.Setup.GUI;
 
 public class TerrariaExecutableSelectionPrompt : ITerrariaExecutableSelectionPrompt
 {
-	private readonly ProgramSettings programSettings;
+	private readonly WorkspaceInfo workspaceInfo;
 
-	public TerrariaExecutableSelectionPrompt(ProgramSettings programSettings)
+	public TerrariaExecutableSelectionPrompt(WorkspaceInfo workspaceInfo)
 	{
-		this.programSettings = programSettings;
+		this.workspaceInfo = workspaceInfo;
 	}
 
 	public Task<string> Prompt(CancellationToken cancellationToken = default)
 	{
 		var dialog = new OpenFileDialog {
-			InitialDirectory = Path.GetFullPath(Directory.Exists(programSettings.TerrariaSteamDir) ? programSettings.TerrariaSteamDir : "."),
+			InitialDirectory = Path.GetFullPath(Directory.Exists(workspaceInfo.TerrariaSteamDirectory) ? workspaceInfo.TerrariaSteamDirectory : "."),
 			Filter = "Terraria|Terraria.exe",
 			Title = "Select Terraria.exe"
 		};

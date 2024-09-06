@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Terraria.ModLoader.Setup.Core.Utilities;
@@ -11,9 +12,10 @@ public sealed class ProjectPathCommandSettings : BaseCommandSettings
 
 	[CommandArgument(0, "<PROJECT_PATH>")]
 	[Description("Path to the .csproj file.")]
-	public string ProjectPath
+	public required string ProjectPath
 	{
 		get => projectPath;
+		[MemberNotNull(nameof(projectPath))]
 		set => projectPath = PathUtils.GetCrossPlatformFullPath(value);
 	}
 

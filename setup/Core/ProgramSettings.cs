@@ -19,10 +19,6 @@ public sealed class ProgramSettings
 
 	public static string LogsDir { get; } = Path.Combine("setup", "logs");
 
-	public string? TerrariaSteamDir { get; set; }
-
-	public string? TMLDevSteamDir { get; set; }
-
 	public DateTime? TerrariaDiffCutoff { get; set; }
 
 	public DateTime? TerrariaNetCoreDiffCutoff { get; set; }
@@ -35,16 +31,6 @@ public sealed class ProgramSettings
 
 	[JsonIgnore]
 	public bool NoPrompts { get; set; }
-
-	[JsonIgnore]
-	public string? TerrariaPath => string.IsNullOrEmpty(TerrariaSteamDir)
-		? null
-		: Path.Combine(TerrariaSteamDir, "Terraria.exe");
-
-	[JsonIgnore]
-	public string? TerrariaServerPath => string.IsNullOrEmpty(TerrariaSteamDir)
-		? null
-		: Path.Combine(TerrariaSteamDir, "TerrariaServer.exe");
 
 	public void Save()
 	{

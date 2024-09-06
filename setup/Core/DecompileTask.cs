@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.Setup.Core
 				{
 					if (cache.TryGetValue(name.FullName, out var module))
 						return module;
-					
+
 					//look in the base module's embedded resources
 					var resName = name.Name + ".dll";
 					var res = baseModule.Resources.Where(r => r.ResourceType == ResourceType.Embedded).SingleOrDefault(r => r.Name.EndsWith(resName));
@@ -49,7 +49,7 @@ namespace Terraria.ModLoader.Setup.Core
 						module = new PEFile(res.Name, res.TryOpenStream()!);
 
 					module ??= _resolver.Resolve(name)!;
-					
+
 					cache[name.FullName] = module;
 					return module;
 				}
@@ -80,6 +80,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 
 		private readonly ProgramSettings programSettings;
+		private readonly WorkspaceInfo workspaceInfo;
 		private readonly TerrariaExecutableSetter terrariaExecutableSetter;
 		private readonly DecompileTaskParameters parameters;
 
@@ -90,6 +91,7 @@ namespace Terraria.ModLoader.Setup.Core
 		{
 			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 			terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
+			workspaceInfo = serviceProvider.GetRequiredService<WorkspaceInfo>();
 			this.parameters = parameters with { SrcDir = PathUtils.WithUnixSeparators(parameters.SrcDir) };
 
 			var formatting = FormattingOptionsFactory.CreateKRStyle();
@@ -115,7 +117,10 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public override async ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default)
 		{
-			await terrariaExecutableSetter.CheckTerrariaExecutablePathsAndPromptIfNecessary(cancellationToken);
+			await terrariaExecutableSetter.FindAndSetTerrariaDirectoryIfNecessary(
+				parameters.TerrariaSteamDirectory,
+				parameters.TmlDevSteamDirectory,
+				cancellationToken);
 		}
 
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
@@ -124,9 +129,9 @@ namespace Terraria.ModLoader.Setup.Core
 			taskProgress.ReportStatus("Deleting Old Src");
 			if (Directory.Exists(parameters.SrcDir))
 				Directory.Delete(parameters.SrcDir, true);
-			
-			var clientModule = parameters.ServerOnly ? null : ReadModule(programSettings.TerrariaPath!, clientVersion, taskProgress);
-			var serverModule = ReadModule(programSettings.TerrariaServerPath!, serverVersion, taskProgress);
+
+			var clientModule = parameters.ServerOnly ? null : ReadModule(workspaceInfo.TerrariaPath, clientVersion, taskProgress);
+			var serverModule = ReadModule(workspaceInfo.TerrariaServerPath, serverVersion, taskProgress);
 			var mainModule = (parameters.ServerOnly ? serverModule : clientModule)!;
 
 			var embeddedAssemblyResolver = new EmbeddedAssemblyResolver(mainModule, mainModule.DetectTargetFrameworkId());
@@ -423,7 +428,7 @@ namespace Terraria.ModLoader.Setup.Core
 					w.WriteStartElement("PropertyGroup");
 					w.WriteElementString("OutputType", outputType);
 					w.WriteElementString("Version", new AssemblyName(module.FullName).Version!.ToString());
-					
+
 					var attribs = GetCustomAttributes(module);
 					w.WriteElementString("Company", attribs[nameof(AssemblyCompanyAttribute)]);
 					w.WriteElementString("Copyright", attribs[nameof(AssemblyCopyrightAttribute)]);
@@ -432,7 +437,7 @@ namespace Terraria.ModLoader.Setup.Core
 					w.WriteEndElement(); // </PropertyGroup>
 
 					writeSpecificConfig(w);
-					
+
 					// resources
 					w.WriteStartElement("ItemGroup");
 					foreach (var r in ApplyWildcards(resources, sources.ToArray()).OrderBy(r => r)) {

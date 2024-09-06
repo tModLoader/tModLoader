@@ -220,6 +220,11 @@ jobs:
           echo XNA Installed
           
           echo ::group::Running setup-cli.bat
+          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
+            tmlVersionDefine=TML_$(cut -d '.' -f1 <<< $TMLVERSION)_$(cut -d '.' -f2 <<< $TMLVERSION)
+            echo "TMLVERSIONDefine: $tmlVersionDefine"
+            sed -i "s#<\!-- TML stable version define placeholder -->#<DefineConstants>\$(DefineConstants);$tmlVersionDefine</DefineConstants>#g" ./patches/tModLoader/Terraria/release_extras/tMLMod.targets
+          fi
           ./setup-cli.bat setup-auto --key $TERRARIA_OWNERSHIP_KEY ./$TERRARIA_VERSION/Windows steam_build --plain-progress
           echo ::endgroup::
           

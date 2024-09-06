@@ -30,7 +30,8 @@ public static class Program
 			.AddCoreServices(configuration, userSettingsFilePath)
 			.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
 			.AddSingleton<IUserPrompt, UserPrompt>()
-			.AddSingleton<TaskRunner>();
+			.AddSingleton<TaskRunner>()
+			.AddSingleton(WorkspaceInfo.Initialize());
 
 		var app = new CommandApp(new TypeRegistrar(services));
 		app.Configure(config => {

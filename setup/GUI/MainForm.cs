@@ -20,8 +20,8 @@ namespace Terraria.ModLoader.Setup.GUI
 	public partial class MainForm : Form, IProgress, IPatchReviewer
 	{
 		private readonly ProgramSettings programSettings;
+		private readonly WorkspaceInfo workspaceInfo;
 		private readonly TerrariaExecutableSetter terrariaExecutableSetter;
-		private readonly TargetsFilesUpdater targetsFilesUpdater;
 		private readonly IServiceProvider serviceProvider;
 		private CancellationTokenSource cancelSource;
 
@@ -31,19 +31,19 @@ namespace Terraria.ModLoader.Setup.GUI
 
 		public MainForm(
 			ProgramSettings programSettings,
+			WorkspaceInfo workspaceInfo,
 			TerrariaExecutableSetter terrariaExecutableSetter,
-			TargetsFilesUpdater targetsFilesUpdater,
 			IServiceProvider serviceProvider)
 		{
 			this.programSettings = programSettings;
+			this.workspaceInfo = workspaceInfo;
 			this.terrariaExecutableSetter = terrariaExecutableSetter;
-			this.targetsFilesUpdater = targetsFilesUpdater;
 			this.serviceProvider = serviceProvider;
 			InitializeComponent();
 
 			labelWorkingDirectory.Text = $"{Directory.GetCurrentDirectory()}";
 
-			taskButtons[buttonDecompile] = () => new DecompileTask(DecompileTaskParameters.CreateDefault(), serviceProvider);
+			taskButtons[buttonDecompile] = () => new DecompileTask(DecompileTaskParameters.CreateDefault(null, null), serviceProvider);
 			// Terraria
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(DiffTaskParameters.ForTerraria(this.programSettings));
 			taskButtons[buttonPatchTerraria] = () => new PatchTask(PatchTaskParameters.ForTerraria(programSettings), serviceProvider);
@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.Setup.GUI
 
 			taskButtons[buttonRegenSource] = () => new RegenSourceTask(serviceProvider);
 
-			taskButtons[buttonSetup] = () => new SetupTask(DecompileTaskParameters.CreateDefault(), serviceProvider);
+			taskButtons[buttonSetup] = () => new SetupTask(DecompileTaskParameters.CreateDefault(null, null), serviceProvider);
 
 			SetPatchMode(this.programSettings.PatchMode);
 			formatDecompiledOutputToolStripMenuItem.Checked = programSettings.FormatAfterDecompiling;
@@ -95,12 +95,17 @@ namespace Terraria.ModLoader.Setup.GUI
 		}
 
 		private void menuItemDecompileServer_Click(object sender, EventArgs e) {
-			RunTask(new DecompileTask(DecompileTaskParameters.CreateDefault(serverOnly: true), serviceProvider));
+			RunTask(new DecompileTask(DecompileTaskParameters.CreateDefault(null, null, serverOnly: true), serviceProvider));
 		}
 
-		private void menuItemFormatCode_Click(object sender, EventArgs e) {
-			projectSelectionProjectPath = PromptForProjectPath(projectSelectionProjectPath);
-			RunTask(new FormatTask(new FormatTaskParameters { ProjectPath = projectSelectionProjectPath }));
+		private void menuItemFormatCode_Click(object sender, EventArgs e)
+		{
+			string selectedPath = PromptForProjectPath(projectSelectionProjectPath);
+			projectSelectionProjectPath ??= selectedPath;
+
+			if (selectedPath != null) {
+				RunTask(new FormatTask(new FormatTaskParameters { ProjectPath = projectSelectionProjectPath }));
+			}
 		}
 
 		private void menuItemHookGen_Click(object sender, EventArgs e) {
@@ -108,8 +113,12 @@ namespace Terraria.ModLoader.Setup.GUI
 		}
 
 		private void simplifierToolStripMenuItem_Click(object sender, EventArgs e) {
-			projectSelectionProjectPath = PromptForProjectPath(projectSelectionProjectPath);
-			RunTask(new SimplifierTask(new RoslynTaskParameters { ProjectPath = projectSelectionProjectPath }));
+			string selectedPath = PromptForProjectPath(projectSelectionProjectPath);
+			projectSelectionProjectPath ??= selectedPath;
+
+			if (selectedPath != null) {
+				RunTask(new SimplifierTask(new RoslynTaskParameters { ProjectPath = projectSelectionProjectPath }));
+			}
 		}
 
 		private static string PromptForProjectPath(string currentProjectPath)
@@ -219,24 +228,14 @@ namespace Terraria.ModLoader.Setup.GUI
 		}
 
 		private void menuItemTmlPath_Click(object sender, EventArgs e) {
-			while (true) {
-				var dialog = new OpenFileDialog {
-					InitialDirectory = Path.GetFullPath(Directory.Exists(programSettings.TerrariaSteamDir) ? programSettings.TerrariaSteamDir : "."),
-					ValidateNames = false,
-					CheckFileExists = false,
-					CheckPathExists = true,
-					FileName = "Folder Selection.",
-				};
+			var dialog = new FolderBrowserDialog {
+				InitialDirectory = Path.GetFullPath(Directory.Exists(workspaceInfo.TerrariaSteamDirectory) ? workspaceInfo.TerrariaSteamDirectory : "."),
+			};
 
-				if (dialog.ShowDialog() != DialogResult.OK)
-					return;
-
-				programSettings.TMLDevSteamDir = Path.GetDirectoryName(dialog.FileName);
-				programSettings.Save();
-				targetsFilesUpdater.Update();
-
+			if (dialog.ShowDialog() != DialogResult.OK)
 				return;
-			}
+
+			workspaceInfo.UpdatePaths(workspaceInfo.TerrariaSteamDirectory, dialog.SelectedPath);
 		}
 
 		private void updateLocalizationFilesToolStripMenuItem_Click(object sender, EventArgs e)
