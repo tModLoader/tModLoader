@@ -157,6 +157,8 @@ namespace Terraria.ModLoader.Setup.GUI
 			{
 				SetupOperation.DeleteFile(errorLogFile);
 
+				workspaceInfo.UpdateGitInfo();
+
 				await task.ConfigurationPrompt(cancelSource.Token);
 
 				if (!task.StartupWarning())
