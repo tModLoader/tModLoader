@@ -223,6 +223,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// This is called when the player activates their armor set bonus by double tapping down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true).
+	/// <para /> Use this to implement armor set bonuses that need to be activated by the player.
+	/// <para /> Don't forget to check if your armor set is active.
+	/// </summary>
+	public virtual void ArmorSetBonusActivated()
+	{
+	}
+
+	/// <summary>
 	/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
 	/// </summary>
 	public virtual void SetControls()

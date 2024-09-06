@@ -158,7 +158,7 @@
  	public int eocDash;
  	public int eocHit;
 +	/// <summary>
-+	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running. 
++	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running.
 +	/// <para/> Defaults to 3f. Accessories set this to specific values, resulting in the last equipped accessories to dictate the final value. Vanilla shoe accessories set this to <c>6f</c> (<see cref="ItemID.HermesBoots"/>) or <c>6.75</c> (<see cref="ItemID.LightningBoots"/>). This assignment should happen in <see cref="ModItem.UpdateEquip(Player)"/>.
 +	/// <para/> This value is later multiplied by other effects in the same manner as <see cref="maxRunSpeed"/>. They are usually modified in tandem, but not always depending on the desired result. For example, asphalt triples maxRunSpeed but does not affect accRunSpeed, whereas Shadow Armor affects both equally.
 +	/// <para/> These multiplicative adjustments should only be done in <see cref="ModPlayer.PostUpdateRunSpeeds"/> or <see cref="ModItem.HorizontalWingSpeeds"/> to correctly function.
@@ -4023,9 +4023,12 @@
  		infernoCounter++;
  		if (infernoCounter >= 180)
  			infernoCounter = 0;
-@@ -19218,6 +_,9 @@
+@@ -19217,7 +_,12 @@
+ 					}
  				}
  
++				PlayerLoader.ArmorSetBonusActivated(this);
++
  				controlDownHold = holdDownCardinalTimer[0] >= 45;
 +
 +				PlayerLoader.SetControls(this);

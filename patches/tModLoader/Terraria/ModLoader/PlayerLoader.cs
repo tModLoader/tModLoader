@@ -1458,4 +1458,24 @@ public static class PlayerLoader
 
 		return true;
 	}
+
+	private static HookList HookArmorSetBonusActivated = AddHook<Action>(p => p.ArmorSetBonusActivated);
+
+	public static void ArmorSetBonusActivated(Player player)
+	{
+		int keyIndex = 0;
+		bool keyReleased = player.controlDown && player.releaseDown;
+
+		if (Main.ReversedUpDownArmorSetBonuses) {
+			keyIndex = 1;
+			keyReleased = player.controlUp && player.releaseUp;
+		}
+
+		if (!keyReleased || player.doubleTapCardinalTimer[keyIndex] <= 0)
+			return;
+
+		foreach (var modPlayer in HookArmorSetBonusActivated.Enumerate(player)) {
+			modPlayer.ArmorSetBonusActivated();
+		}
+	}
 }
