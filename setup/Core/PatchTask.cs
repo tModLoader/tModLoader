@@ -16,7 +16,6 @@ namespace Terraria.ModLoader.Setup.Core
 
 		private readonly IUserPrompt userPrompt;
 		private readonly IPatchReviewer? patchReviewer;
-		private readonly TargetsFilesUpdater targetsFilesUpdater;
 		private readonly ProgramSettings programSettings;
 		private readonly PatchTaskParameters parameters;
 
@@ -30,7 +29,6 @@ namespace Terraria.ModLoader.Setup.Core
 		{
 			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 			patchReviewer = serviceProvider.GetService<IPatchReviewer>();
-			targetsFilesUpdater = serviceProvider.GetRequiredService<TargetsFilesUpdater>();
 			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 			this.parameters = parameters with {
 				BaseDir = PathUtils.WithUnixSeparators(parameters.BaseDir),
