@@ -89,7 +89,7 @@ namespace Terraria.ModLoader.Setup.Core.Formatting
 
 		private StatementSyntax RemoveBraces(BlockSyntax block) => EnsureEndsLine(block.Statements[0]);
 
-		public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax method) {
+		public override SyntaxNode? VisitMethodDeclaration(MethodDeclarationSyntax method) {
 			if (method.Body != null &&
 				StatementIsSingleLine(method.Body) &&
 				method.Body.DescendantTrivia().All(SyntaxUtils.IsWhitespace) &&
