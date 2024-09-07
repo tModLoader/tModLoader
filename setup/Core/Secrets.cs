@@ -96,8 +96,8 @@ public class Secrets
 		return aes.DecryptCbc(data, new byte[16]);
 	}
 
-	// Linux uses another Cipher than Windows which leads to exceptions regarding invalid padding
-	// So this method decrypts with PaddingMode.None and manually removes all remaining padding from the key
+	// Trying to decrypt a value which was encrypted using another key throws an exception regarding invalid padding
+	// Since the size of encrypted data is known for the derived keys, PaddingMode.None can be used and any padding manually stripped
 	private static byte[] DecryptKey(byte[] key, byte[] data)
 	{
 		using var aes = Aes.Create();
