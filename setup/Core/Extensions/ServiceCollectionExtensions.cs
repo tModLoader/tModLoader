@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
 		return serviceCollection
 			.AddSingleton<TerrariaExecutableSetter>()
 			.AddSingleton<TargetsFilesUpdater>()
-			.AddSingleton(programSettings);
+			.AddSingleton(programSettings)
+			.AddSingleton<TerrariaDecompileExecutableProvider>();
 	}
 }

@@ -75,13 +75,9 @@ namespace Terraria.ModLoader.Setup.Core
 				=> base.IncludeTypeWhenDecompilingProject(module, type);
 		}
 
-		public static readonly Version clientVersion = new("1.4.4.9");
-		public static readonly Version serverVersion = new("1.4.4.9");
-
-
 		private readonly ProgramSettings programSettings;
-		private readonly WorkspaceInfo workspaceInfo;
 		private readonly TerrariaExecutableSetter terrariaExecutableSetter;
+		private readonly TerrariaDecompileExecutableProvider terrariaDecompileExecutableProvider;
 		private readonly DecompileTaskParameters parameters;
 
 		private ExtendedProjectDecompiler? projectDecompiler;
@@ -91,7 +87,7 @@ namespace Terraria.ModLoader.Setup.Core
 		{
 			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 			terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
-			workspaceInfo = serviceProvider.GetRequiredService<WorkspaceInfo>();
+			terrariaDecompileExecutableProvider = serviceProvider.GetRequiredService<TerrariaDecompileExecutableProvider>();
 			this.parameters = parameters with { SrcDir = PathUtils.WithUnixSeparators(parameters.SrcDir) };
 
 			var formatting = FormattingOptionsFactory.CreateKRStyle();
@@ -130,8 +126,12 @@ namespace Terraria.ModLoader.Setup.Core
 			if (Directory.Exists(parameters.SrcDir))
 				Directory.Delete(parameters.SrcDir, true);
 
-			var clientModule = parameters.ServerOnly ? null : ReadModule(workspaceInfo.TerrariaPath, clientVersion, taskProgress);
-			var serverModule = ReadModule(workspaceInfo.TerrariaServerPath, serverVersion, taskProgress);
+			var clientModulePath = await terrariaDecompileExecutableProvider.RetrieveClientExecutable(cancellationToken);
+			var clientModule = parameters.ServerOnly ? null : ReadModule(clientModulePath, taskProgress);
+
+			var serverModulePath = await terrariaDecompileExecutableProvider.RetrieveServerExecutable(taskProgress, cancellationToken);
+			var serverModule = ReadModule(serverModulePath, taskProgress);
+
 			var mainModule = (parameters.ServerOnly ? serverModule : clientModule)!;
 
 			var embeddedAssemblyResolver = new EmbeddedAssemblyResolver(mainModule, mainModule.DetectTargetFrameworkId());
@@ -187,30 +187,11 @@ namespace Terraria.ModLoader.Setup.Core
 			}));
 		}
 
-		protected PEFile ReadModule(string path, Version version, ITaskProgress taskProgress)
+		protected PEFile ReadModule(string path, ITaskProgress taskProgress)
 		{
-			bool usingVersionedPath = false;
-			var versionedPath = path.Insert(path.LastIndexOf('.'), $"_v{version}");
-			if (File.Exists(versionedPath)) {
-				path = versionedPath;
-				usingVersionedPath = true;
-			}
-
 			taskProgress.ReportStatus("Loading " + Path.GetFileName(path));
-			using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-			{
-				var module = new PEFile(path, fileStream, PEStreamOptions.PrefetchEntireImage);
-				var assemblyName = new AssemblyName(module.FullName);
-				if (assemblyName.Version != version)
-					throw new Exception($"{assemblyName.Name} version {assemblyName.Version}. Expected {version}");
-
-				if (!usingVersionedPath) {
-					taskProgress.ReportStatus("Backup up " + Path.GetFileName(path) + " to " + Path.GetFileName(versionedPath));
-					File.Copy(path, versionedPath);
-				}
-
-				return module;
-			}
+			using var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+			return new PEFile(path, fileStream, PEStreamOptions.PrefetchEntireImage);
 		}
 
 		// memoized

@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.Json;
-using Terraria.ModLoader.Setup.Core.Abstractions;
 
 namespace Terraria.ModLoader.Setup.Core;
 
@@ -30,6 +28,15 @@ public class Secrets
 		return key;
 	}
 
+	public static bool TryDeriveKey(string file, [NotNullWhen(true)] out byte[]? key)
+	{
+		var hash = HashFile(file);
+		var json = File.ReadAllText(DerivedKeyStorePath);
+		var derivedKeys = JsonSerializer.Deserialize<Dictionary<string, byte[]>>(json)!;
+		key = derivedKeys.Values.Select(k => DecryptKey(hash, k)).FirstOrDefault(CheckKey);
+		return key != null;
+	}
+
 	public void AddProofOfOwnershipFile(string identifier, string file)
 	{
 		var hash = HashFile(file);
@@ -51,6 +58,14 @@ public class Secrets
 		File.WriteAllBytes(SecretFilePath(Path.GetFileName(path)), data);
 	}
 
+	public byte[] ReadFile(string name)
+	{
+		var data = File.ReadAllBytes(SecretFilePath(name));
+		data = DecryptFile(key, data);
+		data = Decompress(data);
+		return data;
+	}
+
 	private static string SecretFilePath(string name) => Path.Combine("setup", "SecretAssets", name + ".enc");
 
 	private static byte[] HashFile(string file)
@@ -58,15 +73,6 @@ public class Secrets
 		using var sha256 = SHA256.Create();
 		using var fs = File.OpenRead(file);
 		return sha256.ComputeHash(fs);
-	}
-
-	private static bool TryDeriveKey(string file, [NotNullWhen(true)] out byte[]? key)
-	{
-		var hash = HashFile(file);
-		var json = File.ReadAllText(DerivedKeyStorePath);
-		var derivedKeys = JsonSerializer.Deserialize<Dictionary<string, byte[]>>(json)!;
-		key = derivedKeys.Values.Select(k => Decrypt(hash, k)).FirstOrDefault(CheckKey);
-		return key != null;
 	}
 
 	private static bool CheckKey(byte[] key)
@@ -83,11 +89,20 @@ public class Secrets
 			throw new Exception("Key verification failed, wrong key");
 	}
 
-	private static byte[] Decrypt(byte[] key, byte[] data)
+	private static byte[] DecryptFile(byte[] key, byte[] data)
 	{
 		using var aes = Aes.Create();
 		aes.Key = key;
 		return aes.DecryptCbc(data, new byte[16]);
+	}
+
+	// Linux uses another Cipher than Windows which leads to exceptions regarding invalid padding
+	// So this method decrypts with PaddingMode.None and manually removes all remaining padding from the key
+	private static byte[] DecryptKey(byte[] key, byte[] data)
+	{
+		using var aes = Aes.Create();
+		aes.Key = key;
+		return aes.DecryptCbc(data, new byte[16], PaddingMode.None)[..32];
 	}
 
 	private static byte[] Encrypt(byte[] key, byte[] data)
@@ -102,6 +117,14 @@ public class Secrets
 		using var ms = new MemoryStream();
 		using var ds = new DeflateStream(ms, CompressionMode.Compress);
 		new MemoryStream(data).CopyTo(ds);
+		return ms.ToArray();
+	}
+
+	private static byte[] Decompress(byte[] data)
+	{
+		using var ds = new DeflateStream(new MemoryStream(data), CompressionMode.Decompress);
+		using var ms = new MemoryStream();
+		ds.CopyTo(ms);
 		return ms.ToArray();
 	}
 }
