@@ -79,11 +79,7 @@ namespace Terraria.ModLoader.Setup.Core
 						UpdateStatus();
 					}
 				})
-				.ContinueWith(t => {
-					if (t.IsFaulted) {
-						throw t.Exception;
-					}
-				}, cancellationToken);
+				.WithAggregateException();
 		}
 
 		public static void CreateDirectory(string dir) {

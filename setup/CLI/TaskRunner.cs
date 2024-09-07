@@ -75,13 +75,7 @@ public sealed class TaskRunner
 		catch (Exception exception)
 		{
 			if (exception is AggregateException aggregateException) {
-				aggregateException = aggregateException.Flatten();
-
-				if (aggregateException.InnerExceptions.All(x => x is OperationCanceledException)) {
-					return 0;
-				}
-
-				exception = aggregateException;
+				exception = aggregateException.Flatten();
 			}
 
 			AnsiConsole.WriteException(exception);

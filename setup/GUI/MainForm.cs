@@ -177,6 +177,10 @@ namespace Terraria.ModLoader.Setup.GUI
 			}
 			catch (Exception e)
 			{
+				if (e is AggregateException aggregateException) {
+					e = aggregateException.Flatten();
+				}
+
 				var status = labelStatus.Text;
 				labelStatus.Text = $"Error: {e.Message.Trim()}{Environment.NewLine}Log: {Path.GetFullPath(errorLogFile)}";
 				SetupOperation.CreateDirectory(ProgramSettings.LogsDir);
