@@ -19,6 +19,6 @@ public sealed class HookGenCommand : CancellableAsyncCommand<BaseCommandSettings
 		BaseCommandSettings settings,
 		CancellationToken cancellationToken)
 	{
-		return await taskRunner.Run(new HookGenTask(serviceProvider), settings.PlainProgress, cancellationToken: cancellationToken);
+		return await taskRunner.Run(new HookGenTask(serviceProvider), settings, cancellationToken: cancellationToken);
 	}
 }

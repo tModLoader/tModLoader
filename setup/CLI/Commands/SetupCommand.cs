@@ -33,6 +33,6 @@ public sealed class SetupCommand : CancellableAsyncCommand<SetupCommandSettings>
 	{
 		var setupTask = new SetupTask(DecompileTaskParameters.CreateDefault(settings.TerrariaSteamDir, settings.TMLDevSteamDir), serviceProvider);
 
-		return await taskRunner.Run(setupTask, settings.PlainProgress, settings.NoPrompts, cancellationToken: cancellationToken);
+		return await taskRunner.Run(setupTask, settings, settings.NoPrompts, cancellationToken: cancellationToken);
 	}
 }

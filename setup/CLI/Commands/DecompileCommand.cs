@@ -45,7 +45,7 @@ public sealed class DecompileCommand : CancellableAsyncCommand<DecompileCommandS
 
 		return await taskRunner.Run(
 			new DecompileTask(decompileTaskParameters, serviceProvider),
-			settings.PlainProgress,
+			settings,
 			settings.NoPrompts,
 			cancellationToken: cancellationToken);
 	}

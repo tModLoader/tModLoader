@@ -21,6 +21,6 @@ public sealed class SimplifyCommand : CancellableAsyncCommand<ProjectPathCommand
 	{
 		RoslynTaskParameters taskParameters = new() { ProjectPath = settings.ProjectPath };
 
-		return await taskRunner.Run(new SimplifierTask(taskParameters), settings.PlainProgress, cancellationToken: cancellationToken);
+		return await taskRunner.Run(new SimplifierTask(taskParameters), settings, cancellationToken: cancellationToken);
 	}
 }

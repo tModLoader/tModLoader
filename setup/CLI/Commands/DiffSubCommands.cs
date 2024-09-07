@@ -56,7 +56,7 @@ public abstract class DiffBaseCommand : CancellableAsyncCommand<DiffCommandSetti
 
 		DiffTask diffTask = new DiffTask(diffTaskParameters);
 
-		return await taskRunner.Run(diffTask, settings.PlainProgress, cancellationToken: cancellationToken);
+		return await taskRunner.Run(diffTask, settings, cancellationToken: cancellationToken);
 	}
 
 	protected abstract DiffTaskParameters GetDiffTaskParameters(ProgramSettings programSettings);

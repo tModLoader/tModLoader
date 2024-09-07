@@ -1,4 +1,5 @@
 using Spectre.Console;
+using Terraria.ModLoader.Setup.CLI.Commands;
 using Terraria.ModLoader.Setup.Core;
 
 namespace Terraria.ModLoader.Setup.CLI;
@@ -16,9 +17,8 @@ public sealed class TaskRunner
 
 	public async Task<int> Run(
 		SetupOperation task,
-		bool plainProgress,
+		BaseCommandSettings settings,
 		bool noPrompts = false,
-		bool strict = false,
 		CancellationToken cancellationToken = default)
 	{
 		var errorLogFile = Path.Combine(ProgramSettings.LogsDir, "error.log");
@@ -35,7 +35,7 @@ public sealed class TaskRunner
 			if (!task.StartupWarning())
 				return 0;
 
-			if (plainProgress) {
+			if (settings.PlainProgress) {
 				await task.Run(new PlainConsoleProgress(), cancellationToken);
 			}
 			else {
@@ -67,7 +67,7 @@ public sealed class TaskRunner
 			(string text, Color color) = GetCompletionText(task);
 			AnsiConsole.Write(new Text(text + '\n', new Style(foreground: color, decoration: Decoration.Bold)));
 
-			if (task.Failed() || (strict && task.Warnings())) {
+			if (task.Failed() || (settings.Strict && task.Warnings())) {
 				return 1;
 			}
 		}

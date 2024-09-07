@@ -19,6 +19,6 @@ public sealed class FormatCommand : CancellableAsyncCommand<ProjectPathCommandSe
 	{
 		FormatTaskParameters taskParameters = new() { ProjectPath = settings.ProjectPath };
 
-		return await taskRunner.Run(new FormatTask(taskParameters), settings.PlainProgress, cancellationToken: cancellationToken);
+		return await taskRunner.Run(new FormatTask(taskParameters), settings, cancellationToken: cancellationToken);
 	}
 }

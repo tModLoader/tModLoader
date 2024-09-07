@@ -19,6 +19,6 @@ public sealed class UpdateLocalizationFilesCommand : CancellableAsyncCommand<Bas
 		BaseCommandSettings settings,
 		CancellationToken cancellationToken)
 	{
-		return await taskRunner.Run(new UpdateLocalizationFilesTask(serviceProvider), settings.PlainProgress, cancellationToken: cancellationToken);
+		return await taskRunner.Run(new UpdateLocalizationFilesTask(serviceProvider), settings, cancellationToken: cancellationToken);
 	}
 }

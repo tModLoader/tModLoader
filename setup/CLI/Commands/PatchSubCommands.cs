@@ -61,7 +61,7 @@ public abstract class PatchBaseCommand : CancellableAsyncCommand<PatchCommandSet
 		programSettings.PatchMode = settings.PatchMode;
 		PatchTask patchTask = new PatchTask(GetPatchTaskParameters(programSettings), serviceProvider);
 
-		return await taskRunner.Run(patchTask, settings.PlainProgress, settings.NoPrompts, cancellationToken: cancellationToken);
+		return await taskRunner.Run(patchTask, settings, settings.NoPrompts, cancellationToken: cancellationToken);
 	}
 
 	protected abstract PatchTaskParameters GetPatchTaskParameters(ProgramSettings programSettings);
