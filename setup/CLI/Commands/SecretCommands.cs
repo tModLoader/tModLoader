@@ -6,7 +6,7 @@ using Terraria.ModLoader.Setup.Core;
 
 namespace Terraria.ModLoader.Setup.CLI.Commands;
 
-public sealed class EncryptCommandSettings : BaseCommandSettings
+public sealed class EncryptCommandSettings : CommandSettings
 {
 	[CommandOption("-k|--key")]
 	[Description("Key in hexadecimal")]
@@ -39,7 +39,7 @@ public sealed class SecretEncryptCommand : CancellableAsyncCommand<EncryptComman
 	}
 }
 
-public sealed class OwnershipCommandSettings : BaseCommandSettings
+public sealed class OwnershipCommandSettings : CommandSettings
 {
 	[CommandOption("-k|--key")]
 	[Description("Key in hexadecimal")]
@@ -75,7 +75,7 @@ public sealed class SecretOwnershipCommand : CancellableAsyncCommand<OwnershipCo
 	}
 }
 
-public sealed class RevealKeySettings : BaseCommandSettings;
+public sealed class RevealKeySettings : CommandSettings;
 
 public sealed class RevealKeyCommand : CancellableAsyncCommand<RevealKeySettings>
 {
