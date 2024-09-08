@@ -325,7 +325,7 @@ namespace Terraria.ModLoader.Setup.GUI
 
 			private void UpdateStatusFromWorkItems()
 			{
-				lock (mainForm) {
+				lock (currentWorkItems) {
 					state = state with {
 						Status = string.Join(Environment.NewLine, currentWorkItems.Select(x => x.Value.Status)),
 					};
