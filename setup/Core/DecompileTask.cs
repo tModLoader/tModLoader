@@ -116,6 +116,7 @@ namespace Terraria.ModLoader.Setup.Core
 			await terrariaExecutableSetter.FindAndSetTerrariaDirectoryIfNecessary(
 				parameters.TerrariaSteamDirectory,
 				parameters.TmlDevSteamDirectory,
+				parameters.ValidateTerrariaSteamDirectory,
 				cancellationToken);
 		}
 
@@ -126,7 +127,7 @@ namespace Terraria.ModLoader.Setup.Core
 			if (Directory.Exists(parameters.SrcDir))
 				Directory.Delete(parameters.SrcDir, true);
 
-			var clientModulePath = await terrariaDecompileExecutableProvider.RetrieveClientExecutable(cancellationToken);
+			var clientModulePath = await terrariaDecompileExecutableProvider.RetrieveClientExecutable(parameters.DecryptionKey, cancellationToken);
 			var clientModule = parameters.ServerOnly ? null : ReadModule(clientModulePath, taskProgress);
 
 			var serverModulePath = await terrariaDecompileExecutableProvider.RetrieveServerExecutable(taskProgress, cancellationToken);

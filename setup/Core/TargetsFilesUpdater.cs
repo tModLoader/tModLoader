@@ -1,8 +1,8 @@
 namespace Terraria.ModLoader.Setup.Core;
 
-internal sealed class TargetsFilesUpdater
+internal static class TargetsFilesUpdater
 {
-	public TargetsFilesUpdater(WorkspaceInfo workspaceInfo)
+	public static void Listen(WorkspaceInfo workspaceInfo)
 	{
 		if (!string.IsNullOrWhiteSpace(workspaceInfo.TMLDevSteamDirectory)) {
 			CopyTmlModTargets(workspaceInfo.TMLDevSteamDirectory);

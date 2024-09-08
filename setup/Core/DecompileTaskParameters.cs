@@ -12,11 +12,17 @@ public sealed record DecompileTaskParameters
 
 	public int? MaxDegreeOfParallelism { get; init; }
 
+	public byte[]? DecryptionKey { get; init; }
+
+	public bool ValidateTerrariaSteamDirectory { get; init; }
+
 	public static DecompileTaskParameters CreateDefault(
 		string? terrariaSteamDirectory,
 		string? tmlDevSteamDirectory,
 		bool serverOnly = false,
-		int? maxDegreeOfParallelism = null)
+		int? maxDegreeOfParallelism = null,
+		byte[]? decryptionKey = null,
+		bool validateTerrariaSteamDirectory = true)
 	{
 		return new DecompileTaskParameters {
 			TerrariaSteamDirectory = terrariaSteamDirectory,
@@ -24,6 +30,8 @@ public sealed record DecompileTaskParameters
 			SrcDir = serverOnly ? "src/decompiled_server" : "src/decompiled",
 			ServerOnly = serverOnly,
 			MaxDegreeOfParallelism = maxDegreeOfParallelism,
+			DecryptionKey = decryptionKey,
+			ValidateTerrariaSteamDirectory = validateTerrariaSteamDirectory,
 		};
 	}
 }

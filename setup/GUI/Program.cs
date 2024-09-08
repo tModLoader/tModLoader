@@ -39,11 +39,10 @@ namespace Terraria.ModLoader.Setup.GUI
 			IServiceCollection services = new ServiceCollection();
 
 			services
-				.AddCoreServices(configuration, userSettingsFilePath)
+				.AddCoreServices(configuration, userSettingsFilePath, workspaceInfo)
 				.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
 				.AddSingleton<IUserPrompt, UserPrompt>()
 				.AddSingleton<MainForm>()
-				.AddSingleton(workspaceInfo)
 				.AddSingleton<IPatchReviewer>(sp => sp.GetRequiredService<MainForm>());
 
 			IServiceProvider serviceProvider = services.BuildServiceProvider();

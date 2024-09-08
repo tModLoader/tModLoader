@@ -25,9 +25,16 @@ public class TerrariaExecutableSetter
 	public async Task FindAndSetTerrariaDirectoryIfNecessary(
 		string? terrariaSteamDirectoryOverride,
 		string? tmlDevSteamDirectoryOverride,
+		bool validateTerrariaDirectory,
 		CancellationToken cancellationToken = default)
 	{
 		string terrariaDirectory = terrariaSteamDirectoryOverride ?? workspaceInfo.TerrariaSteamDirectory;
+
+		if (!validateTerrariaDirectory) {
+			SetTerrariaDirectory(terrariaDirectory, tmlDevSteamDirectoryOverride);
+			return;
+		}
+
 		string[] fileNames = ["Terraria.exe", "TerrariaServer.exe"];
 		string[] missingFiles = fileNames.Where(path => !File.Exists(Path.Combine(terrariaDirectory, path))).ToArray();
 

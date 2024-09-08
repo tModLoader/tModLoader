@@ -21,6 +21,18 @@ public sealed class DecompileCommandSettings : BaseCommandSettings
 	[CommandOption("--tml-dev-steam-dir")]
 	[Description("Path to the TML dev steam directory. On first setup this is derived from Terraria steam directory if not set. The value is persisted to src/WorkspaceInfo.targets")]
 	public string? TMLDevSteamDir { get; init; }
+
+	[CommandOption("--max-parallelism")]
+	[Description("Maximum parallel decompile tasks. Default is CPU count.")]
+	public int? MaxParallelism { get; init; }
+
+	[CommandOption("-k|--key")]
+	[Description("Terraria ownership key in hexadecimal format. This is used to decrypt the Windows Terraria executable on non-windows platforms. The key is usally derived from the installed Terraria.exe")]
+	public string? Key { get; init; }
+
+	[CommandOption("--no-validate")]
+	[Description("Skip validation of the Terraria steam directory by checking for the executable files.")]
+	public bool NoValidate { get; init; }
 }
 
 public sealed class DecompileCommand : CancellableAsyncCommand<DecompileCommandSettings>
@@ -41,7 +53,10 @@ public sealed class DecompileCommand : CancellableAsyncCommand<DecompileCommandS
 		DecompileTaskParameters decompileTaskParameters = DecompileTaskParameters.CreateDefault(
 			settings.TerrariaSteamDir,
 			settings.TMLDevSteamDir,
-			settings.ServerOnly);
+			settings.ServerOnly,
+			settings.MaxParallelism,
+			string.IsNullOrWhiteSpace(settings.Key) ? null : Convert.FromHexString(settings.Key),
+			!settings.NoValidate);
 
 		return await taskRunner.Run(
 			new DecompileTask(decompileTaskParameters, serviceProvider),

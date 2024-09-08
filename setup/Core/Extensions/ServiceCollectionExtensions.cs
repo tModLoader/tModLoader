@@ -10,14 +10,17 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddCoreServices(
 		this IServiceCollection serviceCollection,
 		IConfiguration configuration,
-		string appSettingsPath)
+		string appSettingsPath,
+		WorkspaceInfo workspaceInfo)
 	{
 		ProgramSettings programSettings = new(appSettingsPath);
 		configuration.Bind(programSettings);
 
+		TargetsFilesUpdater.Listen(workspaceInfo);
+
 		return serviceCollection
 			.AddSingleton<TerrariaExecutableSetter>()
-			.AddSingleton<TargetsFilesUpdater>()
+			.AddSingleton(workspaceInfo)
 			.AddSingleton(programSettings)
 			.AddSingleton<TerrariaDecompileExecutableProvider>();
 	}

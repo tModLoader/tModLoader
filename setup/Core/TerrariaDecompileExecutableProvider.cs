@@ -21,7 +21,9 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 	private delegate Task FinalRetrievalAction(string destinationFileName);
 
-	public async Task<string> RetrieveClientExecutable(CancellationToken cancellationToken = default)
+	public async Task<string> RetrieveClientExecutable(
+		byte[]? key,
+		CancellationToken cancellationToken = default)
 	{
 		return await Retrieve(
 			"Terraria",
@@ -30,13 +32,17 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 		async Task DecryptTerrariaExe(string destinationPath)
 		{
-			CheckVersion(workspaceInfo.TerrariaPath, ClientVersion);
+			if (key == null) {
+				CheckVersion(workspaceInfo.TerrariaPath, ClientVersion);
 
-			if (!Secrets.TryDeriveKey(workspaceInfo.TerrariaPath, out var key)) {
-				throw new InvalidOperationException($"Failed to derive key from '{workspaceInfo.TerrariaPath}'. Cannot decrypt Terraria Windows executable.");
+				if (!Secrets.TryDeriveKey(workspaceInfo.TerrariaPath, out key)) {
+					throw new InvalidOperationException(
+						$"Failed to derive key from '{workspaceInfo.TerrariaPath}'. Cannot decrypt Terraria Windows executable.");
+				}
 			}
 
 			byte[] decryptedFile = new Secrets(key).ReadFile(Path.GetFileName(destinationPath));
+			Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
 			await File.WriteAllBytesAsync(destinationPath, decryptedFile, cancellationToken);
 		}
 	}
@@ -46,22 +52,21 @@ internal sealed class TerrariaDecompileExecutableProvider
 		return await Retrieve(
 			"TerrariaServer",
 			ServerVersion,
-			async destinationPath => {
-				taskProgress.ReportStatus("Downloading TerrariaServer Windows executable...");
-				await DownloadAndExtractTerrariaServer(destinationPath, cancellationToken);
-			});
-	}
+			DownloadAndExtractTerrariaServer);
 
-	private async Task DownloadAndExtractTerrariaServer(string destinationPath, CancellationToken cancellationToken)
-	{
-		string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
-		string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
-		Stream fileStream = await httpClient.GetStreamAsync(url, cancellationToken);
-		string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-		ZipFile.ExtractToDirectory(fileStream, tempDirectory);
+		async Task DownloadAndExtractTerrariaServer(string destinationPath)
+		{
+			taskProgress.ReportStatus("Downloading TerrariaServer Windows executable...");
 
-		File.Copy(Path.Combine(tempDirectory, serverVersionWithoutDots, "Windows", "TerrariaServer.exe"), destinationPath);
-		Directory.Delete(tempDirectory, true);
+			string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
+			string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
+			Stream fileStream = await httpClient.GetStreamAsync(url, cancellationToken);
+			string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+			ZipFile.ExtractToDirectory(fileStream, tempDirectory);
+
+			File.Copy(Path.Combine(tempDirectory, serverVersionWithoutDots, "Windows", "TerrariaServer.exe"), destinationPath);
+			Directory.Delete(tempDirectory, true);
+		}
 	}
 
 	private async Task<string> Retrieve(string fileNameWithoutExtension, Version version, FinalRetrievalAction finalRetrievalAction)
@@ -76,13 +81,14 @@ internal sealed class TerrariaDecompileExecutableProvider
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 			if (File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, $"{fileNameWithoutExtension}_v{version}.exe"))) {
 				File.Move(Path.Combine(workspaceInfo.TerrariaSteamDirectory, $"{fileNameWithoutExtension}_v{version}.exe"), expectedExePath);
-			}
-			else {
-				CheckVersion(originalExePath, version);
-				File.Copy(originalExePath, expectedExePath);
+				return expectedExePath;
 			}
 
-			return expectedExePath;
+			if (File.Exists(originalExePath)) {
+				CheckVersion(originalExePath, version);
+				File.Copy(originalExePath, expectedExePath);
+				return expectedExePath;
+			}
 		}
 
 		await finalRetrievalAction(expectedExePath);
