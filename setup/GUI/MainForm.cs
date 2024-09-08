@@ -268,7 +268,7 @@ namespace Terraria.ModLoader.Setup.GUI
 		private sealed class TaskProgress : ITaskProgress
 		{
 			private readonly MainForm mainForm;
-			private readonly ConcurrentDictionary<Guid, GenericWorkItemProgress> currentWorkItems = [];
+			private readonly List<GenericWorkItemProgress> currentWorkItems = [];
 			private Timer timer;
 
 			private sealed record State(int Max, int Current, string Status);
@@ -315,9 +315,16 @@ namespace Terraria.ModLoader.Setup.GUI
 				var progress = new GenericWorkItemProgress(
 					status,
 					UpdateStatusFromWorkItems,
-					x => currentWorkItems.Remove(x.Id, out _));
+					x => {
+						lock (currentWorkItems) {
+							currentWorkItems.Remove(x);
+						}
+					});
 
-				currentWorkItems.TryAdd(progress.Id, progress);
+				lock (currentWorkItems) {
+					currentWorkItems.Add(progress);
+				}
+
 				UpdateStatusFromWorkItems();
 
 				return progress;
@@ -327,7 +334,7 @@ namespace Terraria.ModLoader.Setup.GUI
 			{
 				lock (currentWorkItems) {
 					state = state with {
-						Status = string.Join(Environment.NewLine, currentWorkItems.Select(x => x.Value.Status)),
+						Status = string.Join(Environment.NewLine, currentWorkItems.Select(x => x.Status)),
 					};
 				}
 			}

@@ -7,13 +7,10 @@ public sealed class GenericWorkItemProgress : IWorkItemProgress
 
 	public GenericWorkItemProgress(string status, Action updateStatus, Action<GenericWorkItemProgress> complete)
 	{
-		Id = Guid.NewGuid();
 		Status = status;
 		this.updateStatus = updateStatus;
 		this.complete = complete;
 	}
-
-	public Guid Id { get; }
 
 	public string Status { get; private set; }
 

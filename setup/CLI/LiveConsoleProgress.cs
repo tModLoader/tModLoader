@@ -52,7 +52,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 		private int? maxProgress;
 		private int? currentProgress;
 		private string lastStatus = string.Empty;
-		private readonly ConcurrentDictionary<Guid, GenericWorkItemProgress> currentWorkItems = [];
+		private readonly List<GenericWorkItemProgress> currentWorkItems = [];
 
 		public TaskProgress(string description, Table table)
 		{
@@ -99,9 +99,16 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 			var progress = new GenericWorkItemProgress(
 				status,
 				UpdateStatusFromWorkItems,
-				x => currentWorkItems.Remove(x.Id, out _));
+				x => {
+					lock (currentWorkItems) {
+						currentWorkItems.Remove(x);
+					}
+				});
 
-			currentWorkItems.TryAdd(progress.Id, progress);
+			lock (currentWorkItems) {
+				currentWorkItems.Add(progress);
+			}
+
 			UpdateStatusFromWorkItems();
 
 			return progress;
@@ -109,8 +116,8 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		private void UpdateStatusFromWorkItems()
 		{
-			lock (table) {
-				table.UpdateCell(statusRow, 0, new Text(string.Join(Environment.NewLine, currentWorkItems.Select(x => Indent(x.Value.Status)))));
+			lock (currentWorkItems) {
+				table.UpdateCell(statusRow, 0, new Text(string.Join(Environment.NewLine, currentWorkItems.Select(x => Indent(x.Status)))));
 			}
 		}
 
