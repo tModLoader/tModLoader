@@ -227,7 +227,7 @@ jobs:
           fi
 
           if [ ! -d "./src/decompiled" ]; then
-            ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress --max-parallelism 1 -f --strict --no-validate
+            ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress --max-parallelism 1 -f --strict
 
             err=$?
             if [ $err -ne 0 ]; then

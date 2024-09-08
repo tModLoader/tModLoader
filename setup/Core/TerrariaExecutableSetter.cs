@@ -35,16 +35,15 @@ public class TerrariaExecutableSetter
 			return;
 		}
 
-		string[] fileNames = ["Terraria.exe", "TerrariaServer.exe"];
-		string[] missingFiles = fileNames.Where(path => !File.Exists(Path.Combine(terrariaDirectory, path))).ToArray();
+		string terrariaExecutablePath = Path.Combine(terrariaDirectory, "Terraria.exe");
 
-		if (missingFiles.Length == 0) {
+		if (File.Exists(terrariaExecutablePath)) {
 			SetTerrariaDirectory(terrariaDirectory, tmlDevSteamDirectoryOverride);
 			return;
 		}
 
 		if (!string.IsNullOrWhiteSpace(terrariaSteamDirectoryOverride)) {
-			throw new InvalidOperationException($"Directory '{terrariaSteamDirectoryOverride}' does not contain: {string.Join(", ", missingFiles)}.");
+			throw new InvalidOperationException($"Directory '{terrariaSteamDirectoryOverride}' does not contain 'Terraria.exe'.");
 		}
 
 		await FindTerrariaDirectory(tmlDevSteamDirectoryOverride, cancellationToken);

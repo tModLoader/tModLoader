@@ -29,10 +29,6 @@ public sealed class DecompileCommandSettings : BaseCommandSettings
 	[CommandOption("-k|--key")]
 	[Description("Terraria ownership key in hexadecimal format. This is used to decrypt the Windows Terraria executable on non-windows platforms. The key is usally derived from the installed Terraria.exe")]
 	public string? Key { get; init; }
-
-	[CommandOption("--no-validate")]
-	[Description("Skip validation of the Terraria steam directory by checking for the executable files.")]
-	public bool NoValidate { get; init; }
 }
 
 public sealed class DecompileCommand : CancellableAsyncCommand<DecompileCommandSettings>
@@ -55,8 +51,7 @@ public sealed class DecompileCommand : CancellableAsyncCommand<DecompileCommandS
 			settings.TMLDevSteamDir,
 			settings.ServerOnly,
 			settings.MaxParallelism,
-			string.IsNullOrWhiteSpace(settings.Key) ? null : Convert.FromHexString(settings.Key),
-			!settings.NoValidate);
+			string.IsNullOrWhiteSpace(settings.Key) ? null : Convert.FromHexString(settings.Key));
 
 		return await taskRunner.Run(
 			new DecompileTask(decompileTaskParameters, serviceProvider),
