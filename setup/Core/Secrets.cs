@@ -33,14 +33,14 @@ public class Secrets
 		var hash = HashFile(file);
 		var json = File.ReadAllText(DerivedKeyStorePath);
 		var derivedKeys = JsonSerializer.Deserialize<Dictionary<string, byte[]>>(json)!;
-		key = derivedKeys.Values.Select(k => DecryptKey(hash, k)).FirstOrDefault(CheckKey);
+		key = derivedKeys.Values.Select(k => Decrypt(hash, k, PaddingMode.None)).FirstOrDefault(CheckKey);
 		return key != null;
 	}
 
 	public void AddProofOfOwnershipFile(string identifier, string file)
 	{
 		var hash = HashFile(file);
-		var derivedKey = Encrypt(hash, key);
+		var derivedKey = Encrypt(hash, key, PaddingMode.None);
 
 		var json = File.ReadAllText(DerivedKeyStorePath);
 		var derivedKeys = JsonSerializer.Deserialize<Dictionary<string, byte[]>>(json)!;
@@ -61,7 +61,7 @@ public class Secrets
 	public byte[] ReadFile(string name)
 	{
 		var data = File.ReadAllBytes(SecretFilePath(name));
-		data = DecryptFile(key, data);
+		data = Decrypt(key, data);
 		data = Decompress(data);
 		return data;
 	}
@@ -89,27 +89,18 @@ public class Secrets
 			throw new Exception("Key verification failed, wrong key");
 	}
 
-	private static byte[] DecryptFile(byte[] key, byte[] data)
+	private static byte[] Decrypt(byte[] key, byte[] data, PaddingMode paddingMode = PaddingMode.PKCS7)
 	{
 		using var aes = Aes.Create();
 		aes.Key = key;
-		return aes.DecryptCbc(data, new byte[16]);
+		return aes.DecryptCbc(data, new byte[16], paddingMode);
 	}
 
-	// Trying to decrypt a value which was encrypted using another key throws an exception regarding invalid padding
-	// Since the size of encrypted data is known for the derived keys, PaddingMode.None can be used and any padding manually stripped
-	private static byte[] DecryptKey(byte[] key, byte[] data)
+	private static byte[] Encrypt(byte[] key, byte[] data, PaddingMode paddingMode = PaddingMode.PKCS7)
 	{
 		using var aes = Aes.Create();
 		aes.Key = key;
-		return aes.DecryptCbc(data, new byte[16], PaddingMode.None)[..32];
-	}
-
-	private static byte[] Encrypt(byte[] key, byte[] data)
-	{
-		using var aes = Aes.Create();
-		aes.Key = key;
-		return aes.EncryptCbc(data, new byte[16]);
+		return aes.EncryptCbc(data, new byte[16], paddingMode);
 	}
 
 	private static byte[] Compress(byte[] data)
