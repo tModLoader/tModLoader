@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Timers;
 using Spectre.Console;
@@ -51,6 +52,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 		private int? maxProgress;
 		private int? currentProgress;
 		private string lastStatus = string.Empty;
+		private readonly ConcurrentDictionary<Guid, GenericWorkItemProgress> currentWorkItems = [];
 
 		public TaskProgress(string description, Table table)
 		{
@@ -82,16 +84,34 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 			UpdateHeaderRow();
 		}
 
-		public void ReportStatus(string status, bool overwrite = false)
+		public void ReportStatus(string status)
 		{
-			status = Indent(status);
-			if (!overwrite) {
-				string[] parts = [lastStatus, status];
-				status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
-			}
+			string[] parts = [lastStatus, Indent(status)];
+			status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
 
 			table.UpdateCell(statusRow, 0, new Text(status));
 			lastStatus = status;
+		}
+
+		public IWorkItemProgress StartWorkItem(string status)
+		{
+			lastStatus = string.Empty;
+			var progress = new GenericWorkItemProgress(
+				status,
+				UpdateStatusFromWorkItems,
+				x => currentWorkItems.Remove(x.Id, out _));
+
+			currentWorkItems.TryAdd(progress.Id, progress);
+			UpdateStatusFromWorkItems();
+
+			return progress;
+		}
+
+		private void UpdateStatusFromWorkItems()
+		{
+			lock (table) {
+				table.UpdateCell(statusRow, 0, new Text(string.Join(Environment.NewLine, currentWorkItems.Select(x => Indent(x.Value.Status)))));
+			}
 		}
 
 		private static string Indent(string status) => $"  {status.ReplaceLineEndings("\r\n  ")}";

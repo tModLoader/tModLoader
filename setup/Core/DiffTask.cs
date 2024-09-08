@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 			await ExecuteParallel(items, taskProgress, cancellationToken: cancellationToken);
 
-			taskProgress.ReportStatus("Deleting Unnecessary Patches", overwrite: true);
+			taskProgress.ReportStatus("Deleting Unnecessary Patches");
 			foreach ((string file, string relPath) in EnumerateFiles(parameters.PatchDir)) {
 				var targetPath = relPath.EndsWith(".patch") ? relPath.Substring(0, relPath.Length - 6) : relPath;
 				if (!File.Exists(Path.Combine(parameters.PatchedDir, targetPath)))

@@ -1,18 +1,16 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using DiffPatch;
 using PatchReviewer;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
-using Terraria.ModLoader.Setup.Core.Utilities;
 using Timer = System.Windows.Forms.Timer;
 
 namespace Terraria.ModLoader.Setup.GUI
@@ -270,9 +268,10 @@ namespace Terraria.ModLoader.Setup.GUI
 		private sealed class TaskProgress : ITaskProgress
 		{
 			private readonly MainForm mainForm;
+			private readonly ConcurrentDictionary<Guid, GenericWorkItemProgress> currentWorkItems = [];
 			private Timer timer;
 
-			private record State(int max, int current, string status);
+			private sealed record State(int Max, int Current, string Status);
 			private State state = new State(1, 0, string.Empty);
 
 			public TaskProgress(MainForm mainForm)
@@ -282,14 +281,14 @@ namespace Terraria.ModLoader.Setup.GUI
 					timer = new Timer(mainForm.components) { Interval = 20 };
 					timer.Tick += (_, _) => {
 						var s = state;
-						mainForm.progressBar.Maximum = s.max;
-						if (mainForm.progressBar.Value != s.current) {
+						mainForm.progressBar.Maximum = s.Max;
+						if (mainForm.progressBar.Value != s.Current) {
 							// disable the progress bar animation by setting the value 'backwards'. The animation is often too slow and thus looks bad.
-							mainForm.progressBar.Value = s.max;
-							mainForm.progressBar.Value = s.current;
+							mainForm.progressBar.Value = s.Max;
+							mainForm.progressBar.Value = s.Current;
 						}
 
-						mainForm.labelStatus.Text = s.status;
+						mainForm.labelStatus.Text = s.Status;
 					};
 					timer.Start();
 				});
@@ -300,17 +299,37 @@ namespace Terraria.ModLoader.Setup.GUI
 				timer.Dispose();
 			}
 
-			public void SetMaxProgress(int max) => state = state with { max = max };
-			public void SetCurrentProgress(int current) => state = state with { current = current };
+			public void SetMaxProgress(int max) => state = state with { Max = max };
+			public void SetCurrentProgress(int current) => state = state with { Current = current };
 
-			public void ReportStatus(string status, bool overwrite = false)
+			public void ReportStatus(string status)
 			{
-				if (!overwrite) {
-					string[] parts = [state.status, status];
-					status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
-				}
+				string[] parts = [state.Status, status];
+				status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
 
-				state = state with { status = status };
+				state = state with { Status = status };
+			}
+
+			public IWorkItemProgress StartWorkItem(string status)
+			{
+				var progress = new GenericWorkItemProgress(
+					status,
+					UpdateStatusFromWorkItems,
+					x => currentWorkItems.Remove(x.Id, out _));
+
+				currentWorkItems.TryAdd(progress.Id, progress);
+				UpdateStatusFromWorkItems();
+
+				return progress;
+			}
+
+			private void UpdateStatusFromWorkItems()
+			{
+				lock (mainForm) {
+					state = state with {
+						Status = string.Join(Environment.NewLine, currentWorkItems.Select(x => x.Value.Status)),
+					};
+				}
 			}
 		}
 	}

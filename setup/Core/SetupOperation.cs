@@ -38,13 +38,6 @@ namespace Terraria.ModLoader.Setup.Core
 				progress.SetMaxProgress(items.Count);
 			}
 
-			var working = new List<WorkItem>();
-
-			void UpdateStatus()
-			{
-				progress.ReportStatus(string.Join("\r\n", working.Select(r => r.Status)), overwrite: true);
-			}
-
 			await Parallel.ForEachAsync(
 				items,
 				new ParallelOptions {
@@ -52,17 +45,12 @@ namespace Terraria.ModLoader.Setup.Core
 					CancellationToken = cancellationToken,
 				},
 				async (item, ct) => {
-					lock (working) {
-						working.Add(item);
-						UpdateStatus();
-					}
+					using var workItemProgress = progress.StartWorkItem(item.Status);
 
 					void SetStatus(string s)
 					{
-						lock (working) {
-							item.Status = s;
-							UpdateStatus();
-						}
+						item.Status = s;
+						workItemProgress.ReportStatus(s);
 					}
 
 					try {
@@ -73,11 +61,7 @@ namespace Terraria.ModLoader.Setup.Core
 						throw new Exception($"Work item failed: \"{item.Status}\"", exception);
 					}
 
-					lock (working) {
-						working.Remove(item);
-						progress.SetCurrentProgress(++currentProgress);
-						UpdateStatus();
-					}
+					progress.SetCurrentProgress(Interlocked.Increment(ref currentProgress));
 				})
 				.WithAggregateException();
 		}

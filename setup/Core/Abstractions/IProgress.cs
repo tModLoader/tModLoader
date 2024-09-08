@@ -35,10 +35,28 @@ public interface ITaskProgress : IDisposable
 	/// <param name="current">The current progress.</param>
 	void SetCurrentProgress(int current);
 
+	///  <summary>
+	///		Reports a status. This should not be used while there any active work items progresses.
+	///  </summary>
+	///  <param name="status">The status.</param>
+	void ReportStatus(string status);
+
 	/// <summary>
-	///		Reports a status.
+	///		Starts a new work item.
+	/// </summary>
+	/// <param name="status">The initial status.</param>
+	/// <returns>A work item progress</returns>
+	IWorkItemProgress StartWorkItem(string status);
+}
+
+/// <summary>
+///		Represents a type for reporting progress for a single work item.
+/// </summary>
+public interface IWorkItemProgress : IDisposable
+{
+	/// <summary>
+	///		Reports a new status for the work item.
 	/// </summary>
 	/// <param name="status">The status.</param>
-	/// <param name="overwrite">If <see langword="true"/> the previous status will be overriden, otherwise <paramref name="status"/> is appended.</param>
-	void ReportStatus(string status, bool overwrite = false);
+	void ReportStatus(string status);
 }
