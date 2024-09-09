@@ -12,6 +12,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 	private readonly LiveDisplayContext context;
 	private readonly Table table;
 	private readonly Timer timer;
+	private readonly ConcurrentDictionary<TaskProgress, object?> taskProgresses = [];
 
 	public LiveConsoleProgress(LiveDisplayContext context, Table table)
 	{
@@ -28,7 +29,10 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		timer.Start();
 
-		return new TaskProgress(description, table);
+		var taskProgress = new TaskProgress(description, table, progress => taskProgresses.Remove(progress, out _));
+		taskProgresses.TryAdd(taskProgress, null);
+
+		return taskProgress;
 	}
 
 	public void Dispose()
@@ -38,101 +42,61 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 	private void RefreshTable(object? sender, ElapsedEventArgs e)
 	{
+		foreach (TaskProgress taskProgress in taskProgresses.Keys) {
+			taskProgress.Refresh();
+		}
 		context.Refresh();
 	}
 
-	private sealed class TaskProgress : ITaskProgress
+	private sealed class TaskProgress : TaskProgressBase
 	{
-		private readonly string description;
 		private readonly Table table;
+		private readonly Action<TaskProgress> onCompleted;
 
 		private readonly int headerRow;
 		private readonly int statusRow;
 
-		private int? maxProgress;
-		private int? currentProgress;
-		private string lastStatus = string.Empty;
-		private readonly List<GenericWorkItemProgress> currentWorkItems = [];
-
-		public TaskProgress(string description, Table table)
+		public TaskProgress(string description, Table table, Action<TaskProgress> onCompleted) : base(description)
 		{
-			this.description = description;
 			this.table = table;
+			this.onCompleted = onCompleted;
 
 			headerRow = table.Rows.Count;
 			statusRow = headerRow + 1;
 
 			table.AddEmptyRow().AddEmptyRow();
-
-			UpdateHeaderRow();
 		}
 
-		public void Dispose()
+		public override void Dispose()
 		{
+			UpdateHeaderRow();
 			table.RemoveRow(statusRow);
+			onCompleted(this);
 		}
 
-		public void SetMaxProgress(int max)
+		public void Refresh()
 		{
-			maxProgress = max;
 			UpdateHeaderRow();
+			UpdateStatusRow();
 		}
 
-		public void SetCurrentProgress(int current)
-		{
-			currentProgress = current;
-			UpdateHeaderRow();
-		}
-
-		public void ReportStatus(string status)
-		{
-			string[] parts = [lastStatus, Indent(status)];
-			status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
-
-			table.UpdateCell(statusRow, 0, new Text(status));
-			lastStatus = status;
-		}
-
-		public IWorkItemProgress StartWorkItem(string status)
-		{
-			lastStatus = string.Empty;
-			var progress = new GenericWorkItemProgress(
-				status,
-				UpdateStatusFromWorkItems,
-				x => {
-					lock (currentWorkItems) {
-						currentWorkItems.Remove(x);
-					}
-				});
-
-			lock (currentWorkItems) {
-				currentWorkItems.Add(progress);
-			}
-
-			UpdateStatusFromWorkItems();
-
-			return progress;
-		}
-
-		private void UpdateStatusFromWorkItems()
-		{
-			lock (currentWorkItems) {
-				table.UpdateCell(statusRow, 0, new Text(string.Join(Environment.NewLine, currentWorkItems.Select(x => Indent(x.Status)))));
-			}
-		}
-
-		private static string Indent(string status) => $"  {status.ReplaceLineEndings("\r\n  ")}";
+		protected override string TransformStatus(string status) => $"  {status.ReplaceLineEndings("\r\n  ")}";
 
 		private void UpdateHeaderRow()
 		{
 			string progress = string.Empty;
-
-			if (currentProgress is int i && maxProgress is int n) {
-				string maxProgressString = n.ToString();
-				progress = $"[{(currentProgress != maxProgress ? "red" : "green")}]{i.ToString().PadLeft(maxProgressString.Length)}[/]/[green]{maxProgressString}[/]";
+			var state = State;
+			if (state.Max > 0) {
+				string maxProgressString = state.Max.ToString();
+				progress = $"[{(state.Current != state.Max ? "red" : "green")}]{state.Current.ToString().PadLeft(maxProgressString.Length)}[/]/[green]{maxProgressString}[/]";
 			}
 
-			table.UpdateCell(headerRow, 0, new Markup($"{description,-70}{progress}"));
+			table.UpdateCell(headerRow, 0, new Markup($"{Description,-70}{progress}"));
+		}
+
+		private void UpdateStatusRow()
+		{
+			table.UpdateCell(statusRow, 0, State.Status);
 		}
 	}
 }

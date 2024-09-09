@@ -262,25 +262,19 @@ namespace Terraria.ModLoader.Setup.GUI
 
 			Invoke(() => labelTask.Text = description);
 
-			return new TaskProgress(this);
+			return new TaskProgress(description, this);
 		}
 
-		private sealed class TaskProgress : ITaskProgress
+		private sealed class TaskProgress : TaskProgressBase
 		{
-			private readonly MainForm mainForm;
-			private readonly List<GenericWorkItemProgress> currentWorkItems = [];
 			private Timer timer;
 
-			private sealed record State(int Max, int Current, string Status);
-			private State state = new State(1, 0, string.Empty);
-
-			public TaskProgress(MainForm mainForm)
+			public TaskProgress(string description, MainForm mainForm) : base(description)
 			{
-				this.mainForm = mainForm;
 				mainForm.Invoke(() => {
 					timer = new Timer(mainForm.components) { Interval = 20 };
 					timer.Tick += (_, _) => {
-						var s = state;
+						var s = State;
 						mainForm.progressBar.Maximum = s.Max;
 						if (mainForm.progressBar.Value != s.Current) {
 							// disable the progress bar animation by setting the value 'backwards'. The animation is often too slow and thus looks bad.
@@ -294,49 +288,9 @@ namespace Terraria.ModLoader.Setup.GUI
 				});
 			}
 
-			public void Dispose()
+			public override void Dispose()
 			{
 				timer.Dispose();
-			}
-
-			public void SetMaxProgress(int max) => state = state with { Max = max };
-			public void SetCurrentProgress(int current) => state = state with { Current = current };
-
-			public void ReportStatus(string status)
-			{
-				string[] parts = [state.Status, status];
-				status = string.Join(Environment.NewLine, parts.Where(x => !string.IsNullOrWhiteSpace(x)));
-
-				state = state with { Status = status };
-			}
-
-			public IWorkItemProgress StartWorkItem(string status)
-			{
-				var progress = new GenericWorkItemProgress(
-					status,
-					UpdateStatusFromWorkItems,
-					x => {
-						lock (currentWorkItems) {
-							currentWorkItems.Remove(x);
-						}
-					});
-
-				lock (currentWorkItems) {
-					currentWorkItems.Add(progress);
-				}
-
-				UpdateStatusFromWorkItems();
-
-				return progress;
-			}
-
-			private void UpdateStatusFromWorkItems()
-			{
-				lock (currentWorkItems) {
-					state = state with {
-						Status = string.Join(Environment.NewLine, currentWorkItems.Select(x => x.Status)),
-					};
-				}
 			}
 		}
 	}
