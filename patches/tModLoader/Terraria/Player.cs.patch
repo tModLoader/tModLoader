@@ -308,7 +308,7 @@
  	public float townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
-@@ -752,8 +_,15 @@
+@@ -752,12 +_,20 @@
  	public bool editedChestName;
  	public int reuseDelay;
  	public int aggro;
@@ -324,6 +324,11 @@
  	public bool mouseInterface;
  	public bool lastMouseInterface;
  	public int noThrow;
+ 	public int changeItem = -1;
++	/// <summary> The index of the <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. To access the <see cref="Item"/> directly use <see cref="HeldItem"/> instead. </summary>
+ 	public int selectedItem;
+ 	public const int SupportedSlotsArmor = 3;
+ 	public const int SupportedSlotsAccs = 7;
 @@ -769,9 +_,19 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
@@ -1068,6 +1073,14 @@
  	public bool ZoneUnderworldHeight {
  		get {
  			return zone3[4];
+@@ -1998,6 +_,7 @@
+ 
+ 	public Vector2 Directions => new Vector2(direction, gravDir);
+ 
++	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
+ 	public Item HeldItem => inventory[selectedItem];
+ 
+ 	public int breathCDMax {
 @@ -2085,6 +_,10 @@
  		}
  	}
