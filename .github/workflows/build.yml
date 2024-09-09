@@ -228,21 +228,11 @@ jobs:
 
           if [ ! -d "./src/decompiled" ]; then
             ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress --max-parallelism 1 -f --strict
-
-            err=$?
-            if [ $err -ne 0 ]; then
-              exit $err
-            fi
           else
             echo "src/decompiled found. Skipping decompilation..."
           fi
 
           ./setup-cli.bat regen-source --plain-progress -f --strict
-
-          err=$?
-          if [ $err -ne 0 ]; then
-            exit $err
-          fi
           echo ::endgroup::
           
           echo ::group::WorkspaceInfo.targets
