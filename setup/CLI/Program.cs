@@ -42,10 +42,6 @@ public static class Program
 			config.AddCommand<SetupCommand>("setup")
 				.WithDescription("Complete environment setup. Equivalent to Decompile + Regen Source");
 
-			config.AddCommand<SetupAutoCommand>("setup-auto")
-				.WithDescription("Setup without prompts and parallel decompilation. Intended for e.g. CI pipelines.")
-				.IsHidden();
-
 			config.AddCommand<DecompileCommand>("decompile")
 				.WithDescription("Decompiles Terraria. Outputs to src/decompiled. Currently Windows only.");
 
