@@ -27,16 +27,13 @@ namespace Terraria.ModLoader.Setup.Core
 		protected async Task ExecuteParallel(
 			List<WorkItem> items,
 			ITaskProgress progress,
-			bool resetProgress = true,
 			int? maxDegreeOfParallelism = null,
 			CancellationToken cancellationToken = default)
 		{
 			int currentProgress = 0;
 
-			if (resetProgress) {
-				progress.SetCurrentProgress(0);
-				progress.SetMaxProgress(items.Count);
-			}
+			progress.SetCurrentProgress(0);
+			progress.SetMaxProgress(items.Count);
 
 			await Parallel.ForEachAsync(
 				items,
