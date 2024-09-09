@@ -225,3 +225,10 @@
  		public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 441, 468);
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
+@@ -954,5 +_,6 @@
+ 	public const ushort VioletMossBlock = 691;
+ 	public const ushort RainbowMossBlock = 692;
+ 	public static readonly ushort Count = 693;
++	/// <inheritdoc cref="IdDictionary"/>
+ 	public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();
+ }
