@@ -2,7 +2,7 @@ namespace Terraria.ModLoader.Setup.Core.Abstractions;
 
 public abstract class TaskProgressBase : ITaskProgress
 {
-	private readonly List<GenericWorkItemProgress> currentWorkItems = [];
+	private readonly List<WorkItemProgress> currentWorkItems = [];
 
 	protected TaskProgressBase(string description)
 	{
@@ -30,7 +30,7 @@ public abstract class TaskProgressBase : ITaskProgress
 
 	public IWorkItemProgress StartWorkItem(string status)
 	{
-		var progress = new GenericWorkItemProgress(
+		var progress = new WorkItemProgress(
 			status,
 			UpdateStatusFromWorkItems,
 			RemoveFromWorkItems);
@@ -55,7 +55,7 @@ public abstract class TaskProgressBase : ITaskProgress
 
 	protected virtual string TransformStatus(string status) => status;
 
-	private void RemoveFromWorkItems(GenericWorkItemProgress workItemProgress)
+	private void RemoveFromWorkItems(WorkItemProgress workItemProgress)
 	{
 		lock (currentWorkItems) {
 			currentWorkItems.Remove(workItemProgress);
@@ -63,4 +63,27 @@ public abstract class TaskProgressBase : ITaskProgress
 	}
 
 	protected sealed record ProgressState(int Current, int Max, string Status);
+
+	protected sealed class WorkItemProgress : IWorkItemProgress
+	{
+		private readonly Action updateStatus;
+		private readonly Action<WorkItemProgress> complete;
+
+		public WorkItemProgress(string status, Action updateStatus, Action<WorkItemProgress> complete)
+		{
+			Status = status;
+			this.updateStatus = updateStatus;
+			this.complete = complete;
+		}
+
+		public string Status { get; private set; }
+
+		public void ReportStatus(string status)
+		{
+			Status = status;
+			updateStatus();
+		}
+
+		public void Dispose() => complete(this);
+	}
 }
