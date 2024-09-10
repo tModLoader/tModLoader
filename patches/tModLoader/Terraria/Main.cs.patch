@@ -988,7 +988,7 @@
  
 +	/// <summary>
 +	/// Registers an animation for an item type to draw inside UI (not world or held item on player).
-+	/// To enable its animation in the world, use ItemID.Sets.AnimatesAsSoul in conjunction with this
++	/// To enable its animation in the world, use <see cref="ItemID.Sets.AnimatesAsSoul"/> in conjunction with this
 +	/// </summary>
 +	/// <param name="index">Item type</param>
 +	/// <param name="animation">Draw animation</param>
@@ -2890,7 +2890,7 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -16311,47 +_,92 @@
+@@ -16311,47 +_,93 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -2922,6 +2922,7 @@
 +				Color realLineColor = black;
 +
 +				if (overrideColor[k].HasValue) {
++					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
 +					realLineColor = overrideColor[k].Value * num4;
 +					drawableLines[k].OverrideColor = realLineColor;
 +				}

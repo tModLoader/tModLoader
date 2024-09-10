@@ -15,6 +15,7 @@ using Terraria.ModLoader.Core;
 using Terraria.Audio;
 using Terraria.ID;
 using System;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader.UI;
 
@@ -48,6 +49,13 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonB;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonOMF;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonCL;
+	// confirmation dialog
+	private UIAutoScaleTextTextPanel<LocalizedText> _confirmDialogYesButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> _confirmDialogNoButton;
+	private UIText _confirmDialogText;
+	private UIImage _blockInput;
+	private UIPanel _toggleModsDialog;
+
 	private CancellationTokenSource _cts;
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 
@@ -106,7 +114,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
-		buttonEA.OnLeftClick += EnableAll;
+		buttonEA.OnLeftClick += QuickEnableAll;
 		uIElement.Append(buttonEA);
 
 		// TODO CopyStyle doesn't capture all the duplication here, consider an inner method
@@ -115,7 +123,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonDA.TextColor = Color.Red;
 		buttonDA.HAlign = 0.5f;
 		buttonDA.WithFadedMouseOver();
-		buttonDA.OnLeftClick += DisableAll;
+		buttonDA.OnLeftClick += QuickDisableAll;
 		uIElement.Append(buttonDA);
 
 		buttonRM = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsForceReload"));
@@ -325,9 +333,27 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}
 	}
 
+	private void CloseConfirmDialog(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		_blockInput?.Remove();
+		_toggleModsDialog?.Remove();
+	}
+
+	private void QuickEnableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
+		bool shiftPressed = Main.keyState.PressingShift();
+		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
+			EnableAll(evt, listeningElement);
+		}
+		else {
+			SoundEngine.PlaySound(10, -1, -1, 1);
+			ShowConfirmationWindow(EnableAll, "tModLoader.ModsEnableAllConfirm");
+		}
+	}
+
 	private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			if (modItem.tMLUpdateRequired != null)
 				continue;
@@ -335,9 +361,85 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}
 	}
 
+	private void QuickDisableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
+		bool shiftPressed = Main.keyState.PressingShift();
+		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
+			DisableAll(evt, listeningElement);
+		}
+		else {
+			SoundEngine.PlaySound(10, -1, -1, 1);
+			ShowConfirmationWindow(DisableAll, "tModLoader.ModsDisableAllConfirm");
+		}
+	}
+
+	private void ShowConfirmationWindow(MouseEvent yesAction, string confirmDialogTextKey)
+	{
+		_blockInput = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = new Color(0, 0, 0, 0),
+			ScaleToFit = true
+		};
+		_blockInput.OnLeftMouseDown += CloseConfirmDialog;
+		Interface.modsMenu.Append(_blockInput);
+
+		_toggleModsDialog = new UIPanel() {
+			Width = { Percent = .30f },
+			Height = { Percent = .30f },
+			HAlign = .5f,
+			VAlign = .5f,
+			BackgroundColor = new Color(63, 82, 151),
+			BorderColor = Color.Black
+		};
+		_toggleModsDialog.SetPadding(6f);
+		Interface.modsMenu.Append(_toggleModsDialog);
+
+		_confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .6f,
+			HAlign = .15f
+		}.WithFadedMouseOver();
+		_confirmDialogYesButton.OnLeftClick += yesAction;
+		_confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(_confirmDialogYesButton);
+
+		_confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .6f,
+			HAlign = .85f
+		}.WithFadedMouseOver();
+		_confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(_confirmDialogNoButton);
+
+		var yesDontAskAgainButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.YesDontAskAgain")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(0f, 2f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = 0.95f,
+			HAlign = .5f
+		}.WithFadedMouseOver();
+		yesDontAskAgainButton.OnLeftClick += (a, b) => ModLoader.showConfirmationWindowWhenEnableDisableAllMods = false;
+		yesDontAskAgainButton.OnLeftClick += yesAction;
+		yesDontAskAgainButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(yesDontAskAgainButton);
+
+		_confirmDialogText = new UIText(Language.GetTextValue(confirmDialogTextKey)) {
+			Width = { Percent = .75f },
+			HAlign = .5f,
+			VAlign = .2f,
+			IsWrapped = true
+		};
+		_toggleModsDialog.Append(_confirmDialogText);
+		Recalculate();
+	}
+
 	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}

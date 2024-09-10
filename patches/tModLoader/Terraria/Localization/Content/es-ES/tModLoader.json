@@ -46,7 +46,10 @@
 		// Mods Menu
 		"ModsModsList": "Lista de mods",
 		"ModsEnableAll": "Activar todos",
+		// "ModsEnableAllConfirm": "Are you sure you want to enable all mods?",
 		"ModsDisableAll": "Desactivar todos",
+		// "ModsDisableAllConfirm": "Are you sure you want to disable all mods?",
+		// "YesDontAskAgain": "Yes, don't ask again",
 		"ModsReloadMods": "Recargar mods",
 		"ModsForceReload": "Forzar recarga",
 		"ModsOpenModsFolders": "Carpeta de mods",
@@ -432,6 +435,8 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Activar y recargar automáticamente mods al salir del Navegador: Desactivado",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Recargar automáticamente los mods necesarios al salir del menú de Mods: Activado",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Recargar automáticamente los mods necesarios al salir del menú de Mods: Desactivado",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsYes": "Show Confirmation Window For Enable/Disable All Mods: On",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsNo": "Show Confirmation Window For Enable/Disable All Mods: Off",
 		"DontShowAgain": "No mostrar de nuevo",
 		"ModControls": "Controles de mods",
 
@@ -977,6 +982,7 @@
 	},
 	"Mods": {
 		// "ModLoader.Unloaded": "Unloaded",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Chiste del Día de los Inocentes",
 		"ModLoader.Items.StartBag.DisplayName": "Bolsa de partida",
 		"ModLoader.Items.StartBag.Tooltip": "Algunos objetos de partida no cabían en tu inventario",

@@ -46,7 +46,10 @@
 		// Mods Menu
 		"ModsModsList": "Lista modów",
 		"ModsEnableAll": "Włącz wszystkie",
+		// "ModsEnableAllConfirm": "Are you sure you want to enable all mods?",
 		"ModsDisableAll": "Wyłącz wszystkie",
+		// "ModsDisableAllConfirm": "Are you sure you want to disable all mods?",
+		// "YesDontAskAgain": "Yes, don't ask again",
 		"ModsReloadMods": "Przeładuj mody",
 		"ModsForceReload": "Wymuś przeładowanie modów",
 		"ModsOpenModsFolders": "Otwórz folder z modami",
@@ -432,6 +435,8 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Automatyczne włączaj i ponowne przeładuj mody po opuszczeniu przeglądarki modów: Wyłączone",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatycznie przeładuj wymagane mody po opuszczeniu przeglądarki modów: Włączone",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatycznie przeładuj wymagane mody po opuszczeniu przeglądarki modów: Wyłączone",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsYes": "Show Confirmation Window For Enable/Disable All Mods: On",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsNo": "Show Confirmation Window For Enable/Disable All Mods: Off",
 		"DontShowAgain": "Nie pokazuj więcej",
 		"ModControls": "Mody - sterowanie",
 
@@ -977,6 +982,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Niezaładowane",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Prima Aprilis",
 		"ModLoader.Items.StartBag.DisplayName": "Początkowy ekwipunek",
 		"ModLoader.Items.StartBag.Tooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",

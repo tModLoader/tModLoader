@@ -466,7 +466,7 @@ jobs:
           ls -alhR
         working-directory: solutions/documentation
         
-      - uses: geekyeggo/delete-artifact@v1
+      - uses: geekyeggo/delete-artifact@v5
         with:
           name: temporary-src
           
@@ -569,7 +569,6 @@ jobs:
           echo "Attempting get current version id"
           version=$(git describe --tags --abbrev=0)
           echo "Current Version is: $version"
-          echo "::set-output name=new_version::$version"
           echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
           branch: ${{github.ref}}

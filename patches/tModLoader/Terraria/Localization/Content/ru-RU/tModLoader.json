@@ -46,7 +46,10 @@
 		// Mods Menu
 		"ModsModsList": "Список модов",
 		"ModsEnableAll": "Включить все",
+		// "ModsEnableAllConfirm": "Are you sure you want to enable all mods?",
 		"ModsDisableAll": "Выключить все",
+		// "ModsDisableAllConfirm": "Are you sure you want to disable all mods?",
+		// "YesDontAskAgain": "Yes, don't ask again",
 		"ModsReloadMods": "Перезагрузить моды",
 		"ModsForceReload": "Принудительная перезагрузка",
 		"ModsOpenModsFolders": "Папка с модами",
@@ -282,7 +285,7 @@
 		"InstallPackLocalDesc": "Выключает абсолютно все моды и включает сборку\nс замороженными версиями модов, найденных в сборке",
 		"ModPackMismatch": "Последняя сборка модов: {0}",
 		"ModPackDelete": "Удалить сборку модов",
-		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
+		"ModPackDisableToDelete": "Чтобы удалить, сначала отключите сборку модов",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "Синхронизация модов",
@@ -432,6 +435,8 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "Автоматически включать и перезагружать моды при выходе из «Браузера модов»: Нет",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Автоматически перезагружать моды при выходе из списка модов: Да",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Автоматически перезагружать моды при выходе из списка модов: Нет",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsYes": "Show Confirmation Window For Enable/Disable All Mods: On",
+		// "ShowConfirmationWindowWhenEnableDisableAllModsNo": "Show Confirmation Window For Enable/Disable All Mods: Off",
 		"DontShowAgain": "Не показывать снова",
 		"ModControls": "Управление модов",
 
@@ -977,6 +982,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "Выгружено",
+		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
 		"ModLoader.Items.AprilFools.DisplayName": "Первоапрельская шутка",
 		"ModLoader.Items.StartBag.DisplayName": "Стартовая сумка",
 		"ModLoader.Items.StartBag.Tooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",

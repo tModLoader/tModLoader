@@ -1,13 +1,21 @@
 --- src/TerrariaNetCore/ReLogic/Content/Asset.cs
 +++ src/tModLoader/ReLogic/Content/Asset.cs
-@@ -1,4 +_,6 @@
+@@ -1,12 +_,27 @@
  using System;
 +using System.Threading;
 +using System.Threading.Tasks;
  using ReLogic.Content.Sources;
++using Microsoft.Xna.Framework.Graphics;
++using ReLogic.Graphics;
++using Microsoft.Xna.Framework.Audio;
  
  namespace ReLogic.Content;
-@@ -7,6 +_,12 @@
+ 
++/// <summary>
++/// A class wrapping assets such as textures (<see cref="Texture2D"/>), shaders (<see cref="Effect"/>), fonts (<see cref="DynamicSpriteFont"/>), and sounds (<see cref="SoundEffect"/>). This class provides on-demand (asynchronous) loading and resource pack support. Modders should strive to always use this class when working with assets rather than the contained data for performance and compatibility.
++/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Assets">Assets guide on the wiki</see> for more information on properly using the Asset class.
++/// </summary>
+ public sealed class Asset<T> : IAsset, IDisposable where T : class
  {
  	public static readonly Asset<T> Empty = new Asset<T>("");
  
@@ -20,13 +28,17 @@
  	public string Name { get; private set; }
  
  	public bool IsLoaded => State == AssetState.Loaded;
-@@ -17,7 +_,18 @@
+@@ -17,7 +_,22 @@
  
  	public IContentSource Source { get; private set; }
  
 +	/*
  	public T Value { get; private set; }
 +	*/
++	/// <summary>
++	/// Retrieves the actual asset contained within.
++	/// <para/> If the asset has not yet been loaded (<see cref="IsLoaded"/>), then <see langword="null"/> is returned instead. For <c>Texture2D</c> specifically, however, a 1x1 transparent texture is returned to simplify logic drawing textures that might not be loaded yet.
++	/// </summary>
 +	public T Value => IsLoaded ? ownValue : DefaultValue;
 +
 +	// Added by TML: [[
