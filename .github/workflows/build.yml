@@ -156,6 +156,8 @@ jobs:
           cp -fR pullrequest/patches patches
           rm -r ExampleMod
           cp -fR pullrequest/ExampleMod ExampleMod
+          rm -r setup*
+          cp -fR pullrequest/setup* .
 
       # A cache allows the build to skip the decompile step
       - name: Retrieve encrypted decompiled zip cache
@@ -215,7 +217,7 @@ jobs:
           unzip -q terrariaserver.zip
           
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
-          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.
+          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
           
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
