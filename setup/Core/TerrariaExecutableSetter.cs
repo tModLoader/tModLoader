@@ -23,9 +23,9 @@ public class TerrariaExecutableSetter
 	}
 
 	public async Task FindAndSetTerrariaDirectoryIfNecessary(
-		string? terrariaSteamDirectoryOverride,
-		string? tmlDevSteamDirectoryOverride,
-		bool validateTerrariaDirectory,
+		string? terrariaSteamDirectoryOverride = null,
+		string? tmlDevSteamDirectoryOverride = null,
+		bool validateTerrariaDirectory = true,
 		CancellationToken cancellationToken = default)
 	{
 		string terrariaDirectory = terrariaSteamDirectoryOverride ?? workspaceInfo.TerrariaSteamDirectory;
@@ -51,18 +51,7 @@ public class TerrariaExecutableSetter
 
 	public async Task<string> CheckTerrariaExecutablePathsAndPromptIfNecessary(CancellationToken cancellationToken = default)
 	{
-		string[] paths = [workspaceInfo.TerrariaPath, workspaceInfo.TerrariaServerPath];
-		string[] missingFiles = paths.Where(path => !File.Exists(path)).ToArray();
-
-		if (missingFiles.Length == 0)
-			return workspaceInfo.TerrariaPath;
-
-		if (programSettings.NoPrompts)
-			throw new InvalidOperationException($"Missing required files: {string.Join(Environment.NewLine, missingFiles)}");
-
-		userPrompt.Inform("Missing required files", string.Join(Environment.NewLine, missingFiles), PromptSeverity.Error);
-		await SelectAndSetTerrariaDirectory(cancellationToken);
-
+		await FindAndSetTerrariaDirectoryIfNecessary(cancellationToken: cancellationToken);
 		return workspaceInfo.TerrariaPath;
 	}
 
