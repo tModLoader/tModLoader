@@ -215,7 +215,7 @@ jobs:
           unzip -q terrariaserver.zip
           
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
-          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.
+          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
           
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
