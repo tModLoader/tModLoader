@@ -1,3 +1,4 @@
+using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -61,19 +62,9 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 			string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
 			string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
-			string tempDirectory = await DownloadAndExtractZip(url, cancellationToken);
-
-			File.Copy(Path.Combine(tempDirectory, serverVersionWithoutDots, "Windows", "TerrariaServer.exe"), destinationPath);
-			Directory.Delete(tempDirectory, true);
+			using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken), ZipArchiveMode.Read);
+			zip.Entries.Single(e => e.FullName == $"{serverVersionWithoutDots}/Windows/TerrariaServer.exe").ExtractToFile(destinationPath);
 		}
-	}
-
-	private async Task<string> DownloadAndExtractZip(string url, CancellationToken cancellationToken)
-	{
-		using var fileStream = await httpClient.GetStreamAsync(url, cancellationToken);
-		string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-		ZipFile.ExtractToDirectory(fileStream, tempDirectory);
-		return tempDirectory;
 	}
 
 	private async Task<string> Retrieve(string fileNameWithoutExtension, Version version, FinalRetrievalAction finalRetrievalAction)
@@ -135,11 +126,16 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 		taskProgress.ReportStatus("Downloading .NET Framework Reference Assemblies...");
 		var url = "https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies.net481/1.0.3";
-		string tempDirectory = await DownloadAndExtractZip(url, cancellationToken);
+		using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken), ZipArchiveMode.Read);
 
-		Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-		Directory.Move(Path.Combine(tempDirectory, "build", ".NETFramework", "v4.8.1"), path);
-		Directory.Delete(tempDirectory, true);
+		var subfolder = "build/.NETFramework/v4.8.1";
+		foreach (var e in zip.Entries) {
+			if (e.FullName.StartsWith(subfolder) && e.FullName.EndsWith(".dll")) {
+				var filePath = Path.Combine(path, e.FullName.Substring(subfolder.Length + 1));
+				SetupOperation.CreateParentDirectory(filePath);
+				e.ExtractToFile(filePath);
+			}
+		}
 
 		return path;
 	}
