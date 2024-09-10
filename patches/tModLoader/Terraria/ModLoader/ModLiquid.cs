@@ -62,6 +62,7 @@ public abstract class ModLiquid : ModBlockType
 	public sealed override void SetupContent()
 	{
 		TextureAssets.Liquid[15 + Type - LiquidID.Count] = ModContent.Request<Texture2D>(Texture);
+		LiquidRenderer.Instance._moddedLiquidTextures[Type - LiquidID.Count] = ModContent.Request<Texture2D>(Texture);
 
 		SetStaticDefaults();
 

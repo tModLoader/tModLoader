@@ -46,6 +46,7 @@ public static class LiquidLoader
 	{
 		//Texture
 		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - LiquidID.Count);
+		Array.Resize(ref LiquidRenderer.Instance._moddedLiquidTextures, nextLiquid - LiquidID.Count);
 
 		//Sets
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
