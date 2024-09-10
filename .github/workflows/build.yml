@@ -222,7 +222,7 @@ jobs:
           fi
 
           if [ ! -d "./src/decompiled" ]; then
-            ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress --max-parallelism 1 -f --strict
+            ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress -f --strict
           else
             echo "src/decompiled found. Skipping decompilation..."
           fi
