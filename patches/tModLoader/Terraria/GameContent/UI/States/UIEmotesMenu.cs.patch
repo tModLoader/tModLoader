@@ -1,0 +1,138 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIEmotesMenu.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIEmotesMenu.cs
+@@ -8,6 +_,7 @@
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+ 
+@@ -22,6 +_,8 @@
+ 	private UIScrollbar _scrollBar;
+ 	private bool _isScrollbarAttached;
+ 
++	private int _totalGroups = 7; // Added by TML to support gamepad
++
+ 	public override void OnActivate()
+ 	{
+ 		InitializePage();
+@@ -88,6 +_,14 @@
+ 		TryAddingList(Language.GetText("UI.EmoteCategoryTownNPCs"), ref currentGroupIndex, 9, GetEmotesTownNPCs());
+ 		TryAddingList(Language.GetText("UI.EmoteCategoryCritters"), ref currentGroupIndex, 7, GetEmotesCritters());
+ 		TryAddingList(Language.GetText("UI.EmoteCategoryBosses"), ref currentGroupIndex, 8, GetEmotesBosses());
++
++		var modEmotes = EmoteBubbleLoader.GetAllUnlockedModEmotes();
++		foreach ((Mod mod, List<int> emotes) in modEmotes) {
++			// The maxEmotesPerRow parameter is actually useless
++			TryAddingList(new LocalizedText(mod.Name, mod.DisplayName), ref currentGroupIndex, -1, emotes);
++		}
++
++		_totalGroups = currentGroupIndex;
+ 	}
+ 
+ 	private void TryAddingList(LocalizedText title, ref int currentGroupIndex, int maxEmotesPerRow, List<int> emoteIds)
+@@ -96,7 +_,7 @@
+ 			_list.Add(new EmotesGroupListItem(title, currentGroupIndex++, maxEmotesPerRow, emoteIds.ToArray()));
+ 	}
+ 
+-	private List<int> GetEmotesGeneral()
++	public static List<int> GetEmotesGeneral()
+ 	{
+ 		return new List<int> {
+ 			0,
+@@ -128,10 +_,10 @@
+ 			146,
+ 			147,
+ 			148
+-		};
++		}.AddEmotesToCategory(EmoteID.Category.General);
+ 	}
+ 
+-	private List<int> GetEmotesRPS()
++	public static List<int> GetEmotesRPS()
+ 	{
+ 		return new List<int> {
+ 			36,
+@@ -140,10 +_,10 @@
+ 			33,
+ 			34,
+ 			35
+-		};
++		}.AddEmotesToCategory(EmoteID.Category.Rps);
+ 	}
+ 
+-	private List<int> GetEmotesItems()
++	public static List<int> GetEmotesItems()
+ 	{
+ 		return new List<int> {
+ 			7,
+@@ -169,10 +_,10 @@
+ 			128,
+ 			129,
+ 			149
+-		};
++		}.AddEmotesToCategory(EmoteID.Category.Items);
+ 	}
+ 
+-	private List<int> GetEmotesBiomesAndEvents()
++	public static List<int> GetEmotesBiomesAndEvents()
+ 	{
+ 		return new List<int> {
+ 			22,
+@@ -198,10 +_,10 @@
+ 			96,
+ 			97,
+ 			98
+-		};
++		}.AddEmotesToCategory(EmoteID.Category.NatureAndWeather);
+ 	}
+ 
+-	private List<int> GetEmotesTownNPCs()
++	public static List<int> GetEmotesTownNPCs()
+ 	{
+ 		return new List<int> {
+ 			101,
+@@ -234,10 +_,10 @@
+ 			141,
+ 			142,
+ 			145
+-		};
++		}.AddEmotesToCategory(EmoteID.Category.Town);
+ 	}
+ 
+-	private List<int> GetEmotesCritters()
++	public static List<int> GetEmotesCritters()
+ 	{
+ 		List<int> list = new List<int>();
+ 		list.AddRange(new int[5] {
+@@ -268,10 +_,11 @@
+ 		if (NPC.downedMartians)
+ 			list.Add(71);
+ 
++			list.AddEmotesToCategory(EmoteID.Category.CrittersAndMonsters);
+ 		return list;
+ 	}
+ 
+-	private List<int> GetEmotesBosses()
++	public static List<int> GetEmotesBosses()
+ 	{
+ 		List<int> list = new List<int>();
+ 		if (NPC.downedBoss1)
+@@ -351,6 +_,7 @@
+ 		if (DD2Event.DownedInvasionAnyDifficulty)
+ 			list.Add(133);
+ 
++		list.AddEmotesToCategory(EmoteID.Category.Dangers);
+ 		return list;
+ 	}
+ 
+@@ -399,7 +_,7 @@
+ 
+ 	private void SetupGamepadPoints2(SpriteBatch spriteBatch)
+ 	{
+-		int num = 7;
++		int num = _totalGroups;
+ 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+ 		int num2;
+ 		int iD = (num2 = 3001);

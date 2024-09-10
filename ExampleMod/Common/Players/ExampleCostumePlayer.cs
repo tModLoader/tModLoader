@@ -17,7 +17,7 @@ namespace ExampleMod.Common.Players
 		public bool BlockyHideVanity;            // If true, the item is in a hidden accessory slot
 		public bool BlockyForceVanity;           //	If true, the vanity is forced because the item is in a vanity slot, not the stats.
 		public bool BlockyPower;                 // If true, the stats boosts are applied
-		public bool BlockyVanityEffects => BlockyForceVanity || (BlockyPower && !BlockyHideVanity); // This helper property controls if the audio and visal effects of the vanity should be applied.
+		public bool BlockyVanityEffects => BlockyForceVanity || (BlockyPower && !BlockyHideVanity); // This helper property controls if the audio and visual effects of the vanity should be applied.
 
 		public override void ResetEffects() {
 			BlockyAccessoryPrevious = BlockyAccessory;

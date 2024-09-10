@@ -45,11 +45,11 @@ namespace ExampleMod.Content.Items
 				// This is the amount the sacrifice counter goes up by. We didn't actually change the total number of sacrifices, so this is 0
 				amountWeSacrificed = 0;
 
-				// Return SacrifiedAndDone, so the animation and effects happen
+				// Return SacrificedAndDone, so the animation and effects happen
 				return CreativeUI.ItemSacrificeResult.SacrificedAndDone;
 			}
 
-			// Otherwise, call the original method to run the default behaviour
+			// Otherwise, call the original method to run the default behavior
 			return orig(ref item, out amountWeSacrificed, returnRemainderToPlayer);
 		}
 

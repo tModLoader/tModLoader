@@ -8,6 +8,7 @@ partial class ItemDropRule
 	public static IItemDropRule FewFromOptionsWithNumerator(int amount, int chanceDenominator, int chanceNumerator, params int[] options) => new FewFromOptionsDropRule(amount, chanceDenominator, chanceNumerator, options);
 	public static IItemDropRule SequentialRules(int chanceDenominator, params IItemDropRule[] rules) => new SequentialRulesRule(chanceDenominator, rules);
 	public static IItemDropRule SequentialRulesNotScalingWithLuck(int chanceDenominator, params IItemDropRule[] rules) => new SequentialRulesNotScalingWithLuckRule(chanceDenominator, rules);
+	public static IItemDropRule SequentialRulesNotScalingWithLuckWithNumerator(int chanceDenominator, int chanceNumerator, params IItemDropRule[] rules) => new SequentialRulesNotScalingWithLuckRule(chanceDenominator, chanceNumerator, rules);
 	public static IItemDropRule Coins(long value, bool withRandomBonus) => new CoinsRule(value, withRandomBonus);
 	public static IItemDropRule CoinsBasedOnNPCValue(int npcId)
 	{
@@ -17,4 +18,5 @@ partial class ItemDropRule
 		return Coins((long)npc.value, withRandomBonus: true);
 	}
 	public static IItemDropRule AlwaysAtleastOneSuccess(params IItemDropRule[] rules) => new AlwaysAtleastOneSuccessDropRule(rules);
+	public static IItemDropRule NotScalingWithLuckWithNumerator(int itemId, int chanceDenominator = 1, int chanceNumerator = 1, int minimumDropped = 1, int maximumDropped = 1) => new CommonDropNotScalingWithLuck(itemId, chanceDenominator, chanceNumerator, minimumDropped, maximumDropped);
 }

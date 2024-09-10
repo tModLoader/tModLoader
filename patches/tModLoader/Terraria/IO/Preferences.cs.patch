@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/IO/Preferences.cs
++++ src/tModLoader/Terraria/IO/Preferences.cs
+@@ -93,7 +_,14 @@
+ 					if (this.OnProcessText != null)
+ 						this.OnProcessText(ref text);
+ 
++					// tML: Due to corrupted config.json, we save to .bak file then atomically File.Move in an attempt to avoid corruption.
++					string bakPath = _path + ".bak";
++					File.WriteAllText(bakPath, text);
++					File.Move(bakPath, _path, overwrite: true);
++					File.Delete(bakPath);
++					/*
+ 					File.WriteAllText(_path, text);
++					*/
+ 					File.SetAttributes(_path, FileAttributes.Normal);
+ 				}
+ 				else {

@@ -1,6 +1,6 @@
-using System;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -70,5 +70,9 @@ namespace ExampleMod.Content.Items.Accessories
 	public class WaspNestPlayer : ModPlayer
 	{
 		public bool strongBeesUpgrade;
+
+		public override void ResetEffects() {
+			strongBeesUpgrade = false;
+		}
 	}
 }

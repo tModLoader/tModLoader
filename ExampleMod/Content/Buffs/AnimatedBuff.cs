@@ -25,14 +25,7 @@ namespace ExampleMod.Content.Buffs
 		public override LocalizedText Description => base.Description.WithFormatArgs(DamageBonus);
 
 		public override void SetStaticDefaults() {
-			if (Main.netMode != NetmodeID.Server) {
-				// Do NOT load textures on the server!
-				animatedTexture = ModContent.Request<Texture2D>(AnimationSheetPath);
-			}
-		}
-
-		public override void Unload() {
-			animatedTexture = null;
+			animatedTexture = ModContent.Request<Texture2D>(AnimationSheetPath);
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref BuffDrawParams drawParams) {

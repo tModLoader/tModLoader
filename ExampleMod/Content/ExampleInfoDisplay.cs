@@ -1,8 +1,8 @@
 ﻿using ExampleMod.Common.Players;
 using ExampleMod.Content.Items.Accessories;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content
 {
@@ -29,9 +29,8 @@ namespace ExampleMod.Content
 			// Counting how many minions we have
 			// This is the value that will show up when viewing this display in normal play, right next to the icon
 			int minionCount = 0;
-			for (int i = 0; i < Main.maxProjectiles; i++) {
-				Projectile proj = Main.projectile[i];
-				if (proj.active && proj.minion && proj.owner == Main.myPlayer) {
+			foreach (var proj in Main.ActiveProjectiles) {
+				if (proj.minion && proj.owner == Main.myPlayer) {
 					minionCount++;
 				}
 			}

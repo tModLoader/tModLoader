@@ -146,12 +146,13 @@
  	public bool notActuallyAnItem {
  		get {
  			if (npcNetID == 0)
-@@ -42,6 +_,9 @@
+@@ -42,6 +_,10 @@
  
  	public static float TargetScale => Main.UIScale / Main.GameViewMatrix.Zoom.X;
  
 +	/// <summary>
 +	/// Destroys the <see cref="PopupText"/> in <see cref="Main.popupText"/> at the index <see cref="sonarText"/> if that text has <see cref="sonar"/> set to <see langword="true"/>.
++	/// <para/> Note that multiple fishing lures is a common feature of many popular mods, so this method won't clear all PopupText in that situation because only 1 index is tracked. The Projectile.localAI[2] of a bobber projectile is used to store the index of its sonar PopupText. That stored value is offset by +1.
 +	/// </summary>
  	public static void ClearSonarText()
  	{
@@ -218,7 +219,7 @@
 +	/// <br/> If a <see cref="PopupText"/> already exists with the <see cref="Item.AffixName"/> of <paramref name="newItem"/>, that text will instead be modified unless <paramref name="noStack"/> is <see langword="true"/>.
 +	/// </summary>
 +	/// <param name="context">The <see cref="PopupTextContext"/> in which this <see cref="PopupText"/> was created.</param>
-+	/// <param name="newItem">The <see cref="Item"/> to ceate the new text from.</param>
++	/// <param name="newItem">The <see cref="Item"/> to create the new text from.</param>
 +	/// <param name="stack">The stack of <paramref name="newItem"/>.</param>
 +	/// <param name="noStack">If <see langword="true"/>, always create a new <see cref="PopupText"/> instead of modifying an existing one.</param>
 +	/// <param name="longText">If <see langword="true"/>, then this <see cref="PopupText"/> will spawn with <c><see cref="lifeTime"/> == 5 * 60</c>.</param>

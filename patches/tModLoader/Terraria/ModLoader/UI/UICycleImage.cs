@@ -27,6 +27,14 @@ public class UICycleImage : UIElement
 		}
 	}
 
+	private bool disabled;
+	public bool Disabled {
+		get => disabled;
+		set {
+			disabled = value;
+		}
+	}
+
 	protected int DrawHeight => (int)Height.Pixels;
 	protected int DrawWidth => (int)Width.Pixels;
 
@@ -46,23 +54,29 @@ public class UICycleImage : UIElement
 		CalculatedStyle dimensions = GetDimensions();
 		Point point = new Point(_textureOffsetX, _textureOffsetY + (_padding + DrawHeight) * _currentState);
 		Color color = IsMouseHovering ? Color.White : Color.Silver;
+		if (disabled)
+			color = new Color(100, 100, 100);
 		spriteBatch.Draw(_texture.Value, new Rectangle((int)dimensions.X, (int)dimensions.Y, DrawWidth, DrawHeight), new Rectangle(point.X, point.Y, DrawWidth, DrawHeight), color);
 	}
 
 	public override void LeftClick(UIMouseEvent evt)
 	{
+		if (disabled)
+			return;
 		CurrentState = (_currentState + 1) % _states;
 		base.LeftClick(evt);
 	}
 
 	public override void RightClick(UIMouseEvent evt)
 	{
+		if (disabled)
+			return;
 		CurrentState = (_currentState + _states - 1) % _states;
 		base.RightClick(evt);
 	}
 
-	internal void SetCurrentState(int sortMode)
+	internal void SetCurrentState(int state)
 	{
-		CurrentState = sortMode;
+		CurrentState = state;
 	}
 }

@@ -48,7 +48,7 @@ public static class ConfigManager
 		ContractResolver = serializerSettings.ContractResolver
 	};
 
-	/* Wasn't working due to initialization order. Revist later.
+	/* Wasn't working due to initialization order. Revisit later.
 	private static readonly IList<JsonConverter> converters = new List<JsonConverter>() {
 		new Newtonsoft.Json.Converters.VersionConverter(),
 		//new ColorJsonConverter(),
@@ -263,6 +263,29 @@ public static class ConfigManager
 		return false;
 	}
 
+	internal static bool AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)
+	{
+		modsWithChangedConfigs = new List<Mod>();
+		bool result = false;
+		foreach (var mod in ModLoader.Mods) {
+			if (!Configs.ContainsKey(mod)) {
+				continue;
+			}
+			var configs = Configs[mod];
+			var loadTimeConfigs = ConfigManager.loadTimeConfigs[mod];
+			for (int i = 0; i < configs.Count; i++) {
+				var configClone = GeneratePopulatedClone(configs[i]);
+				Load(configClone); // Should load non-server config values from disk since ModNet.NetReloadActive should be false
+				if (loadTimeConfigs[i].NeedsReload(configClone)) {
+					result = true;
+					modsWithChangedConfigs.Add(mod);
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
 	// GetConfig...returns the config instance
 	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)
@@ -285,7 +308,7 @@ public static class ConfigManager
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
-			string message = reader.ReadString();
+			NetworkText message = NetworkText.Deserialize(reader);
 			if (success) {
 				string modname = reader.ReadString();
 				string configname = reader.ReadString();
@@ -294,19 +317,19 @@ public static class ConfigManager
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
 
-				Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
+				Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(Interface.modConfig);
-					Interface.modConfig.SetMessage("Server response: " + message, Color.Green);
+					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
 			}
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
 
-				Main.NewText("Changes Rejected: " + message);
+				Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage("Server rejected changes: " + message, Color.Red);
+					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
 					//Main.InGameUI.SetState(Interface.modConfig);
 				}
 
@@ -325,14 +348,21 @@ public static class ConfigManager
 			ModConfig pendingConfig = GeneratePopulatedClone(config);
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 			bool success = true;
-			string message = "Accepted";
+			NetworkText message = NetworkText.FromKey("tModLoader.ModConfigAccepted");
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
 				success = false;
-				message = "Can't save because changes would require a reload.";
+				message = NetworkText.FromKey("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload");
 			}
-			if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
-				success = false;
-			}
+
+			string stringMessage = ""; // For compatibility with mods that haven't updated yet
+			success &= config.AcceptClientChanges(pendingConfig, whoAmI, ref message);
+#pragma warning disable CS0618 // Type or member is obsolete
+			success &= config.AcceptClientChanges(pendingConfig, whoAmI, ref stringMessage);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+			if (!string.IsNullOrEmpty(stringMessage))
+				message = NetworkText.FromLiteral(stringMessage);
+
 			if (success) {
 				// Apply to Servers Config
 				ConfigManager.Save(pendingConfig);
@@ -341,7 +371,7 @@ public static class ConfigManager
 				// Send new config to all clients
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(true);
-				p.Write(message);
+				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
 				p.Write(json);
@@ -351,7 +381,7 @@ public static class ConfigManager
 				// Send rejections message back to client who requested change
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(false);
-				p.Write(message);
+				message.Serialize(p);
 				p.Send(whoAmI);
 			}
 
@@ -398,7 +428,7 @@ public static class ConfigManager
 		// TODO: The intention was to prioritize the Type of the element in the array at this index. That was never hooked up it seems, and it might not make sense to apply this behavior to all config attributes at this time. Needs more thought, specifically about collections and which attributes to "inherit". For example, currently ListOfPair won't use Pair BackgroundColor
 	}
 
-	// Used to get an attribute for a member that is a generic collection. The member attribute has highest priority, then attibute on the generic Type.
+	// Used to get an attribute for a member that is a generic collection. The member attribute has highest priority, then attribute on the generic Type.
 	public static T? GetCustomAttributeFromCollectionMemberThenElementType<T>(MemberInfo memberInfo, Type elementType) where T : Attribute
 	{
 		return
@@ -549,7 +579,7 @@ public static class ConfigManager
 }
 
 /// <summary>
-/// Custom ContractResolver for facilitating refernce type defaults.
+/// Custom ContractResolver for facilitating reference type defaults.
 /// The ShouldSerialize code enables unchanged-by-user reference type defaults to properly not serialize.
 /// The ValueProvider code helps during deserialization to not
 /// </summary>

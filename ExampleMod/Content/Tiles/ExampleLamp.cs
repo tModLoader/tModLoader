@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -28,6 +29,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);
+			TileObjectData.newTile.DrawFlipHorizontal = true; // Unlike vanilla lamps, this lamp alternates direction, see SetSpriteEffects below and the TileObjectData.DrawFlipHorizontal docs for more information.
 			TileObjectData.newTile.StyleLineSkip = 2;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.WaterDeath = true;
@@ -39,9 +41,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(253, 221, 3), Language.GetText("MapObject.FloorLamp"));
 
 			// Assets
-			if (!Main.dedServ) {
-				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
-			}
+			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame"); // We could also reuse TextureAssets.Flames[] textures, but using our own texture is nice.
 		}
 
 		public override void HitWire(int i, int j) {
@@ -64,7 +64,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
-			if (i % 2 == 1) {
+			if (i % 2 == 0) {
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 		}
@@ -85,6 +85,10 @@ namespace ExampleMod.Content.Tiles
 			}
 
 			Tile tile = Main.tile[i, j];
+
+			if (!TileDrawing.IsVisible(tile)) {
+				return;
+			}
 
 			short frameX = tile.TileFrameX;
 			short frameY = tile.TileFrameY;
@@ -118,9 +122,15 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
+			Tile tile = Main.tile[i, j];
+
+			if (!TileDrawing.IsVisible(tile)) {
+				return;
+			}
+
 			SpriteEffects effects = SpriteEffects.None;
 
-			if (i % 2 == 1) {
+			if (i % 2 == 0) {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 
@@ -130,7 +140,6 @@ namespace ExampleMod.Content.Tiles
 				zero = Vector2.Zero;
 			}
 
-			Tile tile = Main.tile[i, j];
 			int width = 16;
 			int offsetY = 0;
 			int height = 16;

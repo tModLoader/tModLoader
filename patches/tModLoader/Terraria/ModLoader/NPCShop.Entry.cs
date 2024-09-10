@@ -19,6 +19,7 @@ public sealed partial class NPCShop
 
 		public bool Disabled { get; private set; }
 		public bool OrdersLast { get; private set; }
+		/// <inheritdoc cref="ReserveSlot"/>
 		public bool SlotReserved { get; private set; }
 
 		public Entry(int item, params Condition[] condition) : this(new Item(item), condition) { }
@@ -67,6 +68,10 @@ public sealed partial class NPCShop
 			return this;
 		}
 
+		/// <summary>
+		/// Reserves a slot for this entry even if its conditions are not met (<see cref="ConditionsMet"/>). This can be used to create a defined shop layout similar to the Tavernkeep shop.
+		/// </summary>
+		/// <returns></returns>
 		public Entry ReserveSlot()
 		{
 			SlotReserved = true;

@@ -14,6 +14,7 @@ using log4net.Layout;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
@@ -35,6 +36,7 @@ public static partial class Logging
 	private static readonly Encoding encoding = new UTF8Encoding(false);
 	private static readonly List<string> initWarnings = new();
 	private static readonly Regex statusRegex = new(@"(.+?)[: \d]*%$");
+	private static readonly Regex statusGeneratingWorld = new(@"\d+\.\d% - (.+?) - \d+\.\d%$");
 
 	public static string LogPath { get; private set; }
 
@@ -47,6 +49,8 @@ public static partial class Logging
 
 	internal static void Init(LogFile logFile)
 	{
+		LegacyCleanups();
+
 		if (Program.LaunchParameters.ContainsKey("-build"))
 			return;
 
@@ -55,6 +59,8 @@ public static partial class Logging
 		try {
 			InitLogPaths(logFile);
 			ConfigureAppenders(logFile);
+			// Force-update log4net file's creation date, because log4net does not do that.
+			TryUpdatingFileCreationDate(LogPath);
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Failed to init logging", e);
@@ -63,16 +69,20 @@ public static partial class Logging
 
 	internal static void LogStartup(bool dedServ)
 	{
+		if (Program.LaunchParameters.ContainsKey("-build"))
+			return;
+
 		tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 		tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 		tML.InfoFormat("Running on {0} (v{1}) {2} {3} {4}", ReLogic.OS.Platform.Current.Type, Environment.OSVersion.Version, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
+		tML.InfoFormat("CPU: {0} processors. RAM: {1}", Environment.ProcessorCount, UIMemoryBar.SizeSuffix(UIMemoryBar.GetTotalMemory()));
 		tML.InfoFormat("FrameworkDescription: {0}", RuntimeInformation.FrameworkDescription);
 		tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
 		tML.InfoFormat("Working Directory: {0}", Path.GetFullPath(Directory.GetCurrentDirectory()));
 
 		string args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1));
 
-		if (!string.IsNullOrEmpty(args)) {
+		if (!string.IsNullOrEmpty(args) || Program.LaunchParameters.Any()) {
 			tML.InfoFormat("Launch Parameters: {0}", args);
 			tML.InfoFormat("Parsed Launch Parameters: {0}", string.Join(' ', Program.LaunchParameters.Select(p => ($"{p.Key} {p.Value}").Trim())));
 		}
@@ -92,6 +102,7 @@ public static partial class Logging
 		AssemblyResolving.Init();
 		LoggingHooks.Init();
 		LogArchiver.ArchiveLogs();
+		NativeExceptionHandling.Init();
 	}
 
 	private static void ConfigureAppenders(LogFile logFile)
@@ -120,7 +131,7 @@ public static partial class Logging
 			File = LogPath,
 			AppendToFile = false,
 			Encoding = encoding,
-			Layout = layout
+			Layout = layout,
 		};
 
 		fileAppender.ActivateOptions();
@@ -226,14 +237,32 @@ public static partial class Logging
 		Main.soundVolume = soundVolume;
 	}
 
-	internal static void LogStatusChange(string oldStatusText, string newStatusText)
+	[ThreadStatic]
+	private static string lastStatusLogged; // Needs to be ThreadStatic so competing threads don't spam logs, such as during world gen saving.
+	internal static void LogStatusChange(string newStatusText)
 	{
-		// Trim numbers and percentage to reduce log spam
-		string oldBase = statusRegex.Match(oldStatusText).Groups[1].Value;
-		string newBase = statusRegex.Match(newStatusText).Groups[1].Value;
+		lastStatusLogged ??= string.Empty;
 
-		if (newBase != oldBase && newBase.Length > 0)
+		// Trim numbers and percentage to reduce log spam
+		string newBase = newStatusText;
+
+		if (statusRegex.Match(newStatusText) is { Success: true } statusMatchNew) {
+			newBase = statusMatchNew.Groups[1].Value;
+		}
+
+		if (WorldGen.generatingWorld) {
+			// 21.2% - Adding more grass - 90.3%
+			if (statusGeneratingWorld.Match(newStatusText) is { Success: true } statusGenMatchNew) {
+				newBase = statusGenMatchNew.Groups[1].Value;
+			}
+			if (WorldGen.drunkWorldGenText && !Main.dedServ)
+				newBase = "Random Numbers (Drunk World)";
+		}
+
+		if (newBase != lastStatusLogged && newBase.Length > 0) {
 			LogManager.GetLogger("StatusText").Info(newBase);
+			lastStatusLogged = newBase;
+		}
 	}
 
 	internal static void ServerConsoleLine(string msg)
@@ -256,7 +285,11 @@ public static partial class Logging
 	{
 		try {
 			string fileName = $"environment-{Path.GetFileName(LogPath)}";
-			using var f = File.OpenWrite(Path.Combine(LogDir, fileName));
+			string filePath = Path.Combine(LogDir, fileName);
+
+			TryUpdatingFileCreationDate(filePath);
+
+			using var f = File.OpenWrite(filePath);
 			using var w = new StreamWriter(f);
 			foreach (var key in Environment.GetEnvironmentVariables().Keys) {
 				w.WriteLine($"{key}={Environment.GetEnvironmentVariable((string)key)}");
@@ -264,6 +297,35 @@ public static partial class Logging
 		}
 		catch (Exception e) {
 			tML.Error("Failed to dump env vars", e);
+		}
+	}
+
+	private static void TryUpdatingFileCreationDate(string filePath)
+	{
+		if (File.Exists(filePath)) {
+			using var _ = new QuietExceptionHandle();
+
+			try { File.SetCreationTime(filePath, DateTime.Now); }
+			catch { }
+		}
+	}
+
+	private static readonly string[] autoRemovedFiles = {
+		"environment-",
+	};
+
+	// Removes files that shouldn't have ever existed.
+	private static void LegacyCleanups()
+	{
+		using var _ = new QuietExceptionHandle();
+
+		foreach (string filePath in autoRemovedFiles) {
+			string fullPath = Path.Combine(LogDir, filePath);
+
+			if (File.Exists(fullPath)) {
+				try { File.Delete(fullPath); }
+				catch { }
+			}
 		}
 	}
 }

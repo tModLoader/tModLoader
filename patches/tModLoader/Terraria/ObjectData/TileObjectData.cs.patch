@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ObjectData/TileObjectData.cs
 +++ src/tModLoader/Terraria/ObjectData/TileObjectData.cs
-@@ -4,13 +_,14 @@
+@@ -4,13 +_,19 @@
  using Terraria.Enums;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.ID;
@@ -10,6 +10,11 @@
  namespace Terraria.ObjectData;
  
 -public class TileObjectData
++/// <summary>
++/// Contains tile properties for multitiles dictating how they are placed and how they behave. Multitiles are non-terrain tiles.
++/// <para/> TileObjectData supports alternate placements as well as tile style-specific behaviors. 
++/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#tileobjectdata-or-frameimportantmultitiles">TileObjectData section of the Basic Tile wiki guide</see> has visuals and guides teaching how to use the TileObjectData system.
++/// </summary>
 +public partial class TileObjectData
  {
 -	private TileObjectData _parent;
@@ -17,7 +22,7 @@
  	private bool _linkedAlternates;
  	private bool _usesCustomCanPlace;
  	private TileObjectAlternatesModule _alternates;
-@@ -35,34 +_,36 @@
+@@ -35,34 +_,68 @@
  	private bool _hasOwnTileObjectDraw;
  	private bool _hasOwnTileObjectStyle;
  	private bool _hasOwnTileObjectCoords;
@@ -27,22 +32,45 @@
  	private static bool readOnlyData;
 +
 +	//TML: Everything made public.
--	private static TileObjectData newTile;
++	/// <summary>
++	/// Contains the tile properties for the current tile. This is used to control the behavior, size, and other properties of a non-terrain tiles.
++	/// <para/> Tiles using a TileObjectData are referred to as multitiles.
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#tileobjectdata-or-frameimportantmultitiles">Basic Tile Guide on the wiki</see> has more information about multitiles.
++	/// <para/> After all properties are set, call <see cref="addTile(int)"/> to register the data to the tile type.
++	/// <para/> <see cref="newSubTile"/> and <see cref="newAlternate"/> are used to provide subtile and alternate-specific properties. Alternates should be setup before subtiles.
++	/// </summary>
 +	public static TileObjectData newTile;
--	private static TileObjectData newSubTile;
++	/// <summary>
++	/// Contains the tile properties specific to a subtile, also known as a tile style, of the current <see cref="newTile"/>.
++	/// <para/> Subtiles allow placed tile styles to have specific behaviors. This is most commonly used to declare certain tile styles as immune to lava or water. Another common usage is to declare specific tiles a tile style can anchor to.
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#newsubtile---tile-styles">newSubTile section of the Tile wiki page</see> has more information about subtiles.
++	/// <para/> Calling <see cref="addSubTile(int)"/> registers the alternate placement.
++	/// <para/> If there are alternate placements (<see cref="addAlternate(int)"/>) for this tile, make sure to register those first and to set <see cref="LinkedAlternates"/> to true after copying the base tile.
++	/// </summary>
 +	public static TileObjectData newSubTile;
--	private static TileObjectData newAlternate;
++	/// <summary>
++	/// Contains the tile properties specific to an alternate placement of the current <see cref="newTile"/>.
++	/// <para/> Alternate placements allow each style to be placed in multiple ways, using alternate sprites or alternate anchors.  Mostly useful for tiles that can anchor in multiple ways, such as how torches can anchor to tiles to the left, right, or bottom as well as to walls.
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#newalternate---alternate-placement-styles">newAlternate section of the Tile wiki page</see> has more information about alternate placements.
++	/// <para/> Calling <see cref="addAlternate(int)"/> registers the alternate placement.
++	/// <para/> If there are subtiles (<see cref="addSubTile(int)"/>) for this tile, make sure to do those after alternates are registered and to set <see cref="LinkedAlternates"/> to true on newSubTile after copying the base tile.
+-	private static TileObjectData newTile;
++	/// </summary>
+-	private static TileObjectData newSubTile;
 +	public static TileObjectData newAlternate;
--	private static TileObjectData StyleSwitch;
+-	private static TileObjectData newAlternate;
 +	public static TileObjectData StyleSwitch;
--	private static TileObjectData StyleTorch;
+-	private static TileObjectData StyleSwitch;
 +	public static TileObjectData StyleTorch;
+-	private static TileObjectData StyleTorch;
++	/// <summary> Has left and right alternate placements. </summary>
 -	private static TileObjectData Style4x2;
 +	public static TileObjectData Style4x2;
 -	private static TileObjectData Style2x2;
 +	public static TileObjectData Style2x2;
 -	private static TileObjectData Style1x2;
 +	public static TileObjectData Style1x2;
++	/// <summary> No anchors. </summary>
 -	private static TileObjectData Style1x1;
 +	public static TileObjectData Style1x1;
 -	private static TileObjectData StyleAlch;
@@ -57,10 +85,13 @@
 +	public static TileObjectData StyleSmallCage;
 -	private static TileObjectData StyleOnTable1x1;
 +	public static TileObjectData StyleOnTable1x1;
++	/// <summary> Anchors to tiles above. </summary>
 -	private static TileObjectData Style1x2Top;
 +	public static TileObjectData Style1x2Top;
++	/// <summary> Is 1x3. </summary>
 -	private static TileObjectData Style1xX;
 +	public static TileObjectData Style1xX;
++	/// <summary> Is 2x3. </summary>
 -	private static TileObjectData Style2xX;
 +	public static TileObjectData Style2xX;
 -	private static TileObjectData Style3x2;
@@ -71,14 +102,31 @@
 +	public static TileObjectData Style3x4;
 -	private static TileObjectData Style5x4;
 +	public static TileObjectData Style5x4;
++	/// <summary> Anchors to walls. </summary>
 -	private static TileObjectData Style3x3Wall;
 +	public static TileObjectData Style3x3Wall;
  
 -	private bool LinkedAlternates {
++	/// <summary>
++	/// Call on <see cref="newSubTile"/> only. If set to true, this subtile will be populated with its own copy of the <see cref="Alternates"/> data. This will allow changes made to this subtile to apply to alternate placements of this tile style as well.
++	/// <para/> This must be set to true after <c>TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);</c> and before adjusting any other properties. This should always be set for any subtile of a tile that has alternate placements.
++	/// <para/> Defaults to false.
++	/// </summary>
 +	public bool LinkedAlternates {
  		get {
  			return _linkedAlternates;
  		}
+@@ -77,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, this tile will use anchors to decide if the tile can be placed, otherwise it will fallback to being placed like a terrain tile. Aside from platforms and torches, all multitiles set this to true. 
++	/// <para/> Defaults to false, but most template styles set this to true. If not copying from a template style or existing tile <b>be sure to set this to true</b>.
++	/// </summary>
+ 	public bool UsesCustomCanPlace {
+ 		get {
+ 			return _usesCustomCanPlace;
 @@ -87,7 +_,7 @@
  		}
  	}
@@ -88,6 +136,187 @@
  		get {
  			if (_alternates == null)
  				return _baseObject.Alternates;
+@@ -104,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Defines the anchors needed above this tile. Defaults to null.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#anchorbottomanchorleftanchorrightanchortop">Anchor section of the Basic Tile Guide on the wiki</see> for more information.
++	/// </summary>
+ 	public AnchorData AnchorTop {
+ 		get {
+ 			if (_anchor == null)
+@@ -130,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Defines the anchors needed below this tile. Defaults to null, but most template styles will have this set already if copied from.
++	/// <para/> Most typical furniture will define an AnchorBottom spanning the width of the multitile requiring solid tiles: <c>TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);</c>
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#anchorbottomanchorleftanchorrightanchortop">Anchor section of the Basic Tile Guide on the wiki</see> for more information.
++	/// </summary>
+ 	public AnchorData AnchorBottom {
+ 		get {
+ 			if (_anchor == null)
+@@ -156,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Defines the anchors needed to the left of this tile. Defaults to null.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#anchorbottomanchorleftanchorrightanchortop">Anchor section of the Basic Tile Guide on the wiki</see> for more information.
++	/// </summary>
+ 	public AnchorData AnchorLeft {
+ 		get {
+ 			if (_anchor == null)
+@@ -182,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Defines the anchors needed to the right of this tile. Defaults to null.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#anchorbottomanchorleftanchorrightanchortop">Anchor section of the Basic Tile Guide on the wiki</see> for more information.
++	/// </summary>
+ 	public AnchorData AnchorRight {
+ 		get {
+ 			if (_anchor == null)
+@@ -208,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, then this multitile requires walls behind each individual tile to place. Defaults to false.
++	/// </summary>
+ 	public bool AnchorWall {
+ 		get {
+ 			if (_anchor == null)
+@@ -234,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Limits which tile types are valid for anchoring to a specific set of types. 
++	/// </summary>
+ 	public int[] AnchorValidTiles {
+ 		get {
+ 			if (_anchorTiles == null)
+@@ -265,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Dictates specific tile types that are not valid for anchoring to. 
++	/// </summary>
+ 	public int[] AnchorInvalidTiles {
+ 		get {
+ 			if (_anchorTiles == null)
+@@ -296,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Tiles contained in this array are tiles that will satisfy the <see cref="AnchorType.AlternateTile"/> anchor type. This can be used to provide specific additional valid anchors for a specific alternate placement or tile style.
++	/// </summary>
+ 	public int[] AnchorAlternateTiles {
+ 		get {
+ 			if (_anchorTiles == null)
+@@ -327,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Unimplemented, has no effect.
++	/// </summary>
+ 	public int[] AnchorValidWalls {
+ 		get {
+ 			if (_anchorTiles == null)
+@@ -355,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, this tile will break when in contact with water. This supersedes the <see cref="Main.tileWaterDeath"/> value.
++	/// <para/>By assigning to this on <see cref="newSubTile"/> this can be used to allow specific tile styles to be immune to water. Modders should try to keep this and <see cref="Main.tileWaterDeath"/> in sync and only deviate from that common value for specific tile styles that should behave differently if any. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L57">ExampleTorch</see> serves as an example of this and <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#conditional-behavior">the Conditional Behavior section of the Basic Tile wiki page</see> also has more information on this concept.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool WaterDeath {
+ 		get {
+ 			if (_liquidDeath == null)
+@@ -381,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, this tile will break when in contact with lava. This supersedes the <see cref="Main.tileLavaDeath"/> value.
++	/// <para/>By assigning to this on <see cref="newSubTile"/> this can be used to allow specific tile styles to be immune to lava. Modders should try to keep this and <see cref="Main.tileLavaDeath"/> in sync and only deviate from that common value for specific tile styles that should behave differently if any. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L57">ExampleTorch</see> serves as an example of this and <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#conditional-behavior">the Conditional Behavior section of the Basic Tile wiki page</see> also has more information on this concept.
++	/// <para/> Defaults to false, but many of the templates default this to true.
++	/// </summary>
+ 	public bool LavaDeath {
+ 		get {
+ 			if (_liquidDeath == null)
+@@ -407,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Controls if a tile can be placed in water. Typically used in conjunction with <see cref="WaterDeath"/> for consistency. Many tiles with visual flames, for example, tend to not allow themselves to be placed in water.
++	/// <para/><see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L57">ExampleTorch</see> has an underwater style that is specifically placeable underwater.
++	/// <para/> Defaults to <see cref="LiquidPlacement.Allowed"/>.
++	/// </summary>
+ 	public LiquidPlacement WaterPlacement {
+ 		get {
+ 			if (_liquidPlacement == null)
+@@ -433,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Controls if a tile can be placed in lava. Typically used in conjunction with <see cref="LavaDeath"/> for consistency. Aside from obsidian furniture, most tiles in the game can not be placed in lava. Many tiles can't be placed in lava but won't break in lava, while others will break.
++	/// <para/><see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L57">ExampleTorch</see> has a style that is specifically placeable in lava.
++	/// <para/> Defaults to <see cref="LiquidPlacement.NotAllowed"/>.
++	/// </summary>
+ 	public LiquidPlacement LavaPlacement {
+ 		get {
+ 			if (_liquidPlacement == null)
+@@ -459,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Designates a method to call to determine if the tile can't be placed by the player at the location. This method is only called on the client placing the tile. This is used by chest tiles to see if the chest limit has been reached and by pylons to check if the pylon has already been placed. 
++	/// </summary>
+ 	public PlacementHook HookCheckIfCanPlace {
+ 		get {
+ 			if (_placementHooks == null)
+@@ -477,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Unused. </summary>
+ 	public PlacementHook HookPostPlaceEveryone {
+ 		get {
+ 			if (_placementHooks == null)
+@@ -495,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Designates a method to call after this tile is placed by a player. This method facilitates binding extra data to a placed tile. This method is only called on the client placing the tile. This is used by chest tiles to place the actual <see cref="Chest"/> and by other tiles to place a <see cref="TileEntity"/>.
++	/// </summary>
+ 	public PlacementHook HookPostPlaceMyPlayer {
+ 		get {
+ 			if (_placementHooks == null)
+@@ -513,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Designates a method that will run instead of the usual code that places each individual tile of a mutitile in the world. Used only be <see cref="TileID.ChristmasTree"/> due to its complicated logic.
++	/// </summary>
+ 	public PlacementHook HookPlaceOverride {
+ 		get {
+ 			if (_placementHooks == null)
 @@ -531,7 +_,7 @@
  		}
  	}
@@ -97,6 +326,358 @@
  		get {
  			if (_subTiles == null)
  				return _baseObject.SubTiles;
+@@ -551,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Offsets the drawing of this tile in the Y direction. Can be used to draw a tile at a location other than the default. One example is how <see cref="TileID.Switches"/> appear slightly embedded into the tile they are anchored to. Another example is how the alternate placement of banners for  platforms shifts the drawing up.
++	/// <para/> Read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#non-16-or-18-values">this section on the wiki</see> for a visual explanation of this.
++	/// <para/> Defaults to 0.
++	/// </summary>
+ 	public int DrawYOffset {
+ 		get {
+ 			if (_tileObjectDraw == null)
+@@ -577,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Offsets the drawing of this tile in the X direction. Can be used to draw a tile at a location other than the default. One example is how <see cref="TileID.Switches"/> appear slightly embedded into the tile they are anchored to.
++	/// <para/> Read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#non-16-or-18-values">this section on the wiki</see> for a visual explanation of this.
++	/// <para/> Defaults to 0.
++	/// </summary>
+ 	public int DrawXOffset {
+ 		get {
+ 			if (_tileObjectDraw == null)
+@@ -603,6 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, the tile placement preview will draw this tile flipped horizontally at even X tile coordinates. This effect must be replicated in <see cref="ModTile.SetSpriteEffects(int, int, ref Microsoft.Xna.Framework.Graphics.SpriteEffects)"/> to work for the placed tile. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L66">ExampleLamp.SetSpriteEffects method</see> shows an example of this required code.
++	/// <para/> Use this for visual variety and to break up visual repetition. Tiles with normal left and right placements, such as <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChair.cs">ExampleChair</see>, will use alternate placements influenced by the player direction rather than this.
++	/// <para/> Note that this should only be used for multitiles that are 1 tile wide, the effect will not work correctly for wider tiles.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool DrawFlipHorizontal {
+ 		get {
+ 			if (_tileObjectDraw == null)
+@@ -629,6 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, the tile placement preview will draw this tile flipped vertically at even Y tile coordinates. This effect must be replicated in <see cref="ModTile.SetSpriteEffects(int, int, ref Microsoft.Xna.Framework.Graphics.SpriteEffects)"/> to work for the placed tile. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L66">ExampleLamp.SetSpriteEffects method</see> shows an example of this required code, albeit the example is for DrawFlipHorizontal usage.
++	/// <para/> Use this for visual variety and to break up visual repetition.
++	/// <para/> Note that this should only be used for multitiles that are 1 tile high, the effect will not work correctly for taller tiles.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool DrawFlipVertical {
+ 		get {
+ 			if (_tileObjectDraw == null)
+@@ -655,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="DrawYOffset"/>, this also offsets the drawing of this tile in the Y direction, but this offset will only be applied if there is a solid tile above this tile. Torches use this to shift the torch down 2 more pixels so it doesn't look like the roof is being burnt.
++	/// <para/> This is only applied to the tile placement preview and <see cref="ModTile.SetDrawPositions(int, int, ref int, ref int, ref int, ref short, ref short)"/> must be used to replicate this behavior in the placed tile. While torches use this, torches don't actually show a placement preview in the first place. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L57">ExampleTorch.SetDrawPositions method</see> shows an example of this.
++	/// </summary>
+ 	public int DrawStepDown {
+ 		get {
+ 			if (_tileObjectDraw == null)
+@@ -681,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, tile styles are arranged one after the other horizontally in the spritesheet, otherwise they are arranged vertically. New lines of styles will roll over to the next row once <see cref="StyleWrapLimit"/> is reached, if defined.
++	/// <para/> Some tiles keep this false but use a small <see cref="StyleWrapLimit"/> and <see cref="StyleMultiplier"/> value to provide space for alternate placements, resulting in the tile styles themselves appearing to be arranged horizontally in the resulting spritesheet with the alternate placements below.  
++	/// <para/> Defaults to <c>false</c>.
++	/// </summary>
+ 	public bool StyleHorizontal {
+ 		get {
+ 			if (_tileObjectStyle == null)
+@@ -707,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Used by alternate placements to offset the calculated placement style.
++	/// <para/> Equal to the value passed into <see cref="addAlternate(int)"/>. 
++	/// <para/> Defaults to 0.
++	/// </summary>
+ 	public int Style {
+ 		get {
+ 			if (_tileObjectStyle == null)
+@@ -733,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Defines how many tile placement styles (Number of styles times <see cref="StyleMultiplier"/>) will fit into a line (row if <see cref="StyleHorizontal"/> is true, column if StyleHorizontal is false) of the spritesheet before wrapping to the next line. This is used for organizational purposes and to keep spritesheets easy to work with.
++	/// <para/> Defaults to 0, which will be interpreted as 1.
++	/// </summary>
+ 	public int StyleWrapLimit {
+ 		get {
+ 			if (_tileObjectStyle == null)
+@@ -759,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> A hack used by some vanilla tiles, do not use. </summary>
+ 	public int? StyleWrapLimitVisualOverride {
+ 		get {
+ 			if (_tileObjectStyle == null)
+@@ -785,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> A hack used by some vanilla tiles, do not use. </summary>
+ 	public int? styleLineSkipVisualOverride {
+ 		get {
+ 			if (_tileObjectStyle == null)
+@@ -811,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// How many lines (rows if StyleHorizontal is true, columns if StyleHorizontal is false) will be skipped between each line of styles when wrapping to the next line due to <see cref="StyleWrapLimit"/>. Skipping lines allows tile spritesheets to have space for animations or toggled states (manual changes to TileFrameX and TileFrameY). For example, <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleCampfire.cs">ExampleCampfire</see> sets this to 9 because it has 8 animation frames and an off state taking up additional lines. Failure to set this for a tile that can change states will result in tile drops being incorrectly calculated.
++	/// <para/> Defaults to 1, meaning no lines are skipped.
++	/// </summary>
+ 	public int StyleLineSkip {
+ 		get {
+ 			if (_tileObjectStyle == null)
+@@ -837,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Applies a multiplier to style calculations to account for alternate placements (<see cref="addAlternate(int)"/>) and <see cref="RandomStyleRange"/>. For example, chair tiles can be placed facing left or right. These are intended to share the same style (<see cref="Item.placeStyle"/>) value, but will have different placement style values. The multiplier accounts for these alternate placements allowing tile styles to be properly determined and consequently the correct item to drop when the tile is destroyed.
++	/// <para/> If tiles are mistakenly dropping items from different styles, StyleMultiplier might have the incorrect value.
++	/// <para/> Defaults to 1.
++	/// </summary>
+ 	public int StyleMultiplier {
+ 		get {
+ 			if (_tileObjectStyle == null)
+@@ -863,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The width of this multitile in tile coordinates. For example, chests are 2 tiles wide while furnaces are 3 tiles wide.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#width">Width section of the Basic Tile Guide on the wiki</see> for more information and helpful visualizations.
++	/// <para/> Defaults to 1.
++	/// </summary>
+ 	public int Width {
+ 		get {
+ 			if (_tileObjectBase == null)
+@@ -894,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The height of this multitile in tile coordinates. For example, chests are 2 tiles high while grandfather clocks are 5 tiles high.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#height">Height section of the Basic Tile Guide on the wiki</see> for more information and helpful visualizations.
++	/// <para/> Defaults to 1. When changing this <see cref="CoordinateHeights"/> must be changed as well.
++	/// </summary>
+ 	public int Height {
+ 		get {
+ 			if (_tileObjectBase == null)
+@@ -925,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The tile coordinate from which this multitile is placed from. This affects the position of the tile in relation to the users mouse and also the placement of the tile when placed through code such as <see cref="WorldGen.PlaceTile(int, int, int, bool, bool, int, int)"/>
++	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#origin">Origin section of the Basic Tile wiki guide</see> has more information and useful visualizations of this property.
++	/// <para/> Defaults to Point16.Zero (0, 0), or the top left corner tile.
++	/// </summary>
+ 	public Point16 Origin {
+ 		get {
+ 			if (_tileObjectBase == null)
+@@ -951,6 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The direction this TileObjectData will be eligible to be placed in.
++	/// <para/> Many furniture tiles allow the player to place them facing right or left controlled by the players current direction. These tiles do this by having the base tile place in one direction while an alternate is added placing in the other direction.
++	/// <para/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChair.cs#L38">ExampleChair</see> for an example of this approach.
++	/// <para/> Defaults to <see cref="TileObjectDirection.None"/>.
++	/// </summary>
+ 	public TileObjectDirection Direction {
+ 		get {
+ 			if (_tileObjectBase == null)
+@@ -977,6 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Allows this tile to place a randomly selected placement style when placing. The placement preview will update randomly as the player attempts to place the tile.
++	/// <para/> For example, the <see cref="TileID.Coral"/> tile uses a RandomStyleRange value of 6, allowing 6 different tile placement styles to be selected when placing.
++	/// <para/> This can be used in conjunction with <see cref="StyleMultiplier"/> to ensure that each of these random placement styles are considered the same tile style, but sometimes they are not.
++	/// One interesting advanced usage of this feature is the <see cref="TileID.Painting2X3"/> tile. It uses RandomStyleRange only for tile style 15, which allows the <see cref="ItemID.StrangeGrowth"/> item to place one of four tile styles.
++	/// <para/> If used with alternate placement styles, the random styles of a specific alternate should be located together on the spritesheet. The <see cref="addAlternate(int)"/> parameter should account for RandomStyleRange as well.
++	/// <para/> Note that tiles placed with <see cref="WorldGen.PlaceTile(int, int, int, bool, bool, int, int)"/> won't randomize if <see cref="StyleMultiplier"/> is also used, but a specific random placement style choice can be passed into <see cref="WorldGen.PlaceObject(int, int, int, bool, int, int, int, int)"/>.
++	/// <para/> Defaults to 0.
++	/// </summary>
+ 	public int RandomStyleRange {
+ 		get {
+ 			if (_tileObjectBase == null)
+@@ -1003,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="RandomStyleRange"/>, except a random placement style is selected from a selection of random placement styles. This is unused by vanilla tiles, but should work as expected.
++	/// </summary>
+ 	public int[] SpecificRandomStyles {
+ 		get {
+ 			if (_tileObjectBase == null)
+@@ -1029,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, placing this tile will cause the anchored solid tiles to become unsloped. Otherwise, slopes on anchor tiles will prevent this tile from placing.
++	/// <para/> <see cref="TileID.Switches"/>, <see cref="TileID.Torches"/>, and <see cref="TileID.ProjectilePressurePad"/> (partially) all use this, allowing these tiles to be placed more conveniently.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool FlattenAnchors {
+ 		get {
+ 			if (_tileObjectBase == null)
+@@ -1055,6 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// An array defining how tall each individual tile within this multitile is, in pixels. This array must have exactly <see cref="Height"/> elements in it. In most cases, all values should be 16, but sometimes 18 is suitable for the last value.
++	/// <para/> For example, a 3 tile high multitile might set CoordinateHeights as follows: <c>TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 18 };</c>.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#coordinateheights">CoordinateHeights section of the Basic Tile Guide on the wiki</see> for more information and helpful visualizations.
++	/// <para/> Defaults to <c>new int[] { 16 }</c>. If changing <see cref="Height"/> this must be changed as well.
++	/// </summary>
+ 	public int[] CoordinateHeights {
+ 		get {
+ 			if (_tileObjectCoords == null)
+@@ -1089,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// How wide each individual tile within this multitile is, in pixels.
++	/// <para/> This should almost always be 16 since each tile in the world is 16x16 pixels, but in rare situations a different value might be suitable, such as in this <see cref="TileID.Coral"/> example on the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#non-16-or-18-values">Basic Tile Guide on the wiki</see> where the extra-wide tile will spill out and draw outside the normal tile bounds.
++	/// <para/> Defaults to 0, but most templates default this to 16. If not copying from a template or existing tile <b>be sure to set this to 16</b>.
++	/// </summary>
+ 	public int CoordinateWidth {
+ 		get {
+ 			if (_tileObjectCoords == null)
+@@ -1116,6 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The number of empty padding pixels between each individual tile of a multitile in its spritesheet.
++	/// <para/> All vanilla tiles set this to 2. While it may be possible to use a value of 0 to make it easier on artists, there are plenty of places in the Terraria code that still assume a padding of 2 so it is not recommended. The examples shown in <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#framed-vs-frameimportant-tiles">the Basic Tile wiki guide</see> show what the padding looks like in practice.
++	/// <para/> The community has made tools such as <see href="https://forums.terraria.org/index.php?threads/tspritepadder-ready-to-use-sprites-for-terraria-tiles.96177/">tSpritePadder</see> to simplify adding padding pixels to tile sprites.
++	/// <para/> Defaults to 0 but most templates default this to 2.
++	/// </summary>
+ 	public int CoordinatePadding {
+ 		get {
+ 			if (_tileObjectCoords == null)
+@@ -1143,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The number of pixels between each tile placement style of a multitile in its spritesheet in addition to the normal <see cref="CoordinatePadding"/> between each individual tile. Can be used to give more or less room between tile styles for the artist's convenience.
++	/// <para/> Defaults to (0, 0).
++	/// </summary>
+ 	public Point16 CoordinatePaddingFix {
+ 		get {
+ 			if (_tileObjectCoords == null)
+@@ -1170,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The full width of a multitile in terms of the spritesheet texture coordinates (NOT world coordinates).
++	/// <para/> Used to determine which style and alternate placement a specific Tile with <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/> values belongs to.
++	/// <para/> Equal to <c>(<see cref="CoordinateWidth"/> + <see cref="CoordinatePadding"/>) * <see cref="Width"/> + <see cref="CoordinatePaddingFix"/>.X</c>.
++	/// </summary>
+ 	public int CoordinateFullWidth {
+ 		get {
+ 			if (_tileObjectCoords == null)
+@@ -1182,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The full height of a multitile in terms of the spritesheet texture coordinates (NOT world coordinates).
++	/// <para/> Used to determine which style and alternate placement a specific Tile with <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/> values belongs to.
++	/// <para/> Equal to <c><see cref="CoordinateHeights"/>.Sum() + (<see cref="CoordinatePadding"/> * <see cref="Height"/>) + <see cref="CoordinatePaddingFix"/>.Y</c>.
++	/// </summary>
+ 	public int CoordinateFullHeight {
+ 		get {
+ 			if (_tileObjectCoords == null)
+@@ -1194,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Offsets the tile placement preview by a number of placement styles.
++	/// <para/> This can be used for tiles that have custom draw code to show something resembling the final placed tile despite the actual placement sprite missing parts of the final visuals. <see cref="TileID.Mannequin"/> and <see cref="TileID.GolfCupFlag"/> use this.
++	/// <para/> Defaults to 0.
++	/// </summary>
+ 	public int DrawStyleOffset {
+ 		get {
+ 			if (_tileObjectCoords == null)
+@@ -1245,6 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Copies all tile object data from the <paramref name="copy"/> to this TileObjectData <b>except</b> the subtiles. <see cref="FullCopyFrom(TileObjectData)"/> will additionally copy subtiles.
++	/// <para/> Copying tile data will copy anchors, sizes, origin, and all other properties of the tile dictating their placement behavior.
++	/// <para/> The most common usage is to copy the tile properties of one of the existing tile templates found in the TileObjectData class: <c>TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);</c>. After copying from a template, the properties would be further customized if desired. 
++	/// <para/> Another common usage would be to copy a vanilla furniture tile to easily create tiles matching the behavior of existing furniture: <c>TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.OpenDoor, 0));</c>. CopyFrom is used instead of FullCopyFrom in this situation because copying subtiles would incorrectly copy over subtile specific behavior, such as lava immunity for some subtiles.
++	/// <para/> One more usage is to copy over tile properties from <see cref="newTile"/> to either <see cref="newAlternate"/> or <see cref="newSubTile"/>: <c>TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);</c>.
++	/// <para/> Copying tile properties is a good approach to writing clean code and avoiding hard to troubleshoot bugs. Make sure to call this method before modifying any other properties as this method will overwrite any changes made earlier in the code.
++	/// </summary>
++	/// <param name="copy"></param>
+ 	public void CopyFrom(TileObjectData copy)
+ 	{
+ 		if (copy != null) {
+@@ -1259,14 +_,28 @@
+ 			_tileObjectDraw = copy._tileObjectDraw;
+ 			_tileObjectStyle = copy._tileObjectStyle;
+ 			_tileObjectCoords = copy._tileObjectCoords;
++			// TML: Fix modder error that would result in modder inadvertently changing _baseObject, which would cause many other tiles to be broken. Assigning DrawYOffset and then calling CopyFrom would result in _hasOwnTileObjectDraw being true but sharing a _tileObjectDraw reference with _baseObject. A subsequent DrawYOffset assignment (likely in the next ModTile to load) would modify the shared _tileObjectDraw instead of creating a new _tileObjectDraw.
++			if (_hasOwnAlternates || _hasOwnAnchor || _hasOwnAnchorTiles || _hasOwnLiquidDeath || _hasOwnLiquidPlacement || _hasOwnPlacementHooks || _hasOwnSubTiles || _hasOwnTileObjectBase || _hasOwnTileObjectDraw || _hasOwnTileObjectStyle || _hasOwnTileObjectCoords) {
++				_hasOwnAlternates = _hasOwnAnchor = _hasOwnAnchorTiles = _hasOwnLiquidDeath = _hasOwnLiquidPlacement = _hasOwnPlacementHooks = _hasOwnSubTiles = _hasOwnTileObjectBase = _hasOwnTileObjectDraw = _hasOwnTileObjectStyle = _hasOwnTileObjectCoords = false;
++				// Force modder to fix. Silently fixing would keep modders in the dark about their code mistake and lead to confusion about the correct behavior of TileObjectData. Don't crash in normal usage.
++				if (ModLoader.Core.ModCompile.activelyModding) {
++					Logging.tML.Warn($"Bad TileObjectData values detected.\nLook at this ModTile and the ModTile that would load immediately before this ModTile and ensure that all modifications to TileObjectData.newTile are done between CopyFrom and AddTile.\nThe previous ModTile would typically be alphabetically before the tile in this stack trace.\nSee https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#basic-tileobjectdatanewtile-structure for more information.\n{new System.Diagnostics.StackTrace(true)}");
++				}
++				return;
++			}
+ 		}
+ 	}
+ 
++	/// <inheritdoc cref="FullCopyFrom(TileObjectData)"/>
+ 	public void FullCopyFrom(ushort tileType)
+ 	{
+ 		FullCopyFrom(GetTileData(tileType, 0));
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="CopyFrom(TileObjectData)"/>, except subtile data will also be copied. This is useful for inheriting subtile specific data, such as how each herb tile type (ImmatureHerbs, MatureHerbs, BloomingHerbs) share the same water placement and lava death properties for their Fireblossom and Moonglow styles.
++	/// </summary>
++	/// <param name="copy"></param>
+ 	public void FullCopyFrom(TileObjectData copy)
+ 	{
+ 		if (copy != null) {
 @@ -1372,6 +_,19 @@
  			if (_liquidDeath.water)
  				WaterPlacement = LiquidPlacement.NotAllowed;
@@ -147,10 +728,56 @@
  					if (WaterPlacement == LiquidPlacement.NotAllowed)
  						return false;
  					if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1510,14 +_,14 @@
+@@ -1426,6 +_,9 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// If the tile type is in <see cref="AnchorInvalidTiles"/>, returns false. If <see cref="AnchorValidTiles"/> exists and tile type isn't in it, returns false. Otherwise returns true.
++	/// </summary>
+ 	public bool isValidTileAnchor(int type)
+ 	{
+ 		int[] array;
+@@ -1475,6 +_,9 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// If the tile type is in <see cref="AnchorAlternateTiles"/>, returns true.
++	/// </summary>
+ 	public bool isValidAlternateAnchor(int type)
+ 	{
+ 		if (_anchorTiles == null)
+@@ -1492,6 +_,10 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Calculates a placement style from a provided tile style and random style offset. A placement style is the tile style multiplied by <see cref="StyleMultiplier"/> plus the alternate and random placement style offsets. 
++	/// <para/> The <paramref name="alternate"/> parameter is unused, but the <see cref="Style"/> of this TileObjectData (equivalent to the value passed into <see cref="addAlternate(int)"/>) is used to offset the style to account for alternate placements. As such, this method should be called on the alternate TileObjectData if applicable, not the root TileObjectData for this tile style. Do this by first retrieving it by calling the <see cref="GetTileData(Tile)"/> method.
++	/// </summary>
+ 	public int CalculatePlacementStyle(int style, int alternate, int random)
+ 	{
+ 		int num = style * StyleMultiplier;
+@@ -1502,7 +_,10 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="addTile(int)"/> except the TileObjectData is not registered to a specific tile type. Instead, the completed TileObjectData is assigned to <paramref name="baseTile"/>. This can be used by modders to create their own tile templates.
++	/// </summary>
+-	private static void addBaseTile(out TileObjectData baseTile)
++	public static void addBaseTile(out TileObjectData baseTile)
+ 	{
+ 		newTile.Calculate();
+ 		baseTile = newTile;
+@@ -1510,14 +_,18 @@
  		newTile = new TileObjectData(_baseObject);
  	}
  
++	/// <summary>
++	/// Registers the current <see cref="newTile"/> with the supplied tile type. Make sure to call this method last after all edits to <see cref="newTile"/>, <see cref="newAlternate"/>, and <see cref="newSubTile"/>.
++	/// </summary>
 -	private static void addTile(int tileType)
 +	public static void addTile(int tileType)
  	{
@@ -159,20 +786,63 @@
  		newTile = new TileObjectData(_baseObject);
  	}
  
++	/// <inheritdoc cref="addSubTile(int)"/>
 -	private static void addSubTile(params int[] styles)
 +	public static void addSubTile(params int[] styles)
  	{
  		newSubTile.Calculate();
  		foreach (int num in styles) {
-@@ -1566,7 +_,7 @@
+@@ -1543,6 +_,10 @@
  		newSubTile = new TileObjectData(_baseObject);
  	}
  
++	/// <summary>
++	/// Registers <see cref="newSubTile"/> as a subtile of <see cref="newTile"/>. The style or styles parameter correspond to the tiles styles that should use these tile properties. This corresponds to the <see cref="Item.placeStyle"/> of the item that will place this tile.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#multiple-styles">Multiple Styles section of the Basic Tile wiki guide</see> for more information and visualizations.
++	/// </summary>
+ 	private static void addSubTile(int style)
+ 	{
+ 		newSubTile.Calculate();
+@@ -1566,7 +_,12 @@
+ 		newSubTile = new TileObjectData(_baseObject);
+ 	}
+ 
++	/// <summary>
++	/// Registers <see cref="newAlternate"/> as an alternate placement of <see cref="newTile"/>. The <paramref name="baseStyle"/> parameter corresponds to which placement style sprite this alternate placement will use. This value will apply an offset to the tile style being placed. 
++	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L44">ExampleTorch</see>, for example, shows alternate placements using the 0, 1, and 2 placement style sprites, showing how different anchors can result in different placements sprites. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleDoorClosed.cs#L59">ExampleDoorClosed</see>, on the other hand, adds multiple alternates all using the same 0 placement sprite but different <see cref="Origin"/> to allow the user an easier time placing the door in a doorway.
++	/// <para/> <see cref="StyleMultiplier"/> is usually used to account for alternate placements to allow them to be considered the same tile style. If <see cref="RandomStyleRange"/> is used, the random style will be added after the alternate placement style has been applied, so usually multiples of RandomStyleRange would be used for each addAlternate parameter. (For example, if RandomStyleRange is 5 for a tile with left and right placements, addAlternate(5) could be used for the right facing placement and StyleMultiplier should be set to 10.)
++	/// </summary>
 -	private static void addAlternate(int baseStyle)
 +	public static void addAlternate(int baseStyle)
  	{
  		newAlternate.Calculate();
  		if (!newTile._hasOwnAlternates)
+@@ -2830,6 +_,11 @@
+ 		addTile(486);
+ 		newTile.CopyFrom(Style3x2);
+ 		newTile.LavaDeath = false;
++		// TML: Added to allow modders to spawn Fallen Log in custom biomes.
++		newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, newTile.Width, 0);
++		newTile.AnchorValidTiles = new int[4] {
++			TileID.Grass, TileID.GolfGrass, TileID.HallowedGrass, TileID.GolfGrassHallowed
++		};
+ 		addTile(488);
+ 		newTile.CopyFrom(Style3x2);
+ 		newTile.DrawYOffset = 2;
+@@ -3842,11 +_,13 @@
+ 		};
+ 
+ 		newTile.StyleHorizontal = true;
++		/* Unused, addAlternate never called.
+ 		newAlternate.CopyFrom(newTile);
+ 		newAlternate.Origin = new Point16(0, 1);
+ 		newAlternate.AnchorAlternateTiles = new int[1] {
+ 			419
+ 		};
++		*/
+ 
+ 		addTile(419);
+ 		newTile.CopyFrom(Style1x1);
 @@ -4579,7 +_,10 @@
  		newTile.StyleMultiplier = 3;
  		newTile.StyleHorizontal = true;
@@ -184,3 +854,49 @@
  	}
  
  	public static bool CustomPlace(int type, int style)
+@@ -4648,6 +_,11 @@
+ 
+ 	public static int PlatformFrameWidth() => _data[19].CoordinateFullWidth;
+ 
++	/// <summary>
++	/// Retrieves the TileObjectData corresponding to the passed in tile <paramref name="type"/>, tile <paramref name="style"/>, and optional <paramref name="alternate"/> parameter. Terrain tiles will return null.
++	/// <para/> Note that the alternate parameter in this method retrieves the alternate TileObjectData according to the order that they were registered, not according to a calculated alternate placement style. This parameter counts from 1, not 0, so the default parameter value of 0 will not attempt to retrieve an alternate TileObjectData. As such, it is not suitable for retrieving the TileObjectData of a placed Tile, use  <see cref="GetTileData(Tile)"/> for that.
++	/// <para/> Other related methods include <see cref="GetTileData(Tile)"/>, <see cref="GetTileInfo(Tile, ref int, ref int)"/>, and <see cref="GetTileStyle(Tile)"/>.
++	/// </summary>
+ 	public static TileObjectData GetTileData(int type, int style, int alternate = 0)
+ 	{
+ 		if (type < 0 || type >= _data.Count)
+@@ -4678,6 +_,10 @@
+ 		return tileObjectData;
+ 	}
+ 
++	/// <summary>
++	/// Retrieves the TileObjectData corresponding to the passed in Tile. Empty tiles and terrain tiles will return null. Any individual Tile of the multitile works. Will correctly retrieve the style or alternate specific TileObjectData if it exists.
++	/// <para/> Other related methods include <see cref="GetTileData(int, int, int)"/>, <see cref="GetTileInfo(Tile, ref int, ref int)"/>, and <see cref="GetTileStyle(Tile)"/>.
++	/// </summary>
+ 	public static TileObjectData GetTileData(Tile getTile)
+ 	{
+ 		if (getTile == null || !getTile.active())
+@@ -4697,9 +_,14 @@
+ 		if (num3 == 0)
+ 			num3 = 1;
+ 
++		int styleLineSkip = tileObjectData.StyleLineSkip;
++		int num4 = (!tileObjectData.StyleHorizontal) ? (num / styleLineSkip * num3 + num2) : (num2 / styleLineSkip * num3 + num);
++		/* Fix StyleMultiplier not being applied to tiles using StyleLineSkip
+ 		int num4 = ((!tileObjectData.StyleHorizontal) ? (num * num3 + num2) : (num2 * num3 + num));
++		*/
+ 		int num5 = num4 / tileObjectData.StyleMultiplier;
+ 		int num6 = num4 % tileObjectData.StyleMultiplier;
++		/*
+ 		int styleLineSkip = tileObjectData.StyleLineSkip;
+ 		if (styleLineSkip > 1) {
+ 			if (tileObjectData.StyleHorizontal) {
+@@ -4711,6 +_,7 @@
+ 				num6 = num % styleLineSkip;
+ 			}
+ 		}
++		*/
+ 
+ 		if (tileObjectData.SubTiles != null && num5 >= 0 && num5 < tileObjectData.SubTiles.Count) {
+ 			TileObjectData tileObjectData2 = tileObjectData.SubTiles[num5];

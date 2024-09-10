@@ -47,7 +47,27 @@
  				text2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
  
  			if (flag3)
-@@ -1632,6 +_,18 @@
+@@ -1486,8 +_,19 @@
+ 
+ 		cp3.OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + FancyUISpecialInstructions();
+ 		cp3.UpdateEvent += delegate {
++			bool flag11 = PlayerInput.Triggers.JustPressed.Inventory;
++			if (Main.inputTextEscape) {
++				Main.inputTextEscape = false;
++				flag11 = true;
++			}
++
++			if (CanExecuteInputCommand() && flag11)
++				FancyExit();
++
++			/* Above: Copied over Main.inputTextEscape bypass from MainMenu (1000) to FancyUI (1004) because tModLoader has some FancyUI/UIState menus that have text input.
+ 			if (CanExecuteInputCommand() && PlayerInput.Triggers.JustPressed.Inventory)
+ 				FancyExit();
++			*/
+ 
+ 			UILinkPointNavigator.Shortcuts.BackButtonInUse = false;
+ 		};
+@@ -1632,6 +_,12 @@
  				if (Main.MenuUI.CurrentState is IHaveBackButtonCommand haveBackButtonCommand)
  					haveBackButtonCommand.HandleBackButtonUsage();
  				break;
@@ -55,12 +75,6 @@
 +			case 100:
 +				SoundEngine.PlaySound(11, -1, -1, 1, 1f, 0f);
 +				Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
-+				break;
-+			case 101:
-+				Interface.modBrowser.BackClick(null, null);
-+				break;
-+			case 102:
-+				Interface.modsMenu.BackClick(null, null);
 +				break;
 +			// ]]
  		}

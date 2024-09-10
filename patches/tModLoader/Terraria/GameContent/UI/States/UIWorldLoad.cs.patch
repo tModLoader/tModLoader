@@ -1,12 +1,22 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldLoad.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldLoad.cs
-@@ -64,6 +_,9 @@
+@@ -15,6 +_,7 @@
+ 	private UIGenProgressBar _progressBar = new UIGenProgressBar();
+ 	private UIHeader _progressMessage = new UIHeader();
+ 	private GenerationProgress _progress;
++	private string lastLoggedProgressMessage = string.Empty; // Added to facilitate correct logging for secret seeds
+ 
+ 	public UIWorldLoad()
+ 	{
+@@ -62,6 +_,11 @@
+ 			overallProgress = (float)_progress.TotalProgress;
+ 			currentProgress = (float)_progress.Value;
  			text = _progress.Message;
++		}
++
++		if (text != lastLoggedProgressMessage) {
++			ModLoader.Logging.tML.Info(text + "...");
++			lastLoggedProgressMessage = text;
  		}
  
-+		if (text != _progressMessage.Text)
-+			ModLoader.Logging.tML.Info(text + "...");
-+
  		_progressBar.SetProgress(overallProgress, currentProgress);
- 		_progressMessage.Text = text;
- 		if (WorldGen.drunkWorldGenText && !WorldGen.placingTraps && !WorldGen.getGoodWorldGen) {

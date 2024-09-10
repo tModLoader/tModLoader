@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -212,7 +211,7 @@ namespace ExampleMod.Content.NPCs
 			// netMode == 0 is SP, netMode == 1 is MP Client, netMode == 2 is MP Server.
 			// Typically in MP, Client and Server maintain the same state by running deterministic code individually. When we want to do something random, we must do that on the server and then inform MP Clients.
 			if (AI_Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient) {
-				// For reference: without proper syncing: https://gfycat.com/BackAnxiousFerret and with proper syncing: https://gfycat.com/TatteredKindlyDalmatian
+				// For reference: without proper syncing: https://media-1.discordapp.net/attachments/242228770855976960/1150274335269998674/FlutterSlime_Netsync_Wrong.mp4 and with proper syncing: https://media-1.discordapp.net/attachments/242228770855976960/1150274355306184804/FlutterSlime_Netsync_Correct.mp4
 				AI_FlutterTime = Main.rand.NextBool() ? 100 : 50;
 
 				// Informing MP Clients is done automatically by syncing the npc.ai array over the network whenever npc.netUpdate is set.

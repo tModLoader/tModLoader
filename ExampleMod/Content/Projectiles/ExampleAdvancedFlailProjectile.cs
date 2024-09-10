@@ -1,13 +1,13 @@
-using System;
+using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using ExampleMod.Content.Dusts;
-using Terraria.GameContent;
-using ReLogic.Content;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -18,6 +18,9 @@ namespace ExampleMod.Content.Projectiles
 	{
 		private const string ChainTexturePath = "ExampleMod/Content/Projectiles/ExampleAdvancedFlailProjectileChain"; // The folder path to the flail chain sprite
 		private const string ChainTextureExtraPath = "ExampleMod/Content/Projectiles/ExampleAdvancedFlailProjectileChainExtra";  // This texture and related code is optional and used for a unique effect
+
+		private static Asset<Texture2D> chainTexture;
+		private static Asset<Texture2D> chainTextureExtra; // This texture and related code is optional and used for a unique effect
 
 		private enum AIState
 		{
@@ -38,6 +41,11 @@ namespace ExampleMod.Content.Projectiles
 		public ref float StateTimer => ref Projectile.ai[1];
 		public ref float CollisionCounter => ref Projectile.localAI[0];
 		public ref float SpinningStateTimer => ref Projectile.localAI[1];
+
+		public override void Load() {
+			chainTexture = ModContent.Request<Texture2D>(ChainTexturePath);
+			chainTextureExtra = ModContent.Request<Texture2D>(ChainTextureExtraPath);
+		}
 
 		public override void SetStaticDefaults() {
 			// These lines facilitate the trail drawing
@@ -152,8 +160,7 @@ namespace ExampleMod.Content.Projectiles
 							*/
 							break;
 						}
-						if (shouldSwitchToRetracting)
-						{
+						if (shouldSwitchToRetracting) {
 							CurrentAIState = AIState.Retracting;
 							StateTimer = 0f;
 							Projectile.netUpdate = true;
@@ -388,7 +395,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			// Flails do special collision logic that serves to hit anything within an ellipse centered on the player when the flail is spinning around the player. For example, the projectile rotating around the player won't actually hit a bee if it is directly on the player usually, but this code ensures that the bee is hit. This code makes hitting enemies while spinning more consistant and not reliant of the actual position of the flail projectile.
+			// Flails do special collision logic that serves to hit anything within an ellipse centered on the player when the flail is spinning around the player. For example, the projectile rotating around the player won't actually hit a bee if it is directly on the player usually, but this code ensures that the bee is hit. This code makes hitting enemies while spinning more consistent and not reliant of the actual position of the flail projectile.
 			if (CurrentAIState == AIState.Spinning) {
 				Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
 				Vector2 shortestVectorFromPlayerToTarget = targetHitbox.ClosestPointInRect(mountedCenter) - mountedCenter;
@@ -431,9 +438,6 @@ namespace ExampleMod.Content.Projectiles
 
 			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. The flail itself still draws incorrectly due to another similar bug. This should be removed once the vanilla bug is fixed.
 			playerArmPosition.Y -= Main.player[Projectile.owner].gfxOffY;
-
-			Asset<Texture2D> chainTexture = ModContent.Request<Texture2D>(ChainTexturePath);
-			Asset<Texture2D> chainTextureExtra = ModContent.Request<Texture2D>(ChainTextureExtraPath); // This texture and related code is optional and used for a unique effect
 
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
@@ -493,9 +497,8 @@ namespace ExampleMod.Content.Projectiles
 			}
 
 			// Add a motion trail when moving forward, like most flails do (don't add trail if already hit a tile)
-			if (CurrentAIState == AIState.LaunchingForward)
-			{
-				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+			if (CurrentAIState == AIState.LaunchingForward) {
+				Texture2D projectileTexture = TextureAssets.Projectile[Type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 				for (int k = 0; k < Projectile.oldPos.Length && k < StateTimer; k++) {

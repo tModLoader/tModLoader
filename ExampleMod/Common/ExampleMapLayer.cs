@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -28,6 +29,20 @@ namespace ExampleMod.Common
 				// When the icon is being hovered by the users mouse, we set the mouse text to the localized text for "The Dungeon"
 				text = Language.GetTextValue("Bestiary_Biomes.TheDungeon");
 			}
+		}
+	}
+
+	// The game doesn't send Main.dungeonX or Main.dungeonY to multiplayer clients.
+	// This ModSystem will ensure that they are synced allowing ExampleMapLayer to work in multiplayer.
+	public class ExampleMapLayerSystem : ModSystem
+	{
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write(Main.dungeonX);
+			writer.Write(Main.dungeonY);
+		}
+		public override void NetReceive(BinaryReader reader) {
+			Main.dungeonX = reader.ReadInt32();
+			Main.dungeonY = reader.ReadInt32();
 		}
 	}
 }

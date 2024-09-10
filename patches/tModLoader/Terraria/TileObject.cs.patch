@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/TileObject.cs
 +++ src/tModLoader/Terraria/TileObject.cs
+@@ -14,6 +_,7 @@
+ 	public int yCoord;
+ 	public int type;
+ 	public int style;
++	/// <summary> Note: The index of the alternate within the <see cref="TileObjectData.Alternates"/>, not the alternate placement style offset (<see cref="TileObjectData.Style"/>) </summary>
+ 	public int alternate;
+ 	public int random;
+ 	public static TileObject Empty = default(TileObject);
 @@ -139,7 +_,8 @@
  		return true;
  	}
@@ -28,6 +36,33 @@
  						flag4 = true;
  
  					if (flag4 || flag2 || flag3) {
+@@ -373,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num29, num9 + num28);
+ 					bool flag6 = false;
+ 					if (tileSafely.nactive()) {
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorTop
+ 							flag6 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag6 && (anchorBottom.type & AnchorType.SolidBottom) == AnchorType.SolidBottom && ((Main.tileSolid[tileSafely.type] && (!Main.tileSolidTop[tileSafely.type] || (TileID.Sets.Platforms[tileSafely.type] && (tileSafely.halfBrick() || tileSafely.topSlope())))) || tileSafely.halfBrick() || tileSafely.topSlope()) && !TileID.Sets.NotReallySolid[tileSafely.type] && !tileSafely.bottomSlope())
+@@ -424,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + width, num9 + num30);
+ 					bool flag7 = false;
+ 					if (tileSafely.nactive()) {
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorRight
+ 							flag7 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag7 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
+@@ -492,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num31, num9 + num32);
+ 					bool flag8 = false;
+ 					if (tileSafely.nactive()) {
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorLeft
+ 							flag8 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag8 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
 @@ -565,6 +_,9 @@
  			}
  
@@ -38,3 +73,17 @@
  			float num34 = num22 / num23;
  			if (num34 == 1f && num25 == 0f) {
  				num23 = 1f;
+@@ -601,8 +_,13 @@
+ 				Point16 objectStart = TileObjectPreviewData.randomCache.ObjectStart;
+ 				int num36 = coordinates.X + objectStart.X;
+ 				int num37 = coordinates.Y + objectStart.Y;
++				int num38 = x - tileObjectData.Origin.X;
++				int num39 = y - tileObjectData.Origin.Y;
++				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD 
+ 				int num38 = x - tileData.Origin.X;
+ 				int num39 = y - tileData.Origin.Y;
++				*/
++
+ 				if (num36 != num38 || num37 != num39)
+ 					flag9 = true;
+ 			}

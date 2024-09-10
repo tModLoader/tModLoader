@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.Utilities;
@@ -12,12 +13,14 @@ public static class PrefixLoader
 	// TODO storing twice? could see a better implementation
 	internal static readonly IList<ModPrefix> prefixes = new List<ModPrefix>();
 	internal static readonly IDictionary<PrefixCategory, List<ModPrefix>> categoryPrefixes;
+	internal static List<PrefixCategory>[] itemPrefixesByType;
 
 	public static int PrefixCount { get; private set; } = PrefixID.Count;
 
 	static PrefixLoader()
 	{
 		categoryPrefixes = new Dictionary<PrefixCategory, List<ModPrefix>>();
+		itemPrefixesByType = new List<PrefixCategory>[ItemID.Count];
 
 		foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {
 			categoryPrefixes[category] = new List<ModPrefix>();
@@ -32,9 +35,6 @@ public static class PrefixLoader
 
 	internal static int ReservePrefixID()
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding items breaks vanilla client compatibility");
-
 		return PrefixCount++;
 	}
 
@@ -58,6 +58,7 @@ public static class PrefixLoader
 
 		//Etc
 		Array.Resize(ref Lang.prefix, PrefixCount);
+		Array.Resize(ref itemPrefixesByType, ItemLoader.ItemCount);
 	}
 
 	internal static void FinishSetup()
@@ -76,6 +77,8 @@ public static class PrefixLoader
 		foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {
 			categoryPrefixes[category].Clear();
 		}
+
+		itemPrefixesByType = new List<PrefixCategory>[ItemID.Count];
 	}
 
 	public static bool CanRoll(Item item, int prefix)
@@ -90,13 +93,15 @@ public static class PrefixLoader
 			if (modPrefix.Category is PrefixCategory.Custom)
 				return true;
 
-			return item.GetPrefixCategory() is PrefixCategory itemCategory && (modPrefix.Category == itemCategory || modPrefix.Category == PrefixCategory.AnyWeapon && IsWeaponSubCategory(itemCategory));
+			return item.GetPrefixCategories().Contains(modPrefix.Category);
 		}
 
-		if (item.GetPrefixCategory() is PrefixCategory category) {
+		foreach (PrefixCategory category in item.GetPrefixCategories()) {
 			if (Item.GetVanillaPrefixes(category).Contains(prefix))
 				return true;
 		}
+		if (PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type] && prefix == PrefixID.Legendary2) // Fix #3688
+			return true;
 
 		return false;
 	}
@@ -110,26 +115,31 @@ public static class PrefixLoader
 
 		prefix = 0;
 		var wr = new WeightedRandom<int>(unifiedRandom);
+		var addedPrefixes = new HashSet<int>();
 
 		void AddCategory(PrefixCategory category)
 		{
-			foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {
+			foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item) && addedPrefixes.Add(x.Type))) {
 				wr.Add(modPrefix.Type, modPrefix.RollChance(item));
 			}
 		}
 
-		if (item.GetPrefixCategory() is not PrefixCategory category)
+		List<PrefixCategory> categories = item.GetPrefixCategories();
+		if (categories.Count == 0)
 			return false;
 
 		if (justCheck)
 			return true; // if it has a category, there are probably prefixes in that category...
 
-		foreach (int pre in Item.GetVanillaPrefixes(category))
-			wr.Add(pre, 1);
+		foreach (PrefixCategory category in categories) {
+			foreach (int pre in Item.GetVanillaPrefixes(category)) {
+				if (addedPrefixes.Add(pre)) wr.Add(pre, 1);
+			}
+			AddCategory(category);
+		}
 
-		AddCategory(category);
-		if (IsWeaponSubCategory(category))
-			AddCategory(PrefixCategory.AnyWeapon);
+		if (PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[item.type]) // Fix #3688, Rather than mess with the PrefixCategory enum and Item.GetPrefixCategory at this time and risk compatibility issues, manually support this until a redesign.
+			wr.Add(PrefixID.Legendary2, 1);
 
 		// try 50 times
 		for (int i = 0; i < 50; i++) {

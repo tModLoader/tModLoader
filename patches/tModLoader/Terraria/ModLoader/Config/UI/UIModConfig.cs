@@ -43,7 +43,7 @@ internal class UIModConfig : UIState
 	private readonly Stack<string> subPageStack = new();
 	//private UIList currentConfigList;
 	private Mod mod;
-	private List<ModConfig> modConfigs;
+	private List<ModConfig> sortedModConfigs; // NOT in load order. Don't use for anything other than navigation
 	private ModConfig modConfig; // This is from ConfigManager.Configs
 	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
@@ -184,20 +184,13 @@ internal class UIModConfig : UIState
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
-		Main.menuMode = Interface.modsMenuID;
 
-		//Main.menuMode = 1127;
 		if (!Main.gameMenu) {
 			Main.InGameUI.SetState(Interface.modConfigList);
 		}
-
-		/*
-		IngameFancyUI.Close();
-
-		if (ConfigManager.ModNeedsReload(mod)) {
-			Main.menuMode = Interface.reloadModsID;
+		else {
+			Main.menuMode = Interface.modConfigListID;
 		}
-		*/
 	}
 
 	internal void Unload()
@@ -205,7 +198,7 @@ internal class UIModConfig : UIState
 		mainConfigList?.Clear();
 		mainConfigItems?.Clear();
 		mod = null;
-		modConfigs = null;
+		sortedModConfigs = null;
 		modConfig = null;
 		pendingConfig = null;
 
@@ -219,8 +212,8 @@ internal class UIModConfig : UIState
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		//DiscardChanges();
 
-		int index = modConfigs.IndexOf(modConfig);
-		modConfig = modConfigs[index - 1 < 0 ? modConfigs.Count - 1 : index - 1];
+		int index = sortedModConfigs.IndexOf(modConfig);
+		modConfig = sortedModConfigs[index - 1 < 0 ? sortedModConfigs.Count - 1 : index - 1];
 
 		//modConfigClone = modConfig.Clone();
 
@@ -232,8 +225,8 @@ internal class UIModConfig : UIState
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		//DiscardChanges();
 
-		int index = modConfigs.IndexOf(modConfig);
-		modConfig = modConfigs[index + 1 > modConfigs.Count ? 0 : index + 1];
+		int index = sortedModConfigs.IndexOf(modConfig);
+		modConfig = sortedModConfigs[index + 1 > sortedModConfigs.Count ? 0 : index + 1];
 
 		//modConfigClone = modConfig.Clone();
 
@@ -400,7 +393,7 @@ internal class UIModConfig : UIState
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
 	}
 
 	// do we need 2 copies? We can discard changes by reloading.
@@ -412,8 +405,8 @@ internal class UIModConfig : UIState
 	{
 		this.mod = mod;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
-			modConfigs = ConfigManager.Configs[mod];
-			modConfig = modConfigs[0];
+			sortedModConfigs = ConfigManager.Configs[mod].OrderBy(x => x.DisplayName.Value).ToList();
+			modConfig = sortedModConfigs[0];
 			if (config != null) {
 				modConfig = ConfigManager.Configs[mod].First(x => x == config);
 				// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == ConfigScope.ClientSide).ToList();
@@ -424,7 +417,7 @@ internal class UIModConfig : UIState
 
 		}
 		else {
-			throw new Exception($"There are no ModConfig for {mod.DisplayName}, how did this happen?");
+			throw new Exception($"There are no ModConfig for {mod.DisplayNameClean}, how did this happen?");
 		}
 	}
 
@@ -432,6 +425,7 @@ internal class UIModConfig : UIState
 
 	public override void OnActivate()
 	{
+		Interface.modConfigList.ModToSelectOnOpen = mod;
 		filterTextField.SetText("");
 
 		updateNeeded = false;
@@ -450,8 +444,8 @@ internal class UIModConfig : UIState
 			pendingChangesUIUpdate = true;
 		}
 
-		int index = modConfigs.IndexOf(modConfig);
-		int count = modConfigs.Count;
+		int index = sortedModConfigs.IndexOf(modConfig);
+		int count = sortedModConfigs.Count;
 		//pendingChanges = false;
 
 		backButton.BackgroundColor = UICommon.DefaultUIBlueMouseOver;
@@ -549,6 +543,12 @@ internal class UIModConfig : UIState
 		else if (type == typeof(PrefixDefinition)) {
 			e = new PrefixDefinitionElement();
 		}
+		else if (type == typeof(BuffDefinition)) {
+			e = new BuffDefinitionElement();
+		}
+		else if (type == typeof(TileDefinition)) {
+			e = new TileDefinitionElement();
+		}
 		else if (type == typeof(Color)) {
 			e = new ColorElement();
 		}
@@ -600,6 +600,9 @@ internal class UIModConfig : UIState
 		}
 		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
 			e = new DictionaryElement();
+		}
+		else if(type == typeof(object)) {
+			e = new UIText($"{memberInfo.Name} can't be of the Type Object.");
 		}
 		else if (type.IsClass) {
 			e = new ObjectElement(/*, ignoreSeparatePage: ignoreSeparatePage*/);

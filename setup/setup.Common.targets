@@ -2,8 +2,7 @@
 
 	<!-- Common -->
 	<PropertyGroup>
-		<RootNamespace>Terraria.ModLoader</RootNamespace>
-		<ApplicationIcon>./Setup/tModLoaderSetup.ico</ApplicationIcon>
+		<RootNamespace>Terraria.ModLoader.Setup</RootNamespace>
 		<!-- Avoid weird 'Duplicate attribute' build errors -->
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
@@ -11,14 +10,15 @@
 
 	<!-- Project references -->
 	<ItemGroup>
-		<ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />
+		<ProjectReference Include="..\PatchReviewer\PatchReviewer.csproj" />
 	</ItemGroup>
 
 	<!-- Package references -->
 	<ItemGroup>
 		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
 		<PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
-		<PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="22.5.1.1" />
+		<PackageReference Include="MonoMod.Patcher" Version="25.0.0-prerelease.2" />
+		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.2" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.3.1" />
 		<!-- Preview is needed for https://github.com/icsharpcode/ILSpy/commit/8dd721a -->
@@ -31,12 +31,8 @@
 		<!-- Nothing! -->
 	</ItemGroup>
 
-	<!-- PatchReviewer exclusion -->
 	<ItemGroup>
-		<Page Remove="PatchReviewer\**" />
-		<Compile Remove="PatchReviewer\**" />
-		<EmbeddedResource Remove="PatchReviewer\**" />
-		<None Remove="PatchReviewer\**" />
+		<Compile Include="..\Core\**\*.cs" />
 	</ItemGroup>
 
 	<!-- Settings Generation -->

@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
@@ -15,6 +17,16 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private int currentUseAnimationCompensation;
 
+	/// <summary>
+	/// The ModItem instance attached to this Item. All modded items will have an appropriate instance of the ModItem-inheriting class assigned to this field. Will be null for vanilla items. Can be used to check if an Item is a modded item or not.
+	/// <para/> If you need to access members of a specific ModItem class from code outside of the ModItem, you can cast to your class:
+	/// <code>
+	/// if (item.ModItem is MyItem myItem)
+	/// {
+	///     myItem.myField = 5;
+	/// }
+	/// </code>
+	/// </summary>
 	public ModItem ModItem { get; internal set; }
 
 #region Globals
@@ -63,7 +75,8 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <summary>
 	/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
 	/// Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br/>
-	/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.
+	/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.<para/>
+	/// Tools should typically set this to true to prevent the tool from mining quicker when the player has attack speed modifiers. By convention tool speed should not be affected by attack speed. They will still attack quicker, but their use time (mine/hammer/axe speed) should not be affected.
 	/// </summary>
 	public bool attackSpeedOnlyAffectsWeaponAnimation { get; set; }
 
@@ -72,6 +85,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <br>This prevents it from receiving a prefix on craft.</br>
 	/// </summary>
 	public bool AllowReforgeForStackableItem { get; set; }
+
+	/// <summary>
+	/// Similar to useTurn, but only allows turning when an animation starts (eg between swings). Many early-game vanilla swords use this as it makes them clunky and hard to kite with.
+	/// <br/> Defaults to <see langword="false"/>.
+	/// </summary>
+	public bool useTurnOnAnimationStart { get; set; }
 
 	/// <summary>
 	/// Dictates the amount of times a weapon can be used (shot, etc) each time it animates (is swung, clicked, etc).<br/>
@@ -111,6 +130,13 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// When enabled and the player is hurt, <see cref="Player.channel"/> will be set to false, and the item animation will stop immediately
 	/// </summary>
 	public bool StopAnimationOnHurt { get; set; }
+
+	/// <summary>
+	/// When true, shooting any projectile from this item will make the owner face the projectile. Defaults to true.<br/>
+	/// The only 2 vanilla items that change this from true to false are the Grand Design and Beam Sword<br/>
+	/// This is different to <see cref="Item.useTurn"/>. Item.useTurn will prevent the player from changing their direction while the animation is playing if it is set to true.<br/>
+	/// </summary>
+	public bool ChangePlayerDirectionOnShoot { get; set; } = true;
 
 	private DamageClass _damageClass = DamageClass.Default;
 	/// <summary>
@@ -257,6 +283,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 			useAnimation--;
 			currentUseAnimationCompensation--;
 		}
+
+		// in vanilla, items without autoReuse get a frame where itemAnimation == 0 between uses allowing the direction change checks in HorizontalMovement to apply
+		// in tML we need to explicitly enable this behavior
+		if (type < ItemID.Count && useStyle != 0 && !autoReuse && !useTurn && shoot == 0 && damage > 0) {
+			useTurnOnAnimationStart = true;
+		}
 	}
 
 	private void UndoItemAnimationCompensations()
@@ -267,11 +299,39 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private void RestoreMeleeSpeedBehaviorOnVanillaItems()
 	{
-		if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type] && !shootsEveryUse) {
+		bool isTool = pick > 0 || axe > 0 || hammer > 0 || type == ItemID.GravediggerShovel;
+		if (type < ItemID.Count && melee && (shoot > 0 && !ItemID.Sets.Spears[type] && !shootsEveryUse || isTool)) {
 			if (noMelee)
 				DamageType = DamageClass.MeleeNoSpeed;
 			else
 				attackSpeedOnlyAffectsWeaponAnimation = true;
 		}
+	}
+
+	// Added by TML.
+	/// <summary>
+	/// Determines the <see cref="PrefixCategory">prefix categories</see> of this <see cref="Item"/>.
+	/// </summary>
+	/// <returns>A <see cref="List{PrefixCategory}"/> of every category this <see cref="Item"/> matches, the <see cref="List{PrefixCategory}"/> will be empty if this <see cref="Item"/> doesn't have any categories.</returns>
+	public List<PrefixCategory> GetPrefixCategories() {
+		ref List<PrefixCategory> categories = ref PrefixLoader.itemPrefixesByType[type];
+		if (categories is not null) return categories;
+		categories = [];
+		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
+			categories.Add(PrefixCategory.Melee);
+
+		if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
+			categories.Add(PrefixCategory.Ranged);
+
+		if (PrefixLegacy.ItemSets.MagicAndSummon[type] || ItemLoader.MagicPrefix(this))
+			categories.Add(PrefixCategory.Magic);
+
+		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this) || categories.Count != 0)
+			categories.Add(PrefixCategory.AnyWeapon);
+
+		if (IsAPrefixableAccessory())
+			categories.Add(PrefixCategory.Accessory);
+
+		return categories;
 	}
 }

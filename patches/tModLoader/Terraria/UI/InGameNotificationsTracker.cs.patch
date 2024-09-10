@@ -1,0 +1,36 @@
+--- src/TerrariaNetCore/Terraria/UI/InGameNotificationsTracker.cs
++++ src/tModLoader/Terraria/UI/InGameNotificationsTracker.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.UI;
+ 
+-public class InGameNotificationsTracker
++public partial class InGameNotificationsTracker
+ {
+ 	private static List<IInGameNotification> _notifications = new List<IInGameNotification>();
+ 
+@@ -27,7 +_,7 @@
+ 	private static void JoinRequests_OnRequestRemoved(UserJoinToServerRequest request)
+ 	{
+ 		for (int num = _notifications.Count - 1; num >= 0; num--) {
+-			if (_notifications[num].CreationObject == request)
++			if (_notifications[num] is InGamePopups.PlayerWantsToJoinGamePopup joinReq && joinReq.CreationObject == request)
+ 				_notifications.RemoveAt(num);
+ 		}
+ 	}
+@@ -47,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/*
+ 	public static void DrawInIngameOptions(SpriteBatch spriteBatch, Rectangle area, ref int gamepadPointIdLocalIndexToUse)
+ 	{
+ 		int num = 4;
+@@ -61,6 +_,7 @@
+ 				break;
+ 		}
+ 	}
++	*/
+ 
+ 	public static void AddCompleted(Achievement achievement)
+ 	{

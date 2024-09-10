@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
 {
@@ -29,7 +29,12 @@ namespace ExampleMod.Common.Players
 			_chestIndexNearby = -1;
 			// Find a possible chest nearby
 			for (int x = -1; x <= 1; x++) {
-				var tile = Main.tile[legPositionInTile.X + x, legPositionInTile.Y];
+				var pos = new Point(legPositionInTile.X + x, legPositionInTile.Y);
+				if (!WorldGen.InWorld(pos.X, pos.Y)) {
+					continue;
+				}
+
+				var tile = Main.tile[pos];
 
 				// Dressers are excluded to make search code simpler
 				if (!tile.HasTile || !TileID.Sets.IsAContainer[tile.TileType] || tile.TileType is TileID.Dressers) {
@@ -37,19 +42,16 @@ namespace ExampleMod.Common.Players
 				}
 
 				// Gets the left-top position for the chest
-				int left = legPositionInTile.X + x;
-				int top = legPositionInTile.Y;
-
 				if (tile.TileFrameX % 36 != 0) {
-					left--;
+					pos.X--;
 				}
 
 				if (tile.TileFrameY != 0) {
-					top--;
+					pos.Y--;
 				}
 
-				int chestIndex = Chest.FindChest(left, top);
-				if (chestIndex > -1 && !Chest.IsLocked(left, top)) {
+				int chestIndex = Chest.FindChest(pos.X, pos.Y);
+				if (chestIndex > -1 && !Chest.IsLocked(pos.X, pos.Y)) {
 					Chest chest = Main.chest[chestIndex];
 					// Unopened chests in multiplayer have not initialized the items inside of them, so we check for safety if the first item is not null (assuming that all others won't be null either)
 					// Ideally, we would want to write custom netcode to request chest contents, see how a mod like Recipe Browser handles this: https://github.com/JavidPack/RecipeBrowser/blob/1.4/RecipeBrowser.cs, look for usage of packets

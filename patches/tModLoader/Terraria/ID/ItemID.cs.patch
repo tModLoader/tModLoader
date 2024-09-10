@@ -570,7 +570,8 @@
 +		/// <br/> If <c>!= -1</c> for a given item type (<see cref="Item.type"/>), then that item will fall into the "gameplay" tab of the Journey Mode menu
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
- 		public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, 2495, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32);
+-		public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, 2495, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32);
++		public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 5334, 7, 544, 8, 556, 9, 557, 10, PirateMap, 11, 2673, 12, 602, 13, 1844, 14, 1958, 15, 1293, 16, 2767, 17, 4271, 18, 3601, 19, 1291, 20, 109, 21, 29, 22, 50, 23, 3199, 24, 3124, 25, 5437, 26, 5358, 27, 5359, 28, 5360, 29, 5361, 30, 4263, 31, 4819, 32);
 +
 +		/// <summary>
 +		/// Determines the sorting order of wiring items.
@@ -701,13 +702,13 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
-+		/// To make a torch placable underwater, use <see cref="WaterTorches"/> as well.
++		/// To make a torch placeable underwater, use <see cref="WaterTorches"/> as well.
 +		/// </remarks>
  		public static bool[] Torches = Factory.CreateBoolSet(8, 427, 3004, 523, 433, 429, 974, 1333, 1245, 3114, 430, 3045, 428, 2274, 431, 432, 4383, 4384, 4385, 4386, 4387, 4388, 5293, 5353);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a water torch.
-+		/// <br/> Funtionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater. Make sure to set <see cref="Torches"/> as well if using this.
++		/// <br/> Functionally identical to <see cref="Torches"/>, but items in this set also function whilst underwater. Make sure to set <see cref="Torches"/> as well if using this.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] WaterTorches = Factory.CreateBoolSet(523, 1333, 4384);
@@ -741,3 +742,11 @@
  		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 3085, 4879, 1869, 599, 600, 601);
  	}
  
+@@ -6548,6 +_,7 @@
+ 	public const short DontHurtNatureBookInactive = 5454;
+ 	public const short DontHurtComboBookInactive = 5455;
+ 	public static readonly short Count = 5456;
++	/// <inheritdoc cref="IdDictionary"/>
+ 	public static readonly IdDictionary Search = IdDictionary.Create<ItemID, short>();
+ 
+ 	private static Dictionary<string, short> GenerateLegacyItemDictionary()

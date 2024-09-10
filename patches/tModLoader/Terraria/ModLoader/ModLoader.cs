@@ -17,6 +17,8 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
+using Terraria.Social.Steam;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader;
 
@@ -27,7 +29,7 @@ public static class ModLoader
 {
 	// Stores the most recent version of tModLoader launched. Can be used for migration.
 	public static Version LastLaunchedTModLoaderVersion;
-	// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
+	// Stores the most recent sha for a launched official preview build. Used for ShowWhatsNew
 	public static string LastLaunchedTModLoaderAlphaSha;
 	public static bool ShowWhatsNew;
 	public static bool PreviewFreezeNotification;
@@ -36,6 +38,7 @@ public static class ModLoader
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
 	public static Version LastPreviewFreezeNotificationSeen;
+	public static int LatestNewsTimestamp; 
 
 	// Update this name if doing an upgrade 
 	public static bool BetaUpgradeWelcomed144;
@@ -57,17 +60,15 @@ public static class ModLoader
 
 	internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
 	internal static bool autoReloadRequiredModsLeavingModsScreen = true;
-	internal static bool dontRemindModBrowserUpdateReload;
-	internal static bool dontRemindModBrowserDownloadEnable;
 	internal static bool removeForcedMinimumZoom;
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
-	internal static bool showMemoryEstimates = true;
 	internal static bool notifyNewMainMenuThemes = true;
 	internal static bool showNewUpdatedModsInfo = true;
+	internal static bool showConfirmationWindowWhenEnableDisableAllMods = true;
 	internal static bool skipLoad;
 	internal static Action OnSuccessfulLoad;
 
-	private static bool isLoading;
+	internal static bool isLoading;
 
 	public static Mod[] Mods { get; private set; } = new Mod[0];
 
@@ -91,14 +92,16 @@ public static class ModLoader
 		FileAssociationSupport.UpdateFileAssociation();
 		FolderShortcutSupport.UpdateFolderShortcuts();
 		MonoModHooks.Initialize();
-		ZipExtractFix.Init();
 		FNAFixes.Init();
 		LoaderManager.AutoLoad();
 	}
 
 	internal static void PrepareAssets()
 	{
-		ManifestContentSource = new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly());
+		ManifestContentSource = new AssemblyResourcesContentSource(
+			Assembly.GetExecutingAssembly(),
+			excludedStartingPaths: new[] { "Terraria/ModLoader/Templates/" }
+		);
 		ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, new[] { ManifestContentSource }) {
 			AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
 		};
@@ -117,6 +120,8 @@ public static class ModLoader
 
 		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 		try {
+			var sw = Stopwatch.StartNew();
+
 			var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
 			var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 			modInstances.Insert(0, new ModLoaderMod());
@@ -125,6 +130,8 @@ public static class ModLoader
 				modsByName[mod.Name] = mod;
 
 			ModContent.Load(token);
+
+			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
 			if (OnSuccessfulLoad != null) {
 				OnSuccessfulLoad();
@@ -156,9 +163,13 @@ public static class ModLoader
 			if (responsibleMods.Count == 1) {
 				var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 				if (mod != null)
-					msg += $" v{mod.properties.version}";
+					msg += $" v{mod.Version}";
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+				else if (mod != null)
+					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
+					SteamedWraps.QueueForceValidateSteamInstall();
+
 				if (e is Exceptions.JITException)
 					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
 			}
@@ -173,10 +184,23 @@ public static class ModLoader
 			if (e.Data.Contains("contentType") && e.Data["contentType"] is Type contentType)
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
-			Logging.tML.Error(msg, e);
-
-			foreach (var mod in responsibleMods)
+			foreach (var mod in responsibleMods) {
+				DisableModAndDependents(mod);
+			}
+			void DisableModAndDependents(string mod)
+			{
 				DisableMod(mod);
+
+				var dependents = availableMods
+					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
+					.Select(m => m.Name);
+
+				foreach (var dependent in dependents) {
+					DisableModAndDependents(dependent);
+				}
+			}
+			
+			Logging.tML.Error(msg, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
 			DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
@@ -273,9 +297,12 @@ public static class ModLoader
 			}
 		}
 		else {
+			string HelpLink = e.HelpLink;
+			if(HelpLink == null && e is MultipleException multipleException)
+				HelpLink = multipleException.InnerExceptions.Where(x => x.HelpLink != null).Select(x => x.HelpLink).FirstOrDefault();
 			Interface.errorMessage.Show(msg,
 				gotoMenu: fatal ? -1 : Interface.reloadModsID,
-				webHelpURL: e.HelpLink,
+				webHelpURL: HelpLink,
 				continueIsRetry: continueIsRetry,
 				showSkip: !fatal);
 		}
@@ -324,19 +351,16 @@ public static class ModLoader
 	{
 		Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
 		Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
-		Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
-		Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
-		Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 		Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
 		Main.Configuration.Put(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), attackSpeedScalingTooltipVisibility);
-		Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 		Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 		Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 		Main.Configuration.Put("ShowNewUpdatedModsInfo", showNewUpdatedModsInfo);
+		Main.Configuration.Put("ShowConfirmationWindowWhenEnableDisableAllMods", showConfirmationWindowWhenEnableDisableAllMods);
 		Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 		Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 		Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
@@ -344,27 +368,25 @@ public static class ModLoader
 
 		Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 		Main.Configuration.Put(nameof(BetaUpgradeWelcomed144), BetaUpgradeWelcomed144);
-		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.IsPreview && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
+		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 	}
 
 	internal static void LoadConfiguration()
 	{
 		Main.Configuration.Get("ModBrowserPassphrase", ref modBrowserPassphrase);
 		Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
-		Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 		Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
 		Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
-		Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
-		Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 		Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
 		Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
-		Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 		Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 		Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+		Main.Configuration.Get("ShowConfirmationWindowWhenEnableDisableAllMods", ref showConfirmationWindowWhenEnableDisableAllMods);
 		Main.Configuration.Get("ShowNewUpdatedModsInfo", ref showNewUpdatedModsInfo);
 		Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 		Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
@@ -376,13 +398,11 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(BetaUpgradeWelcomed144), ref BetaUpgradeWelcomed144);
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
+		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
 	}
 
 	internal static void MigrateSettings()
 	{
-		if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
-			showMemoryEstimates = true;
-
 		// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.
 		if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 			ShowWhatsNew = true;
@@ -398,11 +418,7 @@ public static class ModLoader
 	/// </summary>
 	internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
 	{
-		list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
-	}
-
-	internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate
-	{
-		return providers.WhereMethodIsOverridden(expr).ToArray();
+		var query = expr.ToOverrideQuery();
+		list = providers.Where(query.HasOverride).Select(t => (F)query.Binder(t)).ToArray();
 	}
 }

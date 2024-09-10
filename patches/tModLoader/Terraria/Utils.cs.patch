@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
+@@ -18,6 +_,7 @@
+ using ReLogic.Utilities;
+ using Terraria.DataStructures;
+ using Terraria.GameContent;
++using Terraria.ModLoader.Engine;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.Utilities;
 @@ -25,7 +_,7 @@
  
  namespace Terraria;
@@ -9,6 +17,96 @@
  {
  	public delegate bool TileActionAttempt(int x, int y);
  
+@@ -75,10 +_,13 @@
+ 				continue;
+ 
+ 			if (args[i][0] == '-' || args[i][0] == '+') {
++				/*
+ 				if (text != null) {
+ 					dictionary.Add(text.ToLower(), text2);
+ 					text2 = "";
+ 				}
++				*/
++				AddArgToDictionary(text, ref text2, ref dictionary);
+ 
+ 				text = args[i];
+ 				text2 = "";
+@@ -91,10 +_,13 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (text != null) {
+ 			dictionary.Add(text.ToLower(), text2);
+ 			text2 = "";
+ 		}
++		*/
++		AddArgToDictionary(text, ref text2, ref dictionary);
+ 
+ 		return dictionary;
+ 	}
+@@ -117,8 +_,27 @@
+ 		return value;
+ 	}
+ 
++	/// <summary>
++	/// Remaps a provided value from 0->1 to a cosine curve. Provides a method of turning an input sawtooth pattern into a smooth cyclic curve. This is useful when using repeating timers to drive effects that should return smoothly to their initial value before repeating rather than reset abruptly.
++	/// </summary>
++	/// <param name="value"></param>
++	/// <returns></returns>
+ 	public static float Turn01ToCyclic010(float value) => 1f - ((float)Math.Cos(value * ((float)Math.PI * 2f)) * 0.5f + 0.5f);
+ 
++	/// <summary>
++	/// Remaps a provided value from 0->1 to 0->1->0, essentially turning a sawtooth pattern into a triangle wave pattern:
++	/// <code>
++	///          Original:   Remap:    Range Values ↓    
++	///                 /      / \          1        
++	///              /        /   \        0.5      
++	///           /          /     \        0        
++	/// Input→    0 .5  1    0 .5  1
++	/// Output→   0 .5  1    0  1  0
++	/// </code>
++	/// This is useful when using repeating timers to drive effects that should return linearly to their initial value before repeating rather than reset abruptly.
++	/// </summary>
++	/// <param name="value"></param>
++	/// <returns></returns>
+ 	public static float PingPongFrom01To010(float value)
+ 	{
+ 		value %= 1f;
+@@ -131,6 +_,22 @@
+ 		return value * 2f;
+ 	}
+ 
++	/// <summary>
++	/// Linearly interpolates between several values denoting a continuous piecewise linear function (<see href="https://en.wikipedia.org/wiki/Piecewise_linear_function">Piecewise linear function wikipedia page</see>).
++	/// <para/> This can be used to interpolate between several values, providing finer control over the transition between values.
++	/// <code>
++	/// floats parameter→ 0      4      1    Range Values ↓
++	///                         /   \            3    
++	///                       /        \         2   
++	///                     /                    1
++	///                   /                      0
++	/// percent input→    0 .25 .5 .75  1 
++	/// output→           0  2   4  3   2    
++	/// </code>
++	/// </summary>
++	/// <param name="percent"></param>
++	/// <param name="floats"></param>
++	/// <returns></returns>
+ 	public static float MultiLerp(float percent, params float[] floats)
+ 	{
+ 		float num = 1f / ((float)floats.Length - 1f);
+@@ -278,6 +_,10 @@
+ 		return (t - from) / (to - from);
+ 	}
+ 
++	/// <summary>
++	/// Returns the current world time in a 24 hour clock representation. This value is derived from <see cref="Main.dayTime"/> and <see cref="Main.time"/>.
++	/// <para/> For example <c>Utils.GetDayTimeAs24FloatStartingFromMidnight() &lt; 6.50f</c> would check if the time is before 6:30 AM.
++	/// </summary>
+ 	public static float GetDayTimeAs24FloatStartingFromMidnight()
+ 	{
+ 		if (Main.dayTime)
 @@ -294,7 +_,8 @@
  		ArrayList arrayList = new ArrayList();
  		string text = "";
@@ -79,6 +177,89 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
+@@ -697,6 +_,7 @@
+ 		return asset.Value.Height;
+ 	}
+ 
++	/// <inheritdoc cref="Terraria.Utils.Frame(Texture2D, int, int, int, int, int, int)"/>
+ 	public static Rectangle Frame(this Asset<Texture2D> tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
+ 	{
+ 		if (!tex.IsLoaded)
+@@ -720,6 +_,10 @@
+ 		return tex.Value.Size();
+ 	}
+ 
++	/// <summary>
++	/// Returns a Rectangle region ("frame") of the Texture2D corresponding to the layout provided. Can be used to easily retrieve coordinates for drawing a specific frame of a texture.
++	/// <para/> For example <c>texture.Frame(1, 3, 0, 2)</c> indicates that the texture has 1 column and 3 rows and returns the coordinates of the bottom (index #2, or 3rd) frame of the only column. 
++	/// </summary>
+ 	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
+ 	{
+ 		int num = tex.Width / horizontalFrames;
+@@ -927,7 +_,9 @@
+ 	public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
+ 	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);
+ 	public static Vector2D ToVector2D(this Point16 p) => new Vector2D(p.X, p.Y);
++	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
+ 	public static Vector2 ToWorldCoordinates(this Point p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2() * 16f + new Vector2(autoAddX, autoAddY);
++	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
+ 	public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2() * 16f + new Vector2(autoAddX, autoAddY);
+ 
+ 	public static Vector2 MoveTowards(this Vector2 currentPosition, Vector2 targetPosition, float maxAmountAllowedToMove)
+@@ -939,14 +_,21 @@
+ 		return currentPosition + v.SafeNormalize(Vector2.Zero) * maxAmountAllowedToMove;
+ 	}
+ 
++	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToTileCoordinates' /> </summary>
+ 	public static Point16 ToTileCoordinates16(this Vector2 vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
+ 	public static Point16 ToTileCoordinates16(this Vector2D vec) => new Point16((int)vec.X >> 4, (int)vec.Y >> 4);
++	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToTileCoordinates' /> </summary>
+ 	public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
+ 	public static Point ToTileCoordinates(this Vector2D vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
+ 	public static Point ToPoint(this Vector2 v) => new Point((int)v.X, (int)v.Y);
+ 	public static Point ToPoint(this Vector2D v) => new Point((int)v.X, (int)v.Y);
+ 	public static Vector2D ToVector2D(this Vector2 v) => new Vector2D(v.X, v.Y);
+ 
++	/// <summary>
++	/// <inheritdoc cref="Vector2.Normalize()"/>
++	/// <para/> If this Vector2 can't be normalized, either because it is a 0 length vector or has not a number values, <paramref name="defaultValue"/> will be returned instead as a fallback. It will not be normalized so using <see cref="Vector2.UnitX"/> or <see cref="Vector2.UnitY"/> is appropriate. <see cref="Vector2.Zero"/> can also be appropriate if the surrounding logic expects it.
++	/// <para/> Using SafeNormalize instead of Normalize avoids many difficult to anticipate issues that would cause bugs. 
++	/// </summary>
+ 	public static Vector2 SafeNormalize(this Vector2 v, Vector2 defaultValue)
+ 	{
+ 		if (v == Vector2.Zero || v.HasNaNs())
+@@ -955,6 +_,7 @@
+ 		return Vector2.Normalize(v);
+ 	}
+ 
++	/// <summary> Returns the closest point on a line segment from <paramref name="A"/> to <paramref name="B"/> to another point <paramref name="P"/>. The resulting point will be on the line and not extend past A or B. </summary>
+ 	public static Vector2 ClosestPointOnLine(this Vector2 P, Vector2 A, Vector2 B)
+ 	{
+ 		Vector2 value = P - A;
+@@ -1007,6 +_,7 @@
+ 	public static float DistanceSQ(this Vector2 Origin, Vector2 Target) => Vector2.DistanceSquared(Origin, Target);
+ 	public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Target - Origin);
+ 	public static Vector2 DirectionFrom(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Origin - Target);
++	/// <summary> Returns true if the <paramref name="Target"/> is within <paramref name="MaxRange"/> world coordinate units of <paramref name="Origin"/>. </summary>
+ 	public static bool WithinRange(this Vector2 Origin, Vector2 Target, float MaxRange) => Vector2.DistanceSquared(Origin, Target) <= MaxRange * MaxRange;
+ 	public static Vector2 XY(this Vector4 vec) => new Vector2(vec.X, vec.Y);
+ 	public static Vector2 ZW(this Vector4 vec) => new Vector2(vec.Z, vec.W);
+@@ -1017,6 +_,7 @@
+ 	public static string Hex3(this Color color) => (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2")).ToLower();
+ 	public static string Hex4(this Color color) => (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2") + color.A.ToString("X2")).ToLower();
+ 
++	/// <summary> Converts a bool to 1 if true, -1 if false. Suitable for working with <see cref="Entity.direction"/> and <see cref="Projectile.spriteDirection"/>, or anything else related to geometry.</summary>
+ 	public static int ToDirectionInt(this bool value)
+ 	{
+ 		if (!value)
+@@ -1025,6 +_,7 @@
+ 		return 1;
+ 	}
+ 
++	/// <summary> Converts a bool to 1 if true, 0 if false. </summary>
+ 	public static int ToInt(this bool value)
+ 	{
+ 		if (!value)
 @@ -1383,14 +_,26 @@
  			text.Substring(0, maxCharactersDisplayed);
  

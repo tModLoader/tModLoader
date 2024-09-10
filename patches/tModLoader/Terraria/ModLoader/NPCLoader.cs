@@ -203,6 +203,14 @@ public static class NPCLoader
 		GlobalLoaderUtils<GlobalNPC, NPC>.SetDefaults(npc, ref npc._globals, static n => n.ModNPC?.SetDefaults());
 	}
 
+	private static HookList HookSetVariantDefaults = AddHook<Action<NPC>>(g => g.SetDefaultsFromNetId);
+	internal static void SetDefaultsFromNetId(NPC npc)
+	{
+		foreach (var g in HookSetVariantDefaults.Enumerate(npc)) {
+			g.SetDefaultsFromNetId(npc);
+		}
+	}
+
 	private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
 
 	internal static void OnSpawn(NPC npc, IEntitySource source)
@@ -594,6 +602,24 @@ public static class NPCLoader
 		foreach (var g in HookOnCaughtBy.Enumerate(npc)) {
 			g.OnCaughtBy(npc, player, item, failed);
 		}
+	}
+		
+	private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int?>>(g => g.PickEmote);
+		
+	public static int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
+		int? result = null;
+
+		if (npc.ModNPC != null) {
+			result = npc.ModNPC.PickEmote(closestPlayer, emoteList, anchor);
+		}
+
+		foreach (GlobalNPC globalNPC in HookPickEmote.Enumerate(npc)) {
+			int? emote = globalNPC.PickEmote(npc, closestPlayer, emoteList, anchor);
+			if (emote != null)
+				result = emote;
+		}
+
+		return result;
 	}
 
 	private delegate bool DelegateCanHitPlayer(NPC npc, Player target, ref int cooldownSlot);
@@ -1438,4 +1464,40 @@ public static class NPCLoader
 	}
 
 	internal static HookList HookSaveData = AddHook<Action<NPC, TagCompound>>(g => g.SaveData);
+
+	private delegate void DelegateChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookChatBubblePosition = AddHook<DelegateChatBubblePosition>(g => g.ChatBubblePosition);
+
+	public static void ChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.ChatBubblePosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookChatBubblePosition.Enumerate(npc)) {
+			g.ChatBubblePosition(npc, ref position, ref spriteEffects);
+		}
+	}
+
+	private delegate void DelegatePartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookPartyHatPosition = AddHook<DelegatePartyHatPosition>(g => g.PartyHatPosition);
+
+	public static void PartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.PartyHatPosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookPartyHatPosition.Enumerate(npc)) {
+			g.PartyHatPosition(npc, ref position, ref spriteEffects);
+		}
+	}
+
+	private delegate void DelegateEmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects);
+	private static HookList HookEmoteBubblePosition = AddHook<DelegateEmoteBubblePosition>(g => g.EmoteBubblePosition);
+
+	public static void EmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+		npc.ModNPC?.EmoteBubblePosition(ref position, ref spriteEffects);
+
+		foreach (var g in HookEmoteBubblePosition.Enumerate(npc)) {
+			g.EmoteBubblePosition(npc, ref position, ref spriteEffects);
+		}
+	}
 }

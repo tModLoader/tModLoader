@@ -61,7 +61,7 @@ public class RenameRewriter : BaseRewriter {
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
 		node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
-		if (sym.IsOverride && sym.OverriddenMethod == null) {
+		if (sym.IsOverride && (sym.OverriddenMethod == null || sym.OverriddenMethod.IsObsolete())) {
 			node = node.WithIdentifier(Refactor(node.Identifier, sym.ContainingType, refactoringMethod: true));
 		}
 

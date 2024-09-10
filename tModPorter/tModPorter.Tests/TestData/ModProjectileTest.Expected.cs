@@ -58,4 +58,9 @@ public class ModProjectileTest : ModProjectile
 	public override void ModifyHitPvp(Player target, ref int damage, ref bool crit)/* tModPorter Note: Removed. Use ModifyHitPlayer and check modifiers.PvP */ { }
 	public override void OnHitPvp(Player target, int damage, bool crit)/* tModPorter Note: Removed. Use OnHitPlayer and check info.PvP */ { }
 #endif
+	public override void OnKill(int timeLeft) { }
+
+#if COMPILE_ERROR
+	public override void ModifyFishingLine(ref Vector2 lineOriginOffset, ref Color lineColor)/* tModPorter Note: Removed. Use ModItem.ModifyFishingLine */ { }
+#endif
 }

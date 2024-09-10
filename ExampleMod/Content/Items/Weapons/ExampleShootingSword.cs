@@ -36,6 +36,9 @@ namespace ExampleMod.Content.Items.Weapons
 
 			// If you want melee speed to only affect the swing speed of the weapon and not the shoot speed (not recommended)
 			// Item.attackSpeedOnlyAffectsWeaponAnimation = true;
+
+			// Normally shooting a projectile makes the player face the projectile, but if you don't want that (like the beam sword) use this line of code
+			// Item.ChangePlayerDirectionOnShoot = false;
 		}
 		// This method gets called when firing your weapon/sword.
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
