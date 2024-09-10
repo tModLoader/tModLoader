@@ -19,14 +19,14 @@ public class FewFromRulesRule : IItemDropRule, INestedItemDropRule
 		private set;
 	}
 
-	public FewFromRulesRule(int amount, int chanceNumerator, params IItemDropRule[] options)
+	public FewFromRulesRule(int amount, int chanceDenominator, params IItemDropRule[] options)
 	{
 		if (amount > options.Length) {
 			throw new ArgumentOutOfRangeException(nameof(amount), $"{nameof(amount)} must be less than the number of {nameof(options)}");
 		}
 
 		this.amount = amount;
-		chanceDenominator = chanceNumerator;
+		this.chanceDenominator = chanceDenominator;
 		this.options = options;
 		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}
@@ -64,9 +64,8 @@ public class FewFromRulesRule : IItemDropRule, INestedItemDropRule
 
 	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
-		float personalDroprate = 1f / (float)chanceDenominator;
-		float num2 = personalDroprate * ratesInfo.parentDroprateChance;
-		float multiplier = 1f / (float)(options.Length - amount) * num2;
+		float personalDroprate = 1f / chanceDenominator;
+		float multiplier = amount / (float)options.Length * personalDroprate;
 		for (int i = 0; i < options.Length; i++) {
 			options[i].ReportDroprates(drops, ratesInfo.With(multiplier));
 		}

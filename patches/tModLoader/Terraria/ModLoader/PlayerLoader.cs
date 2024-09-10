@@ -831,6 +831,15 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookEmitEnchantmentVisualsAt = AddHook<Action<Projectile, Vector2, int, int>>(p => p.EmitEnchantmentVisualsAt);
+
+	public static void EmitEnchantmentVisualsAt(Player player, Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+		foreach (var modPlayer in HookEmitEnchantmentVisualsAt.Enumerate(player)) {
+			modPlayer.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
+		}
+	}
+
 	private static HookList HookCanCatchNPC = AddHook<Func<NPC, Item, bool?>>(p => p.CanCatchNPC);
 
 	public static bool? CanCatchNPC(Player player, NPC target, Item item)
@@ -1435,5 +1444,18 @@ public static class PlayerLoader
 			if (items != null)
 				yield return (items, onUsedForCrafting);
 		}
+	}
+
+	private static HookList HookOnPickup = AddHook<Func<Item, bool>>(p => p.OnPickup);
+
+	public static bool OnPickup(Player player, Item item)
+	{
+		foreach (var modPlayer in HookOnPickup.Enumerate(player)) {
+			if (!modPlayer.OnPickup(item)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

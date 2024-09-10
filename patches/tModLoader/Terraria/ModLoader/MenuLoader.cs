@@ -8,6 +8,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Default;
+using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader;
@@ -75,6 +76,8 @@ public static class MenuLoader
 		switchToMenu = MenutML;
 		if (ModContent.TryFind(LastSelectedModMenu, out ModMenu value) && value.IsAvailable)
 			switchToMenu = value;
+		if (LastSelectedModMenu == MenuJourneysEnd.FullName)
+			switchToMenu = MenuJourneysEnd;
 
 		loading = false;
 	}
@@ -85,6 +88,20 @@ public static class MenuLoader
 	}
 
 	internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)
+	{
+		var activeInterface = UserInterface.ActiveInstance;
+
+		// Rendering an interface makes it override ActiveInstance, so this block restores the previous value to prevent issues from that.
+		try {
+			UpdateAndDrawModMenuInner(spriteBatch, gameTime, color, logoRotation, logoScale);
+		}
+		finally {
+			// We don't call Use() to avoid triggering recalculations.
+			UserInterface.ActiveInstance = activeInterface;
+		}
+	}
+
+	private static void UpdateAndDrawModMenuInner(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)
 	{
 		if (switchToMenu != null && switchToMenu != currentMenu) {
 			currentMenu.OnDeselected();
@@ -103,7 +120,10 @@ public static class MenuLoader
 		}
 
 		currentMenu.UserInterface.Update(gameTime);
+		// Prevent Recalculate() spam due to Use() in UserInterface.Draw().
+		UserInterface.ActiveInstance = currentMenu.UserInterface;
 		currentMenu.UserInterface.Draw(spriteBatch, gameTime);
+
 		currentMenu.Update(Main.menuMode == 0);
 
 		Texture2D logo = currentMenu.Logo.Value;

@@ -109,6 +109,8 @@ internal class BuildProperties
 				continue;
 			}
 			int split = line.IndexOf('=');
+			if (split < 0)
+				continue; // lines without an '=' are ignored
 			string property = line.Substring(0, split).Trim();
 			string value = line.Substring(split + 1).Trim();
 			if (value.Length == 0) {
@@ -134,7 +136,12 @@ internal class BuildProperties
 					properties.author = value;
 					break;
 				case "version":
-					properties.version = new Version(value);
+					if (Version.TryParse(value, out Version result)) {
+						properties.version = result;
+					}
+					else {
+						Logging.tML.Error($"The version found in {propertiesFile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
+					}
 					break;
 				case "displayName":
 					properties.displayName = value;
@@ -177,6 +184,9 @@ internal class BuildProperties
 		//add (mod|weak)References that are not in sortBefore to sortAfter
 		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().ToArray();
+
+		// Interpolate description values
+		ModCompile.UpdateSubstitutedDescriptionValues(ref properties.description, properties.version.ToString(), properties.homepage);
 
 		return properties;
 	}

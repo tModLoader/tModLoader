@@ -43,7 +43,12 @@
  		_cachedSandstormSeverity = Sandstorm.Severity;
  		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
  		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
-@@ -387,7 +_,8 @@
+@@ -384,10 +_,13 @@
+ 				binaryReader.ReadBoolean();
+ 				binaryReader.ReadBoolean();
+ 				worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
++
++				WorldIO.ReadWorldHeader(worldFileData);
  				return worldFileData;
  			}
  		}
@@ -91,7 +96,7 @@
  		using (MemoryStream input = new MemoryStream(array, 0, num, writable: false)) {
  			using BinaryReader fileIO = new BinaryReader(input);
  			if (!Main.validateSaves || ValidateWorld(fileIO)) {
-@@ -682,12 +_,17 @@
+@@ -682,12 +_,19 @@
  				DoRollingBackups(text);
  			}
  			else {
@@ -104,8 +109,10 @@
  		if (text != null && array2 != null)
  			FileUtilities.WriteAllBytes(text, array2, useCloudSaving);
 +
-+		if (validated)
++		if (validated) {
++			Main.statusText = Language.GetTextValue("tModLoader.SavingModdedWorldData");
 +			WorldIO.Save(Main.worldPathName, useCloudSaving);
++		}
  	}
  
  	private static void DoRollingBackups(string backupWorldWritePath)

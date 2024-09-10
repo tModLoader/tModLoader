@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Projectiles
 	public class ExampleDrillProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			// Prevents jitter when steping up and down blocks and half blocks
+			// Prevents jitter when stepping up and down blocks and half blocks
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
 

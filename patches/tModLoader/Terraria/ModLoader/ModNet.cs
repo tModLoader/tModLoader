@@ -2,6 +2,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
@@ -21,19 +22,18 @@ public static class ModNet
 		public string name;
 		public Version version;
 		public byte[] hash;
-		public bool signed;
 		public string path;
 
-		public ModHeader(string name, Version version, byte[] hash, bool signed)
+		public ModHeader(string name, Version version, byte[] hash)
 		{
 			this.name = name;
 			this.version = version;
 			this.hash = hash;
-			this.signed = signed;
 			path = Path.Combine(ModLoader.ModPath, name + ".tmod");
 		}
 
 		public bool Matches(TmodFile mod) => name == mod.Name && version == mod.Version && hash.SequenceEqual(mod.Hash);
+		public bool MatchesNameAndVersion(TmodFile mod) => name == mod.Name && version == mod.Version;
 		public override string ToString() => $"{name} v{version}[{string.Concat(hash[..4].Select(b => b.ToString("x2")))}]";
 	}
 
@@ -56,7 +56,6 @@ public static class ModNet
 	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
 	internal static bool downloadModsFromServers = true;
-	internal static bool onlyDownloadSignedMods = false;
 
 	internal static bool[] isModdedClient = new bool[256];
 
@@ -71,6 +70,8 @@ public static class ModNet
 
 	internal static bool ShouldDrawModNetDiagnosticsUI = false;
 	internal static INetDiagnosticsUI ModNetDiagnosticsUI { get; private set; }
+
+	private static List<ModHeader> SyncModHeaders = new List<ModHeader>();
 
 	private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
 	internal static List<NetConfig> pendingConfigs = new List<NetConfig>();
@@ -94,8 +95,6 @@ public static class ModNet
 	{
 		kickMsg = null;
 		isModded = clientVersion.StartsWith("tModLoader");
-		if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
-			return true;
 
 		if (clientVersion == NetVersionString)
 			return true;
@@ -126,15 +125,12 @@ public static class ModNet
 	internal static void Unload()
 	{
 		netMods = null;
-		if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
-			AllowVanillaClients = false;
 		ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 	}
 
 	internal static void SyncMods(int clientIndex)
 	{
 		var p = new ModPacket(MessageID.SyncMods);
-		p.Write(AllowVanillaClients);
 
 		var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToList();
 		AddNoSyncDeps(syncMods);
@@ -144,7 +140,6 @@ public static class ModNet
 			p.Write(mod.Name);
 			p.Write(mod.Version.ToString());
 			p.Write(mod.File.Hash);
-			p.Write(mod.File.ValidModBrowserSignature);
 			SendServerConfigs(p, mod);
 		}
 
@@ -196,24 +191,21 @@ public static class ModNet
 	// This method is split so that the local variables aren't held by the GC when reloading
 	internal static bool SyncClientMods(BinaryReader reader, out bool needsReload)
 	{
-		AllowVanillaClients = reader.ReadBoolean();
-		Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
-
 		Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 		Mod[] clientMods = ModLoader.Mods;
-		LocalMod[] modFiles = ModOrganizer.FindMods(); // TODO: find all versions of mods, regardless of if a local is present
+		LocalMod[] modFiles = ModOrganizer.FindAllMods();
 		needsReload = false;
+		SyncModHeaders.Clear();
 		downloadQueue.Clear();
 		pendingConfigs.Clear();
-		var syncList = new List<ModHeader>();
-		var syncSet = new HashSet<string>();
 		var blockedList = new List<ModHeader>();
+		List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = new();
+		List<string> toEnable = new();
 
 		int n = reader.ReadInt32();
 		for (int i = 0; i < n; i++) {
-			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
-			syncList.Add(header);
-			syncSet.Add(header.name);
+			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20));
+			SyncModHeaders.Add(header);
 
 			int configCount = reader.ReadInt32();
 			for (int c = 0; c < configCount; c++)
@@ -225,34 +217,34 @@ public static class ModNet
 
 			needsReload = true;
 
-			LocalMod[] localVersions = modFiles.Where(m => m.Name == header.name).ToArray();
-			LocalMod matching = Array.Find(localVersions, mod => header.Matches(mod.modFile));
+			LocalMod matching = modFiles.FirstOrDefault(mod => header.Matches(mod.modFile));
 			if (matching != null) {
-				matching.Enabled = true;
+				reloadRequiredExplanationEntries.Add(MakeEnableOrVersionSwitchExplanation(header, clientMod, matching));
+				if (clientMod == null) {
+					toEnable.Add(matching.Name);
+				}
 				continue;
 			}
 
-			// overwrite an existing version of the mod if there is one
-			if (localVersions.Length > 0)
-				header.path = localVersions[0].modFile.path;
-
-			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
+			if (downloadModsFromServers) {
 				downloadQueue.Enqueue(header);
-			else
+				reloadRequiredExplanationEntries.Add(MakeDownloadModExplanation(modFiles, header, clientMod));
+			}
+			else {
 				blockedList.Add(header);
+			}
 		}
 
-		Logging.tML.Debug($"Server mods: " + string.Join(", ", syncList));
+		Logging.tML.Debug($"Server mods:\n\t\t" + string.Join("\n\t\t", SyncModHeaders));
 		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
 
-
-		foreach (Mod mod in clientMods)
-			if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name)) {
-				ModLoader.DisableMod(mod.Name);
-				needsReload = true;
-			}
+		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
+		foreach (var name in toDisable) {
+			needsReload = true;
+			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(4, name, modFiles.Where(mod => mod.Name == name).OrderByDescending(mod => mod.Version).FirstOrDefault(), Language.GetTextValue("tModLoader.ReloadRequiredExplanationDisable", "FFA07A")));
+		}
 
 		if (blockedList.Count > 0) {
 			string msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
@@ -268,21 +260,134 @@ public static class ModNet
 			return false;
 		}
 
-		// ready to connect, apply configs. Config manager will apply the configs on reload automatically
-		if (!needsReload) {
-			foreach (NetConfig pendingConfig in pendingConfigs)
-				JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
-
-			if (ConfigManager.AnyModNeedsReload()) {
-				needsReload = true;
-			}
-			else {
-				foreach (NetConfig pendingConfig in pendingConfigs)
-					ConfigManager.GetConfig(pendingConfig).OnChanged();
+		// Even if needsReload, check configs anyway so user is more informed.
+		if (AnyModNeedsReloadFromNetConfigsCheckOnly(out List<Mod> modsWithRequiredConfigReload)) {
+			needsReload = true;
+			foreach (var modWithChangedConfig in modsWithRequiredConfigReload) {
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(5, modWithChangedConfig.Name, modFiles.FirstOrDefault(mod => mod.Name == modWithChangedConfig.Name), Language.GetTextValue("tModLoader.ReloadRequiredExplanationConfigChanged", "DDA0DD")));
 			}
 		}
 
-		return true;
+		if (needsReload) {
+			NetReloadKeepAliveTimer.Restart();
+			// If needsReload, show the ServerModsDifferMessage UI.
+			string continueButtonText = Language.GetTextValue("tModLoader." + (downloadQueue.Count > 0 ? "ReloadRequiredDownloadAndContinue" : "ReloadRequiredReloadAndContinue"));
+			Interface.serverModsDifferMessage.Show(
+				Language.GetTextValue("tModLoader.ReloadRequiredServerJoinMessage", continueButtonText),
+				gotoMenu: 0, // back to main menu
+				continueButtonText: continueButtonText,
+				continueButtonAction: () => {
+					foreach (var name in toDisable) {
+						ModLoader.DisableMod(name);
+					}
+					foreach (var name in toEnable) {
+						ModLoader.EnableMod(name);
+					}
+
+					if (downloadQueue.Count > 0)
+						DownloadNextMod();
+					else
+						OnModsDownloaded(true);
+				},
+				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
+				backButtonAction: () => {
+					Netplay.Disconnect = true;
+				},
+				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
+			);
+
+			// Do we need to worry about connection timeouts while the ServerModsDifferMessage window is open?
+			return false;
+		}
+		else {
+			// Otherwise, apply configs to real ModConfig instances and join server directly
+			foreach (NetConfig pendingConfig in pendingConfigs)
+				JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
+
+			foreach (NetConfig pendingConfig in pendingConfigs)
+				ConfigManager.GetConfig(pendingConfig).OnChanged();
+
+			return true;
+		}
+	}
+
+	private static ReloadRequiredExplanation MakeEnableOrVersionSwitchExplanation(ModHeader header, Mod clientMod, LocalMod matching)
+	{
+		if (clientMod != null) {
+			// Mod is enabled, but wrong version enabled
+			if (clientMod.Version > header.version) {
+				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version));
+			}
+			else {
+				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionUpgrade", "FFFACD", header.version, clientMod.Version)); // double check logic.
+			}
+		}
+		else {
+			return new ReloadRequiredExplanation(3, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationEnable", "98FB98"));
+		}
+	}
+
+	private static ReloadRequiredExplanation MakeDownloadModExplanation(LocalMod[] modFiles, ModHeader header, Mod clientMod)
+	{
+		if (modFiles.FirstOrDefault(mod => header.MatchesNameAndVersion(mod.modFile)) is LocalMod localMod) {
+			// We have the correct mod and version, but hash is different.
+			// We could differentiate between a workshop mod being different and a local mod, which is likely because user is mod dev or playtester.
+			//if(localMod.location == ModLocation.Workshop)
+			//	reloadRequiredExplanationEntries.Add(new Reason(1, header.name, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n[c/ff0000:(Mod differs from local copy, it may have been edited!)]", localMod));
+			//else
+			return new ReloadRequiredExplanation(1, header.name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadHashDiffers", "00BFFF", header.version, string.Concat(header.hash[..4].Select(b => b.ToString("x2")))));
+		}
+		else {
+			LocalMod localModMatchingNameOnly = modFiles.Where(mod => mod.Name == header.name).OrderByDescending(mod => mod.Version).FirstOrDefault(); // Technically might show mod icon from .tmod file that won't be selected to load, but this is fine.
+			if (localModMatchingNameOnly == null) {
+				// We don't have the mod.
+				return new ReloadRequiredExplanation(1, header.name, null, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version));
+			}
+			else {
+				if (clientMod != null) {
+					// We have the mod enabled, but not the correct version.
+					if (clientMod.Version > header.version) {
+						bool downgradeIsTemporary = true;
+						// This downgrade might result in single player downgrading too if no workshop mod exists.
+						if (!modFiles.Where(mod => mod.Name == header.name && mod.location == ModLocation.Workshop).Any())
+							downgradeIsTemporary = false;
+
+						// If workshop mod exists but local mod is loaded: The local mod will downgrade, the lower version will load temporarily, but the user will be permanently downgraded to the workshop version. That's a bit confusing to communicate and extremely rare, and would only happen with mod devs, not worth worrying about.
+
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue(downgradeIsTemporary ? "tModLoader.ReloadRequiredExplanationDownloadDowngradeTemporary" : "tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version));
+					}
+					else {
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version));
+					}
+				}
+				else {
+					// We have the mod, but not the correct version.
+					return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version));
+				}
+			}
+		}
+	}
+
+	internal static bool AnyModNeedsReloadFromNetConfigsCheckOnly(out List<Mod> modsWithRequiredConfigReload)
+	{
+		modsWithRequiredConfigReload = new List<Mod>();
+		foreach (NetConfig pendingConfig in pendingConfigs) {
+			if (modsWithRequiredConfigReload.Any(x => x.Name == pendingConfig.modname) || !ModLoader.HasMod(pendingConfig.modname))
+				continue;
+
+			ModConfig currentConfigClone = ConfigManager.GeneratePopulatedClone(ConfigManager.GetConfig(pendingConfig));
+			JsonConvert.PopulateObject(pendingConfig.json, currentConfigClone, ConfigManager.serializerSettingsCompact);
+			Mod mod = ModLoader.GetMod(pendingConfig.modname);
+			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(mod, pendingConfig.configname);
+
+			if (loadTimeConfig.NeedsReload(currentConfigClone)) {
+				modsWithRequiredConfigReload.Add(mod);
+				// We could mention the specific config in UI if useful: \"{loadTimeConfig.DisplayName}\" Config change");
+				Logging.tML.Debug($"{pendingConfig.modname}:{pendingConfig.configname} ({loadTimeConfig.DisplayName}) would require a mod reload to join this server");
+			}
+		}
+
+		return modsWithRequiredConfigReload.Any();
 	}
 
 	private static void DownloadNextMod()
@@ -340,7 +445,7 @@ public static class ModNet
 					mod.Close();
 
 				downloadingLength = reader.ReadInt64();
-				Logging.tML.Debug($"Downloading: {downloadingMod.name} {downloadingLength}bytes");
+				Logging.tML.Debug($"Downloading: {downloadingMod.name} {downloadingLength} bytes");
 				downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 				return;
 			}
@@ -352,15 +457,14 @@ public static class ModNet
 			if (downloadingFile.Position == downloadingLength) {
 				downloadingFile.Close();
 
+				ModCompile.recentlyBuiltModCheckTimeCutoff = DateTime.Now + TimeSpan.FromSeconds(10);
+
 				var mod = new TmodFile(downloadingMod.path);
 
 				using (mod.Open()) { }
 
 				if (!downloadingMod.Matches(mod))
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
-
-				if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
-					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 				ModLoader.EnableMod(mod.Name);
 
@@ -419,12 +523,14 @@ public static class ModNet
 	}
 
 	internal static bool NetReloadActive;
+	internal static Stopwatch NetReloadKeepAliveTimer = new Stopwatch();
 	internal static Action NetReload()
 	{
 		// Main.ActivePlayerFileData gets cleared during reload
 		string path = Main.ActivePlayerFileData.Path;
 		bool isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
 		NetReloadActive = true;
+		NetReloadKeepAliveTimer.Restart();
 		return () => {
 			NetReloadActive = false;
 			// re-select the current player
@@ -445,6 +551,8 @@ public static class ModNet
 			}
 		};
 	}
+
+	internal static bool ServerRequiresDifferentVersion(LocalMod mod) => NetReloadActive && SyncModHeaders.Any(h => h.name == mod.Name && !h.Matches(mod.modFile));
 
 	internal static void SendNetIDs(int toClient)
 	{

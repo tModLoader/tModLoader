@@ -16,6 +16,7 @@ public static class BuildInfo
 	public static readonly string BuildIdentifier = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
 	public static readonly Version tMLVersion;
+	/// <summary>The Major.Minor version of the stable release at the time this build was created.</summary>
 	public static readonly Version stableVersion;
 	public static readonly BuildPurpose Purpose;
 	public static readonly string BranchName;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -9,7 +10,8 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
+/// This class allows you to modify and use hooks for all projectiles, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 {
@@ -136,6 +138,11 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="timeLeft"></param>
+	public virtual void OnKill(Projectile projectile, int timeLeft)
+	{
+	}
+
+	[Obsolete("Renamed to OnKill", error: true)] // Remove in 2023_10
 	public virtual void Kill(Projectile projectile, int timeLeft)
 	{
 	}
@@ -289,7 +296,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind a projectile. Use the Main.EntitySpriteDraw method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+	/// Allows you to draw things behind a projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	public virtual bool PreDrawExtras(Projectile projectile)
@@ -298,7 +305,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the Main.EntitySpriteDraw method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
+	/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
@@ -308,7 +315,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of a projectile. Use the Main.EntitySpriteDraw method for drawing. This method is called even if PreDraw returns false.
+	/// Allows you to draw things in front of a projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. This method is called even if PreDraw returns false.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
@@ -381,5 +388,15 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual bool? GrappleCanLatchOnTo(Projectile projectile, Player player, int x, int y)
 	{
 		return null;
+	}
+
+	/// <inheritdoc cref="ModProjectile.PrepareBombToBlow"/>
+	public virtual void PrepareBombToBlow(Projectile projectile)
+	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.EmitEnchantmentVisualsAt"/>
+	public virtual void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
 	}
 }

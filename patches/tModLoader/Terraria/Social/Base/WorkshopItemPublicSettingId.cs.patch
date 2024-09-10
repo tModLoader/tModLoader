@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/Social/Base/WorkshopItemPublicSettingId.cs
++++ src/tModLoader/Terraria/Social/Base/WorkshopItemPublicSettingId.cs
+@@ -4,5 +_,6 @@
+ {
+ 	Private,
+ 	FriendsOnly,
+-	Public
++	Public,
++	Unlisted
+ }

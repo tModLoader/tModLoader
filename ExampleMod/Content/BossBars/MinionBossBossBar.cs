@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.NPCs.MinionBoss;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.ModLoader;
 using Terraria.GameContent.UI.BigProgressBar;
-using ExampleMod.Content.NPCs.MinionBoss;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.BossBars
 {

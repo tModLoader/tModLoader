@@ -23,11 +23,19 @@
  {
  	private UIList _worldList;
  	private UITextPanel<LocalizedText> _backPanel;
+@@ -76,6 +_,7 @@
+ 		uIElement.Append(uITextPanel3);
+ 		_newPanel = uITextPanel3;
+ 		Append(uIElement);
++		InitializeMigrationPanel();
+ 	}
+ 
+ 	public override void Recalculate()
 @@ -126,6 +_,7 @@
  	public override void OnActivate()
  	{
  		Main.LoadWorlds();
-+		LoadMigratableWorlds();
++		ActivateMigrationPanel();
  		UpdateWorldsList();
  		if (PlayerInput.UsingGamepadUI)
  			UILinkPointNavigator.ChangePoint(3000 + ((_worldList.Count == 0) ? 1 : 2));

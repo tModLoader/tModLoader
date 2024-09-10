@@ -50,24 +50,16 @@
  					break;
  				case 3:
  					writer.Write((byte)remoteClient);
-@@ -115,7 +_,15 @@
+@@ -115,7 +_,7 @@
  					writer.Write((byte)player4.skinVariant);
  					writer.Write((byte)player4.hair);
  					writer.Write(player4.name);
-+
-+					if (ModNet.AllowVanillaClients) {
 -					writer.Write(player4.hairDye);
-+						writer.Write7BitEncodedInt(player4.hairDye);
-+						goto SkipVanillaWrite;
-+					}
-+
-+					writer.Write((byte)player4.hairDye);
-+					SkipVanillaWrite:
-+
++					writer.Write7BitEncodedInt(player4.hairDye);
  					WriteAccessoryVisibility(writer, player4.hideVisibleAccessory);
  					writer.Write(player4.hideMisc);
  					writer.WriteRGB(player4.hairColor);
-@@ -166,12 +_,19 @@
+@@ -166,12 +_,16 @@
  
  					num11 = item6.stack;
  					num12 = item6.netID;
@@ -75,19 +67,16 @@
  					if (num11 < 0)
  						num11 = 0;
  
-+					if (!ModNet.AllowVanillaClients) {
-+						ItemIO.Send(item6, writer, writeStack: true);
-+						goto SkipVanillaWrite;
-+					}
-+
++					ItemIO.Send(item6, writer, writeStack: true);
++					/*
  					writer.Write((short)num11);
  					writer.Write((byte)number3);
  					writer.Write((short)num12);
-+					SkipVanillaWrite:
++					*/
  					break;
  				}
  				case 7: {
-@@ -340,8 +_,13 @@
+@@ -340,8 +_,12 @@
  						writer.Write(SocialAPI.Network.GetLobbyId());
  					else
  						writer.Write(0uL);
@@ -95,28 +84,22 @@
  
  					writer.Write(Sandstorm.IntendedSeverity);
 +
-+					if (!ModNet.AllowVanillaClients)
-+						WorldIO.SendModData(writer);
++					WorldIO.SendModData(writer);
 +
  					break;
  				}
  				case 8:
-@@ -551,8 +_,17 @@
+@@ -551,8 +_,12 @@
  					writer.Write((short)number);
  					writer.WriteVector2(item3.position);
  					writer.WriteVector2(item3.velocity);
-+
-+					if (!ModNet.AllowVanillaClients) {
-+						writer.Write7BitEncodedInt(item3.stack);
-+						writer.Write7BitEncodedInt(item3.prefix);
-+						goto SkipVanillaWrite;
-+					}
-+
++					writer.Write7BitEncodedInt(item3.stack);
++					writer.Write7BitEncodedInt(item3.prefix);
++					/*
  					writer.Write((short)item3.stack);
 -					writer.Write(item3.prefix);
 +					writer.Write((byte)item3.prefix);
-+					SkipVanillaWrite:
-+
++					*/
  					writer.Write((byte)number2);
  					short value2 = 0;
  					if (item3.active && item3.stack > 0)
@@ -128,7 +111,7 @@
  					break;
  				}
  				case 22:
-@@ -636,9 +_,12 @@
+@@ -636,9 +_,11 @@
  						}
  					}
  
@@ -136,8 +119,7 @@
 +					if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  						writer.Write((byte)nPC2.releaseOwner);
  
-+					if (!ModNet.AllowVanillaClients)
-+						NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
++					NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
 +
  					break;
  				}
@@ -153,7 +135,7 @@
  					if (projectile.originalDamage != 0)
  						bitsByte23[6] = true;
  
-+					byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
++					byte[] extraAI = ProjectileLoader.WriteExtraAI(projectile);
 +					bool hasExtraAI = extraAI?.Length > 0;
 +					bitsByte24[1] = hasExtraAI; // This bit is unused by vanilla
 +
@@ -199,16 +181,13 @@
  					break;
  				case 29:
  					writer.Write((short)number);
-@@ -735,13 +_,21 @@
+@@ -735,13 +_,18 @@
  					Item item7 = Main.chest[number].item[(byte)number2];
  					writer.Write((short)number);
  					writer.Write((byte)number2);
 +
-+					if (!ModNet.AllowVanillaClients) {
-+						ItemIO.Send(item7, writer, writeStack: true);
-+						goto SkipVanillaWrite;
-+					}
-+
++					ItemIO.Send(item7, writer, writeStack: true);
++					/*
  					short value4 = (short)item7.netID;
  					if (item7.Name == null)
  						value4 = 0;
@@ -218,10 +197,19 @@
 -					writer.Write(item7.prefix);
 +					writer.Write((byte)item7.prefix);
  					writer.Write(value4);
-+					SkipVanillaWrite:
++					*/
  					break;
  				}
  				case 33: {
+@@ -757,7 +_,7 @@
+ 					if (number2 == 1f) {
+ 						string text3 = text.ToString();
+ 						num7 = (byte)text3.Length;
+-						if (num7 == 0 || num7 > 20)
++						if (num7 == 0 || num7 > Chest.MaxNameLength)
+ 							num7 = 255;
+ 						else
+ 							text2 = text3;
 @@ -785,6 +_,11 @@
  					else {
  						writer.Write((short)0);
@@ -234,13 +222,12 @@
  					break;
  				case 35:
  					writer.Write((byte)number);
-@@ -798,6 +_,10 @@
+@@ -798,6 +_,9 @@
  					writer.Write(player3.zone3);
  					writer.Write(player3.zone4);
  					writer.Write(player3.zone5);
 +
-+					if (!ModNet.AllowVanillaClients)
-+						BiomeLoader.SendCustomBiomes(player3, writer);
++					BiomeLoader.SendCustomBiomes(player3, writer);
 +
  					break;
  				}
@@ -254,22 +241,19 @@
  
  					break;
  				}
-@@ -1121,14 +_,27 @@
+@@ -1121,14 +_,24 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item4 = Main.player[(int)number4].inventory[(int)number3];
 +
-+					if (!ModNet.AllowVanillaClients) {
-+						ItemIO.Send(item4, writer);
-+						writer.Write7BitEncodedInt(number5);
-+						goto SkipVanillaWrite;
-+					}
-+
++					ItemIO.Send(item4, writer);
++					writer.Write7BitEncodedInt(number5);
++					/*
  					writer.Write((short)item4.netID);
 -					writer.Write(item4.prefix);
 +					writer.Write((byte)item4.prefix);
  					writer.Write((short)number5);
-+					SkipVanillaWrite:
++					*/
  					break;
  				}
  				case 91:
@@ -277,7 +261,7 @@
  					writer.Write((byte)number2);
 +
 +					// Send byte for owner if type corresponds to projectile (magic number 2) #WorldUIAnchorProjectileSyncFix
-+					if (!ModNet.AllowVanillaClients && (byte)number2 == 2)
++					if ((byte)number2 == 2)
 +						writer.Write((byte)((int)number2 >> 8));
 +
  					if (number2 != 255f) {
@@ -315,40 +299,33 @@
  				case 118:
  					writer.Write((byte)number);
  					_currentPlayerDeathReason.WriteSelfTo(writer);
-@@ -1291,9 +_,16 @@
+@@ -1291,9 +_,13 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item2 = Main.player[(int)number4].inventory[(int)number3];
 +
-+					if (!ModNet.AllowVanillaClients) {
-+						ItemIO.Send(item2, writer, writeStack: true);
-+						goto SkipVanillaWrite;
-+					}
-+
++					ItemIO.Send(item2, writer, writeStack: true);
++					/*
  					writer.Write((short)item2.netID);
 -					writer.Write(item2.prefix);
 +					writer.Write((byte)item2.prefix);
  					writer.Write((short)number5);
-+					SkipVanillaWrite:
++					*/
  					break;
  				}
  				case 124: {
-@@ -1356,9 +_,17 @@
+@@ -1356,9 +_,13 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item = Main.player[(int)number4].inventory[(int)number3];
 +
-+
-+					if (!ModNet.AllowVanillaClients) {
-+						ItemIO.Send(item, writer, writeStack: true);
-+						goto SkipVanillaWrite;
-+					}
-+
++					ItemIO.Send(item, writer, writeStack: true);
++					/*
  					writer.Write((short)item.netID);
 -					writer.Write(item.prefix);
 +					writer.Write((byte)item.prefix);
  					writer.Write((short)number5);
-+					SkipVanillaWrite:
++					*/
  					break;
  				}
  				case 134: {
@@ -580,7 +557,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2291,6 +_,23 @@
+@@ -2291,18 +_,54 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -601,9 +578,40 @@
 +		SendData(28, -1, ignoreClient, null, npc.whoAmI, number7: 1);
 +	}
 +
++	/// <SharedSummary>
++	/// Sends all the tiles in a rectangle range to sync them. The range is defined by parameters explained below.
++	/// <para/> <paramref name="whoAmi"/> should usually be -1. <paramref name="changeType"/> can optionally be set to one of the <see cref="TileChangeType"/> to automatically play the corresponding liquid sound on the receiving clients.
++	/// <para/> If called on a client, the server will relay the changed tiles to other clients when it is received.
++	/// <para/> Use this method when manually adjusting <see cref="Main.tile"/>. Uses such as wiring, right clicking on tiles, tiles randomly updating, and projectiles modifying tiles are all exhibited in <see href="https://github.com/search?q=repo%3AtModLoader%2FtModLoader+SendTileSquare+path%3AExampleMod&amp;type=Code">ExampleMod</see>. <para/>
++	/// </SharedSummary>
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the top left corner of tiles to sync and <paramref name="xSize"/> and <paramref name="ySize"/> denote the width and height of the rectangle.
++	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
  	{
  		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
+ 		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>.
++	/// <para/> The <see cref="SendTileSquare(int, int, int, int, int, TileChangeType)"/> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly. 
++	/// </summary>
+ 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, TileChangeType changeType = TileChangeType.None)
+ 	{
+ 		int num = (centeredSquareSize - 1) / 2;
+ 		SendTileSquare(whoAmi, tileX - num, tileY - num, centeredSquareSize, centeredSquareSize, changeType);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote a single tile to sync. If sending multiple tiles use the other overloads instead.
++	/// </summary>
+ 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, TileChangeType changeType = TileChangeType.None)
+ 	{
+ 		int num = 1;
 @@ -2455,7 +_,7 @@
  		}
  

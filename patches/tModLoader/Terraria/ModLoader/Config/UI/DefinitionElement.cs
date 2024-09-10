@@ -57,7 +57,7 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		textBoxBackgroundA.Top.Set(-6, 0);
 		textBoxBackgroundA.PaddingTop = 0;
 		textBoxBackgroundA.PaddingBottom = 0;
-		ChooserFilter = new UIFocusInputTextField("Filter by Name");
+		ChooserFilter = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterByName"));
 		ChooserFilter.OnTextChange += (a, b) => {
 			UpdateNeeded = true;
 		};
@@ -71,7 +71,7 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		UIPanel textBoxBackgroundB = new UIPanel();
 		textBoxBackgroundB.CopyStyle(textBoxBackgroundA);
 		textBoxBackgroundB.Left.Set(180, 0);
-		ChooserFilterMod = new UIFocusInputTextField("Filter by Mod");
+		ChooserFilterMod = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterByMod"));
 		ChooserFilterMod.OnTextChange += (a, b) => {
 			UpdateNeeded = true;
 		};
@@ -166,6 +166,7 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 	public Asset<Texture2D> BackgroundTexture { get; set; } = DefaultBackgroundTexture;
 	public string Tooltip { get; set; }
 	public int Type { get; set; }
+	public int NullID { get; set; } = 0;
 	public T Definition { get; set; }
 
 	internal float Scale { get; set; } = .75f;
@@ -184,10 +185,10 @@ internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 	public virtual void SetItem(T item)
 	{
 		Definition = item;
-		Type = Definition?.Type ?? 0;
+		Type = Definition?.Type ?? NullID;
 		Unloaded = Definition?.IsUnloaded ?? false;
 
-		if (Definition == null || (Type == 0 && !Unloaded))
+		if (Definition == null || (Type == NullID && !Unloaded))
 			Tooltip = Lang.inter[23].Value; // "None";
 		else {
 			if (Unloaded)

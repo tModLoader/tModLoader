@@ -59,7 +59,7 @@ internal class Steam
 		var steam_appid_path = "steam_appid.txt";
 
 		// Family Share & GoG, Dev Enviroments rely on steam_appid.txt to know what the game is in Steam
-		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" || Social.Steam.SteamedWraps.FamilyShared) {
+		if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1" || Social.Steam.SteamedWraps.FamilyShared || InstallVerifier.DistributionPlatform == DistributionPlatform.GoG) {
 			File.WriteAllText(steam_appid_path, appId.ToString());
 			return;
 		}

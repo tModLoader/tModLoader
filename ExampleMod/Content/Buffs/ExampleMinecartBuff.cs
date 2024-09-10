@@ -1,8 +1,8 @@
+using ExampleMod.Content.Items.Mounts;
+using ExampleMod.Content.Mounts;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using ExampleMod.Content.Items.Mounts;
-using ExampleMod.Content.Mounts;
 
 namespace ExampleMod.Content.Buffs
 {

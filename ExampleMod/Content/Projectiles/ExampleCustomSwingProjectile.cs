@@ -1,17 +1,18 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.DataStructures;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
 	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
-	// This is great if you want to make melee weapons with complex swing behaviour
+	// This is great if you want to make melee weapons with complex swing behavior
 	// Note that this projectile only covers 2 relatively simple swings, everything else is up to you
 	// Aside from the custom animation, the custom collision code in Colliding is very important to this weapon
 	public class ExampleCustomSwingProjectile : ModProjectile
@@ -119,7 +120,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void ReceiveExtraAI(BinaryReader reader) {
-			Projectile.spriteDirection = reader.ReadSByte(); 
+			Projectile.spriteDirection = reader.ReadSByte();
 		}
 
 		public override void AI() {
@@ -135,7 +136,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// AI depends on stage and attack
 			// Note that these stages are to facilitate the scaling effect at the beginning and end
-			// If this is not desireable for you, feel free to simplify
+			// If this is not desirable for you, feel free to simplify
 			switch (CurrentStage) {
 				case AttackStage.Prepare:
 					PrepareStrike();
@@ -169,7 +170,7 @@ namespace ExampleMod.Content.Projectiles
 				effects = SpriteEffects.FlipHorizontally;
 			}
 
-			Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, default, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
 

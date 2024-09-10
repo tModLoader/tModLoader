@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -124,6 +125,15 @@ public static class CombinedHooks
 		PlayerLoader.MeleeEffects(player, sItem, itemRectangle);
 	}
 
+	public static void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+		ProjectileLoader.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
+
+		if (projectile.TryGetOwner(out var realPlayer)) {
+			PlayerLoader.EmitEnchantmentVisualsAt(realPlayer, projectile, boxPosition, boxWidth, boxHeight);
+		}
+	}
+
 	public static bool? CanHitNPCWithProj(Projectile proj, NPC npc)
 	{
 		bool? ret = null;
@@ -167,7 +177,7 @@ public static class CombinedHooks
 		if (player.resistCold && projectile.coldDamage)
 			modifiers.IncomingDamageMultiplier *= 0.7f;
 
-		if (!projectile.reflected) {
+		if (!projectile.reflected && !ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[projectile.type]) {
 			float damageMult = Main.GameModeInfo.EnemyDamageMultiplier;
 			if (Main.GameModeInfo.IsJourneyMode) {
 				var power = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
@@ -306,5 +316,10 @@ public static class CombinedHooks
 	{
 		PlayerLoader.FrameEffects(player);
 		EquipLoader.EquipFrameEffects(player);
+	}
+
+	public static bool OnPickup(Item item, Player player)
+	{
+		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
 	}
 }

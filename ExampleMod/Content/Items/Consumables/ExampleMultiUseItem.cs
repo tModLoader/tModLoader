@@ -73,7 +73,7 @@ namespace ExampleMod.Content.Items.Consumables
 				Color.Red,
 				rotation: 0f,
 				origin: Vector2.Zero,
-				scale: new Vector2(spriteSize.X * (MaxUses - useCount) / MaxUses , 2f),
+				scale: new Vector2(spriteSize.X * (MaxUses - useCount) / MaxUses, 2f),
 				SpriteEffects.None,
 				layerDepth: 0f);
 		}

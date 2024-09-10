@@ -3,6 +3,7 @@ using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -107,7 +108,7 @@ public static class MonoModHooks
 
 		foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name)) {
 			if (assemblyDetours.TryGetValue(asm, out var list)) {
-				Logging.tML.Debug($"Unloading {list.ilHooks.Count} IL hooks, {list.detours.Count} detours from {asm.GetName().Name} in {mod.DisplayName}");
+				Logging.tML.Debug($"Unloading {list.ilHooks.Count} IL hooks, {list.detours.Count} detours from {asm.GetName().Name} in {mod.Name}");
 
 				foreach (var detour in list.detours)
 					if (detour.IsApplied)
@@ -118,10 +119,24 @@ public static class MonoModHooks
 						ilHook.Undo();
 			}
 		}
+	}
 
+	internal static void Clear()
+	{
 		HookEndpointManager.Clear();
 		assemblyDetours.Clear();
 		_hookCache.Clear();
+
+		// #4220 - Mitigation for bugs in reflection cache with mod reloads, and helps with assembly unloading
+		var type = typeof(ReflectionHelper);
+		FieldInfo[] caches = [
+			type.GetField("AssemblyCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("AssembliesCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("ResolveReflectionCache", BindingFlags.NonPublic | BindingFlags.Static),
+		];
+		foreach (var cache in caches) {
+			((IDictionary)cache.GetValue(null)).Clear();
+		}
 	}
 
 	#region Obsolete HookEndpointManager method replacement
@@ -160,7 +175,7 @@ public static class MonoModHooks
 	{
 		var ilHooksField = typeof(HookEndpointManager).GetField("ILHooks", BindingFlags.NonPublic | BindingFlags.Static);
 		object ilHooksFieldValue = ilHooksField.GetValue(null);
-		if (ilHooksFieldValue is Dictionary<(MethodBase, Delegate), ILHook> ilHooks) {
+		if (ilHooksFieldValue is IReadOnlyDictionary<(MethodBase, Delegate), ILHook> ilHooks) {
 			Logging.tML.Debug("Dump of registered IL Hooks:");
 			foreach (var item in ilHooks) {
 				Logging.tML.Debug(item.Key + ": " + item.Value);
@@ -179,7 +194,7 @@ public static class MonoModHooks
 	{
 		var hooksField = typeof(HookEndpointManager).GetField("Hooks", BindingFlags.NonPublic | BindingFlags.Static);
 		object hooksFieldValue = hooksField.GetValue(null);
-		if (hooksFieldValue is Dictionary<(MethodBase, Delegate), Hook> detours) {
+		if (hooksFieldValue is IReadOnlyDictionary<(MethodBase, Delegate), Hook> detours) {
 			Logging.tML.Debug("Dump of registered Detours:");
 			foreach (var item in detours) {
 				Logging.tML.Debug(item.Key + ": " + item.Value);

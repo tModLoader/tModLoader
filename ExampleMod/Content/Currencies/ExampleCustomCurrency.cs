@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.GameContent.UI;
-using Terraria.Localization;
 
 namespace ExampleMod.Content.Currencies
 {

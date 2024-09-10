@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Items.Placeable
 				return;
 			}
 
-			// Note that due to biome select torch god's favour, the player may not actually have an ExampleTorch in their inventory when this hook is called, so no modifications should be made to the item instance.
+			// Note that due to biome select torch god's favor, the player may not actually have an ExampleTorch in their inventory when this hook is called, so no modifications should be made to the item instance.
 
 			// Randomly spawn sparkles when the torch is held. Bigger chance to spawn them when swinging the torch.
 			if (Main.rand.NextBool(player.itemAnimation > 0 ? 7 : 30)) {

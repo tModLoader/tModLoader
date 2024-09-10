@@ -51,7 +51,7 @@ public static class TagIO
 
 		public override void WriteList(BinaryWriter w, IList list)
 		{
-			foreach (T t in list)
+			foreach (T t in (IEnumerable<T>)list)
 				writer(w, t);
 		}
 
@@ -110,7 +110,7 @@ public static class TagIO
 			(w, v) => {
 				int id;
 				try {
-					id = GetPayloadId(v.GetType().GetGenericArguments()[0]);
+					id = GetPayloadId(GetListElementType(v.GetType()));
 				}
 				catch (IOException) {
 					throw new IOException("Invalid NBT list type: " + v.GetType());
@@ -121,7 +121,7 @@ public static class TagIO
 			},
 			v => {
 				try {
-					return GetHandler(GetPayloadId(v.GetType().GetGenericArguments()[0])).CloneList(v);
+					return GetHandler(GetPayloadId(GetListElementType(v.GetType()))).CloneList(v);
 				}
 				catch (IOException) {
 					throw new IOException("Invalid NBT list type: " + v.GetType());
@@ -185,6 +185,8 @@ public static class TagIO
 		throw new IOException($"Invalid NBT payload type '{t}'");
 	}
 
+	private static Type GetListElementType(Type type) => type.GetElementType() ?? type.GetGenericArguments()[0];
+
 	public static object Serialize(object value)
 	{
 		ArgumentNullException.ThrowIfNull(value);
@@ -203,7 +205,7 @@ public static class TagIO
 			return value;
 
 		var list = (IList)value;
-		var elemType = type.GetElementType() ?? type.GetGenericArguments()[0];
+		var elemType = GetListElementType(type);
 		if (TagSerializer.TryGetSerializer(elemType, out serializer))
 			return serializer.SerializeList(list);
 
@@ -312,8 +314,10 @@ public static class TagIO
 		}
 
 		name = StringHandler.reader(r);
-		return PayloadHandlers[id].Read(r);
+		return ReadTagImpl(id, r);
 	}
+
+	public static object? ReadTagImpl(int id, BinaryReader r) => PayloadHandlers[id].Read(r);
 
 	public static void WriteTag(string name, object tag, BinaryWriter w)
 	{
@@ -376,5 +380,8 @@ public static class TagIO
 		if (compress) stream.Close();
 	}
 
+	/// <summary>
+	/// Writes the TagCompound to the writer. Please don't use this to send TagCompound over the network if you can avoid it. If you have to, consider using <see cref="ToStream(TagCompound, Stream, bool)"/>/<see cref="FromStream(Stream, bool)"/> with <c>compress: true</c>.
+	/// </summary>
 	public static void Write(TagCompound root, BinaryWriter writer) => WriteTag("", root, writer);
 }
