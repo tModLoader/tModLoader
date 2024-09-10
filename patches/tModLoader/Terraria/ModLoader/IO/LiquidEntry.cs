@@ -7,7 +7,7 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO
 {
-    internal class LiquidEntry : ModEntry
+    internal class LiquidEntry : ModBlockEntry
     {
 		public static Func<TagCompound, LiquidEntry> DESERIALIZER = tag => new LiquidEntry(tag);
 
@@ -15,8 +15,6 @@ namespace Terraria.ModLoader.IO
 
 		public LiquidEntry(TagCompound tag) : base(tag) { }
 
-		public override string DefaultUnloadedType => ModContent.GetInstance<UnloadedLiquid>().FullName;
-
-		protected override string GetUnloadedType(ushort type) => DefaultUnloadedType;
+		public override ModBlockType DefaultUnloadedPlaceholder => ModContent.GetInstance<UnloadedLiquid>();
 	}
 }
