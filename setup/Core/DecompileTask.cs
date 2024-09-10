@@ -211,7 +211,10 @@ namespace Terraria.ModLoader.Setup.Core
 				return false;
 
 			try {
-				CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
+				var ci = CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
+				if (ci.ThreeLetterWindowsLanguageName == "ZZZ")
+					return false; // https://stackoverflow.com/questions/35074033/invalid-cultureinfo-no-longer-throws-culturenotfoundexception
+
 				return true;
 			}
 			catch (CultureNotFoundException) { }
