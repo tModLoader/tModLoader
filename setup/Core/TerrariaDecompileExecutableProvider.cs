@@ -1,4 +1,3 @@
-using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -62,7 +61,7 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 			string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
 			string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
-			using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken), ZipArchiveMode.Read);
+			using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken));
 			zip.Entries.Single(e => e.FullName == $"{serverVersionWithoutDots}/Windows/TerrariaServer.exe").ExtractToFile(destinationPath);
 		}
 	}
@@ -126,7 +125,7 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 		taskProgress.ReportStatus("Downloading .NET Framework Reference Assemblies...");
 		var url = "https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies.net481/1.0.3";
-		using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken), ZipArchiveMode.Read);
+		using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken));
 
 		var subfolder = "build/.NETFramework/v4.8.1";
 		foreach (var e in zip.Entries) {
