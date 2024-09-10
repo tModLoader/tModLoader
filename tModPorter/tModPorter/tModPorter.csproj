@@ -22,10 +22,10 @@
 
 	<!-- Trim the build size a bit by removing unnecessary build host -->
 	<ItemGroup>
-		<Content Update="@(Content->HasMetadata('NuGetItemType'))">
+		<Content Update="@(Content-&gt;HasMetadata('NuGetItemType'))">
 			<Remove Condition="$([System.String]::new('%(Link)').StartsWith('BuildHost-net472'))">true</Remove>
 		</Content>
-		<Content Remove="@(Content->HasMetadata('Remove'))" />
+		<Content Remove="@(Content-&gt;HasMetadata('Remove'))" />
 	</ItemGroup>
 
 	<!-- Import tasks -->
