@@ -215,18 +215,22 @@ jobs:
           unzip -q terrariaserver.zip
           
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
-          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
+          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.
           
-          echo Extracting Setup Secret Assets
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./$TERRARIA_VERSION/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
-          
-          echo Installing XNA
-          curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
-          msiexec //i xnafx40_redist.msi //quiet
-          echo XNA Installed
-          
-          echo ::group::Running setup.bat
-          ./setup.bat auto ./$TERRARIA_VERSION/Windows
+          echo ::group::Running setup-cli.bat
+          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
+            tmlVersionDefine=TML_$(cut -d '.' -f1 <<< $TMLVERSION)_$(cut -d '.' -f2 <<< $TMLVERSION)
+            echo "TMLVERSIONDefine: $tmlVersionDefine"
+            sed -i "s#<\!-- TML stable version define placeholder -->#<DefineConstants>\$(DefineConstants);$tmlVersionDefine</DefineConstants>#g" ./patches/tModLoader/Terraria/release_extras/tMLMod.targets
+          fi
+
+          if [ ! -d "./src/decompiled" ]; then
+            ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress -f --strict
+          else
+            echo "src/decompiled found. Skipping decompilation..."
+          fi
+
+          ./setup-cli.bat regen-source --plain-progress -f --strict
           echo ::endgroup::
           
           echo ::group::WorkspaceInfo.targets
