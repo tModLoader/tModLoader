@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 
 		public readonly static string TerrariaManifestFile = $"appmanifest_{TerrariaAppId}.acf";
 
-		private readonly static Regex SteamLibraryFoldersRegex = new(@"""(\d+)""[^\S\r\n]+""(.+)""", RegexOptions.Compiled);
+		private readonly static Regex SteamLibraryFoldersRegex = new(@"""(\d+|path)""[^\S\r\n]+""(.+)""", RegexOptions.Compiled);
 		private readonly static Regex SteamManifestInstallDirRegex = new(@"""installdir""[^\S\r\n]+""([^\r\n]+)""", RegexOptions.Compiled);
 
 		public static bool TryFindTerrariaDirectory([NotNullWhen(true)] out string? path) {
