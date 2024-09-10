@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using ICSharpCode.Decompiler.Metadata;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
 namespace Terraria.ModLoader.Setup.Core;
@@ -60,13 +61,19 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 			string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
 			string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
-			Stream fileStream = await httpClient.GetStreamAsync(url, cancellationToken);
-			string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-			ZipFile.ExtractToDirectory(fileStream, tempDirectory);
+			string tempDirectory = await DownloadAndExtractZip(url, cancellationToken);
 
 			File.Copy(Path.Combine(tempDirectory, serverVersionWithoutDots, "Windows", "TerrariaServer.exe"), destinationPath);
 			Directory.Delete(tempDirectory, true);
 		}
+	}
+
+	private async Task<string> DownloadAndExtractZip(string url, CancellationToken cancellationToken)
+	{
+		using var fileStream = await httpClient.GetStreamAsync(url, cancellationToken);
+		string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+		ZipFile.ExtractToDirectory(fileStream, tempDirectory);
+		return tempDirectory;
 	}
 
 	private async Task<string> Retrieve(string fileNameWithoutExtension, Version version, FinalRetrievalAction finalRetrievalAction)
@@ -103,5 +110,42 @@ internal sealed class TerrariaDecompileExecutableProvider
 			throw new InvalidOperationException(
 				$"{Path.GetFileName(filePath)} has unsupported version {assemblyName.Version}. Version {expectedVersion} was expected.");
 		}
+	}
+
+	public async Task<IReadOnlyCollection<string>> RetrieveExtraReferences(ITaskProgress taskProgress, CancellationToken cancellationToken = default)
+	{
+		var paths = new List<string>();
+		if (File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, "mscorlib.dll")))
+			paths.Add(await RetrieveFrameworkRefs(taskProgress, cancellationToken));
+
+		if (File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, "FNA.dll"))
+			|| UniversalAssemblyResolver.GetAssemblyInGac(AssemblyNameReference.Parse("Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553")) is null)
+			paths.Add(await RetrieveXNA(taskProgress, cancellationToken));
+
+		return paths;
+	}
+
+	private async Task<string> RetrieveFrameworkRefs(ITaskProgress taskProgress, CancellationToken cancellationToken = default)
+	{
+		// Note that we use v4.8.1 even though Terraria was compiled against v4.0 because ILSpy locates the 4.8.1 assemblies on windows machines for decompilation, as they're installed as 'drop in replacements'
+		// There are some very minor (but nonetheless problematic) decompile output differences due to the back-compatible API differences in 4.8.1
+		var path = Path.Combine("setup", ".NETFramework", "v4.8.1");
+		if (Directory.Exists(path))
+			return path;
+
+		taskProgress.ReportStatus("Downloading .NET Framework Reference Assemblies...");
+		var url = "https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies.net481/1.0.3";
+		string tempDirectory = await DownloadAndExtractZip(url, cancellationToken);
+
+		Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+		Directory.Move(Path.Combine(tempDirectory, "build", ".NETFramework", "v4.8.1"), path);
+		Directory.Delete(tempDirectory, true);
+
+		return path;
+	}
+
+	private async Task<string> RetrieveXNA(ITaskProgress taskProgress, CancellationToken cancellationToken = default)
+	{
+		return Path.Combine("setup", "xna_redist");
 	}
 }

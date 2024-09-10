@@ -21,17 +21,23 @@ namespace Terraria.ModLoader.Setup.Core
 {
 	public class DecompileTask : SetupOperation
 	{
-		private sealed class EmbeddedAssemblyResolver : IAssemblyResolver
+		private sealed class TerrariaAssemblyResolver : IAssemblyResolver
 		{
 
 			private readonly PEFile baseModule;
 			private readonly UniversalAssemblyResolver _resolver;
 			private readonly Dictionary<string, PEFile> cache = new();
 
-			public EmbeddedAssemblyResolver(PEFile baseModule, string targetFramework)
+			public TerrariaAssemblyResolver(PEFile baseModule, string targetFramework, IEnumerable<string> extraSearchDirs)
 			{
 				this.baseModule = baseModule;
-				_resolver = new UniversalAssemblyResolver(baseModule.FileName, true, targetFramework, streamOptions: PEStreamOptions.PrefetchMetadata);
+				// pass mainAssemblyFileName: null so we can control the order of the search paths. We need to search the framework directory before the Terraria.exe folder on Mono platforms 
+				_resolver = new UniversalAssemblyResolver(mainAssemblyFileName: null, throwOnError: true, targetFramework, streamOptions: PEStreamOptions.PrefetchMetadata);
+
+				foreach (var dir in extraSearchDirs)
+					_resolver.AddSearchDirectory(dir);
+
+				_resolver.AddSearchDirectory(Path.GetDirectoryName(baseModule.FileName)!);
 			}
 
 			public PEFile? Resolve(IAssemblyReference name)
@@ -135,9 +141,10 @@ namespace Terraria.ModLoader.Setup.Core
 
 			var mainModule = (parameters.ServerOnly ? serverModule : clientModule)!;
 
-			var embeddedAssemblyResolver = new EmbeddedAssemblyResolver(mainModule, mainModule.DetectTargetFrameworkId());
+			var extraRefDirs = await terrariaDecompileExecutableProvider.RetrieveExtraReferences(taskProgress, cancellationToken);
+			var assemblyResolver = new TerrariaAssemblyResolver(mainModule, mainModule.DetectTargetFrameworkId(), extraRefDirs);
 
-			projectDecompiler = new ExtendedProjectDecompiler(decompilerSettings, embeddedAssemblyResolver);
+			projectDecompiler = new ExtendedProjectDecompiler(decompilerSettings, assemblyResolver);
 
 			var items = new List<WorkItem>();
 			var files = new HashSet<string>();

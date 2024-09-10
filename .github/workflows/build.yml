@@ -214,11 +214,6 @@ jobs:
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           
-          echo Installing XNA
-          curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
-          msiexec //i xnafx40_redist.msi //quiet
-          echo XNA Installed
-          
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
             tmlVersionDefine=TML_$(cut -d '.' -f1 <<< $TMLVERSION)_$(cut -d '.' -f2 <<< $TMLVERSION)
