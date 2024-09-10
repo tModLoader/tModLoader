@@ -19,7 +19,7 @@ on:
     branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, feature/dotnet8]
   pull_request_target:
     types: [labeled]
-    branches: [preview, stable, 1.4.4]
+    branches: [preview, stable, 1.4.4, cli-setup-ci-test]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
