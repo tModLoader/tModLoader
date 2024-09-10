@@ -24,5 +24,5 @@ then
     exit 1
 fi
 
-dotnet run --project setup/CLI/Setup.CLI.csproj -c Release -p:WarningLevel=0 -v q -- $@
+dotnet run --project setup/CLI/Setup.CLI.csproj -c Release -p:WarningLevel=0 -v q -- "$@"
 
