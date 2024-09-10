@@ -214,6 +214,9 @@ jobs:
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           
+          # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
+          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.
+          
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
             tmlVersionDefine=TML_$(cut -d '.' -f1 <<< $TMLVERSION)_$(cut -d '.' -f2 <<< $TMLVERSION)
