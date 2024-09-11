@@ -110,7 +110,7 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 		if (File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, "FNA.dll"))
 			|| UniversalAssemblyResolver.GetAssemblyInGac(AssemblyNameReference.Parse("Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553")) is null)
-			paths.Add(await RetrieveXNA(taskProgress, cancellationToken));
+			paths.Add(Path.Combine("setup", "xna_redist"));
 
 		return paths;
 	}
@@ -137,10 +137,5 @@ internal sealed class TerrariaDecompileExecutableProvider
 		}
 
 		return path;
-	}
-
-	private async Task<string> RetrieveXNA(ITaskProgress taskProgress, CancellationToken cancellationToken = default)
-	{
-		return Path.Combine("setup", "xna_redist");
 	}
 }
