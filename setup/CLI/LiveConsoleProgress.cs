@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Timers;
 using Spectre.Console;
@@ -12,7 +11,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 	private readonly LiveDisplayContext context;
 	private readonly Table table;
 	private readonly Timer timer;
-	private readonly ConcurrentDictionary<TaskProgress, object?> taskProgresses = [];
+	private TaskProgress? currentTaskProgress;
 
 	public LiveConsoleProgress(LiveDisplayContext context, Table table)
 	{
@@ -26,13 +25,13 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 	public ITaskProgress StartTask(string description)
 	{
 		Debug.Assert(description.Length <= 60);
+		Debug.Assert(currentTaskProgress == null);
 
 		timer.Start();
 
-		var taskProgress = new TaskProgress(description, table, progress => taskProgresses.Remove(progress, out _));
-		taskProgresses.TryAdd(taskProgress, null);
+		currentTaskProgress = new TaskProgress(description, table, () => currentTaskProgress = null);
 
-		return taskProgress;
+		return currentTaskProgress;
 	}
 
 	public void Dispose()
@@ -42,21 +41,19 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 	private void RefreshTable(object? sender, ElapsedEventArgs e)
 	{
-		foreach (TaskProgress taskProgress in taskProgresses.Keys) {
-			taskProgress.Refresh();
-		}
+		currentTaskProgress?.Refresh();
 		context.Refresh();
 	}
 
 	private sealed class TaskProgress : TaskProgressBase
 	{
 		private readonly Table table;
-		private readonly Action<TaskProgress> onCompleted;
+		private readonly Action onCompleted;
 
 		private readonly int headerRow;
 		private readonly int statusRow;
 
-		public TaskProgress(string description, Table table, Action<TaskProgress> onCompleted) : base(description)
+		public TaskProgress(string description, Table table, Action onCompleted) : base(description)
 		{
 			this.table = table;
 			this.onCompleted = onCompleted;
@@ -71,7 +68,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 		{
 			UpdateHeaderRow();
 			table.RemoveRow(statusRow);
-			onCompleted(this);
+			onCompleted();
 		}
 
 		public void Refresh()
