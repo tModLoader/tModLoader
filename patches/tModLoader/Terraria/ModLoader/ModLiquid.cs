@@ -75,6 +75,26 @@ public abstract class ModLiquid : ModBlockType
 		DefaultOpacity = 0.6f;
 	}
 
+	public virtual void OnPlayerCollide(Player player)
+	{
+
+	}
+
+	public virtual void OnNPCCollide(NPC npc)
+	{
+
+	}
+
+	public virtual void OnProjectileCollide(Projectile projectile)
+	{
+
+	}
+
+	public virtual void OnItemCollide(Item item)
+	{
+
+	}
+
 	/// <summary>
 	/// Adds an entry to the minimap for this liquid with the given color and display name. This should be called in SetStaticDefaults.
 	/// <br/> For a typical liquid that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Liquids.{ContentName}.MapEntry".

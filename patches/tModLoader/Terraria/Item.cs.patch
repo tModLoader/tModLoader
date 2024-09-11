@@ -2019,6 +2019,15 @@
  				gravity = 0f;
  				velocity.X = 0f;
  				velocity.Y = 0f;
+@@ -48086,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-
++			
+ 			if (shimmerWet && !shimmered) {
+ 				Shimmering();
+ 			}
 @@ -48124,6 +_,8 @@
  			timeSinceItemSpawned += num7;
  		}
@@ -2046,6 +2055,28 @@
  		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  			velocity.X *= 0.95f;
  			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
+@@ -48404,7 +_,7 @@
+ 
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 						}
+-						else {
++						else if (wet) {
+ 							for (int m = 0; m < 10; m++) {
+ 								int num7 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+ 								Main.dust[num7].velocity.Y -= 4f;
+@@ -48416,6 +_,12 @@
+ 
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 						}
++						else
++						{
++							for (int j = 4; j < LiquidLoader.LiquidCount; j++) {
++								LiquidLoader.OnItemCollide(j, this);
++							}
++						}
+ 					}
+ 					else {
+ 						for (int n = 0; n < 5; n++) {
 @@ -48553,7 +_,7 @@
  		Rectangle hitbox = base.Hitbox;
  		for (int j = 0; j < 200; j++) {

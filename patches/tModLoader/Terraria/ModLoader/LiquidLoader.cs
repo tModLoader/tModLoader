@@ -59,6 +59,7 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidLoader.liquidProperties, nextLiquid);
 		Array.Resize(ref Main.SceneMetrics._liquidCounts, nextLiquid);
 		Array.Resize(ref Main.PylonSystem._sceneMetrics._liquidCounts, nextLiquid);
+		Array.Resize(ref Collision.Liquid, nextLiquid + 1);
 
 		if (!unloading) {
 			loaded = true;
@@ -90,6 +91,26 @@ public static class LiquidLoader
 	public static void Merge(int type, bool[] liquidNearby, ref int liquidMergeTileType, ref int liquidMergeType)
 	{
 		GetLiquid(type)?.Merge(type, liquidNearby, ref liquidMergeTileType, ref liquidMergeType);
+	}
+
+	public static void OnPlayerCollide(int type, Player player)
+	{
+		GetLiquid(type)?.OnPlayerCollide(player);
+	}
+
+	public static void OnNPCCollide(int type, NPC npc)
+	{
+		GetLiquid(type)?.OnNPCCollide(npc);
+	}
+
+	public static void OnProjectileCollide(int type, Projectile projectile)
+	{
+		GetLiquid(type)?.OnProjectileCollide(projectile);
+	}
+
+	public static void OnItemCollide(int type, Item item)
+	{
+		GetLiquid(type)?.OnItemCollide(item);
 	}
 
 	static LiquidLoader()
