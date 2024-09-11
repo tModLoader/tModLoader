@@ -1,4 +1,5 @@
 using System.Xml.Linq;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
 namespace Terraria.ModLoader.Setup.Core;
 
@@ -106,21 +107,17 @@ public sealed class WorkspaceInfo
 		WriteToFile();
 	}
 
-	public void UpdatePaths(string terrariaSteamDirectory, string tMLDevSteamDirectory)
+	public void UpdatePaths(string terrariaSteamDirectory, string? tMLDevSteamDirectory)
 	{
-		TerrariaSteamDirectory = terrariaSteamDirectory;
-		string newTmlDevSteamDirectory = string.IsNullOrWhiteSpace(tMLDevSteamDirectory) && !string.IsNullOrWhiteSpace(terrariaSteamDirectory)
-			? Path.GetFullPath(Path.Combine(terrariaSteamDirectory, "..", "tModLoaderDev"))
-			: tMLDevSteamDirectory;
+		ArgumentException.ThrowIfNullOrWhiteSpace(terrariaSteamDirectory);
 
-		if (!string.IsNullOrWhiteSpace(newTmlDevSteamDirectory)) {
-			Directory.CreateDirectory(newTmlDevSteamDirectory);
-		}
-		else {
-			throw new InvalidOperationException("TMLDevSteamDirectory cannot be null or empty.");
-		}
+		TerrariaSteamDirectory = PathUtils.GetCrossPlatformFullPath(terrariaSteamDirectory);
+		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(
+			string.IsNullOrWhiteSpace(tMLDevSteamDirectory)
+				? Path.Combine(terrariaSteamDirectory, "..", "tModLoaderDev")
+				: tMLDevSteamDirectory);
 
-		TMLDevSteamDirectory = newTmlDevSteamDirectory;
+		Directory.CreateDirectory(TMLDevSteamDirectory);
 
 		WriteToFile();
 	}

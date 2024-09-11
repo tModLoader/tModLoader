@@ -104,6 +104,6 @@ public class TerrariaExecutableSetter
 
 	private void SetTerrariaDirectory(string terrariaSteamDirectory, string? tmlDevSteamDirectoryOverride)
 	{
-		workspaceInfo.UpdatePaths(terrariaSteamDirectory, tmlDevSteamDirectoryOverride ?? workspaceInfo.TMLDevSteamDirectory);
+		workspaceInfo.UpdatePaths(terrariaSteamDirectory, tmlDevSteamDirectoryOverride);
 	}
 }

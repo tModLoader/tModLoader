@@ -87,6 +87,9 @@ public static class Program
 				x.AddCommand<SecretOwnershipCommand>("ownership");
 				x.AddCommand<RevealKeyCommand>("reveal");
 			});
+
+			config.AddCommand<UpdateWorkspaceInfoCommand>("update-workspace-info")
+				.WithDescription("Updates the paths in WorkspaceInfo.targets");
 		});
 
 		return await app.RunAsync(args);

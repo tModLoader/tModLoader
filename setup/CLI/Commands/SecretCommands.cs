@@ -1,19 +1,27 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Terraria.ModLoader.Setup.Core;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
 namespace Terraria.ModLoader.Setup.CLI.Commands;
 
 public sealed class EncryptCommandSettings : CommandSettings
 {
+	private readonly string path;
+
 	[CommandOption("-k|--key")]
 	[Description("Key in hexadecimal")]
 	public string? Key { get; init; }
 
 	[CommandArgument(0, "<PATH>")]
-	public required string Path { get; init; }
+	public required string Path {
+		get => path;
+		[MemberNotNull(nameof(path))]
+		init => path = PathUtils.GetCrossPlatformFullPath(value);
+	}
 }
 
 public sealed class SecretEncryptCommand : CancellableAsyncCommand<EncryptCommandSettings>
@@ -41,6 +49,8 @@ public sealed class SecretEncryptCommand : CancellableAsyncCommand<EncryptComman
 
 public sealed class OwnershipCommandSettings : CommandSettings
 {
+	private readonly string path;
+
 	[CommandOption("-k|--key")]
 	[Description("Key in hexadecimal")]
 	public string? Key { get; init; }
@@ -49,7 +59,11 @@ public sealed class OwnershipCommandSettings : CommandSettings
 	public required string Identifier { get; init; }
 
 	[CommandArgument(1, "<PATH>")]
-	public required string Path { get; init; }
+	public required string Path {
+		get => path;
+		[MemberNotNull(nameof(path))]
+		init => path = PathUtils.GetCrossPlatformFullPath(value);
+	}
 }
 
 public sealed class SecretOwnershipCommand : CancellableAsyncCommand<OwnershipCommandSettings>

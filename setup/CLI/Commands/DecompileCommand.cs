@@ -1,11 +1,15 @@
 using System.ComponentModel;
 using Spectre.Console.Cli;
 using Terraria.ModLoader.Setup.Core;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
 namespace Terraria.ModLoader.Setup.CLI.Commands;
 
 public sealed class DecompileCommandSettings : BaseCommandSettings
 {
+	private readonly string? terrariaSteamDir;
+	private readonly string? tmlDevSteamDir;
+
 	[CommandOption("--server-only")]
 	[Description("Decompile only server code.")]
 	public bool ServerOnly { get; init; }
@@ -16,11 +20,17 @@ public sealed class DecompileCommandSettings : BaseCommandSettings
 
 	[CommandOption("--terraria-steam-dir")]
 	[Description("Path to the Terraria steam directory. This is usually auto-detected. The value is persisted to src/WorkspaceInfo.targets")]
-	public string? TerrariaSteamDir { get; init; }
+	public string? TerrariaSteamDir {
+		get => terrariaSteamDir;
+		init => terrariaSteamDir = value != null ? PathUtils.GetCrossPlatformFullPath(value) : null;
+	}
 
 	[CommandOption("--tml-dev-steam-dir")]
-	[Description("Path to the TML dev steam directory. On first setup this is derived from Terraria steam directory if not set. The value is persisted to src/WorkspaceInfo.targets")]
-	public string? TMLDevSteamDir { get; init; }
+	[Description("Path to the TML dev steam directory. This is derived from the Terraria steam directory if no value is supplied. The value is persisted to src/WorkspaceInfo.targets")]
+	public string? TMLDevSteamDir {
+		get => tmlDevSteamDir;
+		init => tmlDevSteamDir = value != null ? PathUtils.GetCrossPlatformFullPath(value) : null;
+	}
 
 	[CommandOption("--max-parallelism")]
 	[Description("Maximum parallel decompile tasks. Default is CPU count.")]
