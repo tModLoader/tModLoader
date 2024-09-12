@@ -26,7 +26,7 @@ public sealed record DecompileTaskParameters
 		return new DecompileTaskParameters {
 			TerrariaSteamDirectory = terrariaSteamDirectory,
 			TmlDevSteamDirectory = tmlDevSteamDirectory,
-			SrcDir = serverOnly ? "src/decompiled_server" : "src/decompiled",
+			SrcDir = serverOnly ? PathConstants.DecompiledServerFolder : PathConstants.DecompiledFolder,
 			ServerOnly = serverOnly,
 			MaxDegreeOfParallelism = maxDegreeOfParallelism,
 			DecryptionKey = decryptionKey,

@@ -13,9 +13,9 @@ public sealed record PatchTaskParameters
 	public static PatchTaskParameters ForTerraria(ProgramSettings programSettings)
 	{
 		return new PatchTaskParameters {
-			BaseDir = "src/decompiled",
-			PatchedDir = "src/Terraria",
-			PatchDir = "patches/Terraria",
+			BaseDir = PathConstants.DecompiledFolder,
+			PatchedDir = PathConstants.TerrariaSourceFolder,
+			PatchDir = PathConstants.TerrariaPatchesFolder,
 			Cutoff = new ProgramSetting<DateTime?>(x => x.TerrariaDiffCutoff, programSettings),
 		};
 	}
@@ -23,9 +23,9 @@ public sealed record PatchTaskParameters
 	public static PatchTaskParameters ForTerrariaNetCore(ProgramSettings programSettings)
 	{
 		return new PatchTaskParameters {
-			BaseDir = "src/Terraria",
-			PatchedDir = "src/TerrariaNetCore",
-			PatchDir = "patches/TerrariaNetCore",
+			BaseDir = PathConstants.TerrariaSourceFolder,
+			PatchedDir = PathConstants.TerrariaNetCoreSourceFolder,
+			PatchDir = PathConstants.TerrariaNetCorePatchesFolder,
 			Cutoff = new ProgramSetting<DateTime?>(x => x.TerrariaNetCoreDiffCutoff, programSettings),
 		};
 	}
@@ -33,9 +33,9 @@ public sealed record PatchTaskParameters
 	public static PatchTaskParameters ForTModLoader(ProgramSettings programSettings)
 	{
 		return new PatchTaskParameters {
-			BaseDir = "src/TerrariaNetCore",
-			PatchedDir = "src/tModLoader",
-			PatchDir = "patches/tModLoader",
+			BaseDir = PathConstants.TerrariaNetCoreSourceFolder,
+			PatchedDir = PathConstants.TModLoaderSourceFolder,
+			PatchDir = PathConstants.TModLoaderPatchesFolder,
 			Cutoff = new ProgramSetting<DateTime?>(x => x.TModLoaderDiffCutoff, programSettings),
 		};
 	}
