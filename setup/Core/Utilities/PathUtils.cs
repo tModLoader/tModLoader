@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 
 			string result = path;
 			if (path.StartsWith("~/") || path.StartsWith("~\\")) {
-				result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path[3..]);
+				result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path[2..]);
 			}
 
 			return Path.GetFullPath(result);
