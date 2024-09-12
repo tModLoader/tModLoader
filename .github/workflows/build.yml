@@ -230,6 +230,7 @@ jobs:
             ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress -f --strict
           else
             echo "src/decompiled found. Skipping decompilation..."
+            ./setup-cli.bat update-workspace-info ./$TERRARIA_VERSION/Windows steam_build --no-validate
           fi
 
           ./setup-cli.bat regen-source --plain-progress -f --strict
