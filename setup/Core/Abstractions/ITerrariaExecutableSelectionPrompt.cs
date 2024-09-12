@@ -6,10 +6,9 @@ namespace Terraria.ModLoader.Setup.Core.Abstractions;
 public interface ITerrariaExecutableSelectionPrompt
 {
 	/// <summary>
-	///		Prompts for a Terraria.exe file and returns the path to the file that was selected by the user or
-	///		<see langword="null"/> if no valid selection was made.
+	///		Prompts for a Terraria.exe file and returns the path to the file that was selected by the user.
 	/// </summary>
 	/// <param name="cancellationToken">A cancellation token.</param>
-	/// <returns>Path to the file that was selected by the user or <see langword="null"/> if no valid selection was made.</returns>
+	/// <returns>Path to the file that was selected by the user</returns>
 	Task<string> Prompt(CancellationToken cancellationToken = default);
 }
