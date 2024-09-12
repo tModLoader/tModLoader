@@ -4,13 +4,13 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 	{
 		public static string GetCrossPlatformFullPath(string path)
 		{
-			if (path == "~") {
+			if (path is "~" or "~/" or "~\\") {
 				return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			}
 
 			string result = path;
-			if (path.StartsWith('~')) {
-				result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path[2..]);
+			if (path.StartsWith("~/") || path.StartsWith("~\\")) {
+				result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path[3..]);
 			}
 
 			return Path.GetFullPath(result);
