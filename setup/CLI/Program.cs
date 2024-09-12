@@ -43,7 +43,7 @@ public static class Program
 				.WithDescription("Complete environment setup. Equivalent to Decompile + Regen Source");
 
 			config.AddCommand<DecompileCommand>("decompile")
-				.WithDescription("Decompiles Terraria. Outputs to src/decompiled. Currently Windows only.");
+				.WithDescription("Decompiles Terraria. Outputs to src/decompiled.");
 
 			config.AddBranch("diff", x => {
 				x.SetDescription("Diffs the source to recalculate patches.");
