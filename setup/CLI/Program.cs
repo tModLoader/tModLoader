@@ -17,8 +17,10 @@ public static class Program
 		CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
 		string userSettingsFilePath = Path.Combine("setup", "user.settings");
+		WorkspaceInfo workspaceInfo = WorkspaceInfo.Initialize();
 		if (!File.Exists(userSettingsFilePath)) {
-			ProgramSettings.InitializeSettingsFile(userSettingsFilePath);
+			ProgramSettings programSettings = ProgramSettings.InitializeSettingsFile(userSettingsFilePath);
+			SettingsMigrator.MigrateSettings(programSettings, workspaceInfo);
 		}
 
 		IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -27,7 +29,7 @@ public static class Program
 
 		IServiceCollection services = new ServiceCollection();
 		services
-			.AddCoreServices(configuration, userSettingsFilePath, WorkspaceInfo.Initialize())
+			.AddCoreServices(configuration, userSettingsFilePath, workspaceInfo)
 			.AddSingleton<ITerrariaExecutableSelectionPrompt, TerrariaExecutableSelectionPrompt>()
 			.AddSingleton<IUserPrompt, UserPrompt>()
 			.AddSingleton<TaskRunner>();
