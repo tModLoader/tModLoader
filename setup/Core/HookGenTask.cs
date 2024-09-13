@@ -15,7 +15,6 @@ namespace Terraria.ModLoader.Setup.Core
 		private const string TmlAssemblyPath = $"src/tModLoader/Terraria/bin/Release/{DotnetTargetVersion}/tModLoader.dll";
 
 		private readonly IUserPrompt userPrompt;
-		private bool success;
 
 		public HookGenTask(IServiceProvider serviceProvider)
 		{
@@ -47,17 +46,11 @@ namespace Terraria.ModLoader.Setup.Core
 
 			File.Delete(Path.ChangeExtension(outputPath, "pdb"));
 
-			success = true;
-
 			return Task.CompletedTask;
 		}
 
 		public override void FinishedPrompt()
 		{
-			if (!success) {
-				return;
-			}
-
 			userPrompt.Inform("Success", "Success. Make sure you diff tModLoader after this");
 		}
 
