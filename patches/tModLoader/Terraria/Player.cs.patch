@@ -4468,7 +4468,7 @@
 +							else {
 +								for (int j = 4; j < liquidWet.Length; j++) {
 +									if(liquidWet[j])
-+										LiquidLoader.OnPlayerEnterCollide(j, this);
++										LiquidLoader.OnEntityCollision(j, this, CollisionType.Enter);
 +								}
 +							}
  						}

@@ -19,4 +19,8 @@ partial class Entity
 	protected bool[] liquidWet = new bool[LiquidLoader.LiquidCount];
 
 	public bool waterWet => wet && liquidWet.Count(i => true) == 1;
+
+	public bool IsInLiquid<T>() where T : ModLiquid => IsInLiquid(ModContent.LiquidType<T>());
+
+	public bool IsInLiquid(int type) => liquidWet[type];
 }

@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Items;
+﻿using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -36,98 +37,65 @@ namespace ExampleMod.Content.Liquids
 		}
 
 		/// <summary>
-		/// An example of what you can do when a player enter your custom liquids, in this case it give the cursed debuff to the player
+		/// Various examples of what you can do with entity that collide with your liquid
 		/// </summary>
-		/// <param name="npc"></param>
-		public override void OnPlayerEnterCollide(Player player) {
-			player.AddBuff(BuffID.Cursed, 1800);
+		/// <param name="entity">Player/Item/Projectile/NPC</param>
+		/// <param name="collisionType">Enter/Stay/Exit</param>
+		public override void OnEntityCollision(Entity entity, CollisionType collisionType) {
+
 			for (int i = 0; i < 10; i++) {
-				int num7 = Dust.NewDust(new Vector2(player.position.X - 6f, player.position.Y + (float)(player.height / 2) - 8f), player.width + 12, 24, DustID.Smoke);
+				int num7 = Dust.NewDust(new Vector2(entity.position.X - 6f, entity.position.Y + (float)(entity.height / 2) - 8f), entity.width + 12, 24, ModContent.DustType<ExampleAdvancedDust>());
 				Main.dust[num7].velocity.Y -= 4f;
 				Main.dust[num7].velocity.X *= 2.5f;
 				Main.dust[num7].scale *= 0.8f;
 				Main.dust[num7].alpha = 100;
 				Main.dust[num7].noGravity = true;
 			}
-			SoundEngine.PlaySound(SoundID.ForceRoar, player.position);
-		}
 
-		/// <summary>
-		/// An example of what you can do when a NPC enter your custom liquids, in this case it can transform a slime into a king slime or just spit out some particle
-		/// </summary>
-		/// <param name="npc"></param>
-		public override void OnNPCEnterCollide(NPC npc) {
-			if (npc.type is NPCID.BlueSlime) {
-				for (int i = 0; i < 10; i++) {
-					int num7 = Dust.NewDust(new Vector2(npc.position.X - 6f, npc.position.Y + (float)(npc.height / 2) - 8f), npc.width + 12, 24, DustID.Smoke);
-					Main.dust[num7].velocity.Y -= 4f;
-					Main.dust[num7].velocity.X *= 2.5f;
-					Main.dust[num7].scale *= 0.8f;
-					Main.dust[num7].alpha = 100;
-					Main.dust[num7].noGravity = true;
-					npc.SetDefaults(NPCID.KingSlime);
+			// We do a switch to do pattern matching for each type of entity we need to do something with
+			switch (entity) {
+				case Player player: {
+						// We make it so player get the cursed debuff when it enter, stay or exit the liquid
+						player.AddBuff(BuffID.Cursed, 1800);
+						break;
+					}
+				case Item item: {
+						// We check if the item is gel and the item is entering the liquid
+						if (item.type == ItemID.Gel && collisionType == CollisionType.Enter) {
+							// Then delete the item
+							item.TurnToAir(true);
+							// Then Spawn a king slime where the gel was
+							NPC.NewNPC(new AEntitySource_Tile((int)(item.position.X / 16), (int)(item.position.Y / 16), ""),
+								(int)item.position.X, (int)item.position.Y, NPCID.KingSlime);
+							// Then play the roar sound to accompany the new kind slime spawn
+							SoundEngine.PlaySound(SoundID.Roar);
+						}
+						// And then return to exit out the function
+						return;
 				}
-				SoundEngine.PlaySound(SoundID.Roar, npc.position);
-				return;
+				case NPC npc: {
+						// We check if the npc is a slime and is entering the liquid
+						if (collisionType == CollisionType.Enter && npc.type is NPCID.BlueSlime)
+							// Then spawn a bunch of smoke dust for visual effect 
+							for (int i = 0; i < 10; i++) {
+								int num7 = Dust.NewDust(new Vector2(npc.position.X - 6f, npc.position.Y + (float)(npc.height / 2) - 8f), npc.width + 12, 24, DustID.Smoke);
+								Main.dust[num7].velocity.Y -= 4f;
+								Main.dust[num7].velocity.X *= 2.5f;
+								Main.dust[num7].scale *= 0.8f;
+								Main.dust[num7].alpha = 100;
+								Main.dust[num7].noGravity = true;
+
+							}
+						// Then play the roar sound to accompany the new kind slime spawn
+						SoundEngine.PlaySound(SoundID.Roar, npc.position);
+						// And then return to exit out the functionm
+						return;
+						
+					}
 			}
-			SoundEngine.PlaySound(SoundID.Splash, npc.position);
-		}
 
-		/// <summary>
-		/// An example of what you can do when an items enter your custom liquids, in this case it can transform a dirt block into an Example item or just spit out some particle
-		/// </summary>
-		/// <param name="item"></param>
-		public override void OnItemEnterCollide(Item item) {
-			switch (item.type)
-			{
-				case ItemID.DirtBlock:
-				{
-					for (int i = 0; i < 10; i++) {
-						int num7 = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (float)(item.height / 2) - 8f), item.width + 12, 24, DustID.FireworkFountain_Red);
-						Main.dust[num7].velocity.Y -= 4f;
-						Main.dust[num7].velocity.X *= 2.5f;
-						Main.dust[num7].scale *= 0.8f;
-						Main.dust[num7].alpha = 100;
-						Main.dust[num7].noGravity = true;
-					}
-				
-
-					SoundEngine.PlaySound(SoundID.DD2_GoblinBomb, item.position);
-
-					item.SetDefaults(ModContent.ItemType<ExampleItem>());
-					break;
-				}
-				case ItemID.Gel:
-					for (int i = 0; i < 20; i++) {
-						int num7 = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (float)(item.height / 2) - 8f), item.width + 12, 24, DustID.Bee);
-						Main.dust[num7].velocity.Y -= 4f;
-						Main.dust[num7].velocity.X *= 2.5f;
-						Main.dust[num7].scale *= 0.8f;
-						Main.dust[num7].alpha = 100;
-						Main.dust[num7].noGravity = true;
-					}
-					item.TurnToAir();
-					NPC.NewNPC(new AEntitySource_Tile((int)(item.position.X / 16), (int)(item.position.Y / 16), ""),
-						(int)item.position.X, (int)item.position.Y, NPCID.KingSlime);
-					SoundEngine.PlaySound(SoundID.Splash, item.position);
-					break;
-				default:
-				{
-					for (int i = 0; i < 20; i++) {
-						int num7 = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (float)(item.height / 2) - 8f), item.width + 12, 24, DustID.Bee);
-						Main.dust[num7].velocity.Y -= 4f;
-						Main.dust[num7].velocity.X *= 2.5f;
-						Main.dust[num7].scale *= 0.8f;
-						Main.dust[num7].alpha = 100;
-						Main.dust[num7].noGravity = true;
-					}
-					item.TurnToAir();
-					NPC.NewNPC(new AEntitySource_Tile((int)(item.position.X / 16), (int)(item.position.Y / 16), ""),
-						(int)item.position.X, (int)item.position.Y, NPCID.KingSlime);
-					SoundEngine.PlaySound(SoundID.Splash, item.position);
-					break;
-				}
-			}
+			// Finally, we play the classic splash sound
+			SoundEngine.PlaySound(SoundID.Splash, entity.position);
 		}
 
 		public override void Merge(int otherLiquid, bool[] liquidNearby, ref int liquidMergeTileType, ref int liquidMergeType) {

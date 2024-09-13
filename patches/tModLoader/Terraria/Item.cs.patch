@@ -2089,7 +2089,7 @@
 +						else {
 +							for (int j = 4; j < LiquidLoader.LiquidCount; j++) {
 +								if (liquidWet[j])
-+									LiquidLoader.OnItemEnterCollide(j, this);
++									LiquidLoader.OnEntityCollision(j, this, CollisionType.Enter);
 +							}
 +						}
  					}

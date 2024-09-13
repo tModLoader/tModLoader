@@ -2957,7 +2957,7 @@
 +					{
 +						for (int j = 4; j < LiquidLoader.LiquidCount; j++) {
 +							if (liquidWet[j])
-+								LiquidLoader.OnNPCEnterCollide(j, this);
++								LiquidLoader.OnEntityCollision(j, this, CollisionType.Enter);
 +						}
 +					}
  				}

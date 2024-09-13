@@ -75,22 +75,7 @@ public abstract class ModLiquid : ModBlockType
 		DefaultOpacity = 0.6f;
 	}
 
-	public virtual void OnPlayerEnterCollide(Player player)
-	{
-
-	}
-
-	public virtual void OnNPCEnterCollide(NPC npc)
-	{
-
-	}
-
-	public virtual void OnProjectileEnterCollide(Projectile projectile)
-	{
-
-	}
-
-	public virtual void OnItemEnterCollide(Item item)
+	public virtual void OnEntityCollision(Entity entity, CollisionType collisionType)
 	{
 
 	}

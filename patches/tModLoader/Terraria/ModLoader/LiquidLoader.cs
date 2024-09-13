@@ -10,6 +10,13 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
+public enum CollisionType
+{
+	Enter,
+	Stay,
+	Exit
+}
+
 public static class LiquidLoader
 {
 	internal struct LiquidProperties
@@ -94,24 +101,9 @@ public static class LiquidLoader
 		GetLiquid(type)?.Merge(type, liquidNearby, ref liquidMergeTileType, ref liquidMergeType);
 	}
 
-	public static void OnPlayerEnterCollide(int type, Player player)
+	public static void OnEntityCollision(int type, Entity entity, CollisionType collisionType)
 	{
-		GetLiquid(type)?.OnPlayerEnterCollide(player);
-	}
-
-	public static void OnNPCEnterCollide(int type, NPC npc)
-	{
-		GetLiquid(type)?.OnNPCEnterCollide(npc);
-	}
-
-	public static void OnProjectileEnterCollide(int type, Projectile projectile)
-	{
-		GetLiquid(type)?.OnProjectileEnterCollide(projectile);
-	}
-
-	public static void OnItemEnterCollide(int type, Item item)
-	{
-		GetLiquid(type)?.OnItemEnterCollide(item);
+		GetLiquid(type)?.OnEntityCollision(entity, collisionType);
 	}
 
 	static LiquidLoader()
