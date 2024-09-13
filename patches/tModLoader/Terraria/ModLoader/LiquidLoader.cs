@@ -17,6 +17,7 @@ public static class LiquidLoader
 		public int FallDelay;
 		public bool NoStandardUpdate;
 		public bool HellEvaporation;
+		public float speedModifier;
 	}
 
 	private static int nextLiquid = LiquidID.Count;
@@ -93,24 +94,24 @@ public static class LiquidLoader
 		GetLiquid(type)?.Merge(type, liquidNearby, ref liquidMergeTileType, ref liquidMergeType);
 	}
 
-	public static void OnPlayerCollide(int type, Player player)
+	public static void OnPlayerEnterCollide(int type, Player player)
 	{
-		GetLiquid(type)?.OnPlayerCollide(player);
+		GetLiquid(type)?.OnPlayerEnterCollide(player);
 	}
 
-	public static void OnNPCCollide(int type, NPC npc)
+	public static void OnNPCEnterCollide(int type, NPC npc)
 	{
-		GetLiquid(type)?.OnNPCCollide(npc);
+		GetLiquid(type)?.OnNPCEnterCollide(npc);
 	}
 
-	public static void OnProjectileCollide(int type, Projectile projectile)
+	public static void OnProjectileEnterCollide(int type, Projectile projectile)
 	{
-		GetLiquid(type)?.OnProjectileCollide(projectile);
+		GetLiquid(type)?.OnProjectileEnterCollide(projectile);
 	}
 
-	public static void OnItemCollide(int type, Item item)
+	public static void OnItemEnterCollide(int type, Item item)
 	{
-		GetLiquid(type)?.OnItemCollide(item);
+		GetLiquid(type)?.OnItemEnterCollide(item);
 	}
 
 	static LiquidLoader()

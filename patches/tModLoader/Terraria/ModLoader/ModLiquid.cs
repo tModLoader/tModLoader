@@ -75,22 +75,22 @@ public abstract class ModLiquid : ModBlockType
 		DefaultOpacity = 0.6f;
 	}
 
-	public virtual void OnPlayerCollide(Player player)
+	public virtual void OnPlayerEnterCollide(Player player)
 	{
 
 	}
 
-	public virtual void OnNPCCollide(NPC npc)
+	public virtual void OnNPCEnterCollide(NPC npc)
 	{
 
 	}
 
-	public virtual void OnProjectileCollide(Projectile projectile)
+	public virtual void OnProjectileEnterCollide(Projectile projectile)
 	{
 
 	}
 
-	public virtual void OnItemCollide(Item item)
+	public virtual void OnItemEnterCollide(Item item)
 	{
 
 	}

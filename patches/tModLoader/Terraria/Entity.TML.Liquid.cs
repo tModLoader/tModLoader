@@ -16,5 +16,7 @@ partial class Entity
 	/// 2 = honeyWet
 	/// 3 = shimmerWet
 	/// </summary>
-	private bool[] liquidWet = new bool[LiquidLoader.LiquidCount];
+	protected bool[] liquidWet = new bool[LiquidLoader.LiquidCount];
+
+	public bool waterWet => wet && liquidWet.Count(i => true) == 1;
 }

@@ -4440,6 +4440,40 @@
  
  						bool crit = false;
  						if ((float)Main.rand.Next(1, 101) <= num80)
+@@ -21393,6 +_,11 @@
+ 		bool num85 = Collision.WetCollision(position, width, height);
+ 		bool flag26 = Collision.honey;
+ 		bool shimmer = Collision.shimmer;
++		
++		for (int j = 4; j < liquidWet.Length; j++) {
++			liquidWet[j] = Collision.Liquid[j];
++		}
++
+ 		if (shimmer) {
+ 			shimmerWet = true;
+ 			if (whoAmI == Main.myPlayer && !shimmerImmune && !shimmerUnstuckHelper.ShouldUnstuck) {
+@@ -21459,7 +_,7 @@
+ 
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+-							else {
++							else if (waterWet) {
+ 								for (int num94 = 0; num94 < 50; num94++) {
+ 									int num95 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+ 									Main.dust[num95].velocity.Y -= 3f;
+@@ -21471,6 +_,12 @@
+ 
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
+ 							}
++							else {
++								for (int j = 4; j < liquidWet.Length; j++) {
++									if(liquidWet[j])
++										LiquidLoader.OnPlayerEnterCollide(j, this);
++								}
++							}
+ 						}
+ 						else {
+ 							for (int num96 = 0; num96 < 20; num96++) {
 @@ -21722,6 +_,8 @@
  		if (vortexDebuff)
  			velocity.Y = velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
