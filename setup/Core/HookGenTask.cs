@@ -24,7 +24,6 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public override Task Run(IProgress progress, CancellationToken cancellationToken = default)
 		{
-			using var taskProgress = progress.StartTask("Generating Hooks...");
 			if (!File.Exists(TmlAssemblyPath)) {
 				throw new FileNotFoundException($"\"{TmlAssemblyPath}\" does not exist.");
 			}
@@ -43,9 +42,8 @@ namespace Terraria.ModLoader.Setup.Core
 			if (File.Exists(outputPath))
 				File.Delete(outputPath);
 
-			taskProgress.ReportStatus("Hooking: tModLoader.dll -> TerrariaHooks.dll");
-
-			HookGen(TmlAssemblyPath, outputPath);
+			using var taskProgress = progress.StartTask("Hooking: tModLoader.dll -> TerrariaHooks.dll");
+			HookGen(taskProgress, TmlAssemblyPath, outputPath, dotnetRefsLocation, cancellationToken);
 
 			File.Delete(Path.ChangeExtension(outputPath, "pdb"));
 
@@ -63,14 +61,16 @@ namespace Terraria.ModLoader.Setup.Core
 			userPrompt.Inform("Success", "Success. Make sure you diff tModLoader after this");
 		}
 
-		private void HookGen(string inputPath, string outputPath)
+		private void HookGen(ITaskProgress taskProgress, string inputPath, string outputPath, string dotnetReferencesDirectory, CancellationToken cancellationToken = default)
 		{
-			using var mm = new MonoModder {
+			using var workItemProgress = taskProgress.StartWorkItem("Loading");
+			using var mm = new ProgressReportingMonoModder(workItemProgress) {
 				InputPath = inputPath,
 				OutputPath = outputPath,
 				ReadingMode = ReadingMode.Deferred,
 				DependencyDirs = { dotnetReferencesDirectory },
 				MissingDependencyThrow = false,
+				LogVerboseEnabled = true,
 			};
 
 			mm.DependencyDirs.AddRange(Directory.GetDirectories(BinLibsPath, "*", SearchOption.AllDirectories));
@@ -82,6 +82,8 @@ namespace Terraria.ModLoader.Setup.Core
 			};
 
 			foreach (var type in mm.Module.Types) {
+				cancellationToken.ThrowIfCancellationRequested();
+
 				if (!type.FullName.StartsWith("Terraria") || type.FullName.StartsWith("Terraria.ModLoader"))
 					continue;
 
@@ -110,6 +112,21 @@ namespace Terraria.ModLoader.Setup.Core
 
 			type.Name = type.Namespace[..2] + '_' + type.Name;
 			type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];
+		}
+
+		private class ProgressReportingMonoModder : MonoModder
+		{
+			private IWorkItemProgress progress;
+
+			public ProgressReportingMonoModder(IWorkItemProgress progress)
+			{
+				this.progress = progress;
+			}
+
+			public override void Log(string text)
+			{
+				progress.ReportStatus(text);
+			}
 		}
 	}
 }
