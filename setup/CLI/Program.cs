@@ -52,7 +52,7 @@ public static class Program
 
 				x.AddCommand<DiffTerrariaCommand>("terraria")
 					.WithDescription("Diffs src/Terraria against src/decompiled");
-				x.AddCommand<DiffTerrariaNetCoreCommand>("terraria-net-core")
+				x.AddCommand<DiffTerrariaNetCoreCommand>("netcore")
 					.WithDescription("Diffs src/TerrariaNetCore against src/Terraria");
 				x.AddCommand<DiffTModLoaderCommand>("tml")
 					.WithDescription("Diffs src/tModLoader against src/TerrariaNetCore. Use this after making changes and then commit the patches to git.");
@@ -63,7 +63,7 @@ public static class Program
 
 				x.AddCommand<PatchTerrariaCommand>("terraria")
 					.WithDescription("Patches source in src/Terraria");
-				x.AddCommand<PatchTerrariaNetCoreCommand>("terraria-net-core")
+				x.AddCommand<PatchTerrariaNetCoreCommand>("netcore")
 					.WithDescription("Patches source in src/TerrariaNetCore");
 				x.AddCommand<PatchTModLoaderCommand>("tml")
 					.WithDescription("Patches source in src/tModLoader. Edit the source code in src/tModLoader after this phase.");
