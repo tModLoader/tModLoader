@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Mono.Cecil;
 using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
@@ -8,13 +8,11 @@ namespace Terraria.ModLoader.Setup.Core
 {
 	public class HookGenTask : SetupOperation
 	{
-		private const string DotnetSdkVersion = "8.0.1";
 		private const string DotnetTargetVersion = "net8.0";
 		private const string LibsPath = "src/tModLoader/Terraria/Libraries";
 		private const string BinLibsPath = $"src/tModLoader/Terraria/bin/Release/{DotnetTargetVersion}/Libraries";
 
 		private const string TmlAssemblyPath = $"src/tModLoader/Terraria/bin/Release/{DotnetTargetVersion}/tModLoader.dll";
-		private const string InstalledNetRefs = $"/dotnet/packs/Microsoft.NETCore.App.Ref/{DotnetSdkVersion}/ref/{DotnetTargetVersion}";
 
 		private readonly IUserPrompt userPrompt;
 		private bool success;
@@ -29,6 +27,15 @@ namespace Terraria.ModLoader.Setup.Core
 			using var taskProgress = progress.StartTask("Generating Hooks...");
 			if (!File.Exists(TmlAssemblyPath)) {
 				throw new FileNotFoundException($"\"{TmlAssemblyPath}\" does not exist.");
+			}
+
+			// Hopefully this always works since we should be running on a system install of a .NET Core sdk
+			var dotnetPath = Path.GetFullPath(Path.GetDirectoryName(typeof(object).Assembly.Location) + "/../../..");
+			var dotnetRefsLocation = Path.Combine(dotnetPath, $"packs/Microsoft.NETCore.App.Ref/{Environment.Version}/ref/{DotnetTargetVersion}");
+
+			// Ensure that refs are present, for gods sake!
+			if (!Directory.Exists(dotnetRefsLocation) || !Directory.GetFiles(dotnetRefsLocation, "*.dll").Any()) {
+				throw new DirectoryNotFoundException($@"Unable to find reference libraries for .NET SDK '{Environment.Version}' - ""{dotnetRefsLocation}"" does not exist.");
 			}
 
 			string outputPath = Path.Combine(LibsPath, "Common", "TerrariaHooks.dll");
@@ -58,15 +65,6 @@ namespace Terraria.ModLoader.Setup.Core
 
 		private void HookGen(string inputPath, string outputPath)
 		{
-			string dotnetReferencesDirectory =
-				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + InstalledNetRefs;
-
-			// Ensure that refs are present, for gods sake!
-			if (!Directory.Exists(dotnetReferencesDirectory) ||
-			    Directory.GetFiles(dotnetReferencesDirectory, "*.dll").Length == 0) {
-				throw new DirectoryNotFoundException($@"Unable to find reference libraries for .NET SDK '{DotnetSdkVersion}' - ""{dotnetReferencesDirectory}"" does not exist.");
-			}
-
 			using var mm = new MonoModder {
 				InputPath = inputPath,
 				OutputPath = outputPath,
