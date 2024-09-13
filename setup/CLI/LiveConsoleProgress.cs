@@ -77,7 +77,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 			UpdateStatusRow();
 		}
 
-		protected override string TransformStatus(string status) => $"  {status.ReplaceLineEndings("\r\n  ").Replace("[", "[[").Replace("]", "]]")}";
+		protected override string TransformStatus(string status) => $"  {status.ReplaceLineEndings("\r\n  ")}";
 
 		private void UpdateHeaderRow()
 		{
@@ -93,7 +93,7 @@ public sealed class LiveConsoleProgress : IProgress, IDisposable
 
 		private void UpdateStatusRow()
 		{
-			table.UpdateCell(statusRow, 0, State.Status);
+			table.UpdateCell(statusRow, 0, Markup.Escape(State.Status));
 		}
 	}
 }
