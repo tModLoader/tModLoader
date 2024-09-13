@@ -1,9 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
 
-namespace Terraria.ModLoader.Setup.Formatting
+namespace Terraria.ModLoader.Setup.Core.Formatting
 {
 	public class FileScopedNamespaceRewriter : CSharpSyntaxRewriter
 	{

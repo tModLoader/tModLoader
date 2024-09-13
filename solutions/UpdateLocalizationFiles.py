@@ -56,5 +56,3 @@ with open('./TranslationsNeeded.txt', 'w', encoding='utf-8') as output:
     else:
         for entry in missings: 
             output.write(str(entry[0]) + " " + str(entry[1]) + "\n")
-print("Make sure to run Diff.")
-input("Press Enter to continue...")
