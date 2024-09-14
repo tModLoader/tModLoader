@@ -1,16 +1,14 @@
-﻿using System;
-using System.Linq;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Terraria.ModLoader.Setup.Formatting
+namespace Terraria.ModLoader.Setup.Core.Formatting
 {
 	class RemoveBracesFromSingleStatementRewriter : CSharpSyntaxRewriter
 	{
-		private SyntaxAnnotation processedAnnotation = new SyntaxAnnotation();
+		private readonly SyntaxAnnotation processedAnnotation = new();
 
-		public override SyntaxNode VisitIfStatement(IfStatementSyntax node) {
+		public override SyntaxNode? VisitIfStatement(IfStatementSyntax node) {
 			if (node.HasAnnotation(processedAnnotation))
 				return base.VisitIfStatement(node);
 
@@ -91,7 +89,7 @@ namespace Terraria.ModLoader.Setup.Formatting
 
 		private StatementSyntax RemoveBraces(BlockSyntax block) => EnsureEndsLine(block.Statements[0]);
 
-		public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax method) {
+		public override SyntaxNode? VisitMethodDeclaration(MethodDeclarationSyntax method) {
 			if (method.Body != null &&
 				StatementIsSingleLine(method.Body) &&
 				method.Body.DescendantTrivia().All(SyntaxUtils.IsWhitespace) &&

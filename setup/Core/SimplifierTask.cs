@@ -1,22 +1,27 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Simplification;
-using System.Threading.Tasks;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core
 {
-	public class SimplifierTask : RoslynTask
+	public sealed class SimplifierTask(RoslynTaskParameters parameters) : RoslynTask(parameters)
 	{
 		protected override string Status => "Simplifying";
 		protected override int MaxDegreeOfParallelism => 2;
 
-		public SimplifierTask(ITaskInterface taskInterface) : base(taskInterface) { }
+		protected override ITaskProgress GetTaskProgress(IProgress progress)
+		{
+			return progress.StartTask($"Simplifying {Path.GetFileName(Parameters.ProjectPath)}...");
+		}
 
-		protected override async Task<Document> Process(Document doc) {
-			if (!(await doc.GetSyntaxRootAsync() is SyntaxNode root))
+		protected override async Task<Document> Process(Document doc, CancellationToken cancellationToken = default)
+		{
+			if (await doc.GetSyntaxRootAsync(cancellationToken) is not { } root) {
 				return doc;
+			}
 
 			root = root.WithAdditionalAnnotations(Simplifier.Annotation);
-			return await Simplifier.ReduceAsync(doc.WithSyntaxRoot(root), cancellationToken: taskInterface.CancellationToken);
+			return await Simplifier.ReduceAsync(doc.WithSyntaxRoot(root), cancellationToken: cancellationToken);
 		}
 	}
 }

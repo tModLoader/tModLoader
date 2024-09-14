@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Setup.CLI": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)/../.."
+    }
+  }
+}

@@ -1515,6 +1515,11 @@ public static class ItemLoader
 			source.favorited = false;
 		}
 
+		if (destination.shopCustomPrice != source.shopCustomPrice) {
+			// If attempting to stack items with custom prices, null them out to prevent exploits. Fixes #4370 while preserving normal resell behavior.
+			destination.shopCustomPrice = null;
+		}
+
 		destination.stack += numTransferred;
 		if (!infiniteSource)
 			source.stack -= numTransferred;

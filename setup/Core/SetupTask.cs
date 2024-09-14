@@ -1,16 +1,32 @@
-﻿using System.Windows.Forms;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core
 {
-	public class SetupTask : CompositeTask
+	public sealed class SetupTask : CompositeTask
 	{
-		public SetupTask(ITaskInterface taskInterface, params SetupOperation[] tasks) : base(taskInterface, tasks) {}
+		private readonly IUserPrompt userPrompt;
+		private readonly ProgramSettings programSettings;
 
-		public override bool StartupWarning() {
-			return MessageBox.Show(
-				       "Any changes in /src will be lost.\r\n",
-				       "Ready for Setup", MessageBoxButtons.OKCancel, MessageBoxIcon.Information)
-			       == DialogResult.OK;
+		public SetupTask(
+			DecompileTaskParameters decompileTaskParameters,
+			IServiceProvider serviceProvider)
+			: base(new DecompileTask(decompileTaskParameters, serviceProvider), new RegenSourceTask(serviceProvider))
+		{
+			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
+			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+		}
+
+		public override bool StartupWarning()
+		{
+			if (programSettings.NoPrompts) {
+				return true;
+			}
+
+			return userPrompt.Prompt(
+				"Ready for Setup",
+				"Any changes in /src will be lost.",
+				PromptOptions.OKCancel);
 		}
 	}
 }
