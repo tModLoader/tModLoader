@@ -10,7 +10,7 @@ using ExampleMod.Content.Liquids;
 
 namespace ExampleMod.Content.Items
 {
-	internal class ExampleBucket : ModItem
+	internal class ExampleBucket2 : ModItem
 	{
 
 		public override void SetDefaults() {
@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items
 		public override bool? UseItem(Player player) {
 			Tile liquid = Main.tile[Player.tileTargetX, Player.tileTargetY];
 
-			int liquidType = ModContent.GetInstance<ExampleLiquid>().Type;
+			int liquidType = ModContent.GetInstance<ExampleLiquid2>().Type;
 
 			if (liquid.LiquidAmount == 0 || liquid.LiquidType == liquidType) {
 

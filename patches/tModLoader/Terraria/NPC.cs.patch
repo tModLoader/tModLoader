@@ -2893,6 +2893,17 @@
  		if (dryadWard) {
  			num2 = (int)num5 / 3;
  			num3 = 6;
+@@ -74164,6 +_,10 @@
+ 		Collision_WalkDownSlopes();
+ 		bool lava = Collision_LavaCollision();
+ 		lava = Collision_WaterCollision(lava);
++		for (int j = 4; j < LiquidLoader.LiquidCount; j++) {
++			if (!Collision.Liquid[j])
++				liquidWet[j] = false;
++		}
+ 		if (!wet) {
+ 			lavaWet = false;
+ 			honeyWet = false;
 @@ -74491,6 +_,9 @@
  
  	private bool Collision_DecideFallThroughPlatforms()
@@ -2903,6 +2914,65 @@
  		bool result = false;
  		if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
  			result = true;
+@@ -74602,6 +_,13 @@
+ 		}
+ 		else {
+ 			flag = Collision.WetCollision(position, width, height);
++
++			if (!flag) {
++				for (int j = 4; j < liquidWet.Length; j++) {
++					if (!Collision.Liquid[j] && liquidWet[j])
++						LiquidLoader.OnEntityCollision(j, this, CollisionType.Exit);
++				}
++			}
+ 			if (Collision.honey)
+ 				honeyWet = true;
+ 
+@@ -74609,6 +_,9 @@
+ 				shimmerWet = true;
+ 				AddBuff(353, 100);
+ 			}
++			for (int j = 4; j < liquidWet.Length; j++) {
++				liquidWet[j] = Collision.Liquid[j];
++			}
+ 		}
+ 
+ 		if (aiStyle == 116)
+@@ -74666,19 +_,33 @@
+ 						if (aiStyle != 1 && type != 1 && type != 16 && type != 147 && type != 59 && type != 300 && aiStyle != 39 && !noGravity)
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 					}
++					/*
+ 					else if (type != 617 && type != 616 && type != 625) {
++					*/
++					else if(waterWet) {
++						if (type != 617 && type != 616 && type != 625) {
+ 						for (int l = 0; l < 30; l++) {
+-							int num3 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
++							int num3 = Dust.NewDust(
++								new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24,
++								Dust.dustWater());
+ 							Main.dust[num3].velocity.Y -= 4f;
+ 							Main.dust[num3].velocity.X *= 2.5f;
+ 							Main.dust[num3].scale *= 0.8f;
+ 							Main.dust[num3].alpha = 100;
+ 							Main.dust[num3].noGravity = true;
+ 						}
++						}
+ 
+ 						if ((type != 376 && type != 579 && aiStyle != 1 && type != 1 && type != 16 && type != 147 && type != 59 && type != 300 && aiStyle != 39 && aiStyle != 68 && type != 362 && type != 364 && type != 361 && type != 445 && !noGravity) || type == 615)
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
+ 					}
++					else
++					{
++						for (int j = 4; j < LiquidLoader.LiquidCount; j++) {
++							if (liquidWet[j])
++								LiquidLoader.OnEntityCollision(j, this, CollisionType.Enter);
++						}
++					}
+ 				}
+ 				else {
+ 					for (int m = 0; m < 10; m++) {
 @@ -74862,6 +_,9 @@
  		if (IsABestiaryIconDummy)
  			newColor = Color.White;

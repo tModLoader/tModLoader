@@ -10,6 +10,13 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
+public enum CollisionType
+{
+	Enter,
+	Stay,
+	Exit
+}
+
 public static class LiquidLoader
 {
 	internal struct LiquidProperties
@@ -17,6 +24,7 @@ public static class LiquidLoader
 		public int FallDelay;
 		public bool NoStandardUpdate;
 		public bool HellEvaporation;
+		public float speedModifier;
 	}
 
 	private static int nextLiquid = LiquidID.Count;
@@ -46,6 +54,7 @@ public static class LiquidLoader
 	{
 		//Texture
 		Array.Resize(ref TextureAssets.Liquid, 15 + nextLiquid - LiquidID.Count);
+		Array.Resize(ref LiquidRenderer.Instance._moddedLiquidTextures, nextLiquid - LiquidID.Count);
 
 		//Sets
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
@@ -58,6 +67,7 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidLoader.liquidProperties, nextLiquid);
 		Array.Resize(ref Main.SceneMetrics._liquidCounts, nextLiquid);
 		Array.Resize(ref Main.PylonSystem._sceneMetrics._liquidCounts, nextLiquid);
+		Array.Resize(ref Collision.Liquid, nextLiquid + 1);
 
 		if (!unloading) {
 			loaded = true;
@@ -76,12 +86,33 @@ public static class LiquidLoader
 		GetLiquid(type)?.ModifyLight(i, j, ref r, ref g, ref b);
 	}
 
+	public static void PreUpdate(int type, int x, int y)
+	{
+		GetLiquid(type)?.PreUpdate(x, y);
+	}
+
+	public static bool Update(int type, Liquid liquid, int x, int y, Tile left, Tile right, Tile up, Tile down)
+	{
+		return GetLiquid(type)?.Update(liquid, x, y, left, right, up, down) ?? true;
+	}
+
+	public static void Merge(int type, bool[] liquidNearby, ref int liquidMergeTileType, ref int liquidMergeType)
+	{
+		GetLiquid(type)?.Merge(type, liquidNearby, ref liquidMergeTileType, ref liquidMergeType);
+	}
+
+	public static void OnEntityCollision(int type, Entity entity, CollisionType collisionType)
+	{
+		GetLiquid(type)?.OnEntityCollision(entity, collisionType);
+	}
+
 	static LiquidLoader()
 	{
 		liquidProperties = new LiquidProperties[] {
 			// Water
 			new LiquidProperties() {
-				FallDelay = 0
+				FallDelay = 0,
+				HellEvaporation = true
 			},
 			// Lava
 			new LiquidProperties() {

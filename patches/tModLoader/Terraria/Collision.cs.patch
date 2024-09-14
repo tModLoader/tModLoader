@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
-@@ -3,6 +_,7 @@
+@@ -3,10 +_,11 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  using Terraria.ID;
@@ -8,6 +8,22 @@
  
  namespace Terraria;
  
+-public class Collision
++public partial class Collision
+ {
+ 	public struct HurtTile
+ 	{
+@@ -17,8 +_,8 @@
+ 
+ 	public static bool stair;
+ 	public static bool stairFall;
+-	public static bool honey;
+-	public static bool shimmer;
++	public static ref bool honey => ref Liquid[2];
++	public static ref bool shimmer => ref Liquid[3];
+ 	public static bool sloping;
+ 	public static bool landMine = false;
+ 	public static bool up;
 @@ -1030,7 +_,7 @@
  		if (tile == null || !tile.active() || tile.inActive() || !Main.tileSolid[tile.type])
  			return false;
@@ -17,6 +33,55 @@
  			return false;
  
  		int num = tile.blockType();
+@@ -1137,6 +_,9 @@
+ 	{
+ 		honey = false;
+ 		shimmer = false;
++		for (int k = 0; k < LiquidLoader.LiquidCount; k++) {
++			Liquid[k] = false;
++		}
+ 		Vector2 vector = new Vector2(Position.X + (float)(Width / 2), Position.Y + (float)(Height / 2));
+ 		int num = 10;
+ 		int num2 = Height / 2;
+@@ -1170,12 +_,18 @@
+ 					vector2.Y += num5 * 2f;
+ 					num4 -= (int)(num5 * 2f);
+ 					if (vector.X + (float)num > vector2.X && vector.X < vector2.X + 16f && vector.Y + (float)num2 > vector2.Y && vector.Y < vector2.Y + (float)num4) {
++						for (int k = 0; k < LiquidLoader.LiquidCount; k++) {
++							if (Main.tile[i, j].LiquidType == k) {
++								Liquid[k] = true;
++							}
++						}
++						/*
+ 						if (Main.tile[i, j].honey())
+ 							honey = true;
+ 
+ 						if (Main.tile[i, j].shimmer())
+ 							shimmer = true;
+-
++						*/
+ 						return true;
+ 					}
+ 				}
+@@ -1187,11 +_,17 @@
+ 					vector2.Y = j * 16;
+ 					int num6 = 16;
+ 					if (vector.X + (float)num > vector2.X && vector.X < vector2.X + 16f && vector.Y + (float)num2 > vector2.Y && vector.Y < vector2.Y + (float)num6) {
++						for (int k = 0; k < LiquidLoader.LiquidCount; k++) {
++							if (Main.tile[i, j - 1].LiquidType == k) {
++								Liquid[k] = true;
++							}
++						}
++						/*
+ 						if (Main.tile[i, j - 1].honey())
+ 							honey = true;
+ 						else if (Main.tile[i, j - 1].shimmer())
+ 							shimmer = true;
+-
++						*/
+ 						return true;
+ 					}
+ 				}
 @@ -2614,7 +_,10 @@
  			tile = Main.tile[num2, num3];
  			tile2 = Main.tile[num2, num3 - 1];

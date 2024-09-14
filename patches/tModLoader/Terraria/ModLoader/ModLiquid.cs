@@ -44,7 +44,15 @@ public abstract class ModLiquid : ModBlockType
 		set => LiquidLoader.liquidProperties[Type].FallDelay = value;
 	}
 
+	public bool HellEvaporation {
+		get => LiquidLoader.liquidProperties[Type].HellEvaporation;
+		set => LiquidLoader.liquidProperties[Type].HellEvaporation = value;
+	}
+
 	public override string LocalizationCategory => "Liquids";
+
+	// public abstract string LiquidFallTexture { get; }
+	// public abstract string LiquidCornerTexture { get; }
 
 	protected sealed override void Register()
 	{
@@ -57,6 +65,7 @@ public abstract class ModLiquid : ModBlockType
 	public sealed override void SetupContent()
 	{
 		TextureAssets.Liquid[15 + Type - LiquidID.Count] = ModContent.Request<Texture2D>(Texture);
+		LiquidRenderer.Instance._moddedLiquidTextures[Type - LiquidID.Count] = ModContent.Request<Texture2D>(Texture);
 
 		SetStaticDefaults();
 
@@ -67,6 +76,11 @@ public abstract class ModLiquid : ModBlockType
 	{
 		WaterfallLength = 10;
 		DefaultOpacity = 0.6f;
+	}
+
+	public virtual void OnEntityCollision(Entity entity, CollisionType collisionType)
+	{
+
 	}
 
 	/// <summary>
@@ -101,5 +115,21 @@ public abstract class ModLiquid : ModBlockType
 			}
 			MapLoader.liquidEntries[Type].Add(entry);
 		}
+	}
+
+
+	public virtual void PreUpdate(int x, int y)
+	{
+		
+	}
+
+	public virtual bool Update(Liquid liquid, int x, int y, Tile left, Tile right, Tile up, Tile down)
+	{
+		return true;
+	}
+
+	public virtual void Merge(int otherLiquid, bool[] liquidNearby, ref int liquidMergeTileType, ref int liquidMergeType)
+	{
+
 	}
 }
