@@ -14,7 +14,7 @@ namespace ExampleMod.Common.Systems
 		public static bool unlockedExamplePersonSpawn = false;
 
 		// Town NPC rescued in the world would follow a similar implementation, the only difference being how the value is set to true.
-		// public static bool savedExamplePerson = false;
+		public static bool savedExamplePerson = false;
 
 		public override void ClearWorld() {
 			unlockedExamplePersonSpawn = false;
@@ -33,16 +33,11 @@ namespace ExampleMod.Common.Systems
 		}
 
 		public override void NetSend(BinaryWriter writer) {
-			writer.Write(new BitsByte(
-				unlockedExamplePersonSpawn
-			));
+			writer.WriteFlags(unlockedExamplePersonSpawn);
 		}
 
 		public override void NetReceive(BinaryReader reader) {
-			BitsByte flags = reader.ReadByte();
-			flags.Retrieve(
-				ref unlockedExamplePersonSpawn
-			);
+			reader.ReadFlags(out unlockedExamplePersonSpawn);
 		}
 	}
 }
