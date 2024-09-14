@@ -4440,8 +4440,18 @@
  
  						bool crit = false;
  						if ((float)Main.rand.Next(1, 101) <= num80)
-@@ -21393,6 +_,11 @@
+@@ -21391,8 +_,21 @@
+ 			num82 -= 6;
+ 
  		bool num85 = Collision.WetCollision(position, width, height);
++
++		if (!num85) {
++			for (int j = 4; j < liquidWet.Length; j++) {
++				if (!Collision.Liquid[j] && liquidWet[j])
++					LiquidLoader.OnEntityCollision(j, this, CollisionType.Exit);
++			}
++		}
++
  		bool flag26 = Collision.honey;
  		bool shimmer = Collision.shimmer;
 +		
@@ -4474,6 +4484,23 @@
  						}
  						else {
  							for (int num96 = 0; num96 < 20; num96++) {
+@@ -21576,7 +_,16 @@
+ 		if (!shimmer)
+ 			shimmerWet = false;
+ 
++		for (int j = 4; j < liquidWet.Length; j++) {
++			if (!Collision.Liquid[j])
++				liquidWet[j] = false;
++		}
++
+ 		if (!wet) {
++			for (int j = 4; j < liquidWet.Length; j++) {
++				if (!Collision.Liquid[j])
++					liquidWet[j] = false;
++			}
+ 			lavaWet = false;
+ 			honeyWet = false;
+ 			shimmerWet = false;
 @@ -21722,6 +_,8 @@
  		if (vortexDebuff)
  			velocity.Y = velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;

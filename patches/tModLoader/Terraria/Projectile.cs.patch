@@ -696,7 +696,7 @@
  
  		projectile.honeyWet = Collision.honey;
  		projectile.shimmerWet = Collision.shimmer;
-+		for (int j = 4; j < Collision.Liquid.Length; j++) {
++		for (int j = 4; j < projectile.liquidWet.Length; j++) {
 +			projectile.liquidWet[j] = Collision.Liquid[j];
 +		}
 +
@@ -1284,20 +1284,29 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
-@@ -12540,12 +_,16 @@
+@@ -12538,14 +_,25 @@
+ 				try {
+ 					flag = Collision.LavaCollision(position, width, height);
  					flag2 = Collision.WetCollision(position, width, height);
++
++					if (!flag2) {
++						for (int j = 4; j < liquidWet.Length; j++) {
++							if (!Collision.Liquid[j] && liquidWet[j])
++								LiquidLoader.OnEntityCollision(j, this, CollisionType.Exit);
++						}
++					}
  					if (flag)
  						lavaWet = true;
 -
-+					/*
++					
  					if (Collision.honey)
  						honeyWet = true;
  
  					if (Collision.shimmer)
  						shimmerWet = true;
-+					*/
-+					for (int j = 0; j < Collision.Liquid.Length; j++) {
-+						liquidWet[i] = Collision.Liquid[i];
++					
++					for (int j = 4; j < liquidWet.Length; j++) {
++						liquidWet[j] = Collision.Liquid[j];
 +					}
  				}
  				catch {
@@ -1316,7 +1325,7 @@
  								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  							}
 +							else {
-+								for (int j = 0; j < liquidWet.Length; j++) {
++								for (int j = 4; j < liquidWet.Length; j++) {
 +									if (liquidWet[j])
 +										LiquidLoader.OnEntityCollision(j, this, CollisionType.Enter);
 +								}
@@ -1325,6 +1334,17 @@
  						}
  						else {
  							for (int num7 = 0; num7 < 10; num7++) {
+@@ -12720,6 +_,10 @@
+ 				}
+ 
+ 				if (!wet) {
++					for (int j = 4; j < LiquidLoader.LiquidCount; j++) {
++						if (Collision.Liquid[j])
++							liquidWet[j] = false;
++					}
+ 					lavaWet = false;
+ 					honeyWet = false;
+ 					shimmerWet = false;
 @@ -12965,9 +_,16 @@
  		}
  	}

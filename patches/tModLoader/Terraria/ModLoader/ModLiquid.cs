@@ -51,6 +51,9 @@ public abstract class ModLiquid : ModBlockType
 
 	public override string LocalizationCategory => "Liquids";
 
+	// public abstract string LiquidFallTexture { get; }
+	// public abstract string LiquidCornerTexture { get; }
+
 	protected sealed override void Register()
 	{
 		Type = (ushort)LiquidLoader.ReserveLiquidID();

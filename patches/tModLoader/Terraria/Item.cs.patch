@@ -2055,11 +2055,18 @@
  		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  			velocity.X *= 0.95f;
  			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
-@@ -48356,11 +_,17 @@
+@@ -48356,11 +_,24 @@
  			lavaWet = true;
  
  		bool num4 = Collision.WetCollision(position, width, height);
-+		
++
++		if (!num4) {
++			for (int j = 4; j < liquidWet.Length; j++) {
++				if (!Collision.Liquid[j] && liquidWet[j])
++					LiquidLoader.OnEntityCollision(j, this, CollisionType.Exit);
++			}
++		}
++
  		if (Collision.honey)
  			honeyWet = true;
  
@@ -2095,6 +2102,24 @@
  					}
  					else {
  						for (int n = 0; n < 5; n++) {
+@@ -48503,8 +_,17 @@
+ 				}
+ 			}
+ 		}
++		for (int j = 4; j < liquidWet.Length; j++) {
++			if (!Collision.Liquid[j])
++				liquidWet[j] = false;
++		}
+ 
+ 		if (!wet) {
++			// Also add support for global liquid exiting later on, water would require a bit more work
++			for (int j = 4; j < liquidWet.Length; j++) {
++				if (!Collision.Liquid[j])
++					liquidWet[j] = false;
++			}
+ 			lavaWet = false;
+ 			honeyWet = false;
+ 			shimmerWet = false;
 @@ -48553,7 +_,7 @@
  		Rectangle hitbox = base.Hitbox;
  		for (int j = 0; j < 200; j++) {

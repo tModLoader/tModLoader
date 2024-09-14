@@ -2893,21 +2893,17 @@
  		if (dryadWard) {
  			num2 = (int)num5 / 3;
  			num3 = 6;
-@@ -74165,9 +_,14 @@
+@@ -74164,6 +_,10 @@
+ 		Collision_WalkDownSlopes();
  		bool lava = Collision_LavaCollision();
  		lava = Collision_WaterCollision(lava);
++		for (int j = 4; j < LiquidLoader.LiquidCount; j++) {
++			if (!Collision.Liquid[j])
++				liquidWet[j] = false;
++		}
  		if (!wet) {
-+			/*
  			lavaWet = false;
  			honeyWet = false;
- 			shimmerWet = false;
-+			*/
-+			for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
-+				liquidWet[j] = false;
-+			}
- 		}
- 
- 		if (wetCount > 0)
 @@ -74491,6 +_,9 @@
  
  	private bool Collision_DecideFallThroughPlatforms()
@@ -2918,6 +2914,20 @@
  		bool result = false;
  		if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
  			result = true;
+@@ -74602,6 +_,13 @@
+ 		}
+ 		else {
+ 			flag = Collision.WetCollision(position, width, height);
++
++			if (!flag) {
++				for (int j = 4; j < liquidWet.Length; j++) {
++					if (!Collision.Liquid[j] && liquidWet[j])
++						LiquidLoader.OnEntityCollision(j, this, CollisionType.Exit);
++				}
++			}
+ 			if (Collision.honey)
+ 				honeyWet = true;
+ 
 @@ -74609,6 +_,9 @@
  				shimmerWet = true;
  				AddBuff(353, 100);
