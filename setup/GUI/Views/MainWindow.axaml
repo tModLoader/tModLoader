@@ -57,18 +57,24 @@
 
         <Grid RowDefinitions="Auto,5,Auto,5,*,5,Auto,5,Auto" Margin="20">
             <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,*">
-                <Button Grid.Row="0" Grid.Column="0" Command="{Binding SetupCommand}" Margin="5">Setup</Button>
-                <Button Grid.Row="0" Grid.Column="1" Command="{Binding DecompileCommand}" Margin="5">Decompile</Button>
-                <Button Grid.Row="1" Grid.Column="0" Command="{Binding DiffTerrariaCommand}" Margin="5">Diff Terraria</Button>
-                <Button Grid.Row="1" Grid.Column="1" Command="{Binding PatchTerrariaCommand}" Margin="5">Patch Terraria</Button>
-                <Button Grid.Row="2" Grid.Column="0" Command="{Binding DiffTerrariaNetCoreCommand}" Margin="5">Diff TerrariaNetCore</Button>
-                <Button Grid.Row="2" Grid.Column="1" Command="{Binding PatchTerrariaNetCoreCommand}" Margin="5">Patch TerrariaNetCore</Button>
-                <Button Grid.Row="3" Grid.Column="0" Command="{Binding DiffTModLoaderCommand}" Margin="5">Diff tModLoader</Button>
-                <Button Grid.Row="3" Grid.Column="1" Command="{Binding PatchTModLoaderCommand}" Margin="5">Patch tModLoader</Button>
-                <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding RegenSourceCommand}"
-                        Margin="5">
-                    Regenerate Source
-                </Button>
+                <Grid.Styles>
+                    <Style Selector="Button[(Grid.Column)=0]">
+                        <Setter Property="Margin" Value="0 0 0 8" />
+                    </Style>
+                    <Style Selector="Button[(Grid.Column)=1]">
+                        <Setter Property="Margin" Value="8 0 0 8" />
+                    </Style>
+                </Grid.Styles>
+                
+                <Button Grid.Row="0" Grid.Column="0" Command="{Binding SetupCommand}">Setup</Button>
+                <Button Grid.Row="0" Grid.Column="1" Command="{Binding DecompileCommand}">Decompile</Button>
+                <Button Grid.Row="1" Grid.Column="0" Command="{Binding DiffTerrariaCommand}">Diff Terraria</Button>
+                <Button Grid.Row="1" Grid.Column="1" Command="{Binding PatchTerrariaCommand}">Patch Terraria</Button>
+                <Button Grid.Row="2" Grid.Column="0" Command="{Binding DiffTerrariaNetCoreCommand}">Diff TerrariaNetCore</Button>
+                <Button Grid.Row="2" Grid.Column="1" Command="{Binding PatchTerrariaNetCoreCommand}">Patch TerrariaNetCore</Button>
+                <Button Grid.Row="3" Grid.Column="0" Command="{Binding DiffTModLoaderCommand}">Diff tModLoader</Button>
+                <Button Grid.Row="3" Grid.Column="1" Command="{Binding PatchTModLoaderCommand}">Patch tModLoader</Button>
+                <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding RegenSourceCommand}">Regenerate Source</Button>
             </Grid>
 
             <TextBlock Grid.Row="2" Text="{Binding TaskText}" />
