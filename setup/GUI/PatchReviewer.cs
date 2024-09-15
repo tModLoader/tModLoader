@@ -11,7 +11,10 @@ public class PatchReviewer : IPatchReviewer
 {
 	public void Show(IReadOnlyCollection<FilePatcher> results, string? commonBasePath = null)
 	{
-		Dispatcher.UIThread.Invoke(() => new ReviewWindow(results, commonBasePath).ShowDialog());
+		Dispatcher.UIThread.Invoke(() => {
+			ReviewWindow reviewWindow = new(results, commonBasePath) { AutoHeaders = true };
+			reviewWindow.ShowDialog();
+		});
 	}
 }
 #endif
