@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 
-namespace Setup.GUI.Avalonia.Services;
+namespace Setup.GUI.Services;
 
 public interface IFilesService
 {

@@ -3,11 +3,11 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
-using Setup.GUI.Avalonia.Services;
+using Setup.GUI.Services;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Setup.GUI.Avalonia;
+namespace Setup.GUI;
 
 public class TerrariaExecutableSelectionPrompt : ITerrariaExecutableSelectionPrompt
 {

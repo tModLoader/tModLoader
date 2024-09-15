@@ -2,13 +2,13 @@ using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Setup.GUI.Avalonia.Services;
-using Setup.GUI.Avalonia.ViewModels;
-using Setup.GUI.Avalonia.Views;
+using Setup.GUI.Services;
+using Setup.GUI.ViewModels;
+using Setup.GUI.Views;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Setup.GUI.Avalonia;
+namespace Setup.GUI;
 
 internal static class Bootstrapper
 {

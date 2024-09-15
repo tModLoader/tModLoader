@@ -5,7 +5,7 @@ using DiffPatch;
 using PatchReviewer;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Setup.GUI.Avalonia;
+namespace Setup.GUI;
 
 public class PatchReviewer : IPatchReviewer
 {

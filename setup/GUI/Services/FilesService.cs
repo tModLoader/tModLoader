@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 
-namespace Setup.GUI.Avalonia.Services;
+namespace Setup.GUI.Services;
 
 public sealed class FilesService : IFilesService
 {

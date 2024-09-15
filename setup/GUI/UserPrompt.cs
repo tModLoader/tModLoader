@@ -9,7 +9,7 @@ using MsBox.Avalonia.Models;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Setup.GUI.Avalonia;
+namespace Setup.GUI;
 
 public class UserPrompt : IUserPrompt
 {

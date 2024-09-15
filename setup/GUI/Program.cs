@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace Setup.GUI.Avalonia;
+namespace Setup.GUI;
 
 sealed class Program
 {

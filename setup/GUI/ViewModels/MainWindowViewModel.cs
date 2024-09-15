@@ -8,12 +8,12 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiffPatch;
-using Setup.GUI.Avalonia.Services;
+using Setup.GUI.Services;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Timer = System.Timers.Timer;
 
-namespace Setup.GUI.Avalonia.ViewModels;
+namespace Setup.GUI.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject, IProgress
 {

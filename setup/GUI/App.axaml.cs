@@ -4,10 +4,10 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
-using Setup.GUI.Avalonia.ViewModels;
-using Setup.GUI.Avalonia.Views;
+using Setup.GUI.ViewModels;
+using Setup.GUI.Views;
 
-namespace Setup.GUI.Avalonia;
+namespace Setup.GUI;
 
 public partial class App : Application
 {
