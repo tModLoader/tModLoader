@@ -10,7 +10,7 @@ public class UserPrompt : IUserPrompt
 	private const string OK = "OK";
 	private const string Retry = "Retry";
 
-	public bool Prompt(
+	public Task<bool> Prompt(
 		string caption,
 		string text,
 		PromptOptions options,
@@ -22,19 +22,21 @@ public class UserPrompt : IUserPrompt
 			new SelectionPrompt<string>().AddChoices(options == PromptOptions.OKCancel ? OK : Retry, Cancel));
 
 		if (answer != Cancel) {
-			return true;
+			return Task.FromResult(true);
 		}
 
 		Console.WriteLine("Cancelled");
 
-		return false;
+		return Task.FromResult(false);
 	}
 
-	public void Inform(string caption, string text, PromptSeverity severity = PromptSeverity.Information)
+	public Task Inform(string caption, string text, PromptSeverity severity = PromptSeverity.Information)
 	{
 		AnsiConsole.MarkupLineInterpolated($"[{GetColor(severity).ToString().ToLower()}]{severity}[/] {caption}");
 		AnsiConsole.WriteLine(text);
 		AnsiConsole.WriteLine();
+
+		return Task.CompletedTask;
 	}
 
 	private static Color GetColor(PromptSeverity severity)

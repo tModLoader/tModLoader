@@ -1,48 +1,50 @@
-using System.Windows.Forms;
+using System;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Base;
+using MsBox.Avalonia.Dto;
+using MsBox.Avalonia.Enums;
+using MsBox.Avalonia.Models;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup.GUI;
+namespace Setup.GUI.Avalonia;
 
 public class UserPrompt : IUserPrompt
 {
-	public bool Prompt(
-		string caption,
-		string text,
-		PromptOptions options,
-		PromptSeverity severity = PromptSeverity.Information)
+	public async Task<bool> Prompt(string caption, string text, PromptOptions options, PromptSeverity severity = PromptSeverity.Information)
 	{
-		return MessageBox.Show(
-			text,
-			caption,
-			GetButtons(options)) == DialogResult.OK;
+		IMsBox<string> messageBox = MessageBoxManager.GetMessageBoxCustom(new MessageBoxCustomParams {
+			Icon = GetMessageBoxIcon(severity),
+			ButtonDefinitions = [
+				new ButtonDefinition { Name = options == PromptOptions.RetryCancel ? "Retry" : "Ok" },
+				new ButtonDefinition { Name = "Cancel", IsCancel = true },
+			],
+			ContentTitle = caption,
+			ContentMessage = text,
+			WindowStartupLocation = WindowStartupLocation.CenterOwner,
+		});
+
+		string result = await messageBox.ShowAsync();
+
+		return result != "Cancel";
 	}
 
-	public void Inform(string caption, string text, PromptSeverity severity = PromptSeverity.Information)
+	public async Task Inform(string caption, string text, PromptSeverity severity = PromptSeverity.Information)
 	{
-		MessageBox.Show(
-			text,
-			caption,
-			MessageBoxButtons.OK,
-			GetIcon(severity));
+		IMsBox<ButtonResult> messageBox = MessageBoxManager.GetMessageBoxStandard(caption, text, ButtonEnum.Ok, GetMessageBoxIcon(severity));
+
+		await messageBox.ShowAsync();
 	}
 
-	private static MessageBoxButtons GetButtons(PromptOptions options)
-	{
-		return options switch {
-			PromptOptions.OKCancel => MessageBoxButtons.OKCancel,
-			PromptOptions.RetryCancel => MessageBoxButtons.RetryCancel,
-			_ => MessageBoxButtons.OK,
-		};
-	}
-
-	private static MessageBoxIcon GetIcon(PromptSeverity severity)
+	private static Icon GetMessageBoxIcon(PromptSeverity severity)
 	{
 		return severity switch {
-			PromptSeverity.Information => MessageBoxIcon.Information,
-			PromptSeverity.Warning => MessageBoxIcon.Warning,
-			PromptSeverity.Error => MessageBoxIcon.Error,
-			_ => MessageBoxIcon.None,
+			PromptSeverity.Information => Icon.Info,
+			PromptSeverity.Warning => Icon.Warning,
+			PromptSeverity.Error => Icon.Error,
+			_ => throw new ArgumentOutOfRangeException(nameof(severity), severity, null)
 		};
 	}
 }

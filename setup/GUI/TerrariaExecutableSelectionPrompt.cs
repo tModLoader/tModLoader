@@ -2,33 +2,37 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Avalonia.Platform.Storage;
+using Setup.GUI.Avalonia.Services;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup.GUI;
+namespace Setup.GUI.Avalonia;
 
 public class TerrariaExecutableSelectionPrompt : ITerrariaExecutableSelectionPrompt
 {
+	private readonly IFilesService filesService;
 	private readonly WorkspaceInfo workspaceInfo;
 
-	public TerrariaExecutableSelectionPrompt(WorkspaceInfo workspaceInfo)
+	public TerrariaExecutableSelectionPrompt(IFilesService filesService, WorkspaceInfo workspaceInfo)
 	{
+		this.filesService = filesService;
 		this.workspaceInfo = workspaceInfo;
 	}
 
-	public Task<string> Prompt(CancellationToken cancellationToken = default)
+	public async Task<string> Prompt(CancellationToken cancellationToken = default)
 	{
-		var dialog = new OpenFileDialog {
-			InitialDirectory = Path.GetFullPath(Directory.Exists(workspaceInfo.TerrariaSteamDirectory) ? workspaceInfo.TerrariaSteamDirectory : "."),
-			Filter = "Terraria|Terraria.exe",
-			Title = "Select Terraria.exe"
-		};
+		IStorageFile? storageFile = await filesService.OpenFile(
+			"Select Terraria.exe",
+			[new FilePickerFileType("Terraria") { Patterns = ["Terraria.exe"] }],
+			Path.GetFullPath(Directory.Exists(workspaceInfo.TerrariaSteamDirectory) ? workspaceInfo.TerrariaSteamDirectory : "."));
 
-		var result = dialog.ShowDialog();
-		if (result == DialogResult.OK)
-			return Task.FromResult(dialog.FileName);
+		string? path = storageFile?.TryGetLocalPath();
 
-		throw new OperationCanceledException();
+		if (path is null) {
+			throw new OperationCanceledException();
+		}
+
+		return path;
 	}
 }
