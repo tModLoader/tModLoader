@@ -6,7 +6,7 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <RootNamespace>Setup.GUI.Avalonia</RootNamespace>
+        <RootNamespace>Setup.GUI</RootNamespace>
         <AssemblyName>setup-gui</AssemblyName>
     </PropertyGroup>
 
