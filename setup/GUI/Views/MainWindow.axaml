@@ -43,13 +43,13 @@
                 <MenuItem Header="Update Localization Files" Command="{Binding UpdateLocalizationFilesCommand}" />
             </MenuItem>
             <MenuItem Header="Patch">
-                <MenuItem Header="EXACT" Command="{Binding SetExactPatchModeCommand}"
+                <MenuItem Header="Exact" Command="{Binding SetExactPatchModeCommand}"
                           IsChecked="{Binding SelectedPatchMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={StaticResource ExactPatchMode}}"
                           ToggleType="CheckBox" />
-                <MenuItem Header="OFFSET" Command="{Binding SetOffsetPatchModeCommand}"
+                <MenuItem Header="Offset" Command="{Binding SetOffsetPatchModeCommand}"
                           IsChecked="{Binding SelectedPatchMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={StaticResource OffsetPatchMode}}"
                           ToggleType="CheckBox" />
-                <MenuItem Header="FUZZY" Command="{Binding SetFuzzyPatchModeCommand}"
+                <MenuItem Header="Fuzzy" Command="{Binding SetFuzzyPatchModeCommand}"
                           IsChecked="{Binding SelectedPatchMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={StaticResource FuzzyPatchMode}}"
                           ToggleType="CheckBox" />
             </MenuItem>
