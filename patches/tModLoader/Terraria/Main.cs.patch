@@ -1538,7 +1538,7 @@
  		}
  
  		if (Netplay.SaveOnServerExit) {
-@@ -4630,6 +_,8 @@
+@@ -4630,13 +_,18 @@
  			WorldFile.SaveWorld();
  		}
  
@@ -1547,6 +1547,17 @@
  		YouCanSleepNow();
  	}
  
+ 	private static void WriteFancyWorldLoadErrorToConsole()
+ 	{
+ 		Console.WriteLine();
++		if(WorldFile.LastThrownLoadException != null)
+-		Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
++			Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
++		else
++			Console.WriteLine("The world failed to load. (Unknown reason)");
+ 	}
+ 
+ 	public static void startDedInput()
 @@ -4650,8 +_,22 @@
  	public static void startDedInputCallBack()
  	{
