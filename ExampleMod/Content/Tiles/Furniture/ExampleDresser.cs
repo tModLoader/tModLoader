@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IsAContainer[Type] = true;
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 
-			AdjTiles = new int[] { TileID.Dressers };
+			AdjTiles = [TileID.Dressers];
 			DustType = ModContent.DustType<Sparkle>();
 
 			// Names
@@ -39,13 +39,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(Chest.FindEmptyChest, -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(Chest.AfterPlacement_Hook, -1, 0, false);
-			TileObjectData.newTile.AnchorInvalidTiles = new int[] {
+			TileObjectData.newTile.AnchorInvalidTiles = [
 				TileID.MagicalIceBlock,
 				TileID.Boulder,
 				TileID.BouncyBoulder,
 				TileID.LifeCrystalBoulder,
 				TileID.RollingCactus
-			};
+			];
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.addTile(Type);
 		}

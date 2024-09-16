@@ -76,10 +76,10 @@ namespace ExampleMod.Common.Systems
 
 			// If you plan on having more than 8 of these flags and don't want to use multiple BitsByte, an alternative is using a System.Collections.BitArray
 			/*
-			bool[] flags = new bool[] {
+			bool[] flags = [
 				downedMinionBoss,
 				downedOtherBoss,
-			};
+			];
 			BitArray bitArray = new BitArray(flags);
 			byte[] bytes = new byte[(bitArray.Length - 1) / 8 + 1]; // Calculation for correct length of the byte array
 			bitArray.CopyTo(bytes, 0);

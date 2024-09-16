@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetStaticDefaults() {
 			// Makes Example Tree grow on ExampleBlock
-			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleBlock>() };
+			GrowsOnTileId = [ModContent.TileType<ExampleBlock>()];
 			texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
 			branchesTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
 			topsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");

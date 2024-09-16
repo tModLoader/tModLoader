@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetStaticDefaults() {
 			// Makes Example Palm Tree grow on Gold Ore
-			GrowsOnTileId = new int[1] { TileID.Gold };
+			GrowsOnTileId = [TileID.Gold];
 			texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
 			oasisTopsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");
 			topsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");

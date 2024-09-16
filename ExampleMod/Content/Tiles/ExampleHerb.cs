@@ -51,15 +51,15 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(128, 128, 128), name);
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);
-			TileObjectData.newTile.AnchorValidTiles = new int[] {
+			TileObjectData.newTile.AnchorValidTiles = [
 				TileID.Grass,
 				TileID.HallowedGrass,
 				ModContent.TileType<ExampleBlock>()
-			};
-			TileObjectData.newTile.AnchorAlternateTiles = new int[] {
+			];
+			TileObjectData.newTile.AnchorAlternateTiles = [
 				TileID.ClayPot,
 				TileID.PlanterBox
-			};
+			];
 			TileObjectData.addTile(Type);
 
 			HitSound = SoundID.Grass;

@@ -19,7 +19,7 @@ namespace ExampleMod.Common.GlobalTiles
 		public override void Unload() {
 			// TileObjectData for existing tiles will not automatically be reset when a mod is unloaded. It is up to the modder to properly undo changes such as these.
 			TileObjectData tileObjectData = TileObjectData.GetTileData(TileID.Sunflower, 0);
-			tileObjectData.AnchorValidTiles = tileObjectData.AnchorValidTiles.Except(new int[] { ModContent.TileType<ExampleBlock>() }).ToArray();
+			tileObjectData.AnchorValidTiles = tileObjectData.AnchorValidTiles.Except([ModContent.TileType<ExampleBlock>()]).ToArray();
 		}
 	}
 }

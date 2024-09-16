@@ -24,10 +24,10 @@ namespace ExampleMod.Content.Tiles.Plants
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);
 			TileObjectData.newTile.UsesCustomCanPlace = true;
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.AnchorValidTiles = new[] { ModContent.TileType<ExampleBlock>(), TileID.Gold };
+			TileObjectData.newTile.AnchorValidTiles = [ModContent.TileType<ExampleBlock>(), TileID.Gold];
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.DrawFlipHorizontal = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;
@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Tiles.Plants
 			TileObjectData.newTile.StyleMultiplier = 3;
 
 			//TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
-			//TileObjectData.newSubTile.AnchorValidTiles = new int[] { TileType<ExampleSand>() };
+			//TileObjectData.newSubTile.AnchorValidTiles = [ModContent.TileType<ExampleSand>()];
 			//TileObjectData.addSubTile(1);
 
 			TileObjectData.addTile(Type);
@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Tiles.Plants
 
 			DustType = ModContent.DustType<Sparkle>();
 
-			AdjTiles = new int[] { TileID.Saplings };
+			AdjTiles = [TileID.Saplings];
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {

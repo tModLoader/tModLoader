@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileLavaDeath[Type] = Main.tileLavaDeath[TileID.FrogCage];
 			Main.tileSolidTop[Type] = Main.tileSolidTop[TileID.FrogCage];
 			Main.tileTable[Type] = Main.tileTable[TileID.FrogCage];
-			AdjTiles = new int[] { TileID.FrogCage, TileID.GoldFrogCage }; // Just in case another mod uses the frog cage to craft
+			AdjTiles = [TileID.FrogCage, TileID.GoldFrogCage]; // Just in case another mod uses the frog cage to craft
 			AnimationFrameHeight = 36;
 
 			// We can copy the TileObjectData directly from an existing tile to copy changes, if any, made to the TileObjectData template the original tile copied from.
