@@ -23,7 +23,11 @@ Mods: {
 
 		// Currencies.ExampleCustomCurrency: example items
 		// DamageClasses.ExampleDamageClass.DisplayName: example damage
-		Keybinds.RandomBuff.DisplayName: 随机增益
+
+		Keybinds: {
+			RandomBuff.DisplayName: 随机增益
+			// LearningExample.DisplayName: Learning Example
+		}
 
 		NPCs: {
 			// ExampleCustomAISlimeNPC.DisplayName: Flutter Slime
@@ -273,7 +277,11 @@ Mods: {
 			ExampleHood: {
 				// DisplayName: Example Hood
 				// Tooltip: This is a modded hood.
-				// SetBonus: "{$CommonItemTooltip.PercentReducedManaCost}"
+				/* SetBonus:
+					'''
+					Double tap or hold {0} to toggle various armor shadow effects
+					{$CommonItemTooltip.PercentReducedManaCost@1}
+					''' */
 			}
 
 			ExampleLeggings: {

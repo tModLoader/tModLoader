@@ -158,7 +158,7 @@
  	public int eocDash;
  	public int eocHit;
 +	/// <summary>
-+	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running. 
++	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running.
 +	/// <para/> Defaults to 3f. Accessories set this to specific values, resulting in the last equipped accessories to dictate the final value. Vanilla shoe accessories set this to <c>6f</c> (<see cref="ItemID.HermesBoots"/>) or <c>6.75</c> (<see cref="ItemID.LightningBoots"/>). This assignment should happen in <see cref="ModItem.UpdateEquip(Player)"/>.
 +	/// <para/> This value is later multiplied by other effects in the same manner as <see cref="maxRunSpeed"/>. They are usually modified in tandem, but not always depending on the desired result. For example, asphalt triples maxRunSpeed but does not affect accRunSpeed, whereas Shadow Armor affects both equally.
 +	/// <para/> These multiplicative adjustments should only be done in <see cref="ModPlayer.PostUpdateRunSpeeds"/> or <see cref="ModItem.HorizontalWingSpeeds"/> to correctly function.
@@ -296,7 +296,20 @@
  	public float slotsMinions;
  	public bool pygmy;
  	public bool raven;
-@@ -731,6 +_,11 @@
+@@ -726,11 +_,24 @@
+ 	public bool dontHurtCritters;
+ 	public bool hasLucyTheAxe;
+ 	public bool dontHurtNature;
++	/// <summary>
++	/// Used to count time between repeated directional movement key presses. When a directional key is pressed it is set to a value of 15. The value will count down each update until it reaches 0. If the key is pressed again before it reaches 0 it will trigger <see cref="Player.KeyDoubleTap"/>, which will call <see cref="ModPlayer.ArmorSetBonusActivated"/> if the armor set bonus direction key has been pressed. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] doubleTapCardinalTimer = new int[4];
++	/// <summary>
++	/// Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] holdDownCardinalTimer = new int[4];
  	public bool defendedByPaladin;
  	public bool hasPaladinShield;
  	public float[] speedSlice = new float[60];
@@ -476,6 +489,14 @@
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
+@@ -910,6 +_,7 @@
+ 	public bool releaseCreativeMenu;
+ 	public bool tileInteractionHappened;
+ 	public bool tileInteractAttempted;
++	/// <summary> True when the player has been holding <see cref="controlDown"/> for at least 45 ticks. Used by <see cref="ItemID.ShimmerCloak"/>. See also <see cref="holdDownCardinalTimer"/>. </summary>
+ 	public bool controlDownHold;
+ 	public bool isOperatingAnotherEntity;
+ 	public bool autoReuseAllWeapons;
 @@ -943,7 +_,13 @@
  	public Vector2[] shadowOrigin = new Vector2[3];
  	public int[] shadowDirection = new int[3];
@@ -8980,6 +9001,15 @@
  		item.stack = 6;
  		item.position = base.Center;
  		Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
+@@ -43921,6 +_,8 @@
+ 		if (keyDir != num)
+ 			return;
+ 
++		PlayerLoader.ArmorSetBonusActivated(this);
++
+ 		if (setVortex && !mount.Active)
+ 			vortexStealthActive = !vortexStealthActive;
+ 
 @@ -44020,7 +_,10 @@
  			}
  		}
@@ -8991,3 +9021,12 @@
  		IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  		_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  	}
+@@ -44032,6 +_,8 @@
+ 			num = 1;
+ 
+ 		if (keyDir == num) {
++			PlayerLoader.ArmorSetBonusHeld(this, holdTime);
++
+ 			if (setStardust && holdTime >= 60)
+ 				MinionRestTargetPoint = Vector2.Zero;
+ 
