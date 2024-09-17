@@ -26,6 +26,7 @@ namespace Terraria.ModLoader;
 public static class ItemLoader
 {
 	public static int ItemCount { get; private set; } = ItemID.Count;
+	public static Dictionary<int, HashSet<string>> StaticItemTags { get; private set; }
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
 	private static readonly List<HookList> hooks = new List<HookList>();
@@ -116,6 +117,8 @@ public static class ItemLoader
 			ContentSamples.ItemsByType[item.Type].RebuildTooltip();
 		}
 
+		InitializeStaticItemTags();
+
 		ValidateDropsSet();
 	}
 
@@ -125,6 +128,46 @@ public static class ItemLoader
 			hook.Update();
 		}
 	}
+
+	private static void InitializeStaticItemTags()
+	{
+		StaticItemTags = [];
+
+		for (int type = 0; type < ItemCount; type++) {
+			StaticItemTags.Add(type, []);
+			if (ItemID.Sets.IsFood[type])
+				StaticItemTags[type].Add("food");
+
+			if (ItemID.Sets.IsAKite[type])
+				StaticItemTags[type].Add("kite");
+
+			if (ItemID.Sets.IsFishingCrate[type]) {
+				StaticItemTags[type].Add("fishing_crate");
+				if (ItemID.Sets.IsFishingCrateHardmode[type])
+					StaticItemTags[type].Add("fishing_crate/hardmode");
+			}
+
+			if (ItemID.Sets.BossBag[type]) {
+				StaticItemTags[type].Add("boss_bag");
+				if (ItemID.Sets.PreHardmodeLikeBossBag[type])
+					StaticItemTags[type].Add("boss_bag/prehardmode");
+			}
+
+			if (ItemID.Sets.IsChainsaw[type] || ItemID.Sets.IsDrill[type] || type == ItemID.ChlorophyteJackhammer) {
+				StaticItemTags[type].Add("tool/motorized");
+				if (ItemID.Sets.IsChainsaw[type])
+					StaticItemTags[type].Add("tool/motorized/chainsaw");
+				if (ItemID.Sets.IsDrill[type])
+					StaticItemTags[type].Add("tool/motorized/drill");
+				if (type == ItemID.ChlorophyteJackhammer)
+					StaticItemTags[type].Add("tool/motorized/jackhammer");
+			}
+
+			if (ItemID.Sets.IgnoresEncumberingStone[type])
+				StaticItemTags[type].Add("ignores_encumbering_stone");
+		}
+	}
+
 
 	internal static void ValidateDropsSet()
 	{

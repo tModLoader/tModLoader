@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -2,21 +_,57 @@
+@@ -1,22 +_,59 @@
++using System;
+ using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -96,12 +98,12 @@
  		};
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will not burn when dropped in lava, even if it has a <see cref="Item.rare"/> of <see cref="ItemRarityID.White"/>.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will not burn when dropped in lava, even if it has a <see cref="Item.rare"/> of <see cref="ItemRarityID.White"/>.<br/> 
++		/// Defaults to <see langword="false"/>.<br/>
++		/// Does not affect the Guide Voodoo Doll, which will always burn when tossed into lava.<br/>
++		/// <br/>
++		/// <b>Superceded by corresponding content tag:</b> <c>"lava_immune"</c>
 +		/// </summary>
-+		/// <remarks>
-+		/// This set does not affect <see cref="GuideVoodooDoll"/>, which will always burn when dropped into lava.
-+		/// </remarks>
  		public static bool[] IsLavaImmuneRegardlessOfRarity = Factory.CreateBoolSet(false, 318, 312, 173, 174, 175, 4422, 2701, 205, 206, 207, 1128, 2340, 2739, 2492, 1127, 85);
 +
 +		/// <summary>
@@ -296,12 +298,15 @@
  		public static FlowerPacketInfo[] flowerPacketInfo = Factory.CreateCustomSet<FlowerPacketInfo>(null, new object[18] {
  			(short)4041,
  			new FlowerPacketInfo {
-@@ -303,18 +_,91 @@
+@@ -303,18 +_,107 @@
  				}
  			}
  		});
 +
-+		/// <summary> Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe, but some items such as coins and void bag hide the tooltip for aesthetic reasons. </summary>
++		/// <summary>
++		/// Indicates that an item should show the material tooltip.<br/>
++		/// Typically, this means that the item is used in at least 1 recipe, but some items (such as coins and the Void Bag) hide the tooltip for aesthetic reasons.<br/>
++		/// </summary>
  		public static bool[] IsAMaterial = Factory.CreateBoolSet();
 -		public static int[] IsCrafted = Factory.CreateIntSet();
 +
@@ -314,8 +319,10 @@
 +		*/
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will always be allowed to be picked up, even if <see cref="Player.preventAllItemPickups"/> is <see langword="true"/>.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will always be able to be picked up, even if <see cref="Player.preventAllItemPickups"/> is <see langword="true"/>.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// <br/>
++		/// <b>Superceded by corresponding content tag:</b> <c>"bypasses_encumbering_stone"</c><br/>
 +		/// </summary>
  		public static bool[] IgnoresEncumberingStone = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 4143);
 +
@@ -335,29 +342,35 @@
  		public static bool[] IsAPickup = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a drill.
-+		/// <br/> Drills have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// If <see langword="true"/> for a given <b>vanilla</b> item type (<see cref="Item.type"/>), then that item is a drill.<br/>
++		/// Drills have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// <br/>
++		/// This set <b>does not:</b><br/>
++		/// - Allow an <see cref="Item"/> to damage and destroy tiles on its own -- use <see cref="Item.pick"/> for that.<br/>
++		/// - Apply its stat modifications to modded items, as the relevant check occurs <b>before</b> any modded SetDefaults hooks.<br/>
++		/// <br/>
++		/// <b>Superceded by corresponding content tag:</b> <c>"tool/motorized/drill"</c><br/>
 +		/// </summary>
-+		/// <remarks>
-+		/// This set does <strong>not</strong> allow an <see cref="Item"/> to damage tiles -- use <see cref="Item.pick"/> for that.
-+		/// </remarks>
  		public static bool[] IsDrill = Factory.CreateBoolSet(388, 1231, 385, 386, 2779, 1196, 1189, 2784, 3464, 1203, 2774, 579);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a chainsaw.
-+		/// <br/> Chainsaws have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// If <see langword="true"/> for a given <b>vanilla</b> item type (<see cref="Item.type"/>), then that item is a chainsaw.<br/>
++		/// Chainsaws have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
++		/// <br/>
++		/// This set <b>does not:</b><br/>
++		/// - Allow an <see cref="Item"/> to cut down trees on its own -- use <see cref="Item.axe"/> for that.<br/>
++		/// - Apply its stat modifications to modded items, as the relevant check occurs <b>before</b> any modded SetDefaults hooks.<br/>
++		/// <br/>
++		/// <b>Superceded by corresponding content tag:</b> <c>"tool/motorized/chainsaw"</c><br/>
 +		/// </summary>
-+		/// <remarks>
-+		/// This set does <strong>not</strong> allow an <see cref="Item"/> to damage trees -- use <see cref="Item.axe"/> for that.
-+		/// </remarks>
  		public static bool[] IsChainsaw = Factory.CreateBoolSet(387, 3098, 1232, 383, 384, 2778, 1197, 1190, 2783, 3463, 1204, 2773, 2342, 579);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a paint scraper.
-+		/// <br/> Paint scrapers can scrape paint off of tiles and collect moss from <see cref="TileID.LongMoss"/>.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a paint scraper.<br/>
++		/// Paint scrapers can scrape paint off of tiles and collect moss from <see cref="TileID.LongMoss"/>.<br/>
++		/// Defaults to <see langword="false"/>.<br/>
 +		/// </summary>
  		public static bool[] IsPaintScraper = Factory.CreateBoolSet(1100, 1545);
 +
@@ -366,17 +379,22 @@
 +		private static bool[] SummonerWeaponThatScalesWithAttackSpeed = Factory.CreateBoolSet(4672, 4679, 4680, 4678, 4913, 4912, 4911, 4914, 5074);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is food.
-+		/// <br/> Food items can be placed onto <see cref="TileID.FoodPlatter"/>s, have a <see cref="Item.holdStyle"/> of <see cref="ItemHoldStyleID.HoldFront"/>, hide shields (<see cref="Item.shieldSlot"/>) when held,
-+		/// <br/> Food item sprites must have 3 frames. The required framing code is automatically initialized.
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is food.<br/>
++		/// Food items:<br/>
++		/// - Can be placed onto <see cref="TileID.FoodPlatter"/>s.<br/>
++		/// - Have a <see cref="Item.holdStyle"/> of <see cref="ItemHoldStyleID.HoldFront"/>.<br/>
++		/// - Hide shields (<see cref="Item.shieldSlot"/>) when held.<br/>
++		/// - Must have 3 frames to their item sprite. The required framing code is automatically initialized.<br/>
++		/// <br/>
++		/// The auto-initialized animation for foods have 3 vertical frames.<br/>
++		/// 1. Inventory sprite<br/>
++		/// 2. Held sprite<br/>
++		/// 3. <see cref="TileID.FoodPlatter"/> sprite<br/>
++		/// <br/>
++		/// <see cref="Item.DefaultToFood(int, int, int, int, bool, int)"/> will set many common item values for food.<br/>
++		/// <br/>
++		/// <b>Corresponding content tag:</b> <c>"food"</c><br/>
 +		/// </summary>
-+		/// <remarks>
-+		/// The auto-initialized animation for  foods have 3 vertical frames.
-+		/// <br/> 1. Inventory sprite
-+		/// <br/> 2. Held sprite
-+		/// <br/> 3. <see cref="TileID.FoodPlatter"/> sprite
-+		/// <br/> <see cref="Item.DefaultToFood(int, int, int, int, bool, int)"/> will set many common item values for food.
-+		/// </remarks>
  		public static bool[] IsFood = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278);
 +
 +		/// <summary>
