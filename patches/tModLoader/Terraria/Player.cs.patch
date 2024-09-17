@@ -296,7 +296,20 @@
  	public float slotsMinions;
  	public bool pygmy;
  	public bool raven;
-@@ -731,6 +_,11 @@
+@@ -726,11 +_,24 @@
+ 	public bool dontHurtCritters;
+ 	public bool hasLucyTheAxe;
+ 	public bool dontHurtNature;
++	/// <summary>
++	/// Used to count time between repeated directional movement key presses. When a directional key is pressed it is set to a value of 15. The value will count down each update until it reaches 0. If the key is pressed again before it reaches 0 it will trigger <see cref="Player.KeyDoubleTap"/>, which will call <see cref="ModPlayer.ArmorSetBonusActivated"/> if the armor set bonus direction key has been pressed. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] doubleTapCardinalTimer = new int[4];
++	/// <summary>
++	/// Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] holdDownCardinalTimer = new int[4];
  	public bool defendedByPaladin;
  	public bool hasPaladinShield;
  	public float[] speedSlice = new float[60];
@@ -471,6 +484,14 @@
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
+@@ -910,6 +_,7 @@
+ 	public bool releaseCreativeMenu;
+ 	public bool tileInteractionHappened;
+ 	public bool tileInteractAttempted;
++	/// <summary> True when the player has been holding <see cref="controlDown"/> for at least 45 ticks. Used by <see cref="ItemID.ShimmerCloak"/>. See also <see cref="holdDownCardinalTimer"/>. </summary>
+ 	public bool controlDownHold;
+ 	public bool isOperatingAnotherEntity;
+ 	public bool autoReuseAllWeapons;
 @@ -943,7 +_,13 @@
  	public Vector2[] shadowOrigin = new Vector2[3];
  	public int[] shadowDirection = new int[3];
@@ -8987,3 +9008,12 @@
  		IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  		_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  	}
+@@ -44032,6 +_,8 @@
+ 			num = 1;
+ 
+ 		if (keyDir == num) {
++			PlayerLoader.ArmorSetBonusHeld(this, holdTime);
++
+ 			if (setStardust && holdTime >= 60)
+ 				MinionRestTargetPoint = Vector2.Zero;
+ 

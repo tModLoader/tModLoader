@@ -1467,4 +1467,13 @@ public static class PlayerLoader
 			modPlayer.ArmorSetBonusActivated();
 		}
 	}
+
+	private static HookList HookArmorSetBonusHeld = AddHook<Action<int>>(p => p.ArmorSetBonusHeld);
+
+	public static void ArmorSetBonusHeld(Player player, int holdTime)
+	{
+		foreach (var modPlayer in HookArmorSetBonusHeld.Enumerate(player)) {
+			modPlayer.ArmorSetBonusHeld(holdTime);
+		}
+	}
 }
