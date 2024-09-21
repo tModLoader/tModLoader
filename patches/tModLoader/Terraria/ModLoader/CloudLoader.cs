@@ -18,10 +18,10 @@ public static class CloudLoader
 
 	public static bool cloudLoaded = false;
 
-	/// <summary> Registers a new cloud with the provided texture. Typically used with <see cref="SimpleModCloud"/> as TCloud for cloud with no additional logic.
-	/// <para/> Use this for any cloud textures not autoloaded by the <see cref="Mod.CloudAutoloadingEnabled"/> logic.
+	/// <summary> Registers a new cloud with the provided texture, spawn chance, and indication if the cloud belongs to the "rare cloud" category. Typically used with <see cref="SimpleModCloud"/> as TCloud for cloud with no additional logic.
+	/// <para/> Use this to manually load a modded cloud rather than making a <see cref="ModCloud"/> class or autoloading the cloud through <see cref="Mod.CloudAutoloadingEnabled"/> logic. 
 	/// </summary>
-	public static bool AddCloudFromTexture<TCloud>(Mod mod, string texture) where TCloud : ModCloud, new()
+	public static bool AddCloudFromTexture<TCloud>(Mod mod, string texture, float spawnChance = 1f, bool rareCloud = false) where TCloud : ModCloud, new()
 	{
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
@@ -34,9 +34,16 @@ public static class CloudLoader
 
 		return mod.AddContent(new TCloud {
 			nameOverride = Path.GetFileNameWithoutExtension(texture),
-			textureOverride = texture
+			textureOverride = texture,
+			spawnChance = spawnChance,
+			rareCloud = rareCloud
 		});
 	}
+
+	/// <summary> Registers a new cloud with the provided texture, spawn chance, and indication if the cloud belongs to the "rare cloud" category.
+	/// <para/> Use this to manually load a modded cloud rather than making a <see cref="ModCloud"/> class or autoloading the cloud through <see cref="Mod.CloudAutoloadingEnabled"/> logic. 
+	/// </summary>
+	public static bool AddCloudFromTexture(Mod mod, string texture, float spawnChance = 1f, bool rareCloud = false) => AddCloudFromTexture<SimpleModCloud>(mod, texture, spawnChance, rareCloud);
 
 	//Called by ModCloud.Register
 	internal static void RegisterModCloud(ModCloud modCloud)
@@ -62,19 +69,18 @@ public static class CloudLoader
 		}
 	}
 
-	public static int? ChooseCloud(int index)
+	public static int? ChooseCloud(float vanillaPool, bool rare)
 	{
 		IDictionary<int, float> pool = new Dictionary<int, float>();
-		pool[0] = 1f;
+		pool[0] = vanillaPool;
 		foreach (ModCloud cloud in clouds.Values) {
-			float weight = cloud.SpawnChance(index);
+			if (rare != cloud.RareCloud)
+				continue;
+			float weight = cloud.SpawnChance();
 			if (weight > 0f) {
 				pool[cloud.Type] = weight;
 			}
 		}
-		//foreach (var g in HookEditSpawnPool.Enumerate()) {
-			//g.EditSpawnPool(pool, spawnInfo);
-		//}
 		float totalWeight = 0f;
 		foreach (int type in pool.Keys) {
 			if (pool[type] < 0f) {
@@ -105,18 +111,19 @@ public static class CloudLoader
 			TextureAssets.Cloud[pair.Key] = ModContent.Request<Texture2D>(pair.Value.Texture);
 		}
 
-		if (!unloading) cloudLoaded = true;
+		if (!unloading)
+			cloudLoaded = true;
 	}
 
 	internal static void Unload()
 	{
 		cloudLoaded = false;
 
-		Cloud.resetClouds();
-
 		CloudCount = CloudID.Count;
 
 		clouds.Clear();
+
+		Cloud.SwapOutModdedClouds();
 	}
 
 	internal static ModCloud GetModCloud(int type)
