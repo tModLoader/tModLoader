@@ -1,8 +1,12 @@
 using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config.UI;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Config;
 
@@ -91,5 +95,36 @@ public abstract class ModConfig : ILocalizedModType
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Opens this config in the config UI.
+	/// <para/> Can be used to allow your own UI to access the config.
+	/// </summary>
+	/// <param name="playSound">Whether <see cref="SoundID.MenuOpen"/> will be played when the UI is opened.</param>
+	/// <param name="onClose">
+	/// A delegate that is called when the back button is pressed to allow for custom back button behaviour.<br/>
+	/// Normally, the user will be taken to the main menu or have the in-game UI closed.
+	/// </param>
+	public void Open(bool playSound = true, Action onClose = null)
+	{
+		if (playSound)
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+
+		Interface.modConfig.SetMod(Mod, this, openedFromModder: true, onClose);
+
+		if (Main.gameMenu) {
+			Main.menuMode = Interface.modConfigID;
+		}
+		else {
+			IngameFancyUI.CoverNextFrame();
+
+			Main.playerInventory = false;
+			Main.editChest = false;
+			Main.npcChatText = "";
+			Main.inFancyUI = true;
+
+			Main.InGameUI.SetState(Interface.modConfig);
+		}
 	}
 }

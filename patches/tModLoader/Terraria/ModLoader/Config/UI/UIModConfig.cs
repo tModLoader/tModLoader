@@ -49,6 +49,9 @@ internal class UIModConfig : UIState
 	private bool updateNeeded;
 	private UIFocusInputTextField filterTextField;
 
+	private bool openedFromModder = false;
+	private Action modderOnClose = null;
+
 	public override void OnInitialize()
 	{
 		uIElement = new UIElement();
@@ -183,13 +186,25 @@ internal class UIModConfig : UIState
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
+		// Sometimes this sound does double up when using ModConfig.Open, but I didn't think it was noticeable
+		// This is because IngameFancyUI.Close() will also play the menu close sound
 		SoundEngine.PlaySound(SoundID.MenuClose);
 
-		if (!Main.gameMenu) {
-			Main.InGameUI.SetState(Interface.modConfigList);
+		// Modder behaviour
+		if (modderOnClose != null) {
+			modderOnClose.Invoke();
+			return;
+		}
+
+		// Default behaviour
+		if (Main.gameMenu) {
+			Main.menuMode = openedFromModder ? MenuID.Title : Interface.modConfigListID;
 		}
 		else {
-			Main.menuMode = Interface.modConfigListID;
+			if (openedFromModder)
+				IngameFancyUI.Close();
+			else
+				Main.InGameUI.SetState(Interface.modConfigList);
 		}
 	}
 
@@ -401,9 +416,11 @@ internal class UIModConfig : UIState
 	// when we get new server configs from server...replace, don't save?
 	// reload manually, reload fresh server config?
 	// need some CopyTo method to preserve references....hmmm
-	internal void SetMod(Mod mod, ModConfig config = null)
+	internal void SetMod(Mod mod, ModConfig config = null, bool openedFromModder = false, Action onClose = null)
 	{
 		this.mod = mod;
+		this.openedFromModder = openedFromModder;
+		this.modderOnClose = onClose;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
 			sortedModConfigs = ConfigManager.Configs[mod].OrderBy(x => x.DisplayName.Value).ToList();
 			modConfig = sortedModConfigs[0];
