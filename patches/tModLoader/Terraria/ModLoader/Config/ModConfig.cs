@@ -103,8 +103,8 @@ public abstract class ModConfig : ILocalizedModType
 	/// </summary>
 	/// <param name="playSound">Whether <see cref="SoundID.MenuOpen"/> will be played when the UI is opened.</param>
 	/// <param name="onClose">
-	/// A delegate that is called when the back button is pressed to allow for custom back button behaviour.<br/>
-	/// Normally, the user will be taken to the main menu or have the in-game UI closed.
+	/// A delegate that is called when the back button is pressed to allow for custom back button behaviour.
+	/// <para/> Normally, the user will be taken to the main menu or have the in-game UI closed.
 	/// </param>
 	public void Open(bool playSound = true, Action onClose = null)
 	{
