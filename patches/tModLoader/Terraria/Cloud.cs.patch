@@ -52,7 +52,7 @@
  		Rectangle rectangle = new Rectangle((int)Main.cloud[num].position.X, (int)Main.cloud[num].position.Y, Main.cloud[num].width, Main.cloud[num].height);
  		for (int j = 0; j < 200; j++) {
  			if (num != j && Main.cloud[j].active) {
-@@ -143,7 +_,15 @@
+@@ -143,6 +_,13 @@
  		int num = -1;
  		bool flag = false;
  		while (!flag) {
@@ -64,7 +64,5 @@
 +			}
 +
  			num = ((!Main.tenthAnniversaryWorld) ? rand.Next(22, 41) : rand.Next(22, 37));
-+
  			switch (num) {
  				default:
- 					flag = true;

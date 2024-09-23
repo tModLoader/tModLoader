@@ -71,6 +71,8 @@ public static class CloudLoader
 
 	public static int? ChooseCloud(float vanillaPool, bool rare)
 	{
+		if (!cloudLoaded)
+			return 0;
 		IDictionary<int, float> pool = new Dictionary<int, float>();
 		pool[0] = vanillaPool;
 		foreach (ModCloud cloud in clouds.Values) {

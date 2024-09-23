@@ -1,8 +1,7 @@
 ﻿using ExampleMod.Content.Biomes;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Clouds
@@ -20,6 +19,7 @@ namespace ExampleMod.Content.Clouds
 			if (!Main.gameMenu && Main.LocalPlayer.InModBiome<ExampleSurfaceBiome>()) {
 				return 10f;
 			}
+			// Since this is a rare cloud, remember that this default spawn chance value is in relation to other rare clouds. If you would like to force this cloud to be more common to see it in action, change RareCloud above to false.
 			return 1f;
 		}
 
@@ -28,23 +28,14 @@ namespace ExampleMod.Content.Clouds
 			cloud.spriteDir = SpriteEffects.None;
 		}
 
-		public override bool Draw(SpriteBatch spriteBatch, Vector2 position, ref Color color, int cloudIndex) {
-			Cloud cloud = Main.cloud[cloudIndex];
-
-			if (Main.rand.NextBool(2)) {
-				spriteBatch.Draw(
-					TextureAssets.Cloud[cloud.type].Value,
-					position,
-					new Rectangle(0, 0, TextureAssets.Cloud[cloud.type].Width(), TextureAssets.Cloud[cloud.type].Height()),
-					color /** num7*/,
-					cloud.rotation,
-					new Vector2((float)TextureAssets.Cloud[cloud.type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud.type].Height() * 0.5f),
-					cloud.scale,
-					cloud.spriteDir,
-					0f);
-				return false;
+		public override bool Draw(SpriteBatch spriteBatch, Cloud cloud, int cloudIndex, ref DrawData drawData) {
+			// Manual draw code can happen here. This example draws an after-image while in ExampleSurfaceBiome.
+			if (!Main.gameMenu && Main.LocalPlayer.InModBiome<ExampleSurfaceBiome>()) {
+				var drawDataCopy = drawData;
+				drawDataCopy.color *= 0.5f;
+				drawDataCopy.position += Utils.NextVector2Circular(Main.rand, 5, 5);
+				drawDataCopy.Draw(spriteBatch);
 			}
-
 			return true;
 		}
 	}
