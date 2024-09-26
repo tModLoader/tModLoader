@@ -100,31 +100,31 @@ public abstract class ModConfig : ILocalizedModType
 	/// <summary>
 	/// Opens this config in the config UI.
 	/// <para/> Can be used to allow your own UI to access the config.
+	/// <para/> <paramref name="onClose"/> can be used to run code after the config is closed, such as opening a modded UI or showing a message to the user.
+	/// <para/> <paramref name="scrollToOption"/> can be used to scroll to a specific member of the config and highlight it. It can also be used to scroll to the header above a member using the format <c>"Header:{MemberNameHere}"</c>. If the member has <c>[SeparatePage]</c> then the subpage will open automatically as well. Set <paramref name="centerScrolledOption"/> to false if you'd like the config option to be at the top of the list when focused instead of at the center.
 	/// </summary>
+	/// <param name="onClose">A delegate that is called when the back button is pressed to allow for custom back button behavior.</param>
+	/// <param name="scrollToOption">The name of a field of the ModConfig to scroll to.</param>
+	/// <param name="centerScrolledOption"></param>
 	/// <param name="playSound">Whether <see cref="SoundID.MenuOpen"/> will be played when the UI is opened.</param>
-	/// <param name="onClose">
-	/// A delegate that is called when the back button is pressed to allow for custom back button behaviour.
-	/// <para/> Normally, the user will be taken to the main menu or have the in-game UI closed.
-	/// </param>
-	public void Open(bool playSound = true, Action onClose = null)
-	{
+	public void Open(Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true, bool playSound = true)
+	{ 
 		if (playSound)
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 
-		Interface.modConfig.SetMod(Mod, this, openedFromModder: true, onClose);
+		Interface.modConfig.SetMod(Mod, this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
 
 		if (Main.gameMenu) {
 			Main.menuMode = Interface.modConfigID;
 		}
 		else {
 			IngameFancyUI.CoverNextFrame();
-
 			Main.playerInventory = false;
 			Main.editChest = false;
 			Main.npcChatText = "";
 			Main.inFancyUI = true;
-
 			Main.InGameUI.SetState(Interface.modConfig);
+			// Same as IngameFancyUI.OpenUIState(Interface.modConfig); except no ClearChat()
 		}
 	}
 }
