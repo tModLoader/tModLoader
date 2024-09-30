@@ -19,6 +19,10 @@ using ReLogic.Content;
 using System.Runtime.CompilerServices;
 using Terraria.Social.Steam;
 using Terraria.ModLoader.Exceptions;
+using System.Text;
+using ReLogic.Localization.IME.WinImm32;
+using Terraria.Social.Base;
+using System.IO;
 
 namespace Terraria.ModLoader;
 
@@ -149,59 +153,12 @@ public static class ModLoader
 			Load(); // don't provide a token, loading just ModLoaderMod should be quick
 		}
 		catch (Exception e) {
-			var responsibleMods = new List<string>();
-			if (e.Data.Contains("mod"))
-				responsibleMods.Add((string)e.Data["mod"]);
-			if (e.Data.Contains("mods"))
-				responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
-			responsibleMods.Remove("ModLoader");
+			var responsibleMods = GetResponsibleModsFromException(e);
 
-			if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
-				responsibleMods.Add(stackMod);
+			var msg = CalculateLoadExceptionMessage(e, responsibleMods, availableMods);
 
-			var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
-			if (responsibleMods.Count == 1) {
-				var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
-				if (mod != null)
-					msg += $" v{mod.Version}";
-				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
-					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
-				else if (mod != null)
-					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
-					SteamedWraps.QueueForceValidateSteamInstall();
-
-				if (e is Exceptions.JITException)
-					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
-			}
-			if (responsibleMods.Count > 0)
-				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
-			else
-				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown");
-
-			if (e is ReflectionTypeLoadException reflectionTypeLoadException)
-				msg += "\n\n" + string.Join("\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message));
-
-			if (e.Data.Contains("contentType") && e.Data["contentType"] is Type contentType)
-				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
-
-			foreach (var mod in responsibleMods) {
-				DisableModAndDependents(mod);
-			}
-			void DisableModAndDependents(string mod)
-			{
-				DisableMod(mod);
-
-				var dependents = availableMods
-					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
-					.Select(m => m.Name);
-
-				foreach (var dependent in dependents) {
-					DisableModAndDependents(dependent);
-				}
-			}
+			DisableErroringMods(responsibleMods, availableMods);
 			
-			Logging.tML.Error(msg, e);
-
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
 			DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 		}
@@ -212,6 +169,104 @@ public static class ModLoader
 			ModNet.NetReloadActive = false;
 			//TODO: FUTURE
 			//GOGModUpdateChecker.CheckModUpdates();
+		}
+	}
+
+	private static List<string> GetResponsibleModsFromException(Exception e)
+	{
+		var responsibleMods = new List<string>();
+		if (e.Data.Contains("mod"))
+			responsibleMods.Add((string)e.Data["mod"]);
+		if (e.Data.Contains("mods"))
+			responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
+		responsibleMods.Remove("ModLoader");
+
+		if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
+			responsibleMods.Add(stackMod);
+
+		return responsibleMods;
+	}
+
+	private static string CalculateLoadExceptionMessage(Exception exception, List<string> responsibleMods, LocalMod[] availableMods)
+	{
+		var sb = new StringBuilder();
+		sb.AppendLine("Mod(s) Failed To Load");
+
+		List<LocalMod> erroringMods = new List<LocalMod>();
+
+		// Player First Impression Section
+		if (responsibleMods.Count == 0) {
+			sb.AppendLine(Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown"));
+		}
+		else {
+			erroringMods = availableMods.Where(mod => responsibleMods.Contains(mod.Name)).ToList();
+
+			foreach (var item in erroringMods) {
+				// For whatever reason \t doesn't work here? - Solxan, June 7 2024
+				sb.AppendLine($"   {item.DisplayName} v{item.Version}, built for tML v{item.tModLoaderVersion}");
+			}
+
+			sb.AppendLine("\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled"));
+		}
+
+		sb.AppendLine("-----------------------------------------------");
+
+		// Player Possible Fixes Section
+		sb.AppendLine("Possible load issue causes are:");
+
+		(bool relevant, string desc)[] commonIssues = {
+			(false, "A dependency mod may have updated and this mod is out of date with the dependency"),
+			(false, $"You attempted to load a Stable mod on {BuildInfo.Purpose} tModLoader"),
+			(false, $"You attempted to load a {"1.3/1.4.3"} mod on {SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion)}"),
+			(false, "You are using a different tML version than the 'Frozen' modpack"),
+		};
+
+		foreach (var item in erroringMods) {
+			commonIssues[0].relevant |= item.properties.modReferences.Length > 0;
+			commonIssues[1].relevant |= !BuildInfo.IsStable && item.tModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
+			commonIssues[2].relevant |= SocialBrowserModule.GetBrowserVersionNumber(item.tModLoaderVersion) != SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
+			commonIssues[3].relevant |= item.location == ModLocation.Modpack && new Version(File.ReadLines(Path.Combine(ModOrganizer.ModPackActive, "Mods", "tmlversion.txt")).FirstOrDefault()).MajorMinor() != BuildInfo.tMLVersion.MajorMinor();
+		}
+
+		foreach (var item in commonIssues.Where(item => item.relevant)) {
+			sb.AppendLine($"   {item.desc}");
+		}
+
+		sb.AppendLine("-----------------------------------------------");
+
+		// Getting Real Technical Section
+
+		sb.AppendLine($"For Support, Include Files at \"Open Logs\" and errors below");
+
+		if (exception is Exceptions.JITException)
+			sb.AppendLine($"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.");
+
+		if (exception is ReflectionTypeLoadException reflectionTypeLoadException)
+			sb.AppendLine("\n" + string.Join("\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message)));
+
+		if (exception.Data.Contains("contentType") && exception.Data["contentType"] is Type contentType)
+			sb.AppendLine(Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName));
+
+		return sb.ToString();
+	} 
+
+	private static void DisableErroringMods(List<string> responsibleMods, LocalMod[] availableMods)
+	{
+		foreach (var mod in responsibleMods) {
+			DisableModAndDependents(mod);
+		}
+
+		void DisableModAndDependents(string mod)
+		{
+			DisableMod(mod);
+
+			var dependents = availableMods
+				.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
+				.Select(m => m.Name);
+
+			foreach (var dependent in dependents) {
+				DisableModAndDependents(dependent);
+			}
 		}
 	}
 
@@ -237,7 +292,6 @@ public static class ModLoader
 			if (e.Data.Contains("mod"))
 				msg += "\n" + Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"]);
 
-			Logging.tML.Fatal(msg, e);
 			DisplayLoadError(msg, e, true);
 
 			return false;
@@ -280,7 +334,14 @@ public static class ModLoader
 
 	private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
 	{
-		msg += "\n\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
+		// These being first ensure that even if the 'hideStackTrace' is 'SET' (ie hide stack) that the trace still shows in the log.
+		if (fatal)
+			Logging.tML.Fatal(msg, e);
+		else
+			Logging.tML.Error(msg, e);
+
+		// tML uses hideStackTrace internally on errors where the stack trace would be all tML, and just detract from the message. - CB
+		msg += "\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
 
 		if (Main.dedServ) {
 			Console.ForegroundColor = ConsoleColor.Red;
