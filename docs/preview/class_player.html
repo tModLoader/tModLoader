@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -2207,6 +2207,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>controlDown</b></td><
 <tr class="separator:adaf1d89f06c1085379431670f8c1eb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32316bda22ef6f043114926a0a9d6909"><td class="memItemLeft" align="right" valign="top"><a id="a32316bda22ef6f043114926a0a9d6909" name="a32316bda22ef6f043114926a0a9d6909"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>controlDownHold</b></td></tr>
+<tr class="memdesc:a32316bda22ef6f043114926a0a9d6909"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when the player has been holding controlDown for at least 45 ticks. Used by ItemID.ShimmerCloak. See also <a class="el" href="class_player.html#a04c89cfe9ebf6a6de95c5d2d83ff7dcf" title="Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately...">holdDownCardinalTimer</a>. <br /></td></tr>
 <tr class="separator:a32316bda22ef6f043114926a0a9d6909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5771c75d5604ed1fda2ef567c85b4a9f"><td class="memItemLeft" align="right" valign="top"><a id="a5771c75d5604ed1fda2ef567c85b4a9f" name="a5771c75d5604ed1fda2ef567c85b4a9f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>controlHook</b></td></tr>
@@ -2444,6 +2445,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>dontStarveShader</b><
 <tr class="separator:a9036aaf32b9eb30626d7edfd1782d5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c393753b377985bd8619d4868fc25a6"><td class="memItemLeft" align="right" valign="top"><a id="a4c393753b377985bd8619d4868fc25a6" name="a4c393753b377985bd8619d4868fc25a6"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>doubleTapCardinalTimer</b> = new int[4]</td></tr>
+<tr class="memdesc:a4c393753b377985bd8619d4868fc25a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to count time between repeated directional movement key presses. When a directional key is pressed it is set to a value of 15. The value will count down each update until it reaches 0. If the key is pressed again before it reaches 0 it will trigger Player.KeyDoubleTap, which will call <a class="el" href="class_mod_player.html#af9057df46f682f9e1c44f4c09b94214b" title="This is called when the player activates their armor set bonus by double tapping down (or up if Main....">ModPlayer.ArmorSetBonusActivated</a> if the armor set bonus direction key has been pressed. Updated immediately before <a class="el" href="class_mod_player.html#a891a9922ddd7f63b9d4e56e4231f3838" title="Use this to modify the control inputs that the player receives. For example, the Confused debuff swap...">ModPlayer.SetControls</a>.  <br /></td></tr>
 <tr class="separator:a4c393753b377985bd8619d4868fc25a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8547cedb43088c531df061a5644427ec"><td class="memItemLeft" align="right" valign="top"><a id="a8547cedb43088c531df061a5644427ec" name="a8547cedb43088c531df061a5644427ec"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>downedDD2EventAnyDifficulty</b></td></tr>
@@ -2867,6 +2869,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>highestStormTigerGemOr
 <tr class="separator:a816ff8bd1d5696aa72685a4a08994ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04c89cfe9ebf6a6de95c5d2d83ff7dcf"><td class="memItemLeft" align="right" valign="top"><a id="a04c89cfe9ebf6a6de95c5d2d83ff7dcf" name="a04c89cfe9ebf6a6de95c5d2d83ff7dcf"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>holdDownCardinalTimer</b> = new int[4]</td></tr>
+<tr class="memdesc:a04c89cfe9ebf6a6de95c5d2d83ff7dcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately before <a class="el" href="class_mod_player.html#a891a9922ddd7f63b9d4e56e4231f3838" title="Use this to modify the control inputs that the player receives. For example, the Confused debuff swap...">ModPlayer.SetControls</a>.  <br /></td></tr>
 <tr class="separator:a04c89cfe9ebf6a6de95c5d2d83ff7dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a919f2491ea589b564e2597f3f1ad75ad"><td class="memItemLeft" align="right" valign="top"><a id="a919f2491ea589b564e2597f3f1ad75ad" name="a919f2491ea589b564e2597f3f1ad75ad"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>honey</b></td></tr>
@@ -3923,6 +3926,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>scope</b></td></tr>
 <tr class="separator:a918eeeed93016d0b82affc767fc98f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a171158f63535ae72a7fb39a529bac0ab"><td class="memItemLeft" align="right" valign="top"><a id="a171158f63535ae72a7fb39a529bac0ab" name="a171158f63535ae72a7fb39a529bac0ab"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>selectedItem</b></td></tr>
+<tr class="memdesc:a171158f63535ae72a7fb39a529bac0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of the <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a> currently selected by the player. To access the <a class="el" href="class_item.html">Item</a> directly use <a class="el" href="class_player.html#abfc65e140a13f059b350e7b39a27c24b" title="The Item within the inventory currently selected by the player.">HeldItem</a> instead. <br /></td></tr>
 <tr class="separator:a171158f63535ae72a7fb39a529bac0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c89a5232e70d6c6cf64226ecaab515c"><td class="memItemLeft" align="right" valign="top"><a id="a3c89a5232e70d6c6cf64226ecaab515c" name="a3c89a5232e70d6c6cf64226ecaab515c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>selectItemOnNextUse</b></td></tr>
@@ -4910,6 +4914,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>HeightOffsetVisual</
 <tr class="separator:a9da3ae1baf6c5b183c36122a40632ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfc65e140a13f059b350e7b39a27c24b"><td class="memItemLeft" align="right" valign="top"><a id="abfc65e140a13f059b350e7b39a27c24b" name="abfc65e140a13f059b350e7b39a27c24b"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HeldItem</b><code> [get]</code></td></tr>
+<tr class="memdesc:abfc65e140a13f059b350e7b39a27c24b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a> currently selected by the player. <br /></td></tr>
 <tr class="separator:abfc65e140a13f059b350e7b39a27c24b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3de1f739d39d19c07afeccefb714e24"><td class="memItemLeft" align="right" valign="top"><a id="ae3de1f739d39d19c07afeccefb714e24" name="ae3de1f739d39d19c07afeccefb714e24"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>HitboxForBestiaryNearbyCheck</b><code> [get]</code></td></tr>

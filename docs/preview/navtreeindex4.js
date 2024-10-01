@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"class_flower_packet_info.html#a4fbc74cc06db4d5944fa8ac21359b8be":[3,0,404,1],
+"class_flower_packet_info.html#a7c28ec29283876d8db33e785ddd9f040":[3,0,404,2],
+"class_folder_creation_failed_exception.html":[3,0,405],
 "class_font_assets.html":[3,0,406],
 "class_forest_biome.html":[3,0,407],
 "class_found_workshop_entry_info.html":[3,0,408],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "class_global_item.html#a1256459afe9e1391256f354bd36606a8":[3,0,457,23],
 "class_global_item.html#a134744212a799fe6834c9ec4443892eb":[3,0,457,81],
 "class_global_item.html#a154b871aa480a8550ac81df75df73b9c":[3,0,457,17],
-"class_global_item.html#a16fbe1d1170313ae5c1c131c8a75116c":[3,0,457,34],
-"class_global_item.html#a1f5a5d167ad652b5de43ae418a3fff2a":[3,0,457,19],
-"class_global_item.html#a25c2302b95165664e3451f658a41e720":[3,0,457,26],
-"class_global_item.html#a28031e08af485c7d38a5fb03145d3842":[3,0,457,103]
+"class_global_item.html#a16fbe1d1170313ae5c1c131c8a75116c":[3,0,457,34]
 };

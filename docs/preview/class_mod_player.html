@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -113,6 +113,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4eba6c93717354fc57d7145664cd5a95"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a4eba6c93717354fc57d7145664cd5a95">AnglerQuestReward</a> (float rareMultiplier, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_item.html">Item</a> &gt; rewardItems)</td></tr>
 <tr class="memdesc:a4eba6c93717354fc57d7145664cd5a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add to, change, or remove from the items the player earns when finishing an Angler quest. The rareMultiplier is a number between 0.15 and 1 inclusively; the lower it is the higher chance there should be for the player to earn rare items.  <a href="class_mod_player.html#a4eba6c93717354fc57d7145664cd5a95">More...</a><br /></td></tr>
 <tr class="separator:a4eba6c93717354fc57d7145664cd5a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9057df46f682f9e1c44f4c09b94214b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#af9057df46f682f9e1c44f4c09b94214b">ArmorSetBonusActivated</a> ()</td></tr>
+<tr class="memdesc:af9057df46f682f9e1c44f4c09b94214b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called when the player activates their armor set bonus by double tapping down (or up if Main.ReversedUpDownArmorSetBonuses is true). As an example, the Vortex armor uses this to toggle stealth mode.  <a href="class_mod_player.html#af9057df46f682f9e1c44f4c09b94214b">More...</a><br /></td></tr>
+<tr class="separator:af9057df46f682f9e1c44f4c09b94214b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f7ab038c72693153dbb418fed131dc9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a5f7ab038c72693153dbb418fed131dc9">ArmorSetBonusHeld</a> (int holdTime)</td></tr>
+<tr class="memdesc:a5f7ab038c72693153dbb418fed131dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called when the player activates their armor set bonus by holding down (or up if Main.ReversedUpDownArmorSetBonuses is true) for some amount of time. The <em>holdTime</em>  parameter indicates how many ticks the key has been held down for. As an example, the Stardust armor prior to 1.4.4 used to use this to set the location of the Stardust Guardian if <em>holdTime</em>  was greater than 60.  <a href="class_mod_player.html#a5f7ab038c72693153dbb418fed131dc9">More...</a><br /></td></tr>
+<tr class="separator:a5f7ab038c72693153dbb418fed131dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ddd550c1c3a464c384977f3796ae85e"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a5ddd550c1c3a464c384977f3796ae85e">CanAutoReuseItem</a> (<a class="el" href="class_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a5ddd550c1c3a464c384977f3796ae85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with <a class="el" href="class_item.html#a376a17bbe7a00d603833cde54a63ae27" title="Whether the item is in continuous use while the mouse button is held down.   Defaults to false.">Item.autoReuse</a>. <br  />
 Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable. <br  />
@@ -526,7 +532,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PreUpdateMove
 <tr class="memdesc:af4a674ca3cc6de7c2d0577d342a782c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called right before modifying the player's position based on velocity. Use this to make direct changes to the velocity. <br /></td></tr>
 <tr class="separator:af4a674ca3cc6de7c2d0577d342a782c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e944fb688c4303197cc0b5d463448ea"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a8e944fb688c4303197cc0b5d463448ea">ProcessTriggers</a> (<a class="el" href="class_triggers_set.html">TriggersSet</a> triggersSet)</td></tr>
-<tr class="memdesc:a8e944fb688c4303197cc0b5d463448ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.  <a href="class_mod_player.html#a8e944fb688c4303197cc0b5d463448ea">More...</a><br /></td></tr>
+<tr class="memdesc:a8e944fb688c4303197cc0b5d463448ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay. Read ExampleKeybindPlayer.csfor examples and information on using this hook.  <a href="class_mod_player.html#a8e944fb688c4303197cc0b5d463448ea">More...</a><br /></td></tr>
 <tr class="separator:a8e944fb688c4303197cc0b5d463448ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07262283140e5f0b7977051b678b26b1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a07262283140e5f0b7977051b678b26b1">RefreshInfoAccessoriesFromTeamPlayers</a> (<a class="el" href="class_player.html">Player</a> otherPlayer)</td></tr>
 <tr class="memdesc:a07262283140e5f0b7977051b678b26b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you set any fields related to INFORMATION accessories based on the passed in player argument. Note that this hook is only called if all of the requirements for a "nearby teammate" is met, which is when the other player is on the same team and within a certain distance, determined by the following code:  <a href="class_mod_player.html#a07262283140e5f0b7977051b678b26b1">More...</a><br /></td></tr>
@@ -834,6 +840,67 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af9057df46f682f9e1c44f4c09b94214b" name="af9057df46f682f9e1c44f4c09b94214b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9057df46f682f9e1c44f4c09b94214b">&#9670;&nbsp;</a></span>ArmorSetBonusActivated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModPlayer.ArmorSetBonusActivated </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is called when the player activates their armor set bonus by double tapping down (or up if Main.ReversedUpDownArmorSetBonuses is true). As an example, the Vortex armor uses this to toggle stealth mode. </p>
+<p >Use this to implement armor set bonuses that need to be activated by the player. </p>
+<p >Don't forget to check if your armor set is active. </p>
+<p >While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <a class="el" href="class_player.html#a04c89cfe9ebf6a6de95c5d2d83ff7dcf" title="Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately...">Player.holdDownCardinalTimer</a> and <a class="el" href="class_player.html#a4c393753b377985bd8619d4868fc25a6" title="Used to count time between repeated directional movement key presses. When a directional key is press...">Player.doubleTapCardinalTimer</a> directly in other hooks for similar effects if needed. </p>
+
+</div>
+</div>
+<a id="a5f7ab038c72693153dbb418fed131dc9" name="a5f7ab038c72693153dbb418fed131dc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f7ab038c72693153dbb418fed131dc9">&#9670;&nbsp;</a></span>ArmorSetBonusHeld()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModPlayer.ArmorSetBonusHeld </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>holdTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is called when the player activates their armor set bonus by holding down (or up if Main.ReversedUpDownArmorSetBonuses is true) for some amount of time. The <em>holdTime</em>  parameter indicates how many ticks the key has been held down for. As an example, the Stardust armor prior to 1.4.4 used to use this to set the location of the Stardust Guardian if <em>holdTime</em>  was greater than 60. </p>
+<p >Use this to implement armor set bonuses that need to be activated by the player. </p>
+<p >Don't forget to check if your armor set is active. </p>
+<p >While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <a class="el" href="class_player.html#a04c89cfe9ebf6a6de95c5d2d83ff7dcf" title="Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately...">Player.holdDownCardinalTimer</a> and <a class="el" href="class_player.html#a4c393753b377985bd8619d4868fc25a6" title="Used to count time between repeated directional movement key presses. When a directional key is press...">Player.doubleTapCardinalTimer</a> directly in other hooks for similar effects if needed. </p>
 
 </div>
 </div>
@@ -4357,7 +4424,7 @@ Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278
 </table>
 </div><div class="memdoc">
 
-<p>Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay. </p>
+<p>Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay. Read ExampleKeybindPlayer.csfor examples and information on using this hook. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">triggersSet</td><td></td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -168,8 +168,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LeftClick</b>
 <tr class="memitem:ad38f4c925a9dc6274a873f67984bfee7"><td class="memItemLeft" align="right" valign="top"><a id="ad38f4c925a9dc6274a873f67984bfee7" name="ad38f4c925a9dc6274a873f67984bfee7"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LeftDoubleClick</b> (<a class="el" href="class_u_i_mouse_event.html">UIMouseEvent</a> evt)</td></tr>
 <tr class="separator:ad38f4c925a9dc6274a873f67984bfee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a374e6f8ed6a3a633aa8a2f05f9a374d7"><td class="memItemLeft" align="right" valign="top"><a id="a374e6f8ed6a3a633aa8a2f05f9a374d7" name="a374e6f8ed6a3a633aa8a2f05f9a374d7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LeftMouseDown</b> (<a class="el" href="class_u_i_mouse_event.html">UIMouseEvent</a> evt)</td></tr>
+<tr class="memitem:a374e6f8ed6a3a633aa8a2f05f9a374d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_i_element.html#a374e6f8ed6a3a633aa8a2f05f9a374d7">LeftMouseDown</a> (<a class="el" href="class_u_i_mouse_event.html">UIMouseEvent</a> evt)</td></tr>
+<tr class="memdesc:a374e6f8ed6a3a633aa8a2f05f9a374d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the <a class="el" href="class_u_i_element.html">UIElement</a> under the mouse is left clicked. The default code calls the OnLeftMouseDown event and then calls <a class="el" href="class_u_i_element.html#a374e6f8ed6a3a633aa8a2f05f9a374d7" title="Called when the UIElement under the mouse is left clicked. The default code calls the OnLeftMouseDown...">LeftMouseDown</a> on the Parent element. Since the method is called on all parent elements in the hierarchy, check <code>if (evt.Target == this)</code> for code only interested in direct clicks to this element. Children elements overlaying this element can be ignored by setting <a class="el" href="class_u_i_element.html#a9cae2bfa345e497da623a9ecf27ab525" title="If true, this element will be ignored for mouse interactions. This can be used to allow UIElement pla...">IgnoresMouseInteraction</a> to true on them.  <a href="class_u_i_element.html#a374e6f8ed6a3a633aa8a2f05f9a374d7">More...</a><br /></td></tr>
 <tr class="separator:a374e6f8ed6a3a633aa8a2f05f9a374d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe22846ce0cd949b4b0b287ae0156d7c"><td class="memItemLeft" align="right" valign="top"><a id="afe22846ce0cd949b4b0b287ae0156d7c" name="afe22846ce0cd949b4b0b287ae0156d7c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LeftMouseUp</b> (<a class="el" href="class_u_i_mouse_event.html">UIMouseEvent</a> evt)</td></tr>
@@ -195,14 +195,14 @@ delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>MouseEvent</
 <tr class="memitem:acace109bb7f688425529040c3cefdacb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_i_element.html#acace109bb7f688425529040c3cefdacb">MouseOver</a> (<a class="el" href="class_u_i_mouse_event.html">UIMouseEvent</a> evt)</td></tr>
 <tr class="memdesc:acace109bb7f688425529040c3cefdacb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once when this <a class="el" href="class_u_i_element.html">UIElement</a> becomes moused over (hovered). Default implementation sets <a class="el" href="class_u_i_element.html#aba62cb6c45cec2084e04c79e464e7e54" title="True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or...">IsMouseHovering</a> to true, calls <a class="el" href="class_u_i_element.html#ac7736aa1484dbdc46bfa15d4ec421544" title="Called by MouseOver(UIMouseEvent). Use this event instead of inheritance if suitable.">OnMouseOver</a> event, then calls this same method on the Parent element. Useful for changing visuals to indicate the element is interactable, as is the <a class="el" href="class_u_i_element.html#ac7736aa1484dbdc46bfa15d4ec421544" title="Called by MouseOver(UIMouseEvent). Use this event instead of inheritance if suitable.">OnMouseOver</a> event. Any code that needs to run as long as the element is hovered should use check <a class="el" href="class_u_i_element.html#aba62cb6c45cec2084e04c79e464e7e54" title="True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or...">IsMouseHovering</a> in Update(GameTime). <a class="el" href="class_u_i_element.html#ae7de30e265aacf3df915d1132f371e60" title="Called once when this UIElement is no longer moused over. Default implementation sets IsMouseHovering...">MouseOut(UIMouseEvent)</a> will be called when it no longer hovered.  <a href="class_u_i_element.html#acace109bb7f688425529040c3cefdacb">More...</a><br /></td></tr>
 <tr class="separator:acace109bb7f688425529040c3cefdacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a232530774c8530e65b675f4c86b6dfbd"><td class="memItemLeft" align="right" valign="top"><a id="a232530774c8530e65b675f4c86b6dfbd" name="a232530774c8530e65b675f4c86b6dfbd"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnActivate</b> ()</td></tr>
+<tr class="memitem:a232530774c8530e65b675f4c86b6dfbd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_i_element.html#a232530774c8530e65b675f4c86b6dfbd">OnActivate</a> ()</td></tr>
+<tr class="memdesc:a232530774c8530e65b675f4c86b6dfbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called each time this element is activated, which is usually when a <a class="el" href="class_u_i_state.html">UIState</a> is activated via UserInterface.SetState(UIState). Use this to run code to update elements whenever the UI is toggled on.  <a href="class_u_i_element.html#a232530774c8530e65b675f4c86b6dfbd">More...</a><br /></td></tr>
 <tr class="separator:a232530774c8530e65b675f4c86b6dfbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab68b757918a1a9cb016b900d3f770a40"><td class="memItemLeft" align="right" valign="top"><a id="ab68b757918a1a9cb016b900d3f770a40" name="ab68b757918a1a9cb016b900d3f770a40"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnDeactivate</b> ()</td></tr>
 <tr class="separator:ab68b757918a1a9cb016b900d3f770a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38a8b3ad267ccce9474b6907aa274cdf"><td class="memItemLeft" align="right" valign="top"><a id="a38a8b3ad267ccce9474b6907aa274cdf" name="a38a8b3ad267ccce9474b6907aa274cdf"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnInitialize</b> ()</td></tr>
+<tr class="memitem:a38a8b3ad267ccce9474b6907aa274cdf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_i_element.html#a38a8b3ad267ccce9474b6907aa274cdf">OnInitialize</a> ()</td></tr>
+<tr class="memdesc:a38a8b3ad267ccce9474b6907aa274cdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before the first time this element is activated (see <a class="el" href="class_u_i_element.html#a232530774c8530e65b675f4c86b6dfbd" title="Called each time this element is activated, which is usually when a UIState is activated via UserInte...">OnActivate</a>). Use this method to create and append other <a class="el" href="class_u_i_element.html">UIElement</a> to this to build a UI.  <a href="class_u_i_element.html#a38a8b3ad267ccce9474b6907aa274cdf">More...</a><br /></td></tr>
 <tr class="separator:a38a8b3ad267ccce9474b6907aa274cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee194ceb3c88758159e31761805e6a9d"><td class="memItemLeft" align="right" valign="top"><a id="aee194ceb3c88758159e31761805e6a9d" name="aee194ceb3c88758159e31761805e6a9d"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Recalculate</b> ()</td></tr>
@@ -284,6 +284,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>HAlign</b></td></tr>
 <tr class="separator:a97249ac67d3ee9621de9dddced7c2550"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cae2bfa345e497da623a9ecf27ab525"><td class="memItemLeft" align="right" valign="top"><a id="a9cae2bfa345e497da623a9ecf27ab525" name="a9cae2bfa345e497da623a9ecf27ab525"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IgnoresMouseInteraction</b></td></tr>
+<tr class="memdesc:a9cae2bfa345e497da623a9ecf27ab525"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this element will be ignored for mouse interactions. This can be used to allow <a class="el" href="class_u_i_element.html">UIElement</a> placed over other <a class="el" href="class_u_i_element.html">UIElement</a> to not be the target of mouse clicks. Defaults to false. <br /></td></tr>
 <tr class="separator:a9cae2bfa345e497da623a9ecf27ab525"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a71bfa7a3bc6a2797a55afda4b8ac0e"><td class="memItemLeft" align="right" valign="top"><a id="a7a71bfa7a3bc6a2797a55afda4b8ac0e" name="a7a71bfa7a3bc6a2797a55afda4b8ac0e"></a>
 <a class="el" href="struct_style_dimension.html">StyleDimension</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Left</b></td></tr>
@@ -365,7 +366,7 @@ Properties</h2></td></tr>
 <tr class="separator:a761569514c46a8cb3366bd0f7798dfdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba62cb6c45cec2084e04c79e464e7e54"><td class="memItemLeft" align="right" valign="top"><a id="aba62cb6c45cec2084e04c79e464e7e54" name="aba62cb6c45cec2084e04c79e464e7e54"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMouseHovering</b><code> [get]</code></td></tr>
-<tr class="memdesc:aba62cb6c45cec2084e04c79e464e7e54"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when the mouse is hovering over this <a class="el" href="class_u_i_element.html">UIElement</a>. Useful for setting hover tooltips in DrawSelf or drawing hover visual indicators. Note that this is true for all elements in the heiarchy that are hovered, not just the topmost element. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button and the panel. Use this or <code>ContainsPoint(<a class="el" href="class_main.html#a4061437db22d405c4ca0303118ddc190" title="Fetches the position of the mouse cursor on the screen.  Useful for making things visually happen nea...">Main.MouseScreen</a>)</code> for behaviors that use this logic, such as setting <a class="el" href="class_player.html#aa535eb16289ef45e6af555a9307b286a" title="If true, the mouse is currently overlapping with a user interface so any mouse interaction should be ...">Player.mouseInterface</a> to true. <br /></td></tr>
+<tr class="memdesc:aba62cb6c45cec2084e04c79e464e7e54"><td class="mdescLeft">&#160;</td><td class="mdescRight">True when the mouse is hovering over this <a class="el" href="class_u_i_element.html">UIElement</a>. Useful for setting hover tooltips in DrawSelf or drawing hover visual indicators. Note that this is true for all elements in the hierarchy that are hovered, not just the topmost element. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button and the panel. Use this or <code>ContainsPoint(<a class="el" href="class_main.html#a4061437db22d405c4ca0303118ddc190" title="Fetches the position of the mouse cursor on the screen.  Useful for making things visually happen nea...">Main.MouseScreen</a>)</code> for behaviors that use this logic, such as setting <a class="el" href="class_player.html#aa535eb16289ef45e6af555a9307b286a" title="If true, the mouse is currently overlapping with a user interface so any mouse interaction should be ...">Player.mouseInterface</a> to true. <br /></td></tr>
 <tr class="separator:aba62cb6c45cec2084e04c79e464e7e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c3b69b222a611a5e114ded4c78d2461"><td class="memItemLeft" align="right" valign="top"><a id="a1c3b69b222a611a5e114ded4c78d2461" name="a1c3b69b222a611a5e114ded4c78d2461"></a>
 <a class="el" href="class_u_i_element.html">UIElement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Parent</b><code> [get]</code></td></tr>
@@ -452,6 +453,42 @@ MouseEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnXButton2Mouse
 <tr class="separator:a236b63daec4a251bdde8104512fe7ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a374e6f8ed6a3a633aa8a2f05f9a374d7" name="a374e6f8ed6a3a633aa8a2f05f9a374d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a374e6f8ed6a3a633aa8a2f05f9a374d7">&#9670;&nbsp;</a></span>LeftMouseDown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void UIElement.LeftMouseDown </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_u_i_mouse_event.html">UIMouseEvent</a>&#160;</td>
+          <td class="paramname"><em>evt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called when the <a class="el" href="class_u_i_element.html">UIElement</a> under the mouse is left clicked. The default code calls the OnLeftMouseDown event and then calls <a class="el" href="class_u_i_element.html#a374e6f8ed6a3a633aa8a2f05f9a374d7" title="Called when the UIElement under the mouse is left clicked. The default code calls the OnLeftMouseDown...">LeftMouseDown</a> on the Parent element. Since the method is called on all parent elements in the hierarchy, check <code>if (evt.Target == this)</code> for code only interested in direct clicks to this element. Children elements overlaying this element can be ignored by setting <a class="el" href="class_u_i_element.html#a9cae2bfa345e497da623a9ecf27ab525" title="If true, this element will be ignored for mouse interactions. This can be used to allow UIElement pla...">IgnoresMouseInteraction</a> to true on them. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">evt</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_group_option_button.html#a7180495c26b64d222d9d18d1f46b88cd">GroupOptionButton&lt; T &gt;</a>, <a class="el" href="class_u_i_character_name_button.html#ae842a83961309e6cb8339c2e5424f2e3">UICharacterNameButton</a>, <a class="el" href="class_u_i_cloth_style_button.html#a204946a3068142490a61c1e681709ce2">UIClothStyleButton</a>, <a class="el" href="class_u_i_difficulty_button.html#a4167f22ed92a52d2af65ee3fd811830f">UIDifficultyButton</a>, <a class="el" href="class_u_i_hair_style_button.html#a6be4aa0e444dc8a955548b6487a9569a">UIHairStyleButton</a>, <a class="el" href="class_u_i_icon_text_button.html#a284d28534af38db28a0e16ed1b8c6e80">UIIconTextButton</a>, <a class="el" href="class_u_i_scrollbar.html#a0f4a82e0e32e830beef5ffd77e84c377">UIScrollbar</a>, <a class="el" href="class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e">FixedUIScrollbar</a>, <a class="el" href="class_u_i_search_bar.html#a4317996f2d54d01159fdddbc151e23a4">UISearchBar</a>, and <a class="el" href="class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e">FixedUIScrollbar</a>.</p>
+
+</div>
+</div>
 <a id="ae7de30e265aacf3df915d1132f371e60" name="ae7de30e265aacf3df915d1132f371e60"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7de30e265aacf3df915d1132f371e60">&#9670;&nbsp;</a></span>MouseOut()</h2>
 
@@ -509,6 +546,64 @@ MouseEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnXButton2Mouse
 <p>Called once when this <a class="el" href="class_u_i_element.html">UIElement</a> becomes moused over (hovered). Default implementation sets <a class="el" href="class_u_i_element.html#aba62cb6c45cec2084e04c79e464e7e54" title="True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or...">IsMouseHovering</a> to true, calls <a class="el" href="class_u_i_element.html#ac7736aa1484dbdc46bfa15d4ec421544" title="Called by MouseOver(UIMouseEvent). Use this event instead of inheritance if suitable.">OnMouseOver</a> event, then calls this same method on the Parent element. Useful for changing visuals to indicate the element is interactable, as is the <a class="el" href="class_u_i_element.html#ac7736aa1484dbdc46bfa15d4ec421544" title="Called by MouseOver(UIMouseEvent). Use this event instead of inheritance if suitable.">OnMouseOver</a> event. Any code that needs to run as long as the element is hovered should use check <a class="el" href="class_u_i_element.html#aba62cb6c45cec2084e04c79e464e7e54" title="True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or...">IsMouseHovering</a> in Update(GameTime). <a class="el" href="class_u_i_element.html#ae7de30e265aacf3df915d1132f371e60" title="Called once when this UIElement is no longer moused over. Default implementation sets IsMouseHovering...">MouseOut(UIMouseEvent)</a> will be called when it no longer hovered. </p>
 
 <p>Reimplemented in <a class="el" href="class_emote_button.html#ab7312f19fe1a2e2d86034ecdd7ce0c1d">EmoteButton</a>, <a class="el" href="class_group_option_button.html#a6d57dae7d6d2cf6211fcdd6d941963d7">GroupOptionButton&lt; T &gt;</a>, <a class="el" href="class_u_i_achievement_list_item.html#abdeeda78cb6eb155b2bd58cfb30963b6">UIAchievementListItem</a>, <a class="el" href="class_u_i_character_list_item.html#a29c590edab8d61db663397b0e046297e">UICharacterListItem</a>, <a class="el" href="class_u_i_character_name_button.html#a113d22a7d83a677bfbea8e8753a4f3a7">UICharacterNameButton</a>, <a class="el" href="class_u_i_cloth_style_button.html#afc3e5e26c2f4787408bcd6c08d1367b3">UIClothStyleButton</a>, <a class="el" href="class_u_i_colored_image_button.html#aab33822bd739ccb1840e2a96af15c3c4">UIColoredImageButton</a>, <a class="el" href="class_u_i_difficulty_button.html#ab548b78e17d80a1aa70de17fbe4bcd11">UIDifficultyButton</a>, <a class="el" href="class_u_i_hair_style_button.html#aaaf19b17be1f976df6d658b01106e32c">UIHairStyleButton</a>, <a class="el" href="class_u_i_icon_text_button.html#a01190b03844c1feac424628924a3cd9d">UIIconTextButton</a>, <a class="el" href="class_u_i_image_button.html#a510b4f303fdebdfe09c92dc3415082d6">UIImageButton</a>, <a class="el" href="class_u_i_resource_pack.html#a89291d8567a137d81218a691b9270b70">UIResourcePack</a>, <a class="el" href="class_u_i_search_bar.html#a83a0c6bde2c9b6d5994b3b627b3871db">UISearchBar</a>, <a class="el" href="class_u_i_workshop_import_world_list_item.html#a44a3475f20e74aa56cd3bf4277025924">UIWorkshopImportWorldListItem</a>, <a class="el" href="class_u_i_workshop_publish_resource_pack_list_item.html#ac6d9a6ad73c24f68e6a7d69de4b36b3f">UIWorkshopPublishResourcePackListItem</a>, <a class="el" href="class_u_i_workshop_publish_world_list_item.html#a74f517e9e412f05c400decac62bfca0c">UIWorkshopPublishWorldListItem</a>, <a class="el" href="class_u_i_world_list_item.html#af88e70a7fadac7edf0675aa6b5313de2">UIWorldListItem</a>, and <a class="el" href="class_u_i_button.html#af5ed4180f167c73343b990d6a1b565b5">UIButton&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a232530774c8530e65b675f4c86b6dfbd" name="a232530774c8530e65b675f4c86b6dfbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a232530774c8530e65b675f4c86b6dfbd">&#9670;&nbsp;</a></span>OnActivate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void UIElement.OnActivate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called each time this element is activated, which is usually when a <a class="el" href="class_u_i_state.html">UIState</a> is activated via UserInterface.SetState(UIState). Use this to run code to update elements whenever the UI is toggled on. </p>
+
+<p>Reimplemented in <a class="el" href="class_u_i_achievements_menu.html#ad31ac5c60036a68a907a332784f66c42">UIAchievementsMenu</a>, <a class="el" href="class_u_i_character_select.html#a980352d513ce3f1a73ae9955d3aa0452">UICharacterSelect</a>, <a class="el" href="class_u_i_creative_powers_menu.html#a20cce538df395462dd1e9bf04c9dfc7e">UICreativePowersMenu</a>, <a class="el" href="class_u_i_emotes_menu.html#ad6cd5b75ad415e1b6e6ee9e1435378b0">UIEmotesMenu</a>, <a class="el" href="class_u_i_manage_controls.html#a7538d05b2a6fc21388cf20fd4fa700f3">UIManageControls</a>, <a class="el" href="class_u_i_virtual_keyboard.html#ae60f2f1b1c4db21cafe8f193de50e9df">UIVirtualKeyboard</a>, <a class="el" href="class_u_i_workshop_select_resource_pack_to_publish.html#a0480bab28bde8d6b3456e7f986a1e163">UIWorkshopSelectResourcePackToPublish</a>, <a class="el" href="class_u_i_workshop_select_world_to_publish.html#aeeb429b43b5100a15a8f9e8afec2e489">UIWorkshopSelectWorldToPublish</a>, <a class="el" href="class_u_i_workshop_world_import.html#acbd44fe0f4ccdde2cae876c72b40dee5">UIWorkshopWorldImport</a>, <a class="el" href="class_u_i_world_load.html#a4070b01cd66b595030b27b065ce2a285">UIWorldLoad</a>, <a class="el" href="class_u_i_world_select.html#a8a720b9af588ebeb42ce6911615519e7">UIWorldSelect</a>, <a class="el" href="class_u_i_button.html#a65fbac9b9422b970f825c95f542e055c">UIButton&lt; T &gt;</a>, and <a class="el" href="class_u_i_create_mod.html#ad812299fa8ce141892ff42c4ec05fe7b">UICreateMod</a>.</p>
+
+</div>
+</div>
+<a id="a38a8b3ad267ccce9474b6907aa274cdf" name="a38a8b3ad267ccce9474b6907aa274cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38a8b3ad267ccce9474b6907aa274cdf">&#9670;&nbsp;</a></span>OnInitialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void UIElement.OnInitialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called before the first time this element is activated (see <a class="el" href="class_u_i_element.html#a232530774c8530e65b675f4c86b6dfbd" title="Called each time this element is activated, which is usually when a UIState is activated via UserInte...">OnActivate</a>). Use this method to create and append other <a class="el" href="class_u_i_element.html">UIElement</a> to this to build a UI. </p>
+
+<p>Reimplemented in <a class="el" href="class_a_workshop_publish_info_state.html#ad4a0fbca82213d325b60d9ce9f5f7c14">AWorkshopPublishInfoState&lt; TPublishedObjectType &gt;</a>, <a class="el" href="class_u_i_character_select.html#a751001dc5e0f48e18e4865cbce84d993">UICharacterSelect</a>, <a class="el" href="class_u_i_manage_controls.html#abcb3b87fd02521c9e8fd4f929ae4d61b">UIManageControls</a>, <a class="el" href="class_u_i_reports_page.html#a3cdc676e23edea43c710475b010762a9">UIReportsPage</a>, <a class="el" href="class_u_i_workshop_hub.html#a71274d488c65141c724b6978f1b39ca1">UIWorkshopHub</a>, <a class="el" href="class_u_i_workshop_select_resource_pack_to_publish.html#afdf1f4fde840ac47797db1a02e7cb8b5">UIWorkshopSelectResourcePackToPublish</a>, <a class="el" href="class_u_i_workshop_select_world_to_publish.html#a8e6d146c0db34e70adfdf3c17bbd053f">UIWorkshopSelectWorldToPublish</a>, <a class="el" href="class_u_i_workshop_world_import.html#a164db7a265e997976c88445d7b72aa50">UIWorkshopWorldImport</a>, <a class="el" href="class_u_i_world_select.html#a58ade7374de0fc2a2ca1951b3087b397">UIWorldSelect</a>, <a class="el" href="class_u_i_async_list.html#affc0f6f6f62ec7f876adf90ae324dca4">UIAsyncList&lt; TResource, TUIElement &gt;</a>, <a class="el" href="class_u_i_create_mod.html#a916e2aa2c8ee5a2ebaac677a9bc56e69">UICreateMod</a>, and <a class="el" href="class_u_i_progress_bar.html#af0c62345eba63961a6f3e689fe6e027b">UIProgressBar</a>.</p>
 
 </div>
 </div>

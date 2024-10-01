@@ -50,5 +50,6 @@ var searchData=
   ['trygetspecialvanillabossbar_47',['TryGetSpecialVanillaBossBar',['../class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f',1,'BigProgressBarSystem']]],
   ['trygettileentity_3c_20t_20_3e_48',['TryGetTileEntity&lt; T &gt;',['../class_tile_entities_manager.html#a9c183807509ec3f8559bcb777e6c732b',1,'TileEntitiesManager']]],
   ['tryremovingbuff_49',['TryRemovingBuff',['../class_main.html#aa3c33b3a39f7a4e711830285ac31ef7a',1,'Main']]],
-  ['trystackitems_50',['TryStackItems',['../class_item_loader.html#a3d0c6cdead9fd0edcb35f3e7d022ce73',1,'ItemLoader']]]
+  ['trystackitems_50',['TryStackItems',['../class_item_loader.html#a3d0c6cdead9fd0edcb35f3e7d022ce73',1,'ItemLoader']]],
+  ['turn01tocyclic010_51',['Turn01ToCyclic010',['../class_utils.html#aca228fc4af907febee4ed8b26ef811a4',1,'Utils']]]
 ];

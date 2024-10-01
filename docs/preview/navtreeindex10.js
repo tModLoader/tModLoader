@@ -1,5 +1,10 @@
 var NAVTREEINDEX10 =
 {
+"class_mod_boss_bar_style.html#a1cbfd7d2b6e2d2248a27f635fe78184d":[3,0,783,0],
+"class_mod_boss_bar_style.html#a39a7f208068ea73327185a21ed649a99":[3,0,783,2],
+"class_mod_boss_bar_style.html#a5ce08518d3f86ceb8712e313f7980ef9":[3,0,783,8],
+"class_mod_boss_bar_style.html#a7adbb2e8eb8df7fcc711e60703e1501f":[3,0,783,1],
+"class_mod_boss_bar_style.html#a8efc9756fa9339b35538beb7675de4ec":[3,0,783,7],
 "class_mod_boss_bar_style.html#aaeb9a7fce29f5672eff523f262518c48":[3,0,783,5],
 "class_mod_boss_bar_style.html#abbcbce3bb6d224257028813c915eac00":[3,0,783,4],
 "class_mod_boss_bar_style.html#aea871e5ea40ac575930e3ff45a8cd989":[3,0,783,9],
@@ -22,7 +27,8 @@ var NAVTREEINDEX10 =
 "class_mod_buff.html#ae34c447843fdcf24ea8cd77aac57a298":[3,0,786,5],
 "class_mod_buff.html#af671e12140513ca09b843ef929a5a436":[3,0,786,0],
 "class_mod_cactus.html":[3,0,787],
-"class_mod_cactus.html#ab7babf50b1a6e74b1f2809d21f354ff4":[3,0,787,0],
+"class_mod_cactus.html#a36d6a6d5d5eb3c77b90afce57ab3782a":[3,0,787,0],
+"class_mod_cactus.html#ab7babf50b1a6e74b1f2809d21f354ff4":[3,0,787,1],
 "class_mod_command.html":[3,0,788],
 "class_mod_command.html#a0814d1ae7619161d0c17fe10b964f259":[3,0,788,3],
 "class_mod_command.html#a680ae3926ce98f85ca58934b575b6858":[3,0,788,6],
@@ -243,11 +249,5 @@ var NAVTREEINDEX10 =
 "class_mod_item.html#acfc46a2a397ebe4dc8b01308ec1d3126":[3,0,797,50],
 "class_mod_item.html#ad49d48612c92aa85d7aed09c3751116b":[3,0,797,27],
 "class_mod_item.html#ad5305a2412fc1cb117a2169e5fe86148":[3,0,797,118],
-"class_mod_item.html#ad54d410325aebfedcaac6b2e823fc397":[3,0,797,64],
-"class_mod_item.html#ad5bd6cb792fdbd1362c47b0a667444c9":[3,0,797,117],
-"class_mod_item.html#ad7be8dd81f80906af6010da5ff2c3519":[3,0,797,116],
-"class_mod_item.html#ad85e8cb411b7f946f0c05a80c2718085":[3,0,797,22],
-"class_mod_item.html#ada150529cadf44422083fb001e7e18a2":[3,0,797,123],
-"class_mod_item.html#ada827c002db2588cdfe24cfc8c09f6cd":[3,0,797,77],
-"class_mod_item.html#adad802e8465d8ff540f4b960c6e9bd28":[3,0,797,67]
+"class_mod_item.html#ad54d410325aebfedcaac6b2e823fc397":[3,0,797,64]
 };

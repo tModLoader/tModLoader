@@ -11,6 +11,7 @@ var NAVTREEINDEX0 =
 "class_a_workshop_entry.html":[3,0,65],
 "class_a_workshop_progress_reporter.html":[3,0,66],
 "class_a_workshop_publish_info_state.html":[3,0,67],
+"class_a_workshop_publish_info_state.html#ad4a0fbca82213d325b60d9ce9f5f7c14":[3,0,67,0],
 "class_a_workshop_tags_collection.html":[3,0,68],
 "class_a_world_list_item.html":[3,0,69],
 "class_abstract_n_p_c_shop.html":[3,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "class_big_progress_bar_system.html":[3,0,91],
 "class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f":[3,0,91,0],
 "class_binary_i_o.html":[3,0,92],
-"class_biome_conversion_i_d.html":[3,0,94],
-"class_biome_loader.html":[3,0,95]
+"class_biome_conversion_i_d.html":[3,0,94]
 };
