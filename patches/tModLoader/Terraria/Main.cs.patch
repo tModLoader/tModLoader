@@ -6116,12 +6116,17 @@
  			DrawCursor(DrawThickCursor());
  		}
  
-@@ -46491,6 +_,11 @@
+@@ -46491,6 +_,16 @@
  
  	private static void DrawMapFullscreenBackground(Vector2 screenPosition, int screenWidth, int screenHeight)
  	{
 +		if (ModContent.RequestIfExists<Texture2D>(LocalPlayer.CurrentSceneEffect.mapBackground, out var modTexture, AssetRequestMode.ImmediateLoad)) {
-+			spriteBatch.Draw(modTexture.Value, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
++			var modSceneEffect = LocalPlayer.CurrentSceneEffect.mapBackgroundSceneEffect;
++			Color modMapColor = Color.White;
++			if (modSceneEffect?.MapBackgroundUsesSkyColor == true)
++				modMapColor = ColorOfTheSkies;
++			modSceneEffect?.MapBackgroundColor(ref modMapColor);
++			spriteBatch.Draw(modTexture.Value, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), modMapColor);
 +			return;
 +		}
 +
