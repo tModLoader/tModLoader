@@ -566,12 +566,20 @@ jobs:
           STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
       
+      # IF statements are for a bug with "git describe --tags --abbrev=0" returning the oldest of two tags on the same commit instead of newest
+      # Needs a bug report to GIT ?
       - name: Get Version tag for Release
         id: version2
         shell: bash
         run: |
           echo "Attempting get current version id"
-          version=$(git describe --tags --abbrev=0)
+          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
+            version=$(git describe --tags --abbrev=0 --exclude v????.??.2*)
+          fi
+          if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
+            version=$(git describe --tags --abbrev=0 --exclude v????.??.1*)
+          fi
+          
           echo "Current Version is: $version"
           echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
