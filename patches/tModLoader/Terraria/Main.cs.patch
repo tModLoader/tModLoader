@@ -6122,9 +6122,9 @@
  	{
 +		if (ModContent.RequestIfExists<Texture2D>(LocalPlayer.CurrentSceneEffect.mapBackground, out var modTexture, AssetRequestMode.ImmediateLoad)) {
 +			var modSceneEffect = LocalPlayer.CurrentSceneEffect.mapBackgroundSceneEffect;
-+			Color modMapColor = Color.White;
-+			if (modSceneEffect?.MapBackgroundUsesSkyColor == true)
-+				modMapColor = ColorOfTheSkies;
++			Color modMapColor = screenPosition.Y <= worldSurface * 16.0 ? ColorOfTheSkies : Color.White;
++			if (modSceneEffect?.MapBackgroundFullbright == true)
++				modMapColor = Color.White;
 +			modSceneEffect?.MapBackgroundColor(ref modMapColor);
 +			spriteBatch.Draw(modTexture.Value, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), modMapColor);
 +			return;

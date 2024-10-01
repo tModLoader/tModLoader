@@ -28,7 +28,6 @@ namespace ExampleMod.Content.Biomes
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
 		public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
-		public override bool MapBackgroundUsesSkyColor => true;
 
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player) {

@@ -40,9 +40,11 @@ public abstract partial class ModSceneEffect : ModType
 	public virtual string MapBackground => null;
 
 	/// <summary>
-	/// If true, the map background (<see cref="MapBackground"/>) will behave like a surface biome, using <see cref="Main.ColorOfTheSkies"/> to draw instead of White. Use <see cref="MapBackgroundColor(ref Color)"/> instead to fully customize the map background draw color.
+	/// If true, the map background (<see cref="MapBackground"/>) will be forced to be drawn at full brightness (White). For example, the background map of the Mushroom biome draws at full brightness even when above ground.
+	/// <para/> By default, this returns false, indicating that the sky color should be used if above surface level and full brightness otherwise. 
+	/// <para/> Use <see cref="MapBackgroundColor(ref Color)"/> instead to fully customize the map background draw color.
 	/// </summary>
-	public virtual bool MapBackgroundUsesSkyColor => false;
+	public virtual bool MapBackgroundFullbright => false;
 
 	/// <summary>
 	/// The <see cref="SceneEffectPriority"/> of this SceneEffect layer. Determines the relative position compared to a vanilla SceneEffect.
@@ -102,9 +104,9 @@ public abstract partial class ModSceneEffect : ModType
 	public virtual void SpecialVisuals(Player player, bool isActive) { }
 
 	/// <summary>
-	/// Uses to customize the draw color of the map background (<see cref="MapBackground"/>) drawn on the fullscreen map. Normal surface biomes would usually use <see cref="MapBackgroundUsesSkyColor"/>, but this method can be used if further customization is needed.
+	/// Uses to customize the draw color of the map background (<see cref="MapBackground"/>) drawn on the fullscreen map. <see cref="MapBackgroundFullbright"/> can be used for typical effects, but this method can be used if further customization is needed.
 	/// </summary>
-	/// <param name="color">White. If MapBackgroundUsesSkyColor is true then this will be Main.ColorOfTheSkies.</param>
+	/// <param name="color">White or Main.ColorOfTheSkies depending on if above ground and MapBackgroundUsesSkyColor value.</param>
 	public virtual void MapBackgroundColor(ref Color color) {
 	} 
 }
