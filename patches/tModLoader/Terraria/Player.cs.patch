@@ -5790,6 +5790,15 @@
  		int num = 50;
  		if (newItem.IsACoin)
  			num = 54;
+@@ -30208,7 +_,7 @@
+ 		}
+ 
+ 		for (int k = 54; k < 58; k++) {
+-			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]))
++			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]) && ItemLoader.CanStack(inventory[k], newItem))
+ 				return new ItemSpaceStatus(CanTakeItem: true);
+ 		}
+ 
 @@ -30240,7 +_,11 @@
  		if (theSlot.type == 0)
  			return true;
