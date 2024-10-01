@@ -32,6 +32,7 @@ var class_item =
     [ "DropCache", "class_item.html#ac33ddc6742cac7a20704bdccc4036778", null ],
     [ "GetGlobalItem< T >", "class_item.html#a46460b23a0f4435c6c7af34a1dbf21ab", null ],
     [ "GetGlobalItem< T >", "class_item.html#a237076cb25906bd3030199fe430868d9", null ],
+    [ "GetPrefixCategories", "class_item.html#ae469eeb30bc2ddc4a934c25c7c64b155", null ],
     [ "GetPrefixCategory", "class_item.html#af434c7f5ff93e08087fae8ae21afdd5e", null ],
     [ "getRect", "class_item.html#a615d25ad7102e5b63c7e3392ccacd85c", null ],
     [ "GetVanillaPrefixes", "class_item.html#a913467583212544016fd36f180e1f336", null ],
@@ -52,6 +53,7 @@ var class_item =
     [ "NewItem", "class_item.html#affc71a3a1959544b16ef6c68c8263a78", null ],
     [ "NPCtoBanner", "class_item.html#afe440f52db2e08b1c5f421d4cbff70d4", null ],
     [ "Prefix", "class_item.html#a5466ddc57ac8392c1a071fcea14d8f28", null ],
+    [ "Refresh", "class_item.html#a4a7bbb79a58b3903c04f6fdf5440f458", null ],
     [ "sellPrice", "class_item.html#ad30ec39319d94558e35650cf2350e2cf", null ],
     [ "SetNameOverride", "class_item.html#a678e9da8f2b078fbf0b90905b322dc81", null ],
     [ "SetShopValues", "class_item.html#a31ed2d402ea04272696879770ff21a5b", null ],
@@ -167,5 +169,6 @@ var class_item =
     [ "ResearchUnlockCount", "class_item.html#ab7fcb405aa707d7031409bb397b39738", null ],
     [ "StopAnimationOnHurt", "class_item.html#a5398785fbab9e41cb1002a898cb59dc3", null ],
     [ "useLimitPerAnimation", "class_item.html#a45a9bea6cb7b8b8f088460c128326172", null ],
-    [ "useTurnOnAnimationStart", "class_item.html#a7b69df7f6c806d9bf33332a82d295234", null ]
+    [ "useTurnOnAnimationStart", "class_item.html#a7b69df7f6c806d9bf33332a82d295234", null ],
+    [ "Variant", "class_item.html#a2f3c4c189bf37852038ded6b11b910bb", null ]
 ];

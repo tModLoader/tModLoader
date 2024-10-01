@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -310,7 +310,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>maxItems</b> = 4
 <tr class="memdesc:a280de54d02a7a112028080b80d14812d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of items chests can contain. <br /></td></tr>
 <tr class="separator:a280de54d02a7a112028080b80d14812d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a161ec797dcaee5bb81ce41c464237526"><td class="memItemLeft" align="right" valign="top"><a id="a161ec797dcaee5bb81ce41c464237526" name="a161ec797dcaee5bb81ce41c464237526"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b> = 20</td></tr>
+const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b> = 63</td></tr>
 <tr class="memdesc:a161ec797dcaee5bb81ce41c464237526"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum length that <a class="el" href="class_chest.html#a36fff2ef1f14fb62a0776989eb387f47" title="The player-assigned name of this chest. May not exceed MaxNameLength characters in length.">name</a> is allowed to be. <br /></td></tr>
 <tr class="separator:a161ec797dcaee5bb81ce41c464237526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -456,7 +456,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
 <p>Visually opens the chest at <em>worldPosition</em>  for <em>duration</em>  ticks. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">worldPosition</td><td>The position of the chest to ask, in tile coordinates.</td></tr>
+    <tr><td class="paramname">worldPosition</td><td>The position of the chest to ask, in world coordinates.</td></tr>
     <tr><td class="paramname">duration</td><td>The duration of the eating animation in ticks.</td></tr>
   </table>
   </dd>

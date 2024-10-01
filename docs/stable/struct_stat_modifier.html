@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -195,6 +195,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>Multiplicative</b> =
 <code>damage = CritDamage.ApplyTo(damage)</code></p>
 <p ><br  />
 could be used to apply a crit damage modifier to a base damage value </p>
+<p >Note that when using this to calculate the final damage of a <a class="el" href="class_damage_class.html" title="DamageClass is used to determine the application of item effects, damage/stat scaling,...">DamageClass</a> make sure to use <a class="el" href="class_player.html#acb149277cb3bf7ddc94804065ee0239e" title="Calculates a total damage modifier for the player for the provided DamageClass.  Use in conjunction w...">Player.GetTotalDamage(DamageClass)</a> not <a class="el" href="class_player.html#afb5ba132b05a7e2abf19f970eefd4634" title="Gets the damage modifier for this damage type on this player. This returns a reference,...">Player.GetDamage(DamageClass)</a> to account for inherited damage modifiers such as Generic damage. </p>
 <p >For help understanding the meanings of the applied values please make note of documentation for: </p><ul>
 <li>
 <a class="el" href="struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5" title="An offset to the base value of the stat. Directly applied to the base stat before multipliers are app...">Base</a> </li>

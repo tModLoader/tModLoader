@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -303,7 +303,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MagicPrefix</
 <tr class="separator:aad9f2562a67c4eb1b7b6a4ca7ac8fb0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b1eec50a051b0a48bdd0d7bf0a33194"><td class="memItemLeft" align="right" valign="top"><a id="a9b1eec50a051b0a48bdd0d7bf0a33194" name="a9b1eec50a051b0a48bdd0d7bf0a33194"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MeleePrefix</b> ()</td></tr>
-<tr class="memdesc:a9b1eec50a051b0a48bdd0d7bf0a33194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not. Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix <br /></td></tr>
+<tr class="memdesc:a9b1eec50a051b0a48bdd0d7bf0a33194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not. <br /></td></tr>
 <tr class="separator:a9b1eec50a051b0a48bdd0d7bf0a33194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2bbf852362fe7918ef0aac7b9cd4f0d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d">ModifyFishingLine</a> (<a class="el" href="class_projectile.html">Projectile</a> bobber, ref Vector2 lineOriginOffset, ref Color lineColor)</td></tr>
 <tr class="memdesc:af2bbf852362fe7918ef0aac7b9cd4f0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this item is a fishing pole, allows you to modify the origin and color of its fishing line.  <a href="class_mod_item.html#af2bbf852362fe7918ef0aac7b9cd4f0d">More...</a><br /></td></tr>
@@ -469,7 +469,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PreReforge</b
 <tr class="separator:a7f1ab496eeef31e46ff6b028e979f0ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a64c6e647ff86bfbceffc7c3e723347"><td class="memItemLeft" align="right" valign="top"><a id="a7a64c6e647ff86bfbceffc7c3e723347" name="a7a64c6e647ff86bfbceffc7c3e723347"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>RangedPrefix</b> ()</td></tr>
-<tr class="memdesc:a7a64c6e647ff86bfbceffc7c3e723347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not. Takes priority over MagicPrefix <br /></td></tr>
+<tr class="memdesc:a7a64c6e647ff86bfbceffc7c3e723347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not. <br /></td></tr>
 <tr class="separator:a7a64c6e647ff86bfbceffc7c3e723347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1210a73f18135d114a722c4a0e2f0f63"><td class="memItemLeft" align="right" valign="top"><a id="a1210a73f18135d114a722c4a0e2f0f63" name="a1210a73f18135d114a722c4a0e2f0f63"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ReforgePrice</b> (ref int reforgePrice, ref bool canApplyDiscount)</td></tr>
@@ -561,7 +561,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ReforgePrice<
 <tr class="separator:ae176047bff9341583f7680d43cd41ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a896b193acb3696c102165deb41e6c388"><td class="memItemLeft" align="right" valign="top"><a id="a896b193acb3696c102165deb41e6c388" name="a896b193acb3696c102165deb41e6c388"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>WeaponPrefix</b> ()</td></tr>
-<tr class="memdesc:a896b193acb3696c102165deb41e6c388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon only receives generic prefixes. Return true if the item should only receive generic prefixes and false if it should not. Takes priority over RangedPrefix and MagicPrefix Ignored if MeleePrefix returns true <br /></td></tr>
+<tr class="memdesc:a896b193acb3696c102165deb41e6c388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives generic prefixes. Return true if the item should receive generic prefixes and false if it should only receive them from another category. <br /></td></tr>
 <tr class="separator:a896b193acb3696c102165deb41e6c388"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a119bbb1160e79491555445544b0744ff"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a119bbb1160e79491555445544b0744ff">WingUpdate</a> (<a class="el" href="class_player.html">Player</a> player, bool inUse)</td></tr>
 <tr class="memdesc:a119bbb1160e79491555445544b0744ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.  <a href="class_mod_item.html#a119bbb1160e79491555445544b0744ff">More...</a><br /></td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('class_common_conditions_1_1_events.htm
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a11a3ec336fdbf298e3f031a43ed7d66c"><td class="memItemLeft" align="right" valign="top"><a id="a11a3ec336fdbf298e3f031a43ed7d66c" name="a11a3ec336fdbf298e3f031a43ed7d66c"></a>
-static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BloodMoon</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Main.bloodMoon &amp;&amp; !Main.snowMoon &amp;&amp; !Main.pumpkinMoon)</td></tr>
+static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BloodMoon</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; <a class="el" href="class_main.html#a1058f9e210f4d162a7e2432a7f6bad52">Main.bloodMoon</a> &amp;&amp; !<a class="el" href="class_main.html#a632768365eaf2436f5e1b6cf2a890649">Main.snowMoon</a> &amp;&amp; !<a class="el" href="class_main.html#ac1ec77e09a56b92b2a4769ac026d3efc">Main.pumpkinMoon</a>)</td></tr>
 <tr class="separator:a11a3ec336fdbf298e3f031a43ed7d66c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86f89bbe55efc34cea61c644f83c991f"><td class="memItemLeft" align="right" valign="top"><a id="a86f89bbe55efc34cea61c644f83c991f" name="a86f89bbe55efc34cea61c644f83c991f"></a>
 static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DD2Event</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Boss.HighestTierBossOrEvent == -6)</td></tr>
@@ -103,7 +103,7 @@ static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition
 static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FrostLegion</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Boss.HighestTierBossOrEvent == -2)</td></tr>
 <tr class="separator:a76f47da80b06deaf3d72a3d063216a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95663f70b6fbc3962806b25184a20d49"><td class="memItemLeft" align="right" valign="top"><a id="a95663f70b6fbc3962806b25184a20d49" name="a95663f70b6fbc3962806b25184a20d49"></a>
-static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FrostMoon</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Main.snowMoon)</td></tr>
+static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FrostMoon</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; <a class="el" href="class_main.html#a632768365eaf2436f5e1b6cf2a890649">Main.snowMoon</a>)</td></tr>
 <tr class="separator:a95663f70b6fbc3962806b25184a20d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d8135b03639d9df686c56eaeedf362f"><td class="memItemLeft" align="right" valign="top"><a id="a9d8135b03639d9df686c56eaeedf362f" name="a9d8135b03639d9df686c56eaeedf362f"></a>
 static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GoblinArmy</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Boss.HighestTierBossOrEvent == -1)</td></tr>
@@ -118,10 +118,10 @@ static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition
 static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PirateInvasion</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Boss.HighestTierBossOrEvent == -3)</td></tr>
 <tr class="separator:a0acb4bbd76534c732c6b0ea21d997785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41fa406952173b4f6e69c3b20a279d7d"><td class="memItemLeft" align="right" valign="top"><a id="a41fa406952173b4f6e69c3b20a279d7d" name="a41fa406952173b4f6e69c3b20a279d7d"></a>
-static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PumpkinMoon</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Main.pumpkinMoon)</td></tr>
+static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PumpkinMoon</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; <a class="el" href="class_main.html#ac1ec77e09a56b92b2a4769ac026d3efc">Main.pumpkinMoon</a>)</td></tr>
 <tr class="separator:a41fa406952173b4f6e69c3b20a279d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7799d94dbbe7b8345af6cbac020b902c"><td class="memItemLeft" align="right" valign="top"><a id="a7799d94dbbe7b8345af6cbac020b902c" name="a7799d94dbbe7b8345af6cbac020b902c"></a>
-static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SolarEclipse</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; Main.eclipse)</td></tr>
+static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SolarEclipse</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; <a class="el" href="class_main.html#a8f5d92e64250aee44f212bfda7f9babd">Main.eclipse</a>)</td></tr>
 <tr class="separator:a7799d94dbbe7b8345af6cbac020b902c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03cc681d32950082c9674fa918844d61"><td class="memItemLeft" align="right" valign="top"><a id="a03cc681d32950082c9674fa918844d61" name="a03cc681d32950082c9674fa918844d61"></a>
 static readonly <a class="el" href="class_chroma_condition.html">ChromaCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SolarPillar</b> = new SimpleCondition((<a class="el" href="class_player.html">Player</a> player) =&gt; player.ZoneTowerSolar)</td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -90,6 +90,9 @@ $(document).ready(function(){initNavTree('class_prefix_legacy_1_1_item_sets.html
   <div class="headertitle"><div class="title">PrefixLegacy.ItemSets Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>These sets determine which vanilla weapons belong to which prefix categories. Modded items should not use these as modded item prefix categories are derived automatically from their <a class="el" href="class_item.html#ae3ded102ad76a38413d3cb8784e0d5b1" title="The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla cl...">Item.DamageType</a> and/or <a class="el" href="class_mod_item.html#a9b1eec50a051b0a48bdd0d7bf0a33194" title="Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should ...">ModItem.MeleePrefix</a>/<a class="el" href="class_mod_item.html#a5c190c8931d29c088a0ddadf7636c3e9" title="Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should ...">ModItem.MagicPrefix</a>/<a class="el" href="class_mod_item.html#a7a64c6e647ff86bfbceffc7c3e723347" title="Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should...">ModItem.RangedPrefix</a>/<a class="el" href="class_mod_item.html#a896b193acb3696c102165deb41e6c388" title="Allows you to change whether or not a weapon receives generic prefixes. Return true if the item shoul...">ModItem.WeaponPrefix</a> usage instead. <a class="el" href="class_prefix_legacy_1_1_item_sets.html#ada72ede6f7826a448e50a9ff7cc09e97" title="If true, this item can receive the ItemID.Terrarian-specific Legendary modifier.">ItemsThatCanHaveLegendary2</a>, however, can be used by modded items if needed.  
+ <a href="class_prefix_legacy_1_1_item_sets.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -104,6 +107,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>GunsBows</b>
 <tr class="separator:a422467f988638cb51fc18898fe7fc07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada72ede6f7826a448e50a9ff7cc09e97"><td class="memItemLeft" align="right" valign="top"><a id="ada72ede6f7826a448e50a9ff7cc09e97" name="ada72ede6f7826a448e50a9ff7cc09e97"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ItemsThatCanHaveLegendary2</b> = Factory.CreateBoolSet(3389)</td></tr>
+<tr class="memdesc:ada72ede6f7826a448e50a9ff7cc09e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this item can receive the ItemID.Terrarian-specific Legendary modifier. <br /></td></tr>
 <tr class="separator:ada72ede6f7826a448e50a9ff7cc09e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f9cc93013c4407fca979eadd724bff2"><td class="memItemLeft" align="right" valign="top"><a id="a6f9cc93013c4407fca979eadd724bff2" name="a6f9cc93013c4407fca979eadd724bff2"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>MagicAndSummon</b> = Factory.CreateBoolSet(64, 112, 113, 127, 157, 165, 218, 272, 494, 495, 496, 514, 517, 518, 519, 683, 726, 739, 740, 741, 742, 743, 744, 788, 1121, 1155, 1157, 1178, 1244, 1256, 1260, 1264, 1266, 1295, 1296, 1308, 1309, 1313, 1336, 1444, 1445, 1446, 1572, 1801, 1802, 1930, 1931, 2188, 2622, 2621, 2584, 2551, 2366, 2535, 2365, 2364, 2623, 2750, 2795, 3053, 3051, 3209, 3014, 3105, 2882, 3269, 3006, 3377, 3069, 2749, 3249, 3476, 3474, 3531, 3541, 3542, 3569, 3570, 3571, 3779, 3787, 3531, 3852, 3870, 4269, 4273, 4281, 4347, 4348, 4270, 4758, 4715, 4952, 4607, 5005, 5065, 5069, 5114, 5119, 5118, 5147, 3824, 3818, 3829, 3832, 3825, 3819, 3830, 3833, 3826, 3820, 3831, 3834, 4062)</td></tr>
@@ -115,7 +119,11 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>SpearsMacesC
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>SwordsHammersAxesPicks</b> = Factory.CreateBoolSet(1, 4, 6, 7, 10, 24, 45, 46, 65, 103, 104, 121, 122, 155, 190, 196, 198, 199, 200, 201, 202, 203, 4258, 204, 213, 217, 273, 367, 368, 426, 482, 483, 484, 653, 654, 656, 657, 659, 660, 671, 672, 674, 675, 676, 723, 724, 757, 776, 777, 778, 787, 795, 797, 798, 799, 881, 882, 921, 922, 989, 990, 991, 992, 993, 1123, 1166, 1185, 1188, 1192, 1195, 1199, 1202, 1222, 1223, 1224, 1226, 1227, 1230, 1233, 1234, 1294, 1304, 1305, 1306, 1320, 1327, 1506, 1507, 1786, 1826, 1827, 1909, 1917, 1928, 2176, 2273, 2608, 2341, 2330, 2320, 2516, 2517, 2746, 2745, 3063, 3018, 3211, 3013, 3258, 3106, 3065, 2880, 3481, 3482, 3483, 3484, 3485, 3487, 3488, 3489, 3490, 3491, 3493, 3494, 3495, 3496, 3497, 3499, 3500, 3501, 3502, 3503, 3505, 3506, 3507, 3508, 3509, 3511, 3512, 3513, 3514, 3515, 3517, 3518, 3519, 3520, 3521, 3522, 3523, 3524, 3525, 3462, 3465, 3466, 2772, 2775, 2776, 2777, 2780, 2781, 2782, 2785, 2786, 3349, 3352, 3351, 3764, 3765, 3766, 3767, 3768, 3769, 4259, 3772, 3823, 3827, 186, 946, 4059, 4317, 4463, 486, 4707, 4711, 4956, 4923, 4672, 4913, 4912, 4911, 4678, 4679, 4680, 4914, 5074, 5094, 5095, 5096, 5097, 5283, 5284, 5129, 5295, 5382)</td></tr>
 <tr class="separator:a91f52f1e33478c05a5a19e075c6da0e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >These sets determine which vanilla weapons belong to which prefix categories. </p>
+<p >Modded items should not use these as modded item prefix categories are derived automatically from their <a class="el" href="class_item.html#ae3ded102ad76a38413d3cb8784e0d5b1" title="The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla cl...">Item.DamageType</a> and/or <a class="el" href="class_mod_item.html#a9b1eec50a051b0a48bdd0d7bf0a33194" title="Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should ...">ModItem.MeleePrefix</a>/<a class="el" href="class_mod_item.html#a5c190c8931d29c088a0ddadf7636c3e9" title="Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should ...">ModItem.MagicPrefix</a>/<a class="el" href="class_mod_item.html#a7a64c6e647ff86bfbceffc7c3e723347" title="Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should...">ModItem.RangedPrefix</a>/<a class="el" href="class_mod_item.html#a896b193acb3696c102165deb41e6c388" title="Allows you to change whether or not a weapon receives generic prefixes. Return true if the item shoul...">ModItem.WeaponPrefix</a> usage instead. </p>
+<p ><a class="el" href="class_prefix_legacy_1_1_item_sets.html#ada72ede6f7826a448e50a9ff7cc09e97" title="If true, this item can receive the ItemID.Terrarian-specific Legendary modifier.">ItemsThatCanHaveLegendary2</a>, however, can be used by modded items if needed. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

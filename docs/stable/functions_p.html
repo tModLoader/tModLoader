@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('functions_p.html',''); initResizable()
 <li>PartyGirlNeedsOtherNPCsToMoveIn&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#a1129b2cc972d05fb037dae131be5114a">GameTipID</a></li>
 <li>PartyHatPosition()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#ac7b27eef2ff5aa7c00786980bcbdcbaa">GlobalNPC</a>, <a class="el" href="class_mod_n_p_c.html#a6d490a106075934c826923f2229754b1">ModNPC</a></li>
 <li>Passive&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#aa4a9b78ae38528ad13a9cfea803f5686">NPCAIStyleID</a></li>
+<li>PayCurrency()&#160;:&#160;<a class="el" href="class_player.html#a408df3b999b8415a08076fe0ddadb40d">Player</a></li>
 <li>penetrate&#160;:&#160;<a class="el" href="class_projectile.html#a94391ca36fc93547aba841b6fc4af5a0">Projectile</a></li>
 <li>PerEntityIndex&#160;:&#160;<a class="el" href="class_global_type.html#a8aa049c6973320e8314d4cab2d82c5cb">GlobalType&lt; TEntity, TGlobal &gt;</a></li>
 <li>persistentBuff&#160;:&#160;<a class="el" href="class_main.html#a8ebb90ade0b89892ebd4e7ea242904db">Main</a></li>
@@ -180,6 +181,7 @@ $(document).ready(function(){initNavTree('functions_p.html',''); initResizable()
 <li>PostSetupContent()&#160;:&#160;<a class="el" href="class_mod.html#afe714e608786744a898fed05debcd972">Mod</a>, <a class="el" href="class_mod_system.html#ab87305c04f3074d7231312f319517e90">ModSystem</a></li>
 <li>PostSetupRecipes()&#160;:&#160;<a class="el" href="class_mod_system.html#a6701371df32a444e7a753bdaf9023010">ModSystem</a></li>
 <li>PostSetupTileMerge()&#160;:&#160;<a class="el" href="class_global_tile.html#a7c20aceb0500f1518da17f0a9c29294b">GlobalTile</a>, <a class="el" href="class_mod_tile.html#a3f80b7cf1635e81f45a31d7ca4d3d98a">ModTile</a></li>
+<li>PostTileFrame()&#160;:&#160;<a class="el" href="class_mod_tile.html#a1cf66f688e357b054302f1ad5f90bce0">ModTile</a></li>
 <li>PostUpdate()&#160;:&#160;<a class="el" href="class_global_item.html#a134744212a799fe6834c9ec4443892eb">GlobalItem</a>, <a class="el" href="class_item_loader.html#af49bb8fa805e9d72553bfaa3180776fe">ItemLoader</a>, <a class="el" href="class_mod_item.html#a192ecf51da3d364954e9df7c5c9655d8">ModItem</a>, <a class="el" href="class_mod_player.html#aee95754c98f8419601548e446cbebf0e">ModPlayer</a></li>
 <li>PostUpdateBuffs()&#160;:&#160;<a class="el" href="class_mod_player.html#acd1ae828b53a468305b7830476b9533e">ModPlayer</a></li>
 <li>PostUpdateDusts()&#160;:&#160;<a class="el" href="class_mod_system.html#a4f4d8cdcc418b8b9f542c3df998996d5">ModSystem</a></li>
@@ -221,8 +223,8 @@ $(document).ready(function(){initNavTree('functions_p.html',''); initResizable()
 <li>PreDrawTooltip()&#160;:&#160;<a class="el" href="class_global_item.html#a62aa6c40f55ca8b50e74ea393586f47d">GlobalItem</a>, <a class="el" href="class_mod_item.html#a6b2a9022af802e7e85f3bd30bd6c464a">ModItem</a></li>
 <li>PreDrawTooltipLine()&#160;:&#160;<a class="el" href="class_global_item.html#afc5b11fc92dd6d85d9f89d14847289b8">GlobalItem</a>, <a class="el" href="class_mod_item.html#a75ef9172b2dc32e5c68a98384f04fd80">ModItem</a></li>
 <li>PreferredGolfBall()&#160;:&#160;<a class="el" href="class_accessory_slot_loader.html#a9e31bc6991996d609fb2efcd20f64134">AccessorySlotLoader</a></li>
-<li>Prefix()&#160;:&#160;<a class="el" href="class_item.html#a5466ddc57ac8392c1a071fcea14d8f28">Item</a></li>
 <li>prefix&#160;:&#160;<a class="el" href="class_item.html#ad19d05c738f67bd61c40e5b265d7f9a0">Item</a></li>
+<li>Prefix()&#160;:&#160;<a class="el" href="class_item.html#a5466ddc57ac8392c1a071fcea14d8f28">Item</a></li>
 <li>PrefixChance()&#160;:&#160;<a class="el" href="class_global_item.html#ac5b6b102d554b37880ab60cbb5dd6974">GlobalItem</a>, <a class="el" href="class_item_loader.html#ad71d4758dba162dbb8b9e92fa64cacba">ItemLoader</a>, <a class="el" href="class_mod_item.html#a3acd6ec62c798bd5c18683167119e7f7">ModItem</a></li>
 <li>PrefixDefinition()&#160;:&#160;<a class="el" href="class_prefix_definition.html#a8c45a227046fe75c0b8dd023f14a083b">PrefixDefinition</a></li>
 <li>PrefixType&lt; T &gt;()&#160;:&#160;<a class="el" href="class_mod_content.html#a0e17c9eeef92fd4aea38b37b1d5dd366">ModContent</a></li>
@@ -285,6 +287,7 @@ $(document).ready(function(){initNavTree('functions_p.html',''); initResizable()
 <li>Pumpking&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#a0fd8e3b3b86d8904b974a6c845695cc6">NPCAIStyleID</a></li>
 <li>PumpkingMoonStarting&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#ab4916e55fbc854fed1033610af7c498b">GameTipID</a></li>
 <li>PumpkingScythe&#160;:&#160;<a class="el" href="class_n_p_c_a_i_style_i_d.html#accdcb50e769fafd8a21744873928ffdd">NPCAIStyleID</a></li>
+<li>pumpkinMoon&#160;:&#160;<a class="el" href="class_main.html#ac1ec77e09a56b92b2a4769ac026d3efc">Main</a></li>
 <li>Purple&#160;:&#160;<a class="el" href="class_item_rarity_i_d.html#af0ab2b06b23ed7fb48c1276073b03966">ItemRarityID</a></li>
 <li>PutItemInNearbyChest()&#160;:&#160;<a class="el" href="class_chest.html#ac79cdc8a35dcf2ff97ed321ef84ae4c9">Chest</a></li>
 <li>PvP&#160;:&#160;<a class="el" href="struct_player_1_1_hurt_info.html#a223f4407c111b66c39b1181faea167d4">Player.HurtInfo</a>, <a class="el" href="struct_player_1_1_hurt_modifiers.html#acc6458994f221c568588dfaf15d91ba3">Player.HurtModifiers</a></li>
