@@ -2726,7 +2726,7 @@
  			X += 34;
  
  		new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
-+		Vector2 vector = FontAssets.MouseText.Value.MeasureString(cursorText);
++		Vector2 vector = ChatManager.GetStringSize(FontAssets.MouseText.Value, cursorText, Vector2.One);
  		if (HoverItem.type > 0) {
  			MouseText_DrawItemTooltip(info, num, diff, X, Y);
  			return;
