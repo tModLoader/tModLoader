@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Common.Configs;
 using ExampleMod.Common.Configs.ModConfigShowcases;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -8,22 +9,15 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
-namespace ExampleMod.Common.UI.ExampleModalUI
+namespace ExampleMod.Common.UI.ExampleFullscreenUI
 {
 	/// <summary>
-	/// This is an example of a non-gameplay/modal UI using IngameFancyUI. "Modal" UI are UI that take over the screen like the bestiary, emote menu, or settings menus.
+	/// This is an example of an in-game fullscreen UI.
+	/// This UI is shown and managed using the IngameFancyUI class. Since we are using IngameFancyUI, we do not need to write code to Update or Draw a UserInterface, unlike other UI. Since IngameFancyUI is used for non-gameplay fullscreen UI, it  prevents later interface layers from drawing. Vanilla examples of this sort of UI include the bestiary, emote menu, and settings menus.
 	/// </summary>
-	internal class ExampleModalUI : UIState
+	internal class ExampleFullscreenUI : UIState
 	{
-		private class ExampleModalUILoader : ILoadable
-		{
-			public void Load(Mod mod) {
-				ContentInstance.Register(new ExampleModalUI());
-			}
-
-			public void Unload() {
-			}
-		}
+		public static readonly ExampleFullscreenUI instance = new ExampleFullscreenUI();
 
 		private UIText itemDefinitionMessage;
 
@@ -36,14 +30,14 @@ namespace ExampleMod.Common.UI.ExampleModalUI
 			};
 			Append(panel);
 
-			var header = new UIText("Example Modal UI") {
+			var header = new UIText("Example Fullscreen UI") {
 				IsWrapped = true,
 				Width = StyleDimension.Fill,
 				HAlign = 0.5f
 			};
 			panel.Append(header);
 
-			var description = new UIText("This is an example modal UI, notice how other UI is hidden.") {
+			var description = new UIText("This is an example fullscreen UI, notice how other UI is hidden.") {
 				Top = new(40f, 0f),
 				TextOriginX = 0f,
 				IsWrapped = true,
@@ -124,5 +118,6 @@ namespace ExampleMod.Common.UI.ExampleModalUI
 				return $"\"{configEntryLabel}\" is set to \"{itemDefinition.DisplayName}\": [i:{itemDefinition.Type}]";
 			}
 		}
+
 	}
 }

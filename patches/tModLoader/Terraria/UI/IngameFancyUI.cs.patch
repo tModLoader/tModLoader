@@ -13,8 +13,8 @@
  namespace Terraria.UI;
  
 +/// <summary>
-+/// Provides convenient access to the <see cref="Main.InGameUI"/> <see cref="UserInterface"/> class. Use this for non-gameplay/"modal" user interfaces. Modal user interfaces are interfaces that hide all other UI and demand the users attention, such as the bestiary, emote menu, or settings menus. There can only be one active modal user interface and the user can't play the game normally when active, so this is only useful for non-gameplay UI.
-+/// <para/> Use <see cref="OpenUIState"/> to show a <see cref="UIState"/> and <see cref="Close"/> to close it. There is no need to manage a <see cref="UserInterface"/> or interface layers when using this approach, but it is more limited.
++/// Provides convenient access to the <see cref="Main.InGameUI"/> <see cref="UserInterface"/> class. Use this for in-game non-gameplay fullscreen user interfaces. User interfaces shown using IngameFancyUI hide all other UI. Some examples include the bestiary, emote menu, and settings menus. There can only be one active fullscreen user interface and the user can't play the game normally when active, so this is only useful for non-gameplay UI.
++/// <para/> Use <see cref="OpenUIState"/> to show a <see cref="UIState"/> and <see cref="Close"/> to close it. There is no need to manage a <see cref="UserInterface"/> or interface layers when using this approach, but it is more limited in flexibility.
 +/// </summary>
  public class IngameFancyUI
  {
