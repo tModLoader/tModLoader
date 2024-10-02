@@ -1,7 +1,5 @@
-﻿using ExampleMod.Common.Configs;
-using ExampleMod.Common.Configs.ModConfigShowcases;
+﻿using ExampleMod.Common.Configs.ModConfigShowcases;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
