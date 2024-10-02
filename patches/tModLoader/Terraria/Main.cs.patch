@@ -5433,7 +5433,7 @@
 +
 +			endThisIcon:
 +			drawnCount++; // Moved here due to calculation changes
-+			if (drawnCount >= 12)
++			if (drawnCount >= endingDisplay - startingDisplay)
 +				break;
  		}
  
