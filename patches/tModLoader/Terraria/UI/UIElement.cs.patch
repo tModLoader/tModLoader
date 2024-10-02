@@ -9,13 +9,23 @@
  {
  	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
  
+@@ -28,6 +_,9 @@
+ 	public StyleDimension MinWidth = StyleDimension.Empty;
+ 	public StyleDimension MinHeight = StyleDimension.Empty;
+ 	private bool _isInitialized;
++	/// <summary>
++	/// If true, this element will be ignored for mouse interactions. This can be used to allow UIElement placed over other  UIElement to not be the target of mouse clicks. Defaults to false.
++	/// </summary>
+ 	public bool IgnoresMouseInteraction;
+ 	public bool OverflowHidden;
+ 	public SamplerState OverrideSamplerState;
 @@ -58,6 +_,10 @@
  
  	public IEnumerable<UIElement> Children => Elements;
  
 +	/// <summary>
 +	/// True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or drawing hover visual indicators.
-+	/// <para/> Note that this is true for all elements in the heiarchy that are hovered, not just the topmost element. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button and the panel. Use this or <c>ContainsPoint(Main.MouseScreen)</c> for behaviors that use this logic, such as setting <see cref="Player.mouseInterface"/> to true.
++	/// <para/> Note that this is true for all elements in the hierarchy that are hovered, not just the topmost element. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button and the panel. Use this or <c>ContainsPoint(Main.MouseScreen)</c> for behaviors that use this logic, such as setting <see cref="Player.mouseInterface"/> to true.
 +	/// </summary>
  	public bool IsMouseHovering { get; private set; }
  
@@ -53,6 +63,18 @@
  			spriteBatch.End();
  			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
+@@ -334,6 +_,11 @@
+ 		Recalculate();
+ 	}
+ 
++	/// <summary>
++	/// Called when the UIElement under the mouse is left clicked. The default code calls the <see cref="OnLeftMouseDown"/> event and then calls <see cref="LeftMouseDown"/> on the <see cref="Parent"/> element.
++	/// <para/> Since the method is called on all parent elements in the hierarchy, check <c>if (evt.Target == this)</c> for code only interested in direct clicks to this element. Children elements overlaying this element can be ignored by setting <see cref="IgnoresMouseInteraction"/> to true on them.
++	/// </summary>
++	/// <param name="evt"></param>
+ 	public virtual void LeftMouseDown(UIMouseEvent evt)
+ 	{
+ 		if (this.OnLeftMouseDown != null)
 @@ -406,6 +_,12 @@
  			Parent.RightDoubleClick(evt);
  	}
@@ -78,3 +100,23 @@
  	public virtual void MouseOut(UIMouseEvent evt)
  	{
  		IsMouseHovering = false;
+@@ -446,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Called each time this element is activated, which is usually when a <see cref="UIState"/> is activated via <see cref="UserInterface.SetState(UIState)"/>. Use this to run code to update elements whenever the UI is toggled on.
++	/// </summary>
+ 	public virtual void OnActivate()
+ 	{
+ 	}
+@@ -485,6 +_,9 @@
+ 		_isInitialized = true;
+ 	}
+ 
++	/// <summary>
++	/// Called before the first time this element is activated (see <see cref="OnActivate"/>). Use this method to create and append other UIElement to this to build a UI. 
++	/// </summary>
+ 	public virtual void OnInitialize()
+ 	{
+ 	}

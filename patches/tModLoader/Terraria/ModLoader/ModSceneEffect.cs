@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -37,6 +38,13 @@ public abstract partial class ModSceneEffect : ModType
 	/// The path to the texture that will display behind the map. Should be 115x65.
 	/// </summary>
 	public virtual string MapBackground => null;
+
+	/// <summary>
+	/// If true, the map background (<see cref="MapBackground"/>) will be forced to be drawn at full brightness (White). For example, the background map of the Mushroom biome draws at full brightness even when above ground.
+	/// <para/> By default, this returns false, indicating that the sky color should be used if above surface level and full brightness otherwise. 
+	/// <para/> Use <see cref="MapBackgroundColor(ref Color)"/> instead to fully customize the map background draw color.
+	/// </summary>
+	public virtual bool MapBackgroundFullbright => false;
 
 	/// <summary>
 	/// The <see cref="SceneEffectPriority"/> of this SceneEffect layer. Determines the relative position compared to a vanilla SceneEffect.
@@ -94,4 +102,11 @@ public abstract partial class ModSceneEffect : ModType
 	/// <br/> This runs even if <see cref="IsSceneEffectActive"/> returns false. Check <paramref name="isActive"/> for the active status.
 	/// </summary>
 	public virtual void SpecialVisuals(Player player, bool isActive) { }
+
+	/// <summary>
+	/// Uses to customize the draw color of the map background (<see cref="MapBackground"/>) drawn on the fullscreen map. <see cref="MapBackgroundFullbright"/> can be used for typical effects, but this method can be used if further customization is needed.
+	/// </summary>
+	/// <param name="color">White or Main.ColorOfTheSkies depending on if above ground and MapBackgroundUsesSkyColor value.</param>
+	public virtual void MapBackgroundColor(ref Color color) {
+	} 
 }

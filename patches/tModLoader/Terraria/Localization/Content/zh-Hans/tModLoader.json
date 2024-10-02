@@ -47,11 +47,11 @@
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
-		"ModsEnableAll": "启用全部",
-		// "ModsEnableAllConfirm": "Are you sure you want to enable all mods?",
-		"ModsDisableAll": "禁用全部",
-		// "ModsDisableAllConfirm": "Are you sure you want to disable all mods?",
-		// "YesDontAskAgain": "Yes, don't ask again",
+		"ModsEnableAll": "启用全部模组",
+		"ModsEnableAllConfirm": "你确定要启用全部模组吗？",
+		"ModsDisableAll": "禁用全部模组",
+		"ModsDisableAllConfirm": "你确定要禁用全部模组吗？",
+		"YesDontAskAgain": "是，不再询问",
 		"ModsReloadMods": "重新加载模组",
 		"ModsForceReload": "强制重新加载模组",
 		"ModsOpenModsFolders": "打开模组文件夹",
@@ -285,9 +285,9 @@
 		"RemovePackLocalDesc": "禁用所有模组且从加载目录中移除固定版本的模组",
 		"InstallPackLocal": "加载整合包（本地）",
 		"InstallPackLocalDesc": "禁用所有模组且启用整合包里的所有模组（按整合包里指定的版本）",
-		"ModPackMismatch": "上次使用的模组包：{0}",
+		"ModPackMismatch": "上次使用的整合包：{0}",
 		"ModPackDelete": "删除整合包",
-		// "ModPackDisableToDelete": "Remove Mod Pack to Delete",
+		"ModPackDisableToDelete": "禁用整合包以删除",
 
 		// ModNet/Multiplayer
 		"MPSyncingMods": "同步模组",
@@ -437,8 +437,8 @@
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "离开模组浏览器时自动启用并重新加载模组：关闭",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenYes": "离开模组列表时自动重新加载需要加载的的模组：开启",
 		"AutomaticallyReloadRequiredModsLeavingModsScreenNo": "离开模组列表时自动重新加载需要加载的模组：关闭",
-		// "ShowConfirmationWindowWhenEnableDisableAllModsYes": "Show Confirmation Window For Enable/Disable All Mods: On",
-		// "ShowConfirmationWindowWhenEnableDisableAllModsNo": "Show Confirmation Window For Enable/Disable All Mods: Off",
+		"ShowConfirmationWindowWhenEnableDisableAllModsYes": "显示启用/禁用所有模组的确认窗口：开启",
+		"ShowConfirmationWindowWhenEnableDisableAllModsNo": "显示启用/禁用所有模组的确认窗口：关闭",
 		"DontShowAgain": "不再提示",
 		"ModControls": "模组按键",
 
@@ -608,7 +608,7 @@
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",
-		"DeleteModConfirm": "您确定要删除这个模组吗？",
+		"DeleteModConfirm": "你确定要删除这个模组吗？",
 		"PatreonSetTooltip": "感谢您的支持！",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题",
@@ -984,7 +984,7 @@
 	},
 	"Mods": {
 		"ModLoader.Unloaded": "卸载",
-		// "ModLoader.Prefixes.UnloadedPrefix.Tooltip": "Prefix from unloaded mod: {0}",
+		"ModLoader.Prefixes.UnloadedPrefix.Tooltip": "卸载模组的前缀：{0}",
 		"ModLoader.Items.AprilFools.DisplayName": "愚人节玩笑",
 		"ModLoader.Items.StartBag.DisplayName": "起始包",
 		"ModLoader.Items.StartBag.Tooltip": "部分起始物品无法正常放入背包",
