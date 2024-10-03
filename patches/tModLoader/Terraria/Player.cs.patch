@@ -362,7 +362,7 @@
  	public Item[] miscDyes = new Item[5];
  	public Item trashItem = new Item();
  	public float itemRotation;
-@@ -781,16 +_,48 @@
+@@ -781,16 +_,51 @@
  	public bool poundRelease;
  	public float ghostFade;
  	public float ghostDir = 1f;
@@ -401,8 +401,11 @@
 +	/// <para/> Defaults to -1.
 +	/// </summary>
  	public int heldProj = -1;
++	/// <summary> A countdown timer for <see cref="breath"/>. Ticks up every frame the player is holding their breath underwater. Once it reaches <see cref="breathCDMax"/>, resets back to 0 and breath is reduced by 1. </summary>
  	public int breathCD;
++	/// <summary> The max value of <see cref="breath"/>. Defaults to 200. The total ticks before starting to drown is <c>breathMax * breathCDMax</c>.</summary>
  	public int breathMax = 200;
++	/// <summary> The current amount of breath the player has (<see href="https://terraria.wiki.gg/wiki/Breath_meter">Breath info on the wiki</see>). <see cref="breathCD"/> controls how often the value decreases. Once 0, the player will start to take drowning damage. When out of liquid increases by 3 each tick. </summary>
  	public int breath = 200;
  	public int lavaCD;
 +	/// <summary> The max amount of lava immunity time (in ticks) the player can have. <see cref="ItemID.LavaCharm"/> and many other accessories add 420 do this, or 7 seconds. </summary>
@@ -1094,14 +1097,20 @@
  	public bool ZoneUnderworldHeight {
  		get {
  			return zone3[4];
-@@ -1998,6 +_,7 @@
+@@ -1998,10 +_,13 @@
  
  	public Vector2 Directions => new Vector2(direction, gravDir);
  
 +	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
  	public Item HeldItem => inventory[selectedItem];
  
++	/// <summary> How long it takes for <see cref="breathCD"/> to cause <see cref="breath"/> to decrease by 1. Defaults to 7 and is increased by factors such as holding a Breathing Reed, which doubles this, or having a Diving Gear, which multiplies this by 6, to make the process of losing breath value slower. </summary>
  	public int breathCDMax {
+ 		get {
++			// TODO: hook or StatModifier breathEffectiveness
+ 			int num = 7;
+ 			if (inventory[selectedItem].type == 186 && itemAnimation == 0)
+ 				num *= 2;
 @@ -2085,6 +_,10 @@
  		}
  	}
@@ -3357,6 +3366,14 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
+@@ -14505,6 +_,7 @@
+ 		dashType = 0;
+ 		spikedBoots = 0;
+ 		blackBelt = false;
++		breathMax = 200; // Added by TML.
+ 		lavaMax = 0;
+ 		archery = false;
+ 		poisoned = false;
 @@ -14538,8 +_,10 @@
  		witheredWeapon = false;
  		parryDamageBuff = false;
@@ -4470,11 +4487,12 @@
  		if (tongued) {
  			position += velocity;
  			flag30 = false;
-@@ -21810,11 +_,13 @@
- 
+@@ -21811,10 +_,15 @@
  		if (statMana > statManaMax2)
  			statMana = statManaMax2;
--
+ 
++		if (breath > breathMax)
++			breath = breathMax;
 +		// More patch context.
  		grappling[0] = -1;
  		grapCount = 0;
