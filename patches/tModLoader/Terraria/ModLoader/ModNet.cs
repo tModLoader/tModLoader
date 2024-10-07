@@ -239,6 +239,9 @@ public static class ModNet
 		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
+		var clientSideMods = clientMods.Where(x => x.Side == ModSide.Client);
+		if (clientSideMods.Any())
+			Logging.tML.Debug($"Client Side mods: " + string.Join(", ", clientSideMods.Select(x => $"{x.Name} ({x.DisplayNameClean})")));
 
 		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
 		foreach (var name in toDisable) {
