@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -1779,6 +1780,20 @@ public static class ItemLoader
 		}
 
 		return retVal ?? false;
+	}
+
+	public static bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string memberName = "")
+	{
+		// Currently hooked up: Back, Balloon, Neck, Shoes (Sitting not implemented)
+		// Not hooked up: Head, Body, Legs, HandsOn, HandsOff, Front, Waist, Wings, Shield, Face, Beard
+
+		if (slot <= 0)
+			return true;
+
+		EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+		bool? retVal = texture?.ModifyDraw(ref drawInfo, ref drawData, memberName);
+
+		return retVal ?? true;
 	}
 
 	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
