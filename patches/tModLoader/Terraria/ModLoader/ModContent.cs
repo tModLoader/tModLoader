@@ -184,6 +184,9 @@ public static class ModContent
 	/// <inheritdoc cref="TileLoader.GetTile"/>
 	public static ModTile GetModTile(int type) => TileLoader.GetTile(type);
 
+	/// <inheritdoc cref="LiquidLoader.GetLiquid"/>
+	public static ModLiquid GetModLiquid(int type) => LiquidLoader.GetLiquid(type);
+
 	/// <inheritdoc cref="WallLoader.GetWall"/>
 	public static ModWall GetModWall(int type) => WallLoader.GetWall(type);
 
@@ -239,6 +242,11 @@ public static class ModContent
 	/// Get the id (type) of a ModTile by class. Assumes one instance per class.
 	/// </summary>
 	public static int TileType<T>() where T : ModTile => GetInstance<T>()?.Type ?? 0;
+
+	/// <summary>
+	/// Get the id (type) of a ModLiquid by class. Assumes one instance per class.
+	/// </summary>
+	public static int LiquidType<T>() where T : ModLiquid => GetInstance<T>()?.Type ?? 0;
 
 	/// <summary>
 	/// Get the id (type) of a ModPylon by class. Assumes one instance per class.
@@ -492,6 +500,7 @@ public static class ModContent
 		TileLoader.Unload();
 		PylonLoader.Unload();
 		WallLoader.Unload();
+		LiquidLoader.Unload();
 		ProjectileLoader.Unload();
 
 		NPCLoader.Unload();
@@ -567,6 +576,7 @@ public static class ModContent
 		DustLoader.ResizeArrays();
 		TileLoader.ResizeArrays(unloading);
 		WallLoader.ResizeArrays(unloading);
+		LiquidLoader.ResizeArrays(unloading);
 		ProjectileLoader.ResizeArrays(unloading);
 		NPCLoader.ResizeArrays(unloading);
 		NPCHeadLoader.ResizeAndFillArrays();

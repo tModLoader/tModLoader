@@ -1,5 +1,68 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
+@@ -8,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.Liquid;
+ 
+-public class LiquidRenderer
++public partial class LiquidRenderer
+ {
+ 	private struct LiquidCache
+ 	{
+@@ -33,8 +_,8 @@
+ 		public float VisibleRightWall;
+ 		public float VisibleBottomWall;
+ 		public float VisibleTopWall;
+-		public byte Type;
++		public ushort Type;
+-		public byte VisibleType;
++		public ushort VisibleType;
+ 	}
+ 
+ 	private struct LiquidDrawCache
+@@ -43,7 +_,7 @@
+ 		public Vector2 LiquidOffset;
+ 		public bool IsVisible;
+ 		public float Opacity;
+-		public byte Type;
++		public ushort Type;
+ 		public bool IsSurfaceLiquid;
+ 		public bool HasWall;
+ 	}
+@@ -56,7 +_,7 @@
+ 		public Vector2 LiquidOffset;
+ 		public bool IsVisible;
+ 		public float Opacity;
+-		public byte Type;
++		public ushort Type;
+ 		public bool IsSurfaceLiquid;
+ 		public bool HasWall;
+ 	}
+@@ -64,20 +_,20 @@
+ 	private const int ANIMATION_FRAME_COUNT = 16;
+ 	private const int CACHE_PADDING = 2;
+ 	private const int CACHE_PADDING_2 = 4;
+-	private static readonly int[] WATERFALL_LENGTH = new int[4] {
++	internal static int[] WATERFALL_LENGTH = new int[4] {
+ 		10,
+ 		3,
+ 		2,
+ 		10
+ 	};
+-	private static readonly float[] DEFAULT_OPACITY = new float[4] {
++	internal static float[] DEFAULT_OPACITY = new float[4] {
+ 		0.6f,
+ 		0.95f,
+ 		0.95f,
+ 		0.75f
+ 	};
+-	private static readonly byte[] WAVE_MASK_STRENGTH = new byte[5];
++	internal static byte[] WAVE_MASK_STRENGTH = new byte[5];
+-	private static readonly byte[] VISCOSITY_MASK = new byte[5] {
++	internal static byte[] VISCOSITY_MASK = new byte[5] {
+ 		0,
+ 		200,
+ 		240,
 @@ -86,7 +_,7 @@
  	};
  	public const float MIN_LIQUID_SIZE = 0.25f;
@@ -36,3 +99,32 @@
  					if (tile == null)
  						tile = new Tile();
  
+@@ -534,6 +_,10 @@
+ 						Vector2 liquidOffset = ptr2->LiquidOffset;
+ 						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
+ 						int num2 = ptr2->Type;
++						if (num2 == 0) {
++							num *= globalAlpha;
++						}
++						/*
+ 						switch (num2) {
+ 							case 0:
+ 								num2 = waterStyle;
+@@ -542,7 +_,7 @@
+ 							case 2:
+ 								num2 = 11;
+ 								break;
+-						}
++						}*/
+ 
+ 						num = Math.Min(1f, num);
+ 						Lighting.GetCornerColors(i, j, out var vertices);
+@@ -551,7 +_,7 @@
+ 						vertices.TopLeftColor *= num;
+ 						vertices.TopRightColor *= num;
+ 						Main.DrawTileInWater(drawOffset, i, j);
+-						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
++						Main.tileBatch.Draw(GetLiquidTexture(num2, waterStyle), new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 					}
+ 
+ 					ptr2++;

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,19 +_,55 @@
+@@ -3,27 +_,66 @@
  
  namespace Terraria;
  
@@ -49,15 +49,20 @@
 +	/// The height of this Entity's hitbox, in pixels.
 +	/// </summary>
  	public int height;
+-	public bool wet;
+-	public bool shimmerWet;
+-	public bool honeyWet;
 +
 +	/// <summary>
 +	/// The Entity is currently in water.
 +	/// <br/> Projectile: Affects movement speed and some projectiles die when wet. <see cref="Projectile.ignoreWater"/> prevents this.
 +	/// </summary>
- 	public bool wet;
- 	public bool shimmerWet;
- 	public bool honeyWet;
-@@ -24,6 +_,9 @@
++	public ref bool wet => ref liquidWet[0];
++	public ref bool shimmerWet => ref liquidWet[3];
++	public ref bool honeyWet => ref liquidWet[2];
+ 	public byte wetCount;
+-	public bool lavaWet;
++	public ref bool lavaWet => ref liquidWet[1];
  
  	public virtual Vector2 VisualPosition => position;
  

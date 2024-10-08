@@ -9,6 +9,14 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
+@@ -127,6 +_,7 @@
+ 	public static int[] wallOptionCounts;
+ 	public static ushort[] tileLookup;
+ 	public static ushort[] wallLookup;
++	public static ushort[] liquidLookup;
+ 	private static ushort tilePosition;
+ 	private static ushort wallPosition;
+ 	private static ushort liquidPosition;
 @@ -134,7 +_,8 @@
  	private static ushort dirtPosition;
  	private static ushort rockPosition;
@@ -19,6 +27,18 @@
  	private static ushort[] snowTypes;
  	private static ushort wallRangeStart;
  	private static ushort wallRangeEnd;
+@@ -1579,7 +_,10 @@
+ 
+ 		wallRangeEnd = num20;
+ 		liquidPosition = num20;
++		liquidLookup = new ushort[LiquidID.Count];
+-		for (int num25 = 0; num25 < 4; num25++) {
++		for (int num25 = 0; num25 < LiquidID.Count; num25++) {
++			_ = array3[num25];
++			liquidLookup[num25] = num20;
+ 			colorLookup[num20] = array3[num25];
+ 			num20 = (ushort)(num20 + 1);
+ 		}
 @@ -1604,6 +_,7 @@
  
  		hellPosition = num20;
@@ -27,9 +47,12 @@
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
-@@ -1749,7 +_,7 @@
+@@ -1747,9 +_,9 @@
+ 
+ 			if (tile.liquid > 32) {
  				int num5 = tile.liquidType();
- 				num3 = liquidPosition + num5;
+-				num3 = liquidPosition + num5;
++				num3 = liquidLookup[num5];
  			}
 -			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallID.Count) {
 +			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallLoader.WallCount) {
@@ -63,6 +86,15 @@
  	}
  
  	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption)
+@@ -2528,7 +_,7 @@
+ 			binaryWriter.Write(Main.maxTilesX);
+ 			binaryWriter.Write((short)TileID.Count);
+ 			binaryWriter.Write((short)WallID.Count);
+-			binaryWriter.Write((short)4);
++			binaryWriter.Write((short)LiquidID.Count);
+ 			binaryWriter.Write((short)256);
+ 			binaryWriter.Write((short)256);
+ 			binaryWriter.Write((short)256);
 @@ -2603,7 +_,10 @@
  					byte b6 = 0;
  					int num7;

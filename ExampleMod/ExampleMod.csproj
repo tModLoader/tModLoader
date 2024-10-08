@@ -15,4 +15,10 @@
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\Items\ExampleBucket.png" />
+    <None Remove="Content\Items\ExampleBucket2.png" />
+    <None Remove="Content\Liquids\ExampleLiquid.png" />
+    <None Remove="Content\Liquids\ExampleLiquid2.png" />
+  </ItemGroup>
 </Project>

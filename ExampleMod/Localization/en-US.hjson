@@ -95,7 +95,10 @@ Mods: {
 				}
 			}
 		}
-
+		Liquids: {
+			ExampleLiquid.MapEntry: Example Liquid
+			ExampleLiquid2.MapEntry: Oil
+		}
 		Tiles: {
 			ExamplePylonTile.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItem.DisplayName}"
 			ExamplePylonTileAdvanced.MapEntry: "{$Mods.ExampleMod.Items.ExamplePylonItemAdvanced.DisplayName}"
