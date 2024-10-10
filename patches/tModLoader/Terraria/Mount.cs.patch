@@ -26,7 +26,7 @@
  		public Asset<Texture2D> frontTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureExtra = Asset<Texture2D>.Empty;
-@@ -150,7 +_,8 @@
+@@ -150,11 +_,14 @@
  		public int dashingFrameCount;
  		public int dashingFrameDelay;
  		public bool Minecart;
@@ -36,6 +36,12 @@
  		public Vector3 lightColor = Vector3.One;
  		public bool emitsLight;
  		public MountDelegatesData delegations = new MountDelegatesData();
+ 		public int playerXOffset;
++		public float MinecartUpgradeRunSpeed = 20f, MinecartUpgradeAcceleration = 0.1f, MinecartUpgradeJumpSpeed = 5.15f, MinecartUpgradeDashSpeed = 20f;
++		public int MinecartUpgradeJumpHeight = 15;
+ 	}
+ 
+ 	public static int currentShader = 0;
 @@ -168,7 +_,7 @@
  	public const int DrawBackExtra = 1;
  	public const int DrawFront = 2;
@@ -45,7 +51,7 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -182,29 +_,29 @@
+@@ -182,36 +_,32 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
@@ -94,17 +100,44 @@
 +	public object _mountSpecificData;
 -	private bool _active;
 +	public bool _active;
- 	public static float SuperCartRunSpeed = 20f;
- 	public static float SuperCartDashSpeed = 20f;
- 	public static float SuperCartAcceleration = 0.1f;
-@@ -212,6 +_,7 @@
- 	public static float SuperCartJumpSpeed = 5.15f;
+-	public static float SuperCartRunSpeed = 20f;
+-	public static float SuperCartDashSpeed = 20f;
+-	public static float SuperCartAcceleration = 0.1f;
+-	public static int SuperCartJumpHeight = 15;
+-	public static float SuperCartJumpSpeed = 5.15f;
  	private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  
 +	/// <summary> True if the player is currently using a mount. </summary>
  	public bool Active => _active;
  
  	public int Type => _type;
+@@ -283,7 +_,7 @@
+ 				return _data.runSpeed + 2f;
+ 
+ 			if (_shouldSuperCart)
+-				return SuperCartRunSpeed;
++				return _data.MinecartUpgradeRunSpeed;
+ 
+ 			return _data.runSpeed;
+ 		}
+@@ -292,7 +_,7 @@
+ 	public float DashSpeed {
+ 		get {
+ 			if (_shouldSuperCart)
+-				return SuperCartDashSpeed;
++				return _data.MinecartUpgradeDashSpeed;
+ 
+ 			return _data.dashSpeed;
+ 		}
+@@ -301,7 +_,7 @@
+ 	public float Acceleration {
+ 		get {
+ 			if (_shouldSuperCart)
+-				return SuperCartAcceleration;
++				return _data.MinecartUpgradeAcceleration;
+ 
+ 			return _data.acceleration;
+ 		}
 @@ -2013,7 +_,7 @@
  		}
  	}
@@ -152,7 +185,8 @@
  		}
  
  		if (_shouldSuperCart)
- 			num = SuperCartJumpHeight;
+-			num = SuperCartJumpHeight;
++			num = _data.MinecartUpgradeJumpHeight;
  
 +		MountLoader.JumpHeight(player, _data, ref num, xVelocity);
  		return num;
@@ -172,7 +206,8 @@
  		}
  
  		if (_shouldSuperCart)
- 			num = SuperCartJumpSpeed;
+-			num = SuperCartJumpSpeed;
++			num = _data.MinecartUpgradeJumpSpeed;
 +		
 +		MountLoader.JumpSpeed(player, _data, ref num, xVelocity);
  
