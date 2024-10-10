@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,341 @@
+@@ -63,79 +_,343 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -210,6 +210,7 @@
 +
 +	/// <summary>
 +	/// Holds the value of <see cref="Entity.position"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++	/// <para/> Note that <c>oldPos[0]</c> will be equal to <see cref="Entity.position"/> during drawing methods, so index 0 should be skipped unless skipping vanilla drawing. Also note that they should be drawn in reverse order to layer properly. Also note that the values are from previous updates, not previous draws, which might be relevant if <see cref="extraUpdates"/> is used.
 +	/// </summary>
  	public Vector2[] oldPos = new Vector2[10];
 +
@@ -249,7 +250,8 @@
 +
 +	/// <summary>
 +	/// Additional update steps per tick. Useful for really fast projectiles such as <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-item-and-projectile-shadowbeam-staff-clone">Shadowbeam Staff</see>. If your projectile is mistakenly occasionally traveling through tiles, you may need to increase this to prevent that.
-+	/// <br/> Defaults to 0.
++	/// <para/> Also useful as a velocity multiplier for ammo projectile. The <see href="https://terraria.wiki.gg/wiki/Velocity">Shoot Speed wiki page</see> explains how that works.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int extraUpdates;
  	public bool stopsDealingDamageAfterPenetrateHits;
