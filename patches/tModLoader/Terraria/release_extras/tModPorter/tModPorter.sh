@@ -32,5 +32,12 @@ if [[ ! -z "$DOTNET_ROOT" ]]; then
 	export DOTNET_ROOT=$HOME/.dotnet
 	export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 fi
+
+DOTNET_PATH=$(which dotnet)
+DOTNET_X64_PATH=$(dirname $DOTNET_PATH)/x64/dotnet
+if [[ -f $DOTNET_X64_PATH ]]; then
+	DOTNET_PATH=$DOTNET_X64_PATH
+fi
+
 export DOTNET_ROLL_FORWARD=Minor
-dotnet tModLoader.dll -tModPorter "$@" 2>&1 | tee ./tModLoader-Logs/tModPorter.log
+$DOTNET_PATH tModLoader.dll -tModPorter "$@" 2>&1 | tee ./tModLoader-Logs/tModPorter.log
