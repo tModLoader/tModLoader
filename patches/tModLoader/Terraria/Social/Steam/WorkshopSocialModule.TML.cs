@@ -70,12 +70,26 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.WrongVersionCantPublishError");
 			return false;
 		}
-
+		// Checks if Mod is adequate
+		// Check mod description
+		var stream = new StreamReader(modFile.GetStream("description.txt"));
+		var desc = stream.ReadToEnd();
+		stream.Close();
+		string defaultDesc;
+		var stream2 = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream("Terraria/ModLoader/Templates/description.txt");
+		using ( var reader = new StreamReader(stream2))
+			defaultDesc = reader.ReadToEnd();
+		stream2.Close();
+		int minimumDefaultDescriptionCharacters = 20;
+		if (desc.Length < minimumDefaultDescriptionCharacters || desc == defaultDesc) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.ModDescriptionLengthTooShort");
+			return false;
+		}
+		// Check for Beta
 		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
-
 		string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
 		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"])}:{buildData["version"]}";
 		// Needed for backwards compat from previous version metadata
