@@ -377,7 +377,7 @@
  	public static bool eclipse;
  	public static float eclipseLight;
  	public static int checkForSpawns;
-@@ -777,6 +_,13 @@
+@@ -777,7 +_,18 @@
  	public static int BartenderHelpTextIndex = 0;
  	public static bool autoGen;
  	public static bool autoPause = false;
@@ -389,8 +389,13 @@
 +	/// Indexed by <see cref="Projectile.type"/>. Defaults to 1.
 +	/// </summary>
  	public static int[] projFrames = new int[ProjectileID.Count];
++	/// <summary>
++	/// Indicates that a projectile type is a pet or minion projectile.
++	/// <para/> Affects various things such as applying the appropriate dye/shader, syncing the projectile in multiplayer, minion contact damage, and more.
++	/// </summary>
  	public static bool[] projPet = new bool[ProjectileID.Count];
  	public static float demonTorch = 1f;
+ 	public static int demonTorchDir = 1;
 @@ -807,8 +_,15 @@
  	public static int fadeCounter;
  	public static float invAlpha = 1f;
@@ -988,7 +993,7 @@
  
 +	/// <summary>
 +	/// Registers an animation for an item type to draw inside UI (not world or held item on player).
-+	/// To enable its animation in the world, use ItemID.Sets.AnimatesAsSoul in conjunction with this
++	/// To enable its animation in the world, use <see cref="ItemID.Sets.AnimatesAsSoul"/> in conjunction with this
 +	/// </summary>
 +	/// <param name="index">Item type</param>
 +	/// <param name="animation">Draw animation</param>
@@ -1538,7 +1543,7 @@
  		}
  
  		if (Netplay.SaveOnServerExit) {
-@@ -4630,6 +_,8 @@
+@@ -4630,13 +_,18 @@
  			WorldFile.SaveWorld();
  		}
  
@@ -1547,6 +1552,17 @@
  		YouCanSleepNow();
  	}
  
+ 	private static void WriteFancyWorldLoadErrorToConsole()
+ 	{
+ 		Console.WriteLine();
++		if(WorldFile.LastThrownLoadException != null)
+-		Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
++			Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
++		else
++			Console.WriteLine("The world failed to load. (Unknown reason)");
+ 	}
+ 
+ 	public static void startDedInput()
 @@ -4650,8 +_,22 @@
  	public static void startDedInputCallBack()
  	{
@@ -2715,7 +2731,7 @@
  			X += 34;
  
  		new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
-+		Vector2 vector = FontAssets.MouseText.Value.MeasureString(cursorText);
++		Vector2 vector = ChatManager.GetStringSize(FontAssets.MouseText.Value, cursorText, Vector2.One);
  		if (HoverItem.type > 0) {
  			MouseText_DrawItemTooltip(info, num, diff, X, Y);
  			return;
@@ -5422,7 +5438,7 @@
 +
 +			endThisIcon:
 +			drawnCount++; // Moved here due to calculation changes
-+			if (drawnCount >= 12)
++			if (drawnCount >= endingDisplay - startingDisplay)
 +				break;
  		}
  
@@ -6105,12 +6121,17 @@
  			DrawCursor(DrawThickCursor());
  		}
  
-@@ -46491,6 +_,11 @@
+@@ -46491,6 +_,16 @@
  
  	private static void DrawMapFullscreenBackground(Vector2 screenPosition, int screenWidth, int screenHeight)
  	{
 +		if (ModContent.RequestIfExists<Texture2D>(LocalPlayer.CurrentSceneEffect.mapBackground, out var modTexture, AssetRequestMode.ImmediateLoad)) {
-+			spriteBatch.Draw(modTexture.Value, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
++			var modSceneEffect = LocalPlayer.CurrentSceneEffect.mapBackgroundSceneEffect;
++			Color modMapColor = screenPosition.Y <= worldSurface * 16.0 ? ColorOfTheSkies : Color.White;
++			if (modSceneEffect?.MapBackgroundFullbright == true)
++				modMapColor = Color.White;
++			modSceneEffect?.MapBackgroundColor(ref modMapColor);
++			spriteBatch.Draw(modTexture.Value, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), modMapColor);
 +			return;
 +		}
 +

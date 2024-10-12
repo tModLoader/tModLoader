@@ -1,23 +1,21 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Options;
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Windows.Forms;
-using Terraria.ModLoader.Setup.Formatting;
+using Terraria.ModLoader.Setup.Core.Abstractions;
+using Terraria.ModLoader.Setup.Core.Formatting;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core
 {
-	public partial class FormatTask : SetupOperation
+	public sealed class FormatTask : SetupOperation
 	{
-		private static readonly AdhocWorkspace workspace = new();
+		private static readonly AdhocWorkspace Workspace = new();
+
+		private readonly FormatTaskParameters parameters;
 
 		static FormatTask() {
-			var optionSet = workspace.CurrentSolution.Options;
+			var optionSet = Workspace.CurrentSolution.Options;
 
 			// Essentials
 			optionSet = optionSet
@@ -38,59 +36,51 @@ namespace Terraria.ModLoader.Setup
 				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSection, true)
 				.WithChangedOption(CSharpFormattingOptions.IndentSwitchCaseSectionWhenBlock, false);
 
-			workspace.TryApplyChanges(workspace.CurrentSolution.WithOptions(optionSet));
+			Workspace.TryApplyChanges(Workspace.CurrentSolution.WithOptions(optionSet));
 		}
 
-		public FormatTask(ITaskInterface taskInterface) : base(taskInterface) { }
+		public FormatTask(FormatTaskParameters parameters)
+		{
+			this.parameters = parameters;
+		}
 
-		private static string projectPath; //persist across executions
-		public override bool ConfigurationDialog() => (bool)taskInterface.Invoke(new Func<bool>(() => {
-			var dialog = new OpenFileDialog {
-				FileName = projectPath,
-				InitialDirectory = Path.GetDirectoryName(projectPath) ?? Path.GetFullPath("."),
-				Filter = "C# Project|*.csproj",
-				Title = "Select C# Project"
-			};
+		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default) {
+			using var taskProgress = progress.StartTask($"Formatting {Path.GetFileName(parameters.ProjectPath)}...");
 
-			var result = dialog.ShowDialog();
-			projectPath = dialog.FileName;
-			return result == DialogResult.OK && File.Exists(projectPath);
-		}));
-
-		public override void Run() {
-			var dir = Path.GetDirectoryName(projectPath); //just format all files in the directory
+			var dir = Path.GetDirectoryName(parameters.ProjectPath)!; //just format all files in the directory
 			var workItems = Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
 				.Select(path => new FileInfo(path))
 				.OrderByDescending(f => f.Length)
-				.Select(f => new WorkItem("Formatting: " + f.Name, () => FormatFile(f.FullName, taskInterface.CancellationToken, false)));
+				.Select(f => new WorkItem("Formatting: " + f.Name,
+					ct => FormatFile(f.FullName, false, ct)));
 
 
-			ExecuteParallel(workItems.ToList());
+			await ExecuteParallel(workItems.ToList(), taskProgress, cancellationToken: cancellationToken);
 		}
 
-		public static void FormatFile(string path, CancellationToken cancellationToken, bool aggressive) {
-			string source = File.ReadAllText(path);
-			string formatted = Format(source, cancellationToken, aggressive);
+		private static async ValueTask FormatFile(string path, bool aggressive, CancellationToken cancellationToken) {
+			string source = await File.ReadAllTextAsync(path, cancellationToken);
+			string formatted = Format(source, aggressive, cancellationToken);
 			if (source != formatted)
-				File.WriteAllText(path, formatted);
+				await File.WriteAllTextAsync(path, formatted, cancellationToken);
 		}
 
-		public static SyntaxNode Format(SyntaxNode node, CancellationToken cancellationToken, bool aggressive) {
+		private static SyntaxNode Format(SyntaxNode node, bool aggressive, CancellationToken cancellationToken) {
 			if (aggressive) {
 				node = new NoNewlineBetweenFieldsRewriter().Visit(node);
 				node = new RemoveBracesFromSingleStatementRewriter().Visit(node);
 			}
 
-			node = new AddVisualNewlinesRewriter().Visit(node);
-			node = new FileScopedNamespaceRewriter().Visit(node);
-			node = Formatter.Format(node, workspace, cancellationToken: cancellationToken);
+			node = new AddVisualNewlinesRewriter().Visit(node)!;
+			node = new FileScopedNamespaceRewriter().Visit(node)!;
+			node = Formatter.Format(node, Workspace, cancellationToken: cancellationToken);
 			node = new CollectionInitializerFormatter().Visit(node);
 			return node;
 		}
 
-		public static string Format(string source, CancellationToken cancellationToken, bool aggressive) {
-			var tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
-			return Format(tree.GetRoot(), cancellationToken, aggressive).ToFullString();
+		public static string Format(string source, bool aggressive, CancellationToken cancellationToken) {
+			SyntaxTree tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
+			return Format(tree.GetRoot(), aggressive, cancellationToken).ToFullString();
 		}
 	}
 }

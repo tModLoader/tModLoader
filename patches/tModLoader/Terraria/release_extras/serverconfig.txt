@@ -1,5 +1,6 @@
 #This is an example config file for tModLoader
 #tModLoader config files work exactly the same as Terraria, but instead of launching the .exe file, the .bat file is launched. 
+#Note that unless a world is specified, some settings like max player count, port, and port forwarding will be ignored.  
 #In addition, tModLoader config files support tModLoader specific options.
 #By default, the config file named serverconfig.txt will automatically be used by the server.
 #The config file used can be customized. Use the command 'start-tModLoaderServer.bat -config configFileHere.txt' to use a specific config file instead.
