@@ -1469,7 +1469,7 @@
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
  			WriteFancyWorldLoadErrorToConsole();
  			if (!autoShutdown)
-@@ -4574,28 +_,39 @@
+@@ -4574,41 +_,57 @@
  
  		Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
  		Console.WriteLine("");
@@ -1511,7 +1511,18 @@
  				if (oldStatusText != statusText) {
  					oldStatusText = statusText;
  					Console.WriteLine(statusText);
-@@ -4609,6 +_,7 @@
+ 				}
+ 
+-				if (Netplay.HasClients)
++				if (Netplay.HasClients) {
+ 					Update(new GameTime());
++
++					if (!Netplay.HasClients)		// Added by TML.
++						WorldGen.saveAndPlay();		// Called when the last player disconnects.
++				} 
+ 				else if (saveTime.IsRunning)
+ 					saveTime.Stop();
+ 
  				if (Main.OnTickForThirdPartySoftwareOnly != null)
  					Main.OnTickForThirdPartySoftwareOnly();
  
