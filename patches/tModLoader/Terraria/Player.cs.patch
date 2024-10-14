@@ -3878,6 +3878,20 @@
  			velocity.Y -= num * gravDir;
  			if (gravDir == 1f) {
  				if (velocity.Y > 0f)
+@@ -17047,8 +_,13 @@
+ 					velocity.Y = jumpSpeed * num3;
+ 			}
+ 
++			/*
+ 			if ((wingsLogic == 22 || wingsLogic == 28 || wingsLogic == 30 || wingsLogic == 31 || wingsLogic == 37 || wingsLogic == 45) && TryingToHoverDown && !controlLeft && !controlRight)
+ 				wingTime -= 0.5f;
++			*/
++
++			if (wingsLogic > 0 && TryingToHoverDown && !controlLeft && !controlRight)
++				wingTime -= ArmorIDs.Wing.Sets.StationaryHoverUsage[wingsLogic];
+ 			else
+ 				wingTime -= 1f;
+ 		}
 @@ -17335,7 +_,7 @@
  					Position.Y = projectile.position.Y + (float)(projectile.height / 2) - (float)(height / 2);
  					RemoveAllGrapplingHooks();
@@ -4421,6 +4435,20 @@
  			HorizontalMovement();
  			bool flag20 = !mount.Active;
  			if (forcedGravity > 0) {
+@@ -20669,8 +_,13 @@
+ 			if (wingsLogic > 0 && controlJump && wingTime > 0f && jump == 0 && velocity.Y != 0f)
+ 				flag21 = true;
+ 
++			/*
+ 			if ((wingsLogic == 22 || wingsLogic == 28 || wingsLogic == 30 || wingsLogic == 32 || wingsLogic == 29 || wingsLogic == 33 || wingsLogic == 35 || wingsLogic == 37 || wingsLogic == 45) && controlJump && TryingToHoverDown && wingTime > 0f)
+ 				flag21 = true;
++			*/
++
++			if (wingsLogic > 0 && (ArmorIDs.Wing.Sets.InUseWhenAttemptingHover[wingsLogic] ?? ArmorIDs.Wing.Sets.CanHover[wingsLogic]) && controlJump && TryingToHoverDown && wingTime > 0f)
++				flag21 = true;
+ 
+ 			if (frozen || webbed || stoned) {
+ 				if (mount.Active)
 @@ -20684,12 +_,13 @@
  				CancelAllJumpVisualEffects();
  			}
@@ -4461,6 +4489,29 @@
  							if (wings == 4) {
  								rocketDelay2--;
  								if (rocketDelay2 <= 0) {
+@@ -21111,6 +_,8 @@
+ 		if (mount.Active)
+ 			wingFrame = 0;
+ 
++		// Patch context: Hovering wings.
++		/*
+ 		if ((wingsLogic == 22 || wingsLogic == 28 || wingsLogic == 30 || wingsLogic == 31 || wingsLogic == 33 || wingsLogic == 35 || wingsLogic == 37 || wingsLogic == 45) && TryingToHoverDown && controlJump && wingTime > 0f && !merman) {
+ 			float num71 = 0.9f;
+ 			if (wingsLogic == 45)
+@@ -21126,6 +_,13 @@
+ 			if (velocity.Y > -2f && velocity.Y < 1f)
+ 				velocity.Y = 1E-05f;
+ 		}
++		*/
++
++		if (wingsLogic > 0 && ArmorIDs.Wing.Sets.CanHover[wingsLogic] && TryingToHoverDown && controlJump && wingTime > 0f && !merman) {
++			velocity.Y *= ArmorIDs.Wing.Sets.HoverSlowdown[wingsLogic];
++			if (velocity.Y > -2f && velocity.Y < 1f)
++				velocity.Y = 1E-05f;
++		}
+ 
+ 		GrabItems(i);
+ 		LookForTileInteractions();
 @@ -21257,12 +_,16 @@
  
  				for (int num79 = 0; num79 < 200; num79++) {
