@@ -25,6 +25,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary> The NPC object that this ModNPC controls. </summary>
 	public NPC NPC => Entity;
 
+	/// <summary> Shorthand for NPC.target; </summary>
+	public int Target => NPC.Target;
+ 
 	/// <summary> Shorthand for NPC.type; </summary>
 	public int Type => NPC.type;
 
