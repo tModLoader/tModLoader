@@ -1,23 +1,55 @@
 --- src/TerrariaNetCore/Terraria/UI/IngameFancyUI.cs
 +++ src/tModLoader/Terraria/UI/IngameFancyUI.cs
-@@ -4,7 +_,9 @@
+@@ -4,11 +_,18 @@
  using Terraria.Audio;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
 +using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.UI;
  using Terraria.UI.Gamepad;
  
  namespace Terraria.UI;
-@@ -93,6 +_,10 @@
- 					Main.defaultChestName = Lang.chestType2[tile.frameX / 36].Value;
+ 
++/// <summary>
++/// Provides convenient access to the <see cref="Main.InGameUI"/> <see cref="UserInterface"/> class. Use this for in-game non-gameplay fullscreen user interfaces. User interfaces shown using IngameFancyUI hide all other UI. Some examples include the bestiary, emote menu, and settings menus. There can only be one active fullscreen user interface and the user can't play the game normally when active, so this is only useful for non-gameplay UI.
++/// <para/> Use <see cref="OpenUIState"/> to show a <see cref="UIState"/> and <see cref="Close"/> to close it. There is no need to manage a <see cref="UserInterface"/> or interface layers when using this approach, but it is more limited in flexibility.
++/// </summary>
+ public class IngameFancyUI
+ {
+ 	private static bool CoverForOneUIFrame;
+@@ -56,6 +_,10 @@
+ 		OpenUIState(Main.ManageControlsMenu);
+ 	}
+ 
++	/// <summary>
++	/// Sets the current <see cref="UIState"/> for <see cref="Main.InGameUI"/>. Modders can use this to display a non-gameplay UI without managing and updating a <see cref="UserInterface"/>.
++	/// </summary>
++	/// <param name="uiState"></param>
+ 	public static void OpenUIState(UIState uiState)
+ 	{
+ 		CoverNextFrame();
+@@ -94,6 +_,10 @@
  				else if (tile.type == 88)
  					Main.defaultChestName = Lang.dresserType[tile.frameX / 54].Value;
-+
+ 
 +				// Handle mod container names.
 +				if (tile.type >= TileID.Count && (TileID.Sets.BasicChest[tile.type] || TileID.Sets.BasicDresser[tile.type]))
 +					Main.defaultChestName = TileLoader.DefaultContainerName(tile.type, tile.TileFrameX, tile.TileFrameY);
- 
++
  				if (Main.npcChatText == "")
  					Main.npcChatText = Main.defaultChestName;
+ 
+@@ -152,8 +_,11 @@
+ 			Main.playerInventory = false;
+ 
+ 		Main.LocalPlayer.releaseInventory = false;
++		bool currentStateWasModConfig = Main.InGameUI.CurrentState == Interface.modConfig;
+ 		Main.InGameUI.SetState(null);
+ 		UILinkPointNavigator.Shortcuts.FANCYUI_SPECIAL_INSTRUCTIONS = 0;
++		if (currentStateWasModConfig)
++			Interface.modConfig.HandleOnCloseCallback();
+ 	}
+ 
+ 	public static bool Draw(SpriteBatch spriteBatch, GameTime gameTime)

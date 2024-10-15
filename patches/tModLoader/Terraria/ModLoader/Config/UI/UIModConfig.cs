@@ -22,8 +22,9 @@ namespace Terraria.ModLoader.Config.UI;
 // TODO: Revert individual button.
 // TODO: Collapse All button, or default to collapsed?
 // TODO: Localization support
-internal class UIModConfig : UIState
+internal class UIModConfig : UIState, IHaveBackButtonCommand
 {
+	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
 	public int UpdateCount { get; set; }
 
 	private UIElement uIElement;
@@ -48,6 +49,11 @@ internal class UIModConfig : UIState
 	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
 	private UIFocusInputTextField filterTextField;
+	internal string scrollToOption = null;
+	internal bool centerScrolledOption = false;
+
+	private bool openedFromModder = false;
+	private Action modderOnClose = null;
 
 	public override void OnInitialize()
 	{
@@ -183,13 +189,25 @@ internal class UIModConfig : UIState
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
+		HandleBackButtonUsage();
+		return;
+	}
 
-		if (!Main.gameMenu) {
-			Main.InGameUI.SetState(Interface.modConfigList);
+	// Note that Escape key while in-game won't call this.
+	public void HandleBackButtonUsage()
+	{ 
+		if(Main.gameMenu || !openedFromModder)
+			SoundEngine.PlaySound(SoundID.MenuClose);
+
+		if (Main.gameMenu) {
+			Main.menuMode = Interface.modConfigListID;
+			HandleOnCloseCallback();
 		}
 		else {
-			Main.menuMode = Interface.modConfigListID;
+			if (openedFromModder)
+				IngameFancyUI.Close();
+			else
+				Main.InGameUI.SetState(Interface.modConfigList);
 		}
 	}
 
@@ -349,6 +367,42 @@ internal class UIModConfig : UIState
 	{
 		base.Update(gameTime);
 
+		if (scrollToOption != null) {
+			bool header = false;
+			if (scrollToOption.StartsWith("Header:")) {
+				scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
+				header = true;
+			}
+			// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
+			var desiredElement = mainConfigList._items.Find(x => {
+				if(x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
+					if (configElement is ObjectElement objectElement && objectElement.separatePagePanel != null) {
+						SwitchToSubConfig(objectElement.separatePagePanel);
+						return true;
+					}
+					configElement.Flashing = true;
+					return true;
+				}
+				return false;
+			});
+
+			if (header) {
+				int index = mainConfigList._items.IndexOf(desiredElement);
+				for (int i = index - 1; i >= 0; i--) {
+					if (mainConfigList._items[i] is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is HeaderElement headerElement) {
+						desiredElement = sortableElement;
+						break;
+					}
+				}
+			}
+			mainConfigList.Goto(delegate (UIElement element) {
+				return element == desiredElement;
+			}, center: centerScrolledOption);
+
+			scrollToOption = null;
+			centerScrolledOption = false;
+		}
+
 		UpdateCount++;
 
 		if (pendingChangesUIUpdate) {
@@ -392,8 +446,7 @@ internal class UIModConfig : UIState
 			UICommon.TooltipMouseText(Tooltip);
 		}
 
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 	}
 
 	// do we need 2 copies? We can discard changes by reloading.
@@ -401,9 +454,13 @@ internal class UIModConfig : UIState
 	// when we get new server configs from server...replace, don't save?
 	// reload manually, reload fresh server config?
 	// need some CopyTo method to preserve references....hmmm
-	internal void SetMod(Mod mod, ModConfig config = null)
+	internal void SetMod(Mod mod, ModConfig config = null, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
 	{
 		this.mod = mod;
+		this.openedFromModder = openedFromModder;
+		this.modderOnClose = onClose;
+		this.scrollToOption = scrollToOption;
+		this.centerScrolledOption = centerScrolledOption;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
 			sortedModConfigs = ConfigManager.Configs[mod].OrderBy(x => x.DisplayName.Value).ToList();
 			modConfig = sortedModConfigs[0];
@@ -815,4 +872,12 @@ internal class UIModConfig : UIState
 	//	base.Recalculate();
 	//	mainConfigList?.Recalculate();
 	//}
+
+	internal void HandleOnCloseCallback()
+	{
+		if (modderOnClose != null) {
+			modderOnClose.Invoke();
+			modderOnClose = null;
+		}
+	}
 }
