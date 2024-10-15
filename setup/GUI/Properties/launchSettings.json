@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "setup": {
+    "Setup.GUI": {
       "commandName": "Project",
       "workingDirectory": "$(ProjectDir)/../.."
     }

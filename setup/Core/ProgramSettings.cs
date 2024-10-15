@@ -1,11 +1,12 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using DiffPatch;
 
 namespace Terraria.ModLoader.Setup.Core;
 
-public sealed class ProgramSettings
+public sealed class ProgramSettings : INotifyPropertyChanged
 {
 	private static readonly JsonSerializerOptions FormatJsonSerializerOptions =
 		new() { WriteIndented = true, TypeInfoResolver = new DefaultJsonTypeInfoResolver() };
@@ -16,6 +17,8 @@ public sealed class ProgramSettings
 	{
 		this.jsonFilePath = jsonFilePath;
 	}
+
+	public event PropertyChangedEventHandler? PropertyChanged;
 
 	public static string LogsDir { get; } = Path.Combine("setup", "logs");
 

@@ -37,13 +37,13 @@ namespace Terraria.ModLoader.Setup.Core
 			};
 		}
 
-		public override bool StartupWarning()
+		public override async ValueTask<bool> StartupWarning()
 		{
 			if (programSettings.NoPrompts) {
 				return true;
 			}
 
-			return userPrompt.Prompt(
+			return await userPrompt.Prompt(
 				"Possible loss of data",
 				"Any changes in /" + parameters.PatchedDir + " that have not been converted to patches will be lost.",
 				PromptOptions.OKCancel,
@@ -125,12 +125,12 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public override bool Warnings() => warnings > 0;
 
-		public override void FinishedPrompt()
+		public override async ValueTask FinishedPrompt()
 		{
 			if ((patchReviewer != null && fuzzy > 0) || (!Failed() && !Warnings()))
 				return;
 
-			userPrompt.Inform(
+			await userPrompt.Inform(
 				"Patch Results",
 				$"Patches applied with {failures} failures and {warnings} warnings.\nSee /logs/patch.log for details",
 				Failed() ? PromptSeverity.Error : PromptSeverity.Warning);

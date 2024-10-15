@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.Setup.Core
 		///     Display a startup warning dialog
 		/// </summary>
 		/// <returns>true if the task should continue</returns>
-		public virtual bool StartupWarning() => true;
+		public virtual ValueTask<bool> StartupWarning() => ValueTask.FromResult(true);
 
 		/// <summary>
 		///     Returns a value indicating whether the task failed.
@@ -166,6 +166,6 @@ namespace Terraria.ModLoader.Setup.Core
 		/// <summary>
 		///     Called to display a finished dialog if Failures() || warnings are not supressed and Warnings()
 		/// </summary>
-		public virtual void FinishedPrompt() { }
+		public virtual ValueTask FinishedPrompt() => ValueTask.CompletedTask;
 	}
 }

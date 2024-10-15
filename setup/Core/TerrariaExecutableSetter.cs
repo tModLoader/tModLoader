@@ -76,7 +76,7 @@ public class TerrariaExecutableSetter
 				return Path.GetDirectoryName(executablePath)!;
 			}
 
-			if (!userPrompt.Prompt(
+			if (!await userPrompt.Prompt(
 					"Invalid Selection",
 					errorText,
 					PromptOptions.RetryCancel)) {
@@ -94,7 +94,7 @@ public class TerrariaExecutableSetter
 				throw new InvalidOperationException(messageText);
 			}
 
-			userPrompt.Inform("Error", messageText, PromptSeverity.Error);
+			await userPrompt.Inform("Error", messageText, PromptSeverity.Error);
 
 			terrariaFolderPath = await PromptForTerrariaDirectory(cancellationToken);
 		}
