@@ -65,7 +65,37 @@
  			int num = drawinfo.drawPlayer.bodyFrame.Y / 56;
  			if (num < 1 || num > 5) {
  				drawinfo.armorAdjust = 10;
-@@ -842,7 +_,7 @@
+@@ -519,6 +_,13 @@
+ 
+ 	public static void DrawPlayer_09_Wings(ref PlayerDrawSet drawinfo)
+ 	{
++		if (drawinfo.drawPlayer.wings <= 0)
++			return;
++
++		Main.instance.LoadWings(drawinfo.drawPlayer.wings);
++
++		if (!ItemLoader.PreDrawWings(ref drawinfo)) return;
++
+ 		if (drawinfo.drawPlayer.dead || drawinfo.hideEntirePlayer)
+ 			return;
+ 
+@@ -526,10 +_,7 @@
+ 		Vector2 vector = drawinfo.Position - Main.screenPosition + drawinfo.drawPlayer.Size / 2f;
+ 		Vector2 vector2 = new Vector2(0f, 7f);
+ 		vector = drawinfo.Position - Main.screenPosition + new Vector2(drawinfo.drawPlayer.width / 2, drawinfo.drawPlayer.height - drawinfo.drawPlayer.bodyFrame.Height / 2) + vector2;
+-		if (drawinfo.drawPlayer.wings <= 0)
+-			return;
+ 
+-		Main.instance.LoadWings(drawinfo.drawPlayer.wings);
+ 		DrawData item;
+ 		if (drawinfo.drawPlayer.wings == 22) {
+ 			if (!drawinfo.drawPlayer.ShouldDrawWingsThatAreAlwaysAnimated())
+@@ -838,11 +_,12 @@
+ 			item.shader = drawinfo.cWings;
+ 			drawinfo.DrawDataCache.Add(item);
+ 		}
++
+ 	}
  
  	public static void DrawPlayer_12_1_BalloonFronts(ref PlayerDrawSet drawinfo)
  	{

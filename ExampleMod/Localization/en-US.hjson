@@ -223,6 +223,11 @@ Mods: {
 				Tooltip: This is a modded wing.
 			}
 
+			ExampleCustomDrawnWings: {
+				DisplayName: Example Custom Wings
+				Tooltip: This is a modded wing that is manually drawn.
+			}
+
 			WaspNest: {
 				DisplayName: Wasp Nest
 				# Here we use a vanilla language key to copy the tooltip from HiveBackpack
