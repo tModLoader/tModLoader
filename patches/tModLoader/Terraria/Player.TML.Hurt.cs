@@ -173,29 +173,29 @@ public partial class Player
 		}
 	}
 
-	public struct HurtInfo
+	public readonly struct HurtInfo
 	{
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.DamageSource"/>
 		/// </summary>
-		public PlayerDeathReason DamageSource = null;
+		public PlayerDeathReason DamageSource { get; init; } = null;
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.PvP"/>
 		/// </summary>
-		public bool PvP = false;
+		public bool PvP { get; init; } = false;
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.CooldownCounter"/>
 		/// </summary>
-		public int CooldownCounter = -1;
+		public int CooldownCounter { get; init; } = -1;
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.Dodgeable"/>
 		/// </summary>
-		public bool Dodgeable = true;
+		public bool Dodgeable { get; init; } = true;
 
-		private int _sourceDamage = 1;
+		private readonly int _sourceDamage = 1;
 		/// <summary>
 		/// The amount of damage 'dealt' to the player, before incoming damage multipliers, armor, damage reduction.<br/>
 		/// Use this to trigger effects which scale based on how 'hard' the player was hit rather than how much life was lost.<br/>
@@ -204,40 +204,40 @@ public partial class Player
 		/// Using this instead of <see cref="Damage"/> can prevent diminishing returns damage mitigation, when adding beneficial effects like retaliatory damage.
 		/// </summary>
 		public int SourceDamage {
-			readonly get => _sourceDamage;
-			set => _sourceDamage = Math.Max(value, 1);
+			get => _sourceDamage;
+			init => _sourceDamage = Math.Max(value, 1);
 		}
 
-		private int _damage = 1;
+		private readonly int _damage = 1;
 		/// <summary>
 		/// The amount of damage received by the player. How much life the player will lose. <br/>
 		/// Is NOT capped at the player's current life.<br/>
 		/// Cannot be set to less than 1.
 		/// </summary>
 		public int Damage {
-			readonly get => _damage;
-			set => _damage = Math.Max(value, 1);
+			get => _damage;
+			init => _damage = Math.Max(value, 1);
 		}
 
 		/// <summary>
 		/// <inheritdoc cref="HurtModifiers.HitDirection"/>
 		/// </summary>
-		public int HitDirection = 0;
+		public int HitDirection { get; init; } = 0;
 
 		/// <summary>
 		/// The amount of knockback to apply. Should always be >= 0.
 		/// </summary>
-		public float Knockback = 0;
+		public float Knockback { get; init; } = 0;
 
 		/// <summary>
 		/// If true, dust will not spawn
 		/// </summary>
-		public bool DustDisabled = false;
+		public bool DustDisabled { get; init; } = false;
 
 		/// <summary>
 		/// If true, sound will not play
 		/// </summary>
-		public bool SoundDisabled = false;
+		public bool SoundDisabled { get; init; } = false;
 
 		public HurtInfo() { }
 	}
