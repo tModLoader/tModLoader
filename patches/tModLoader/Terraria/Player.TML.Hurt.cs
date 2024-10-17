@@ -212,11 +212,11 @@ public partial class Player
 		/// <summary>
 		/// The amount of damage received by the player. How much life the player will lose. <br/>
 		/// Is NOT capped at the player's current life.<br/>
-		/// Cannot be set to less than 1.
+		/// Cannot be set to less than 0.
 		/// </summary>
 		public int Damage {
 			readonly get => _damage;
-			set => _damage = Math.Max(value, 1);
+			set => _damage = Math.Max(value, 0);
 		}
 
 		/// <summary>
