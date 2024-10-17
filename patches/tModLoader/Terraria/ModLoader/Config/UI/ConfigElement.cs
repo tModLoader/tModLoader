@@ -38,7 +38,7 @@ public abstract class ConfigElement : UIElement
 	protected PropertyFieldWrapper MemberInfo { get; set; }
 	// The object that contains the memberInfo. This is usually a ModConfig instance or an object instance contained within a ModConfig instance.
 	protected object Item { get; set; }
-	// If non-null, the memberInfo actually referes to the collection containing this item and array and index need to be used to assign this data
+	// If non-null, the memberInfo actually refers to the collection containing this item and array and index need to be used to assign this data
 	protected IList List { get; set; }
 	// Attributes
 	protected LabelKeyAttribute LabelAttribute;

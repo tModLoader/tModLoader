@@ -656,7 +656,8 @@ internal class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 					prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider!, defaultValueCreator);
 				}
 				else if (prop.PropertyType.IsArray) {
-					Func<object?> defaultValueCreator = () => (prop.ValueProvider!.GetValue(referenceInstance) as Array)!.Clone();
+					Func<object?> defaultValueCreator = () => prop.ValueProvider!.GetValue(ctor.Invoke(null));
+					// Func<object?> defaultValueCreator = () => (prop.ValueProvider!.GetValue(referenceInstance) as Array)!.Clone(); // Cloning an array copies element references, not what we need.
 					prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider!, defaultValueCreator);
 				}
 			}
