@@ -28,9 +28,12 @@ public static class LocalizationLoader
 		}
 	}
 
+	[Obsolete("Use LoadModTranslations(LanguageManager, GameCulture) instead")]
 	public static void LoadModTranslations(GameCulture culture)
+		=> LoadModTranslations(LanguageManager.Instance, culture)
+
+	public static void LoadModTranslations(LanguageManager lang, GameCulture culture)
 	{
-		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
 			foreach (var (key, value) in LoadTranslations(mod, culture)) {
 				lang.GetText(key).SetValue(value); // can only set the value of existing keys. Cannot register new keys.
