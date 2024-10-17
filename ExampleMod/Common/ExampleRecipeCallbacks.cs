@@ -7,8 +7,8 @@ namespace ExampleMod.Common
 	public static class ExampleRecipeCallbacks
 	{
 		// ConsumeItemCallbacks - These are used to adjust the number of ingredients consumed by recipes, similar to Alchemy Table - See https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#custom-item-consumption
-		public static void DontConsumeChain(Recipe recipe, int type, ref int amount) {
-			if (type == ItemID.Chain) {
+		public static void DontConsumeChain(Recipe recipe, int type, ref int amount, bool isDecrafting) {
+			if (type == ItemID.Chain) { // since there is no check for isDecrafting this will not return chains on shimmer either
 				amount = 0;
 			}
 		}

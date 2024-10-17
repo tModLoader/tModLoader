@@ -2004,6 +2004,43 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
+@@ -47808,10 +_,34 @@
+ 			shimmered = true;
+ 		}
+ 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
+-			int num8 = stack;
++			int stackSize = stack;
+ 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
+-			stack = num8;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			int spawnCount = 0;
++
++			while (stackSize > 0) {
++				spawnCount++;
++
++				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
++				Item item = Main.item[newItemIndex];
++				item.stack = stackSize;
++				if (item.stack > maxStack)
++					item.stack = maxStack;
++				stackSize -= item.stack;
++				item.shimmerTime = 1f;
++				item.shimmered = true;
++				item.shimmerWet = true;
++				item.wet = true;
++				item.velocity *= 0.1f;
++				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];
@@ -2013,6 +2050,31 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47869,17 +_,22 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+-					if (num18 > 9999)
+-						num18 = 9999;
++					if (num18 > item2.maxStack)
++						num18 = item2.maxStack;
+ 
+ 					num16 -= num18;
+ 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
