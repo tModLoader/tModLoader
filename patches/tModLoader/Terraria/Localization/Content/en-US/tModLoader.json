@@ -150,6 +150,7 @@
 		"ModConfigScaleUp": "Scale Up",
 		"ModConfigScaleDown": "Scale Down",
 		"ModConfigTypeHere": "Type Here",
+		"ModConfigUnknownEnum": "Unknown value",
 		"ModConfigServerResponse": "Server response: {0}",
 		"ModConfigServerRejectedChanges": "Server rejected changes: {0}",
 		"ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",

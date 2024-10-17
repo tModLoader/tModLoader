@@ -42,6 +42,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[DrawTicks]
 		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasaur", "Squirtle" })]
 		[DefaultValue("Bulbasaur")]
+		// Note that the enum approach above is recommended for options. This is just included for the sake of completeness.
 		public string FavoritePokemon;
 
 		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
