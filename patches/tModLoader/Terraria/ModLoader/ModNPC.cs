@@ -740,7 +740,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to add shops to this NPC, similar to adding recipes for items. <br/>
-	/// Make a new <see cref="NPCShop"/>, and items to it, and call <see cref="AbstractNPCShop.Register"/>
+	/// Make a new <see cref="NPCShop"/>, add items to it, and call <see cref="AbstractNPCShop.Register"/>
 	/// </summary>
 	public virtual void AddShops()
 	{
