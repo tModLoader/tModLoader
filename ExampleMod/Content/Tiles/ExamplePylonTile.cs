@@ -60,6 +60,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 			TileID.Sets.PreventsSandfall[Type] = true;
 			TileID.Sets.AvoidedByMeteorLanding[Type] = true;
+			TileID.Sets.PreventsActuationUnder[Type] = true;
 
 			// Adds functionality for proximity of pylons; if this is true, then being near this tile will count as being near a pylon for the teleportation process.
 			AddToArray(ref TileID.Sets.CountsAsPylon);
