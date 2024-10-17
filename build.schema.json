@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+	"properties": {
+		"displayName": {
+			"type": "string",
+			"description": "The name used when the mod is displayed"
+		},
+		"author": {
+			"type": "string",
+			"description": "The author used when the mod is displayed\t"
+		},
+		"version": {
+			"type": "string",
+			"pattern": "^([0-9]{1,})((.([0-9]{1,})){1,3})$",
+			"description": "The version used when the mod is displayed."
+		},
+		"dllReferences": {
+			"type": "array",
+			"items": { "type": "string" },
+			"description": "A list of dll references the mod has aside from the dlls of other mods. Name references by their file name without the extension. You must place the dll files in a 'lib/' folder in the top level of your mod source."
+		},
+		"modReferences": {
+			"type": "array",
+			"items": { "type": "string" },
+			"description": "A list of other mods that the mod depends on. Name mods by their file name without the extension."
+		},
+		"weakReferences": {
+			"type": "array",
+			"items": { "type": "string" },
+			"description": "A list of mods that the mod will build against and can natively interact with, but don't necessarily have to be enabled. Basically optional modReferences, but require the modder to be a little more careful in programming to avoid binding errors."
+		},
+		"noCompile": {
+			"type": "boolean",
+			"description": "Whether the mod should compile source code when being built or use a .dll file pre-compiled by the mod maker. By default this will be false if you do not include this property. The precompiled dll file must be named \"ModName.dll\", where ModName is your mod's name.",
+		},
+		"homepage": {
+			"type": "string",
+			"format": "uri",
+			"description": "A link to the home website of the mod. This will be listed alongside the steam workshop page in the More Info menu."
+		},
+		"hideCode": {
+			"type": "boolean",
+			"description": "If true, the unpacked mod that results from using the extract mod option will not include .dll files (compiled code), .pdb files (help with error messages) or .xml files (documentation). These files are essential to allowing cross-mod functionality so this option shouldn't be true if you intend to allow mods to properly interop with your mod."
+		},
+		"hideResources": {
+			"type": "boolean",
+			"description": "If true, the unpacked mod that results from using the extract mod option will not include resource files, such as .png files and .wav files. Use this if you would like to have your sounds and images freely available to other modders to view. If you use includeSource, this will also include those .cs files."
+		},
+		"includeSource": {
+			"type": "boolean",
+			"description": "If true, the unpacked mod that results from using the extract mod option will include .cs files, provided hideResources is still false. Use this if you would like to share your code freely. If you are truly interested in community support for your mod, consider using GitHub to allow others to contribute code to your mod."
+		},
+		"buildIgnore": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"description": "A list of file patterns to ignore during the build and packaging processes. To exclude a single file, simply write the filename: Template.psd, Items/TestItem.cs. To exclude a folder, write FolderName/*."
+		},
+		"side": {
+			"description": "The ModSide that controls how this mod is synced between client and server.",
+			"enum": [ "Both", "Client", "Server", "NoSync" ]
+		},
+		"sortAfter": {
+			"type": "array",
+			"items": { "type": "string" },
+			"description": "A list of other mods that this mod will be forced to load after. The last mod in the list alphabetically is the one this mod will be loaded after. Only affects loading if this mod would normally be loaded before those other mods. Automatically happens with mods listed in the modReferences list. Name mods by their file name without the extension."
+		},
+		"sortBefore": {
+			"type": "array",
+			"items": { "type": "string" },
+			"description": "A list of other mods that this mod will be forced to load before. This property can be considered the opposite of the sortAfter property. Name mods by their file name without the extension."
+		},
+		"playableOnPreview": {
+			"type": "boolean",
+			"description": "If false, the mod will refuse to load on a preview version of tModLoader if loaded from the workshop. This can be used for mods that want to avoid bug reports from preview users or want to publish to preview without spoiling new content. Most mods shouldn't need to use this."
+		},
+		"translationMod": {
+			"type": "boolean",
+			"description": "f true, this mod will be treated as a mod providing translations for another mod. The mods listed in modReferences are the mods this mod translates. Translation mods will have their localization files automatically updated with localization entries from the translated mod when they are loaded together, enabling translation mod authors to easily update translations to the latest update. This will also cause a special icon to be shown in the Mods menu and adds a custom workshop tag to allow users to more easily find translation mods."
+		}
+
+	}
+}

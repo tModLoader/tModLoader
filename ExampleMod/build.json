@@ -1,0 +1,11 @@
+{
+	"$schema": "https://raw.githubusercontent.com/TechnicalitiesDevelopment/tModLoader/refs/heads/feature/build.json/build.schema.json",
+	"author": "TML Team",
+	"displayName": "Example Mod",
+	"homepage": "https://tmodloader.net/",
+	"hideCode": false,
+	"hideResources": false,
+	"includeSource": true,
+	"buildIgnore": [ "*.csproj", "*.user", "obj\\*", "bin\\*", ".vs\\*", "Old\\*" ],
+	"version": "9999.0"
+}

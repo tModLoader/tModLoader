@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Terraria.ModLoader.IO;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 namespace Terraria.ModLoader.Core;
 
 //todo: further documentation
@@ -92,9 +93,92 @@ internal class BuildProperties
 
 		writer.Write("");
 	}
+	internal static BuildProperties ReadBuildFileJson(string modDir)
+	{
+		string propertiesfile = modDir + Path.DirectorySeparatorChar + "build.json";
+		string descriptionfile = modDir + Path.DirectorySeparatorChar + "description.txt";
+		BuildProperties properties = new BuildProperties() {
+			description = File.ReadAllText(descriptionfile)
+		};
+		string json = File.ReadAllText(propertiesfile);
+		Dictionary<string, object> parsed = JsonConvert.DeserializeObject< Dictionary<string, object>>(json);
+		foreach(var key in parsed.Keys) {
+			var value = parsed[key];
+			switch (key) {
+				case "displayName":
+					properties.displayName = (string)value;
+					break;
+				case "author":
+					properties.author = (string)value;
+					break;
+				case "version":
+					if (Version.TryParse((string)value, out Version result)) {
+						properties.version = result;
+					}
+					else {
+						Logging.tML.Error($"The version found in {propertiesfile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
+					}
+					break;
+				case "dllReferences":
+					properties.dllReferences = ((JArray)value).ToObject<string[]>();
+					break;
+				case "modReferences":
+					properties.modReferences = (((JArray)value).ToObject<string[]>()).Select(ModReference.Parse).ToArray();
+					break;
+				case "weakReferences":
+					properties.weakReferences = (((JArray)value).ToObject<string[]>()).Select(ModReference.Parse).ToArray();
+					break;
+				case "noCompile":
+					properties.noCompile = (bool)value;
+					break;
+				case "homepage":
+					properties.homepage = (string)value;
+					break;
+				case "hideCode":
+					properties.hideCode = (bool)value;
+					break;
+				case "hideResources":
+					properties.hideResources = (bool)value;
+					break;
+				case "includeSource":
+					properties.includeSource = (bool)value;
+					break;
+				case "buildIgnore":
+					properties.buildIgnores = ((JArray)value).ToObject<string[]>();
+					break;
+				case "side":
+					properties.side = Enum.Parse<ModSide>((string)value);
+					break;
+				case "sortAfter":
+					properties.sortAfter = ((JArray)value).ToObject<string[]>();
+					break;
+				case "sortBefore":
+					properties.sortBefore = ((JArray)value).ToObject<string[]>();
+					break;
+				case "playableOnPreview":
+					properties.playableOnPreview = (bool)value;
+					break;
+				case "translationMod":
+					properties.translationMod = (bool)value;
+					break;
+			}
+		}
+		var refs = properties.RefNames(true).ToList();
+		if (refs.Count != refs.Distinct().Count())
+			throw new Exception("Duplicate mod/weak reference");
 
+		//add (mod|weak)References that are not in sortBefore to sortAfter
+		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
+			.Concat(properties.sortAfter).Distinct().ToArray();
+
+		// Interpolate description values
+		ModCompile.UpdateSubstitutedDescriptionValues(ref properties.description, properties.version.ToString(), properties.homepage);
+
+		return properties;
+	}
 	internal static BuildProperties ReadBuildFile(string modDir)
 	{
+		if (File.Exists(modDir + Path.DirectorySeparatorChar + "build.json")) return ReadBuildFileJson(modDir);
 		string propertiesFile = modDir + Path.DirectorySeparatorChar + "build.txt";
 		string descriptionfile = modDir + Path.DirectorySeparatorChar + "description.txt";
 		BuildProperties properties = new BuildProperties();
