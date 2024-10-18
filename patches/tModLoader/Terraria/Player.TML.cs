@@ -85,6 +85,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public const int ManaCrystalMax = 9;
 
+	public StatModifier breathEffectiveness = StatModifier.Default;
+
 	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
 	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;
