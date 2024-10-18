@@ -408,4 +408,13 @@ public abstract partial class ModSystem : ModType
 	/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 	/// </summary>
 	public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
+
+	/// <summary>
+	/// Called after all mods register content and before all mods start setting up content. Use this to initialize data structures dependent on the count of various content IDs, usually through SetFactory instances directly.
+	/// <para/> For example, <c>ItemID.Sets.Factory.CreateBoolSet(false, ItemID.PoisonDart, ItemID.PoisonedKnife)</c> will create an array with length equal to the total number of items in the game with the specified item types set to true.
+	/// <para/> <see cref="SetHandler.RegisterCustomSet{T}(string, T, T[])"/> can be used to expose a custom set for other mods to use by name without a dependency.
+	/// </summary>
+	public virtual void ResizeArrays() {
+		// TODO: bool unloading? Or maybe just only call this hook when loading in the first place?
+	}
 }

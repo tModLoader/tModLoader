@@ -37,9 +37,15 @@ public static partial class SystemLoader
 		SystemsByMod.Clear();
 	}
 
-	internal static void ResizeArrays()
+	internal static void ResizeArrays(bool unloading)
 	{
 		RebuildHooks();
+
+		if (!unloading) {
+			foreach (var system in HookResizeArrays.Enumerate()) {
+				system.ResizeArrays();
+			}
+		}
 	}
 
 	internal static void OnModLoad(Mod mod)

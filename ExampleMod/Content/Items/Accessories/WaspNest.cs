@@ -46,6 +46,10 @@ namespace ExampleMod.Content.Items.Accessories
 			}
 		}
 
+		public override void SetStaticDefaults() {
+			WaspNestSystem.CantEquipWith_HiveBackpack[Type] = true; // Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
+		}
+
 		public override void SetDefaults() {
 			int realBackSlot = Item.backSlot;
 			Item.CloneDefaults(ItemID.HiveBackpack);
@@ -60,10 +64,27 @@ namespace ExampleMod.Content.Items.Accessories
 			// Here we add an additional effect
 			player.GetModPlayer<WaspNestPlayer>().strongBeesUpgrade = true;
 		}
+	}
 
+	public class WaspNestSystem : ModSystem
+	{
+		// This is a custom item set, facilitating mod collaboration. See CustomSetsSystem.cs for more information.
+		public static bool[] CantEquipWith_HiveBackpack;
+
+		public override void ResizeArrays() {
+			CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateBoolSet(false, ItemID.HiveBackpack);
+			SetHandler.RegisterCustomSet(nameof(CantEquipWith_HiveBackpack), false, ref CantEquipWith_HiveBackpack);
+		}
+	}
+
+	public class WaspNestGlobalItem : GlobalItem
+	{
+		// Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
 		public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
-			// Don't allow Hive Pack and Wasp Nest to be equipped at the same time.
-			return incomingItem.type != ItemID.HiveBackpack;
+			if (WaspNestSystem.CantEquipWith_HiveBackpack[equippedItem.type] && WaspNestSystem.CantEquipWith_HiveBackpack[incomingItem.type]) {
+				return false;
+			}
+			return true;
 		}
 	}
 
