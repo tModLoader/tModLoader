@@ -85,6 +85,24 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.ModDescriptionLengthTooShort");
 			return false;
 		}
+		// Checks Mod Icon
+		stream = new StreamReader(modFile.GetStream("icon.png"));
+		var mIcon = stream.ReadToEnd();
+		stream.Close();
+		stream2 = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream("Terraria/ModLoader/Templates/icon.png");
+		string dIcon;
+		using ( var reader = new StreamReader(stream2))
+			dIcon = reader.ReadToEnd();
+		stream2.Close();
+		if(mIcon == dIcon) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.ModUsesDefaultIcon");
+			return false;
+		}
+		//Checks for icon_workshop.png
+		if (!modFile.HasFile("icon_workshop.png")) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.ModWorkshopIconNotExist");
+			return false;
+		}
 		// Check for Beta
 		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
