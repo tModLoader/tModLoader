@@ -75,8 +75,13 @@ public partial class WorkshopSocialModule
 		// Checks if Mod is adequate
 
 		// Check mod description
-		const int MinimumDefaultDescriptionCharacters = 20;
 		const string DescriptionFileName = "description.txt";
+		if (!modFile.HasFile(DescriptionFileName)) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionMissing", DescriptionFileName));
+			return false;
+		}
+
+		const int MinimumDefaultDescriptionCharacters = 20;
 		using var defaultDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{DescriptionFileName}"));
 		string defaultDescription = defaultDescriptionStream.ReadToEnd();
 		string modDescription = Encoding.UTF8.GetString(modFile.GetBytes(DescriptionFileName));

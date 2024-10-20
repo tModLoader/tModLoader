@@ -76,6 +76,7 @@
 		"ModDescriptionLengthTooShort": "Please create a valid description for your mod",
 		"ModWorkshopIconNotExist": "The file icon_workshop.png doesn't exist. Please upload a valid workshop icon",
 		"ModUsesDefaultIcon": "Please create a custom icon for your mod.",
+		"ModDescriptionMissing": "The file {0} doesn't exist. Please create a valid description for your mod.",
 		"OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Reload Required",
