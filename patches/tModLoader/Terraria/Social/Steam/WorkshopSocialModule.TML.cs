@@ -81,13 +81,13 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		const int MinimumDefaultDescriptionCharacters = 20;
+		const int MinimumDefaultDescriptionCharacters = 50;
 		using var defaultDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{DescriptionFileName}"));
 		string defaultDescription = defaultDescriptionStream.ReadToEnd();
 		string modDescription = Encoding.UTF8.GetString(modFile.GetBytes(DescriptionFileName));
 
 		if (modDescription.Count(char.IsLetterOrDigit) < MinimumDefaultDescriptionCharacters || modDescription == defaultDescription) {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.ModDescriptionLengthTooShort");
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionLengthTooShort", DescriptionFileName));
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public partial class WorkshopSocialModule
 		var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(IconFileName);
 
 		if (modIconBytes.SequenceEqual(defaultIconBytes)) {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.ModUsesDefaultIcon");
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModUsesDefaultIcon", IconFileName));
 			return false;
 		}
 
