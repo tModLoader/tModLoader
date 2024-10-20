@@ -14,9 +14,12 @@
  	private GroupOptionButton<WorkshopItemPublicSettingId>[] _publicityOptions;
 -	private List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
 +	protected List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
- 	private UICharacterNameButton _previewImagePathPlate;
- 	private Texture2D _previewImageTransientTexture;
- 	private UIImage _previewImageUIElement;
+-	private UICharacterNameButton _previewImagePathPlate;
++	protected UICharacterNameButton _previewImagePathPlate;
+-	private Texture2D _previewImageTransientTexture;
++	protected Texture2D _previewImageTransientTexture;
+-	private UIImage _previewImageUIElement;
++	protected UIImage _previewImageUIElement;
 -	private string _previewImagePath;
 +	protected string _previewImagePath;
  	private Asset<Texture2D> _defaultPreviewImageTexture;
@@ -280,3 +283,12 @@
  		string text = FileBrowser.OpenFilePanel("Open icon", extensions);
  		if (text != null) {
  			_previewImagePath = text;
+@@ -680,7 +_,7 @@
+ 		return path;
+ 	}
+ 
+-	private void UpdateImagePreview()
++	protected virtual void UpdateImagePreview()
+ 	{
+ 		Texture2D texture2D = null;
+ 		string contents = PrettifyPath(_previewImagePath);

@@ -1,18 +1,20 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social;
 using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace Terraria.GameContent.UI.States;
 
@@ -21,6 +23,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 	public const string TmlRules = "https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/";
 
 	private readonly NameValueCollection _buildData;
+	protected UIText imageWarningText;
 	internal string changeNotes;
 
 	public WorkshopPublishInfoStateForMods(UIState stateToGoBackTo, TmodFile modFile, NameValueCollection buildData)
@@ -40,12 +43,31 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 	protected override void GoToPublishConfirmation()
 	{
+		// If needed, create a resized image and use it instead.
+		string resizedPreviewImage = null;
+		if (CheckPreviewImageNeedsResizing(out _, out int newWidth, out int newHeight)) {
+			string srcPath = _previewImagePath;
+			resizedPreviewImage = Path.Combine(Path.GetTempPath(), "icon_workshop.png");
+			UpscaleAndSaveImageAsPng(srcPath, resizedPreviewImage, newWidth, newHeight);
+			_previewImagePath = resizedPreviewImage;
+		}
+
 		/* if ( SocialAPI.Workshop != null) */
 		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
 			Main.menuMode = 888;
 			Main.MenuUI.SetState(_previousUIState);
+
+			// If we resized the preview image and if no errors occurred, copy it to the mod's source directory.
+			if (resizedPreviewImage != null) {
+				try {
+					string newPath = Path.Combine(ModCompile.ModSourcePath, _dataObject.Name, "icon_workshop.png");
+					File.Copy(resizedPreviewImage, newPath, overwrite: true);
+					_previewImagePath = newPath;
+				}
+				catch { }
+			}
 		}
 	}
 
@@ -224,5 +246,53 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		uIElement.Append(uIText);
 		uIText.SetSnapPoint("warning", 0);
 		uiList.Add(groupOptionButton);
+	}
+
+	protected override void UpdateImagePreview()
+	{
+		base.UpdateImagePreview();
+
+		if (imageWarningText == null) {
+			imageWarningText = new UIText(string.Empty) {
+				TextOriginX = 0f,
+				TextOriginY = 0.5f,
+				Width = _previewImagePathPlate.Width,
+				Height = new(0f, 0f),
+				Left = new(10f, 0f),
+				Top = new(10f, 0f), //Top = new(0f, 0.675f),
+				TextColor = Color.Orange,
+			};
+			_previewImagePathPlate.Parent.Append(imageWarningText);
+		}
+
+		// Display a warning that the preview image will be resized.
+		if (CheckPreviewImageNeedsResizing(out var tex, out int newWidth, out int newHeight)) {
+			imageWarningText.SetText(Language.GetTextValue("tModLoader.ModWorkshopIconResizeWarning", $"{tex.Width}x{tex.Height}", $"{newWidth}x{newHeight}"));
+		}
+		else {
+			imageWarningText.SetText(string.Empty);
+		}
+	}
+
+	private bool CheckPreviewImageNeedsResizing(out Texture2D texture, out int newWidth, out int newHeight)
+	{
+		const int MinDimensions = 480;
+		const int PreferredDimensions = 512;
+		if (_previewImagePath != null && _previewImageTransientTexture is Texture2D tex) {
+			(texture, newWidth, newHeight) = (tex, PreferredDimensions, PreferredDimensions);
+			return tex.Width < MinDimensions || tex.Height < MinDimensions;
+		}
+
+		(texture, newWidth, newHeight) = (default, default, default);
+		return false;
+	}
+
+	internal static unsafe void UpscaleAndSaveImageAsPng(string srcImagePath, string dstImagePath, int dstWidth, int dstHeight)
+	{
+		using var srcStream = File.OpenRead(srcImagePath);
+		Texture2D.TextureDataFromStreamEXT(srcStream, out int srcWidth, out int srcHeight, out byte[] srcBytes); 
+
+		using var dstStream = File.OpenWrite(dstImagePath);
+		PlatformUtilities.SavePng(dstStream, srcWidth, srcHeight, dstWidth, dstHeight, srcBytes);
 	}
 }
