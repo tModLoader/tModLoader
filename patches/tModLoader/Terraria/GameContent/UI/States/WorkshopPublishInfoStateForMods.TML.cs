@@ -47,7 +47,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		string resizedPreviewImage = null;
 		if (CheckPreviewImageNeedsResizing(out _, out int newWidth, out int newHeight)) {
 			string srcPath = _previewImagePath;
-			resizedPreviewImage = Path.Combine(Path.GetTempPath(), "icon_workshop.png");
+			resizedPreviewImage = Path.Combine(Path.GetTempPath(), "icon_workshop.png." + DateTime.Now.Ticks);
 			UpscaleAndSaveImageAsPng(srcPath, resizedPreviewImage, newWidth, newHeight);
 			_previewImagePath = resizedPreviewImage;
 		}
@@ -56,9 +56,6 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
-			Main.menuMode = 888;
-			Main.MenuUI.SetState(_previousUIState);
-
 			// If we resized the preview image and if no errors occurred, copy it to the mod's source directory.
 			if (resizedPreviewImage != null) {
 				try {
@@ -68,6 +65,9 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 				}
 				catch { }
 			}
+
+			Main.menuMode = 888;
+			Main.MenuUI.SetState(_previousUIState);
 		}
 	}
 
