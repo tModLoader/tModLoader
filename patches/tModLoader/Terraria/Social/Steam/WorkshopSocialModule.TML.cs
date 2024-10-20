@@ -10,6 +10,7 @@ using Terraria.Social.Base;
 using Terraria.Utilities;
 using Terraria.Localization;
 using System.Collections;
+using System.Text;
 
 namespace Terraria.Social.Steam;
 
@@ -70,44 +71,46 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.WrongVersionCantPublishError");
 			return false;
 		}
+
 		// Checks if Mod is adequate
+
 		// Check mod description
-		var stream = new StreamReader(modFile.GetStream("description.txt"));
-		var desc = stream.ReadToEnd();
-		stream.Close();
-		string defaultDesc;
-		var stream2 = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream("Terraria/ModLoader/Templates/description.txt");
-		using ( var reader = new StreamReader(stream2))
-			defaultDesc = reader.ReadToEnd();
-		stream2.Close();
-		int minimumDefaultDescriptionCharacters = 20;
-		if (desc.Length < minimumDefaultDescriptionCharacters || desc == defaultDesc) {
+		const int MinimumDefaultDescriptionCharacters = 20;
+		const string DescriptionFileName = "description.txt";
+		using var defaultDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{DescriptionFileName}"));
+		string defaultDescription = defaultDescriptionStream.ReadToEnd();
+		string modDescription = Encoding.UTF8.GetString(modFile.GetBytes(DescriptionFileName));
+
+		if (modDescription.Length < MinimumDefaultDescriptionCharacters || modDescription == defaultDescription) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.ModDescriptionLengthTooShort");
 			return false;
 		}
-		// Checks Mod Icon
-		stream = new StreamReader(modFile.GetStream("icon.png"));
-		var mIcon = stream.ReadToEnd();
-		stream.Close();
-		stream2 = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream("Terraria/ModLoader/Templates/icon.png");
-		string dIcon;
-		using ( var reader = new StreamReader(stream2))
-			dIcon = reader.ReadToEnd();
-		stream2.Close();
-		if(mIcon == dIcon) {
+
+		// Check mod icon
+		const string IconFileName = "icon.png";
+		using var defaultIconStream = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{IconFileName}");
+		using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+		defaultIconStream.CopyTo(defaultIconMemoryStream);
+		var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+		var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(IconFileName);
+
+		if (modIconBytes.SequenceEqual(defaultIconBytes)) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.ModUsesDefaultIcon");
 			return false;
 		}
-		//Checks for icon_workshop.png
+
+		// Checks for icon_workshop.png
 		if (!modFile.HasFile("icon_workshop.png")) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.ModWorkshopIconNotExist");
 			return false;
 		}
+
 		// Check for Beta
 		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
+
 		string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
 		buildData["versionsummary"] = $"{new Version(buildData["modloaderversion"])}:{buildData["version"]}";
 		// Needed for backwards compat from previous version metadata
