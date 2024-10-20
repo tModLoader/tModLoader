@@ -81,7 +81,7 @@ public partial class WorkshopSocialModule
 		string defaultDescription = defaultDescriptionStream.ReadToEnd();
 		string modDescription = Encoding.UTF8.GetString(modFile.GetBytes(DescriptionFileName));
 
-		if (modDescription.Length < MinimumDefaultDescriptionCharacters || modDescription == defaultDescription) {
+		if (modDescription.Count(char.IsLetterOrDigit) < MinimumDefaultDescriptionCharacters || modDescription == defaultDescription) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.ModDescriptionLengthTooShort");
 			return false;
 		}
