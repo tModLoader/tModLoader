@@ -277,11 +277,10 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 	private bool CheckPreviewImageNeedsResizing(out Texture2D texture, out int newWidth, out int newHeight)
 	{
-		const int MinDimensions = 480;
-		const int PreferredDimensions = 512;
+		const int TargetDimensions = 480; // (512 % 80), lets Steam perform crispier downscaling for pixel art drawn at 40/80px resolution.
 		if (_previewImagePath != null && _previewImageTransientTexture is Texture2D tex) {
-			(texture, newWidth, newHeight) = (tex, PreferredDimensions, PreferredDimensions);
-			return tex.Width < MinDimensions || tex.Height < MinDimensions;
+			(texture, newWidth, newHeight) = (tex, TargetDimensions, TargetDimensions);
+			return tex.Width < TargetDimensions || tex.Height < TargetDimensions;
 		}
 
 		(texture, newWidth, newHeight) = (default, default, default);
