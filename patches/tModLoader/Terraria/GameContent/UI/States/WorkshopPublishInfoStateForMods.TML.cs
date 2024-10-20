@@ -44,24 +44,25 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 	protected override void GoToPublishConfirmation()
 	{
 		// If needed, create a resized image and use it instead.
-		string resizedPreviewImage = null;
+		bool resizedPreviewImage = false;
 		if (CheckPreviewImageNeedsResizing(out _, out int newWidth, out int newHeight)) {
 			string srcPath = _previewImagePath;
-			resizedPreviewImage = Path.Combine(Path.GetTempPath(), "icon_workshop.png." + DateTime.Now.Ticks);
-			UpscaleAndSaveImageAsPng(srcPath, resizedPreviewImage, newWidth, newHeight);
-			_previewImagePath = resizedPreviewImage;
+			string dstPath = Path.Combine(Path.GetTempPath(), "icon_workshop.png." + DateTime.Now.Ticks);
+			UpscaleAndSaveImageAsPng(srcPath, dstPath, newWidth, newHeight);
+			_previewImagePath = dstPath;
+			resizedPreviewImage = true;
 		}
 
 		/* if ( SocialAPI.Workshop != null) */
 		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
-			// If we resized the preview image and if no errors occurred, copy it to the mod's source directory.
-			if (resizedPreviewImage != null) {
+			// Copy the used preview image to the mod's source directory if one isn't there or if we resized it.
+			string iconWorkshopPath = Path.Combine(ModCompile.ModSourcePath, _dataObject.Name, "icon_workshop.png");
+			if (_previewImagePath != iconWorkshopPath && (resizedPreviewImage || !File.Exists(iconWorkshopPath))) {
 				try {
-					string newPath = Path.Combine(ModCompile.ModSourcePath, _dataObject.Name, "icon_workshop.png");
-					File.Copy(resizedPreviewImage, newPath, overwrite: true);
-					_previewImagePath = newPath;
+					File.Copy(_previewImagePath, iconWorkshopPath, overwrite: true);
+					_previewImagePath = iconWorkshopPath;
 				}
 				catch { }
 			}
