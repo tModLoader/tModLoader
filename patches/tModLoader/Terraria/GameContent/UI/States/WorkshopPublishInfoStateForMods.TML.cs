@@ -57,9 +57,9 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
-			// Copy the used preview image to the mod's source directory if one isn't there or if we resized it.
+			// Copy the used preview image to the mod's source directory if it's not a resize and if one isn't there already.
 			string iconWorkshopPath = Path.Combine(ModCompile.ModSourcePath, _dataObject.Name, "icon_workshop.png");
-			if (_previewImagePath != iconWorkshopPath && (resizedPreviewImage || !File.Exists(iconWorkshopPath))) {
+			if (_previewImagePath != iconWorkshopPath && !resizedPreviewImage && !File.Exists(iconWorkshopPath)) {
 				try {
 					File.Copy(_previewImagePath, iconWorkshopPath, overwrite: true);
 					_previewImagePath = iconWorkshopPath;
