@@ -154,6 +154,7 @@
 		"ModConfigScaleUp": "Vergrößern",
 		"ModConfigScaleDown": "Verkleinern",
 		// "ModConfigTypeHere": "Type Here",
+		// "ModConfigUnknownEnum": "Unknown value",
 		"ModConfigServerResponse": "Server Antwort: {0}",
 		"ModConfigServerRejectedChanges": "Der Server hat folgende Änderungen abgelehnt: {0}",
 		"ModConfigSharedConfigChanged": "Geteilte Konfiguration verändert: Meldung: {0}, Mod: {1}, Konfiguration: {2}",

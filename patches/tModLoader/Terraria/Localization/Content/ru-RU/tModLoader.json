@@ -154,6 +154,7 @@
 		"ModConfigScaleUp": "Увеличить масштаб",
 		"ModConfigScaleDown": "Уменьшить масштаб",
 		"ModConfigTypeHere": "Напишите здесь",
+		// "ModConfigUnknownEnum": "Unknown value",
 		"ModConfigServerResponse": "Ответ сервера: {0}",
 		"ModConfigServerRejectedChanges": "Сервер отклонил изменения: {0}",
 		"ModConfigSharedConfigChanged": "Изменена общая конфигурация: Сообщение: {0}, Мод: {1}, Конфигурация: {2}",

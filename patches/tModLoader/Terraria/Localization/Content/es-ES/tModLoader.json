@@ -154,6 +154,7 @@
 		"ModConfigScaleUp": "Ampliar",
 		"ModConfigScaleDown": "Reducir",
 		// "ModConfigTypeHere": "Type Here",
+		// "ModConfigUnknownEnum": "Unknown value",
 		"ModConfigServerResponse": "Respuesta del servidor: {0}",
 		"ModConfigServerRejectedChanges": "El servidor rechazó los cambios: {0}",
 		"ModConfigSharedConfigChanged": "La configuración compartida ha cambiado: Mensaje: {0}, Mod: {1}, Configuración: {2}",

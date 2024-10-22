@@ -13,8 +13,16 @@ namespace Terraria.ModLoader;
 public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModType
 {
 	// Basic Biome information
+	/// <summary>
+	/// <inheritdoc cref="ModSceneEffect.Priority" path="/SharedSummary/node()"/>
+	/// <para/> Defaults to <see cref="SceneEffectPriority.BiomeLow"/>.
+	/// </summary>
 	public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 
+	/// <summary>
+	/// <inheritdoc cref="ModSceneEffect.Music" path="/SharedSummary/node()"/>
+	/// <para/> Defaults to 0. If custom music is not implemented for this biome, set this to -1.
+	/// </summary>
 	public override int Music => 0;
 
 	/// <summary>
