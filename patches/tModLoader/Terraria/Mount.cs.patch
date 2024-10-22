@@ -160,11 +160,21 @@
  	{
  		newMount.spawnDust = 3;
  		newMount.buff = buff;
-@@ -2075,6 +_,12 @@
+@@ -2075,6 +_,22 @@
  		}
  	}
  
 +	//TODO 1.4.5: Vanilla will remove the 2 buff overload
++	/// <summary>
++	/// This method sets a variety of MountData values common to most minecarts.
++	/// <para/>Notably:<code>
++	/// runSpeed = 13f;
++	/// dashSpeed = 13f;
++	///	acceleration = 0.04f;
++	/// jumpHeight = 15;
++	///	jumpSpeed = 5.15f;
++	/// </code>
++	/// </summary>
 +	public static void SetAsMinecart(MountData newMount, int buff, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
 +	{
 +		SetAsMinecart(newMount, buff, buff, texture, verticalOffset, playerVerticalOffset);
