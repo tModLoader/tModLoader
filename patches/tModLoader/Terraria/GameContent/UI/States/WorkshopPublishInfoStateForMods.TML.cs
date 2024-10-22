@@ -261,7 +261,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 				Height = new(0f, 0f),
 				Left = new(10f, 0f),
 				Top = new(10f, 0f), //Top = new(0f, 0.675f),
-				TextColor = Color.Orange,
+				TextColor = new Color(106, 190, 48),
 			};
 			_previewImagePathPlate.Parent.Append(imageWarningText);
 		}
