@@ -170,9 +170,9 @@
 +	/// <para/>Notably:<code>
 +	/// runSpeed = 13f;
 +	/// dashSpeed = 13f;
-+	///	acceleration = 0.04f;
++	/// acceleration = 0.04f;
 +	/// jumpHeight = 15;
-+	///	jumpSpeed = 5.15f;
++	/// jumpSpeed = 5.15f;
 +	/// </code>
 +	/// </summary>
 +	public static void SetAsMinecart(MountData newMount, int buff, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
