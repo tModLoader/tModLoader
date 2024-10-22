@@ -26,7 +26,7 @@
  		public Asset<Texture2D> frontTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureExtra = Asset<Texture2D>.Empty;
-@@ -150,11 +_,14 @@
+@@ -150,11 +_,22 @@
  		public int dashingFrameCount;
  		public int dashingFrameDelay;
  		public bool Minecart;
@@ -37,7 +37,15 @@
  		public bool emitsLight;
  		public MountDelegatesData delegations = new MountDelegatesData();
  		public int playerXOffset;
-+		public float MinecartUpgradeRunSpeed = 20f, MinecartUpgradeAcceleration = 0.1f, MinecartUpgradeJumpSpeed = 5.15f, MinecartUpgradeDashSpeed = 20f;
++		/// <summary> Alternate <see cref="runSpeed"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>20f</c>.</summary>
++		public float MinecartUpgradeRunSpeed = 20f;
++		/// <summary> Alternate <see cref="acceleration"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>0.1f</c>.</summary>
++		public float MinecartUpgradeAcceleration = 0.1f;
++		/// <summary> Alternate <see cref="jumpSpeed"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>5.15f</c>.</summary>
++		public float MinecartUpgradeJumpSpeed = 5.15f;
++		/// <summary> Alternate <see cref="dashSpeed"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>20f</c>.</summary>
++		public float MinecartUpgradeDashSpeed = 20f;
++		/// <summary> Alternate <see cref="jumpHeight"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>15</c>.</summary>
 +		public int MinecartUpgradeJumpHeight = 15;
  	}
  
@@ -51,7 +59,7 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -182,36 +_,32 @@
+@@ -182,36 +_,42 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
@@ -100,11 +108,16 @@
 +	public object _mountSpecificData;
 -	private bool _active;
 +	public bool _active;
--	public static float SuperCartRunSpeed = 20f;
--	public static float SuperCartDashSpeed = 20f;
--	public static float SuperCartAcceleration = 0.1f;
--	public static int SuperCartJumpHeight = 15;
--	public static float SuperCartJumpSpeed = 5.15f;
++	[Obsolete("Unused, use MountData.MinecartUpgradeRunSpeed instead")]
+ 	public static float SuperCartRunSpeed = 20f;
++	[Obsolete("Unused, use MountData.MinecartUpgradeDashSpeed instead")]
+ 	public static float SuperCartDashSpeed = 20f;
++	[Obsolete("Unused, use MountData.MinecartUpgradeAcceleration instead")]
+ 	public static float SuperCartAcceleration = 0.1f;
++	[Obsolete("Unused, use MountData.MinecartUpgradeJumpHeight instead")]
+ 	public static int SuperCartJumpHeight = 15;
++	[Obsolete("Unused, use MountData.MinecartUpgradeJumpSpeed instead")]
+ 	public static float SuperCartJumpSpeed = 5.15f;
  	private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  
 +	/// <summary> True if the player is currently using a mount. </summary>
