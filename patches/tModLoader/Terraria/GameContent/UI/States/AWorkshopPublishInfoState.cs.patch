@@ -283,7 +283,7 @@
  		string text = FileBrowser.OpenFilePanel("Open icon", extensions);
  		if (text != null) {
  			_previewImagePath = text;
-@@ -680,7 +_,7 @@
+@@ -680,14 +_,15 @@
  		return path;
  	}
  
@@ -292,3 +292,12 @@
  	{
  		Texture2D texture2D = null;
  		string contents = PrettifyPath(_previewImagePath);
+ 		_previewImagePathPlate.SetContents(contents);
+ 		if (_previewImagePath != null) {
+ 			try {
++				//TML: Prefixed 'using' as a bugfix.
+-				FileStream stream = File.OpenRead(_previewImagePath);
++				using FileStream stream = File.OpenRead(_previewImagePath);
+ 				texture2D = Texture2D.FromStream(Main.graphics.GraphicsDevice, stream);
+ 			}
+ 			catch (Exception exception) {
