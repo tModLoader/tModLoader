@@ -26,7 +26,8 @@ namespace ExampleMod.Content.Mounts
 			MountData.delegations.MinecartLandingSound = DelegateMethods.Minecart.LandingSoundFart;
 			MountData.delegations.MinecartBumperSound = DelegateMethods.Minecart.BumperSoundFart;
 
-			// Note that runSpeed, dashSpeed, acceleration, jumpHeight, and jumpSpeed will be overridden when the player has used the Minecart Upgrade Kit. To customize the Minecart Upgrade Kit values, assign the MinecartUpgrade version of these:
+			// Note that runSpeed, dashSpeed, acceleration, jumpHeight, and jumpSpeed will be overridden when the player has used the Minecart Upgrade Kit.
+			// To customize the Minecart Upgrade Kit stats, assign values to the MinecartUpgradeX fields:
 			MountData.MinecartUpgradeRunSpeed = 40f;
 			MountData.MinecartUpgradeDashSpeed = 40f;
 			MountData.MinecartUpgradeAcceleration = 0.2f;
