@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/ReLogic/Graphics/DynamicSpriteFont.cs
++++ src/tModLoader/ReLogic/Graphics/DynamicSpriteFont.cs
+@@ -10,7 +_,7 @@
+ 
+ public class DynamicSpriteFont : IFontMetrics
+ {
+-	private struct SpriteCharacterData
++	public struct SpriteCharacterData
+ 	{
+ 		public readonly Texture2D Texture;
+ 		public readonly Rectangle Glyph;
