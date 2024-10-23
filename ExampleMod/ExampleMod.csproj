@@ -15,4 +15,7 @@
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\Items\Consumables\ExampleKeyBag.png" />
+  </ItemGroup>
 </Project>

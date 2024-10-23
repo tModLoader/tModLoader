@@ -1363,4 +1363,13 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
+
+	/// <summary>
+	/// Determines if its allowed to open this item (right-click). Returns true by default.
+	/// </summary>
+	/// <param name="player">The player.</param>
+	public virtual bool CanOpen(Player player)
+	{
+		return true;
+	}
 }

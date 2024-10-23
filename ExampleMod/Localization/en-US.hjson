@@ -927,6 +927,16 @@ Mods: {
 				Tooltip: The power of examplium flows in this inanimate fish
 			}
 
+<<<<<<< HEAD
+			ExampleGoldenKey: {
+				DisplayName: Example Golden Key
+				Tooltip: Use this key to open the Example Key Bag.
+			}
+
+			ExampleKeyBag: {
+				DisplayName: Example Key Bag
+				Tooltip: Open this with the Example Golden Key to get some goodies.
+=======
 			ExampleSandBlock: {
 				DisplayName: Example Sand Block
 				Tooltip: This is a modded sand block
@@ -979,6 +989,7 @@ Mods: {
 			ExampleArrow: {
 				DisplayName: Example Arrow
 				Tooltip: ""
+>>>>>>> 1.4.4
 			}
 
 			ExampleTownPetLicense: {
