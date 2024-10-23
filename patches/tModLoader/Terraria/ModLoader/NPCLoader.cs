@@ -1224,9 +1224,14 @@ public static class NPCLoader
 		}
 	}
 
+	private delegate void DelegateAddShops(int type);
+	private static HookList HookAddShops = AddHook<DelegateAddShops>(g => g.AddShops);
 	public static void AddShops(int type)
 	{
 		GetNPC(type)?.AddShops();
+		foreach (var g in HookAddShops.Enumerate(type)) {
+			g.AddShops(type);
+		}
 	}
 
 	private delegate void DelegateModifyShop(NPCShop shop);
