@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,13 +_,14 @@
+@@ -11,15 +_,16 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -14,8 +14,20 @@
 -public class TileDrawing
 +public partial class TileDrawing
  {
- 	private enum TileCounterType
+-	private enum TileCounterType
++	public enum TileCounterType
  	{
+ 		Tree,
+ 		DisplayDoll,
+@@ -114,7 +_,7 @@
+ 
+ 	private Gore[] _gore => Main.gore;
+ 
+-	private void AddSpecialPoint(int x, int y, TileCounterType type)
++	public void AddSpecialPoint(int x, int y, TileCounterType type)
+ 	{
+ 		_specialPositions[(int)type][_specialsCount[(int)type]++] = new Point(x, y);
+ 	}
 @@ -151,11 +_,11 @@
  				if (tile == null)
  					continue;
