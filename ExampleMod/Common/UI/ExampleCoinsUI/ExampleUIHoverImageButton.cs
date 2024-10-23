@@ -2,6 +2,7 @@
 using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader.UI;
 
 namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
@@ -24,8 +25,11 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			base.DrawSelf(spriteBatch);
 
 			// IsMouseHovering becomes true when the mouse hovers over the current UIElement
-			if (IsMouseHovering)
-				Main.hoverItemName = hoverText;
+			if (IsMouseHovering) {
+				// Show the tooltip when hovered.
+				UICommon.TooltipMouseText(hoverText);
+				// Another option is "Main.hoverItemName = hoverText;". Read the docs for information on the slight behavioral differences.
+			}
 		}
 	}
 }

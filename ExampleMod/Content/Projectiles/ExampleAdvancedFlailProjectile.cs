@@ -501,7 +501,8 @@ namespace ExampleMod.Content.Projectiles
 				Texture2D projectileTexture = TextureAssets.Projectile[Type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-				for (int k = 0; k < Projectile.oldPos.Length && k < StateTimer; k++) {
+				int afterimageCount = Math.Min(Projectile.oldPos.Length - 1, (int)StateTimer);
+				for (int k = afterimageCount; k > 0; k--) {
 					Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 					Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 					Main.spriteBatch.Draw(projectileTexture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k / (float)Projectile.oldPos.Length / 3, spriteEffects, 0f);

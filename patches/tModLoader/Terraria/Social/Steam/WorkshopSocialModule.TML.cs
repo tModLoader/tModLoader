@@ -10,6 +10,7 @@ using Terraria.Social.Base;
 using Terraria.Utilities;
 using Terraria.Localization;
 using System.Collections;
+using System.Text;
 
 namespace Terraria.Social.Steam;
 
@@ -71,6 +72,39 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
+		// Checks if Mod is adequate
+
+		// Check mod description
+		const string DescriptionFileName = "description.txt";
+		if (!modFile.HasFile(DescriptionFileName)) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionMissing", DescriptionFileName));
+			return false;
+		}
+
+		const int MinimumDefaultDescriptionCharacters = 50;
+		using var defaultDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{DescriptionFileName}"));
+		string defaultDescription = defaultDescriptionStream.ReadToEnd();
+		string modDescription = Encoding.UTF8.GetString(modFile.GetBytes(DescriptionFileName));
+
+		if (modDescription.Count(char.IsLetterOrDigit) < MinimumDefaultDescriptionCharacters || modDescription == defaultDescription) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionLengthTooShort", DescriptionFileName));
+			return false;
+		}
+
+		// Check mod icon
+		const string IconFileName = "icon.png";
+		using var defaultIconStream = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{IconFileName}");
+		using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+		defaultIconStream.CopyTo(defaultIconMemoryStream);
+		var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+		var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(IconFileName);
+
+		if (modIconBytes.SequenceEqual(defaultIconBytes)) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModUsesDefaultIcon", IconFileName));
+			return false;
+		}
+
+		// Check for Beta
 		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;

@@ -26,7 +26,7 @@
  		public Asset<Texture2D> frontTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureExtra = Asset<Texture2D>.Empty;
-@@ -150,7 +_,8 @@
+@@ -150,11 +_,22 @@
  		public int dashingFrameCount;
  		public int dashingFrameDelay;
  		public bool Minecart;
@@ -36,6 +36,20 @@
  		public Vector3 lightColor = Vector3.One;
  		public bool emitsLight;
  		public MountDelegatesData delegations = new MountDelegatesData();
+ 		public int playerXOffset;
++		/// <summary> Alternate <see cref="runSpeed"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>20f</c>.</summary>
++		public float MinecartUpgradeRunSpeed = 20f;
++		/// <summary> Alternate <see cref="acceleration"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>0.1f</c>.</summary>
++		public float MinecartUpgradeAcceleration = 0.1f;
++		/// <summary> Alternate <see cref="jumpSpeed"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>5.15f</c>.</summary>
++		public float MinecartUpgradeJumpSpeed = 5.15f;
++		/// <summary> Alternate <see cref="dashSpeed"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>20f</c>.</summary>
++		public float MinecartUpgradeDashSpeed = 20f;
++		/// <summary> Alternate <see cref="jumpHeight"/> for this minecart while the <see href="https://terraria.wiki.gg/wiki/Minecart_Upgrade_Kit">Minecart Upgrade Kit</see> is active. Defaults to <c>15</c>.</summary>
++		public int MinecartUpgradeJumpHeight = 15;
+ 	}
+ 
+ 	public static int currentShader = 0;
 @@ -168,7 +_,7 @@
  	public const int DrawBackExtra = 1;
  	public const int DrawFront = 2;
@@ -45,7 +59,7 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -182,29 +_,29 @@
+@@ -182,36 +_,42 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
@@ -94,10 +108,15 @@
 +	public object _mountSpecificData;
 -	private bool _active;
 +	public bool _active;
++	[Obsolete("Unused, use MountData.MinecartUpgradeRunSpeed instead")]
  	public static float SuperCartRunSpeed = 20f;
++	[Obsolete("Unused, use MountData.MinecartUpgradeDashSpeed instead")]
  	public static float SuperCartDashSpeed = 20f;
++	[Obsolete("Unused, use MountData.MinecartUpgradeAcceleration instead")]
  	public static float SuperCartAcceleration = 0.1f;
-@@ -212,6 +_,7 @@
++	[Obsolete("Unused, use MountData.MinecartUpgradeJumpHeight instead")]
+ 	public static int SuperCartJumpHeight = 15;
++	[Obsolete("Unused, use MountData.MinecartUpgradeJumpSpeed instead")]
  	public static float SuperCartJumpSpeed = 5.15f;
  	private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  
@@ -105,6 +124,33 @@
  	public bool Active => _active;
  
  	public int Type => _type;
+@@ -283,7 +_,7 @@
+ 				return _data.runSpeed + 2f;
+ 
+ 			if (_shouldSuperCart)
+-				return SuperCartRunSpeed;
++				return _data.MinecartUpgradeRunSpeed;
+ 
+ 			return _data.runSpeed;
+ 		}
+@@ -292,7 +_,7 @@
+ 	public float DashSpeed {
+ 		get {
+ 			if (_shouldSuperCart)
+-				return SuperCartDashSpeed;
++				return _data.MinecartUpgradeDashSpeed;
+ 
+ 			return _data.dashSpeed;
+ 		}
+@@ -301,7 +_,7 @@
+ 	public float Acceleration {
+ 		get {
+ 			if (_shouldSuperCart)
+-				return SuperCartAcceleration;
++				return _data.MinecartUpgradeAcceleration;
+ 
+ 			return _data.acceleration;
+ 		}
 @@ -2013,7 +_,7 @@
  		}
  	}
@@ -114,11 +160,21 @@
  	{
  		newMount.spawnDust = 3;
  		newMount.buff = buff;
-@@ -2075,6 +_,12 @@
+@@ -2075,6 +_,22 @@
  		}
  	}
  
 +	//TODO 1.4.5: Vanilla will remove the 2 buff overload
++	/// <summary>
++	/// This method sets a variety of MountData values common to most minecarts.
++	/// <para/>Notably:<code>
++	/// runSpeed = 13f;
++	/// dashSpeed = 13f;
++	/// acceleration = 0.04f;
++	/// jumpHeight = 15;
++	/// jumpSpeed = 5.15f;
++	/// </code>
++	/// </summary>
 +	public static void SetAsMinecart(MountData newMount, int buff, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
 +	{
 +		SetAsMinecart(newMount, buff, buff, texture, verticalOffset, playerVerticalOffset);
@@ -152,7 +208,8 @@
  		}
  
  		if (_shouldSuperCart)
- 			num = SuperCartJumpHeight;
+-			num = SuperCartJumpHeight;
++			num = _data.MinecartUpgradeJumpHeight;
  
 +		MountLoader.JumpHeight(player, _data, ref num, xVelocity);
  		return num;
@@ -172,7 +229,8 @@
  		}
  
  		if (_shouldSuperCart)
- 			num = SuperCartJumpSpeed;
+-			num = SuperCartJumpSpeed;
++			num = _data.MinecartUpgradeJumpSpeed;
 +		
 +		MountLoader.JumpSpeed(player, _data, ref num, xVelocity);
  

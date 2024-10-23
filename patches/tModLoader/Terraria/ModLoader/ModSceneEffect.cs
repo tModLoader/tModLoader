@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
@@ -28,8 +29,12 @@ public abstract partial class ModSceneEffect : ModType
 	/// </summary>
 	public virtual ModUndergroundBackgroundStyle UndergroundBackgroundStyle => null;
 
+	/// <SharedSummary>
+	/// The music that will play. -1 for letting other music play, 0 for no music, >0 for the given music to play (using <see cref="MusicLoader.GetMusicSlot(Mod, string)"/> or <see cref="ID.MusicID"/>).
+	/// </SharedSummary>
 	/// <summary>
-	/// The music that will play. -1 for letting other music play, 0 for no music, >0 for the given music to play. Defaults to -1.
+	/// <inheritdoc cref="Music" path="/SharedSummary/node()"/>
+	/// <para/> Defaults to -1.
 	/// </summary>
 	public virtual int Music => -1;
 
@@ -39,8 +44,19 @@ public abstract partial class ModSceneEffect : ModType
 	public virtual string MapBackground => null;
 
 	/// <summary>
+	/// If true, the map background (<see cref="MapBackground"/>) will be forced to be drawn at full brightness (White). For example, the background map of the Mushroom biome draws at full brightness even when above ground.
+	/// <para/> By default, this returns false, indicating that the sky color should be used if above surface level and full brightness otherwise. 
+	/// <para/> Use <see cref="MapBackgroundColor(ref Color)"/> instead to fully customize the map background draw color.
+	/// </summary>
+	public virtual bool MapBackgroundFullbright => false;
+
+	/// <SharedSummary>
 	/// The <see cref="SceneEffectPriority"/> of this SceneEffect layer. Determines the relative position compared to a vanilla SceneEffect.
 	/// Analogously, if SceneEffect were competing in a wrestling match, this would be the 'Weight Class' that this SceneEffect is competing in.
+	/// </SharedSummary>
+	/// <summary>
+	/// <inheritdoc cref="Priority" path="/SharedSummary/node()"/>
+	/// <para/> Defaults to <see cref="SceneEffectPriority.None"/>.
 	/// </summary>
 	public virtual SceneEffectPriority Priority => SceneEffectPriority.None;
 
@@ -94,4 +110,11 @@ public abstract partial class ModSceneEffect : ModType
 	/// <br/> This runs even if <see cref="IsSceneEffectActive"/> returns false. Check <paramref name="isActive"/> for the active status.
 	/// </summary>
 	public virtual void SpecialVisuals(Player player, bool isActive) { }
+
+	/// <summary>
+	/// Uses to customize the draw color of the map background (<see cref="MapBackground"/>) drawn on the fullscreen map. <see cref="MapBackgroundFullbright"/> can be used for typical effects, but this method can be used if further customization is needed.
+	/// </summary>
+	/// <param name="color">White or Main.ColorOfTheSkies depending on if above ground and MapBackgroundUsesSkyColor value.</param>
+	public virtual void MapBackgroundColor(ref Color color) {
+	} 
 }

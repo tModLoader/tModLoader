@@ -32,7 +32,7 @@ if !errorlevel! neq 0 (
 endlocal
 
 echo building Setup.GUI.csproj
-dotnet build setup/GUI/Setup.GUI.csproj -c Release -p:WarningLevel=0 -v q
+dotnet build setup/GUI/Setup.GUI.csproj -c Release -p:WarningLevel=0;Platform= -v q
 
 if NOT ["%errorlevel%"]==["0"] (
 	pause
