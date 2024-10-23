@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
 
@@ -176,5 +177,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual bool WingUpdate(Player player, bool inUse)
 	{
 		return Item?.WingUpdate(player, inUse) ?? false;
+	}
+
+	public bool PreDrawWings(ref PlayerDrawSet drawInfo)
+	{
+		return Item?.PreDrawWings(ref drawInfo) ?? false;
 	}
 }
