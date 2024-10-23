@@ -11,13 +11,24 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 {
 	/// <summary>
 	/// This is an example of an in-game fullscreen UI.
-	/// This UI is shown and managed using the IngameFancyUI class. Since we are using IngameFancyUI, we do not need to write code to Update or Draw a UserInterface, unlike other UI. Since IngameFancyUI is used for non-gameplay fullscreen UI, it  prevents later interface layers from drawing. Vanilla examples of this sort of UI include the bestiary, emote menu, and settings menus.
+	/// This UI is shown and managed using the IngameFancyUI class. Since we are using IngameFancyUI, we do not need to write code to Update or Draw a UserInterface, unlike other UI. Since IngameFancyUI is used for non-gameplay fullscreen UI, it prevents later interface layers from drawing. Vanilla examples of this sort of UI include the bestiary, emote menu, and settings menus.
 	/// </summary>
-	internal class ExampleFullscreenUI : UIState
+	internal class ExampleFullscreenUI : UIState, ILoadable
 	{
-		public static readonly ExampleFullscreenUI instance = new ExampleFullscreenUI();
+		public static ExampleFullscreenUI instance;
+		private static LocalizedText HeaderText { get; set; }
+		private static LocalizedText DescriptionText { get; set; }
 
 		private UIText itemDefinitionMessage;
+
+		public void Load(Mod mod) {
+			instance = this;
+			HeaderText = mod.GetLocalization("UI.ExampleFullscreenUI.Header");
+			DescriptionText = mod.GetLocalization("UI.ExampleFullscreenUI.Description");
+		}
+
+		public void Unload() {
+		}
 
 		public override void OnInitialize() {
 			var panel = new UIPanel() {
@@ -28,14 +39,14 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			};
 			Append(panel);
 
-			var header = new UIText("Example Fullscreen UI") {
+			var header = new UIText(HeaderText.Value) { // "Example Fullscreen UI"
 				IsWrapped = true,
 				Width = StyleDimension.Fill,
 				HAlign = 0.5f
 			};
 			panel.Append(header);
 
-			var description = new UIText("This is an example fullscreen UI, notice how other UI is hidden.") {
+			var description = new UIText(DescriptionText.Value) { // "This is an example fullscreen UI, notice how other UI is hidden."
 				Top = new(40f, 0f),
 				TextOriginX = 0f,
 				IsWrapped = true,
@@ -116,6 +127,5 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 				return $"\"{configEntryLabel}\" is set to \"{itemDefinition.DisplayName}\": [i:{itemDefinition.Type}]";
 			}
 		}
-
 	}
 }

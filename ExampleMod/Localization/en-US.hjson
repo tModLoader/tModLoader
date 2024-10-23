@@ -1250,6 +1250,11 @@ Mods: {
 		UI: {
 			ExampleResource: Example Resource: {0} / {1}
 			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+
+			ExampleFullscreenUI: {
+				Header: Example Fullscreen UI
+				Description: This is an example fullscreen UI, notice how other UI is hidden.
+			}
 		}
 
 		WorldGen: {
@@ -1280,6 +1285,7 @@ Mods: {
 		}
 
 		NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
+		Commands.ShowFullscreenUICommand.Description: Show the example fullscreen UI
 	}
 }
 
