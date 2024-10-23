@@ -656,6 +656,37 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
+@@ -6662,6 +_,15 @@
+ 						num4 = ClimbCatTail(x, num3);
+ 						num3 -= num4 - 1;
+ 						break;
++					default:
++						// TML: num4 = sizeY (height of multi-tile)
++						if (TileID.Sets.MultiTileSway[tile.TileType]) {
++							TileObjectData objectData = TileObjectData.GetTileData(tile);
++							sizeX = objectData.Width;
++							num4 = objectData.Height;
++						}
++
++						break;
+ 				}
+ 
+ 				DrawMultiTileGrassInWind(unscaledPosition, zero, x, num3, sizeX, num4);
+@@ -6738,6 +_,14 @@
+ 						sizeX = 2;
+ 						sizeY = 3;
+ 						break;
++					default:
++						if (TileID.Sets.MultiTileSway[tile.TileType]) {
++							TileObjectData tileObjectData = TileObjectData.GetTileData(tile);
++							sizeX = tileObjectData.Width;
++							sizeY = tileObjectData.Height;
++						}
++
++						break;
+ 				}
+ 
+ 				DrawMultiTileVinesInWind(unscaledPosition, zero, x, y, sizeX, sizeY);
 @@ -6903,7 +_,7 @@
  			float num6 = (float)num2 * num3 * windCycle + num4;
  			if (_localPlayer.biomeSight) {
