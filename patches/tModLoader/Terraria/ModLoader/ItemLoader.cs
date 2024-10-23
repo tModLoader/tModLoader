@@ -2253,4 +2253,28 @@ public static class ItemLoader
 
 		return false;
 	}
+
+	private delegate bool DelegatePreDrawHeldItem(Item item, ref PlayerDrawSet drawInfo);
+	private static HookList HookPreDrawHeldItem = AddHook<DelegatePreDrawHeldItem>(g => g.PreDrawHeldItem);
+
+	public static bool PreDrawHeldItem(Item item, ref PlayerDrawSet drawInfo) {
+		bool ret = item.ModItem?.PreDrawHeldItem(ref drawInfo) ?? true;
+
+		foreach (var g in HookPreDrawHeldItem.Enumerate(item)) {
+			ret &= g.PreDrawHeldItem(item, ref drawInfo);
+		}
+
+		return ret;
+	}
+
+	private delegate void DelegatePostDrawHeldItem(Item item, ref PlayerDrawSet drawInfo, List<DrawData> heldItemDrawData);
+	private static HookList HookPostDrawHeldItem = AddHook<DelegatePostDrawHeldItem>(g => g.PostDrawHeldItem);
+
+	public static void PostDrawHeldItem(Item item, ref PlayerDrawSet drawSet, List<DrawData> heldItemDrawData){
+		item.ModItem?.PostDrawHeldItem(ref drawSet, heldItemDrawData);
+
+		foreach (var g in HookPostDrawHeldItem.Enumerate(item)) {
+			g.PostDrawHeldItem(item, ref drawSet, heldItemDrawData);
+		}
+	}
 }

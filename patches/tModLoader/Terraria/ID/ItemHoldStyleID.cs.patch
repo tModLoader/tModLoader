@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemHoldStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemHoldStyleID.cs
-@@ -1,13 +_,49 @@
+@@ -1,13 +_,50 @@
  namespace Terraria.ID;
  
 +/// <summary>
@@ -9,6 +9,7 @@
 +/// </summary>
  public class ItemHoldStyleID
  {
++	public const int Custom = -1;
 +	/// <summary>
 +	/// Default. No specific animation will happen while this item is held.
 +	/// <br/>Used by any item by default. 
