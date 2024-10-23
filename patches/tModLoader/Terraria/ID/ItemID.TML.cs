@@ -209,5 +209,11 @@ partial class ItemID
 		/// Set to <see langword="true"/> to make this Item set its mana cost to 0 whenever <see cref="Player.spaceGun"/> is set to <see langword="true"/>.
 		/// </summary>
 		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
+
+		// Values taken from KillTile_ShouldDropSeeds
+		/// <summary>
+		/// Set to <see langword="true"/> to have seeds drop whenever grass breaks with this Item in the player's inventory.
+		/// </summary>
+		public static bool[] DropSeedsIfInInventory = Factory.CreateBoolSet(false, Blowpipe, Blowgun);
 	}
 }
