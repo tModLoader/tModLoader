@@ -45,6 +45,57 @@
  
  		return dictionary;
  	}
+@@ -117,8 +_,27 @@
+ 		return value;
+ 	}
+ 
++	/// <summary>
++	/// Remaps a provided value from 0->1 to a cosine curve. Provides a method of turning an input sawtooth pattern into a smooth cyclic curve. This is useful when using repeating timers to drive effects that should return smoothly to their initial value before repeating rather than reset abruptly.
++	/// </summary>
++	/// <param name="value"></param>
++	/// <returns></returns>
+ 	public static float Turn01ToCyclic010(float value) => 1f - ((float)Math.Cos(value * ((float)Math.PI * 2f)) * 0.5f + 0.5f);
+ 
++	/// <summary>
++	/// Remaps a provided value from 0->1 to 0->1->0, essentially turning a sawtooth pattern into a triangle wave pattern:
++	/// <code>
++	///          Original:   Remap:    Range Values ↓    
++	///                 /      / \          1        
++	///              /        /   \        0.5      
++	///           /          /     \        0        
++	/// Input→    0 .5  1    0 .5  1
++	/// Output→   0 .5  1    0  1  0
++	/// </code>
++	/// This is useful when using repeating timers to drive effects that should return linearly to their initial value before repeating rather than reset abruptly.
++	/// </summary>
++	/// <param name="value"></param>
++	/// <returns></returns>
+ 	public static float PingPongFrom01To010(float value)
+ 	{
+ 		value %= 1f;
+@@ -131,6 +_,22 @@
+ 		return value * 2f;
+ 	}
+ 
++	/// <summary>
++	/// Linearly interpolates between several values denoting a continuous piecewise linear function (<see href="https://en.wikipedia.org/wiki/Piecewise_linear_function">Piecewise linear function wikipedia page</see>).
++	/// <para/> This can be used to interpolate between several values, providing finer control over the transition between values.
++	/// <code>
++	/// floats parameter→ 0      4      1    Range Values ↓
++	///                         /   \            3    
++	///                       /        \         2   
++	///                     /                    1
++	///                   /                      0
++	/// percent input→    0 .25 .5 .75  1 
++	/// output→           0  2   4  3   2    
++	/// </code>
++	/// </summary>
++	/// <param name="percent"></param>
++	/// <param name="floats"></param>
++	/// <returns></returns>
+ 	public static float MultiLerp(float percent, params float[] floats)
+ 	{
+ 		float num = 1f / ((float)floats.Length - 1f);
 @@ -278,6 +_,10 @@
  		return (t - from) / (to - from);
  	}
@@ -81,6 +132,16 @@
  						if (num3 < 0)
  							num3 = 0;
  
+@@ -550,6 +_,9 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Converts a coin value into an array of individual coin currency item counts. The result is a 4 element array containing <c>[Copper, Silver, Gold, Platinum]</c> coin counts totaling to the coin value provided.
++	/// </summary>
+ 	public static int[] CoinsSplit(long count)
+ 	{
+ 		int[] array = new int[4];
 @@ -644,17 +_,32 @@
  			return false;
  		}
@@ -126,6 +187,25 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
+@@ -697,6 +_,7 @@
+ 		return asset.Value.Height;
+ 	}
+ 
++	/// <inheritdoc cref="Terraria.Utils.Frame(Texture2D, int, int, int, int, int, int)"/>
+ 	public static Rectangle Frame(this Asset<Texture2D> tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
+ 	{
+ 		if (!tex.IsLoaded)
+@@ -720,6 +_,10 @@
+ 		return tex.Value.Size();
+ 	}
+ 
++	/// <summary>
++	/// Returns a Rectangle region ("frame") of the Texture2D corresponding to the layout provided. Can be used to easily retrieve coordinates for drawing a specific frame of a texture.
++	/// <para/> For example <c>texture.Frame(1, 3, 0, 2)</c> indicates that the texture has 1 column and 3 rows and returns the coordinates of the bottom (index #2, or 3rd) frame of the only column. 
++	/// </summary>
+ 	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
+ 	{
+ 		int num = tex.Width / horizontalFrames;
 @@ -927,7 +_,9 @@
  	public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
  	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);

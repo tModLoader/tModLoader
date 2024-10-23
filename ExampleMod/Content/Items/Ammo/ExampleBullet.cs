@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.value = 10;
 			Item.rare = ItemRarityID.Green;
 			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleBullet>(); // The projectile that weapons fire when using this item as ammunition.
-			Item.shootSpeed = 16f; // The speed of the projectile.
+			Item.shootSpeed = 4.5f; // The speed of the projectile. This value equivalent to Silver Bullet since ExampleBullet's Projectile.extraUpdates is 1.
 			Item.ammo = AmmoID.Bullet; // The ammo class this ammo belongs to.
 		}
 

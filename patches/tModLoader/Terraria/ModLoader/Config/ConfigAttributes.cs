@@ -388,6 +388,10 @@ public class JsonDefaultDictionaryKeyValueAttribute : Attribute
 
 /// <summary>
 /// By default, string fields will provide the user with a text input field. Use this attribute to restrict strings to a selection of options.
+/// <para/> <b>This approach is not recommended due to feature deficiencies.</b> It is recommended to use an <see langword="enum"/> instead of a <see langword="string"/> for this type of option selection. By using an <see langword="enum"/> instead of a <see langword="string"/> paired with OptionStringsAttribute, localization is possible and automatic. It is also easier to work with enum values and less prone to errors caused by typos.
+/// <para/> If you want to migrate from a string option entry to an enum in an update to a released mod, you should use the EnumMemberAttribute on the enum fields corresponding to existing string options that had spaces in them previously to support correctly loading the existing config choices of your users when they update the mod:
+/// <code>[EnumMember(Value = "Left Aligned")]
+/// LeftAligned,</code> 
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class OptionStringsAttribute : Attribute

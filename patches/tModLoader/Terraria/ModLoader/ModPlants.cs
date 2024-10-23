@@ -151,6 +151,7 @@ public abstract class ModCactus : IPlant
 	public int[] GrowsOnTileId { get; set; }
 	public abstract void SetStaticDefaults();
 	public abstract Asset<Texture2D> GetTexture();
+	/// <summary> The fruit texture has a special layout that needs to be followed, see ExampleCactus_Fruit.png in ExampleMod for a template. </summary>
 	public abstract Asset<Texture2D> GetFruitTexture();
 }
 

@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,248 @@
+@@ -121,49 +_,251 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -523,8 +523,11 @@
  	public int shoot;
 +
 +	/// <summary>
-+	/// The velocity in pixels the projectile fired by this item will have. Actual velocity depends on the projectile being fired. If your weapon is shooting projectiles and they are stationary, change this to something like 10f. Throwing Knife uses 10f. Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
-+	/// <br/> Defaults to 0f.
++	/// The velocity in pixels the projectile fired by this item will have. If your weapon is shooting projectiles and they are stationary, change this to something like 10f and adjust as needed. Throwing Knife uses 10f.
++	/// <para/> Actual velocity depends on the projectile being fired, most notably the <see cref="Projectile.extraUpdates"/> value of that projectile. For example, <see cref="ItemID.LaserRifle"/> has <c>shootSpeed = 17f;</c> and shoots <see cref="ProjectileID.PurpleLaser"/>, which has <c>extraUpdates = 4;</c>, meaning 5 total updates per game tick. This projectile will have an effective velocity of 85 (because <c>17 * (1 + 4) == 85</c>). The <see href="https://terraria.wiki.gg/wiki/Velocity">Shoot Speed wiki page</see> has more information and examples of how these values work together in practice.
++	/// <para/> For weapons using ammo, the weapon's shootSpeed is added to the ammo's shootSpeed, so adjust ammo and weapon shootSpeed values accordingly. Consult the <see href="https://terraria.wiki.gg/wiki/Ammunition_items">Ammunition items wiki page</see> and wiki pages for the weapons that shoot various ammo for suitable values to use.
++	/// <para/> Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
++	/// <para/> Defaults to 0f.
 +	/// </summary>
  	public float shootSpeed;
 +

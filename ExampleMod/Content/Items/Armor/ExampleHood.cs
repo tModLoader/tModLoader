@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.Players;
+using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -15,7 +16,8 @@ namespace ExampleMod.Content.Items.Armor
 		public static LocalizedText SetBonusText { get; private set; }
 
 		public override void SetStaticDefaults() {
-			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(ManaCostReductionPercent);
+			// We are passing in "{0}" into WithFormatArgs to replace "{0}" with itself because we do the final formatting for this LocalizedText in UpdateArmorSet itself according to the players current ReversedUpDownArmorSetBonuses setting.
+			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs("{0}", ManaCostReductionPercent);
 		}
 
 		public override void SetDefaults() {
@@ -33,8 +35,25 @@ namespace ExampleMod.Content.Items.Armor
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			player.setBonus = SetBonusText.Value; // This is the setbonus tooltip: "10% reduced mana cost"
+			// This is the setbonus tooltip:
+			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
+			//   10% reduced mana cost
+			player.setBonus = SetBonusText.Format(Language.GetTextValue(Main.ReversedUpDownArmorSetBonuses ? "Key.UP" : "Key.DOWN"));
 			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
+			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
+		}
+
+		public override void ArmorSetShadows(Player player) {
+			var exampleArmorSetBonusPlayer = player.GetModPlayer<ExampleArmorSetBonusPlayer>();
+			if(exampleArmorSetBonusPlayer.ShadowStyle == 1) {
+				player.armorEffectDrawShadow = true;
+			}
+			else if(exampleArmorSetBonusPlayer.ShadowStyle == 2) {
+				player.armorEffectDrawOutlines = true;
+			}
+			else if (exampleArmorSetBonusPlayer.ShadowStyle == 3) {
+				player.armorEffectDrawOutlinesForbidden = true;
+			}
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

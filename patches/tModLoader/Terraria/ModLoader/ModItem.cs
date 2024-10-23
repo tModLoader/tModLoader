@@ -828,9 +828,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the equipment that the player appears to be wearing. This hook will only be called for body armor and leg armor. Note that equipSlot is not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
-	/// If this hook is called on body armor, equipSlot allows you to modify the leg armor the player appears to be wearing. If you modify it, make sure to set robes to true. If this hook is called on leg armor, equipSlot allows you to modify the leg armor the player appears to be wearing, and the robes parameter is useless.
-	/// Note that this hook is only ever called through this item's associated equipment texture.
+	/// Allows you to modify the equipment that the player appears to be wearing. This is most commonly used to add legs to robes and for swapping to female variant textures if <paramref name="male"/> is false for head and leg armor. This hook will only be called for head armor, body armor, and leg armor. Note that equipSlot is not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
+	/// <para/> If this hook is called on body armor, equipSlot allows you to modify the leg armor the player appears to be wearing. If you modify it, make sure to set robes to true. If this hook is called on leg armor, equipSlot allows you to modify the leg armor the player appears to be wearing, and the robes parameter is useless. The same is true for head armor.
+	/// <para/> Note that this hook is only ever called through this item's associated equipment texture.
 	/// </summary>
 	/// <param name="male">if set to <c>true</c> [male].</param>
 	/// <param name="equipSlot">The equip slot.</param>
@@ -848,7 +848,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this item is right-clicked in the inventory.
+	/// Allows you to make things happen when this item is right-clicked in the inventory. By default this will consume the item by 1 stack, so return false in <see cref="ConsumeItem(Player)"/> if that behavior is undesired.
+	/// <para/> This is only called if the item can be right-clicked, meaning <see cref="ItemID.Sets.OpenableBag"/> is true for the item type or either <see cref="ModItem.CanRightClick"/> or <see cref="GlobalItem.CanRightClick"/> return true.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void RightClick(Player player)
@@ -1077,14 +1078,21 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
+	/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <code>
+	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
+	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
+	/// Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
+	/// </code>
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="lightColor">Color of the light.</param>
 	/// <param name="alphaColor">Color of the alpha.</param>
-	/// <param name="rotation">The rotation.</param>
-	/// <param name="scale">The scale.</param>
-	/// <param name="whoAmI">The who am i.</param>
+	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
+	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
+	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
 	/// <returns></returns>
 	public virtual bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
@@ -1093,27 +1101,35 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false.
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <code>
+	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
+	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
+	/// Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
+	/// </code>
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="lightColor">Color of the light.</param>
 	/// <param name="alphaColor">Color of the alpha.</param>
-	/// <param name="rotation">The rotation.</param>
-	/// <param name="scale">The scale.</param>
-	/// <param name="whoAmI">The who am i.</param>
+	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
+	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
+	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
 	public virtual void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
+	/// Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="position">The position.</param>
-	/// <param name="frame">The frame.</param>
+	/// <param name="position">The screen position of the center of the inventory slot.</param>
+	/// <param name="frame">The frame of the item texture to be drawn.</param>
 	/// <param name="drawColor">Color of the draw.</param>
 	/// <param name="itemColor">Color of the item.</param>
-	/// <param name="origin">The origin.</param>
-	/// <param name="scale">The scale.</param>
+	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
+	/// <param name="scale">The scale the item has been calculated to draw in to fit in the inventory slot.</param>
 	/// <returns></returns>
 	public virtual bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
 		Color itemColor, Vector2 origin, float scale)
@@ -1123,14 +1139,15 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false.
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="position">The position.</param>
-	/// <param name="frame">The frame.</param>
+	/// <param name="position">The screen position of the center of the inventory slot.</param>
+	/// <param name="frame">The frame of the item texture to be drawn.</param>
 	/// <param name="drawColor">Color of the draw.</param>
 	/// <param name="itemColor">Color of the item.</param>
-	/// <param name="origin">The origin.</param>
-	/// <param name="scale">The scale.</param>
+	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
+	/// <param name="scale">The scale of the item drawing to to fit in the inventory slot.</param>
 	public virtual void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
 		Color itemColor, Vector2 origin, float scale)
 	{
