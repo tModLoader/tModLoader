@@ -153,4 +153,6 @@ partial class SystemLoader
 
 	internal static HookList HookNetSend = AddHook<Action<BinaryWriter>>(s => s.NetSend);
 	internal static HookList HookNetReceive = AddHook<Action<BinaryReader>>(s => s.NetReceive);
+
+	private static HookList HookResizeArrays = AddHook<Action>(s => s.ResizeArrays);
 }

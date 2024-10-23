@@ -485,6 +485,8 @@ public static class ModContent
 		MonoModHooks.Clear();
 		TypeCaching.Clear();
 		ContentCache.Unload();
+		DataInstance.Clear();
+		SetHandler.Clear();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();
@@ -577,7 +579,7 @@ public static class ModContent
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
 		BuilderToggleLoader.ResizeArrays();
-		SystemLoader.ResizeArrays();
+		SystemLoader.ResizeArrays(unloading);
 
 		if (!Main.dedServ) {
 			GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
