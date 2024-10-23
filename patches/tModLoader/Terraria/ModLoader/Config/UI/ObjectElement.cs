@@ -25,7 +25,7 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage initializeButton;
 	private UIModConfigHoverImage deleteButton;
 	private UIModConfigHoverImage expandButton;
-	private UIPanel separatePagePanel;
+	internal UIPanel separatePagePanel;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
 
 	// Label:

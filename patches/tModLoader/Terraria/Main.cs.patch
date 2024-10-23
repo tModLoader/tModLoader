@@ -102,6 +102,17 @@
  	public static FileMetadata WorldFileMetadata;
  	public static FileMetadata MapFileMetadata;
  	public static PingMapLayer Pings = new PingMapLayer();
+@@ -270,6 +_,10 @@
+ 	private AchievementAdvisor _achievementAdvisor;
+ 	public static BigProgressBarSystem BigBossProgressBar = new BigProgressBarSystem();
+ 	public static UserInterface MenuUI = new UserInterface();
++	/// <summary>
++	/// Used for non-gameplay in-game fullscreen UI which hide all other UI. Some examples include the bestiary, emote menu, and settings menus.
++	/// <para/> Modders can use <see cref="IngameFancyUI.OpenUIState(UIState)"/> to easily display a fullscreen UI without needing to manage updating or drawing a <see cref="UserInterface"/>.
++	/// </summary>
+ 	public static UserInterface InGameUI = new UserInterface();
+ 	private static OnPlayerSelected _pendingCharacterSelect;
+ 	public static bool drawBackGore;
 @@ -457,7 +_,9 @@
  	public static int jungleBackStyle;
  	public static string debugWords = "";
