@@ -33,6 +33,7 @@ namespace ExampleMod.Content.Tiles
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Torches };
+			VanillaFallbackOnModDeletion = TileID.Torches;
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
 

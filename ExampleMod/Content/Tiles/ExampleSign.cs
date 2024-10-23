@@ -26,6 +26,8 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.TileInteractRead[Type] = true;
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 
+			VanillaFallbackOnModDeletion = TileID.Signs;
+
 			// TileObjectData assignment
 			// The TileID.Signs TileObjectData doesn't set StyleMultiplier to 5, so we will not be copying from it in this case
 			// Using Style2x2 as a base, we will create a TileObjectData with 5 alternate placements, each anchoring to a different anchor.

@@ -87,6 +87,8 @@ namespace ExampleMod.Content.Tiles
 
 			TileObjectData.addTile(Type);
 
+			VanillaFallbackOnModDeletion = TileID.ArrowSign;
+
 			// We can automatically set the animation frame height from CoordinateFullHeight for any typical tile that uses the expected layout.
 			AnimationFrameHeight = TileObjectData.GetTileData(Type, 0).CoordinateFullHeight;
 		}
