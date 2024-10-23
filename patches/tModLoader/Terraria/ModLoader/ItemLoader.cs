@@ -1312,6 +1312,19 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookPostUpdatePrefixBenefits = AddHook<Action<Item, Player>>(g => g.PostUpdatePrefixBenefits);
+
+	/// <summary>
+	/// Runs at the end of UpdatePrefixBenefits for each equipped Item.
+	/// Acts like a Global for ModPrefix without going to length of implementing a GlobalPrefix 
+	/// </summary>
+	public static void PostUpdatePrefixBenefits(Player player, Item equippedItem)
+	{
+		foreach (var g in HookPostUpdatePrefixBenefits.Enumerate()) {
+			g.PostUpdatePrefixBenefits(equippedItem, player);
+		}
+	}
+
 	private static HookList HookArmorSetShadows = AddHook<Action<Player, string>>(g => g.ArmorSetShadows);
 
 	/// <summary>

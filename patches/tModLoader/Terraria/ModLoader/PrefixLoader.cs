@@ -159,6 +159,8 @@ public static class PrefixLoader
 			prefix.ApplyAccessoryEffects(player);
 		}
 
+		ItemLoader.PostUpdatePrefixBenefits(player, item);
+
 		// Should there be more here for tooltips? Not entirely sure how that's handled in tML. - Mutant
 	}
 }
