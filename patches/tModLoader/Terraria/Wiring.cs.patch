@@ -116,6 +116,17 @@
  		switch (type) {
  			case 144:
  				HitSwitch(i, j);
+@@ -1157,7 +_,10 @@
+ 		}
+ 
+ 		if (type == 130) {
++			/*
+ 			if (Main.tile[i, j - 1] == null || !Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChestFake[Main.tile[i, j - 1].type] && Main.tile[i, j - 1].type != 88)) {
++			*/
++			if (Main.tile[i, j - 1] == null || !Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicChestFake[Main.tile[i, j - 1].type] && !TileID.Sets.BasicDresser[Main.tile[i, j - 1].type])) {
+ 				tile.type = 131;
+ 				WorldGen.SquareTileFrame(i, j);
+ 				NetMessage.SendTileSquare(-1, i, j);
 @@ -1192,14 +_,14 @@
  			return;
  		}
@@ -254,6 +265,17 @@
  	{
  		if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  			return;
+@@ -2533,7 +_,10 @@
+ 		if (type == 314 || (uint)(type - 386) <= 3u || type == 476)
+ 			flag = false;
+ 
++		/*
+ 		if (flag && (!Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && Main.tile[i, j - 1].type != 26 && Main.tile[i, j - 1].type != 77 && Main.tile[i, j - 1].type != 88 && Main.tile[i, j - 1].type != 470 && Main.tile[i, j - 1].type != 475 && Main.tile[i, j - 1].type != 237 && Main.tile[i, j - 1].type != 597 && WorldGen.CanKillTile(i, j)))) {
++		*/
++		if (flag && (!Main.tile[i, j - 1].active() || (!TileID.Sets.BasicChest[Main.tile[i, j - 1].type] && !TileID.Sets.BasicDresser[Main.tile[i, j - 1].type] && !TileID.Sets.PreventsActuationUnder[Main.tile[i, j - 1].type] && WorldGen.CanKillTile(i, j)))) {
+ 			Main.tile[i, j].inActive(inActive: true);
+ 			WorldGen.SquareTileFrame(i, j, resetFrame: false);
+ 			if (Main.netMode != 1)
 @@ -2541,7 +_,7 @@
  		}
  	}
