@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,59 +_,87 @@
+@@ -11,59 +_,86 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -37,7 +37,6 @@
 +		<CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +		<BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
 +		<SourceRevisionId>$(tMLVersion)|$(StableVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
-+		<TargetFramework>net8.0</TargetFramework>
  	</PropertyGroup>
  
  	<!-- References -->
