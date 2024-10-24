@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,251 @@
+@@ -121,49 +_,254 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -655,6 +655,9 @@
 +	/// </summary>
  	public int? shopCustomPrice;
  	public bool shootsEveryUse;
++	/// <summary>
++	/// If true, then the player won't swing the arm and item while attempting to use this item unless hovering over an Extractinator tile. This helps avoid misleading the player into thinking an item should do something when used. This and other properties common to extractinator-only items can be set using <see cref="Item.MakeUsableWithChlorophyteExtractinator"/>.
++	/// </summary>
  	public bool chlorophyteExtractinatorConsumable;
 +
 +	/// <summary>
@@ -1711,6 +1714,16 @@
  	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
+@@ -46959,6 +_,9 @@
+ 		consumable = true;
+ 	}
+ 
++	/// <summary>
++	/// Assigns properties common to extractinator-only items, ensuring a typical use animation when clicking on an Extractinator tile and no animation otherwise. Use this method for items that don't do anything when used but should be useable in an Extractinator. Most notably this sets <see cref="chlorophyteExtractinatorConsumable"/> to true.
++	/// </summary>
+ 	public void MakeUsableWithChlorophyteExtractinator()
+ 	{
+ 		useStyle = 1;
 @@ -46995,6 +_,27 @@
  		autoReuse = true;
  	}

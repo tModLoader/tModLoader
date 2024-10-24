@@ -406,7 +406,7 @@
  		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
  			new Color(164, 16, 47),
  			new Color(246, 34, 79),
-@@ -939,44 +_,271 @@
+@@ -939,44 +_,272 @@
  			new Color(142, 96, 60)
  		});
  		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
@@ -515,7 +515,8 @@
 +		// Paired with a change in Player.ExtractinatorUse, non default extractType goes by iconic ItemID:
 +		// DesertFossil is 3347 rather than 1, 2339/2338/2337 are 2337 rather than 2, 4354/4389/4377/4378/5127/5128 are now 4354 rather than 3.
 +		/// <summary>
-+		/// Indicates which extractinator type an item belongs to. An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info. Use this in conjunction with <see cref="ModItem.ExtractinatorUse(int, ref int, ref int)"/> or <see cref="GlobalItem.ExtractinatorUse(int, int, ref int, ref int)"/>. 
++		/// Indicates which extractinator type an item belongs to. An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info. Use this in conjunction with <see cref="ModItem.ExtractinatorUse(int, ref int, ref int)"/> or <see cref="GlobalItem.ExtractinatorUse(int, int, ref int, ref int)"/>.
++		/// <para/> Defaults to -1.
 +		/// </summary>
 +		/*
  		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3);
