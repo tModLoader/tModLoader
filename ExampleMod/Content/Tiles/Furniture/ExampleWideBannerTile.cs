@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Tiles.Furniture {
          TileObjectData.addAlternate(0);
          TileObjectData.addTile(Type);
          
-         AddMapEntry(Color.White, Language.GetText("ItemName.Banner"));
+         AddMapEntry(Color.White, Language.GetText("MapObject.Banner"));
       }
 
       public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
