@@ -1986,10 +1986,17 @@
  		else if (flag9) {
  			newMusic = 82;
  		}
-@@ -10009,6 +_,9 @@
+@@ -10009,6 +_,16 @@
  		}
  		else if (flag13) {
  			newMusic = 82;
++		}
++		// These 2 are now Event priority.
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon) {
++			newMusic = 82;
++		}
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon) {
++			newMusic = 82;
 +		}
 +		else if (modPriority >= SceneEffectPriority.Environment) {
 +			newMusic = modMusic;
@@ -2026,6 +2033,20 @@
  		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  			if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2)) {
  				if (player[myPlayer].ZoneUndergroundDesert)
+@@ -10156,11 +_,13 @@
+ 				newMusic = 64;
+ 		}
+ 
++		/* Moved to Event priority
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon)
+ 			newMusic = 82;
+ 
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon)
+ 			newMusic = 82;
++		*/
+ 	}
+ 
+ 	private void UpdateAudio_DecideOnNewMusic()
 @@ -10199,7 +_,11 @@
  		if (lastMusicPlayed == 50)
  			musicNoCrossFade[51] = true;
@@ -2194,10 +2215,17 @@
  		else if (flag9) {
  			newMusic = 35;
  		}
-@@ -10481,6 +_,9 @@
+@@ -10481,6 +_,16 @@
  		else if (flag13) {
  			newMusic = 41;
  		}
++		// These 2 are now Event priority.
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon) {
++			newMusic = 30;
++		}
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon) {
++			newMusic = 32;
++		}
 +		else if (modPriority >= SceneEffectPriority.Environment) {
 +			newMusic = modMusic;
 +		}
@@ -2234,6 +2262,20 @@
  		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && (remixWorld || !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16))) {
  			if (player[myPlayer].ZoneHallow) {
  				if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2))
+@@ -10715,11 +_,13 @@
+ 				newMusic = 3;
+ 		}
+ 
++		/* Moved to Event priority
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon)
+ 			newMusic = 30;
+ 
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon)
+ 			newMusic = 32;
++		*/
+ 	}
+ 
+ 	private void UpdateWindyDayState()
 @@ -10866,12 +_,15 @@
  		float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  		if (cloudBGActive > 0f) {
