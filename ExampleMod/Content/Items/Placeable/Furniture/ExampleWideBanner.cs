@@ -11,4 +11,12 @@ public class ExampleWideBanner : ModItem {
       Item.DefaultToPlaceableTile(ModContent.TileType<ExampleWideBannerTile>());
       Item.value = Terraria.Item.buyPrice(copper: 10);
    }
+   
+   // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+   	public override void AddRecipes() {
+   		CreateRecipe()
+   			.AddIngredient<ExampleItem>()
+   			.AddTile<Tiles.Furniture.ExampleWorkbench>()
+   			.Register();
+   	}
 }
