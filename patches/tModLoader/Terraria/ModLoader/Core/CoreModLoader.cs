@@ -35,7 +35,7 @@ internal static class CoreModLoader
 
 	internal static bool FindCoreMods(string[] programArgs, out Mod[] coreMods)
 	{
-		coreMods = Array.Empty<Mod>();
+		coreMods = [];
 
 		// Don't need to do a full initialization since we aren't going to be loading any "normal" mod content, just CoreMod transformers
 		ModLoader.MinimalEngineInit();
@@ -88,7 +88,7 @@ internal static class CoreModLoader
 
 		// Launch child ALC
 		Logging.tML.InfoFormat("Launching Transformed Child tML...");
-		childProgramType.GetMethod(nameof(Program.LaunchGame_), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, new object?[] { isServer });
+		childProgramType.GetMethod(nameof(Program.LaunchGame_), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, [ isServer ]);
 	}
 
 	private static List<string> GetAllDependentAssemblyLocations()
