@@ -255,14 +255,14 @@ public partial class NPC
 	/// <summary>
 	/// Represents a finalized damage calculation for damage about to be applied to an NPC. This is the result of the all modifications done previously in a <see cref="HitModifiers"/>.
 	/// </summary>
-	public struct HitInfo
+	public readonly struct HitInfo
 	{
 		/// <summary>
 		/// The DamageType of the hit.
 		/// </summary>
-		public DamageClass DamageType = DamageClass.Default;
+		public DamageClass DamageType { get; init; } = DamageClass.Default;
 
-		private int _sourceDamage = 1;
+		private readonly int _sourceDamage = 1;
 		/// <summary>
 		/// The amount of damage 'dealt' to the NPC, before incoming damage multipliers, armor, critical strikes etc.<br/>
 		/// Use this to trigger effects which scale based on damage dealt, and also deal damage.<br/>
@@ -273,11 +273,11 @@ public partial class NPC
 		/// Used by vanilla for dryad ward retaliation, and many sword on-hit projectiles like volcano and beekeeper
 		/// </summary>
 		public int SourceDamage {
-			readonly get => _sourceDamage;
-			set => _sourceDamage = Math.Max(value, 1);
+			get => _sourceDamage;
+			init => _sourceDamage = Math.Max(value, 1);
 		}
 
-		private int _damage = 1;
+		private readonly int _damage = 1;
 		/// <summary>
 		/// The amount of damage received by the NPC. How much life the NPC will lose. <br/>
 		/// Is NOT capped at the NPC's current life. <br/>
@@ -285,36 +285,36 @@ public partial class NPC
 		/// Cannot be set to less than 1.
 		/// </summary>
 		public int Damage {
-			readonly get => _damage;
-			set => _damage = Math.Max(value, 1);
+			get => _damage;
+			init => _damage = Math.Max(value, 1);
 		}
 
 		/// <summary>
 		/// Whether or not the hit is a crit
 		/// </summary>
-		public bool Crit = false;
+		public bool Crit { get; init; } = false;
 
 		/// <summary>
 		/// The direction to apply knockback in.
 		/// </summary>
-		public int HitDirection = 0;
+		public int HitDirection { get; init; } = 0;
 
 		/// <summary>
 		/// The amount of knockback to apply. Should always be >= 0. <br/>
 		/// Note that <see cref="NPC.StrikeNPC(HitInfo, bool, bool)"/> has a staggered knockback falloff, and that critical strikes automatically get extra 40% knockback in excess of this value.
 		/// </summary>
-		public float Knockback = 0;
+		public float Knockback { get; init; } = 0;
 
 		/// <summary>
 		/// If true, as much damage as necessary will be dealt, and damage number popups will not be shown for this hit. <br/>
 		/// Has no effect if the NPC is <see cref="NPC.immortal"/>
 		/// </summary>
-		public bool InstantKill = false;
+		public bool InstantKill { get; init; } = false;
 
 		/// <summary>
 		/// If true, damage number popups will not be shown for this hit.
 		/// </summary>
-		public bool HideCombatText = false;
+		public bool HideCombatText { get; init; } = false;
 
 		public HitInfo() { }
 	}
