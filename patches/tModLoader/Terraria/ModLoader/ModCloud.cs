@@ -6,7 +6,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class allows you to customize the behavior of a custom cloud.
-/// <para/> Modded clouds can be autoloaded automatically (see <see cref="Mod.CloudAutoloadingEnabled"/>) or manually registered (<see cref="CloudLoader.AddCloudFromTexture"/>), but autoloaded clouds default to being normal clouds with the default spawn chance. Make a ModCloud class if custom behavior is needed or use <see cref="CloudLoader.AddCloudFromTexture"/> if just customizing cloud category and spawn chance is needed.
+/// <para/> Modded clouds can be autoloaded automatically (see <see cref="Mod.CloudAutoloadingEnabled"/>) or manually registered (<see cref="CloudLoader.AddCloudFromTexture"/>), but autoloaded clouds default to being normal clouds with the default spawn chance. Make a ModCloud class if custom behavior is needed or use <see cref="CloudLoader.AddCloudFromTexture"/> if customizing cloud category and spawn chance is all that is needed.
 /// <para/> This class is not instanced, all clouds of the same type will share the same instance.
 /// </summary>
 [Autoload(Side = ModSide.Client)]

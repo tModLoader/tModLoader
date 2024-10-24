@@ -45,7 +45,7 @@ public static class CloudLoader
 	/// </summary>
 	public static bool AddCloudFromTexture(Mod mod, string texture, float spawnChance = 1f, bool rareCloud = false) => AddCloudFromTexture<SimpleModCloud>(mod, texture, spawnChance, rareCloud);
 
-	//Called by ModCloud.Register
+	// Called by ModCloud.Register
 	internal static void RegisterModCloud(ModCloud modCloud)
 	{
 		int id = CloudCount++;
@@ -103,10 +103,10 @@ public static class CloudLoader
 
 	internal static void ResizeAndFillArrays(bool unloading = false)
 	{
-		//Textures
+		// Textures
 		Array.Resize(ref TextureAssets.Cloud, CloudCount);
 
-		//Sets
+		// Sets
 		LoaderUtils.ResetStaticMembers(typeof(CloudID));
 
 		foreach (var pair in clouds) {
