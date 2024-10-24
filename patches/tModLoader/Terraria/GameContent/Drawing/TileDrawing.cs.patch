@@ -696,7 +696,7 @@
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  
-@@ -7041,7 +_,17 @@
+@@ -7041,7 +_,19 @@
  		Vector2 vector2 = new Vector2(0f, -2f);
  		vector += vector2;
  		bool flag = false;
@@ -709,8 +709,9 @@
 +			isBelowNonHammeredPlatform = false;
 +			break;
 +		}
--		if ((type != 465 && (uint)(type - 591) > 1u) ? (sizeX == 1 && WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY)) : (WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY) && WorldGen.IsBelowANonHammeredPlatform(topLeftX + 1, topLeftY))) {
-+		//if ((type != 465 && (uint)(type - 591) > 1u) ? (sizeX == 1 && WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY)) : (WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY) && WorldGen.IsBelowANonHammeredPlatform(topLeftX + 1, topLeftY))) {
++		/*
+ 		if ((type != 465 && (uint)(type - 591) > 1u) ? (sizeX == 1 && WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY)) : (WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY) && WorldGen.IsBelowANonHammeredPlatform(topLeftX + 1, topLeftY))) {
++		*/
 +		if (isBelowNonHammeredPlatform) {
  			vector.Y -= 8f;
  			vector2.Y -= 8f;
