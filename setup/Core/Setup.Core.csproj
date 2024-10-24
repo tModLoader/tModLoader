@@ -13,7 +13,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Fody" Version="6.8.1">
-		  <PrivateAssets>all</PrivateAssets>
+			<PrivateAssets>all</PrivateAssets>
 			<ExcludeAssets>compile;runtime</ExcludeAssets>
 		</PackageReference>
 		<PackageReference Include="ConfigureAwait.Fody" Version="3.3.2">
@@ -30,14 +30,9 @@
 		<!-- Preview is needed for https://github.com/icsharpcode/ILSpy/commit/8dd721a -->
 		<!-- When updating, please remove the TODO patch from patches/Terraria/Terraria/Graphics/TileBatch.cs.patch, and this line. -->
 		<PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7106-preview2" />
+		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 	</ItemGroup>
-
-	<PropertyGroup>
-		<WeaverConfiguration>
-			<Weavers>
-				<ConfigureAwait ContinueOnCapturedContext="false" />
-			</Weavers>
-		</WeaverConfiguration>
-	</PropertyGroup>
 
 </Project>
