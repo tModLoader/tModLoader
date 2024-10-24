@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIBestiaryEntryInfoPage.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIBestiaryEntryInfoPage.cs
+@@ -8,7 +_,7 @@
+ 
+ public class UIBestiaryEntryInfoPage : UIPanel
+ {
+-	private enum BestiaryInfoCategory
++	public enum BestiaryInfoCategory
+ 	{
+ 		Nameplate,
+ 		Portrait,
+@@ -162,6 +_,10 @@
+ 
+ 	private BestiaryInfoCategory GetBestiaryInfoCategory(IBestiaryInfoElement element)
+ 	{
++		if (element is ICategorizedBestiaryInfoElement categorizedElement) {
++			return categorizedElement.ElementCategory;
++		}
++
+ 		if (element is NPCPortraitInfoElement)
+ 			return BestiaryInfoCategory.Portrait;
+ 
