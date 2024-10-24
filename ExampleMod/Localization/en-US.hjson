@@ -9,7 +9,7 @@
 Mods: {
 	ExampleMod: {
 	
-        Bestiary.ImportantFlavorText: Important Flavor Text!  
+		Bestiary.ImportantFlavorText: Important Flavor Text!  
 	
 		Common.PaperAirplane: Paper Airplane
 
