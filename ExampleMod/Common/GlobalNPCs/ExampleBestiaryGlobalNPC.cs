@@ -17,6 +17,13 @@ public class ExampleBestiaryGlobalNPC : GlobalNPC
 	// An example of adding additional flavor text to a bestiary entry!
 	private class ImportantFlavorTextElement : IBestiaryInfoElement, IBestiaryPrioritizedElement, ICategorizedBestiaryInfoElement
 	{
+
+		// 1 so that it gets placed above the normal flavor text!
+		public float OrderPriority => 1f;
+
+		// Puts this element in the same category as the flavor text box, instead of at the bottom.
+		public UIBestiaryEntryInfoPage.BestiaryInfoCategory ElementCategory => UIBestiaryEntryInfoPage.BestiaryInfoCategory.FlavorText;
+
 		public UIElement ProvideUIElement(BestiaryUICollectionInfo info) {
 			// Code mostly taken from vanilla Bestiary
 			UIPanel backPanel = new(Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Stat_Panel"), null, customBarSize: 7)	{
@@ -37,13 +44,6 @@ public class ExampleBestiaryGlobalNPC : GlobalNPC
 
 			return backPanel;
 		}
-
-		// 1 so that it gets placed above the normal flavor text!
-		public float OrderPriority => 1f;
-
-		// Puts this element in the same category as the flavor text box, instead of at the bottom.
-		public UIBestiaryEntryInfoPage.BestiaryInfoCategory ElementCategory => UIBestiaryEntryInfoPage.BestiaryInfoCategory.FlavorText;
-
 	}
 
 	public override void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
