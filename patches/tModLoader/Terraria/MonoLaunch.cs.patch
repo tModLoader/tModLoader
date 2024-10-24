@@ -12,7 +12,7 @@
  
  namespace Terraria;
  
-@@ -16,7 +_,16 @@
+@@ -16,9 +_,18 @@
  
  	private static void Main(string[] args)
  	{
@@ -24,13 +24,21 @@
 +
 +		Thread.CurrentThread.Name = "Entry Thread";
 +
- #if NETCORE
+-#if NETCORE
++		#if NETCORE
 +		NativeLibraries.SetNativeLibraryPath(NativesDir);
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
- #else
+-#else
++		#else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,6 +_,35 @@
- #endif
+ 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
+ 			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
+@@ -31,9 +_,38 @@
+ 				return Assembly.Load(array);
+ 			}
+ 		};
+-#endif
++		#endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 +

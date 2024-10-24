@@ -69,10 +69,9 @@ internal class ModCompile
 
 	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
-	private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
 	private static readonly string modTargetsPath = Path.Combine(ModSourcePath, "tModLoader.targets");
-	private static readonly string tMLModTargetsPath = Path.Combine(tMLDir, "tMLMod.targets");
+	private static readonly string tMLModTargetsPath = Path.Combine(Program.tMLAssemblyLocation, "tMLMod.targets");
 	private static bool referencesUpdated = false;
 	internal static void UpdateReferencesFolder()
 	{

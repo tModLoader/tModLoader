@@ -110,7 +110,10 @@ public static class AssemblyManager
 			if (assemblies.TryGetValue(assemblyName.Name, out var asm))
 				return asm;
 
-			return dependencies.Select(dep => dep.Load(assemblyName)).FirstOrDefault(a => a != null);
+			if (dependencies.Select(dep => dep.Load(assemblyName)).FirstOrDefault(a => a != null) is Assembly dep)
+				return dep;
+
+			return GetLoadContext(Assembly.GetExecutingAssembly()).LoadFromAssemblyName(assemblyName);
 		}
 
 		internal bool IsModDependencyPresent(string name) => name == Name || dependencies.Any(d => d.IsModDependencyPresent(name));
@@ -132,11 +135,16 @@ public static class AssemblyManager
 					return existing;
 
 				var runtime = mod.LoadFromAssemblyName(assemblyName);
-				if (string.IsNullOrEmpty(runtime.Location))
-					return context.LoadFromByteArray(((ModLoadContext)GetLoadContext(runtime)).assemblyBytes[assemblyName.Name]);
+				if (!string.IsNullOrEmpty(runtime.Location))
+					return context.LoadFromAssemblyPath(runtime.Location);
 
+				if (GetLoadContext(runtime) is ModLoadContext modLoadContext)
+					return context.LoadFromByteArray(modLoadContext.assemblyBytes[assemblyName.Name]);
 
-				return context.LoadFromAssemblyPath(runtime.Location);
+				if (CoreModLoader.transformedAssemblyBytes.TryGetValue(runtime, out var bytes))
+					return context.LoadFromByteArray(bytes);
+
+				throw new Exception($"Unable to find bytes for {runtime.FullName}");
 			}
 		}
 
