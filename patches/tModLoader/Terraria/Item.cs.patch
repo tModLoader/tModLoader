@@ -269,7 +269,7 @@
 +	/// - <see cref="NPC.DropItemInstanced"/><br/>
 +	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
 +	/// - <see cref="MessageID.InstancedItem"/><br/>
-+	/// Defaults to false.<br/>
++	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool instanced;
  	public int ownIgnore = -1;
@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,245 @@
+@@ -121,49 +_,251 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -523,8 +523,11 @@
  	public int shoot;
 +
 +	/// <summary>
-+	/// The velocity in pixels the projectile fired by this item will have. Actual velocity depends on the projectile being fired. If your weapon is shooting projectiles and they are stationary, change this to something like 10f. Throwing Knife uses 10f. Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
-+	/// <br/> Defaults to 0f.
++	/// The velocity in pixels the projectile fired by this item will have. If your weapon is shooting projectiles and they are stationary, change this to something like 10f and adjust as needed. Throwing Knife uses 10f.
++	/// <para/> Actual velocity depends on the projectile being fired, most notably the <see cref="Projectile.extraUpdates"/> value of that projectile. For example, <see cref="ItemID.LaserRifle"/> has <c>shootSpeed = 17f;</c> and shoots <see cref="ProjectileID.PurpleLaser"/>, which has <c>extraUpdates = 4;</c>, meaning 5 total updates per game tick. This projectile will have an effective velocity of 85 (because <c>17 * (1 + 4) == 85</c>). The <see href="https://terraria.wiki.gg/wiki/Velocity">Shoot Speed wiki page</see> has more information and examples of how these values work together in practice.
++	/// <para/> For weapons using ammo, the weapon's shootSpeed is added to the ammo's shootSpeed, so adjust ammo and weapon shootSpeed values accordingly. Consult the <see href="https://terraria.wiki.gg/wiki/Ammunition_items">Ammunition items wiki page</see> and wiki pages for the weapons that shoot various ammo for suitable values to use.
++	/// <para/> Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
++	/// <para/> Defaults to 0f.
 +	/// </summary>
  	public float shootSpeed;
 +
@@ -580,6 +583,7 @@
 +	/// <summary>
 +	/// The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <c>10462</c> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer.
 +	/// <br/> For convenience, you can also use the <see cref="Item.buyPrice(int, int, int, int)"/> method for setting values: <c>Item.value = Item.buyPrice(0, 1, 4, 62);</c> You can also use the <see cref="Item.sellPrice(int, int, int, int)"/> method if you would rather think about an item's value the other way. Both <c>Item.buyPrice(0, 0, 10, 55)</c> and <c>Item.sellPrice(0, 0, 2, 11)</c> would set the value to <c>1055</c>.
++	/// <para/> If custom purchase prices disconnected from the item value are needed, <see cref="shopCustomPrice"/> should be set for the item instance added to a shop entry.
 +	/// </summary>
  	public int value;
  	public bool buy;
@@ -645,8 +649,9 @@
 +	/// Used for assigning a non-default price to an item in shops.<br/>
 +	/// Can be used with <see cref="shopSpecialCurrency"/> to assign a price in terms of a custom currency instead of coins.<br/>
 +	/// To get the raw price of an item, use <see cref="GetStoreValue"/>.<br/>
-+	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.<br/>
-+	/// Defaults to <see langword="null"/>.<br/>
++	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.
++	/// <para/> Be careful of setting a custom price far below the normal <see cref="Item.value"/>, it could result in an infinite money exploit. For example, with maximum happiness and a discount card, a custom price 0.44 times the regular value would allow the user to sell the item for just barely more than it was bought for after leaving and reentering the world.
++	/// <para/> Defaults to <see langword="null"/>.
 +	/// </summary>
  	public int? shopCustomPrice;
  	public bool shootsEveryUse;
@@ -723,7 +728,8 @@
 +
 +	/// <summary>
 +	/// A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items.
-+	/// <br/> Defaults to 0.
++	/// <para/> One notable example usage is the <see cref="ItemID.ClockworkAssaultRifle"/> with a value of 14, but most other usages are smaller values like 2.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int reuseDelay;
  	public bool newAndShiny;
@@ -776,7 +782,7 @@
  	public bool PaintOrCoating {
  		get {
  			if (paint <= 0)
-@@ -196,11 +_,19 @@
+@@ -196,12 +_,24 @@
  
  	public bool FitsAccessoryVanitySlot => true;
  
@@ -787,15 +793,20 @@
  
  	public int OriginalDefense => ContentSamples.ItemsByType[type].defense;
 +	*/
-+
+ 
 +	public int OriginalRarity => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.rare : 0;
 +
 +	public int OriginalDamage => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.damage : 0;
 +
 +	public int OriginalDefense => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.defense : 0;
- 
++
++	/// <summary>
++	/// If not null, indicates that this item has a special seed variant active.
++	/// <para/> Item variants are not supported for modded items.
++	/// </summary>
  	public ItemVariant Variant { get; private set; }
  
+ 	public bool IsACoin {
 @@ -254,12 +_,27 @@
  		}
  	}
@@ -910,15 +921,16 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -318,12 +_,18 @@
+@@ -318,12 +_,20 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
-+
-+			if (applyPrefixOverride is true) { } else
++			/*
  			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
--				rolledPrefix = 0;
-+				return true; //rolledPrefix = 0;
+ 				rolledPrefix = 0;
++			*/
++			if (applyPrefixOverride is not true && rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
++				return true;
  
  			if (prefixWeWant < -1)
  				rolledPrefix = -1;
@@ -1057,7 +1069,7 @@
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -750,16 +_,65 @@
+@@ -750,16 +_,66 @@
  		return null;
  	}
  
@@ -1066,6 +1078,7 @@
 +	/// Determines the <see cref="PrefixCategory"/> of this <see cref="Item"/>.
 +	/// </summary>
 +	/// <returns>The <see cref="PrefixCategory"/> of this <see cref="Item"/> or <see langword="null"/> if this <see cref="Item"/> doesn't have a category.</returns>
++	[Obsolete("Does not support items with multiple prefix categories, use GetPrefixCategories instead")]
 +	public PrefixCategory? GetPrefixCategory()
 +	{
 +		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
@@ -1356,6 +1369,15 @@
  			case 4953:
 +				useLimitPerAnimation = 5; // Added by TML.
 +				consumeAmmoOnLastShotOnly = true; // Added by TML.
++
+ 				useStyle = 5;
+ 				autoReuse = true;
+ 				useAnimation = 30;
+@@ -44338,6 +_,8 @@
+ 				value = sellPrice(0, 0, 50);
+ 				break;
+ 			case 5134:
++				consumeAmmoOnLastShotOnly = true; // Added by TML
 +
  				useStyle = 5;
  				autoReuse = true;
@@ -1856,7 +1878,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,32 @@
+@@ -47318,14 +_,33 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1875,6 +1897,7 @@
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
 +		ChangePlayerDirectionOnShoot = true;
++		ArmorPenetration = 0;
 +
  		sentry = false;
  		hasVanityEffects = false;
@@ -2284,7 +2307,15 @@
  			TurnToAir();
  	}
  
-@@ -49359,6 +_,7 @@
+@@ -49356,9 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Resets the stats of this item while preserving modded data, prefix, stack, and favorited. Used to update the stats of this item to facilitate <see cref="ItemVariants"/>. This is called on most items when a player enters a world to ensure that their stats match the variant expected for the world seed.
++	/// <para/> If <paramref name="onlyIfVariantChanged"/> is true (it usually is), then the item is only refreshed if <see cref="Item.Variant"/> and <see cref="ItemVariants.SelectVariant(int)"/> differ.
++	/// </summary>
++	/// <param name="onlyIfVariantChanged"></param>
  	public void Refresh(bool onlyIfVariantChanged = true)
  	{
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {

@@ -85,7 +85,7 @@ namespace ExampleMod.Content.Tiles.Plants
 		}
 
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects effects) {
-			if (i % 2 == 1) {
+			if (i % 2 == 0) {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 		}

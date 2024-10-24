@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/IItemDropRuleCondition.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/IItemDropRuleCondition.cs
+@@ -2,7 +_,13 @@
+ 
+ public interface IItemDropRuleCondition : IProvideItemConditionDescription
+ {
++	/// <summary>
++	/// Whether or not the item using this drop rule can drop.
++	/// </summary>
+ 	bool CanDrop(DropAttemptInfo info);
+ 
++	/// <summary>
++	/// Whether or not the item using this drop rule will show in the Bestiary drops listing. This is typically less restrictive than the <see cref="CanDrop(DropAttemptInfo)"/> logic and usually only limits drop visibility for conditions that represent world state that can't change, such as the world difficulty or world evil choice. Most other conditions just return true, hinting to the player that the item could potentially drop even if the drop conditions aren't currently fully met.
++	/// </summary>
+ 	bool CanShowItemDropInUI();
+ }

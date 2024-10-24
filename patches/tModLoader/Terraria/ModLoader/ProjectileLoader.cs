@@ -769,4 +769,25 @@ public static class ProjectileLoader
 			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 		}
 	}
+
+	private static HookList HookPrepareBombToBlow = AddHook<Action<Projectile>>(g => g.PrepareBombToBlow);
+
+	internal static void PrepareBombToBlow(Projectile projectile)
+	{
+		projectile.ModProjectile?.PrepareBombToBlow();
+
+		foreach (var g in HookPrepareBombToBlow.Enumerate(projectile)) {
+			g.PrepareBombToBlow(projectile);
+		}
+	}
+
+	private static HookList HookEmitEnchantmentVisualsAt = AddHook<Action<Projectile, Vector2, int, int>>(g => g.EmitEnchantmentVisualsAt);
+
+	internal static void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight) {
+		projectile.ModProjectile?.EmitEnchantmentVisualsAt(boxPosition, boxWidth, boxHeight);
+
+		foreach (var g in HookEmitEnchantmentVisualsAt.Enumerate(projectile)) {
+			g.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
+		}
+	}
 }

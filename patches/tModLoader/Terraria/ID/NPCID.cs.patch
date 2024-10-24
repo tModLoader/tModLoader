@@ -253,7 +253,7 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -4980,53 +_,361 @@
+@@ -4980,54 +_,371 @@
  			{ 622, 621 },
  			{ 623, 621 }
  		};
@@ -609,14 +609,35 @@
 +		/// </summary>
 +		/// <remarks>Bosses (<see cref="NPC.boss"/>) and invasion enemies (<see cref="NPC.GetNPCInvasionGroup(int)"/>) can always hit shimmered players.</remarks>
  		public static bool[] CanHitPastShimmer = Factory.CreateBoolSet(535, 5, 13, 14, 15, 666, 267, 36, 210, 211, 115, 116, 117, 118, 119, 658, 659, 660, 134, 135, 136, 139, 128, 131, 129, 130, 263, 264, 246, 249, 247, 248, 371, 372, 373, 566, 567, 440, 522, 523, 521, 454, 455, 456, 457, 458, 459, 397, 396, 400);
+-		public static int[][] TownNPCsFramingGroups = new int[8][] {
 +
 +		/// <summary>
 +		/// The vertical offset, in pixels, that this NPC's party hat will draw. Indexed using values from <see cref="NPCFramingGroup"/>.
++		/// <br>Group 0: The default for all Town NPCs. This group matches up with the standard walking animations which are the same animations that the player uses.</br>
++		/// <br>Group 1: Used by Nurse, Dryad, Party Girl, Steampunker, Mechanic, Stylist, Zoologist. These Town NPCs have only 12 walking frames.</br>
++		/// <br>Group 2: Used by Angler.</br>
++		/// <br>Group 3: Used by Truffle.</br>
++		/// <br>Group 4: Used by Town Cat.</br>
++		/// <br>Group 5: Used by Town Dog.</br>
++		/// <br>Group 6: Used by Town Bunny.</br>
++		/// <br>Group 7: Used by all Town Slimes.</br>
++		/// <br>Group 8: No offset (added by tModLoader).</br>
 +		/// </summary>
 +		/// <remarks><see cref="HatOffsetY"/> applies the same offset to all frames, this applies a specific offset per frame.</remarks>
- 		public static int[][] TownNPCsFramingGroups = new int[8][] {
++		public static int[][] TownNPCsFramingGroups = new int[9][] { // tModLoader: Resized from 8 to 9
  			new int[26] {
  				0,
+ 				0,
+@@ -5237,6 +_,9 @@
+ 				2,
+ 				4,
+ 				2
++			},
++			new int[1] { // Added by tModLoader
++				0
+ 			}
+ 		};
+ 
 @@ -5246,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
@@ -663,3 +684,11 @@
  	}
  
  	private static readonly int[] NetIdMap = new int[65] {
+@@ -11271,6 +_,7 @@
+ 	public const short BoundTownSlimePurple = 686;
+ 	public const short BoundTownSlimeYellow = 687;
+ 	public static readonly short Count = 688;
++	/// <inheritdoc cref="IdDictionary"/>
+ 	public static readonly IdDictionary Search = IdDictionary.Create<NPCID, short>();
+ 
+ 	public static int FromLegacyName(string name)

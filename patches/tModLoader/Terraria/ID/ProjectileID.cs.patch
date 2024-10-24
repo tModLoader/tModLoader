@@ -158,7 +158,7 @@
  		public static bool?[] ForcePlateDetection = Factory.CreateCustomSet<bool?>(null, new object[70] {
  			(short)397,
  			true,
-@@ -241,17 +_,84 @@
+@@ -241,17 +_,85 @@
  			(short)1014,
  			false
  		});
@@ -231,8 +231,9 @@
  		public static bool[] MinionSacrificable = Factory.CreateBoolSet(191, 192, 193, 194, 266, 317, 373, 375, 387, 388, 390, 393, 407, 423, 533, 613, 755, 758, 759, 831, 970, 864, 946, 951, 963, 625, 626, 627, 628);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will always draw using the lighting color at its center, even if <see cref="Projectile.hide"/> is <see langword="true"/>. If not in this set, these projectiles would use the lighting color at their owner's center.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// Controls the lighting for projectiles with <see cref="Projectile.hide"/> set to <see langword="true"/>. By default, projectiles with <see cref="Projectile.hide"/> set to <see langword="true"/> would use the lighting color at the player's center. If this is set to <see langword="true"/> then this projectile will use lighting values from the projectile center as normal.
++		/// <para/> Set this to true for any <see cref="Projectile.hide"/> projectile that isn't being held directly in the players hands. 
++		/// <para/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] DontAttachHideToAlpha = Factory.CreateBoolSet(598, 641, 617, 636, 579, 578, 625, 626, 627, 628, 759, 813, 525, 960, 971);
 +
@@ -256,7 +257,7 @@
  		public static float[] ExtendedCanHitCheckRange = Factory.CreateFloatSet(0f, 833f, 48f, 834f, 48f, 835f, 48f);
  		public static bool[] NeedsUUID = Factory.CreateBoolSet(625, 626, 627, 628);
  		public static bool[] StardustDragon = Factory.CreateBoolSet(625, 626, 627, 628);
-@@ -269,13 +_,57 @@
+@@ -269,14 +_,58 @@
  			834,
  			835
  		};
@@ -305,12 +306,20 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanHitPastShimmer = Factory.CreateBoolSet(605, 270, 719, 961, 962, 926, 922, 100, 84, 83, 96, 101, 102, 275, 276, 277, 258, 259, 384, 385, 386, 874, 872, 873, 871, 683, 676, 670, 675, 686, 687, 467, 468, 464, 465, 466, 526, 456, 462, 455, 452, 454, 949);
-+
+ 
 +		/// <summary>
 +		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will do the same damage to players regardless of difficulty (expert/master etc). <br/>
 +		/// This set includes all the friendly vanilla explosives which can hurt players from vanilla
 +		/// </summary>
 +		public static bool[] PlayerHurtDamageIgnoresDifficultyScaling = Factory.CreateBoolSet(28, 29, 30, 37, 108, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 164, 397, 470, 516, 517, 519, 588, 637, 773, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 903, 904, 905, 906, 910, 911, 1002);
- 
++
  		public static SettingsForCharacterPreview SimpleLoop(int startFrame, int frameCount, int delayPerFrame = 4, bool bounceLoop = false)
  		{
+ 			if (frameCount < 1)
+@@ -1314,5 +_,6 @@
+ 	public const short JimsDrone = 1020;
+ 	public const short MoonBoulder = 1021;
+ 	public static readonly short Count = 1022;
++	/// <inheritdoc cref="IdDictionary"/>
+ 	public static readonly IdDictionary Search = IdDictionary.Create<ProjectileID, short>();
+ }

@@ -12,7 +12,9 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
+/// A ModPlayer instance represents an extension of a Player instance.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
+/// <br/> You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 /// </summary>
 public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 {
@@ -43,7 +45,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
 		base.ValidateType();
 
-		LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
+		LoaderUtils.MustOverrideTogether(this, p => p.SaveData, p => p.LoadData);
 		LoaderUtils.MustOverrideTogether(this, p => p.CopyClientState, p => p.SendClientChanges);
 	}
 
@@ -214,9 +216,30 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
+	/// <para/> Read <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleKeybindPlayer.cs">ExampleKeybindPlayer.cs</see> for examples and information on using this hook.
 	/// </summary>
 	/// <param name="triggersSet"></param>
 	public virtual void ProcessTriggers(TriggersSet triggersSet)
+	{
+	}
+
+	/// <summary>
+	/// This is called when the player activates their armor set bonus by double tapping down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true). As an example, the Vortex armor uses this to toggle stealth mode.
+	/// <para /> Use this to implement armor set bonuses that need to be activated by the player.
+	/// <para /> Don't forget to check if your armor set is active.
+	/// <para/> While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <see cref="Player.holdDownCardinalTimer"/> and <see cref="Player.doubleTapCardinalTimer"/> directly in other hooks for similar effects if needed.
+	/// </summary>
+	public virtual void ArmorSetBonusActivated()
+	{
+	}
+
+	/// <summary>
+	/// This is called when the player activates their armor set bonus by holding down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true) for some amount of time. The <paramref name="holdTime"/> parameter indicates how many ticks the key has been held down for. As an example, the Stardust armor prior to 1.4.4 used to use this to set the location of the Stardust Guardian if <paramref name="holdTime"/> was greater than 60.
+	/// <para /> Use this to implement armor set bonuses that need to be activated by the player.
+	/// <para /> Don't forget to check if your armor set is active.
+	/// <para/> While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <see cref="Player.holdDownCardinalTimer"/> and <see cref="Player.doubleTapCardinalTimer"/> directly in other hooks for similar effects if needed.
+	/// </summary>
+	public virtual void ArmorSetBonusHeld(int holdTime)
 	{
 	}
 
@@ -699,11 +722,17 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to give this player's melee weapon special effects, such as creating light or dust.
+	/// Allows you to give this player's melee weapon special effects, such as creating light or dust. This is typically used to implement a weapon enchantment, similar to flasks, frost armor, or magma stone effects.
+	/// <para/> If implementing a weapon enchantment, also implement <see cref="EmitEnchantmentVisualsAt(Projectile, Vector2, int, int)"/> to support enchantment visuals for projectiles as well.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="hitbox"></param>
 	public virtual void MeleeEffects(Item item, Rectangle hitbox)
+	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.EmitEnchantmentVisualsAt"/>
+	public virtual void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
 	}
 

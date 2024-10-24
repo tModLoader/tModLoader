@@ -1,0 +1,85 @@
+--- src/TerrariaNetCore/Terraria/GameContent/PlayerEyeHelper.cs
++++ src/tModLoader/Terraria/GameContent/PlayerEyeHelper.cs
+@@ -2,22 +_,48 @@
+ 
+ public struct PlayerEyeHelper
+ {
++	// TML: Made public
+-	private enum EyeFrame
++	public enum EyeFrame
+ 	{
+ 		EyeOpen,
+ 		EyeHalfClosed,
+ 		EyeClosed
+ 	}
+ 
++	// TML: Made public
+-	private enum EyeState
++	public enum EyeState
+ 	{
+ 		NormalBlinking,
++		/// <summary>
++		/// <br/> Out of 120 ticks, 5 of them will have eyes closed; otherwise eyes are half closed.
++		/// </summary>
+ 		InStorm,
++		/// <summary>
++		/// <br/> Slowly closes eyes.
++		/// <para/> If player is moderately damaged, then eyes will be half closed for first second in bed instead of open.
++		/// <br/> For the next second, eyes are half closed.
++		/// <br/> Afterwards, eyes are closed.
++		/// </summary>
+ 		InBed,
++		/// <summary>
++		/// <br/> Eyes always closed.
++		/// </summary>
+ 		JustTookDamage,
++		/// <summary>
++		/// <br/> Out of 120 ticks, 19 of them will have eyes closed; otherwise eyes are half closed.
++		/// </summary>
+ 		IsModeratelyDamaged,
++		/// <summary>
++		/// <br/> Eyes always closed.
++		/// </summary>
+ 		IsBlind,
++		/// <summary>
++		/// <br/> Out of 120 ticks, 19 of them will have eyes closed; otherwise eyes are half closed.
++		/// </summary>
+ 		IsTipsy,
++		/// <summary>
++		/// <br/> Out of 120 ticks, 19 of them will have eyes closed; otherwise eyes are half closed.
++		/// </summary>
+ 		IsPoisoned
+ 	}
+ 
+@@ -25,8 +_,22 @@
+ 	private int _timeInState;
+ 	private const int TimeToActDamaged = 20;
+ 
++	[System.Obsolete("Use CurrentEyeFrame instead")]
+ 	public int EyeFrameToShow { get; private set; }
+ 
++	public EyeState CurrentEyeState { // TML
++		get => _state;
++		set => _state = value;
++	}
++	public EyeFrame CurrentEyeFrame { // TML
++		get => (EyeFrame)EyeFrameToShow;
++		set => EyeFrameToShow = (int)value;
++	}
++	public int TimeInState { // TML
++		get => _timeInState;
++		set => _timeInState = value;
++	}
++
+ 	public void Update(Player player)
+ 	{
+ 		SetStateByPlayerInfo(player);
+@@ -109,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void SwitchToState(EyeState newState, bool resetStateTimerEvenIfAlreadyInState = false)
++	public void SwitchToState(EyeState newState, bool resetStateTimerEvenIfAlreadyInState = false) // TML: Made public
+ 	{
+ 		if (_state != newState || resetStateTimerEvenIfAlreadyInState) {
+ 			_state = newState;

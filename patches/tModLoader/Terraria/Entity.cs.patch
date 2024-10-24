@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,19 +_,54 @@
+@@ -3,19 +_,64 @@
  
  namespace Terraria;
  
@@ -13,11 +13,12 @@
 +	/// <br/> Projectile: <see cref="Main.projectile"/>
 +	/// <br/> NPC: <see cref="Main.npc"/>
 +	/// <br/> Player: <see cref="Main.player"/>
++	/// <para/> Note that Projectile.whoAmI is not consistent between clients in multiplayer for the same projectile.
 +	/// </summary>
  	public int whoAmI;
 +
 +	/// <summary>
-+	/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array.
++	/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array. Another option for iterating is to use <see cref="Main.ActivePlayers"/>, <see cref="Main.ActiveNPCs"/>, <see cref="Main.ActiveProjectiles"/>, or <see cref="Main.ActiveItems"/> instead for simpler code.
 +	/// </summary>
  	public bool active;
  	internal long entityId;
@@ -31,8 +32,17 @@
 +	/// The velocity of this Entity in world coordinates per tick.
 +	/// </summary>
  	public Vector2 velocity;
++	/// <summary>
++	/// The <see cref="position"/> of this Entity during the previous tick. For projectiles with <see cref="Projectile.extraUpdates"/>, this will be the position during the previous extra update, not necessarily the position during the previous tick.
++	/// </summary>
  	public Vector2 oldPosition;
++	/// <summary>
++	/// The <see cref="velocity"/> of this Entity during the previous tick. For projectiles with <see cref="Projectile.extraUpdates"/>, this will be the velocity during the previous extra update, not necessarily the velocity during the previous tick.
++	/// </summary>
  	public Vector2 oldVelocity;
++	/// <summary>
++	/// The <see cref="direction"/> of this Entity during the previous tick. For projectiles with <see cref="Projectile.extraUpdates"/>, this will be the direction during the previous extra update, not necessarily the direction during the previous tick.
++	/// </summary>
  	public int oldDirection;
 +	/// <summary>
 +	/// The direction this entity is facing. A value of 1 means the entity is facing to the right. -1 means facing to the left.

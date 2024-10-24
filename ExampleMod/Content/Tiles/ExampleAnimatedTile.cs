@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Tiles
 				uniqueAnimationFrame += 3;
 			uniqueAnimationFrame %= 6;
 
-			// frameYOffset = modTile.animationFrameHeight * Main.tileFrame [type] will already be set before this hook is called
+			// frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type] will already be set before this hook is called
 			// But we have a horizontal animated texture, so we use frameXOffset instead of frameYOffset
 			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
 		}
@@ -106,7 +106,7 @@ namespace ExampleMod.Content.Tiles
 
 
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedTileTile").Value;
+			Texture2D texture = TextureAssets.Tile[Type].Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode

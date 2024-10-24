@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -81,7 +82,8 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 
 			if (!Item.IsAir || Unloaded) {
 				int type = Unloaded ? ModContent.ItemType<UnloadedItem>() : Item.type;
-				Main.instance.LoadItem(Item.type);
+				if (TextureAssets.Item[type].State == AssetState.NotLoaded)
+					Main.Assets.Request<Texture2D>(TextureAssets.Item[type].Name, AssetRequestMode.AsyncLoad);
 				Texture2D itemTexture = TextureAssets.Item[type].Value;
 				Rectangle rectangle2;
 
@@ -111,8 +113,8 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 
 				drawScale *= Scale;
 				Vector2 vector = BackgroundTexture.Size() * Scale;
-				Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
-				Vector2 origin = rectangle2.Size() * (pulseScale / 2f - 0.5f);
+				Vector2 position2 = dimensions.Position() + vector / 2f;
+				Vector2 origin = rectangle2.Size() / 2;
 
 				if (ItemLoader.PreDrawInInventory(Item, spriteBatch, position2, rectangle2, Item.GetAlpha(newColor),
 					Item.GetColor(Color.White), origin, drawScale * pulseScale)) {

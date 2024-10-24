@@ -167,6 +167,9 @@ internal static class InstallVerifier
 		}
 		yield return vanillaPath;
 
+		if (Platform.IsLinux)
+			yield return Path.Combine(vanillaPath, "game"); // GOG+Linux installs exe to Terraria/game/
+
 		// Fallback to default GOG install locations
 		if (Platform.IsWindows) {
 			yield return Path.Combine(@"c:\", "Program Files (x86)", "GOG Galaxy", "Games", "Terraria");
@@ -220,7 +223,12 @@ internal static class InstallVerifier
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaNotInstalled"));
 				break;
 			case TerrariaSteamClient.LaunchResult.ErrInstallOutOfDate:
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
+				break;
+			case TerrariaSteamClient.LaunchResult.ErrInstallLegacyVersion:
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
 				break;
 			default:
 				throw new Exception("Unsupported result type: " + result);

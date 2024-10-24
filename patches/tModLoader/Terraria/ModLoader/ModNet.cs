@@ -2,6 +2,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
@@ -21,15 +22,13 @@ public static class ModNet
 		public string name;
 		public Version version;
 		public byte[] hash;
-		public bool signed;
 		public string path;
 
-		public ModHeader(string name, Version version, byte[] hash, bool signed)
+		public ModHeader(string name, Version version, byte[] hash)
 		{
 			this.name = name;
 			this.version = version;
 			this.hash = hash;
-			this.signed = signed;
 			path = Path.Combine(ModLoader.ModPath, name + ".tmod");
 		}
 
@@ -57,7 +56,6 @@ public static class ModNet
 	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
 	internal static bool downloadModsFromServers = true;
-	internal static bool onlyDownloadSignedMods = false;
 
 	internal static bool[] isModdedClient = new bool[256];
 
@@ -97,8 +95,6 @@ public static class ModNet
 	{
 		kickMsg = null;
 		isModded = clientVersion.StartsWith("tModLoader");
-		if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
-			return true;
 
 		if (clientVersion == NetVersionString)
 			return true;
@@ -129,15 +125,12 @@ public static class ModNet
 	internal static void Unload()
 	{
 		netMods = null;
-		if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
-			AllowVanillaClients = false;
 		ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 	}
 
 	internal static void SyncMods(int clientIndex)
 	{
 		var p = new ModPacket(MessageID.SyncMods);
-		p.Write(AllowVanillaClients);
 
 		var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToList();
 		AddNoSyncDeps(syncMods);
@@ -147,7 +140,6 @@ public static class ModNet
 			p.Write(mod.Name);
 			p.Write(mod.Version.ToString());
 			p.Write(mod.File.Hash);
-			p.Write(mod.File.ValidModBrowserSignature);
 			SendServerConfigs(p, mod);
 		}
 
@@ -199,9 +191,6 @@ public static class ModNet
 	// This method is split so that the local variables aren't held by the GC when reloading
 	internal static bool SyncClientMods(BinaryReader reader, out bool needsReload)
 	{
-		AllowVanillaClients = reader.ReadBoolean();
-		Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
-
 		Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 		Mod[] clientMods = ModLoader.Mods;
 		LocalMod[] modFiles = ModOrganizer.FindAllMods();
@@ -215,7 +204,7 @@ public static class ModNet
 
 		int n = reader.ReadInt32();
 		for (int i = 0; i < n; i++) {
-			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
+			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20));
 			SyncModHeaders.Add(header);
 
 			int configCount = reader.ReadInt32();
@@ -237,7 +226,7 @@ public static class ModNet
 				continue;
 			}
 
-			if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods)) {
+			if (downloadModsFromServers) {
 				downloadQueue.Enqueue(header);
 				reloadRequiredExplanationEntries.Add(MakeDownloadModExplanation(modFiles, header, clientMod));
 			}
@@ -250,6 +239,9 @@ public static class ModNet
 		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
+		var clientSideMods = clientMods.Where(x => x.Side == ModSide.Client);
+		if (clientSideMods.Any())
+			Logging.tML.Debug($"Client Side mods: " + string.Join(", ", clientSideMods.Select(x => $"{x.Name} ({x.DisplayNameClean})")));
 
 		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
 		foreach (var name in toDisable) {
@@ -280,6 +272,7 @@ public static class ModNet
 		}
 
 		if (needsReload) {
+			NetReloadKeepAliveTimer.Restart();
 			// If needsReload, show the ServerModsDifferMessage UI.
 			string continueButtonText = Language.GetTextValue("tModLoader." + (downloadQueue.Count > 0 ? "ReloadRequiredDownloadAndContinue" : "ReloadRequiredReloadAndContinue"));
 			Interface.serverModsDifferMessage.Show(
@@ -326,11 +319,10 @@ public static class ModNet
 		if (clientMod != null) {
 			// Mod is enabled, but wrong version enabled
 			if (clientMod.Version > header.version) {
-				// TODO: Localize these messages once finalized
 				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version));
 			}
 			else {
-				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionDowngrade", "FFFACD", header.version, clientMod.Version));
+				return new ReloadRequiredExplanation(2, header.name, matching, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersionUpgrade", "FFFACD", header.version, clientMod.Version)); // double check logic.
 			}
 		}
 		else {
@@ -357,10 +349,19 @@ public static class ModNet
 			else {
 				if (clientMod != null) {
 					// We have the mod enabled, but not the correct version.
-					if (clientMod.Version > header.version)
-						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version));
-					else
-						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly,Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version));
+					if (clientMod.Version > header.version) {
+						bool downgradeIsTemporary = true;
+						// This downgrade might result in single player downgrading too if no workshop mod exists.
+						if (!modFiles.Where(mod => mod.Name == header.name && mod.location == ModLocation.Workshop).Any())
+							downgradeIsTemporary = false;
+
+						// If workshop mod exists but local mod is loaded: The local mod will downgrade, the lower version will load temporarily, but the user will be permanently downgraded to the workshop version. That's a bit confusing to communicate and extremely rare, and would only happen with mod devs, not worth worrying about.
+
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue(downgradeIsTemporary ? "tModLoader.ReloadRequiredExplanationDownloadDowngradeTemporary" : "tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version));
+					}
+					else {
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version));
+					}
 				}
 				else {
 					// We have the mod, but not the correct version.
@@ -459,15 +460,14 @@ public static class ModNet
 			if (downloadingFile.Position == downloadingLength) {
 				downloadingFile.Close();
 
+				ModCompile.recentlyBuiltModCheckTimeCutoff = DateTime.Now + TimeSpan.FromSeconds(10);
+
 				var mod = new TmodFile(downloadingMod.path);
 
 				using (mod.Open()) { }
 
 				if (!downloadingMod.Matches(mod))
 					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModHashMismatch"));
-
-				if (downloadingMod.signed && onlyDownloadSignedMods && !mod.ValidModBrowserSignature)
-					throw new Exception(Language.GetTextValue("tModLoader.MPErrorModNotSigned"));
 
 				ModLoader.EnableMod(mod.Name);
 
@@ -526,12 +526,14 @@ public static class ModNet
 	}
 
 	internal static bool NetReloadActive;
+	internal static Stopwatch NetReloadKeepAliveTimer = new Stopwatch();
 	internal static Action NetReload()
 	{
 		// Main.ActivePlayerFileData gets cleared during reload
 		string path = Main.ActivePlayerFileData.Path;
 		bool isCloudSave = Main.ActivePlayerFileData.IsCloudSave;
 		NetReloadActive = true;
+		NetReloadKeepAliveTimer.Restart();
 		return () => {
 			NetReloadActive = false;
 			// re-select the current player

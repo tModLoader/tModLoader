@@ -138,6 +138,7 @@ public static class LocalizationLoader
 	#nullable disable
 	{
 		path = Path.ChangeExtension(path, null);
+		path = path.Replace("\\", "/");
 
 		culture = null;
 		prefix = null;
@@ -216,7 +217,21 @@ public static class LocalizationLoader
 					jsonString = HjsonValue.Parse(translationFileContents).ToString();
 				}
 				catch (Exception e) {
-					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
+					string additionalContext = "";
+					if(e is ArgumentException && Regex.Match(e.Message, "At line (\\d+),") is Match { Success: true } match && int.TryParse(match.Groups[1].Value, out int line)) {
+						string[] lines = translationFileContents.Replace("\r", "").Replace("\t", "    ").Split('\n');
+						int start = Math.Max(0, line - 4);
+						int end = Math.Min(lines.Length, line + 3);
+						var linesOutput = new StringBuilder();
+						for (int i = start; i < end; i++) {
+							if (line - 1 == i)
+								linesOutput.Append($"\n{i + 1}[c/ff0000:>" + lines[i] + "]");
+							else
+								linesOutput.Append($"\n{i + 1}:" + lines[i]);
+						}
+						additionalContext = "\nContext:" + linesOutput.ToString();
+					}
+					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load:{additionalContext} ", e);
 				}
 
 				// Parse JSON

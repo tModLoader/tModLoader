@@ -1,44 +1,42 @@
 @echo off
+setlocal enabledelayedexpansion
 
 where git >NUL
-if NOT ["%errorlevel%"]==["0"] (
+if !errorlevel! neq 0 (
 	echo git not found on PATH
     pause
     exit /b %errorlevel%
 )
 
-echo Restoring git submodules
-git submodule update --init --recursive
-if NOT ["%errorlevel%"]==["0"] (
-    pause
-    exit /b %errorlevel%
+set busybox=patches\tModLoader\Terraria\release_extras\LaunchUtils\busybox64.exe
+set submoduleupdatemarker=.git\tml-setup-module-init.touch
+%busybox% [ .git\index -ot %submoduleupdatemarker% ]
+rem a 0 exit code means true, a 1 exit code indicates false, or missing file
+if !errorlevel! neq 0 (
+	echo Restoring git submodules
+	git submodule update --init --recursive
+	if !errorlevel! neq 0 (
+		pause
+		exit /b %errorlevel%
+	)
+	%busybox% touch %submoduleupdatemarker%
 )
 
 where dotnet >NUL
-if NOT ["%errorlevel%"]==["0"] (
+if !errorlevel! neq 0 (
 	echo dotnet not found on PATH. Install .NET Core!
     pause
     exit /b %errorlevel%
 )
 
-If "%1"=="auto" (
-	echo building setupAuto.csproj
-	dotnet build setup/setupAuto.csproj --output "setup/bin/Debug/net6.0-windows"
+endlocal
 
-	if NOT ["%errorlevel%"]==["0"] (
-		pause
-		exit /b %errorlevel%
-	)
+echo building Setup.GUI.csproj
+dotnet build setup/GUI/Setup.GUI.csproj -c Release -p:WarningLevel=0;Platform= -v q
 
-	"setup/bin/Debug/net6.0-windows/setupAuto.exe" %2
-) Else (
-	echo building setup.csproj
-	dotnet build setup/setup.csproj --output "setup/bin/Debug/net6.0-windows"
-
-	if NOT ["%errorlevel%"]==["0"] (
-		pause
-		exit /b %errorlevel%
-	)
-
-	start "" "setup/bin/Debug/net6.0-windows/setup.exe" %*
+if NOT ["%errorlevel%"]==["0"] (
+	pause
+	exit /b %errorlevel%
 )
+
+start "" "setup/GUI/bin/Release/net8.0-windows/setup-gui.exe" %*

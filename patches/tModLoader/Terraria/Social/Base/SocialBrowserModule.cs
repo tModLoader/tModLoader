@@ -148,6 +148,7 @@ public struct QueryParameters
 	public string[] searchModSlugs;
 	public string searchGeneric;
 	public string searchAuthor;
+	public uint days;
 
 	public ModBrowserSortMode sortingParamater;
 	public UpdateFilter updateStatusFilter;
@@ -159,5 +160,6 @@ public struct QueryParameters
 public enum QueryType
 {
 	SearchAll,
-	SearchDirect
+	SearchDirect,
+	SearchUserPublishedOnly
 }

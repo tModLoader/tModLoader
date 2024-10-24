@@ -267,7 +267,7 @@ namespace ExampleMod.Content.Projectiles
 				return false;
 			}
 
-			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+			Texture2D texture = TextureAssets.Projectile[Type].Value;
 			Vector2 centerFloored = Projectile.Center.Floor() + Projectile.velocity * Projectile.scale * 10.5f;
 			Vector2 drawScale = new Vector2(Projectile.scale);
 

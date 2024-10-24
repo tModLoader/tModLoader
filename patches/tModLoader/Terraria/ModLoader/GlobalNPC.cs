@@ -14,7 +14,8 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
+/// This class allows you to modify and use hooks for all NPCs, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 {
@@ -36,7 +37,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Called after SetDefaults for NPCs with a negative <see cref="NPC.netID"/><br/>
 	/// This hook is required because <see cref="NPC.SetDefaultsFromNetId"/> only sets <see cref="NPC.netID"/> after SetDefaults<br/>
-	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but differet netID<br/>
+	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but different netID<br/>
 	/// </summary>
 	public virtual void SetDefaultsFromNetId(NPC npc)
 	{
@@ -239,7 +240,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// <para/> Most item drops should be done via drop rules registered in <see cref="ModifyNPCLoot(NPC, NPCLoot)"/> or <see cref="ModifyGlobalLoot(GlobalLoot)"/>. Some dynamic NPC drops, such as additional hearts, are more suited for OnKill instead. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossMinion.cs#L101">MinionBossMinion.cs</see> shows an example of an NPC that drops additional hearts. See <see cref="NPC.lastInteraction"/> and <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#player-who-killed-npc">Player who killed NPC wiki section</see> as well for determining which players attacked or killed this NPC.
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void OnKill(NPC npc)
@@ -394,6 +396,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to determine whether an NPC can be collided with the player melee weapon when swung. <br/>
 	/// Use <see cref="CanBeHitByItem(NPC, Player, Item)"/> instead for Guide Voodoo Doll-type effects.
 	/// </summary>
+	/// <param name="npc">The NPC being collided with</param>
 	/// <param name="player">The player wielding this item.</param>
 	/// <param name="item">The weapon item the player is holding.</param>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
@@ -656,6 +659,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
 	/// If possible, use <see cref="ModifyShop(NPCShop)"/> instead, to reduce mod conflicts and improve compatibility.
 	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// <para/> Also note that unused slots in <paramref name="items"/> are null while <see cref="Item.IsAir"/> entries are entries that have a reserved slot (<see cref="NPCShop.Entry.SlotReserved"/>) but did not have their conditions met. These should not be overwritten.
 	/// </summary>
 	/// <param name="npc">An instance of <seealso cref="NPC"/> that currently player talks to.</param>
 	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
@@ -861,5 +865,20 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	public virtual int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor)
 	{
 		return null;
+	}
+
+	/// <inheritdoc cref="ModNPC.ChatBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void ChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <inheritdoc cref="ModNPC.PartyHatPosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void PartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <inheritdoc cref="ModNPC.EmoteBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void EmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
 	}
 }

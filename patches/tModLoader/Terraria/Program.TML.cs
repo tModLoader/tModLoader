@@ -144,11 +144,21 @@ public static partial class Program
 			try {
 				var oneDrivePath1 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\OneDrive\\OneDrive.exe");
 				var oneDrivePath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Microsoft OneDrive\\OneDrive.exe");
-				if (File.Exists(oneDrivePath1))
-					System.Diagnostics.Process.Start(oneDrivePath1);
-				else if (File.Exists(oneDrivePath2))
-					System.Diagnostics.Process.Start(oneDrivePath2);
 
+				// passing /background to onedrive starts it with neither a tooltip popup nor a file explorer window
+				System.Diagnostics.ProcessStartInfo oneDriveInfo = new System.Diagnostics.ProcessStartInfo {
+					Arguments = "/background",
+					UseShellExecute = false
+				};
+
+				if (File.Exists(oneDrivePath1)) {
+					oneDriveInfo.FileName = oneDrivePath1;
+					System.Diagnostics.Process.Start(oneDriveInfo);
+				}
+				else if (File.Exists(oneDrivePath2)) {
+					oneDriveInfo.FileName = oneDrivePath2;
+					System.Diagnostics.Process.Start(oneDriveInfo);
+				}
 				Thread.Sleep(3000);
 			}
 			catch { }
@@ -304,6 +314,17 @@ public static partial class Program
 			}
 		}
 
+		if (Platform.IsWindows) {
+			// Fix #4168, for some reason sometimes Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) in PathService.GetStoragePath is returning a path with / and \, causing issues for some interactions. Bad -tmlsavedirectory or -savedirectory arguments could also cause this.
+			string SavePathFixed = SavePath.Replace('/', Path.DirectorySeparatorChar);
+			string SavePathSharedFixed = SavePathShared.Replace('/', Path.DirectorySeparatorChar);
+			if (SavePath != SavePathFixed || SavePathShared != SavePathSharedFixed) {
+				Logging.tML.Warn($"Saves paths had incorrect slashes somehow: \"{SavePath}\"=>\"{SavePathFixed}\", \"{SavePathShared}\"=>\"{SavePathSharedFixed}\"");
+				SavePath = SavePathFixed;
+				SavePathShared = SavePathSharedFixed;
+			}
+		}
+
 		Logging.tML.Info($"Saves Are Located At: {Path.GetFullPath(SavePath)}");
 	}
 
@@ -313,8 +334,14 @@ public static partial class Program
 			ControlledFolderAccessSupport.CheckFileSystemAccess();
 			Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
 
-			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
+			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64) {
+				if (Program.LaunchParameters.ContainsKey("-build"))
+					Console.WriteLine("Warning: Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK appears to be running. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk"); // MessageBoxShow called below will also error when attempting to load 32 bit SDL2.
 				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
+			}
+			if (Platform.Current.Type == PlatformType.OSX && Environment.OSVersion.Version < new Version(10, 15)) {
+				ErrorReporting.FatalExit("tModLoader requires macOS v10.15 (Catalina) or higher to run as of tModLoader v2024.03+. Please update macOS.\nIf updating is not possible, manually downgrading (https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#manual-installation) to tModLoader v2024.02.3.0 (https://github.com/tModLoader/tModLoader/releases/tag/v2024.02.3.0) is an option to keep playing.\nAborting...");
+			}
 
 			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
 

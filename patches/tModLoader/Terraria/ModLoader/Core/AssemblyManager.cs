@@ -405,6 +405,8 @@ public static class AssemblyManager
 				ForceJITOnMethod(method);
 			}
 			catch (Exception e) {
+				if (AssemblyManager.GetAssemblyOwner(method.DeclaringType.Assembly, out string modName))
+					e.Data["mod"] = modName;
 				exceptions.Enqueue((e, method));
 			}
 		}, token).ConfigureAwait(false);
@@ -424,7 +426,10 @@ public static class AssemblyManager
 		}
 
 		message += string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
-		throw new Exceptions.JITException(message);
+		var jitException = new Exceptions.JITException(message);
+		if(exceptions.Any(e => e.exception.Data.Contains("mod")))
+			jitException.Data["mods"] = exceptions.Select(e => (string)e.exception.Data["mod"]).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
+		throw jitException;
 	}
 
 	private static async Task ForEachAsync<T>(IEnumerable<T> elements, Action<T> action, CancellationToken token)

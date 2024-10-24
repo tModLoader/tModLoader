@@ -12,7 +12,7 @@ using Terraria.UI;
 
 namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
-	// ExampleUIs visibility is toggled by typing "/coin" in chat (See CoinCommand.cs)
+	// ExampleUIs visibility is toggled by typing "/coins" in chat (See CoinCommand.cs)
 	// ExampleCoinsUI is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement
 	// For more info about UI you can check https://github.com/tModLoader/tModLoader/wiki/Basic-UI-Element and https://github.com/tModLoader/tModLoader/wiki/Advanced-guide-to-custom-UI 
 	internal class ExampleCoinsUIState : UIState
@@ -99,6 +99,9 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 				Main.instance.LoadItem(74 - j);
 				coinsTextures[j] = TextureAssets.Item[74 - j].Value;
 			}
+
+			// This allows clicks to "pass-through" this element to the parent element and not be consumed by this element. This allows ExampleDraggableUIPanel to be dragged even when the user is clicking on the UIMoneyDisplay.
+			IgnoresMouseInteraction = true;
 		}
 		public void AddCoinsPerMinute(int coins) {
 			collectedCoins += coins;

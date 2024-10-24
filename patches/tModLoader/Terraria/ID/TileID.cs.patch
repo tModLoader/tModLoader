@@ -108,7 +108,7 @@
  		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
  		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
  		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
-@@ -159,14 +_,35 @@
+@@ -159,14 +_,39 @@
  		public static bool[] DrawsWalls = Factory.CreateBoolSet(10, 54, 138, 664, 484, 388, 191, 137, 328, 162, 387, 48, 232, 127, 459, 541, 546);
  		public static ushort[] GemsparkFramingTypes = Factory.CreateUshortSet(0, 265, 265, 258, 258, 264, 264, 257, 257, 267, 267, 260, 260, 266, 266, 259, 259, 263, 263, 256, 256, 262, 262, 255, 255, 268, 268, 261, 261, 385, 385, 446, 446, 447, 447, 448, 448);
  		public static bool[] TeamTiles = Factory.CreateBoolSet(426, 430, 431, 432, 433, 434, 427, 435, 436, 437, 438, 439);
@@ -131,6 +131,9 @@
 +		/// </summary>
  		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
  		public static bool[] HasSlopeFrames = Factory.CreateBoolSet(421, 422);
++		/// <summary>
++		/// Changes the gamepad button prompt when hovering over this tile from "Use" to "Read". Set by all <see cref="Main.tileSign"/> tiles. Defaults to false.
++		/// </summary>
  		public static bool[] TileInteractRead = Factory.CreateBoolSet(55, 85, 425, 573);
 +		/// <summary>
 +		/// Set to true to prevent this tile from being drawn slightly warped to fit with nearby half bricks. Tiles such as <see cref="Traps"/> and <see cref="PlanterBox"/> use this. This is only relevant for tiles set as <see cref="Main.tileSolid"/> and not <see cref="Sets.NotReallySolid"/>. 
@@ -140,13 +143,34 @@
  		public static int[] DrawFlipMode = Factory.CreateIntSet(0, 3, 1, 13, 1, 20, 1, 24, 1, 49, 1, 372, 1, 646, 1, 50, 1, 52, 1, 61, 1, 62, 1, 71, 1, 73, 1, 74, 1, 81, 1, 82, 1, 83, 1, 84, 1, 91, 1, 92, 1, 93, 1, 110, 1, 113, 1, 115, 1, 135, 1, 141, 1, 165, 1, 174, 1, 201, 1, 205, 1, 227, 1, 270, 1, 271, 1, 382, 1, 184, 2, 185, 3, 528, 1, 529, 1, 590, 1, 595, 1, 615, 1, 624, 1, 638, 1, 636, 1, 656, 1);
 +		/// <summary>
 +		/// Indicates that this tile has an outline texture to be drawn to indicate that it is interactable. If set to true for a modded tile, <see cref="ModTile.HighlightTexture"/> will be used to autoload the highlight texture and must exist for the mod to load.
++		/// <para/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -238,21 +_,56 @@
+@@ -181,6 +_,14 @@
+ 		public static bool[] HellSpecial = Factory.CreateBoolSet(58, 76, 75);
+ 		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
+ 		public static bool[] tileMossBrick = Factory.CreateBoolSet(false, 512, 513, 514, 515, 516, 517, 535, 537, 540, 626, 628);
++		/// <summary>
++		/// Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be valid for general placement will prevent the placement of various micro biomes such as hives, campsites, enchanted sword shrines, and minecart tracks.
++		/// <para/> Vanilla tiles set to false in this set include Chests, Life Crystals, various Dungeon Bricks, Lihzahrd Bricks, Ebonsand, Ebonstone, Crimstone, Shadow Orbs, Hive, Mushroom Grass, Sandstone Brick, and others. The effect of these tiles being in this set means that micro biomes will not overlap with the dungeon, pyramid, temple, corruption/crimson biomes, glowing mushroom biomes, and other important placed tiles such as chests and life crystals.
++		/// <para/> Modders should set this to false for any tile that could potentially be placed during world generation where this effect is desired. In conjunction with <see cref="WorldBuilding.StructureMap.AddProtectedStructure(Microsoft.Xna.Framework.Rectangle, int)"/>, this will help ensure that interesting world generation features do not overlap. This is especially useful for terrain tiles that would be placed into the world that wouldn't be well served by adding rectangular areas to protect using <c>AddProtectedStructure</c>.
++		/// <para/> This effect is cooperative and is reliant on world generation code that checks this set, such as how <see cref="WorldBuilding.StructureMap.CanPlace(Microsoft.Xna.Framework.Rectangle, int)"/> will check this set and the protected structures by default.
++		/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation">World Generation wiki page</see> teaches more about this subject.
++		/// <para/> Defaults to <c>true</c>.
++		/// </summary>
+ 		public static bool[] GeneralPlacementTiles = Factory.CreateBoolSet(true, 225, 41, 481, 43, 482, 44, 483, 226, 203, 112, 25, 70, 151, 21, 31, 467, 12, 665, 639);
+ 		public static bool[] BasicChest = Factory.CreateBoolSet(21, 467);
+ 		public static bool[] BasicChestFake = Factory.CreateBoolSet(441, 468);
+@@ -237,22 +_,61 @@
+ 		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
++		/// <summary>
++		/// Causes tile framing to run for this tile when a nearby wall is killed. Most tiles are not affected by walls, but some tiles can anchor to walls in some or all of its placement styles. Any tile that anchors to walls should set this to true, allowing the tile to properly destroy itself if the anchored walls are destroyed. Some tiles that set this include <see cref="TileID.Painting3X3"/>, <see cref="TileID.Signs"/>, and <see cref="TileID.Torches"/>.
++		/// <para/> Defaults to false.
++		/// </summary>
  		public static bool[] FramesOnKillWall = Factory.CreateBoolSet(440, 240, 241, 242, 245, 246, 4, 136, 334, 132, 55, 395, 425, 440, 471, 510, 511, 573, 630, 631);
 +		/// <summary>
 +		/// If true, Town NPCs will try to avoid standing still in front of the tile, allowing the player to interact with the tile rather than accidentally interacting with the Town NPC. Some tiles that set this include <see cref="TileID.Containers"/>, <see cref="TileID.Signs"/>, and <see cref="TileID.Tombstones"/>.
@@ -201,3 +225,10 @@
  		public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 441, 468);
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
+@@ -954,5 +_,6 @@
+ 	public const ushort VioletMossBlock = 691;
+ 	public const ushort RainbowMossBlock = 692;
+ 	public static readonly ushort Count = 693;
++	/// <inheritdoc cref="IdDictionary"/>
+ 	public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();
+ }

@@ -59,8 +59,15 @@ public static class ItemIO
 
 
 		if (PrefixLoader.GetPrefix(item.prefix) is ModPrefix modPrefix) {
-			tag.Set("modPrefixMod", modPrefix.Mod.Name);
-			tag.Set("modPrefixName", modPrefix.Name);
+			if (modPrefix is UnloadedPrefix) {
+				UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
+				tag.Set("modPrefixMod", unloadedGlobalItem.ModPrefixMod);
+				tag.Set("modPrefixName", unloadedGlobalItem.ModPrefixName);
+			}
+			else {
+				tag.Set("modPrefixMod", modPrefix.Mod.Name);
+				tag.Set("modPrefixName", modPrefix.Name);
+			}
 		}
 		else if (item.prefix != 0 && item.prefix < PrefixID.Count) {
 			tag.Set("prefix", (byte)item.prefix);
@@ -99,18 +106,33 @@ public static class ItemIO
 			}
 		}
 
-		if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
-			item.Prefix(ModContent.TryFind(tag.GetString("modPrefixMod"), tag.GetString("modPrefixName"), out ModPrefix prefix) ? prefix.Type : 0);
-		}
-		else if (tag.ContainsKey("prefix")) {
-			item.Prefix(tag.GetByte("prefix"));
-		}
+		LoadModdedPrefix(item, tag);
 
 		item.stack = tag.Get<int?>("stack") ?? 1;
 		item.favorited = tag.GetBool("fav");
 
 		if (item.ModItem is not UnloadedItem)
 			LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
+	}
+
+	internal static void LoadModdedPrefix(Item item, TagCompound tag)
+	{
+		if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
+			string modPrefixMod = tag.GetString("modPrefixMod");
+			string modPrefixName = tag.GetString("modPrefixName");
+			if (ModContent.TryFind(modPrefixMod, modPrefixName, out ModPrefix prefix)) {
+				item.Prefix(prefix.Type);
+			}
+			else {
+				item.Prefix(ModContent.PrefixType<UnloadedPrefix>());
+				UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
+				unloadedGlobalItem.ModPrefixMod = modPrefixMod;
+				unloadedGlobalItem.ModPrefixName = modPrefixName;
+			}
+		}
+		else if (tag.ContainsKey("prefix")) {
+			item.Prefix(tag.GetByte("prefix"));
+		}
 	}
 
 	public static Item Load(TagCompound tag)
@@ -185,7 +207,7 @@ public static class ItemIO
 	public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 	{
 		item.netDefaults(reader.Read7BitEncodedInt());
-		item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt());
+		item.Prefix(reader.Read7BitEncodedInt());
 
 		if (readStack)
 			item.stack = reader.Read7BitEncodedInt();

@@ -50,9 +50,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(254, 121, 2), Language.GetText("ItemName.Campfire"));
 
 			// Assets
-			if (!Main.dedServ) {
-				flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
-			}
+			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
 		}
 
 		public override void NearbyEffects(int i, int j, bool closer) {
@@ -111,6 +109,7 @@ namespace ExampleMod.Content.Tiles
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
 			if (++frameCounter >= 4) {
 				frameCounter = 0;
+				// We animate through the 1st 8 frames. The 9th frame is manually drawn if in the "off" state so it is not included in the animation logic here.
 				frame = ++frame % 8;
 			}
 		}
@@ -120,6 +119,8 @@ namespace ExampleMod.Content.Tiles
 				frameYOffset = Main.tileFrame[type] * 36;
 			}
 			else {
+				// When in the "off" state, TileFrameY of the top tile is 36.
+				// Since we want to draw the 9th animation frame when "off", we need to offset the TileFrameY value by 252. (Because 8 * 36 == 288 and 36 + 252 == 288)
 				frameYOffset = 252;
 			}
 		}

@@ -12,7 +12,8 @@ using Terraria.ModLoader.Core;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
+/// This class allows you to modify and use hooks for all items, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 {
@@ -34,6 +35,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
+	/// <summary>
+	/// Called when the <paramref name="item"/> is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
+	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft the <paramref name="item"/>.
+	/// </summary>
 	public virtual void OnCreated(Item item, ItemCreationContext context)
 	{
 	}
@@ -690,8 +695,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Allows you to determine special visual effects a vanity has on the player without having to code them yourself.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
+	/// </summary>
 	public virtual void ArmorSetShadows(Player player, string set)
 	{
 	}
@@ -934,7 +939,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind an item, or to modify the way an item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
+	/// <inheritdoc cref="ModItem.PreDrawInWorld(SpriteBatch, Color, Color, ref float, ref float, int)"/>
 	/// </summary>
 	public virtual bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
@@ -942,14 +947,14 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of an item. This method is called even if PreDrawInWorld returns false.
+	/// <inheritdoc cref="ModItem.PostDrawInWorld(SpriteBatch, Color, Color, float, float, int)"/>
 	/// </summary>
 	public virtual void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind an item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
+	/// <inheritdoc cref="ModItem.PreDrawInInventory(SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float)"/>
 	/// </summary>
 	public virtual bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 		Color drawColor, Color itemColor, Vector2 origin, float scale)
@@ -958,7 +963,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of an item in the inventory. This method is called even if PreDrawInInventory returns false.
+	/// <inheritdoc cref="ModItem.PostDrawInInventory(SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float)"/>
 	/// </summary>
 	public virtual void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 		Color drawColor, Color itemColor, Vector2 origin, float scale)
@@ -971,8 +976,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Return null to use the item's default holdout offset; returns null by default.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>return new Vector2(10, 0);</code></example>
+	/// </summary>
 	public virtual Vector2? HoldoutOffset(int type)
 	{
 		return null;
@@ -1012,13 +1017,12 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator.
-	/// <br/> An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info.
-	/// <br/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
-	/// <br/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
-	/// <br/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in ExampleAdvancedFlail.cs.
-	/// <br/> 
-	/// <br/> This method is not instanced.
+	/// Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. Use <see cref="ItemID.Sets.ExtractinatorMode"/> to allow an item to be fed into the Extractinator.
+	/// <para/> An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info.
+	/// <para/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
+	/// <para/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
+	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see>.
+	/// <para/> This method is not instanced.
 	/// </summary>
 	/// <param name="extractType">The extractinator type corresponding to the items being processed</param>
 	/// <param name="extractinatorBlockType">Which Extractinator tile is being used, <see cref="TileID.Extractinator"/> or <see cref="TileID.ChlorophyteExtractinator"/>.</param>
