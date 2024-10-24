@@ -163,7 +163,7 @@ partial class TileID
 
 		/// <summary>
 		/// A version of <see cref="TileID.Sets.SwaysInWindBasic"/> that functions with multi-tiles. Causes the tile to sway along with the wind & player-interaction.
-		/// <b>NOTE:</b> Requires calling <see cref="TileDrawing.AddSpecialPoint"/> in <see cref="ModTile.DrawEffects"/>, at the top left of the multi-tile, with either
+		/// <b>NOTE:</b> Requires calling <see cref="TileDrawing.AddSpecialPoint"/> in <see cref="ModTile.PreDraw"/>, at the top left of the multi-tile, with either
 		/// <see cref="TileDrawing.TileCounterType.MultiTileVine"/> or <see cref="TileDrawing.TileCounterType.MultiTileGrass"/>, depending on what kind of sway-interaction you want.
 		/// </summary>
 		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
