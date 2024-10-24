@@ -36,7 +36,7 @@ internal class UIModSourceItem : UIPanel
 	private Task<string[]> langFileTask;
 	private Task<bool> sourceUpgradeTask;
 	private CancellationToken _modSourcesToken;
-	
+
 	public UIModSourceItem(string mod, LocalMod builtMod, CancellationToken modSourcesToken)
 	{
 		_mod = mod;
@@ -420,7 +420,7 @@ internal class UIModSourceItem : UIPanel
 			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
 			string args = $"\"{csprojFile}\"";
-			var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+			var tMLPath = Path.GetFileName(Program.tMLAssemblyLocation);
 			var porterPath = Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
 
 			var porterInfo = new ProcessStartInfo() {
