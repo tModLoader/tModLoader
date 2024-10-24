@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,13 +_,14 @@
+@@ -11,15 +_,16 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -14,8 +14,20 @@
 -public class TileDrawing
 +public partial class TileDrawing
  {
- 	private enum TileCounterType
+-	private enum TileCounterType
++	public enum TileCounterType
  	{
+ 		Tree,
+ 		DisplayDoll,
+@@ -114,7 +_,7 @@
+ 
+ 	private Gore[] _gore => Main.gore;
+ 
+-	private void AddSpecialPoint(int x, int y, TileCounterType type)
++	public void AddSpecialPoint(int x, int y, TileCounterType type)
+ 	{
+ 		_specialPositions[(int)type][_specialsCount[(int)type]++] = new Point(x, y);
+ 	}
 @@ -151,11 +_,11 @@
  				if (tile == null)
  					continue;
@@ -644,6 +656,37 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
+@@ -6662,6 +_,15 @@
+ 						num4 = ClimbCatTail(x, num3);
+ 						num3 -= num4 - 1;
+ 						break;
++					default:
++						// TML: num4 = sizeY (height of multi-tile)
++						if (TileID.Sets.MultiTileSway[tile.TileType]) {
++							TileObjectData objectData = TileObjectData.GetTileData(tile);
++							sizeX = objectData.Width;
++							num4 = objectData.Height;
++						}
++
++						break;
+ 				}
+ 
+ 				DrawMultiTileGrassInWind(unscaledPosition, zero, x, num3, sizeX, num4);
+@@ -6738,6 +_,14 @@
+ 						sizeX = 2;
+ 						sizeY = 3;
+ 						break;
++					default:
++						if (TileID.Sets.MultiTileSway[tile.TileType]) {
++							TileObjectData tileObjectData = TileObjectData.GetTileData(tile);
++							sizeX = tileObjectData.Width;
++							sizeY = tileObjectData.Height;
++						}
++
++						break;
+ 				}
+ 
+ 				DrawMultiTileVinesInWind(unscaledPosition, zero, x, y, sizeX, sizeY);
 @@ -6903,7 +_,7 @@
  			float num6 = (float)num2 * num3 * windCycle + num4;
  			if (_localPlayer.biomeSight) {
@@ -653,3 +696,23 @@
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  
+@@ -7041,7 +_,19 @@
+ 		Vector2 vector2 = new Vector2(0f, -2f);
+ 		vector += vector2;
+ 		bool flag = false;
++		bool isBelowNonHammeredPlatform = true;
++		for (int i = 0; i < sizeX; i++) {
++			if (WorldGen.IsBelowANonHammeredPlatform(topLeftX + i, topLeftY)) {
++				continue;
++			}
++
++			isBelowNonHammeredPlatform = false;
++			break;
++		}
++		/*
+ 		if ((type != 465 && (uint)(type - 591) > 1u) ? (sizeX == 1 && WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY)) : (WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY) && WorldGen.IsBelowANonHammeredPlatform(topLeftX + 1, topLeftY))) {
++		*/
++		if (isBelowNonHammeredPlatform) {
+ 			vector.Y -= 8f;
+ 			vector2.Y -= 8f;
+ 		}

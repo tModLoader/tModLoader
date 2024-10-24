@@ -1,3 +1,6 @@
+using Terraria.GameContent.Drawing;
+using Terraria.ModLoader;
+
 namespace Terraria.ID;
 
 partial class TileID
@@ -157,6 +160,13 @@ partial class TileID
 		/// The ID of the tile that a given open door transforms into when it becomes CLOSED. Defaults to -1, which means said tile isn't an open door.
 		/// </summary>
 		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
+
+		/// <summary>
+		/// A version of <see cref="TileID.Sets.SwaysInWindBasic"/> that functions with multi-tiles. Causes the tile to sway along with the wind & player-interaction.
+		/// <b>NOTE:</b> Requires calling <see cref="TileDrawing.AddSpecialPoint"/> in <see cref="ModTile.PreDraw"/>, at the top left of the multi-tile, with either
+		/// <see cref="TileDrawing.TileCounterType.MultiTileVine"/> or <see cref="TileDrawing.TileCounterType.MultiTileGrass"/>, depending on what kind of sway-interaction you want.
+		/// </summary>
+		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
 
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)

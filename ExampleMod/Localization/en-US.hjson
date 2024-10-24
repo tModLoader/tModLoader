@@ -567,6 +567,11 @@ Mods: {
 				DisplayName: Example Toilet
 				Tooltip: This is a modded toilet.
 			}
+			
+			ExampleWideBanner: {
+		        DisplayName: Example Wide Banner
+		        Tooltip: This banner is wider than all the others!	
+			}
 
 			ExampleWorkbench: {
 				DisplayName: Example Work Bench
