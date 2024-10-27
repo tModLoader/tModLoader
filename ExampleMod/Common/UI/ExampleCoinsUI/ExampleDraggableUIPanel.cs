@@ -21,14 +21,18 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			// When you override UIElement methods, don't forget call the base method
 			// This helps to keep the basic behavior of the UIElement
 			base.LeftMouseDown(evt);
-			// When the mouse button is down, then we start dragging
-			DragStart(evt);
+			// When the mouse button is down on this element, then we start dragging
+			if (evt.Target == this) {
+				DragStart(evt);
+			}
 		}
 
 		public override void LeftMouseUp(UIMouseEvent evt) {
 			base.LeftMouseUp(evt);
 			// When the mouse button is up, then we stop dragging
-			DragEnd(evt);
+			if (evt.Target == this) {
+				DragEnd(evt);
+			}
 		}
 
 		private void DragStart(UIMouseEvent evt) {

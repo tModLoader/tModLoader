@@ -27,4 +27,7 @@
 		<para/> Lighting is tracked at Tile Coordinate granularity (<see href="https://github.com/tModLoader/tModLoader/wiki/Coordinates">Coordinates wiki page</see>). Typically the center of an entity, converted to tile coordinates, is used to query the lighting color at the entity's location. That color is then used to draw the entity.
 		<para/> Lighting values in-between tile coordinates can be interpolated using <see cref="GetSubLight(Vector2)"/>, but usually the lighting values at the tile coordinates closest to the center of an entity are sufficient. There are many more GetColorX methods for more advanced situations, if needed. If drawing a really large sprite, one might consider splitting up the drawing to allow sections of the sprite to be drawn at different light values.
 	</LightingGetColor>
+	<CardinalDirections>
+		<para/> The index values are as follows: <br/> 0: Down <br/> 1: Up <br/> 2: Right <br/> 3: Left
+	</CardinalDirections>
 </Common>

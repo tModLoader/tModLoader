@@ -684,3 +684,11 @@
  	}
  
  	private static readonly int[] NetIdMap = new int[65] {
+@@ -11271,6 +_,7 @@
+ 	public const short BoundTownSlimePurple = 686;
+ 	public const short BoundTownSlimeYellow = 687;
+ 	public static readonly short Count = 688;
++	/// <inheritdoc cref="IdDictionary"/>
+ 	public static readonly IdDictionary Search = IdDictionary.Create<NPCID, short>();
+ 
+ 	public static int FromLegacyName(string name)

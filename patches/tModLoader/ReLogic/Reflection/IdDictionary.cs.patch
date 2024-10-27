@@ -1,5 +1,27 @@
 --- src/TerrariaNetCore/ReLogic/Reflection/IdDictionary.cs
 +++ src/tModLoader/ReLogic/Reflection/IdDictionary.cs
+@@ -5,6 +_,11 @@
+ 
+ namespace ReLogic.Reflection;
+ 
++/// <summary>
++/// Maps the ID numbers of content to their internal names. Internal names are used for data that needs to persist between gameplay sessions since ID numbers are not consistent between gameplay sessions. Modders will typically use the ItemDefinition or similar classes to work with persistent content identification, but using IdDictionary directly is also sometimes useful.
++/// <para/> For example <c>string name = ItemID.Search.GetName(item.netID);</c> can be used to get the internal name of an item type while <c>int npcId = NPCID.Search.GetId(name)</c> could be used to get the ID value of an NPC from an internal name string.
++/// <para/> Vanilla ID names are defined in their corresponding ID class in the Terraria.ID namespace, such as ItemID or ProjectileID. Modded ID names are ModType.FullName, meaning they are in the form of "ModName/Name". (for example "ExampleMod/ExampleItem")
++/// </summary>
+ public class IdDictionary
+ {
+ 	private readonly Dictionary<string, int> _nameToId = new Dictionary<string, int>();
+@@ -23,6 +_,9 @@
+ 	public bool ContainsName(string name) => _nameToId.ContainsKey(name);
+ 	public bool ContainsId(int id) => _idToName.ContainsKey(id);
+ 	public string GetName(int id) => _idToName[id];
++	/// <summary> Gets the ID value of content with the provided internal name. Remember that vanilla internal names are the field names in the corresponding ID class and modded internal names are <c>ModType.FullName</c>, which are in the form of "ModName/Name". </summary>
++	/// <param name="name"></param>
++	/// <returns></returns>
+ 	public int GetId(string name) => _nameToId[name];
+ 
+ 	public void Add(string name, int id)
 @@ -56,6 +_,7 @@
  		IdDictionary dictionary = new IdDictionary(num);
  		(from f in idClass.GetFields(BindingFlags.Static | BindingFlags.Public)

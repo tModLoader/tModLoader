@@ -23,7 +23,11 @@ Mods: {
 
 		Currencies.ExampleCustomCurrency: example items
 		DamageClasses.ExampleDamageClass.DisplayName: example damage
-		Keybinds.RandomBuff.DisplayName: Random Buff
+
+		Keybinds: {
+			RandomBuff.DisplayName: Random Buff
+			LearningExample.DisplayName: Learning Example
+		}
 
 		NPCs: {
 			ExampleCustomAISlimeNPC.DisplayName: Flutter Slime
@@ -273,7 +277,11 @@ Mods: {
 			ExampleHood: {
 				DisplayName: Example Hood
 				Tooltip: This is a modded hood.
-				SetBonus: "{$CommonItemTooltip.PercentReducedManaCost}"
+				SetBonus:
+					'''
+					Double tap or hold {0} to toggle various armor shadow effects
+					{$CommonItemTooltip.PercentReducedManaCost@1}
+					'''
 			}
 
 			ExampleLeggings: {
@@ -560,6 +568,11 @@ Mods: {
 				Tooltip: This is a modded toilet.
 			}
 
+			ExampleWideBanner: {
+				DisplayName: Example Wide Banner
+				Tooltip: This banner is wider than all the others!
+			}
+
 			ExampleWorkbench: {
 				DisplayName: Example Work Bench
 				Tooltip: This is a modded workbench.
@@ -709,6 +722,11 @@ Mods: {
 			ExampleSword: {
 				DisplayName: Example Sword
 				Tooltip: This is a modded sword.
+			}
+
+			ExampleMultiplePrefixCategoryWeapon: {
+				DisplayName: Example Multiple Prefix Category Weapon
+				Tooltip: This can receive and keep both melee and magic prefixes
 			}
 
 			ExampleWhip: {
@@ -996,6 +1014,11 @@ Mods: {
 				DisplayName: Example Custom Framing Tile Item
 				Tooltip: ""
 			}
+
+			CustomItemDrawingShowcase: {
+				DisplayName: Custom Item Drawing Showcase
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1232,6 +1255,11 @@ Mods: {
 		UI: {
 			ExampleResource: Example Resource: {0} / {1}
 			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+
+			ExampleFullscreenUI: {
+				Header: Example Fullscreen UI
+				Description: This is an example fullscreen UI, notice how other UI is hidden.
+			}
 		}
 
 		WorldGen: {
@@ -1262,6 +1290,7 @@ Mods: {
 		}
 
 		NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
+		Commands.ShowFullscreenUICommand.Description: Show the example fullscreen UI
 	}
 }
 

@@ -58,6 +58,10 @@ public partial class Mod
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
+	/// Whether or not this mod will automatically add images in the "Clouds" folder as clouds to the game. This means you do not need to manually call <see cref="CloudLoader.AddCloudFromTexture(Mod, string, float, bool)"/> or make a <see cref="ModCloud"/> class to add them to the game, but they will have the default spawn chance and be counted as normal clouds if autoloaded in this manner. Defaults to true.
+	/// </summary>
+	public bool CloudAutoloadingEnabled { get; init; } = true;
+	/// <summary>
 	/// Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
@@ -85,7 +89,8 @@ public partial class Mod
 	/// <summary>
 	/// Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the <see cref="AssetRepository.Request{T}(string)"/> method to retrieve an Asset&lt;T&gt; instance:
 	/// <code>Asset&lt;Texture2D&gt; balloonTexture = Mod.Assets.Request&lt;Texture2D&gt;("Content/Items/Armor/SimpleAccessory_Balloon");</code>
-	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required. 
+	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required.
+	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Assets">Assets guide on the wiki</see> for more information.
 	/// </summary>
 	public AssetRepository Assets { get; private set; }
 

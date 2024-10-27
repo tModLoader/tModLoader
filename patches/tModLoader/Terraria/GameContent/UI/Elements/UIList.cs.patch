@@ -23,6 +23,28 @@
  	private float _innerListHeight;
  	public float ListPadding = 5f;
  	public Action<List<UIElement>> ManualSortMethod;
+@@ -60,6 +_,21 @@
+ 		}
+ 	}
+ 
++	public void Goto(ElementSearchMethod searchMethod, bool center = false)
++	{
++		var innerDimensionHeight = GetInnerDimensions().Height;
++		for (int i = 0; i < this._items.Count; i++) {
++			var item = this._items[i];
++			if (searchMethod(item)) {
++				this._scrollbar.ViewPosition = item.Top.Pixels;
++				if (center) {
++					this._scrollbar.ViewPosition = item.Top.Pixels - innerDimensionHeight / 2 + item.GetOuterDimensions().Height / 2;
++				}
++				return;
++			}
++		}
++	}
++
+ 	public virtual void Add(UIElement item)
+ 	{
+ 		_items.Add(item);
 @@ -71,6 +_,7 @@
  	public virtual bool Remove(UIElement item)
  	{
