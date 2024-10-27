@@ -411,7 +411,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
+	/// Special Draw. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

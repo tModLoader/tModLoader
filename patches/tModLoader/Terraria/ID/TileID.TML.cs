@@ -162,9 +162,9 @@ partial class TileID
 		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
 
 		/// <summary>
-		/// A version of <see cref="TileID.Sets.SwaysInWindBasic"/> that functions with multi-tiles. Causes the tile to sway along with the wind & player-interaction.
-		/// <b>NOTE:</b> Requires calling <see cref="TileDrawing.AddSpecialPoint"/> in <see cref="ModTile.PreDraw"/>, at the top left of the multi-tile, with either
-		/// <see cref="TileDrawing.TileCounterType.MultiTileVine"/> or <see cref="TileDrawing.TileCounterType.MultiTileGrass"/>, depending on what kind of sway-interaction you want.
+		/// A version of <see cref="TileID.Sets.SwaysInWindBasic"/> that functions with multitiles. Causes the tile to sway along with the wind and player interaction.
+		/// <para/> <b>NOTE:</b> Requires calling <see cref="TileDrawing.AddSpecialPoint"/> in <c>ModTile.PreDraw</c> for the coordinates of the top left tile of the multitile. Use either
+		/// <see cref="TileDrawing.TileCounterType.MultiTileVine"/> or <see cref="TileDrawing.TileCounterType.MultiTileGrass"/>, depending on what kind of sway interaction you want.
 		/// </summary>
 		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
 
