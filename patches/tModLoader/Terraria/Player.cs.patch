@@ -5370,7 +5370,7 @@
  		bool flag = !immune;
  		bool flag2 = false;
  		int hitContext = cooldownCounter;
-@@ -29530,7 +_,34 @@
+@@ -29530,7 +_,36 @@
  		}
  
  		if (flag) {
@@ -5398,6 +5398,8 @@
 +
 +			ApplyVanillaHurtEffectModifiers(ref modifiers);
 +			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
++			if (info.Cancelled)
++				return 0.0;
 +
 +			if (info.Dodgeable) {
 +				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, info))
