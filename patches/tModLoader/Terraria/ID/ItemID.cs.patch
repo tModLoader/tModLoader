@@ -406,7 +406,7 @@
  		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
  			new Color(164, 16, 47),
  			new Color(246, 34, 79),
-@@ -939,44 +_,272 @@
+@@ -939,44 +_,273 @@
  			new Color(142, 96, 60)
  		});
  		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
@@ -423,8 +423,9 @@
  		public static int DefaultKillsForBannerNeeded = 50;
 +
 +		/// <summary>
-+		/// Determines the number of NPC kills required to obtain the given item type (<see cref="Item.type"/>).
-+		/// <br/> Defaults to <c><see cref="DefaultKillsForBannerNeeded"/></c>.
++		/// Determines the number of NPC of the corresponding BannerID that are required to be killed to obtain the given banner item type (<see cref="Item.type"/>). 
++		/// <br/> Defaults to <c><see cref="DefaultKillsForBannerNeeded"/> (50)</c>.
++		/// <para/> This is also used to determine how many kills are needed to fully unlock the Bestiary entry for each NPC type using the corresponding BannerID, although Bestiary kill counts are tracked individually for each NPC type instead of sharing a kill count with all other NPC types using the same BannerID as they do for banner dropping purposes.
 +		/// </summary>
  		public static int[] KillsToBanner = Factory.CreateIntSet(DefaultKillsForBannerNeeded, 3838, 1000, 3845, 200, 3837, 500, 3844, 200, 3843, 50, 3839, 150, 3840, 100, 3842, 200, 3841, 100, 3846, 50, 2971, 150, 2982, 150, 2931, 100, 2961, 100, 2994, 100, 2985, 10, 4541, 10, 2969, 10, 2986, 10, 2915, 10, 4602, 10, 4542, 25, 4543, 25, 4546, 25, 4545, 25, 2901, 25, 2902, 25, 1631, 25, 2913, 25, 4688, 25, 3390, 25, 4973, 25, 4974, 25, 4975, 25, 2934, 25, 1670, 25, 1694, 25, 2958, 25, 2960, 25, 3441, 25, 3780, 25, 3397, 25, 3403, 25);
 +

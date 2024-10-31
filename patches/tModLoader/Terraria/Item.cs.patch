@@ -1210,7 +1210,7 @@
  	public static int NPCtoBanner(int i)
  	{
  		switch (i) {
-@@ -1771,15 +_,24 @@
+@@ -1771,15 +_,25 @@
  				return 286;
  			case 176:
  				return 287;
@@ -1228,7 +1228,8 @@
  	}
  
 +	/// <summary>
-+	/// Converts a banner ID into the equivalent NPC type (<see cref="NPC.type"/>).
++	/// Converts a BannerID into the equivalent NPC type (<see cref="NPC.type"/>). Used to determine a single NPC type from a BannerID for display purposes.
++	/// Note that modded BannerIDs are the same number as their NPC type, and those BannerIDs might not actually be used.
 +	/// </summary>
 +	/// <param name="i">The banner ID to convert.</param>
 +	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
