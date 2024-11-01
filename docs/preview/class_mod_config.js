@@ -6,6 +6,7 @@ var class_mod_config =
     [ "NeedsReload", "class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9", null ],
     [ "OnChanged", "class_mod_config.html#a14b46492af2b15784eb3c83c44fe3e07", null ],
     [ "OnLoaded", "class_mod_config.html#af02ded51ef3c98534476412ea117d179", null ],
+    [ "Open", "class_mod_config.html#acfe877364ca5914f2928cdcfa736f344", null ],
     [ "FullName", "class_mod_config.html#a1a090288f1b691fde4c430d011bbbb50", null ],
     [ "LocalizationCategory", "class_mod_config.html#abb47b31c01d813435964e1cd9763a563", null ],
     [ "Mod", "class_mod_config.html#a9f7c968276ef6b016e02104f4bff5d89", null ],

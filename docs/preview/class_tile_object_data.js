@@ -12,6 +12,8 @@ var class_tile_object_data =
     [ "GetTileData", "class_tile_object_data.html#a727db4e8b5b37945f564933c625eb9ec", null ],
     [ "GetTileInfo", "class_tile_object_data.html#a5e0af20cb560f52935caa4a1284e80b1", null ],
     [ "GetTileStyle", "class_tile_object_data.html#aa00109a7846b843f13b42570b4ed0099", null ],
+    [ "IsTopLeft", "class_tile_object_data.html#a4205896800b8eb9044efb847edfcf0b3", null ],
+    [ "IsTopLeft", "class_tile_object_data.html#aa6efdaa1022b066032eeaf3eb2a20280", null ],
     [ "isValidAlternateAnchor", "class_tile_object_data.html#a7737c2ce84bf08c72a4b07cc536d6ae7", null ],
     [ "isValidTileAnchor", "class_tile_object_data.html#a27d0c26c0b1d347634d755d127a5ef17", null ],
     [ "newAlternate", "class_tile_object_data.html#a0c8131a8a6a41b30a6e9ef95e5f043eb", null ],

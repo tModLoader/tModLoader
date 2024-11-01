@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -292,7 +292,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTile
 <tr class="memdesc:a113507fa8b1b232508dc73929010d707 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control how hammers slope this tile. Return true to allow it to slope normally. Returns true by default. Called on the local Client and Single <a class="el" href="class_player.html">Player</a>.  <a href="class_mod_tile.html#a113507fa8b1b232508dc73929010d707">More...</a><br /></td></tr>
 <tr class="separator:a113507fa8b1b232508dc73929010d707 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b13471950886bada007ff785e116a4a inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a1b13471950886bada007ff785e116a4a">SpecialDraw</a> (int i, int j, SpriteBatch spriteBatch)</td></tr>
-<tr class="memdesc:a1b13471950886bada007ff785e116a4a inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.  <a href="class_mod_tile.html#a1b13471950886bada007ff785e116a4a">More...</a><br /></td></tr>
+<tr class="memdesc:a1b13471950886bada007ff785e116a4a inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special Draw. Only called if coordinates are added using <code>Main.instance.TilesRenderer.AddSpecialLegacyPoint</code> during <a class="el" href="class_mod_pylon.html#ab4ea8a40b519ddfe81df56f37b612be3" title="Allows you to make stuff happen whenever the tile at the given coordinates is drawn....">DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)</a>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.  <a href="class_mod_tile.html#a1b13471950886bada007ff785e116a4a">More...</a><br /></td></tr>
 <tr class="separator:a1b13471950886bada007ff785e116a4a inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd686051c24fca9c56e95a8d59cc641 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a8cd686051c24fca9c56e95a8d59cc641">TileFrame</a> (int i, int j, ref bool resetFrame, ref bool noBreak)</td></tr>
 <tr class="memdesc:a8cd686051c24fca9c56e95a8d59cc641 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever this tile updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default.  <a href="class_mod_tile.html#a8cd686051c24fca9c56e95a8d59cc641">More...</a><br /></td></tr>

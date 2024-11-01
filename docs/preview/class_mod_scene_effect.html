@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -109,6 +109,9 @@ virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>GetWeight</b
 <tr class="memitem:a94bfe0b5f4c7cb15a197643bff874208"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_scene_effect.html#a94bfe0b5f4c7cb15a197643bff874208">IsSceneEffectActive</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a94bfe0b5f4c7cb15a197643bff874208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true to make the SceneEffect apply its effects (as long as its priority and weight allow that).  <a href="class_mod_scene_effect.html#a94bfe0b5f4c7cb15a197643bff874208">More...</a><br /></td></tr>
 <tr class="separator:a94bfe0b5f4c7cb15a197643bff874208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae12b15a403f5053fddfa1b36986e524f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_scene_effect.html#ae12b15a403f5053fddfa1b36986e524f">MapBackgroundColor</a> (ref Color color)</td></tr>
+<tr class="memdesc:ae12b15a403f5053fddfa1b36986e524f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses to customize the draw color of the map background (<a class="el" href="class_mod_scene_effect.html#aaf60a0b649d3a998afde78326d7b6217" title="The path to the texture that will display behind the map. Should be 115x65.">MapBackground</a>) drawn on the fullscreen map. <a class="el" href="class_mod_scene_effect.html#a736965fb2620668834cdb7f37c003990" title="If true, the map background (MapBackground) will be forced to be drawn at full brightness (White)....">MapBackgroundFullbright</a> can be used for typical effects, but this method can be used if further customization is needed.  <a href="class_mod_scene_effect.html#ae12b15a403f5053fddfa1b36986e524f">More...</a><br /></td></tr>
+<tr class="separator:ae12b15a403f5053fddfa1b36986e524f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2cb06be0bc076eb62db9ca310e7a8f"><td class="memItemLeft" align="right" valign="top"><a id="a3b2cb06be0bc076eb62db9ca310e7a8f" name="a3b2cb06be0bc076eb62db9ca310e7a8f"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SpecialVisuals</b> (<a class="el" href="class_player.html">Player</a> player, bool isActive)</td></tr>
 <tr class="memdesc:a3b2cb06be0bc076eb62db9ca310e7a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special visual effects in the area around the player. For example, the Blood Moon's red filter on the screen or the Slime <a class="el" href="class_rain.html">Rain</a>'s falling slime in the background. You must create classes that override <a class="el" href="class_screen_shader_data.html">ScreenShaderData</a> or <a class="el" href="class_custom_sky.html">CustomSky</a>, add them in a Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code. <br  />
@@ -218,13 +221,15 @@ Properties</h2></td></tr>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>MapBackground</b><code> [get]</code></td></tr>
 <tr class="memdesc:aaf60a0b649d3a998afde78326d7b6217"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path to the texture that will display behind the map. Should be 115x65. <br /></td></tr>
 <tr class="separator:aaf60a0b649d3a998afde78326d7b6217"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07514b30903f12946072d5e6fb5993f6"><td class="memItemLeft" align="right" valign="top"><a id="a07514b30903f12946072d5e6fb5993f6" name="a07514b30903f12946072d5e6fb5993f6"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>Music</b><code> [get]</code></td></tr>
-<tr class="memdesc:a07514b30903f12946072d5e6fb5993f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The music that will play. -1 for letting other music play, 0 for no music, &gt;0 for the given music to play. Defaults to -1. <br /></td></tr>
+<tr class="memitem:a736965fb2620668834cdb7f37c003990"><td class="memItemLeft" align="right" valign="top"><a id="a736965fb2620668834cdb7f37c003990" name="a736965fb2620668834cdb7f37c003990"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>MapBackgroundFullbright</b><code> [get]</code></td></tr>
+<tr class="memdesc:a736965fb2620668834cdb7f37c003990"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the map background (<a class="el" href="class_mod_scene_effect.html#aaf60a0b649d3a998afde78326d7b6217" title="The path to the texture that will display behind the map. Should be 115x65.">MapBackground</a>) will be forced to be drawn at full brightness (White). For example, the background map of the Mushroom biome draws at full brightness even when above ground. By default, this returns false, indicating that the sky color should be used if above surface level and full brightness otherwise. Use <a class="el" href="class_mod_scene_effect.html#ae12b15a403f5053fddfa1b36986e524f" title="Uses to customize the draw color of the map background (MapBackground) drawn on the fullscreen map....">MapBackgroundColor(ref Color)</a> instead to fully customize the map background draw color. <br /></td></tr>
+<tr class="separator:a736965fb2620668834cdb7f37c003990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07514b30903f12946072d5e6fb5993f6"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_scene_effect.html#a07514b30903f12946072d5e6fb5993f6">Music</a><code> [get]</code></td></tr>
+<tr class="memdesc:a07514b30903f12946072d5e6fb5993f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaults to -1.  <a href="class_mod_scene_effect.html#a07514b30903f12946072d5e6fb5993f6">More...</a><br /></td></tr>
 <tr class="separator:a07514b30903f12946072d5e6fb5993f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae41db4c5059325def708737f3cc07384"><td class="memItemLeft" align="right" valign="top"><a id="ae41db4c5059325def708737f3cc07384" name="ae41db4c5059325def708737f3cc07384"></a>
-virtual <a class="el" href="class_mod_n_p_c.html#a9dc3a99a1280fc2fdcf6c0588a52d08f">SceneEffectPriority</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Priority</b><code> [get]</code></td></tr>
-<tr class="memdesc:ae41db4c5059325def708737f3cc07384"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_mod_n_p_c.html#a9dc3a99a1280fc2fdcf6c0588a52d08f" title="The priority of the music that plays when this NPC is on or near the screen.">SceneEffectPriority</a> of this SceneEffect layer. Determines the relative position compared to a vanilla SceneEffect. Analogously, if SceneEffect were competing in a wrestling match, this would be the 'Weight Class' that this SceneEffect is competing in. <br /></td></tr>
+<tr class="memitem:ae41db4c5059325def708737f3cc07384"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_mod_n_p_c.html#a9dc3a99a1280fc2fdcf6c0588a52d08f">SceneEffectPriority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_scene_effect.html#ae41db4c5059325def708737f3cc07384">Priority</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae41db4c5059325def708737f3cc07384"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defaults to SceneEffectPriority.None.  <a href="class_mod_scene_effect.html#ae41db4c5059325def708737f3cc07384">More...</a><br /></td></tr>
 <tr class="separator:ae41db4c5059325def708737f3cc07384"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9395b27f140198bc74db76857312623b"><td class="memItemLeft" align="right" valign="top"><a id="a9395b27f140198bc74db76857312623b" name="a9395b27f140198bc74db76857312623b"></a>
 virtual <a class="el" href="class_mod_surface_background_style.html">ModSurfaceBackgroundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SurfaceBackgroundStyle</b><code> [get]</code></td></tr>
@@ -333,6 +338,40 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 
 </div>
 </div>
+<a id="ae12b15a403f5053fddfa1b36986e524f" name="ae12b15a403f5053fddfa1b36986e524f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae12b15a403f5053fddfa1b36986e524f">&#9670;&nbsp;</a></span>MapBackgroundColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModSceneEffect.MapBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Uses to customize the draw color of the map background (<a class="el" href="class_mod_scene_effect.html#aaf60a0b649d3a998afde78326d7b6217" title="The path to the texture that will display behind the map. Should be 115x65.">MapBackground</a>) drawn on the fullscreen map. <a class="el" href="class_mod_scene_effect.html#a736965fb2620668834cdb7f37c003990" title="If true, the map background (MapBackground) will be forced to be drawn at full brightness (White)....">MapBackgroundFullbright</a> can be used for typical effects, but this method can be used if further customization is needed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">color</td><td>White or Main.ColorOfTheSkies depending on if above ground and MapBackgroundUsesSkyColor value.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5bca5cee8c84401c79dbdbb8e2c74f46" name="a5bca5cee8c84401c79dbdbb8e2c74f46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5bca5cee8c84401c79dbdbb8e2c74f46">&#9670;&nbsp;</a></span>Register()</h2>
 
@@ -359,6 +398,57 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override. </p>
 
 <p>Implements <a class="el" href="class_mod_type.html#ab0f9ad250e4d99c4830b609cc4db2881">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a07514b30903f12946072d5e6fb5993f6" name="a07514b30903f12946072d5e6fb5993f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07514b30903f12946072d5e6fb5993f6">&#9670;&nbsp;</a></span>Music</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int ModSceneEffect.Music</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defaults to -1. </p>
+<p >&lt;SharedSummary&gt; The music that will play. -1 for letting other music play, 0 for no music, &gt;0 for the given music to play (using <a class="el" href="class_music_loader.html#a6f10534a3f624119790340431f9d7481" title="Gets the music id of the track with the specified mod path. The path must not have a file extension.">MusicLoader.GetMusicSlot(Mod, string)</a> or ID.MusicID). &lt;/SharedSummary&gt; </p>
+
+</div>
+</div>
+<a id="ae41db4c5059325def708737f3cc07384" name="ae41db4c5059325def708737f3cc07384"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41db4c5059325def708737f3cc07384">&#9670;&nbsp;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="class_mod_n_p_c.html#a9dc3a99a1280fc2fdcf6c0588a52d08f">SceneEffectPriority</a> ModSceneEffect.Priority</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defaults to SceneEffectPriority.None. </p>
+<p >&lt;SharedSummary&gt; The <a class="el" href="class_mod_n_p_c.html#a9dc3a99a1280fc2fdcf6c0588a52d08f" title="The priority of the music that plays when this NPC is on or near the screen.">SceneEffectPriority</a> of this SceneEffect layer. Determines the relative position compared to a vanilla SceneEffect. Analogously, if SceneEffect were competing in a wrestling match, this would be the 'Weight Class' that this SceneEffect is competing in. &lt;/SharedSummary&gt; </p>
 
 </div>
 </div>

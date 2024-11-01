@@ -290,6 +290,7 @@ var hierarchy =
     [ "Cloning", "class_cloning.html", null ],
     [ "Cloud", "class_cloud.html", null ],
     [ "CloudID", "class_cloud_i_d.html", null ],
+    [ "CloudLoader", "class_cloud_loader.html", null ],
     [ "Terraria.Social.Base.CloudSocialModule", "class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html", [
       [ "CloudSocialModule", "class_cloud_social_module.html", null ],
       [ "CloudSocialModule", "class_cloud_social_module.html", null ]
@@ -1494,6 +1495,9 @@ var hierarchy =
             ] ],
             [ "ModBossBar", "class_mod_boss_bar.html", null ],
             [ "ModBuff", "class_mod_buff.html", null ],
+            [ "ModCloud", "class_mod_cloud.html", [
+              [ "SimpleModCloud", "class_simple_mod_cloud.html", null ]
+            ] ],
             [ "ModDust", "class_mod_dust.html", null ],
             [ "ModGore", "class_mod_gore.html", [
               [ "SimpleModGore", "class_simple_mod_gore.html", null ]

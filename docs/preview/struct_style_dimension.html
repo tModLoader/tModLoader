@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -94,6 +94,9 @@ $(document).ready(function(){initNavTree('struct_style_dimension.html',''); init
   <div class="headertitle"><div class="title">StyleDimension Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents a dimension, either an absolute pixel size, a percentage of the available space, or a combination of both. For example <code>uiElement.Width.Set(200, 0f);</code> sets an absolute width of 200 pixels. <code>uiElement.Width.Set(0, 0.5f);</code> on the otherhand sets a width of 50% of the parent's avaiable <a class="el" href="class_u_i_element.html#adc42b475f74d77f6fe008b8f1e77ad19" title="The dimensions of the area within this element suitable for placing children elements....">UIElement.GetInnerDimensions</a>. Both values can be set for more complex logic. <code>uiElement.Width.Set(-10, 0.5f);</code> sets the width to 50% of the available space minus 10 pixels. This would leave room between 2 buttons filling a space. <code>uiElement.Height.Set(-100, 1f);</code> would fill the full height of the space but leave 100 pixels at the bottom empty.  
+ <a href="struct_style_dimension.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -143,7 +146,11 @@ Properties</h2></td></tr>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Percent</b><code> [get, set]</code></td></tr>
 <tr class="separator:a7dd5bce353ae249f02d9203c122358d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents a dimension, either an absolute pixel size, a percentage of the available space, or a combination of both. </p>
+<p >For example <code>uiElement.Width.Set(200, 0f);</code> sets an absolute width of 200 pixels. <code>uiElement.Width.Set(0, 0.5f);</code> on the otherhand sets a width of 50% of the parent's avaiable <a class="el" href="class_u_i_element.html#adc42b475f74d77f6fe008b8f1e77ad19" title="The dimensions of the area within this element suitable for placing children elements....">UIElement.GetInnerDimensions</a>. </p>
+<p >Both values can be set for more complex logic. <code>uiElement.Width.Set(-10, 0.5f);</code> sets the width to 50% of the available space minus 10 pixels. This would leave room between 2 buttons filling a space. <code>uiElement.Height.Set(-100, 1f);</code> would fill the full height of the space but leave 100 pixels at the bottom empty. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

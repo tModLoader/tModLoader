@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -122,6 +122,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnChanged</b>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnLoaded</b> ()</td></tr>
 <tr class="memdesc:af02ded51ef3c98534476412ea117d179"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called when the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> has been loaded for the first time. This happens before regular Autoloading and <a class="el" href="class_mod.html#ae174f640b4281fa62e475400aad4dad6" title="Override this method to run code after all content has been autoloaded. Here additional content can b...">Mod.Load</a>. You can use this hook to assign a static reference to this instance for easy access. tModLoader will automatically assign (and later unload) this instance to a static field named Instance in the class prior to calling this method, if it exists. <br /></td></tr>
 <tr class="separator:af02ded51ef3c98534476412ea117d179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfe877364ca5914f2928cdcfa736f344"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#acfe877364ca5914f2928cdcfa736f344">Open</a> (Action onClose=null, string scrollToOption=null, bool centerScrolledOption=true, bool playSound=true)</td></tr>
+<tr class="memdesc:acfe877364ca5914f2928cdcfa736f344"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens this config in the config UI. Can be used to allow your own UI to access the config. <em>onClose</em>  can be used to run code after the config is closed, such as opening a modded UI or showing a message to the user. <em>scrollToOption</em>  can be used to scroll to a specific member of the config and highlight it. It can also be used to scroll to the header above a member using the format <code>"Header:{MemberNameHere}"</code>. If the member has <code>[SeparatePage]</code> then the subpage will open automatically as well. Set <em>centerScrolledOption</em>  to false if you'd like the config option to be at the top of the list when focused instead of at the center.  <a href="class_mod_config.html#acfe877364ca5914f2928cdcfa736f344">More...</a><br /></td></tr>
+<tr class="separator:acfe877364ca5914f2928cdcfa736f344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -274,6 +277,57 @@ abstract ConfigScope&#160;</td><td class="memItemRight" valign="bottom"><b>Mode<
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="acfe877364ca5914f2928cdcfa736f344" name="acfe877364ca5914f2928cdcfa736f344"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfe877364ca5914f2928cdcfa736f344">&#9670;&nbsp;</a></span>Open()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ModConfig.Open </td>
+          <td>(</td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onClose</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>scrollToOption</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>centerScrolledOption</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>playSound</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens this config in the config UI. Can be used to allow your own UI to access the config. <em>onClose</em>  can be used to run code after the config is closed, such as opening a modded UI or showing a message to the user. <em>scrollToOption</em>  can be used to scroll to a specific member of the config and highlight it. It can also be used to scroll to the header above a member using the format <code>"Header:{MemberNameHere}"</code>. If the member has <code>[SeparatePage]</code> then the subpage will open automatically as well. Set <em>centerScrolledOption</em>  to false if you'd like the config option to be at the top of the list when focused instead of at the center. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onClose</td><td>A delegate that is called when the back button is pressed to allow for custom back button behavior.</td></tr>
+    <tr><td class="paramname">scrollToOption</td><td>The name of a field of the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> to scroll to.</td></tr>
+    <tr><td class="paramname">centerScrolledOption</td><td></td></tr>
+    <tr><td class="paramname">playSound</td><td>Whether SoundID.MenuOpen will be played when the UI is opened.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

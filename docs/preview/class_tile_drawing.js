@@ -1,5 +1,26 @@
 var class_tile_drawing =
 [
+    [ "TileCounterType", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8", [
+      [ "Tree", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a3b0c14770e6bd663518496da60f524da", null ],
+      [ "DisplayDoll", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a29dc53dc2741f38f7160c08ada377c31", null ],
+      [ "HatRack", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8afde36c7da6ca0c2e5ac6993c9cdab567", null ],
+      [ "WindyGrass", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a9118ec5501e2d89ad398527437130530", null ],
+      [ "MultiTileGrass", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aaa2b4dab37d59bac74628eeb73139ff2", null ],
+      [ "MultiTileVine", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a5e6f4d3726467dd261fe68460c4c5055", null ],
+      [ "Vine", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a7484afa72345f4711785b3fa8cf2572c", null ],
+      [ "BiomeGrass", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a3a93750f0e1677a1f4fabec54828cd43", null ],
+      [ "VoidLens", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a210c2ca4f2c5238fa5ee7a088423b9e9", null ],
+      [ "ReverseVine", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aa16777bfcec51e1ca7c3ae688ebc991d", null ],
+      [ "TeleportationPylon", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a7d3fd93497240b3c624918799566aed1", null ],
+      [ "MasterTrophy", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a51868fe8b85c9c92120422d9958f7552", null ],
+      [ "AnyDirectionalGrass", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a1077b6d8dacd0994078cc259f23e2a7f", null ],
+      [ "Count", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8ae93f994f01c537c4e2f7d8528c3eb5e9", null ]
+    ] ],
+    [ "AddSpecialLegacyPoint", "class_tile_drawing.html#af61849574d464e30106795a896ca3b8a", null ],
+    [ "AddSpecialLegacyPoint", "class_tile_drawing.html#a82a5087b146818ad1f4ec7b54fa9aec2", null ],
+    [ "AddSpecialPoint", "class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac", null ],
+    [ "CrawlToBottomOfReverseVineAndAddSpecialPoint", "class_tile_drawing.html#aa0fa210558c2c9e68e0628f59392d021", null ],
+    [ "CrawlToTopOfVineAndAddSpecialPoint", "class_tile_drawing.html#a2d253cefdb0c31ad068ff7883d6fe2ce", null ],
     [ "EmitLivingTreeLeaf", "class_tile_drawing.html#a02189b771b065777d7952f6713cdca80", null ],
     [ "EmitLivingTreeLeaf_Below", "class_tile_drawing.html#a24bdc2e2b25697391ef45c50cabbeb81", null ],
     [ "EmitLivingTreeLeaf_Sideways", "class_tile_drawing.html#a7bc4d74d7f3676df9d16be1e84203ff7", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -190,6 +190,14 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileStyle</b
 <tr class="memitem:a9f184e0bb1c5fce7091984bcf3f94250"><td class="memItemLeft" align="right" valign="top"><a id="a9f184e0bb1c5fce7091984bcf3f94250" name="a9f184e0bb1c5fce7091984bcf3f94250"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
 <tr class="separator:a9f184e0bb1c5fce7091984bcf3f94250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4205896800b8eb9044efb847edfcf0b3"><td class="memItemLeft" align="right" valign="top"><a id="a4205896800b8eb9044efb847edfcf0b3" name="a4205896800b8eb9044efb847edfcf0b3"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTopLeft</b> (int i, int j)</td></tr>
+<tr class="memdesc:a4205896800b8eb9044efb847edfcf0b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> at the location provided has a placed tile and is the top left tile of a multitile (supports alternate placements and states as well). Returns false otherwise. Can be used for logic that should only run once per multitile, such as custom tile rendering. <br /></td></tr>
+<tr class="separator:a4205896800b8eb9044efb847edfcf0b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6efdaa1022b066032eeaf3eb2a20280"><td class="memItemLeft" align="right" valign="top"><a id="aa6efdaa1022b066032eeaf3eb2a20280" name="aa6efdaa1022b066032eeaf3eb2a20280"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTopLeft</b> (<a class="el" href="struct_tile.html">Tile</a> tile)</td></tr>
+<tr class="memdesc:aa6efdaa1022b066032eeaf3eb2a20280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> provided has a placed tile and is the top left tile of a multitile (supports alternate placements and states as well). Returns false otherwise. Can be used for logic that should only run once per multitile, such as custom tile rendering. <br /></td></tr>
+<tr class="separator:aa6efdaa1022b066032eeaf3eb2a20280"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb25290a397a648b59cac760fd167a3d"><td class="memItemLeft" align="right" valign="top"><a id="abb25290a397a648b59cac760fd167a3d" name="abb25290a397a648b59cac760fd167a3d"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>LiquidPlace</b> (int type, <a class="el" href="struct_tile.html">Tile</a> checkTile)</td></tr>
 <tr class="separator:abb25290a397a648b59cac760fd167a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('class_workshop_publish_info_state_for_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_workshop_publish_info_state_for_mods-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">WorkshopPublishInfoStateForMods Class Reference</div></div>
 </div><!--header-->
@@ -118,7 +119,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleBackButtonUsage
 <tr class="separator:aaa96376fdea5bb8eb797f06fc25e8da4 inherit pub_methods_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4a0fbca82213d325b60d9ce9f5f7c14 inherit pub_methods_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="ad4a0fbca82213d325b60d9ce9f5f7c14" name="ad4a0fbca82213d325b60d9ce9f5f7c14"></a>
 override void&#160;</td><td class="memItemRight" valign="bottom"><b>OnInitialize</b> ()</td></tr>
-<tr class="memdesc:ad4a0fbca82213d325b60d9ce9f5f7c14 inherit pub_methods_class_a_workshop_publish_info_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before the first time this element is activated (see OnActivate). Use this method to create and append other <a class="el" href="class_u_i_element.html">UIElement</a> to this to build a UI. <br /></td></tr>
+<tr class="memdesc:ad4a0fbca82213d325b60d9ce9f5f7c14 inherit pub_methods_class_a_workshop_publish_info_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before the first time this element is activated (see OnActivate). Use this method to create and append other <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> to this to build a UI. <br /></td></tr>
 <tr class="separator:ad4a0fbca82213d325b60d9ce9f5f7c14 inherit pub_methods_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafeba7db32799aaa1d141ed737c37729 inherit pub_methods_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="aafeba7db32799aaa1d141ed737c37729" name="aafeba7db32799aaa1d141ed737c37729"></a>
 override void&#160;</td><td class="memItemRight" valign="bottom"><b>Recalculate</b> ()</td></tr>
@@ -143,6 +144,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:aa346e3a840c3259a33c9c1bdeb04ac35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a51806c58f2cb391d56354949a19cd7"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_workshop_publish_info_state_for_mods.html#a4a51806c58f2cb391d56354949a19cd7">TryFindingTags</a> (out <a class="el" href="class_found_workshop_entry_info.html">FoundWorkshopEntryInfo</a> info)</td></tr>
 <tr class="separator:a4a51806c58f2cb391d56354949a19cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af73c96c53663e71dbb281f73ddd06b8d"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_workshop_publish_info_state_for_mods.html#af73c96c53663e71dbb281f73ddd06b8d">UpdateImagePreview</a> ()</td></tr>
+<tr class="separator:af73c96c53663e71dbb281f73ddd06b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_a_workshop_publish_info_state"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_a_workshop_publish_info_state')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_a_workshop_publish_info_state.html">AWorkshopPublishInfoState&lt; TmodFile &gt;</a></td></tr>
 <tr class="memitem:a4307d6559b426b525cf548e39ebfa4f8 inherit pro_methods_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="a4307d6559b426b525cf548e39ebfa4f8" name="a4307d6559b426b525cf548e39ebfa4f8"></a>
 abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>GetPublishedObjectDisplayName</b> ()</td></tr>
@@ -159,9 +162,15 @@ abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>GoToPublishC
 <tr class="memitem:a21e8e42d3a62956506898435fa65b3bd inherit pro_methods_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="a21e8e42d3a62956506898435fa65b3bd" name="a21e8e42d3a62956506898435fa65b3bd"></a>
 abstract bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryFindingTags</b> (out <a class="el" href="class_found_workshop_entry_info.html">FoundWorkshopEntryInfo</a> info)</td></tr>
 <tr class="separator:a21e8e42d3a62956506898435fa65b3bd inherit pro_methods_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac12df82e050b70172c0ab92e727054 inherit pro_methods_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="aaac12df82e050b70172c0ab92e727054" name="aaac12df82e050b70172c0ab92e727054"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateImagePreview</b> ()</td></tr>
+<tr class="separator:aaac12df82e050b70172c0ab92e727054 inherit pro_methods_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a4f8b2637577f287d8c0638169cc23c01"><td class="memItemLeft" align="right" valign="top"><a id="a4f8b2637577f287d8c0638169cc23c01" name="a4f8b2637577f287d8c0638169cc23c01"></a>
+<a class="el" href="class_u_i_text.html">UIText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>imageWarningText</b></td></tr>
+<tr class="separator:a4f8b2637577f287d8c0638169cc23c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_a_workshop_publish_info_state"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_a_workshop_publish_info_state')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_a_workshop_publish_info_state.html">AWorkshopPublishInfoState&lt; TmodFile &gt;</a></td></tr>
 <tr class="memitem:a9fc7bde824d5a6da02695587d80d64cc inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="a9fc7bde824d5a6da02695587d80d64cc" name="a9fc7bde824d5a6da02695587d80d64cc"></a>
 TPublishedObjectType&#160;</td><td class="memItemRight" valign="bottom"><b>_dataObject</b></td></tr>
@@ -175,6 +184,15 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>_instructionsTextKe
 <tr class="memitem:afe4f8a8f5d94ec08b679c8fe3691f266 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="afe4f8a8f5d94ec08b679c8fe3691f266" name="afe4f8a8f5d94ec08b679c8fe3691f266"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>_previewImagePath</b></td></tr>
 <tr class="separator:afe4f8a8f5d94ec08b679c8fe3691f266 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c3377d764f8f1c922f5b5d3e3eb3d06 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="a8c3377d764f8f1c922f5b5d3e3eb3d06" name="a8c3377d764f8f1c922f5b5d3e3eb3d06"></a>
+<a class="el" href="class_u_i_character_name_button.html">UICharacterNameButton</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_previewImagePathPlate</b></td></tr>
+<tr class="separator:a8c3377d764f8f1c922f5b5d3e3eb3d06 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a654de64f0e3dcf5ddcff62b3c010b715 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="a654de64f0e3dcf5ddcff62b3c010b715" name="a654de64f0e3dcf5ddcff62b3c010b715"></a>
+Texture2D&#160;</td><td class="memItemRight" valign="bottom"><b>_previewImageTransientTexture</b></td></tr>
+<tr class="separator:a654de64f0e3dcf5ddcff62b3c010b715 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0b642cc60a7c16db24fc402c9669382 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="aa0b642cc60a7c16db24fc402c9669382" name="aa0b642cc60a7c16db24fc402c9669382"></a>
+<a class="el" href="class_u_i_image.html">UIImage</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_previewImageUIElement</b></td></tr>
+<tr class="separator:aa0b642cc60a7c16db24fc402c9669382 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad07c775bcd784a25858cd44f67e42099 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="ad07c775bcd784a25858cd44f67e42099" name="ad07c775bcd784a25858cd44f67e42099"></a>
 <a class="el" href="class_u_i_state.html">UIState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_previousUIState</b></td></tr>
 <tr class="separator:ad07c775bcd784a25858cd44f67e42099 inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +208,9 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>_publishedObjectNam
 <tr class="memitem:a32b504ddcd08f1b194faa69a1bc20e2c inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="a32b504ddcd08f1b194faa69a1bc20e2c" name="a32b504ddcd08f1b194faa69a1bc20e2c"></a>
 <a class="el" href="class_u_i_text.html">UIText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_tMLDisclaimerText</b></td></tr>
 <tr class="separator:a32b504ddcd08f1b194faa69a1bc20e2c inherit pro_attribs_class_a_workshop_publish_info_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header properties_class_a_workshop_publish_info_state"><td colspan="2" onclick="javascript:toggleInherit('properties_class_a_workshop_publish_info_state')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_a_workshop_publish_info_state.html">AWorkshopPublishInfoState&lt; TmodFile &gt;</a></td></tr>
 <tr class="memitem:ad5e18390d24c4bd44bb45ce64cb578c9 inherit properties_class_a_workshop_publish_info_state"><td class="memItemLeft" align="right" valign="top"><a id="ad5e18390d24c4bd44bb45ce64cb578c9" name="ad5e18390d24c4bd44bb45ce64cb578c9"></a>
 <a class="el" href="class_u_i_state.html">UIState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PreviousUIState</b><code> [get, set]</code></td></tr>
@@ -302,6 +323,33 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>_publishedObjectNam
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="class_a_workshop_publish_info_state.html">AWorkshopPublishInfoState&lt; TmodFile &gt;</a>.</p>
+
+</div>
+</div>
+<a id="af73c96c53663e71dbb281f73ddd06b8d" name="af73c96c53663e71dbb281f73ddd06b8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af73c96c53663e71dbb281f73ddd06b8d">&#9670;&nbsp;</a></span>UpdateImagePreview()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void WorkshopPublishInfoStateForMods.UpdateImagePreview </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="class_a_workshop_publish_info_state.html">AWorkshopPublishInfoState&lt; TmodFile &gt;</a>.</p>
 
 </div>
 </div>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -222,6 +222,10 @@ Properties</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>BackgroundAutoloadingEnabled</b> = true<code> [get]</code></td></tr>
 <tr class="memdesc:a7a2ec207e31889c9a9ca3ea3ecdb9c59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the "Backgrounds" folder as background textures to the game. This means you do not need to manually call <a class="el" href="class_background_texture_loader.html#a749bdf9c8dae1a34bd34c0a4703b8dc2" title="Adds a texture to the list of background textures and assigns it a background texture slot....">BackgroundTextureLoader.AddBackgroundTexture(Mod, string)</a>. <br /></td></tr>
 <tr class="separator:a7a2ec207e31889c9a9ca3ea3ecdb9c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90175ae770b9ebeb9452c0cabd0a7136"><td class="memItemLeft" align="right" valign="top"><a id="a90175ae770b9ebeb9452c0cabd0a7136" name="a90175ae770b9ebeb9452c0cabd0a7136"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CloudAutoloadingEnabled</b> = true<code> [get]</code></td></tr>
+<tr class="memdesc:a90175ae770b9ebeb9452c0cabd0a7136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the "Clouds" folder as clouds to the game. This means you do not need to manually call <a class="el" href="class_cloud_loader.html#a996b8d9e7f7cf288b06a6f96c6b16e85" title="Registers a new cloud with the provided texture, spawn chance, and indication if the cloud belongs to...">CloudLoader.AddCloudFromTexture(Mod, string, float, bool)</a> or make a <a class="el" href="class_mod_cloud.html" title="This class allows you to customize the behavior of a custom cloud. Modded clouds can be autoloaded au...">ModCloud</a> class to add them to the game, but they will have the default spawn chance and be counted as normal clouds if autoloaded in this manner. Defaults to true. <br /></td></tr>
+<tr class="separator:a90175ae770b9ebeb9452c0cabd0a7136"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35d8d5126d591d95110eaf26b2a21eb8"><td class="memItemLeft" align="right" valign="top"><a id="a35d8d5126d591d95110eaf26b2a21eb8" name="a35d8d5126d591d95110eaf26b2a21eb8"></a>
 Assembly&#160;</td><td class="memItemRight" valign="bottom"><b>Code</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a35d8d5126d591d95110eaf26b2a21eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The assembly code this is loaded when tModLoader loads this mod. <br  />

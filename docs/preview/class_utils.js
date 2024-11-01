@@ -2,6 +2,7 @@ var class_utils =
 [
     [ "ChaseResults", "struct_utils_1_1_chase_results.html", null ],
     [ "ClosestPointOnLine", "class_utils.html#a1aa7dde73333fb2204b3b115a6fc829a", null ],
+    [ "CoinsSplit", "class_utils.html#ac0d31b79da89281e90fb6589afd5e319", null ],
     [ "Frame", "class_utils.html#ada68951072cd4fdc7e20a5d57d7b1873", null ],
     [ "Frame", "class_utils.html#af8ae312e8da4a79a51b2fada5851cbf9", null ],
     [ "GetDayTimeAs24FloatStartingFromMidnight", "class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723", null ],

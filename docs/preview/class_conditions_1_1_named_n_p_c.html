@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -100,16 +100,18 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>NamedNPC</b> (string neededName)</td></tr>
 <tr class="separator:a5e1a823ed8914a26fb82e3851c7b26c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16ba17327286ac44b7a0964a43068772"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conditions_1_1_named_n_p_c.html#a16ba17327286ac44b7a0964a43068772">CanDrop</a> (<a class="el" href="struct_drop_attempt_info.html">DropAttemptInfo</a> info)</td></tr>
+<tr class="memdesc:a16ba17327286ac44b7a0964a43068772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the item using this drop rule can drop.  <a href="class_conditions_1_1_named_n_p_c.html#a16ba17327286ac44b7a0964a43068772">More...</a><br /></td></tr>
 <tr class="separator:a16ba17327286ac44b7a0964a43068772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdd1a20027eb3880415311507816394f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conditions_1_1_named_n_p_c.html#afdd1a20027eb3880415311507816394f">CanShowItemDropInUI</a> ()</td></tr>
+<tr class="memdesc:afdd1a20027eb3880415311507816394f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the item using this drop rule will show in the Bestiary drops listing. This is typically less restrictive than the <a class="el" href="class_conditions_1_1_named_n_p_c.html#a16ba17327286ac44b7a0964a43068772" title="Whether or not the item using this drop rule can drop.">CanDrop(DropAttemptInfo)</a> logic and usually only limits drop visibility for conditions that represent world state that can't change, such as the world difficulty or world evil choice. Most other conditions just return true, hinting to the player that the item could potentially drop even if the drop conditions aren't currently fully met.  <a href="class_conditions_1_1_named_n_p_c.html#afdd1a20027eb3880415311507816394f">More...</a><br /></td></tr>
 <tr class="separator:afdd1a20027eb3880415311507816394f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf056df6c15501a4621bfde5bacc1aa9"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_conditions_1_1_named_n_p_c.html#acf056df6c15501a4621bfde5bacc1aa9">GetConditionDescription</a> ()</td></tr>
 <tr class="separator:acf056df6c15501a4621bfde5bacc1aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5954f0d34045e5d42a2c564b09e8477d"><td class="memItemLeft" align="right" valign="top"><a id="a5954f0d34045e5d42a2c564b09e8477d" name="a5954f0d34045e5d42a2c564b09e8477d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDrop</b> (<a class="el" href="struct_drop_attempt_info.html">DropAttemptInfo</a> info)</td></tr>
+<tr class="memitem:a5954f0d34045e5d42a2c564b09e8477d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_item_drop_rule_condition.html#a5954f0d34045e5d42a2c564b09e8477d">CanDrop</a> (<a class="el" href="struct_drop_attempt_info.html">DropAttemptInfo</a> info)</td></tr>
+<tr class="memdesc:a5954f0d34045e5d42a2c564b09e8477d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the item using this drop rule can drop.  <a href="interface_i_item_drop_rule_condition.html#a5954f0d34045e5d42a2c564b09e8477d">More...</a><br /></td></tr>
 <tr class="separator:a5954f0d34045e5d42a2c564b09e8477d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac901ef948749a479f103cbdc0d56714b"><td class="memItemLeft" align="right" valign="top"><a id="ac901ef948749a479f103cbdc0d56714b" name="ac901ef948749a479f103cbdc0d56714b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShowItemDropInUI</b> ()</td></tr>
+<tr class="memitem:ac901ef948749a479f103cbdc0d56714b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_item_drop_rule_condition.html#ac901ef948749a479f103cbdc0d56714b">CanShowItemDropInUI</a> ()</td></tr>
+<tr class="memdesc:ac901ef948749a479f103cbdc0d56714b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the item using this drop rule will show in the Bestiary drops listing. This is typically less restrictive than the <a class="el" href="interface_i_item_drop_rule_condition.html#a5954f0d34045e5d42a2c564b09e8477d" title="Whether or not the item using this drop rule can drop.">CanDrop(DropAttemptInfo)</a> logic and usually only limits drop visibility for conditions that represent world state that can't change, such as the world difficulty or world evil choice. Most other conditions just return true, hinting to the player that the item could potentially drop even if the drop conditions aren't currently fully met.  <a href="interface_i_item_drop_rule_condition.html#ac901ef948749a479f103cbdc0d56714b">More...</a><br /></td></tr>
 <tr class="separator:ac901ef948749a479f103cbdc0d56714b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90869adf95dff8d86a0292f65712b4cf"><td class="memItemLeft" align="right" valign="top"><a id="a90869adf95dff8d86a0292f65712b4cf" name="a90869adf95dff8d86a0292f65712b4cf"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>GetConditionDescription</b> ()</td></tr>
@@ -138,7 +140,9 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>neededName</b></td>
       </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_item_drop_rule_condition.html">IItemDropRuleCondition</a>.</p>
+<p>Whether or not the item using this drop rule can drop. </p>
+
+<p>Implements <a class="el" href="interface_i_item_drop_rule_condition.html#a5954f0d34045e5d42a2c564b09e8477d">IItemDropRuleCondition</a>.</p>
 
 </div>
 </div>
@@ -157,7 +161,9 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>neededName</b></td>
       </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_item_drop_rule_condition.html">IItemDropRuleCondition</a>.</p>
+<p>Whether or not the item using this drop rule will show in the Bestiary drops listing. This is typically less restrictive than the <a class="el" href="class_conditions_1_1_named_n_p_c.html#a16ba17327286ac44b7a0964a43068772" title="Whether or not the item using this drop rule can drop.">CanDrop(DropAttemptInfo)</a> logic and usually only limits drop visibility for conditions that represent world state that can't change, such as the world difficulty or world evil choice. Most other conditions just return true, hinting to the player that the item could potentially drop even if the drop conditions aren't currently fully met. </p>
+
+<p>Implements <a class="el" href="interface_i_item_drop_rule_condition.html#ac901ef948749a479f103cbdc0d56714b">IItemDropRuleCondition</a>.</p>
 
 </div>
 </div>

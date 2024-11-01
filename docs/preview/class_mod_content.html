@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -100,6 +100,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a67c2d4fd904a8253ded6948e0bc5a837"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837">BuffType&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a67c2d4fd904a8253ded6948e0bc5a837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the id (type) of a <a class="el" href="class_mod_buff.html" title="This class serves as a place for you to define a new buff and how that buff behaves.">ModBuff</a> by class. Assumes one instance per class.  <a href="class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837">More...</a><br /></td></tr>
 <tr class="separator:a67c2d4fd904a8253ded6948e0bc5a837"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6633e5d1b99f4dbad122bcf4c73f86fc"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#a6633e5d1b99f4dbad122bcf4c73f86fc">CloudType&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a6633e5d1b99f4dbad122bcf4c73f86fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the id (type) of a <a class="el" href="class_mod_cloud.html" title="This class allows you to customize the behavior of a custom cloud. Modded clouds can be autoloaded au...">ModCloud</a> by class. Assumes one instance per class.  <a href="class_mod_content.html#a6633e5d1b99f4dbad122bcf4c73f86fc">More...</a><br /></td></tr>
+<tr class="separator:a6633e5d1b99f4dbad122bcf4c73f86fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e5088dea2ed1df947181a447284d950"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_content.html#a2e5088dea2ed1df947181a447284d950">DustType&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a2e5088dea2ed1df947181a447284d950"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the id (type) of a <a class="el" href="class_mod_dust.html" title="This class represents a type of dust that is added by a mod. Only one instance of this class will eve...">ModDust</a> by class. Assumes one instance per class.  <a href="class_mod_content.html#a2e5088dea2ed1df947181a447284d950">More...</a><br /></td></tr>
 <tr class="separator:a2e5088dea2ed1df947181a447284d950"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,6 +267,43 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>SplitName</b> 
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_mod_buff.html">ModBuff</a></em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GetInstance&lt;T&gt;()</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>Type</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+
+</div>
+</div>
+<a id="a6633e5d1b99f4dbad122bcf4c73f86fc" name="a6633e5d1b99f4dbad122bcf4c73f86fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6633e5d1b99f4dbad122bcf4c73f86fc">&#9670;&nbsp;</a></span>CloudType&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int ModContent.CloudType&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the id (type) of a <a class="el" href="class_mod_cloud.html" title="This class allows you to customize the behavior of a custom cloud. Modded clouds can be autoloaded au...">ModCloud</a> by class. Assumes one instance per class. </p>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em><a class="el" href="class_mod_cloud.html">ModCloud</a></em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>GetInstance&lt;T&gt;()</em></td><td>&#160;</td></tr>
 <tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>Type</em></td><td>&#160;</td></tr>
 </table>

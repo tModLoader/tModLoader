@@ -26,6 +26,7 @@ var class_mod =
     [ "Unload", "class_mod.html#a3d755e24235caf22ddeeaecf6b27ed8f", null ],
     [ "Assets", "class_mod.html#a4c11f9df40a7fad9ce11b661bd04c357", null ],
     [ "BackgroundAutoloadingEnabled", "class_mod.html#a7a2ec207e31889c9a9ca3ea3ecdb9c59", null ],
+    [ "CloudAutoloadingEnabled", "class_mod.html#a90175ae770b9ebeb9452c0cabd0a7136", null ],
     [ "Code", "class_mod.html#a35d8d5126d591d95110eaf26b2a21eb8", null ],
     [ "ContentAutoloadingEnabled", "class_mod.html#a5fd3e08f3ff975febcc71d8bab11e614", null ],
     [ "DisplayName", "class_mod.html#aef45efd720eec50524fba05d7466f5d7", null ],
