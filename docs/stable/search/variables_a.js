@@ -11,8 +11,8 @@ var searchData=
   ['killstobanner_8',['KillsToBanner',['../class_item_i_d_1_1_sets.html#acc42102d6c4023c007d0c2b3905f7cb1',1,'ItemID::Sets']]],
   ['kingslime_9',['KingSlime',['../class_n_p_c_a_i_style_i_d.html#a3c24cd97f987a65ee0f5085ff2235082',1,'NPCAIStyleID']]],
   ['kite_10',['Kite',['../class_proj_a_i_style_i_d.html#a5768b12b922f6b0dfb0da8cf7d2b5b31',1,'ProjAIStyleID']]],
-  ['knockback_11',['Knockback',['../struct_n_p_c_1_1_hit_modifiers.html#a8e131f3a414af1f3a4502d517f724cd8',1,'NPC.HitModifiers.Knockback()'],['../struct_n_p_c_1_1_hit_info.html#a83883a578dcb6ab13807bcade71bc962',1,'NPC.HitInfo.Knockback()'],['../struct_player_1_1_hurt_modifiers.html#a4f95d6829f471857f3870967d898496f',1,'Player.HurtModifiers.Knockback()'],['../struct_player_1_1_hurt_info.html#a385a782077b2fc03ef6c72dc7a0fd3dc',1,'Player.HurtInfo.Knockback()']]],
-  ['knockback_12',['knockBack',['../class_item.html#a98c6c332c5aa30e68e8d366571d87c95',1,'Item.knockBack()'],['../class_projectile.html#a929e0214a735bbb564f3c032d408b56c',1,'Projectile.knockBack()']]],
+  ['knockback_11',['knockBack',['../class_item.html#a98c6c332c5aa30e68e8d366571d87c95',1,'Item.knockBack()'],['../class_projectile.html#a929e0214a735bbb564f3c032d408b56c',1,'Projectile.knockBack()']]],
+  ['knockback_12',['Knockback',['../struct_n_p_c_1_1_hit_modifiers.html#a8e131f3a414af1f3a4502d517f724cd8',1,'NPC.HitModifiers.Knockback()'],['../struct_n_p_c_1_1_hit_info.html#a83883a578dcb6ab13807bcade71bc962',1,'NPC.HitInfo.Knockback()'],['../struct_player_1_1_hurt_modifiers.html#a4f95d6829f471857f3870967d898496f',1,'Player.HurtModifiers.Knockback()'],['../struct_player_1_1_hurt_info.html#a385a782077b2fc03ef6c72dc7a0fd3dc',1,'Player.HurtInfo.Knockback()']]],
   ['knockbackimmunityeffectiveness_13',['KnockbackImmunityEffectiveness',['../struct_player_1_1_hurt_modifiers.html#a9ec7c517952042fd807043412a84462f',1,'Player::HurtModifiers']]],
   ['knockbackresist_14',['knockBackResist',['../class_n_p_c.html#a19671fea508f786929fb6b46b35d94cc',1,'NPC']]]
 ];

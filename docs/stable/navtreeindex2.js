@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_conditions_1_1_legacy_hack___is_a_boss.html":[3,0,191,39],
 "class_conditions_1_1_legacy_hack___is_boss_and_expert.html":[3,0,191,40],
 "class_conditions_1_1_legacy_hack___is_boss_and_not_expert.html":[3,0,191,41],
 "class_conditions_1_1_living_flames.html":[3,0,191,42],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_dust.html#a96f53df54dad8ad3aac4b431be593e32":[3,0,293,1],
 "class_dust.html#aaa7683b785f9d14fcc85ea086b9d428d":[3,0,293,13],
 "class_dust.html#ab171b38c60e5943ad1e33eeaef0f0ed1":[3,0,293,0],
-"class_dust.html#ababcb0d034ba24ebbb99959c285e0584":[3,0,293,17],
-"class_dust.html#ac6e5ec001104c289afdba74221632d0d":[3,0,293,10]
+"class_dust.html#ababcb0d034ba24ebbb99959c285e0584":[3,0,293,17]
 };

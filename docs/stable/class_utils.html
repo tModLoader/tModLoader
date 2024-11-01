@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -274,6 +274,7 @@ static Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>Frame</b>
 <tr class="separator:ada68951072cd4fdc7e20a5d57d7b1873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8ae312e8da4a79a51b2fada5851cbf9"><td class="memItemLeft" align="right" valign="top"><a id="af8ae312e8da4a79a51b2fada5851cbf9" name="af8ae312e8da4a79a51b2fada5851cbf9"></a>
 static Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>Frame</b> (this Texture2D tex, int horizontalFrames=1, int verticalFrames=1, int frameX=0, int frameY=0, int sizeOffsetX=0, int sizeOffsetY=0)</td></tr>
+<tr class="memdesc:af8ae312e8da4a79a51b2fada5851cbf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a Rectangle region ("frame") of the Texture2D corresponding to the layout provided. Can be used to easily retrieve coordinates for drawing a specific frame of a texture. For example <code>texture.Frame(1, 3, 0, 2)</code> indicates that the texture has 1 column and 3 rows and returns the coordinates of the bottom (index #2, or 3rd) frame of the only column. <br /></td></tr>
 <tr class="separator:af8ae312e8da4a79a51b2fada5851cbf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ab3bad62bf2c6148122ff09dce9375e"><td class="memItemLeft" align="right" valign="top"><a id="a9ab3bad62bf2c6148122ff09dce9375e" name="a9ab3bad62bf2c6148122ff09dce9375e"></a>
 static <a class="el" href="struct_utils_1_1_chase_results.html">ChaseResults</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetChaseResults</b> (Vector2 chaserPosition, float chaserSpeed, Vector2 runnerPosition, Vector2 runnerVelocity)</td></tr>
@@ -368,8 +369,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ModulusPositive
 <tr class="memitem:a1cde0640e54843ebecad3899c7e5eb1a"><td class="memItemLeft" align="right" valign="top"><a id="a1cde0640e54843ebecad3899c7e5eb1a" name="a1cde0640e54843ebecad3899c7e5eb1a"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MoveTowards</b> (this Vector2 currentPosition, Vector2 targetPosition, float maxAmountAllowedToMove)</td></tr>
 <tr class="separator:a1cde0640e54843ebecad3899c7e5eb1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54b07febc0e0b2f0703a75feb2287a5b"><td class="memItemLeft" align="right" valign="top"><a id="a54b07febc0e0b2f0703a75feb2287a5b" name="a54b07febc0e0b2f0703a75feb2287a5b"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>MultiLerp</b> (float percent, params float[] floats)</td></tr>
+<tr class="memitem:a54b07febc0e0b2f0703a75feb2287a5b"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utils.html#a54b07febc0e0b2f0703a75feb2287a5b">MultiLerp</a> (float percent, params float[] floats)</td></tr>
+<tr class="memdesc:a54b07febc0e0b2f0703a75feb2287a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linearly interpolates between several values denoting a continuous piecewise linear function (Piecewise linear function wikipedia page). This can be used to interpolate between several values, providing finer control over the transition between values.  <a href="class_utils.html#a54b07febc0e0b2f0703a75feb2287a5b">More...</a><br /></td></tr>
 <tr class="separator:a54b07febc0e0b2f0703a75feb2287a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade4152cc9efcb80bd2bfa61014673f4c"><td class="memItemLeft" align="right" valign="top"><a id="ade4152cc9efcb80bd2bfa61014673f4c" name="ade4152cc9efcb80bd2bfa61014673f4c"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>MultiplyRGB</b> (this Color firstColor, Color secondColor)</td></tr>
@@ -453,8 +454,8 @@ static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>OriginFlip<
 <tr class="memitem:a7685ce05105fceb1685c503109be7e9a"><td class="memItemLeft" align="right" valign="top"><a id="a7685ce05105fceb1685c503109be7e9a" name="a7685ce05105fceb1685c503109be7e9a"></a>
 static Dictionary&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ParseArguements</b> (string[] args)</td></tr>
 <tr class="separator:a7685ce05105fceb1685c503109be7e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bd4180566ed24a75277cb4c102a1c85"><td class="memItemLeft" align="right" valign="top"><a id="a5bd4180566ed24a75277cb4c102a1c85" name="a5bd4180566ed24a75277cb4c102a1c85"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>PingPongFrom01To010</b> (float value)</td></tr>
+<tr class="memitem:a5bd4180566ed24a75277cb4c102a1c85"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utils.html#a5bd4180566ed24a75277cb4c102a1c85">PingPongFrom01To010</a> (float value)</td></tr>
+<tr class="memdesc:a5bd4180566ed24a75277cb4c102a1c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remaps a provided value from 0-&gt;1 to 0-&gt;1-&gt;0, essentially turning a sawtooth pattern into a triangle wave pattern:  <a href="class_utils.html#a5bd4180566ed24a75277cb4c102a1c85">More...</a><br /></td></tr>
 <tr class="separator:a5bd4180566ed24a75277cb4c102a1c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a246aa5fdc9456fb7ebc8b39dabb3c76a"><td class="memItemLeft" align="right" valign="top"><a id="a246aa5fdc9456fb7ebc8b39dabb3c76a" name="a246aa5fdc9456fb7ebc8b39dabb3c76a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PlotLine</b> (Point p0, Point p1, TileActionAttempt plot, bool jump=true)</td></tr>
@@ -686,8 +687,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>TrimTextIfNeed
 <tr class="memitem:ad7d1bccf8265d0979fc8fd41f8cf709b"><td class="memItemLeft" align="right" valign="top"><a id="ad7d1bccf8265d0979fc8fd41f8cf709b" name="ad7d1bccf8265d0979fc8fd41f8cf709b"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryCreatingDirectory</b> (string folderPath)</td></tr>
 <tr class="separator:ad7d1bccf8265d0979fc8fd41f8cf709b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca228fc4af907febee4ed8b26ef811a4"><td class="memItemLeft" align="right" valign="top"><a id="aca228fc4af907febee4ed8b26ef811a4" name="aca228fc4af907febee4ed8b26ef811a4"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>Turn01ToCyclic010</b> (float value)</td></tr>
+<tr class="memitem:aca228fc4af907febee4ed8b26ef811a4"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utils.html#aca228fc4af907febee4ed8b26ef811a4">Turn01ToCyclic010</a> (float value)</td></tr>
+<tr class="memdesc:aca228fc4af907febee4ed8b26ef811a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remaps a provided value from 0-&gt;1 to a cosine curve. Provides a method of turning an input sawtooth pattern into a smooth cyclic curve. This is useful when using repeating timers to drive effects that should return smoothly to their initial value before repeating rather than reset abruptly.  <a href="class_utils.html#aca228fc4af907febee4ed8b26ef811a4">More...</a><br /></td></tr>
 <tr class="separator:aca228fc4af907febee4ed8b26ef811a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba77fe3f1f3b08cd904a74949939aec6"><td class="memItemLeft" align="right" valign="top"><a id="aba77fe3f1f3b08cd904a74949939aec6" name="aba77fe3f1f3b08cd904a74949939aec6"></a>
 static double&#160;</td><td class="memItemRight" valign="bottom"><b>UnclampedSmoothStep</b> (double min, double max, double x)</td></tr>
@@ -830,6 +831,56 @@ const long&#160;</td><td class="memItemRight" valign="bottom"><b>MaxCoins</b> = 
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a54b07febc0e0b2f0703a75feb2287a5b" name="a54b07febc0e0b2f0703a75feb2287a5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54b07febc0e0b2f0703a75feb2287a5b">&#9670;&nbsp;</a></span>MultiLerp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Utils.MultiLerp </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>percent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params float[]&#160;</td>
+          <td class="paramname"><em>floats</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Linearly interpolates between several values denoting a continuous piecewise linear function (Piecewise linear function wikipedia page). This can be used to interpolate between several values, providing finer control over the transition between values. </p>
+<p ><code> floats parameter→ 0 4 1 Range Values ↓ / \ 3 <br  />
+ / \ 2 <br  />
+ / 1 / 0 percent input→ 0 .25 .5 .75 1 output→ 0 2 4 3 2 <br  />
+ </code> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">percent</td><td></td></tr>
+    <tr><td class="paramname">floats</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -1143,6 +1194,46 @@ It will not return <em>maxValue</em> . </p>
 
 </div>
 </div>
+<a id="a5bd4180566ed24a75277cb4c102a1c85" name="a5bd4180566ed24a75277cb4c102a1c85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bd4180566ed24a75277cb4c102a1c85">&#9670;&nbsp;</a></span>PingPongFrom01To010()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Utils.PingPongFrom01To010 </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remaps a provided value from 0-&gt;1 to 0-&gt;1-&gt;0, essentially turning a sawtooth pattern into a triangle wave pattern: </p>
+<p ><code> Original: Remap: Range Values ↓ <br  />
+ / / \ 1 <br  />
+ / / \ 0.5 <br  />
+ / / \ 0 <br  />
+ Input→ 0 .5 1 0 .5 1 Output→ 0 .5 1 0 1 0 </code> This is useful when using repeating timers to drive effects that should return linearly to their initial value before repeating rather than reset abruptly. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a8f018d28f6d8d5e5e4d4228ec0df7d6c" name="a8f018d28f6d8d5e5e4d4228ec0df7d6c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8f018d28f6d8d5e5e4d4228ec0df7d6c">&#9670;&nbsp;</a></span>PreviousEnum&lt; T &gt;()</h2>
 
@@ -1174,6 +1265,41 @@ It will not return <em>maxValue</em> . </p>
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="aca228fc4af907febee4ed8b26ef811a4" name="aca228fc4af907febee4ed8b26ef811a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca228fc4af907febee4ed8b26ef811a4">&#9670;&nbsp;</a></span>Turn01ToCyclic010()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Utils.Turn01ToCyclic010 </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remaps a provided value from 0-&gt;1 to a cosine curve. Provides a method of turning an input sawtooth pattern into a smooth cyclic curve. This is useful when using repeating timers to drive effects that should return smoothly to their initial value before repeating rather than reset abruptly. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

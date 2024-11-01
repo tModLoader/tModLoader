@@ -11,7 +11,7 @@ var searchData=
   ['findchestbyguessing_8',['FindChestByGuessing',['../class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27',1,'Chest']]],
   ['findemptychest_9',['FindEmptyChest',['../class_chest.html#ab1b7fd27494e9acb186fb520bcb0967a',1,'Chest']]],
   ['findfirstnpc_10',['FindFirstNPC',['../class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c',1,'NPC']]],
-  ['findframe_11',['FindFrame',['../class_mod_n_p_c.html#af372ab81defe98db878f181a8c66978c',1,'ModNPC.FindFrame()'],['../class_global_n_p_c.html#a3c7e86440480e05f58cb286946e76915',1,'GlobalNPC.FindFrame()']]],
+  ['findframe_11',['FindFrame',['../class_global_n_p_c.html#a3c7e86440480e05f58cb286946e76915',1,'GlobalNPC.FindFrame()'],['../class_mod_n_p_c.html#af372ab81defe98db878f181a8c66978c',1,'ModNPC.FindFrame()']]],
   ['findindex_3c_20t_20_3e_12',['FindIndex&lt; T &gt;',['../struct_pos_data.html#af0fa98792a2c9d5135f0ce01b983b8de',1,'PosData']]],
   ['findtargetwithlineofsight_13',['FindTargetWithLineOfSight',['../class_projectile.html#a780516db1f9ddea8551003ad41b9adbc',1,'Projectile']]],
   ['finishloading_14',['FinishLoading',['../class_global_list.html#aff9a43509781a5cbf8eae7512cafe42d',1,'GlobalList']]],
@@ -19,10 +19,11 @@ var searchData=
   ['floorvisuals_16',['FloorVisuals',['../class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320',1,'GlobalTile.FloorVisuals()'],['../class_mod_tile.html#a92eb77e2f88bc81c3fb481412828727a',1,'ModTile.FloorVisuals()']]],
   ['format_17',['Format',['../class_localized_text.html#a390d22b406bdaf9afbd725569fcbc181',1,'LocalizedText']]],
   ['formatwith_18',['FormatWith',['../class_localized_text.html#a293e37e2678717137ac1e28a79365a96',1,'LocalizedText']]],
-  ['frameeffects_19',['FrameEffects',['../class_equip_texture.html#afa1857188c214545b261d4a4836b6666',1,'EquipTexture.FrameEffects()'],['../class_mod_player.html#a4c43f816c48cdfdfab5ffe524f27ec3e',1,'ModPlayer.FrameEffects()']]],
-  ['freedodge_20',['FreeDodge',['../class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618',1,'ModPlayer']]],
-  ['fromformattable_21',['FromFormattable',['../class_network_text.html#a5d99e2833761c441a1a4427649242132',1,'NetworkText']]],
-  ['fromkey_22',['FromKey',['../class_network_text.html#ae3f73dfc810df7bc77c39621ed5b8644',1,'NetworkText']]],
-  ['fromliteral_23',['FromLiteral',['../class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4',1,'NetworkText']]],
-  ['fullcopyfrom_24',['FullCopyFrom',['../class_tile_object_data.html#a49f102639c55f4674f789006642c683e',1,'TileObjectData.FullCopyFrom(ushort tileType)'],['../class_tile_object_data.html#ac8cbe6dd92f2e1a664bfc32092008b4a',1,'TileObjectData.FullCopyFrom(TileObjectData copy)']]]
+  ['frame_19',['Frame',['../class_utils.html#ada68951072cd4fdc7e20a5d57d7b1873',1,'Utils.Frame(this Asset&lt; Texture2D &gt; tex, int horizontalFrames=1, int verticalFrames=1, int frameX=0, int frameY=0, int sizeOffsetX=0, int sizeOffsetY=0)'],['../class_utils.html#af8ae312e8da4a79a51b2fada5851cbf9',1,'Utils.Frame(this Texture2D tex, int horizontalFrames=1, int verticalFrames=1, int frameX=0, int frameY=0, int sizeOffsetX=0, int sizeOffsetY=0)']]],
+  ['frameeffects_20',['FrameEffects',['../class_equip_texture.html#afa1857188c214545b261d4a4836b6666',1,'EquipTexture.FrameEffects()'],['../class_mod_player.html#a4c43f816c48cdfdfab5ffe524f27ec3e',1,'ModPlayer.FrameEffects()']]],
+  ['freedodge_21',['FreeDodge',['../class_mod_player.html#a71c0e6fc69f1e25cd85ed8576ce13618',1,'ModPlayer']]],
+  ['fromformattable_22',['FromFormattable',['../class_network_text.html#a5d99e2833761c441a1a4427649242132',1,'NetworkText']]],
+  ['fromkey_23',['FromKey',['../class_network_text.html#ae3f73dfc810df7bc77c39621ed5b8644',1,'NetworkText']]],
+  ['fromliteral_24',['FromLiteral',['../class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4',1,'NetworkText']]],
+  ['fullcopyfrom_25',['FullCopyFrom',['../class_tile_object_data.html#a49f102639c55f4674f789006642c683e',1,'TileObjectData.FullCopyFrom(ushort tileType)'],['../class_tile_object_data.html#ac8cbe6dd92f2e1a664bfc32092008b4a',1,'TileObjectData.FullCopyFrom(TileObjectData copy)']]]
 ];

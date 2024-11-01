@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -407,11 +407,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (
 <tr class="separator:a8c010609b631ff1428394368f527269e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84afa22daae87e473ecb82d36baa3a3a"><td class="memItemLeft" align="right" valign="top"><a id="a84afa22daae87e473ecb82d36baa3a3a" name="a84afa22daae87e473ecb82d36baa3a3a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostDrawInInventory</b> (<a class="el" href="class_item.html">Item</a> item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)</td></tr>
-<tr class="memdesc:a84afa22daae87e473ecb82d36baa3a3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of an item in the inventory. This method is called even if PreDrawInInventory returns false. <br /></td></tr>
 <tr class="separator:a84afa22daae87e473ecb82d36baa3a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7b99cde42dde56372a7be009fa16212"><td class="memItemLeft" align="right" valign="top"><a id="ac7b99cde42dde56372a7be009fa16212" name="ac7b99cde42dde56372a7be009fa16212"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostDrawInWorld</b> (<a class="el" href="class_item.html">Item</a> item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)</td></tr>
-<tr class="memdesc:ac7b99cde42dde56372a7be009fa16212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of an item. This method is called even if PreDrawInWorld returns false. <br /></td></tr>
 <tr class="separator:ac7b99cde42dde56372a7be009fa16212"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8184ccce7f7146736e6dcb18ba95f975"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a8184ccce7f7146736e6dcb18ba95f975">PostDrawTooltip</a> (<a class="el" href="class_item.html">Item</a> item, ReadOnlyCollection&lt; <a class="el" href="class_drawable_tooltip_line.html">DrawableTooltipLine</a> &gt; lines)</td></tr>
 <tr class="memdesc:a8184ccce7f7146736e6dcb18ba95f975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.  <a href="class_global_item.html#a8184ccce7f7146736e6dcb18ba95f975">More...</a><br /></td></tr>
@@ -429,11 +427,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostUpdate</b
 <tr class="separator:a134744212a799fe6834c9ec4443892eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab34493ce82e8232913653e31a264f1b8"><td class="memItemLeft" align="right" valign="top"><a id="ab34493ce82e8232913653e31a264f1b8" name="ab34493ce82e8232913653e31a264f1b8"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreDrawInInventory</b> (<a class="el" href="class_item.html">Item</a> item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)</td></tr>
-<tr class="memdesc:ab34493ce82e8232913653e31a264f1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind an item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default. <br /></td></tr>
 <tr class="separator:ab34493ce82e8232913653e31a264f1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0c53591af6d471eedee73afacc1c316"><td class="memItemLeft" align="right" valign="top"><a id="ab0c53591af6d471eedee73afacc1c316" name="ab0c53591af6d471eedee73afacc1c316"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreDrawInWorld</b> (<a class="el" href="class_item.html">Item</a> item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)</td></tr>
-<tr class="memdesc:ab0c53591af6d471eedee73afacc1c316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind an item, or to modify the way an item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default. <br /></td></tr>
 <tr class="separator:ab0c53591af6d471eedee73afacc1c316"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62aa6c40f55ca8b50e74ea393586f47d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#a62aa6c40f55ca8b50e74ea393586f47d">PreDrawTooltip</a> (<a class="el" href="class_item.html">Item</a> item, ReadOnlyCollection&lt; <a class="el" href="class_tooltip_line.html">TooltipLine</a> &gt; lines, ref int x, ref int y)</td></tr>
 <tr class="memdesc:a62aa6c40f55ca8b50e74ea393586f47d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things before this item's tooltip is drawn.  <a href="class_global_item.html#a62aa6c40f55ca8b50e74ea393586f47d">More...</a><br /></td></tr>

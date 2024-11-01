@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_biome_loader.html":[3,0,95],
 "class_biome_preference_list_trait.html":[3,0,96],
 "class_biome_preference_list_trait_1_1_biome_preference.html":[3,0,96,0],
 "class_birthday_party.html":[3,0,97],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_is_solid.html":[3,0,191,35],
 "class_conditions_1_1_is_tile.html":[3,0,191,36],
 "class_conditions_1_1_is_using_specific_a_i_values.html":[3,0,191,37],
-"class_conditions_1_1_jungle_key_condition.html":[3,0,191,38],
-"class_conditions_1_1_legacy_hack___is_a_boss.html":[3,0,191,39]
+"class_conditions_1_1_jungle_key_condition.html":[3,0,191,38]
 };
