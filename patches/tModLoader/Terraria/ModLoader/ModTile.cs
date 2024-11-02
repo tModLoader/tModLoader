@@ -283,7 +283,11 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which aesthetics like monoliths and music boxes and clocks work. It is false for campfires and heart lanterns.
+	/// Allows you to make things happen when this tile is within a certain range of the player, such as how banners, campfire, and monoliths work.
+	/// <para/> This method will be called on tiles within 2 specific ranges, once for calculating visual effects and another time for calculating gameplay effects:
+	/// <para/> When calculating <b>visual effects</b>, the <paramref name="closer"/> parameter will be <see langword="true"/>. The visual effect range depend on the game window resolution, zoom level, and lighting mode, so it will not be reliable for gameplay effects but rather it adjusts to the players view of the game world. This is suitable for monoliths, water fountains, and music boxes.
+	/// <para/> When calculating <b>gameplay effects</b>, the <paramref name="closer"/> parameter will be <see langword="false"/>. The gameplay effect range will always be a 169x124 tile rectangle centered on the player. This is suitable for tiles that give buffs like the sunflower, banners, heart lantern, and campfire.
+	/// <para/> Make sure to check <paramref name="closer"/> when using this method to ensure the effects of this tile are applying to the intended range.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
