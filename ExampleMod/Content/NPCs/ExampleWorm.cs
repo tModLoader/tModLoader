@@ -1,4 +1,6 @@
-﻿using ExampleMod.NPCs;
+﻿using ExampleMod.Content.Items.Placeable.Banners;
+using ExampleMod.Content.Tiles.Banners;
+using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
@@ -30,8 +32,11 @@ namespace ExampleMod.Content.NPCs
 			NPC.CloneDefaults(NPCID.DiggerHead);
 			NPC.aiStyle = -1;
 
-			Banner = Type; // TODO: Do vanilla works all set bannerids?
-			BannerItem = Mod.Find<ModItem>("ExampleWormHeadBanner").Type;
+			Banner = Type;
+			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
+			// These lines are only needed in the main body part.
+			ModContent.GetInstance<EnemyBanner>().RegisterStyle((int)EnemyBanner.StyleID.ExampleWormHead, Banner);
+			ItemID.Sets.KillsToBanner[BannerItem] = 25;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -107,7 +112,7 @@ namespace ExampleMod.Content.NPCs
 
 			// Extra body parts should use the same Banner and BannerItem values as the main ModNPC.
 			Banner = ModContent.NPCType<ExampleWormHead>();
-			BannerItem = Mod.Find<ModItem>("ExampleWormHeadBanner").Type;
+			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
 		}
 
 		public override void Init() {
@@ -130,7 +135,7 @@ namespace ExampleMod.Content.NPCs
 
 			// Extra body parts should use the same Banner and BannerItem values as the main ModNPC.
 			Banner = ModContent.NPCType<ExampleWormHead>();
-			BannerItem = Mod.Find<ModItem>("ExampleWormHeadBanner").Type;
+			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
 		}
 
 		public override void Init() {

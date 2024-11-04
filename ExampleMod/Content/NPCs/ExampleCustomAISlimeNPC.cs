@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items.Placeable.Banners;
+using ExampleMod.Content.Tiles.Banners;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -62,7 +64,8 @@ namespace ExampleMod.Content.NPCs
 			NPC.value = 25f; // How many copper coins the NPC will drop when killed.
 
 			Banner = Type;
-			BannerItem = Mod.Find<ModItem>(Name + "Banner").Type;
+			BannerItem = ModContent.ItemType<ExampleCustomAISlimeNPCBanner>();
+			ModContent.GetInstance<EnemyBanner>().RegisterStyle((int)EnemyBanner.StyleID.ExampleCustomAISlimeNPC, Banner);
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
