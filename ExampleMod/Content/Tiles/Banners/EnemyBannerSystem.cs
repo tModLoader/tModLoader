@@ -19,19 +19,9 @@ namespace ExampleMod.Content.Tiles.Banners
 
 		public override void Load() {
 			// For each entry in EnemyBanner.StyleIDs, we dynamically load a EnemyBannerItem. 
-			foreach (var styleName in EnemyBanner.StyleIDs.Search.Names) {
-				int placeStyle = EnemyBanner.StyleIDs.Search.GetId(styleName);
+			foreach (EnemyBanner.StyleIDs styleID in Enum.GetValues(typeof(EnemyBanner.StyleIDs))) {
 				int? killsToBanner = null;
-				if (styleName ==  nameof(EnemyBanner.StyleIDs.ExampleWormHead)) {
-					killsToBanner = 25; // Weird to have this here in the ModSystem class...
-				}
-				Mod.AddContent(new EnemyBannerItem(styleName + "Banner", placeStyle, killsToBanner));
-			}
-
-			// Enum alt approach
-			foreach (EnemyBanner.StyleIDsEnum styleID in Enum.GetValues(typeof(EnemyBanner.StyleIDsEnum))) {
-				int? killsToBanner = null;
-				if (styleID == EnemyBanner.StyleIDsEnum.ExampleWormHead) {
+				if (styleID == EnemyBanner.StyleIDs.ExampleWormHead) {
 					killsToBanner = 25; // Weird to have this here in the ModSystem class...
 				}
 				Mod.AddContent(new EnemyBannerItem(styleID.ToString() + "Banner", (int)styleID, killsToBanner));
@@ -40,14 +30,7 @@ namespace ExampleMod.Content.Tiles.Banners
 
 		public override void PostSetupContent() {
 			// Now that all content has loaded, we can create a mapping of placeStyle to BannerIDs:
-			foreach (var styleName in EnemyBanner.StyleIDs.Search.Names) {
-				int placeStyle = EnemyBanner.StyleIDs.Search.GetId(styleName);
-				int bannerID = Mod.Find<ModNPC>(styleName).Banner;
-				RegisterBanner(placeStyle, bannerID);
-			}
-
-			// Enum alt approach
-			foreach (var styleID in Enum.GetValues(typeof(EnemyBanner.StyleIDsEnum))) {
+			foreach (var styleID in Enum.GetValues(typeof(EnemyBanner.StyleIDs))) {
 				int bannerID = Mod.Find<ModNPC>(styleID.ToString()).Banner;
 				RegisterBanner((int)styleID, bannerID);
 			}

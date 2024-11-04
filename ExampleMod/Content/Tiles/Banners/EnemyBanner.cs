@@ -1,7 +1,6 @@
 using ExampleMod.Content.NPCs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Reflection;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -19,18 +18,12 @@ namespace ExampleMod.Content.Tiles.Banners
 	// To support a new NPC, simply add an item texture to the Content/Items/Placeable/Banners folder, a tile sprite to Content/Tiles/Banners/EnemyBanner.png, set ModNPC.Banner and ModNPC.BannerItem on the ModNPC, and add an entry to EnemyBanner.StyleIDs.
 	public class EnemyBanner : ModTile
 	{
-		public class StyleIDs {
-			public const int ExampleWormHead = 0;
-			public const int ExampleCustomAISlimeNPC = 1;
-			public static readonly IdDictionary Search = IdDictionary.Create<StyleIDs, int>();
-		}
-
-		public enum StyleIDsEnum
+		// This enum keeps our code clean and readable.
+		public enum StyleIDs
 		{
-			ExampleWormHead, // TODO: "= 0", not forced, so this approach might end up with mistakes if modder rearranges?
+			ExampleWormHead, 
 			ExampleCustomAISlimeNPC
 		}
-
 
 		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
@@ -88,19 +81,11 @@ namespace ExampleMod.Content.Tiles.Banners
 			int tileStyle = TileObjectData.GetTileStyle(Main.tile[i, j]);
 			int bannerID = EnemyBannerSystem.GetBannerID(tileStyle);
 
-			/*
 			// Mapping bannerID to tile style can be done manually.
-			// Each item needs to know the tile style anyway, so a const or enum helps prevent bugs from typos.
-
-			bannerID = tileStyle switch {
+			/*
+			bannerID = (StyleIDs)tileStyle switch {
 				StyleIDs.ExampleWormHead => ModContent.NPCType<ExampleWormHead>(),
 				StyleIDs.ExampleCustomAISlimeNPC => ModContent.NPCType<ExampleCustomAISlimeNPC>(),
-				_ => -1,
-			};
-
-			bannerID = (StyleIDsEnum)tileStyle switch {
-				StyleIDsEnum.ExampleWormHead => ModContent.NPCType<ExampleWormHead>(),
-				StyleIDsEnum.ExampleCustomAISlimeNPC => ModContent.NPCType<ExampleCustomAISlimeNPC>(),
 				_ => -1,
 			};
 			*/
