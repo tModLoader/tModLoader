@@ -29,6 +29,9 @@ namespace ExampleMod.Content.NPCs
 			// Head is 10 defense, body 20, tail 30.
 			NPC.CloneDefaults(NPCID.DiggerHead);
 			NPC.aiStyle = -1;
+
+			Banner = Type; // TODO: Do vanilla works all set bannerids?
+			BannerItem = Mod.Find<ModItem>("ExampleWormHeadBanner").Type;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -101,6 +104,10 @@ namespace ExampleMod.Content.NPCs
 		public override void SetDefaults() {
 			NPC.CloneDefaults(NPCID.DiggerBody);
 			NPC.aiStyle = -1;
+
+			// Extra body parts should use the same Banner and BannerItem values as the main ModNPC.
+			Banner = ModContent.NPCType<ExampleWormHead>();
+			BannerItem = Mod.Find<ModItem>("ExampleWormHeadBanner").Type;
 		}
 
 		public override void Init() {
@@ -120,6 +127,10 @@ namespace ExampleMod.Content.NPCs
 		public override void SetDefaults() {
 			NPC.CloneDefaults(NPCID.DiggerTail);
 			NPC.aiStyle = -1;
+
+			// Extra body parts should use the same Banner and BannerItem values as the main ModNPC.
+			Banner = ModContent.NPCType<ExampleWormHead>();
+			BannerItem = Mod.Find<ModItem>("ExampleWormHeadBanner").Type;
 		}
 
 		public override void Init() {

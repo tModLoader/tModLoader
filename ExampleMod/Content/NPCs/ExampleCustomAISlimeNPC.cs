@@ -60,6 +60,9 @@ namespace ExampleMod.Content.NPCs
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
 			NPC.DeathSound = SoundID.NPCDeath1; // The sound the NPC will make when it dies.
 			NPC.value = 25f; // How many copper coins the NPC will drop when killed.
+
+			Banner = Type;
+			BannerItem = Mod.Find<ModItem>(Name + "Banner").Type;
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {

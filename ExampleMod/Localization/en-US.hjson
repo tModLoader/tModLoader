@@ -789,11 +789,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus".
-			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file.
-			OctopusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
-			SarcophagusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
-
 			HoldStyleShowcase: {
 				DisplayName: Hold Style Showcase
 				Tooltip:
@@ -1018,6 +1013,20 @@ Mods: {
 			CustomItemDrawingShowcase: {
 				DisplayName: Custom Item Drawing Showcase
 				Tooltip: ""
+			}
+
+			# These banner item examples show using substitutions.
+			# For ExampleCustomAISlimeNPCBanner.Tooltip we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Flutter Slime".
+			# Note that the translation files for other languages don't need to modify ExampleCustomAISlimeNPCBanner.Tooltip at all because it is completely composed of text substitutions.
+			# Other languages would only need to modify NPCs.ExampleCustomAISlimeNPC.DisplayName and ExampleCustomAISlimeNPCBanner.DisplayName.
+			ExampleCustomAISlimeNPCBanner: {
+				DisplayName: "{$NPCs.ExampleCustomAISlimeNPC.DisplayName} Banner"
+				Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleCustomAISlimeNPC.DisplayName}"
+			}
+
+			ExampleWormHeadBanner: {
+				DisplayName: "{$NPCs.ExampleWormHead.DisplayName} Banner"
+				Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
 			}
 		}
 
