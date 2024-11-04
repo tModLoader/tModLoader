@@ -54,6 +54,11 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void NearbyEffects(int i, int j, bool closer) {
+			// HasCampfire is a gameplay effect, so we don't run the code if closer is true.
+			if (closer) {
+				return;
+			}
+
 			if (Main.tile[i, j].TileFrameY < 36) {
 				Main.SceneMetrics.HasCampfire = true;
 			}
