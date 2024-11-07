@@ -146,6 +146,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 		if (Banner != 0 && BannerItem != 0) {
 			NPCLoader.bannerToItem[Banner] = BannerItem;
+			NPCLoader.itemToBanner[BannerItem] = Banner;
 		}
 		else if (Banner != 0 || BannerItem != 0) {
 			// TODO: Only the main NPC should need to set BannerItem. Maybe this check can be moved to after all content is setup and check if NPCLoader.bannerToItem[Banner] exists already.

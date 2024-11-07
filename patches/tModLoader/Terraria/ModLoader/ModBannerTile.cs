@@ -17,18 +17,6 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class ModBannerTile : ModTile
 {
-	private Dictionary<int, int> tileStyleToBannerIDMapping = new();
-
-	/// <summary>
-	/// Registers a tile place style to a BannerID. Necessary to facilitate automatically applying enemy banner buffs.
-	/// </summary>
-	public void RegisterStyle(int tileStyle, int bannerID) => tileStyleToBannerIDMapping[tileStyle] = bannerID;
-
-	/// <summary>
-	/// Given an tile place style, returns the corresponding BannerID. Returns -1 if not found.
-	/// </summary>
-	public int GetBannerID(int tileStyle) => tileStyleToBannerIDMapping.TryGetValue(tileStyle, out var id) ? id : -1;
-
 	public override void SetStaticDefaults()
 	{
 		Main.tileFrameImportant[Type] = true;
@@ -85,19 +73,14 @@ public abstract class ModBannerTile : ModTile
 			return;
 		}
 
-		// Calculate the tile place style, then map that place style to a BannerID.
+		// Calculate the tile place style, then map that place style to an ItemID and BannerID.
 		int tileStyle = TileObjectData.GetTileStyle(Main.tile[i, j]);
-
-		int itemType2 = TileLoader.GetItemDropFromTypeAndStyle(Type, tileStyle);
-		int bannerID2 = NPCLoader.itemToBanner[itemType2];
-
-		int bannerID = GetBannerID(tileStyle);
+		int itemType = TileLoader.GetItemDropFromTypeAndStyle(Type, tileStyle);
+		int bannerID = NPCLoader.BannerItemToNPC(itemType);
 
 		if (bannerID == -1) {
 			return;
 		}
-
-		int itemType = Item.BannerToItem(bannerID);
 
 		// Once the BannerID and Item type have been calculated, we apply the banner buff
 		if (ItemID.Sets.BannerStrength.IndexInRange(itemType) && ItemID.Sets.BannerStrength[itemType].Enabled) {

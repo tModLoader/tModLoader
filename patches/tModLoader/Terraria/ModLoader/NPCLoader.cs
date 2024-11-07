@@ -29,6 +29,7 @@ public static class NPCLoader
 	public static int NPCCount { get; private set; } = NPCID.Count;
 	internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
 	internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
+	internal static readonly IDictionary<int, int> itemToBanner = new Dictionary<int, int>();
 	/// <summary>
 	/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
 	/// </summary>
@@ -187,6 +188,11 @@ public static class NPCLoader
 	{
 		return npc.type >= NPCID.Count;
 	}
+
+	/// <summary>
+	/// Returns the type of a ModNPC corresponding to the provided banner item type. Note that this is equivalent to the banner type as well, since ModNPC type and banner type are the same. Returns -1 if not found.
+	/// </summary>
+	public static int BannerItemToNPC(int itemType) => itemToBanner.TryGetValue(itemType, out var id) ? id : -1;
 
 	internal static void SetDefaults(NPC npc, bool createModNPC = true)
 	{

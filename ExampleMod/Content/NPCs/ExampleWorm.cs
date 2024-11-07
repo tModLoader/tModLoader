@@ -35,7 +35,6 @@ namespace ExampleMod.Content.NPCs
 			Banner = Type;
 			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
 			// These lines are only needed in the main body part.
-			ModContent.GetInstance<EnemyBanner>().RegisterStyle((int)EnemyBanner.StyleID.ExampleWormHead, Banner);
 			ItemID.Sets.KillsToBanner[BannerItem] = 25;
 		}
 

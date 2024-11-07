@@ -65,7 +65,6 @@ namespace ExampleMod.Content.NPCs
 
 			Banner = Type;
 			BannerItem = ModContent.ItemType<ExampleCustomAISlimeNPCBanner>();
-			ModContent.GetInstance<EnemyBanner>().RegisterStyle((int)EnemyBanner.StyleID.ExampleCustomAISlimeNPC, Banner);
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
