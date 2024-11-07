@@ -14,6 +14,5 @@ namespace ExampleMod.Content.Items.Placeable.Banners
 			Item.SetShopValues(ItemRarityColor.Blue1, Item.buyPrice(silver: 10));
 		}
 	}
-	
 }
 

@@ -15,7 +15,7 @@ namespace Terraria.ModLoader;
 /// Extension to <seealso cref="ModTile"/> that streamlines the process of creating an enemy banner tile. Behaves the same as <see cref="TileID.Banners"/> except it does not set StyleWrapLimit to 111.
 /// <para/> Handles applying banner buffs for <see cref="ModNPC"/>. Each <see cref="ModNPC"/> should call <see cref="RegisterStyle(int, int)"/> in <see cref="ModNPC.SetDefaults"/> to register a mapping of tile placement style to BannerID. If multiple ModNPC share a BannerID, only the representative NPC needs to call RegisterStyle.
 /// </summary>
-public abstract class BannerTile : ModTile
+public abstract class ModBannerTile : ModTile
 {
 	private Dictionary<int, int> tileStyleToBannerIDMapping = new();
 
@@ -87,6 +87,10 @@ public abstract class BannerTile : ModTile
 
 		// Calculate the tile place style, then map that place style to a BannerID.
 		int tileStyle = TileObjectData.GetTileStyle(Main.tile[i, j]);
+
+		int itemType2 = TileLoader.GetItemDropFromTypeAndStyle(Type, tileStyle);
+		int bannerID2 = NPCLoader.itemToBanner[itemType2];
+
 		int bannerID = GetBannerID(tileStyle);
 
 		if (bannerID == -1) {
