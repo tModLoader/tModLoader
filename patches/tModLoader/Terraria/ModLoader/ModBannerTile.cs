@@ -61,7 +61,7 @@ public abstract class ModBannerTile : ModTile
 
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
 	{
-		// Due to MultiTileVine rendering the tile 2 tiles higher than expected for modded tiles using TileObjectData.DrawYOffset, we need to add 2 to fix the math for correct drawing
+		// Due to MultiTileVine rendering the tile 2 pixels higher than expected for modded tiles using TileObjectData.DrawYOffset, we need to add 2 to fix the math for correct drawing
 		offsetY += 2;
 		return;
 	}
