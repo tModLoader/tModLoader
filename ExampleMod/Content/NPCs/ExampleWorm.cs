@@ -1,5 +1,4 @@
 ﻿using ExampleMod.Content.Items.Placeable.Banners;
-using ExampleMod.Content.Tiles.Banners;
 using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using System.IO;
@@ -33,9 +32,9 @@ namespace ExampleMod.Content.NPCs
 			NPC.aiStyle = -1;
 
 			Banner = Type;
-			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
 			// These lines are only needed in the main body part.
-			ItemID.Sets.KillsToBanner[BannerItem] = 25;
+			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
+			ItemID.Sets.KillsToBanner[BannerItem] = 25; // Custom kill count required for banner drop and bestiary unlock
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -109,9 +108,8 @@ namespace ExampleMod.Content.NPCs
 			NPC.CloneDefaults(NPCID.DiggerBody);
 			NPC.aiStyle = -1;
 
-			// Extra body parts should use the same Banner and BannerItem values as the main ModNPC.
+			// Extra body parts should use the same Banner value as the main ModNPC.
 			Banner = ModContent.NPCType<ExampleWormHead>();
-			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
 		}
 
 		public override void Init() {
@@ -132,9 +130,8 @@ namespace ExampleMod.Content.NPCs
 			NPC.CloneDefaults(NPCID.DiggerTail);
 			NPC.aiStyle = -1;
 
-			// Extra body parts should use the same Banner and BannerItem values as the main ModNPC.
+			// Extra body parts should use the same Banner value as the main ModNPC.
 			Banner = ModContent.NPCType<ExampleWormHead>();
-			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
 		}
 
 		public override void Init() {

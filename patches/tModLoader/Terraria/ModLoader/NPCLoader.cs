@@ -113,6 +113,14 @@ public static class NPCLoader
 		foreach (ModNPC npc in npcs) {
 			Lang._npcNameCache[npc.Type] = npc.DisplayName;
 			RegisterTownNPCMoodLocalizations(npc);
+
+			// Detect various mismatched Banner/BannerItem issues:
+			// Detect NPC with BannerItem set but Banner not set.
+			// Detect modded Banner values with no associated Banner item.
+			// Detect NPC with BannerItem values that don't match the BannerItem associated with the Banner.
+			if (npc.BannerItem != 0 && npc.Banner == 0 || npc.Banner != 0 && npc.Banner >= NPCID.Count && (!bannerToItem.ContainsKey(npc.Banner) || bannerToItem[npc.Banner] != npc.BannerItem)) {
+				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", npc.Mod.Name, npc.Name));
+			}
 		}
 	}
 
