@@ -13,7 +13,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Extension to <seealso cref="ModTile"/> that streamlines the process of creating an enemy banner tile. Behaves the same as <see cref="TileID.Banners"/> except it does not set StyleWrapLimit to 111.
-/// <para/> Handles applying banner buffs for <see cref="ModNPC"/>. Each <see cref="ModNPC"/> should call <see cref="RegisterStyle(int, int)"/> in <see cref="ModNPC.SetDefaults"/> to register a mapping of tile placement style to BannerID. If multiple ModNPC share a BannerID, only the representative NPC needs to call RegisterStyle.
+/// <para/> Handles applying banner buffs for <see cref="ModNPC"/> automatically provided <see cref="ModNPC.Banner"/> and <see cref="ModNPC.BannerItem"/> are properly assigned and a <see cref="ModItem"/> to place each banner placement style exists.
 /// </summary>
 public abstract class ModBannerTile : ModTile
 {
@@ -30,10 +30,6 @@ public abstract class ModBannerTile : ModTile
 		TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 		TileObjectData.newTile.StyleHorizontal = true;
 		TileObjectData.newTile.AnchorTop = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.SolidBottom | AnchorType.PlanterBox, TileObjectData.newTile.Width, 0);
-		// TODO: Note: Porting Notes: added | AnchorType.PlanterBox since 1.3
-		// TODO: Make note of changes: Vanilla banners don't flip, but 1.3 example used SetSpriteEffects to flip
-
-		// TODO: Note: Porting Notes: All this is new:
 		TileObjectData.newTile.DrawYOffset = -2; // Draw this tile 2 pixels up, allowing the banner pole to align visually with the bottom of the tile it is anchored to.
 
 		// This alternate placement supports placing on un-hammered platform tiles. Note how the DrawYOffset accounts for the height adjustment needed for the tile to look correctly attached.
@@ -68,7 +64,6 @@ public abstract class ModBannerTile : ModTile
 
 	public override void NearbyEffects(int i, int j, bool closer)
 	{
-		// TODO: Porting notes: Old example used closer incorrectly. Tell everyone this was wrong!
 		if (closer) {
 			return;
 		}
