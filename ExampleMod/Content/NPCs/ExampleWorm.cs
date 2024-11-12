@@ -34,7 +34,7 @@ namespace ExampleMod.Content.NPCs
 			Banner = Type;
 			// These lines are only needed in the main body part.
 			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
-			ItemID.Sets.KillsToBanner[BannerItem] = 25; // Custom kill count required for banner drop and bestiary unlock
+			ItemID.Sets.KillsToBanner[BannerItem] = 25; // Custom kill count required for banner drop and bestiary unlock. Omit this line for the default 50 kill count.
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {

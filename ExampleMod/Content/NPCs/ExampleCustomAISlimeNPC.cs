@@ -1,5 +1,4 @@
 ﻿using ExampleMod.Content.Items.Placeable.Banners;
-using ExampleMod.Content.Tiles.Banners;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
