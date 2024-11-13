@@ -1,5 +1,15 @@
 var NAVTREEINDEX19 =
 {
+"class_projectile.html#a70e6ef8c8986be5cca4335001e4fcb8d":[3,0,1022,58],
+"class_projectile.html#a76031be1e4228ce7e8a3ec67e2c293ad":[3,0,1022,11],
+"class_projectile.html#a76496c491c0b11fff48d35497239037c":[3,0,1022,46],
+"class_projectile.html#a780516db1f9ddea8551003ad41b9adbc":[3,0,1022,7],
+"class_projectile.html#a7fb8914d4756cec3186cdb39dd0679b5":[3,0,1022,32],
+"class_projectile.html#a8072b57da2e5bf37a03de842c2d60058":[3,0,1022,15],
+"class_projectile.html#a808116568ed122b5ce53870b1da44101":[3,0,1022,44],
+"class_projectile.html#a8086d1cdae48cc3a28cce5ec592b6684":[3,0,1022,30],
+"class_projectile.html#a8af7eeb8df132127746791f7593072fa":[3,0,1022,18],
+"class_projectile.html#a929e0214a735bbb564f3c032d408b56c":[3,0,1022,36],
 "class_projectile.html#a94391ca36fc93547aba841b6fc4af5a0":[3,0,1022,56],
 "class_projectile.html#a95a0fb8d78cb68614912e58eb4442d0d":[3,0,1022,47],
 "class_projectile.html#aa0caf8d064a681508017326f184f489d":[3,0,1022,49],
@@ -239,15 +249,5 @@ var NAVTREEINDEX19 =
 "class_shapes_1_1_circle.html":[3,0,1117,0],
 "class_shapes_1_1_half_circle.html":[3,0,1117,1],
 "class_shapes_1_1_mound.html":[3,0,1117,2],
-"class_shapes_1_1_rectangle.html":[3,0,1117,3],
-"class_shapes_1_1_slime.html":[3,0,1117,4],
-"class_shapes_1_1_tail.html":[3,0,1117,5],
-"class_shimmer_helper.html":[3,0,1118],
-"class_shimmer_transforms.html":[3,0,1119],
-"class_shimmer_transforms_1_1_recipe_sets.html":[3,0,1119,0],
-"class_shop_helper.html":[3,0,1121],
-"class_show_despite_json_ignore_attribute.html":[3,0,1123],
-"class_sign.html":[3,0,1124],
-"class_sign.html#a1f062d26bf77dee4ef19fc838fd3bdf9":[3,0,1124,0],
-"class_sign.html#ae0a8676844348ece5b252271ae0ab505":[3,0,1124,1]
+"class_shapes_1_1_rectangle.html":[3,0,1117,3]
 };

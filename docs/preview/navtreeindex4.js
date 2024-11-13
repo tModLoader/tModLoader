@@ -1,5 +1,15 @@
 var NAVTREEINDEX4 =
 {
+"class_entity_source___caught.html#a8923c2a0de7b28a808dac608b80d7676":[3,0,319,0],
+"class_entity_source___death.html":[3,0,320],
+"class_entity_source___debug_command.html":[3,0,321],
+"class_entity_source___debug_command.html#a3f554db8cad5150722b194eebca43ceb":[3,0,321,0],
+"class_entity_source___drop_as_item.html":[3,0,322],
+"class_entity_source___film.html":[3,0,323],
+"class_entity_source___film.html#ad8abff8d67575f1d12f3cd0accd06458":[3,0,323,0],
+"class_entity_source___fished_out.html":[3,0,324],
+"class_entity_source___fished_out.html#a2497c9cab55f524479dbf663aeb46f93":[3,0,324,0],
+"class_entity_source___fished_out.html#ac5e3424b2c37c98ded5f42196456565b":[3,0,324,1],
 "class_entity_source___gift.html":[3,0,325],
 "class_entity_source___hit_effect.html":[3,0,326],
 "class_entity_source___item_open.html":[3,0,327],
@@ -136,8 +146,8 @@ var NAVTREEINDEX4 =
 "class_fish_finder_info_display.html#a716ad3524337148ccdad4a5fa8c193ad":[3,0,394,0],
 "class_fix_exploit_man_eaters.html":[3,0,397],
 "class_fixed_u_i_scrollbar.html":[3,0,396],
-"class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e":[3,0,396,1],
 "class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e":[3,0,396,0],
+"class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e":[3,0,396,1],
 "class_flame_particle.html":[3,0,399],
 "class_flavor_text_bestiary_info_element.html":[3,0,400],
 "class_flexible_tile_wand.html":[3,0,401],
@@ -239,15 +249,5 @@ var NAVTREEINDEX4 =
 "class_game_tip_i_d.html#a7628fece232ac97809b64a011293194f":[3,0,432,121],
 "class_game_tip_i_d.html#a768ca2aa39d75b27e4891909aa2fcb64":[3,0,432,7],
 "class_game_tip_i_d.html#a7839923745b88388f659b12062218fe3":[3,0,432,60],
-"class_game_tip_i_d.html#a7ea1e73e879c5d165eb6108abe8c5bfd":[3,0,432,119],
-"class_game_tip_i_d.html#a8173445b08ba6fcf73a15d841fd2c5ff":[3,0,432,84],
-"class_game_tip_i_d.html#a859c55392790e9267b793ad2d0706a5d":[3,0,432,47],
-"class_game_tip_i_d.html#a86b3c0e85ac6646881811ff08ffef1fb":[3,0,432,28],
-"class_game_tip_i_d.html#a8e174e50f2206dc3135b2a0c0f9351a2":[3,0,432,26],
-"class_game_tip_i_d.html#a922dd1be57186bd7d0e4df68e0578aba":[3,0,432,59],
-"class_game_tip_i_d.html#a92e4790888279a74ee342d86b1b52c7b":[3,0,432,0],
-"class_game_tip_i_d.html#a92fbf89b2cb8e56ced0e835caa824eb9":[3,0,432,120],
-"class_game_tip_i_d.html#a931d2ff1a711c3f76487838803c6ddc4":[3,0,432,100],
-"class_game_tip_i_d.html#a95a459b52f25c093c8bda5e592610041":[3,0,432,88],
-"class_game_tip_i_d.html#a95c2244f6572f304ff79b107047aad5e":[3,0,432,107]
+"class_game_tip_i_d.html#a7ea1e73e879c5d165eb6108abe8c5bfd":[3,0,432,119]
 };

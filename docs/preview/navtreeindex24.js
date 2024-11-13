@@ -1,5 +1,15 @@
 var NAVTREEINDEX24 =
 {
+"interface_command_caller.html#a6b2be735bc53e87b44c25f9a985e9acb":[3,0,178,1],
+"interface_command_caller.html#aa68aad6a98e93aa7288ad8addc3422da":[3,0,178,0],
+"interface_i_achievement_tracker.html":[3,0,510],
+"interface_i_animation_segment.html":[3,0,511],
+"interface_i_animation_segment_action.html":[3,0,512],
+"interface_i_audio_system.html":[3,0,514],
+"interface_i_audio_track.html":[3,0,515],
+"interface_i_ball_contact_listener.html":[3,0,516],
+"interface_i_bestiary_background_image_path_and_color_provider.html":[3,0,517],
+"interface_i_bestiary_background_overlay_and_color_provider.html":[3,0,518],
 "interface_i_bestiary_entry_display_index.html":[3,0,519],
 "interface_i_bestiary_entry_filter.html":[3,0,520],
 "interface_i_bestiary_info_element.html":[3,0,521],
@@ -239,15 +249,5 @@ var NAVTREEINDEX24 =
 "struct_item_i_d_1_1_banner_effect.html#a4d02bf4d90579faf43f6993217783505":[3,0,639,0,4],
 "struct_item_i_d_1_1_banner_effect.html#a5fa97458ee4e665b898b47ee6f98fefb":[3,0,639,0,1],
 "struct_item_i_d_1_1_banner_effect.html#a6daf82ec4e7a15e9f65c5adf58137b57":[3,0,639,0,7],
-"struct_item_i_d_1_1_banner_effect.html#a9caec4582bd6bac8e1940cc433fb41c9":[3,0,639,0,3],
-"struct_item_i_d_1_1_banner_effect.html#a9d323e48a7e4b362c1198c7c9cf4b26c":[3,0,639,0,2],
-"struct_item_i_d_1_1_banner_effect.html#ac8df3f62630485565f41653383b29538":[3,0,639,0,6],
-"struct_item_i_d_1_1_banner_effect.html#ae52e2aaabf587ff97fa02be46cee3fa3":[3,0,639,0,8],
-"struct_item_loot.html":[3,0,642],
-"struct_item_slot_1_1_item_transfer_info.html":[3,0,647,1],
-"struct_item_sync_persistent_stats.html":[3,0,650],
-"struct_legacy_lighting_1_1_rect_area.html":[3,0,696,0],
-"struct_light_disc_drawer.html":[3,0,705],
-"struct_line_segment.html":[3,0,709],
-"struct_liquid_data.html":[3,0,713]
+"struct_item_i_d_1_1_banner_effect.html#a9caec4582bd6bac8e1940cc433fb41c9":[3,0,639,0,3]
 };

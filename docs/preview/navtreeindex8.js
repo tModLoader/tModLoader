@@ -1,5 +1,15 @@
 var NAVTREEINDEX8 =
 {
+"class_item_craft_condition.html":[3,0,627],
+"class_item_creation_context.html":[3,0,628],
+"class_item_definition.html":[3,0,629],
+"class_item_definition.html#a5209f4f531e28faebf7c941a03a3fae2":[3,0,629,0],
+"class_item_drop_bestiary_info_element.html":[3,0,631],
+"class_item_drop_database.html":[3,0,632],
+"class_item_drop_resolver.html":[3,0,633],
+"class_item_drop_rule.html":[3,0,634],
+"class_item_drop_with_condition_rule.html":[3,0,635],
+"class_item_filters.html":[3,0,636],
 "class_item_filters_1_1_a_accessories.html":[3,0,636,0],
 "class_item_filters_1_1_a_armor.html":[3,0,636,1],
 "class_item_filters_1_1_accessories.html":[3,0,636,2],
@@ -239,15 +249,5 @@ var NAVTREEINDEX8 =
 "class_item_use_style_i_d.html#a4c3c42d0a6e8a34ca738000533dee49a":[3,0,655,9],
 "class_item_use_style_i_d.html#a7117f7a3b2dfc7fbc29181c9de3d2c65":[3,0,655,0],
 "class_item_use_style_i_d.html#a7484310b7a54c496224065b4b87ea022":[3,0,655,4],
-"class_item_use_style_i_d.html#a8015400bfb683bac094d952581a65d73":[3,0,655,8],
-"class_item_use_style_i_d.html#a8ae641e4379298e83d59c44f1bc092d8":[3,0,655,7],
-"class_item_use_style_i_d.html#ab5b11381b8cf44f7db8cbe5bb059e302":[3,0,655,2],
-"class_item_use_style_i_d.html#abfd249ed19cf084012404fd1299bdccb":[3,0,655,11],
-"class_item_use_style_i_d.html#aedf57c54df1f32daa0adea4f1a46580d":[3,0,655,10],
-"class_item_variant.html":[3,0,656],
-"class_item_variant.html#a04b24d40434156cfe40bd870f7c54378":[3,0,656,0],
-"class_item_variant.html#aa5096599a931b53f7f51a89c2a5ef39a":[3,0,656,1],
-"class_item_variants.html":[3,0,657],
-"class_item_variants.html#a0109eb4fe333d16cd7634c35e5655ead":[3,0,657,9],
-"class_item_variants.html#a01e495638f2f700ca355d1cc0c8c7a6d":[3,0,657,5]
+"class_item_use_style_i_d.html#a8015400bfb683bac094d952581a65d73":[3,0,655,8]
 };

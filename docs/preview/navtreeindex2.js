@@ -1,5 +1,15 @@
 var NAVTREEINDEX2 =
 {
+"class_conditions_1_1_downed_plantera.html#a15e8a85121ee64ba5d0658648de85519":[3,0,192,9,1],
+"class_conditions_1_1_downed_plantera.html#a8e2d83f735f6a6d50f4f80c152308015":[3,0,192,9,0],
+"class_conditions_1_1_drunk_world_is_not_up.html":[3,0,192,10],
+"class_conditions_1_1_drunk_world_is_not_up.html#a7593803c12ee424bd53082e1bf2c5464":[3,0,192,10,1],
+"class_conditions_1_1_drunk_world_is_not_up.html#a9d5e468cc2d786a6660083e85edad309":[3,0,192,10,0],
+"class_conditions_1_1_drunk_world_is_up.html":[3,0,192,11],
+"class_conditions_1_1_drunk_world_is_up.html#a328b6416be1a94db8d8544816a54e6d5":[3,0,192,11,0],
+"class_conditions_1_1_drunk_world_is_up.html#aced603104bd7f8d4d38256fc1115ccf3":[3,0,192,11,1],
+"class_conditions_1_1_empress_of_light_is_genuinely_enraged.html":[3,0,192,12],
+"class_conditions_1_1_empress_of_light_is_genuinely_enraged.html#a0e98fea31e7ec0103ba5ddbbc4ff73d3":[3,0,192,12,1],
 "class_conditions_1_1_empress_of_light_is_genuinely_enraged.html#a1aa34dba81fe5f1bc4517bd562975081":[3,0,192,12,0],
 "class_conditions_1_1_first_time_killing_plantera.html":[3,0,192,13],
 "class_conditions_1_1_first_time_killing_plantera.html#a043f77f15c4971e787e7ec32aaa61c40":[3,0,192,13,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX2 =
 "class_creative_powers_1_1_freeze_wind_direction_and_strength.html":[3,0,212,9],
 "class_creative_powers_1_1_godmode_power.html":[3,0,212,10],
 "class_creative_powers_1_1_modify_rain_power.html":[3,0,212,11],
-"class_creative_powers_1_1_modify_time_rate.html":[3,0,212,12],
-"class_creative_powers_1_1_modify_wind_direction_and_strength.html":[3,0,212,13],
-"class_creative_powers_1_1_spawn_rate_slider_per_player_power.html":[3,0,212,14],
-"class_creative_powers_1_1_start_day_immediately.html":[3,0,212,15],
-"class_creative_powers_1_1_start_midnight_immediately.html":[3,0,212,16],
-"class_creative_powers_1_1_start_night_immediately.html":[3,0,212,17],
-"class_creative_powers_1_1_start_noon_immediately.html":[3,0,212,18],
-"class_creative_powers_1_1_stop_biome_spread_power.html":[3,0,212,19],
-"class_creative_powers_helper.html":[3,0,214],
-"class_creative_powers_helper_1_1_creative_power_icon_locations.html":[3,0,214,0],
-"class_creative_sacrifice_particle.html":[3,0,216]
+"class_creative_powers_1_1_modify_time_rate.html":[3,0,212,12]
 };

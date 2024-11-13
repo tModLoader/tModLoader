@@ -1,5 +1,15 @@
 var NAVTREEINDEX7 =
 {
+"class_header_attribute.html":[3,0,495],
+"class_help_command.html":[3,0,496],
+"class_help_command.html#a3b257d208e73b721f2e313cb0c9fa3ff":[3,0,496,0],
+"class_herb_bag_drops_item_drop_rule.html":[3,0,498],
+"class_hide_all_wires_builder_toggle.html":[3,0,499],
+"class_highest_of_multiple_u_i_collection_info_provider.html":[3,0,500],
+"class_hit_tile.html":[3,0,501],
+"class_hit_tile_1_1_hit_tile_object.html":[3,0,501,0],
+"class_hive_biome.html":[3,0,502],
+"class_honey_patch_biome.html":[3,0,503],
 "class_hook_list.html":[3,0,504],
 "class_hook_list.html#a156e1866bf3335262b3bc5efccbc28e8":[3,0,504,1],
 "class_hook_list.html#aa47cf689285451fba7a32575d2fe8754":[3,0,504,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX7 =
 "class_item.html#afe440f52db2e08b1c5f421d4cbff70d4":[3,0,625,52],
 "class_item.html#afe89f43c2dab80619ef8867972f333cf":[3,0,625,116],
 "class_item.html#affc71a3a1959544b16ef6c68c8263a78":[3,0,625,51],
-"class_item_alternative_function_i_d.html":[3,0,626],
-"class_item_craft_condition.html":[3,0,627],
-"class_item_creation_context.html":[3,0,628],
-"class_item_definition.html":[3,0,629],
-"class_item_definition.html#a5209f4f531e28faebf7c941a03a3fae2":[3,0,629,0],
-"class_item_drop_bestiary_info_element.html":[3,0,631],
-"class_item_drop_database.html":[3,0,632],
-"class_item_drop_resolver.html":[3,0,633],
-"class_item_drop_rule.html":[3,0,634],
-"class_item_drop_with_condition_rule.html":[3,0,635],
-"class_item_filters.html":[3,0,636]
+"class_item_alternative_function_i_d.html":[3,0,626]
 };

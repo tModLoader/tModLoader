@@ -92,7 +92,7 @@ var annotated_dup =
     [ "BigProgressBarHelper", "class_big_progress_bar_helper.html", "class_big_progress_bar_helper" ],
     [ "BigProgressBarInfo", "struct_big_progress_bar_info.html", null ],
     [ "BigProgressBarSystem", "class_big_progress_bar_system.html", "class_big_progress_bar_system" ],
-    [ "BinaryIO", "class_binary_i_o.html", null ],
+    [ "BinaryIO", "class_binary_i_o.html", "class_binary_i_o" ],
     [ "BinaryWriterHelper", "struct_binary_writer_helper.html", null ],
     [ "BiomeConversionID", "class_biome_conversion_i_d.html", null ],
     [ "BiomeLoader", "class_biome_loader.html", null ],

@@ -1,5 +1,15 @@
 var NAVTREEINDEX3 =
 {
+"class_creative_powers_1_1_modify_wind_direction_and_strength.html":[3,0,212,13],
+"class_creative_powers_1_1_spawn_rate_slider_per_player_power.html":[3,0,212,14],
+"class_creative_powers_1_1_start_day_immediately.html":[3,0,212,15],
+"class_creative_powers_1_1_start_midnight_immediately.html":[3,0,212,16],
+"class_creative_powers_1_1_start_night_immediately.html":[3,0,212,17],
+"class_creative_powers_1_1_start_noon_immediately.html":[3,0,212,18],
+"class_creative_powers_1_1_stop_biome_spread_power.html":[3,0,212,19],
+"class_creative_powers_helper.html":[3,0,214],
+"class_creative_powers_helper_1_1_creative_power_icon_locations.html":[3,0,214,0],
+"class_creative_sacrifice_particle.html":[3,0,216],
 "class_creative_u_i.html":[3,0,217],
 "class_creative_u_i.html#a51b8d41ce3a2581823cca12bd4ecb6ba":[3,0,217,1],
 "class_creative_u_i.html#a6828c2ff9aa6b98b268685449d464464":[3,0,217,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX3 =
 "class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4":[3,0,317,1],
 "class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652":[3,0,317,0],
 "class_entity_source___catch_entity.html":[3,0,318],
-"class_entity_source___caught.html":[3,0,319],
-"class_entity_source___caught.html#a8923c2a0de7b28a808dac608b80d7676":[3,0,319,0],
-"class_entity_source___death.html":[3,0,320],
-"class_entity_source___debug_command.html":[3,0,321],
-"class_entity_source___debug_command.html#a3f554db8cad5150722b194eebca43ceb":[3,0,321,0],
-"class_entity_source___drop_as_item.html":[3,0,322],
-"class_entity_source___film.html":[3,0,323],
-"class_entity_source___film.html#ad8abff8d67575f1d12f3cd0accd06458":[3,0,323,0],
-"class_entity_source___fished_out.html":[3,0,324],
-"class_entity_source___fished_out.html#a2497c9cab55f524479dbf663aeb46f93":[3,0,324,0],
-"class_entity_source___fished_out.html#ac5e3424b2c37c98ded5f42196456565b":[3,0,324,1]
+"class_entity_source___caught.html":[3,0,319]
 };

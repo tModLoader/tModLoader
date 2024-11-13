@@ -1,5 +1,15 @@
 var NAVTREEINDEX1 =
 {
+"class_binary_i_o.html#a473a5c2b3a3d808c7d6a13bb16788877":[3,0,92,3],
+"class_binary_i_o.html#a6ad7d1159184f93639a5bed28b2b221d":[3,0,92,0],
+"class_binary_i_o.html#a707112646d5860a262c72d3ec266ac25":[3,0,92,5],
+"class_binary_i_o.html#a9f1f6f7fed33e697bae40928b8131b1c":[3,0,92,2],
+"class_binary_i_o.html#aa90dade19f0d71471b9490eeaaa44b58":[3,0,92,8],
+"class_binary_i_o.html#abeb818181722a9621430fb60924cccd8":[3,0,92,9],
+"class_binary_i_o.html#ac809120a014a2e77619c3c701004259c":[3,0,92,7],
+"class_binary_i_o.html#accc9bb2e2769b5ea33f7ce851eb62ee4":[3,0,92,4],
+"class_binary_i_o.html#af8916bd9b494d9330368f397c87dfdce":[3,0,92,1],
+"class_biome_conversion_i_d.html":[3,0,94],
 "class_biome_loader.html":[3,0,95],
 "class_biome_preference_list_trait.html":[3,0,96],
 "class_biome_preference_list_trait_1_1_biome_preference.html":[3,0,96,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_downed_all_mech_bosses.html":[3,0,192,8],
 "class_conditions_1_1_downed_all_mech_bosses.html#a50615d4e365598d2335409416cc69f72":[3,0,192,8,1],
 "class_conditions_1_1_downed_all_mech_bosses.html#a83922aaa2e315416ba2f99cbc5def299":[3,0,192,8,0],
-"class_conditions_1_1_downed_plantera.html":[3,0,192,9],
-"class_conditions_1_1_downed_plantera.html#a15e8a85121ee64ba5d0658648de85519":[3,0,192,9,1],
-"class_conditions_1_1_downed_plantera.html#a8e2d83f735f6a6d50f4f80c152308015":[3,0,192,9,0],
-"class_conditions_1_1_drunk_world_is_not_up.html":[3,0,192,10],
-"class_conditions_1_1_drunk_world_is_not_up.html#a7593803c12ee424bd53082e1bf2c5464":[3,0,192,10,1],
-"class_conditions_1_1_drunk_world_is_not_up.html#a9d5e468cc2d786a6660083e85edad309":[3,0,192,10,0],
-"class_conditions_1_1_drunk_world_is_up.html":[3,0,192,11],
-"class_conditions_1_1_drunk_world_is_up.html#a328b6416be1a94db8d8544816a54e6d5":[3,0,192,11,0],
-"class_conditions_1_1_drunk_world_is_up.html#aced603104bd7f8d4d38256fc1115ccf3":[3,0,192,11,1],
-"class_conditions_1_1_empress_of_light_is_genuinely_enraged.html":[3,0,192,12],
-"class_conditions_1_1_empress_of_light_is_genuinely_enraged.html#a0e98fea31e7ec0103ba5ddbbc4ff73d3":[3,0,192,12,1]
+"class_conditions_1_1_downed_plantera.html":[3,0,192,9]
 };
