@@ -28,7 +28,7 @@
 		<para/> Lighting values in-between tile coordinates can be interpolated using <see cref="GetSubLight(Vector2)"/>, but usually the lighting values at the tile coordinates closest to the center of an entity are sufficient. There are many more GetColorX methods for more advanced situations, if needed. If drawing a really large sprite, one might consider splitting up the drawing to allow sections of the sprite to be drawn at different light values.
 	</LightingGetColor>
 	<BitArrayUsage>
-		<para/> Useful for sending/receiving large amounts of flags/bools. If the data length is unknown to the receiver, length would need to be sent as well.
+		<para/> Useful for sending/receiving a large number of flags/bools. If the data length is unknown to the receiver, length would need to be sent as well.
 		This example sends a bool array of length <c>ItemLoader.ItemCount</c>, which will be consistent, so length is not sent.
 		<code>
 // Field
