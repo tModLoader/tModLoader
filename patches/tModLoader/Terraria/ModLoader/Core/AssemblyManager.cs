@@ -322,6 +322,13 @@ public static class AssemblyManager
 
 	public static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(mod.Name));
 
+	/// <summary>
+	/// Gets all <see cref="Type"/>s loadable from the given <see cref="Assembly"/>.
+	/// <para/> For a non-mod Assembly, will simply return <see cref="Assembly.GetTypes"/>.
+	/// <para/> When used on a modded Assembly (using <see cref="Mod.Code"/>), this will return all the Types that are able to be loaded. This will specifically exclude Types that inherit from other mods using <see cref="ExtendsFromModAttribute"/>. Failure to use this method as a replacement for <see cref="Assembly.GetTypes"/> to query the Types from other mods (for the purposes of autoloading content, for example) will result in exceptions.
+	/// </summary>
+	/// <param name="assembly"></param>
+	/// <returns></returns>
 	public static Type[] GetLoadableTypes(Assembly assembly) => AssemblyLoadContext.GetLoadContext(assembly) is ModLoadContext mlc ? mlc.loadableTypes[assembly] : assembly.GetTypes();
 
 	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)

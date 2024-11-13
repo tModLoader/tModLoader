@@ -1,15 +1,25 @@
 --- src/TerrariaNetCore/Terraria/UI/StyleDimension.cs
 +++ src/tModLoader/Terraria/UI/StyleDimension.cs
-@@ -7,6 +_,12 @@
+@@ -1,11 +_,22 @@
+ namespace Terraria.UI;
+ 
++/// <summary>
++/// Represents a dimension, either an absolute pixel size, a percentage of the available space, or a combination of both.
++/// <para/> For example <c>uiElement.Width.Set(200, 0f);</c> sets an absolute width of 200 pixels. <c>uiElement.Width.Set(0, 0.5f);</c> on the otherhand sets a width of 50% of the parent's avaiable <see cref="UIElement.GetInnerDimensions"/>.
++/// <para/> Both values can be set for more complex logic. <c>uiElement.Width.Set(-10, 0.5f);</c> sets the width to 50% of the available space minus 10 pixels. This would leave room between 2 buttons filling a space. <c>uiElement.Height.Set(-100, 1f);</c> would fill the full height of the space but leave 100 pixels at the bottom empty.
++/// </summary>
+ public struct StyleDimension
+ {
+ 	public static StyleDimension Fill = new StyleDimension(0f, 1f);
+ 	public static StyleDimension Empty = new StyleDimension(0f, 0f);
  	public float Pixels;
  	public float Precent;
- 
++
 +	// Added by TML.
 +	public float Percent {
 +		get => Precent;
 +		set => Precent = value;
 +	}
-+
+ 
  	public StyleDimension(float pixels, float precent)
  	{
- 		Pixels = pixels;

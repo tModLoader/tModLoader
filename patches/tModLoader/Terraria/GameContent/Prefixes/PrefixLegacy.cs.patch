@@ -13,12 +13,23 @@
  	{
  		public static int[] PrefixesForSwords = new int[40] {
  			1,
-@@ -197,7 +_,7 @@
+@@ -195,10 +_,18 @@
+ 		};
+ 	}
  
++	/// <summary>
++	/// These sets determine which vanilla weapons belong to which prefix categories.
++	/// <para/> Modded items should not use these as modded item prefix categories are derived automatically from their <see cref="Item.DamageType"/> and/or <see cref="ModItem.MeleePrefix"/>/<see cref="ModItem.MagicPrefix"/>/<see cref="ModItem.RangedPrefix"/>/<see cref="ModItem.WeaponPrefix"/> usage instead.
++	/// <para/> <see cref="ItemsThatCanHaveLegendary2"/>, however, can be used by modded items if needed.
++	/// </summary>
  	public class ItemSets
  	{
 -		public static SetFactory Factory = new SetFactory(ItemID.Count);
 +		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
  		public static bool[] BoomerangsChakrams = Factory.CreateBoolSet(55, 119, 191, 284, 670, 1122, 1513, 1569, 1571, 1825, 1918, 3054, 3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 5294, 3030, 3543, 4764, 4818, 4760, 561, 1324, 5298);
++		/// <summary>
++		/// If true, this item can receive the <see cref="ItemID.Terrarian"/>-specific Legendary modifier.
++		/// </summary>
  		public static bool[] ItemsThatCanHaveLegendary2 = Factory.CreateBoolSet(3389);
  		public static bool[] MagicAndSummon = Factory.CreateBoolSet(64, 112, 113, 127, 157, 165, 218, 272, 494, 495, 496, 514, 517, 518, 519, 683, 726, 739, 740, 741, 742, 743, 744, 788, 1121, 1155, 1157, 1178, 1244, 1256, 1260, 1264, 1266, 1295, 1296, 1308, 1309, 1313, 1336, 1444, 1445, 1446, 1572, 1801, 1802, 1930, 1931, 2188, 2622, 2621, 2584, 2551, 2366, 2535, 2365, 2364, 2623, 2750, 2795, 3053, 3051, 3209, 3014, 3105, 2882, 3269, 3006, 3377, 3069, 2749, 3249, 3476, 3474, 3531, 3541, 3542, 3569, 3570, 3571, 3779, 3787, 3531, 3852, 3870, 4269, 4273, 4281, 4347, 4348, 4270, 4758, 4715, 4952, 4607, 5005, 5065, 5069, 5114, 5119, 5118, 5147, 3824, 3818, 3829, 3832, 3825, 3819, 3830, 3833, 3826, 3820, 3831, 3834, 4062);
+ 		public static bool[] GunsBows = Factory.CreateBoolSet(39, 44, 95, 96, 98, 99, 120, 164, 197, 219, 266, 281, 434, 435, 436, 481, 506, 533, 534, 578, 655, 658, 661, 679, 682, 725, 758, 759, 760, 796, 800, 905, 923, 964, 986, 1156, 1187, 1194, 1201, 1229, 1254, 1255, 1258, 1265, 1319, 1553, 1782, 1784, 1835, 1870, 1910, 1929, 1946, 2223, 2269, 2270, 2624, 2515, 2747, 2796, 2797, 3052, 2888, 3019, 3029, 3007, 3008, 3210, 3107, 3475, 3540, 3854, 3859, 3821, 3930, 3480, 3486, 3492, 3498, 3504, 3510, 3516, 3350, 3546, 3788, 4058, 4060, 4381, 4703, 4953, 5117, 5282);

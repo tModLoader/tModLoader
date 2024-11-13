@@ -42,4 +42,7 @@ var itemsFoundData = Utils.ReceiveBitArray(ItemLoader.ItemCount, reader);
 itemFoundData.CopyTo(itemsFound, 0);
 		</code>
 	</BitArrayUsage>
+	<CardinalDirections>
+		<para/> The index values are as follows: <br/> 0: Down <br/> 1: Up <br/> 2: Right <br/> 3: Left
+	</CardinalDirections>
 </Common>

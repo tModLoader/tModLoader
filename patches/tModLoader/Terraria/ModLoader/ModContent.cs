@@ -216,6 +216,11 @@ public static class ModContent
 	public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
 
 	/// <summary>
+	/// Get the id (type) of a ModCloud by class. Assumes one instance per class.
+	/// </summary>
+	public static int CloudType<T>() where T : ModCloud => GetInstance<T>()?.Type ?? 0;
+
+	/// <summary>
 	/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 	/// </summary>
 	public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
@@ -462,6 +467,7 @@ public static class ModContent
 	internal static void UnloadModContent()
 	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+		CloudLoader.Unload();
 
 		int i = 0;
 		foreach (var mod in ModLoader.Mods.Reverse()) {
@@ -582,6 +588,7 @@ public static class ModContent
 		if (!Main.dedServ) {
 			GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 			GoreLoader.ResizeAndFillArrays();
+			CloudLoader.ResizeAndFillArrays(unloading);
 		}
 
 		LoaderManager.ResizeArrays();

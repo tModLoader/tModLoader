@@ -87,13 +87,7 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
-	/// <summary>
-	/// Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type">The tile type</param>
-	/// <param name="closer"></param>
+	/// <inheritdoc cref="ModTile.NearbyEffects(int, int, bool)"/>
 	public virtual void NearbyEffects(int i, int j, int type, bool closer)
 	{
 	}

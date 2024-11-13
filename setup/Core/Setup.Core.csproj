@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Terraria.ModLoader.Setup.Core</RootNamespace>
+		<AssemblyName>setup-core</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PatchReviewer\DiffPatch\DiffPatch.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Fody" Version="6.8.1">
+		  <PrivateAssets>all</PrivateAssets>
+			<ExcludeAssets>compile;runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="ConfigureAwait.Fody" Version="3.3.2">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+		<PackageReference Include="MonoMod.Patcher" Version="25.0.0-prerelease.2" />
+		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.3.1" />
+		<!-- Preview is needed for https://github.com/icsharpcode/ILSpy/commit/8dd721a -->
+		<!-- When updating, please remove the TODO patch from patches/Terraria/Terraria/Graphics/TileBatch.cs.patch, and this line. -->
+		<PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7106-preview2" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<WeaverConfiguration>
+			<Weavers>
+				<ConfigureAwait ContinueOnCapturedContext="false" />
+			</Weavers>
+		</WeaverConfiguration>
+	</PropertyGroup>
+
+</Project>
