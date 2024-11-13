@@ -290,6 +290,7 @@ jobs:
           echo ::endgroup::
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+          TERRARIA_OWNERSHIP_KEY: ${{ secrets.TERRARIA_OWNERSHIP_KEY }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}
