@@ -72,6 +72,9 @@ public static class BinaryIO
 	/// <inheritdoc cref=" WriteFlags(BinaryWriter, bool, bool, bool, bool, bool, bool, bool, bool)"/>
 	public static void Write(this BinaryWriter writer, bool b1 = false, bool b2 = false, bool b3 = false, bool b4 = false, bool b5 = false, bool b6 = false, bool b7 = false, bool b8 = false) => writer.Write(new BitsByte(b1, b2, b3, b4, b5, b6, b7, b8));
 
+	// TODO: public static void Write(this BinaryWriter writer, params bool[] booleans)
+	// TODO: public static bool[] ReadBooleans(this BinaryReader reader)
+
 	public static void SafeWrite(this BinaryWriter writer, Action<BinaryWriter> write)
 	{
 		var ms = new MemoryStream();//memory thrash should be fine here

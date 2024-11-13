@@ -4,6 +4,7 @@ namespace Terraria;
 
 public partial struct BitsByte
 {
+	/* Deconstruct approach commented out for now, ReadFlags preferred.
 	public void Deconstruct(out bool b0)
 	{
 		b0 = this[0];
@@ -71,6 +72,7 @@ public partial struct BitsByte
 		b6 = this[6];
 		b7 = this[7];
 	}
+	*/
 
 	// Added by TML to ease debugging
 	public override string ToString()
