@@ -15,7 +15,7 @@
 +	/// if (info.UnlockState == BestiaryEntryUnlockState.NotKnownAtAll_0)
 +	///		return null;
 +	///		
-+	///	// other code creating and returning a UIElement showing info
++	/// // other code creating and returning a UIElement showing info
 +	/// </code>
 +	/// </summary>
  	UIElement ProvideUIElement(BestiaryUICollectionInfo info);
