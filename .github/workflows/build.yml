@@ -1,4 +1,5 @@
 name: Build tModLoader
+#NOTE: this doesn't auto sync to other branches. 
 
 env:
     DevBranch: 1.4.4
@@ -50,12 +51,6 @@ jobs:
         run: |
           echo "Attempting get previous version id"
           version=$(git describe --tags --abbrev=0)
-          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
-            version=$(git describe --tags --abbrev=0 --exclude v????.??.2*)
-          fi
-          if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
-            version=$(git describe --tags --abbrev=0 --exclude v????.??.1*)
-          fi
           
           echo "Previous Version is: $version"
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
@@ -296,6 +291,7 @@ jobs:
           echo ::endgroup::
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+          TERRARIA_OWNERSHIP_KEY: ${{ secrets.TERRARIA_OWNERSHIP_KEY }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}

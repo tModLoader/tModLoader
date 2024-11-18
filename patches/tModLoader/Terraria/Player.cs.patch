@@ -854,6 +854,16 @@
  	public bool hostile;
  	public SoundPlaySet hermesStepSound = new SoundPlaySet();
  	public Vector2 instantMovementAccumulatedThisFrame;
+@@ -1270,6 +_,9 @@
+ 	public bool accWeatherRadio;
+ 	public bool accJarOfSouls;
+ 	public bool accCalendar;
++	/// <summary>
++	/// The BannerID of the last npc damaged by this player. Used by the <see cref="ItemID.TallyCounter"/> to display the name of the last attacked enemy. When attacking an enemy without an assigned banner, the value will be 0 and "Kill count unavailable" will be shown.
++	/// </summary>
+ 	public int lastCreatureHit = -1;
+ 	public bool accThirdEye;
+ 	public byte accThirdEyeCounter;
 @@ -1297,9 +_,24 @@
  	public Item boneGloveItem;
  	public bool goldRing;
@@ -5370,7 +5380,7 @@
  		bool flag = !immune;
  		bool flag2 = false;
  		int hitContext = cooldownCounter;
-@@ -29530,7 +_,34 @@
+@@ -29530,7 +_,36 @@
  		}
  
  		if (flag) {
@@ -5388,6 +5398,7 @@
 +			modifiers.ScalingArmorPenetration += scalingArmorPenetration;
 +
 +			// ogre knockback re-implemented from below
+-			if (dodgeable) {
 +			if (flag2) {
 +				// this gives the right values for X knockback.
 +				// Y knockback will be slightly different, but mostly accurate
@@ -5397,8 +5408,10 @@
 +
 +			ApplyVanillaHurtEffectModifiers(ref modifiers);
 +			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
++			if (info.Cancelled)
++				return 0.0;
 +
- 			if (dodgeable) {
++			if (info.Dodgeable) {
 +				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, info))
 +					return 0.0;
 +

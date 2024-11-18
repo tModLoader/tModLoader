@@ -695,7 +695,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual void HoldItemFrame(Player player) { }
 
 	/// <summary>
-	/// Allows you to make this item usable by right-clicking. Returns false by default. When this item is used by right-clicking, player.altFunctionUse will be set to 2.
+	/// Allows you to make this item usable by right-clicking. When this item is used by right-clicking, <see cref="Player.altFunctionUse"/> will be set to 2. Check the value of altFunctionUse in <see cref="UseItem(Player)"/> to apply right-click specific logic. For auto-reusing through right clicking, see also <see cref="ItemID.Sets.ItemsThatAllowRepeatedRightClick"/>.
+	/// <para/> Returns false by default.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>

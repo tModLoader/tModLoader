@@ -73,10 +73,24 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 	public float DrawOffsetY { get; set; }
 
-	/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type. </summary>
+	/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. Also known as the BannerID. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type and also set <see cref="BannerItem"/>:
+	/// <code>
+	/// Banner = Type;
+	/// BannerItem = ModContent.ItemType&lt;ExampleWormHeadBanner&gt;();
+	/// </code>
+	/// <para/> For NPC with multiple parts, such as worms, be sure to set this to the same value for each ModNPC. Typically the head NPC type is used as the common Banner value. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExampleWorm.cs">ExampleWorm.cs</see> is an example of this:
+	/// <code>
+	/// // In ExampleWormBody.SetDefaults:
+	/// Banner = ModContent.NPCType&lt;ExampleWormHead&gt;();</code>
+	/// <para/> For NPC that are variants of each other, it is also useful to share a Banner value so that each variant counts towards the same banner kill count rather than each having their own banner drop. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie.cs</see> does this and shares the vanilla Zombie banner. By doing this it is affected by the Zombie banner and counts towards dropping it as well.
+	/// <para/> To retrieve and use a vanilla banner value, use the <see cref="Item.NPCtoBanner"/> method:
+	/// <code>Banner = Item.NPCtoBanner(NPCID.Zombie);</code>
+	/// </summary>
 	public int Banner { get; set; }
 
-	/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner. </summary>
+	/// <summary> The item type this NPC drops after some number of it is defeated. The exact number can be customized by using <see cref="ItemID.Sets.KillsToBanner"/> and defaults to 50. For any ModNPC whose <see cref="Banner"/> field is set to the type of this NPC, that ModNPC will drop this banner. Must be set along with <see cref="Banner"/>.
+	/// <para/> If querying the banner item drop for a specific NPC that you know has an assigned banner, you'll need to use the following for accurate results since BannerItem isn't necessarily assigned for npc sharing a banner: <c>Item.BannerToItem(Item.NPCtoBanner(npc.BannerID()));</c>
+	/// </summary>
 	public int BannerItem { get; set; }
 
 	//TODO: Find a better solution in the future.
@@ -142,9 +156,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 		if (Banner != 0 && BannerItem != 0) {
 			NPCLoader.bannerToItem[Banner] = BannerItem;
-		}
-		else if (Banner != 0 || BannerItem != 0) {
-			Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.Name, Name));
+			NPCLoader.itemToBanner[BannerItem] = Banner;
 		}
 
 		if (NPC.lifeMax > 32767 || NPC.boss) {

@@ -22,6 +22,17 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
+@@ -48,6 +_,10 @@
+ 	public static int maxAI = 4;
+ 	public int netSpam;
+ 	public static int goldCritterChance = 400;
++	/// <summary>
++	/// Indexed by BannerIDs, counts how many kills a specific enemy (or group of enemies with a shared BannerID) has in this world. Kill counts are stored on the world and are synced in multiplayer. Used by the <see cref="ItemID.TallyCounter"/> and for dropping banners. See also <see cref="ItemID.Sets.KillsToBanner"/>.
++	/// <para/> Note that Bestiary kill counts are tracked separately and per each NPC type instead of sharing a kill count with all other NPC types using the same BannerID.
++	/// </summary>
+ 	public static int[] killCount = new int[NPCID.Count];
+ 	public static float totalInvasionPoints = 0f;
+ 	public static float waveKills = 0f;
 @@ -55,6 +_,12 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;

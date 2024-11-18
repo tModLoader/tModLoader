@@ -1272,6 +1272,19 @@
  		if (Main.tile[x, y + 1] != null) {
  			if (!SolidTileAllowBottomSlope(x, y + 1))
  				KillTile(x, y);
+@@ -30563,7 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Checks if vines are allowed to grow immediately below the location provided. This method only checks that the count of existing vine tiles (<see cref="TileID.Sets.IsVine"/>) in a nearby area does not exceed the maximum allowed amount. Returns true if more vines in the area would be allowed.
++	/// <para/> Specifically, this method checks that the number of vine tiles in a 9x17 area around the given coordinate does not exceed 60.
++	/// </summary>
+-	private static bool GrowMoreVines(int x, int y)
++	public static bool GrowMoreVines(int x, int y)
+ 	{
+ 		if (!InWorld(x, y, 30))
+ 			return false;
 @@ -30923,10 +_,12 @@
  			return;
  
@@ -2665,6 +2678,18 @@
  		return false;
  	}
  
+@@ -50482,7 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Returns true if there are 3 or more Chlorophyte or ChlorophyteBrick tiles within a 11x11 area around the provided coordinate. Sometimes returns true if there are less than 3 but more than 0 of them. Used to implement Chlorophyte tiles  restricting the spread of the evil biomes nearby (<see href="https://terraria.wiki.gg/wiki/Biome_spread#Notes">Biome Spread wiki page</see>).
++	/// </summary>
+-	private static bool nearbyChlorophyte(int i, int j)
++	public static bool nearbyChlorophyte(int i, int j)
+ 	{
+ 		double num = 0.0;
+ 		int num2 = 5;
 @@ -50555,7 +_,7 @@
  			return;
  

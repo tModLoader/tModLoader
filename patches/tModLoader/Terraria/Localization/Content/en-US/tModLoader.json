@@ -204,7 +204,7 @@
 		"LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		"LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
 		"LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
-		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
+		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.Banner or ModNPC.BannerItem, but not the other. Or, the BannerItem value conflicts with other ModNPC sharing the same banner. Make sure you set both for the representative ModNPC, check your spelling, and that the item exists if you are using Mod.Find<ModItem>().Type. Report this to the {0} developers.",
 		"UnloadError": "One or more errors occurred while unloading and tModLoader must be restarted to prevent further issues.",
 		"DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
 		"BuildError": "An error occurred while building {0}",

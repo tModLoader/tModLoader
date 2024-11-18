@@ -6264,6 +6264,17 @@
  	public void LoadTiles(int i)
  	{
  		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
+@@ -48951,7 +_,10 @@
+ 					color.G = (byte)((float)(int)color.G * num9);
+ 					float num10 = cloud[i].position.Y * ((float)screenHeight / 600f);
+ 					num10 = cloud[i].position.Y + (float)(int)(num4 * 750.0 + 830.0) + (float)(int)scAdj + (float)num6;
++					DrawCloud(i, color * num7, num10);
++					/*
+ 					spriteBatch.Draw(TextureAssets.Cloud[cloud[i].type].Value, new Vector2(cloud[i].position.X + (float)TextureAssets.Cloud[cloud[i].type].Width() * 0.5f, num10 + (float)TextureAssets.Cloud[cloud[i].type].Height() * 0.5f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[i].type].Width(), TextureAssets.Cloud[cloud[i].type].Height()), color * num7, cloud[i].rotation, new Vector2((float)TextureAssets.Cloud[cloud[i].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[i].type].Height() * 0.5f), cloud[i].scale, cloud[i].spriteDir, 0f);
++					*/
+ 				}
+ 			}
+ 		}
 @@ -48974,12 +_,12 @@
  		if (!WorldGen.drunkWorldGen && flag && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  			if (BackgroundEnabled) {
@@ -6297,6 +6308,29 @@
  
  					if (cloudBGX[1] > (float)backgroundWidth[cloudBG[1]] * bgScale)
  						cloudBGX[1] -= (float)backgroundWidth[cloudBG[1]] * bgScale;
+@@ -49067,8 +_,10 @@
+ 
+ 						if (gameMenu)
+ 							num16 = 1f;
+-
++						DrawCloud(l, color2 * num7, num15 + cTop + 200f);
++						/*
+ 						spriteBatch.Draw(TextureAssets.Cloud[cloud[l].type].Value, new Vector2(cloud[l].position.X + (float)TextureAssets.Cloud[cloud[l].type].Width() * 0.5f, num15 + (float)TextureAssets.Cloud[cloud[l].type].Height() * 0.5f + cTop + 200f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[l].type].Width(), TextureAssets.Cloud[cloud[l].type].Height()), color2 * num7, cloud[l].rotation, new Vector2((float)TextureAssets.Cloud[cloud[l].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[l].type].Height() * 0.5f), cloud[l].scale, cloud[l].spriteDir, 0f);
++						*/
+ 					}
+ 				}
+ 			}
+@@ -49149,7 +_,10 @@
+ 						if (gameMenu)
+ 							num20 = 1f;
+ 
++						DrawCloud(n, color4 * num7, num19 + cTop);
++						/*
+ 						spriteBatch.Draw(TextureAssets.Cloud[cloud[n].type].Value, new Vector2(cloud[n].position.X + (float)TextureAssets.Cloud[cloud[n].type].Width() * 0.5f, num19 + (float)TextureAssets.Cloud[cloud[n].type].Height() * 0.5f + cTop), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[n].type].Width(), TextureAssets.Cloud[cloud[n].type].Height()), color4 * num7, cloud[n].rotation, new Vector2((float)TextureAssets.Cloud[cloud[n].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[n].type].Height() * 0.5f), cloud[n].scale, cloud[n].spriteDir, 0f);
++						*/
+ 					}
+ 				}
+ 			}
 @@ -49231,10 +_,15 @@
  						DrawSurfaceBG_Mushroom(num4, num5, num6, bgTexIndexes7);
  						DrawSurfaceBG_DrawChangeOverlay(11);
@@ -6313,6 +6347,29 @@
  		if (flag2)
  			num6 -= num11;
  
+@@ -49257,6 +_,22 @@
+ 
+ 		if (!mapFullscreen)
+ 			SkyManager.Instance.DrawRemainingDepth(spriteBatch);
++
++		void DrawCloud(int cloudIndex, Color color, float yOffset)
++		{
++			Cloud cloud = Main.cloud[cloudIndex];
++			Asset<Texture2D> texture = TextureAssets.Cloud[cloud.type];
++			Vector2 position = new Vector2(cloud.position.X + (float)texture.Width() * 0.5f, yOffset + (float)texture.Height() * 0.5f);
++			Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width(), texture.Height());
++			float rotation = cloud.rotation;
++			Vector2 origin = new Vector2((float)texture.Width() * 0.5f, (float)texture.Height() * 0.5f);
++			float scale = cloud.scale;
++			SpriteEffects effects = cloud.spriteDir;
++			DrawData drawData = new DrawData(texture.Value, position, sourceRectangle, color, rotation, origin, scale, effects);
++			if (cloud.ModCloud?.Draw(spriteBatch, cloud, cloudIndex, ref drawData) == false)
++				return; 
++			drawData.Draw(spriteBatch);
++		}
+ 	}
+ 
+ 	private static float DrawSurfaceBG_GetFogPower() => Math.Max(cloudAlpha, GraveyardVisualIntensity * 0.92f);
 @@ -49393,11 +_,14 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(24);
  		}

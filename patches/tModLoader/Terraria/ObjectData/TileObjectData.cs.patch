@@ -326,12 +326,13 @@
  		get {
  			if (_subTiles == null)
  				return _baseObject.SubTiles;
-@@ -551,6 +_,11 @@
+@@ -551,6 +_,12 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Offsets the drawing of this tile in the Y direction. Can be used to draw a tile at a location other than the default. One example is how <see cref="TileID.Switches"/> appear slightly embedded into the tile they are anchored to. Another example is how the alternate placement of banners for  platforms shifts the drawing up.
++	/// <para/> For modded tiles this affects both the placement preview and placed tiles.
 +	/// <para/> Read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#non-16-or-18-values">this section on the wiki</see> for a visual explanation of this.
 +	/// <para/> Defaults to 0.
 +	/// </summary>
