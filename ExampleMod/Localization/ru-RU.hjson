@@ -1158,6 +1158,7 @@ Mods: {
 		// ResourceDisplaySets.ExampleReversedBarsDisplay.DisplayName: Swapped Bars
 
 		Bestiary: {
+			// ImportantFlavorText: Important Flavor Text!
 			ExamplePerson: Построен из блоков, с руками из стали. Качает своё железо и днём и ночью.
 			// ExampleBoneMerchant: Built with bone blocks and arms of steel. Throws bones day and night.
 			// ExampleTownPet: A blocky Town Pet to bring extra cuteness to the town.

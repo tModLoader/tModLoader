@@ -9,15 +9,13 @@ using Terraria.UI;
 namespace ExampleMod.Common.GlobalNPCs;
 
 /// <summary>
-/// Global NPC that showcases adding your own UI element to a pre-existing Bestiary entry.
+/// Showcases adding a custom bestiary UI element (IBestiaryInfoElement) to a pre-existing Bestiary entry.
 /// </summary>
 public class ExampleBestiaryGlobalNPC : GlobalNPC
 {
-
 	// An example of adding additional flavor text to a bestiary entry!
 	private class ImportantFlavorTextElement : IBestiaryInfoElement, IBestiaryPrioritizedElement, ICategorizedBestiaryInfoElement
 	{
-
 		// 1 so that it gets placed above the normal flavor text!
 		public float OrderPriority => 1f;
 
@@ -25,7 +23,11 @@ public class ExampleBestiaryGlobalNPC : GlobalNPC
 		public UIBestiaryEntryInfoPage.BestiaryInfoCategory ElementCategory => UIBestiaryEntryInfoPage.BestiaryInfoCategory.FlavorText;
 
 		public UIElement ProvideUIElement(BestiaryUICollectionInfo info) {
-			// Code mostly taken from vanilla Bestiary
+			if (info.UnlockState == BestiaryEntryUnlockState.NotKnownAtAll_0) {
+				return null;
+			}
+
+			// This code mostly adapted from vanilla Bestiary code
 			UIPanel backPanel = new(Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Stat_Panel"), null, customBarSize: 7)	{
 				IgnoresMouseInteraction = true,
 				Width = StyleDimension.FromPixelsAndPercent(-11f, 1f),
