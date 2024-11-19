@@ -65,7 +65,7 @@
 +	// SyncItem and ItemOwner for every active item
 +	// SyncNPC for every active npc
 +	// SyncProjectile for every active projectile with the netImportant property or listed in Main.projPet
-+	// NPCKillCountDeathTally for the first 250 NPCs (though I don't know why)
++	// NPCKillCountDeathTally for all NPCs (technically BannerIDs)
 +	// StartPlaying, TileCounts, WorldInfo, MoonlordCountdown, UpdateTowerShieldStrengths
  	public const byte SpawnTileData = 8;
 +
@@ -409,7 +409,7 @@
  	public const byte NetModules = 82;
 +
 +	// BannerID, killCount
-+	// Supports modded banners now that check for bannerID > 267 removed
++	// Supports modded banners now that check for bannerID > Main.MaxBannerTypes removed
 +	// Sent to all clients whenever an npc with a banner is killed
  	public const byte NPCKillCountDeathTally = 83;
  	public const byte PlayerStealth = 84;

@@ -19,7 +19,8 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// </summary>
 	public SoundStyle? HitSound { get; set; } = SoundID.Dig;
 
-	/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
+	/// <summary> The default type of dust made when this tile/wall is hit.
+	/// <para/> Defaults to 0, which is <see cref="DustID.Dirt"/>. To prevent spawning any hit dust, set this to -1 instead. </summary>
 	public int DustType { get; set; }
 
 	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>

@@ -161,7 +161,7 @@
  		Rectangle bodyFrame = drawPlayer.bodyFrame;
  		bodyFrame = drawPlayer.bodyFrame;
  		bodyFrame.Y -= 336;
-@@ -1359,9 +_,18 @@
+@@ -1359,15 +_,24 @@
  			int height = 26;
  			hairFrontFrame.Height = height;
  		}
@@ -180,6 +180,13 @@
  		drawFloatingTube = drawPlayer.hasFloatingTube && !hideEntirePlayer;
  		drawUnicornHorn = drawPlayer.hasUnicornHorn;
  		drawAngelHalo = drawPlayer.hasAngelHalo;
+ 		drawFrontAccInNeckAccLayer = false;
+ 		if (drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height == 5)
+-			drawFrontAccInNeckAccLayer = drawPlayer.front > 0 && drawPlayer.front < ArmorIDs.Front.Count && ArmorIDs.Front.Sets.DrawsInNeckLayer[drawPlayer.front];
++			drawFrontAccInNeckAccLayer = drawPlayer.front > 0 && ArmorIDs.Front.Sets.DrawsInNeckLayer[drawPlayer.front];
+ 
+ 		hairOffset = drawPlayer.GetHairDrawOffset(drawPlayer.hair, hatHair);
+ 		helmetOffset = drawPlayer.GetHelmetDrawOffset();
 @@ -1419,9 +_,9 @@
  	{
  		frontShoulderOffset = Vector2.Zero;

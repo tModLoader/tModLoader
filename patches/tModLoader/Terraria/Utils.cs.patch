@@ -132,6 +132,16 @@
  						if (num3 < 0)
  							num3 = 0;
  
+@@ -550,6 +_,9 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Converts a coin value into an array of individual coin currency item counts. The result is a 4 element array containing <c>[Copper, Silver, Gold, Platinum]</c> coin counts totaling to the coin value provided.
++	/// </summary>
+ 	public static int[] CoinsSplit(long count)
+ 	{
+ 		int[] array = new int[4];
 @@ -644,17 +_,32 @@
  			return false;
  		}

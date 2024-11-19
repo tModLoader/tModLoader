@@ -410,6 +410,24 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		_modList.Clear();
 		string filter = filterTextBox.Text;
 		_modList.AddRange(_items.Where(item => filter.Length > 0 ? item.modName.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1 : true));
+		if (_items.Count == 0) {
+			var firstModGuidePanel = new UIPanel() {
+				Width = new(0, 1f),
+				Height = new(180, 0f),
+			};
+			firstModGuidePanel.OnLeftClick += (a, b) => {
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide");
+			};
+			var firstModGuideText = new UIText(Language.GetTextValue("tModLoader.MSNoModSourcesLinkToBasicModdingGuide")) {
+				IsWrapped = true,
+				WrappedTextBottomPadding = 0f,
+				Width = StyleDimension.Fill,
+				TextOriginX = 0f,
+				VAlign = 0.5f
+			};
+			firstModGuidePanel.Append(firstModGuideText);
+			_modList.Add(firstModGuidePanel);
+		}
 		Recalculate();
 		_modList.ViewPosition = modListViewPosition;
 	}

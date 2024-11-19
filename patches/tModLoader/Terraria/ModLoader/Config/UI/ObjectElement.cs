@@ -25,7 +25,7 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage initializeButton;
 	private UIModConfigHoverImage deleteButton;
 	private UIModConfigHoverImage expandButton;
-	private UIPanel separatePagePanel;
+	internal UIPanel separatePagePanel;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
 
 	// Label:
@@ -43,7 +43,11 @@ internal class ObjectElement : ConfigElement<object>
 		if (List != null) {
 			// TODO: only do this if ToString is overriden.
 
-			var listType = MemberInfo.Type.GetGenericArguments()[0];
+			Type listType;
+			if (MemberInfo.Type.IsArray)
+				listType = MemberInfo.Type.GetElementType();
+			else
+				listType = MemberInfo.Type.GetGenericArguments()[0];
 
 			System.Reflection.MethodInfo methodInfo = listType.GetMethod("ToString", Array.Empty<Type>());
 			bool hasToString = methodInfo != null && methodInfo.DeclaringType != typeof(object);
@@ -65,15 +69,15 @@ internal class ObjectElement : ConfigElement<object>
 			}
 		}
 
-		// Null values without AllowNullAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
+		// Null values without NullAllowedAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
 		if (Value == null && List != null) {
 			// This should never actually happen, but I guess a bad Json file could.
-			object data = Activator.CreateInstance(MemberInfo.Type, true);
+			/*object data = Activator.CreateInstance(MemberInfo.Type, true);
 			string json = JsonDefaultValueAttribute?.Json ?? "{}";
 
 			JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
 
-			Value = data;
+			Value = data;*/
 		}
 
 		separatePage = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SeparatePageAttribute>(MemberInfo, Item, List) != null;
@@ -119,7 +123,11 @@ internal class ObjectElement : ConfigElement<object>
 		}
 		else {
 			// ListMember's ExpandListElements > Class
-			var listType = MemberInfo.Type.GetGenericArguments()[0];
+			Type listType;
+			if (MemberInfo.Type.IsArray)
+				listType = MemberInfo.Type.GetElementType();
+			else
+				listType = MemberInfo.Type.GetGenericArguments()[0];
 			var expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(listType, typeof(ExpandAttribute), true);
 			if (expandAttribute != null)
 				expanded = expandAttribute.Expand;

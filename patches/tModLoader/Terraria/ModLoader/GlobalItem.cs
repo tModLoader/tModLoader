@@ -577,9 +577,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// </summary>
 	public virtual void HoldItemFrame(Item item, Player player) { }
 
-	/// <summary>
-	/// Allows you to make an item usable by right-clicking. Returns false by default. When the item is used by right-clicking, player.altFunctionUse will be set to 2.
-	/// </summary>
+	/// <inheritdoc cref="ModItem.AltFunctionUse(Player)"/>
 	public virtual bool AltFunctionUse(Item item, Player player)
 	{
 		return false;

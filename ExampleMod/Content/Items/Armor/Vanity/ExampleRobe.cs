@@ -16,6 +16,10 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 
 			// By passing this (the ModItem) into the item parameter we can reference it later in GetEquipSlot with just the item's name
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
+
+			/* Here is example code for supporting a female-specifig legs equip texture. See SetMatch as well.
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}_Female", EquipType.Legs, this, Name + "_Female");
+			*/
 		}
 
 		public override void SetStaticDefaults() {
@@ -37,6 +41,12 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			// Here we can get the equip slot by name since we referenced the item when adding the texture
 			// You can also cache the equip slot in a variable when you add it so this way you don't have to call GetEquipSlot
 			equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
+
+			/* Here is example code for supporting a female-specifig legs equip texture. See Load as well.
+			if (!male) {
+				equipSlot = EquipLoader.GetEquipSlot(Mod, Name + "_Female", EquipType.Legs);
+			}
+			*/
 		}
 	}
 }

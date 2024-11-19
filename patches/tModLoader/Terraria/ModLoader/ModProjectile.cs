@@ -224,7 +224,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Whether or not this minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if this projectile is considered a pet.
+	/// Whether or not this minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if this projectile is considered a pet (<see cref="Main.projPet"/>).
 	/// </summary>
 	public virtual bool MinionContactDamage()
 	{
