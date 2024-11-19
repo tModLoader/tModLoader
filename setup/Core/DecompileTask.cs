@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
@@ -17,58 +12,66 @@ using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
 using ICSharpCode.Decompiler.CSharp.Transforms;
 using ICSharpCode.Decompiler.Metadata;
 using ICSharpCode.Decompiler.TypeSystem;
-using Terraria.ModLoader.Setup.Properties;
-using static Terraria.ModLoader.Setup.Program;
+using Microsoft.Extensions.DependencyInjection;
+using Terraria.ModLoader.Setup.Core.Abstractions;
+using Terraria.ModLoader.Setup.Core.Utilities;
+using AssemblyReference = ICSharpCode.Decompiler.Metadata.AssemblyReference;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core
 {
 	public class DecompileTask : SetupOperation
 	{
-		private class EmbeddedAssemblyResolver : IAssemblyResolver
+		private sealed class TerrariaAssemblyResolver : IAssemblyResolver
 		{
+
 			private readonly PEFile baseModule;
 			private readonly UniversalAssemblyResolver _resolver;
-			private readonly Dictionary<string, PEFile> cache = new Dictionary<string, PEFile>();
+			private readonly Dictionary<string, PEFile> cache = new();
 
-			public EmbeddedAssemblyResolver(PEFile baseModule, string targetFramework)
+			public TerrariaAssemblyResolver(PEFile baseModule, string targetFramework, IEnumerable<string> extraSearchDirs)
 			{
 				this.baseModule = baseModule;
-				_resolver = new UniversalAssemblyResolver(baseModule.FileName, true, targetFramework, streamOptions: PEStreamOptions.PrefetchMetadata);
-				_resolver.AddSearchDirectory(Path.GetDirectoryName(baseModule.FileName));
+				// pass mainAssemblyFileName: null so we can control the order of the search paths. We need to search the framework directory before the Terraria.exe folder on Mono platforms 
+				_resolver = new UniversalAssemblyResolver(mainAssemblyFileName: null, throwOnError: true, targetFramework, streamOptions: PEStreamOptions.PrefetchMetadata);
+
+				foreach (var dir in extraSearchDirs)
+					_resolver.AddSearchDirectory(dir);
+
+				_resolver.AddSearchDirectory(Path.GetDirectoryName(baseModule.FileName)!);
 			}
 
-			public PEFile Resolve(IAssemblyReference name)
+			public PEFile? Resolve(IAssemblyReference name)
 			{
 				lock (this)
 				{
 					if (cache.TryGetValue(name.FullName, out var module))
 						return module;
-					
+
 					//look in the base module's embedded resources
 					var resName = name.Name + ".dll";
 					var res = baseModule.Resources.Where(r => r.ResourceType == ResourceType.Embedded).SingleOrDefault(r => r.Name.EndsWith(resName));
 
 					if (res != null)
-						module = new PEFile(res.Name, res.TryOpenStream());
+						module = new PEFile(res.Name, res.TryOpenStream()!);
 
-					module ??= _resolver.Resolve(name);
-					
+					module ??= _resolver.Resolve(name)!;
+
 					cache[name.FullName] = module;
 					return module;
 				}
 			}
 
-			public PEFile ResolveModule(PEFile mainModule, string moduleName)
-				=> _resolver.ResolveModule(mainModule, moduleName);
+			public PEFile? ResolveModule(PEFile mainModule, string moduleName)
+				=> _resolver.ResolveModule(mainModule, moduleName)!;
 
-			public async Task<PEFile> ResolveAsync(IAssemblyReference reference)
-				=> await Task.Run(() => Resolve(reference));
+			public Task<PEFile?> ResolveAsync(IAssemblyReference reference)
+				=> Task.Run(() => Resolve(reference));
 
-			public async Task<PEFile> ResolveModuleAsync(PEFile mainModule, string moduleName)
-				=> await Task.Run(() => ResolveModule(mainModule, moduleName));
+			public Task<PEFile?> ResolveModuleAsync(PEFile mainModule, string moduleName)
+				=> Task.Run(() => ResolveModule(mainModule, moduleName));
 		}
 
-		// What function does this serve..?
+		// This exists solely to expose the IncludeTypeWhenDecompilingProject method, which is protected in WholeProjectDecompiler
 		private class ExtendedProjectDecompiler : WholeProjectDecompiler
 		{
 			public ExtendedProjectDecompiler(DecompilerSettings settings, IAssemblyResolver assemblyResolver)
@@ -78,21 +81,20 @@ namespace Terraria.ModLoader.Setup
 				=> base.IncludeTypeWhenDecompilingProject(module, type);
 		}
 
-		public static readonly Version clientVersion = new("1.4.4.9");
-		public static readonly Version serverVersion = new("1.4.4.9");
+		private readonly ProgramSettings programSettings;
+		private readonly TerrariaExecutableSetter terrariaExecutableSetter;
+		private readonly TerrariaDecompileExecutableProvider terrariaDecompileExecutableProvider;
+		private readonly DecompileTaskParameters parameters;
 
-		private readonly string srcDir;
-		private readonly bool serverOnly;
-		private readonly bool formatOutput = Settings.Default.FormatAfterDecompiling;
-
-		private ExtendedProjectDecompiler projectDecompiler;
-
+		private ExtendedProjectDecompiler? projectDecompiler;
 		private readonly DecompilerSettings decompilerSettings;
 
-		public DecompileTask(ITaskInterface taskInterface, string srcDir, bool serverOnly = false) : base(taskInterface)
+		public DecompileTask(DecompileTaskParameters parameters, IServiceProvider serviceProvider)
 		{
-			this.srcDir = srcDir;
-			this.serverOnly = serverOnly;
+			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
+			terrariaExecutableSetter = serviceProvider.GetRequiredService<TerrariaExecutableSetter>();
+			terrariaDecompileExecutableProvider = serviceProvider.GetRequiredService<TerrariaDecompileExecutableProvider>();
+			this.parameters = parameters with { SrcDir = PathUtils.WithUnixSeparators(parameters.SrcDir) };
 
 			var formatting = FormattingOptionsFactory.CreateKRStyle();
 
@@ -115,32 +117,34 @@ namespace Terraria.ModLoader.Setup
 			};
 		}
 
-		public override bool ConfigurationDialog()
+		public override async ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default)
 		{
-			if (File.Exists(TerrariaPath) && File.Exists(TerrariaServerPath))
-				return true;
-
-#if AUTO
-			Console.WriteLine($"Automatic setup critical failure, can't find both {TerrariaPath} and {TerrariaServerPath}");
-			Environment.Exit(1);
-#endif
-
-			return (bool) taskInterface.Invoke(new Func<bool>(SelectAndSetTerrariaDirectoryDialog));
+			await terrariaExecutableSetter.FindAndSetTerrariaDirectoryIfNecessary(
+				parameters.TerrariaSteamDirectory,
+				parameters.TmlDevSteamDirectory,
+				parameters.ValidateTerrariaSteamDirectory,
+				cancellationToken);
 		}
 
-		public override void Run()
+		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
 		{
-			taskInterface.SetStatus("Deleting Old Src");
-			if (Directory.Exists(srcDir))
-				Directory.Delete(srcDir, true);
-			
-			var clientModule = serverOnly ? null : ReadModule(TerrariaPath, clientVersion);
-			var serverModule = ReadModule(TerrariaServerPath, serverVersion);
-			var mainModule = serverOnly ? serverModule : clientModule;
+			using var taskProgress = progress.StartTask("Decompiling Terraria...");
+			taskProgress.ReportStatus("Deleting Old Src");
+			if (Directory.Exists(parameters.SrcDir))
+				Directory.Delete(parameters.SrcDir, true);
 
-			var embeddedAssemblyResolver = new EmbeddedAssemblyResolver(mainModule, mainModule.DetectTargetFrameworkId());
+			var clientModulePath = await terrariaDecompileExecutableProvider.RetrieveClientExecutable(parameters.DecryptionKey, cancellationToken);
+			var clientModule = parameters.ServerOnly ? null : ReadModule(clientModulePath, taskProgress);
 
-			projectDecompiler = new ExtendedProjectDecompiler(decompilerSettings, embeddedAssemblyResolver);
+			var serverModulePath = await terrariaDecompileExecutableProvider.RetrieveServerExecutable(taskProgress, cancellationToken);
+			var serverModule = ReadModule(serverModulePath, taskProgress);
+
+			var mainModule = (parameters.ServerOnly ? serverModule : clientModule)!;
+
+			var extraRefDirs = await terrariaDecompileExecutableProvider.RetrieveExtraReferences(taskProgress, cancellationToken);
+			var assemblyResolver = new TerrariaAssemblyResolver(mainModule, mainModule.DetectTargetFrameworkId(), extraRefDirs);
+
+			projectDecompiler = new ExtendedProjectDecompiler(decompilerSettings, assemblyResolver);
 
 			var items = new List<WorkItem>();
 			var files = new HashSet<string>();
@@ -155,24 +159,20 @@ namespace Terraria.ModLoader.Setup
 				exclude.Add(GetOutputPath(libRes.Name, mainModule));
 			}
 
-			if (!serverOnly)
-				AddModule(clientModule, projectDecompiler.AssemblyResolver, items, files, resources, exclude);
+			if (!parameters.ServerOnly)
+				AddModule(clientModule!, projectDecompiler.AssemblyResolver, items, files, resources, exclude);
 
-			AddModule(serverModule, projectDecompiler.AssemblyResolver, items, files, resources, exclude, serverOnly ? null : "SERVER");
+			AddModule(serverModule, projectDecompiler.AssemblyResolver, items, files, resources, exclude, parameters.ServerOnly ? null : "SERVER");
 
 			items.Add(WriteTerrariaProjectFile(mainModule, files, resources, decompiledLibraries));
 			items.Add(WriteCommonConfigurationFile());
 
-#if AUTO
-			ExecuteParallel(items, true, 1);
-#else
-			ExecuteParallel(items);
-#endif
+			await ExecuteParallel(items, taskProgress, maxDegreeOfParallelism: parameters.MaxDegreeOfParallelism, cancellationToken: cancellationToken);
 		}
 
 		private void AddEmbeddedLibrary(Resource res, IAssemblyResolver resolver, List<WorkItem> items)
 		{
-			using var s = res.TryOpenStream();
+			using var s = res.TryOpenStream()!;
 			s.Position = 0;
 			var module = new PEFile(res.Name, s, PEStreamOptions.PrefetchEntireImage);
 
@@ -195,30 +195,11 @@ namespace Terraria.ModLoader.Setup
 			}));
 		}
 
-		protected PEFile ReadModule(string path, Version version)
+		protected PEFile ReadModule(string path, ITaskProgress taskProgress)
 		{
-			bool usingVersionedPath = false;
-			var versionedPath = path.Insert(path.LastIndexOf('.'), $"_v{version}");
-			if (File.Exists(versionedPath)) {
-				path = versionedPath;
-				usingVersionedPath = true;
-			}
-
-			taskInterface.SetStatus("Loading " + Path.GetFileName(path));
-			using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
-			{
-				var module = new PEFile(path, fileStream, PEStreamOptions.PrefetchEntireImage);
-				var assemblyName = new AssemblyName(module.FullName);
-				if (assemblyName.Version != version)
-					throw new Exception($"{assemblyName.Name} version {assemblyName.Version}. Expected {version}");
-
-				if (!usingVersionedPath) {
-					taskInterface.SetStatus("Backup up " + Path.GetFileName(path) + " to " + Path.GetFileName(versionedPath));
-					File.Copy(path, versionedPath);
-				}
-
-				return module;
-			}
+			taskProgress.ReportStatus("Loading " + Path.GetFileName(path));
+			using var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+			return new PEFile(path, fileStream, PEStreamOptions.PrefetchEntireImage);
 		}
 
 		// memoized
@@ -237,7 +218,10 @@ namespace Terraria.ModLoader.Setup
 				return false;
 
 			try {
-				CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
+				var ci = CultureInfo.GetCultureInfo(Path.GetFileNameWithoutExtension(path));
+				if (ci.ThreeLetterWindowsLanguageName == "ZZZ")
+					return false; // https://stackoverflow.com/questions/35074033/invalid-cultureinfo-no-longer-throws-culturenotfoundexception
+
 				return true;
 			}
 			catch (CultureNotFoundException) { }
@@ -276,7 +260,7 @@ namespace Terraria.ModLoader.Setup
 		private IEnumerable<IGrouping<string, TypeDefinitionHandle>> GetCodeFiles(PEFile module)
 		{
 			var metadata = module.Metadata;
-			return module.Metadata.GetTopLevelTypeDefinitions().Where(td => projectDecompiler.IncludeTypeWhenDecompilingProject(module, td))
+			return module.Metadata.GetTopLevelTypeDefinitions().Where(td => projectDecompiler!.IncludeTypeWhenDecompilingProject(module, td))
 				.GroupBy(h =>
 				{
 					var type = metadata.GetTypeDefinition(h);
@@ -292,7 +276,7 @@ namespace Terraria.ModLoader.Setup
 			return module.Resources.Where(r => r.ResourceType == ResourceType.Embedded).Select(res => (GetOutputPath(res.Name, module), res));
 		}
 
-		private DecompilerTypeSystem AddModule(PEFile module, IAssemblyResolver resolver, List<WorkItem> items, ISet<string> sourceSet, ISet<string> resourceSet, ICollection<string> exclude = null, string conditional = null)
+		private DecompilerTypeSystem AddModule(PEFile module, IAssemblyResolver resolver, List<WorkItem> items, ISet<string> sourceSet, ISet<string> resourceSet, ICollection<string>? exclude = null, string? conditional = null)
 		{
 			var projectDir = GetAssemblyTitle(module);
 			var sources = GetCodeFiles(module).ToList();
@@ -319,34 +303,34 @@ namespace Terraria.ModLoader.Setup
 
 		private WorkItem ExtractResource(string name, Resource res, string projectDir)
 		{
-			return new WorkItem("Extracting: " + name, () =>
+			return new WorkItem("Extracting: " + name, async ct =>
 			{
-				var path = Path.Combine(srcDir, projectDir, name);
+				var path = Path.Combine(parameters.SrcDir, projectDir, name);
 				CreateParentDirectory(path);
 
-				var s = res.TryOpenStream();
+				var s = res.TryOpenStream()!;
 				s.Position = 0;
 				using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-					s.CopyTo(fs);
+					await s.CopyToAsync(fs, ct);
 			});
 		}
 
-		private CSharpDecompiler CreateDecompiler(DecompilerTypeSystem ts)
+		private CSharpDecompiler CreateDecompiler(DecompilerTypeSystem ts, CancellationToken cancellationToken = default)
 		{
-			var decompiler = new CSharpDecompiler(ts, projectDecompiler.Settings)
+			var decompiler = new CSharpDecompiler(ts, projectDecompiler!.Settings)
 			{
-				CancellationToken = taskInterface.CancellationToken
+				CancellationToken = cancellationToken
 			};
 			decompiler.AstTransforms.Add(new EscapeInvalidIdentifiers());
 			decompiler.AstTransforms.Add(new RemoveCLSCompliantAttribute());
 			return decompiler;
 		}
 
-		private WorkItem DecompileSourceFile(DecompilerTypeSystem ts, IGrouping<string, TypeDefinitionHandle> src, string projectName, string conditional = null)
+		private WorkItem DecompileSourceFile(DecompilerTypeSystem ts, IGrouping<string, TypeDefinitionHandle> src, string projectName, string? conditional = null)
 		{
-			return new WorkItem("Decompiling: " + src.Key, updateStatus =>
+			return new WorkItem("Decompiling: " + src.Key, async (updateStatus, cancellationToken) =>
 			{
-				var path = Path.Combine(srcDir, projectName, src.Key);
+				var path = Path.Combine(parameters.SrcDir, projectName, src.Key);
 				CreateParentDirectory(path);
 
 				using (var w = new StringWriter())
@@ -354,20 +338,20 @@ namespace Terraria.ModLoader.Setup
 					if (conditional != null)
 						w.WriteLine("#if "+conditional);
 
-					CreateDecompiler(ts)
+					CreateDecompiler(ts, cancellationToken)
 						.DecompileTypes(src.ToArray())
-						.AcceptVisitor(new CSharpOutputVisitor(w, projectDecompiler.Settings.CSharpFormattingOptions));
+						.AcceptVisitor(new CSharpOutputVisitor(w, projectDecompiler!.Settings.CSharpFormattingOptions));
 
 					if (conditional != null)
 						w.WriteLine("#endif");
 
 					string source = w.ToString();
-					if (formatOutput) {
+					if (programSettings.FormatAfterDecompiling) {
 						updateStatus("Formatting: " + src.Key);
-						source = FormatTask.Format(source, taskInterface.CancellationToken, true);
+						source = FormatTask.Format(source, true, cancellationToken);
 					}
 
-					File.WriteAllText(path, source);
+					await File.WriteAllTextAsync(path, source, cancellationToken);
 				}
 			});
 		}
@@ -388,7 +372,7 @@ namespace Terraria.ModLoader.Setup
 				var references = module.AssemblyReferences.Where(r => r.Name != "mscorlib").OrderBy(r => r.Name).ToArray();
 				var projectReferences = decompiledLibraries != null
 					? references.Where(r => decompiledLibraries.Contains(r.Name)).ToArray()
-					: Array.Empty<ICSharpCode.Decompiler.Metadata.AssemblyReference>();
+					: Array.Empty<AssemblyReference>();
 				var normalReferences = references.Except(projectReferences).ToArray();
 
 				foreach (var r in projectReferences) {
@@ -420,7 +404,7 @@ namespace Terraria.ModLoader.Setup
 			var filename = name + ".csproj";
 			return new WorkItem("Writing: " + filename, () =>
 			{
-				var path = Path.Combine(srcDir, name, filename);
+				var path = Path.Combine(parameters.SrcDir, name, filename);
 				CreateParentDirectory(path);
 
 				using (var sw = new StreamWriter(path))
@@ -435,8 +419,8 @@ namespace Terraria.ModLoader.Setup
 
 					w.WriteStartElement("PropertyGroup");
 					w.WriteElementString("OutputType", outputType);
-					w.WriteElementString("Version", new AssemblyName(module.FullName).Version.ToString());
-					
+					w.WriteElementString("Version", new AssemblyName(module.FullName).Version!.ToString());
+
 					var attribs = GetCustomAttributes(module);
 					w.WriteElementString("Company", attribs[nameof(AssemblyCompanyAttribute)]);
 					w.WriteElementString("Copyright", attribs[nameof(AssemblyCopyrightAttribute)]);
@@ -445,7 +429,7 @@ namespace Terraria.ModLoader.Setup
 					w.WriteEndElement(); // </PropertyGroup>
 
 					writeSpecificConfig(w);
-					
+
 					// resources
 					w.WriteStartElement("ItemGroup");
 					foreach (var r in ApplyWildcards(resources, sources.ToArray()).OrderBy(r => r)) {
@@ -464,8 +448,9 @@ namespace Terraria.ModLoader.Setup
 		private WorkItem WriteCommonConfigurationFile()
 		{
 			var filename = "Configuration.targets";
-			return new WorkItem("Writing: " + filename, () => {
-				var path = Path.Combine(srcDir, filename);
+			return new WorkItem("Writing: " + filename, () =>
+			{
+				var path = Path.Combine(parameters.SrcDir, filename);
 				CreateParentDirectory(path);
 
 				using (var sw = new StreamWriter(path))
@@ -555,7 +540,7 @@ namespace Terraria.ModLoader.Setup
 					continue;
 
 				var value = attrib.DecodeValue(new IDGAFAttributeTypeProvider());
-				dict[attrTypeName] = value.FixedArguments.Single().Value as string;
+				dict[attrTypeName] = (value.FixedArguments.Single().Value as string)!;
 			}
 
 			return dict;
@@ -563,7 +548,9 @@ namespace Terraria.ModLoader.Setup
 
 		private class IDGAFAttributeTypeProvider : ICustomAttributeTypeProvider<object>
 		{
-			public object GetPrimitiveType(PrimitiveTypeCode typeCode) => null;
+#pragma warning disable CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
+			public object? GetPrimitiveType(PrimitiveTypeCode typeCode) => null;
+#pragma warning restore CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
 			public object GetSystemType() => throw new NotImplementedException();
 			public object GetSZArrayType(object elementType) => throw new NotImplementedException();
 			public object GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind) => throw new NotImplementedException();
