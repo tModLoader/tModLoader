@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropResolver.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropResolver.cs
-@@ -13,7 +_,14 @@
+@@ -13,13 +_,20 @@
  
  	public void TryDropping(DropAttemptInfo info)
  	{
@@ -15,3 +15,25 @@
  		for (int i = 0; i < rulesForNPCID.Count; i++) {
  			ResolveRule(rulesForNPCID[i], info);
  		}
+ 	}
+ 
+-	private ItemDropAttemptResult ResolveRule(IItemDropRule rule, DropAttemptInfo info)
++	public static ItemDropAttemptResult ResolveRule(IItemDropRule rule, DropAttemptInfo info)
+ 	{
+ 		if (!rule.CanDrop(info)) {
+ 			ItemDropAttemptResult itemDropAttemptResult = default(ItemDropAttemptResult);
+@@ -34,12 +_,12 @@
+ 		return itemDropAttemptResult3;
+ 	}
+ 
+-	private void ResolveRuleChains(IItemDropRule rule, DropAttemptInfo info, ItemDropAttemptResult parentResult)
++	private static void ResolveRuleChains(IItemDropRule rule, DropAttemptInfo info, ItemDropAttemptResult parentResult)
+ 	{
+ 		ResolveRuleChains(ref info, ref parentResult, rule.ChainedRules);
+ 	}
+ 
+-	private void ResolveRuleChains(ref DropAttemptInfo info, ref ItemDropAttemptResult parentResult, List<IItemDropRuleChainAttempt> ruleChains)
++	private static void ResolveRuleChains(ref DropAttemptInfo info, ref ItemDropAttemptResult parentResult, List<IItemDropRuleChainAttempt> ruleChains)
+ 	{
+ 		if (ruleChains == null)
+ 			return;
