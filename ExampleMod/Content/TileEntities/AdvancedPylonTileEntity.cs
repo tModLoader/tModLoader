@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.TileEntities
 {
@@ -30,11 +31,11 @@ namespace ExampleMod.Content.TileEntities
 			// We want to make sure that our data is synced properly across clients and server.
 			// NetSend is called whenever a TileEntitySharing message is sent, so the game will handle this automatically for us,
 			// granted that we send a message when we need to.
-			writer.Write(isActive);
+			writer.WriteFlags(isActive);
 		}
 
 		public override void NetReceive(BinaryReader reader) {
-			isActive = reader.ReadBoolean();
+			reader.ReadFlags(out isActive);
 		}
 
 		public override void Update() {

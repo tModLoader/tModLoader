@@ -1,16 +1,14 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Terraria.ModLoader.Setup.Formatting
+namespace Terraria.ModLoader.Setup.Core.Formatting
 {
 	public class CollectionInitializerFormatter : CSharpSyntaxRewriter
 	{
-		private IDictionary<SyntaxToken, SyntaxToken> changes = new Dictionary<SyntaxToken, SyntaxToken>();
+		private readonly Dictionary<SyntaxToken, SyntaxToken> changes = [];
 
-		public override SyntaxNode VisitInitializerExpression(InitializerExpressionSyntax node) {
+		public override SyntaxNode? VisitInitializerExpression(InitializerExpressionSyntax node) {
 			if (!node.DescendantTrivia().All(SyntaxUtils.IsWhitespace))
 				return node;// nothing to do here
 
@@ -31,7 +29,7 @@ namespace Terraria.ModLoader.Setup.Formatting
 			SyntaxNodeOrToken prevNode = node.OpenBraceToken;
 			foreach (var nodeOrToken in exprList.GetWithSeparators()) {
 				if (nodeOrToken.IsNode && prevNode.GetTrailingTrivia().Any(SyntaxKind.EndOfLineTrivia)) {
-					var tok = nodeOrToken.AsNode().GetFirstToken();
+					var tok = nodeOrToken.AsNode()!.GetFirstToken();
 					AddChange(tok, tok.WithLeadingWhitespace(indent + '\t'));
 				}
 				prevNode = nodeOrToken;
@@ -66,7 +64,7 @@ namespace Terraria.ModLoader.Setup.Formatting
 				));
 
 			var closeBrace = node.CloseBraceToken.WithLeadingTrivia(SyntaxTriviaList.Empty);
-			if (node != ((InitializerExpressionSyntax)node.Parent).Expressions.Last())
+			if (node != ((InitializerExpressionSyntax)node.Parent!).Expressions.Last())
 				closeBrace = closeBrace.WithTrailingTrivia(SyntaxTriviaList.Empty);
 
 			return node

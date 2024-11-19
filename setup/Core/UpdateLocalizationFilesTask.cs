@@ -1,38 +1,47 @@
 ﻿using System.Diagnostics;
-using System.IO;
-using System.Windows;
+using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup;
+namespace Terraria.ModLoader.Setup.Core;
 
-internal class UpdateLocalizationFilesTask : SetupOperation
+public sealed class UpdateLocalizationFilesTask : SetupOperation
 {
-	private const string UpdateLocalizationFilesPath = $"solutions/UpdateLocalizationFiles.py";
+	private const string UpdateLocalizationFilesPath = "solutions/UpdateLocalizationFiles.py";
 
-	public UpdateLocalizationFilesTask(ITaskInterface taskInterface) : base(taskInterface)
+	private readonly IUserPrompt userPrompt;
+	private bool success = false;
+
+	public UpdateLocalizationFilesTask(IServiceProvider serviceProvider)
 	{
+		userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 	}
 
-	public override void Run()
+	public override Task Run(IProgress progress, CancellationToken cancellationToken = default)
 	{
-		int result = Program.RunCmd("", "where", "python");
-		if (result != 0) {
-			MessageBox.Show("python 3 is needed to run this command", "python not found on PATH", MessageBoxButton.OK);
-			taskInterface.SetStatus("Cancelled");
-			return;
-		}
+		using var taskProgress = progress.StartTask("Updating localization files...");
 
-		if (!File.Exists(UpdateLocalizationFilesPath)) {
-			MessageBox.Show("UpdateLocalizationFiles.py is missing somehow", "UpdateLocalizationFiles.py missing", MessageBoxButton.OK);
-			taskInterface.SetStatus("Cancelled");
-			return;
-		}
+		var err = new StringBuilder();
+		int exitCode = RunCmd.Run(
+			Path.GetDirectoryName(UpdateLocalizationFilesPath)!,
+			"python",
+			Path.GetFileName(UpdateLocalizationFilesPath),
+			output: s => taskProgress.ReportStatus(s),
+			error: s => err.Append(s),
+			cancel: cancellationToken);
 
-		Process p = Process.Start(new ProcessStartInfo {
-			FileName = "python",
-			Arguments = Path.GetFileName(UpdateLocalizationFilesPath),
-			WorkingDirectory = new FileInfo(UpdateLocalizationFilesPath).Directory.FullName,
-		});
-		p.WaitForExit();
-		// MessageBox.Show("Success. Make sure you diff tModLoader after this");
+		if (err.Length > 0)
+			throw new Exception(err.ToString());
+
+		success = exitCode == 0;
+
+		return Task.CompletedTask;
+	}
+
+	public override void FinishedPrompt()
+	{
+		if (success) {
+			userPrompt.Inform("Success", "Make sure you diff tModLoader after this.");
+		}
 	}
 }

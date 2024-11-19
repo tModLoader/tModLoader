@@ -58,6 +58,10 @@ public partial class Mod
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
+	/// Whether or not this mod will automatically add images in the "Clouds" folder as clouds to the game. This means you do not need to manually call <see cref="CloudLoader.AddCloudFromTexture(Mod, string, float, bool)"/> or make a <see cref="ModCloud"/> class to add them to the game, but they will have the default spawn chance and be counted as normal clouds if autoloaded in this manner. Defaults to true.
+	/// </summary>
+	public bool CloudAutoloadingEnabled { get; init; } = true;
+	/// <summary>
 	/// Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;

@@ -11,6 +11,7 @@ using System.Text;
 
 // Man, I just want these warnings gone. This needs to be entirely rewritten anyway.
 #pragma warning disable CA1051 // Do not declare visible instance fields
+#nullable disable
 
 namespace MonoMod.RuntimeDetour.HookGen
 {
@@ -610,3 +611,5 @@ namespace MonoMod.RuntimeDetour.HookGen
 
     }
 }
+
+#nullable restore

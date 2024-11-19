@@ -1,20 +1,19 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Terraria.ModLoader.Setup.Formatting
+namespace Terraria.ModLoader.Setup.Core.Formatting
 {
 	internal class NoNewlineBetweenFieldsRewriter : CSharpSyntaxRewriter
 	{
-		private HashSet<SyntaxToken> modifyTokens = new HashSet<SyntaxToken>();
-		public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node) {
+		private readonly HashSet<SyntaxToken> modifyTokens = [];
+
+		public override SyntaxNode? VisitClassDeclaration(ClassDeclarationSyntax node) {
 			TagFieldTokens(node.Members);
 			return base.VisitClassDeclaration(node);
 		}
 
-		public override SyntaxNode VisitStructDeclaration(StructDeclarationSyntax node) {
+		public override SyntaxNode? VisitStructDeclaration(StructDeclarationSyntax node) {
 			TagFieldTokens(node.Members);
 			return base.VisitStructDeclaration(node);
 		}

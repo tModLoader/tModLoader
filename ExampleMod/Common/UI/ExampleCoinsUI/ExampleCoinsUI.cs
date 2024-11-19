@@ -99,6 +99,9 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 				Main.instance.LoadItem(74 - j);
 				coinsTextures[j] = TextureAssets.Item[74 - j].Value;
 			}
+
+			// This allows clicks to "pass-through" this element to the parent element and not be consumed by this element. This allows ExampleDraggableUIPanel to be dragged even when the user is clicking on the UIMoneyDisplay.
+			IgnoresMouseInteraction = true;
 		}
 		public void AddCoinsPerMinute(int coins) {
 			collectedCoins += coins;

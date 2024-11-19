@@ -1,76 +1,72 @@
-﻿using Mono.Cecil;
+using Microsoft.Extensions.DependencyInjection;
+using Mono.Cecil;
 using MonoMod;
 using MonoMod.RuntimeDetour.HookGen;
-using System;
-using System.IO;
-using System.Windows;
+using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core
 {
-	internal class HookGenTask : SetupOperation
+	public class HookGenTask : SetupOperation
 	{
-		private const string dotnetSdkVersion = "8.0.1";
-		private const string dotnetTargetVersion = "net8.0";
-		private const string libsPath = "src/tModLoader/Terraria/Libraries";
-		private const string binLibsPath = $"src/tModLoader/Terraria/bin/Release/{dotnetTargetVersion}/Libraries";
-		private const string tmlAssemblyPath = @$"src/tModLoader/Terraria/bin/Release/{dotnetTargetVersion}/tModLoader.dll";
-		private const string installedNetRefs = $@"\dotnet\packs\Microsoft.NETCore.App.Ref\{dotnetSdkVersion}\ref\{dotnetTargetVersion}";
+		private const string DotnetTargetVersion = "net8.0";
+		private const string LibsPath = "src/tModLoader/Terraria/Libraries";
+		private const string BinLibsPath = $"src/tModLoader/Terraria/bin/Release/{DotnetTargetVersion}/Libraries";
 
-		public HookGenTask(ITaskInterface taskInterface) : base(taskInterface)
+		private const string TmlAssemblyPath = $"src/tModLoader/Terraria/bin/Release/{DotnetTargetVersion}/tModLoader.dll";
+
+		private readonly IUserPrompt userPrompt;
+
+		public HookGenTask(IServiceProvider serviceProvider)
 		{
+			userPrompt = serviceProvider.GetRequiredService<IUserPrompt>();
 		}
 
-		public override void Run()
+		public override Task Run(IProgress progress, CancellationToken cancellationToken = default)
 		{
-			if (!File.Exists(tmlAssemblyPath)) {
-				MessageBox.Show($"\"{tmlAssemblyPath}\" does not exist.", "tML exe not found", MessageBoxButton.OK);
-				taskInterface.SetStatus("Cancelled");
-				return;
+			if (!File.Exists(TmlAssemblyPath)) {
+				throw new FileNotFoundException($"\"{TmlAssemblyPath}\" does not exist.");
 			}
 
-			string outputPath = Path.Combine(libsPath, "Common", "TerrariaHooks.dll");
+			// Hopefully this always works since we should be running on a system install of a .NET Core sdk
+			var dotnetPath = Path.GetFullPath(Path.GetDirectoryName(typeof(object).Assembly.Location) + "/../../..");
+			var dotnetRefsLocation = Path.Combine(dotnetPath, $"packs/Microsoft.NETCore.App.Ref/{Environment.Version}/ref/{DotnetTargetVersion}");
+
+			// Ensure that refs are present, for gods sake!
+			if (!Directory.Exists(dotnetRefsLocation) || !Directory.GetFiles(dotnetRefsLocation, "*.dll").Any()) {
+				throw new DirectoryNotFoundException($@"Unable to find reference libraries for .NET SDK '{Environment.Version}' - ""{dotnetRefsLocation}"" does not exist.");
+			}
+
+			string outputPath = Path.Combine(LibsPath, "Common", "TerrariaHooks.dll");
 
 			if (File.Exists(outputPath))
 				File.Delete(outputPath);
 
-			taskInterface.SetStatus($"Hooking: tModLoader.dll -> TerrariaHooks.dll");
-
-			if (!HookGen(tmlAssemblyPath, outputPath)) {
-				taskInterface.SetStatus("Cancelled");
-				return;
-			}
+			using var taskProgress = progress.StartTask("Hooking: tModLoader.dll -> TerrariaHooks.dll");
+			HookGen(taskProgress, TmlAssemblyPath, outputPath, dotnetRefsLocation, cancellationToken);
 
 			File.Delete(Path.ChangeExtension(outputPath, "pdb"));
 
-			MessageBox.Show("Success. Make sure you diff tModLoader after this");
+			return Task.CompletedTask;
 		}
 
-		public static bool HookGen(string inputPath, string outputPath)
+		public override void FinishedPrompt()
 		{
-			string dotnetReferencesDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + installedNetRefs;
+			userPrompt.Inform("Success", "Success. Make sure you diff tModLoader after this");
+		}
 
-			// Ensure that refs are present, for gods sake!
-			if (!Directory.Exists(dotnetReferencesDirectory) || Directory.GetFiles(dotnetReferencesDirectory, "*.dll").Length == 0) {
-				// Replace with exceptions if this is ever called in CLI.
-				MessageBox.Show(
-					$@"Unable to find reference libraries for .NET SDK '{dotnetSdkVersion}' - ""{dotnetReferencesDirectory}"" does not exist.",
-					$".NET SDK {dotnetSdkVersion} not found",
-					MessageBoxButton.OK
-				);
-
-				return false;
-			}
-
-			using var mm = new MonoModder {
+		private void HookGen(ITaskProgress taskProgress, string inputPath, string outputPath, string dotnetReferencesDirectory, CancellationToken cancellationToken = default)
+		{
+			using var workItemProgress = taskProgress.StartWorkItem("Loading");
+			using var mm = new ProgressReportingMonoModder(workItemProgress) {
 				InputPath = inputPath,
 				OutputPath = outputPath,
 				ReadingMode = ReadingMode.Deferred,
-
 				DependencyDirs = { dotnetReferencesDirectory },
 				MissingDependencyThrow = false,
+				LogVerboseEnabled = true,
 			};
 
-			mm.DependencyDirs.AddRange(Directory.GetDirectories(binLibsPath, "*", SearchOption.AllDirectories));
+			mm.DependencyDirs.AddRange(Directory.GetDirectories(BinLibsPath, "*", SearchOption.AllDirectories));
 
 			mm.Read();
 
@@ -79,6 +75,8 @@ namespace Terraria.ModLoader.Setup
 			};
 
 			foreach (var type in mm.Module.Types) {
+				cancellationToken.ThrowIfCancellationRequested();
+
 				if (!type.FullName.StartsWith("Terraria") || type.FullName.StartsWith("Terraria.ModLoader"))
 					continue;
 
@@ -94,8 +92,6 @@ namespace Terraria.ModLoader.Setup
 			}
 
 			gen.OutputModule.Write(outputPath);
-
-			return true;
 		}
 
 
@@ -109,6 +105,21 @@ namespace Terraria.ModLoader.Setup
 
 			type.Name = type.Namespace[..2] + '_' + type.Name;
 			type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];
+		}
+
+		private class ProgressReportingMonoModder : MonoModder
+		{
+			private IWorkItemProgress progress;
+
+			public ProgressReportingMonoModder(IWorkItemProgress progress)
+			{
+				this.progress = progress;
+			}
+
+			public override void Log(string text)
+			{
+				progress.ReportStatus(text);
+			}
 		}
 	}
 }
