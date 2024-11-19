@@ -491,8 +491,7 @@ public static class ModContent
 		MonoModHooks.Clear();
 		TypeCaching.Clear();
 		ContentCache.Unload();
-		DataInstance.Clear();
-		SetHandler.Clear();
+		//DataInstance.Clear();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();

@@ -76,8 +76,10 @@ namespace ExampleMod.Content.Items.Accessories
 		public static bool[] CantEquipWith_HiveBackpack;
 
 		public override void ResizeArrays() {
-			CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateBoolSet(false, ItemID.HiveBackpack);
-			SetHandler.RegisterCustomSet(nameof(CantEquipWith_HiveBackpack), false, ref CantEquipWith_HiveBackpack);
+			//CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateBoolSet(false, ItemID.HiveBackpack);
+			//SetHandler.RegisterCustomSet(nameof(CantEquipWith_HiveBackpack), false, ref CantEquipWith_HiveBackpack);
+
+			CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateBoolSet(nameof(CantEquipWith_HiveBackpack), false, ItemID.HiveBackpack);
 		}
 	}
 

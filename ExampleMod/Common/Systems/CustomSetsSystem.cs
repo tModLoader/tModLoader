@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.DamageClasses;
 using ExampleMod.Content.Items.Accessories;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -29,7 +30,7 @@ namespace ExampleMod.Common.Systems
 
 		public override void Load() {
 			// Exposing data needs to happen in Load so that other mods can retrieve the data in SetStaticDefaults
-			DataInstance.Expose(Mod, "BannedWords", bannedWords);
+			DataInstance<HashSet<string>>.Expose(Mod, "BannedWords", bannedWords);
 			bannedWords.Add("yolo");
 		}
 
@@ -37,11 +38,9 @@ namespace ExampleMod.Common.Systems
 			// ResizeArrays is the earliest method called after all content has loaded and has been assigned ID values.
 			// This is where methods such as SetFactory.CreateBoolSet and SetHandler.RegisterCustomSet should be called.
 
-			// To create a custom item set, we use the ItemID.Sets.Factory.CreateXSet method.
-			FlamingWeapon = ItemID.Sets.Factory.CreateBoolSet(false, ItemID.FieryGreatsword);
-
-			// SetHandler.RegisterCustomSet exposed the set for other mods to access. The key and default value must be consistent with other mods.
-			SetHandler.RegisterCustomSet(FlamingWeaponCustomSetKey, false, ref FlamingWeapon);
+			// To create a custom item set, we use the ItemID.Sets.Factory.CreateXSet method with the key parameter.
+			// This method also exposes the set for other mods to access via this key. The key and default value must be consistent with other mods.
+			FlamingWeapon = ItemID.Sets.Factory.CreateBoolSet(FlamingWeaponCustomSetKey, false, ItemID.FieryGreatsword);
 
 			// We can further edit the set. These changes will be consistent between all mods accessing this set since the object reference is shared.
 			FlamingWeapon[ItemID.FireWhip] = true;
@@ -53,7 +52,7 @@ namespace ExampleMod.Common.Systems
 
 		public override void SetStaticDefaults() {
 			// SetStaticDefaults is an appropriate place to retrieve data exposed by other mods.
-			dataFromOtherMod = DataInstance.Retrieve("CustomSetTest1", "specialDamageClasses") as List<DamageClass>;
+			dataFromOtherMod = DataInstance<List<DamageClass>>.Retrieve("CustomSetTest1", "specialDamageClasses");
 			if (dataFromOtherMod != null) {
 				dataFromOtherMod.Add(ModContent.GetInstance<ExampleDamageClass>());
 			}
