@@ -91,6 +91,12 @@ public partial class SetFactory
 	/// </summary>
 	public void RegisterCustomSet<T>(string key, T defaultValue, ref T[] input)
 	{
+		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
+		if (!ContentCache.contentLoadingFinished) 
+		{
+			throw new Exception($"Custom sets can only be registered during or after ModSystem.ResizeArrays. This ensures that all content has been registered and that the custom set will have the correct length");
+		}
+
 		// TODO: Return bool to represent already exists or merged?
 		// TODO: if(loadStage < ResizeArrays) throw new Exception? It's probably always wrong to do it earlier.
 		// TODO: We could store defaultValue and throw on mismatch.

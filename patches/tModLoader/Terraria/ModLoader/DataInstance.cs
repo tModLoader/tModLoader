@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Net.Mime;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
