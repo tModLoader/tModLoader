@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria.ID;
@@ -9,7 +10,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
 namespace Terraria.GameContent.ItemDropRules;
-internal class DropFromItemPoolRule : IItemDropRule
+public class DropFromItemPoolRule : IItemDropRule
 {
 	public string poolName;
 	public int chanceDenominator;
@@ -17,7 +18,7 @@ internal class DropFromItemPoolRule : IItemDropRule
 	public int amountDroppedMaximum;
 	public int chanceNumerator;
 	public List<IItemDropRuleChainAttempt> ChainedRules { get; private set; }
-	public DropFromItemPoolRule(string poolName, int chanceDenominator, int amountDroppedMinimum = 1, int amountDroppedMaximum = 1, int chanceNumerator = 1)
+	public DropFromItemPoolRule(string poolName, int chanceDenominator = 1, int amountDroppedMinimum = 1, int amountDroppedMaximum = 1, int chanceNumerator = 1)
 	{
 		if (amountDroppedMinimum > amountDroppedMaximum) {
 			throw new ArgumentOutOfRangeException(nameof(amountDroppedMinimum), $"{nameof(amountDroppedMinimum)} must be lesser or equal to {nameof(amountDroppedMaximum)}.");
@@ -33,7 +34,7 @@ internal class DropFromItemPoolRule : IItemDropRule
 
 	public bool CanDrop(DropAttemptInfo info) => true;
 
-	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+	public virtual ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result;
 		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
@@ -58,32 +59,41 @@ internal class DropFromItemPoolRule : IItemDropRule
 		return result;
 	}
 
-	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+	public virtual void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
 	{
 		float num = (float)chanceNumerator / (float)chanceDenominator;
 		float dropRate = num * ratesInfo.parentDroprateChance;
 		DropRateInfoChainFeed thisRatesInfo = ratesInfo;
 		thisRatesInfo.parentDroprateChance = dropRate;
 
-		foreach (IGrouping<HashSet<IItemDropRuleCondition>, ItemPoolEntry> group in ChestLootLoader.GetItemPool(poolName).GroupBy(e => e.Conditions.ToHashSet(), HashSet<IItemDropRuleCondition>.CreateSetComparer())) {
-			DropRateInfoChainFeed groupRatesInfo = thisRatesInfo;
-			groupRatesInfo.conditions = groupRatesInfo.conditions.Concat(group.Key).ToList();
-			float totalWeight = 0;
-			foreach (ItemPoolEntry item in group)
+		List<ItemPoolEntry> entries = ChestLootLoader.GetItemPool(poolName);
+		float totalWeight = 0;
+		foreach (ItemPoolEntry item in entries) {
+			bool canShow = true;
+			for (int i = 0; i < item.Conditions.Count && canShow; i++) {
+				canShow &= item.Conditions[i].CanShowItemDropInUI();
+			}
+			if (canShow)
 				totalWeight += item.Weight;
-			foreach (ItemPoolEntry item in group) {
-				DropRateInfoChainFeed itemRatesInfo = groupRatesInfo;
-				itemRatesInfo.parentDroprateChance *= item.Weight / totalWeight;
-				drops.Add(new DropRateInfo(item.Type, amountDroppedMinimum, amountDroppedMaximum, dropRate, itemRatesInfo.conditions));
-				foreach (IItemDropRule ChainedRule in item.ChainedRules) {
-					ChainedRule.ReportDroprates(drops, itemRatesInfo);
-				}
+		}
+		foreach (ItemPoolEntry item in entries) {
+			bool canShow = true;
+			for (int i = 0; i < item.Conditions.Count && canShow; i++) {
+				canShow &= item.Conditions[i].CanShowItemDropInUI();
+			}
+			if (!canShow)
+				continue;
+			DropRateInfoChainFeed itemRatesInfo = thisRatesInfo;
+			itemRatesInfo.parentDroprateChance *= item.Weight / totalWeight;
+			itemRatesInfo.conditions = (itemRatesInfo.conditions ?? []).Concat(item.Conditions ?? []).ToList();
+			drops.Add(new DropRateInfo(item.Type, amountDroppedMinimum, amountDroppedMaximum, itemRatesInfo.parentDroprateChance, itemRatesInfo.conditions));
+			foreach (IItemDropRule ChainedRule in item.ChainedRules) {
+				ChainedRule.ReportDroprates(drops, itemRatesInfo);
 			}
 		}
 		Chains.ReportDroprates(ChainedRules, num, drops, ratesInfo);
 	}
-
-	private IEnumerable<Tuple<(int type, List<IItemDropRule> chainedRules), double>> GetDropableEntries(DropAttemptInfo info)
+	protected IEnumerable<Tuple<(int type, List<IItemDropRule> chainedRules), double>> GetDropableEntries(DropAttemptInfo info)
 	{
 		List<ItemPoolEntry> entries = ChestLootLoader.GetItemPool(poolName);
 		for (int i = 0; i < entries.Count; i++) {

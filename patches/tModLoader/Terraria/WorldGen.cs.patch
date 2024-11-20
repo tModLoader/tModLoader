@@ -2825,6 +2825,28 @@
  	public static void TileRunner(int i, int j, double strength, int steps, int type, bool addTile = false, double speedX = 0.0, double speedY = 0.0, bool noYChange = false, bool overRide = true, int ignoreTileType = -1)
  	{
  		if (!GenVars.mudWall) {
+@@ -57694,6 +_,8 @@
+ 			Main.tile[num9, num12].slope(0);
+ 		}
+ 
++		AddBuriedChest(i, num10 - 3, ChestLootLoader.LootPoolNames.FloatingIsland, notNearOtherChests: false, getGoodWorldGen ? 2 : 13, trySlope: false, 0);
++		/*
+ 		int contain = 0;
+ 		int num13 = GenVars.skyIslandHouseCount;
+ 		if (num13 > 3)
+@@ -57714,10 +_,12 @@
+ 				break;
+ 		}
+ 
++		
+ 		if (getGoodWorldGen)
+ 			AddBuriedChest(i, num10 - 3, contain, notNearOtherChests: false, 2, trySlope: false, 0);
+ 		else
+ 			AddBuriedChest(i, num10 - 3, contain, notNearOtherChests: false, 13, trySlope: false, 0);
++		*/
+ 
+ 		if (islandStyle > 0) {
+ 			for (int num14 = 0; num14 < 100000; num14++) {
 @@ -58741,7 +_,7 @@
  			Main.tile[x, y + 1] = new Tile();
  

@@ -27,7 +27,7 @@
  			int x = (int)npc.position.X + npc.width / 2;
  			int y = (int)npc.position.Y + npc.height / 2;
  			if (scattered) {
-@@ -17,13 +_,57 @@
+@@ -17,13 +_,58 @@
  			}
  
  			int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
@@ -47,6 +47,7 @@
 +					slot.SetDefaults(item);
 +					slot.stack = stack;
 +					slot.Prefix(-1);
++					break;
 +				}
 +			}
 +		}
