@@ -12,6 +12,7 @@ using System.Linq;
 using Terraria.ModLoader.Config;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
+using ReLogic.Utilities;
 
 namespace Terraria.ModLoader;
 
@@ -107,6 +108,8 @@ public partial class Mod
 	/// <inheritdoc cref="Terraria.ModLoader.PreJITFilter"/>
 	public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
 
+	internal HashSet<Type> ReinitializeDuringResizeArraysTypes = new();
+
 	public Mod() {
 		Content = new ContentCache(this);
 	}
@@ -165,6 +168,9 @@ public partial class Mod
 		instance.Load(this);
 		Content.Add(instance);
 		ContentInstance.Register(instance);
+		if(instance.GetType().GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null) {
+			ReinitializeDuringResizeArraysTypes.Add(instance.GetType());
+		}
 		return true;
 	}
 

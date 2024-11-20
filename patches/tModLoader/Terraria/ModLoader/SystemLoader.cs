@@ -7,6 +7,7 @@ using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -42,6 +43,13 @@ public static partial class SystemLoader
 		RebuildHooks();
 
 		if (!unloading) {
+			foreach (var mod in ModLoader.Mods) {
+				foreach (var typesToReinitialize in mod.ReinitializeDuringResizeArraysTypes) {
+					// Uninitialized static ctor will be initialized twice here for some reason.
+					LoaderUtils.ResetStaticMembers(typesToReinitialize);
+				}
+			}
+
 			foreach (var system in HookResizeArrays.Enumerate()) {
 				system.ResizeArrays();
 			}
