@@ -1011,6 +1011,17 @@
  	public static bool AddBuriedChest(int i, int j, int contain = 0, bool notNearOtherChests = false, int Style = -1, bool trySlope = false, ushort chestTileType = 0)
  	{
  		if (chestTileType == 0)
+@@ -25777,8 +_,10 @@
+ 			if (num8 >= 0) {
+ 				if (flag11) {
+ 					GenVars.hellChest++;
++					/*
+ 					if (GenVars.hellChest >= GenVars.hellChestItem.Length)
+ 						GenVars.hellChest = 0;
++					*/
+ 				}
+ 
+ 				Chest chest = Main.chest[num8];
 @@ -26845,9 +_,10 @@
  			Main.tile[i, j] = new Tile();
  

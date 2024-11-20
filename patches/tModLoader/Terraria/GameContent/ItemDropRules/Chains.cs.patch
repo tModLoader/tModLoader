@@ -8,7 +8,7 @@
  		}
  	}
  
-@@ -74,18 +_,43 @@
+@@ -74,21 +_,69 @@
  		}
  	}
  
@@ -52,3 +52,29 @@
  	public static IItemDropRule OnFailedConditions(this IItemDropRule rule, IItemDropRule ruleToChain, bool hideLootReport = false)
  	{
  		rule.ChainedRules.Add(new TryIfDoesntFillConditions(ruleToChain, hideLootReport));
+ 		return ruleToChain;
++	}
++	/// <returns>this rule</returns>
++	/// <inheritdoc cref="OnFailedRoll(IItemDropRule, IItemDropRule, bool)"/>
++	public static IItemDropRule WithOnFailedRoll(this IItemDropRule rule, IItemDropRule ruleToChain, bool hideLootReport = false)
++	{
++		rule.OnFailedRoll(ruleToChain, hideLootReport);
++		return rule;
++	}
++
++	/// <returns>this rule</returns>
++	/// <inheritdoc cref="OnSuccess(IItemDropRule, IItemDropRule, bool)"/>
++	public static IItemDropRule WithOnSuccess(this IItemDropRule rule, IItemDropRule ruleToChain, bool hideLootReport = false)
++	{
++		rule.OnSuccess(ruleToChain, hideLootReport);
++		return rule;
++	}
++
++	/// <returns>this rule</returns>
++	/// <inheritdoc cref="OnFailedConditions(IItemDropRule, IItemDropRule, bool)"/>
++	public static IItemDropRule WithOnFailedConditions(this IItemDropRule rule, IItemDropRule ruleToChain, bool hideLootReport = false)
++	{
++		rule.OnFailedConditions(ruleToChain, hideLootReport);
++		return rule;
+ 	}
+ }

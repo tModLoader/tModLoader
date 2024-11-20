@@ -53,7 +53,6 @@ public partial class WorldGen
 	{
 		if (chestTileType == 0)
 			chestTileType = 21;
-
 		bool flag = false;
 		bool flag2 = false;
 		bool flag3 = false;
@@ -69,17 +68,17 @@ public partial class WorldGen
 		if (tenthAnniversaryWorldGen)
 			num *= 3;
 
-		for (int chestY = j; chestY < Main.maxTilesY - 10; chestY++) {
+		for (int floorTileY = j; floorTileY < Main.maxTilesY - 10; floorTileY++) {
 			int num2 = -1;
 			int num3 = -1;
-			if (Main.tile[i, (int)chestY].shimmer())
+			if (Main.tile[i, (int)floorTileY].shimmer())
 				return false;
 
-			if (trySlope && Main.tile[i, (int)chestY].active() && Main.tileSolid[Main.tile[i, (int)chestY].type] && !Main.tileSolidTop[Main.tile[i, (int)chestY].type]) {
+			if (trySlope && Main.tile[i, (int)floorTileY].active() && Main.tileSolid[Main.tile[i, (int)floorTileY].type] && !Main.tileSolidTop[Main.tile[i, (int)floorTileY].type]) {
 				if (Style == 17) {
 					int num4 = 30;
 					for (int l = i - num4; l <= i + num4; l++) {
-						for (int m = chestY - num4; m <= chestY + num4; m++) {
+						for (int m = floorTileY - num4; m <= floorTileY + num4; m++) {
 							if (!InWorld(l, m, 5))
 								return false;
 
@@ -89,36 +88,37 @@ public partial class WorldGen
 					}
 				}
 
-				if (Main.tile[i - 1, (int)chestY].topSlope()) {
-					num2 = Main.tile[i - 1, (int)chestY].slope();
-					Main.tile[i - 1, (int)chestY].slope(0);
+				if (Main.tile[i - 1, (int)floorTileY].topSlope()) {
+					num2 = Main.tile[i - 1, (int)floorTileY].slope();
+					Main.tile[i - 1, (int)floorTileY].slope(0);
 				}
 
-				if (Main.tile[i, (int)chestY].topSlope()) {
-					num3 = Main.tile[i, (int)chestY].slope();
-					Main.tile[i, (int)chestY].slope(0);
+				if (Main.tile[i, (int)floorTileY].topSlope()) {
+					num3 = Main.tile[i, (int)floorTileY].slope();
+					Main.tile[i, (int)floorTileY].slope(0);
 				}
 			}
 
-			if (remixWorldGen && (double)i > (double)Main.maxTilesX * 0.37 && (double)i < (double)Main.maxTilesX * 0.63 && chestY > Main.maxTilesY - 250)
+			if (remixWorldGen && (double)i > (double)Main.maxTilesX * 0.37 && (double)i < (double)Main.maxTilesX * 0.63 && floorTileY > Main.maxTilesY - 250)
 				return false;
 
 			int num5 = 2;
 			for (int n = i - num5; n <= i + num5; n++) {
-				for (int num6 = chestY - num5; num6 <= chestY + num5; num6++) {
+				for (int num6 = floorTileY - num5; num6 <= floorTileY + num5; num6++) {
 					if (Main.tile[n, num6].active() && (TileID.Sets.Boulders[Main.tile[n, num6].type] || Main.tile[n, num6].type == 26 || Main.tile[n, num6].type == 237))
 						return false;
 				}
 			}
 
-			if (!SolidTile(i, (int)chestY))
+			if (!SolidTile(i, (int)floorTileY))
 				continue;
 
+			int floorTileType = Main.tile[i, floorTileY].type;
 			bool isHellChest = false;
 			int style = 0;
-			bool flag12 = (double)chestY >= Main.worldSurface + 25.0;
+			bool flag12 = (double)floorTileY >= Main.worldSurface + 25.0;
 			if (remixWorldGen)
-				flag12 = chestY < Main.maxTilesY - 400;
+				flag12 = floorTileY < Main.maxTilesY - 400;
 
 			if (Style >= 0) {
 				style = Style;
@@ -128,43 +128,17 @@ public partial class WorldGen
 			}
 			
 
-			if ((chestTileType == 467 && style == 10) || (string.IsNullOrEmpty(pool) && chestY <= Main.maxTilesY - 205 && IsUndergroundDesert(i, chestY))) {
+			if ((chestTileType == 467 && style == 10) || (string.IsNullOrEmpty(pool) && floorTileY <= Main.maxTilesY - 205 && IsUndergroundDesert(i, floorTileY))) {
 				flag2 = true;
 				style = 10;
 				chestTileType = 467;
-				pool = (chestY <= (GenVars.desertHiveHigh * 3 + GenVars.desertHiveLow * 4) / 7) ? ChestLootLoader.LootPoolNames.SandstoneHigh : ChestLootLoader.LootPoolNames.SandstoneLow;
+				pool = (floorTileY <= (GenVars.desertHiveHigh * 3 + GenVars.desertHiveLow * 4) / 7) ? ChestLootLoader.LootPoolNames.SandstoneHigh : ChestLootLoader.LootPoolNames.SandstoneLow;
 				canBeReplacedByAngelStatue = true;
 			}
 
-			if (chestTileType == 21 && (style == 11 || (string.IsNullOrEmpty(pool) && chestY >= Main.worldSurface + 25.0 && chestY <= Main.maxTilesY - 205 && (Main.tile[i, chestY].type == 147 || Main.tile[i, chestY].type == 161 || Main.tile[i, chestY].type == 162)))) {
-				flag = true;
+			if (chestTileType == 21 && (style == 11 || (string.IsNullOrEmpty(pool) && floorTileY >= Main.worldSurface + 25.0 && floorTileY <= Main.maxTilesY - 205 && floorTileType is TileID.SnowBlock or TileID.IceBlock or TileID.BreakableIce))) {
 				style = 11;
-				switch (genRand.Next(6)) {
-					case 0:
-						contain = 670;
-						break;
-					case 1:
-						contain = 724;
-						break;
-					case 2:
-						contain = 950;
-						break;
-					case 3:
-						contain = ((!remixWorldGen) ? 1319 : 725);
-						break;
-					case 4:
-						contain = 987;
-						break;
-					default:
-						contain = 1579;
-						break;
-				}
-
-				if (genRand.Next(20) == 0)
-					contain = 997;
-
-				if (genRand.Next(50) == 0)
-					contain = 669;
+				pool = ChestLootLoader.LootPoolNames.Frozen;
 
 				canBeReplacedByAngelStatue = true;
 			}
@@ -174,7 +148,7 @@ public partial class WorldGen
 				canBeReplacedByAngelStatue = true;
 			}
 
-			if (chestTileType == 21 && chestY > Main.maxTilesY - 205 && string.IsNullOrEmpty(pool)) {
+			if (chestTileType == 21 && floorTileY > Main.maxTilesY - 205 && string.IsNullOrEmpty(pool)) {
 				flag7 = true;
 				contain = GenVars.hellChestItem[GenVars.hellChest];
 				style = 4;
@@ -182,8 +156,8 @@ public partial class WorldGen
 				canBeReplacedByAngelStatue = true;
 			}
 
-			if (chestTileType == 21 && style == 17) {
-				flag4 = true;
+			if (chestTileType == 21 && style == 17 && string.IsNullOrEmpty(pool)) {
+				pool = ChestLootLoader.LootPoolNames.WaterSimple;
 				canBeReplacedByAngelStatue = true;
 			}
 
@@ -197,7 +171,7 @@ public partial class WorldGen
 				canBeReplacedByAngelStatue = true;
 			}
 
-			if (chestTileType == 21 && style != 0 && IsDungeon(i, chestY))
+			if (chestTileType == 21 && style != 0 && IsDungeon(i, floorTileY))
 				flag8 = true;
 			if (chestTileType == 21 && style != 0 && (contain == 848 || contain == 857 || contain == 934))
 				flag9 = true;
@@ -217,12 +191,10 @@ public partial class WorldGen
 				style = 4;
 				chestTileType = TileID.Containers2;
 			}
-			int chestIndex = PlaceChest(i - 1, chestY - 1, chestTileType, notNearOtherChests, style);
+			int chestIndex = PlaceChest(i - 1, floorTileY - 1, chestTileType, notNearOtherChests, style);
 			if (chestIndex >= 0) {
 				if (isHellChest) {
 					GenVars.hellChest++;
-					if (GenVars.hellChest >= GenVars.hellChestItem.Length)
-						GenVars.hellChest = 0;
 				}
 
 				Chest chest = Main.chest[chestIndex];
@@ -266,10 +238,10 @@ public partial class WorldGen
 
 			if (trySlope) {
 				if (num2 > -1)
-					Main.tile[i - 1, chestY].slope((byte)num2);
+					Main.tile[i - 1, floorTileY].slope((byte)num2);
 
 				if (num3 > -1)
-					Main.tile[i, chestY].slope((byte)num3);
+					Main.tile[i, floorTileY].slope((byte)num3);
 			}
 
 			return false;

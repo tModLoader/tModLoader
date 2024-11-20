@@ -5,10 +5,12 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.ItemDropRules.VanillaChests;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.WorldBuilding;
 using static Terraria.GameContent.ItemDropRules.ItemDropRule;
+using static Terraria.ModLoader.ChestLootLoader;
 using Conditions = Terraria.GameContent.ItemDropRules.Conditions;
 
 namespace Terraria.ModLoader;
@@ -65,7 +67,7 @@ public static class ChestLootLoader
 		SetupItemPools();
 
 		lootPools[LootPoolNames.SurfaceWooden] = [
-			new DropFromItemPoolRule(ItemPoolNames.SurfaceWoodenPrimary, 1),
+			new DropFromItemPoolRule(ItemPoolNames.SurfaceWoodenPrimary),
 			Common(ItemID.Glowstick, chanceDenominator: 6, minimumDropped: 40, maximumDropped: 75),
 			Common(ItemID.ThrowingKnife, chanceDenominator: 6, minimumDropped: 150, maximumDropped: 300),
 			Common(ItemID.HerbBag, chanceDenominator: 6, minimumDropped: 1, maximumDropped: 4),
@@ -97,6 +99,62 @@ public static class ChestLootLoader
 			Common(ItemID.SilverCoin, chanceDenominator: 2, minimumDropped: 10, maximumDropped: 29),
 			Common(ItemID.Wood, chanceDenominator: 2, minimumDropped: 50, maximumDropped: 99),
 		];
+		lootPools[LootPoolNames.Frozen] = [
+			new DropFromItemPoolRule(ItemPoolNames.FrozenPrimary, 1),
+			Common(ItemID.IceMirror, 5)
+		];
+		lootPools[LootPoolNames.SandstoneHigh] = [
+			new DropFromItemPoolRule(ItemPoolNames.SandstoneHighPrimary),
+			Common(ItemID.ScarabBomb, 3, 10, 20),
+			Common(ItemID.EncumberingStone, 7),
+			Common(ItemID.DesertMinecart, 15),
+		];
+		lootPools[LootPoolNames.SandstoneLow] = [
+			new DropFromItemPoolRule(ItemPoolNames.SandstoneLowPrimary),
+			Common(ItemID.ScarabBomb, 3, 10, 20),
+			Common(ItemID.EncumberingStone, 7),
+			Common(ItemID.DesertMinecart, 15),
+		];
+		lootPools[LootPoolNames.Jungle] = [
+			Common(ItemID.LivingMahoganyWand, 6).WithOnSuccess(Common(ItemID.LivingMahoganyLeafWand)),
+			Common(ItemID.BeeMinecart, 10)
+		];
+		lootPools[LootPoolNames.WaterOceanCave] = [
+			new DropFromItemPoolRule(ItemPoolNames.WaterOceanCavePrimary),
+			new DropLootPoolRule(LootPoolNames.WaterSimple)
+		];
+		lootPools[LootPoolNames.WaterSimple] = [
+			Common(ItemID.SharkBait, 2),
+			Common(ItemID.SandcastleBucket, 2)
+		];
+		lootPools[LootPoolNames.LivingWood] = [
+			new DropFromItemPoolRule(ItemPoolNames.LivingWoodPrimary),
+			new OneFromRulesRule(10,
+				Common(ItemID.SunflowerMinecart),
+				Common(ItemID.LadybugMinecart)
+			)
+		];
+		lootPools[LootPoolNames.MushroomHigh] = [
+			Common(ItemID.ShroomMinecart, 2),
+			Common(ItemID.MushroomHat, 3).WithOnSuccess(Common(ItemID.MushroomVest)).WithOnSuccess(Common(ItemID.MushroomPants))
+		];
+		lootPools[LootPoolNames.MushroomLow] = [
+			new DropFromItemPoolRule(ItemPoolNames.MushroomLowSecondary)
+		];
+		lootPools[LootPoolNames.Shadow] = [
+			new ShadowChestPrimaryRule(),
+			Common(ItemID.TreasureMagnet, 5),
+			Common(ItemID.HellMinecart, 10),
+			Common(ItemID.OrnateShadowKey, 10),
+			Common(ItemID.HellCake, 10),
+		];
+		lootPools[LootPoolNames.FloatingIsland] = [
+			new FloatingIslandPrimaryRule(),
+			Common(ItemID.CreativeWings, 40),
+			Common(ItemID.SkyMill, 3),
+			new DropFromItemPoolRule(ItemPoolNames.FloatingIslandPainting),
+			Common(ItemID.Cloud, minimumDropped: 50, maximumDropped: 100)
+		];
 	}
 	private static void SetupItemPools()
 	{
@@ -113,6 +171,11 @@ public static class ChestLootLoader
 			new(ItemID.PortableStool)
 		]);
 		AddItemPool(ItemPoolNames.PyramidGoldPrimary, [
+			new(ItemID.PharaohsMask, ChainedRules:[Common(ItemID.PharaohsRobe)], Weight: 1),
+			new(ItemID.FlyingCarpet, Weight: 4),
+			new(ItemID.SandstorminaBottle, Weight: 4)
+		]);
+		AddItemPool(ItemPoolNames.PyramidGoldPrimaryAnniversary, [
 			new(ItemID.PharaohsMask, ChainedRules:[Common(ItemID.PharaohsRobe)], Weight: 1),
 			new(ItemID.FlyingCarpet, Weight: 4),
 			new(ItemID.SandstorminaBottle, Weight: 4)
@@ -142,7 +205,7 @@ public static class ChestLootLoader
 			new(ItemID.LivingWoodWand, ChainedRules: [Common(ItemID.LeafWand)], Weight: 2),
 			new(ItemID.BabyBirdStaff)
 		]);
-		AddItemPool(ItemPoolNames.MushroomSecondary, [
+		AddItemPool(ItemPoolNames.MushroomLowSecondary, [
 			new(ItemID.ShroomMinecart),
 			new(ItemID.MushroomHat, ChainedRules: [Common(ItemID.MushroomVest, ItemID.MushroomPants)])
 		]);
@@ -162,6 +225,14 @@ public static class ChestLootLoader
 			new(ItemID.Starfury),
 			new(ItemID.LuckyHorseshoe),
 			new(ItemID.CelestialMagnet),
+		]);
+		AddItemPool(ItemPoolNames.FloatingIslandPainting, [
+			new(ItemID.SeeTheWorldForWhatItIs),
+			new(ItemID.HighPitch),
+			new(ItemID.BlessingfromTheHeavens),
+			new(ItemID.Constellation),
+			new(ItemID.LoveisintheTrashSlot),
+			new(ItemID.SunOrnament),
 		]);
 		AddItemPool(ItemPoolNames.WaterOceanCavePrimary, [
 			new(ItemID.WaterWalkingBoots),
@@ -219,13 +290,15 @@ public static class ChestLootLoader
 		public const string GoldBar = nameof(GoldBar);
 		public const string SurfaceWoodenPrimary = nameof(SurfaceWoodenPrimary);
 		public const string PyramidGoldPrimary = nameof(PyramidGoldPrimary);
+		public const string PyramidGoldPrimaryAnniversary = nameof(PyramidGoldPrimaryAnniversary);
 		public const string SandstoneHighPrimary = nameof(SandstoneHighPrimary);
 		public const string SandstoneLowPrimary = nameof(SandstoneLowPrimary);
 		public const string DungeonGoldPrimary = nameof(DungeonGoldPrimary);
 		public const string FrozenPrimary = nameof(FrozenPrimary);
-		public const string MushroomSecondary = nameof(MushroomSecondary);
+		public const string MushroomLowSecondary = nameof(MushroomLowSecondary);
 		public const string LivingWoodPrimary = nameof(LivingWoodPrimary);
 		public const string FloatingIslandPrimary = nameof(FloatingIslandPrimary);
+		public const string FloatingIslandPainting = nameof(FloatingIslandPainting);
 		public const string WaterOceanCavePrimary = nameof(WaterOceanCavePrimary);
 		public const string WebPrimary = nameof(WebPrimary);
 		public const string ShadowPrimary = nameof(ShadowPrimary);
@@ -238,10 +311,13 @@ public static class ChestLootLoader
 		public const string SandstoneLow = nameof(SandstoneLow);//TODO
 		public const string DungeonGold = nameof(DungeonGold);//TODO
 		public const string Frozen = nameof(Frozen);//TODO
-		public const string Mushroom = nameof(Mushroom);//TODO
+		public const string Jungle = nameof(Jungle);//TODO
+		public const string MushroomHigh = nameof(MushroomHigh);//TODO
+		public const string MushroomLow = nameof(MushroomLow);//TODO
 		public const string LivingWood = nameof(LivingWood);//TODO
 		public const string FloatingIsland = nameof(FloatingIsland);//TODO
 		public const string WaterOceanCave = nameof(WaterOceanCave);//TODO
+		public const string WaterSimple = nameof(WaterSimple);//TODO
 		public const string Web = nameof(Web);//TODO
 		public const string Shadow = nameof(Shadow);//TODO
 	}
