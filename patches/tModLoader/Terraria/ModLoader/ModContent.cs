@@ -339,6 +339,7 @@ public static class ModContent
 			SystemLoader.PostSetupContent(mod);
 			mod.TransferAllAssets();
 		});
+		DataInstance.ResetLookupCount();
 
 		MemoryTracking.Finish();
 

@@ -3,6 +3,23 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
+public static class DataInstance
+{
+	internal static ulong LookupCount;
+	internal static bool LookupCountWarningLogged;
+	private const int LookupCountLimit = 100;
+
+	internal static void ResetLookupCount()
+	{
+		if (LookupCount > LookupCountLimit && !ModLoader.isLoading && !LookupCountWarningLogged) {
+			// Could add ModCompile.activelyModding to condition, but normal user reports of this might be good.
+			Logging.tML.Warn($"Over {LookupCountLimit} calls to DataInstance.Retrieve have happened this game update. The mod responsible is not known. Consider caching the results of DataInstance.Retrieve to improve performance.");
+			LookupCountWarningLogged = true;
+		}
+		LookupCount = 0;
+	}
+}
+
 /// <summary>
 /// Allows arbitrary cross-mod data collaboration.
 /// <para/> Primarily used by <see cref="SetHandler"/> to store custom ID sets, but can be used directly for any reference type a modder might want to share with other mods.
@@ -41,7 +58,10 @@ public static class DataInstance<T>
 		obj = entry;
 	}
 
-	internal static T GetOrAdd(object key, T obj) => data.GetOrAdd(key, obj);
+	internal static T GetOrAdd(object key, T obj)
+	{
+		return data.GetOrAdd(key, obj);
+	}
 
 	/// <summary>
 	/// Allows a mod to expose an object to other mods. The resulting key will be "ModName/Key". This is load order dependent, so collaboration about the Type, usage, and timing for access is required to properly use exposed objects in other mods. A typical approach would be to call this method in <c>ModSystem.Load</c> and have other mods call <see cref="Retrieve(string)"/> in <c>ModSystem.SetStaticDefaults</c>. The owner mod would then be able to access the final data during <c>ModSystem.PostSetupContent</c>
@@ -60,6 +80,7 @@ public static class DataInstance<T>
 
 	public static T Retrieve(object key)
 	{
+		DataInstance.LookupCount++;
 		if (data.TryGetValue(key, out T value))
 			return value;
 		return default(T); // is this right for primitives?
@@ -70,6 +91,7 @@ public static class DataInstance<T>
 	/// </summary>
 	public static T Retrieve(string key)
 	{
+		DataInstance.LookupCount++;
 		if (data.TryGetValue(key, out T value))
 			return value;
 		return default(T); // is this right for primitives?
