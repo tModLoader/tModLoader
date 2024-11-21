@@ -92,8 +92,9 @@ public partial class SetFactory
 	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input)
 	{
 		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
-		if (!ContentCache.contentLoadingFinished) 
+		if (false && !ContentCache.contentLoadingFinished)
 		{
+			// TODO: This throws during initial modded Set class initialization. Ignore sometimes somehow? Or maybe, track a list of keys registered during load and make sure they all reset during ResizeArrays?
 			throw new Exception($"Custom sets can only be registered during or after ModSystem.ResizeArrays. This ensures that all content has been registered and that the custom set will have the correct length");
 		}
 
@@ -113,6 +114,7 @@ public partial class SetFactory
 		if (!newMetadata.defaultValue.Equals(existingMetadata.defaultValue))
 		{ // Primitive might be boxed, so != doesn't work.
 			throw new Exception($"Previously registered set for {key} has a default value of {existingMetadata.defaultValue} but {newMetadata.defaultValue} was supplied. Custom data set will not be registered");
+			// TODO: just allow this and output a warning? Keep both somehow?
 		}
 		/*if (newmetadata.length != existingmetadata.length)
 		{

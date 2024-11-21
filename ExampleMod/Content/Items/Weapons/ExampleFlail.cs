@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Weapons
 			// When thrown directly at enemies, the flail projectile will deal double Item.damage, matching the tooltip, but deals normal damage in other modes.
 			ItemID.Sets.ToolTipDamageMultiplier[Type] = 2f;
 
-			CustomSetsSystem.FlamingWeapon[Type] = true;
+			CustomSetsSystem.Sets.FlamingWeapon[Type] = true;
 		}
 
 		public override void SetDefaults() {

@@ -70,17 +70,12 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 	}
 
+	// Unlike with CustomSetsSystem, it is ok to use ReinitializeDuringResizeArrays on the ModSystem class directly because this class doesn't have any other static fields that we wouldn't want to reset.
+	[ReinitializeDuringResizeArrays]
 	public class WaspNestSystem : ModSystem
 	{
 		// This is a custom item set, facilitating mod collaboration. See CustomSetsSystem.cs for more information.
-		public static bool[] CantEquipWith_HiveBackpack;
-
-		public override void ResizeArrays() {
-			//CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateBoolSet(false, ItemID.HiveBackpack);
-			//SetHandler.RegisterCustomSet(nameof(CantEquipWith_HiveBackpack), false, ref CantEquipWith_HiveBackpack);
-
-			CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateBoolSet(nameof(CantEquipWith_HiveBackpack), false, ItemID.HiveBackpack);
-		}
+		public static bool[] CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateNamedBoolSet(nameof(CantEquipWith_HiveBackpack), false, ItemID.HiveBackpack);
 	}
 
 	public class WaspNestGlobalItem : GlobalItem
