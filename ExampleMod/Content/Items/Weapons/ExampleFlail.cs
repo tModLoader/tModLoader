@@ -1,5 +1,4 @@
-﻿using ExampleMod.Common.Systems;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -16,7 +15,7 @@ namespace ExampleMod.Content.Items.Weapons
 			// When thrown directly at enemies, the flail projectile will deal double Item.damage, matching the tooltip, but deals normal damage in other modes.
 			ItemID.Sets.ToolTipDamageMultiplier[Type] = 2f;
 
-			CustomSetsSystem.Sets.FlamingWeapon[Type] = true;
+			CustomItemSets.FlamingWeapon[Type] = true;
 		}
 
 		public override void SetDefaults() {

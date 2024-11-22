@@ -70,19 +70,16 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 	}
 
-	// Unlike with CustomSetsSystem, it is ok to use ReinitializeDuringResizeArrays on the ModSystem class directly because this class doesn't have any other static fields that we wouldn't want to reset.
+	// We can safely use ReinitializeDuringResizeArrays on this class to properly initialize CantEquipWith_HiveBackpack because their are no other static fields that we wouldn't want to reset, but if we did have that then we would want to move CantEquipWith_HiveBackpack to it's own class or move it to CustomItemSets.
 	[ReinitializeDuringResizeArrays]
-	public class WaspNestSystem : ModSystem
-	{
-		// This is a custom item set, facilitating mod collaboration. See CustomSetsSystem.cs for more information.
-		public static bool[] CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateNamedBoolSet(nameof(CantEquipWith_HiveBackpack), false, ItemID.HiveBackpack);
-	}
-
 	public class WaspNestGlobalItem : GlobalItem
 	{
+		// This is a custom item set, facilitating mod collaboration. See CustomItemSets.cs for more information.
+		public static bool[] CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateNamedBoolSet(nameof(CantEquipWith_HiveBackpack), false, ItemID.HiveBackpack);
+
 		// Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
 		public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
-			if (WaspNestSystem.CantEquipWith_HiveBackpack[equippedItem.type] && WaspNestSystem.CantEquipWith_HiveBackpack[incomingItem.type]) {
+			if (CantEquipWith_HiveBackpack[equippedItem.type] && CantEquipWith_HiveBackpack[incomingItem.type]) {
 				return false;
 			}
 			return true;
