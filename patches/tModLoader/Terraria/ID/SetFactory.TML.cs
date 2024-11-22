@@ -96,18 +96,9 @@ public partial class SetFactory
 		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
 		if (!ContentCache.contentLoadingFinished) {
 			// If a set is initialized early, throw an error if the class containing the set doesn't have ReinitializeDuringResizeArrays
-			var stack = new StackTrace();
-			for (int i = 0; i < stack.FrameCount; i++) {
-				StackFrame frame = stack.GetFrame(i);
-				var type = frame.GetMethod()?.DeclaringType;
-				var assembly = type?.Assembly;
-				if (assembly != null && AssemblyManager.GetAssemblyOwner(assembly, out string modName)) {
-					if (type.GetAttribute<ReinitializeDuringResizeArraysAttribute>() == null) {
-						throw new Exception($"Custom sets must be initialized from a class with the ReinitializeDuringResizeArrays attribute. This ensures that all content has been registered and that the custom set will have the correct length");
-					}
-					break;
-				}
-			}
+			bool willBeReinitialized = new StackTrace().GetFrames().Any(frame => frame.GetMethod()?.DeclaringType?.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null);
+			if (!willBeReinitialized)
+				throw new Exception($"Custom sets must be initialized from a class with the ReinitializeDuringResizeArrays attribute. This ensures that all content has been registered and that the custom set will have the correct length");
 		}
 
 		// TODO: Return bool to represent already exists or merged?
