@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ReLogic.Utilities;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ID;
 
@@ -15,13 +18,12 @@ public partial class SetFactory
 
 	private ConcurrentDictionary<(string, Type), SetMetadata> setMetadataMapping = new ConcurrentDictionary<(string, Type), SetMetadata>();
 
-	public void Clear() // call where?
+	public void Clear() // TODO: call where?
 	{
 		setMetadataMapping.Clear();
 	}
 
 	// Copies of existing methods with an additional key parameter.
-	// TODO: CreateNamedCustomSet?
 	public T[] CreateNamedCustomSet<T>(string key, T defaultState, params object[] inputs)
 	{
 		var set = CreateCustomSet(defaultState, inputs);
@@ -86,24 +88,31 @@ public partial class SetFactory
 
 	/// <summary>
 	/// Registers a custom "set", meaning an array of values of length equal to the count of the content the set corresponds to. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateXSet method.
-	/// <para/> The set reference passed in may change as a result of this method. This method will merge sets together regardless of mod load order, allowing for ad-hoc collaboration. Note that this merge behavior is dependent on mods agreeing on key and default value. It is important that set names are unique, so it is good practice to include the entity name in the set name to avoid mods accidentally using the same name for different things. For example, a set named "Acidic" might be used by 1 mod to describe projectiles and another mod to describe items. Sets representing mod-specific ideas should prepend the key with the mod name to ensure a unique key that will not be used by any other mod: "ExampleMod/Jiggly"
+	/// <para/> The set reference passed in may change as a result of this method. This method will merge sets together regardless of mod load order, allowing for ad-hoc collaboration. Note that this merge behavior is dependent on mods agreeing on key and default value. It is important that set names are unique, so it is good practice to include the entity name in the set name to avoid mods accidentally using the same name for different things. For example, a set named "Acidic" might be used by one mod to describe projectiles and another mod to describe items. Sets representing mod-specific ideas should prepend the key with the mod name to ensure a unique key that will not be used by any other mod: "ExampleMod/Jiggly"
 	/// <para/> Throws an exception if the Type, data length, or default value does not match the data registered using the same key by any mod loaded before this mod.
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input)
 	{
 		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
-		if (false && !ContentCache.contentLoadingFinished)
-		{
-			// TODO: This throws during initial modded Set class initialization. Ignore sometimes somehow? Or maybe, track a list of keys registered during load and make sure they all reset during ResizeArrays?
-			throw new Exception($"Custom sets can only be registered during or after ModSystem.ResizeArrays. This ensures that all content has been registered and that the custom set will have the correct length");
+		if (!ContentCache.contentLoadingFinished) {
+			// If a set is initialized early, throw an error if the class containing the set doesn't have ReinitializeDuringResizeArrays
+			var stack = new StackTrace();
+			for (int i = 0; i < stack.FrameCount; i++) {
+				StackFrame frame = stack.GetFrame(i);
+				var type = frame.GetMethod()?.DeclaringType;
+				var assembly = type?.Assembly;
+				if (assembly != null && AssemblyManager.GetAssemblyOwner(assembly, out string modName)) {
+					if (type.GetAttribute<ReinitializeDuringResizeArraysAttribute>() == null) {
+						throw new Exception($"Custom sets must be initialized from a class with the ReinitializeDuringResizeArrays attribute. This ensures that all content has been registered and that the custom set will have the correct length");
+					}
+					break;
+				}
+			}
 		}
 
 		// TODO: Return bool to represent already exists or merged?
-		// TODO: if(loadStage < ResizeArrays) throw new Exception? It's probably always wrong to do it earlier.
-		// TODO: We could store defaultValue and throw on mismatch.
-		// TODO: Another Generic for Content Type? Item or ItemID for example?
 
-		// Note: Intended to be load order independent as long as all parties agree on default value, Type, and length. Any deviation will throw exception.
+		// Note: Intended to be load order independent as long as all parties agree on default value and Type. Any deviation will throw exception.
 
 		SetMetadata newMetadata = new SetMetadata(typeof(T), defaultValue);
 		SetMetadata existingMetadata = setMetadataMapping.GetOrAdd((key, typeof(T)), newMetadata);
@@ -111,10 +120,9 @@ public partial class SetFactory
 		{
 			throw new Exception($"Previously registered set for {key} is of type {existingMetadata.type} but {newMetadata.type} was supplied. Custom data set will not be registered");
 		}*/
-		if (!newMetadata.defaultValue.Equals(existingMetadata.defaultValue))
-		{ // Primitive might be boxed, so != doesn't work.
+		if (!newMetadata.defaultValue.Equals(existingMetadata.defaultValue)) { // Primitive might be boxed, so != doesn't work.
 			throw new Exception($"Previously registered set for {key} has a default value of {existingMetadata.defaultValue} but {newMetadata.defaultValue} was supplied. Custom data set will not be registered");
-			// TODO: just allow this and output a warning? Keep both somehow?
+			// TODO: We could just allow this and output a warning that the data will not be shared. Keep both somehow?
 		}
 		/*if (newmetadata.length != existingmetadata.length)
 		{
@@ -122,30 +130,18 @@ public partial class SetFactory
 		}*/
 
 		// Custom sets are registered as (SetFactory, key) in DataInstance.
-		object entry = DataInstance<T[]>.GetOrAdd((this, key), input);
-
-		if (entry is not T[])
-		{
-			throw new Exception($"Existing set is not the expected Type {typeof(T)}, but is {entry.GetType()}");
-			// This could potentially happen if a modder bypasses SetHandler and registers a set using DataInstance instead. setMetadataMapping checks won't catch that.
-		}
-
-		var value = entry as T[];
+		T[] value = DataInstance<T[]>.GetOrAdd((this, key), input);
 
 		// If it already exists, merge the data
-		if (value != input)
-		{
-			if (value.Length != input.Length)
-			{
+		if (value != input) {
+			if (value.Length != input.Length) {
 				throw new Exception("Input set and existing set are of different lengths.");
 			}
 
 			// To merge, we find entries in the input that aren't defaultValue and assign them to the result.
 			// Existing changes should persist as long as mods agree on the defaultValue passed in and used in CreateXSet
-			for (int i = 0; i < input.Length; i++)
-			{
-				if (!input[i].Equals(defaultValue))
-				{
+			for (int i = 0; i < input.Length; i++) {
+				if (!input[i].Equals(defaultValue)) {
 					value[i] = input[i];
 				}
 			}

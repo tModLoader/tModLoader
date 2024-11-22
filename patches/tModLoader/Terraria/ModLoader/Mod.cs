@@ -168,9 +168,6 @@ public partial class Mod
 		instance.Load(this);
 		Content.Add(instance);
 		ContentInstance.Register(instance);
-		if(instance.GetType().GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null) {
-			ReinitializeDuringResizeArraysTypes.Add(instance.GetType());
-		}
 		return true;
 	}
 

@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetStaticDefaults() {
-			WaspNestSystem.CantEquipWith_HiveBackpack[Type] = true; // Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
+			WaspNestGlobalItem.CantEquipWith_HiveBackpack[Type] = true; // Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
 		}
 
 		public override void SetDefaults() {

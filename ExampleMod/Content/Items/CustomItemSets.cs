@@ -42,6 +42,7 @@ namespace ExampleMod.Content.Items
 			CustomItemSets.FlamingWeapon[ItemID.HelFire] = true;
 
 			// For example, we can add user-defined items to CustomItemSets.FlamingWeapon
+			// Note that this example would need more code to work correctly for config values changed in-game, this is just showing a potential use-case.
 			foreach (var itemDefinition in ModContent.GetInstance<ModConfigShowcaseDefaultValues>().ListOfItemDefinition) {
 				if (itemDefinition.Type != -1) {
 					CustomItemSets.FlamingWeapon[itemDefinition.Type] = true;
