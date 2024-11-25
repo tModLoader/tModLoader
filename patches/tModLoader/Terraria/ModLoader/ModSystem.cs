@@ -415,6 +415,5 @@ public abstract partial class ModSystem : ModType
 	/// <para/> <see cref="SetHandler.RegisterCustomSet{T}(string, T, T[])"/> can be used to expose a custom set for other mods to use by name without a dependency.
 	/// </summary>
 	public virtual void ResizeArrays() {
-		// TODO: bool unloading? Or maybe just only call this hook when loading in the first place?
 	}
 }

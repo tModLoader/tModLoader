@@ -1,8 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -42,17 +44,26 @@ public static partial class SystemLoader
 	{
 		RebuildHooks();
 
-		if (!unloading) {
-			foreach (var mod in ModLoader.Mods) {
-				foreach (var typesToReinitialize in mod.ReinitializeDuringResizeArraysTypes) {
-					// Uninitialized static ctor will be initialized twice here for some reason.
-					LoaderUtils.ResetStaticMembers(typesToReinitialize);
-				}
-			}
+		if (unloading) {
+			return;
+		}
+		foreach (var mod in ModLoader.Mods) {
+			var reinitializeTypes = AssemblyManager.GetLoadableTypes(mod.Code)
+				.Where(t => t.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null)
+				//.Where(t => !t.IsAbstract && !t.ContainsGenericParameters) // static is IsAbstract and IsSealed
+				//.Where(t => t.IsAssignableTo(typeof(ILoadable)))
+				//.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
+				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
+				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			foreach (var system in HookResizeArrays.Enumerate()) {
-				system.ResizeArrays();
+			foreach (var typesToReinitialize in reinitializeTypes) {
+				// Uninitialized static ctor will be initialized twice here for some reason.
+				LoaderUtils.ResetStaticMembers(typesToReinitialize); // Not necessarily ILoadable
 			}
+		}
+
+		foreach (var system in HookResizeArrays.Enumerate()) {
+			system.ResizeArrays();
 		}
 	}
 

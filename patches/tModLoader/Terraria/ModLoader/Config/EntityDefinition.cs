@@ -80,6 +80,7 @@ public abstract class EntityDefinition : TagSerializable
 
 /// <summary>
 /// ItemDefinition represents an Item identity. A typical use for this class is usage in ModConfig, perhaps to facilitate an Item tweaking mod.
+/// <para/> <inheritdoc/>
 /// </summary>
 // JSONItemConverter should allow this to be used as a dictionary key.
 [TypeConverter(typeof(ToFromStringConverter<ItemDefinition>))]

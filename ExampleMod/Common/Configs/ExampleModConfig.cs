@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
 namespace ExampleMod.Common.Configs
@@ -20,5 +21,8 @@ namespace ExampleMod.Common.Configs
 
 		[ReloadRequired]
 		public bool WeaponWithGrowingDamageToggle;
+
+		[ReloadRequired]
+		public List<ItemDefinition> AdditionalFlamingWeaponEntries = new List<ItemDefinition>();
 	}
 }

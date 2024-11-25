@@ -339,7 +339,6 @@ public static class ModContent
 			SystemLoader.PostSetupContent(mod);
 			mod.TransferAllAssets();
 		});
-		DataInstance.ResetLookupCount();
 
 		MemoryTracking.Finish();
 
@@ -492,7 +491,6 @@ public static class ModContent
 		MonoModHooks.Clear();
 		TypeCaching.Clear();
 		ContentCache.Unload();
-		//DataInstance.Clear();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();

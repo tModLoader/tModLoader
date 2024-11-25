@@ -3,70 +3,32 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReLogic.Utilities;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 
 namespace Terraria.ID;
 
 public partial class SetFactory
 {
 	// Additional code to support named custom sets for ad-hoc collaboration
-	private record SetMetadata(Type type, object defaultValue); // Note: Stores the array Type, not Type[]
+	private record SetMetadata(object defaultValue, object array);
 
 	private ConcurrentDictionary<(string, Type), SetMetadata> setMetadataMapping = new ConcurrentDictionary<(string, Type), SetMetadata>();
 
-	public void Clear() // TODO: call where?
+	// Each SetFactory will be re-created on mod reload, so this doesn't need to be called by tModLoader code.
+	public void Clear()
 	{
 		setMetadataMapping.Clear();
 	}
 
 	// Copies of existing methods with an additional key parameter.
-	public T[] CreateNamedCustomSet<T>(string key, T defaultState, params object[] inputs)
-	{
-		var set = CreateCustomSet(defaultState, inputs);
-		RegisterNamedCustomSet(key, defaultState, ref set);
-		return set;
-	}
-
-	public float[] CreateNamedFloatSet(string key, float defaultState, params float[] inputs)
-	{
-		var set = CreateFloatSet(defaultState, inputs);
-		RegisterNamedCustomSet(key, defaultState, ref set);
-		return set;
-	}
-	public ushort[] CreateNamedUshortSet(string key, ushort defaultState, params ushort[] inputs)
-	{
-		var set = CreateUshortSet(defaultState, inputs);
-		RegisterNamedCustomSet(key, defaultState, ref set);
-		return set;
-	}
-	public int[] CreateNamedIntSet(string key, int defaultState, params int[] inputs)
-	{
-		var set = CreateIntSet(defaultState, inputs);
-		RegisterNamedCustomSet(key, defaultState, ref set);
-		return set;
-	}
-	public int[] CreateNamedIntSet(string key, params int[] types)
-	{
-		var set = CreateIntSet(types);
-		RegisterNamedCustomSet(key, -1, ref set);
-		return set;
-	}
-	public bool[] CreateNamedBoolSet(string key, params int[] types)
-	{
-		var set = CreateBoolSet(false, types);
-		RegisterNamedCustomSet(key, false, ref set);
-		return set;
-	}
-	public bool[] CreateNamedBoolSet(string key, bool defaultState, params int[] types)
-	{
-		var set = CreateBoolSet(defaultState, types);
-		RegisterNamedCustomSet(key, defaultState, ref set);
-		return set;
-	}
+	public T[] CreateNamedCustomSet<T>(string key, T defaultState, params object[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateCustomSet(defaultState, inputs));
+	public float[] CreateNamedFloatSet(string key, float defaultState, params float[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateFloatSet(defaultState, inputs));
+	public ushort[] CreateNamedUshortSet(string key, ushort defaultState, params ushort[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateUshortSet(defaultState, inputs));
+	public int[] CreateNamedIntSet(string key, int defaultState, params int[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateIntSet(defaultState, inputs));
+	public int[] CreateNamedIntSet(string key, params int[] types) => RegisterNamedCustomSet(key, -1, CreateIntSet(types));
+	public bool[] CreateNamedBoolSet(string key, params int[] types) => RegisterNamedCustomSet(key, false, CreateBoolSet(false, types));
+	public bool[] CreateNamedBoolSet(string key, bool defaultState, params int[] types) => RegisterNamedCustomSet(key, defaultState, CreateBoolSet(defaultState, types));
 
 	// modName + key overloads
 	public T[] CreateNamedCustomSet<T>(string modName, string key, T defaultState, params object[] inputs) => CreateNamedCustomSet<T>($"{modName}/{key}", defaultState, inputs);
@@ -86,6 +48,13 @@ public partial class SetFactory
 	public bool[] CreateNamedBoolSet(Mod mod, string key, params int[] types) => CreateNamedBoolSet($"{mod.Name}/{key}", false, types);
 	public bool[] CreateNamedBoolSet(Mod mod, string key, bool defaultState, params int[] types) => CreateNamedBoolSet($"{mod.Name}/{key}", defaultState, types);
 
+	// This is private to prevent potential modder mistake.
+	private T[] RegisterNamedCustomSet<T>(string key, T defaultValue, T[] input)
+	{
+		RegisterNamedCustomSet(key, defaultValue, ref input);
+		return input;
+	}
+
 	/// <summary>
 	/// Registers a custom "set", meaning an array of values of length equal to the count of the content the set corresponds to. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateXSet method.
 	/// <para/> The set reference passed in may change as a result of this method. This method will merge sets together regardless of mod load order, allowing for ad-hoc collaboration. Note that this merge behavior is dependent on mods agreeing on key and default value. It is important that set names are unique, so it is good practice to include the entity name in the set name to avoid mods accidentally using the same name for different things. For example, a set named "Acidic" might be used by one mod to describe projectiles and another mod to describe items. Sets representing mod-specific ideas should prepend the key with the mod name to ensure a unique key that will not be used by any other mod: "ExampleMod/Jiggly"
@@ -93,6 +62,7 @@ public partial class SetFactory
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input)
 	{
+		// TODO: Return bool to represent already exists or merged?
 		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
 		if (!ContentCache.contentLoadingFinished) {
 			// If a set is initialized early, throw an error if the class containing the set doesn't have ReinitializeDuringResizeArrays
@@ -101,38 +71,31 @@ public partial class SetFactory
 				throw new Exception($"Custom sets must be initialized from a class with the ReinitializeDuringResizeArrays attribute. This ensures that all content has been registered and that the custom set will have the correct length");
 		}
 
-		// TODO: Return bool to represent already exists or merged?
+		// Note: Intended to be load order independent as long as all parties agree on default value. Any deviation will throw exception.
+		SetMetadata newMetadata = new SetMetadata(defaultValue, input);
+		(string key, Type) dictionaryKey = (key, typeof(T));
+		SetMetadata existingMetadata = setMetadataMapping.GetOrAdd(dictionaryKey, newMetadata);
 
-		// Note: Intended to be load order independent as long as all parties agree on default value and Type. Any deviation will throw exception.
-
-		SetMetadata newMetadata = new SetMetadata(typeof(T), defaultValue);
-		SetMetadata existingMetadata = setMetadataMapping.GetOrAdd((key, typeof(T)), newMetadata);
-		/*if (newMetadata.type != existingMetadata.type)
-		{
-			throw new Exception($"Previously registered set for {key} is of type {existingMetadata.type} but {newMetadata.type} was supplied. Custom data set will not be registered");
-		}*/
-		if (!newMetadata.defaultValue.Equals(existingMetadata.defaultValue)) { // Primitive might be boxed, so != doesn't work.
+		if (!EqualityComparer<object>.Default.Equals(newMetadata.defaultValue, existingMetadata.defaultValue)) { // Primitive might be boxed, so != doesn't work.
 			throw new Exception($"Previously registered set for {key} has a default value of {existingMetadata.defaultValue} but {newMetadata.defaultValue} was supplied. Custom data set will not be registered");
 			// TODO: We could just allow this and output a warning that the data will not be shared. Keep both somehow?
 		}
-		/*if (newmetadata.length != existingmetadata.length)
-		{
-			throw new exception($"previously registered set for {key} is has length {existingmetadata.length} but supplied set has length {newmetadata.length}. custom data set will not be registered");
-		}*/
 
-		// Custom sets are registered as (SetFactory, key) in DataInstance.
-		T[] value = DataInstance<T[]>.GetOrAdd((this, key), input);
+		// TODO: Once DataInstance feature is merged, Custom sets can be registered as (SetFactory, key) in DataInstance.
+		T[] value = (T[])existingMetadata.array;
 
 		// If it already exists, merge the data
 		if (value != input) {
 			if (value.Length != input.Length) {
 				throw new Exception("Input set and existing set are of different lengths.");
+				// This could potentially happen for willBeReinitialized sets if the modder makes the array manually for the current content count instead of using the SetFactory as intended.
 			}
 
 			// To merge, we find entries in the input that aren't defaultValue and assign them to the result.
 			// Existing changes should persist as long as mods agree on the defaultValue passed in and used in CreateXSet
+			// For conflicts, mods loading after will have final say.
 			for (int i = 0; i < input.Length; i++) {
-				if (!input[i].Equals(defaultValue)) {
+				if (!EqualityComparer<T>.Default.Equals(input[i], defaultValue)) {
 					value[i] = input[i];
 				}
 			}
@@ -152,8 +115,4 @@ public partial class SetFactory
 	/// <para/> This particular overload will result in a final key constructed from the provided <paramref name="mod"/> and <paramref name="key"/>: "{mod.Name}/{key}".
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(Mod mod, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSet($"{mod.Name}/{key}", defaultValue, ref input);
-
-	/* Error prone method overload? No need.
-	public T[] RegisterCustomSet<T>(Mod mod, string key, T defaultValue, T[] input) => RegisterCustomSet($"{mod.Name}/{key}", defaultValue, input);
-	*/
 }

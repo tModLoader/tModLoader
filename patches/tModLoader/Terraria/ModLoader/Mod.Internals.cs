@@ -60,18 +60,6 @@ partial class Mod
 				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
 			LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
-
-			var reinitializeTypes = AssemblyManager.GetLoadableTypes(Code)
-				.Where(t => t.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null)
-				//.Where(t => !t.IsAbstract && !t.ContainsGenericParameters) // static is IsAbstract and IsSealed
-				//.Where(t => t.IsAssignableTo(typeof(ILoadable)))
-				//.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
-				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
-				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
-
-			foreach (var type in reinitializeTypes) {
-				ReinitializeDuringResizeArraysTypes.Add(type); // Not necessarily ILoadable
-			}
 		}
 
 		// Skip loading client assets if this is a dedicated server;

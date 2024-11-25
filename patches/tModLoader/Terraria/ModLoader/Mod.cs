@@ -108,8 +108,6 @@ public partial class Mod
 	/// <inheritdoc cref="Terraria.ModLoader.PreJITFilter"/>
 	public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
 
-	internal HashSet<Type> ReinitializeDuringResizeArraysTypes = new();
-
 	public Mod() {
 		Content = new ContentCache(this);
 	}

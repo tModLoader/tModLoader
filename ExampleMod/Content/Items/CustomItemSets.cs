@@ -1,6 +1,8 @@
-﻿using ExampleMod.Common.Configs.ModConfigShowcases;
+﻿using ExampleMod.Common.Configs;
+using ExampleMod.Content.Items.Accessories;
 using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -40,11 +42,15 @@ namespace ExampleMod.Content.Items
 			// We can further edit the data sets here. These changes will still be consistent between all mods accessing this set since the object reference is shared.
 			CustomItemSets.FlamingWeapon[ItemID.FireWhip] = true;
 			CustomItemSets.FlamingWeapon[ItemID.HelFire] = true;
+		}
 
-			// For example, we can add user-defined items to CustomItemSets.FlamingWeapon
-			// Note that this example would need more code to work correctly for config values changed in-game, this is just showing a potential use-case.
-			foreach (var itemDefinition in ModContent.GetInstance<ModConfigShowcaseDefaultValues>().ListOfItemDefinition) {
-				if (itemDefinition.Type != -1) {
+		public override void PostSetupContent() {
+			// TODO: Issue, ItemID.Search.Add(FullName, Type) isn't called until SetupContent, so missing entries unless called here.
+
+			// For example, we can add user-defined items from the Config to CustomItemSets.FlamingWeapon
+			// Note that AdditionalFlamingWeaponEntries is marked as ReloadRequired because changing these values in-game for the expected use cases would not work correctly.
+			foreach (var itemDefinition in ModContent.GetInstance<ExampleModConfig>().AdditionalFlamingWeaponEntries) {
+				if (itemDefinition.Type != -1) { // Check if the ItemDefinition refers to an unloaded item, such as one from a mod that is not loaded.
 					CustomItemSets.FlamingWeapon[itemDefinition.Type] = true;
 				}
 			}
@@ -58,6 +64,25 @@ namespace ExampleMod.Content.Items
 			if (CustomItemSets.FlamingWeapon[Player.HeldItem.type] && Main.rand.NextBool(100)) {
 				CombatText.NewText(Player.getRect(), Color.Red, "Hahahah, burn!");
 			}
+		}
+	}
+
+	// This command helps visualize the custom set data to verify its contents.
+	// Type /customsets in chat to view the contents of these sets
+	public class CustomSetsCommand : ModCommand
+	{
+		public override string Command => "customsets";
+
+		public override string Description => "View custom set values, see CustomItemSets.cs";
+
+		public override CommandType Type => CommandType.Chat;
+
+		public override void Action(CommandCaller caller, string input, string[] args) {
+			caller.Reply("True values in FlamingWeapon: " + string.Join(", ", CustomItemSets.FlamingWeapon.GetTrueIndexes().Select(ItemID.Search.GetName)));
+			// Or, to see display names instead of internal names:
+			// caller.Reply("True values in FlamingWeapon: " + string.Join(", ", CustomItemSets.FlamingWeapon.GetTrueIndexes().Select(Lang.GetItemNameValue)));
+
+			caller.Reply("True values in CantEquipWith_HiveBackpack: " + string.Join(", ", WaspNestGlobalItem.CantEquipWith_HiveBackpack.GetTrueIndexes().Select(ItemID.Search.GetName)));
 		}
 	}
 }

@@ -2383,12 +2383,11 @@
  			CinematicManager.Instance.Update(gameTime);
  			if (netMode == 2) {
  				for (int i = 0; i < 256; i++) {
-@@ -13526,6 +_,9 @@
+@@ -13526,6 +_,8 @@
  			}
  		}
  
 +		LocalizationLoader.Update();
-+		DataInstance.ResetLookupCount();
 +		MemoryTracking.InGameUpdate();
  		DoUpdate_AutoSave();
  		if (!dedServ) {
