@@ -21,8 +21,5 @@ namespace ExampleMod.Common.Configs
 
 		[ReloadRequired]
 		public bool WeaponWithGrowingDamageToggle;
-
-		[ReloadRequired]
-		public List<ItemDefinition> AdditionalFlamingWeaponEntries = new List<ItemDefinition>();
 	}
 }

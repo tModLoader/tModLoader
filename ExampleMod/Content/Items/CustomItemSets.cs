@@ -43,18 +43,6 @@ namespace ExampleMod.Content.Items
 			CustomItemSets.FlamingWeapon[ItemID.FireWhip] = true;
 			CustomItemSets.FlamingWeapon[ItemID.HelFire] = true;
 		}
-
-		public override void PostSetupContent() {
-			// TODO: Issue, ItemID.Search.Add(FullName, Type) isn't called until SetupContent, so missing entries unless called here.
-
-			// For example, we can add user-defined items from the Config to CustomItemSets.FlamingWeapon
-			// Note that AdditionalFlamingWeaponEntries is marked as ReloadRequired because changing these values in-game for the expected use cases would not work correctly.
-			foreach (var itemDefinition in ModContent.GetInstance<ExampleModConfig>().AdditionalFlamingWeaponEntries) {
-				if (itemDefinition.Type != -1) { // Check if the ItemDefinition refers to an unloaded item, such as one from a mod that is not loaded.
-					CustomItemSets.FlamingWeapon[itemDefinition.Type] = true;
-				}
-			}
-		}
 	}
 
 	// This class showcases the actual use of our FlamingWeapon set in this mod. Each mod using a shared set might have their own interpretation of the set and their corresponding effects. 
