@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
 namespace ExampleMod.Common.Configs

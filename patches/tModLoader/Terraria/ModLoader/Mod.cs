@@ -12,7 +12,6 @@ using System.Linq;
 using Terraria.ModLoader.Config;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
-using ReLogic.Utilities;
 
 namespace Terraria.ModLoader;
 
