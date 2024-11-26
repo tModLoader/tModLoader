@@ -1,4 +1,6 @@
 using Terraria.ObjectData;
+using Terraria.UI;
+using Terraria.WorldBuilding;
 
 namespace Terraria.GameContent.ItemDropRules;
 
@@ -106,15 +108,82 @@ partial class Conditions
 		{
 			if (info.chest is null)
 				return false;
-			return !SurfaceChest.IsSurfaceOrHigher(info.chest.y + 2) && IsUndergroundOrHigher(info.chest.x, info.chest.y);
+			if (SurfaceChest.IsSurfaceOrHigher(info.chest.y + 2))
+				return false;
+			return IsUndergroundOrHigher(info.chest.y + 2);
 		}
-		internal static bool IsUndergroundOrHigher(int chestX, int chestY)
+		internal static bool IsUndergroundOrHigher(int floorY)
+		{
+			if (WorldGen.remixWorldGen) {
+				return floorY > Main.rockLayer && floorY < Main.maxTilesY - 250;
+			}
+			return floorY < Main.rockLayer;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => null;
+	}
+	public class CavernsChest : IItemDropRuleCondition, IProvideItemConditionDescription
+	{
+		public bool CanDrop(DropAttemptInfo info)
+		{
+			if (info.chest is null)
+				return false;
+			if (SurfaceChest.IsSurfaceOrHigher(info.chest.y + 2))
+				return false;
+			if (UndergroundChest.IsUndergroundOrHigher(info.chest.y + 2))
+				return false;
+			return IsCavernsOrHigher(info.chest.x, info.chest.y);
+		}
+		internal static bool IsCavernsOrHigher(int chestX, int chestY)
 		{
 			if (WorldGen.remixWorldGen) {
 				int style = TileObjectData.GetTileStyle(Main.tile[chestX, chestY]);
 				return style == 7 || style == 14;
 			}
-			return chestY + 2 < Main.rockLayer;
+			return chestY + 2 < Main.maxTilesY - 250;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => null;
+	}
+	public class LavaLayerChest : IItemDropRuleCondition, IProvideItemConditionDescription
+	{
+		public bool CanDrop(DropAttemptInfo info)
+		{
+			if (info.chest is null)
+				return false;
+			int floorY = info.chest.y + 2;
+			if (WorldGen.remixWorldGen) {
+				return floorY > Main.worldSurface && floorY < Main.rockLayer;
+			}
+			return floorY > GenVars.lavaLine;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => null;
+	}
+	public class IsChestType(int type, int style) : IItemDropRuleCondition, IProvideItemConditionDescription
+	{
+		public bool CanDrop(DropAttemptInfo info)
+		{
+			if (info.chest is null)
+				return false;
+			Tile tile = Main.tile[info.chest.x, info.chest.y];
+			if (tile.type != type)
+				return false;
+			return TileObjectData.GetTileStyle(tile) == style;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => null;
+	}
+	public class IsNotChestType(int type, int style) : IItemDropRuleCondition, IProvideItemConditionDescription
+	{
+		public bool CanDrop(DropAttemptInfo info)
+		{
+			if (info.chest is null)
+				return false;
+			Tile tile = Main.tile[info.chest.x, info.chest.y];
+			if (tile.type != type)
+				return true;
+			return TileObjectData.GetTileStyle(tile) != style;
 		}
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => null;
