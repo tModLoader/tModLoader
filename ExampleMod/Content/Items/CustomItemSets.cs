@@ -11,6 +11,7 @@ namespace ExampleMod.Content.Items
 {
 	// This class demonstrates "custom data sets". Custom data sets are arrays indexed by content ids such as those seen in all the ID classes (ItemID.Sets, NPCID.Sets, ProjectileID.Sets, etc). This allows mods to easily implement content id-specific data.
 	// Custom data sets are automatically merged when other mods declare the same data set, facilitating "ad-hoc" collaboration that doesn't require mod dependencies.
+	// See https://github.com/tModLoader/tModLoader/pull/4381 for more information about custom data sets.
 
 	// This [ReinitializeDuringResizeArrays] attribute will cause this class's static constructor to be called during the ResizeArrays step of mod loading. This is essential for any class with field initializers calling SetFactory.CreateNamedXSet methods.
 	// This will allow the arrays to have the correct lengths after all content has been loaded into the game. This reinitialization happens before ModSystem.ResizeArrays, avoiding potential issues from mod load order.

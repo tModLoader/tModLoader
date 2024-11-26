@@ -70,7 +70,7 @@
  		public BannerEffect(float normalDamageDealt, float expertDamageDealt, float normalDamageReceived, float expertDamageReceived)
  		{
  			NormalDamageDealt = normalDamageDealt;
-@@ -36,9 +_,17 @@
+@@ -36,9 +_,18 @@
  		}
  	}
  
@@ -79,6 +79,7 @@
  	{
 +		/// <summary>
 +		/// Used for creating sets indexed by item type (<see cref="Item.type"/>).
++		/// <para/> <inheritdoc cref="SetFactory"/>
 +		/// </summary>
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);

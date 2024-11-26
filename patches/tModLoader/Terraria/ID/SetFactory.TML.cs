@@ -8,6 +8,11 @@ using Terraria.ModLoader;
 
 namespace Terraria.ID;
 
+/// <summary>
+/// SetFactory is responsible for creating "data sets" for content. Data sets refers to arrays indexed by content ids. The data set contains data applying to all instances of content of a specific type. This is typically metadata or data controlling how code will interact with each type of content. Each vanilla ID class contains a SetFactory instance called "Factory" which is used to initialize the data sets contained within the ID class.
+/// <para/> For example <see cref="ItemID.Sets.Factory"/> is used to initialize <see cref="ItemID.Sets.IsFood"/> with true values for food items such as <see cref="ItemID.PadThai"/>. Modded content updates data sets in <see cref="ModType.SetStaticDefaults"/>: <c>ItemID.Sets.IsFood[Type] = true;</c>. Code in tModLoader and individual mods might consult the data in <see cref="ItemID.Sets.IsFood"/> for whatever purpose they want.
+/// <para/> Mods can make their own custom data sets through the methods of this class. The methods with "Named" in their method name facilitate collaborative custom data sets. More information on properly using these methods can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom Data Sets pull request</see>.
+/// </summary>
 public partial class SetFactory
 {
 	// Additional code to support named custom sets for ad-hoc collaboration
@@ -22,30 +27,48 @@ public partial class SetFactory
 	}
 
 	// Copies of existing methods with an additional key parameter.
+	/// <summary> <inheritdoc cref="CreateCustomSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
 	public T[] CreateNamedCustomSet<T>(string key, T defaultState, params object[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateCustomSet(defaultState, inputs));
+	/// <summary> <inheritdoc cref="CreateFloatSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
 	public float[] CreateNamedFloatSet(string key, float defaultState, params float[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateFloatSet(defaultState, inputs));
 	public ushort[] CreateNamedUshortSet(string key, ushort defaultState, params ushort[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateUshortSet(defaultState, inputs));
+	/// <summary> <inheritdoc cref="CreateIntSet(int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
 	public int[] CreateNamedIntSet(string key, int defaultState, params int[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateIntSet(defaultState, inputs));
+	/// <summary> <inheritdoc cref="CreateIntSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
 	public int[] CreateNamedIntSet(string key, params int[] types) => RegisterNamedCustomSet(key, -1, CreateIntSet(types));
+	/// <summary> <inheritdoc cref="CreateBoolSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
 	public bool[] CreateNamedBoolSet(string key, params int[] types) => RegisterNamedCustomSet(key, false, CreateBoolSet(false, types));
+	/// <summary> <inheritdoc cref="CreateBoolSet(bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
 	public bool[] CreateNamedBoolSet(string key, bool defaultState, params int[] types) => RegisterNamedCustomSet(key, defaultState, CreateBoolSet(defaultState, types));
 
 	// modName + key overloads
+	/// <summary> <inheritdoc cref="CreateNamedCustomSet{T}(string, T, object[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public T[] CreateNamedCustomSet<T>(string modName, string key, T defaultState, params object[] inputs) => CreateNamedCustomSet<T>($"{modName}/{key}", defaultState, inputs);
+	/// <summary> <inheritdoc cref="CreateNamedFloatSet(string, float, float[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public float[] CreateNamedFloatSet(string modName, string key, float defaultState, params float[] inputs) => CreateNamedFloatSet($"{modName}/{key}", defaultState, inputs);
 	public ushort[] CreateNamedUshortSet(string modName, string key, ushort defaultState, params ushort[] inputs) => CreateNamedUshortSet($"{modName}/{key}", defaultState, inputs);
+	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public int[] CreateNamedIntSet(string modName, string key, int defaultState, params int[] inputs) => CreateNamedIntSet($"{modName}/{key}", defaultState, inputs);
-	public int[] CreateNamedIntSet(string modName, string key, params int[] types) => CreateNamedIntSet($"{modName}/{key}", -1, types);
+	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
+	public int[] CreateNamedIntSet(string modName, string key, params int[] types) => CreateNamedIntSet($"{modName}/{key}", types);
+	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public bool[] CreateNamedBoolSet(string modName, string key, params int[] types) => CreateNamedBoolSet($"{modName}/{key}", false, types);
+	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public bool[] CreateNamedBoolSet(string modName, string key, bool defaultState, params int[] types) => CreateNamedBoolSet($"{modName}/{key}", defaultState, types);
 
 	// Mod + key overloads
+	/// <summary> <inheritdoc cref="CreateNamedCustomSet{T}(string, T, object[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public T[] CreateNamedCustomSet<T>(Mod mod, string key, T defaultState, params object[] inputs) => CreateNamedCustomSet<T>($"{mod.Name}/{key}", defaultState, inputs);
+	/// <summary> <inheritdoc cref="CreateNamedFloatSet(string, float, float[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public float[] CreateNamedFloatSet(Mod mod, string key, float defaultState, params float[] inputs) => CreateNamedFloatSet($"{mod.Name}/{key}", defaultState, inputs);
 	public ushort[] CreateNamedUshortSet(Mod mod, string key, ushort defaultState, params ushort[] inputs) => CreateNamedUshortSet($"{mod.Name}/{key}", defaultState, inputs);
+	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public int[] CreateNamedIntSet(Mod mod, string key, int defaultState, params int[] inputs) => CreateNamedIntSet($"{mod.Name}/{key}", defaultState, inputs);
+	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public int[] CreateNamedIntSet(Mod mod, string key, params int[] types) => CreateNamedIntSet($"{mod.Name}/{key}", -1, types);
+	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public bool[] CreateNamedBoolSet(Mod mod, string key, params int[] types) => CreateNamedBoolSet($"{mod.Name}/{key}", false, types);
+	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public bool[] CreateNamedBoolSet(Mod mod, string key, bool defaultState, params int[] types) => CreateNamedBoolSet($"{mod.Name}/{key}", defaultState, types);
 
 	// This is private to prevent potential modder mistake.
@@ -56,9 +79,11 @@ public partial class SetFactory
 	}
 
 	/// <summary>
-	/// Registers a custom "set", meaning an array of values of length equal to the count of the content the set corresponds to. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateXSet method.
-	/// <para/> The set reference passed in may change as a result of this method. This method will merge sets together regardless of mod load order, allowing for ad-hoc collaboration. Note that this merge behavior is dependent on mods agreeing on key and default value. It is important that set names are unique, so it is good practice to include the entity name in the set name to avoid mods accidentally using the same name for different things. For example, a set named "Acidic" might be used by one mod to describe projectiles and another mod to describe items. Sets representing mod-specific ideas should prepend the key with the mod name to ensure a unique key that will not be used by any other mod: "ExampleMod/Jiggly"
-	/// <para/> Throws an exception if the Type, data length, or default value does not match the data registered using the same key by any mod loaded before this mod.
+	/// Registers a "custom data set" for collaboration, meaning an array of values of length equal to the count of the content the set corresponds to. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateXSet methods, but this method can be used for manually initialized arrays.
+	/// <para/> The set reference passed in may change as a result of this method. This method will merge sets together regardless of mod load order, allowing for ad-hoc collaboration. Note that this merge behavior is dependent on mods agreeing on key, default value, and Type. 
+	/// <para/> The <paramref name="key"/> is a special identifier that all mods intending to collaborate on this custom data set will use. Mod makers should collaborate on the key and its associated meaning. Use the <see cref="RegisterNamedCustomSet{T}(string, string, T, ref T[])"/> or <see cref="RegisterNamedCustomSet{T}(Mod, string, T, ref T[])"/> overload instead to create a custom data set for a mod-specific idea to give it a unique key that will not conflict with a key used by any other mod.
+	/// <para/> More information on properly using these methods can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom Data Sets pull request</see>. Custom data set keys used by other mods are listed in the <see href="https://github.com/tModLoader/tModLoader/wiki/Custom-Data-Sets">Custom Data Sets wiki page</see>, please read and consult this page to collaborate on custom data set key meanings.
+	/// <para/> Throws an exception if the data length or default value does not match the data registered using the same key by any mod loaded before this mod.
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input)
 	{
@@ -105,14 +130,12 @@ public partial class SetFactory
 	}
 
 	/// <summary>
-	/// <inheritdoc cref="RegisterNamedCustomSet{T}(string, T, ref T[])"/>
-	/// <para/> This particular overload will result in a final key constructed from the provided <paramref name="modName"/> and <paramref name="key"/>: "{modName}/{key}".
+	/// <inheritdoc cref="RegisterNamedCustomSet{T}(string, T, ref T[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' />
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(string modName, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSet($"{modName}/{key}", defaultValue, ref input);
 
 	/// <summary>
-	/// <inheritdoc cref="RegisterNamedCustomSet{T}(string, T, ref T[])"/>
-	/// <para/> This particular overload will result in a final key constructed from the provided <paramref name="mod"/> and <paramref name="key"/>: "{mod.Name}/{key}".
+	/// <inheritdoc cref="RegisterNamedCustomSet{T}(string, T, ref T[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' />
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(Mod mod, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSet($"{mod.Name}/{key}", defaultValue, ref input);
 }
