@@ -87,7 +87,7 @@ public static class ChestLootLoader
 		itemPools.Clear();
 		SetupItemPools();
 
-		lootPools[LootPoolNames.SurfaceGeneric] = [
+		lootPools[LootPoolNames.SurfaceCommon] = [
 			Common(ItemID.Glowstick, chanceDenominator: 6, minimumDropped: 40, maximumDropped: 75),
 			Common(ItemID.ThrowingKnife, chanceDenominator: 6, minimumDropped: 150, maximumDropped: 300),
 			Common(ItemID.HerbBag, chanceDenominator: 6, minimumDropped: 1, maximumDropped: 4),
@@ -119,7 +119,7 @@ public static class ChestLootLoader
 			Common(ItemID.SilverCoin, chanceDenominator: 2, minimumDropped: 10, maximumDropped: 29),
 			Common(ItemID.Wood, chanceDenominator: 2, minimumDropped: 50, maximumDropped: 99),
 		];
-		lootPools[LootPoolNames.UndergroundGeneric] = [
+		lootPools[LootPoolNames.UndergroundCommon] = [
 			ByCondition(new Conditions.IsNotChestType(TileID.Containers2, 10), ItemID.Bomb, 3, 10, 20),
 			Common(ItemID.AngelStatue, 5),
 			Common(ItemID.Rope, 3, 50, 100),
@@ -150,10 +150,10 @@ public static class ChestLootLoader
 			),
 			Common(ItemID.SilverCoin, 2, 50, 89)
 		];
-		lootPools[LootPoolNames.CavernsGeneric] = [
+		lootPools[LootPoolNames.CavernsCommon] = [
 			Common(ItemID.SuspiciousLookingEye, 5),
 			Common(ItemID.Dynamite, 3),
-			Common(ItemID.JestersArrow, 25, 50),
+			Common(ItemID.JestersArrow, minimumDropped: 25, maximumDropped: 50),
 			new OneFromRulesRule(2,
 				new DropFromItemPoolRule(ItemPoolNames.GoldBar, 1, amountDroppedMinimum: 3, amountDroppedMaximum: 10),
 				new DropFromItemPoolRule(ItemPoolNames.SilverBar, 1, amountDroppedMinimum: 3, amountDroppedMaximum: 10)
@@ -189,7 +189,7 @@ public static class ChestLootLoader
 			),
 			Common(ItemID.GoldCoin, 2, 1, 2)
 		];
-		lootPools[LootPoolNames.HellGeneric] = [
+		lootPools[LootPoolNames.HellCommon] = [
 			Common(ItemID.Bomb, 3, 10, 20),
 			new OneFromRulesRule(2,
 				Common(ItemID.MeteoriteBar, minimumDropped: 15, maximumDropped: 29),
@@ -228,59 +228,61 @@ public static class ChestLootLoader
 			Common(ItemID.GoldCoin, 2, 2, 4)
 		];
 
-		lootPools[LootPoolNames.HeightBasedGeneric] = [
+		lootPools[LootPoolNames.HeightBasedCommon] = [
 			SequentialRules(1,
-				new LeadingConditionRule(new Conditions.SurfaceChest())
-					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.SurfaceGeneric)),
 				new LeadingConditionRule(new Conditions.UndergroundChest())
-					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.UndergroundGeneric)),
+					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.UndergroundCommon)),
 				new LeadingConditionRule(new Conditions.CavernsChest())
-					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.CavernsGeneric)),
-				new DropLootPoolRule(LootPoolNames.HellGeneric)
+					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.CavernsCommon)),
+				new DropLootPoolRule(LootPoolNames.HellCommon)
 			)
+		];
+
+		lootPools[LootPoolNames.SurfaceWooden] = [
+			new DropFromItemPoolRule(ItemPoolNames.SurfaceWoodenRare),
+			new DropLootPoolRule(LootPoolNames.SurfaceCommon),
 		];
 
 		lootPools[LootPoolNames.Wooden] = [
 			SequentialRules(1,
 				new LeadingConditionRule(new Conditions.SurfaceChest())
 					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.SurfaceWooden)),
-				new DropLootPoolRule(LootPoolNames.HeightBasedGeneric)
+				new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
 			)
 		];
 		lootPools[LootPoolNames.Underground] = [
-			new DropFromItemPoolRule(ItemPoolNames.UndergroundPrimary),
-				new DropLootPoolRule(LootPoolNames.Underground)
+			new DropFromItemPoolRule(ItemPoolNames.UndergroundRare),
+				new DropLootPoolRule(LootPoolNames.UndergroundCommon)
 		];
-		lootPools[LootPoolNames.CavernsPrimary] = [
+		lootPools[LootPoolNames.CavernsRare] = [
 			new LeadingConditionRule(new Conditions.LavaLayerChest()).WithOnSuccess(SequentialRules(1,
 				ByCondition(new Conditions.TenthAnniversaryIsUp(), ItemID.LavaCharm, 15),
 				ByCondition(new Conditions.TenthAnniversaryIsNotUp(), ItemID.LavaCharm, 20),
-				new DropFromItemPoolRule(ItemPoolNames.CavernsPrimaryNoLavaCharm)
-			)).WithOnFailedConditions(new DropFromItemPoolRule(ItemPoolNames.CavernsPrimaryNoLavaCharm))
+				new DropFromItemPoolRule(ItemPoolNames.CavernsRareNoLavaCharm)
+			)).WithOnFailedConditions(new DropFromItemPoolRule(ItemPoolNames.CavernsRareNoLavaCharm))
 		];
-
 		lootPools[LootPoolNames.Caverns] = [
-			new DropFromItemPoolRule(ItemPoolNames.SurfaceWoodenPrimary),
-			new DropLootPoolRule(LootPoolNames.SurfaceGeneric),
+			new DropLootPoolRule(LootPoolNames.CavernsRare),
+			new DropLootPoolRule(LootPoolNames.CavernsCommon),
 		];
 
 		lootPools[LootPoolNames.PyramidGold] = [
-			new DropFromItemPoolRule(ItemPoolNames.PyramidGoldPrimary),
+			new DropFromItemPoolRule(ItemPoolNames.PyramidGoldRare),
 			ByCondition(new Conditions.TenthAnniversaryIsUp(), ItemID.PharaohsMask).WithOnSuccess(Common(ItemID.PharaohsRobe)),
-			new DropLootPoolRule(LootPoolNames.SurfaceGeneric),
+			new DropLootPoolRule(LootPoolNames.SurfaceCommon),
 		];
 		lootPools[LootPoolNames.Frozen] = [
-			new DropFromItemPoolRule(ItemPoolNames.FrozenPrimary, 1),
+			new DropFromItemPoolRule(ItemPoolNames.FrozenRare, 1),
 			Common(ItemID.IceMirror, 5)
 		];
 		lootPools[LootPoolNames.SandstoneHigh] = [
-			new DropFromItemPoolRule(ItemPoolNames.SandstoneHighPrimary),
+			new DropFromItemPoolRule(ItemPoolNames.SandstoneHighRare),
 			Common(ItemID.ScarabBomb, 3, 10, 20),
 			Common(ItemID.EncumberingStone, 7),
 			Common(ItemID.DesertMinecart, 15),
 		];
 		lootPools[LootPoolNames.SandstoneLow] = [
-			new DropFromItemPoolRule(ItemPoolNames.SandstoneLowPrimary),
+			new DropFromItemPoolRule(ItemPoolNames.SandstoneLowRare),
 			Common(ItemID.ScarabBomb, 3, 10, 20),
 			Common(ItemID.EncumberingStone, 7),
 			Common(ItemID.DesertMinecart, 15),
@@ -290,7 +292,7 @@ public static class ChestLootLoader
 			Common(ItemID.BeeMinecart, 10)
 		];
 		lootPools[LootPoolNames.WaterOceanCave] = [
-			new DropFromItemPoolRule(ItemPoolNames.WaterOceanCavePrimary),
+			new DropFromItemPoolRule(ItemPoolNames.WaterOceanCaveRare),
 			new DropLootPoolRule(LootPoolNames.WaterSimple)
 		];
 		lootPools[LootPoolNames.WaterSimple] = [
@@ -298,7 +300,7 @@ public static class ChestLootLoader
 			Common(ItemID.SandcastleBucket, 2)
 		];
 		lootPools[LootPoolNames.LivingWood] = [
-			new DropFromItemPoolRule(ItemPoolNames.LivingWoodPrimary),
+			new DropFromItemPoolRule(ItemPoolNames.LivingWoodRare),
 			new OneFromRulesRule(10,
 				Common(ItemID.SunflowerMinecart),
 				Common(ItemID.LadybugMinecart)
@@ -309,7 +311,7 @@ public static class ChestLootLoader
 			Common(ItemID.MushroomHat, 3).WithOnSuccess(Common(ItemID.MushroomVest)).WithOnSuccess(Common(ItemID.MushroomPants))
 		];
 		lootPools[LootPoolNames.MushroomLow] = [
-			new DropFromItemPoolRule(ItemPoolNames.MushroomLowSecondary)
+			new DropFromItemPoolRule(ItemPoolNames.MushroomLowUncommon)
 		];
 		lootPools[LootPoolNames.Shadow] = [
 			new ShadowChestPrimaryRule(),
@@ -317,10 +319,12 @@ public static class ChestLootLoader
 			Common(ItemID.HellMinecart, 10),
 			Common(ItemID.OrnateShadowKey, 10),
 			Common(ItemID.HellCake, 10),
+			new DropLootPoolRule(LootPoolNames.HellCommon)
 		];
 		lootPools[LootPoolNames.FloatingIsland] = [
 			new FloatingIslandPrimaryRule(),
 			Common(ItemID.CreativeWings, 40),
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
 			Common(ItemID.SkyMill, 3),
 			new DropFromItemPoolRule(ItemPoolNames.FloatingIslandPainting),
 			Common(ItemID.Cloud, minimumDropped: 50, maximumDropped: 100)
@@ -331,7 +335,7 @@ public static class ChestLootLoader
 	}
 	private static void SetupItemPools()
 	{
-		AddItemPool(ItemPoolNames.SurfaceWoodenPrimary, [
+		AddItemPool(ItemPoolNames.SurfaceWoodenRare, [
 			new(ItemID.Spear),
 			new(ItemID.Blowpipe),
 			new(ItemID.WoodenBoomerang),
@@ -344,7 +348,7 @@ public static class ChestLootLoader
 			new(ItemID.Radar),
 			new(ItemID.PortableStool)
 		]);
-		AddItemPool(ItemPoolNames.UndergroundPrimary, [
+		AddItemPool(ItemPoolNames.UndergroundRare, [
 			new(ItemID.BandofRegeneration),
 			new(ItemID.MagicMirror),
 			new(ItemID.CloudinaBottle),
@@ -352,7 +356,7 @@ public static class ChestLootLoader
 			new(ItemID.Mace),
 			new(ItemID.ShoeSpikes)
 		]);
-		AddItemPool(ItemPoolNames.CavernsPrimaryNoLavaCharm, [
+		AddItemPool(ItemPoolNames.CavernsRareNoLavaCharm, [
 			new(ItemID.BandofRegeneration),
 			new(ItemID.MagicMirror),
 			new(ItemID.CloudinaBottle),
@@ -362,19 +366,19 @@ public static class ChestLootLoader
 			new(ItemID.FlareGun, ChainedRules: [Common(ItemID.Flare, minimumDropped: 25, maximumDropped: 50)]),
 			..GetReplacementValues(7, (ItemID.Extractinator, 1f / 15f))
 		]);
-		AddItemPool(ItemPoolNames.HellPrimary, [
+		AddItemPool(ItemPoolNames.HellRare, [
 			new(ItemID.BandofRegeneration),
 			new(ItemID.MagicMirror),
 			new(ItemID.CloudinaBottle),
 			new(ItemID.HermesBoots)
 		]);
-		AddItemPool(ItemPoolNames.PyramidGoldPrimary, [
+		AddItemPool(ItemPoolNames.PyramidGoldRare, [
 			new(ItemID.PharaohsMask, Conditions: [new Conditions.TenthAnniversaryIsNotUp()], ChainedRules: [Common(ItemID.PharaohsRobe)], Weight: 1),
 			new(ItemID.FlyingCarpet, Conditions: [new Conditions.TenthAnniversaryIsUp()], Weight: 1),
 			new(ItemID.FlyingCarpet, Weight: 4),
 			new(ItemID.SandstorminaBottle, Weight: 4)
 		]);
-		AddItemPool(ItemPoolNames.DungeonGoldPrimary, [ // ordered generation
+		AddItemPool(ItemPoolNames.DungeonGoldRare, [ // ordered generation
 			new(ItemID.Muramasa),
 			new(ItemID.CobaltShield),
 			new(ItemID.AquaScepter, [new Conditions.NotRemixSeed()]),
@@ -385,7 +389,7 @@ public static class ChestLootLoader
 			new(ItemID.GoldenKey, Weight: 0),
 			new(ItemID.Handgun)
 		]);
-		AddItemPool(ItemPoolNames.FrozenPrimary, [
+		AddItemPool(ItemPoolNames.FrozenRare, [
 			new(ItemID.IceBoomerang),
 			new(ItemID.IceBlade),
 			new(ItemID.IceSkates),
@@ -395,26 +399,26 @@ public static class ChestLootLoader
 			new(ItemID.FlurryBoots),
 			..GetReplacementValues(6, (ItemID.Extractinator, 0.049), (ItemID.Fish, 0.02))
 		]);
-		AddItemPool(ItemPoolNames.LivingWoodPrimary, [
+		AddItemPool(ItemPoolNames.LivingWoodRare, [
 			new(ItemID.LivingWoodWand, ChainedRules: [Common(ItemID.LeafWand)], Weight: 2),
 			new(ItemID.BabyBirdStaff)
 		]);
-		AddItemPool(ItemPoolNames.MushroomLowSecondary, [
+		AddItemPool(ItemPoolNames.MushroomLowUncommon, [
 			new(ItemID.ShroomMinecart),
-			new(ItemID.MushroomHat, ChainedRules: [Common(ItemID.MushroomVest, ItemID.MushroomPants)])
+			new(ItemID.MushroomHat, ChainedRules: [Common(ItemID.MushroomVest), Common(ItemID.MushroomPants)])
 		]);
-		AddItemPool(ItemPoolNames.SandstoneHighPrimary, [
+		AddItemPool(ItemPoolNames.SandstoneHighRare, [
 			new(ItemID.AncientChisel),
 			new(ItemID.SandBoots),
 			new(ItemID.MysticCoilSnake),
 			new(ItemID.MagicConch)
 		]);
-		AddItemPool(ItemPoolNames.SandstoneLowPrimary, [
+		AddItemPool(ItemPoolNames.SandstoneLowRare, [
 			new(ItemID.ThunderSpear),
 			new(ItemID.ThunderStaff),
 			new(ItemID.CatBast)
 		]);
-		AddItemPool(ItemPoolNames.FloatingIslandPrimary, [ // ordered generation
+		AddItemPool(ItemPoolNames.FloatingIslandRare, [ // ordered generation
 			new(ItemID.ShinyRedBalloon),
 			new(ItemID.Starfury),
 			new(ItemID.LuckyHorseshoe),
@@ -428,17 +432,17 @@ public static class ChestLootLoader
 			new(ItemID.LoveisintheTrashSlot),
 			new(ItemID.SunOrnament),
 		]);
-		AddItemPool(ItemPoolNames.WaterOceanCavePrimary, [
+		AddItemPool(ItemPoolNames.WaterOceanCaveRare, [
 			new(ItemID.WaterWalkingBoots),
 			new(ItemID.BreathingReed),
 			new(ItemID.Trident),
 			new(ItemID.Flipper),
 			new(ItemID.FloatingTube),
 		]);
-		AddItemPool(ItemPoolNames.WebPrimary, [
+		AddItemPool(ItemPoolNames.WebRare, [
 			new(ItemID.WebSlinger)
 		]);
-		AddItemPool(ItemPoolNames.ShadowPrimary, [ // ordered generation
+		AddItemPool(ItemPoolNames.ShadowRare, [ // ordered generation
 			new(ItemID.DarkLance),
 			new(ItemID.Sunfury),
 			new(ItemID.FlowerofFire, [new Conditions.NotRemixSeed()]),
@@ -489,33 +493,33 @@ public static class ChestLootLoader
 		public const string GoldBar = nameof(GoldBar);
 		public const string HellChestAmmo = nameof(HellChestAmmo);
 
-		public const string SurfaceWoodenPrimary = nameof(SurfaceWoodenPrimary);
-		public const string UndergroundPrimary = nameof(UndergroundPrimary);
-		public const string CavernsPrimaryNoLavaCharm = nameof(CavernsPrimaryNoLavaCharm);
-		public const string HellPrimary = nameof(HellPrimary);
-		public const string PyramidGoldPrimary = nameof(PyramidGoldPrimary);
-		public const string SandstoneHighPrimary = nameof(SandstoneHighPrimary);
-		public const string SandstoneLowPrimary = nameof(SandstoneLowPrimary);
-		public const string DungeonGoldPrimary = nameof(DungeonGoldPrimary);
-		public const string FrozenPrimary = nameof(FrozenPrimary);
-		public const string MushroomLowSecondary = nameof(MushroomLowSecondary);
-		public const string LivingWoodPrimary = nameof(LivingWoodPrimary);
-		public const string FloatingIslandPrimary = nameof(FloatingIslandPrimary);
+		public const string SurfaceWoodenRare = nameof(SurfaceWoodenRare);
+		public const string UndergroundRare = nameof(UndergroundRare);
+		public const string CavernsRareNoLavaCharm = nameof(CavernsRareNoLavaCharm);
+		public const string HellRare = nameof(HellRare);
+		public const string PyramidGoldRare = nameof(PyramidGoldRare);
+		public const string SandstoneHighRare = nameof(SandstoneHighRare);
+		public const string SandstoneLowRare = nameof(SandstoneLowRare);
+		public const string DungeonGoldRare = nameof(DungeonGoldRare);
+		public const string FrozenRare = nameof(FrozenRare);
+		public const string MushroomLowUncommon = nameof(MushroomLowUncommon);
+		public const string LivingWoodRare = nameof(LivingWoodRare);
+		public const string FloatingIslandRare = nameof(FloatingIslandRare);
 		public const string FloatingIslandPainting = nameof(FloatingIslandPainting);
-		public const string WaterOceanCavePrimary = nameof(WaterOceanCavePrimary);
-		public const string WebPrimary = nameof(WebPrimary);
-		public const string ShadowPrimary = nameof(ShadowPrimary);
+		public const string WaterOceanCaveRare = nameof(WaterOceanCaveRare);
+		public const string WebRare = nameof(WebRare);
+		public const string ShadowRare = nameof(ShadowRare);
 	}
 	public static class LootPoolNames
 	{
 		public const string Wooden = nameof(Wooden);
 
-		public const string HeightBasedGeneric = nameof(HeightBasedGeneric);
+		public const string HeightBasedCommon = nameof(HeightBasedCommon);
 
-		public const string SurfaceGeneric = nameof(SurfaceGeneric);
-		public const string UndergroundGeneric = nameof(UndergroundGeneric);//TODO
-		public const string CavernsGeneric = nameof(CavernsGeneric);//TODO
-		public const string HellGeneric = nameof(HellGeneric);//TODO
+		public const string SurfaceCommon = nameof(SurfaceCommon);
+		public const string UndergroundCommon = nameof(UndergroundCommon);//TODO
+		public const string CavernsCommon = nameof(CavernsCommon);//TODO
+		public const string HellCommon = nameof(HellCommon);//TODO
 
 		public const string SurfaceWooden = nameof(SurfaceWooden);
 		public const string Underground = nameof(Underground);
@@ -535,7 +539,7 @@ public static class ChestLootLoader
 		public const string Web = nameof(Web);//TODO
 		public const string Shadow = nameof(Shadow);//TODO
 
-		public const string CavernsPrimary = nameof(CavernsPrimary);
+		public const string CavernsRare = nameof(CavernsRare);
 		public const string BiomeChestExtras = nameof(BiomeChestExtras);//TODO
 	}
 }

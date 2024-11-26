@@ -51,6 +51,7 @@ public partial class WorldGen
 	/// <returns></returns>
 	public static bool AddBuriedChest(int i, int j, string pool, bool notNearOtherChests = false, int Style = -1, bool trySlope = false, ushort chestTileType = 0, int forceContain = ItemID.None)
 	{
+		/*
 		if (chestTileType == 0)
 			chestTileType = 21;
 		bool flag = false;
@@ -246,7 +247,7 @@ public partial class WorldGen
 
 			return false;
 		}
-
+		*/
 		return false;
 	}
 }

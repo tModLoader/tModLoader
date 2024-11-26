@@ -108,8 +108,6 @@ partial class Conditions
 		{
 			if (info.chest is null)
 				return false;
-			if (SurfaceChest.IsSurfaceOrHigher(info.chest.y + 2))
-				return false;
 			return IsUndergroundOrHigher(info.chest.y + 2);
 		}
 		internal static bool IsUndergroundOrHigher(int floorY)
@@ -127,8 +125,6 @@ partial class Conditions
 		public bool CanDrop(DropAttemptInfo info)
 		{
 			if (info.chest is null)
-				return false;
-			if (SurfaceChest.IsSurfaceOrHigher(info.chest.y + 2))
 				return false;
 			if (UndergroundChest.IsUndergroundOrHigher(info.chest.y + 2))
 				return false;

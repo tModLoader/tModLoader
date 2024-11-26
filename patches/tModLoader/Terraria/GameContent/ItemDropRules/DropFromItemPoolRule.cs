@@ -98,13 +98,13 @@ public class DropFromItemPoolRule : IItemDropRule
 		List<ItemPoolEntry> entries = ChestLootLoader.GetItemPool(poolName);
 		for (int i = 0; i < entries.Count; i++) {
 			ItemPoolEntry entry = entries[i];
-			bool shouldBreak = false;
-			for (int j = 0; j < entry.Conditions.Count && !shouldBreak; j++) {
+			bool shouldSkip = false;
+			for (int j = 0; j < entry.Conditions.Count && !shouldSkip; j++) {
 				if (!entry.Conditions[j].CanDrop(info))
-					shouldBreak = true;
+					shouldSkip = true;
 			}
-			if (shouldBreak)
-				break;
+			if (shouldSkip)
+				continue;
 			yield return new((entry.Type, entry.ChainedRules), entry.Weight);
 		}
 	}
