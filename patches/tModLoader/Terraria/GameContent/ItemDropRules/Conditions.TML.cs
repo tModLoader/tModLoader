@@ -1,3 +1,5 @@
+using Terraria.ObjectData;
+
 namespace Terraria.GameContent.ItemDropRules;
 
 partial class Conditions
@@ -77,6 +79,43 @@ partial class Conditions
 	public class ZenithSeedIsNotUp : IItemDropRuleCondition, IProvideItemConditionDescription
 	{
 		public bool CanDrop(DropAttemptInfo info) => !Main.zenithWorld;
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => null;
+	}
+	public class SurfaceChest : IItemDropRuleCondition, IProvideItemConditionDescription
+	{
+		public bool CanDrop(DropAttemptInfo info)
+		{
+			if (info.chest is null)
+				return false;
+			return IsSurfaceOrHigher(info.chest.y + 2);
+		}
+		internal static bool IsSurfaceOrHigher(int floorY)
+		{
+			if (WorldGen.remixWorldGen) {
+				return floorY >= (Main.rockLayer + ((Main.maxTilesY - 350) * 2)) / 3.0;
+			}
+			return floorY < Main.worldSurface + 25.0;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => null;
+	}
+	public class UndergroundChest : IItemDropRuleCondition, IProvideItemConditionDescription
+	{
+		public bool CanDrop(DropAttemptInfo info)
+		{
+			if (info.chest is null)
+				return false;
+			return !SurfaceChest.IsSurfaceOrHigher(info.chest.y + 2) && IsUndergroundOrHigher(info.chest.x, info.chest.y);
+		}
+		internal static bool IsUndergroundOrHigher(int chestX, int chestY)
+		{
+			if (WorldGen.remixWorldGen) {
+				int style = TileObjectData.GetTileStyle(Main.tile[chestX, chestY]);
+				return style == 7 || style == 14;
+			}
+			return chestY + 2 < Main.rockLayer;
+		}
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => null;
 	}

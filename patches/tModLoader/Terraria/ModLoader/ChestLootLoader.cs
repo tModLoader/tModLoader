@@ -66,8 +66,7 @@ public static class ChestLootLoader
 		itemPools.Clear();
 		SetupItemPools();
 
-		lootPools[LootPoolNames.SurfaceWooden] = [
-			new DropFromItemPoolRule(ItemPoolNames.SurfaceWoodenPrimary),
+		lootPools[LootPoolNames.SurfaceGeneric] = [
 			Common(ItemID.Glowstick, chanceDenominator: 6, minimumDropped: 40, maximumDropped: 75),
 			Common(ItemID.ThrowingKnife, chanceDenominator: 6, minimumDropped: 150, maximumDropped: 300),
 			Common(ItemID.HerbBag, chanceDenominator: 6, minimumDropped: 1, maximumDropped: 4),
@@ -98,6 +97,21 @@ public static class ChestLootLoader
 			),
 			Common(ItemID.SilverCoin, chanceDenominator: 2, minimumDropped: 10, maximumDropped: 29),
 			Common(ItemID.Wood, chanceDenominator: 2, minimumDropped: 50, maximumDropped: 99),
+		];
+
+		lootPools[LootPoolNames.Wooden] = [
+			new LeadingConditionRule(new Conditions.SurfaceChest())
+				.WithOnSuccess(new DropLootPoolRule(LootPoolNames.SurfaceWooden))
+		];
+
+		lootPools[LootPoolNames.SurfaceWooden] = [
+			new DropFromItemPoolRule(ItemPoolNames.SurfaceWoodenPrimary),
+			new DropLootPoolRule(LootPoolNames.SurfaceGeneric),
+		];
+
+		lootPools[LootPoolNames.PyramidGold] = [
+			new DropFromItemPoolRule(ItemPoolNames.PyramidGoldPrimary),
+			new DropLootPoolRule(LootPoolNames.SurfaceGeneric),
 		];
 		lootPools[LootPoolNames.Frozen] = [
 			new DropFromItemPoolRule(ItemPoolNames.FrozenPrimary, 1),
@@ -155,6 +169,9 @@ public static class ChestLootLoader
 			new DropFromItemPoolRule(ItemPoolNames.FloatingIslandPainting),
 			Common(ItemID.Cloud, minimumDropped: 50, maximumDropped: 100)
 		];
+		lootPools[LootPoolNames.BiomeChestExtras] = [
+			Common(ItemID.RemnantsofDevotion, 2)
+		];
 	}
 	private static void SetupItemPools()
 	{
@@ -166,12 +183,14 @@ public static class ChestLootLoader
 			new(ItemID.ClimbingClaws),
 			new(ItemID.Umbrella),
 			new(ItemID.CordageGuide),
-			new(ItemID.WandofSparking),
+			new(ItemID.WandofSparking, [new Conditions.NotRemixSeed()]),
+			new(ItemID.MagicDagger, [new Conditions.RemixSeed()]),
 			new(ItemID.Radar),
 			new(ItemID.PortableStool)
 		]);
 		AddItemPool(ItemPoolNames.PyramidGoldPrimary, [
-			new(ItemID.PharaohsMask, ChainedRules:[Common(ItemID.PharaohsRobe)], Weight: 1),
+			new(ItemID.PharaohsMask, Conditions: [new Conditions.TenthAnniversaryIsNotUp()], ChainedRules: [Common(ItemID.PharaohsRobe)], Weight: 1),
+			new(ItemID.FlyingCarpet, Conditions: [new Conditions.TenthAnniversaryIsUp()], Weight: 1),
 			new(ItemID.FlyingCarpet, Weight: 4),
 			new(ItemID.SandstorminaBottle, Weight: 4)
 		]);
@@ -305,7 +324,10 @@ public static class ChestLootLoader
 	}
 	public static class LootPoolNames
 	{
+		public const string Wooden = nameof(Wooden);
+
 		public const string SurfaceWooden = nameof(SurfaceWooden);
+		public const string SurfaceGeneric = nameof(SurfaceGeneric);
 		public const string PyramidGold = nameof(PyramidGold);//TODO
 		public const string SandstoneHigh = nameof(SandstoneHigh);//TODO
 		public const string SandstoneLow = nameof(SandstoneLow);//TODO
@@ -320,6 +342,8 @@ public static class ChestLootLoader
 		public const string WaterSimple = nameof(WaterSimple);//TODO
 		public const string Web = nameof(Web);//TODO
 		public const string Shadow = nameof(Shadow);//TODO
+
+		public const string BiomeChestExtras = nameof(BiomeChestExtras);//TODO
 	}
 }
 public record class ItemPoolEntry(int Type, List<IItemDropRuleCondition> Conditions = null, List<IItemDropRule> ChainedRules = null, float Weight = 1f)
