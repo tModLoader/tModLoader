@@ -1,3 +1,4 @@
+using System;
 using Terraria.ObjectData;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -183,5 +184,31 @@ partial class Conditions
 		}
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => null;
+	}
+	public abstract class SavedOreTier(int value) : IItemDropRuleCondition, IProvideItemConditionDescription
+	{
+		public int Value => value;
+		public abstract int Tier { get; }
+		public bool CanDrop(DropAttemptInfo info) => Tier == Value;
+		public bool CanShowItemDropInUI() => Tier == Value;
+		public string GetConditionDescription() => null;
+		public override int GetHashCode() => HashCode.Combine(GetType(), Value);
+		public override bool Equals(object obj) => obj.GetType() == GetType() && ((SavedOreTier)obj).Value == value;
+	}
+	public class SavedOreTierCopper(int type) : SavedOreTier(type)
+	{
+		public override int Tier => WorldGen.SavedOreTiers.Copper;
+	}
+	public class SavedOreTierIron(int type) : SavedOreTier(type)
+	{
+		public override int Tier => WorldGen.SavedOreTiers.Iron;
+	}
+	public class SavedOreTierSilver(int type) : SavedOreTier(type)
+	{
+		public override int Tier => WorldGen.SavedOreTiers.Silver;
+	}
+	public class SavedOreTierGold(int type) : SavedOreTier(type)
+	{
+		public override int Tier => WorldGen.SavedOreTiers.Gold;
 	}
 }

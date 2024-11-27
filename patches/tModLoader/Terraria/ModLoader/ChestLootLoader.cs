@@ -38,51 +38,9 @@ public static class ChestLootLoader
 		RegisterDefaultLootPools();
 	}
 
-	private static readonly Dictionary<(string name, int type), SimpleItemDropRuleCondition> genVarConditions = [];
-	public static SimpleItemDropRuleCondition GenVarCondition(string name, int type)
-	{
-		if (genVarConditions.TryGetValue((name, type), out SimpleItemDropRuleCondition condition))
-			return condition;
-		FieldInfo field = typeof(GenVars).GetField(name) ?? throw new ArgumentException($"No such static field {nameof(GenVars)}.{name} exists", nameof(name));
-		if (field.FieldType != typeof(int))
-			throw new ArgumentException($"Field type must be {typeof(int)}", nameof(name));
-		DynamicMethod getterMethod = new($"GenVars.{name}_Equals_{type}", typeof(bool), [], true);
-		ILGenerator gen = getterMethod.GetILGenerator();
-
-		gen.Emit(OpCodes.Ldsfld, field);
-		gen.Emit(OpCodes.Ldc_I4, type);
-		gen.Emit(OpCodes.Ceq);
-		gen.Emit(OpCodes.Ret);
-
-		genVarConditions[(name, type)] = condition = new Condition(LocalizedText.Empty, getterMethod.CreateDelegate<Func<bool>>()).ToDropCondition(ShowItemDropInUI.Always);
-		return condition;
-	}
-	public static ItemPoolEntry DropItemFromGenVar(string name, int type) => new(type, [GenVarCondition(name, type)]);
-	private static readonly Dictionary<(string name, int type), SimpleItemDropRuleCondition> savedOreTierConditions = [];
-	public static SimpleItemDropRuleCondition SavedOreTierCondition(string name, int type)
-	{
-		if (savedOreTierConditions.TryGetValue((name, type), out SimpleItemDropRuleCondition condition))
-			return condition;
-		FieldInfo field = typeof(WorldGen.SavedOreTiers).GetField(name) ?? throw new ArgumentException($"No such static field {nameof(WorldGen.SavedOreTiers)}.{name} exists", nameof(name));
-		if (field.FieldType != typeof(int))
-			throw new ArgumentException($"Field type must be {typeof(int)}", nameof(name));
-		DynamicMethod getterMethod = new($"WorldGen.SavedOreTiers.{name}_Equals_{type}", typeof(bool), [], true);
-		ILGenerator gen = getterMethod.GetILGenerator();
-
-		gen.Emit(OpCodes.Ldsfld, field);
-		gen.Emit(OpCodes.Ldc_I4, type);
-		gen.Emit(OpCodes.Ceq);
-		gen.Emit(OpCodes.Ret);
-
-		savedOreTierConditions[(name, type)] = condition = new Condition(LocalizedText.Empty, getterMethod.CreateDelegate<Func<bool>>()).ToDropCondition(ShowItemDropInUI.Always);
-		return condition;
-	}
-	public static ItemPoolEntry DropItemFromSavedOreTier(string name, int oreType, int itemType) => new(itemType, [SavedOreTierCondition(name, oreType)]);
 	internal static void RegisterDefaultLootPools()
 	{
 		//TODO: ordered with random replacement: jungle chests, normal water chests
-		genVarConditions.Clear();
-		savedOreTierConditions.Clear();
 		lootPools.Clear();
 		itemPools.Clear();
 		SetupItemPools();
@@ -277,15 +235,15 @@ public static class ChestLootLoader
 		];
 		lootPools[LootPoolNames.SandstoneHigh] = [
 			new DropFromItemPoolRule(ItemPoolNames.SandstoneHighRare),
-			Common(ItemID.ScarabBomb, 3, 10, 20),
-			Common(ItemID.EncumberingStone, 7),
-			Common(ItemID.DesertMinecart, 15),
+			ByCondition(new Conditions.UndergroundChest(), ItemID.ScarabBomb, 3, 10, 20),
+			ByCondition(new Conditions.CavernsChest(), ItemID.EncumberingStone, 7),
+			ByCondition(new Conditions.CavernsChest(), ItemID.DesertMinecart, 15),
 		];
 		lootPools[LootPoolNames.SandstoneLow] = [
 			new DropFromItemPoolRule(ItemPoolNames.SandstoneLowRare),
-			Common(ItemID.ScarabBomb, 3, 10, 20),
-			Common(ItemID.EncumberingStone, 7),
-			Common(ItemID.DesertMinecart, 15),
+			ByCondition(new Conditions.UndergroundChest(), ItemID.ScarabBomb, 3, 10, 20),
+			ByCondition(new Conditions.CavernsChest(), ItemID.EncumberingStone, 7),
+			ByCondition(new Conditions.CavernsChest(), ItemID.DesertMinecart, 15),
 		];
 		lootPools[LootPoolNames.Jungle] = [
 			Common(ItemID.LivingMahoganyWand, 6).WithOnSuccess(Common(ItemID.LivingMahoganyLeafWand)),
@@ -452,25 +410,25 @@ public static class ChestLootLoader
 		]);
 
 		AddItemPool(ItemPoolNames.CopperBar, [
-			DropItemFromGenVar(nameof(GenVars.copperBar), ItemID.CopperBar),
-			DropItemFromGenVar(nameof(GenVars.copperBar), ItemID.TinBar)
+			new(ItemID.CopperBar, [new Conditions.SavedOreTierCopper(TileID.Copper)]),
+			new(ItemID.TinBar, [new Conditions.SavedOreTierCopper(TileID.Tin)])
 		]);
 		AddItemPool(ItemPoolNames.IronBar, [
-			DropItemFromGenVar(nameof(GenVars.ironBar), ItemID.IronBar),
-			DropItemFromGenVar(nameof(GenVars.ironBar), ItemID.LeadBar)
+			new(ItemID.IronBar, [new Conditions.SavedOreTierIron(TileID.Iron)]),
+			new(ItemID.LeadBar, [new Conditions.SavedOreTierIron(TileID.Lead)])
 		]);
 		AddItemPool(ItemPoolNames.SilverBar, [
-			DropItemFromGenVar(nameof(GenVars.silverBar), ItemID.SilverBar),
-			DropItemFromGenVar(nameof(GenVars.silverBar), ItemID.TungstenBar)
+			new(ItemID.SilverBar, [new Conditions.SavedOreTierSilver(TileID.Silver)]),
+			new(ItemID.TungstenBar, [new Conditions.SavedOreTierSilver(TileID.Tungsten)])
 		]);
 		AddItemPool(ItemPoolNames.GoldBar, [
-			DropItemFromGenVar(nameof(GenVars.goldBar), ItemID.GoldBar),
-			DropItemFromGenVar(nameof(GenVars.goldBar), ItemID.PlatinumBar)
+			new(ItemID.GoldBar, [new Conditions.SavedOreTierGold(TileID.Gold)]),
+			new(ItemID.PlatinumBar, [new Conditions.SavedOreTierGold(TileID.Platinum)])
 		]);
 		AddItemPool(ItemPoolNames.HellChestAmmo, [
 			new(ItemID.HellfireArrow),
-			DropItemFromSavedOreTier(nameof(WorldGen.SavedOreTiers.Silver), TileID.Tungsten, ItemID.TungstenBullet),
-			DropItemFromSavedOreTier(nameof(WorldGen.SavedOreTiers.Silver), TileID.Silver, ItemID.SilverBullet)
+			new(ItemID.TungstenBullet, [new Conditions.SavedOreTierSilver(TileID.Tungsten)]),
+			new(ItemID.SilverBullet, [new Conditions.SavedOreTierSilver(TileID.Silver)])
 		]);
 	}
 	internal static IEnumerable<ItemPoolEntry> GetReplacementValues(double baseWeight, params (short type, double chance)[] values)
@@ -485,6 +443,8 @@ public static class ChestLootLoader
 	}
 	public static List<IItemDropRule> GetLootPool(string name) => lootPools.TryGetValue(name, out var pool) ? pool : null;
 	public static List<ItemPoolEntry> GetItemPool(string name) => itemPools.TryGetValue(name, out var pool) ? pool : null;
+	public static Dictionary<string, List<IItemDropRule>>.KeyCollection GetLootPools() => lootPools.Keys;
+	public static Dictionary<string, List<ItemPoolEntry>>.KeyCollection GetItemPools() => itemPools.Keys;
 	public static class ItemPoolNames
 	{
 		public const string CopperBar = nameof(CopperBar);
@@ -517,9 +477,9 @@ public static class ChestLootLoader
 		public const string HeightBasedCommon = nameof(HeightBasedCommon);
 
 		public const string SurfaceCommon = nameof(SurfaceCommon);
-		public const string UndergroundCommon = nameof(UndergroundCommon);//TODO
-		public const string CavernsCommon = nameof(CavernsCommon);//TODO
-		public const string HellCommon = nameof(HellCommon);//TODO
+		public const string UndergroundCommon = nameof(UndergroundCommon);
+		public const string CavernsCommon = nameof(CavernsCommon);
+		public const string HellCommon = nameof(HellCommon);
 
 		public const string SurfaceWooden = nameof(SurfaceWooden);
 		public const string Underground = nameof(Underground);
@@ -537,10 +497,10 @@ public static class ChestLootLoader
 		public const string WaterOceanCave = nameof(WaterOceanCave);//TODO
 		public const string WaterSimple = nameof(WaterSimple);//TODO
 		public const string Web = nameof(Web);//TODO
-		public const string Shadow = nameof(Shadow);//TODO
+		public const string Shadow = nameof(Shadow);
 
 		public const string CavernsRare = nameof(CavernsRare);
-		public const string BiomeChestExtras = nameof(BiomeChestExtras);//TODO
+		public const string BiomeChestExtras = nameof(BiomeChestExtras);
 	}
 }
 public record class ItemPoolEntry(int Type, List<IItemDropRuleCondition> Conditions = null, List<IItemDropRule> ChainedRules = null, float Weight = 1f)
