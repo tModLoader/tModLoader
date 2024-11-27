@@ -13,10 +13,10 @@
  		}
  	}
  
-+	/// <summary> Creates and returns a bool array data set. All values will be false except the indexes passed in (<paramref name="types"/>) will be true. </summary>
++	/// <summary> Creates and returns a bool array ID set. All values will be false except the indexes passed in (<paramref name="types"/>) will be true. </summary>
  	public bool[] CreateBoolSet(params int[] types) => CreateBoolSet(defaultState: false, types);
  
-+	/// <summary> Creates and returns a bool array data set. All values will be <paramref name="defaultState"/> except the indexes passed in (<paramref name="types"/>) will be the opposite of <paramref name="defaultState"/>. </summary>
++	/// <summary> Creates and returns a bool array ID set. All values will be <paramref name="defaultState"/> except the indexes passed in (<paramref name="types"/>) will be the opposite of <paramref name="defaultState"/>. </summary>
  	public bool[] CreateBoolSet(bool defaultState, params int[] types)
  	{
  		bool[] boolBuffer = GetBoolBuffer();
@@ -24,10 +24,10 @@
  		return boolBuffer;
  	}
  
-+	/// <summary> Creates and returns an int array data set. All values are -1 except for the values passed in as <paramref name="types"/>. The <paramref name="types"/> contain index value pairs listed one after the other. For example <c>CreateIntSet([ItemID.CopperOre, 10, ItemID.SilverOre, 20])</c> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
++	/// <summary> Creates and returns an int array ID set. All values are -1 except for the values passed in as <paramref name="types"/>. The <paramref name="types"/> contain index value pairs listed one after the other. For example <c>CreateIntSet([ItemID.CopperOre, 10, ItemID.SilverOre, 20])</c> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
  	public int[] CreateIntSet(params int[] types) => CreateIntSet(-1, types);
  
-+	/// <summary> Creates and returns an int array data set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateIntSet(-1, ItemID.CopperOre, 10, ItemID.SilverOre, 20)</c> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
++	/// <summary> Creates and returns an int array ID set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateIntSet(-1, ItemID.CopperOre, 10, ItemID.SilverOre, 20)</c> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
  	public int[] CreateIntSet(int defaultState, params int[] inputs)
  	{
  		if (inputs.Length % 2 != 0)
@@ -35,7 +35,7 @@
  		return ushortBuffer;
  	}
  
-+	/// <summary> Creates and returns a float array data set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateFloatSet(1f, ItemID.CopperOre, 1.5f, ItemID.SilverOre, 2.3f)</c> will result in an array filled with 1f except the CopperOre index will have a value of 1.5f and the SilverOre index a value of 2.3f. </summary>
++	/// <summary> Creates and returns a float array ID set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateFloatSet(1f, ItemID.CopperOre, 1.5f, ItemID.SilverOre, 2.3f)</c> will result in an array filled with 1f except the CopperOre index will have a value of 1.5f and the SilverOre index a value of 2.3f. </summary>
  	public float[] CreateFloatSet(float defaultState, params float[] inputs)
  	{
  		if (inputs.Length % 2 != 0)
@@ -44,7 +44,7 @@
  	}
  
 +	/// <summary>
-+	/// Creates and returns an array data set of the supplied Type. This should be used for creating data sets not covered by the other methods, such as for classes (string, List&lt;T&gt;), nullable primitives (bool?), and structs (Color).
++	/// Creates and returns an array ID set of the supplied Type. This should be used for creating ID sets not covered by the other methods, such as for classes (string, List&lt;T&gt;), nullable primitives (bool?), and structs (Color).
 +	/// <para/> All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateCustomSet<string></string>(null, ItemID.CopperOre, "Ugly", ItemID.SilverOre, "Pretty")</c> will result in an array filled with null except the CopperOre index will have a value of "Ugly" and the SilverOre index a value of "Pretty".
 +	/// <para/> Note that for non-null class values used for <paramref name="defaultState"/>, the reference will be shared with all default entries, so be mindful when working with these sets to not accidentally affect the shared default state object. For example passing in <c>new List&lt;int&gt;</c> as <paramref name="defaultState"/> will make it very likely to be misused on accident.
 +	/// </summary>

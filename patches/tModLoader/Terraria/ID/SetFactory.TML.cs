@@ -9,9 +9,9 @@ using Terraria.ModLoader;
 namespace Terraria.ID;
 
 /// <summary>
-/// SetFactory is responsible for creating "data sets" for content. Data sets refers to arrays indexed by content ids. The data set contains data applying to all instances of content of a specific type. This is typically metadata or data controlling how code will interact with each type of content. Each vanilla ID class contains a SetFactory instance called "Factory" which is used to initialize the data sets contained within the ID class.
-/// <para/> For example <see cref="ItemID.Sets.Factory"/> is used to initialize <see cref="ItemID.Sets.IsFood"/> with true values for food items such as <see cref="ItemID.PadThai"/>. Modded content updates data sets in <see cref="ModType.SetStaticDefaults"/>: <c>ItemID.Sets.IsFood[Type] = true;</c>. Code in tModLoader and individual mods might consult the data in <see cref="ItemID.Sets.IsFood"/> for whatever purpose they want.
-/// <para/> Mods can make their own custom data sets through the methods of this class. The methods with "Named" in their method name facilitate collaborative custom data sets. More information on properly using these methods can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom Data Sets pull request</see>.
+/// SetFactory is responsible for creating "custom ID sets" for content. "Custom ID sets" refers to arrays indexed by content ids. The ID set contains data applying to all instances of content of a specific type. This is typically metadata or data controlling how code will interact with each type of content. Each vanilla ID class contains a SetFactory instance called "Factory" which is used to initialize the ID sets contained within the ID class.
+/// <para/> For example <see cref="ItemID.Sets.Factory"/> is used to initialize <see cref="ItemID.Sets.IsFood"/> with true values for food items such as <see cref="ItemID.PadThai"/>. Modded content updates ID sets in <see cref="ModType.SetStaticDefaults"/>: <c>ItemID.Sets.IsFood[Type] = true;</c>. Code in tModLoader and individual mods might consult the data in <see cref="ItemID.Sets.IsFood"/> for whatever purpose they want.
+/// <para/> Mods can make their own custom ID sets through the methods of this class. The methods with "Named" in their method name facilitate collaborative "named ID sets". Mods using the same "named ID set" will share a reference to the same array merging together all the entries and changes. More information can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom and Named ID Sets pull request</see>.
 /// </summary>
 public partial class SetFactory
 {
@@ -79,15 +79,12 @@ public partial class SetFactory
 	}
 
 	/// <summary>
-	/// Registers a "custom data set" for collaboration, meaning an array of values of length equal to the count of the content the set corresponds to. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateXSet methods, but this method can be used for manually initialized arrays.
-	/// <para/> The set reference passed in may change as a result of this method. This method will merge sets together regardless of mod load order, allowing for ad-hoc collaboration. Note that this merge behavior is dependent on mods agreeing on key, default value, and Type. 
-	/// <para/> The <paramref name="key"/> is a special identifier that all mods intending to collaborate on this custom data set will use. Mod makers should collaborate on the key and its associated meaning. Use the <see cref="RegisterNamedCustomSet{T}(string, string, T, ref T[])"/> or <see cref="RegisterNamedCustomSet{T}(Mod, string, T, ref T[])"/> overload instead to create a custom data set for a mod-specific idea to give it a unique key that will not conflict with a key used by any other mod.
-	/// <para/> More information on properly using these methods can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom Data Sets pull request</see>. Custom data set keys used by other mods are listed in the <see href="https://github.com/tModLoader/tModLoader/wiki/Custom-Data-Sets">Custom Data Sets wiki page</see>, please read and consult this page to collaborate on custom data set key meanings.
-	/// <para/> Throws an exception if the data length or default value does not match the data registered using the same key by any mod loaded before this mod.
+	/// Manually registers a named ID set. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateNamedXSet methods, but this method can be used for manually initialized arrays.
+	/// <para/> The set reference passed in might be changed by this method when merging with existing data.
+	/// <para/> Throws an exception if the data length or default value does not match a named ID set with the same key registered before this.
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input)
 	{
-		// TODO: Return bool to represent already exists or merged?
 		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
 		if (!ContentCache.contentLoadingFinished) {
 			// If a set is initialized early, throw an error if the class containing the set doesn't have ReinitializeDuringResizeArrays
@@ -102,11 +99,9 @@ public partial class SetFactory
 		SetMetadata existingMetadata = setMetadataMapping.GetOrAdd(dictionaryKey, newMetadata);
 
 		if (!EqualityComparer<object>.Default.Equals(newMetadata.defaultValue, existingMetadata.defaultValue)) { // Primitive might be boxed, so != doesn't work.
-			throw new Exception($"Previously registered set for {key} has a default value of {existingMetadata.defaultValue} but {newMetadata.defaultValue} was supplied. Custom data set will not be registered");
-			// TODO: We could just allow this and output a warning that the data will not be shared. Keep both somehow?
+			throw new Exception($"Previously registered named ID set for {key} has a default value of {existingMetadata.defaultValue} but {newMetadata.defaultValue} was supplied. This named ID set can not be registered. Please visit https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets to see how existing mods are using named ID sets and adjust accordingly.");
 		}
 
-		// TODO: Once DataInstance feature is merged, Custom sets can be registered as (SetFactory, key) in DataInstance.
 		T[] value = (T[])existingMetadata.array;
 
 		// If it already exists, merge the data

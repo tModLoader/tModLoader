@@ -9,25 +9,27 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
-	// This class demonstrates "custom data sets". Custom data sets are arrays indexed by content ids such as those seen in all the ID classes (ItemID.Sets, NPCID.Sets, ProjectileID.Sets, etc). This allows mods to easily implement content id-specific data.
-	// Custom data sets are automatically merged when other mods declare the same data set, facilitating "ad-hoc" collaboration that doesn't require mod dependencies.
-	// See https://github.com/tModLoader/tModLoader/pull/4381 for more information about custom data sets.
+	// This class demonstrates "custom ID sets". "Custom ID sets" are arrays indexed by content ids such as those seen in all the ID classes (ItemID.Sets, NPCID.Sets, ProjectileID.Sets, etc). This allows mods to easily implement content id-specific data.
+	// These custom ID sets are registered with a key, giving them a public identity and making them "named ID sets".
+	// "Named ID sets" are automatically merged when other mods declare the same ID set, facilitating "ad-hoc" collaboration that doesn't require mod dependencies.
+	// See https://github.com/tModLoader/tModLoader/pull/4381 for more information about custom and named ID sets.
 
-	// This [ReinitializeDuringResizeArrays] attribute will cause this class's static constructor to be called during the ResizeArrays step of mod loading. This is essential for any class with field initializers calling SetFactory.CreateNamedXSet methods.
+	// This [ReinitializeDuringResizeArrays] attribute will cause this class's static constructor to be called during the ResizeArrays step of mod loading. This is essential for any class with field initializers calling SetFactory methods.
 	// This will allow the arrays to have the correct lengths after all content has been loaded into the game. This reinitialization happens before ModSystem.ResizeArrays, avoiding potential issues from mod load order.
 	[ReinitializeDuringResizeArrays]
 	public static class CustomItemSets
 	{
-		// Custom item set example. This will behave the same as any other ItemID.Sets array.
+		// Named ID set example. This will behave the same as any other ItemID.Sets array.
 		public const string FlamingWeaponCustomSetKey = "FlamingWeapon"; // This string MUST be consistent between mods working together.
 
-		// To create a custom item set, we use the ItemID.Sets.Factory.CreateNamedXSet method and provide a string key.
+		// To create a named ID set for items, we use the ItemID.Sets.Factory.CreateNamedXSet method and provide a string key.
 		// We can also pass in any initial data, in this case we are indicating that FieryGreatsword and ExampleSword should be true in this set. Note that it is also possible to set these set values in SetStaticDefaults instead, which is more typical. See ExampleFlail.cs for an example.
 		// This method also exposes the set for other mods to access via this key. The key and default value must be consistent with other mods.
 		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSet(FlamingWeaponCustomSetKey, false, ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>());
 		// Note that by using the ReinitializeDuringResizeArrays approach, ModContent.ItemType<ExampleSword>() is a valid input since modded content IDs will be assigned and retrievable during the reinitialization. Without ReinitializeDuringResizeArrays the code will incorrectly use 0 as the value of ModContent.ItemType<ExampleSword>() because modded IDs haven't been assigned yet.
 
-		// If a set is specific to content in your mod, consider using the CreateNamedBoolSet(string modName, string key, ...) overload instead to avoid any potential conflicts with another mod that happens to use that same key for unrelated purposes.
+		// If a named ID set is specific to content in your mod, consider using the CreateNamedBoolSet(string modName, string key, ...) overload instead to avoid any potential conflicts with another mod that happens to use that same key for unrelated purposes.
+		// If sharing a custom ID set with other mods is not needed at all, the CreateXSet methods can be used to create a non-named custom ID set.
 	}
 
 	public class CustomItemSetsSystem : ModSystem
@@ -40,7 +42,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetStaticDefaults() {
-			// We can further edit the data sets here. These changes will still be consistent between all mods accessing this set since the object reference is shared.
+			// We can further edit the ID sets here. These changes will still be consistent between all mods accessing this set since the array reference is shared.
 			CustomItemSets.FlamingWeapon[ItemID.FireWhip] = true;
 			CustomItemSets.FlamingWeapon[ItemID.HelFire] = true;
 		}
@@ -56,13 +58,13 @@ namespace ExampleMod.Content.Items
 		}
 	}
 
-	// This command helps visualize the custom set data to verify its contents.
+	// This command helps visualize the custom ID set data to verify its contents.
 	// Type /customsets in chat to view the contents of these sets
 	public class CustomSetsCommand : ModCommand
 	{
 		public override string Command => "customsets";
 
-		public override string Description => "View custom set values, see CustomItemSets.cs";
+		public override string Description => "View custom ID set values, see CustomItemSets.cs";
 
 		public override CommandType Type => CommandType.Chat;
 

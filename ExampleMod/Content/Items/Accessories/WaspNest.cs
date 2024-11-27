@@ -70,7 +70,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 	}
 
-	// We can safely use ReinitializeDuringResizeArrays on this class to properly initialize CantEquipWith_HiveBackpack because their are no other static fields that we wouldn't want to reset, but if we did have that then we would want to move CantEquipWith_HiveBackpack to it's own class or move it to CustomItemSets.
+	// We can safely use ReinitializeDuringResizeArrays on this class to properly initialize CantEquipWith_HiveBackpack because there are no other static fields that we wouldn't want to reset, but if we did have that then we would want to move CantEquipWith_HiveBackpack to it's own class or move it to CustomItemSets.
 	[ReinitializeDuringResizeArrays]
 	public class WaspNestGlobalItem : GlobalItem
 	{
