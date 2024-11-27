@@ -16,7 +16,7 @@ public class ShadowKeyRule(int chanceDenominator = 3, int amountDroppedMinimum =
 	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result;
-		if (!GenVars.generatedShadowKey || info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+		if (!GenVars.generatedShadowKey || info.RollLuck(chanceDenominator) < chanceNumerator) {
 			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
 			GenVars.generatedShadowKey = true;
 			result = default;

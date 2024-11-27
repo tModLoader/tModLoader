@@ -39,7 +39,7 @@ public class DropInOrderRule : IItemDropRule
 	public virtual ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result;
-		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+		if (info.RollLuck(chanceDenominator) < chanceNumerator) {
 			CommonCode.DropItem(info, itemIds[counter()], info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
 			result = default;
 			result.State = ItemDropAttemptResultState.Success;

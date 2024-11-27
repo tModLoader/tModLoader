@@ -37,7 +37,7 @@ public class FewFromOptionsDropRule : IItemDropRule
 
 	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
-		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+		if (info.RollLuck(chanceDenominator) < chanceNumerator) {
 			List<int> savedDropIds = dropIds.ToList();
 			int count = 0;
 

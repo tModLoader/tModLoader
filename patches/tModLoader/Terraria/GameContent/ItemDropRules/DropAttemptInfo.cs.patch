@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/DropAttemptInfo.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropAttemptInfo.cs
-@@ -5,6 +_,8 @@
+@@ -5,9 +_,17 @@
  public struct DropAttemptInfo
  {
  	public NPC npc;
@@ -9,3 +9,12 @@
  	public Player player;
  	public UnifiedRandom rng;
  	public bool IsInSimulation;
+ 	public bool IsExpertMode;
+ 	public bool IsMasterMode;
++	public readonly int RollLuck(int chanceDenominator) // Added by TML.
++	{
++		if (WorldGen.generatingWorld)
++			return WorldGen.genRand.Next(chanceDenominator);
++		return player.RollLuck(chanceDenominator);
++	}
+ }

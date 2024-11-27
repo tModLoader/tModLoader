@@ -33,7 +33,14 @@
  		ChainedRules = new List<IItemDropRuleChainAttempt>();
  		this.parameters = parameters;
  		this.itemId = itemId;
-@@ -39,7 +_,7 @@
+@@ -33,13 +_,13 @@
+ 	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+ 	{
+ 		ItemDropAttemptResult result;
+-		if (info.player.RollLuck(parameters.ChanceDenominator) < parameters.ChanceNumerator) {
++		if (info.RollLuck(parameters.ChanceDenominator) < parameters.ChanceNumerator) {
+ 			int num = info.rng.Next(parameters.MinimumItemDropsCount, parameters.MaximumItemDropsCount + 1);
+ 			int activePlayersCount = Main.CurrentFrameFlags.ActivePlayersCount;
  			int minValue = parameters.MinimumStackPerChunkBase + activePlayersCount * parameters.BonusMinDropsPerChunkPerPlayer;
  			int num2 = parameters.MaximumStackPerChunkBase + activePlayersCount * parameters.BonusMaxDropsPerChunkPerPlayer;
  			for (int i = 0; i < num; i++) {

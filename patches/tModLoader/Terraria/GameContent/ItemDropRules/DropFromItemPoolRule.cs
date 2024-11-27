@@ -37,7 +37,7 @@ public class DropFromItemPoolRule : IItemDropRule
 	public virtual ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result;
-		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+		if (info.RollLuck(chanceDenominator) < chanceNumerator) {
 			Tuple<(int type, List<IItemDropRule> chainedRules), double>[] options = GetDropableEntries(info).ToArray();
 			if (options.Length == 0) {
 				result = default;

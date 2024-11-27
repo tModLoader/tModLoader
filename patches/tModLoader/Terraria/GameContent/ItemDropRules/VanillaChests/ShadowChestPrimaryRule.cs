@@ -16,7 +16,7 @@ public class ShadowChestPrimaryRule(int chanceDenominator = 1, int amountDropped
 	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result;
-		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+		if (info.RollLuck(chanceDenominator) < chanceNumerator) {
 			Tuple<(int type, List<IItemDropRule> chainedRules), double>[] options = GetDropableEntries(info).ToArray();
 			if (options.Length == 0) {
 				result = default;

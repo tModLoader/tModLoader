@@ -37,7 +37,7 @@ public class DropLootPoolRule : IItemDropRule
 	public virtual ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
 		ItemDropAttemptResult result;
-		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+		if (info.RollLuck(chanceDenominator) < chanceNumerator) {
 			foreach (IItemDropRule item in ChestLootLoader.GetLootPool(poolName)) {
 				ItemDropResolver.ResolveRule(item, info);
 			}
