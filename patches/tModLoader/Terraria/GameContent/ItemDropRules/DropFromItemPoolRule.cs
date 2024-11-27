@@ -44,7 +44,14 @@ public class DropFromItemPoolRule : IItemDropRule
 				result.State = ItemDropAttemptResultState.DoesntFillConditions;
 				return result;
 			}
-			(int itemId, List<IItemDropRule> chainedRules) = new WeightedRandom<(int, List<IItemDropRule>)>(info.rng, options).Get();
+			int itemId;
+			List<IItemDropRule> chainedRules;
+			if (options.Length == 1) {
+				(itemId, chainedRules) = options[0].Item1;
+			}
+			else {
+				(itemId, chainedRules) = new WeightedRandom<(int, List<IItemDropRule>)>(info.rng, options).Get();
+			}
 			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
 			for (int i = 0; i < chainedRules.Count; i++) {
 				ItemDropResolver.ResolveRule(chainedRules[i], info);

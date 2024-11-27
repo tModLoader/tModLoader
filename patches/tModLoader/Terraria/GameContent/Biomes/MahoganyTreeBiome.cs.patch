@@ -1,0 +1,20 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Biomes/MahoganyTreeBiome.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/MahoganyTreeBiome.cs
+@@ -2,6 +_,7 @@
+ using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Terraria.GameContent.Generation;
++using Terraria.ModLoader;
+ using Terraria.WorldBuilding;
+ 
+ namespace Terraria.GameContent.Biomes;
+@@ -76,7 +_,8 @@
+ 			WorldUtils.Gen(result, new ShapeRoot(angle, GenBase._random.Next(40, 60)), Actions.Chain(new Modifiers.SkipTiles(21, 467, 226, 237), new Modifiers.SkipWalls(87), new Actions.SetTile(383, setSelfFrames: true)));
+ 		}
+ 
+-		WorldGen.AddBuriedChest(result.X + 3, result.Y - 1, (GenBase._random.Next(4) != 0) ? WorldGen.GetNextJungleChestItem() : 0, notNearOtherChests: false, 10, trySlope: false, 0);
++		//WorldGen.AddBuriedChest(result.X + 3, result.Y - 1, (GenBase._random.Next(4) != 0) ? WorldGen.GetNextJungleChestItem() : 0, notNearOtherChests: false, 10, trySlope: false, 0);
++		WorldGen.AddBuriedChest(result.X + 3, result.Y - 1, (GenBase._random.Next(4) != 0) ? ChestLootLoader.LootPoolNames.Jungle : null, notNearOtherChests: false, 10, trySlope: false, 0);
+ 		structures.AddProtectedStructure(new Rectangle(result.X - 30, result.Y - 30, 60, 60));
+ 		return true;
+ 	}

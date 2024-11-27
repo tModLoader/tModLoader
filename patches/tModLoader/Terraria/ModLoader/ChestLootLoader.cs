@@ -330,7 +330,16 @@ public static class ChestLootLoader
 			new DropFromItemPoolRule(ItemPoolNames.FloatingIslandPainting),
 			Common(ItemID.Cloud, minimumDropped: 50, maximumDropped: 100)
 		];
-		lootPools[LootPoolNames.BiomeChestExtras] = [
+		lootPools[LootPoolNames.Lihzahrd] = [
+			Common(ItemID.LihzahrdPowerCell),
+			SequentialRules(1,
+				Common(ItemID.SolarTablet, 5),
+				Common(ItemID.LunarTabletFragment, 1, 3, 7)
+			),
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+		];
+		lootPools[LootPoolNames.BiomeChestCommon] = [
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
 			Common(ItemID.RemnantsofDevotion, 2)
 		];
 	}
@@ -561,11 +570,12 @@ public static class ChestLootLoader
 		public const string WaterSimple = nameof(WaterSimple);
 		public const string Web = nameof(Web);
 		public const string Shadow = nameof(Shadow);
+		public const string Lihzahrd = nameof(Lihzahrd);
 
 		public const string CavernsRare = nameof(CavernsRare);
 		public const string JungleRare = nameof(JungleRare);
 		public const string WaterAnywhereRare = nameof(WaterAnywhereRare);
-		public const string BiomeChestExtras = nameof(BiomeChestExtras);
+		public const string BiomeChestCommon = nameof(BiomeChestCommon);
 	}
 }
 public record class ItemPoolEntry(int Type, List<IItemDropRuleCondition> Conditions = null, List<IItemDropRule> ChainedRules = null, float Weight = 1f)
