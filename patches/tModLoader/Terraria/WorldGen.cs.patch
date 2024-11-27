@@ -1140,10 +1140,12 @@
  			}
  		}
  
-@@ -22830,6 +_,27 @@
+@@ -22829,7 +_,28 @@
+ 		}
  
  		Main.statusText = Lang.gen[58].Value + " 95%";
- 		int num92 = 1;
+-		int num92 = 1;
++		int num92 = 0;
 +		List<int> chestContents = [];
 +		{
 +			List<ItemPoolEntry> chestContentsEntries = ChestLootLoader.GetItemPool(ChestLootLoader.ItemPoolNames.DungeonGoldRare);
@@ -1186,7 +1188,7 @@
  				}
 -
 +				*/
-+				num97 = chestContents[num92];
++				num97 = chestContents[num92 % chestContents.Count];
 +				if (num97 == ItemID.GoldenKey) {
 +					style3 = 0;
 +				}
@@ -1199,7 +1201,7 @@
  
 -				if (AddBuriedChest(i3, num96, num97, notNearOtherChests: false, style3, trySlope: false, 0)) {
 +				//if (AddBuriedChest(i3, num96, num97, notNearOtherChests: false, style3, trySlope: false, 0)) {
-+				if (AddBuriedChest(i3, num96, ChestLootLoader.LootPoolNames.HeightBasedCommon, notNearOtherChests: false, style3, trySlope: false, 0, num97)) {
++				if (AddBuriedChest(i3, num96, ChestLootLoader.LootPoolNames.DungeonCommon, notNearOtherChests: false, style3, trySlope: false, 0, num97)) {
  					num94 += 1000;
  					num92++;
  				}

@@ -196,6 +196,11 @@ public static class ChestLootLoader
 			)
 		];
 
+		lootPools[LootPoolNames.DungeonCommon] = [
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+			Common(ItemID.BoneWelder, 8)
+		];
+
 		lootPools[LootPoolNames.HeightBasedGeneric] = [
 			SequentialRules(1,
 				new LeadingConditionRule(new Conditions.UndergroundChest())
@@ -261,7 +266,8 @@ public static class ChestLootLoader
 		lootPools[LootPoolNames.Frozen] = [
 			new DropFromItemPoolRule(ItemPoolNames.FrozenRare, 1),
 			Common(ItemID.IceMirror, 5),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+			Common(ItemID.IceMachine, 7)
 		];
 		lootPools[LootPoolNames.SandstoneHigh] = [
 			new DropFromItemPoolRule(ItemPoolNames.SandstoneHighRare),
@@ -281,7 +287,8 @@ public static class ChestLootLoader
 			new DropLootPoolRule(LootPoolNames.JungleRare),
 			Common(ItemID.LivingMahoganyWand, 6).WithOnSuccess(Common(ItemID.LivingMahoganyLeafWand)),
 			Common(ItemID.BeeMinecart, 10),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+			ByCondition(new Conditions.IsChestType(TileID.Containers, 10), Item.HoneyDispenser, 4)
 		];
 		lootPools[LootPoolNames.WaterOceanCave] = [
 			new DropFromItemPoolRule(ItemPoolNames.WaterOceanCaveRare),
@@ -332,11 +339,16 @@ public static class ChestLootLoader
 		];
 		lootPools[LootPoolNames.Lihzahrd] = [
 			Common(ItemID.LihzahrdPowerCell),
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
 			SequentialRules(1,
 				Common(ItemID.SolarTablet, 5),
 				Common(ItemID.LunarTabletFragment, 1, 3, 7)
 			),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+			Common(ItemID.LihzahrdFurnace),
+		];
+		lootPools[LootPoolNames.Web] = [
+			new DropFromItemPoolRule(ItemPoolNames.WebRare),
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
 		];
 		lootPools[LootPoolNames.BiomeChestCommon] = [
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
@@ -550,6 +562,7 @@ public static class ChestLootLoader
 		public const string UndergroundCommon = nameof(UndergroundCommon);
 		public const string CavernsCommon = nameof(CavernsCommon);
 		public const string HellCommon = nameof(HellCommon);
+		public const string DungeonCommon = nameof(DungeonCommon);
 
 		public const string SurfaceWooden = nameof(SurfaceWooden);
 		public const string Underground = nameof(Underground);
@@ -558,7 +571,6 @@ public static class ChestLootLoader
 		public const string PyramidGold = nameof(PyramidGold);
 		public const string SandstoneHigh = nameof(SandstoneHigh);
 		public const string SandstoneLow = nameof(SandstoneLow);
-		public const string DungeonGold = nameof(DungeonGold);
 		public const string Frozen = nameof(Frozen);
 		public const string Jungle = nameof(Jungle);
 		public const string MushroomHigh = nameof(MushroomHigh);
