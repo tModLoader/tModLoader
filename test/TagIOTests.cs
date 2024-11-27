@@ -119,9 +119,9 @@ namespace Terraria.ModLoader
 				["double"] = 1.525,
 				["string1"] = "",
 				["string2"] = "Test string",
-				["byteArr1"] = new byte[0],
+				["byteArr1"] = Array.Empty<byte>(),
 				["byteArr2"] = new byte[] { 0, 5, 25, 125 },
-				["intArr1"] = new int[0],
+				["intArr1"] = Array.Empty<int>(),
 				["intArr2"] = new[] { -7, -5326, 32800 },
 				["tag1"] = new TagCompound(),
 				["tag2"] = new TagCompound { { "key", "value" } },
@@ -140,9 +140,9 @@ namespace Terraria.ModLoader
 				["listString1"] = new List<string>(),
 				["listString2"] = new List<string> { "item1", "item2" },
 				["listByteArr1"] = new List<byte[]>(),
-				["listByteArr2"] = new List<byte[]> { new byte[0], new byte[] { 7, 15 } },
+				["listByteArr2"] = new List<byte[]> { Array.Empty<byte>(), new byte[] { 7, 15 } },
 				["listIntArr1"] = new List<int[]>(),
-				["listIntArr2"] = new List<int[]> { new int[0], new[] { 12, 3 } },
+				["listIntArr2"] = new List<int[]> { Array.Empty<int>(), new[] { 12, 3 } },
 			};
 		}
 
@@ -159,7 +159,7 @@ namespace Terraria.ModLoader
 								["moarLists"] = new List<IList> {
 									new List<long> {-1, -2, -3},
 									new List<int[]> {
-										new int[0],
+										Array.Empty<int>(),
 										new[] {5, 6, 7, 8}
 									}
 								}
@@ -349,8 +349,8 @@ namespace Terraria.ModLoader
 			AssertEqual(tag.Get<float>("key"), 0f);
 			AssertEqual(tag.Get<double>("key"), 0d);
 			AssertEqual(tag.Get<string>("key"), "");
-			AssertEqual(tag.Get<byte[]>("key"), new byte[0]);
-			AssertEqual(tag.Get<int[]>("key"), new int[0]);
+			AssertEqual(tag.Get<byte[]>("key"), Array.Empty<byte>());
+			AssertEqual(tag.Get<int[]>("key"), Array.Empty<int>());
 			AssertEqual(tag.Get<TagCompound>("key"), new TagCompound());
 
 			AssertEqual(tag.GetList<byte>("key"), new List<byte>());
@@ -363,34 +363,34 @@ namespace Terraria.ModLoader
 			AssertEqual(tag.Get<IList<IList<float>>>("key"), new List<IList<float>>());
 
 			AssertEqual(tag.Get<string[,]>("key"), new string[0, 0]);
-			AssertEqual(tag.Get<string[][]>("key"), new string[0][]);
-			AssertEqual(tag.Get<string[][,]>("key"), new string[0][,]);
+			AssertEqual(tag.Get<string[][]>("key"), Array.Empty<string[]>());
+			AssertEqual(tag.Get<string[][,]>("key"), Array.Empty<string[,]>());
 			AssertEqual(tag.Get<string[,][]>("key"), new string[0, 0][]);
 			AssertEqual(tag.Get<string[,][,]>("key"), new string[0, 0][,]);
 
 			AssertEqual(tag.Get<Vector2[,]>("key"), new Vector2[0, 0]);
-			AssertEqual(tag.Get<Vector2[][]>("key"), new Vector2[0][]);
-			AssertEqual(tag.Get<Vector2[][,]>("key"), new Vector2[0][,]);
+			AssertEqual(tag.Get<Vector2[][]>("key"), Array.Empty<Vector2[]>());
+			AssertEqual(tag.Get<Vector2[][,]>("key"), Array.Empty<Vector2[,]>());
 			AssertEqual(tag.Get<Vector2[,][]>("key"), new Vector2[0, 0][]);
 			AssertEqual(tag.Get<Vector2[,][,]>("key"), new Vector2[0, 0][,]);
 
 			AssertEqual(tag.Get<C[,]>("key"), new C[0, 0]);
-			AssertEqual(tag.Get<C[][]>("key"), new C[0][]);
-			AssertEqual(tag.Get<C[][,]>("key"), new C[0][,]);
+			AssertEqual(tag.Get<C[][]>("key"), Array.Empty<C[]>());
+			AssertEqual(tag.Get<C[][,]>("key"), Array.Empty<C[,]>());
 			AssertEqual(tag.Get<C[,][]>("key"), new C[0, 0][]);
 			AssertEqual(tag.Get<C[,][,]>("key"), new C[0, 0][,]);
 
-			AssertEqual(tag.Get<List<string>[]>("key"), new List<string>[0]);
+			AssertEqual(tag.Get<List<string>[]>("key"), Array.Empty<List<string>>());
 			AssertEqual(tag.Get<List<string[]>>("key"), new List<string[]>());
 			AssertEqual(tag.Get<List<string[,]>>("key"), new List<string[,]>());
 			AssertEqual(tag.Get<List<string>[,]>("key"), new List<string>[0, 0]);
 
-			AssertEqual(tag.Get<List<Vector2>[]>("key"), new List<Vector2>[0]);
+			AssertEqual(tag.Get<List<Vector2>[]>("key"), Array.Empty<List<Vector2>>());
 			AssertEqual(tag.Get<List<Vector2[]>>("key"), new List<Vector2[]>());
 			AssertEqual(tag.Get<List<Vector2[,]>>("key"), new List<Vector2[,]>());
 			AssertEqual(tag.Get<List<Vector2>[,]>("key"), new List<Vector2>[0, 0]);
 
-			AssertEqual(tag.Get<List<C>[]>("key"), new List<C>[0]);
+			AssertEqual(tag.Get<List<C>[]>("key"), Array.Empty<List<C>>());
 			AssertEqual(tag.Get<List<C[]>>("key"), new List<C[]>());
 			AssertEqual(tag.Get<List<C[,]>>("key"), new List<C[,]>());
 			AssertEqual(tag.Get<List<C>[,]>("key"), new List<C>[0, 0]);
