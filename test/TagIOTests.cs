@@ -909,6 +909,11 @@ namespace Terraria.ModLoader
 				["c2List"] = c2List,
 			};
 
+			Check(tag);
+			Check(AfterIO(tag));
+			Check((TagCompound)tag.Clone());
+			return;
+
 			void Check(TagCompound tag)
 			{
 				Assert.IsTrue(stringList .Zip(tag.Get<List<string>> ("stringArray")).All(t => t.First == t.Second));
@@ -920,10 +925,6 @@ namespace Terraria.ModLoader
 				Assert.IsTrue(c2List     .Zip(tag.Get<List<C2>>     ("c2Array"))    .All(t => t.First.value == t.Second.value));
 				Assert.IsTrue(c2Array    .Zip(tag.Get<C2[]>         ("c2List"))     .All(t => t.First.value == t.Second.value));
 			}
-
-			Check(tag);
-			Check(AfterIO(tag));
-			Check((TagCompound)tag.Clone());
 		}
 
 		[TestMethod]
@@ -954,6 +955,11 @@ namespace Terraria.ModLoader
 				 ["s5"] = s5, ["v5"] = v5, ["c5"] = c5,
 			};
 
+			Check(tag);
+			Check(AfterIO(tag));
+			Check((TagCompound)tag.Clone());
+			return;
+
 			void Check(TagCompound tag)
 			{
 				Assert.IsTrue(s1[0, 0]       == tag.Get<string[,]>    ("s1")[0, 0]);
@@ -974,10 +980,6 @@ namespace Terraria.ModLoader
 				Assert.IsTrue(c4[0, 0][0].value    == tag.Get<C[,][]> ("c4")[0, 0][0].value);
 				Assert.IsTrue(c5[0, 0][0, 0].value == tag.Get<C[,][,]>("c5")[0, 0][0, 0].value);
 			}
-
-			Check(tag);
-			Check(AfterIO(tag));
-			Check((TagCompound)tag.Clone());
 		}
 
 		[TestMethod]
@@ -1004,6 +1006,11 @@ namespace Terraria.ModLoader
 				 ["s4"] = s4, ["v4"] = v4, ["c4"] = c4,
 			};
 
+			Check(tag);
+			Check(AfterIO(tag));
+			Check((TagCompound)tag.Clone());
+			return;
+
 			void Check(TagCompound tag)
 			{
 				Assert.IsTrue(s1[0][0]    == tag.Get<List<string>[]>  ("s1")[0][0]);
@@ -1021,10 +1028,6 @@ namespace Terraria.ModLoader
 				Assert.IsTrue(c3[0][0, 0].value == tag.Get<List<C[,]>>("c3")[0][0, 0].value);
 				Assert.IsTrue(c4[0, 0][0].value == tag.Get<List<C>[,]>("c4")[0, 0][0].value);
 			}
-
-			Check(tag);
-			Check(AfterIO(tag));
-			Check((TagCompound)tag.Clone());
 		}
 
 		[TestMethod]
@@ -1075,6 +1078,11 @@ namespace Terraria.ModLoader
 				["c9"] = c9, ["v9"] = v9, ["b9"] = b9,
 			};
 
+			Check(tag);
+			Check(AfterIO(tag));
+			Check((TagCompound)tag.Clone());
+			return;
+
 			void Check(TagCompound tag)
 			{
 				Assert.IsTrue(c1[0, 0].value       == tag.Get<C2[,]>       ("c1")[0, 0].value);
@@ -1110,10 +1118,6 @@ namespace Terraria.ModLoader
 				Assert.IsTrue((byte)(b8[0][0, 0]    ? 1 : 0) == tag.Get<List<byte[,]>>("b8")[0][0, 0]);
 				Assert.IsTrue((byte)(b9[0, 0][0]    ? 1 : 0) == tag.Get<List<byte>[,]>("b9")[0, 0][0]);
 			}
-
-			Check(tag);
-			Check(AfterIO(tag));
-			Check((TagCompound)tag.Clone());
 		}
 	}
 }

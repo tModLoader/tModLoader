@@ -63,12 +63,6 @@ public partial class InvokeRewriter : BaseRewriter
 	private SyntaxNode RefactorViaLookup(InvocationExpressionSyntax node, IdentifierNameSyntax nameSyntax) {
 		// this won't work if all the static members of a type have been removed, but it's a nice way to handle both the static context from inheritance heirachy, and from using statements.
 		INamedTypeSymbol[] _staticTypesWithMembersInCtx = null;
-		INamedTypeSymbol[] GetStaticallyLocalTypes() => _staticTypesWithMembersInCtx ??= model
-			.LookupStaticMembers(node.SpanStart)
-			.OfType<IMethodSymbol>()
-			.Select(m => m.ContainingType)
-			.Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default)
-			.ToArray();
 
 		var enclosingMethod = model.GetEnclosingSymbol(node.SpanStart);
 		var enclosingType = enclosingMethod.ContainingType;
@@ -86,6 +80,13 @@ public partial class InvokeRewriter : BaseRewriter
 		}
 
 		return node;
+
+		INamedTypeSymbol[] GetStaticallyLocalTypes() => _staticTypesWithMembersInCtx ??= model
+			.LookupStaticMembers(node.SpanStart)
+			.OfType<IMethodSymbol>()
+			.Select(m => m.ContainingType)
+			.Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default)
+			.ToArray();
 	}
 
 	#region Handlers
@@ -191,8 +192,6 @@ public partial class InvokeRewriter : BaseRewriter
 			equipTexture = args[1].Expression;
 		}
 
-		static ExpressionSyntax ReplaceNullLiteral(ExpressionSyntax expr) => expr.IsKind(SyntaxKind.NullLiteralExpression) ? null : expr;
-
 		// arg map (ModItem variant)
 		// 0 -> 0 (mod)
 		// 1 -> 3 (item)
@@ -213,6 +212,8 @@ public partial class InvokeRewriter : BaseRewriter
 			invoke = invoke.WithBlockComment("Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide");
 
 		return invoke.WithArgumentList(ArgumentList(method, newArgs).WithTriviaFrom(invoke.ArgumentList));
+
+		static ExpressionSyntax ReplaceNullLiteral(ExpressionSyntax expr) => expr.IsKind(SyntaxKind.NullLiteralExpression) ? null : expr;
 	};
 
 	public static RewriteInvoke ToTryGet(string newName) => (rw, invoke, methodName) => {

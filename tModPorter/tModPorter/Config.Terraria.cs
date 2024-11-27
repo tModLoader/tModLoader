@@ -267,9 +267,6 @@ public static partial class Config
 	private static void AddTextureRenames() {
 		var getValue = AccessMember("Value");
 
-		void RenameTextureAsset(string from, string to) =>	RenameStaticField("Terraria.Main", from, to, newType: "Terraria.GameContent.TextureAssets").FollowBy(getValue);
-		void RenameFontAsset(string from, string to) =>		RenameStaticField("Terraria.Main", from, to, newType: "Terraria.GameContent.FontAssets").FollowBy(getValue);
-
 
 		RenameFontAsset(from: "fontDeathText",	to: "DeathText");
 		RenameFontAsset(from: "fontItemText",	to: "ItemStack");
@@ -293,22 +290,25 @@ public static partial class Config
 		RenameTextureAsset(from: "wireUITexture",		to: "WireUi");
 		RenameTextureAsset(from: "gemTexture",			to: "Gem");
 
+		RenameMultipleTextures(4,	s => $"wire{s}Texture",				s => $"Wire{s}");
+		RenameMultipleTextures(43,	s => $"chain{s}Texture",			s => $"Chain{s}");
+		RenameMultipleTextures(18,	s => $"inventoryBack{s}Texture",	s => $"InventoryBack{s}");
+		RenameMultipleTextures(3,	s => $"sun{s}Texture",				s => $"Sun{s}");
+		return;
+
+		void RenameTextureAsset(string from, string to) =>	RenameStaticField("Terraria.Main", from, to, newType: "Terraria.GameContent.TextureAssets").FollowBy(getValue);
+
+		void RenameFontAsset(string from, string to) =>		RenameStaticField("Terraria.Main", from, to, newType: "Terraria.GameContent.FontAssets").FollowBy(getValue);
+
 		void RenameMultipleTextures(int n, Func<string, string> from, Func<string, string> to) {
 			for (int i = 0; i <= n; i++) {
 				var s = i > 1 ? i.ToString() : "";
 				RenameTextureAsset(from(s), to(s));
 			}
 		}
-
-		RenameMultipleTextures(4,	s => $"wire{s}Texture",				s => $"Wire{s}");
-		RenameMultipleTextures(43,	s => $"chain{s}Texture",			s => $"Chain{s}");
-		RenameMultipleTextures(18,	s => $"inventoryBack{s}Texture",	s => $"InventoryBack{s}");
-		RenameMultipleTextures(3,	s => $"sun{s}Texture",				s => $"Sun{s}");
 	}
 
 	private static void AddWorldGenToGenVars() {
-		static void RenameGenVar(string name) => RenameStaticField("Terraria.WorldGen", name, name, "Terraria.WorldBuilding.GenVars");
-
 		RenameGenVar("configuration");
 		RenameGenVar("structures");
 		RenameGenVar("copper");
@@ -455,6 +455,9 @@ public static partial class Config
 		RenameGenVar("hellChestItem");
 		RenameGenVar("statueList");
 		RenameGenVar("StatuesWithTraps");
+		return;
+
+		static void RenameGenVar(string name) => RenameStaticField("Terraria.WorldGen", name, name, "Terraria.WorldBuilding.GenVars");
 	}
 }
 

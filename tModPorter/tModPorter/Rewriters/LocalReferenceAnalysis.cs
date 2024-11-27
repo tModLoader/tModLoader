@@ -47,18 +47,13 @@ namespace tModPorter.Rewriters
 			var reads = new List<(SyntaxNode syntax, Node node)>();
 			var blockStates = cfg.Blocks.ToDictionary(b => b, b => new BlockState(SymbolEqualityComparer.Default));
 
-			Ref<Node> GetNode(BasicBlock block, ILocalSymbol local) {
-				var state = blockStates[block];
-
-				if (!state.TryGetValue(local, out var r)) {
-					state[local] = r = new();
-					r.Value = new Node(block.Predecessors.Select(p => GetNode(p.Source, local)).ToImmutableArray());
+			foreach (var block in cfg.Blocks) {
+				foreach (var op in block.Operations) {
+					Visit(op);
 				}
 
-				return r;
-			}
+				continue;
 
-			foreach (var block in cfg.Blocks) {
 				void Visit(IOperation op) {
 					switch (op) {
 						case IAssignmentOperation assign when assign is { Target: ILocalReferenceOperation { Local: var local }, Value: var value }:
@@ -74,13 +69,20 @@ namespace tModPorter.Rewriters
 							break;
 					}
 				}
-
-				foreach (var op in block.Operations) {
-					Visit(op);
-				}
 			}
 
 			return reads.ToImmutableDictionary(e => e.syntax, e => e.node.GetValues());
+
+			Ref<Node> GetNode(BasicBlock block, ILocalSymbol local) {
+				var state = blockStates[block];
+
+				if (!state.TryGetValue(local, out var r)) {
+					state[local] = r = new();
+					r.Value = new Node(block.Predecessors.Select(p => GetNode(p.Source, local)).ToImmutableArray());
+				}
+
+				return r;
+			}
 		}
 	}
 }
