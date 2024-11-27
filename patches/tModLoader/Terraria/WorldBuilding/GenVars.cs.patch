@@ -22,3 +22,9 @@
  	public static List<int> StatuesWithTraps = new List<int>(new int[4] {
  		4,
  		7,
+@@ -163,4 +_,5 @@
+ 	});
+ 	public static bool crimsonLeft = true;
+ 	public static Vector2D shimmerPosition;
++	public static int WaterItemCount;
+ }

@@ -51,7 +51,6 @@ public partial class WorldGen
 	/// <returns></returns>
 	public static bool AddBuriedChest(int i, int j, string pool, bool notNearOtherChests = false, int Style = -1, bool trySlope = false, ushort chestTileType = 0, int forceContain = ItemID.None)
 	{
-		/*
 		if (chestTileType == 0)
 			chestTileType = 21;
 		bool flag = false;
@@ -127,7 +126,7 @@ public partial class WorldGen
 			else if (flag12 || !string.IsNullOrEmpty(pool)) {
 				style = 1;
 			}
-			
+
 
 			if ((chestTileType == 467 && style == 10) || (string.IsNullOrEmpty(pool) && floorTileY <= Main.maxTilesY - 205 && IsUndergroundDesert(i, floorTileY))) {
 				flag2 = true;
@@ -153,12 +152,11 @@ public partial class WorldGen
 				flag7 = true;
 				contain = GenVars.hellChestItem[GenVars.hellChest];
 				style = 4;
-				isHellChest = true;
 				canBeReplacedByAngelStatue = true;
 			}
 
 			if (chestTileType == 21 && style == 17 && string.IsNullOrEmpty(pool)) {
-				pool = ChestLootLoader.LootPoolNames.WaterSimple;
+				pool = ChestLootLoader.LootPoolNames.WaterAnywhere;
 				canBeReplacedByAngelStatue = true;
 			}
 
@@ -194,8 +192,16 @@ public partial class WorldGen
 			}
 			int chestIndex = PlaceChest(i - 1, floorTileY - 1, chestTileType, notNearOtherChests, style);
 			if (chestIndex >= 0) {
-				if (isHellChest) {
-					GenVars.hellChest++;
+				switch (pool) {
+					case ChestLootLoader.LootPoolNames.Shadow:
+						GenVars.hellChest++;
+						break;
+					case ChestLootLoader.LootPoolNames.Jungle:
+						GenVars.JungleItemCount++;
+						break;
+					case ChestLootLoader.LootPoolNames.WaterAnywhere:
+						GenVars.WaterItemCount++;
+						break;
 				}
 
 				Chest chest = Main.chest[chestIndex];
@@ -247,7 +253,7 @@ public partial class WorldGen
 
 			return false;
 		}
-		*/
+
 		return false;
 	}
 }

@@ -11,7 +11,7 @@ using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace Terraria.GameContent.ItemDropRules.VanillaChests;
-public class ShadowChestPrimaryRule(int chanceDenominator = 1, int amountDroppedMinimum = 1, int amountDroppedMaximum = 1, int chanceNumerator = 1) : DropFromItemPoolRule(ChestLootLoader.ItemPoolNames.ShadowRare, chanceDenominator, amountDroppedMinimum, amountDroppedMaximum, chanceNumerator)
+public class ChestSequentialPrimaryRule(string poolName, Func<int> getItemCount, int chanceDenominator = 1, int amountDroppedMinimum = 1, int amountDroppedMaximum = 1, int chanceNumerator = 1) : DropFromItemPoolRule(poolName, chanceDenominator, amountDroppedMinimum, amountDroppedMaximum, chanceNumerator)
 {
 	public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
 	{
@@ -23,7 +23,7 @@ public class ShadowChestPrimaryRule(int chanceDenominator = 1, int amountDropped
 				result.State = ItemDropAttemptResultState.DoesntFillConditions;
 				return result;
 			}
-			(int itemId, List<IItemDropRule> chainedRules) = options[GenVars.hellChest % options.Length].Item1;
+			(int itemId, List<IItemDropRule> chainedRules) = options[getItemCount() % options.Length].Item1;
 			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
 			for (int i = 0; i < chainedRules.Count; i++) {
 				ItemDropResolver.ResolveRule(chainedRules[i], info);
