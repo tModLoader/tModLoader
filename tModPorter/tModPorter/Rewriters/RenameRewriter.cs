@@ -85,9 +85,8 @@ public class RenameRewriter : BaseRewriter {
 			return usings;
 
 		usings = List(usings.Except(renamed));
-		foreach (var u in renamed) {
-			usings = usings.WithUsingNamespace(namespaceRenames[u.Name.ToString()]);
-		}
+		usings =
+			renamed.Aggregate(usings, (current, u) => current.WithUsingNamespace(namespaceRenames[u.Name.ToString()]));
 
 		return base.VisitUsingList(usings);
 	}
@@ -99,10 +98,12 @@ public class RenameRewriter : BaseRewriter {
 		if (instType == null)
 			return nameToken;
 
-		foreach (var entry in memberRenames) {
-			if (entry.from != nameToken.Text || refactoringMethod && !entry.isMethod || !instType.InheritsFrom(entry.type))
-				continue;
-
+		foreach (MemberRename entry in
+		         memberRenames.Where(entry =>
+			         entry.from == nameToken.Text && 
+			         (!refactoringMethod || entry.isMethod) &&
+			         instType.InheritsFrom(entry.type)))
+		{
 			entry.followup?.Invoke(this, nameToken);
 			return nameToken.WithText(entry.to);
 		}
