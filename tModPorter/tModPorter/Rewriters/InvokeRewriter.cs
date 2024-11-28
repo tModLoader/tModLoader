@@ -181,7 +181,7 @@ public partial class InvokeRewriter : BaseRewriter
 			return invoke;
 
 		invoke = (InvocationExpressionSyntax)ToStaticMethodCall(method.ContainingType.ToString(), method.Name, targetBecomesFirstArg: true)(rw, invoke, methodName);
-		if (paramOps.Any(op => op == null || op is IInvalidOperation) || paramOps.Length < 4)
+		if (paramOps.Any(op => op is null or IInvalidOperation) || paramOps.Length < 4)
 			return invoke;
 
 		var args = invoke.ArgumentList.Arguments;

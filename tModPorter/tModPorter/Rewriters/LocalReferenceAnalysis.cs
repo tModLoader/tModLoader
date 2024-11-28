@@ -56,7 +56,7 @@ namespace tModPorter.Rewriters
 
 				void Visit(IOperation op) {
 					switch (op) {
-						case IAssignmentOperation assign when assign is { Target: ILocalReferenceOperation { Local: var local }, Value: var value }:
+						case IAssignmentOperation { Target: ILocalReferenceOperation { Local: var local }, Value: var value } assign:
 							Visit(value);
 							GetNode(block, local).Value = new Node(assign);
 							break;
