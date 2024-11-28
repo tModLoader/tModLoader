@@ -288,7 +288,7 @@ public static class ChestLootLoader
 			Common(ItemID.LivingMahoganyWand, 6).WithOnSuccess(Common(ItemID.LivingMahoganyLeafWand)),
 			Common(ItemID.BeeMinecart, 10),
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
-			ByCondition(new Conditions.IsChestType(TileID.Containers, 10), Item.HoneyDispenser, 4)
+			ByCondition(new Conditions.IsChestType(TileID.Containers, 10), ItemID.HoneyDispenser, 4)
 		];
 		lootPools[LootPoolNames.WaterOceanCave] = [
 			new DropFromItemPoolRule(ItemPoolNames.WaterOceanCaveRare),

@@ -176,7 +176,7 @@ partial class Conditions
 		public bool CanDrop(DropAttemptInfo info)
 		{
 			if (info.chest is null)
-				return false;
+				return true;
 			Tile tile = Main.tile[info.chest.x, info.chest.y];
 			if (tile.type != type)
 				return true;
