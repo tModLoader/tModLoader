@@ -1224,6 +1224,15 @@
  	public static bool AddBuriedChest(int i, int j, int contain = 0, bool notNearOtherChests = false, int Style = -1, bool trySlope = false, ushort chestTileType = 0)
  	{
  		if (chestTileType == 0)
+@@ -25724,7 +_,7 @@
+ 
+ 			if (chestTileType == 21 && num7 > Main.maxTilesY - 205 && contain == 0) {
+ 				flag7 = true;
+-				contain = GenVars.hellChestItem[GenVars.hellChest];
++				contain = GenVars.hellChestItem[GenVars.hellChest % GenVars.hellChestItem.Length];
+ 				num9 = 4;
+ 				flag11 = true;
+ 				if (getGoodWorldGen && genRand.Next(num) == 0)
 @@ -25777,8 +_,10 @@
  			if (num8 >= 0) {
  				if (flag11) {
