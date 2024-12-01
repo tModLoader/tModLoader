@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"class_conditions_1_1_downed_all_mech_bosses.html#a50615d4e365598d2335409416cc69f72":[3,0,192,8,1],
+"class_conditions_1_1_downed_all_mech_bosses.html#a83922aaa2e315416ba2f99cbc5def299":[3,0,192,8,0],
+"class_conditions_1_1_downed_plantera.html":[3,0,192,9],
 "class_conditions_1_1_downed_plantera.html#a15e8a85121ee64ba5d0658648de85519":[3,0,192,9,1],
 "class_conditions_1_1_downed_plantera.html#a8e2d83f735f6a6d50f4f80c152308015":[3,0,192,9,0],
 "class_conditions_1_1_drunk_world_is_not_up.html":[3,0,192,10],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "class_creative_powers_1_1_far_placement_range_power.html":[3,0,212,6],
 "class_creative_powers_1_1_freeze_rain_power.html":[3,0,212,7],
 "class_creative_powers_1_1_freeze_time.html":[3,0,212,8],
-"class_creative_powers_1_1_freeze_wind_direction_and_strength.html":[3,0,212,9],
-"class_creative_powers_1_1_godmode_power.html":[3,0,212,10],
-"class_creative_powers_1_1_modify_rain_power.html":[3,0,212,11],
-"class_creative_powers_1_1_modify_time_rate.html":[3,0,212,12]
+"class_creative_powers_1_1_freeze_wind_direction_and_strength.html":[3,0,212,9]
 };

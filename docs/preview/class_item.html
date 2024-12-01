@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -459,7 +459,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a164ffb6c05e54cd51021290cc2c0180a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a banner ID into the equivalent item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>).  <a href="class_item.html#a164ffb6c05e54cd51021290cc2c0180a">More...</a><br /></td></tr>
 <tr class="separator:a164ffb6c05e54cd51021290cc2c0180a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acec31517f21b781057c26f73a645f32e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#acec31517f21b781057c26f73a645f32e">BannerToNPC</a> (int i)</td></tr>
-<tr class="memdesc:acec31517f21b781057c26f73a645f32e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a banner ID into the equivalent <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_item.html#acec31517f21b781057c26f73a645f32e">More...</a><br /></td></tr>
+<tr class="memdesc:acec31517f21b781057c26f73a645f32e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a BannerID into the equivalent <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). Used to determine a single <a class="el" href="class_n_p_c.html">NPC</a> type from a BannerID for display purposes. Note that modded BannerIDs are the same number as their <a class="el" href="class_n_p_c.html">NPC</a> type, and those BannerIDs might not actually be used.  <a href="class_item.html#acec31517f21b781057c26f73a645f32e">More...</a><br /></td></tr>
 <tr class="separator:acec31517f21b781057c26f73a645f32e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9396042f559601050ad34dfe823ee89"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#ae9396042f559601050ad34dfe823ee89">buyPrice</a> (int platinum=0, int gold=0, int silver=0, int copper=0)</td></tr>
 <tr class="memdesc:ae9396042f559601050ad34dfe823ee89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the provided buy price into copper coins. <br  />
@@ -1583,7 +1583,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 </table>
 </div><div class="memdoc">
 
-<p>Converts a banner ID into the equivalent <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
+<p>Converts a BannerID into the equivalent <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). Used to determine a single <a class="el" href="class_n_p_c.html">NPC</a> type from a BannerID for display purposes. Note that modded BannerIDs are the same number as their <a class="el" href="class_n_p_c.html">NPC</a> type, and those BannerIDs might not actually be used. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>The banner ID to convert.</td></tr>

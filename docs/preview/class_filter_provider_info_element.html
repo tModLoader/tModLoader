@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -108,6 +108,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a897ed1afa1af4bcaab81a1cdd57f1b01"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_filter_provider_info_element.html#a897ed1afa1af4bcaab81a1cdd57f1b01">GetSearchString</a> (ref <a class="el" href="struct_bestiary_u_i_collection_info.html">BestiaryUICollectionInfo</a> info)</td></tr>
 <tr class="separator:a897ed1afa1af4bcaab81a1cdd57f1b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a833b23d396c1c43f6a788d7e8f527a1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_u_i_element.html">UIElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_filter_provider_info_element.html#a833b23d396c1c43f6a788d7e8f527a1f">ProvideUIElement</a> (<a class="el" href="struct_bestiary_u_i_collection_info.html">BestiaryUICollectionInfo</a> info)</td></tr>
+<tr class="memdesc:a833b23d396c1c43f6a788d7e8f527a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to create the <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> for this bestiary entry. Called when the bestiary entry is clicked in-game. Use <a class="el" href="struct_bestiary_u_i_collection_info.html#a241e31d860a66f18b9e41a81d0abed6f" title="Indicates the extent to how unlocked this bestiary entry is. Use this to determine how detailed of in...">BestiaryUICollectionInfo.UnlockState</a> to dynamically populate the UI according to how fully unlocked this particular bestiary entry is. Return null if no <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> should be provided, which is usually the case for <a class="el" href="class_n_p_c.html">NPC</a> never encountered.  <a href="class_filter_provider_info_element.html#a833b23d396c1c43f6a788d7e8f527a1f">More...</a><br /></td></tr>
 <tr class="separator:a833b23d396c1c43f6a788d7e8f527a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed00a18cf214918ef7b42b3cb1d845c9"><td class="memItemLeft" align="right" valign="top"><a id="aed00a18cf214918ef7b42b3cb1d845c9" name="aed00a18cf214918ef7b42b3cb1d845c9"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>GetDisplayNameKey</b> ()</td></tr>
@@ -118,8 +119,8 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>GetDisplayNameKey</
 <tr class="memitem:a4c9f49cf4ebe561a1355204b8b445a9c"><td class="memItemLeft" align="right" valign="top"><a id="a4c9f49cf4ebe561a1355204b8b445a9c" name="a4c9f49cf4ebe561a1355204b8b445a9c"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>GetSearchString</b> (ref <a class="el" href="struct_bestiary_u_i_collection_info.html">BestiaryUICollectionInfo</a> info)</td></tr>
 <tr class="separator:a4c9f49cf4ebe561a1355204b8b445a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acff3fc1236d3152176ddf3e5b952e44b"><td class="memItemLeft" align="right" valign="top"><a id="acff3fc1236d3152176ddf3e5b952e44b" name="acff3fc1236d3152176ddf3e5b952e44b"></a>
-<a class="el" href="class_u_i_element.html">UIElement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ProvideUIElement</b> (<a class="el" href="struct_bestiary_u_i_collection_info.html">BestiaryUICollectionInfo</a> info)</td></tr>
+<tr class="memitem:acff3fc1236d3152176ddf3e5b952e44b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_u_i_element.html">UIElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_bestiary_info_element.html#acff3fc1236d3152176ddf3e5b952e44b">ProvideUIElement</a> (<a class="el" href="struct_bestiary_u_i_collection_info.html">BestiaryUICollectionInfo</a> info)</td></tr>
+<tr class="memdesc:acff3fc1236d3152176ddf3e5b952e44b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to create the <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> for this bestiary entry. Called when the bestiary entry is clicked in-game. Use <a class="el" href="struct_bestiary_u_i_collection_info.html#a241e31d860a66f18b9e41a81d0abed6f" title="Indicates the extent to how unlocked this bestiary entry is. Use this to determine how detailed of in...">BestiaryUICollectionInfo.UnlockState</a> to dynamically populate the UI according to how fully unlocked this particular bestiary entry is. Return null if no <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> should be provided, which is usually the case for <a class="el" href="class_n_p_c.html">NPC</a> never encountered.  <a href="interface_i_bestiary_info_element.html#acff3fc1236d3152176ddf3e5b952e44b">More...</a><br /></td></tr>
 <tr class="separator:acff3fc1236d3152176ddf3e5b952e44b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -206,7 +207,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HideInPortraitInfo</b
       </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_bestiary_info_element.html">IBestiaryInfoElement</a>.</p>
+<p>Use to create the <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> for this bestiary entry. Called when the bestiary entry is clicked in-game. Use <a class="el" href="struct_bestiary_u_i_collection_info.html#a241e31d860a66f18b9e41a81d0abed6f" title="Indicates the extent to how unlocked this bestiary entry is. Use this to determine how detailed of in...">BestiaryUICollectionInfo.UnlockState</a> to dynamically populate the UI according to how fully unlocked this particular bestiary entry is. Return null if no <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> should be provided, which is usually the case for <a class="el" href="class_n_p_c.html">NPC</a> never encountered. </p>
+<p ><code> if (info.UnlockState == BestiaryEntryUnlockState.NotKnownAtAll_0) return null;</code></p>
+<p ><code>// other code creating and returning a <a class="el" href="class_u_i_element.html" title="A UI element, the building blocks of a user interface. Commonly used elements include UIPanel,...">UIElement</a> showing info </code> </p>
+
+<p>Implements <a class="el" href="interface_i_bestiary_info_element.html#acff3fc1236d3152176ddf3e5b952e44b">IBestiaryInfoElement</a>.</p>
 
 </div>
 </div>

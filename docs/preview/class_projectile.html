@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -495,10 +495,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>aiStyle</b></td></tr>
 <tr class="separator:a0f5a8d3314bda6bb32403d60071451b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abca5cdec0d37c34c2604d20e8721b890"><td class="memItemLeft" align="right" valign="top"><a id="abca5cdec0d37c34c2604d20e8721b890" name="abca5cdec0d37c34c2604d20e8721b890"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
-<tr class="memdesc:abca5cdec0d37c34c2604d20e8721b890"><td class="mdescLeft">&#160;</td><td class="mdescRight">How transparent to draw this projectile. 0 to 255. 255 is completely transparent. <br  />
- ExampleBulletsets this to 255, and the projectile aiStyle of <a class="el" href="class_proj_a_i_style_i_d.html#a78688ab08e230c17c5404d10eaa26046" title="Behavior: Includes Bullets and Lasers  Used by: ProjectileID.WoodenArrowFriendly, ProjectileID....">ProjAIStyleID.Arrow</a> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap. <br  />
- The Basic <a class="el" href="class_projectile.html">Projectile</a> Guideteaches more about projectile fade in and out. <br  />
- Defaults to 0. <br /></td></tr>
+<tr class="memdesc:abca5cdec0d37c34c2604d20e8721b890"><td class="mdescLeft">&#160;</td><td class="mdescRight">How transparent to draw this projectile. Ranges from 0 to 255. 0 is fully opaque and 255 is completely transparent. (<a class="el" href="class_projectile.html#aaaef267521b5f0b04e58f12ec817da83" title="Derived from alpha, except it ranges from 0f to 1f and is inverted. 0 is transparent and 1 is fully o...">Opacity</a> also controls alpha and might be easier to work with in some situations.) Can be adjusted to dynamically fade in or out a projectile. One example usage is for projectiles that look odd when initially spawned on the weapon because of texture overlap. ExampleBullet.SetDefaultssets this to 255, and the projectile aiStyle of <a class="el" href="class_proj_a_i_style_i_d.html#a78688ab08e230c17c5404d10eaa26046" title="Behavior: Includes Bullets and Lasers  Used by: ProjectileID.WoodenArrowFriendly, ProjectileID....">ProjAIStyleID.Arrow</a> automatically decreases alpha each tick, causing the projectile to fade in quickly after being spawned. The Basic <a class="el" href="class_projectile.html">Projectile</a> Guideteaches more about projectile fade in and out. Defaults to 0. <br /></td></tr>
 <tr class="separator:abca5cdec0d37c34c2604d20e8721b890"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea7754bae8b733ff4cdcfb8e8f379777"><td class="memItemLeft" align="right" valign="top"><a id="aea7754bae8b733ff4cdcfb8e8f379777" name="aea7754bae8b733ff4cdcfb8e8f379777"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>appliesImmunityTimeOnSingleHits</b></td></tr>
@@ -918,7 +915,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><code> [get
 <tr class="separator:a576d13b46463ba4a8df08cb14d0a35ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaaef267521b5f0b04e58f12ec817da83"><td class="memItemLeft" align="right" valign="top"><a id="aaaef267521b5f0b04e58f12ec817da83" name="aaaef267521b5f0b04e58f12ec817da83"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Opacity</b><code> [get, set]</code></td></tr>
-<tr class="memdesc:aaaef267521b5f0b04e58f12ec817da83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived from <a class="el" href="class_projectile.html#abca5cdec0d37c34c2604d20e8721b890" title="How transparent to draw this projectile. 0 to 255. 255 is completely transparent.   ExampleBulletsets...">alpha</a>, except it ranges from 0f to 1f and is inverted. 0 is transparent and 1 is fully opaque. Using this instead of alpha might make more sense when doing graphics calculations. <br /></td></tr>
+<tr class="memdesc:aaaef267521b5f0b04e58f12ec817da83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived from <a class="el" href="class_projectile.html#abca5cdec0d37c34c2604d20e8721b890" title="How transparent to draw this projectile. Ranges from 0 to 255. 0 is fully opaque and 255 is completel...">alpha</a>, except it ranges from 0f to 1f and is inverted. 0 is transparent and 1 is fully opaque. Using this instead of alpha might make more sense when doing graphics calculations. <br /></td></tr>
 <tr class="separator:aaaef267521b5f0b04e58f12ec817da83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9b496d833e80e1b7a950e968ec3841c"><td class="memItemLeft" align="right" valign="top"><a id="ab9b496d833e80e1b7a950e968ec3841c" name="ab9b496d833e80e1b7a950e968ec3841c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>OriginalArmorPenetration</b><code> [get, set]</code></td></tr>

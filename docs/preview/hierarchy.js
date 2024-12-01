@@ -878,6 +878,7 @@ var hierarchy =
     [ "ICameraModifier", "interface_i_camera_modifier.html", [
       [ "PunchCameraModifier", "class_punch_camera_modifier.html", null ]
     ] ],
+    [ "ICategorizedBestiaryInfoElement", "interface_i_categorized_bestiary_info_element.html", null ],
     [ "IChatCommand", "interface_i_chat_command.html", [
       [ "AllDeathCommand", "class_all_death_command.html", null ],
       [ "AllPVPDeathCommand", "class_all_p_v_p_death_command.html", null ],
@@ -1479,6 +1480,7 @@ var hierarchy =
             ] ],
             [ "ModBlockType", "class_mod_block_type.html", [
               [ "ModTile", "class_mod_tile.html", [
+                [ "ModBannerTile", "class_mod_banner_tile.html", null ],
                 [ "ModPylon", "class_mod_pylon.html", null ],
                 [ "UnloadedTile", "class_unloaded_tile.html", [
                   [ "UnloadedChest", "class_unloaded_chest.html", null ],

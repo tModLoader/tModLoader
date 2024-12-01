@@ -240,14 +240,14 @@ var NAVTREEINDEX0 =
 "class_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html":[3,0,79,2],
 "class_bestiary_entry.html":[3,0,80],
 "class_bestiary_portrait_background_based_on_world_evil_provider_preference_info_element.html":[3,0,81],
+"class_bestiary_portrait_background_based_on_world_evil_provider_preference_info_element.html#a9a55bc8fd1ef2cd5cfbbfd5b3d9cb734":[3,0,81,0],
 "class_bestiary_portrait_background_provider_preference_info_element.html":[3,0,82],
+"class_bestiary_portrait_background_provider_preference_info_element.html#ae300d150f6b983ca2b9571d629faa514":[3,0,82,0],
 "class_bestiary_unlocks_tracker.html":[3,0,85],
 "class_big_endian_reader.html":[3,0,86],
 "class_big_endian_writer.html":[3,0,87],
 "class_big_progress_bar_helper.html":[3,0,89],
 "class_big_progress_bar_helper.html#a848a4001dc17bba1eb3ece1ff5037bee":[3,0,89,0],
 "class_big_progress_bar_system.html":[3,0,91],
-"class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f":[3,0,91,0],
-"class_binary_i_o.html":[3,0,92],
-"class_binary_i_o.html#a431b1b8dfcb0d36266bcf461aed38bec":[3,0,92,6]
+"class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f":[3,0,91,0]
 };

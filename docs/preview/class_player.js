@@ -134,6 +134,7 @@ var class_player =
     [ "inventory", "class_player.html#a590dce4227b207c8976811be19f2cf64", null ],
     [ "jumpSpeed", "class_player.html#acdf8e12ddf06f366c080f718a62899d7", null ],
     [ "jumpSpeedBoost", "class_player.html#a8d27319306da3d545130e171fc62bbf7", null ],
+    [ "lastCreatureHit", "class_player.html#af071c03764a975155d8ec9ad8978e398", null ],
     [ "lavaImmune", "class_player.html#ac87e9a8cd933daa13b16f84f73f8d816", null ],
     [ "lavaMax", "class_player.html#ae7170d10978db162f2a360d182a82aac", null ],
     [ "lavaRose", "class_player.html#ae610f665b99ea080e886103e9e901064", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -116,7 +116,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>AllowPrefix</
 <tr class="memdesc:a1739c1ec490b893b6c531d0b801a4169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force a re-roll of a prefix by returning false. <br /></td></tr>
 <tr class="separator:a1739c1ec490b893b6c531d0b801a4169"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d3d79e855102eb25e0075daffcb13ab"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a0d3d79e855102eb25e0075daffcb13ab">AltFunctionUse</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a0d3d79e855102eb25e0075daffcb13ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make this item usable by right-clicking. Returns false by default. When this item is used by right-clicking, player.altFunctionUse will be set to 2.  <a href="class_mod_item.html#a0d3d79e855102eb25e0075daffcb13ab">More...</a><br /></td></tr>
+<tr class="memdesc:a0d3d79e855102eb25e0075daffcb13ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make this item usable by right-clicking. When this item is used by right-clicking, Player.altFunctionUse will be set to 2. Check the value of altFunctionUse in <a class="el" href="class_mod_item.html#ad5305a2412fc1cb117a2169e5fe86148" title="Allows you to make things happen when this item is used. The return value controls whether or not App...">UseItem(Player)</a> to apply right-click specific logic. For auto-reusing through right clicking, see also <a class="el" href="class_item_i_d_1_1_sets.html#a91483f20082fc028f22450bc99ecd3bb" title="If true for a given item type (Item.type), then that item has a right-click features that can be auto...">ItemID.Sets.ItemsThatAllowRepeatedRightClick</a>. Returns false by default.  <a href="class_mod_item.html#a0d3d79e855102eb25e0075daffcb13ab">More...</a><br /></td></tr>
 <tr class="separator:a0d3d79e855102eb25e0075daffcb13ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58947194035a754982f2025aefd232e1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a58947194035a754982f2025aefd232e1">AnglerQuestChat</a> (ref string description, ref string catchLocation)</td></tr>
 <tr class="memdesc:a58947194035a754982f2025aefd232e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set what the Angler says when he requests for this item. The description parameter is his dialogue, and catchLocation should be set to "\n(Caught at [location])".  <a href="class_mod_item.html#a58947194035a754982f2025aefd232e1">More...</a><br /></td></tr>
@@ -725,7 +725,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make this item usable by right-clicking. Returns false by default. When this item is used by right-clicking, player.altFunctionUse will be set to 2. </p>
+<p>Allows you to make this item usable by right-clicking. When this item is used by right-clicking, Player.altFunctionUse will be set to 2. Check the value of altFunctionUse in <a class="el" href="class_mod_item.html#ad5305a2412fc1cb117a2169e5fe86148" title="Allows you to make things happen when this item is used. The return value controls whether or not App...">UseItem(Player)</a> to apply right-click specific logic. For auto-reusing through right clicking, see also <a class="el" href="class_item_i_d_1_1_sets.html#a91483f20082fc028f22450bc99ecd3bb" title="If true for a given item type (Item.type), then that item has a right-click features that can be auto...">ItemID.Sets.ItemsThatAllowRepeatedRightClick</a>. Returns false by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player.</td></tr>

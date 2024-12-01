@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"class_creative_powers_1_1_godmode_power.html":[3,0,212,10],
+"class_creative_powers_1_1_modify_rain_power.html":[3,0,212,11],
+"class_creative_powers_1_1_modify_time_rate.html":[3,0,212,12],
 "class_creative_powers_1_1_modify_wind_direction_and_strength.html":[3,0,212,13],
 "class_creative_powers_1_1_spawn_rate_slider_per_player_power.html":[3,0,212,14],
 "class_creative_powers_1_1_start_day_immediately.html":[3,0,212,15],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "class_entity_source___boss_spawn.html#a70798afd3e246700e23286b6cf28af65":[3,0,316,0],
 "class_entity_source___boss_spawn.html#aa5fd09a8a4ee17aad84a1182acb2a75c":[3,0,316,1],
 "class_entity_source___buff.html":[3,0,317],
-"class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4":[3,0,317,1],
-"class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652":[3,0,317,0],
-"class_entity_source___catch_entity.html":[3,0,318],
-"class_entity_source___caught.html":[3,0,319]
+"class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4":[3,0,317,1]
 };

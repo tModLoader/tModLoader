@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"class_entity_source___buff.html#a6969ab094c1711fe56449c9ccd253652":[3,0,317,0],
+"class_entity_source___catch_entity.html":[3,0,318],
+"class_entity_source___caught.html":[3,0,319],
 "class_entity_source___caught.html#a8923c2a0de7b28a808dac608b80d7676":[3,0,319,0],
 "class_entity_source___death.html":[3,0,320],
 "class_entity_source___debug_command.html":[3,0,321],
@@ -136,6 +139,7 @@ var NAVTREEINDEX4 =
 "class_filter.html":[3,0,387],
 "class_filter_manager.html":[3,0,390],
 "class_filter_provider_info_element.html":[3,0,391],
+"class_filter_provider_info_element.html#a833b23d396c1c43f6a788d7e8f527a1f":[3,0,391,0],
 "class_filters.html":[3,0,392],
 "class_filters_1_1_by_boss.html":[3,0,392,0],
 "class_filters_1_1_by_info_element.html":[3,0,392,1],
@@ -150,6 +154,7 @@ var NAVTREEINDEX4 =
 "class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e":[3,0,396,1],
 "class_flame_particle.html":[3,0,399],
 "class_flavor_text_bestiary_info_element.html":[3,0,400],
+"class_flavor_text_bestiary_info_element.html#ab4bd7bff677b41d1548a14dd5c5a0be6":[3,0,400,0],
 "class_flexible_tile_wand.html":[3,0,401],
 "class_flexible_tile_wand.html#a2bda0c3e99fe67967eab3421663c5487":[3,0,401,3],
 "class_flexible_tile_wand.html#ac73cb13f8e013b7c004d8959b0de9d65":[3,0,401,1],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "class_game_tip_i_d.html#a727da10b73b3eb465314bf121fc1e593":[3,0,432,31],
 "class_game_tip_i_d.html#a72d5b1f0cfb7f2443702aff522c66486":[3,0,432,12],
 "class_game_tip_i_d.html#a73140ddc986ff3af2de1c98c5d2a106b":[3,0,432,56],
-"class_game_tip_i_d.html#a73b22addc8b8092f3a3ad34945ccc0c5":[3,0,432,83],
-"class_game_tip_i_d.html#a74ac33b122a0ddcfd603d09745de0e17":[3,0,432,5],
-"class_game_tip_i_d.html#a7628fece232ac97809b64a011293194f":[3,0,432,121],
-"class_game_tip_i_d.html#a768ca2aa39d75b27e4891909aa2fcb64":[3,0,432,7],
-"class_game_tip_i_d.html#a7839923745b88388f659b12062218fe3":[3,0,432,60],
-"class_game_tip_i_d.html#a7ea1e73e879c5d165eb6108abe8c5bfd":[3,0,432,119]
+"class_game_tip_i_d.html#a73b22addc8b8092f3a3ad34945ccc0c5":[3,0,432,83]
 };

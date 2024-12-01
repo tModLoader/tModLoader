@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -384,8 +384,8 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ItemsThatSho
 <tr class="separator:a18bcc4aaf07fe39ba85761425468394d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc42102d6c4023c007d0c2b3905f7cb1"><td class="memItemLeft" align="right" valign="top"><a id="acc42102d6c4023c007d0c2b3905f7cb1" name="acc42102d6c4023c007d0c2b3905f7cb1"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>KillsToBanner</b> = Factory.CreateIntSet(<a class="el" href="class_item_i_d_1_1_sets.html#a9fcd6cfb35dad45b9166ed4597892bf6">DefaultKillsForBannerNeeded</a>, 3838, 1000, 3845, 200, 3837, 500, 3844, 200, 3843, 50, 3839, 150, 3840, 100, 3842, 200, 3841, 100, 3846, 50, 2971, 150, 2982, 150, 2931, 100, 2961, 100, 2994, 100, 2985, 10, 4541, 10, 2969, 10, 2986, 10, 2915, 10, 4602, 10, 4542, 25, 4543, 25, 4546, 25, 4545, 25, 2901, 25, 2902, 25, 1631, 25, 2913, 25, 4688, 25, 3390, 25, 4973, 25, 4974, 25, 4975, 25, 2934, 25, 1670, 25, 1694, 25, 2958, 25, 2960, 25, 3441, 25, 3780, 25, 3397, 25, 3403, 25)</td></tr>
-<tr class="memdesc:acc42102d6c4023c007d0c2b3905f7cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the number of <a class="el" href="class_n_p_c.html">NPC</a> kills required to obtain the given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>). <br  />
- Defaults to <code><a class="el" href="class_item_i_d_1_1_sets.html#a9fcd6cfb35dad45b9166ed4597892bf6" title="The default number of NPC kills required to obtain the NPC&#39;s respective banner.">DefaultKillsForBannerNeeded</a></code>. <br /></td></tr>
+<tr class="memdesc:acc42102d6c4023c007d0c2b3905f7cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the number of <a class="el" href="class_n_p_c.html">NPC</a> of the corresponding BannerID that are required to be killed to obtain the given banner item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>). <br  />
+ Defaults to <code><a class="el" href="class_item_i_d_1_1_sets.html#a9fcd6cfb35dad45b9166ed4597892bf6" title="The default number of NPC kills required to obtain the NPC&#39;s respective banner.">DefaultKillsForBannerNeeded</a> (50)</code>. This is also used to determine how many kills are needed to fully unlock the Bestiary entry for each <a class="el" href="class_n_p_c.html">NPC</a> type using the corresponding BannerID, although Bestiary kill counts are tracked individually for each <a class="el" href="class_n_p_c.html">NPC</a> type instead of sharing a kill count with all other <a class="el" href="class_n_p_c.html">NPC</a> types using the same BannerID as they do for banner dropping purposes. <br /></td></tr>
 <tr class="separator:acc42102d6c4023c007d0c2b3905f7cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03d3a12274ee07320bdf9a80d19025de"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a03d3a12274ee07320bdf9a80d19025de">LavaproofCatchingTool</a></td></tr>
 <tr class="memdesc:a03d3a12274ee07320bdf9a80d19025de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set for catching tools which can catch the Underworld's lava critters.<br  />
