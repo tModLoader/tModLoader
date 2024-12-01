@@ -1,6 +1,7 @@
 var class_mod_content =
 [
     [ "BuffType< T >", "class_mod_content.html#a67c2d4fd904a8253ded6948e0bc5a837", null ],
+    [ "CloudType< T >", "class_mod_content.html#a6633e5d1b99f4dbad122bcf4c73f86fc", null ],
     [ "DustType< T >", "class_mod_content.html#a2e5088dea2ed1df947181a447284d950", null ],
     [ "EmoteBubbleType< T >", "class_mod_content.html#a3bc92dd34e75e83175f542ba9751f287", null ],
     [ "FileExists", "class_mod_content.html#aa62a1a13744a3ac5c4cb12b2879e87ee", null ],

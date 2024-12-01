@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -115,6 +115,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>AddBossHeadTexture()&#160;:&#160;<a class="el" href="class_mod.html#a00545110ca72da144feab6caae91ee6b">Mod</a></li>
 <li>AddBuff()&#160;:&#160;<a class="el" href="class_n_p_c.html#a6519d87a1742abe76ac68c9396dfb117">NPC</a>, <a class="el" href="class_player.html#ac31b2c55747dc1b540e5b60282f58623">Player</a></li>
 <li>AddBuriedChest()&#160;:&#160;<a class="el" href="class_world_gen.html#a2a4b53d8f88a0781d0592b72380642a3">WorldGen</a></li>
+<li>AddCloudFromTexture()&#160;:&#160;<a class="el" href="class_cloud_loader.html#a996b8d9e7f7cf288b06a6f96c6b16e85">CloudLoader</a></li>
+<li>AddCloudFromTexture&lt; TCloud &gt;()&#160;:&#160;<a class="el" href="class_cloud_loader.html#afbeca1e151d7bdc4485e880e12841564">CloudLoader</a></li>
 <li>AddCondition()&#160;:&#160;<a class="el" href="class_recipe.html#aca15dbdbe8d4a62c21673c369c0f908c">Recipe</a></li>
 <li>AddConsumeItemCallback()&#160;:&#160;<a class="el" href="class_recipe.html#aaf2ce910bb8fc35fb9ec7fb195a242c2">Recipe</a></li>
 <li>AddContent()&#160;:&#160;<a class="el" href="class_mod.html#a065e9e5db3ac5ed00507a5b995c8bdcc">Mod</a></li>
@@ -124,7 +126,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>AddEquipTexture()&#160;:&#160;<a class="el" href="class_equip_loader.html#ac7b8ddef83e0307fc303ce0dade64006">EquipLoader</a></li>
 <li>AddGoreFromTexture&lt; TGore &gt;()&#160;:&#160;<a class="el" href="class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71">GoreLoader</a></li>
 <li>AddImmuneTime()&#160;:&#160;<a class="el" href="class_player.html#a62a65413a898e003e73d8e9e38f6d0d8">Player</a></li>
-<li>AddIngredient()&#160;:&#160;<a class="el" href="class_recipe.html#a6b5557174d959e1f2753e4a91abf24c9">Recipe</a></li>
+<li>AddIngredient()&#160;:&#160;<a class="el" href="class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7">Recipe</a></li>
 <li>AddIngredient&lt; T &gt;()&#160;:&#160;<a class="el" href="class_recipe.html#a82a8b7544c9e7de652ece58224193c7a">Recipe</a></li>
 <li>AddItemToShop()&#160;:&#160;<a class="el" href="class_chest.html#a551628b11c152dfb770da372234f7b4b">Chest</a></li>
 <li>Additive&#160;:&#160;<a class="el" href="struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091">StatModifier</a></li>
@@ -141,6 +143,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>AddRecipeGroups()&#160;:&#160;<a class="el" href="class_mod.html#a7cb809eedb01a15eafc6451cf1a4bcde">Mod</a>, <a class="el" href="class_mod_system.html#aeb82ea695ce424e7d906808097ef3e02">ModSystem</a></li>
 <li>AddRecipes()&#160;:&#160;<a class="el" href="class_global_item.html#a9ea8b1a34d268ff6a068ac2311f1c5cc">GlobalItem</a>, <a class="el" href="class_mod.html#acf6255eaa107fb7f74477702761df098">Mod</a>, <a class="el" href="class_mod_item.html#a20b95897782c4b2767122dce8d62ffd2">ModItem</a>, <a class="el" href="class_mod_system.html#aed57ccad5d10597a1cd4f56ee3cdd226">ModSystem</a></li>
 <li>AddShops()&#160;:&#160;<a class="el" href="class_mod_n_p_c.html#afb01454e473cae470741a9a0954b4b09">ModNPC</a></li>
+<li>AddSpecialLegacyPoint()&#160;:&#160;<a class="el" href="class_tile_drawing.html#a82a5087b146818ad1f4ec7b54fa9aec2">TileDrawing</a></li>
+<li>AddSpecialPoint()&#160;:&#160;<a class="el" href="class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac">TileDrawing</a></li>
 <li>AddStartingItems()&#160;:&#160;<a class="el" href="class_mod_player.html#ab123bb4ad3907a192513002bc8f21a7a">ModPlayer</a></li>
 <li>AddStructure()&#160;:&#160;<a class="el" href="class_structure_map.html#aaf6e15771f6cea1274dc89f7efe27f66">StructureMap</a></li>
 <li>addSubTile()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a6fb1111075a0a4437122552da7e84d7f">TileObjectData</a></li>
@@ -217,6 +221,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>AnyInteractions()&#160;:&#160;<a class="el" href="class_n_p_c.html#abe60ba5bdf081fffe741c01d43494f23">NPC</a></li>
 <li>AnyNPCs()&#160;:&#160;<a class="el" href="class_n_p_c.html#ac2825cb01f6e95f6e025f09993ef6914">NPC</a></li>
 <li>AnyThrownCostReduction&#160;:&#160;<a class="el" href="class_player.html#a55103513d96bc820345e45f34cad7c7a">Player</a></li>
+<li>Append()&#160;:&#160;<a class="el" href="class_u_i_element.html#aba285d19a4f931a415048ae87b65afb9">UIElement</a></li>
 <li>appliesImmunityTimeOnSingleHits&#160;:&#160;<a class="el" href="class_projectile.html#aea7754bae8b733ff4cdcfb8e8f379777">Projectile</a></li>
 <li>AppliesToEntity()&#160;:&#160;<a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0">GlobalType&lt; TEntity, TGlobal &gt;</a></li>
 <li>Apply()&#160;:&#160;<a class="el" href="class_mod_prefix.html#a1bfd97f29841bac5f8e5097b5405c6de">ModPrefix</a></li>

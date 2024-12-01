@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -90,6 +90,9 @@ $(document).ready(function(){initNavTree('class_ingame_fancy_u_i.html',''); init
   <div class="headertitle"><div class="title">IngameFancyUI Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Provides convenient access to the <a class="el" href="class_main.html#a239aa7a925524e2c6476a9a03cb2843e" title="Used for non-gameplay in-game fullscreen UI which hide all other UI. Some examples include the bestia...">Main.InGameUI</a> <a class="el" href="class_user_interface.html">UserInterface</a> class. Use this for in-game non-gameplay fullscreen user interfaces. User interfaces shown using <a class="el" href="class_ingame_fancy_u_i.html" title="Provides convenient access to the Main.InGameUI UserInterface class. Use this for in-game non-gamepla...">IngameFancyUI</a> hide all other UI. Some examples include the bestiary, emote menu, and settings menus. There can only be one active fullscreen user interface and the user can't play the game normally when active, so this is only useful for non-gameplay UI. Use <a class="el" href="class_ingame_fancy_u_i.html#a192ada84d9ea95bc7a70a156d78bf473" title="Sets the current UIState for Main.InGameUI. Modders can use this to display a non-gameplay UI without...">OpenUIState</a> to show a <a class="el" href="class_u_i_state.html">UIState</a> and Close to close it. There is no need to manage a <a class="el" href="class_user_interface.html">UserInterface</a> or interface layers when using this approach, but it is more limited in flexibility.  
+ <a href="class_ingame_fancy_u_i.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -120,13 +123,51 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenAchievemen
 <tr class="memitem:a9fae9b529b5334d24f9fe6481b31c34a"><td class="memItemLeft" align="right" valign="top"><a id="a9fae9b529b5334d24f9fe6481b31c34a" name="a9fae9b529b5334d24f9fe6481b31c34a"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenKeybinds</b> ()</td></tr>
 <tr class="separator:a9fae9b529b5334d24f9fe6481b31c34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a192ada84d9ea95bc7a70a156d78bf473"><td class="memItemLeft" align="right" valign="top"><a id="a192ada84d9ea95bc7a70a156d78bf473" name="a192ada84d9ea95bc7a70a156d78bf473"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenUIState</b> (<a class="el" href="class_u_i_state.html">UIState</a> uiState)</td></tr>
+<tr class="memitem:a192ada84d9ea95bc7a70a156d78bf473"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ingame_fancy_u_i.html#a192ada84d9ea95bc7a70a156d78bf473">OpenUIState</a> (<a class="el" href="class_u_i_state.html">UIState</a> uiState)</td></tr>
+<tr class="memdesc:a192ada84d9ea95bc7a70a156d78bf473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the current <a class="el" href="class_u_i_state.html">UIState</a> for <a class="el" href="class_main.html#a239aa7a925524e2c6476a9a03cb2843e" title="Used for non-gameplay in-game fullscreen UI which hide all other UI. Some examples include the bestia...">Main.InGameUI</a>. Modders can use this to display a non-gameplay UI without managing and updating a <a class="el" href="class_user_interface.html">UserInterface</a>.  <a href="class_ingame_fancy_u_i.html#a192ada84d9ea95bc7a70a156d78bf473">More...</a><br /></td></tr>
 <tr class="separator:a192ada84d9ea95bc7a70a156d78bf473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacecadd8922d1c674ab013b57e6a75f7"><td class="memItemLeft" align="right" valign="top"><a id="aacecadd8922d1c674ab013b57e6a75f7" name="aacecadd8922d1c674ab013b57e6a75f7"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenVirtualKeyboard</b> (int keyboardContext)</td></tr>
 <tr class="separator:aacecadd8922d1c674ab013b57e6a75f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Provides convenient access to the <a class="el" href="class_main.html#a239aa7a925524e2c6476a9a03cb2843e" title="Used for non-gameplay in-game fullscreen UI which hide all other UI. Some examples include the bestia...">Main.InGameUI</a> <a class="el" href="class_user_interface.html">UserInterface</a> class. Use this for in-game non-gameplay fullscreen user interfaces. User interfaces shown using <a class="el" href="class_ingame_fancy_u_i.html" title="Provides convenient access to the Main.InGameUI UserInterface class. Use this for in-game non-gamepla...">IngameFancyUI</a> hide all other UI. Some examples include the bestiary, emote menu, and settings menus. There can only be one active fullscreen user interface and the user can't play the game normally when active, so this is only useful for non-gameplay UI. </p>
+<p >Use <a class="el" href="class_ingame_fancy_u_i.html#a192ada84d9ea95bc7a70a156d78bf473" title="Sets the current UIState for Main.InGameUI. Modders can use this to display a non-gameplay UI without...">OpenUIState</a> to show a <a class="el" href="class_u_i_state.html">UIState</a> and Close to close it. There is no need to manage a <a class="el" href="class_user_interface.html">UserInterface</a> or interface layers when using this approach, but it is more limited in flexibility. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a192ada84d9ea95bc7a70a156d78bf473" name="a192ada84d9ea95bc7a70a156d78bf473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a192ada84d9ea95bc7a70a156d78bf473">&#9670;&nbsp;</a></span>OpenUIState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void IngameFancyUI.OpenUIState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_u_i_state.html">UIState</a>&#160;</td>
+          <td class="paramname"><em>uiState</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the current <a class="el" href="class_u_i_state.html">UIState</a> for <a class="el" href="class_main.html#a239aa7a925524e2c6476a9a03cb2843e" title="Used for non-gameplay in-game fullscreen UI which hide all other UI. Some examples include the bestia...">Main.InGameUI</a>. Modders can use this to display a non-gameplay UI without managing and updating a <a class="el" href="class_user_interface.html">UserInterface</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uiState</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

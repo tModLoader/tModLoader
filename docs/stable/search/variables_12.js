@@ -38,8 +38,8 @@ var searchData=
   ['shimmertransformtoitem_35',['ShimmerTransformToItem',['../class_item_i_d_1_1_sets.html#af49a4b1e6e7fee25acd09fbbcf634e9a',1,'ItemID.Sets.ShimmerTransformToItem()'],['../class_n_p_c_i_d_1_1_sets.html#a80165edcb902e866f3f756b4c5afe100',1,'NPCID.Sets.ShimmerTransformToItem()']]],
   ['shimmertransformtonpc_36',['ShimmerTransformToNPC',['../class_n_p_c_i_d_1_1_sets.html#a12faaca6b8de4c8e82470afdcf40c918',1,'NPCID::Sets']]],
   ['shoes_37',['Shoes',['../class_player_draw_layers.html#a2caf98a7aa9bc471456a04b92ade5a21',1,'PlayerDrawLayers']]],
-  ['shoot_38',['shoot',['../class_item.html#ac6ffd1a259a6f86e42e455c54e2dcf4e',1,'Item']]],
-  ['shoot_39',['Shoot',['../class_item_use_style_i_d.html#aedf57c54df1f32daa0adea4f1a46580d',1,'ItemUseStyleID']]],
+  ['shoot_38',['Shoot',['../class_item_use_style_i_d.html#aedf57c54df1f32daa0adea4f1a46580d',1,'ItemUseStyleID']]],
+  ['shoot_39',['shoot',['../class_item.html#ac6ffd1a259a6f86e42e455c54e2dcf4e',1,'Item']]],
   ['shootspeed_40',['shootSpeed',['../class_item.html#af7f533f50d6d71ee4e653a77e04483a2',1,'Item']]],
   ['shopcustomprice_41',['shopCustomPrice',['../class_item.html#ac60bb6a29b6e60906e67472d6da06a4a',1,'Item']]],
   ['shopspecialcurrency_42',['shopSpecialCurrency',['../class_item.html#a20d6efe0a3c858d2f9e7a5c9e8316a77',1,'Item']]],
@@ -100,8 +100,8 @@ var searchData=
   ['spawnfromlastemptyslot_97',['SpawnFromLastEmptySlot',['../class_n_p_c_i_d_1_1_sets.html#a9de0aa881342d2197f9500a20a3ac92a',1,'NPCID::Sets']]],
   ['spawnpointsettingwithbed_98',['SpawnPointSettingWithBed',['../class_game_tip_i_d.html#ae0d316094af121c9c2ea8db60129478c',1,'GameTipID']]],
   ['spawnswithcustomname_99',['SpawnsWithCustomName',['../class_n_p_c_i_d_1_1_sets.html#a1cdde2add658b7197b42715630b1296a',1,'NPCID::Sets']]],
-  ['spawntilex_100',['SpawnTileX',['../struct_n_p_c_spawn_info.html#a64625a696e9cfa4b0329f4d6b20f51fb',1,'NPCSpawnInfo']]],
-  ['spawntilex_101',['spawnTileX',['../class_main.html#aeac6d2a4742e9642d6a091205ebbc302',1,'Main']]],
+  ['spawntilex_100',['spawnTileX',['../class_main.html#aeac6d2a4742e9642d6a091205ebbc302',1,'Main']]],
+  ['spawntilex_101',['SpawnTileX',['../struct_n_p_c_spawn_info.html#a64625a696e9cfa4b0329f4d6b20f51fb',1,'NPCSpawnInfo']]],
   ['spawntiley_102',['SpawnTileY',['../struct_n_p_c_spawn_info.html#a0e8769976f0f0bfaec1759f726885812',1,'NPCSpawnInfo']]],
   ['spawntiley_103',['spawnTileY',['../class_main.html#ad0219f2a3e73acb90d1a44350bf4304d',1,'Main']]],
   ['spawnx_104',['SpawnX',['../class_player.html#a650d6eeb545288c6985a37847ed769be',1,'Player']]],
@@ -177,5 +177,6 @@ var searchData=
   ['superstar_174',['SuperStar',['../class_proj_a_i_style_i_d.html#a684922187f1cdda7ea074d5c8abba521',1,'ProjAIStyleID']]],
   ['superstarbeam_175',['SuperStarBeam',['../class_proj_a_i_style_i_d.html#ad1a598beff4af5aa1d5729db93e1b69f',1,'ProjAIStyleID']]],
   ['suspiciousitemwarning_176',['SuspiciousItemWarning',['../class_game_tip_i_d.html#a0dcc966e0741fec7ed7c0bd294efd216',1,'GameTipID']]],
-  ['swing_177',['Swing',['../class_item_use_style_i_d.html#abfd249ed19cf084012404fd1299bdccb',1,'ItemUseStyleID']]]
+  ['swaysinwindbasic_177',['SwaysInWindBasic',['../class_tile_i_d_1_1_sets.html#a672992e3566d96e0818e520da4063e05',1,'TileID::Sets']]],
+  ['swing_178',['Swing',['../class_item_use_style_i_d.html#abfd249ed19cf084012404fd1299bdccb',1,'ItemUseStyleID']]]
 ];

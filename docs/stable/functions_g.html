@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -150,6 +150,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetDayTimeAs24FloatStartingFromMidnight()&#160;:&#160;<a class="el" href="class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723">Utils</a></li>
 <li>GetDefaultPosition()&#160;:&#160;<a class="el" href="class_extra_jump.html#af1dab013ba93bcdad238c9b21fa264f4">ExtraJump</a>, <a class="el" href="class_player_draw_layer.html#ad1abf53d0ac67bbd2cc16b1ee91d1c81">PlayerDrawLayer</a>, <a class="el" href="class_vanilla_extra_jump.html#a4f8e2eddf78bb1ea731c1696dbb5d98c">VanillaExtraJump</a></li>
 <li>GetDefaultVisibility()&#160;:&#160;<a class="el" href="class_player_draw_layer.html#aace7bac01413c45ecaa2464d31105cf5">PlayerDrawLayer</a></li>
+<li>GetDimensions()&#160;:&#160;<a class="el" href="class_u_i_element.html#a1573899b8299cd5438f5be708a6a0795">UIElement</a></li>
 <li>GetDouble()&#160;:&#160;<a class="el" href="class_tag_compound.html#a598c3248e1832d934f4c151766058840">TagCompound</a></li>
 <li>GetDrawLayers()&#160;:&#160;<a class="el" href="class_player_draw_layer_loader.html#abe1ba3a5dbbd3bd7fefeb396b336bbfb">PlayerDrawLayerLoader</a></li>
 <li>GetDropletGore()&#160;:&#160;<a class="el" href="class_mod_water_style.html#a6c90c6575c585cbc6caae4e076ca2e70">ModWaterStyle</a></li>
@@ -182,6 +183,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetHealMana()&#160;:&#160;<a class="el" href="class_global_item.html#a2848d1b6955448e14b2705c1c1d73e52">GlobalItem</a>, <a class="el" href="class_item_loader.html#abd634865f7413f78b9397bc0681c00d5">ItemLoader</a>, <a class="el" href="class_mod_item.html#a4c237098d3332af3f255d0e7f9c0669d">ModItem</a>, <a class="el" href="class_mod_player.html#ac203467fd37be0e5e373f91a542bc0d3">ModPlayer</a></li>
 <li>GetIconTexture()&#160;:&#160;<a class="el" href="class_mod_boss_bar.html#af6d2086be9e55e610f0e736ec9373c4a">ModBossBar</a></li>
 <li>GetIncomingStrikeModifiers()&#160;:&#160;<a class="el" href="class_n_p_c.html#a821efa5e5bebb9fffc6fe365eea23e8e">NPC</a></li>
+<li>GetInnerDimensions()&#160;:&#160;<a class="el" href="class_u_i_element.html#adc42b475f74d77f6fe008b8f1e77ad19">UIElement</a></li>
 <li>GetInstance&lt; T &gt;()&#160;:&#160;<a class="el" href="class_mod_content.html#acdff87a801fa92c1ea46907113eb6839">ModContent</a></li>
 <li>GetInt()&#160;:&#160;<a class="el" href="class_tag_compound.html#aed77185345ce342e88828ac6ed448da1">TagCompound</a></li>
 <li>GetIntArray()&#160;:&#160;<a class="el" href="class_tag_compound.html#ad6fccfd4a3a766e2cf55cfa6395d856a">TagCompound</a></li>
@@ -233,6 +235,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetNPCShopEntry()&#160;:&#160;<a class="el" href="class_mod_pylon.html#ad1ed9277882319241603bc0c9002af9d">ModPylon</a></li>
 <li>GetOasisTopTextures()&#160;:&#160;<a class="el" href="class_mod_palm_tree.html#af32727e80d17c9a70845b1476b0de396">ModPalmTree</a></li>
 <li>GetOrRegister()&#160;:&#160;<a class="el" href="class_language.html#adeb7406a52fd6c027ecf54bb38159bd3">Language</a></li>
+<li>GetOuterDimensions()&#160;:&#160;<a class="el" href="class_u_i_element.html#a00cf40dac98ad4c3f0eccb486b88b19a">UIElement</a></li>
 <li>GetPacket()&#160;:&#160;<a class="el" href="class_mod.html#ae95db58d653971959368e4a7e56c1d94">Mod</a></li>
 <li>GetPartyHatGore()&#160;:&#160;<a class="el" href="class_n_p_c.html#a75b8f2a5cdbb4dba9a7427dfc3bbc3c0">NPC</a></li>
 <li>GetPrefix()&#160;:&#160;<a class="el" href="class_prefix_loader.html#a0a0131ab62687b4cd8674e5f30c0b2a2">PrefixLoader</a></li>
@@ -257,7 +260,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>GetSubLight()&#160;:&#160;<a class="el" href="class_lighting.html#a071b92fde6c0634bad0ffd1ab5c66991">Lighting</a></li>
 <li>GetText()&#160;:&#160;<a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc">Language</a></li>
 <li>GetTexture()&#160;:&#160;<a class="el" href="class_boss_bar_loader.html#ae8acbfc5f163abff32bfcee29a598b99">BossBarLoader</a></li>
-<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#a3b2e720502c67915d529cbfdb8e0ec7c">Language</a></li>
+<li>GetTextValue()&#160;:&#160;<a class="el" href="class_language.html#a1d9e47c4293041f4c411232c895e45b6">Language</a></li>
 <li>GetTextValueWith()&#160;:&#160;<a class="el" href="class_language.html#ac8d9b980c93eddf3589cc778348bf8cd">Language</a></li>
 <li>GetTile()&#160;:&#160;<a class="el" href="class_tile_loader.html#a7538e67b4dca6b9aa9505afbf94a7486">TileLoader</a></li>
 <li>GetTileData()&#160;:&#160;<a class="el" href="class_tile_object_data.html#a933bdc3aca3d7e261f93169b143785c1">TileObjectData</a></li>

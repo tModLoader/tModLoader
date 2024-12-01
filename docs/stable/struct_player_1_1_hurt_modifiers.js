@@ -1,5 +1,6 @@
 var struct_player_1_1_hurt_modifiers =
 [
+    [ "Cancel", "struct_player_1_1_hurt_modifiers.html#add7409a737d4956980fd698ac185cb71", null ],
     [ "DisableDust", "struct_player_1_1_hurt_modifiers.html#a91dc16c0ded57f497609926b87ec2125", null ],
     [ "DisableSound", "struct_player_1_1_hurt_modifiers.html#a4eb3681039301ffd4896697254a99afa", null ],
     [ "SetMaxDamage", "struct_player_1_1_hurt_modifiers.html#aa447fefe1c6804405d6279704d2bd833", null ],

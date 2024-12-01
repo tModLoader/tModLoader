@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1985,12 +1985,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>brainOfConfusionDodgeA
 <tr class="separator:ad3178c07792a43f3dd0047c69d034609"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d4afad08867cd0283fc7dbf33974041"><td class="memItemLeft" align="right" valign="top"><a id="a5d4afad08867cd0283fc7dbf33974041" name="a5d4afad08867cd0283fc7dbf33974041"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>breath</b> = 200</td></tr>
+<tr class="memdesc:a5d4afad08867cd0283fc7dbf33974041"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current amount of breath the player has (Breath info on the wiki). <a class="el" href="class_player.html#ac38cb5d629d17037af10b32851edb081" title="A countdown timer for breath. Ticks up every frame the player is holding their breath underwater....">breathCD</a> controls how often the value decreases. Once 0, the player will start to take drowning damage. When out of liquid increases by 3 each tick. <br /></td></tr>
 <tr class="separator:a5d4afad08867cd0283fc7dbf33974041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac38cb5d629d17037af10b32851edb081"><td class="memItemLeft" align="right" valign="top"><a id="ac38cb5d629d17037af10b32851edb081" name="ac38cb5d629d17037af10b32851edb081"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>breathCD</b></td></tr>
+<tr class="memdesc:ac38cb5d629d17037af10b32851edb081"><td class="mdescLeft">&#160;</td><td class="mdescRight">A countdown timer for <a class="el" href="class_player.html#a5d4afad08867cd0283fc7dbf33974041" title="The current amount of breath the player has (Breath info on the wiki). breathCD controls how often th...">breath</a>. Ticks up every frame the player is holding their breath underwater. Once it reaches <a class="el" href="class_player.html#a12ec255efe0453a36c40e6b6a292de41" title="How long it takes for breathCD to cause breath to decrease by 1. Defaults to 7 and is increased by fa...">breathCDMax</a>, resets back to 0 and breath is reduced by 1. <br /></td></tr>
 <tr class="separator:ac38cb5d629d17037af10b32851edb081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb1a86181d00d990994768e665c8b1f2"><td class="memItemLeft" align="right" valign="top"><a id="afb1a86181d00d990994768e665c8b1f2" name="afb1a86181d00d990994768e665c8b1f2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>breathMax</b> = 200</td></tr>
+<tr class="memdesc:afb1a86181d00d990994768e665c8b1f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max value of <a class="el" href="class_player.html#a5d4afad08867cd0283fc7dbf33974041" title="The current amount of breath the player has (Breath info on the wiki). breathCD controls how often th...">breath</a>. Defaults to 200. The total ticks before starting to drown is <code>breathMax * breathCDMax</code>.<br /></td></tr>
 <tr class="separator:afb1a86181d00d990994768e665c8b1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2a26bc02e3e073d72f2009c460a9a83"><td class="memItemLeft" align="right" valign="top"><a id="aa2a26bc02e3e073d72f2009c460a9a83" name="aa2a26bc02e3e073d72f2009c460a9a83"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>brokenArmor</b></td></tr>
@@ -4641,12 +4644,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>lavaWet</b></td></tr>
 <tr class="separator:abc3417619a9288a664db67a19af94781 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99144ef9b73ff3fbbc084dbb8a72c77e inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a99144ef9b73ff3fbbc084dbb8a72c77e" name="a99144ef9b73ff3fbbc084dbb8a72c77e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>oldDirection</b></td></tr>
+<tr class="memdesc:a99144ef9b73ff3fbbc084dbb8a72c77e inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">direction</a> of this <a class="el" href="class_entity.html">Entity</a> during the previous tick. For projectiles with <a class="el" href="class_projectile.html#a32f4240d9f1ab45a43a819b4c7362a3f" title="Additional update steps per tick. Useful for really fast projectiles such as Shadowbeam Staff....">Projectile.extraUpdates</a>, this will be the direction during the previous extra update, not necessarily the direction during the previous tick. <br /></td></tr>
 <tr class="separator:a99144ef9b73ff3fbbc084dbb8a72c77e inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af27ddd682f234963d31f91a855a39977 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="af27ddd682f234963d31f91a855a39977" name="af27ddd682f234963d31f91a855a39977"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>oldPosition</b></td></tr>
+<tr class="memdesc:af27ddd682f234963d31f91a855a39977 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075" title="The position of this Entity in world coordinates. Note that this corresponds to the top left corner o...">position</a> of this <a class="el" href="class_entity.html">Entity</a> during the previous tick. For projectiles with <a class="el" href="class_projectile.html#a32f4240d9f1ab45a43a819b4c7362a3f" title="Additional update steps per tick. Useful for really fast projectiles such as Shadowbeam Staff....">Projectile.extraUpdates</a>, this will be the position during the previous extra update, not necessarily the position during the previous tick. <br /></td></tr>
 <tr class="separator:af27ddd682f234963d31f91a855a39977 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e117c5fa3562f8b5b0f05982c0f8739 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="a6e117c5fa3562f8b5b0f05982c0f8739" name="a6e117c5fa3562f8b5b0f05982c0f8739"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>oldVelocity</b></td></tr>
+<tr class="memdesc:a6e117c5fa3562f8b5b0f05982c0f8739 inherit pub_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168" title="The velocity of this Entity in world coordinates per tick.">velocity</a> of this <a class="el" href="class_entity.html">Entity</a> during the previous tick. For projectiles with <a class="el" href="class_projectile.html#a32f4240d9f1ab45a43a819b4c7362a3f" title="Additional update steps per tick. Useful for really fast projectiles such as Shadowbeam Staff....">Projectile.extraUpdates</a>, this will be the velocity during the previous extra update, not necessarily the velocity during the previous tick. <br /></td></tr>
 <tr class="separator:a6e117c5fa3562f8b5b0f05982c0f8739 inherit pub_attribs_class_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea6af1b1841c5129ac2ddce832b53075 inherit pub_attribs_class_entity"><td class="memItemLeft" align="right" valign="top"><a id="aea6af1b1841c5129ac2ddce832b53075" name="aea6af1b1841c5129ac2ddce832b53075"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
@@ -4855,6 +4861,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>BlehOldPositionFix
 <tr class="separator:a7d661cb723f50b6f85d7b4bd7f071523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12ec255efe0453a36c40e6b6a292de41"><td class="memItemLeft" align="right" valign="top"><a id="a12ec255efe0453a36c40e6b6a292de41" name="a12ec255efe0453a36c40e6b6a292de41"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>breathCDMax</b><code> [get]</code></td></tr>
+<tr class="memdesc:a12ec255efe0453a36c40e6b6a292de41"><td class="mdescLeft">&#160;</td><td class="mdescRight">How long it takes for <a class="el" href="class_player.html#ac38cb5d629d17037af10b32851edb081" title="A countdown timer for breath. Ticks up every frame the player is holding their breath underwater....">breathCD</a> to cause <a class="el" href="class_player.html#a5d4afad08867cd0283fc7dbf33974041" title="The current amount of breath the player has (Breath info on the wiki). breathCD controls how often th...">breath</a> to decrease by 1. Defaults to 7 and is increased by factors such as holding a Breathing Reed, which doubles this, or having a Diving Gear, which multiplies this by 6, to make the process of losing breath value slower. <br /></td></tr>
 <tr class="separator:a12ec255efe0453a36c40e6b6a292de41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c5a015afac602260b585117376a55e1"><td class="memItemLeft" align="right" valign="top"><a id="a0c5a015afac602260b585117376a55e1" name="a0c5a015afac602260b585117376a55e1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeTalkedTo</b><code> [get]</code></td></tr>

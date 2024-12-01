@@ -14,5 +14,7 @@ var class_mod_biome =
     [ "BiomeCampfireItemType", "class_mod_biome.html#a32b4fd7d34c32fb78af362cb7e225fc7", null ],
     [ "BiomeTorchItemType", "class_mod_biome.html#a454490cc5a3ff7ffb87450efe406a209", null ],
     [ "DisplayName", "class_mod_biome.html#ab727aa7efb5f1428de536388e0342a35", null ],
-    [ "LocalizationCategory", "class_mod_biome.html#a6f15613eb3688d530778adb6744313ed", null ]
+    [ "LocalizationCategory", "class_mod_biome.html#a6f15613eb3688d530778adb6744313ed", null ],
+    [ "Music", "class_mod_biome.html#ab10e86877fe13c7e175550710a29db8a", null ],
+    [ "Priority", "class_mod_biome.html#a0cdd07b3ec63f0f1f73b017543c94277", null ]
 ];

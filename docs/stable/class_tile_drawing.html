@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('class_tile_drawing.html',''); initResi
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -94,6 +95,30 @@ $(document).ready(function(){initNavTree('class_tile_drawing.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aa39bb62f00a066f5fb70057f6301fff8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8">TileCounterType</a> { <br />
+&#160;&#160;<b>Tree</b>
+, <b>DisplayDoll</b>
+, <b>HatRack</b>
+, <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a9118ec5501e2d89ad398527437130530">WindyGrass</a>
+, <br />
+&#160;&#160;<a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aaa2b4dab37d59bac74628eeb73139ff2">MultiTileGrass</a>
+, <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a5e6f4d3726467dd261fe68460c4c5055">MultiTileVine</a>
+, <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a7484afa72345f4711785b3fa8cf2572c">Vine</a>
+, <b>BiomeGrass</b>
+, <br />
+&#160;&#160;<b>VoidLens</b>
+, <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aa16777bfcec51e1ca7c3ae688ebc991d">ReverseVine</a>
+, <b>TeleportationPylon</b>
+, <b>MasterTrophy</b>
+, <br />
+&#160;&#160;<b>AnyDirectionalGrass</b>
+, <b>Count</b>
+<br />
+ }</td></tr>
+<tr class="separator:aa39bb62f00a066f5fb70057f6301fff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad8050bad6f4876a07a9aaaa97e2254c5"><td class="memItemLeft" align="right" valign="top"><a id="ad8050bad6f4876a07a9aaaa97e2254c5" name="ad8050bad6f4876a07a9aaaa97e2254c5"></a>
@@ -101,13 +126,26 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad8050bad6f4876a07a9aaaa97e2254c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af61849574d464e30106795a896ca3b8a"><td class="memItemLeft" align="right" valign="top"><a id="af61849574d464e30106795a896ca3b8a" name="af61849574d464e30106795a896ca3b8a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSpecialLegacyPoint</b> (int x, int y)</td></tr>
+<tr class="memdesc:af61849574d464e30106795a896ca3b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a tile coordinate to have additional drawing code executed after all tiles are drawn. <a class="el" href="class_global_tile.html#a09b794bc47b52d1aa682b22cc0d97aa2" title="Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer....">ModTile.SpecialDraw</a> (or <a class="el" href="class_tile_loader.html#a9e5a6496b43162b1885292a581ca97a0" title="Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of t...">GlobalTile.SpecialDraw(int, int, int, SpriteBatch)</a>) will be called with the same coordinates after all tiles have been rendered. For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <a class="el" href="class_tile_object_data.html#a4205896800b8eb9044efb847edfcf0b3" title="Returns true if the Tile at the location provided has a placed tile and is the top left tile of a mul...">TileObjectData.IsTopLeft(int, int)</a> first. This should be called in <a class="el" href="class_mod_pylon.html#ab4ea8a40b519ddfe81df56f37b612be3" title="Allows you to make stuff happen whenever the tile at the given coordinates is drawn....">ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)</a> (or GlobalTile.DrawEffects(int, int, int, SpriteBatch, ref TileDrawInfo)) This is useful for drawing additional visuals to a tile, especially visuals that might render outside the bounds of a single <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a>. Attempting to draw outside the bounds will not work in normal tile drawing methods because the visuals will be overwritten by the next tile drawn. Some examples include how the TileID.LihzahrdAltar draws a sun texture hovering over the tile and how TileID.ItemFrame draws the contained item sprite over the tile. <br /></td></tr>
 <tr class="separator:af61849574d464e30106795a896ca3b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82a5087b146818ad1f4ec7b54fa9aec2"><td class="memItemLeft" align="right" valign="top"><a id="a82a5087b146818ad1f4ec7b54fa9aec2" name="a82a5087b146818ad1f4ec7b54fa9aec2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSpecialLegacyPoint</b> (Point p)</td></tr>
 <tr class="separator:a82a5087b146818ad1f4ec7b54fa9aec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af170d8db0cc8598e746425fad62eac"><td class="memItemLeft" align="right" valign="top"><a id="a0af170d8db0cc8598e746425fad62eac" name="a0af170d8db0cc8598e746425fad62eac"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSpecialPoint</b> (int x, int y, <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8">TileCounterType</a> type)</td></tr>
+<tr class="memdesc:a0af170d8db0cc8598e746425fad62eac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a tile coordinate to use custom drawing code corresponding to the <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8">TileCounterType</a> provided. This is mostly used to apply wind and player interaction effects to tiles. For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <a class="el" href="class_tile_object_data.html#a4205896800b8eb9044efb847edfcf0b3" title="Returns true if the Tile at the location provided has a placed tile and is the top left tile of a mul...">TileObjectData.IsTopLeft(int, int)</a> first. This should be called in <code>ModTile.PreDraw</code> (or <code>GlobalTile.PreDraw</code>) and false should be returned to prevent the default tile drawing. <br /></td></tr>
+<tr class="separator:a0af170d8db0cc8598e746425fad62eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc63e88ef17e36a127691a448629729c"><td class="memItemLeft" align="right" valign="top"><a id="acc63e88ef17e36a127691a448629729c" name="acc63e88ef17e36a127691a448629729c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearCachedTileDraws</b> (bool solidLayer)</td></tr>
 <tr class="separator:acc63e88ef17e36a127691a448629729c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0fa210558c2c9e68e0628f59392d021"><td class="memItemLeft" align="right" valign="top"><a id="aa0fa210558c2c9e68e0628f59392d021" name="aa0fa210558c2c9e68e0628f59392d021"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CrawlToBottomOfReverseVineAndAddSpecialPoint</b> (int j, int i)</td></tr>
+<tr class="memdesc:aa0fa210558c2c9e68e0628f59392d021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the bottom of a tile chain of reverse vine tiles and calls <a class="el" href="class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac" title="Registers a tile coordinate to use custom drawing code corresponding to the TileCounterType provided....">AddSpecialPoint</a> using <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aa16777bfcec51e1ca7c3ae688ebc991d" title="Tile chain will sway as if anchored below. Affected by wind and player interaction....">TileCounterType.ReverseVine</a> if not already registered for custom drawing. See <a class="el" href="class_tile_i_d_1_1_sets.html#a339c48cfddc2ff80413d1d7868a0029d" title="Sets the tile to to draw reverse vines, vines that go up instead of hanging down, affected by wind ph...">TileID.Sets.ReverseVineThreads</a>. <br /></td></tr>
+<tr class="separator:aa0fa210558c2c9e68e0628f59392d021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d253cefdb0c31ad068ff7883d6fe2ce"><td class="memItemLeft" align="right" valign="top"><a id="a2d253cefdb0c31ad068ff7883d6fe2ce" name="a2d253cefdb0c31ad068ff7883d6fe2ce"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CrawlToTopOfVineAndAddSpecialPoint</b> (int j, int i)</td></tr>
+<tr class="memdesc:a2d253cefdb0c31ad068ff7883d6fe2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the top of a tile chain of vine tiles and calls <a class="el" href="class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac" title="Registers a tile coordinate to use custom drawing code corresponding to the TileCounterType provided....">AddSpecialPoint</a> using <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a7484afa72345f4711785b3fa8cf2572c" title="Tile chain will sway as if anchored above. Affected by wind and player interaction....">TileCounterType.Vine</a> if not already registered for custom drawing. See <a class="el" href="class_tile_i_d_1_1_sets.html#aff1403f322dfd6e9126e89ef2d1de620" title="Sets the tile to draw vines affected by wind physics and player interaction. This is required for add...">TileID.Sets.VineThreads</a>. <br /></td></tr>
+<tr class="separator:a2d253cefdb0c31ad068ff7883d6fe2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01dc0d84a570e822e96f8b282535fcc0"><td class="memItemLeft" align="right" valign="top"><a id="a01dc0d84a570e822e96f8b282535fcc0" name="a01dc0d84a570e822e96f8b282535fcc0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (bool solidLayer, bool forRenderTargets, bool intoRenderTargets, int waterStyleOverride=-1)</td></tr>
 <tr class="separator:a01dc0d84a570e822e96f8b282535fcc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +240,33 @@ Properties</h2></td></tr>
 <tr class="memdesc:aa6e95bf8aaced1dd91bc75f266b7727c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The wind grid used to exert wind effects on tiles. <br /></td></tr>
 <tr class="separator:aa6e95bf8aaced1dd91bc75f266b7727c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="aa39bb62f00a066f5fb70057f6301fff8" name="aa39bb62f00a066f5fb70057f6301fff8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa39bb62f00a066f5fb70057f6301fff8">&#9670;&nbsp;</a></span>TileCounterType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8">TileDrawing.TileCounterType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa39bb62f00a066f5fb70057f6301fff8a9118ec5501e2d89ad398527437130530" name="aa39bb62f00a066f5fb70057f6301fff8a9118ec5501e2d89ad398527437130530"></a>WindyGrass&#160;</td><td class="fielddoc"><p ><a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> will sway as if anchored below (1x1 tile). Affected by wind and player interaction. Used automatically by tiles in <a class="el" href="class_tile_i_d_1_1_sets.html#a672992e3566d96e0818e520da4063e05" title="If true, this tile will render as if it were affected by wind and player interaction and is anchored ...">TileID.Sets.SwaysInWindBasic</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa39bb62f00a066f5fb70057f6301fff8aaa2b4dab37d59bac74628eeb73139ff2" name="aa39bb62f00a066f5fb70057f6301fff8aaa2b4dab37d59bac74628eeb73139ff2"></a>MultiTileGrass&#160;</td><td class="fielddoc"><p ><a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> will sway as if anchored below. Affected by wind but not player interaction. Used by TileID.PlantDetritus, TileID.Sunflower. Tiles need to assign <a class="el" href="class_tile_i_d_1_1_sets.html#a38f8ae5e160f4c40a230fc10d7e621b1" title="A version of TileID.Sets.SwaysInWindBasic that functions with multitiles. Causes the tile to sway alo...">TileID.Sets.MultiTileSway</a> and use as directed.</p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa39bb62f00a066f5fb70057f6301fff8a5e6f4d3726467dd261fe68460c4c5055" name="aa39bb62f00a066f5fb70057f6301fff8a5e6f4d3726467dd261fe68460c4c5055"></a>MultiTileVine&#160;</td><td class="fielddoc"><p ><a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> will sway as if anchored above. Affected by wind and player interaction. Used by TileID.Banners, TileID.Chandeliers, TileID.HangingLanterns, TileID.FireflyinaBottle. Tiles need to assign <a class="el" href="class_tile_i_d_1_1_sets.html#a38f8ae5e160f4c40a230fc10d7e621b1" title="A version of TileID.Sets.SwaysInWindBasic that functions with multitiles. Causes the tile to sway alo...">TileID.Sets.MultiTileSway</a> and use as directed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa39bb62f00a066f5fb70057f6301fff8a7484afa72345f4711785b3fa8cf2572c" name="aa39bb62f00a066f5fb70057f6301fff8a7484afa72345f4711785b3fa8cf2572c"></a>Vine&#160;</td><td class="fielddoc"><p ><a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> chain will sway as if anchored above. Affected by wind and player interaction. Used by all varieties of TileID.Vines. Tiles need to assign <a class="el" href="class_tile_i_d_1_1_sets.html#aff1403f322dfd6e9126e89ef2d1de620" title="Sets the tile to draw vines affected by wind physics and player interaction. This is required for add...">TileID.Sets.VineThreads</a> and use as directed. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa39bb62f00a066f5fb70057f6301fff8aa16777bfcec51e1ca7c3ae688ebc991d" name="aa39bb62f00a066f5fb70057f6301fff8aa16777bfcec51e1ca7c3ae688ebc991d"></a>ReverseVine&#160;</td><td class="fielddoc"><p ><a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> chain will sway as if anchored below. Affected by wind and player interaction. Used by TileID.Seaweed, although seaweed grows below the wind limit so it isn't affected. Tiles need to assign <a class="el" href="class_tile_i_d_1_1_sets.html#a339c48cfddc2ff80413d1d7868a0029d" title="Sets the tile to to draw reverse vines, vines that go up instead of hanging down, affected by wind ph...">TileID.Sets.ReverseVineThreads</a> and use as directed. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a02189b771b065777d7952f6713cdca80" name="a02189b771b065777d7952f6713cdca80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a02189b771b065777d7952f6713cdca80">&#9670;&nbsp;</a></span>EmitLivingTreeLeaf()</h2>
@@ -586,7 +651,7 @@ Properties</h2></td></tr>
 <ul>
 <li>if Main.SettingsEnabled_TilesSwayInWind is false<br  />
 </li>
-<li>if TileID.Sets.SwaysInWindBasic is false for the tile type of <em>tileCache</em> <br  />
+<li>if <a class="el" href="class_tile_i_d_1_1_sets.html#a672992e3566d96e0818e520da4063e05" title="If true, this tile will render as if it were affected by wind and player interaction and is anchored ...">TileID.Sets.SwaysInWindBasic</a> is false for the tile type of <em>tileCache</em> <br  />
 </li>
 <li>if the tile is an Orange Bloodroot</li>
 <li>if the tile is a Pink Prickly Pear on any vanilla cactus variant </li>

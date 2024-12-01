@@ -1,5 +1,6 @@
 var struct_player_1_1_hurt_info =
 [
+    [ "Cancelled", "struct_player_1_1_hurt_info.html#aaebb41670c5634510e9d78a5120fbd68", null ],
     [ "CooldownCounter", "struct_player_1_1_hurt_info.html#ab45ce066eaadcc876fa4ff86490f7e08", null ],
     [ "DamageSource", "struct_player_1_1_hurt_info.html#afbda1d7dc60e1d31b1d34848bf657399", null ],
     [ "Dodgeable", "struct_player_1_1_hurt_info.html#a932995c5c67ad2875496015ab83c0893", null ],
