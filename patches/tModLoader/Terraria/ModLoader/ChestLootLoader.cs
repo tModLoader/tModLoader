@@ -46,6 +46,7 @@ public static class ChestLootLoader
 		SetupItemPools();
 
 		lootPools[LootPoolNames.SurfaceCommon] = [
+			//Common(ItemID.GreenDye), //idea taken from the field of medicine, for debugging use in addition to adding dyes to appropriate sections of vanilla code
 			Common(ItemID.Glowstick, chanceDenominator: 6, minimumDropped: 40, maximumDropped: 75),
 			Common(ItemID.ThrowingKnife, chanceDenominator: 6, minimumDropped: 150, maximumDropped: 300),
 			Common(ItemID.HerbBag, chanceDenominator: 6, minimumDropped: 1, maximumDropped: 4),
@@ -78,6 +79,7 @@ public static class ChestLootLoader
 			Common(ItemID.Wood, chanceDenominator: 2, minimumDropped: 50, maximumDropped: 99),
 		];
 		lootPools[LootPoolNames.UndergroundCommon] = [
+			//Common(ItemID.BrownDye),
 			ByCondition(new Conditions.IsNotChestType(TileID.Containers2, 10), ItemID.Bomb, 3, 10, 20),
 			Common(ItemID.AngelStatue, 5),
 			Common(ItemID.Rope, 3, 50, 100),
@@ -89,7 +91,7 @@ public static class ChestLootLoader
 				Common(ItemID.WoodenArrow, minimumDropped: 25, maximumDropped: 49),
 				Common(ItemID.Shuriken, minimumDropped: 25, maximumDropped: 49)
 			),
-			Common(ItemID.LesserHealingPotion, minimumDropped: 3, maximumDropped: 5),
+			Common(ItemID.LesserHealingPotion, chanceDenominator: 2, minimumDropped: 3, maximumDropped: 5),
 			new OneFromRulesRule(3, 2,
 				Common(ItemID.RegenerationPotion, maximumDropped: 2),
 				Common(ItemID.ShinePotion, maximumDropped: 2),
@@ -109,9 +111,10 @@ public static class ChestLootLoader
 			Common(ItemID.SilverCoin, 2, 50, 89)
 		];
 		lootPools[LootPoolNames.CavernsCommon] = [
+			//Common(ItemID.SilverDye),
 			Common(ItemID.SuspiciousLookingEye, 5),
 			Common(ItemID.Dynamite, 3),
-			Common(ItemID.JestersArrow, minimumDropped: 25, maximumDropped: 50),
+			Common(ItemID.JestersArrow, 4, minimumDropped: 25, maximumDropped: 50),
 			new OneFromRulesRule(2,
 				new DropFromItemPoolRule(ItemPoolNames.GoldBar, 1, amountDroppedMinimum: 3, amountDroppedMaximum: 10),
 				new DropFromItemPoolRule(ItemPoolNames.SilverBar, 1, amountDroppedMinimum: 3, amountDroppedMaximum: 10)
@@ -120,7 +123,7 @@ public static class ChestLootLoader
 				Common(ItemID.FlamingArrow, minimumDropped: 25, maximumDropped: 50),
 				Common(ItemID.ThrowingKnife, minimumDropped: 25, maximumDropped: 50)
 			),
-			Common(ItemID.HealingPotion, minimumDropped: 3, maximumDropped: 5),
+			Common(ItemID.HealingPotion, 2, minimumDropped: 3, maximumDropped: 5),
 			new OneFromRulesRule(3, 2,
 				Common(ItemID.SpelunkerPotion, maximumDropped: 2),
 				Common(ItemID.FeatherfallPotion, maximumDropped: 2),
@@ -139,7 +142,7 @@ public static class ChestLootLoader
 			),
 			new CommonDrop(ItemID.RecallPotion, 2, 2, 4),
 			new OneFromRulesRule(2,
-				SequentialRules(2,
+				SequentialRules(1,
 					ByCondition(new Conditions.IsChestType(TileID.Containers, 11), ItemID.IceTorch, minimumDropped: 15, maximumDropped: 29),
 					Common(ItemID.Torch, minimumDropped: 15, maximumDropped: 29)
 				),
@@ -148,7 +151,8 @@ public static class ChestLootLoader
 			Common(ItemID.GoldCoin, 2, 1, 2)
 		];
 		lootPools[LootPoolNames.HellCommon] = [
-			Common(ItemID.Bomb, 3, 10, 20),
+			//Common(ItemID.RedDye),
+			Common(ItemID.Dynamite, 3),
 			new OneFromRulesRule(2,
 				Common(ItemID.MeteoriteBar, minimumDropped: 15, maximumDropped: 29),
 				new DropFromItemPoolRule(ItemPoolNames.GoldBar, amountDroppedMinimum: 15, amountDroppedMaximum: 29)
@@ -188,6 +192,14 @@ public static class ChestLootLoader
 
 		lootPools[LootPoolNames.HeightBasedCommon] = [
 			SequentialRules(1,
+				new LeadingConditionRule(new Conditions.SurfaceChest())
+					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.SurfaceCommon)),
+				new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon)
+			)
+		];
+
+		lootPools[LootPoolNames.UndergroundHeightBasedCommon] = [
+			SequentialRules(1,
 				new LeadingConditionRule(new Conditions.UndergroundChest())
 					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.UndergroundCommon)),
 				new LeadingConditionRule(new Conditions.CavernsChest())
@@ -197,6 +209,7 @@ public static class ChestLootLoader
 		];
 
 		lootPools[LootPoolNames.DungeonCommon] = [
+			new ShadowKeyRule(),
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
 			Common(ItemID.BoneWelder, 8)
 		];
@@ -298,7 +311,7 @@ public static class ChestLootLoader
 		lootPools[LootPoolNames.WaterAnywhere] = [
 			new DropLootPoolRule(LootPoolNames.WaterAnywhereRare),
 			new DropLootPoolRule(LootPoolNames.WaterSimple),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon)
 		];
 		lootPools[LootPoolNames.WaterSimple] = [
 			Common(ItemID.SharkBait, 2),
@@ -310,7 +323,7 @@ public static class ChestLootLoader
 				Common(ItemID.SunflowerMinecart),
 				Common(ItemID.LadybugMinecart)
 			),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon)
 		];
 		lootPools[LootPoolNames.MushroomHigh] = [
 			Common(ItemID.ShroomMinecart, 2),
@@ -332,7 +345,7 @@ public static class ChestLootLoader
 		lootPools[LootPoolNames.FloatingIsland] = [
 			new FloatingIslandPrimaryRule(),
 			Common(ItemID.CreativeWings, 40),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon),
 			Common(ItemID.SkyMill, 3),
 			new DropFromItemPoolRule(ItemPoolNames.FloatingIslandPainting),
 			Common(ItemID.Cloud, minimumDropped: 50, maximumDropped: 100)
@@ -351,7 +364,7 @@ public static class ChestLootLoader
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
 		];
 		lootPools[LootPoolNames.BiomeChestCommon] = [
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+			new DropLootPoolRule(LootPoolNames.DungeonCommon),
 			Common(ItemID.RemnantsofDevotion, 2)
 		];
 	}
@@ -556,6 +569,7 @@ public static class ChestLootLoader
 		public const string Wooden = nameof(Wooden);
 
 		public const string HeightBasedCommon = nameof(HeightBasedCommon);
+		public const string UndergroundHeightBasedCommon = nameof(UndergroundHeightBasedCommon);
 		public const string HeightBasedGeneric = nameof(HeightBasedGeneric);
 
 		public const string SurfaceCommon = nameof(SurfaceCommon);

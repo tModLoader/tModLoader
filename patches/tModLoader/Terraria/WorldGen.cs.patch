@@ -1205,6 +1205,15 @@
  					num94 += 1000;
  					num92++;
  				}
+@@ -25570,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	private static bool IsDungeon(int x, int y)
++	internal static bool IsDungeon(int x, int y)
+ 	{
+ 		if ((double)y < Main.worldSurface)
+ 			return false;
 @@ -25584,6 +_,18 @@
  		return false;
  	}
