@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<!-- Import tModLoader mod properties -->
-	<Import Project="..\tModLoader.targets" />
+	<Import Project="C:\Program Files (x86)\Steam\steamapps\common\tModLoaderDev\tMLMod.targets" />
 
 	<!-- General -->
 	<PropertyGroup>
