@@ -133,7 +133,7 @@ public partial class WorldGen
 			}
 			if (chestTileType == 21 && (Style == 10 || pool == ChestLootLoader.LootPoolNames.Jungle)) {
 				style = 10;
-				pool = ChestLootLoader.LootPoolNames.Jungle;
+				//pool = ChestLootLoader.LootPoolNames.Jungle;
 				canBeReplacedByAngelStatue = true;
 			}
 
@@ -145,6 +145,11 @@ public partial class WorldGen
 
 			if (chestTileType == 21 && style == 17 && string.IsNullOrEmpty(pool)) {
 				pool = ChestLootLoader.LootPoolNames.WaterAnywhere;
+				canBeReplacedByAngelStatue = true;
+			}
+
+			if (chestTileType == 21 && style == 32 && string.IsNullOrEmpty(pool)) {
+				pool = ChestLootLoader.LootPoolNames.Mushroom;
 				canBeReplacedByAngelStatue = true;
 			}
 
@@ -177,9 +182,6 @@ public partial class WorldGen
 				switch (pool) {
 					case ChestLootLoader.LootPoolNames.Shadow:
 						GenVars.hellChest++;
-						break;
-					case ChestLootLoader.LootPoolNames.Jungle:
-						GenVars.JungleItemCount++;
 						break;
 					case ChestLootLoader.LootPoolNames.WaterAnywhere:
 						GenVars.WaterItemCount++;
@@ -229,6 +231,11 @@ public partial class WorldGen
 						}
 						replaceFirstSuccessWithAngelStatue = false;
 					}
+				}
+				switch (pool) {
+					case ChestLootLoader.LootPoolNames.Jungle:
+					GenVars.JungleItemCount++;
+					break;
 				}
 				return true;
 			}

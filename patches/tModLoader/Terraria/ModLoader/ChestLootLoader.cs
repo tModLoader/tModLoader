@@ -62,7 +62,7 @@ public static class ChestLootLoader
 				Common(ItemID.Shuriken, minimumDropped: 25, maximumDropped: 50)
 			),
 			Common(ItemID.LesserHealingPotion, chanceDenominator: 2, minimumDropped: 3, maximumDropped: 5),
-			new CommonDrop(ItemID.RecallPotion, chanceDenominator: 2, chanceNumerator: 3, amountDroppedMinimum: 3, amountDroppedMaximum: 5),
+			new CommonDrop(ItemID.RecallPotion, chanceNumerator: 2, chanceDenominator: 3, amountDroppedMinimum: 3, amountDroppedMaximum: 5),
 			new OneFromRulesRule(3, 2,
 				Common(ItemID.IronskinPotion, maximumDropped: 2),
 				Common(ItemID.ShinePotion, maximumDropped: 2),
@@ -103,7 +103,7 @@ public static class ChestLootLoader
 				Common(ItemID.MiningPotion, maximumDropped: 2),
 				Common(ItemID.TrapsightPotion, maximumDropped: 2)
 			),
-			new CommonDrop(ItemID.RecallPotion, 2, 2, 4, 2),
+			new CommonDrop(ItemID.RecallPotion, 3, 2, 4, 2),
 			SequentialRules(2,
 				ByCondition(new Conditions.IsChestType(TileID.Containers, 11), ItemID.IceTorch, minimumDropped: 10, maximumDropped: 20),
 				Common(ItemID.Torch, minimumDropped: 10, maximumDropped: 20)
@@ -158,7 +158,7 @@ public static class ChestLootLoader
 				new DropFromItemPoolRule(ItemPoolNames.GoldBar, amountDroppedMinimum: 15, amountDroppedMaximum: 29)
 			),
 			new DropFromItemPoolRule(ItemPoolNames.HellChestAmmo, 2, 50, 74),
-			Common(ItemID.RestorationPotion, minimumDropped: 15, maximumDropped: 20),
+			Common(ItemID.RestorationPotion, 2, minimumDropped: 15, maximumDropped: 20),
 			new OneFromRulesRule(4, 3,
 				Common(ItemID.SpelunkerPotion, maximumDropped: 2),
 				Common(ItemID.FeatherfallPotion, maximumDropped: 2),
@@ -204,12 +204,18 @@ public static class ChestLootLoader
 					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.UndergroundCommon)),
 				new LeadingConditionRule(new Conditions.CavernsChest())
 					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.CavernsCommon)),
-				new DropLootPoolRule(LootPoolNames.Hell)
-			)
+				new DropLootPoolRule(LootPoolNames.HellCommon)
+			),
+			ByCondition(new Conditions.IsChestType(TileID.Containers, 10), ItemID.HoneyDispenser, 4)
 		];
 
 		lootPools[LootPoolNames.DungeonCommon] = [
 			new ShadowKeyRule(),
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon),
+			Common(ItemID.BoneWelder, 8)
+		];
+
+		lootPools[LootPoolNames.DungeonWoodenCommon] = [
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
 			Common(ItemID.BoneWelder, 8)
 		];
@@ -238,7 +244,11 @@ public static class ChestLootLoader
 		];
 		lootPools[LootPoolNames.Underground] = [
 			new DropFromItemPoolRule(ItemPoolNames.UndergroundRare),
-				new DropLootPoolRule(LootPoolNames.UndergroundCommon)
+			SequentialRules(1, 
+				Common(ItemID.Extractinator, 20),
+				Common(ItemID.FlareGun, 20).WithOnSuccess(Common(ItemID.Flare, minimumDropped: 25, maximumDropped: 50))
+			),
+			new DropLootPoolRule(LootPoolNames.UndergroundCommon)
 		];
 		lootPools[LootPoolNames.CavernsRare] = [
 			new LeadingConditionRule(new Conditions.LavaLayerChest()).WithOnSuccess(SequentialRules(1,
@@ -278,8 +288,8 @@ public static class ChestLootLoader
 		];
 		lootPools[LootPoolNames.Frozen] = [
 			new DropFromItemPoolRule(ItemPoolNames.FrozenRare, 1),
-			Common(ItemID.IceMirror, 5),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
+			ByCondition(new Conditions.CavernsChest(), ItemID.IceMirror, 5),
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon),
 			Common(ItemID.IceMachine, 7)
 		];
 		lootPools[LootPoolNames.SandstoneHigh] = [
@@ -287,26 +297,25 @@ public static class ChestLootLoader
 			ByCondition(new Conditions.UndergroundChest(), ItemID.ScarabBomb, 3, 10, 20),
 			ByCondition(new Conditions.CavernsChest(), ItemID.EncumberingStone, 7),
 			ByCondition(new Conditions.CavernsChest(), ItemID.DesertMinecart, 15),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon)
 		];
 		lootPools[LootPoolNames.SandstoneLow] = [
 			new DropFromItemPoolRule(ItemPoolNames.SandstoneLowRare),
 			ByCondition(new Conditions.UndergroundChest(), ItemID.ScarabBomb, 3, 10, 20),
 			ByCondition(new Conditions.CavernsChest(), ItemID.EncumberingStone, 7),
 			ByCondition(new Conditions.CavernsChest(), ItemID.DesertMinecart, 15),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon)
 		];
 		lootPools[LootPoolNames.Jungle] = [
 			new DropLootPoolRule(LootPoolNames.JungleRare),
 			Common(ItemID.LivingMahoganyWand, 6).WithOnSuccess(Common(ItemID.LivingMahoganyLeafWand)),
 			Common(ItemID.BeeMinecart, 10),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon),
-			ByCondition(new Conditions.IsChestType(TileID.Containers, 10), ItemID.HoneyDispenser, 4)
+			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
 		];
 		lootPools[LootPoolNames.WaterOceanCave] = [
 			new DropFromItemPoolRule(ItemPoolNames.WaterOceanCaveRare),
 			new DropLootPoolRule(LootPoolNames.WaterSimple),
-			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon)
 		];
 		lootPools[LootPoolNames.WaterAnywhere] = [
 			new DropLootPoolRule(LootPoolNames.WaterAnywhereRare),
@@ -324,6 +333,14 @@ public static class ChestLootLoader
 				Common(ItemID.LadybugMinecart)
 			),
 			new DropLootPoolRule(LootPoolNames.UndergroundHeightBasedCommon)
+		];
+
+		lootPools[LootPoolNames.Mushroom] = [
+			SequentialRules(1,
+				new LeadingConditionRule(new Conditions.CavernsChest())
+					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.MushroomHigh)),
+				new DropLootPoolRule(LootPoolNames.MushroomLow)
+			)
 		];
 		lootPools[LootPoolNames.MushroomHigh] = [
 			Common(ItemID.ShroomMinecart, 2),
@@ -577,6 +594,7 @@ public static class ChestLootLoader
 		public const string CavernsCommon = nameof(CavernsCommon);
 		public const string HellCommon = nameof(HellCommon);
 		public const string DungeonCommon = nameof(DungeonCommon);
+		public const string DungeonWoodenCommon = nameof(DungeonWoodenCommon);
 
 		public const string SurfaceWooden = nameof(SurfaceWooden);
 		public const string Underground = nameof(Underground);
@@ -587,6 +605,7 @@ public static class ChestLootLoader
 		public const string SandstoneLow = nameof(SandstoneLow);
 		public const string Frozen = nameof(Frozen);
 		public const string Jungle = nameof(Jungle);
+		public const string Mushroom = nameof(Mushroom);
 		public const string MushroomHigh = nameof(MushroomHigh);
 		public const string MushroomLow = nameof(MushroomLow);
 		public const string LivingWood = nameof(LivingWood);

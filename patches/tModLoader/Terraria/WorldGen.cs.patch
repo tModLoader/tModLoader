@@ -1201,7 +1201,7 @@
  
 -				if (AddBuriedChest(i3, num96, num97, notNearOtherChests: false, style3, trySlope: false, 0)) {
 +				//if (AddBuriedChest(i3, num96, num97, notNearOtherChests: false, style3, trySlope: false, 0)) {
-+				if (AddBuriedChest(i3, num96, ChestLootLoader.LootPoolNames.DungeonCommon, notNearOtherChests: false, style3, trySlope: false, 0, num97)) {
++				if (AddBuriedChest(i3, num96, num97 == ItemID.GoldenKey ? ChestLootLoader.LootPoolNames.DungeonWoodenCommon : ChestLootLoader.LootPoolNames.DungeonCommon, notNearOtherChests: false, style3, trySlope: false, 0, num97)) {
  					num94 += 1000;
  					num92++;
  				}
