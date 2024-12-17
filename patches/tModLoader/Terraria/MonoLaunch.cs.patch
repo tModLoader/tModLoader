@@ -65,6 +65,14 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
+@@ -41,6 +_,7 @@
+ 	public static readonly string NativesDir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", NativePlatformDir);
+ 
+ 	private static string NativePlatformDir =>
++		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && IntPtr.Size == 4 ? "Windows32" :
+ 		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
+ 		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
+ 		RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "OSX" :
 @@ -57,25 +_,25 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;

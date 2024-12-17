@@ -35,7 +35,7 @@ internal static class InstallVerifier
 		if (Platform.IsWindows) {
 			if (IntPtr.Size == 4) {
 				steamAPIPath = "Libraries/Native/Windows32/steam_api.dll";
-				steamAPIHash = ToByteArray("56d9f94d37cb8f03049a1cc3062bffaf");
+				steamAPIHash = ToByteArray("CC62F2EBF08CF5814E9C78D3804FA98F");
 			}
 			else {
 				steamAPIPath = "Libraries/Native/Windows/steam_api64.dll";
