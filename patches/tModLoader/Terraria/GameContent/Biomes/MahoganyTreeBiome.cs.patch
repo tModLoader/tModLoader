@@ -14,7 +14,7 @@
  
 -		WorldGen.AddBuriedChest(result.X + 3, result.Y - 1, (GenBase._random.Next(4) != 0) ? WorldGen.GetNextJungleChestItem() : 0, notNearOtherChests: false, 10, trySlope: false, 0);
 +		//WorldGen.AddBuriedChest(result.X + 3, result.Y - 1, (GenBase._random.Next(4) != 0) ? WorldGen.GetNextJungleChestItem() : 0, notNearOtherChests: false, 10, trySlope: false, 0);
-+		WorldGen.AddBuriedChest(result.X + 3, result.Y - 1, (GenBase._random.Next(4) != 0) ? ChestLootLoader.LootPoolNames.Jungle : null, notNearOtherChests: false, 10, trySlope: false, 0);
++		WorldGen.AddBuriedChest(result.X + 3, result.Y - 1, ChestLootLoader.LootPoolNames.JungleTree, notNearOtherChests: false, 10, trySlope: false, 0);
  		structures.AddProtectedStructure(new Rectangle(result.X - 30, result.Y - 30, 60, 60));
  		return true;
  	}

@@ -64,7 +64,7 @@ public class DeclChestLootTests : Mod {
 				}
 			}
 		}
-		int tries = 5;
+		int tries = 10;
 		do {
 			Combine(ref dropCountsVanilla, CalculateDropCounts(null, i, j, pool, notNearOtherChests, Style, trySlope, chestTileType, forceContain));
 			Combine(ref dropCountsNew, CalculateDropCounts(orig, i, j, pool, notNearOtherChests, Style, trySlope, chestTileType, forceContain));
@@ -84,7 +84,7 @@ public class DeclChestLootTests : Mod {
 
 				}
 				inaccuracy -= 1;
-				if (unsignedInaccuracy - 1 > 0.25f || Math.Abs(dropCountNew.Min - dropCountVanilla.Min) > 2 || Math.Abs(dropCountNew.Max - dropCountVanilla.Max) > 2) {
+				if (unsignedInaccuracy - 1 > 0.20f || Math.Abs(dropCountNew.Min - dropCountVanilla.Min) > 2 || Math.Abs(dropCountNew.Max - dropCountVanilla.Max) > 2) {
 					int _inaccuracy = (int)(inaccuracy * 1000);
 					switch (inaccuracy) {
 						case float.NegativeInfinity:
@@ -117,6 +117,14 @@ public class DeclChestLootTests : Mod {
 					case ChestLootLoader.LootPoolNames.Jungle:
 					forceContain = GetNextJungleChestItem();
 					GenVars.JungleItemCount--;
+					break;
+					case ChestLootLoader.LootPoolNames.JungleTree:
+					if (genRand.NextBool(4)) {
+						forceContain = 0;
+					} else {
+						forceContain = GetNextJungleChestItem();
+						GenVars.JungleItemCount--;
+					}
 					break;
 					case ChestLootLoader.LootPoolNames.Web:
 					forceContain = ItemID.WebSlinger;
@@ -231,7 +239,7 @@ public class DeclChestLootTests : Mod {
 						case ChestLootLoader.LootPoolNames.Shadow:
 						GenVars.hellChest--;
 						break;
-						case ChestLootLoader.LootPoolNames.Jungle:
+						case ChestLootLoader.LootPoolNames.JungleTree or ChestLootLoader.LootPoolNames.Jungle:
 						GenVars.JungleItemCount--;
 						break;
 					}

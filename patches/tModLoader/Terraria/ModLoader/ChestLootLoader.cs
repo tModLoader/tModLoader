@@ -8,6 +8,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.ItemDropRules.VanillaChests;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.UI;
 using Terraria.WorldBuilding;
 using static Terraria.GameContent.ItemDropRules.ItemDropRule;
 using static Terraria.ModLoader.ChestLootLoader;
@@ -37,10 +38,8 @@ public static class ChestLootLoader
 	{
 		RegisterDefaultLootPools();
 	}
-
 	internal static void RegisterDefaultLootPools()
 	{
-		//TODO: ordered with random replacement: jungle chests, normal water chests
 		lootPools.Clear();
 		itemPools.Clear();
 		SetupItemPools();
@@ -77,6 +76,7 @@ public static class ChestLootLoader
 			),
 			Common(ItemID.SilverCoin, chanceDenominator: 2, minimumDropped: 10, maximumDropped: 29),
 			Common(ItemID.Wood, chanceDenominator: 2, minimumDropped: 50, maximumDropped: 99),
+			new DropLootPoolRule(LootPoolNames.StyleBasedCraftingStations)
 		];
 		lootPools[LootPoolNames.UndergroundCommon] = [
 			//Common(ItemID.BrownDye),
@@ -108,7 +108,8 @@ public static class ChestLootLoader
 				ByCondition(new Conditions.IsChestType(TileID.Containers, 11), ItemID.IceTorch, minimumDropped: 10, maximumDropped: 20),
 				Common(ItemID.Torch, minimumDropped: 10, maximumDropped: 20)
 			),
-			Common(ItemID.SilverCoin, 2, 50, 89)
+			Common(ItemID.SilverCoin, 2, 50, 89),
+			new DropLootPoolRule(LootPoolNames.StyleBasedCraftingStations)
 		];
 		lootPools[LootPoolNames.CavernsCommon] = [
 			//Common(ItemID.SilverDye),
@@ -148,7 +149,8 @@ public static class ChestLootLoader
 				),
 				Common(ItemID.Glowstick, minimumDropped: 15, maximumDropped: 29)
 			),
-			Common(ItemID.GoldCoin, 2, 1, 2)
+			Common(ItemID.GoldCoin, 2, 1, 2),
+			new DropLootPoolRule(LootPoolNames.StyleBasedCraftingStations)
 		];
 		lootPools[LootPoolNames.HellCommon] = [
 			//Common(ItemID.RedDye),
@@ -187,7 +189,18 @@ public static class ChestLootLoader
 				Common(ItemID.Torch, minimumDropped: 15, maximumDropped: 29),
 				Common(ItemID.Glowstick, minimumDropped: 15, maximumDropped: 29)
 			),
-			Common(ItemID.GoldCoin, 2, 2, 4)
+			Common(ItemID.GoldCoin, 2, 2, 4),
+			new DropLootPoolRule(LootPoolNames.StyleBasedCraftingStations)
+		];
+
+		lootPools[LootPoolNames.HeightBasedRare] = [
+			SequentialRules(1,
+				new LeadingConditionRule(new Conditions.UndergroundChest())
+					.WithOnSuccess(new DropFromItemPoolRule(ItemPoolNames.UndergroundRare)),
+				new LeadingConditionRule(new Conditions.CavernsChest())
+					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.CavernsRare)),
+				new DropFromItemPoolRule(ItemPoolNames.HellRare)
+			)
 		];
 
 		lootPools[LootPoolNames.HeightBasedCommon] = [
@@ -205,7 +218,10 @@ public static class ChestLootLoader
 				new LeadingConditionRule(new Conditions.CavernsChest())
 					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.CavernsCommon)),
 				new DropLootPoolRule(LootPoolNames.HellCommon)
-			),
+			)
+		];
+
+		lootPools[LootPoolNames.StyleBasedCraftingStations] = [
 			ByCondition(new Conditions.IsChestType(TileID.Containers, 10), ItemID.HoneyDispenser, 4)
 		];
 
@@ -308,9 +324,15 @@ public static class ChestLootLoader
 		];
 		lootPools[LootPoolNames.Jungle] = [
 			new DropLootPoolRule(LootPoolNames.JungleRare),
-			Common(ItemID.LivingMahoganyWand, 6).WithOnSuccess(Common(ItemID.LivingMahoganyLeafWand)),
-			Common(ItemID.BeeMinecart, 10),
+			ByCondition(new Conditions.CavernsChest(), ItemID.LivingMahoganyWand, 6).WithOnSuccess(Common(ItemID.LivingMahoganyLeafWand)),
+			ByCondition(new Conditions.CavernsChest(), ItemID.BeeMinecart, 10),
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
+		];
+		lootPools[LootPoolNames.JungleTree] = [
+			SequentialRules(1,
+				new DropLootPoolRule(LootPoolNames.Jungle, chanceDenominator: 4, chanceNumerator: 3),
+				new DropLootPoolRule(LootPoolNames.HeightBasedGeneric)
+			)
 		];
 		lootPools[LootPoolNames.WaterOceanCave] = [
 			new DropFromItemPoolRule(ItemPoolNames.WaterOceanCaveRare),
@@ -337,17 +359,19 @@ public static class ChestLootLoader
 
 		lootPools[LootPoolNames.Mushroom] = [
 			SequentialRules(1,
-				new LeadingConditionRule(new Conditions.CavernsChest())
+				new LeadingConditionRule(new Conditions.UndergroundChest())
 					.WithOnSuccess(new DropLootPoolRule(LootPoolNames.MushroomHigh)),
 				new DropLootPoolRule(LootPoolNames.MushroomLow)
 			)
 		];
 		lootPools[LootPoolNames.MushroomHigh] = [
+			new DropLootPoolRule(LootPoolNames.HeightBasedRare),
 			Common(ItemID.ShroomMinecart, 2),
 			Common(ItemID.MushroomHat, 3).WithOnSuccess(Common(ItemID.MushroomVest)).WithOnSuccess(Common(ItemID.MushroomPants)),
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
 		];
 		lootPools[LootPoolNames.MushroomLow] = [
+			new DropLootPoolRule(LootPoolNames.HeightBasedRare),
 			new DropFromItemPoolRule(ItemPoolNames.MushroomLowUncommon),
 			new DropLootPoolRule(LootPoolNames.HeightBasedCommon)
 		];
@@ -587,6 +611,7 @@ public static class ChestLootLoader
 
 		public const string HeightBasedCommon = nameof(HeightBasedCommon);
 		public const string UndergroundHeightBasedCommon = nameof(UndergroundHeightBasedCommon);
+		public const string HeightBasedRare = nameof(HeightBasedRare);
 		public const string HeightBasedGeneric = nameof(HeightBasedGeneric);
 
 		public const string SurfaceCommon = nameof(SurfaceCommon);
@@ -605,6 +630,7 @@ public static class ChestLootLoader
 		public const string SandstoneLow = nameof(SandstoneLow);
 		public const string Frozen = nameof(Frozen);
 		public const string Jungle = nameof(Jungle);
+		public const string JungleTree = nameof(JungleTree);
 		public const string Mushroom = nameof(Mushroom);
 		public const string MushroomHigh = nameof(MushroomHigh);
 		public const string MushroomLow = nameof(MushroomLow);
@@ -617,6 +643,7 @@ public static class ChestLootLoader
 		public const string Shadow = nameof(Shadow);
 		public const string Lihzahrd = nameof(Lihzahrd);
 
+		public const string StyleBasedCraftingStations = nameof(StyleBasedCraftingStations);
 		public const string CavernsRare = nameof(CavernsRare);
 		public const string JungleRare = nameof(JungleRare);
 		public const string WaterAnywhereRare = nameof(WaterAnywhereRare);

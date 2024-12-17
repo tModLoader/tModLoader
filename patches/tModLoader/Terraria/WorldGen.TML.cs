@@ -131,7 +131,7 @@ public partial class WorldGen
 
 				canBeReplacedByAngelStatue = true;
 			}
-			if (chestTileType == 21 && (Style == 10 || pool == ChestLootLoader.LootPoolNames.Jungle)) {
+			if (chestTileType == 21 && (Style == 10 || pool == ChestLootLoader.LootPoolNames.JungleTree || pool == ChestLootLoader.LootPoolNames.Jungle)) {
 				style = 10;
 				//pool = ChestLootLoader.LootPoolNames.Jungle;
 				canBeReplacedByAngelStatue = true;
@@ -233,7 +233,7 @@ public partial class WorldGen
 					}
 				}
 				switch (pool) {
-					case ChestLootLoader.LootPoolNames.Jungle:
+					case ChestLootLoader.LootPoolNames.JungleTree or ChestLootLoader.LootPoolNames.Jungle:
 					GenVars.JungleItemCount++;
 					break;
 				}
