@@ -52,6 +52,9 @@ jobs:
           echo "Attempting get previous version id"
           version=$(git describe --tags --abbrev=0)
           
+          echo "Get the latest version if there is multiple tags"
+          version=$(git tag --points-at $version | tail -1)
+          
           echo "Previous Version is: $version"
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
