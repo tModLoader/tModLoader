@@ -375,6 +375,7 @@ internal static class ModOrganizer
 			EnsureRecentlyBuildModsAreLoading(modsToLoad);
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
+			EnsureHashesAreValid(modsToLoad);
 			return Sort(modsToLoad);
 		}
 		catch (ModSortingException e) {
@@ -518,6 +519,20 @@ internal static class ModOrganizer
 				}
 			}
 
+		if (errored.Count > 0)
+			throw new ModSortingException(errored, errorLog.ToString());
+	}
+
+	internal static void EnsureHashesAreValid(ICollection<LocalMod> mods)
+	{
+		var errored = new HashSet<LocalMod>();
+		var errorLog = new StringBuilder();
+		foreach (var mod in mods) {
+			if (!mod.modFile.VerifyHash()) {
+				errored.Add(mod);
+				errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorruptedWithModName", mod));
+			}
+		}
 		if (errored.Count > 0)
 			throw new ModSortingException(errored, errorLog.ToString());
 	}

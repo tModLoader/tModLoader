@@ -143,6 +143,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		try {
 			ModOrganizer.EnsureDependenciesExist(modList, true);
 			ModOrganizer.EnsureTargetVersionsMet(modList);
+			ModOrganizer.EnsureHashesAreValid(modList);
 			var sortedModList = ModOrganizer.Sort(modList);
 			modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
 		}
