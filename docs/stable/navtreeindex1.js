@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"class_binary_i_o.html":[3,0,92],
+"class_binary_i_o.html#a431b1b8dfcb0d36266bcf461aed38bec":[3,0,92,6],
 "class_binary_i_o.html#a473a5c2b3a3d808c7d6a13bb16788877":[3,0,92,3],
 "class_binary_i_o.html#a6ad7d1159184f93639a5bed28b2b221d":[3,0,92,0],
 "class_binary_i_o.html#a707112646d5860a262c72d3ec266ac25":[3,0,92,5],
@@ -33,6 +35,7 @@ var NAVTREEINDEX1 =
 "class_boss_bar_loader.html#ac043304c2915d51833b6cab542153466":[3,0,112,0],
 "class_boss_bar_loader.html#ae8acbfc5f163abff32bfcee29a598b99":[3,0,112,1],
 "class_boss_bestiary_info_element.html":[3,0,113],
+"class_boss_bestiary_info_element.html#a1d319c409617fcadd3d3ef341ccdaf7a":[3,0,113,0],
 "class_brain_of_cthulu_big_progress_bar.html":[3,0,114],
 "class_brain_shader.html":[3,0,115],
 "class_buff_definition.html":[3,0,116],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_dont_starve_is_up.html":[3,0,192,7],
 "class_conditions_1_1_dont_starve_is_up.html#a7e554d9445faa8bb140f7eda1786f2c5":[3,0,192,7,1],
 "class_conditions_1_1_dont_starve_is_up.html#ace306818f2fb15a7f81b1c44918f1636":[3,0,192,7,0],
-"class_conditions_1_1_downed_all_mech_bosses.html":[3,0,192,8],
-"class_conditions_1_1_downed_all_mech_bosses.html#a50615d4e365598d2335409416cc69f72":[3,0,192,8,1],
-"class_conditions_1_1_downed_all_mech_bosses.html#a83922aaa2e315416ba2f99cbc5def299":[3,0,192,8,0],
-"class_conditions_1_1_downed_plantera.html":[3,0,192,9]
+"class_conditions_1_1_downed_all_mech_bosses.html":[3,0,192,8]
 };

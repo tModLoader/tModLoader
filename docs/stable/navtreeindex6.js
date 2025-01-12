@@ -1,5 +1,10 @@
 var NAVTREEINDEX6 =
 {
+"class_global_item.html#acb730ad14ccef95a764577579b88ccd7":[3,0,458,47],
+"class_global_item.html#acb88ba12f8befe863f93bc2e15324b8e":[3,0,458,15],
+"class_global_item.html#ad1420ea0491b79f097b4916d032a453d":[3,0,458,104],
+"class_global_item.html#ad1cc4da8630d50e48c451ab708a3699a":[3,0,458,39],
+"class_global_item.html#ad1f983f0812edc3344dd1414e29fa763":[3,0,458,71],
 "class_global_item.html#ad2b18f62232732eae106b48de1904eb3":[3,0,458,28],
 "class_global_item.html#ad4d19038db2a83e8d9bd0b21dce89758":[3,0,458,68],
 "class_global_item.html#ad562bf64d6639a7fc19954c2a9f44a68":[3,0,458,98],
@@ -244,10 +249,5 @@ var NAVTREEINDEX6 =
 "class_hair_i_d_1_1_sets.html":[3,0,487,0],
 "class_hair_i_d_1_1_sets.html#a3572d25190356ece1c2d1a46b5d766f6":[3,0,487,0,0],
 "class_hair_loader.html":[3,0,488],
-"class_hair_shader_data.html":[3,0,489],
-"class_hair_shader_data_set.html":[3,0,490],
-"class_hairstyle_unlocks_helper.html":[3,0,491],
-"class_hallow_biome.html":[3,0,492],
-"class_hallow_surface_shader.html":[3,0,493],
-"class_hat_rack_slot.html":[3,0,494]
+"class_hair_shader_data.html":[3,0,489]
 };

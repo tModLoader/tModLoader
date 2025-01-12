@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -171,8 +171,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <tr class="memitem:a86355a0bac4b8cfcc6e3d5990a4c82bf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a86355a0bac4b8cfcc6e3d5990a4c82bf">MouseOverFar</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a86355a0bac4b8cfcc6e3d5990a4c82bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when the mouse hovers over any tile, even when the player is far away. Useful for showing what's written on signs, etc.  <a href="class_global_tile.html#a86355a0bac4b8cfcc6e3d5990a4c82bf">More...</a><br /></td></tr>
 <tr class="separator:a86355a0bac4b8cfcc6e3d5990a4c82bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd">NearbyEffects</a> (int i, int j, int type, bool closer)</td></tr>
-<tr class="memdesc:a1173ef4323d9e01a36b5c909f1d348fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.  <a href="class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd">More...</a><br /></td></tr>
+<tr class="memitem:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memItemLeft" align="right" valign="top"><a id="a1173ef4323d9e01a36b5c909f1d348fd" name="a1173ef4323d9e01a36b5c909f1d348fd"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NearbyEffects</b> (int i, int j, int type, bool closer)</td></tr>
 <tr class="separator:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c20aceb0500f1518da17f0a9c29294b"><td class="memItemLeft" align="right" valign="top"><a id="a7c20aceb0500f1518da17f0a9c29294b" name="a7c20aceb0500f1518da17f0a9c29294b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTileMerge</b> ()</td></tr>
@@ -1272,65 +1272,6 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a1173ef4323d9e01a36b5c909f1d348fd" name="a1173ef4323d9e01a36b5c909f1d348fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1173ef4323d9e01a36b5c909f1d348fd">&#9670;&nbsp;</a></span>NearbyEffects()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void GlobalTile.NearbyEffects </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>j</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>closer</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
-    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
-    <tr><td class="paramname">type</td><td>The tile type</td></tr>
-    <tr><td class="paramname">closer</td><td></td></tr>
   </table>
   </dd>
 </dl>

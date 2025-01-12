@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -856,6 +856,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>TransformElder
 <tr class="separator:ac3e5c1797de076affdc0ed0266c026ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07e72f9eeac6a27e6ece55961f299e9d"><td class="memItemLeft" align="right" valign="top"><a id="a07e72f9eeac6a27e6ece55961f299e9d" name="a07e72f9eeac6a27e6ece55961f299e9d"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>TypeToDefaultHeadIndex</b> (int <a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b">type</a>)</td></tr>
+<tr class="memdesc:a07e72f9eeac6a27e6ece55961f299e9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the default head index of the town <a class="el" href="class_n_p_c.html">NPC</a> type. To account for shimmer and other variants use <a class="el" href="class_town_n_p_c_profiles.html#a2139871f3f6aeeba7de75e44683a6b06" title="Retrieves the head index of this town NPC, accounting for shimmer and other variants....">TownNPCProfiles.GetHeadIndexSafe(NPC)</a> instead. Returns -1 if no head index found. <br /></td></tr>
 <tr class="separator:a07e72f9eeac6a27e6ece55961f299e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1916fbee61fdd373ced02eadfd8dd4d7"><td class="memItemLeft" align="right" valign="top"><a id="a1916fbee61fdd373ced02eadfd8dd4d7" name="a1916fbee61fdd373ced02eadfd8dd4d7"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>UnlockOrExchangePet</b> (ref bool petBoughtFlag, int npcType, string textKeyForLicense, int netMessageData)</td></tr>
@@ -1685,6 +1686,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemMoonlordCoun
 <tr class="separator:a8460dcf2dd9e0544c2c2b387b4f85dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9a217d81e5d1832e957e6972eef9674"><td class="memItemLeft" align="right" valign="top"><a id="ab9a217d81e5d1832e957e6972eef9674" name="ab9a217d81e5d1832e957e6972eef9674"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>killCount</b> = new int[NPCID.Count]</td></tr>
+<tr class="memdesc:ab9a217d81e5d1832e957e6972eef9674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indexed by BannerIDs, counts how many kills a specific enemy (or group of enemies with a shared BannerID) has in this world. Kill counts are stored on the world and are synced in multiplayer. Used by the ItemID.TallyCounter and for dropping banners. See also <a class="el" href="class_item_i_d_1_1_sets.html#acc42102d6c4023c007d0c2b3905f7cb1" title="Determines the number of NPC of the corresponding BannerID that are required to be killed to obtain t...">ItemID.Sets.KillsToBanner</a>. Note that Bestiary kill counts are tracked separately and per each <a class="el" href="class_n_p_c.html">NPC</a> type instead of sharing a kill count with all other <a class="el" href="class_n_p_c.html">NPC</a> types using the same BannerID. <br /></td></tr>
 <tr class="separator:ab9a217d81e5d1832e957e6972eef9674"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d8c2d8c03b8810c862ffb8285d81d30"><td class="memItemLeft" align="right" valign="top"><a id="a7d8c2d8c03b8810c862ffb8285d81d30" name="a7d8c2d8c03b8810c862ffb8285d81d30"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>ladyBugBadLuckTime</b> = -10800</td></tr>
