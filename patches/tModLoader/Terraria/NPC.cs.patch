@@ -1133,6 +1133,15 @@
  		if (aiStyle == 0) {
  			if (Main.netMode != 1) {
  				for (int i = 0; i < 255; i++) {
+@@ -19686,7 +_,7 @@
+ 				num567 = Main.player[target].position.Y + (float)(Main.player[target].height / 2) - vector69.Y;
+ 				num568 = (float)Math.Sqrt(num566 * num566 + num567 * num567);
+ 				rotation = (float)Math.Atan2(num567, num566) - 1.57f;
+-				if (Main.netMode == 1) {
++				if (Main.netMode != NetmodeID.MultiplayerClient) { // TML: Fix inverted netmode check
+ 					localAI[0] += 1f;
+ 					if (localAI[0] > 80f) {
+ 						localAI[0] = 0f;
 @@ -31736,7 +_,7 @@
  			timeLeft = 86400;
  		}
