@@ -600,7 +600,7 @@ internal static class Interface
 			if ((originalRepresentation.StartsWith('"') || type == typeof(string)) && !inputString.StartsWith('"'))
 				inputString = $"\"{inputString}\"";
 			else if (type.IsArray || type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>) || type.GetGenericTypeDefinition() == typeof(HashSet<>))) {
-				if (!inputString.StartsWith("["))
+				if (!inputString.StartsWith('['))
 					inputString = $"[{inputString}]";
 			}
 			else if (type.IsClass && originalRepresentation.StartsWith('{') && !inputString.StartsWith('{')) {

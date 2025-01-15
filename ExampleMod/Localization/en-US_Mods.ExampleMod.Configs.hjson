@@ -389,6 +389,16 @@ ModConfigShowcaseMisc: {
 		Label: List of Ints
 		Tooltip: ""
 	}
+
+	customLabelColor: {
+		Label: custom Label Color
+		Tooltip: ""
+	}
+
+	percent: {
+		Label: percent
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseRanges: {

@@ -550,6 +550,19 @@ public class ExpandAttribute : Attribute
 	}
 }
 
+/// <summary>
+/// Use this attribute to customize some styles of the config element. The type must inherit from <see cref="ModConfigStylesProvider"/>.
+/// </summary>
+public class CustomModConfigStylesAttribute : Attribute
+{
+	public Type Type { get; }
+
+	public CustomModConfigStylesAttribute(Type type)
+	{
+		Type = type;
+	}
+}
+
 // Unimplemented ideas below:
 /*
 

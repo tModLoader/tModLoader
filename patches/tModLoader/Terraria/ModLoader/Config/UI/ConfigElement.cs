@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections;
+using System.Reflection;
 using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -51,6 +53,7 @@ public abstract class ConfigElement : UIElement
 	protected RangeAttribute RangeAttribute;
 	protected IncrementAttribute IncrementAttribute;
 	protected JsonDefaultValueAttribute JsonDefaultValueAttribute;
+	protected CustomModConfigStylesAttribute CustomModConfigStylesAttribute;
 	// Etc
 	protected bool NullAllowed { get; set; }
 	protected internal Func<string> TextDisplayFunction { get; set; }
@@ -60,6 +63,7 @@ public abstract class ConfigElement : UIElement
 	protected bool ShowReloadRequiredTooltip { get; set; }
 	protected object OldValue { get; set; }
 	protected bool ValueChanged => !ConfigManager.ObjectEquals(OldValue, GetObject());
+	protected ModConfigStylesProvider StylesProvider;
 
 	public ConfigElement()
 	{
@@ -110,7 +114,22 @@ public abstract class ConfigElement : UIElement
 			// We need to check against the value in the load time config, not the value at the time of binding.
 			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
 			OldValue = MemberInfo.GetValue(loadTimeConfig);
-		 }
+		}
+
+		CustomModConfigStylesAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigStylesAttribute>(MemberInfo, Item, List);
+
+		if (CustomModConfigStylesAttribute != null) {
+			Type providerType = CustomModConfigStylesAttribute.Type;
+
+			if (typeof(ModConfigStylesProvider).IsAssignableFrom(providerType)) {
+				ConstructorInfo ctor = providerType.GetConstructor(Array.Empty<Type>());
+
+				if (ctor != null) {
+					object instance = ctor.Invoke(new object[0]);
+					StylesProvider = instance as ModConfigStylesProvider;
+				}
+			}
+		}
 	}
 
 	protected virtual void SetObject(object value)
@@ -149,6 +168,7 @@ public abstract class ConfigElement : UIElement
 			color = Color.Gray;
 
 		//color = Color.Lerp(color, Color.White, base.IsMouseHovering ? 1f : 0f);
+		StylesProvider?.ModifyLabelColor(GetObject, IsMouseHovering, MemberInfo.CanWrite, ref color);
 		Color panelColor = base.IsMouseHovering ? backgroundColor : backgroundColor.MultiplyRGBA(new Color(180, 180, 180));
 		Vector2 position = vector;
 
@@ -164,6 +184,7 @@ public abstract class ConfigElement : UIElement
 			position.Y += 8f;
 
 			string label = TextDisplayFunction();
+			StylesProvider?.ModifyLabel(GetObject, Label, ref label);
 			if (ReloadRequired && ValueChanged) {
 				label += " - [c/FF0000:" + Language.GetTextValue("tModLoader.ModReloadRequired") + "]";
 			}

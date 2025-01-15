@@ -40,6 +40,12 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
 		public Corner corner;
 
+		[CustomModConfigStyles(typeof(DynamicLabelColorProvider))]
+		public float customLabelColor;
+
+		[CustomModConfigStyles(typeof(FloatToPercentProvider))]
+		public float percent = 0.5f;
+
 		// You can put multiple attributes in the same [] if you like.
 		// ColorHueSliderAttribute displays Hue Saturation Lightness. Passing in false means only Hue is shown.
 		[DefaultValue(typeof(Color), "255, 0, 0, 255"), ColorHSLSlider(false), ColorNoAlpha]
