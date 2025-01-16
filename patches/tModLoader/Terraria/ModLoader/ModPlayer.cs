@@ -1102,6 +1102,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called when a player disconnects.
+	/// <para/> Called on the server when this player disconnects.
+	/// <para/> Called on other clients when this player disconnects.
 	/// </summary>
 	public virtual void PlayerDisconnect()
 	{
