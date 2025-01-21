@@ -755,7 +755,7 @@
  				}
  				break;
  			case 124: {
-@@ -3431,20 +_,43 @@
+@@ -3431,25 +_,48 @@
  					ushort key = reader.ReadUInt16();
  					LegacySoundStyle legacySoundStyle = SoundID.SoundByIndex[key];
  					BitsByte bitsByte4 = reader.ReadByte();
@@ -799,6 +799,12 @@
  				}
  				break;
  			case 134: {
+ 				int num41 = reader.ReadByte();
+-				int ladyBugLuckTimeLeft = reader.ReadInt32();
++				double ladyBugLuckTimeLeft = reader.ReadDouble();
+ 				float torchLuck = reader.ReadSingle();
+ 				byte luckPotion = reader.ReadByte();
+ 				bool hasGardenGnomeNearby = reader.ReadBoolean();
 @@ -3587,6 +_,35 @@
  
  				break;
