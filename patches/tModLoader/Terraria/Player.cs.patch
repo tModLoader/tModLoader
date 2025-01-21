@@ -2949,6 +2949,35 @@
  		}
  
  		if (currentItem.type == 854)
+@@ -11164,18 +_,25 @@
+ 		if (currentItem.type == 976)
+ 			spikedBoots += 2;
+ 
+-		if (currentItem.type == 977)
++		if (currentItem.type == 977) {
++			tabi = true;
+ 			dashType = 1;
++		}
+ 
+-		if (currentItem.type == 3097)
++		if (currentItem.type == 3097) {
++			shieldOfCthulu = true; 
+ 			dashType = 2;
++		}
+ 
+ 		if (currentItem.type == 963)
+ 			blackBelt = true;
+ 
+ 		if (currentItem.type == 984) {
++			tabi = true;
+ 			blackBelt = true;
++			if (useModdedDashPriority && shieldOfCthulu) {
+-			dashType = 1;
++				dashType = 1;
++			}
+ 			spikedBoots = 2;
+ 		}
+ 
 @@ -11501,10 +_,13 @@
  			minionDamage += 0.15f;
  
@@ -3039,14 +3068,18 @@
  			rangedDamage += 0.1f;
  			meleeDamage += 0.1f;
  			magicDamage += 0.1f;
-@@ -12397,6 +_,7 @@
+@@ -12397,7 +_,10 @@
  			rangedCrit += 10;
  			meleeCrit += 10;
  			magicCrit += 10;
 +			*/
- 			dashType = 5;
++			if (!useModdedDashPriority || !(tabi && shieldOfCthulu)) {
+-			dashType = 5;
++				dashType = 5;
++			}
  		}
  
+ 		if (head == 82 && body == 53 && legs == 48) {
 @@ -12581,11 +_,16 @@
  			minionDamage += 0.15f;
  			whipRangeMultiplier += 0.3f;
@@ -3376,10 +3409,12 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
-@@ -14505,6 +_,7 @@
+@@ -14505,6 +_,9 @@
  		dashType = 0;
  		spikedBoots = 0;
  		blackBelt = false;
++		tabi = false; // Added by TML.
++		shieldOfCthulu = false; // Added by TML.
 +		breathMax = 200; // Added by TML.
  		lavaMax = 0;
  		archery = false;
@@ -3759,7 +3794,20 @@
  			}
  
  			releaseJump = false;
-@@ -16334,16 +_,24 @@
+@@ -16316,6 +_,12 @@
+ 
+ 	public void DashMovement()
+ 	{
++		// PerformModDash() is a hook which will return true if there are no modded dashes overriding the current vanilla priority.
++		bool modDashPerformed = PerformModDash(); // TODO: Implement
++		if (modDashPerformed) {
++			return;
++		}
++
+ 		if (dashDelay == 0)
+ 			dash = dashType;
+ 
+@@ -16334,31 +_,39 @@
  
  					Rectangle rect = nPC.getRect();
  					if (rectangle.Intersects(rect) && (nPC.noTileCollide || CanHit(nPC))) {
@@ -3767,8 +3815,8 @@
  						float num = 30f * meleeDamage;
  						float num2 = 9f;
 +						*/
-+						float num = GetTotalDamage(DamageClass.Melee).ApplyTo(30f);
-+						float num2 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
++						float eocDamage = GetTotalDamage(DamageClass.Melee).ApplyTo(30f);
++						float eocKnockback = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
  						bool crit = false;
 +
 +						// Knockback glove and buff moved to UpdateEquips and Update
@@ -3784,17 +3832,28 @@
 +						if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  							crit = true;
  
- 						int num3 = direction;
-@@ -16354,7 +_,7 @@
- 							num3 = 1;
+-						int num3 = direction;
++						int playerDirection = direction;
+ 						if (velocity.X < 0f)
+-							num3 = -1;
++							playerDirection = -1;
+ 
+ 						if (velocity.X > 0f)
+-							num3 = 1;
++							playerDirection = 1;
  
  						if (whoAmI == Main.myPlayer)
 -							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit);
-+							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, DamageClass.Melee);
++							ApplyDamageToNPC(nPC, (int)eocDamage, eocKnockback, playerDirection, crit, DamageClass.Melee);
  
  						eocDash = 10;
  						dashDelay = 30;
-@@ -16384,16 +_,25 @@
+-						velocity.X = -num3 * 9;
++						velocity.X = -playerDirection * 9;
+ 						velocity.Y = -4f;
+ 						GiveImmuneTimeForCollisionAttack(4);
+ 						eocHit = i;
+@@ -16384,29 +_,38 @@
  						ConsumeSolarFlare();
  					}
  
@@ -3802,8 +3861,8 @@
  					float num4 = 150f * meleeDamage;
  					float num5 = 9f;
 +					*/
-+					float num4 = GetTotalDamage(DamageClass.Melee).ApplyTo(150f);
-+					float num5 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
++					float solarFlareDamage = GetTotalDamage(DamageClass.Melee).ApplyTo(150f);
++					float solarFlareKnockback = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
 +
  					bool crit2 = false;
 +
@@ -3820,17 +3879,150 @@
 +					if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  						crit2 = true;
  
- 					int num6 = direction;
-@@ -16404,7 +_,7 @@
- 						num6 = 1;
+-					int num6 = direction;
++					int playerDirection = direction;
+ 					if (velocity.X < 0f)
+-						num6 = -1;
++						playerDirection = -1;
+ 
+ 					if (velocity.X > 0f)
+-						num6 = 1;
++						playerDirection = 1;
  
  					if (whoAmI == Main.myPlayer) {
 -						ApplyDamageToNPC(nPC2, (int)num4, num5, num6, crit2);
-+						ApplyDamageToNPC(nPC2, (int)num4, num5, num6, crit2, DamageClass.Melee);
- 						int num7 = Projectile.NewProjectile(GetProjectileSource_OnHit(nPC2, 2), base.Center.X, base.Center.Y, 0f, 0f, 608, (int)num4, 15f, Main.myPlayer);
- 						Main.projectile[num7].Kill();
++						ApplyDamageToNPC(nPC2, (int)solarFlareDamage, solarFlareKnockback, playerDirection, crit2, DamageClass.Melee);
+-						int num7 = Projectile.NewProjectile(GetProjectileSource_OnHit(nPC2, 2), base.Center.X, base.Center.Y, 0f, 0f, 608, (int)num4, 15f, Main.myPlayer);
++						int solarFlareProjectile = Projectile.NewProjectile(GetProjectileSource_OnHit(nPC2, 2), base.Center.X, base.Center.Y, 0f, 0f, 608, (int)solarFlareDamage, 15f, Main.myPlayer);
+-						Main.projectile[num7].Kill();
++						Main.projectile[solarFlareProjectile].Kill();
  					}
-@@ -16631,6 +_,14 @@
+ 
+ 					nPC2.immune[whoAmI] = 6;
+@@ -16426,58 +_,58 @@
+ 		}
+ 		else if (dashDelay < 0) {
+ 			StopVanityActions();
+-			float num8 = 12f;
++			float maxDashSpeed = 12f;
+-			float num9 = 0.992f;
++			float decelerationFactor = 0.992f;
+-			float num10 = Math.Max(accRunSpeed, maxRunSpeed);
++			float maxHorizontalSpeed = Math.Max(accRunSpeed, maxRunSpeed);
+-			float num11 = 0.96f;
++			float dashEndDeceleration = 0.96f;
+-			int num12 = 20;
++			int dashCooldownInTicks = 20;
+ 			if (dash == 1) {
+ 				for (int k = 0; k < 2; k++) {
+-					int num13 = ((velocity.Y != 0f) ? Dust.NewDust(new Vector2(position.X, position.Y + (float)(height / 2) - 8f), width, 16, 31, 0f, 0f, 100, default(Color), 1.4f) : Dust.NewDust(new Vector2(position.X, position.Y + (float)height - 4f), width, 8, 31, 0f, 0f, 100, default(Color), 1.4f));
++					int dustIndex = ((velocity.Y != 0f) ? Dust.NewDust(new Vector2(position.X, position.Y + (float)(height / 2) - 8f), width, 16, 31, 0f, 0f, 100, default(Color), 1.4f) : Dust.NewDust(new Vector2(position.X, position.Y + (float)height - 4f), width, 8, 31, 0f, 0f, 100, default(Color), 1.4f));
+-					Main.dust[num13].velocity *= 0.1f;
++					Main.dust[dustIndex].velocity *= 0.1f;
+-					Main.dust[num13].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
++					Main.dust[dustIndex].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
+ 				}
+ 			}
+ 			else if (dash == 2) {
+ 				for (int l = 0; l < 0; l++) {
+-					int num14 = ((velocity.Y != 0f) ? Dust.NewDust(new Vector2(position.X, position.Y + (float)(height / 2) - 8f), width, 16, 31, 0f, 0f, 100, default(Color), 1.4f) : Dust.NewDust(new Vector2(position.X, position.Y + (float)height - 4f), width, 8, 31, 0f, 0f, 100, default(Color), 1.4f));
++					int dustIndex = ((velocity.Y != 0f) ? Dust.NewDust(new Vector2(position.X, position.Y + (float)(height / 2) - 8f), width, 16, 31, 0f, 0f, 100, default(Color), 1.4f) : Dust.NewDust(new Vector2(position.X, position.Y + (float)height - 4f), width, 8, 31, 0f, 0f, 100, default(Color), 1.4f));
+-					Main.dust[num14].velocity *= 0.1f;
++					Main.dust[dustIndex].velocity *= 0.1f;
+-					Main.dust[num14].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
++					Main.dust[dustIndex].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
+ 				}
+ 
+-				num9 = 0.985f;
++				decelerationFactor = 0.985f;
+-				num11 = 0.94f;
++				dashEndDeceleration = 0.94f;
+-				num12 = 30;
++				dashCooldownInTicks = 30;
+ 			}
+ 			else if (dash == 3) {
+ 				for (int m = 0; m < 4; m++) {
+-					int num15 = Dust.NewDust(new Vector2(position.X, position.Y + 4f), width, height - 8, 6, 0f, 0f, 100, default(Color), 1.7f);
++					int dustIndex = Dust.NewDust(new Vector2(position.X, position.Y + 4f), width, height - 8, 6, 0f, 0f, 100, default(Color), 1.7f);
+-					Main.dust[num15].velocity *= 0.1f;
++					Main.dust[dustIndex].velocity *= 0.1f;
+-					Main.dust[num15].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
++					Main.dust[dustIndex].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
+-					Main.dust[num15].shader = GameShaders.Armor.GetSecondaryShader(ArmorSetDye(), this);
++					Main.dust[dustIndex].shader = GameShaders.Armor.GetSecondaryShader(ArmorSetDye(), this);
+-					Main.dust[num15].noGravity = true;
++					Main.dust[dustIndex].noGravity = true;
+ 					if (Main.rand.Next(2) == 0)
+-						Main.dust[num15].fadeIn = 0.5f;
++						Main.dust[dustIndex].fadeIn = 0.5f;
+ 				}
+ 
+-				num8 = 14f;
++				maxDashSpeed = 14f;
+-				num9 = 0.985f;
++				decelerationFactor = 0.985f;
+-				num11 = 0.94f;
++				dashEndDeceleration = 0.94f;
+-				num12 = 20;
++				dashCooldownInTicks = 20;
+ 			}
+ 			else if (dash == 4) {
+ 				for (int n = 0; n < 2; n++) {
+-					int num16 = Dust.NewDust(new Vector2(position.X, position.Y + 4f), width, height - 8, 229, 0f, 0f, 100, default(Color), 1.2f);
++					int dustIndex = Dust.NewDust(new Vector2(position.X, position.Y + 4f), width, height - 8, 229, 0f, 0f, 100, default(Color), 1.2f);
+-					Main.dust[num16].velocity *= 0.1f;
++					Main.dust[dustIndex].velocity *= 0.1f;
+-					Main.dust[num16].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
++					Main.dust[dustIndex].scale *= 1f + (float)Main.rand.Next(20) * 0.01f;
+-					Main.dust[num16].noGravity = true;
++					Main.dust[dustIndex].noGravity = true;
+ 					if (Main.rand.Next(2) == 0)
+-						Main.dust[num16].fadeIn = 0.3f;
++						Main.dust[dustIndex].fadeIn = 0.3f;
+ 				}
+ 
+-				num9 = 0.985f;
++				decelerationFactor = 0.985f;
+-				num11 = 0.94f;
++				dashEndDeceleration = 0.94f;
+-				num12 = 20;
++				dashCooldownInTicks = 20;
+ 			}
+ 
+ 			if (dash == 5) {
+@@ -16500,23 +_,23 @@
+ 			if (dash <= 0)
+ 				return;
+ 
+-			doorHelper.AllowOpeningDoorsByVelocityAloneForATime(num12 * 3);
++			doorHelper.AllowOpeningDoorsByVelocityAloneForATime(dashCooldownInTicks * 3);
+ 			vortexStealthActive = false;
+-			if (velocity.X > num8 || velocity.X < 0f - num8) {
++			if (velocity.X > maxDashSpeed || velocity.X < 0f - maxDashSpeed) {
+-				velocity.X *= num9;
++				velocity.X *= decelerationFactor;
+ 				return;
+ 			}
+ 
+-			if (velocity.X > num10 || velocity.X < 0f - num10) {
++			if (velocity.X > maxHorizontalSpeed || velocity.X < 0f - maxHorizontalSpeed) {
+-				velocity.X *= num11;
++				velocity.X *= dashEndDeceleration;
+ 				return;
+ 			}
+ 
+-			dashDelay = num12;
++			dashDelay = dashCooldownInTicks;
+ 			if (velocity.X < 0f)
+-				velocity.X = 0f - num10;
++				velocity.X = 0f - maxHorizontalSpeed;
+ 			else if (velocity.X > 0f)
+-				velocity.X = num10;
++				velocity.X = maxHorizontalSpeed;
+ 		}
+ 		else {
+ 			if (dash <= 0 || mount.Active)
+@@ -16631,7 +_,17 @@
  		solarDashConsumedFlare = false;
  	}
  
@@ -3842,9 +4034,13 @@
 +	//
 +	// I'll do all this in an upcoming PR if nobody else does.
 +	// - Thomas
- 	private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
++	// Made public by ModDash
++	// - Shimadacat
+-	private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
++	public void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
  	{
  		dir = 0;
+ 		dashing = false;
 @@ -16745,7 +_,7 @@
  	public void CarpetMovement()
  	{
