@@ -352,7 +352,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				Arguments = "--list-sdks",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
-			}).StandardOutput.ReadToEnd();
+			}).StandardOutput.ReadToEnd().Trim();
 			Logging.tML.Info("\n" + output);
 
 			if (Platform.IsWindows && dotnetFilename.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86))) {
