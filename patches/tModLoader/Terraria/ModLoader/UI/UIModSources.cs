@@ -296,14 +296,12 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private static IEnumerable<string> GetPossibleSystemDotnetPaths()
 	{
 		if (GetCommandToFindPathOfExecutable() is string cmd) {
-			string whereResult = ModCompile.StartOnHost(new ProcessStartInfo {
+			yield return ModCompile.StartOnHost(new ProcessStartInfo {
 				FileName = cmd,
 				Arguments = "dotnet",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Split("\n")[0].Trim();
-			if (!string.IsNullOrWhiteSpace(whereResult))
-				yield return whereResult;
 		}
 
 		// OSX fallback
@@ -388,6 +386,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 	private static bool DoesDotnetWork(string path)
 	{
+		if (string.IsNullOrWhiteSpace(path))
+			return false;
+
 		try {
 			// Try and execute each possible dotnet installation path,
 			// we can't simply check if the file exists as we may be inside a steam-runtime container environment
