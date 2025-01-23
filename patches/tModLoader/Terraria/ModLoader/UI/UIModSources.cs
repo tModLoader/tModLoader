@@ -296,12 +296,14 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private static IEnumerable<string> GetPossibleSystemDotnetPaths()
 	{
 		if (GetCommandToFindPathOfExecutable() is string cmd) {
-			yield return ModCompile.StartOnHost(new ProcessStartInfo {
+			string whereResult = ModCompile.StartOnHost(new ProcessStartInfo {
 				FileName = cmd,
 				Arguments = "dotnet",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Split("\n")[0].Trim();
+			if (!string.IsNullOrWhiteSpace(whereResult))
+				yield return whereResult;
 		}
 
 		// OSX fallback
