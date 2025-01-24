@@ -296,7 +296,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private static IEnumerable<string> GetPossibleSystemDotnetPaths()
 	{
 		if (GetCommandToFindPathOfExecutable() is string cmd) {
-			yield return Process.Start(new ProcessStartInfo {
+			yield return ModCompile.StartOnHost(new ProcessStartInfo {
 				FileName = cmd,
 				Arguments = "dotnet",
 				UseShellExecute = false,
@@ -329,7 +329,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private static string GetSystemDotnetPath()
 	{
 		try {
-			if (GetPossibleSystemDotnetPaths().FirstOrDefault(File.Exists) is string path) {
+			if (GetPossibleSystemDotnetPaths().FirstOrDefault(DoesDotnetWork) is string path) {
 				Logging.tML.Debug($"System dotnet install located at: {path}");
 				return path;
 			}
@@ -347,7 +347,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		try {
 			string dotnetFilename = GetSystemDotnetPath() ?? "dotnet";
-			string output = Process.Start(new ProcessStartInfo {
+			string output = ModCompile.StartOnHost(new ProcessStartInfo {
 				FileName = dotnetFilename,
 				Arguments = "--list-sdks",
 				UseShellExecute = false,
@@ -380,6 +380,31 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			Logging.tML.Debug("Flatpak sandbox detected");
 			return true;
 		}
+
+		return false;
+	}
+
+	private static bool DoesDotnetWork(string path)
+	{
+		if (string.IsNullOrWhiteSpace(path))
+			return false;
+
+		try {
+			// Try and execute each possible dotnet installation path,
+			// we can't simply check if the file exists as we may be inside a steam-runtime container environment
+			// and the path may point to a file on the host.
+			var proc = ModCompile.StartOnHost(new ProcessStartInfo {
+				FileName = path,
+				Arguments = "--version"
+			});
+			if (proc == null) return false;
+
+			proc.WaitForExit();
+			if (proc.ExitCode == 0) {
+				return true;
+			}
+		}
+		catch (Exception) { }
 
 		return false;
 	}
