@@ -38,9 +38,9 @@ public static class ModLoader
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
 	public static Version LastPreviewFreezeNotificationSeen;
-	public static int LatestNewsTimestamp; 
+	public static int LatestNewsTimestamp;
 
-	// Update this name if doing an upgrade 
+	// Update this name if doing an upgrade
 	public static bool BetaUpgradeWelcomed144;
 
 	public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
@@ -132,6 +132,8 @@ public static class ModLoader
 
 			ModContent.Load(token);
 
+			Main.Achievements.Load(); // Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
+
 			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
 			if (OnSuccessfulLoad != null) {
@@ -168,7 +170,7 @@ public static class ModLoader
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 				else if (mod != null)
-					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
+					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan
 					SteamedWraps.QueueForceValidateSteamInstall();
 
 				if (e is Exceptions.JITException)
@@ -200,7 +202,7 @@ public static class ModLoader
 					DisableModAndDependents(dependent);
 				}
 			}
-			
+
 			Logging.tML.Error(msg, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload

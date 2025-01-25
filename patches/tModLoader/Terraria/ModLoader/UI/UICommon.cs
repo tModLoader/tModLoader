@@ -174,8 +174,11 @@ public static class UICommon
 		DividerTexture = Main.Assets.Request<Texture2D>("Images/UI/Divider");
 		InnerPanelTexture = Main.Assets.Request<Texture2D>("Images/UI/InnerPanelBackground");
 
+
 		InfoDisplayPageArrowTexture = LoadEmbeddedTexture("UI.InfoDisplayPageArrow");
 		tModLoaderTitleLinkButtonsTexture = LoadEmbeddedTexture("UI.tModLoaderTitleLinkButtons");
 		CopyCodeButtonTexture = LoadEmbeddedTexture("UI.CopyCodeButton");
+
+
 	}
 }

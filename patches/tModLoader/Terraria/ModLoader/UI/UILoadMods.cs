@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using log4net.Repository.Hierarchy;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI;
@@ -23,6 +24,7 @@ internal class UILoadMods : UIProgress
 		};
 		gotoMenu = 888; // ModLoader will redirect to the mods menu if there are no errors during cancel
 		ModLoader.BeginLoad(_cts.Token);
+
 	}
 
 	public override void OnDeactivate()

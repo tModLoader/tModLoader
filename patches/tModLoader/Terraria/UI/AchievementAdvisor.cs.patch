@@ -1,0 +1,34 @@
+--- src/TerrariaNetCore/Terraria/UI/AchievementAdvisor.cs
++++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
+@@ -1,9 +_,11 @@
++using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+ using Terraria.GameInput;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.UI;
+ 
+@@ -146,7 +_,18 @@
+ 
+ 		Rectangle frame = card.frame;
+ 		frame.X += 528;
++		if (card.achievement.Modded) {
++			if (card.achievement.ModAchievement.GetTexture() == null) {
++				throw new Exception($"{card.achievement.Name}.png was not found, add it in the same directory as your source file.");
++			}
++		}
++
++		if (!card.achievement.Modded) {
+-		spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++			spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++		}
++		else {
++			spriteBatch.Draw(card.achievement.ModAchievement.GetTexture().Value, Vector2.Zero, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++		}
+ 		spriteBatch.Draw(_achievementsBorderTexture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+ 		if (hovered)
+ 			spriteBatch.Draw(value, position + vector2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);

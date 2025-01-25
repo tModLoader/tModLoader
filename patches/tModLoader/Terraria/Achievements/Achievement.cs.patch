@@ -1,0 +1,53 @@
+--- src/TerrariaNetCore/Terraria/Achievements/Achievement.cs
++++ src/tModLoader/Terraria/Achievements/Achievement.cs
+@@ -1,7 +_,10 @@
+ using System.Collections.Generic;
++using Microsoft.Xna.Framework.Graphics;
+ using Newtonsoft.Json;
+ using Newtonsoft.Json.Linq;
++using ReLogic.Content;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
+ namespace Terraria.Achievements;
+@@ -13,14 +_,18 @@
+ 
+ 	private static int _totalAchievements;
+ 	public readonly string Name;
+-	public readonly LocalizedText FriendlyName;
++	public LocalizedText FriendlyName;
+-	public readonly LocalizedText Description;
++	public LocalizedText Description;
+ 	public readonly int Id = _totalAchievements++;
+ 	private AchievementCategory _category;
+ 	private IAchievementTracker _tracker;
+ 	[JsonProperty("Conditions")]
+ 	private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
+ 	private int _completedCount;
++	public int Type;           // TML: Added for keeping track of modded achievements during loading, Native achievements don't get assigned a type as they don't need one.
++	public bool Modded = false; // TML: Added to keep vanilla achievements working.
++	public bool Hidden { get; set; } = false;
++	public ModAchievement ModAchievement;
+ 
+ 	public AchievementCategory Category => _category;
+ 
+@@ -32,8 +_,9 @@
+ 
+ 	public IAchievementTracker GetTracker() => _tracker;
+ 
+-	public Achievement(string name)
++	public Achievement(string name, bool modded = false)
+ 	{
++		Modded = modded;
+ 		Name = name;
+ 		FriendlyName = Language.GetText("Achievements." + name + "_Name");
+ 		Description = Language.GetText("Achievements." + name + "_Description");
+@@ -52,6 +_,7 @@
+ 
+ 	public void Load(Dictionary<string, JObject> conditions)
+ 	{
++		_completedCount = 0;
+ 		foreach (KeyValuePair<string, JObject> condition in conditions) {
+ 			if (_conditions.TryGetValue(condition.Key, out var value)) {
+ 				value.Load(condition.Value);

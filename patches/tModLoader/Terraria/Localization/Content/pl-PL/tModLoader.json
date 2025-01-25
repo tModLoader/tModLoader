@@ -166,6 +166,11 @@
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Brak Opcji",
 
+		// Achievements
+		"AchievementsReset": "Resetować",
+		"AchievementResetConfirm": "Jesteś pewien?",
+		"AchievementResetConfirmTooltip": "Zresetowanie osiągnięć oznacza, że utracisz je na stałe. Czy na pewno chcesz kontynuować?",
+
 		// Workshop
 		"WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",
 		"NonModOwnerPublishWarning": "Mod o nazwie \"{0}\" został już opublikowany w warsztacie przez innego moddera. Jeśli nie jesteś współtwórcą tego modu, próba publikacji nie powiedzie się. Jeśli to jest Twój mod, upewnij się, że jesteś zalogowany na właściwe konto Steam. Każdy mod musi mieć unikalną wewnętrzną nazwę.",

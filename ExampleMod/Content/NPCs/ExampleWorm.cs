@@ -1,8 +1,11 @@
 ﻿using ExampleMod.Content.Items.Placeable.Banners;
+﻿using ExampleMod.Content.Achievements;
+using ExampleMod.Content.Items.Placeable.Banners;
 using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
+using Terraria.GameContent.Achievements;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -47,6 +50,13 @@ namespace ExampleMod.Content.NPCs
 				// Sets the description of this NPC that is listed in the bestiary.
 				new FlavorTextBestiaryInfoElement("Looks like a Digger fell into some aqua-colored paint. Oh well.")
 			});
+		}
+
+		public override void OnKill() {
+			ModContent.GetModAchievement<ExampleWormKilled>().GetCondition("EXAMPLEMOD_KILL_BOOLEAN_CONDITION").Complete();
+			((CustomIntCondition)ModContent.GetModAchievement<ManyExampleWormsKilled>().GetCondition("EXAMPLEMOD_KILL_WORMS")).Value++;
+
+			base.OnKill();
 		}
 
 		public override void Init() {

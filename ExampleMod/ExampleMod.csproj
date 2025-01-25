@@ -6,8 +6,6 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Old\**" />
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />

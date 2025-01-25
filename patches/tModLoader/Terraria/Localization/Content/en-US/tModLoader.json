@@ -165,6 +165,12 @@
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",
 		"BossBarStyleNoOptions": "No Options",
+		
+		//Achievements
+		"AchievementSearch": "Search...",
+		"AchievementsReset": "Reset",
+		"AchievementResetConfirm": "Are you sure?",
+		"AchievementResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
 
 		// Workshop
 		"WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
@@ -971,7 +977,7 @@
 		"MoonPhases04": "During a full or new moon",
 		"MoonPhases15": "During a waning gibbous or waxing crescent moon",
 		"MoonPhases26": "During a third quarter or first quarter moon",
-		"MoonPhases37": "During a waning crescent or waxing gibbous moon"
+		"MoonPhases37": "During a waning crescent or waxing gibbous moon",
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

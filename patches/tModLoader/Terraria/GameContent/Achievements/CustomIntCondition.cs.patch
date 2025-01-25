@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/CustomIntCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/CustomIntCondition.cs
+@@ -37,7 +_,6 @@
+ 		_value = 0;
+ 		base.Clear();
+ 	}
+-
+ 	public override void Load(JObject state)
+ 	{
+ 		base.Load(state);
