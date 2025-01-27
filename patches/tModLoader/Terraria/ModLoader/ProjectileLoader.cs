@@ -254,7 +254,15 @@ public static class ProjectileLoader
 			}
 
 			if (stream.Position < stream.Length) {
-				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
+				// Calculate original length of Read7BitEncodedInt
+				int bitReaderOverhead = 1;
+				int temp = bitReader.MaxBits;
+				while (temp > 0x7Fu) {
+					bitReaderOverhead++;
+					temp >>= 7;
+				}
+				var bytesLength = stream.Length - (int)Math.Ceiling(bitReader.MaxBits / 8f) - bitReaderOverhead;
+				throw new IOException($"Read underflow {stream.Length - stream.Position} of {bytesLength} bytes in ReceiveExtraAI, more info below");
 			}
 		}
 		catch (IOException e) {
