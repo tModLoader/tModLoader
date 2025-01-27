@@ -246,6 +246,7 @@ public static class ProjectileLoader
 		bool anyGlobals = false;
 		try {
 			foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
+				anyGlobals = true;
 				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
 
@@ -268,11 +269,13 @@ public static class ProjectileLoader
 		catch (IOException e) {
 			string message = $"Error in ReceiveExtraAI for Projectile {projectile.ModProjectile?.FullName ?? projectile.Name}";
 			if (anyGlobals) {
-				message += ", may be caused by one of these GlobalNPCs:";
+				message += ", may be caused by one of these GlobalProjectiles:";
 				foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
 					message += $"\n\t{g.FullName}";
 				}
 			}
+
+			Logging.tML.Error(message, e);
 		}
 	}
 
