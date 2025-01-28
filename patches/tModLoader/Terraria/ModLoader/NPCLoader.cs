@@ -370,7 +370,9 @@ public static class NPCLoader
 		bitWriter.Flush(modWriter);
 		modWriter.Write(bufferedStream.ToArray());
 
-		return stream.ToArray();
+		byte[] bytes = stream.ToArray();
+		// If the only byte is the bitWriter.Flush length byte, no extra data.
+		return bytes.Length == 1 && bytes[0] == 0 ? null : bytes;
 	}
 
 	public static byte[] ReadExtraAI(BinaryReader reader)
