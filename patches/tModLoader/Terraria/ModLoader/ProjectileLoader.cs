@@ -208,18 +208,19 @@ public static class ProjectileLoader
 
 	public static byte[] WriteExtraAI(Projectile projectile)
 	{
+		// Data is ordered as follows: GlobalProjectile BitWriter, ModProjectile Bytes, GlobalProjectile Bytes
 		using var stream = new MemoryStream();
 		using var modWriter = new BinaryWriter(stream);
 
-		projectile.ModProjectile?.SendExtraAI(modWriter);
-
 		using var bufferedStream = new MemoryStream();
-		using var globalWriter = new BinaryWriter(bufferedStream);
+		using var binaryWriter = new BinaryWriter(bufferedStream);
 
 		BitWriter bitWriter = new BitWriter();
 
+		projectile.ModProjectile?.SendExtraAI(binaryWriter);
+
 		foreach (var g in HookSendExtraAI.Enumerate(projectile)) {
-			g.SendExtraAI(projectile, bitWriter, globalWriter);
+			g.SendExtraAI(projectile, bitWriter, binaryWriter);
 		}
 
 		bitWriter.Flush(modWriter);
@@ -248,9 +249,10 @@ public static class ProjectileLoader
 
 		GlobalProjectile lastGlobalProjectile = null;
 		try {
-			projectile.ModProjectile?.ReceiveExtraAI(modReader);
-
 			BitReader bitReader = new BitReader(modReader);
+
+			var bitReaderEnd = stream.Position;
+			projectile.ModProjectile?.ReceiveExtraAI(modReader);
 
 			foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
 				lastGlobalProjectile = g;
@@ -262,18 +264,10 @@ public static class ProjectileLoader
 			}
 
 			if (stream.Position < stream.Length) {
-				// Calculate original length of Read7BitEncodedInt
-				int bitReaderOverhead = 1;
-				int temp = bitReader.MaxBits;
-				while (temp > 0x7Fu) {
-					bitReaderOverhead++;
-					temp >>= 7;
-				}
-				var bytesLength = stream.Length - (int)Math.Ceiling(bitReader.MaxBits / 8f) - bitReaderOverhead;
-				throw new IOException($"Read underflow {stream.Length - stream.Position} of {bytesLength} bytes in ReceiveExtraAI, more info below");
+				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length - bitReaderEnd} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (Exception) {
+		catch (Exception e) {
 			string message = $"Error in ReceiveExtraAI for Projectile {projectile.ModProjectile?.FullName ?? projectile.Name}";
 			if (lastGlobalProjectile != null) {
 				message += ", may be caused by one of these GlobalProjectiles:";

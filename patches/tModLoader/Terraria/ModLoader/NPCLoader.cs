@@ -354,18 +354,19 @@ public static class NPCLoader
 
 	public static byte[] WriteExtraAI(NPC npc)
 	{
+		// Data is ordered as follows: GlobalProjectile BitWriter, ModProjectile Bytes, GlobalProjectile Bytes
 		using var stream = new MemoryStream();
 		using var modWriter = new BinaryWriter(stream);
 
-		npc.ModNPC?.SendExtraAI(modWriter);
-
 		using var bufferedStream = new MemoryStream();
-		using var globalWriter = new BinaryWriter(bufferedStream);
+		using var binaryWriter = new BinaryWriter(bufferedStream);
 
 		BitWriter bitWriter = new BitWriter();
 
+		npc.ModNPC?.SendExtraAI(binaryWriter);
+
 		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
-			g.SendExtraAI(npc, bitWriter, globalWriter);
+			g.SendExtraAI(npc, bitWriter, binaryWriter);
 		}
 	
 		bitWriter.Flush(modWriter);
@@ -394,9 +395,10 @@ public static class NPCLoader
 
 		GlobalNPC lastGlobalNPC = null;
 		try {
-			npc.ModNPC?.ReceiveExtraAI(modReader);
-
 			BitReader bitReader = new BitReader(modReader);
+
+			var bitReaderEnd = stream.Position;
+			npc.ModNPC?.ReceiveExtraAI(modReader);
 
 			foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
 				lastGlobalNPC = g;
@@ -408,15 +410,7 @@ public static class NPCLoader
 			}
 
 			if (stream.Position < stream.Length) {
-				// Calculate original length of Read7BitEncodedInt
-				int bitReaderOverhead = 1;
-				int temp = bitReader.MaxBits;
-				while (temp > 0x7Fu) {
-					bitReaderOverhead++;
-					temp >>= 7;
-				}
-				var bytesLength = stream.Length - (int)Math.Ceiling(bitReader.MaxBits / 8f) - bitReaderOverhead;
-				throw new IOException($"Read underflow {stream.Length - stream.Position} of {bytesLength} bytes in ReceiveExtraAI, more info below");
+				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length - bitReaderEnd} bytes in ReceiveExtraAI, more info below");
 			}
 		}
 		catch (Exception) {
