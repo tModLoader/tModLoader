@@ -17,6 +17,7 @@ using Terraria.ModLoader.Utilities;
 using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.IO;
 using Terraria.GameContent.Personalities;
+using System.Diagnostics;
 
 namespace Terraria.ModLoader;
 
@@ -366,13 +367,17 @@ public static class NPCLoader
 		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
 			g.SendExtraAI(npc, bitWriter, globalWriter);
 		}
-
+	
 		bitWriter.Flush(modWriter);
 		modWriter.Write(bufferedStream.ToArray());
 
 		byte[] bytes = stream.ToArray();
 		// If the only byte is the bitWriter.Flush length byte, no extra data.
-		return bytes.Length == 1 && bytes[0] == 0 ? null : bytes;
+		if (bytes.Length == 1) {
+			Debug.Assert(bytes[0] == 0);
+			return null;
+		}
+		return bytes;
 	}
 
 	public static byte[] ReadExtraAI(BinaryReader reader)
@@ -387,14 +392,14 @@ public static class NPCLoader
 		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
-		npc.ModNPC?.ReceiveExtraAI(modReader);
-
-		BitReader bitReader = new BitReader(modReader);
-
-		bool anyGlobals = false;
+		GlobalNPC lastGlobalNPC = null;
 		try {
+			npc.ModNPC?.ReceiveExtraAI(modReader);
+
+			BitReader bitReader = new BitReader(modReader);
+
 			foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
-				anyGlobals = true;
+				lastGlobalNPC = g;
 				g.ReceiveExtraAI(npc, bitReader, modReader);
 			}
 
@@ -414,16 +419,18 @@ public static class NPCLoader
 				throw new IOException($"Read underflow {stream.Length - stream.Position} of {bytesLength} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (Exception e) {
+		catch (Exception) {
 			string message = $"Error in ReceiveExtraAI for NPC {npc.ModNPC?.FullName ?? npc.TypeName}";
-			if (anyGlobals) {
+			if (lastGlobalNPC != null) {
 				message += ", may be caused by one of these GlobalNPCs:";
 				foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
 					message += $"\n\t{g.FullName}";
+					if (lastGlobalNPC == g)
+						break;
 				}
 			}
 
-			Logging.tML.Error(message, e);
+			Logging.tML.Error(message);
 		}
 	}
 

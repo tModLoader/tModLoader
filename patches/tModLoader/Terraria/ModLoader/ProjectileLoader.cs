@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -226,7 +227,11 @@ public static class ProjectileLoader
 
 		byte[] bytes = stream.ToArray();
 		// If the only byte is the bitWriter.Flush length byte, no extra data.
-		return bytes.Length == 1 && bytes[0] == 0 ? null : bytes;
+		if (bytes.Length == 1) {
+			Debug.Assert(bytes[0] == 0);
+			return null;
+		}
+		return bytes;
 	}
 
 	public static byte[] ReadExtraAI(BinaryReader reader)
@@ -241,14 +246,14 @@ public static class ProjectileLoader
 		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
-		projectile.ModProjectile?.ReceiveExtraAI(modReader);
-
-		BitReader bitReader = new BitReader(modReader);
-
-		bool anyGlobals = false;
+		GlobalProjectile lastGlobalProjectile = null;
 		try {
+			projectile.ModProjectile?.ReceiveExtraAI(modReader);
+
+			BitReader bitReader = new BitReader(modReader);
+
 			foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
-				anyGlobals = true;
+				lastGlobalProjectile = g;
 				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
 
@@ -268,16 +273,18 @@ public static class ProjectileLoader
 				throw new IOException($"Read underflow {stream.Length - stream.Position} of {bytesLength} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (IOException e) {
+		catch (Exception) {
 			string message = $"Error in ReceiveExtraAI for Projectile {projectile.ModProjectile?.FullName ?? projectile.Name}";
-			if (anyGlobals) {
+			if (lastGlobalProjectile != null) {
 				message += ", may be caused by one of these GlobalProjectiles:";
 				foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
 					message += $"\n\t{g.FullName}";
+					if (lastGlobalProjectile == g)
+						break;
 				}
 			}
 
-			Logging.tML.Error(message, e);
+			Logging.tML.Error(message);
 		}
 	}
 
