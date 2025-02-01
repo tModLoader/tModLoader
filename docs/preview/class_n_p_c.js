@@ -86,6 +86,7 @@ var class_n_p_c =
     [ "downedTowerSolar", "class_n_p_c.html#a4486d89ec8a00e29b6a993b1462df29e", null ],
     [ "downedTowerStardust", "class_n_p_c.html#ae9bd582ce78787c19c9f0de70fcd2fbd", null ],
     [ "downedTowerVortex", "class_n_p_c.html#a7712b24daf22efd480c9233e5df4387e", null ],
+    [ "extraValue", "class_n_p_c.html#a755c72ab401b0e5016015be0d480dd6b", null ],
     [ "frame", "class_n_p_c.html#aa24fde10437c2dfa9d6217a3bc47b234", null ],
     [ "friendly", "class_n_p_c.html#a0d0e747e4548ea459606bcbb92b96c96", null ],
     [ "gfxOffY", "class_n_p_c.html#a7f796a0ac2fe61dea6f6975552f4b59b", null ],

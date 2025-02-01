@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -95,9 +95,10 @@ $(document).ready(function(){initNavTree('class_item_drop_database.html',''); in
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0b149a032d91b3bac5d9b578836fb36f"><td class="memItemLeft" align="right" valign="top"><a id="a0b149a032d91b3bac5d9b578836fb36f" name="a0b149a032d91b3bac5d9b578836fb36f"></a>
 <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetRulesForItemID</b> (int itemID)</td></tr>
+<tr class="memdesc:a0b149a032d91b3bac5d9b578836fb36f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves all the registered <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> for this specific item type. <br /></td></tr>
 <tr class="separator:a0b149a032d91b3bac5d9b578836fb36f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51bd4add57067ce26c37cb2248bda273"><td class="memItemLeft" align="right" valign="top"><a id="a51bd4add57067ce26c37cb2248bda273" name="a51bd4add57067ce26c37cb2248bda273"></a>
-<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetRulesForNPCID</b> (int npcNetId, bool includeGlobalDrops=true)</td></tr>
+<tr class="memitem:a51bd4add57067ce26c37cb2248bda273"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_drop_database.html#a51bd4add57067ce26c37cb2248bda273">GetRulesForNPCID</a> (int npcNetId, bool includeGlobalDrops=true)</td></tr>
+<tr class="memdesc:a51bd4add57067ce26c37cb2248bda273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves all the registered <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> for this specific <a class="el" href="class_n_p_c.html">NPC</a> type.  <a href="class_item_drop_database.html#a51bd4add57067ce26c37cb2248bda273">More...</a><br /></td></tr>
 <tr class="separator:a51bd4add57067ce26c37cb2248bda273"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab700571acd2747c6d3225877dd3ca3c8"><td class="memItemLeft" align="right" valign="top"><a id="ab700571acd2747c6d3225877dd3ca3c8" name="ab700571acd2747c6d3225877dd3ca3c8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Populate</b> ()</td></tr>
@@ -148,6 +149,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveFromNPCNetId</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TrimDuplicateRulesForNegativeIDs</b> ()</td></tr>
 <tr class="separator:a47d3906fc75323cb3a3e6effc1c80b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a51bd4add57067ce26c37cb2248bda273" name="a51bd4add57067ce26c37cb2248bda273"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51bd4add57067ce26c37cb2248bda273">&#9670;&nbsp;</a></span>GetRulesForNPCID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt; ItemDropDatabase.GetRulesForNPCID </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>npcNetId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>includeGlobalDrops</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves all the registered <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> for this specific <a class="el" href="class_n_p_c.html">NPC</a> type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npcNetId</td><td></td></tr>
+    <tr><td class="paramname">includeGlobalDrops</td><td>If true then global drop rules will also be retrieved</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

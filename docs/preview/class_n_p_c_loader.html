@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -367,7 +367,7 @@ static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>WriteExtraAI
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ad278795f89f080ad20f4a1670593eede"><td class="memItemLeft" align="right" valign="top"><a id="ad278795f89f080ad20f4a1670593eede" name="ad278795f89f080ad20f4a1670593eede"></a>
 static readonly IList&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>blockLoot</b> = new <a class="el" href="class_list.html">List</a>&lt;int&gt;()</td></tr>
-<tr class="memdesc:ad278795f89f080ad20f4a1670593eede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to stop an <a class="el" href="class_n_p_c.html">NPC</a> from dropping loot by adding item IDs to this list. This list will be cleared whenever <a class="el" href="struct_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a> ends. Useful for either removing an item or change the drop rate of an item in the <a class="el" href="class_n_p_c.html">NPC</a>'s loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list. <br /></td></tr>
+<tr class="memdesc:ad278795f89f080ad20f4a1670593eede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to stop an <a class="el" href="class_n_p_c.html">NPC</a> from dropping specific loot by adding item IDs to this list. This list will be cleared whenever <a class="el" href="struct_n_p_c_loot.html" title="Provides access to ItemDropDatabase&#39;s methods specific to this NPC type.">NPCLoot</a> ends. Useful for dynamically removing an item in the <a class="el" href="class_n_p_c.html">NPC</a>'s loot table. To remove an item drop use the <a class="el" href="class_mod_n_p_c.html#ae9109fb61ac3fc600a4bf7c6b12d16ea" title="Allows you to determine whether or not this NPC will do anything upon death (besides dying)....">ModNPC.PreKill</a> hook to add the item's ID to this list. Editing the drop rules themselves is usually the better and more compatible approach, however. <br /></td></tr>
 <tr class="separator:ad278795f89f080ad20f4a1670593eede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>

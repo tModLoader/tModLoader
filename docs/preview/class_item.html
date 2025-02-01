@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -141,8 +141,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearNameOverride</b>
 <tr class="memitem:aaf8c66cf232da2a62614267f2f0e7472"><td class="memItemLeft" align="right" valign="top"><a id="aaf8c66cf232da2a62614267f2f0e7472" name="aaf8c66cf232da2a62614267f2f0e7472"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
 <tr class="separator:aaf8c66cf232da2a62614267f2f0e7472"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb93f144a74dca503475c213525bbc68"><td class="memItemLeft" align="right" valign="top"><a id="adb93f144a74dca503475c213525bbc68" name="adb93f144a74dca503475c213525bbc68"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CloneDefaults</b> (int TypeToClone)</td></tr>
+<tr class="memitem:adb93f144a74dca503475c213525bbc68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#adb93f144a74dca503475c213525bbc68">CloneDefaults</a> (int TypeToClone)</td></tr>
+<tr class="memdesc:adb93f144a74dca503475c213525bbc68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call in <a class="el" href="class_mod_item.html#a10b52a61d301eca52d3b30c3c989d835" title="This is where you set all your item&#39;s properties, such as width, damage, shootSpeed,...">ModItem.SetDefaults</a> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired. When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. WaspNest.csshows how to cache and restore those values. This will only clone the values, any additional logic such as shoot accuracy, recipes, accessory effects, use item logic, etc. will not be copied. The Vanilla Code Adaption wiki pageteaches how to make a complete clone of an existing item.  <a href="class_item.html#adb93f144a74dca503475c213525bbc68">More...</a><br /></td></tr>
 <tr class="separator:adb93f144a74dca503475c213525bbc68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cc4bce9d2b8ac615ad7460925df5ae4"><td class="memItemLeft" align="right" valign="top"><a id="a3cc4bce9d2b8ac615ad7460925df5ae4" name="a3cc4bce9d2b8ac615ad7460925df5ae4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyNetStateTo</b> (<a class="el" href="class_item.html">Item</a> target)</td></tr>
@@ -365,7 +365,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults4</b> (int
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults5</b> (int <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51">type</a>)</td></tr>
 <tr class="separator:a6e844f39de572d32438e6e572febf632"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a678e9da8f2b078fbf0b90905b322dc81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a678e9da8f2b078fbf0b90905b322dc81">SetNameOverride</a> (string name)</td></tr>
-<tr class="memdesc:a678e9da8f2b078fbf0b90905b322dc81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a>.  <a href="class_item.html#a678e9da8f2b078fbf0b90905b322dc81">More...</a><br /></td></tr>
+<tr class="memdesc:a678e9da8f2b078fbf0b90905b322dc81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a> for this <a class="el" href="class_item.html">Item</a> instance. This is used mainly to change the name shown on the item tooltip for recipe group ingredients to "Any RecipeGroupItemNameHere". This does not change the actual name of this item when shown elsewhere as text, for example, so it is not a suitable way to permanently change an item name. To do that a localization file entryshould be used instead.  <a href="class_item.html#a678e9da8f2b078fbf0b90905b322dc81">More...</a><br /></td></tr>
 <tr class="separator:a678e9da8f2b078fbf0b90905b322dc81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31ed2d402ea04272696879770ff21a5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a31ed2d402ea04272696879770ff21a5b">SetShopValues</a> (ItemRarityColor rarity, int coinValue)</td></tr>
 <tr class="memdesc:a31ed2d402ea04272696879770ff21a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method that sets item rarity (<a class="el" href="class_item.html#a145323c0b871d18ceb4f44f657f9fdac" title="Indicates the rarity of an item. Assign to a ItemRarityID value. Vanilla values range from -1 to 13....">Item.rare</a>) and item value (<a class="el" href="class_item.html#a0495e4ae68c9b8eef643464e738ca1c0" title="The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to 10462...">Item.value</a>).  <a href="class_item.html#a31ed2d402ea04272696879770ff21a5b">More...</a><br /></td></tr>
@@ -847,6 +847,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mana</b></td></tr>
 <tr class="separator:a58c1d23d287efddbfcf7c208af3b2395"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d4e0e43de9c4f2fa2efdb6b5905ea6"><td class="memItemLeft" align="right" valign="top"><a id="a25d4e0e43de9c4f2fa2efdb6b5905ea6" name="a25d4e0e43de9c4f2fa2efdb6b5905ea6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>manaIncrease</b></td></tr>
+<tr class="memdesc:a25d4e0e43de9c4f2fa2efdb6b5905ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Unused.</b> <br /></td></tr>
 <tr class="separator:a25d4e0e43de9c4f2fa2efdb6b5905ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4261df91855d11850e5c3d170f12a6a0"><td class="memItemLeft" align="right" valign="top"><a id="a4261df91855d11850e5c3d170f12a6a0" name="a4261df91855d11850e5c3d170f12a6a0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>master</b></td></tr>
@@ -1408,7 +1409,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCurrency</b><code> 
 <tr class="memitem:aab24cfb4fb684aa5e3697b42f7c37f35"><td class="memItemLeft" align="right" valign="top"><a id="aab24cfb4fb684aa5e3697b42f7c37f35" name="aab24cfb4fb684aa5e3697b42f7c37f35"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><code> [get]</code></td></tr>
 <tr class="memdesc:aab24cfb4fb684aa5e3697b42f7c37f35"><td class="mdescLeft">&#160;</td><td class="mdescRight">The localized name of this item without stack size or prefixes. <br  />
- Can be overridden using <a class="el" href="class_item.html#a678e9da8f2b078fbf0b90905b322dc81" title="Overrides the value of Name.">SetNameOverride(string)</a>. <br /></td></tr>
+ Can be overridden using <a class="el" href="class_item.html#a678e9da8f2b078fbf0b90905b322dc81" title="Overrides the value of Name for this Item instance. This is used mainly to change the name shown on t...">SetNameOverride(string)</a>. <br /></td></tr>
 <tr class="separator:aab24cfb4fb684aa5e3697b42f7c37f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1de8c83868f78381c09d4822b5df0750"><td class="memItemLeft" align="right" valign="top"><a id="a1de8c83868f78381c09d4822b5df0750" name="a1de8c83868f78381c09d4822b5df0750"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>NetStateVersion</b><code> [get]</code></td></tr>
@@ -1718,6 +1719,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if this <a class="el" href="class_item.html">Item</a> can receive prefixes (<a class="el" href="class_item.html#a7c6119fa462a77f03a6d2fb59d73d257" title="Determines if this Item can receive prefixes.">CanHavePrefixes</a>) and if PrefixLoader.CanRoll(Item, int) returns <code>true</code>, <code>false</code> otherwise.</dd></dl>
 <p >Just because a prefix can be rolled does not mean it can be applied &ndash; use <a class="el" href="class_item.html#aed7ee0f67ec31f0674b4bebec7897acf" title="Determines if this Item can receive the given prefix.">CanApplyPrefix(int)</a> to check for that.</p>
+
+</div>
+</div>
+<a id="adb93f144a74dca503475c213525bbc68" name="adb93f144a74dca503475c213525bbc68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb93f144a74dca503475c213525bbc68">&#9670;&nbsp;</a></span>CloneDefaults()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Item.CloneDefaults </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>TypeToClone</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Call in <a class="el" href="class_mod_item.html#a10b52a61d301eca52d3b30c3c989d835" title="This is where you set all your item&#39;s properties, such as width, damage, shootSpeed,...">ModItem.SetDefaults</a> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired. When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. WaspNest.csshows how to cache and restore those values. This will only clone the values, any additional logic such as shoot accuracy, recipes, accessory effects, use item logic, etc. will not be copied. The Vanilla Code Adaption wiki pageteaches how to make a complete clone of an existing item. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">TypeToClone</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -3718,7 +3745,7 @@ Otherwise, return <code>true</code>. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Overrides the value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a>. </p>
+<p>Overrides the value of <a class="el" href="class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35" title="The localized name of this item without stack size or prefixes.   Can be overridden using SetNameOver...">Name</a> for this <a class="el" href="class_item.html">Item</a> instance. This is used mainly to change the name shown on the item tooltip for recipe group ingredients to "Any RecipeGroupItemNameHere". This does not change the actual name of this item when shown elsewhere as text, for example, so it is not a suitable way to permanently change an item name. To do that a localization file entryshould be used instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The new name of this <a class="el" href="class_item.html">Item</a>.</td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -107,6 +107,8 @@ $(document).ready(function(){initNavTree('class_recipe.html',''); initResizable(
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_1_1_consumption_rules.html">ConsumptionRules</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_1_1_ingredient_quantity_rules.html">IngredientQuantityRules</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -128,6 +130,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptsGroup</b> (int
 <tr class="memitem:a201aa97265a199607d864e8fbe40dda6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a201aa97265a199607d864e8fbe40dda6">AddCondition</a> (params Condition[] conditions)</td></tr>
 <tr class="memdesc:a201aa97265a199607d864e8fbe40dda6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an array of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).  <a href="class_recipe.html#a201aa97265a199607d864e8fbe40dda6">More...</a><br /></td></tr>
 <tr class="separator:a201aa97265a199607d864e8fbe40dda6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a297e1a167daf638e8859b7b55a599ab4"><td class="memItemLeft" align="right" valign="top"><a id="a297e1a167daf638e8859b7b55a599ab4" name="a297e1a167daf638e8859b7b55a599ab4"></a>
+<a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddConsumeIngredientCallback</b> (<a class="el" href="class_recipe.html#af8d62dc389a124c2e1efe81092a8c0d1">IngredientQuantityCallback</a> callback)</td></tr>
+<tr class="memdesc:a297e1a167daf638e8859b7b55a599ab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired. <br /></td></tr>
+<tr class="separator:a297e1a167daf638e8859b7b55a599ab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf2ce910bb8fc35fb9ec7fb195a242c2"><td class="memItemLeft" align="right" valign="top"><a id="aaf2ce910bb8fc35fb9ec7fb195a242c2" name="aaf2ce910bb8fc35fb9ec7fb195a242c2"></a>
 <a class="el" href="class_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddConsumeItemCallback</b> (ConsumeItemCallback callback)</td></tr>
 <tr class="memdesc:aaf2ce910bb8fc35fb9ec7fb195a242c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired. <br /></td></tr>
@@ -260,6 +266,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasTile</b> (<a class
 <tr class="separator:a7cf412677291de9430a963a2d24b1a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23f78c045c6fd2880537b398da318dd4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe.html#a23f78c045c6fd2880537b398da318dd4">HasTile&lt; T &gt;</a> ()</td></tr>
 <tr class="separator:a23f78c045c6fd2880537b398da318dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8d62dc389a124c2e1efe81092a8c0d1"><td class="memItemLeft" align="right" valign="top"><a id="af8d62dc389a124c2e1efe81092a8c0d1" name="af8d62dc389a124c2e1efe81092a8c0d1"></a>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>IngredientQuantityCallback</b> (<a class="el" href="class_recipe.html">Recipe</a> recipe, int type, ref int amount, bool isDecrafting)</td></tr>
+<tr class="memdesc:af8d62dc389a124c2e1efe81092a8c0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called for both Create() and Item.GetShimmered, using <em>isDecrafting</em>  = <code>true</code> to denote a shimmer operation <br /></td></tr>
+<tr class="separator:af8d62dc389a124c2e1efe81092a8c0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4151c3bb0900f280d531e3a1b629cd59"><td class="memItemLeft" align="right" valign="top"><a id="a4151c3bb0900f280d531e3a1b629cd59" name="a4151c3bb0900f280d531e3a1b629cd59"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCraftCallback</b> (<a class="el" href="class_recipe.html">Recipe</a> recipe, <a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_item.html">Item</a> &gt; consumedItems, <a class="el" href="class_item.html">Item</a> destinationStack)</td></tr>
 <tr class="separator:a4151c3bb0900f280d531e3a1b629cd59"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -385,7 +395,7 @@ Public Attributes</h2></td></tr>
 <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>acceptedGroups</b> = new()</td></tr>
 <tr class="separator:a6999c5d0f9de0ac14ad72daf06849ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86772e3b05db56fe6165cda4169fd40a"><td class="memItemLeft" align="right" valign="top"><a id="a86772e3b05db56fe6165cda4169fd40a" name="a86772e3b05db56fe6165cda4169fd40a"></a>
-readonly <a class="el" href="class_list.html">List</a>&lt; Condition &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Conditions</b> = new <a class="el" href="class_list.html">List</a>&lt;Condition&gt;()</td></tr>
+readonly <a class="el" href="class_list.html">List</a>&lt; Condition &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Conditions</b> = new()</td></tr>
 <tr class="separator:a86772e3b05db56fe6165cda4169fd40a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe78f7e05bb32f31689f4d7619c178bb"><td class="memItemLeft" align="right" valign="top"><a id="afe78f7e05bb32f31689f4d7619c178bb" name="afe78f7e05bb32f31689f4d7619c178bb"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>createItem</b> = new <a class="el" href="class_item.html">Item</a>()</td></tr>
@@ -394,7 +404,7 @@ readonly <a class="el" href="class_list.html">List</a>&lt; Condition &gt;&#160;<
 <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_item.html">Item</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>customShimmerResults</b></td></tr>
 <tr class="separator:a4585663049386f7d8345538d774b6a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e61b3d820f3d7790a27ad98a2b5bb8"><td class="memItemLeft" align="right" valign="top"><a id="ab5e61b3d820f3d7790a27ad98a2b5bb8" name="ab5e61b3d820f3d7790a27ad98a2b5bb8"></a>
-readonly <a class="el" href="class_list.html">List</a>&lt; Condition &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DecraftConditions</b> = new <a class="el" href="class_list.html">List</a>&lt;Condition&gt;()</td></tr>
+readonly <a class="el" href="class_list.html">List</a>&lt; Condition &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DecraftConditions</b> = new()</td></tr>
 <tr class="separator:ab5e61b3d820f3d7790a27ad98a2b5bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a559a239e8198f562454d3be2265b0e40"><td class="memItemLeft" align="right" valign="top"><a id="a559a239e8198f562454d3be2265b0e40" name="a559a239e8198f562454d3be2265b0e40"></a>
 readonly <a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Mod</b></td></tr>
@@ -420,6 +430,10 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>numRecipes</b><
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:acd60f143e2a0288f83dd708f0323fbe4"><td class="memItemLeft" align="right" valign="top"><a id="acd60f143e2a0288f83dd708f0323fbe4" name="acd60f143e2a0288f83dd708f0323fbe4"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>DecraftDisabled</b><code> [get]</code></td></tr>
+<tr class="memdesc:acd60f143e2a0288f83dd708f0323fbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Any recipe with this flag won't be decrafted in shimmer. <br /></td></tr>
+<tr class="separator:acd60f143e2a0288f83dd708f0323fbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9bf3267c476541e9827aab485a3e244"><td class="memItemLeft" align="right" valign="top"><a id="ae9bf3267c476541e9827aab485a3e244" name="ae9bf3267c476541e9827aab485a3e244"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Disabled</b><code> [get]</code></td></tr>
 <tr class="memdesc:ae9bf3267c476541e9827aab485a3e244"><td class="mdescLeft">&#160;</td><td class="mdescRight">Any recipe with this flag won't be shown in game. <br /></td></tr>

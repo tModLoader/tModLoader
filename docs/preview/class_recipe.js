@@ -1,9 +1,11 @@
 var class_recipe =
 [
-    [ "ConsumptionRules", "class_recipe_1_1_consumption_rules.html", "class_recipe_1_1_consumption_rules" ],
+    [ "ConsumptionRules", "class_recipe_1_1_consumption_rules.html", null ],
+    [ "IngredientQuantityRules", "class_recipe_1_1_ingredient_quantity_rules.html", "class_recipe_1_1_ingredient_quantity_rules" ],
     [ "AddCondition", "class_recipe.html#ae836542e8c39a03f778756c0cf830639", null ],
     [ "AddCondition", "class_recipe.html#aca15dbdbe8d4a62c21673c369c0f908c", null ],
     [ "AddCondition", "class_recipe.html#a201aa97265a199607d864e8fbe40dda6", null ],
+    [ "AddConsumeIngredientCallback", "class_recipe.html#a297e1a167daf638e8859b7b55a599ab4", null ],
     [ "AddConsumeItemCallback", "class_recipe.html#aaf2ce910bb8fc35fb9ec7fb195a242c2", null ],
     [ "AddDecraftCondition", "class_recipe.html#a3dff5481bb47513683cfdd8abec91a94", null ],
     [ "AddDecraftCondition", "class_recipe.html#a65694504cb539a30b4b834cfe5c66e1e", null ],
@@ -24,11 +26,13 @@ var class_recipe =
     [ "Clone", "class_recipe.html#a19108cd242ac564fae40dfb601d1b968", null ],
     [ "Create", "class_recipe.html#a474a5953b0fbbdec4c68881277228d79", null ],
     [ "DisableDecraft", "class_recipe.html#a42c2a6104d56731eae1d3c50137485ae", null ],
+    [ "IngredientQuantityCallback", "class_recipe.html#af8d62dc389a124c2e1efe81092a8c0d1", null ],
     [ "Register", "class_recipe.html#adbbadf559d181a9ed34ce2082c6f8f9f", null ],
     [ "SortAfter", "class_recipe.html#aa4dc1aeebc0fe4c0478d75ef5543e79b", null ],
     [ "SortAfterFirstRecipesOf", "class_recipe.html#a80a75313e584f7c91e3dc0e02c594708", null ],
     [ "SortBefore", "class_recipe.html#a57e4f436ccb5261a6a76bf4b2d1bf268", null ],
     [ "SortBeforeFirstRecipesOf", "class_recipe.html#ad2a91457644909e8e77df62463615dad", null ],
+    [ "DecraftDisabled", "class_recipe.html#acd60f143e2a0288f83dd708f0323fbe4", null ],
     [ "Disabled", "class_recipe.html#ae9bf3267c476541e9827aab485a3e244", null ],
     [ "RecipeIndex", "class_recipe.html#ab6306a38f7fdb58f08a141f27143c773", null ]
 ];

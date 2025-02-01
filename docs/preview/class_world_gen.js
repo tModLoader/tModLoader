@@ -10,6 +10,7 @@ var class_world_gen =
     [ "WorldSize", "class_world_gen_1_1_world_size.html", null ],
     [ "AddBuriedChest", "class_world_gen.html#a2a4b53d8f88a0781d0592b72380642a3", null ],
     [ "Convert", "class_world_gen.html#a4c0e5140584ee1a66fa8e98e5fef5494", null ],
+    [ "GetTreeBottom", "class_world_gen.html#aa9afddbc1172acfb7cf6564d2ace3fd0", null ],
     [ "GrowMoreVines", "class_world_gen.html#a449552fb320c54ae613675a3e35d59ec", null ],
     [ "InWorld", "class_world_gen.html#a5ee5c1aa704eb7690bc7fdd4a1147e66", null ],
     [ "KillTile", "class_world_gen.html#aab8789310665bd013cbc7cbc955137ed", null ],

@@ -1,5 +1,24 @@
 var NAVTREEINDEX26 =
 {
+"struct_shimmer_unstuck_helper.html":[3,0,1122],
+"struct_shopping_settings.html":[3,0,1124],
+"struct_smart_interact_scan_settings.html":[3,0,1143],
+"struct_sound_style.html":[3,0,1160],
+"struct_sound_style.html#a0505bc0358495ac3390eaad7966123a0":[3,0,1160,5],
+"struct_sound_style.html#a46cc0193d6bbabe2401fd4b45bbd6e8a":[3,0,1160,12],
+"struct_sound_style.html#a5075312e4a769fda0820fefd65473af2":[3,0,1160,0],
+"struct_sound_style.html#a5202c2e6b1a467becfbd430387484c43":[3,0,1160,11],
+"struct_sound_style.html#a5d342dfbf2d069e486c19e119bef9885":[3,0,1160,8],
+"struct_sound_style.html#a69d7ee6ec7278e9c00fb3051e9f2a225":[3,0,1160,1],
+"struct_sound_style.html#a80d0ec72d506be9b268f13d87dac01d2":[3,0,1160,4],
+"struct_sound_style.html#a87ddc4142df801a259b3c4e510d8f40d":[3,0,1160,7],
+"struct_sound_style.html#a89eebee91ea59d9c7caef248cd6a6522":[3,0,1160,9],
+"struct_sound_style.html#a962caebf253b04e394b5400150cb343a":[3,0,1160,6],
+"struct_sound_style.html#a9bbc4e8110bbab57351c8100ba17ed1f":[3,0,1160,3],
+"struct_sound_style.html#ad12afc077a47e80bc201345e1c8a9871":[3,0,1160,10],
+"struct_sound_style.html#adc51a634f4a7cc2725f6881b0afce994":[3,0,1160,2],
+"struct_sprite_frame.html":[3,0,1168],
+"struct_sprite_render_target_helper.html":[3,0,1169],
 "struct_stat_inheritance_data.html":[3,0,1177],
 "struct_stat_modifier.html":[3,0,1178],
 "struct_stat_modifier.html#a0aa73c39bba3ab2aa34f82c131d1f20b":[3,0,1178,3],
@@ -14,6 +33,7 @@ var NAVTREEINDEX26 =
 "struct_stat_modifier.html#ae406ad7481a888e931ea62bc85916e9f":[3,0,1178,4],
 "struct_steamed_wraps_1_1_item_install_info.html":[3,0,1181,0],
 "struct_style_dimension.html":[3,0,1187],
+"struct_style_dimension.html#a0c959bcdc133227ba2a5226e8cd4d4c4":[3,0,1187,0],
 "struct_teleport_pylon_info.html":[3,0,1212],
 "struct_tile.html":[3,0,1228],
 "struct_tile.html#a047cb32edc0780caae12689f296b2faa":[3,0,1228,9],
@@ -110,5 +130,5 @@ var NAVTREEINDEX26 =
 "struct_world_gen_1_1_check_tree_settings.html":[3,0,1498,0],
 "struct_world_gen_1_1_grow_tree_settings.html":[3,0,1498,1],
 "struct_world_gen_1_1_tile_merge_cull_cache.html":[3,0,1498,6],
-"structnativefiledialog_1_1nfdpathset__t.html":[3,0,863,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[3,0,862,0]
 };

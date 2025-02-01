@@ -22,10 +22,12 @@ var class_global_tile =
     [ "NearbyEffects", "class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd", null ],
     [ "PostSetupTileMerge", "class_global_tile.html#a7c20aceb0500f1518da17f0a9c29294b", null ],
     [ "PreHitWire", "class_global_tile.html#a9e1dd0f415df215847048a005719966c", null ],
+    [ "PreShakeTree", "class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6", null ],
     [ "Register", "class_global_tile.html#afe930e11a453ea3bac520f8c5b7a481d", null ],
     [ "RightClick", "class_global_tile.html#ab7419ebee394a8290e7731b86e47676f", null ],
     [ "SetSpriteEffects", "class_global_tile.html#a21006e6002030adc0e508f52a7432fcb", null ],
     [ "SetupContent", "class_global_tile.html#a91ad460f801e6aabb68ae343c9fa5c81", null ],
+    [ "ShakeTree", "class_global_tile.html#a55ba6a9536bb124af00a371850286dbb", null ],
     [ "Slope", "class_global_tile.html#aea6470973410113a596702a787037288", null ],
     [ "SpecialDraw", "class_global_tile.html#a09b794bc47b52d1aa682b22cc0d97aa2", null ],
     [ "TileFrame", "class_global_tile.html#a28bcb7cd4cc43ba2cf63073782154d4e", null ]

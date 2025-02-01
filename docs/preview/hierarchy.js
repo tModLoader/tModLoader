@@ -1642,6 +1642,7 @@ var hierarchy =
     [ "InGameNotificationsTracker", "class_in_game_notifications_tracker.html", null ],
     [ "IngameOptions", "class_ingame_options.html", null ],
     [ "InGamePopups", "class_in_game_popups.html", null ],
+    [ "Recipe.IngredientQuantityRules", "class_recipe_1_1_ingredient_quantity_rules.html", null ],
     [ "IntRange", "struct_int_range.html", null ],
     [ "InvasionID", "class_invasion_i_d.html", null ],
     [ "BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions", "class_bestiary_database_n_p_cs_populator_1_1_common_tags_1_1_spawn_conditions_1_1_invasions.html", null ],

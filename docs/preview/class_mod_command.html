@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -212,10 +212,12 @@ Properties</h2></td></tr>
 abstract string&#160;</td><td class="memItemRight" valign="bottom"><b>Command</b><code> [get]</code></td></tr>
 <tr class="memdesc:a0814d1ae7619161d0c17fe10b964f259"><td class="mdescLeft">&#160;</td><td class="mdescRight">The desired text to trigger this command.<br /></td></tr>
 <tr class="separator:a0814d1ae7619161d0c17fe10b964f259"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7aaf933950868c1e9c6c0e24dba7e5a"><td class="memItemLeft" align="right" valign="top"><a id="af7aaf933950868c1e9c6c0e24dba7e5a" name="af7aaf933950868c1e9c6c0e24dba7e5a"></a>
-virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>Description</b><code> [get]</code></td></tr>
-<tr class="memdesc:af7aaf933950868c1e9c6c0e24dba7e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A short description of this command.<br /></td></tr>
+<tr class="memitem:af7aaf933950868c1e9c6c0e24dba7e5a"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_command.html#af7aaf933950868c1e9c6c0e24dba7e5a">Description</a><code> [get]</code></td></tr>
+<tr class="memdesc:af7aaf933950868c1e9c6c0e24dba7e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A short description of this command. <a href="class_mod_command.html#af7aaf933950868c1e9c6c0e24dba7e5a">More...</a><br /></td></tr>
 <tr class="separator:af7aaf933950868c1e9c6c0e24dba7e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79d8969374cdb1499153284dea007884"><td class="memItemLeft" align="right" valign="top"><a id="a79d8969374cdb1499153284dea007884" name="a79d8969374cdb1499153284dea007884"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCaseSensitive</b><code> [get]</code></td></tr>
+<tr class="separator:a79d8969374cdb1499153284dea007884"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a4b5e514832b154db8499d813f0cc5b"><td class="memItemLeft" align="right" valign="top"><a id="a8a4b5e514832b154db8499d813f0cc5b" name="a8a4b5e514832b154db8499d813f0cc5b"></a>
 abstract CommandType&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</code></td></tr>
 <tr class="memdesc:a8a4b5e514832b154db8499d813f0cc5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag enum representing context where this command operates.<br /></td></tr>
@@ -383,6 +385,32 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it. </p>
 
 <p>Reimplemented from <a class="el" href="class_mod_type.html#a9b37711592d855e0fbf38caff1dce343">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="af7aaf933950868c1e9c6c0e24dba7e5a" name="af7aaf933950868c1e9c6c0e24dba7e5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7aaf933950868c1e9c6c0e24dba7e5a">&#9670;&nbsp;</a></span>Description</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string ModCommand.Description</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A short description of this command.</p>
+<p >summary&gt;If false (default), the arguments to Action will be provided as lowercase.</p>
 
 </div>
 </div>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -221,7 +221,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConditio
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b> (<a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit)</td></tr>
 <tr class="memdesc:a9ac8099138100a46319697f4aa247e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen whenever this <a class="el" href="class_n_p_c.html">NPC</a> is hit, such as creating dust or gores. <br  />
  Called on local, server and remote clients. <br  />
- Usually when something happens when an <a class="el" href="class_n_p_c.html">NPC</a> dies such as item spawning, you use <a class="el" href="struct_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (<a class="el" href="class_n_p_c.html#a067a1a8a65adff35ccb1d12cd1a2c04a" title="The current life of the NPC. Automatically set to the value of lifeMax at the end of SetDefaults.">NPC.life</a> &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds. <br  />
+ Usually when something happens when an <a class="el" href="class_n_p_c.html">NPC</a> dies such as item spawning, you use <a class="el" href="struct_n_p_c_loot.html" title="Provides access to ItemDropDatabase&#39;s methods specific to this NPC type.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (<a class="el" href="class_n_p_c.html#a067a1a8a65adff35ccb1d12cd1a2c04a" title="The current life of the NPC. Automatically set to the value of lifeMax at the end of SetDefaults.">NPC.life</a> &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds. <br  />
  <br /></td></tr>
 <tr class="separator:a9ac8099138100a46319697f4aa247e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc8f409acec8b46fed06244d8c9ce686"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#afc8f409acec8b46fed06244d8c9ce686">LoadData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
@@ -237,28 +237,22 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 <p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.  <a href="class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde">More...</a><br /></td></tr>
 <tr class="separator:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8fbc2330dc5ccf91b253860794ae804"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804">ModifyHitByItem</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
-<tr class="memdesc:ae8fbc2330dc5ccf91b253860794ae804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. <br  />
- Runs on the local client. <br  />
-  <a href="class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804">More...</a><br /></td></tr>
+<tr class="memdesc:ae8fbc2330dc5ccf91b253860794ae804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. Runs on the local client.  <a href="class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804">More...</a><br /></td></tr>
 <tr class="separator:ae8fbc2330dc5ccf91b253860794ae804"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05d683ec6c2d648e94be20243cf6dc30"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a05d683ec6c2d648e94be20243cf6dc30">ModifyHitByProjectile</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
-<tr class="memdesc:a05d683ec6c2d648e94be20243cf6dc30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_mod_n_p_c.html#a05d683ec6c2d648e94be20243cf6dc30">More...</a><br /></td></tr>
+<tr class="memdesc:a05d683ec6c2d648e94be20243cf6dc30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.  <a href="class_mod_n_p_c.html#a05d683ec6c2d648e94be20243cf6dc30">More...</a><br /></td></tr>
 <tr class="separator:a05d683ec6c2d648e94be20243cf6dc30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a276c35b263374a49f86344cd647b8d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a9a276c35b263374a49f86344cd647b8d">ModifyHitNPC</a> (<a class="el" href="class_n_p_c.html">NPC</a> target, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
-<tr class="memdesc:a9a276c35b263374a49f86344cd647b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
- Runs in single player or on the server. <br  />
-  <a href="class_mod_n_p_c.html#a9a276c35b263374a49f86344cd647b8d">More...</a><br /></td></tr>
+<tr class="memdesc:a9a276c35b263374a49f86344cd647b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. Runs in single player or on the server.  <a href="class_mod_n_p_c.html#a9a276c35b263374a49f86344cd647b8d">More...</a><br /></td></tr>
 <tr class="separator:a9a276c35b263374a49f86344cd647b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a70e7d66c1426ca13bbc5a70b59de4a95">ModifyHitPlayer</a> (<a class="el" href="class_player.html">Player</a> target, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
-<tr class="memdesc:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. <br  />
- Runs on the local client. <br  />
-  <a href="class_mod_n_p_c.html#a70e7d66c1426ca13bbc5a70b59de4a95">More...</a><br /></td></tr>
+<tr class="memdesc:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. Runs on the local client.  <a href="class_mod_n_p_c.html#a70e7d66c1426ca13bbc5a70b59de4a95">More...</a><br /></td></tr>
 <tr class="separator:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b4e1b38634e000d79d027008f301f91"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91">ModifyHoverBoundingBox</a> (ref Rectangle boundingBox)</td></tr>
 <tr class="memdesc:a5b4e1b38634e000d79d027008f301f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the bounding box for hovering over this <a class="el" href="class_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed).  <a href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91">More...</a><br /></td></tr>
 <tr class="separator:a5b4e1b38634e000d79d027008f301f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440518cbf4705dd06498ebe6ba6d1e62"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a440518cbf4705dd06498ebe6ba6d1e62">ModifyIncomingHit</a> (ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
-<tr class="memdesc:a440518cbf4705dd06498ebe6ba6d1e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.  <a href="class_mod_n_p_c.html#a440518cbf4705dd06498ebe6ba6d1e62">More...</a><br /></td></tr>
+<tr class="memdesc:a440518cbf4705dd06498ebe6ba6d1e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.  <a href="class_mod_n_p_c.html#a440518cbf4705dd06498ebe6ba6d1e62">More...</a><br /></td></tr>
 <tr class="separator:a440518cbf4705dd06498ebe6ba6d1e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1363bd911d2f60b9f52eb224db2fc304"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a1363bd911d2f60b9f52eb224db2fc304">ModifyNPCLoot</a> (<a class="el" href="struct_n_p_c_loot.html">NPCLoot</a> npcLoot)</td></tr>
 <tr class="memdesc:a1363bd911d2f60b9f52eb224db2fc304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify <a class="el" href="class_n_p_c.html">NPC</a> loot tables to drop on death and to appear in the Bestiary.<br  />
@@ -333,7 +327,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostAI</b> ()
 <tr class="memdesc:af6b6f93e24d698d9d216fe8f1df8f7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this <a class="el" href="class_n_p_c.html">NPC</a>, or to modify the way this <a class="el" href="class_n_p_c.html">NPC</a> is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the <a class="el" href="class_n_p_c.html">NPC</a> (useful if you're manually drawing the <a class="el" href="class_n_p_c.html">NPC</a>). Returns true by default.  <a href="class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc">More...</a><br /></td></tr>
 <tr class="separator:af6b6f93e24d698d9d216fe8f1df8f7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9109fb61ac3fc600a4bf7c6b12d16ea"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ae9109fb61ac3fc600a4bf7c6b12d16ea">PreKill</a> ()</td></tr>
-<tr class="memdesc:ae9109fb61ac3fc600a4bf7c6b12d16ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not this <a class="el" href="class_n_p_c.html">NPC</a> will do anything upon death (besides dying). Returns true by default.  <a href="class_mod_n_p_c.html#ae9109fb61ac3fc600a4bf7c6b12d16ea">More...</a><br /></td></tr>
+<tr class="memdesc:ae9109fb61ac3fc600a4bf7c6b12d16ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not this <a class="el" href="class_n_p_c.html">NPC</a> will do anything upon death (besides dying). This method can also be used to dynamically prevent specific item loot using <a class="el" href="class_n_p_c_loader.html#ad278795f89f080ad20f4a1670593eede" title="Allows you to stop an NPC from dropping specific loot by adding item IDs to this list....">NPCLoader.blockLoot</a>, but editing the drop rules themselves is usually the better approach. Returning false will skip dropping loot, the NPCLoader.OnKill(NPC) methods, and logic setting boss flags (NPC.DoDeathEvents). Returns true by default.  <a href="class_mod_n_p_c.html#ae9109fb61ac3fc600a4bf7c6b12d16ea">More...</a><br /></td></tr>
 <tr class="separator:ae9109fb61ac3fc600a4bf7c6b12d16ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb7c4468cbdba533146c4e35f3299a69"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#abb7c4468cbdba533146c4e35f3299a69">ReceiveExtraAI</a> (BinaryReader reader)</td></tr>
 <tr class="memdesc:abb7c4468cbdba533146c4e35f3299a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_mod_n_p_c.html#ab97269b1204781b8cbf396c31e604154" title="If you are storing AI information outside of the NPC.ai array, use this to send that AI information b...">SendExtraAI</a>. <br  />
@@ -1905,9 +1899,7 @@ is only used for the player for ) </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. <br  />
- Runs on the local client. <br  />
- </p>
+<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. Runs on the local client. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td></td></tr>
@@ -1953,7 +1945,7 @@ is only used for the player for ) </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
+<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1998,9 +1990,7 @@ is only used for the player for ) </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
- Runs in single player or on the server. <br  />
- </p>
+<p>Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a friendly <a class="el" href="class_n_p_c.html">NPC</a>. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. Runs in single player or on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td></td></tr>
@@ -2045,9 +2035,7 @@ is only used for the player for ) </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. <br  />
- Runs on the local client. <br  />
- </p>
+<p>Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. Runs on the local client. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td></td></tr>
@@ -2116,7 +2104,7 @@ is only used for the player for ) </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. </p>
+<p>Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">modifiers</td><td></td></tr>
@@ -2761,7 +2749,7 @@ and  are already taken into account. </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine whether or not this <a class="el" href="class_n_p_c.html">NPC</a> will do anything upon death (besides dying). Returns true by default. </p>
+<p>Allows you to determine whether or not this <a class="el" href="class_n_p_c.html">NPC</a> will do anything upon death (besides dying). This method can also be used to dynamically prevent specific item loot using <a class="el" href="class_n_p_c_loader.html#ad278795f89f080ad20f4a1670593eede" title="Allows you to stop an NPC from dropping specific loot by adding item IDs to this list....">NPCLoader.blockLoot</a>, but editing the drop rules themselves is usually the better approach. Returning false will skip dropping loot, the NPCLoader.OnKill(NPC) methods, and logic setting boss flags (NPC.DoDeathEvents). Returns true by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
