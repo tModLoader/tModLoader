@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.11</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -247,7 +247,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
  <b>NOTE:</b> Using <a class="el" href="class_item.html#a3cc4bce9d2b8ac615ad7460925df5ae4" title="Use this instead of Clone for much faster state snapshotting and change sync detection....">Item.CopyNetStateTo</a> is the recommended way of creating item snapshots.  <a href="class_mod_player.html#a99b4decd672a09196ad922ccdf4d03ec">More...</a><br /></td></tr>
 <tr class="separator:a99b4decd672a09196ad922ccdf4d03ec inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0ee4c692fb63a5feacc4844676f0c8d inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#ad0ee4c692fb63a5feacc4844676f0c8d">DrawEffects</a> (<a class="el" href="struct_player_draw_set.html">PlayerDrawSet</a> drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)</td></tr>
-<tr class="memdesc:ad0ee4c692fb63a5feacc4844676f0c8d inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br  />
+<tr class="memdesc:ad0ee4c692fb63a5feacc4844676f0c8d inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br  />
  This will be called multiple times a frame if a player afterimage is being drawn. Check  <a href="class_mod_player.html#ad0ee4c692fb63a5feacc4844676f0c8d">More...</a><br /></td></tr>
 <tr class="separator:ad0ee4c692fb63a5feacc4844676f0c8d inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa89ef88fba5ce8cf9e833c5d6b6e31e5 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top"><a id="aa89ef88fba5ce8cf9e833c5d6b6e31e5" name="aa89ef88fba5ce8cf9e833c5d6b6e31e5"></a>
