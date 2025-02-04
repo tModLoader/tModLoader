@@ -32,8 +32,9 @@ public partial class TileEntity
 
 	/// <summary>
 	/// Receives custom data sent in the <see cref="NetSend"/> hook.
-	/// <br/>Called while receiving tile data (!lightReceive) and when <see cref="MessageID.TileEntitySharing"/> is received (lightReceive).
-	/// <br/>Only called on the client.
+	/// <para/> Called while receiving tile data (!lightReceive) and when <see cref="MessageID.TileEntitySharing"/> is received (lightReceive).
+	/// <para/> Note that this is called on a new instance that will replace the existing instance at the <see cref="Position"/>, if any. <see cref="ID"/> is not assigned yet when this is called.
+	/// <para/> Only called on the client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
 	public virtual void NetReceive(BinaryReader reader) => ReadExtraData(reader, true);

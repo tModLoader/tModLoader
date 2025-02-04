@@ -19,7 +19,7 @@
 +	/// <summary> Maps tile coordinate locations to the TileEntity at that location. </summary>
  	public static Dictionary<Point16, TileEntity> ByPosition = new Dictionary<Point16, TileEntity>();
  	public static int TileEntitiesNextID;
-+	/// <summary> A unique ID for each TileEntity instance in the world. </summary>
++	/// <summary> A unique ID for each TileEntity instance in the world. This ID is consistent in multiplayer. </summary>
  	public int ID;
 +	/// <summary> The tile coordinate location of this TileEntity. Will typically be the top left corner of the corresponding multitile, but not necessarily. </summary>
  	public Point16 Position;
@@ -43,7 +43,15 @@
  	}
  
  	public static void PlaceEntityNet(int x, int y, int type)
-@@ -59,38 +_,62 @@
+@@ -55,42 +_,70 @@
+ 			manager.NetPlaceEntity(type, x, y);
+ 	}
+ 
++	/// <summary>
++	/// Allows logic to execute every game update for this placed Tile Entity. Called on each placed Tile Entity.
++	/// <para/> This hook is not called for multiplayer clients. The <see cref="ID.MessageID.TileEntitySharing"/> network message will need be used to keep clients in sync if necessary. 
++	/// </summary>
+ 	public virtual void Update()
  	{
  	}
  
