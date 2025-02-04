@@ -2,8 +2,10 @@ using ExampleMod.Common.Players;
 using ExampleMod.Common.Systems;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
+using ExampleMod.Content.TileEntities;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,7 +22,8 @@ namespace ExampleMod
 			ExampleTeleportToStatue,
 			ExampleDodge,
 			ExampleTownPetUnlockOrExchange,
-			ExampleResourceEffect
+			ExampleResourceEffect,
+			BasicTileEntityClaimWater
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -55,6 +58,13 @@ namespace ExampleMod
 					break;
 				case MessageType.ExampleResourceEffect:
 					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);
+					break;
+				case MessageType.BasicTileEntityClaimWater:
+					int ID = reader.ReadInt32();
+					if (TileEntity.ByID[ID] is BasicTileEntity basicTileEntity) {
+						// Will cause syncNeeded to be set which will sync the data to other clients
+						basicTileEntity.WaterFillLevel = 0;
+					}
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
