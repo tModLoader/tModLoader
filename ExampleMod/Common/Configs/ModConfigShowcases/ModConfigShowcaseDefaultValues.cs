@@ -46,8 +46,8 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public string FavoritePokemon;
 
 		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
-		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
-		public string[] ArrayOfString = new string[] { "Give Up", "Give Up" };
+		[OptionStrings(["Win", "Lose", "Give Up"])]
+		public string[] ArrayOfString = ["Give Up", "Give Up"];
 
 		// DefaultListValue provides the default value to be added when the user clicks add in the UI.
 		[DefaultListValue(123)]
