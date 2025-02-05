@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
@@ -28,6 +29,14 @@ public class tModPorter
 		MakeBackups = makeBackups;
 	}
 
+	private static bool TreatErrorAsWarning(WorkspaceDiagnostic diagnostic)
+	{
+		var msg = diagnostic.Message;
+		if (Regex.IsMatch(msg, "This mismatch may cause runtime failures")) return true;
+		if (Regex.IsMatch(msg, "has a known \\w+ severity vulnerability")) return true;
+		return false;
+	}
+
 	public async Task ProcessProject(string projectPath, Action<ProgressUpdate>? updateProgress = null) {
 
 		Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -49,7 +58,7 @@ public class tModPorter
 
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
 		workspace.WorkspaceFailed += (o, e) => {
-			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.ToString().Contains("This mismatch may cause runtime failures"))
+			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !TreatErrorAsWarning(e.Diagnostic))
 				throw new Exception(e.Diagnostic.ToString());
 
 			updateProgress(new Warning(e.Diagnostic.ToString()));

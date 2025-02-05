@@ -113,8 +113,8 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 
 				drawScale *= Scale;
 				Vector2 vector = BackgroundTexture.Size() * Scale;
-				Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
-				Vector2 origin = rectangle2.Size() * (pulseScale / 2f - 0.5f);
+				Vector2 position2 = dimensions.Position() + vector / 2f;
+				Vector2 origin = rectangle2.Size() / 2;
 
 				if (ItemLoader.PreDrawInInventory(Item, spriteBatch, position2, rectangle2, Item.GetAlpha(newColor),
 					Item.GetColor(Color.White), origin, drawScale * pulseScale)) {

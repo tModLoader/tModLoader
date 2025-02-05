@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -23,6 +24,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileFrameImportant[Type] = true;
 			// Set to True if you'd like your tile to die if hit by lava
 			Main.tileLavaDeath[Type] = true;
+			// This allows the tile to sway in the wind and from player interaction when used together with the code in PreDraw below.
+			TileID.Sets.MultiTileSway[Type] = true;
 			// Use this to utilize an existing template
 			// The names of styles are self explanatory usually (you can see all existing templates at the link mentioned earlier)
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2Top);
@@ -66,7 +69,7 @@ namespace ExampleMod.Content.Tiles
 				uniqueAnimationFrame += 3;
 			uniqueAnimationFrame %= 6;
 
-			// frameYOffset = modTile.animationFrameHeight * Main.tileFrame [type] will already be set before this hook is called
+			// frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type] will already be set before this hook is called
 			// But we have a horizontal animated texture, so we use frameXOffset instead of frameYOffset
 			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
 		}
@@ -141,6 +144,18 @@ namespace ExampleMod.Content.Tiles
 
 			// Above code works, but since we are just mimicking another tile, we can just use the same value
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
+		}
+
+		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
+			Tile tile = Main.tile[i, j];
+
+			if (TileObjectData.IsTopLeft(tile)) {
+				// Makes this tile sway in the wind and with player interaction when used with TileID.Sets.MultiTileSway
+				Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileDrawing.TileCounterType.MultiTileVine);
+			}
+
+			// We must return false here to prevent the normal tile drawing code from drawing the default static tile. Without this a duplicate tile will be drawn.
+			return false;
 		}
 	}
 

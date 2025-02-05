@@ -40,7 +40,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			// By default enemies gain health and attack if hardmode is reached. this NPC should not be affected by that
 			NPCID.Sets.DontDoHardmodeScaling[Type] = true;
-			// Enemies can pick up coins, let's prevent it for this NPC
+			// Enemies can pick up coins and be respawned automatically, let's prevent it for this NPC since we don't want this enemy to respawn outside of a boss fight.
 			NPCID.Sets.CantTakeLunchMoney[Type] = true;
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);

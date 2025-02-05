@@ -14,7 +14,8 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
+/// This class allows you to modify and use hooks for all NPCs, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 {
@@ -228,18 +229,15 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 		return false;
 	}
 
-	/// <summary>
-	/// Allows you to determine whether or not NPC from doing anything on death (besides die). Return false to stop the NPC from doing anything special. Returns true by default.
-	/// </summary>
-	/// <param name="npc"></param>
-	/// <returns></returns>
+	/// <inheritdoc cref="ModNPC.PreKill"/>
 	public virtual bool PreKill(NPC npc)
 	{
 		return true;
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// <para/> Most item drops should be done via drop rules registered in <see cref="ModifyNPCLoot(NPC, NPCLoot)"/> or <see cref="ModifyGlobalLoot(GlobalLoot)"/>. Some dynamic NPC drops, such as additional hearts, are more suited for OnKill instead. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossMinion.cs#L101">MinionBossMinion.cs</see> shows an example of an NPC that drops additional hearts. See <see cref="NPC.lastInteraction"/> and <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#player-who-killed-npc">Player who killed NPC wiki section</see> as well for determining which players attacked or killed this NPC.
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void OnKill(NPC npc)
@@ -317,6 +315,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that an NPC does to a player.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -360,6 +359,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC does to a friendly NPC.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -394,6 +394,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to determine whether an NPC can be collided with the player melee weapon when swung. <br/>
 	/// Use <see cref="CanBeHitByItem(NPC, Player, Item)"/> instead for Guide Voodoo Doll-type effects.
 	/// </summary>
+	/// <param name="npc">The NPC being collided with</param>
 	/// <param name="player">The player wielding this item.</param>
 	/// <param name="item">The weapon item the player is holding.</param>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
@@ -406,8 +407,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon. 
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
@@ -442,6 +444,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a projectile.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
@@ -463,6 +466,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="modifiers"></param>

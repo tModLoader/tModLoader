@@ -181,6 +181,9 @@ internal class BuildProperties
 		if (refs.Count != refs.Distinct().Count())
 			throw new Exception("Duplicate mod/weak reference");
 
+		if (properties.dllReferences.Union(properties.modReferences.Select(x => x.mod)).Any())
+			throw new Exception("dllReferences contains duplicate of modReferences");
+
 		//add (mod|weak)References that are not in sortBefore to sortAfter
 		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().ToArray();

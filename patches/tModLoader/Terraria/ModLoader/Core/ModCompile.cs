@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
+using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Core;
@@ -101,6 +102,18 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			File.WriteAllBytes(path, bytes);
 	}
 
+	public static Process StartOnHost(ProcessStartInfo info)
+	{
+		// Steam runtime uses pressure vessel to 'sandbox' the application, providing its own set of system libraries and applications.
+		// We can run commands on the host via `steam-runtime-launch-client --alongside-steam --host -- <the command for the app>`
+		// See the steam runtime docs: https://gitlab.steamos.cloud/steamrt/steam-runtime-tools/-/blob/main/docs/slr-for-game-developers.md#running-commands-outside-the-container
+		if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PRESSURE_VESSEL_RUNTIME"))) {
+			info.Arguments = "--alongside-steam --host -- " + info.FileName + " " + info.Arguments;
+			info.FileName = "steam-runtime-launch-client";
+		}
+		return Process.Start(info);
+	}
+
 	internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
 
 	private IBuildStatus status;
@@ -142,6 +155,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		try {
 			ModOrganizer.EnsureDependenciesExist(modList, true);
 			ModOrganizer.EnsureTargetVersionsMet(modList);
+			ModOrganizer.EnsureHashesAreValid(modList);
 			var sortedModList = ModOrganizer.Sort(modList);
 			modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
 		}
@@ -170,13 +184,13 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			new ModCompile(new ConsoleBuildStatus()).Build(modFolder);
 		}
 		catch (BuildException e) {
-			Console.Error.WriteLine("Error: " + e.Message);
+			ErrorReporting.LogStandardDiagnosticError(e.Message, e.errorCode);
 			if (e.InnerException != null)
 				Console.Error.WriteLine(e.InnerException);
 			Environment.Exit(1);
 		}
 		catch (Exception e) {
-			Console.Error.WriteLine(e);
+			ErrorReporting.LogStandardDiagnosticError(e.Message, ErrorReporting.TMLErrorCode.TML001);
 			Environment.Exit(1);
 		}
 
@@ -223,7 +237,13 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				loadedMod.Close();
 			}
 
-			mod.modFile.Save();
+			try {
+				mod.modFile.Save();
+			}
+			catch (IOException e) {
+				throw new BuildException("Please close tModLoader or disable the mod in-game to build mods directly.", e, ErrorReporting.TMLErrorCode.TML003);
+			}
+
 			ModLoader.EnableMod(mod.Name);
 			// TODO: This should probably enable dependencies recursively as well. They will load properly, but right now the UI does not show them as loaded.
 			LocalizationLoader.HandleModBuilt(mod.Name);

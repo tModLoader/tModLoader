@@ -148,7 +148,8 @@ partial class Utils
 	public static int Repeat(int value, int length) => value >= 0 ? value % length : (value % length) + length;
 
 	/// <summary>
-	/// Bit packs a BitArray in to a Byte Array and then sends the byte array
+	/// Bit packs a BitArray into a Byte Array and then sends the byte array
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static void SendBitArray(BitArray arr, BinaryWriter writer)
 	{
@@ -159,6 +160,7 @@ partial class Utils
 
 	/// <summary>
 	/// Receives the result of SendBitArray, and returns the corresponding BitArray
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static BitArray ReceiveBitArray(int BitArrLength, BinaryReader reader)
 	{
@@ -166,6 +168,8 @@ partial class Utils
 		receive = reader.ReadBytes(receive.Length);
 		return new BitArray(receive);
 	}
+
+	// TODO: Better options to SendBitArray/ReceiveBitArray that don't allocate a new bool[] or BitArray, most likely as extension methods in BinaryIO.cs
 
 	// Common Blocks
 

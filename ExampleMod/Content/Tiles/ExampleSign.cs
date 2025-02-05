@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 
 			// TileObjectData assignment
-			// The TileID.Signs TileObjectData is incorrect, as they sometimes are, so we will not be copying from it in this case
+			// The TileID.Signs TileObjectData doesn't set StyleMultiplier to 5, so we will not be copying from it in this case
 			// Using Style2x2 as a base, we will create a TileObjectData with 5 alternate placements, each anchoring to a different anchor.
 			// We also adjust the Origin for the alternates to match vanilla. Style2x2 starts with a origin at 0, 1 and a AnchorBottom, these will both be adjusted in the alternates.
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -37,10 +37,6 @@ namespace ExampleMod.Content.Tiles
 
 			// To reduce code repetition, we'll use the same AnchorData value multiple times. This works because the tile is as tall as it is wide.
 			AnchorData SolidOrSolidSideAnchor2TilesLong = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide, 2, 0);
-
-			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
-			TileObjectData.newAlternate.AnchorBottom = SolidOrSolidSideAnchor2TilesLong;
-			TileObjectData.addAlternate(0); // Due to a bug in TileLoader.CheckModTile, we need a separate alternate for the normal placement
 
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
 			TileObjectData.newAlternate.Origin = Point16.Zero;
@@ -62,7 +58,8 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newAlternate.AnchorWall = true;
 			TileObjectData.addAlternate(4);
 
-			TileObjectData.newTile.AnchorBottom = SolidOrSolidSideAnchor2TilesLong; // Finally, we restore the default AnchorBottom. 
+			// Finally, we restore the default AnchorBottom, the extra AnchorTypes here allow placing on tables, platforms, and other tiles.
+			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table | AnchorType.SolidSide, 2, 0);
 			TileObjectData.addTile(Type);
 
 			// Map entry and extra localization
@@ -78,7 +75,6 @@ namespace ExampleMod.Content.Tiles
 			if (signId != -1) {
 				Sign.TextSign(signId, DefaultSignText.Value);
 			}
-
 		}
 
 		public override bool RightClick(int i, int j) {

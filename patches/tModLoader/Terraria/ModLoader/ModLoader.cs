@@ -64,6 +64,7 @@ public static class ModLoader
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
 	internal static bool notifyNewMainMenuThemes = true;
 	internal static bool showNewUpdatedModsInfo = true;
+	internal static bool showConfirmationWindowWhenEnableDisableAllMods = true;
 	internal static bool skipLoad;
 	internal static Action OnSuccessfulLoad;
 
@@ -74,7 +75,8 @@ public static class ModLoader
 	internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 	internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
+	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found so it should only be used for mods known to be enabled, such as a strong mod dependency.
+	/// <para/> Use <see cref="TryGetMod(string, out Mod)"/> instead if the mod might not be enabled. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	public static Mod GetMod(string name) => modsByName[name];
 
@@ -359,6 +361,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 		Main.Configuration.Put("ShowNewUpdatedModsInfo", showNewUpdatedModsInfo);
+		Main.Configuration.Put("ShowConfirmationWindowWhenEnableDisableAllMods", showConfirmationWindowWhenEnableDisableAllMods);
 		Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 		Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 		Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
@@ -384,6 +387,7 @@ public static class ModLoader
 		Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+		Main.Configuration.Get("ShowConfirmationWindowWhenEnableDisableAllMods", ref showConfirmationWindowWhenEnableDisableAllMods);
 		Main.Configuration.Get("ShowNewUpdatedModsInfo", ref showNewUpdatedModsInfo);
 		Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 		Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);

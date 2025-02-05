@@ -1,5 +1,6 @@
 using ExampleMod.Common;
 using ExampleMod.Common.Configs;
+using ExampleMod.Common.Systems;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
@@ -17,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -171,7 +173,19 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
+		public override void OnSpawn(IEntitySource source) {
+			if(source is EntitySource_SpawnNPC) {
+				// A TownNPC is "unlocked" once it successfully spawns into the world.
+				TownNPCRespawnSystem.unlockedExamplePersonSpawn = true;
+			}
+		}
+
 		public override bool CanTownNPCSpawn(int numTownNPCs) { // Requirements for the town NPC to spawn.
+			if (TownNPCRespawnSystem.unlockedExamplePersonSpawn) {
+				// If Example Person has spawned in this world before, we don't require the user satisfying the ExampleItem/ExampleBlock inventory conditions for a respawn.
+				return true;
+			}
+
 			foreach (var player in Main.ActivePlayers) {
 				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
 				if (player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>() || item.type == ModContent.ItemType<Items.Placeable.ExampleBlock>())) {
@@ -307,6 +321,7 @@ namespace ExampleMod.Content.NPCs
 				.Add<Items.Ammo.ExampleBullet>(Condition.MoonPhasesQuarter1)
 				.Add<Items.Weapons.ExampleStaff>(ExampleConditions.DownedMinionBoss)
 				.Add<ExampleOnBuyItem>()
+				.Add(ItemID.AcornAxe) // Here is an example of how to sell an existing vanilla item.
 				.Add<Items.Weapons.ExampleYoyo>(Condition.IsNpcShimmered); // Let's sell an yoyo if this NPC is shimmered!
 
 			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {

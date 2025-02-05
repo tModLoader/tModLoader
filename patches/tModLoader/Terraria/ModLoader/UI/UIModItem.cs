@@ -130,11 +130,11 @@ internal class UIModItem : UIPanel
 		string updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
 		Color updateColor = Color.Orange;
 
-		// Detect if it's for a preview version ahead of our time
+		// Detect if it's for a preview or stable version ahead of our time
 		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
 			updateVersion = $"v{_mod.tModLoaderVersion}";
 
-			if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
+			if (_mod.tModLoaderVersion.Build == 2)
 				updateVersion = $"Preview {updateVersion}";
 		}
 

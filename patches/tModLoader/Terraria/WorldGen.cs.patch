@@ -26,6 +26,14 @@
  {
  	public static class WorldSize
  	{
+@@ -780,6 +_,7 @@
+ 	public static readonly int oceanDistance = 250;
+ 	public static readonly int beachDistance = 380;
+ 	public static readonly int shimmerSafetyDistance = 150;
++	/// <summary> Indicates the selected world evil. If true, the world is a Crimson world, when false the world is a Corruption world. </summary>
+ 	public static bool crimson;
+ 	public static int[] tileCounts = new int[TileID.Count];
+ 	public static int totalEvil;
 @@ -889,14 +_,22 @@
  	public static int SmallConsecutivesFound = 0;
  	public static int SmallConsecutivesEliminated = 0;
@@ -1264,6 +1272,19 @@
  		if (Main.tile[x, y + 1] != null) {
  			if (!SolidTileAllowBottomSlope(x, y + 1))
  				KillTile(x, y);
+@@ -30563,7 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Checks if vines are allowed to grow immediately below the location provided. This method only checks that the count of existing vine tiles (<see cref="TileID.Sets.IsVine"/>) in a nearby area does not exceed the maximum allowed amount. Returns true if more vines in the area would be allowed.
++	/// <para/> Specifically, this method checks that the number of vine tiles in a 9x17 area around the given coordinate does not exceed 60.
++	/// </summary>
+-	private static bool GrowMoreVines(int x, int y)
++	public static bool GrowMoreVines(int x, int y)
+ 	{
+ 		if (!InWorld(x, y, 30))
+ 			return false;
 @@ -30923,10 +_,12 @@
  			return;
  
@@ -2066,7 +2087,7 @@
  
 +	/// <summary>
 +	/// PlaceTile is the main way to place individual tiles while obeying anchor considerations. Most of the other PlaceX methods in the WorldGen class are called by this method. i and j are the tile coordinates. These coordinates relate to the origin of the tile, not necessarily the top left corner of the tile. Read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">the Basic Tile wiki guide</see> to familiarize yourself with the concepts of Anchors and Origins. <paramref name="mute"/> indicates if a sound should be made, this only applies to in-game usage as sounds are all muted during world gen. <paramref name="forced"/> attempts to place the tile even if other tiles are already at the coordinates, but it is unreliable. <paramref name="plr"/> does nothing except affect bathtubs. <paramref name="style"/> refers to the style of the tile type provided. Styles are explained in the Basic Tile guide.
-+	/// <para/> PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <c>if(Main.tile[x, y].type == TileID.Campfire)</c>
++	/// <para/> PlaceTile returns a bool indicating placement success. Unfortunately, it doesn't work, don't use it. Checking the coordinates after calling PlaceTile is a good way to check if the placement was a success: <c>if(Main.tile[x, y].TileType == TileID.Campfire)</c>
 +	/// <para/> PlaceTile doesn't expose everything. For example, attempting to place a tile with a specific style will be ignored by many of the underlying methods. Another issue is that it is impossible to place a tile that has left and right placement orientations facing right. In these situations, you might need to manually place each tile in the multitile or use <see cref="PlaceObject(int, int, int, bool, int, int, int, int)"/> instead. WorldGen.PlaceObject requires more input. For example, placing Coral with PlaceObject means you have to manually specify the style, as the random style (<see cref="TileObjectData.RandomStyleRange"/>) choosing is a feature of PlaceTile.
 +	/// <para/> If called in-game, the changed tiles would need to be synced if placement is successful. See <see cref="NetMessage.SendTileSquare(int, int, int, int, int, TileChangeType)"/> for more information and examples.
 +	/// </summary>
@@ -2151,11 +2172,12 @@
  								SquareTileFrame(i, j);
  							}
  
-@@ -42866,6 +_,9 @@
+@@ -42866,6 +_,10 @@
  										case 314:
  											Minecart.PlaceTrack(tile, style);
  											break;
 +										case int _ when num >= TileID.Count && TileObjectData.GetTileData(num, style) != null:
++											// TODO: Can we pass in direction = Main.player[plr].direction; to support it for modded PlaceTile without breaking anything?
 +											PlaceObject(i, j, (ushort)num, mute, style);
 +											break;
  										default:
@@ -2406,19 +2428,23 @@
  		switch (tileType) {
  			case 2:
  			case 477:
-@@ -45086,6 +_,8 @@
+@@ -45086,6 +_,10 @@
  		if (!IsTileALeafyTreeTop(x, y) || Collision.SolidTiles(x - 2, x + 2, y - 2, y + 2))
  			return;
  
 +		bool createLeaves = true;
++
++		if (TileLoader.GlobalShakeTree(x, y, treeType)) { } else
 +		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, num].type, ref createLeaves)) { } else
  		if (Main.getGoodWorld && genRand.Next(17) == 0) {
  			Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Main.myPlayer, 16f, 16f);
  		}
-@@ -45310,11 +_,18 @@
+@@ -45310,11 +_,20 @@
  			Item.NewItem(Type: (genRand.Next(2) != 0) ? 5278 : 5277, source: GetItemSource_FromTreeShake(x, y), X: x * 16, Y: y * 16, Width: 16, Height: 16);
  		}
  
++		NPCLoader.blockLoot.Clear(); // Clear PreShakeTree values
++
 +		if (!createLeaves)
 +			return;
 +
@@ -2434,6 +2460,14 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(112, -1, -1, null, 1, x, y, 1f, passStyle);
  
+@@ -45336,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> If given a tree tile coordinate, will output the coordinates of the tree tile at the bottom of the tree. </summary>
+ 	public static void GetTreeBottom(int i, int j, out int x, out int y)
+ 	{
+ 		x = i;
 @@ -45397,6 +_,17 @@
  		fossilBreak = false;
  	}
@@ -2656,6 +2690,18 @@
  		return false;
  	}
  
+@@ -50482,7 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Returns true if there are 3 or more Chlorophyte or ChlorophyteBrick tiles within a 11x11 area around the provided coordinate. Sometimes returns true if there are less than 3 but more than 0 of them. Used to implement Chlorophyte tiles  restricting the spread of the evil biomes nearby (<see href="https://terraria.wiki.gg/wiki/Biome_spread#Notes">Biome Spread wiki page</see>).
++	/// </summary>
+-	private static bool nearbyChlorophyte(int i, int j)
++	public static bool nearbyChlorophyte(int i, int j)
+ 	{
+ 		double num = 0.0;
+ 		int num2 = 5;
 @@ -50555,7 +_,7 @@
  			return;
  
@@ -2909,7 +2955,7 @@
 +
 +																												//TODO: Test this. Not sure this is still correct.
 +																												TileLoader.CheckModTile(i, j, num);
-+
++																												TileLoader.PostTileFrame(num, i, j, 0, 0, 0, 0, 0, 0, 0, 0);
  																												return;
  																										}
  																									}
@@ -3057,7 +3103,7 @@
  											TileMergeAttempt(-2, 147, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  											break;
  										case 162:
-@@ -60829,7 +_,7 @@
+@@ -60829,11 +_,13 @@
  								else if (TileID.Sets.Ore[num])
  									TileMergeAttempt(num, TileID.Sets.Conversion.Grass, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
@@ -3066,6 +3112,12 @@
  									TileMergeAttempt(num, TileID.Sets.OreMergesWithMud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  								else if (TileID.Sets.OreMergesWithMud[num])
  									TileMergeAttempt(num, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 
++								TileLoader.ModifyFrameMerge(num, i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
++								
+ 								bool flag = false;
+ 								TileMergeCullCache tileMergeCullCache = default(TileMergeCullCache);
+ 								if (!Main.ShouldShowInvisibleWalls()) {
 @@ -60848,11 +_,18 @@
  									tileMergeCullCache.CullBottomRight |= tile7 != null && tile7.invisibleBlock() != flag2;
  								}
@@ -3119,6 +3171,16 @@
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}
+@@ -63195,6 +_,9 @@
+ 
+ 								tile.frameX = (short)rectangle.X;
+ 								tile.frameY = (short)rectangle.Y;
++
++								TileLoader.PostTileFrame(num, i, j, up, down, left, right, upLeft, upRight, downLeft, downRight);
++
+ 								if (TileID.Sets.IsVine[num]) {
+ 									up = ((tile2 == null) ? num : ((!tile2.nactive()) ? (-1) : ((!tile2.bottomSlope()) ? tile2.type : (-1))));
+ 									if (num != up) {
 @@ -63321,7 +_,7 @@
  			currentMerge = -1;
  	}

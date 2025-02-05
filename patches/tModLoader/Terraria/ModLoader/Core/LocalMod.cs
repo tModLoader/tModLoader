@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("tModLoaderTests")]
@@ -26,7 +27,7 @@ internal class LocalMod
 
 	public override string ToString() => Name;
 
-	public string DetailedInfo => $"{Name} {Version} for tML {tModLoaderVersion} from {location}";
+	public string DetailedInfo => $"{Name} {Version} for tML {tModLoaderVersion} from {location}" + (Path.GetFileNameWithoutExtension(modFile.path) != Name ? $" ({Path.GetFileName(modFile.path)})": "");
 
 	public LocalMod(ModLocation location, TmodFile modFile, BuildProperties properties)
 	{

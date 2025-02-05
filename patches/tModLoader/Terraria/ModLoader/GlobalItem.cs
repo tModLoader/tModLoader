@@ -12,7 +12,8 @@ using Terraria.ModLoader.Core;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
+/// This class allows you to modify and use hooks for all items, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 {
@@ -576,9 +577,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// </summary>
 	public virtual void HoldItemFrame(Item item, Player player) { }
 
-	/// <summary>
-	/// Allows you to make an item usable by right-clicking. Returns false by default. When the item is used by right-clicking, player.altFunctionUse will be set to 2.
-	/// </summary>
+	/// <inheritdoc cref="ModItem.AltFunctionUse(Player)"/>
 	public virtual bool AltFunctionUse(Item item, Player player)
 	{
 		return false;
@@ -694,8 +693,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Allows you to determine special visual effects a vanity has on the player without having to code them yourself.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
+	/// </summary>
 	public virtual void ArmorSetShadows(Player player, string set)
 	{
 	}
@@ -938,7 +937,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind an item, or to modify the way an item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
+	/// <inheritdoc cref="ModItem.PreDrawInWorld(SpriteBatch, Color, Color, ref float, ref float, int)"/>
 	/// </summary>
 	public virtual bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
@@ -946,14 +945,14 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of an item. This method is called even if PreDrawInWorld returns false.
+	/// <inheritdoc cref="ModItem.PostDrawInWorld(SpriteBatch, Color, Color, float, float, int)"/>
 	/// </summary>
 	public virtual void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind an item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
+	/// <inheritdoc cref="ModItem.PreDrawInInventory(SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float)"/>
 	/// </summary>
 	public virtual bool PreDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 		Color drawColor, Color itemColor, Vector2 origin, float scale)
@@ -962,7 +961,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of an item in the inventory. This method is called even if PreDrawInInventory returns false.
+	/// <inheritdoc cref="ModItem.PostDrawInInventory(SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float)"/>
 	/// </summary>
 	public virtual void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 		Color drawColor, Color itemColor, Vector2 origin, float scale)
@@ -975,8 +974,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Return null to use the item's default holdout offset; returns null by default.
 	///
 	/// This method is not instanced.
-	/// </summary>
 	/// <example><code>return new Vector2(10, 0);</code></example>
+	/// </summary>
 	public virtual Vector2? HoldoutOffset(int type)
 	{
 		return null;

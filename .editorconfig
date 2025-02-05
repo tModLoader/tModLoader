@@ -86,9 +86,12 @@ dotnet_diagnostic.CA2211.severity = none
 #### C# Coding Conventions ####
 
 # var preferences
-	csharp_style_var_elsewhere = false:silent
-	csharp_style_var_for_built_in_types = false:suggestion
-	csharp_style_var_when_type_is_apparent = true:none
+	csharp_style_var_elsewhere = false
+	csharp_style_var_for_built_in_types = false
+	csharp_style_var_when_type_is_apparent = true
+	
+	dotnet_diagnostic.IDE0007.severity = suggestion # Use var instead of explicit type
+	dotnet_diagnostic.IDE0008.severity = none # Use explicit type instead of var
 
 # Expression-bodied members
 	csharp_style_expression_bodied_lambdas = true:silent
