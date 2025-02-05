@@ -27,21 +27,21 @@ namespace ExampleMod.Content.TileEntities
 
 		// This water barrel will fill up in 1 minute of rain, or 3600 game updates.
 		private const int MaxFill = 3600;
-		private const int SyncInterval = 3600 / 10;
+		private const int SyncInterval = MaxFill / 10;
 
 		// We use a property to consolidate logic clamping water level value and triggering a network sync.
 		private int waterFillLevel;
 		public int WaterFillLevel {
 			get { return waterFillLevel; }
 			set {
-				int fillLevelValue = Math.Clamp(value, 0, MaxFill);
-				if (waterFillLevel / SyncInterval != fillLevelValue / SyncInterval) {
+				int newFillLevel = Math.Clamp(value, 0, MaxFill);
+				if (waterFillLevel / SyncInterval != newFillLevel / SyncInterval) {
 					// To reduce network spam while raining, we only sync this tile entity at 10% fill intervals.
 					// This may or may not be the correct approach for other ModTileEntity, depending on how accurate of
 					// data the client will need access to.
 					syncNeeded = true;
 				}
-				waterFillLevel = fillLevelValue;
+				waterFillLevel = newFillLevel;
 			}
 		}
 
@@ -147,22 +147,16 @@ namespace ExampleMod.Content.TileEntities
 			if (TryGetBasicTileEntity(i, j, out BasicTileEntity tileEntity)) {
 				return StatusText.Format(tileEntity.WaterFillPercentage);
 			}
-
-			// Note that it is possible for a map entry to be queried for a tile location that doesn't have a TileEntity anymore.
-			// This can happen in multiplayer when a world section hasn't been synced yet or when a players map hasn't been updated to match changes to the world.
-			// This code shows detecting those situations, but the basic lesson is don't assume a TileEntity will always be present.
-			/*
-			Point16 topLeft = TileObjectData.TopLeft(i, j);
-			int index = ModContent.GetInstance<BasicTileEntity>().Find(topLeft.X, topLeft.Y);
-			if (index == -1) {
+			else {
+				// Note that it is possible for a map entry to be queried for a tile location that doesn't have a TileEntity anymore.
+				// This can happen in multiplayer when a world section hasn't been synced yet or when a players map hasn't been updated to match changes to the world.
+				// This code shows detecting those situations, but the basic lesson is don't assume a TileEntity will always be present.
+				Point16 topLeft = TileObjectData.TopLeft(i, j);
 				if (!Main.sectionManager.TileLoaded(topLeft.X, topLeft.Y)) {
 					return $"{name}: World section not loaded yet";
 				}
 				return $"{name}: No TileEntity found at coordinate";
 			}
-			*/
-
-			return name;
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
@@ -189,36 +183,36 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override bool RightClick(int i, int j) {
-			if(TryGetBasicTileEntity(i, j, out BasicTileEntity tileEntity)) {
-				if(tileEntity.WaterFillPercentage == 100) {
-					Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_TileInteraction(i, j), ItemID.WaterBucket);
-					tileEntity.WaterFillLevel = 0;
-					SoundEngine.PlaySound(SoundID.Drown);
-
-					if (Main.netMode == NetmodeID.MultiplayerClient) {
-						// The server is in charge of the Tile Entity, we need to inform the server that we took all the water so that the data stays in sync on other clients.
-						var packet = Mod.GetPacket();
-						packet.Write((byte)ExampleMod.MessageType.BasicTileEntityClaimWater);
-						packet.Write(tileEntity.ID);
-						packet.Send();
-					}
-				}
-				Main.NewText(StatusText.Format(tileEntity.WaterFillPercentage));
+			if (!TryGetBasicTileEntity(i, j, out BasicTileEntity tileEntity)) {
+				return true;
 			}
-			
+			if (tileEntity.WaterFillPercentage == 100) {
+				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_TileInteraction(i, j), ItemID.WaterBucket);
+				tileEntity.WaterFillLevel = 0;
+				SoundEngine.PlaySound(SoundID.Drown);
+
+				if (Main.netMode == NetmodeID.MultiplayerClient) {
+					// The server is in charge of the Tile Entity, we need to inform the server that we took all the water so that the data stays in sync on other clients.
+					var packet = Mod.GetPacket();
+					packet.Write((byte)ExampleMod.MessageType.BasicTileEntityClaimWater);
+					packet.Write(tileEntity.ID);
+					packet.Send();
+				}
+			}
+			Main.NewText(StatusText.Format(tileEntity.WaterFillPercentage));
+
 			return true;
 		}
 
 		// This helper method retrieves the BasicTileEntity instance from any tile coordinate of the placed tile.
 		public static bool TryGetBasicTileEntity(int i, int j, out BasicTileEntity entity) {
 			Point16 topLeft = TileObjectData.TopLeft(i, j);
-			int index = ModContent.GetInstance<BasicTileEntity>().Find(topLeft.X, topLeft.Y);
-			if (index == -1) {
-				entity = null;
-				return false;
+			if (TileEntity.ByPosition.TryGetValue(topLeft, out var tileEntity) && tileEntity is BasicTileEntity basicTileEntity) {
+				entity = basicTileEntity;
+				return true;
 			}
-			entity = (BasicTileEntity)TileEntity.ByID[index];
-			return true;
+			entity = null;
+			return false;
 		}
 	}
 
