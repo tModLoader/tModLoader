@@ -384,6 +384,7 @@ public abstract class ModTile : ModBlockType
 	///}</code>
 	///	or, to mimic another tile, simply:
 	///	<code>frame = Main.tileFrame[TileID.FireflyinaBottle];</code></example>
+	///	<para/> <b>Note:</b> For the smoothest animation, <paramref name="frameCounter"/> should count up to a multiple of 4 before advancing the <paramref name="frame"/> value. This is because tiles are rendered every 4 game draws but this method is called every game update. Values that aren't multiples of 4 would result in some frames drawing for twice as long as the next animation frame, resulting in jerky animation. Similarly, attempting to change frames at intervals shorter than 4 will result in skipped animation frames.
 	/// </summary>
 	public virtual void AnimateTile(ref int frame, ref int frameCounter)
 	{
@@ -404,7 +405,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
-	/// SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.
+	/// <para/> Can also be used to register this tile location for additional rendering after all tiles are drawn normally. <see cref="SpecialDraw(int, int, SpriteBatch)"/> will be called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> here or in <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -415,7 +416,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Special Draw. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
+	/// Special Draw. Allows for additional rendering after all tiles are drawn normally. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> or <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
