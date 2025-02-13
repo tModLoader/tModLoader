@@ -495,9 +495,9 @@
  
 +	/// <summary>
 +	/// Registers a tile coordinate to have additional drawing code executed after all tiles are drawn. <see cref="ModTile.SpecialDraw"/> (or <see cref="GlobalTile.SpecialDraw(int, int, int, SpriteBatch)"/>) will be called with the same coordinates after all tiles have been rendered. For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> (or <see cref="GlobalTile.DrawEffects(int, int, int, SpriteBatch, ref TileDrawInfo)"/>)
-+	/// <para/> This is useful for drawing additional visuals to a tile, especially visuals that might render outside the bounds of a single Tile. Attempting to draw outside the bounds will not work in normal tile drawing methods because the visuals will be overwritten by the next tile drawn. 
++	/// <para/> This is useful for drawing additional visuals which overlap multiple tiles.
 +	/// <para/> Some examples include how the <see cref="TileID.LihzahrdAltar"/> draws a sun texture hovering over the tile and how <see cref="TileID.ItemFrame"/> draws the contained item sprite over the tile.
-+	/// <para/> This additional drawing will draw to the tile rendering targets, meaning it will render at 15fps and requires adjusting for <see cref="Main.offScreenRange"/>. For a smoother animations <see cref="AddSpecialPoint(int, int, TileCounterType)"/> can be used with <see cref="TileCounterType.CustomSolid"/> or CustomNonSolid to render at full frame rate.
++	/// <para/> This additional drawing will draw to the tile rendering targets, meaning it will render at 15fps and requires adjusting for <see cref="Main.offScreenRange"/>. As mentioned in <see cref="ModTile.AnimateTile(ref int, ref int)"/>, any animation done using this method should stick to animating at multiples of 4 frames to avoid jerky animation. For smoother animations <see cref="AddSpecialPoint(int, int, TileCounterType)"/> can be used with <see cref="TileCounterType.CustomSolid"/> or CustomNonSolid to render at full frame rate.
 +	/// </summary>
 -	private void AddSpecialLegacyPoint(int x, int y)
 +	public void AddSpecialLegacyPoint(int x, int y)
