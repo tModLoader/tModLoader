@@ -209,6 +209,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	{
 	}
 
+	public virtual void OnHoverBoundingBox(Rectangle boundingBox, bool mouseIntersects, bool smartCursorInteraction)
+	{
+	}
+
 	/// <summary>
 	/// Allows you to give a list of names this NPC can be given on spawn.<br></br>
 	/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.

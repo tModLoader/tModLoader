@@ -92,6 +92,10 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
+	public virtual void OnHoverBoundingBox(NPC npc, Rectangle boundingBox, bool mouseIntersects, bool smartCursorInteraction)
+	{
+	}
+
 	/// <summary>
 	/// Allows you to set the town NPC profile that a given NPC uses.
 	/// </summary>

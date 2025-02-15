@@ -1146,6 +1146,18 @@ public static class NPCLoader
 		}
 	}
 
+	private delegate void DelegateOnHoverBoundingBox(NPC npc, Rectangle boundingBox, bool mouseIntersects, bool smartCursorInteraction);
+	private static HookList HookOnHoverBoundingBox = AddHook<DelegateOnHoverBoundingBox>(g => g.OnHoverBoundingBox);
+	public static void OnHoverBoundingBox(NPC npc, Rectangle boundingBox, bool mouseIntersects, bool smartCursorInteraction)
+	{
+		if (npc.ModNPC != null)
+			npc.ModNPC.OnHoverBoundingBox(boundingBox, mouseIntersects, smartCursorInteraction);
+
+		foreach (var g in HookOnHoverBoundingBox.Enumerate(npc)) {
+			g.OnHoverBoundingBox(npc, boundingBox, mouseIntersects, smartCursorInteraction);
+		}
+	}
+
 	private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
 	public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList)
 	{
