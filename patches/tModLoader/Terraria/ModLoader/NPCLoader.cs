@@ -1146,15 +1146,15 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateOnHoverBoundingBox(NPC npc, Rectangle boundingBox, bool mouseIntersects, bool smartCursorInteraction);
+	private delegate void DelegateOnHoverBoundingBox(NPC npc, Rectangle boundingBox, bool mouseIntersects);
 	private static HookList HookOnHoverBoundingBox = AddHook<DelegateOnHoverBoundingBox>(g => g.OnHoverBoundingBox);
-	public static void OnHoverBoundingBox(NPC npc, Rectangle boundingBox, bool mouseIntersects, bool smartCursorInteraction)
+	public static void OnHoverBoundingBox(NPC npc, Rectangle boundingBox, bool mouseIntersects)
 	{
 		if (npc.ModNPC != null)
-			npc.ModNPC.OnHoverBoundingBox(boundingBox, mouseIntersects, smartCursorInteraction);
+			npc.ModNPC.OnHoverBoundingBox(boundingBox, mouseIntersects);
 
 		foreach (var g in HookOnHoverBoundingBox.Enumerate(npc)) {
-			g.OnHoverBoundingBox(npc, boundingBox, mouseIntersects, smartCursorInteraction);
+			g.OnHoverBoundingBox(npc, boundingBox, mouseIntersects);
 		}
 	}
 
