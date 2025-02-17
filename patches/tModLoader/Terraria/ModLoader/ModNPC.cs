@@ -203,7 +203,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the bounding box for hovering over this NPC (affects things like whether or not its name is displayed).
-	/// <br/>This hook is not called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="false">.
+	/// <br/>This hook is only called when <see cref="NPC.ShowNameOnHover"/> returns <see langword="true">.
 	/// </summary>
 	/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
 	public virtual void ModifyHoverBoundingBox(ref Rectangle boundingBox)
