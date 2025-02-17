@@ -162,10 +162,17 @@ public partial class WorkshopHelper
 	}
 
 	//////// Workshop Publishing ////////////////////
-	internal static void PublishMod(LocalMod mod, string iconPath)
+	internal static void PublishMod(LocalMod mod, string iconPath, string[] publishTags = null, WorkshopItemPublicSettingId? publicity = null)
 	{
 		var modFile = mod.modFile;
 		var bp = mod.properties;
+
+		if (bp.side != ModSide.Server && Main.dedServ)
+		{
+			// After review, will add a localization key for this error
+			// Message: "You can only publish server-side mods using the command line."
+			Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.LoadError", modFile.Name), Interface.modSourcesID);
+		}
 
 		if (bp.buildVersion != modFile.TModLoaderVersion)
 			throw new WebException(Language.GetTextValue("tModLoader.OutdatedModCantPublishError"));
@@ -214,21 +221,43 @@ public partial class WorkshopHelper
 
 				Thread.Sleep(1500); // Solxan: SteamAPI requires 1 or so seconds to initialize
 
-				var usedTags = Array.Empty<WorkshopTagOption>();
-				var publicity = WorkshopItemPublicSettingId.Public;
+				WorkshopTagOption[] usedTags = [];
+				var tagsToAdd = SteamedWraps.ModTags
+					.Where(x => publishTags.Contains(x.NameKey))
+					.Select(x => x.InternalNameForAPIs)
+					.Union(["Server"]);
 
-				if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
-					usedTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToArray();
-					publicity = info.publicity;
+				using (modFile.Open()) {
+					if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
+						var usedTagsList = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToList();
+
+						var tagsToRemove = SteamedWraps.ModTags
+							.Select(x => x.InternalNameForAPIs)
+							.Union(["Client", "Both", "NoSync"]);
+						usedTagsList.RemoveAll(x => tagsToRemove.Contains(x.InternalNameForAPIs));
+
+						usedTags = usedTagsList
+							.Union(tagsToAdd.Select(x => new WorkshopTagOption(x, x)))
+							.DistinctBy(x => x.InternalNameForAPIs)
+							.ToArray();
+
+						publicity = publicity ?? info.publicity;
+					}
+					else {
+						usedTags = tagsToAdd
+							.Select(x => new WorkshopTagOption(x, x))
+							.DistinctBy(x => x.InternalNameForAPIs)
+							.ToArray();
+					}
+
+					var publishSetttings = new WorkshopItemPublishSettings {
+						Publicity = publicity ?? WorkshopItemPublicSettingId.Public,
+						UsedTags = usedTags,
+						PreviewImagePath = iconPath
+					};
+
+					SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 				}
-
-				var publishSetttings = new WorkshopItemPublishSettings {
-					Publicity = publicity,
-					UsedTags = usedTags,
-					PreviewImagePath = iconPath
-				};
-				
-				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 			}
 			finally {
 				SteamedWraps.OnGameExitCleanup();

@@ -54,7 +54,9 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		}
 
 		/* if ( SocialAPI.Workshop != null) */
-		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
+		using (_dataObject.Open()) {
+			SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
+		}
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
 			// Copy the used preview image to the mod's source directory if it's not a resize and if one isn't there already.

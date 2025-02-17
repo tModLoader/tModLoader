@@ -93,10 +93,15 @@
  
  		string value;
  		if ((value = TryParameter("-maxplayers", "-players")) != null) {
-@@ -103,6 +_,16 @@
+@@ -103,6 +_,21 @@
  		if ((s2 = TryParameter("-language")) != null)
  			LanguageManager.Instance.SetLanguage(s2);
  
++		// Added by TML.
++		if (TryParameter("-preparepublish") is string preparepublish) {
++			ModLoader.UI.UIModSourceItem.PreparePublishModCommandLine(preparepublish);
++		}
++
 +		// Added by TML.
 +		if (TryParameter("-publish") is string publish) {
 +			ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
