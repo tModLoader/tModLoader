@@ -307,7 +307,7 @@ internal class UIModSourceItem : UIPanel
 			var p = new ProcessStartInfo() {
 				UseShellExecute = true,
 				FileName = Process.GetCurrentProcess().MainModule.FileName,
-				Arguments = "tModLoader.dll -server -steam -preparepublish " + _builtMod.modFile.path.Remove(_builtMod.modFile.path.LastIndexOf(".tmod"))
+				Arguments = "tModLoader.dll -server -steam -preparepublish " + _builtMod.modFile.Name
 			};
 
 			var pending = Process.Start(p);
