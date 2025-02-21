@@ -54,20 +54,26 @@ internal class ModCompile
 
 	public static readonly string ModSourcePath = Path.Combine(Program.SavePathShared, "ModSources");
 
-	internal static string[] FindModSources()
+	internal static string[] FindModSources(bool refindAllMods, out LocalMod[] builtMods)
 	{
 		Directory.CreateDirectory(ModSourcePath);
-		return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
+		var modSources = Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
 			var directory = new DirectoryInfo(dir);
 			return directory.Name[0] != '.' && directory.Name != "ModAssemblies" && directory.Name != "Mod Libraries";
-		}).ToArray();
+		}).ToHashSet();
+
+		// Also add mod sources defined by built .tmod files.
+		builtMods = refindAllMods ? ModOrganizer.FindAllMods() : ModOrganizer.AllFoundMods;
+		modSources.UnionWith(builtMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => s.Length > 0));
+
+		return modSources.ToArray();
 	}
 
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
 	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
-	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
+	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources(refindAllMods: false, out _).Length > 0;
 
 	private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
@@ -129,7 +135,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 	internal void BuildAll()
 	{
 		var modList = new List<LocalMod>();
-		foreach (var modFolder in FindModSources())
+		foreach (var modFolder in FindModSources(refindAllMods: false, out _))
 			modList.Add(ReadBuildInfo(modFolder));
 
 		//figure out which of the installed mods are required for building
