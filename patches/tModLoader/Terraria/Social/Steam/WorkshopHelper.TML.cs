@@ -170,7 +170,7 @@ public partial class WorkshopHelper
 		if (bp.buildVersion != modFile.TModLoaderVersion)
 			throw new WebException(Language.GetTextValue("tModLoader.OutdatedModCantPublishError"));
 
-		var changeLogFile = Path.Combine(ModCompile.GetModSource(modFile), "changelog.txt");
+		var changeLogFile = Path.Combine(BuildProperties.ReadModFile(modFile).modSource, "changelog.txt");
 		string changeLog;
 		if (File.Exists(changeLogFile))
 			changeLog = File.ReadAllText(changeLogFile);
@@ -187,7 +187,7 @@ public partial class WorkshopHelper
 			{ "homepage", bp.homepage },
 			{ "description", bp.description },
 			{ "iconpath", iconPath },
-			{ "sourcesfolder", ModCompile.GetModSource(modFile) },
+			{ "sourcesfolder", BuildProperties.ReadModFile(modFile).modSource },
 			{ "modloaderversion", $"{modFile.TModLoaderVersion}" },
 			{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 			{ "modside", bp.side.ToFriendlyString() },

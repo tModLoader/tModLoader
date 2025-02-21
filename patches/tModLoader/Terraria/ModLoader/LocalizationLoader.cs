@@ -201,7 +201,7 @@ public static class LocalizationLoader
 
 				string modpath = Path.Combine(mod.Name, translationFile.Name).Replace('/', '\\');
 				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
-					string path = ModCompile.GetModSource(mod.File);
+					string path = BuildProperties.ReadModFile(mod.File).modSource;
 					if (File.Exists(path)) {
 						try {
 							translationFileContents = File.ReadAllText(path);
@@ -327,7 +327,7 @@ public static class LocalizationLoader
 		};
 
 		// TODO: Maybe optimize to only recently built?
-		string sourceFolder = outputPath ?? ModCompile.GetModSource(mod.File);
+		string sourceFolder = outputPath ?? BuildProperties.ReadModFile(mod.File).modSource;
 		if (!Directory.Exists(sourceFolder))
 			return;
 
@@ -821,7 +821,7 @@ public static class LocalizationLoader
 			if (mod.File == null)
 				continue;
 
-			string path = ModCompile.GetModSource(mod.File);
+			string path = BuildProperties.ReadModFile(mod.File).modSource;
 			if (!Directory.Exists(path))
 				continue;
 
