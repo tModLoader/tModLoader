@@ -54,7 +54,7 @@ internal class ModCompile
 
 	public static readonly string ModSourcePath = Path.Combine(Program.SavePathShared, "ModSources");
 
-	internal static string[] FindModSources(bool updateFoundModCache)
+	internal static string[] FindModSources()
 	{
 		Directory.CreateDirectory(ModSourcePath);
 		var modSources = Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
@@ -63,8 +63,7 @@ internal class ModCompile
 		}).ToHashSet();
 
 		// Also add mod sources defined by built .tmod files.
-		var builtMods = updateFoundModCache ? ModOrganizer.FindAllMods() : ModOrganizer.AllFoundMods;
-		modSources.UnionWith(builtMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => s.Length > 0));
+		modSources.UnionWith(ModOrganizer.AllFoundMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => s.Length > 0));
 
 		return modSources.ToArray();
 	}
@@ -73,7 +72,7 @@ internal class ModCompile
 	public static bool activelyModding;
 	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
-	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources(updateFoundModCache: false).Length > 0;
+	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
 	private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
@@ -135,7 +134,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 	internal void BuildAll()
 	{
 		var modList = new List<LocalMod>();
-		foreach (var modFolder in FindModSources(updateFoundModCache: false))
+		foreach (var modFolder in FindModSources())
 			modList.Add(ReadBuildInfo(modFolder));
 
 		//figure out which of the installed mods are required for building
