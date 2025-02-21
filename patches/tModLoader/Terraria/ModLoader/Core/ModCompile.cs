@@ -60,12 +60,12 @@ internal class ModCompile
 		var modSources = Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
 			var directory = new DirectoryInfo(dir);
 			return directory.Name[0] != '.' && directory.Name != "ModAssemblies" && directory.Name != "Mod Libraries";
-		}).ToHashSet();
+		});
 
-		// Also add mod sources defined by built .tmod files.
-		modSources.UnionWith(ModOrganizer.AllFoundMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => s.Length > 0));
+		// Find mod sources defined by built .tmod files.
+		var localSources = ModOrganizer.AllFoundMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => !string.IsNullOrEmpty(s));
 
-		return modSources.ToArray();
+		return modSources.Concat(localSources).Distinct().ToArray();
 	}
 
 	// Silence exception reporting in the chat unless actively modding.
