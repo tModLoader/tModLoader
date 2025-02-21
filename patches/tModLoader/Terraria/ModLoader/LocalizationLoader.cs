@@ -817,6 +817,10 @@ public static class LocalizationLoader
 		// Add a watcher for each loaded mod that has a corresponding mod sources folder
 		// Don't worry about the mod being local or not, for now. The feature might be useful for even workshop tmod files
 		foreach (var mod in ModLoader.Mods) {
+			// ModLoaderMod does not exist on disk and is not applicable.
+			if (mod.File == null)
+				continue;
+
 			string path = ModCompile.GetModSource(mod.File);
 			if (!Directory.Exists(path))
 				continue;
