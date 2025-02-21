@@ -349,6 +349,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		string dllPath = null;
 		string pdbPath() => Path.ChangeExtension(dllPath, "pdb");
 
+		mod.properties.modSource = mod.path;
+
 		// look for pre-compiled paths
 		if (mod.properties.noCompile) {
 			dllPath = Path.Combine(mod.path, dllName);
