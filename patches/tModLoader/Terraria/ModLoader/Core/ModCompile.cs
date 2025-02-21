@@ -67,6 +67,9 @@ internal class ModCompile
 		}
 
 		// Find mod sources defined by built .tmod files.
+		// It's possible for AllFoundMods to not be populated in low-init scenarios
+		// such as mod building, so we can populate it ourselves.
+		var foundMods = ModOrganizer.AllFoundMods ?? ModOrganizer.FindAllMods();
 		modSources.AddRange(ModOrganizer.AllFoundMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => !string.IsNullOrEmpty(s)));
 
 		return modSources.Distinct().ToArray();
