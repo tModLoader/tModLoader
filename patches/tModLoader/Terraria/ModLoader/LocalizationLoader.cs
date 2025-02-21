@@ -201,7 +201,7 @@ public static class LocalizationLoader
 
 				string modpath = Path.Combine(mod.Name, translationFile.Name).Replace('/', '\\');
 				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
-					string path = Path.Combine(ModCompile.ModSourcePath, modpath);
+					string path = ModCompile.GetModSource(mod.File);
 					if (File.Exists(path)) {
 						try {
 							translationFileContents = File.ReadAllText(path);
@@ -323,7 +323,7 @@ public static class LocalizationLoader
 		};
 
 		// TODO: Maybe optimize to only recently built?
-		string sourceFolder = outputPath ?? Path.Combine(ModCompile.ModSourcePath, mod.Name);
+		string sourceFolder = outputPath ?? ModCompile.GetModSource(mod.File);
 		if (!Directory.Exists(sourceFolder))
 			return;
 
@@ -813,7 +813,7 @@ public static class LocalizationLoader
 		// Add a watcher for each loaded mod that has a corresponding mod sources folder
 		// Don't worry about the mod being local or not, for now. The feature might be useful for even workshop tmod files
 		foreach (var mod in ModLoader.Mods) {
-			string path = Path.Combine(ModCompile.ModSourcePath, mod.Name);
+			string path = ModCompile.GetModSource(mod.File);
 			if (!Directory.Exists(path))
 				continue;
 

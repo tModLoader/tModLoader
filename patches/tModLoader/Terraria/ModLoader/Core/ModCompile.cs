@@ -72,6 +72,14 @@ internal class ModCompile
 		return modSources.Distinct().ToArray();
 	}
 
+	internal static string GetModSource(TmodFile tmod)
+	{
+		var buildInfo = BuildProperties.ReadModFile(tmod);
+		return string.IsNullOrEmpty(buildInfo.modSource) ? Path.Combine(ModSourcePath, tmod.Name) : buildInfo.modSource;
+	}
+
+	internal static string GetModSource(LocalMod mod) => string.IsNullOrEmpty(mod.properties.modSource) ? Path.Combine(ModSourcePath, mod.Name) : mod.properties.modSource;
+
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
 	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
