@@ -50,6 +50,11 @@ public partial class Mod
 	public List<string> TranslationForMods { get; internal set; }
 
 	/// <summary>
+	/// The path to the source folder the mod was built from.
+	/// </summary>
+	public string SourceFolder { get; internal set; }
+
+	/// <summary>
 	/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
