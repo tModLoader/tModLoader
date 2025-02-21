@@ -314,6 +314,10 @@ public static class LocalizationLoader
 
 	private static void UpdateLocalizationFilesForMod(Mod mod, string outputPath = null, GameCulture specificCulture = null)
 	{
+		// ModLoaderMod does not exist on disk and is not applicable.
+		if (mod.File == null)
+			return;
+
 		var desiredCultures = new HashSet<GameCulture>();
 		if (specificCulture != null)
 			desiredCultures.Add(specificCulture);
