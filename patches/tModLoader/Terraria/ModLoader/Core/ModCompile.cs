@@ -72,7 +72,7 @@ internal class ModCompile
 		var foundMods = ModOrganizer.AllFoundMods ?? ModOrganizer.FindAllMods();
 		modSources.AddRange(ModOrganizer.AllFoundMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => !string.IsNullOrEmpty(s)));
 
-		return modSources.Distinct().ToArray();
+		return modSources.Distinct().Where(Directory.Exists).ToArray();
 	}
 
 	internal static string GetModSource(TmodFile tmod)
