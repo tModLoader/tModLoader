@@ -210,9 +210,7 @@ public static class AssemblyManager
 			m.DisplayName = mod.properties.displayName;
 			m.TModLoaderVersion = mod.properties.buildVersion;
 			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
-
-			if (Directory.Exists(mod.properties.modSource))
-				m.SourceFolder = mod.properties.modSource;
+			m.SourceFolder = Directory.Exists(mod.properties.modSource) ? mod.properties.modSource : "";
 			return m;
 		}
 		catch (Exception e) {
