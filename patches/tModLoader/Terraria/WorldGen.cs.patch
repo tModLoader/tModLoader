@@ -2798,6 +2798,14 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -52948,6 +_,7 @@
+ 		if (!tile.active())
+ 			return false;
+ 
++		// TODO: TryToggleLight handles the feature where rain extinguishes light sources in The Constant worlds. It is currently unsupported for modded tiles. Modded lights with WaterDeath will be destroyed instead of extinguished.
+ 		switch (tile.type) {
+ 			default:
+ 				return false;
 @@ -53002,7 +_,7 @@
  			return false;
  

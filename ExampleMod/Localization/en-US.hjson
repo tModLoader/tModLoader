@@ -1037,6 +1037,11 @@ Mods: {
 				DisplayName: "{$NPCs.ExampleWormHead.DisplayName} Banner"
 				Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
 			}
+
+			ExampleChandelier: {
+				DisplayName: Example Chandelier
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

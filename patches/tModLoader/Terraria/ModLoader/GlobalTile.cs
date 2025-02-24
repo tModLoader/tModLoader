@@ -164,6 +164,11 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
+	public virtual bool DrawTilesEmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	{
+		return true;
+	}
+
 	/// <summary>
 	/// Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>

@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/Animation.cs
++++ src/tModLoader/Terraria/Animation.cs
+@@ -162,6 +_,7 @@
+ 		}
+ 	}
+ 
++	// TODO: Need an example of this. Would require SetDefaults type as well maybe, or alternate approach. Network. Could just use tileType, but that won't allow multiple animations per tile. 
+ 	public static bool GetTemporaryFrame(int x, int y, out int frameData)
+ 	{
+ 		Point16 key = new Point16(x, y);

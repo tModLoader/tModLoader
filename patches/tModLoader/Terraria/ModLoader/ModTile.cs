@@ -61,7 +61,7 @@ public abstract class ModTile : ModBlockType
 	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>. Modders can also re-use the display name localization of items, such as <c>ModContent.GetInstance&lt;ItemThatPlacesThisStyle&gt;().DisplayName</c>. 
 	/// <br/><br/> Multiple map entries are suitable for tiles that need a different color or hover text for different tile styles. Vanilla code uses this mostly only for chest and dresser tiles. Map entries will be given a corresponding map option value, counting from 0, according to the order in which they are added. Map option values don't necessarily correspond to tile styles.
 	/// <br/> <see cref="ModBlockType.GetMapOption"/> will be used to choose which map entry is used for a given coordinate.
-	/// <br/><br/> Vanilla map entries for most furniture tiles tend to be fairly generic, opting to use a single map entry to show "Table" for all styles of tables instead of the style-specific text such as "Wooden Table", "Honey Table", etc. To use these existing localizations, use the <see cref="Language.GetText(string)"/> method with the appropriate key, such as "MapObject.Chair", "MapObject.Door", "ItemName.WorkBench", etc. Consult the source code or ExampleMod to find the existing localization keys for common furniture types.
+	/// <br/><br/> Vanilla map entries for most furniture tiles tend to be fairly generic, opting to use a single map entry to show "Table" for all styles of tables instead of the style-specific text such as "Wooden Table", "Honey Table", etc. To use these existing localizations, use the <see cref="Language.GetText(string)"/> method with the appropriate key, such as "MapObject.Chair", "MapObject.Door", "ItemName.WorkBench", etc. Consult the source code or ExampleMod to find the existing localization keys for common furniture types. The <c>array</c> array in <c>MapHelper.Initialize</c> has vanilla tile color values and <c>Lang.BuildMapAtlas</c> has the text.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name = null)
 	{
@@ -416,6 +416,27 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Used to spawn Dust or Gore particle effects.
+	/// Note that this is called even if the tile is invisible due to echo coating, so checking <paramref name="visible"/> should be used if dust should not be spawned unless the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock.
+	///
+	/// <para/> The <paramref name="tileFrameX"/> and <paramref name="tileFrameY"/> values differ from the Tile frame values in that they incorporate the changes from <see cref="SetDrawPositions"/> and likely should be used instead of <see cref="Tile.TileFrameX"/> and Y.
+	///
+	/// Returns true by default. Return false to stop the game from running code for <see cref="Main.tileShine"/> and shooting star dust while in near the shimmer.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="tileCache"></param>
+	/// <param name="tileFrameX"></param>
+	/// <param name="tileFrameY"></param>
+	/// <param name="tileLight"></param>
+	/// <param name="visible"></param>
+	/// <returns></returns>
+	public virtual bool DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Special Draw. Allows for additional rendering after all tiles are drawn normally. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> or <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -635,5 +656,31 @@ public abstract class ModTile : ModBlockType
 	public virtual bool CanReplace(int i, int j, int tileTypeBeingPlaced)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// Customizes a tile drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="overrideWindCycle">null</param>
+	/// <param name="windPushPowerX">1f</param>
+	/// <param name="windPushPowerY">-4f</param>
+	/// <param name="dontRotateTopTiles">false</param>
+	/// <param name="totalWindMultiplier">0.15f</param>
+	/// <param name="glowTexture">null</param>
+	/// <param name="glowColor">Color.Transparent</param>
+	public virtual void AdjustMultiTileVineParameters(int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor)
+	{
+	}
+
+	/// <summary>
+	/// Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="tileFlameData"></param>
+	public virtual void GetTileFlameData(int i, int j, ref GameContent.Drawing.TileDrawing.TileFlameData tileFlameData)
+	{
 	}
 }

@@ -170,5 +170,28 @@ namespace ExampleMod.Content.Tiles
 				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + xx, j * 16 - (int)Main.screenPosition.Y + offsetY + yy) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default, 1f, SpriteEffects.None, 0f);
 			}
 		}
+
+		public override bool DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+			if (Main.rand.NextBool(40) && tileFrameX < 66) {
+				int dustChoice = ModContent.DustType<Sparkle>();
+				Dust dust;
+				Vector2 spawnPosition = tileFrameX switch {
+					22 => new Vector2(i * 16 + 6, j * 16),
+					44 => new Vector2(i * 16 + 2, j * 16),
+					_ => new Vector2(i * 16 + 4, j * 16)
+				};
+
+				dust = Dust.NewDustDirect(new Vector2(i * 16 + 4, j * 16), 4, 4, dustChoice, 0f, 0f, 100);
+
+				if (!Main.rand.NextBool(3)) {
+					dust.noGravity = true;
+				}
+
+				dust.velocity *= 0.3f;
+				dust.velocity.Y -= 1.5f;
+			}
+
+			return true;
+		}
 	}
 }
