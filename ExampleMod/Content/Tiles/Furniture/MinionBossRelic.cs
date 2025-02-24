@@ -81,21 +81,15 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Therefore we register the top-left of the tile as a "special point"
 			// This allows us to draw things in SpecialDraw
 			if (drawData.tileFrameX % FrameWidth == 0 && drawData.tileFrameY % FrameHeight == 0) {
-				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
+				Main.instance.TilesRenderer.AddSpecialPoint(i, j, Terraria.GameContent.Drawing.TileDrawing.TileCounterType.CustomNonSolid);
 			}
 		}
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-			// This is lighting-mode specific, always include this if you draw tiles manually
-			Vector2 offScreen = new Vector2(Main.offScreenRange);
-			if (Main.drawToScreen) {
-				offScreen = Vector2.Zero;
-			}
-
 			// Take the tile, check if it actually exists
 			Point p = new Point(i, j);
 			Tile tile = Main.tile[p.X, p.Y];
-			if (tile == null || !tile.HasTile) {
+			if (!tile.HasTile) {
 				return;
 			}
 
@@ -116,7 +110,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Some math magic to make it smoothly move up and down over time
 			const float TwoPi = (float)Math.PI * 2f;
 			float offset = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 5f);
-			Vector2 drawPos = worldPos + offScreen - Main.screenPosition + new Vector2(0f, -40f) + new Vector2(0f, offset * 4f);
+			Vector2 drawPos = worldPos - Main.screenPosition + new Vector2(0f, -40f) + new Vector2(0f, offset * 4f);
 
 			// Draw the main texture
 			spriteBatch.Draw(texture, drawPos, frame, color, 0f, origin, 1f, effects, 0f);

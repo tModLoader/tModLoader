@@ -226,7 +226,11 @@ Mods: {
 			WaspNest: {
 				// DisplayName: Wasp Nest
 				# Here we use a vanilla language key to copy the tooltip from HiveBackpack
-				// Tooltip: "{$ItemTooltip.HiveBackpack}"
+				/* Tooltip:
+					'''
+					{$ItemTooltip.HiveBackpack}
+					Releases bees when damaged
+					''' */
 			}
 
 			ExampleBullet: {
@@ -568,6 +572,11 @@ Mods: {
 				// Tooltip: This is a modded toilet.
 			}
 
+			ExampleWideBanner: {
+				// DisplayName: Example Wide Banner
+				// Tooltip: This banner is wider than all the others!
+			}
+
 			ExampleWorkbench: {
 				// DisplayName: Example Work Bench
 				// Tooltip: This is a modded workbench.
@@ -783,11 +792,6 @@ Mods: {
 				// DisplayName: Red Firefly in a Bottle
 				// Tooltip: ""
 			}
-
-			# These 2 examples show using substitutions. Here we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Octopus".
-			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file.
-			// OctopusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
-			// SarcophagusBanner.Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
 
 			HoldStyleShowcase: {
 				// DisplayName: Hold Style Showcase
@@ -1014,6 +1018,25 @@ Mods: {
 				// DisplayName: Custom Item Drawing Showcase
 				// Tooltip: ""
 			}
+
+			ExampleSandRod: {
+				// DisplayName: Example Sand Rod
+				// Tooltip: Magically moves sand
+			}
+
+			# These banner item examples show using substitutions.
+			# For ExampleCustomAISlimeNPCBanner.Tooltip we use a vanilla Key and a key from this Mod to generate the text: "Nearby players get a bonus against: Flutter Slime".
+			# Note that the translation files for other languages don't need to modify ExampleCustomAISlimeNPCBanner.Tooltip at all because it is completely composed of text substitutions.
+			# Other languages would only need to modify NPCs.ExampleCustomAISlimeNPC.DisplayName and ExampleCustomAISlimeNPCBanner.DisplayName.
+			ExampleCustomAISlimeNPCBanner: {
+				// DisplayName: "{$NPCs.ExampleCustomAISlimeNPC.DisplayName} Banner"
+				// Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleCustomAISlimeNPC.DisplayName}"
+			}
+
+			ExampleWormHeadBanner: {
+				// DisplayName: "{$NPCs.ExampleWormHead.DisplayName} Banner"
+				// Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1158,6 +1181,7 @@ Mods: {
 		// ResourceDisplaySets.ExampleReversedBarsDisplay.DisplayName: Swapped Bars
 
 		Bestiary: {
+			// ImportantFlavorText: Important Flavor Text!
 			// ExamplePerson: Built of blocks with arms of steel. Pumps iron day and night.
 			// ExampleBoneMerchant: Built with bone blocks and arms of steel. Throws bones day and night.
 			// ExampleTownPet: A blocky Town Pet to bring extra cuteness to the town.
@@ -1250,6 +1274,11 @@ Mods: {
 		UI: {
 			// ExampleResource: Example Resource: {0} / {1}
 			// InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+
+			ExampleFullscreenUI: {
+				// Header: Example Fullscreen UI
+				// Description: This is an example fullscreen UI, notice how other UI is hidden.
+			}
 		}
 
 		WorldGen: {
@@ -1280,6 +1309,7 @@ Mods: {
 		}
 
 		// NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
+		// Commands.ShowFullscreenUICommand.Description: Show the example fullscreen UI
 	}
 }
 

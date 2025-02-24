@@ -73,10 +73,24 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 	public float DrawOffsetY { get; set; }
 
-	/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type. </summary>
+	/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. Also known as the BannerID. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type and also set <see cref="BannerItem"/>:
+	/// <code>
+	/// Banner = Type;
+	/// BannerItem = ModContent.ItemType&lt;ExampleWormHeadBanner&gt;();
+	/// </code>
+	/// <para/> For NPC with multiple parts, such as worms, be sure to set this to the same value for each ModNPC. Typically the head NPC type is used as the common Banner value. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExampleWorm.cs">ExampleWorm.cs</see> is an example of this:
+	/// <code>
+	/// // In ExampleWormBody.SetDefaults:
+	/// Banner = ModContent.NPCType&lt;ExampleWormHead&gt;();</code>
+	/// <para/> For NPC that are variants of each other, it is also useful to share a Banner value so that each variant counts towards the same banner kill count rather than each having their own banner drop. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie.cs</see> does this and shares the vanilla Zombie banner. By doing this it is affected by the Zombie banner and counts towards dropping it as well.
+	/// <para/> To retrieve and use a vanilla banner value, use the <see cref="Item.NPCtoBanner"/> method:
+	/// <code>Banner = Item.NPCtoBanner(NPCID.Zombie);</code>
+	/// </summary>
 	public int Banner { get; set; }
 
-	/// <summary> The type of the item this NPC drops for every 50 times it is defeated. For any ModNPC whose banner field is set to the type of this NPC, that ModNPC will drop this banner. </summary>
+	/// <summary> The item type this NPC drops after some number of it is defeated. The exact number can be customized by using <see cref="ItemID.Sets.KillsToBanner"/> and defaults to 50. For any ModNPC whose <see cref="Banner"/> field is set to the type of this NPC, that ModNPC will drop this banner. Must be set along with <see cref="Banner"/>.
+	/// <para/> If querying the banner item drop for a specific NPC that you know has an assigned banner, you'll need to use the following for accurate results since BannerItem isn't necessarily assigned for npc sharing a banner: <c>Item.BannerToItem(Item.NPCtoBanner(npc.BannerID()));</c>
+	/// </summary>
 	public int BannerItem { get; set; }
 
 	//TODO: Find a better solution in the future.
@@ -142,9 +156,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 		if (Banner != 0 && BannerItem != 0) {
 			NPCLoader.bannerToItem[Banner] = BannerItem;
-		}
-		else if (Banner != 0 || BannerItem != 0) {
-			Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", Mod.Name, Name));
+			NPCLoader.itemToBanner[BannerItem] = Banner;
 		}
 
 		if (NPC.lifeMax > 32767 || NPC.boss) {
@@ -225,6 +237,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool PreAI()
@@ -234,12 +247,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. This will only be called if PreAI returns true.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	public virtual void AI()
 	{
 	}
 
-	//Allows you to determine how this NPC behaves. This will be called regardless of what PreAI returns.
+	/// <summary>
+	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
+	/// </summary>
 	public virtual void PostAI()
 	{
 	}
@@ -320,7 +337,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). Returns true by default.
+	/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). This method can also be used to dynamically prevent specific item loot using <see cref="NPCLoader.blockLoot"/>, but editing the drop rules themselves is usually the better approach.
+	/// <para/> Returning false will skip dropping loot, the <see cref="NPCLoader.OnKill(NPC)"/> methods, and logic setting boss flags (<see cref="NPC.DoDeathEvents"/>).
+	/// <para/> Returns true by default. 
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool PreKill()
@@ -403,8 +422,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this NPC does to a player. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to modify the damage, etc., that this NPC does to a player. 
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -443,8 +463,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. <br/>
-	/// Runs in single player or on the server. <br/>
+	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. 
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Runs in single player or on the server.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -489,8 +510,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. 
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
@@ -523,6 +545,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="modifiers"></param>
@@ -542,6 +565,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
+	/// This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="modifiers"></param>
 	public virtual void ModifyIncomingHit(ref NPC.HitModifiers modifiers)

@@ -40,7 +40,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 			// Gun Properties
 			Item.shoot = ProjectileID.PurificationPowder; // For some reason, all the guns in the vanilla source have this.
-			Item.shootSpeed = 16f; // The speed of the projectile (measured in pixels per frame.)
+			Item.shootSpeed = 10f; // The speed of the projectile (measured in pixels per frame.) This value equivalent to Handgun
 			Item.useAmmo = AmmoID.Bullet; // The "ammo Id" of the ammo item that this weapon uses. Ammo IDs are magic numbers that usually correspond to the item id of one item that most commonly represent the ammo type.
 		}
 
@@ -126,7 +126,7 @@ namespace ExampleMod.Content.Items.Weapons
 		// How can I choose between several projectiles randomly?
 		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
-			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, ModContent.ProjectileType<Projectiles.ExampleBullet>() });
+			type = Main.rand.Next([type, ProjectileID.GoldenBullet, ModContent.ProjectileType<Projectiles.ExampleBullet>()]);
 		}*/
 	}
 }

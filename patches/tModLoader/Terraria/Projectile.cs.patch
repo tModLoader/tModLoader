@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,341 @@
+@@ -63,79 +_,343 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -66,10 +66,10 @@
  	public int type;
 +
 +	/// <summary>
-+	/// How transparent to draw this projectile. 0 to 255. 255 is completely transparent.
-+	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
-+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#fade-inout">Basic Projectile Guide</see> teaches more about projectile fade in and out.
-+	/// <br/> Defaults to 0.
++	/// How transparent to draw this projectile. Ranges from 0 to 255. 0 is fully opaque and 255 is completely transparent. (<see cref="Opacity"/> also controls alpha and might be easier to work with in some situations.)
++	/// <para/> Can be adjusted to dynamically fade in or out a projectile. One example usage is for projectiles that look odd when initially spawned on the weapon because of texture overlap. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet.SetDefaults</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, causing the projectile to fade in quickly after being spawned.
++	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#fade-inout">Basic Projectile Guide</see> teaches more about projectile fade in and out.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
 +	/// <summary>
@@ -210,6 +210,7 @@
 +
 +	/// <summary>
 +	/// Holds the value of <see cref="Entity.position"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++	/// <para/> Note that <c>oldPos[0]</c> will be equal to <see cref="Entity.position"/> during drawing methods, so index 0 should be skipped unless skipping vanilla drawing. Also note that they should be drawn in reverse order to layer properly. Also note that the values are from previous updates, not previous draws, which might be relevant if <see cref="extraUpdates"/> is used.
 +	/// </summary>
  	public Vector2[] oldPos = new Vector2[10];
 +
@@ -249,7 +250,8 @@
 +
 +	/// <summary>
 +	/// Additional update steps per tick. Useful for really fast projectiles such as <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-item-and-projectile-shadowbeam-staff-clone">Shadowbeam Staff</see>. If your projectile is mistakenly occasionally traveling through tiles, you may need to increase this to prevent that.
-+	/// <br/> Defaults to 0.
++	/// <para/> Also useful as a velocity multiplier for ammo projectile. The <see href="https://terraria.wiki.gg/wiki/Velocity">Shoot Speed wiki page</see> explains how that works.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int extraUpdates;
  	public bool stopsDealingDamageAfterPenetrateHits;
@@ -264,7 +266,7 @@
 +
 +	/// <summary>
 +	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
-+	/// <para/> Be default this will also influence the lighting of this projectile to match the players lighting, as if it were a held projectile. Projectiles that are not held by the player should set <see cref="ProjectileID.Sets.DontAttachHideToAlpha"/> to true in SetStaticDefaults: <c>ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;</c>
++	/// <para/> By default this will also influence the lighting of this projectile to match the players lighting, as if it were a held projectile. Projectiles that are not held by the player should set <see cref="ProjectileID.Sets.DontAttachHideToAlpha"/> to true in SetStaticDefaults: <c>ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;</c>
 +	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hide;

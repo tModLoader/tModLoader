@@ -228,7 +228,7 @@
  		public static List<int> GoldCrittersCollection = new List<int> {
  			443,
  			442,
-@@ -4933,8 +_,24 @@
+@@ -4933,8 +_,26 @@
  			448,
  			539
  		};
@@ -241,7 +241,8 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC cannot pick up dropped coins in Expert Mode.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <para/> Vanilla entries include mainly boss summons and other NPC that shouldn't be able to respawn naturally. See also <see cref="RespawnEnemyID"/>.
++		/// <para/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CantTakeLunchMoney = Factory.CreateBoolSet(394, 393, 392, 492, 491, 662, 384, 478, 535, 658, 659, 660, 128, 131, 129, 130, 139, 267, 247, 248, 246, 249, 245, 409, 410, 397, 396, 401, 400, 440, 68, 534);
 +
@@ -249,6 +250,7 @@
 +		/// Associates an NPC type (<see cref="NPC.type"/>) with the NPC type it respawns as from the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).
 +		/// <br/> If an NPC type is not a key in this dictionary, then that NPC respawns as itself.
 +		/// <br/> If the value for an NPC type is <c>0</c>, then that NPC won't be cached (<see cref="GameContent.CoinLossRevengeSystem.CacheEnemy(NPC)"/>).
++		/// <para/> Some vanilla entries contain 0 values for special enemies that shouldn't respawn and other entries contain values indicating the "head" NPC of worm enemies to allow them to spawn the worm correctly. (Worm enemies currently don't work with the coin loss revenge system, however.) See also <see cref="CantTakeLunchMoney"/>.
 +		/// </summary>
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },

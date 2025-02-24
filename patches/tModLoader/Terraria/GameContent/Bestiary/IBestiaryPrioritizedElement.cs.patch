@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Bestiary/IBestiaryPrioritizedElement.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/IBestiaryPrioritizedElement.cs
+@@ -2,5 +_,9 @@
+ 
+ public interface IBestiaryPrioritizedElement
+ {
++	/// <summary>
++	/// Higher priority values are shown before (higher up) other elements in the same Bestiary info category (<see cref="UI.Elements.UIBestiaryEntryInfoPage.BestiaryInfoCategory"/>). Defaults to 0.
++	/// <para/> Use <see cref="ICategorizedBestiaryInfoElement.ElementCategory"/> to dictate which category this element belongs to.
++	/// </summary>
+ 	float OrderPriority { get; }
+ }

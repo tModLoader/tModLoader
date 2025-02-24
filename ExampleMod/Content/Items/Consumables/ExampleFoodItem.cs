@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Consumables
 {
+	// Food items have a unique item sprite for their eating and placed visuals. These are explained in the comments.
 	public class ExampleFoodItem : ModItem
 	{
 		public override void SetStaticDefaults() {
@@ -26,11 +27,11 @@ namespace ExampleMod.Content.Items.Consumables
 			// Depending on if you are making solid or liquid food switch out FoodParticleColors
 			// with DrinkParticleColors. The difference is that food particles fly outwards
 			// whereas drink particles fall straight down and are slightly transparent
-			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3] {
+			ItemID.Sets.FoodParticleColors[Item.type] = [
 				new Color(249, 230, 136),
 				new Color(152, 93, 95),
 				new Color(174, 192, 192)
-			};
+			];
 
 			ItemID.Sets.IsFood[Type] = true; //This allows it to be placed on a plate and held correctly
 		}

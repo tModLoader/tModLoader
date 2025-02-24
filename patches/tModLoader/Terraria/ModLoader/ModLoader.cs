@@ -75,7 +75,8 @@ public static class ModLoader
 	internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 	internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
+	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found so it should only be used for mods known to be enabled, such as a strong mod dependency.
+	/// <para/> Use <see cref="TryGetMod(string, out Mod)"/> instead if the mod might not be enabled. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	public static Mod GetMod(string name) => modsByName[name];
 

@@ -89,8 +89,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc.
-	/// For those that are familiar with tAPI, this has the same function as .json files.
+	/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. There are many properties that must be set for an item to do anything at all so it is best to consult examples, <see href="https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Content/Items">such as those in ExampleMod</see>, to get an idea of what is required for the type of item you are making.
+	/// <para/> There are many useful methods such as <see cref="Item.DefaultToPlaceableTile(int, int)"/> and <see cref="Item.DefaultToRangedWeapon(int, int, int, float, bool)"/> to easily set the variables needed for that type of item all at once.
+	/// <para/> The <see cref="Item.CloneDefaults(int)"/> method can be used to clone the item defaults of an item.
 	/// </summary>
 	public virtual void SetDefaults()
 	{
@@ -695,7 +696,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual void HoldItemFrame(Player player) { }
 
 	/// <summary>
-	/// Allows you to make this item usable by right-clicking. Returns false by default. When this item is used by right-clicking, player.altFunctionUse will be set to 2.
+	/// Allows you to make this item usable by right-clicking. When this item is used by right-clicking, <see cref="Player.altFunctionUse"/> will be set to 2. Check the value of altFunctionUse in <see cref="UseItem(Player)"/> to apply right-click specific logic. For auto-reusing through right clicking, see also <see cref="ItemID.Sets.ItemsThatAllowRepeatedRightClick"/>.
+	/// <para/> Returns false by default.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -828,9 +830,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the equipment that the player appears to be wearing. This hook will only be called for body armor and leg armor. Note that equipSlot is not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
-	/// If this hook is called on body armor, equipSlot allows you to modify the leg armor the player appears to be wearing. If you modify it, make sure to set robes to true. If this hook is called on leg armor, equipSlot allows you to modify the leg armor the player appears to be wearing, and the robes parameter is useless.
-	/// Note that this hook is only ever called through this item's associated equipment texture.
+	/// Allows you to modify the equipment that the player appears to be wearing. This is most commonly used to add legs to robes and for swapping to female variant textures if <paramref name="male"/> is false for head and leg armor. This hook will only be called for head armor, body armor, and leg armor. Note that equipSlot is not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
+	/// <para/> If this hook is called on body armor, equipSlot allows you to modify the leg armor the player appears to be wearing. If you modify it, make sure to set robes to true. If this hook is called on leg armor, equipSlot allows you to modify the leg armor the player appears to be wearing, and the robes parameter is useless. The same is true for head armor.
+	/// <para/> Note that this hook is only ever called through this item's associated equipment texture.
 	/// </summary>
 	/// <param name="male">if set to <c>true</c> [male].</param>
 	/// <param name="equipSlot">The equip slot.</param>
