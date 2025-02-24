@@ -1,5 +1,6 @@
 var NAVTREEINDEX26 =
 {
+"struct_scene_metrics_scan_settings.html":[3,0,1094],
 "struct_segment_infor_report.html":[3,0,1102],
 "struct_segments_1_1_panning.html":[3,0,1103,5],
 "struct_settings_for_character_preview_1_1_selection_based_settings.html":[3,0,1111,0],

@@ -39,6 +39,7 @@ var class_mod =
     [ "Name", "class_mod.html#a95b89033e52b425237258eb49ebff416", null ],
     [ "PreJITFilter", "class_mod.html#a203672e875cf843ef7fea8166a0fda64", null ],
     [ "Side", "class_mod.html#a8706680abdd1062598b4719d8b3decdf", null ],
+    [ "SourceFolder", "class_mod.html#af9cc6edeeb2cee626f0ab6b1d0b3d9ba", null ],
     [ "TModLoaderVersion", "class_mod.html#aa399ee0fe62bc27298c4cc408d73a0f2", null ],
     [ "Version", "class_mod.html#ac06290a5264e10bc183201a18452e7c0", null ]
 ];

@@ -1,5 +1,6 @@
 var NAVTREEINDEX25 =
 {
+"struct_extra_bestiary_info_page_information.html":[3,0,363],
 "struct_extra_jump_state.html":[3,0,366],
 "struct_extra_jump_state.html#a290a7d90773c3c40a968c15ca7f711dd":[3,0,366,0],
 "struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566":[3,0,366,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX25 =
 "struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651":[3,0,1070,1],
 "struct_resource_overlay_draw_context.html#af5cdc9b01085fb5c4d8c174e8d2c4ec4":[3,0,1070,2],
 "struct_resource_pack_version.html":[3,0,1075],
-"struct_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair.html":[3,0,1092,0,0],
-"struct_scene_metrics_scan_settings.html":[3,0,1094]
+"struct_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair.html":[3,0,1092,0,0]
 };

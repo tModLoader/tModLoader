@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"class_twilight_dye_shader_data.html":[3,0,1292],
 "class_twilight_hair_dye_shader_data.html":[3,0,1293],
 "class_twins_big_progress_bar.html":[3,0,1294],
 "class_twins_shader.html":[3,0,1295],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "class_unloaded_item.html#af9a5e2d5ab6b9da46f1f55eb39336eae":[3,0,1414,4],
 "class_unloaded_item.html#afc5f9791ed834c179419c609800ea7c7":[3,0,1414,7],
 "class_unloaded_non_solid_tile.html":[3,0,1415],
-"class_unloaded_non_solid_tile.html#aae5bc2c98b0a722a2c6bc4e8d1d64ab1":[3,0,1415,0],
-"class_unloaded_player.html":[3,0,1416]
+"class_unloaded_non_solid_tile.html#aae5bc2c98b0a722a2c6bc4e8d1d64ab1":[3,0,1415,0]
 };

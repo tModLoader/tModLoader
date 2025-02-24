@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_proj_a_i_style_i_d.html#afeb23f6f7132b1990e2a822037cae1c2":[3,0,1023,25],
 "class_proj_a_i_style_i_d.html#aff97e9ab2685355956831cfda121c6a2":[3,0,1023,104],
 "class_projectile.html":[3,0,1024],
 "class_projectile.html#a01ec793a8f23b86a7ac80513ad1d0949":[3,0,1024,41],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "class_scene_effect_loader.html":[3,0,1092],
 "class_scene_effect_loader_1_1_scene_effect_instance.html":[3,0,1092,0],
 "class_scene_metrics.html":[3,0,1093],
-"class_scene_metrics.html#aad9cd2adbe69564e7db8052770c159f5":[3,0,1093,1],
-"class_scene_metrics.html#ac8f00217d15e334a32dab36b11daa6a4":[3,0,1093,0]
+"class_scene_metrics.html#aad9cd2adbe69564e7db8052770c159f5":[3,0,1093,1]
 };

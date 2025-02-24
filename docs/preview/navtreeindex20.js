@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"class_scene_metrics.html#ac8f00217d15e334a32dab36b11daa6a4":[3,0,1093,0],
 "class_screen_darkness.html":[3,0,1095],
 "class_screen_effect_initializer.html":[3,0,1096],
 "class_screen_obstruction.html":[3,0,1097],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "class_tile_drawing.html#a02189b771b065777d7952f6713cdca80":[3,0,1235,6],
 "class_tile_drawing.html#a0a974e7cce603c1475e06cc59403f48e":[3,0,1235,11],
 "class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac":[3,0,1235,3],
-"class_tile_drawing.html#a24bdc2e2b25697391ef45c50cabbeb81":[3,0,1235,7],
-"class_tile_drawing.html#a2d253cefdb0c31ad068ff7883d6fe2ce":[3,0,1235,5]
+"class_tile_drawing.html#a24bdc2e2b25697391ef45c50cabbeb81":[3,0,1235,7]
 };

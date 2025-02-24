@@ -1,5 +1,6 @@
 var NAVTREEINDEX24 =
 {
+"functions_prop_n.html":[3,3,4,12],
 "functions_prop_o.html":[3,3,4,13],
 "functions_prop_p.html":[3,3,4,14],
 "functions_prop_r.html":[3,3,4,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX24 =
 "struct_entity_globals_enumerator.html":[3,0,314],
 "struct_entity_shadow_info.html":[3,0,315],
 "struct_entry_icon_draw_settings.html":[3,0,353],
-"struct_extension_filter.html":[3,0,362],
-"struct_extra_bestiary_info_page_information.html":[3,0,363]
+"struct_extension_filter.html":[3,0,362]
 };
