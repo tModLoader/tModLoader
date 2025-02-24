@@ -1,5 +1,8 @@
 var NAVTREEINDEX19 =
 {
+"class_proj_a_i_style_i_d.html#aff97e9ab2685355956831cfda121c6a2":[3,0,1023,104],
+"class_projectile.html":[3,0,1024],
+"class_projectile.html#a01ec793a8f23b86a7ac80513ad1d0949":[3,0,1024,41],
 "class_projectile.html#a0b34b3b9b56439acfc13ebba50455ca6":[3,0,1024,71],
 "class_projectile.html#a0d64b71b07d6ac6420039854d1f15db7":[3,0,1024,17],
 "class_projectile.html#a0d8c6c0caf918333ef24757dac3a1ee1":[3,0,1024,38],
@@ -246,8 +249,5 @@ var NAVTREEINDEX19 =
 "class_scene_effect_loader_1_1_scene_effect_instance.html":[3,0,1092,0],
 "class_scene_metrics.html":[3,0,1093],
 "class_scene_metrics.html#aad9cd2adbe69564e7db8052770c159f5":[3,0,1093,1],
-"class_scene_metrics.html#ac8f00217d15e334a32dab36b11daa6a4":[3,0,1093,0],
-"class_screen_darkness.html":[3,0,1095],
-"class_screen_effect_initializer.html":[3,0,1096],
-"class_screen_obstruction.html":[3,0,1097]
+"class_scene_metrics.html#ac8f00217d15e334a32dab36b11daa6a4":[3,0,1093,0]
 };

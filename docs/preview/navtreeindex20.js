@@ -1,5 +1,8 @@
 var NAVTREEINDEX20 =
 {
+"class_screen_darkness.html":[3,0,1095],
+"class_screen_effect_initializer.html":[3,0,1096],
+"class_screen_obstruction.html":[3,0,1097],
 "class_screen_shader_data.html":[3,0,1098],
 "class_search_alias_info_element.html":[3,0,1099],
 "class_search_alias_info_element.html#ae2bb4a66816f81741aa003923f1c5fc7":[3,0,1099,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX20 =
 "class_tile_drawing.html#a0a974e7cce603c1475e06cc59403f48e":[3,0,1235,11],
 "class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac":[3,0,1235,3],
 "class_tile_drawing.html#a24bdc2e2b25697391ef45c50cabbeb81":[3,0,1235,7],
-"class_tile_drawing.html#a2d253cefdb0c31ad068ff7883d6fe2ce":[3,0,1235,5],
-"class_tile_drawing.html#a659c5f36626e9f85d00ba2da8c2bd6d0":[3,0,1235,13],
-"class_tile_drawing.html#a7bc4d74d7f3676df9d16be1e84203ff7":[3,0,1235,8],
-"class_tile_drawing.html#a82a5087b146818ad1f4ec7b54fa9aec2":[3,0,1235,2]
+"class_tile_drawing.html#a2d253cefdb0c31ad068ff7883d6fe2ce":[3,0,1235,5]
 };

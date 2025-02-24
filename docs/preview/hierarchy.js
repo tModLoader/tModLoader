@@ -2349,6 +2349,7 @@ var hierarchy =
     [ "HairID.Sets", "class_hair_i_d_1_1_sets.html", null ],
     [ "ItemID.Sets", "class_item_i_d_1_1_sets.html", null ],
     [ "MountID.Sets", "class_mount_i_d_1_1_sets.html", null ],
+    [ "MusicID.Sets", "class_music_i_d_1_1_sets.html", null ],
     [ "NPCHeadID.Sets", "class_n_p_c_head_i_d_1_1_sets.html", null ],
     [ "NPCID.Sets", "class_n_p_c_i_d_1_1_sets.html", null ],
     [ "PlayerVariantID.Sets", "class_player_variant_i_d_1_1_sets.html", null ],

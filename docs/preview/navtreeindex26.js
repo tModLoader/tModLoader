@@ -1,5 +1,8 @@
 var NAVTREEINDEX26 =
 {
+"struct_segment_infor_report.html":[3,0,1102],
+"struct_segments_1_1_panning.html":[3,0,1103,5],
+"struct_settings_for_character_preview_1_1_selection_based_settings.html":[3,0,1111,0],
 "struct_shimmer_unstuck_helper.html":[3,0,1122],
 "struct_shopping_settings.html":[3,0,1124],
 "struct_smart_interact_scan_settings.html":[3,0,1143],

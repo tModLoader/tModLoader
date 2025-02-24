@@ -857,7 +857,7 @@ var annotated_dup =
     [ "MushroomBiome", "class_mushroom_biome.html", null ],
     [ "MushroomHouseBuilder", "class_mushroom_house_builder.html", null ],
     [ "MusicCueHolder", "class_music_cue_holder.html", null ],
-    [ "MusicID", "class_music_i_d.html", null ],
+    [ "MusicID", "class_music_i_d.html", "class_music_i_d" ],
     [ "MusicLoader", "class_music_loader.html", "class_music_loader" ],
     [ "MysticLogFairiesEvent", "class_mystic_log_fairies_event.html", null ],
     [ "NamePlateInfoElement", "class_name_plate_info_element.html", "class_name_plate_info_element" ],

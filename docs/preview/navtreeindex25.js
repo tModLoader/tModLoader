@@ -1,5 +1,8 @@
 var NAVTREEINDEX25 =
 {
+"struct_extra_jump_state.html":[3,0,366],
+"struct_extra_jump_state.html#a290a7d90773c3c40a968c15ca7f711dd":[3,0,366,0],
+"struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566":[3,0,366,2],
 "struct_extra_jump_state.html#aa796ec3b44c5ebd15f6268c8f1696902":[3,0,366,1],
 "struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71":[3,0,366,3],
 "struct_extra_jump_state.html#ae499c81e723ad86fa7269d42b4cb7038":[3,0,366,4],
@@ -246,8 +249,5 @@ var NAVTREEINDEX25 =
 "struct_resource_overlay_draw_context.html#af5cdc9b01085fb5c4d8c174e8d2c4ec4":[3,0,1070,2],
 "struct_resource_pack_version.html":[3,0,1075],
 "struct_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair.html":[3,0,1092,0,0],
-"struct_scene_metrics_scan_settings.html":[3,0,1094],
-"struct_segment_infor_report.html":[3,0,1102],
-"struct_segments_1_1_panning.html":[3,0,1103,5],
-"struct_settings_for_character_preview_1_1_selection_based_settings.html":[3,0,1111,0]
+"struct_scene_metrics_scan_settings.html":[3,0,1094]
 };
