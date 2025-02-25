@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -33,6 +34,11 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			foreach (Item item in items) {
+				// Skip 'air' items and null items.
+				if (item == null || item.type == ItemID.None) {
+					continue;
+				}
+
 				int value = item.shopCustomPrice ?? item.value;
 				item.shopCustomPrice = value * 2;
 			}
