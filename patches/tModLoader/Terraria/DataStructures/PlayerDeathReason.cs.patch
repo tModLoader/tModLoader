@@ -8,32 +8,34 @@
  
  namespace Terraria.DataStructures;
  
-@@ -10,19 +_,33 @@
+@@ -10,10 +_,21 @@
  	private int _sourceProjectileLocalIndex = -1;
  	private int _sourceOtherIndex = -1;
  	private int _sourceProjectileType;
--	private int _sourceItemType;
--	private int _sourceItemPrefix;
 +
 +	// Added
 +	private Item _sourceItem;
 +
 +	// Changed to reference _sourceItem
++	/*
+ 	private int _sourceItemType;
+ 	private int _sourceItemPrefix;
++	*/
 +	private int _sourceItemType => _sourceItem?.type ?? 0;
 +	private int _sourceItemPrefix => _sourceItem?.prefix ?? 0;
  	private string _sourceCustomReason;
--
--	public int? SourceProjectileType {
--		get {
--			if (_sourceProjectileLocalIndex == -1)
--				return null;
--
--			return _sourceProjectileType;
--		}
--	}
--
 +	private NetworkText _sourceCustomReasonLocalized;
-+
+ 
++	/*
+ 	public int? SourceProjectileType {
+ 		get {
+ 			if (_sourceProjectileLocalIndex == -1)
+@@ -22,7 +_,25 @@
+ 			return _sourceProjectileType;
+ 		}
+ 	}
++	*/
+ 
 +	// Ref fields added by TML.
 +	public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
 +	public ref int SourceNPCIndex => ref _sourceNPCIndex;
