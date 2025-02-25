@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDeathReason.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDeathReason.cs
-@@ -1,5 +_,7 @@
+@@ -1,5 +_,8 @@
++using System;
  using System.IO;
  using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -24,13 +25,13 @@
 +	private int _sourceItemType => _sourceItem?.type ?? 0;
 +	private int _sourceItemPrefix => _sourceItem?.prefix ?? 0;
  	private string _sourceCustomReason;
-+	private NetworkText _sourceCustomReasonLocalized;
++	private NetworkText _customReason;
  
 +	/*
  	public int? SourceProjectileType {
  		get {
  			if (_sourceProjectileLocalIndex == -1)
-@@ -22,7 +_,25 @@
+@@ -22,7 +_,26 @@
  			return _sourceProjectileType;
  		}
  	}
@@ -43,8 +44,9 @@
 +	public ref int SourceOtherIndex => ref _sourceOtherIndex;
 +	public ref int SourceProjectileType => ref _sourceProjectileType;
 +	public ref Item SourceItem => ref _sourceItem;
++	[Obsolete("CustomReason should be used instead")]
 +	public ref string SourceCustomReason => ref _sourceCustomReason;
-+	public ref NetworkText SourceCustomReasonLocalized => ref _sourceCustomReasonLocalized;
++	public ref NetworkText CustomReason => ref _customReason;
 +
 +	/// <summary>
 +	/// Only safe for use when the local player is the one taking damage! <br/>
@@ -68,37 +70,30 @@
  			return true;
  		}
  
-@@ -65,6 +_,10 @@
+@@ -65,6 +_,11 @@
  		};
  	}
  
 +	/// <summary>
 +	/// A custom death message.
-+	/// <para/> This overload does not support localization, all players will see the same text regardless of their language settings. Use <see cref="ByCustomReason(LocalizedText)"/> or <see cref="ByCustomReason(NetworkText)"/> instead for localization support.
++	/// <para/> This overload does not support localization, all players will see the same text regardless of their language settings. Use <see cref="ByCustomReason(NetworkText)"/> instead for localization support.
 +	/// </summary>
++	[Obsolete("Use the NetworkText version instead")]
  	public static PlayerDeathReason ByCustomReason(string reasonInEnglish)
  	{
  		return new PlayerDeathReason {
-@@ -72,18 +_,45 @@
+@@ -72,18 +_,37 @@
  		};
  	}
  
-+	/// <inheritdoc cref="ByCustomReason(NetworkText)"/>
-+	public static PlayerDeathReason ByCustomReason(LocalizedText reason)
-+	{
-+		return new PlayerDeathReason {
-+			_sourceCustomReasonLocalized = reason.ToNetworkText()
-+		};
-+	}
-+
 +	/// <summary>
 +	/// A localized custom death message. Each client will see the death message in their own language, unlike with <see cref="ByCustomReason(string)"/>.
-+	/// <para/> Text substitutions can be provided by using <see cref="LocalizedText.ToNetworkText(object[])"/> or <see cref="LocalizedText.WithFormatArgs(object[])"/>
++	/// <para/> Text substitutions can be provided by using <see cref="LocalizedText.ToNetworkText(object[])"/> or <see cref="NetworkText.FromKey(string, object[])"/>.
 +	/// </summary>
 +	public static PlayerDeathReason ByCustomReason(NetworkText reason)
 +	{
 +		return new PlayerDeathReason {
-+			_sourceCustomReasonLocalized = reason
++			_customReason = reason
 +		};
 +	}
 +
@@ -142,8 +137,8 @@
  
  	public NetworkText GetDeathText(string deadPlayerName)
  	{
-+		if (_sourceCustomReasonLocalized != null)
-+			return _sourceCustomReasonLocalized;
++		if (_customReason != null)
++			return _customReason;
 +
  		if (_sourceCustomReason != null)
  			return NetworkText.FromLiteral(_sourceCustomReason);
@@ -155,7 +150,7 @@
 +		/*
  		bitsByte[6] = _sourceItemPrefix != 0;
 +		*/
-+		bitsByte[6] = _sourceCustomReasonLocalized != null;
++		bitsByte[6] = _customReason != null;
  		bitsByte[7] = _sourceCustomReason != null;
  		writer.Write(bitsByte);
  		if (bitsByte[0])
@@ -172,7 +167,7 @@
  			writer.Write((byte)_sourceItemPrefix);
 +		*/
 +		if (bitsByte[6])
-+			_sourceCustomReasonLocalized.Serialize(writer);
++			_customReason.Serialize(writer);
  
  		if (bitsByte[7])
  			writer.Write(_sourceCustomReason);
@@ -191,7 +186,7 @@
 +			playerDeathReason._sourceItem = ItemIO.Receive(reader);
 +
 +		if (bitsByte[6])
-+			playerDeathReason._sourceCustomReasonLocalized = NetworkText.Deserialize(reader);
++			playerDeathReason._customReason = NetworkText.Deserialize(reader);
  
  		if (bitsByte[7])
  			playerDeathReason._sourceCustomReason = reader.ReadString();
