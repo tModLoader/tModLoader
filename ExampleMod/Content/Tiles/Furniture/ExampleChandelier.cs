@@ -15,28 +15,28 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	/// <summary>
 	/// Chandeliers use TileID.Sets.MultiTileSway and TilesRenderer.AddSpecialPoint to draw the tile swaying in the wind and reacting to player interaction.
-	/// In addition, this example shows using AdjustMultiTileVineParameters to customize the physics of the wind interaction and using GetTileFlameData to draw a flickering flame overlay.
+	/// In addition, this example shows using AdjustMultiTileVineParameters to customize the physics of the wind interaction and using GetTileFlameData to draw a flickering flame overlay. It also shows using Animation.NewTemporaryAnimation to easily implement a custom temporary per-tile animation.
 	/// The examples are all clones of existing chandeliers to showcase how they are done.
 	/// </summary>
-	// TODO: Hue-shife sprite
 	public class ExampleChandelier : ModTile
 	{
-		// private Asset<Texture2D> glowTexture;
 		private Asset<Texture2D> flameTexture;
+		private Asset<Texture2D> glowTexture;
+		private int turningOnAnimationType;
 
 		public enum StyleID
 		{
 			Copper, // Copy of vanilla style 0
 			Silver, // Copy of vanilla style 1
-			Frozen, // Copy of vanilla style 11
+			Frozen, // Copy of vanilla style 11, except it has a flicker animation while turning on.
 			PalmWood, // Copy of vanilla style 23
-			BorealWood, // Copy of vanilla style 25
+			BorealWood, // Copy of vanilla style 25, except it has a glowmask
 			Flesh // Copy of vanilla style 9
 		}
 
 		public override void Load() {
-			// glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
 			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
+			glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
 		}
 
 		public override void SetStaticDefaults() {
@@ -66,6 +66,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Since we are using RandomStyleRange without StyleMultiplier, we'll need to manually register the item drop for the tile styles other than style 0. Here we register the default drop for any style.
 			RegisterItemDrop(ModContent.ItemType<Items.Placeable.Furniture.ExampleChandelier>());
+
+			// Frozen style uses the temporary animation system to cycle between frames to give this style a flickering light effect when turning on.
+			turningOnAnimationType = Animation.RegisterTemporaryAnimation(frameRate: 12, frames: [0, 2, 2, 3, 2, 2, 1, 3]);
 		}
 
 		public override void HitWire(int i, int j) {
@@ -85,9 +88,14 @@ namespace ExampleMod.Content.Tiles.Furniture
 			if (Main.netMode != NetmodeID.SinglePlayer) {
 				NetMessage.SendTileSquare(-1, topX, topY, 3, 3);
 			}
+
+			// If turning the frozen style on, register a temporary animation.
+			if (frameAdjustment == -54 && (StyleID)TileObjectData.GetTileStyle(tile) == StyleID.Frozen) {
+				Animation.NewTemporaryAnimation(turningOnAnimationType, Type, topX, topY);
+			}
 		}
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
-			if (Main.tile[i, j].TileFrameX / 54 != 0) {
+			if (Main.tile[i, j].TileFrameY / 54 != 0) {
 				return;
 			}
 
@@ -128,8 +136,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 				// ---
 				// O-O
 				// ---
-
-				// TODO: Verify this in-game
 
 				int tileColumn = tileFrameX / 18 % 3;
 				if (tileFrameY / 18 % 3 == 1 && tileColumn != 1) {
@@ -204,6 +210,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 					overrideWindCycle = null;
 					windPushPowerY = -1f;
 					dontRotateTopTiles = true;
+					// Additional glowmask
+					glowTexture = this.glowTexture.Value;
+					glowColor = Color.White;
 					break;
 				case StyleID.Flesh:
 					overrideWindCycle = null;
@@ -211,18 +220,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 					dontRotateTopTiles = true;
 					totalWindMultiplier *= 0.3f;
 					break;
-					//case StyleID.8:
-					//	break;
-					//case StyleID.5: // PotsSuspended BrazierSuspended
-					//	windPushPowerX = 0.5f;
-					//	windPushPowerY = -2f;
-					//	break;
-					//case StyleID.6:
-					//	glowTexture = this.glowTexture.Value;
-					//	glowColor = new Color(255, 255, 255, 0);
-					//	break;
-					//default:
-					//	break;
 			}
 		}
 
@@ -265,6 +262,15 @@ namespace ExampleMod.Content.Tiles.Furniture
 					tileFlameData.flameRangeMultX = 0.15f;
 					tileFlameData.flameRangeMultY = 0.35f;
 					break;
+			}
+		}
+
+		public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
+			Tile tile = Main.tile[i, j];
+			int topX = i - tile.TileFrameX % 54 / 18;
+			int topY = j - tile.TileFrameY % 54 / 18;
+			if (tile.TileFrameY / 54 == 0 && Animation.GetTemporaryFrame(topX, topY, out int frameData)) {
+				frameYOffset = 54 * frameData;
 			}
 		}
 	}

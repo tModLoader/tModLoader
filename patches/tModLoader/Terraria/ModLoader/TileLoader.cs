@@ -268,6 +268,7 @@ public static class TileLoader
 		tiles.Clear();
 		globalTiles.Clear();
 		tileTypeAndTileStyleToItemType.Clear();
+		Animation.Unload();
 
 		// Has to be ran on the main thread, since this may dispose textures.
 		Main.QueueMainThreadAction(() => {
