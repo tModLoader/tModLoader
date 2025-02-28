@@ -168,6 +168,12 @@ partial class TileID
 		/// </summary>
 		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
 
+		/// <summary>
+		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Vanilla entries include Cloud, RainCloud, SnowCloud, and PoopBlock. Defaults to false.
+		/// <para/> See also <see cref="Main.tileBouncy"/>.
+		/// </summary>
+		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
+
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)
 		{

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,25 +_,31 @@
+@@ -11,29 +_,39 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -34,13 +34,33 @@
  		ReverseVine,
  		TeleportationPylon,
  		MasterTrophy,
-@@ -114,7 +_,11 @@
+ 		AnyDirectionalGrass,
++		/// <summary> Will cause <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> to be called. </summary>
++		CustomNonSolid,
++		/// <summary> Will cause <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> to be called. </summary>
++		CustomSolid,
+ 		Count
+ 	}
+ 
+@@ -56,8 +_,8 @@
+ 	private const float FORCE_FOR_MIN_WIND = 0.08f;
+ 	private const float FORCE_FOR_MAX_WIND = 1.2f;
+ 	private int _leafFrequency = 100000;
+-	private int[] _specialsCount = new int[13];
++	private int[] _specialsCount = new int[(int)TileCounterType.Count];
+-	private Point[][] _specialPositions = new Point[13][];
++	private Point[][] _specialPositions = new Point[(int)TileCounterType.Count][];
+ 	private Dictionary<Point, int> _displayDollTileEntityPositions = new Dictionary<Point, int>();
+ 	private Dictionary<Point, int> _hatRackTileEntityPositions = new Dictionary<Point, int>();
+ 	private Dictionary<Point, int> _trainingDummyTileEntityPositions = new Dictionary<Point, int>();
+@@ -114,7 +_,12 @@
  
  	private Gore[] _gore => Main.gore;
  
 +	/// <summary>
 +	/// Registers a tile coordinate to use custom drawing code corresponding to the <see cref="TileCounterType"/> provided. This is mostly used to apply wind and player interaction effects to tiles.
-+	/// <para/> For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <c>ModTile.PreDraw</c> (or <c>GlobalTile.PreDraw</c>) and false should be returned to prevent the default tile drawing.
++	/// <para/> For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <c>ModTile.PreDraw</c> (or <c>GlobalTile.PreDraw</c>) and false should be returned to prevent the default tile drawing. It can also be called in <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> as well.
++	/// <para/> When <see cref="TileCounterType.CustomNonSolid"/> or <see cref="TileCounterType.CustomSolid"/> is used, <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> will be called to allow custom rendering. Compared to using <see cref="AddSpecialLegacyPoint(int, int)"/>, SpecialDraw will be called at 60fps rather than 15fps, the sampler state will default to PointClamp instead of LinearClamp, and adjusting for <see cref="Main.offScreenRange"/> is no longer necessary because the render target is the screen rather than the tile render targets.
 +	/// </summary>
 -	private void AddSpecialPoint(int x, int y, TileCounterType type)
 +	public void AddSpecialPoint(int x, int y, TileCounterType type)
@@ -101,6 +121,32 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
+@@ -321,7 +_,10 @@
+ 			_specialsCount[9] = 0;
+ 			_specialsCount[10] = 0;
+ 			_specialsCount[11] = 0;
++			_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
+ 		}
++		if(solidLayer && flag)
++			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
+ 	}
+ 
+ 	public void PostDrawTiles(bool solidLayer, bool forRenderTargets, bool intoRenderTargets)
+@@ -338,12 +_,14 @@
+ 			DrawTrees();
+ 			DrawVines();
+ 			DrawReverseVines();
++			DrawCustom(solidLayer);
+ 			Main.spriteBatch.End();
+ 		}
+ 
+ 		if (solidLayer && !intoRenderTargets) {
+ 			DrawEntities_HatRacks();
+ 			DrawEntities_DisplayDolls();
++			DrawCustom(solidLayer);
+ 		}
+ 	}
+ 
 @@ -396,8 +_,10 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
@@ -424,7 +470,7 @@
  	{
  		int num = x - tileFrameX / 18;
  		int num2 = y - tileFrameY / 18;
-@@ -4922,18 +_,35 @@
+@@ -4922,18 +_,36 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
@@ -449,8 +495,9 @@
  
 +	/// <summary>
 +	/// Registers a tile coordinate to have additional drawing code executed after all tiles are drawn. <see cref="ModTile.SpecialDraw"/> (or <see cref="GlobalTile.SpecialDraw(int, int, int, SpriteBatch)"/>) will be called with the same coordinates after all tiles have been rendered. For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> (or <see cref="GlobalTile.DrawEffects(int, int, int, SpriteBatch, ref TileDrawInfo)"/>)
-+	/// <para/> This is useful for drawing additional visuals to a tile, especially visuals that might render outside the bounds of a single Tile. Attempting to draw outside the bounds will not work in normal tile drawing methods because the visuals will be overwritten by the next tile drawn. 
-+	/// <para/> Some examples include how the <see cref="TileID.LihzahrdAltar"/> draws a sun texture hovering over the tile and how <see cref="TileID.ItemFrame"/> draws the contained item sprite over the tile. 
++	/// <para/> This is useful for drawing additional visuals which overlap multiple tiles.
++	/// <para/> Some examples include how the <see cref="TileID.LihzahrdAltar"/> draws a sun texture hovering over the tile and how <see cref="TileID.ItemFrame"/> draws the contained item sprite over the tile.
++	/// <para/> This additional drawing will draw to the tile rendering targets, meaning it will render at 15fps and requires adjusting for <see cref="Main.offScreenRange"/>. As mentioned in <see cref="ModTile.AnimateTile(ref int, ref int)"/>, any animation done using this method should stick to animating at multiples of 4 frames to avoid jerky animation. For smoother animations <see cref="AddSpecialPoint(int, int, TileCounterType)"/> can be used with <see cref="TileCounterType.CustomSolid"/> or CustomNonSolid to render at full frame rate.
 +	/// </summary>
 -	private void AddSpecialLegacyPoint(int x, int y)
 +	public void AddSpecialLegacyPoint(int x, int y)

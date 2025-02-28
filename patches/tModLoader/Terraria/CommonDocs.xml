@@ -45,4 +45,12 @@ itemFoundData.CopyTo(itemsFound, 0);
 	<CardinalDirections>
 		<para/> The index values are as follows: <br/> 0: Down <br/> 1: Up <br/> 2: Right <br/> 3: Left
 	</CardinalDirections>
+	<AIMethodOrder>
+		<para/> The order of the AI related methods is: <code>
+if (PreAI()) {
+	VanillaAI()
+	AI()
+}
+PostAI()</code>
+	</AIMethodOrder>
 </Common>

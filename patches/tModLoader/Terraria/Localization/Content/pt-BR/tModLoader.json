@@ -75,6 +75,8 @@
 		"BetaModCantPublishError": "Você não pode publicar um mod construído em uma versão beta do tModLoader",
 		"ModDescriptionMissing": "O arquivo {0} não existe. Certifique-se de que haja uma descrição válida para seu mod.",
 		"ModDescriptionLengthTooShort": "A descrição do mod é muito curta. Crie uma descrição válida para seu mod modificando o arquivo {0}.",
+		// "ModDescriptionInvalid": "Mod description is equal to or too similar to the description template, please create a valid description for your mod by modifying {0}.",
+		// "ModWorkshopDescriptionInvalid": "Workshop description is equal to or too similar to the description template, please create a valid description for your workshop page by modifying {0}. You can also delete {0} if you wish to use {1} as the description of your workshop page.",
 		"ModWorkshopIconResizeWarning": "Será redimensionado de {0} para {1}.",
 		"ModUsesDefaultIcon": "Crie um ícone personalizado para seu mod modificando o arquivo {0}.",
 		"OutdatedModCantPublishError": "Você não pode publicar um mod construído em uma versão antiga do tModLoader",
@@ -200,6 +202,7 @@
 		"LoadErrorDependencyMissing": "Mod não encontrado: {0} necessário por {1}",
 		"LoadErrorErrorReadingModFile": "Erro ao ler o arquivo de mod {0}",
 		"LoadErrorHashMismatchCorrupted": "Hash incompatível, o blob de dados foi modificado ou corrompido",
+		// "LoadErrorHashMismatchCorruptedWithModName": "Unable to verify integrity of {0}: hash mismatch; data blob has been modified or corrupted",
 		"LoadErrorDependencyVersionTooLow": "{0} requer a versão {1} ou maior de {2} mas a versão {3} está instalada",
 		"LoadErrorMajorVersionMismatch": "{0} destina-se à versão {1} de {2}, mas você possui uma versão principal mais recente ({3}) que pode não ser compatível. {0} deve ser atualizado.",
 		"LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} foi construído recentemente, mas não foi selecionado para carregar pois a cópia publicada na oficina (v{2}) é mais nova.\nAtualize o build.txt e reconstrua o mod ou remova a sua inscrição no mod temporariamente.",
@@ -239,6 +242,7 @@
 		"RuntimeErrorSeeLogsForFullTrace": "(veja {0} para o rastreamento completo)",
 		"ShopOverflow": "Não foi possível encaixar todos os itens na loja!",
 		"PlayerSaveFail": "Ocorreu um erro ao salvar o jogador",
+		// "BackingUpPlayerFile": "Backing up player file",
 		"OpenLogs": "Abrir Registros",
 		"OpenWebHelp": "Abrir Ajuda na Web",
 		"SkipToMainMenu": "Pular o Carregamento de Mods",
@@ -320,6 +324,7 @@
 		"ReloadRequiredExplanationDisable": "[c/{0}:Desativar]",
 		"ReloadRequiredExplanationConfigChanged": "[c/{0}:Mudar configurações] temporariamente",
 		"ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:Restaurar configurações]",
+		// "ReloadRequiredHostAndPlayModWasDisabledHint": "It is possible that a mod you had previously enabled has errors when run on the server and has been automatically disabled. Check server.log to investigate these issues. Click here to open the FAQ for this issue.",
 
 		// UIAsyncList
 		"ALLoading": "Carregando...",

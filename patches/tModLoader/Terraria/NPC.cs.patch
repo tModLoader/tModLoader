@@ -362,7 +362,7 @@
  	public static bool downedMechBoss3 = false;
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,193 @@
+@@ -233,51 +_,196 @@
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -544,6 +544,9 @@
 +	/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
 +	/// </summary>
  	public float value;
++	/// <summary>
++	/// The coin value of dropped coins this NPC has picked up. The <see href="https://terraria.wiki.gg/wiki/Coin_pickup_in_Expert_Mode">Coin pickup in Expert Mode wiki page has more details.</see> See also <see cref="NPCID.Sets.RespawnEnemyID"/> and <see cref="NPCID.Sets.CantTakeLunchMoney"/>.
++	/// </summary>
  	public int extraValue;
 +	/// <summary>
 +	/// Indicates that this NPC does not currently take damage, attacks won't hit it. Some example usage includes Blazing Wheel, Spike Ball, Golem Head during 2nd phase, Jellyfish while electrified, and Granite Golem while shielding.

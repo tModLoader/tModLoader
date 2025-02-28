@@ -220,7 +220,7 @@ namespace ExampleMod.Content.NPCs
 			// netMode == 0 is SP, netMode == 1 is MP Client, netMode == 2 is MP Server.
 			// Typically in MP, Client and Server maintain the same state by running deterministic code individually. When we want to do something random, we must do that on the server and then inform MP Clients.
 			if (AI_Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient) {
-				// For reference: without proper syncing: https://media-1.discordapp.net/attachments/242228770855976960/1150274335269998674/FlutterSlime_Netsync_Wrong.mp4 and with proper syncing: https://media-1.discordapp.net/attachments/242228770855976960/1150274355306184804/FlutterSlime_Netsync_Correct.mp4
+				// For reference: without proper syncing: https://github.com/user-attachments/assets/27b289c0-37a6-47e8-9e35-ea6f641612f0 and with proper syncing: https://github.com/user-attachments/assets/f2bdcea4-8fe6-4eba-aa0d-0d36ade9a16d
 				AI_FlutterTime = Main.rand.NextBool() ? 100 : 50;
 
 				// Informing MP Clients is done automatically by syncing the npc.ai array over the network whenever npc.netUpdate is set.

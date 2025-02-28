@@ -75,6 +75,8 @@
 		"BetaModCantPublishError": "Vous ne pouvez pas publier un Mod compilé en version Beta de tModLoader",
 		// "ModDescriptionMissing": "The file {0} doesn't exist. Please create a valid description for your mod.",
 		// "ModDescriptionLengthTooShort": "Mod description is too short, please create a valid description for your mod by modifying {0}.",
+		// "ModDescriptionInvalid": "Mod description is equal to or too similar to the description template, please create a valid description for your mod by modifying {0}.",
+		// "ModWorkshopDescriptionInvalid": "Workshop description is equal to or too similar to the description template, please create a valid description for your workshop page by modifying {0}. You can also delete {0} if you wish to use {1} as the description of your workshop page.",
 		// "ModWorkshopIconResizeWarning": "Will be resized from {0} to {1}.",
 		// "ModUsesDefaultIcon": "Please create a custom icon for your mod by modifying {0}.",
 		"OutdatedModCantPublishError": "Vous ne pouvez pas publier un Mod compilé avec une version obsolète de tModLoader",
@@ -200,6 +202,7 @@
 		"LoadErrorDependencyMissing": "Mod manquant: {0} requis par {1}",
 		"LoadErrorErrorReadingModFile": "Erreur durant la lecture de {0}",
 		"LoadErrorHashMismatchCorrupted": "Le hachage ne correspond pas, les données ont été modifiées ou corrompues",
+		// "LoadErrorHashMismatchCorruptedWithModName": "Unable to verify integrity of {0}: hash mismatch; data blob has been modified or corrupted",
 		"LoadErrorDependencyVersionTooLow": "{0} requiert la version {1} de {2} mais la version {3} est installée",
 		"LoadErrorMajorVersionMismatch": "{0} requiert la version {1} de {2} mais la version {3} est installée, ce qui peut être incompatible. {0} doit être mis à jour.",
 		// "LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
@@ -239,6 +242,7 @@
 		"RuntimeErrorSeeLogsForFullTrace": "(Voir {0} pour plus de détails)",
 		// "ShopOverflow": "Not all items could fit in the shop!",
 		// "PlayerSaveFail": "An error occurred while saving the player",
+		// "BackingUpPlayerFile": "Backing up player file",
 		"OpenLogs": "Ouvrir les Registres",
 		"OpenWebHelp": "Ouvrir l'Aide Internet",
 		"SkipToMainMenu": "Sauter le chargement",
@@ -320,6 +324,7 @@
 		// "ReloadRequiredExplanationDisable": "[c/{0}:Disable]",
 		// "ReloadRequiredExplanationConfigChanged": "[c/{0}:Change config] temporarily",
 		// "ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:Restore config]",
+		// "ReloadRequiredHostAndPlayModWasDisabledHint": "It is possible that a mod you had previously enabled has errors when run on the server and has been automatically disabled. Check server.log to investigate these issues. Click here to open the FAQ for this issue.",
 
 		// UIAsyncList
 		// "ALLoading": "Loading...",

@@ -89,8 +89,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc.
-	/// For those that are familiar with tAPI, this has the same function as .json files.
+	/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. There are many properties that must be set for an item to do anything at all so it is best to consult examples, <see href="https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Content/Items">such as those in ExampleMod</see>, to get an idea of what is required for the type of item you are making.
+	/// <para/> There are many useful methods such as <see cref="Item.DefaultToPlaceableTile(int, int)"/> and <see cref="Item.DefaultToRangedWeapon(int, int, int, float, bool)"/> to easily set the variables needed for that type of item all at once.
+	/// <para/> The <see cref="Item.CloneDefaults(int)"/> method can be used to clone the item defaults of an item.
 	/// </summary>
 	public virtual void SetDefaults()
 	{

@@ -2428,19 +2428,23 @@
  		switch (tileType) {
  			case 2:
  			case 477:
-@@ -45086,6 +_,8 @@
+@@ -45086,6 +_,10 @@
  		if (!IsTileALeafyTreeTop(x, y) || Collision.SolidTiles(x - 2, x + 2, y - 2, y + 2))
  			return;
  
 +		bool createLeaves = true;
++
++		if (TileLoader.GlobalShakeTree(x, y, treeType)) { } else
 +		if (!PlantLoader.ShakeTree(x, y, Main.tile[x, num].type, ref createLeaves)) { } else
  		if (Main.getGoodWorld && genRand.Next(17) == 0) {
  			Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Main.myPlayer, 16f, 16f);
  		}
-@@ -45310,11 +_,18 @@
+@@ -45310,11 +_,20 @@
  			Item.NewItem(Type: (genRand.Next(2) != 0) ? 5278 : 5277, source: GetItemSource_FromTreeShake(x, y), X: x * 16, Y: y * 16, Width: 16, Height: 16);
  		}
  
++		NPCLoader.blockLoot.Clear(); // Clear PreShakeTree values
++
 +		if (!createLeaves)
 +			return;
 +
@@ -2456,6 +2460,14 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(112, -1, -1, null, 1, x, y, 1f, passStyle);
  
+@@ -45336,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> If given a tree tile coordinate, will output the coordinates of the tree tile at the bottom of the tree. </summary>
+ 	public static void GetTreeBottom(int i, int j, out int x, out int y)
+ 	{
+ 		x = i;
 @@ -45397,6 +_,17 @@
  		fossilBreak = false;
  	}

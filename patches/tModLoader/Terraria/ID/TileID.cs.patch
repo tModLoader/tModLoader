@@ -103,6 +103,17 @@
  		public static int[] CritterCageLidStyle = Factory.CreateIntSet(-1, 275, 0, 276, 0, 277, 0, 278, 0, 279, 0, 280, 0, 281, 0, 558, 0, 554, 0, 553, 0, 551, 0, 550, 0, 542, 0, 413, 0, 309, 0, 297, 0, 296, 0, 645, 0, 643, 0, 644, 0, 632, 0, 640, 0, 559, 1, 414, 1, 359, 1, 358, 1, 605, 2, 604, 2, 603, 2, 602, 2, 601, 2, 599, 2, 600, 2, 612, 2, 611, 2, 610, 2, 609, 2, 608, 2, 606, 2, 607, 2, 285, 3, 286, 3, 582, 3, 555, 3, 538, 3, 533, 3, 532, 3, 394, 3, 393, 3, 392, 3, 391, 3, 339, 3, 310, 3, 299, 3, 298, 3, 629, 3, 619, 3, 556, 4, 544, 4, 364, 4, 363, 4, 362, 4, 361, 4);
  		public static int[] SmartCursorPickaxePriorityOverride = Factory.CreateIntSet(0, 12, 1, 665, 1, 639, 1);
  		public static bool[] IgnoreSmartCursorPriorityAxe = Factory.CreateBoolSet(false, 488);
+@@ -136,6 +_,10 @@
+ 		public static bool[] CanBeSatOnForPlayers = Factory.CreateBoolSet(false, 15, 497, 89, 102, 487);
+ 		public static bool[] CanBeSleptIn = Factory.CreateBoolSet(false, 79);
+ 		public static bool[] IgnoresTileReplacementDropCheckWhenBeingPlaced = Factory.CreateBoolSet(false, 158, 30);
++		/// <summary>
++		/// If true, this tile will be drawn during the solid tile drawing pass despite not being <see cref="Main.tileSolid"/>, meaning it will draw in front of <see cref="NPC.behindTiles"/> NPC such as worms rather than behind as "background" tiles usually do. Some examples include <see cref="OpenDoor"/>, <see cref="DisplayDoll"/>, and <see cref="HatRack"/>.
++		/// <para/> Setting to false would do the inverse, but no vanilla tile uses that. Defaults to null.
++		/// </summary>
+ 		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
+ 			(ushort)11,
+ 			true,
 @@ -148,7 +_,15 @@
  			(ushort)579,
  			true
@@ -119,7 +130,13 @@
  		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
  		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
  		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
-@@ -159,14 +_,44 @@
+@@ -156,17 +_,50 @@
+ 		public static bool[] ReplaceTileBreakUp = Factory.CreateBoolSet(27, 20, 227, 24, 201, 110, 113, 61, 74, 71, 3, 73, 186, 187, 185, 233, 530, 236, 238, 254, 484, 485, 84, 82, 83, 529, 549, 590, 595, 615, 624, 637);
+ 		public static bool[] ReplaceTileBreakDown = Factory.CreateBoolSet(205, 115, 62, 52, 382, 444, 528, 638, 636);
+ 		public static bool[] SlowlyDiesInWater = Factory.CreateBoolSet(3, 20, 24, 27, 73, 201, 80, 110, 529, 530, 590, 595, 615, 637);
++		/// <summary>
++		/// If true, the wall behind this tile will be drawn despite game logic expecting the wall to be fully hidden by the tile. Use this for <see cref="Main.tileSolid"/> tiles that don't fully cover all the pixels of their tile location or are transparent. Some examples include <see cref="ClosedDoor"/>, <see cref="Glass"/>, and <see cref="Boulder"/>. If walls seem to disappear when placed behind your tile, set this to true.
++		/// </summary>
  		public static bool[] DrawsWalls = Factory.CreateBoolSet(10, 54, 138, 664, 484, 388, 191, 137, 328, 162, 387, 48, 232, 127, 459, 541, 546);
  		public static ushort[] GemsparkFramingTypes = Factory.CreateUshortSet(0, 265, 265, 258, 258, 264, 264, 257, 257, 267, 267, 260, 260, 266, 266, 259, 259, 263, 263, 256, 256, 262, 262, 255, 255, 268, 268, 261, 261, 385, 385, 446, 446, 447, 447, 448, 448);
  		public static bool[] TeamTiles = Factory.CreateBoolSet(426, 430, 431, 432, 433, 434, 427, 435, 436, 437, 438, 439);
@@ -164,7 +181,7 @@
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -181,6 +_,14 @@
+@@ -181,10 +_,30 @@
  		public static bool[] HellSpecial = Factory.CreateBoolSet(58, 76, 75);
  		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
  		public static bool[] tileMossBrick = Factory.CreateBoolSet(false, 512, 513, 514, 515, 516, 517, 535, 537, 540, 626, 628);
@@ -177,9 +194,34 @@
 +		/// <para/> Defaults to <c>true</c>.
 +		/// </summary>
  		public static bool[] GeneralPlacementTiles = Factory.CreateBoolSet(true, 225, 41, 481, 43, 482, 44, 483, 226, 203, 112, 25, 70, 151, 21, 31, 467, 12, 665, 639);
++		/// <summary>
++		/// Indicates that this tile is a basic 2x2 chest. It is important to note that chests must be 2x2 tiles with the typical 2 padding. Deviations from the default layout are not supported and will lead to issues, so following a working template is recommended.
++		/// <para/> <see cref="Main.tileContainer"/> and <see cref="IsAContainer"/> should also be set in tandem.
++		/// </summary>
  		public static bool[] BasicChest = Factory.CreateBoolSet(21, 467);
  		public static bool[] BasicChestFake = Factory.CreateBoolSet(441, 468);
-@@ -237,22 +_,61 @@
++		/// <summary>
++		/// Indicates that this tile is a basic 3x2 dresser. It is important to note that dressers must be 3x2 tiles with the typical 2 padding. Deviations from the default layout are not supported and will lead to issues, so following a working template is recommended.
++		/// <para/> <see cref="Main.tileContainer"/> and <see cref="IsAContainer"/> should also be set in tandem.
++		/// </summary>
+ 		public static bool[] BasicDresser = Factory.CreateBoolSet(88);
++		/// <summary>
++		/// Protects specific tiles from some world generation methods, most notably <see cref="WorldGen.Cavinator(int, int, int)"/> and <see cref="WorldGen.TileRunner(int, int, double, int, int, bool, double, double, bool, bool, int)"/>. Tiles set to false will be immune to being changed by some world generation methods that happen early on in the world generation process while the terrain is being shaped. Some examples include various sandstone and hardened sand tiles, granite, and LihzahrdBrick. Should only need to be set for terrain tiles potentially placed early in world generation that shouldn't be interrupted by ore generation or caves.
++		/// <para/> Defaults to true.
++		/// </summary>
+ 		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 226, 237);
+ 		public static List<int> CorruptCountCollection = new List<int> {
+ 			23,
+@@ -231,29 +_,77 @@
+ 		public static bool[] IsSkippedForNPCSpawningGroundTypeCheck = Factory.CreateBoolSet(false, 421, 422);
+ 		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 541);
+ 		public static bool[] BlocksStairsAbove = Factory.CreateBoolSet(386, 387);
++		/// <summary>
++		/// Indicates that this tile should not be considered solid for the purpose of tile placement anchors despite being <see cref="Main.tileSolid"/>. Used by <see cref="ClosedDoor"/>, <see cref="TrapdoorClosed"/>, and <see cref="TallGateClosed"/>. These tiles are solid and have collision, but because they transform into a non-solid tile when interacted with, they are not suitable for placing tiles on.
++		/// </summary>
+ 		public static bool[] NotReallySolid = Factory.CreateBoolSet(387, 388, 10);
+ 		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470);
+ 		public static bool[] AllowLightInWater = Factory.CreateBoolSet(false, 54, 541, 328);
  		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
@@ -230,6 +272,9 @@
 +		/// Indicates that the tile is an ore. Used in worldgen code for various purposes and by Fairies.
 +		/// </summary>
  		public static bool[] Ore = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);
++		/// <summary>
++		/// Indicates that this tile contains items. All chests and dressers should set this. <see cref="Main.tileContainer"/> should also be set in tandem.
++		/// </summary>
  		public static bool[] IsAContainer = Factory.CreateBoolSet(21, 467, 88);
 +		/// <summary>
 +		/// Indicates that the tile is an appropriate tile to be connected to a trigger tile (<see cref="IsATrigger"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
@@ -239,8 +284,12 @@
 +		/// Indicates that the tile is an appropriate tile to be connected to a mechanism tile (<see cref="IsAMechanism"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
 +		/// </summary>
  		public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 441, 468);
++		/// <summary>
++		/// If true, <see href="https://terraria.wiki.gg/wiki/Fairies">Fairies</see> can lead the player to this tile. The tile must also set <see cref="Main.tileOreFinderPriority"/> to be eligible. 
++		/// </summary>
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
+ 		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633);
 @@ -954,5 +_,6 @@
  	public const ushort VioletMossBlock = 691;
  	public const ushort RainbowMossBlock = 692;

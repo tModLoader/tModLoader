@@ -33,7 +33,7 @@ namespace ExampleMod.Content.BuilderToggles
 		}
 
 		public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
-			Color[] colors = new[] { Color.Red, Color.Blue, Color.Green, Color.Yellow };
+			Color[] colors = [Color.Red, Color.Blue, Color.Green, Color.Yellow];
 			drawParams.Color = colors[CurrentState];
 			return true;
 		}

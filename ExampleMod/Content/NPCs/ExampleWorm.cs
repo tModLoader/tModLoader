@@ -1,4 +1,4 @@
-﻿using ExampleMod.Content.Items.Placeable.Banners;
+using ExampleMod.Content.Items.Placeable.Banners;
 using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using System.IO;
@@ -39,14 +39,14 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
 
 				// Sets the description of this NPC that is listed in the bestiary.
 				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExampleWormHead")
-			});
+			]);
 		}
 
 		public override void Init() {
@@ -102,6 +102,7 @@ namespace ExampleMod.Content.NPCs
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
+			NPCID.Sets.RespawnEnemyID[NPC.type] = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void SetDefaults() {
@@ -124,6 +125,7 @@ namespace ExampleMod.Content.NPCs
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
+			NPCID.Sets.RespawnEnemyID[NPC.type] = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void SetDefaults() {

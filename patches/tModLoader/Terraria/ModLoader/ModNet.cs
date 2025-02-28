@@ -294,7 +294,17 @@ public static class ModNet
 				},
 				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
 				backButtonAction: () => {
+					Netplay.InvalidateAllOngoingIPSetAttempts();
 					Netplay.Disconnect = true;
+					Netplay.Connection.Socket.Close();
+					if (Main.tServer != null) {
+						try {
+							Main.tServer.Kill();
+							Main.tServer = null;
+						}
+						catch {
+						}
+					}
 				},
 				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
 			);

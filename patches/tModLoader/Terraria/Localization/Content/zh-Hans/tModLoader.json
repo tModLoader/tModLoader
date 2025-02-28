@@ -77,6 +77,8 @@
 		"BetaModCantPublishError": "你无法发布基于测试版本tModLoader的模组",
 		// "ModDescriptionMissing": "The file {0} doesn't exist. Please create a valid description for your mod.",
 		// "ModDescriptionLengthTooShort": "Mod description is too short, please create a valid description for your mod by modifying {0}.",
+		// "ModDescriptionInvalid": "Mod description is equal to or too similar to the description template, please create a valid description for your mod by modifying {0}.",
+		// "ModWorkshopDescriptionInvalid": "Workshop description is equal to or too similar to the description template, please create a valid description for your workshop page by modifying {0}. You can also delete {0} if you wish to use {1} as the description of your workshop page.",
 		// "ModWorkshopIconResizeWarning": "Will be resized from {0} to {1}.",
 		// "ModUsesDefaultIcon": "Please create a custom icon for your mod by modifying {0}.",
 		"OutdatedModCantPublishError": "你无法发布基于旧版本tModLoader的模组",
@@ -202,6 +204,7 @@
 		"LoadErrorDependencyMissing": "缺少模组：{0} 需求来源：{1}",
 		"LoadErrorErrorReadingModFile": "读取模组文件时发生错误 {0}",
 		"LoadErrorHashMismatchCorrupted": "校验码不匹配, 模组文件已损坏",
+		// "LoadErrorHashMismatchCorruptedWithModName": "Unable to verify integrity of {0}: hash mismatch; data blob has been modified or corrupted",
 		"LoadErrorDependencyVersionTooLow": "{0} 需要 {2}（v{1} 或以上），但你安装的是 v{3}。", // {0}为被依赖的Mod，{1}为需要版本号，{2}为依赖的Mod，{3}为当前版本号
 		"LoadErrorMajorVersionMismatch": "{0} 需要 {2}（v{1}），和你安装的版本（{3}）可能存在兼容问题。 {0} 需要更新。", // {0}为依赖的Mod，{1}为需要版本号，{2}为被依赖的Mod，{3}为当前版本号
 		"LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1}于近期构建，但未在模组列表内启用，因为在创意工坊订阅的版本（v{2}）较新。\n你可以选择更新build.txt并重新构建模组，或是在创意工坊暂时取消订阅此模组。",
@@ -241,6 +244,7 @@
 		"RuntimeErrorSeeLogsForFullTrace": "（请参阅 {0} 以获取完整调用堆栈）",
 		"ShopOverflow": "物品太多，塞不进商店里 :(",
 		"PlayerSaveFail": "保存人物时发生错误",
+		// "BackingUpPlayerFile": "Backing up player file",
 		"OpenLogs": "打开日志",
 		"OpenWebHelp": "打开网页帮助",
 		"SkipToMainMenu": "跳过加载模组",
@@ -322,6 +326,7 @@
 		"ReloadRequiredExplanationDisable": "[c/{0}:禁用]",
 		"ReloadRequiredExplanationConfigChanged": "暂时[c/{0}:修改配置]",
 		"ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:恢复配置]",
+		// "ReloadRequiredHostAndPlayModWasDisabledHint": "It is possible that a mod you had previously enabled has errors when run on the server and has been automatically disabled. Check server.log to investigate these issues. Click here to open the FAQ for this issue.",
 
 		// UIAsyncList
 		"ALLoading": "加载中……",

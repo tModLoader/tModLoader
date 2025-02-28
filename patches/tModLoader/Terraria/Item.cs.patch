@@ -1809,11 +1809,17 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47088,6 +_,22 @@
+@@ -47088,6 +_,28 @@
  		SetDefaults(Type, noMatCheck: false, null);
  	}
  
 +	// Added by TML.
++	/// <summary>
++	/// Call in <see cref="ModItem.SetDefaults"/> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired. 
++	/// <para/> When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Accessories/WaspNest.cs#L51">WaspNest.cs</see> shows how to cache and restore those values.
++	/// <para/> This will only clone the values, any additional logic such as shoot accuracy, recipes, accessory effects, use item logic, etc. will not be copied. The <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption">Vanilla Code Adaption wiki page</see> teaches how to make a complete clone of an existing item.
++	/// </summary>
++	/// <param name="TypeToClone"></param>
 +	public void CloneDefaults(int TypeToClone)
 +	{
 +		int originalType = type;
@@ -1893,7 +1899,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,33 @@
+@@ -47318,14 +_,34 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1914,6 +1920,7 @@
 +		ChangePlayerDirectionOnShoot = true;
 +		ArmorPenetration = 0;
 +
++		_nameOverride = null; // Added by TML.
  		sentry = false;
  		hasVanityEffects = false;
  		DD2Summon = false;
@@ -2019,6 +2026,43 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
+@@ -47808,10 +_,34 @@
+ 			shimmered = true;
+ 		}
+ 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
+-			int num8 = stack;
++			int stackSize = stack;
+ 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
+-			stack = num8;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			int spawnCount = 0;
++
++			while (stackSize > 0) {
++				spawnCount++;
++
++				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
++				Item item = Main.item[newItemIndex];
++				item.stack = stackSize;
++				if (item.stack > maxStack)
++					item.stack = maxStack;
++				stackSize -= item.stack;
++				item.shimmerTime = 1f;
++				item.shimmered = true;
++				item.shimmerWet = true;
++				item.wet = true;
++				item.velocity *= 0.1f;
++				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];
@@ -2028,6 +2072,31 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47869,17 +_,22 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+-					if (num18 > 9999)
+-						num18 = 9999;
++					if (num18 > item2.maxStack)
++						num18 = item2.maxStack;
+ 
+ 					num16 -= num18;
+ 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
@@ -2271,12 +2340,13 @@
  	{
  		if (netID == compareItem.netID && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
-@@ -49285,11 +_,18 @@
+@@ -49285,11 +_,19 @@
  		return true;
  	}
  
 +	/// <summary>
-+	/// Overrides the value of <see cref="Name"/>.
++	/// Overrides the value of <see cref="Name"/> for this Item instance. This is used mainly to change the name shown on the item tooltip for recipe group ingredients to "Any RecipeGroupItemNameHere".
++	/// <para/> This does not change the actual name of this item when shown elsewhere as text, for example, so it is not a suitable way to permanently change an item name. To do that a <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#overwriting-existing-terraria-keys">localization file entry</see> should be used instead.
 +	/// </summary>
 +	/// <param name="name">The new name of this <see cref="Item"/>.</param>
  	public void SetNameOverride(string name)
