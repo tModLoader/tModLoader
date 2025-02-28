@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -9,16 +8,6 @@ namespace ExampleMod.Common.Players
 	{
 		public bool ExampleSetHood; // Indicates if the ExampleSet with ExampleHood is the active armor set.
 		public int ShadowStyle = 0; // This is the shadow to use. Note that ExampleHood.ArmorSetShadows will only be called if the full armor set is visible.
-
-		public static LocalizedText[] ShadowStyleText { get; private set; }
-
-		public static LocalizedText CurrentShadowStyleText { get; private set; }
-
-		public override void SetStaticDefaults() {
-			string key = nameof(ExampleArmorSetBonusPlayer);
-			ShadowStyleText = [Mod.GetLocalization($"{key}.ShadowStyle_0"), Mod.GetLocalization($"{key}.ShadowStyle_1"), Mod.GetLocalization($"{key}.ShadowStyle_2"), Mod.GetLocalization($"{key}.ShadowStyle_3")];
-			CurrentShadowStyleText = Mod.GetLocalization($"{key}.CurrentShadowStyle");
-		}
 
 		public override void ResetEffects() {
 			ExampleSetHood = false;
@@ -48,11 +37,13 @@ namespace ExampleMod.Common.Players
 		}
 
 		private void ShowMessageForShadowStyle() {
-			string styleName = ShadowStyleText[0].Value;
-			if (ShadowStyle > 0 && ShadowStyle < ShadowStyleText.Length)
-				styleName = ShadowStyleText[ShadowStyle].Value;
-
-			Main.NewText(CurrentShadowStyleText.Format(styleName));
+			string styleName = ShadowStyle switch {
+				1 => "armorEffectDrawShadow",
+				2 => "armorEffectDrawOutlines",
+				3 => "armorEffectDrawOutlinesForbidden",
+				_ => "None",
+			};
+			Main.NewText("Current shadow style: " + styleName);
 		}
 	}
 }

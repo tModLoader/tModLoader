@@ -2,7 +2,6 @@ using ExampleMod.Common.Players;
 using ExampleMod.Common.Systems;
 using System;
 using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -12,19 +11,17 @@ namespace ExampleMod
 	// This class extends from the Mod class as seen in ExampleMod.cs. Make sure to extend from the mod class, ": Mod", in your own code if using this file as a template for you mods Mod class.
 	partial class ExampleMod
 	{
-		public static LocalizedText[] ErrorText { get; private set; }
-
 		// The following code allows other mods to "call" Example Mod data.
 		// This allows mod developers to access Example Mod's data without having to set it a reference.
 		// Mod calls are not exposed by default, so it will be up to you to publish appropriate calls for your mod, and what values they return.
 		public override object Call(params object[] args) {
 			// Make sure the call doesn't include anything that could potentially cause exceptions.
 			if (args is null) {
-				throw new ArgumentNullException(ErrorText[0].Format(nameof(args)));
+				throw new ArgumentNullException(nameof(args), "Arguments cannot be null!");
 			}
 
 			if (args.Length == 0) {
-				throw new ArgumentException(ErrorText[1].Value);
+				throw new ArgumentException("Arguments cannot be empty!");
 			}
 
 			// This check makes sure that the argument is a string using pattern matching.
@@ -43,7 +40,7 @@ namespace ExampleMod
 						if (args[1] is not bool minionSet) {
 							// If it's not the type we need, we can't continue
 							// Tell the developer what type we need, and what we got instead.
-							throw new Exception(ErrorText[2].Format(args[1].GetType().Name));
+							throw new Exception($"Expected an argument of type bool when setting minion count, but got type {args[1].GetType().Name} instead.");
 						}
 
 						// We'll set the value to what the argument provided.

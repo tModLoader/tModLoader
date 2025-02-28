@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using System.Linq;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -42,14 +43,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetStaticDefaults() {
 			SwitchingText = this.GetLocalization("Switching");
 			CurrentModeText = this.GetLocalization("CurrentMode");
-			ModeText = [this.GetLocalization("Mode_0"),
-				this.GetLocalization("Mode_1"),
-				this.GetLocalization("Mode_2"),
-				this.GetLocalization("Mode_3"),
-				this.GetLocalization("Mode_4"),
-				this.GetLocalization("Mode_5"),
-				this.GetLocalization("Mode_6"),
-				this.GetLocalization("Mode_7")];
+			ModeText = Enumerable.Range(0, 8).Select(i => this.GetLocalization($"Mode_{i}")).ToArray();
 			UnknownModeText = this.GetLocalization("UnknownMode");
 		}
 

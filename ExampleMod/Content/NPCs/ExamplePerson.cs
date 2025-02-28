@@ -122,11 +122,10 @@ namespace ExampleMod.Content.NPCs
 				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
-				// Sets your NPC's flavor text in the bestiary.
+				// Sets your NPC's flavor text in the bestiary.(use localization keys)
 				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson_1"),
 
 				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
 				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson_2")
 			]);
 		}

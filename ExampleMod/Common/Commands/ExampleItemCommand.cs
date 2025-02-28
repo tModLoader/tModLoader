@@ -2,6 +2,7 @@
 using Terraria.DataStructures;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using System.Linq;
 
 namespace ExampleMod.Common.Commands
 {
@@ -17,7 +18,7 @@ namespace ExampleMod.Common.Commands
 			string key = $"Commands.{nameof(ExampleItemCommand)}.";
 			UsageText = Mod.GetLocalization($"{key}Usage");
 			DescriptionText = Mod.GetLocalization($"{key}Description");
-			ErrorText = [Mod.GetLocalization($"{key}Error_0"), Mod.GetLocalization($"{key}Error_1"), Mod.GetLocalization($"{key}Error_2")];
+			ErrorText = Enumerable.Range(0, 3).Select(i => Mod.GetLocalization($"{key}Error_{i}")).ToArray();
 		}
 
 		// CommandType.Chat means that command can be used in Chat in SP and MP

@@ -5,7 +5,6 @@ using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -15,8 +14,6 @@ namespace ExampleMod
 	// This class extends from the Mod class as seen in ExampleMod.cs. Make sure to extend from the mod class, ": Mod", in your own code if using this file as a template for you mods Mod class.
 	partial class ExampleMod
 	{
-		public static LocalizedText LoggerText { get; private set; }
-
 		internal enum MessageType : byte
 		{
 			ExampleStatIncreasePlayerSync,
@@ -60,7 +57,7 @@ namespace ExampleMod
 					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);
 					break;
 				default:
-					Logger.WarnFormat(LoggerText.Format(msgType));
+					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
 					break;
 			}
 		}

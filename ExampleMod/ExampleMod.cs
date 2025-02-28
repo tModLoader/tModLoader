@@ -16,11 +16,6 @@ namespace ExampleMod
 			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
 		}
 
-		public override void PostSetupContent() {
-			ErrorText = [GetLocalization("ModCall.Error_0"), GetLocalization("ModCall.Error_1"), GetLocalization("ModCall.Error_2")];
-			LoggerText = GetLocalization("Networking.Logger");
-		}
-
 		public override void Unload() {
 			// The Unload() methods can be used for unloading/disposing/clearing special objects, unsubscribing from events, or for undoing some of your mod's actions.
 			// Be sure to always write unloading code when there is a chance of some of your mod's objects being kept present inside the vanilla assembly.

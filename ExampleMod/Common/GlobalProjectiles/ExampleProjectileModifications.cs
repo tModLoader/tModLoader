@@ -17,7 +17,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 		private Color trailColor;
 		private bool trailActive;
 
-		public static LocalizedText TimesHitOnThirdHitText { get; private set; }
+		public static LocalizedText HitMessage { get; private set; }
 
 		// Here, a method is provided for setting the above fields.
 		public void SetTrail(Color color) {
@@ -26,14 +26,14 @@ namespace ExampleMod.Common.GlobalProjectiles
 		}
 
 		public override void SetStaticDefaults() {
-			TimesHitOnThirdHitText = Mod.GetLocalization($"{nameof(ExampleProjectileModifications)}.TimesHitOnThirdHit");
+			HitMessage = Mod.GetLocalization($"{nameof(ExampleProjectileModifications)}.HitMessage");
 		}
 
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (sayTimesHitOnThirdHit) {
 				ProjectileModificationGlobalNPC globalNPC = target.GetGlobalNPC<ProjectileModificationGlobalNPC>();
 				if (globalNPC.timesHitByModifiedProjectiles % 3 == 0) {
-					Main.NewText(TimesHitOnThirdHitText.Format(globalNPC.timesHitByModifiedProjectiles));
+					Main.NewText(HitMessage.Format(globalNPC.timesHitByModifiedProjectiles));
 				}
 				target.GetGlobalNPC<ProjectileModificationGlobalNPC>().timesHitByModifiedProjectiles += 1;
 			}

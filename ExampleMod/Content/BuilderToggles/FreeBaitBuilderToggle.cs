@@ -18,8 +18,6 @@ public class FreeBaitBuilderToggle : BuilderToggle
 {
 	public static LocalizedText NameText { get; private set; }
 
-	public static LocalizedText UnknownText { get; private set; }
-
 	public override string HoverTexture => Texture;
 
 	public override bool Active() => !Main.LocalPlayer.HeldItem.IsAir && Main.LocalPlayer.HeldItem.fishingPole > 0;
@@ -65,7 +63,6 @@ public class FreeBaitBuilderToggle : BuilderToggle
 
 	public override void SetStaticDefaults() {
 		NameText = this.GetLocalization(nameof(NameText));
-		UnknownText = this.GetLocalization(nameof(UnknownText));
 	}
 
 	public override string DisplayValue() {
@@ -74,7 +71,7 @@ public class FreeBaitBuilderToggle : BuilderToggle
 			1 => Lang.GetItemNameValue(ItemID.JourneymanBait),
 			2 => Lang.GetItemNameValue(ItemID.MasterBait),
 			3 => Lang.GetItemNameValue(ItemID.TruffleWorm),
-			_ => UnknownText.Value
+			_ => "Unknown (How did you get here?)"
 		};
 		return NameText.Format(itemName);
 	}

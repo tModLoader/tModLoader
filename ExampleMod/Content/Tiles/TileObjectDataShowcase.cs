@@ -4,7 +4,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -21,8 +20,6 @@ namespace ExampleMod.Content.Tiles
 	// After reaching the wrap limit, subsequent styles are placed on the next row.
 	public class TileObjectDataShowcase : ModTile
 	{
-		public static LocalizedText DataText { get; private set; }
-
 		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
@@ -92,8 +89,6 @@ namespace ExampleMod.Content.Tiles
 
 			// We can automatically set the animation frame height from CoordinateFullHeight for any typical tile that uses the expected layout.
 			AnimationFrameHeight = TileObjectData.GetTileData(Type, 0).CoordinateFullHeight;
-
-			DataText = this.GetLocalization("Data");
 		}
 
 		// Displays various info about the tile placement in chat.
@@ -105,7 +100,7 @@ namespace ExampleMod.Content.Tiles
 			int unused = -1;
 			TileObjectData.GetTileInfo(Main.tile[x, y], ref unused, ref alternatePlacement);
 
-			Main.NewText(DataText.Format(style, tileData.Style, alternatePlacement - tileData.Style, alternatePlacement, style * tileData.StyleMultiplier + alternatePlacement, direction, alternate, tileData.Origin.X, tileData.Origin.Y));
+			Main.NewText($"Style: {style}, Alternate Offset: {tileData.Style}, Random Offset: {alternatePlacement - tileData.Style}, Placement Style: {alternatePlacement}, Full Placement Style: {style * tileData.StyleMultiplier + alternatePlacement}, Direction: {direction}, Alternate Index: {alternate}, Origin: ({tileData.Origin.X}, {tileData.Origin.Y})");
 
 			return 0;
 		}

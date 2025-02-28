@@ -21,13 +21,6 @@ Mods: {
 			// PercentIncreasedExampleSpeed: "{0}% increased example attack speed"
 		}
 
-		ModCall: {
-			// Error_0: "{0} Arguments cannot be null!"
-			// Error_1: Arguments cannot be empty!
-			// Error_2: Expected an argument of type bool when setting minion count, but got type {0} instead.
-		}
-
-		// Networking.Logger: ExampleMod: Unknown Message type: {0}
 		// Currencies.ExampleCustomCurrency: example items
 		// DamageClasses.ExampleDamageClass.DisplayName: example damage
 		// ExampleFishingPlayer.Wrong: Something's wrong...
@@ -51,15 +44,7 @@ Mods: {
 		}
 
 		// GelGlobalItem.SpecialShiftClick: Shift-click on this item from your inventory to get a random color and rarity!
-		// ExampleProjectileModifications.TimesHitOnThirdHit: This NPC has been hit with a modified projectile {0} times.
-
-		ExampleArmorSetBonusPlayer: {
-			// CurrentShadowStyle: Current shadow style: {0}
-			// ShadowStyle_0: None
-			// ShadowStyle_1: armorEffectDrawShadow
-			// ShadowStyle_2: armorEffectDrawOutlines
-			// ShadowStyle_3: armorEffectDrawOutlinesForbidden
-		}
+		// ExampleProjectileModifications.HitMessage: This NPC has been hit with a modified projectile {0} times.
 
 		ExampleKeybindPlayer: {
 			// RandomBuff: ExampleMod's ModKeybind was just pressed. The {0} buff was given to the player.
@@ -168,8 +153,6 @@ Mods: {
 				// DefaultSignText: Right-click me!
 				// MapEntry: Example Sign
 			}
-
-			// TileObjectDataShowcase.Data: Style: {0}, Alternate Offset: {1}, Random Offset: {2}, Placement Style: {3}, Full Placement Style: {4}, Direction: {5}, Alternate Index: {6}, Origin: ({7}, {8})
 		}
 
 		Items: {
@@ -1104,7 +1087,6 @@ Mods: {
 				// DisplayName: Custom Item Drawing Showcase
 				// Tooltip: ""
 				// RightClick: Switching to drawMode #{0}: {1}
-				// DrawModeDetails: drawMode #{0}: {1}
 				// DrawMode_0: Draw an overlay/glowmask
 				// DrawMode_1: Scale drawing to make a pulse effect similar to Soul items
 				// DrawMode_2: Draw a texture behind the item
@@ -1409,10 +1391,7 @@ Mods: {
 				// Color_3: Yellow
 			}
 
-			FreeBaitBuilderToggle: {
-				NameText: 免费鱼饵：{0}
-				// UnknownText: Unknown (How did you get here?)
-			}
+			FreeBaitBuilderToggle.NameText: 免费鱼饵：{0}
 		}
 
 		Emotes: {
@@ -1431,6 +1410,11 @@ Mods: {
 		// NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 
 		Commands: {
+			Common: {
+				// NoParameters: At least one argument was expected.
+				// NotInteger: "{0} is not a correct integer value."
+			}
+
 			// ExampleCoinsCommand.Description: Show the coin rate UI
 
 			ExampleItemCommand: {
@@ -1442,7 +1426,7 @@ Mods: {
 					Replace spaces in item name with underscores.
 					''' */
 				// Description: Spawn an item by name or by typeId
-				// Error_0: At least one argument was expected.
+				// Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
 				// Error_1: Unknown item — Must be valid name or 0 < type < {0}
 				// Error_2: Stack value must be integer, but met: {0}
 			}
@@ -1457,8 +1441,8 @@ Mods: {
 					number - number of NPC's to spawn.
 					''' */
 				// Description: Spawn a NPC by NPCID
-				// Error_0: At least one argument was expected.
-				// Error_1: "{0} is not a correct integer value."
+				// Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				// Error_1: "{$Mods.ExampleMod.Commands.Common.NotInteger}"
 				// Error_2: "{0} is not a correct X position (must be valid integer value)."
 				// Error_3: "{0} is not a correct Y position (must be valid integer value)."
 				// Error_4: "{0} is not a correct number (must be valid integer value)."
@@ -1471,8 +1455,8 @@ Mods: {
 					numTicks — positive or negative number in ticks (1 second = 60 ticks).
 					''' */
 				// Description: Adds numTicks to fast forward or rewind world time
-				// Error_0: At least one argument was expected.
-				// Error_1: "{0} is not a correct integer value."
+				// Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				// Error_1: "{$Mods.ExampleMod.Commands.Common.NotInteger}"
 			}
 
 			// ShowFullscreenUICommand.Description: Show the example fullscreen UI

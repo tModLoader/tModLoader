@@ -39,8 +39,6 @@ namespace ExampleMod.Content.Items
 
 		public static LocalizedText RightClickText { get; private set; }
 
-		public static LocalizedText DrawModeDetailsText { get; private set; }
-
 		public static LocalizedText[] DrawModeText { get; private set; }
 
 		public static LocalizedText DrawMode_UnknownText { get; private set; }
@@ -52,7 +50,6 @@ namespace ExampleMod.Content.Items
 
 		public override void SetStaticDefaults() {
 			RightClickText = this.GetLocalization("RightClick");
-			DrawModeDetailsText = this.GetLocalization("DrawModeDetails");
 			DrawModeText = [this.GetLocalization("DrawMode_0"), this.GetLocalization("DrawMode_1"), this.GetLocalization("DrawMode_2"), this.GetLocalization("DrawMode_3"), this.GetLocalization("DrawMode_4")];
 			DrawMode_UnknownText = this.GetLocalization("DrawMode_Unknown");
 		}
@@ -80,7 +77,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			tooltips.Add(new TooltipLine(Mod, "DrawModeDetails", DrawModeDetailsText.Format(drawMode, GetMessageForDrawMode())));
+			tooltips.Add(new TooltipLine(Mod, "DrawModeDetails", $"drawMode #{drawMode}: {GetMessageForDrawMode()}"));
 		}
 
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
