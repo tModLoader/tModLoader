@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -181,6 +181,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTile
 <tr class="memitem:a9e1dd0f415df215847048a005719966c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">PreHitWire</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a9e1dd0f415df215847048a005719966c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the vanilla HitWire code and the HitWire hook is allowed to run. Useful for overriding vanilla behavior by returning false. Returns true by default.  <a href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">More...</a><br /></td></tr>
 <tr class="separator:a9e1dd0f415df215847048a005719966c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7027bde2eb2f5e85f9823e8c5195ef6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6">PreShakeTree</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>, TreeTypes treeType)</td></tr>
+<tr class="memdesc:ad7027bde2eb2f5e85f9823e8c5195ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook runs before <a class="el" href="class_global_tile.html#a55ba6a9536bb124af00a371850286dbb" title="This hook runs when any tree is shaken (See the Tree Shaking wiki page). It is intended to be used to...">ShakeTree(int, int, TreeTypes)</a> and is intended to be used to spawn bonus tree shaking drops and prevent existing drops using <a class="el" href="class_n_p_c_loader.html#ad278795f89f080ad20f4a1670593eede" title="Allows you to stop an NPC from dropping specific loot by adding item IDs to this list....">NPCLoader.blockLoot</a>. The tile coordinates provided indicates the leafy top of the tree where entities should be spawned. Runs on the server or singleplayer.  <a href="class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6">More...</a><br /></td></tr>
+<tr class="separator:ad7027bde2eb2f5e85f9823e8c5195ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7419ebee394a8290e7731b86e47676f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#ab7419ebee394a8290e7731b86e47676f">RightClick</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:ab7419ebee394a8290e7731b86e47676f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when any tile is right-clicked by the player.  <a href="class_global_tile.html#ab7419ebee394a8290e7731b86e47676f">More...</a><br /></td></tr>
 <tr class="separator:ab7419ebee394a8290e7731b86e47676f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +193,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTile
 <tr class="memitem:a91ad460f801e6aabb68ae343c9fa5c81"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a91ad460f801e6aabb68ae343c9fa5c81">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a91ad460f801e6aabb68ae343c9fa5c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_global_tile.html#a91ad460f801e6aabb68ae343c9fa5c81">More...</a><br /></td></tr>
 <tr class="separator:a91ad460f801e6aabb68ae343c9fa5c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55ba6a9536bb124af00a371850286dbb"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a55ba6a9536bb124af00a371850286dbb">ShakeTree</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>, TreeTypes treeType)</td></tr>
+<tr class="memdesc:a55ba6a9536bb124af00a371850286dbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook runs when any tree is shaken (See the Tree Shaking wiki page). It is intended to be used to drop the primary item (or <a class="el" href="class_n_p_c.html">NPC</a>). Use <a class="el" href="class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6" title="This hook runs before ShakeTree(int, int, TreeTypes) and is intended to be used to spawn bonus tree s...">PreShakeTree(int, int, TreeTypes)</a> to implement bonus drops instead, since this method isn't guaranteed to be called if another mod rolls an item drop. If a drop happens, return true to signify that a primary drop has been spawned and to prevent other mods and vanilla code from also attempting to drop the primary item. When spawning the drop be sure to use <a class="el" href="class_entity_source___shake_tree.html" title="Used when items/bomb projectiles/NPCs fall out of trees being cut down">EntitySource_ShakeTree</a> as the source. The tile coordinates provided indicates the leafy top of the tree where entities should be spawned. Returns false by default. Runs on the server or singleplayer.  <a href="class_global_tile.html#a55ba6a9536bb124af00a371850286dbb">More...</a><br /></td></tr>
+<tr class="separator:a55ba6a9536bb124af00a371850286dbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea6470973410113a596702a787037288"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#aea6470973410113a596702a787037288">Slope</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:aea6470973410113a596702a787037288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single <a class="el" href="class_player.html">Player</a>.  <a href="class_global_tile.html#aea6470973410113a596702a787037288">More...</a><br /></td></tr>
 <tr class="separator:aea6470973410113a596702a787037288"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1331,6 +1337,58 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 
 </div>
 </div>
+<a id="ad7027bde2eb2f5e85f9823e8c5195ef6" name="ad7027bde2eb2f5e85f9823e8c5195ef6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7027bde2eb2f5e85f9823e8c5195ef6">&#9670;&nbsp;</a></span>PreShakeTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void GlobalTile.PreShakeTree </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TreeTypes&#160;</td>
+          <td class="paramname"><em>treeType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This hook runs before <a class="el" href="class_global_tile.html#a55ba6a9536bb124af00a371850286dbb" title="This hook runs when any tree is shaken (See the Tree Shaking wiki page). It is intended to be used to...">ShakeTree(int, int, TreeTypes)</a> and is intended to be used to spawn bonus tree shaking drops and prevent existing drops using <a class="el" href="class_n_p_c_loader.html#ad278795f89f080ad20f4a1670593eede" title="Allows you to stop an NPC from dropping specific loot by adding item IDs to this list....">NPCLoader.blockLoot</a>. The tile coordinates provided indicates the leafy top of the tree where entities should be spawned. Runs on the server or singleplayer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The x tile coordinate of the tree.</td></tr>
+    <tr><td class="paramname">y</td><td>The y tile coordinate of the top of the tree.</td></tr>
+    <tr><td class="paramname">treeType</td><td>The type of tree that is being shaken. Modded trees will be TreeTypes.Custom by default.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="afe930e11a453ea3bac520f8c5b7a481d" name="afe930e11a453ea3bac520f8c5b7a481d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe930e11a453ea3bac520f8c5b7a481d">&#9670;&nbsp;</a></span>Register()</h2>
 
@@ -1497,6 +1555,58 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>If you make a new <a class="el" href="class_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it. </p>
 
 <p>Reimplemented from <a class="el" href="class_mod_type.html#a9b37711592d855e0fbf38caff1dce343">ModType&lt; TEntity &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a55ba6a9536bb124af00a371850286dbb" name="a55ba6a9536bb124af00a371850286dbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55ba6a9536bb124af00a371850286dbb">&#9670;&nbsp;</a></span>ShakeTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool GlobalTile.ShakeTree </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TreeTypes&#160;</td>
+          <td class="paramname"><em>treeType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This hook runs when any tree is shaken (See the Tree Shaking wiki page). It is intended to be used to drop the primary item (or <a class="el" href="class_n_p_c.html">NPC</a>). Use <a class="el" href="class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6" title="This hook runs before ShakeTree(int, int, TreeTypes) and is intended to be used to spawn bonus tree s...">PreShakeTree(int, int, TreeTypes)</a> to implement bonus drops instead, since this method isn't guaranteed to be called if another mod rolls an item drop. If a drop happens, return true to signify that a primary drop has been spawned and to prevent other mods and vanilla code from also attempting to drop the primary item. When spawning the drop be sure to use <a class="el" href="class_entity_source___shake_tree.html" title="Used when items/bomb projectiles/NPCs fall out of trees being cut down">EntitySource_ShakeTree</a> as the source. The tile coordinates provided indicates the leafy top of the tree where entities should be spawned. Returns false by default. Runs on the server or singleplayer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The x tile coordinate of the tree.</td></tr>
+    <tr><td class="paramname">y</td><td>The y tile coordinate of the top of the tree.</td></tr>
+    <tr><td class="paramname">treeType</td><td>The type of tree that is being shaken. Modded trees will be TreeTypes.Custom by default.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

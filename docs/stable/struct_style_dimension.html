@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -106,8 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62acad4030569824dcced4b9e3a10e56"><td class="memItemLeft" align="right" valign="top"><a id="a62acad4030569824dcced4b9e3a10e56" name="a62acad4030569824dcced4b9e3a10e56"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>GetValue</b> (float containerSize)</td></tr>
 <tr class="separator:a62acad4030569824dcced4b9e3a10e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c959bcdc133227ba2a5226e8cd4d4c4"><td class="memItemLeft" align="right" valign="top"><a id="a0c959bcdc133227ba2a5226e8cd4d4c4" name="a0c959bcdc133227ba2a5226e8cd4d4c4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Set</b> (float pixels, float precent)</td></tr>
+<tr class="memitem:a0c959bcdc133227ba2a5226e8cd4d4c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_style_dimension.html#a0c959bcdc133227ba2a5226e8cd4d4c4">Set</a> (float pixels, float precent)</td></tr>
+<tr class="memdesc:a0c959bcdc133227ba2a5226e8cd4d4c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the values for this <a class="el" href="struct_style_dimension.html" title="Represents a dimension, either an absolute pixel size, a percentage of the available space,...">StyleDimension</a>. <b><a class="el" href="struct_style_dimension.html" title="Represents a dimension, either an absolute pixel size, a percentage of the available space,...">StyleDimension</a> documentation:</b><br  />
+  <a href="struct_style_dimension.html#a0c959bcdc133227ba2a5226e8cd4d4c4">More...</a><br /></td></tr>
 <tr class="separator:a0c959bcdc133227ba2a5226e8cd4d4c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -150,7 +151,46 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>Percent</b><code> [g
 <div class="textblock"><p >Represents a dimension, either an absolute pixel size, a percentage of the available space, or a combination of both. </p>
 <p >For example <code>uiElement.Width.Set(200, 0f);</code> sets an absolute width of 200 pixels. <code>uiElement.Width.Set(0, 0.5f);</code> on the otherhand sets a width of 50% of the parent's avaiable <a class="el" href="class_u_i_element.html#adc42b475f74d77f6fe008b8f1e77ad19" title="The dimensions of the area within this element suitable for placing children elements....">UIElement.GetInnerDimensions</a>. </p>
 <p >Both values can be set for more complex logic. <code>uiElement.Width.Set(-10, 0.5f);</code> sets the width to 50% of the available space minus 10 pixels. This would leave room between 2 buttons filling a space. <code>uiElement.Height.Set(-100, 1f);</code> would fill the full height of the space but leave 100 pixels at the bottom empty. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0c959bcdc133227ba2a5226e8cd4d4c4" name="a0c959bcdc133227ba2a5226e8cd4d4c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c959bcdc133227ba2a5226e8cd4d4c4">&#9670;&nbsp;</a></span>Set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void StyleDimension.Set </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>pixels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>precent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the values for this <a class="el" href="struct_style_dimension.html" title="Represents a dimension, either an absolute pixel size, a percentage of the available space,...">StyleDimension</a>. <b><a class="el" href="struct_style_dimension.html" title="Represents a dimension, either an absolute pixel size, a percentage of the available space,...">StyleDimension</a> documentation:</b><br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pixels</td><td></td></tr>
+    <tr><td class="paramname">precent</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

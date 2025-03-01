@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('class_mod_loader.html',''); initResiza
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5443f35af4514c1058c067b8733b62fe"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_loader.html#a5443f35af4514c1058c067b8733b62fe">GetMod</a> (string name)</td></tr>
-<tr class="memdesc:a5443f35af4514c1058c067b8733b62fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> with the specified name. This will throw an exception if the mod cannot be found.  <a href="class_mod_loader.html#a5443f35af4514c1058c067b8733b62fe">More...</a><br /></td></tr>
+<tr class="memdesc:a5443f35af4514c1058c067b8733b62fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> with the specified name. This will throw an exception if the mod cannot be found so it should only be used for mods known to be enabled, such as a strong mod dependency. Use <a class="el" href="class_mod_loader.html#aa3095baef671c1eb9113dfd0e01c316a" title="Safely attempts to get the instance of the Mod with the specified name.">TryGetMod(string, out Mod)</a> instead if the mod might not be enabled.  <a href="class_mod_loader.html#a5443f35af4514c1058c067b8733b62fe">More...</a><br /></td></tr>
 <tr class="separator:a5443f35af4514c1058c067b8733b62fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16ee6317324ee835c2022569e3b998f4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_loader.html#a16ee6317324ee835c2022569e3b998f4">HasMod</a> (string name)</td></tr>
 <tr class="memdesc:a16ee6317324ee835c2022569e3b998f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely checks whether or not a mod with the specified internal name is currently loaded.  <a href="class_mod_loader.html#a16ee6317324ee835c2022569e3b998f4">More...</a><br /></td></tr>
@@ -189,7 +189,7 @@ static string&#160;</td><td class="memItemRight" valign="bottom"><b>versionedNam
 </table>
 </div><div class="memdoc">
 
-<p>Gets the instance of the <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> with the specified name. This will throw an exception if the mod cannot be found. </p>
+<p>Gets the instance of the <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> with the specified name. This will throw an exception if the mod cannot be found so it should only be used for mods known to be enabled, such as a strong mod dependency. Use <a class="el" href="class_mod_loader.html#aa3095baef671c1eb9113dfd0e01c316a" title="Safely attempts to get the instance of the Mod with the specified name.">TryGetMod(string, out Mod)</a> instead if the mod might not be enabled. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">KeyNotFoundException</td><td></td></tr>

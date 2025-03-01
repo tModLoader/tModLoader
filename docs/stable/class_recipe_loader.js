@@ -1,5 +1,6 @@
 var class_recipe_loader =
 [
+    [ "ConsumeIngredient", "class_recipe_loader.html#adc919b47a014153aa61dd98a10ed3fa4", null ],
     [ "ConsumeItem", "class_recipe_loader.html#a66c925ee94dc17f2f4e2c74eb28c3f2c", null ],
     [ "DecraftAvailable", "class_recipe_loader.html#aa917a2e31a58005a7175adcf752883d0", null ],
     [ "OnCraft", "class_recipe_loader.html#aeaaa89370b17536181962f67826a9a96", null ],

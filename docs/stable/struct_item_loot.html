@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('struct_item_loot.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 
-<p>This readonly struct is a simple shortcut to <a class="el" href="class_item_drop_database.html">ItemDropDatabase</a>'s methods.  
+<p>Provides access to <a class="el" href="class_item_drop_database.html">ItemDropDatabase</a>'s methods specific to this item type.  
  <a href="struct_item_loot.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="interface_i_loot.html">ILoot</a>.</p>
@@ -106,24 +106,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa54c6f4c8b32a40d3df33dbbdbbec00d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_item_loot.html#aa54c6f4c8b32a40d3df33dbbdbbec00d">Get</a> (bool includeGlobalDrops=true)</td></tr>
 <tr class="separator:aa54c6f4c8b32a40d3df33dbbdbbec00d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56352dfc4a9ae3ce3bd0df8b7aef17f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_item_loot.html#a56352dfc4a9ae3ce3bd0df8b7aef17f1">Remove</a> (<a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> entry)</td></tr>
+<tr class="memdesc:a56352dfc4a9ae3ce3bd0df8b7aef17f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a specific <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> from this item type. Note that <em>entry</em>  must be an existing <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> instance retrieved from <a class="el" href="struct_item_loot.html#aa54c6f4c8b32a40d3df33dbbdbbec00d">Get(bool)</a>, not a newly created instance.  <a href="struct_item_loot.html#a56352dfc4a9ae3ce3bd0df8b7aef17f1">More...</a><br /></td></tr>
 <tr class="separator:a56352dfc4a9ae3ce3bd0df8b7aef17f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4635341a23d1cb8410cdf35d4d3bfe23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_item_loot.html#a4635341a23d1cb8410cdf35d4d3bfe23">RemoveWhere</a> (Predicate&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt; predicate, bool includeGlobalDrops=true)</td></tr>
 <tr class="separator:a4635341a23d1cb8410cdf35d4d3bfe23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af38d0138bbbb1be1d56a118dd743b1e3"><td class="memItemLeft" align="right" valign="top"><a id="af38d0138bbbb1be1d56a118dd743b1e3" name="af38d0138bbbb1be1d56a118dd743b1e3"></a>
 <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (<a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> entry)</td></tr>
 <tr class="separator:af38d0138bbbb1be1d56a118dd743b1e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52102bd9343c81479bc58631a34155fc"><td class="memItemLeft" align="right" valign="top"><a id="a52102bd9343c81479bc58631a34155fc" name="a52102bd9343c81479bc58631a34155fc"></a>
-<a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Get</b> (bool includeGlobalDrops=true)</td></tr>
+<tr class="memitem:a52102bd9343c81479bc58631a34155fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_list.html">List</a>&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_loot.html#a52102bd9343c81479bc58631a34155fc">Get</a> (bool includeGlobalDrops=true)</td></tr>
 <tr class="separator:a52102bd9343c81479bc58631a34155fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaba1f906c50a6d617682b45cc7c20a3"><td class="memItemLeft" align="right" valign="top"><a id="adaba1f906c50a6d617682b45cc7c20a3" name="adaba1f906c50a6d617682b45cc7c20a3"></a>
-<a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Remove</b> (<a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> entry)</td></tr>
+<tr class="memitem:adaba1f906c50a6d617682b45cc7c20a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_loot.html#adaba1f906c50a6d617682b45cc7c20a3">Remove</a> (<a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> entry)</td></tr>
 <tr class="separator:adaba1f906c50a6d617682b45cc7c20a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b88890b9ea694707cb5e56e6fda3209"><td class="memItemLeft" align="right" valign="top"><a id="a2b88890b9ea694707cb5e56e6fda3209" name="a2b88890b9ea694707cb5e56e6fda3209"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveWhere</b> (Predicate&lt; <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> &gt; predicate, bool includeGlobalDrops=true)</td></tr>
 <tr class="separator:a2b88890b9ea694707cb5e56e6fda3209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This readonly struct is a simple shortcut to <a class="el" href="class_item_drop_database.html">ItemDropDatabase</a>'s methods. </p>
+<div class="textblock"><p >Provides access to <a class="el" href="class_item_drop_database.html">ItemDropDatabase</a>'s methods specific to this item type. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad4f65a04ccfb2b5966da3bf5c5e90e3e" name="ad4f65a04ccfb2b5966da3bf5c5e90e3e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad4f65a04ccfb2b5966da3bf5c5e90e3e">&#9670;&nbsp;</a></span>Add()</h2>
@@ -161,6 +160,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveWhere</b> (Pred
       </table>
 </div><div class="memdoc">
 
+<p></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">includeGlobalDrops</td><td>Unused</td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Implements <a class="el" href="interface_i_loot.html">ILoot</a>.</p>
 
 </div>
@@ -180,6 +187,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveWhere</b> (Pred
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Removes a specific <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> from this item type. Note that <em>entry</em>  must be an existing <a class="el" href="interface_i_item_drop_rule.html">IItemDropRule</a> instance retrieved from <a class="el" href="struct_item_loot.html#aa54c6f4c8b32a40d3df33dbbdbbec00d">Get(bool)</a>, not a newly created instance. </p>
 
 <p>Implements <a class="el" href="interface_i_loot.html">ILoot</a>.</p>
 

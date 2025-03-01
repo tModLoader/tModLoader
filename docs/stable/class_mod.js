@@ -35,9 +35,11 @@ var class_mod =
     [ "GoreAutoloadingEnabled", "class_mod.html#ab41198cdf95d58ca446d2ff9477f5f46", null ],
     [ "Logger", "class_mod.html#a36f6a48cdff60d11217fcd27f77a3e7b", null ],
     [ "MusicAutoloadingEnabled", "class_mod.html#a00d5eed93524439d8a47da0bc5bff0de", null ],
+    [ "MusicSkipsVolumeRemap", "class_mod.html#a4885e85804fd8be52bfb30308cba609e", null ],
     [ "Name", "class_mod.html#a95b89033e52b425237258eb49ebff416", null ],
     [ "PreJITFilter", "class_mod.html#a203672e875cf843ef7fea8166a0fda64", null ],
     [ "Side", "class_mod.html#a8706680abdd1062598b4719d8b3decdf", null ],
+    [ "SourceFolder", "class_mod.html#af9cc6edeeb2cee626f0ab6b1d0b3d9ba", null ],
     [ "TModLoaderVersion", "class_mod.html#aa399ee0fe62bc27298c4cc408d73a0f2", null ],
     [ "Version", "class_mod.html#ac06290a5264e10bc183201a18452e7c0", null ]
 ];

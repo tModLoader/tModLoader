@@ -40,6 +40,7 @@ var searchData=
   ['extraplatformorwallconversion_37',['ExtraPlatformOrWallConversion',['../class_game_tip_i_d.html#abc424fb069b1addd4b193b2d6c233edc',1,'GameTipID']]],
   ['extratexturecount_38',['ExtraTextureCount',['../class_n_p_c_i_d_1_1_sets.html#a77e7574396ab5a7e9c93ae439e088729',1,'NPCID::Sets']]],
   ['extraupdates_39',['extraUpdates',['../class_projectile.html#a32f4240d9f1ab45a43a819b4c7362a3f',1,'Projectile']]],
-  ['eyebrellacloud_40',['EyebrellaCloud',['../class_player_draw_layers.html#ad2d993e5ac1b51f510a49e6005f81d5c',1,'PlayerDrawLayers']]],
-  ['eyeofcthulhu_41',['EyeOfCthulhu',['../class_n_p_c_a_i_style_i_d.html#a1b4e7df4a855afe8aca85c6177516c01',1,'NPCAIStyleID']]]
+  ['extravalue_40',['extraValue',['../class_n_p_c.html#a755c72ab401b0e5016015be0d480dd6b',1,'NPC']]],
+  ['eyebrellacloud_41',['EyebrellaCloud',['../class_player_draw_layers.html#ad2d993e5ac1b51f510a49e6005f81d5c',1,'PlayerDrawLayers']]],
+  ['eyeofcthulhu_42',['EyeOfCthulhu',['../class_n_p_c_a_i_style_i_d.html#a1b4e7df4a855afe8aca85c6177516c01',1,'NPCAIStyleID']]]
 ];

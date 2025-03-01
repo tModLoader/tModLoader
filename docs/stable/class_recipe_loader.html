@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2024.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -96,8 +96,11 @@ $(document).ready(function(){initNavTree('class_recipe_loader.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:adc919b47a014153aa61dd98a10ed3fa4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_loader.html#adc919b47a014153aa61dd98a10ed3fa4">ConsumeIngredient</a> (<a class="el" href="class_recipe.html">Recipe</a> recipe, int type, ref int amount, bool isDecrafting)</td></tr>
+<tr class="memdesc:adc919b47a014153aa61dd98a10ed3fa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to edit the amount of item the player uses in a recipe. Also used to decide the amount a shimmer transformation returns  <a href="class_recipe_loader.html#adc919b47a014153aa61dd98a10ed3fa4">More...</a><br /></td></tr>
+<tr class="separator:adc919b47a014153aa61dd98a10ed3fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66c925ee94dc17f2f4e2c74eb28c3f2c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_loader.html#a66c925ee94dc17f2f4e2c74eb28c3f2c">ConsumeItem</a> (<a class="el" href="class_recipe.html">Recipe</a> recipe, int type, ref int amount)</td></tr>
-<tr class="memdesc:a66c925ee94dc17f2f4e2c74eb28c3f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to edit the amount of item the player uses in a recipe.  <a href="class_recipe_loader.html#a66c925ee94dc17f2f4e2c74eb28c3f2c">More...</a><br /></td></tr>
+<tr class="memdesc:a66c925ee94dc17f2f4e2c74eb28c3f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to edit the amount of item the player uses in a recipe. Also used to decide the amount a shimmer transformation returns  <a href="class_recipe_loader.html#a66c925ee94dc17f2f4e2c74eb28c3f2c">More...</a><br /></td></tr>
 <tr class="separator:a66c925ee94dc17f2f4e2c74eb28c3f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa917a2e31a58005a7175adcf752883d0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_recipe_loader.html#aa917a2e31a58005a7175adcf752883d0">DecraftAvailable</a> (<a class="el" href="class_recipe.html">Recipe</a> recipe)</td></tr>
 <tr class="memdesc:aa917a2e31a58005a7175adcf752883d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not the conditions are met for this recipe to be shimmered/decrafted.  <a href="class_recipe_loader.html#aa917a2e31a58005a7175adcf752883d0">More...</a><br /></td></tr>
@@ -115,6 +118,65 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This is where all <a class="el" href="class_recipe.html" title="A Recipe is a collection of ingredients, tiles, and a resulting Item. This is how players can craft i...">Recipe</a> hooks are gathered and called. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="adc919b47a014153aa61dd98a10ed3fa4" name="adc919b47a014153aa61dd98a10ed3fa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc919b47a014153aa61dd98a10ed3fa4">&#9670;&nbsp;</a></span>ConsumeIngredient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void RecipeLoader.ConsumeIngredient </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_recipe.html">Recipe</a>&#160;</td>
+          <td class="paramname"><em>recipe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>amount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isDecrafting</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows to edit the amount of item the player uses in a recipe. Also used to decide the amount a shimmer transformation returns </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">recipe</td><td>The recipe used for the craft.</td></tr>
+    <tr><td class="paramname">type</td><td>Type of the ingredient.</td></tr>
+    <tr><td class="paramname">amount</td><td>Modifiable amount of the item consumed.</td></tr>
+    <tr><td class="paramname">isDecrafting</td><td>If the operation takes place during shimmer decrafting.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a66c925ee94dc17f2f4e2c74eb28c3f2c" name="a66c925ee94dc17f2f4e2c74eb28c3f2c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a66c925ee94dc17f2f4e2c74eb28c3f2c">&#9670;&nbsp;</a></span>ConsumeItem()</h2>
 
@@ -155,7 +217,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows to edit the amount of item the player uses in a recipe. </p>
+<p>Allows to edit the amount of item the player uses in a recipe. Also used to decide the amount a shimmer transformation returns </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">recipe</td><td>The recipe used for the craft.</td></tr>

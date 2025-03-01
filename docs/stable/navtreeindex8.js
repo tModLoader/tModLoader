@@ -1,9 +1,13 @@
 var NAVTREEINDEX8 =
 {
-"class_item.html#afde4aad6d39d51ef587dab0e7e3e630c":[3,0,626,61],
-"class_item.html#afe440f52db2e08b1c5f421d4cbff70d4":[3,0,626,52],
-"class_item.html#afe89f43c2dab80619ef8867972f333cf":[3,0,626,116],
-"class_item.html#affc71a3a1959544b16ef6c68c8263a78":[3,0,626,51],
+"class_item.html#af79ba8b09813fd867fa3da24a4e31e51":[3,0,626,146],
+"class_item.html#af7f533f50d6d71ee4e653a77e04483a2":[3,0,626,136],
+"class_item.html#af9fe3594a76ad5d1f32ff3f4ca22832a":[3,0,626,100],
+"class_item.html#afa18d73137643eeff54c636e6728f6a9":[3,0,626,11],
+"class_item.html#afde4aad6d39d51ef587dab0e7e3e630c":[3,0,626,62],
+"class_item.html#afe440f52db2e08b1c5f421d4cbff70d4":[3,0,626,53],
+"class_item.html#afe89f43c2dab80619ef8867972f333cf":[3,0,626,118],
+"class_item.html#affc71a3a1959544b16ef6c68c8263a78":[3,0,626,52],
 "class_item_alternative_function_i_d.html":[3,0,627],
 "class_item_craft_condition.html":[3,0,628],
 "class_item_creation_context.html":[3,0,629],
@@ -12,6 +16,8 @@ var NAVTREEINDEX8 =
 "class_item_drop_bestiary_info_element.html":[3,0,632],
 "class_item_drop_bestiary_info_element.html#a384730f0806bdc758d488cd653c0b44b":[3,0,632,0],
 "class_item_drop_database.html":[3,0,633],
+"class_item_drop_database.html#a0b149a032d91b3bac5d9b578836fb36f":[3,0,633,0],
+"class_item_drop_database.html#a51bd4add57067ce26c37cb2248bda273":[3,0,633,1],
 "class_item_drop_resolver.html":[3,0,634],
 "class_item_drop_rule.html":[3,0,635],
 "class_item_drop_with_condition_rule.html":[3,0,636],
@@ -243,11 +249,5 @@ var NAVTREEINDEX8 =
 "class_item_slot_1_1_options.html":[3,0,648,2],
 "class_item_sorting.html":[3,0,649],
 "class_item_tag_handler.html":[3,0,652],
-"class_item_tooltip.html":[3,0,653],
-"class_item_trader.html":[3,0,654],
-"class_item_trader_1_1_trade_option.html":[3,0,654,0],
-"class_item_transfer_particle.html":[3,0,655],
-"class_item_use_style_i_d.html":[3,0,656],
-"class_item_use_style_i_d.html#a042d4de5006faa60d1529dc30fed97c1":[3,0,656,1],
-"class_item_use_style_i_d.html#a080dcffe9c0aadf834ddb571b810e715":[3,0,656,3]
+"class_item_tooltip.html":[3,0,653]
 };

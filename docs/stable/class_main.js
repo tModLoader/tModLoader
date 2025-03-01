@@ -31,6 +31,8 @@ var class_main =
     [ "SyncRain", "class_main.html#ab621bfa9926b1c9670fe702b52976662", null ],
     [ "TryGetBuffTime", "class_main.html#a374e6ecfc6ca7aa1358413e39e33e041", null ],
     [ "TryRemovingBuff", "class_main.html#aa3c33b3a39f7a4e711830285ac31ef7a", null ],
+    [ "anglerQuest", "class_main.html#a75d38fba870f26bc874e84c316f4a4f7", null ],
+    [ "anglerQuestItemNetIDs", "class_main.html#a0eb2ccdd07ceb3b344b2be524ed8bc07", null ],
     [ "availableRecipe", "class_main.html#a446cd9c5d93185537e2a5a5703742535", null ],
     [ "bloodMoon", "class_main.html#a1058f9e210f4d162a7e2432a7f6bad52", null ],
     [ "buffNoSave", "class_main.html#a37a50bf3ced9746a42bd06faf3ce79c6", null ],
