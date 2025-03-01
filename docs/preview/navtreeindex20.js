@@ -1,5 +1,12 @@
 var NAVTREEINDEX20 =
 {
+"class_santank_mount_jump.html#a7a12616c0a346bf9875dbc388aff6098":[3,0,1090,2],
+"class_santank_mount_jump.html#a8e80fd33304490e0609601cc6a1aff9d":[3,0,1090,1],
+"class_say_chat_command.html":[3,0,1091],
+"class_scene_effect_loader.html":[3,0,1092],
+"class_scene_effect_loader_1_1_scene_effect_instance.html":[3,0,1092,0],
+"class_scene_metrics.html":[3,0,1093],
+"class_scene_metrics.html#aad9cd2adbe69564e7db8052770c159f5":[3,0,1093,1],
 "class_scene_metrics.html#ac8f00217d15e334a32dab36b11daa6a4":[3,0,1093,0],
 "class_screen_darkness.html":[3,0,1095],
 "class_screen_effect_initializer.html":[3,0,1096],
@@ -242,12 +249,5 @@ var NAVTREEINDEX20 =
 "class_tile_definition.html":[3,0,1232],
 "class_tile_definition.html#a3e6b6b529d2ffe8e910b7682bd439fe4":[3,0,1232,0],
 "class_tile_destroyed_condition.html":[3,0,1233],
-"class_tile_draw_info.html":[3,0,1234],
-"class_tile_draw_sorter.html":[3,0,1236],
-"class_tile_draw_sorter_1_1_custom_comparer.html":[3,0,1236,0],
-"class_tile_drawing.html":[3,0,1235],
-"class_tile_drawing.html#a02189b771b065777d7952f6713cdca80":[3,0,1235,6],
-"class_tile_drawing.html#a0a974e7cce603c1475e06cc59403f48e":[3,0,1235,11],
-"class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac":[3,0,1235,3],
-"class_tile_drawing.html#a24bdc2e2b25697391ef45c50cabbeb81":[3,0,1235,7]
+"class_tile_draw_info.html":[3,0,1234]
 };

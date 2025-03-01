@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -3592,6 +3592,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileBlockLig
 <tr class="separator:abe2ddd285204e43fe773b6df014ca8b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad422149713840dfc947d37a1c90160d0"><td class="memItemLeft" align="right" valign="top"><a id="ad422149713840dfc947d37a1c90160d0" name="ad422149713840dfc947d37a1c90160d0"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileBouncy</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:ad422149713840dfc947d37a1c90160d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this tile negates fall damageand causes the player to bounce when landed on. Vanilla entries include PinkSlimeBlock, SillyBalloonPink, SillyBalloonPurple, and SillyBalloonGreen. Defaults to false. See also <a class="el" href="class_tile_i_d_1_1_sets.html#a637597eded269c670b0f6bd0e7fe882b" title="If true, players landing on these tiles will not suffer fall damage. Vanilla entries include Cloud,...">TileID.Sets.NegatesFallDamage</a>. <br /></td></tr>
 <tr class="separator:ad422149713840dfc947d37a1c90160d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9281af0d63461d5ab27be07c65f4a0d"><td class="memItemLeft" align="right" valign="top"><a id="ac9281af0d63461d5ab27be07c65f4a0d" name="ac9281af0d63461d5ab27be07c65f4a0d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileBrick</b> = new bool[TileID.Count]</td></tr>
@@ -3601,6 +3602,7 @@ static Microsoft.Xna.Framework.Color&#160;</td><td class="memItemRight" valign="
 <tr class="separator:aa3f1a0e2deb09e9197cecadea9c06eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9292c59467fe80a77a55c82bec8be90d"><td class="memItemLeft" align="right" valign="top"><a id="a9292c59467fe80a77a55c82bec8be90d" name="a9292c59467fe80a77a55c82bec8be90d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileContainer</b> = new bool[TileID.Count]</td></tr>
+<tr class="memdesc:a9292c59467fe80a77a55c82bec8be90d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this tile contains items. All chests and dressers need to set this to save and load chest contents. <a class="el" href="class_tile_i_d_1_1_sets.html#aff8ff43ce2fe95a587735a42c9a9326d" title="Indicates that this tile contains items. All chests and dressers should set this. Main....">TileID.Sets.IsAContainer</a> should also be set in tandem. <br /></td></tr>
 <tr class="separator:a9292c59467fe80a77a55c82bec8be90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1e23b904ae1a46d736a897834c69647"><td class="memItemLeft" align="right" valign="top"><a id="ad1e23b904ae1a46d736a897834c69647" name="ad1e23b904ae1a46d736a897834c69647"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileCracked</b> = new bool[TileID.Count]</td></tr>
@@ -3650,8 +3652,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileInteraction
 <tr class="memitem:abc6635734fe593b267ddbd634bbac520"><td class="memItemLeft" align="right" valign="top"><a id="abc6635734fe593b267ddbd634bbac520" name="abc6635734fe593b267ddbd634bbac520"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileInteractionLY</b> = -1</td></tr>
 <tr class="separator:abc6635734fe593b267ddbd634bbac520"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31efd2fbedd7a4071162d6678c0da706"><td class="memItemLeft" align="right" valign="top"><a id="a31efd2fbedd7a4071162d6678c0da706" name="a31efd2fbedd7a4071162d6678c0da706"></a>
-static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLargeFrames</b> = new byte[TileID.Count]</td></tr>
+<tr class="memitem:a31efd2fbedd7a4071162d6678c0da706"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main.html#a31efd2fbedd7a4071162d6678c0da706">tileLargeFrames</a> = new byte[TileID.Count]</td></tr>
+<tr class="memdesc:a31efd2fbedd7a4071162d6678c0da706"><td class="mdescLeft">&#160;</td><td class="mdescRight">When set to 1 or 2, this tile will use a tiled pattern for the tile variation rather than the random <a class="el" href="struct_tile.html#ad13afd5ae330e950ea1e76e0e848565a" title="The random style number the tile at this position has, which is random number between 0 and 2 (inclus...">Tile.TileFrameNumber</a> choice (The info below counts from 1 rather than 0 for illustrative purposes). Only applicable to terrain/framed tiles. Defaults to 0. A value of 1 results in a 3x4 pattern used by Smoothe Marble Block (TileID.MarbleBlock) and others:  <a href="class_main.html#a31efd2fbedd7a4071162d6678c0da706">More...</a><br /></td></tr>
 <tr class="separator:a31efd2fbedd7a4071162d6678c0da706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4e747a8a660d98c8fd21b613e1fc2d4"><td class="memItemLeft" align="right" valign="top"><a id="ae4e747a8a660d98c8fd21b613e1fc2d4" name="ae4e747a8a660d98c8fd21b613e1fc2d4"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileLavaDeath</b> = new bool[TileID.Count]</td></tr>
@@ -3690,7 +3692,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileObsidian
 <tr class="separator:ac8f3eeb77b730712be9268d5d8ca9cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f9ffde4d29e185014fb024d3e6ed24"><td class="memItemLeft" align="right" valign="top"><a id="a34f9ffde4d29e185014fb024d3e6ed24" name="a34f9ffde4d29e185014fb024d3e6ed24"></a>
 static short[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileOreFinderPriority</b> = new short[TileID.Count]</td></tr>
-<tr class="memdesc:a34f9ffde4d29e185014fb024d3e6ed24"><td class="mdescLeft">&#160;</td><td class="mdescRight">The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The Metal Detector wiki pagelists existing values to use as reference. <br /></td></tr>
+<tr class="memdesc:a34f9ffde4d29e185014fb024d3e6ed24"><td class="mdescLeft">&#160;</td><td class="mdescRight">The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The Metal Detector wiki pagelists existing values to use as reference. Fairiesleading to treasure also take this into account. <br /></td></tr>
 <tr class="separator:a34f9ffde4d29e185014fb024d3e6ed24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e4500daf67856fcb8f5beffc4e55aa1"><td class="memItemLeft" align="right" valign="top"><a id="a0e4500daf67856fcb8f5beffc4e55aa1" name="a0e4500daf67856fcb8f5beffc4e55aa1"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tilePile</b> = new bool[TileID.Count]</td></tr>
@@ -5557,6 +5559,33 @@ EventHandler&lt; EventArgs &gt;&#160;</td><td class="memItemRight" valign="botto
 
 <p>The y-coordinate of the top of the caverns layer, in tile coordinates. </p>
 <p >Players in this layer will have <a class="el" href="class_player.html#a1e5fcca923e4a7cd9a16f0e061c3fe35" title="If true, then this player is in the Caverns layer (Main.rockLayer) but not in the Underworld (Main....">Player.ZoneRockLayerHeight</a> set to <code>true</code>.</p>
+
+</div>
+</div>
+<a id="a31efd2fbedd7a4071162d6678c0da706" name="a31efd2fbedd7a4071162d6678c0da706"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31efd2fbedd7a4071162d6678c0da706">&#9670;&nbsp;</a></span>tileLargeFrames</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte [] Main.tileLargeFrames = new byte[TileID.Count]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>When set to 1 or 2, this tile will use a tiled pattern for the tile variation rather than the random <a class="el" href="struct_tile.html#ad13afd5ae330e950ea1e76e0e848565a" title="The random style number the tile at this position has, which is random number between 0 and 2 (inclus...">Tile.TileFrameNumber</a> choice (The info below counts from 1 rather than 0 for illustrative purposes). Only applicable to terrain/framed tiles. Defaults to 0. A value of 1 results in a 3x4 pattern used by Smoothe Marble Block (TileID.MarbleBlock) and others: </p>
+<p ><code>2 4 2 1 3 1 2 2 4 1 1 3 </code> </p>
+<p >A value of 2 results in a 2x2 pattern used by Lunar Rust Brick (TileID.LunarBrick) and others:<code>1 2 3 4 </code> The Basic <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> wiki guide</p>
+<p >has diagrams of these options. </p>
 
 </div>
 </div>

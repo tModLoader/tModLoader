@@ -33,6 +33,7 @@ var class_mod =
     [ "DisplayNameClean", "class_mod.html#aad4aae695df3aff639eb1a10e050440b", null ],
     [ "ExtraPlayerBuffSlots", "class_mod.html#a1e5eebd662fa5948f063d890e407724c", null ],
     [ "GoreAutoloadingEnabled", "class_mod.html#ab41198cdf95d58ca446d2ff9477f5f46", null ],
+    [ "IsNetSynced", "class_mod.html#a60ebbe739c0a94f34d2e1d2409c9af73", null ],
     [ "Logger", "class_mod.html#a36f6a48cdff60d11217fcd27f77a3e7b", null ],
     [ "MusicAutoloadingEnabled", "class_mod.html#a00d5eed93524439d8a47da0bc5bff0de", null ],
     [ "MusicSkipsVolumeRemap", "class_mod.html#a4885e85804fd8be52bfb30308cba609e", null ],

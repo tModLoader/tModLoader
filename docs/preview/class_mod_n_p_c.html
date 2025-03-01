@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -108,7 +108,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AddShops</b> 
 <tr class="separator:afb01454e473cae470741a9a0954b4b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8d0a987b5ccdb2c583e789af32c9287"><td class="memItemLeft" align="right" valign="top"><a id="ae8d0a987b5ccdb2c583e789af32c9287" name="ae8d0a987b5ccdb2c583e789af32c9287"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AI</b> ()</td></tr>
-<tr class="memdesc:ae8d0a987b5ccdb2c583e789af32c9287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this <a class="el" href="class_n_p_c.html">NPC</a> behaves. This will only be called if PreAI returns true. <br /></td></tr>
+<tr class="memdesc:ae8d0a987b5ccdb2c583e789af32c9287"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this <a class="el" href="class_n_p_c.html">NPC</a> behaves. This will only be called if PreAI returns true.  <br /></td></tr>
 <tr class="separator:ae8d0a987b5ccdb2c583e789af32c9287"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f1472e775b679fbf20ae8ccfa5e8bfd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a1f1472e775b679fbf20ae8ccfa5e8bfd">ApplyDifficultyAndPlayerScaling</a> (int numPlayers, float balance, float bossAdjustment)</td></tr>
 <tr class="memdesc:a1f1472e775b679fbf20ae8ccfa5e8bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize this <a class="el" href="class_n_p_c.html">NPC</a>'s stats when the difficulty is expert or higher.<br  />
@@ -316,12 +316,13 @@ Allows you to fully control the location of the party and sprite direction of th
 <tr class="separator:acc0c36e6b2f6b1ca72df7322e1ae2de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a371a6c88f97bf56827b531c8accbab47"><td class="memItemLeft" align="right" valign="top"><a id="a371a6c88f97bf56827b531c8accbab47" name="a371a6c88f97bf56827b531c8accbab47"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostAI</b> ()</td></tr>
+<tr class="memdesc:a371a6c88f97bf56827b531c8accbab47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any <a class="el" href="class_n_p_c.html">NPC</a> behaves. This will be called regardless of what PreAI returns.  <br /></td></tr>
 <tr class="separator:a371a6c88f97bf56827b531c8accbab47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c0a7db0e213a9db0d5ef034f71db3c5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a3c0a7db0e213a9db0d5ef034f71db3c5">PostDraw</a> (SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)</td></tr>
 <tr class="memdesc:a3c0a7db0e213a9db0d5ef034f71db3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of this <a class="el" href="class_n_p_c.html">NPC</a>. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.  <a href="class_mod_n_p_c.html#a3c0a7db0e213a9db0d5ef034f71db3c5">More...</a><br /></td></tr>
 <tr class="separator:a3c0a7db0e213a9db0d5ef034f71db3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59734d50b20bc7225a23acb167af1c23"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a59734d50b20bc7225a23acb167af1c23">PreAI</a> ()</td></tr>
-<tr class="memdesc:a59734d50b20bc7225a23acb167af1c23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this <a class="el" href="class_n_p_c.html">NPC</a> behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.  <a href="class_mod_n_p_c.html#a59734d50b20bc7225a23acb167af1c23">More...</a><br /></td></tr>
+<tr class="memdesc:a59734d50b20bc7225a23acb167af1c23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this <a class="el" href="class_n_p_c.html">NPC</a> behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.   <a href="class_mod_n_p_c.html#a59734d50b20bc7225a23acb167af1c23">More...</a><br /></td></tr>
 <tr class="separator:a59734d50b20bc7225a23acb167af1c23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6b6f93e24d698d9d216fe8f1df8f7bc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc">PreDraw</a> (SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)</td></tr>
 <tr class="memdesc:af6b6f93e24d698d9d216fe8f1df8f7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this <a class="el" href="class_n_p_c.html">NPC</a>, or to modify the way this <a class="el" href="class_n_p_c.html">NPC</a> is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the <a class="el" href="class_n_p_c.html">NPC</a> (useful if you're manually drawing the <a class="el" href="class_n_p_c.html">NPC</a>). Returns true by default.  <a href="class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc">More...</a><br /></td></tr>
@@ -2668,7 +2669,7 @@ and  are already taken into account. </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine how this <a class="el" href="class_n_p_c.html">NPC</a> behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default. </p>
+<p>Allows you to determine how this <a class="el" href="class_n_p_c.html">NPC</a> behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.  </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>

@@ -14,6 +14,8 @@ var class_tile_drawing =
       [ "TeleportationPylon", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a7d3fd93497240b3c624918799566aed1", null ],
       [ "MasterTrophy", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a51868fe8b85c9c92120422d9958f7552", null ],
       [ "AnyDirectionalGrass", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a1077b6d8dacd0994078cc259f23e2a7f", null ],
+      [ "CustomNonSolid", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aafee7c56b6b54f059a488b6a8230c966", null ],
+      [ "CustomSolid", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a42a953849f0263c76cb93a6f3660a610", null ],
       [ "Count", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8ae93f994f01c537c4e2f7d8528c3eb5e9", null ]
     ] ],
     [ "AddSpecialLegacyPoint", "class_tile_drawing.html#af61849574d464e30106795a896ca3b8a", null ],
