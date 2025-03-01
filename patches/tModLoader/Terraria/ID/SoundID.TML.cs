@@ -714,6 +714,10 @@ partial class SoundID
 		LegacySoundIDs.Research => Research,
 		LegacySoundIDs.ResearchComplete => ResearchComplete,
 		LegacySoundIDs.QueenSlime => QueenSlime,
+		LegacySoundIDs.Clown => Clown,
+		LegacySoundIDs.Cockatiel => Cockatiel,
+		LegacySoundIDs.Macaw => Macaw,
+		LegacySoundIDs.Toucan => Toucan,
 		_ => null,
 	};
 }
