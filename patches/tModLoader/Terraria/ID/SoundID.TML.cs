@@ -590,10 +590,10 @@ partial class SoundID
 			}
 		}
 
-		AddNumberedStyles(LegacySoundIDs.Item, nameof(LegacySoundIDs.Item), 0, 172);
-		AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 65);
-		AddNumberedStyles(LegacySoundIDs.NPCKilled, "NPCDeath", 0, 57);
-		AddNumberedStyles(LegacySoundIDs.Zombie, nameof(LegacySoundIDs.Zombie), 0, 118);
+		AddNumberedStyles(LegacySoundIDs.Item, nameof(LegacySoundIDs.Item), 0, 179);
+		AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 58);
+		AddNumberedStyles(LegacySoundIDs.NPCKilled, "NPCDeath", 0, 67);
+		AddNumberedStyles(LegacySoundIDs.Zombie, nameof(LegacySoundIDs.Zombie), 0, 130);
 	}
 
 	// Helper methods
