@@ -98,6 +98,7 @@ public static class TileLoader
 	private static Action[] HookPostSetupTileMerge;
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
+	private static Func<int, int, int, int, bool>[] HookConvert;
 
 	internal static int ReserveTileID()
 	{
@@ -246,6 +247,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
+		ModLoader.BuildGlobalHook(ref HookConvert, globalTiles, g => g.Convert);
 
 		if (!unloading) {
 			loaded = true;
@@ -684,6 +686,22 @@ public static class TileLoader
 		foreach (var hook in HookModifyLight) {
 			hook(i, j, type, ref r, ref g, ref b);
 		}
+	}
+
+	public static bool Convert(int i, int j, int conversionType, bool fromPurificationPowder = false)
+	{
+		int type = Main.tile[i, j].type;
+		ModTile modTile = GetTile(type);
+		if (modTile != null && !modTile.Convert(i, j, conversionType, fromPurificationPowder)) {
+			return false;
+		}
+
+		foreach (var hook in HookConvert) {
+			if (!hook(i, j, type, conversionType, fromPurificationPowder)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static bool? IsTileDangerous(int i, int j, int type, Player player)

@@ -1912,7 +1912,7 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,6 +_,28 @@
+@@ -39342,6 +_,23 @@
  		return true;
  	}
  
@@ -1933,68 +1933,982 @@
 +	/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
 +	/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
 +	/// </param>
-+	/*
-+	TO-DO:
-+	- ConvertTIle utility method which consolidates the three lines used for most conversions into a single call
-+	- modder-friendliness extension; see #2738
-+	*/
  	public static void Convert(int i, int j, int conversionType, int size = 4)
  	{
  		for (int k = i - size; k <= i + size; k++) {
-@@ -39354,7 +_,7 @@
+@@ -39352,571 +_,411 @@
+ 				Tile tile = Main.tile[k, l];
+ 				int type = tile.type;
  				int wall = tile.wall;
- 				switch (conversionType) {
- 					case 4:
+-				switch (conversionType) {
+-					case 4:
 -						if (type <= TileID.Count && wall <= WallID.Count) {
-+						if (type <= TileLoader.TileCount && wall <= WallLoader.WallCount) {
- 							if (WallID.Sets.Conversion.Grass[wall] && wall != 81) {
- 								tile.wall = 81;
- 								SquareWallFrame(k, l);
-@@ -39444,7 +_,7 @@
- 						}
- 						continue;
- 					case 2:
+-							if (WallID.Sets.Conversion.Grass[wall] && wall != 81) {
+-								tile.wall = 81;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.Stone[wall] && wall != 83) {
+-								tile.wall = 83;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.HardenedSand[wall] && wall != 218) {
+-								tile.wall = 218;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.Sandstone[wall] && wall != 221) {
+-								tile.wall = 221;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall1[wall] && wall != 192) {
+-								tile.wall = 192;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall2[wall] && wall != 193) {
+-								tile.wall = 193;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall3[wall] && wall != 194) {
+-								tile.wall = 194;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall4[wall] && wall != 195) {
+-								tile.wall = 195;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-
+-							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 203) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 203);
+-								tile.type = 203;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 662) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 662);
+-								tile.type = 662;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Grass[type] && type != 199) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 199);
+-								tile.type = 199;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Ice[type] && type != 200) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 200);
+-								tile.type = 200;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Sand[type] && type != 234) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 234);
+-								tile.type = 234;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.HardenedSand[type] && type != 399) {
+-								tile.type = 399;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Sandstone[type] && type != 401) {
+-								tile.type = 401;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Thorn[type] && type != 352) {
+-								tile.type = 352;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-						}
+-						continue;
+-					case 2:
 -						if (type > TileID.Count || wall > WallID.Count)
-+						if (type >= TileLoader.TileCount || wall >= WallLoader.WallCount)
- 							continue;
- 						if (WallID.Sets.Conversion.Grass[wall] && wall != 70) {
- 							tile.wall = 70;
-@@ -39538,7 +_,7 @@
- 						}
- 						continue;
- 					case 1:
+-							continue;
+-						if (WallID.Sets.Conversion.Grass[wall] && wall != 70) {
+-							tile.wall = 70;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.Stone[wall] && wall != 28) {
+-							tile.wall = 28;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.HardenedSand[wall] && wall != 219) {
+-							tile.wall = 219;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.Sandstone[wall] && wall != 222) {
+-							tile.wall = 222;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall1[wall] && wall != 200) {
+-							tile.wall = 200;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall2[wall] && wall != 201) {
+-							tile.wall = 201;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall3[wall] && wall != 202) {
+-							tile.wall = 202;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall4[wall] && wall != 203) {
+-							tile.wall = 203;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 117) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 117);
+-							tile.type = 117;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.GolfGrass[type] && type != 492) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 492);
+-							tile.type = 492;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Grass[type] && type != 109 && type != 492) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 109);
+-							tile.type = 109;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Ice[type] && type != 164) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 164);
+-							tile.type = 164;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Sand[type] && type != 116) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 116);
+-							tile.type = 116;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.HardenedSand[type] && type != 402) {
+-							tile.type = 402;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Sandstone[type] && type != 403) {
+-							tile.type = 403;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Thorn[type]) {
+-							KillTile(k, l);
+-							if (Main.netMode == 1)
+-								NetMessage.SendData(17, -1, -1, null, 0, k, l);
+-						}
+-						if (type == 59 && (Main.tile[k - 1, l].type == 109 || Main.tile[k + 1, l].type == 109 || Main.tile[k, l - 1].type == 109 || Main.tile[k, l + 1].type == 109)) {
+-							tile.type = 0;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						continue;
+-					case 1:
 -						if (type <= TileID.Count && wall <= WallID.Count) {
-+						if (type <= TileLoader.TileCount && wall <= WallLoader.WallCount) {
- 							if (WallID.Sets.Conversion.Grass[wall] && wall != 69) {
- 								tile.wall = 69;
- 								SquareWallFrame(k, l);
-@@ -39645,7 +_,7 @@
- 						}
- 						continue;
- 					case 5:
+-							if (WallID.Sets.Conversion.Grass[wall] && wall != 69) {
+-								tile.wall = 69;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
+-								tile.type = 661;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.Stone[wall] && wall != 3) {
+-								tile.wall = 3;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.HardenedSand[wall] && wall != 217) {
+-								tile.wall = 217;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.Sandstone[wall] && wall != 220) {
+-								tile.wall = 220;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall1[wall] && wall != 188) {
+-								tile.wall = 188;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall2[wall] && wall != 189) {
+-								tile.wall = 189;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall3[wall] && wall != 190) {
+-								tile.wall = 190;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (WallID.Sets.Conversion.NewWall4[wall] && wall != 191) {
+-								tile.wall = 191;
+-								SquareWallFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-
+-							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 25) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 25);
+-								tile.type = 25;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Grass[type] && type != 23) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 23);
+-								tile.type = 23;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Ice[type] && type != 163) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 163);
+-								tile.type = 163;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Sand[type] && type != 112) {
+-								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 112);
+-								tile.type = 112;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.HardenedSand[type] && type != 398) {
+-								tile.type = 398;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Sandstone[type] && type != 400) {
+-								tile.type = 400;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-							else if (TileID.Sets.Conversion.Thorn[type] && type != 32) {
+-								tile.type = 32;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+-						}
+-						continue;
+-					case 3:
+-						if (WallID.Sets.CanBeConvertedToGlowingMushroom[wall]) {
+-							tile.wall = 80;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						if (tile.type == 60) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 70);
+-							tile.type = 70;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Thorn[type]) {
+-							KillTile(k, l);
+-							if (Main.netMode == 1)
+-								NetMessage.SendData(17, -1, -1, null, 0, k, l);
+-						}
+-						continue;
+-					case 5:
 -						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
-+						if (type < 0 || type >= TileLoader.TileCount || wall < 0 || wall >= WallLoader.WallCount)
- 							continue;
- 						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 187) {
- 							tile.wall = 187;
-@@ -39685,7 +_,7 @@
- 						}
- 						continue;
- 					case 6:
+-							continue;
+-						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 187) {
+-							tile.wall = 187;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if ((WallID.Sets.Conversion.HardenedSand[wall] || WallID.Sets.Conversion.Dirt[wall] || WallID.Sets.Conversion.Snow[wall]) && wall != 216) {
+-							tile.wall = 216;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 53) {
+-							int num = 53;
+-							if (BlockBelowMakesSandConvertIntoHardenedSand(k, l))
+-								num = 397;
+-
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, num);
+-							tile.type = (ushort)num;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.HardenedSand[type] && type != 397) {
+-							tile.type = 397;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Ice[type] || TileID.Sets.Conversion.Sandstone[type]) && type != 396) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 396);
+-							tile.type = 396;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Thorn[type] && type != 69) {
+-							KillTile(k, l);
+-							if (Main.netMode == 1)
+-								NetMessage.SendData(17, -1, -1, null, 0, k, l);
+-						}
+-						continue;
+-					case 6:
 -						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
-+						if (type < 0 || type >= TileLoader.TileCount || wall < 0 || wall >= WallLoader.WallCount)
- 							continue;
- 						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 71) {
- 							tile.wall = 71;
-@@ -39716,7 +_,7 @@
- 						}
- 						continue;
- 					case 7:
+-							continue;
+-						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 71) {
+-							tile.wall = 71;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if ((WallID.Sets.Conversion.HardenedSand[wall] || WallID.Sets.Conversion.Dirt[wall] || WallID.Sets.Conversion.Snow[wall]) && wall != 40) {
+-							tile.wall = 40;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.HardenedSand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 147) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 147);
+-							tile.type = 147;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Ice[type] || TileID.Sets.Conversion.Sandstone[type]) && type != 161) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 161);
+-							tile.type = 161;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Thorn[type] && type != 69) {
+-							KillTile(k, l);
+-							if (Main.netMode == 1)
+-								NetMessage.SendData(17, -1, -1, null, 0, k, l);
+-						}
+-						continue;
+-					case 7:
 -						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
-+						if (type < 0 || type >= TileLoader.TileCount || wall < 0 || wall >= WallLoader.WallCount)
- 							continue;
- 						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 1) {
- 							tile.wall = 1;
+-							continue;
+-						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 1) {
+-							tile.wall = 1;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if ((WallID.Sets.Conversion.HardenedSand[wall] || WallID.Sets.Conversion.Snow[wall] || WallID.Sets.Conversion.Dirt[wall]) && wall != 2) {
+-							tile.wall = 2;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall1[wall] && wall != 196) {
+-							tile.wall = 196;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall2[wall] && wall != 197) {
+-							tile.wall = 197;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall3[wall] && wall != 198) {
+-							tile.wall = 198;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (WallID.Sets.Conversion.NewWall4[wall] && wall != 199) {
+-							tile.wall = 199;
+-							SquareWallFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						if ((TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Ice[type] || TileID.Sets.Conversion.Sandstone[type]) && type != 1) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 1);
+-							tile.type = 1;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.GolfGrass[type] && type != 477) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 477);
+-							tile.type = 477;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Grass[type] && type != 2 && type != 477) {
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 2);
+-							tile.type = 2;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if ((TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.HardenedSand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 0) {
+-							int num2 = 0;
+-							if (TileIsExposedToAir(k, l))
+-								num2 = 2;
+-
+-							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, num2);
+-							tile.type = (ushort)num2;
+-							SquareTileFrame(k, l);
+-							NetMessage.SendTileSquare(-1, k, l);
+-						}
+-						else if (TileID.Sets.Conversion.Thorn[type] && type != 69) {
+-							KillTile(k, l);
+-							if (Main.netMode == 1)
+-								NetMessage.SendData(17, -1, -1, null, 0, k, l);
+-						}
+-						continue;
+-				}
+-
+-				if (tile.wall == 69 || tile.wall == 70 || tile.wall == 81) {
+-					if ((double)l < Main.worldSurface) {
+-						if (genRand.Next(10) == 0)
+-							tile.wall = 65;
+-						else
+-							tile.wall = 63;
+-					}
+-					else {
+-						tile.wall = 64;
+-					}
+-
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (WallID.Sets.Conversion.Stone[wall] && wall != 1 && wall != 262 && wall != 274 && wall != 61 && wall != 185) {
+-					tile.wall = 1;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (WallID.Sets.Conversion.Stone[wall] && wall == 262) {
+-					tile.wall = 61;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (WallID.Sets.Conversion.Stone[wall] && wall == 274) {
+-					tile.wall = 185;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-
+-				if (WallID.Sets.Conversion.NewWall1[wall] && wall != 212) {
+-					tile.wall = 212;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (WallID.Sets.Conversion.NewWall2[wall] && wall != 213) {
+-					tile.wall = 213;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (WallID.Sets.Conversion.NewWall3[wall] && wall != 214) {
+-					tile.wall = 214;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (WallID.Sets.Conversion.NewWall4[wall] && wall != 215) {
+-					tile.wall = 215;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (tile.wall == 80) {
+-					if ((double)l < Main.worldSurface + 4.0 + (double)genRand.Next(3) || (double)l > ((double)Main.maxTilesY + Main.rockLayer) / 2.0 - 3.0 + (double)genRand.Next(3)) {
+-						tile.wall = 15;
+-						SquareWallFrame(k, l);
+-						NetMessage.SendTileSquare(-1, k, l);
+-					}
+-					else {
+-						tile.wall = 64;
+-						SquareWallFrame(k, l);
+-						NetMessage.SendTileSquare(-1, k, l);
+-					}
+-				}
+-				else if (WallID.Sets.Conversion.HardenedSand[wall] && wall != 216) {
+-					tile.wall = 216;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (WallID.Sets.Conversion.Sandstone[wall] && wall != 187) {
+-					tile.wall = 187;
+-					SquareWallFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-
+-				if (tile.type == 492) {
+-					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 477);
+-					tile.type = 477;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.JungleGrass[type] && type != 60) {
+-					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 60);
+-					tile.type = 60;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.Grass[type] && type != 2 && type != 477) {
+-					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 2);
+-					tile.type = 2;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.Stone[type] && type != 1) {
+-					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 1);
+-					tile.type = 1;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.Sand[type] && type != 53) {
+-					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 53);
+-					tile.type = 53;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.HardenedSand[type] && type != 397) {
+-					tile.type = 397;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.Sandstone[type] && type != 396) {
+-					tile.type = 396;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.Ice[type] && type != 161) {
+-					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 161);
+-					tile.type = 161;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (TileID.Sets.Conversion.MushroomGrass[type]) {
+-					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 60);
+-					tile.type = 60;
+-					SquareTileFrame(k, l);
+-					NetMessage.SendTileSquare(-1, k, l);
+-				}
+-				else if (tile.type == 32 || Main.tile[k, l].type == 352) {
+-					KillTile(k, l);
+-					if (Main.netMode == 1)
+-						NetMessage.SendData(17, -1, -1, null, 0, k, l);
++
++				if (wall > 0 && wall <= WallLoader.WallCount && WallLoader.Convert(k, l, conversionType)) {
++					switch (conversionType) {
++						case 1:
++							if (WallID.Sets.Conversion.Grass[wall]) {
++								ConvertWall(k, l, 69);
++							}
++							else if (TileID.Sets.Conversion.JungleGrass[type]) {
++								ConvertWall(k, l, 661);
++							}
++							else if (WallID.Sets.Conversion.Stone[wall]) {
++								ConvertWall(k, l, 3);
++							}
++							else if (WallID.Sets.Conversion.HardenedSand[wall]) {
++								ConvertWall(k, l, 217);
++							}
++							else if (WallID.Sets.Conversion.Sandstone[wall]) {
++								ConvertWall(k, l, 220);
++							}
++							else if (WallID.Sets.Conversion.NewWall1[wall]) {
++								ConvertWall(k, l, 188);
++							}
++							else if (WallID.Sets.Conversion.NewWall2[wall]) {
++								ConvertWall(k, l, 189);
++							}
++							else if (WallID.Sets.Conversion.NewWall3[wall]) {
++								ConvertWall(k, l, 190);
++							}
++							else if (WallID.Sets.Conversion.NewWall4[wall]) {
++								ConvertWall(k, l, 191);
++							}
++							continue;
++						case 2:
++							if (WallID.Sets.Conversion.Grass[wall]) {
++								ConvertWall(k, l, 70);
++							}
++							else if (WallID.Sets.Conversion.Stone[wall]) {
++								ConvertWall(k, l, 28);
++							}
++							else if (WallID.Sets.Conversion.HardenedSand[wall]) {
++								ConvertWall(k, l, 219);
++							}
++							else if (WallID.Sets.Conversion.Sandstone[wall]) {
++								ConvertWall(k, l, 222);
++							}
++							else if (WallID.Sets.Conversion.NewWall1[wall]) {
++								ConvertWall(k, l, 200);
++							}
++							else if (WallID.Sets.Conversion.NewWall2[wall]) {
++								ConvertWall(k, l, 201);
++							}
++							else if (WallID.Sets.Conversion.NewWall3[wall]) {
++								ConvertWall(k, l, 202);
++							}
++							else if (WallID.Sets.Conversion.NewWall4[wall]) {
++								ConvertWall(k, l, 203);
++							}
++							continue;
++						case 3:
++							if (WallID.Sets.CanBeConvertedToGlowingMushroom[wall]) {
++								ConvertWall(k, l, 80);
++							}
++							continue;
++						case 4:
++							if (WallID.Sets.Conversion.Grass[wall]) {
++								ConvertWall(k, l, 81);
++							}
++							else if (WallID.Sets.Conversion.Stone[wall]) {
++								ConvertWall(k, l, 83);
++							}
++							else if (WallID.Sets.Conversion.HardenedSand[wall]) {
++								ConvertWall(k, l, 218);
++							}
++							else if (WallID.Sets.Conversion.Sandstone[wall]) {
++								ConvertWall(k, l, 221);
++							}
++							else if (WallID.Sets.Conversion.NewWall1[wall]) {
++								ConvertWall(k, l, 192);
++							}
++							else if (WallID.Sets.Conversion.NewWall2[wall]) {
++								ConvertWall(k, l, 193);
++							}
++							else if (WallID.Sets.Conversion.NewWall3[wall]) {
++								ConvertWall(k, l, 194);
++							}
++							else if (WallID.Sets.Conversion.NewWall4[wall]) {
++								ConvertWall(k, l, 195);
++							}
++							continue;
++						case 5:
++							if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall])) {
++								ConvertWall(k, l, 187);
++							}
++							else if ((WallID.Sets.Conversion.HardenedSand[wall] || WallID.Sets.Conversion.Dirt[wall] || WallID.Sets.Conversion.Snow[wall])) {
++								ConvertWall(k, l, 216);
++							}
++							continue;
++						case 6:
++							if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall])) {
++								ConvertWall(k, l, 71);
++							}
++							else if ((WallID.Sets.Conversion.HardenedSand[wall] || WallID.Sets.Conversion.Dirt[wall] || WallID.Sets.Conversion.Snow[wall])) {
++								ConvertWall(k, l, 40);
++							}
++							continue;
++						case 7:
++							if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall])) {
++								ConvertWall(k, l, 1);
++							}
++							else if ((WallID.Sets.Conversion.HardenedSand[wall] || WallID.Sets.Conversion.Snow[wall] || WallID.Sets.Conversion.Dirt[wall])) {
++								ConvertWall(k, l, 2);
++							}
++							else if (WallID.Sets.Conversion.NewWall1[wall]) {
++								ConvertWall(k, l, 196);
++							}
++							else if (WallID.Sets.Conversion.NewWall2[wall]) {
++								ConvertWall(k, l, 197);
++							}
++							else if (WallID.Sets.Conversion.NewWall3[wall]) {
++								ConvertWall(k, l, 198);
++							}
++							else if (WallID.Sets.Conversion.NewWall4[wall]) {
++								ConvertWall(k, l, 199);
++							}
++							continue;
++						default:
++							if (wall == 69 || wall == 70 || wall == 81) {
++								if ((double)l < Main.worldSurface) {
++									if (genRand.Next(10) == 0)
++										tile.wall = 65;
++									else
++										tile.wall = 63;
++								}
++								else {
++									tile.wall = 64;
++								}
++
++								SquareWallFrame(k, l);
++								NetMessage.SendTileSquare(-1, k, l);
++							}
++							else if (WallID.Sets.Conversion.Stone[wall] && wall != 262 && wall != 274 && wall != 61 && wall != 185) {
++								ConvertWall(k, l, 1);
++							}
++							else if (WallID.Sets.Conversion.Stone[wall] && wall == 262) {
++								ConvertWall(k, l, 61);
++							}
++							else if (WallID.Sets.Conversion.Stone[wall] && wall == 274) {
++								ConvertWall(k, l, 185);
++							}
++
++							if (WallID.Sets.Conversion.NewWall1[wall]) {
++								ConvertWall(k, l, 212);
++							}
++							else if (WallID.Sets.Conversion.NewWall2[wall]) {
++								ConvertWall(k, l, 213);
++							}
++							else if (WallID.Sets.Conversion.NewWall3[wall]) {
++								ConvertWall(k, l, 214);
++							}
++							else if (WallID.Sets.Conversion.NewWall4[wall]) {
++								ConvertWall(k, l, 215);
++							}
++							else if (tile.wall == 80) {
++								if ((double)l < Main.worldSurface + 4.0 + (double)genRand.Next(3) || (double)l > ((double)Main.maxTilesY + Main.rockLayer) / 2.0 - 3.0 + (double)genRand.Next(3)) {
++									ConvertWall(k, l, 15);
++								}
++								else {
++									ConvertWall(k, l, 64);
++								}
++							}
++							else if (WallID.Sets.Conversion.HardenedSand[wall]) {
++								ConvertWall(k, l, 216);
++							}
++							else if (WallID.Sets.Conversion.Sandstone[wall]) {
++								ConvertWall(k, l, 187);
++							}
++							continue;
++					}
++				}
++
++				if (tile > 0 && tile <= TileLoader.TileCount && TileLoader.Convert(k, j, conversionType)) {
++					switch (conversionType) {
++						case 1:
++							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type])) {
++								ConvertTile(k, l, 25, true);
++							}
++							else if (TileID.Sets.Conversion.Grass[type]) {
++								ConvertTile(k, l, 23, true);
++							}
++							else if (TileID.Sets.Conversion.Ice[type]) {
++								ConvertTile(k, l, 163, true);
++							}
++							else if (TileID.Sets.Conversion.Sand[type]) {
++								ConvertTile(k, l, 112, true);
++							}
++							else if (TileID.Sets.Conversion.HardenedSand[type]) {
++								ConvertTile(k, l, 398);
++							}
++							else if (TileID.Sets.Conversion.Sandstone[type]) {
++								ConvertTile(k, l, 400);
++							}
++							else if (TileID.Sets.Conversion.Thorn[type]) {
++								ConvertTile(k, l, 32);
++							}
++							continue;
++						case 2:
++							if (Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) {
++								ConvertTile(k, l, 117, true);
++							}
++							else if (TileID.Sets.Conversion.GolfGrass[type]) {
++								ConvertTile(k, l, 492, true);
++							}
++							else if (TileID.Sets.Conversion.Grass[type] && type != 492) {
++								ConvertTile(k, l, 109, true);
++							}
++							else if (TileID.Sets.Conversion.Ice[type]) {
++								ConvertTile(k, l, 164, true);
++							}
++							else if (TileID.Sets.Conversion.Sand[type] && type != 116) {
++								ConvertTile(k, l, 116, true);
++							}
++							else if (TileID.Sets.Conversion.HardenedSand[type] && type != 402) {
++								ConvertTile(k, l, 402);
++							}
++							else if (TileID.Sets.Conversion.Sandstone[type] && type != 403) {
++								ConvertTile(k, l, 403);
++							}
++							else if (TileID.Sets.Conversion.Thorn[type]) {
++								KillTile(k, l);
++								if (Main.netMode == 1)
++									NetMessage.SendData(17, -1, -1, null, 0, k, l);
++							}
++							if (type == 59 && (Main.tile[k - 1, l].type == 109 || Main.tile[k + 1, l].type == 109 || Main.tile[k, l - 1].type == 109 || Main.tile[k, l + 1].type == 109)) {
++								ConvertTile(k, l, 0);
++							}
++							continue;
++						case 3:
++							if (tile.type == 60) {
++								ConvertTile(k, l, 70, true);
++							}
++							else if (TileID.Sets.Conversion.Thorn[type]) {
++								KillTile(k, l);
++								if (Main.netMode == 1)
++									NetMessage.SendData(17, -1, -1, null, 0, k, l);
++							}
++							continue;
++						case 4:
++							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type])) {
++								ConvertTile(k, l, 203, true);
++							}
++							else if (TileID.Sets.Conversion.JungleGrass[type]) {
++								ConvertTile(k, l, 662, true);
++							}
++							else if (TileID.Sets.Conversion.Grass[type]) {
++								ConvertTile(k, l, 199, true);
++							}
++							else if (TileID.Sets.Conversion.Ice[type]) {
++								ConvertTile(k, l, 200, true);
++							}
++							else if (TileID.Sets.Conversion.Sand[type]) {
++								ConvertTile(k, l, 234, true);
++							}
++							else if (TileID.Sets.Conversion.HardenedSand[type]) {
++								ConvertTile(k, l, 399);
++							}
++							else if (TileID.Sets.Conversion.Sandstone[type]) {
++								ConvertTile(k, l, 401);
++							}
++							else if (TileID.Sets.Conversion.Thorn[type]) {
++								ConvertTile(k, l, 352);
++							}
++							continue;
++						case 5:						
++							if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 53) {
++								int num = 53;
++								if (BlockBelowMakesSandConvertIntoHardenedSand(k, l))
++									num = 397;
++
++								ConvertTile(k, l, num, true);
++							}
++							else if (TileID.Sets.Conversion.HardenedSand[type]) {
++								ConvertTile(k, l, 397);
++							}
++							else if (Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Ice[type] || TileID.Sets.Conversion.Sandstone[type]) {
++								ConvertTile(k, l, 396, true);
++							}
++							else if (TileID.Sets.Conversion.Thorn[type] && type != 69) {
++								KillTile(k, l);
++								if (Main.netMode == 1)
++									NetMessage.SendData(17, -1, -1, null, 0, k, l);
++							}
++							continue;
++						case 6:
++							if (TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.HardenedSand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) {
++								ConvertTile(k, l, 147, true);
++							}
++							else if (Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Ice[type] || TileID.Sets.Conversion.Sandstone[type]) {
++								ConvertTile(k, l, 161, true);
++							}
++							else if (TileID.Sets.Conversion.Thorn[type] && type != 69) {
++								KillTile(k, l);
++								if (Main.netMode == 1)
++									NetMessage.SendData(17, -1, -1, null, 0, k, l);
++							}
++							continue;
++						case 7:
++							if ((TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Ice[type] || TileID.Sets.Conversion.Sandstone[type]) && type != 1) {
++								ConvertTile(k, l, 1, true);
++							}
++							else if (TileID.Sets.Conversion.GolfGrass[type]) {
++								ConvertTile(k, l, 477, true);
++							}
++							else if (TileID.Sets.Conversion.Grass[type] && type != 477) {
++								ConvertTile(k, l, 2, true);
++							}
++							else if ((TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.HardenedSand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 0) {
++								int num2 = 0;
++								if (TileIsExposedToAir(k, l))
++									num2 = 2;
++
++								ConvertTile(k, l, num2, true);
++							}
++							else if (TileID.Sets.Conversion.Thorn[type] && type != 69) {
++								KillTile(k, l);
++								if (Main.netMode == 1)
++									NetMessage.SendData(17, -1, -1, null, 0, k, l);
++							}
++							continue;
++						default:
++							if (tile.type == 492) {
++								ConvertTile(k, l, 477, true);
++							}
++							else if (TileID.Sets.Conversion.JungleGrass[type]) {
++								ConvertTile(k, l, 60, true);
++							}
++							else if (TileID.Sets.Conversion.Grass[type] && type != 477) {
++								ConvertTile(k, l, 2, true);
++							}
++							else if (TileID.Sets.Conversion.Stone[type] && type != 1) {
++								ConvertTile(k, l, 1, true);
++							}
++							else if (TileID.Sets.Conversion.Sand[type]) {
++								ConvertTile(k, l, 53, true);
++							}
++							else if (TileID.Sets.Conversion.HardenedSand[type]) {
++								ConvertTile(k, l, 397);
++							}
++							else if (TileID.Sets.Conversion.Sandstone[type]) {
++								ConvertTile(k, l, 396);
++							}
++							else if (TileID.Sets.Conversion.Ice[type]) {
++								ConvertTile(k, l, 161, true);
++							}
++							else if (TileID.Sets.Conversion.MushroomGrass[type]) {
++								ConvertTile(k, l, 60, true);
++							}
++							else if (tile.type == 32 || Main.tile[k, l].type == 352) {
++								KillTile(k, l);
++								if (Main.netMode == 1)
++									NetMessage.SendData(17, -1, -1, null, 0, k, l);
++							}
++							continue;
++					}
+ 				}
+ 			}
+ 		}
+ 	}
++
++	/// <summary>
++	/// Converts the single tile at the given coordinate into a specified new tile type<br/>
++	/// Automatically handles tile framing and multiplayer syncing.
++	/// </summary>
++	/// <param name="i">The X coordinate of the target tile.</param>
++	/// <param name="j">The Y coordinate of the target tile.</param>
++	/// <param name="newType">The new type to convert the tile into</param>
++	/// <param name="tryBreakTrees">Should the conversion try to break trees above the converted tile if the new type is invalid for the tree</param>
++	public static void ConvertTile(int i, int j, int newType, bool tryBreakTrees = false)
++	{
++		Tile tile = Main.tile[i, j];
++		if (tile.TileType == newType)
++			return;
++		if (tryBreakTrees)
++			TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
++		tile.type = newType;
++		SquareTileFrame(i, j);
++		NetMessage.SendTileSquare(-1, i, j);
++	}
++
++	/// <summary>
++	/// Converts the single wall at the given coordinate into a specified new wall type<br/>
++	/// Automatically handles wall framing and multiplayer syncing.
++	/// </summary>
++	/// <param name="i">The X coordinate of the target tile.</param>
++	/// <param name="j">The Y coordinate of the target tile.</param>
++	/// <param name="newType">The new type to convert the wall into</param>
++	public static void ConvertWall(int i, int j, ushort newType)
++	{
++		Tile tile = Main.tile[i, j];
++		if (tile.wall == newType)
++			return;
++		tile.wall = newType;
++		SquareWallFrame(i, j);
++		NetMessage.SendTileSquare(-1, i, j);
++	}
++
+ 
+ 	public static void CactusFrame(int i, int j)
+ 	{
 @@ -40114,7 +_,7 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;
@@ -2826,6 +3740,292 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -55302,144 +_,156 @@
+ 						continue;
+ 
+ 					if (good) {
++						if (WallLoader.Convert(m, n, 2)) {
+-						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68 || Main.tile[m, n].wall == 69 || Main.tile[m, n].wall == 81)
++							if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68 || Main.tile[m, n].wall == 69 || Main.tile[m, n].wall == 81)
+-							Main.tile[m, n].wall = 70;
++								Main.tile[m, n].wall = 70;
+-						else if (Main.tile[m, n].wall == 216)
++							else if (Main.tile[m, n].wall == 216)
+-							Main.tile[m, n].wall = 219;
++								Main.tile[m, n].wall = 219;
+-						else if (Main.tile[m, n].wall == 187)
++							else if (Main.tile[m, n].wall == 187)
+-							Main.tile[m, n].wall = 222;
++								Main.tile[m, n].wall = 222;
+-						else if (Main.tile[m, n].wall == 3 || Main.tile[m, n].wall == 83)
++							else if (Main.tile[m, n].wall == 3 || Main.tile[m, n].wall == 83)
+-							Main.tile[m, n].wall = 28;
++								Main.tile[m, n].wall = 28;
++						}
+ 
++						if (TileLoader.Convert(m, n, 2)) {
+-						if (flag && Main.tile[m, n].type == 225) {
++							if (flag && Main.tile[m, n].type == 225) {
+-							Main.tile[m, n].type = 117;
++								Main.tile[m, n].type = 117;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (flag && Main.tile[m, n].type == 230) {
++							else if (flag && Main.tile[m, n].type == 230) {
+-							Main.tile[m, n].type = 402;
++								Main.tile[m, n].type = 402;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 2) {
++							else if (Main.tile[m, n].type == 2) {
+-							Main.tile[m, n].type = 109;
++								Main.tile[m, n].type = 109;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 25 || Main.tile[m, n].type == 203) {
++							else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 25 || Main.tile[m, n].type == 203) {
+-							Main.tile[m, n].type = 117;
++								Main.tile[m, n].type = 117;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 112 || Main.tile[m, n].type == 234) {
++							else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 112 || Main.tile[m, n].type == 234) {
+-							Main.tile[m, n].type = 116;
++								Main.tile[m, n].type = 116;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 661 || Main.tile[m, n].type == 662) {
++							else if (Main.tile[m, n].type == 661 || Main.tile[m, n].type == 662) {
+-							Main.tile[m, n].type = 60;
++								Main.tile[m, n].type = 60;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 23 || Main.tile[m, n].type == 199) {
++							else if (Main.tile[m, n].type == 23 || Main.tile[m, n].type == 199) {
+-							Main.tile[m, n].type = 109;
++								Main.tile[m, n].type = 109;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 163 || Main.tile[m, n].type == 200) {
++							else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 163 || Main.tile[m, n].type == 200) {
+-							Main.tile[m, n].type = 164;
++								Main.tile[m, n].type = 164;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 396) {
++							else if (Main.tile[m, n].type == 396) {
+-							Main.tile[m, n].type = 403;
++								Main.tile[m, n].type = 403;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 397) {
++							else if (Main.tile[m, n].type == 397) {
+-							Main.tile[m, n].type = 402;
++								Main.tile[m, n].type = 402;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
++							}
+ 						}
+ 					}
+ 					else if (crimson) {
++						if (WallLoader.Convert(m, n, 4)) {
+-						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
++							if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
+-							Main.tile[m, n].wall = 81;
++								Main.tile[m, n].wall = 81;
+-						else if (Main.tile[m, n].wall == 216)
++							else if (Main.tile[m, n].wall == 216)
+-							Main.tile[m, n].wall = 218;
++								Main.tile[m, n].wall = 218;
+-						else if (Main.tile[m, n].wall == 187)
++							else if (Main.tile[m, n].wall == 187)
+-							Main.tile[m, n].wall = 221;
++								Main.tile[m, n].wall = 221;
++						}
+ 
++						if (TileLoader.Convert(m, n, 4)) {
+-						if (flag && Main.tile[m, n].type == 225) {
++							if (flag && Main.tile[m, n].type == 225) {
+-							Main.tile[m, n].type = 203;
++								Main.tile[m, n].type = 203;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (flag && Main.tile[m, n].type == 230) {
++							else if (flag && Main.tile[m, n].type == 230) {
+-							Main.tile[m, n].type = 399;
++								Main.tile[m, n].type = 399;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 661) {
++							else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 661) {
+-							Main.tile[m, n].type = 662;
++								Main.tile[m, n].type = 662;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
++							else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
+-							Main.tile[m, n].type = 199;
++								Main.tile[m, n].type = 199;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
++							else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
+-							Main.tile[m, n].type = 203;
++								Main.tile[m, n].type = 203;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
++							else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
+-							Main.tile[m, n].type = 234;
++								Main.tile[m, n].type = 234;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
++							else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
+-							Main.tile[m, n].type = 200;
++								Main.tile[m, n].type = 200;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 396) {
++							else if (Main.tile[m, n].type == 396) {
+-							Main.tile[m, n].type = 401;
++								Main.tile[m, n].type = 401;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 397) {
++							else if (Main.tile[m, n].type == 397) {
+-							Main.tile[m, n].type = 399;
++								Main.tile[m, n].type = 399;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
++							}
+ 						}
+ 					}
+ 					else {
++						if (WallLoader.Convert(m, n, 1)) {
+-						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
++							if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
+-							Main.tile[m, n].wall = 69;
++								Main.tile[m, n].wall = 69;
+-						else if (Main.tile[m, n].wall == 216)
++							else if (Main.tile[m, n].wall == 216)
+-							Main.tile[m, n].wall = 217;
++								Main.tile[m, n].wall = 217;
+-						else if (Main.tile[m, n].wall == 187)
++							else if (Main.tile[m, n].wall == 187)
+-							Main.tile[m, n].wall = 220;
++								Main.tile[m, n].wall = 220;
++						}
+ 
++						if (TileLoader.Convert(m, n, 1)) {
+-						if (flag && Main.tile[m, n].type == 225) {
++							if (flag && Main.tile[m, n].type == 225) {
+-							Main.tile[m, n].type = 25;
++								Main.tile[m, n].type = 25;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (flag && Main.tile[m, n].type == 230) {
++							else if (flag && Main.tile[m, n].type == 230) {
+-							Main.tile[m, n].type = 398;
++								Main.tile[m, n].type = 398;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 662) {
++							else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 662) {
+-							Main.tile[m, n].type = 661;
++								Main.tile[m, n].type = 661;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
++							else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
+-							Main.tile[m, n].type = 23;
++								Main.tile[m, n].type = 23;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
++							else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
+-							Main.tile[m, n].type = 25;
++								Main.tile[m, n].type = 25;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
++							else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
+-							Main.tile[m, n].type = 112;
++								Main.tile[m, n].type = 112;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
++							else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
+-							Main.tile[m, n].type = 163;
++								Main.tile[m, n].type = 163;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 396) {
++							else if (Main.tile[m, n].type == 396) {
+-							Main.tile[m, n].type = 400;
++								Main.tile[m, n].type = 400;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
+-						}
++							}
+-						else if (Main.tile[m, n].type == 397) {
++							else if (Main.tile[m, n].type == 397) {
+-							Main.tile[m, n].type = 398;
++								Main.tile[m, n].type = 398;
+-							SquareTileFrame(m, n);
++								SquareTileFrame(m, n);
++							}
+ 						}
+ 					}
+ 				}
 @@ -55722,6 +_,10 @@
  		}
  	}

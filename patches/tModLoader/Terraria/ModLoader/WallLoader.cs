@@ -42,6 +42,7 @@ public static class WallLoader
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
+	private static Func<int, int, int, int, bool>[] HookConvert;
 
 	internal static int ReserveWallID()
 	{
@@ -105,6 +106,7 @@ public static class WallLoader
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalWalls, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalWalls, g => g.PlaceInWorld);
+		ModLoader.BuildGlobalHook(ref HookConvert, globalWalls, g => g.Convert);
 
 		if (!unloading) {
 			loaded = true;
@@ -248,6 +250,23 @@ public static class WallLoader
 			hook(i, j, type, ref r, ref g, ref b);
 		}
 	}
+
+	public static bool Convert(int i, int j, int conversionType, bool fromPurificationPowder = false)
+	{
+		int type = Main.tile[i, j].wall;
+		ModWall modWall = GetWall(type);
+		if (modWall != null && !modWall.Convert(i, j, conversionType, fromPurificationPowder)) {
+			return false;
+		}
+
+		foreach (var hook in HookConvert) {
+			if (!hook(i, j, type, conversionType, fromPurificationPowder)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	//in Terraria.WorldGen.UpdateWorld after each call to TileLoader.RandomUpdate call
 	//  WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
 	//  WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);

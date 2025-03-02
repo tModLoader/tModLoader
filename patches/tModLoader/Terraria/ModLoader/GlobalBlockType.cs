@@ -130,4 +130,21 @@ public abstract class GlobalBlockType : ModType
 	public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to change what happens when this tile/wall is converted into another biome. Return false to stop the game from converting the tile normally. Returns true by default.
+	/// <para/> Purification powder doesn't convert hallowed tiles back into purity, so hallowed tiles should check <paramref name="fromPurificationPowder"/> to mimic vanilla behavior.
+	/// <para/> You can use <see cref="WorldGen.ConvertTile(int, int, int, bool)"/> or <see cref="WorldGen.ConvertWall(int, int, ushort)"/> to automatically handle tile framing and multiplayer syncing.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="type"></param>
+	/// <param name="conversionType">The <see cref="ID.BiomeConversionID"/> of the conversion</param>
+	/// <param name="fromPurificationPowder">If this conversion was caused by purification powder.<br/>
+	/// Walls are not affected by purification powder, so this hook isn't called on ModWalls.</param>
+	/// <returns></returns>
+	public virtual bool Convert(int i, int j, int type, int conversionType, bool fromPurificationPowder = false)
+	{
+		return true;
+	}
 }

@@ -1495,6 +1495,103 @@
  		if (aiStyle == 1) {
  			AI_001();
  		}
+@@ -17290,53 +_,55 @@
+ 							continue;
+ 
+ 						if (type == 10) {
++							if (TileLoader.Convert(num96, num97, 0, true)) {
+-							if (Main.tile[num96, num97].type == 23 || Main.tile[num96, num97].type == 199) {
++								if (Main.tile[num96, num97].type == 23 || Main.tile[num96, num97].type == 199) {
+-								Main.tile[num96, num97].type = 2;
++									Main.tile[num96, num97].type = 2;
+-								WorldGen.SquareTileFrame(num96, num97);
++									WorldGen.SquareTileFrame(num96, num97);
+-								if (Main.netMode == 1)
++									if (Main.netMode == 1)
+-									NetMessage.SendTileSquare(-1, num96, num97);
++										NetMessage.SendTileSquare(-1, num96, num97);
+-							}
++								}
+ 
+-							if (Main.tile[num96, num97].type == 25 || Main.tile[num96, num97].type == 203) {
++								if (Main.tile[num96, num97].type == 25 || Main.tile[num96, num97].type == 203) {
+-								Main.tile[num96, num97].type = 1;
++									Main.tile[num96, num97].type = 1;
+-								WorldGen.SquareTileFrame(num96, num97);
++									WorldGen.SquareTileFrame(num96, num97);
+-								if (Main.netMode == 1)
++									if (Main.netMode == 1)
+-									NetMessage.SendTileSquare(-1, num96, num97);
++										NetMessage.SendTileSquare(-1, num96, num97);
+-							}
++								}
+ 
+-							if (Main.tile[num96, num97].type == 112 || Main.tile[num96, num97].type == 234) {
++								if (Main.tile[num96, num97].type == 112 || Main.tile[num96, num97].type == 234) {
+-								Main.tile[num96, num97].type = 53;
++									Main.tile[num96, num97].type = 53;
+-								WorldGen.SquareTileFrame(num96, num97);
++									WorldGen.SquareTileFrame(num96, num97);
+-								if (Main.netMode == 1)
++									if (Main.netMode == 1)
+-									NetMessage.SendTileSquare(-1, num96, num97);
++										NetMessage.SendTileSquare(-1, num96, num97);
+-							}
++								}
+ 
+-							if (Main.tile[num96, num97].type == 163 || Main.tile[num96, num97].type == 200) {
++								if (Main.tile[num96, num97].type == 163 || Main.tile[num96, num97].type == 200) {
+-								Main.tile[num96, num97].type = 161;
++									Main.tile[num96, num97].type = 161;
+-								WorldGen.SquareTileFrame(num96, num97);
++									WorldGen.SquareTileFrame(num96, num97);
+-								if (Main.netMode == 1)
++									if (Main.netMode == 1)
+-									NetMessage.SendTileSquare(-1, num96, num97);
++										NetMessage.SendTileSquare(-1, num96, num97);
+-							}
++								}
+ 
+-							if (Main.tile[num96, num97].type == 400 || Main.tile[num96, num97].type == 401) {
++								if (Main.tile[num96, num97].type == 400 || Main.tile[num96, num97].type == 401) {
+-								Main.tile[num96, num97].type = 396;
++									Main.tile[num96, num97].type = 396;
+-								WorldGen.SquareTileFrame(num96, num97);
++									WorldGen.SquareTileFrame(num96, num97);
+-								if (Main.netMode == 1)
++									if (Main.netMode == 1)
+-									NetMessage.SendTileSquare(-1, num96, num97);
++										NetMessage.SendTileSquare(-1, num96, num97);
+-							}
++								}
+ 
+-							if (Main.tile[num96, num97].type == 398 || Main.tile[num96, num97].type == 399) {
++								if (Main.tile[num96, num97].type == 398 || Main.tile[num96, num97].type == 399) {
+-								Main.tile[num96, num97].type = 397;
++									Main.tile[num96, num97].type = 397;
+-								WorldGen.SquareTileFrame(num96, num97);
++									WorldGen.SquareTileFrame(num96, num97);
+-								if (Main.netMode == 1)
++									if (Main.netMode == 1)
+-									NetMessage.SendTileSquare(-1, num96, num97);
++										NetMessage.SendTileSquare(-1, num96, num97);
+-							}
++								}
+ 
+-							if (Main.tile[num96, num97].type == 661 || Main.tile[num96, num97].type == 662) {
++								if (Main.tile[num96, num97].type == 661 || Main.tile[num96, num97].type == 662) {
+-								Main.tile[num96, num97].type = 60;
++									Main.tile[num96, num97].type = 60;
+-								WorldGen.SquareTileFrame(num96, num97);
++									WorldGen.SquareTileFrame(num96, num97);
+-								if (Main.netMode == 1)
++									if (Main.netMode == 1)
+-									NetMessage.SendTileSquare(-1, num96, num97);
++										NetMessage.SendTileSquare(-1, num96, num97);
++								}
+ 							}
+ 						}
+ 
 @@ -24212,7 +_,7 @@
  					int num799 = (int)base.Center.Y / 16;
  					for (int num800 = num798 - num797; num800 <= num798 + num797; num800++) {
