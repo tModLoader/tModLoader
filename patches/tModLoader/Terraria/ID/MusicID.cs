@@ -16,10 +16,9 @@ public static class MusicID
 
 		/// <summary>
 		/// A multiplier of the specified track's volume.
-		/// <para/> This only applies if <see cref="SkipsVolumeRemap"/> is set to <see langword="true"/> for the same track.
-		/// <para/> Clamped between 0 and 2.
+		/// <para/> Clamped between 0 and 2 for tracks that have <see cref="SkipsVolumeRemap"/> set to <see langword="true"/>, but between 0 and 1 otherwise.
 		/// </summary>
-		public static float[] TrackVolumeWithoutRemap = Factory.CreateFloatSet(1);
+		public static float[] VolumeMult = Factory.CreateFloatSet(1);
 	}
 	// Names derived from the music box that plays each: https://terraria.wiki.gg/wiki/Music_Box
 	public const short OverworldDay = 1;

@@ -68,7 +68,7 @@
  		if (tempFade > 1f)
  			tempFade = 1f;
  
-+		float volume = totalVolume * (MusicID.Sets.SkipsVolumeRemap[i] ? MathHelper.Clamp(MusicID.Sets.TrackVolumeWithoutRemap[i], 0, 2f) : 1f);
++		float volume = totalVolume * MathHelper.Clamp(MusicID.Sets.VolumeMult[i], 0, MusicID.Sets.SkipsVolumeRemap[i] ? 2f : 1f);
 +
  		if (!AudioTracks[i].IsPlaying && active) {
  			if (MusicReplayDelay == 0) {
@@ -100,7 +100,7 @@
  			}
  			else {
 -				AudioTracks[i].SetVariable("Volume", totalVolume);
-+				float volume = totalVolume * (MusicID.Sets.SkipsVolumeRemap[i] ? MathHelper.Clamp(MusicID.Sets.TrackVolumeWithoutRemap[i], 0, 2f) : 1f);
++				float volume = totalVolume * MathHelper.Clamp(MusicID.Sets.VolumeMult[i], 0, MusicID.Sets.SkipsVolumeRemap[i] ? 2f : 1f);
 +				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", volume);
  			}
  		}
