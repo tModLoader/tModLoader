@@ -13,6 +13,13 @@ public static class MusicID
 		/// <para/>This should be set in <see cref="ModType.SetStaticDefaults()"/>, preferably <see cref="ModSystem"/>
 		/// </summary>
 		public static bool[] SkipsVolumeRemap = Factory.CreateBoolSet(false);
+
+		/// <summary>
+		/// A multiplier of the specified track's volume.
+		/// <para/> This only applies if <see cref="SkipsVolumeRemap"/> is set to <see langword="true"/> for the same track.
+		/// <para/> Clamped between 0 and 2.
+		/// </summary>
+		public static float[] TrackVolumeWithoutRemap = Factory.CreateFloatSet(1);
 	}
 	// Names derived from the music box that plays each: https://terraria.wiki.gg/wiki/Music_Box
 	public const short OverworldDay = 1;

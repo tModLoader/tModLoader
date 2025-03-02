@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -2,8 +_,11 @@
+@@ -2,8 +_,12 @@
  using System.Collections;
  using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  using Microsoft.Xna.Framework.Audio;
++using Microsoft.Xna.Framework;
  using ReLogic.Content.Sources;
 +using Terraria.ID;
 +using Terraria.ModLoader.Engine;
@@ -63,18 +64,26 @@
  	public void LoadCue(int cueIndex, string cueName)
  	{
  		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
-@@ -245,18 +_,19 @@
+@@ -239,24 +_,27 @@
+ 		if (tempFade > 1f)
+ 			tempFade = 1f;
+ 
++		float volume = totalVolume * (MusicID.Sets.SkipsVolumeRemap[i] ? MathHelper.Clamp(MusicID.Sets.TrackVolumeWithoutRemap[i], 0, 2f) : 1f);
++
+ 		if (!AudioTracks[i].IsPlaying && active) {
+ 			if (MusicReplayDelay == 0) {
+ 				if (Main.SettingMusicReplayDelayEnabled)
  					MusicReplayDelay = Main.rand.Next(14400, 21601);
  
  				AudioTracks[i].Reuse();
 -				AudioTracks[i].SetVariable("Volume", totalVolume);
-+				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
++				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", volume);
  				AudioTracks[i].Play();
  			}
  		}
  		else {
 -			AudioTracks[i].SetVariable("Volume", totalVolume);
-+			AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
++			AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", volume);
  		}
  	}
  
@@ -86,12 +95,13 @@
  			return;
  
  		if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {
-@@ -271,7 +_,7 @@
+@@ -271,7 +_,8 @@
  				AudioTracks[i].Stop(AudioStopOptions.Immediate);
  			}
  			else {
 -				AudioTracks[i].SetVariable("Volume", totalVolume);
-+				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect"  : "Volume", totalVolume);
++				float volume = totalVolume * (MusicID.Sets.SkipsVolumeRemap[i] ? MathHelper.Clamp(MusicID.Sets.TrackVolumeWithoutRemap[i], 0, 2f) : 1f);
++				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", volume);
  			}
  		}
  		else {
