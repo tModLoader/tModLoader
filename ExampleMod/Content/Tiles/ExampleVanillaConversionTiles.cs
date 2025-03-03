@@ -62,6 +62,30 @@ namespace ExampleMod.Content.Tiles
 
 			return true;
 		}
+
+		public override void RandomUpdate(int i, int j) {
+			//Account for journey mode disabling infections and plantera slowing down biome spread rate
+			if (Main.hardMode && (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)) || !WorldGen.AllowedToSpreadInfections)
+				return;
+
+			//Check a random nearby tile and try to convert it into hallow
+			int testX = i + WorldGen.genRand.Next(-3, 4);
+			int testY = j + WorldGen.genRand.Next(-3, 4);
+			if (!WorldGen.InWorld(testX, testY, 10))
+				continue;
+
+			//Chlorophyte prevents and repels biome spread, so we should account for that
+			if (WorldGen.nearbyChlorophyte(testX, testY)) {
+				WorldGen.ChlorophyteDefense(testX, testY);
+			}
+			else {
+				//Sunflowers prevent spread
+				if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
+					continue;
+
+				WorldGen.Convert(testX, testY, BiomeConversionID.Hallow, 1);
+			}
+		}
 	}
 
 	public class CorruptFossilTile : ModTile
@@ -105,6 +129,30 @@ namespace ExampleMod.Content.Tiles
 
 			return true;
 		}
+
+		public override void RandomUpdate(int i, int j) {
+			//Account for journey mode disabling infections and plantera slowing down biome spread rate
+			if (Main.hardMode && (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)) || !WorldGen.AllowedToSpreadInfections)
+				return;
+
+			//Check a random nearby tile and try to convert it into hallow
+			int testX = i + WorldGen.genRand.Next(-3, 4);
+			int testY = j + WorldGen.genRand.Next(-3, 4);
+			if (!WorldGen.InWorld(testX, testY, 10))
+				continue;
+
+			//Chlorophyte prevents and repels biome spread, so we should account for that
+			if (WorldGen.nearbyChlorophyte(testX, testY)) {
+				WorldGen.ChlorophyteDefense(testX, testY);
+			}
+			else {
+				//Sunflowers prevent spread
+				if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
+					continue;
+
+				WorldGen.Convert(testX, testY, BiomeConversionID.Corruption, 1);
+			}
+		}
 	}
 
 	public class CrimsonFossilTile : ModTile
@@ -134,6 +182,30 @@ namespace ExampleMod.Content.Tiles
 			}
 
 			return true;
+		}
+
+		public override void RandomUpdate(int i, int j) {
+			//Account for journey mode disabling infections and plantera slowing down biome spread rate
+			if (Main.hardMode && (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)) || !WorldGen.AllowedToSpreadInfections)
+				return;
+
+			//Check a random nearby tile and try to convert it into hallow
+			int testX = i + WorldGen.genRand.Next(-3, 4);
+			int testY = j + WorldGen.genRand.Next(-3, 4);
+			if (!WorldGen.InWorld(testX, testY, 10))
+				continue;
+
+			//Chlorophyte prevents and repels biome spread, so we should account for that
+			if (WorldGen.nearbyChlorophyte(testX, testY)) {
+				WorldGen.ChlorophyteDefense(testX, testY);
+			}
+			else {
+				//Sunflowers prevent spread
+				if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
+					continue;
+
+				WorldGen.Convert(testX, testY, BiomeConversionID.Crimson, 1);
+			}
 		}
 	}
 

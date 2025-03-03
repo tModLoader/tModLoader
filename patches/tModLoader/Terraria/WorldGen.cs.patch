@@ -2883,6 +2883,17 @@
  		return false;
  	}
  
+@@ -50401,7 +_,9 @@
+ 		if (!Main.remixWorld)
+ 			return;
+ 
++		if (TileLoader.Convert(x, y, 0)) {
++		}
+-		if (Main.tile[x, y].type == 23 || Main.tile[x, y].type == 199 || Main.tile[x, y].type == 661 || Main.tile[x, y].type == 662) {
++		else if (Main.tile[x, y].type == 23 || Main.tile[x, y].type == 199 || Main.tile[x, y].type == 661 || Main.tile[x, y].type == 662) {
+ 			Main.tile[x, y].type = 60;
+ 			SquareTileFrame(x, y);
+ 			if (Main.netMode == 2)
 @@ -50482,7 +_,10 @@
  		return true;
  	}
@@ -2904,6 +2915,41 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
+@@ -50715,7 +_,11 @@
+ 					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
+ 						continue;
+ 
++					if (!TileLoader.Convert(num11, num12, 1)) {
++						if (genRand.Next(2) == 0)
++							flag2 = true;
++					}
+-					if (Main.tile[num11, num12].type == 2) {
++					else if (Main.tile[num11, num12].type == 2) {
+ 						if (genRand.Next(2) == 0)
+ 							flag2 = true;
+ 
+@@ -50799,6 +_,10 @@
+ 					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
+ 						continue;
+ 
++					if (!TileLoader.Convert(num13, num14, 4)) {
++						if (genRand.Next(2) == 0)
++							flag3 = true;
++					}
+ 					if (Main.tile[num13, num14].type == 2) {
+ 						if (genRand.Next(2) == 0)
+ 							flag3 = true;
+@@ -50878,6 +_,10 @@
+ 			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
+ 				continue;
+ 
++			if (!TileLoader.Convert(num15, num16, 2)) {
++				if (genRand.Next(2) == 0)
++					flag4 = true;
++			}
+ 			if (Main.tile[num15, num16].type == 2) {
+ 				if (genRand.Next(2) == 0)
+ 					flag4 = true;
 @@ -52049,9 +_,20 @@
  
  	public static void UpdateWorld()
