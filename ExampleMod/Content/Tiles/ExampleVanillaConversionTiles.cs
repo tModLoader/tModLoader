@@ -15,9 +15,9 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
 			TileID.Sets.Hallow[Type] = true;
-			TileID.Sets.HallowBiome[Type] = true;
+			TileID.Sets.HallowBiome[Type] = 1;
 			TileID.Sets.HallowBiomeSight[Type] = true;
-			TileID.Sets.HallowCountCollection[Type] = true;
+			TileID.Sets.HallowCountCollection.Add(Type);
 			DustType = DustID.Pearlsand;
 			AddMapEntry(new Color(157, 76, 152));
 
@@ -38,51 +38,49 @@ namespace ExampleMod.Content.Tiles
 
 		//This code is called when the game attempts to convert our hallowed tile into a new biome
 		public override bool Convert(int i, int j, int conversionType) {
-			//Purification powder doesn't convert hallow tiles back into pure versions
-			if (conversionType == BiomeConversionID.PurificationPowder)
-				return false;
-			//Yellow (desert) solution also converts evil/hallowed tiles back into purity, so don't forget that check!
-			else if(conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand) {
-				WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-				return false;
+			switch (conversionType) {
+				// Purification powder doesn't convert hallow tiles back into purity, so we don't check for BiomeCoversionID.PurificationPowder
+				case BiomeConversionID.Purity:
+				case BiomeConversionID.Sand: // Yellow (desert) solution also converts evil/hallowed tiles back into purity, so don't forget that check!
+					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
+					return false;
+				case BiomeConversionID.Corruption:
+					WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
+					return false;
+				case BiomeConversionID.Crimson:
+					WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
+					return false;
+
+				// This example showcases how to make hallow and evil biome conversion work, but you can extend this code to work for the other vanilla solutions.
+				// Just don't forget to register the conversion type in SetStaticDefaults if you want a vanilla tile to turn into your new modded tile.
+				// case BiomeConversionID.Snow:
+				//		WorldGen.ConvertTile(i, j, TileID.Slush);
+				//		return false;
 			}
-			else if (conversionType == BiomeConversionID.Corruption) {
-				WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
-				return false;
-			}
-			else if(conversionType == BiomeConversionID.Crimson) {
-				WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
-				return false;
-			}
-			//This example showcases how to make hallow and evil biome conversion work, but you can extend this code to work for the other vanilla solutions.
-			//Just don't forget to register the conversion type in SetStaticDefaults if you want a vanilla tile to turn into your new modded tile.
-			//else if (conversionType == BiomeConversionID.Snow) {
-			//	WorldGen.ConvertTile(i, j, TileID.Slush);
-			//}
 
 			return true;
 		}
 
 		public override void RandomUpdate(int i, int j) {
-			//Account for journey mode disabling infections and plantera slowing down biome spread rate
-			if (Main.hardMode && (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)) || !WorldGen.AllowedToSpreadInfections)
+			// Don't spread the biome if disabled by journey mode
+			if (!WorldGen.AllowedToSpreadInfections)
+				return;
+			// Spreading tiles (besides grass) don't spread until hardmode. After plantera, the spread rate is also reduced, so we have to account for that
+			if (!Main.hardMode || (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)))
 				return;
 
 			//Check a random nearby tile and try to convert it into hallow
 			int testX = i + WorldGen.genRand.Next(-3, 4);
 			int testY = j + WorldGen.genRand.Next(-3, 4);
 			if (!WorldGen.InWorld(testX, testY, 10))
-				continue;
+				return;
 
 			//Chlorophyte prevents and repels biome spread, so we should account for that
 			if (WorldGen.nearbyChlorophyte(testX, testY)) {
 				WorldGen.ChlorophyteDefense(testX, testY);
 			}
-			else {
-				//Sunflowers prevent spread
-				if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
-					continue;
-
+			//Sunflowers prevent spread
+			else if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0) {
 				WorldGen.Convert(testX, testY, BiomeConversionID.Hallow, 1);
 			}
 		}
@@ -93,9 +91,9 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
 			TileID.Sets.Corrupt[Type] = true;
-			TileID.Sets.CorruptBiome[Type] = true;
+			TileID.Sets.CorruptBiome[Type] = 1;
 			TileID.Sets.CorruptBiomeSight[Type] = true;
-			TileID.Sets.CorruptCountCollection[Type] = true;
+			TileID.Sets.CorruptCountCollection.Add(Type);
 			DustType = DustID.Corruption;
 			AddMapEntry(new Color(65, 48, 99));
 
@@ -114,42 +112,41 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override bool Convert(int i, int j, int conversionType) {
-			if (conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand || conversionType == BiomeConversionID.PurificationPowder) {
-				WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Hallow) {
-				WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Crimson) {
-				WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
-				return false;
+			switch (conversionType) {
+				case BiomeConversionID.Purity:
+				case BiomeConversionID.Sand:
+				case BiomeConversionID.PurificationPowder:
+					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
+					return false;
+				case BiomeConversionID.Hallow:
+					WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
+					return false;
+				case BiomeConversionID.Crimson:
+					WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
+					return false;
 			}
 
 			return true;
 		}
 
 		public override void RandomUpdate(int i, int j) {
-			//Account for journey mode disabling infections and plantera slowing down biome spread rate
-			if (Main.hardMode && (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)) || !WorldGen.AllowedToSpreadInfections)
+			if (!WorldGen.AllowedToSpreadInfections)
+				return;
+			if (!Main.hardMode || (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)))
 				return;
 
 			//Check a random nearby tile and try to convert it into hallow
 			int testX = i + WorldGen.genRand.Next(-3, 4);
 			int testY = j + WorldGen.genRand.Next(-3, 4);
 			if (!WorldGen.InWorld(testX, testY, 10))
-				continue;
+				return;
 
 			//Chlorophyte prevents and repels biome spread, so we should account for that
 			if (WorldGen.nearbyChlorophyte(testX, testY)) {
 				WorldGen.ChlorophyteDefense(testX, testY);
 			}
-			else {
-				//Sunflowers prevent spread
-				if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
-					continue;
-
+			//Sunflowers prevent spread
+			else if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0) {
 				WorldGen.Convert(testX, testY, BiomeConversionID.Corruption, 1);
 			}
 		}
@@ -160,50 +157,49 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
 			TileID.Sets.Crimson[Type] = true;
-			TileID.Sets.CrimsonBiome[Type] = true;
+			TileID.Sets.CrimsonBiome[Type] = 1;
 			TileID.Sets.CrimsonBiomeSight[Type] = true;
-			TileID.Sets.CrimsonCountCollection[Type] = true;
+			TileID.Sets.CrimsonCountCollection.Add(Type);
 			DustType = DustID.Crimstone;
 			AddMapEntry(new Color(112, 33, 32));
 		}
 
 		public override bool Convert(int i, int j, int conversionType) {
-			if (conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand || conversionType == BiomeConversionID.PurificationPowder) {
-				WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Corruption) {
-				WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Hallow) {
-				WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
-				return false;
+			switch (conversionType) {
+				case BiomeConversionID.Purity:
+				case BiomeConversionID.Sand:
+				case BiomeConversionID.PurificationPowder:
+					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
+					return false;
+				case BiomeConversionID.Hallow:
+					WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
+					return false;
+				case BiomeConversionID.Corruption:
+					WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
+					return false;
 			}
 
 			return true;
 		}
 
 		public override void RandomUpdate(int i, int j) {
-			//Account for journey mode disabling infections and plantera slowing down biome spread rate
-			if (Main.hardMode && (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)) || !WorldGen.AllowedToSpreadInfections)
+			if (!WorldGen.AllowedToSpreadInfections)
+				return;
+			if (!Main.hardMode || (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)))
 				return;
 
 			//Check a random nearby tile and try to convert it into hallow
 			int testX = i + WorldGen.genRand.Next(-3, 4);
 			int testY = j + WorldGen.genRand.Next(-3, 4);
 			if (!WorldGen.InWorld(testX, testY, 10))
-				continue;
+				return;
 
 			//Chlorophyte prevents and repels biome spread, so we should account for that
 			if (WorldGen.nearbyChlorophyte(testX, testY)) {
 				WorldGen.ChlorophyteDefense(testX, testY);
 			}
-			else {
-				//Sunflowers prevent spread
-				if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
-					continue;
-
+			//Sunflowers prevent spread
+			else if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0) {
 				WorldGen.Convert(testX, testY, BiomeConversionID.Crimson, 1);
 			}
 		}
@@ -232,7 +228,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<CorruptFossilWallItem>(4)
+				.AddIngredient<CorruptFossillWallItem>(4)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 		}
@@ -246,7 +242,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<CrimsonFossilWallItem>(4)
+				.AddIngredient<CrimsonFossillWallItem>(4)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 		}

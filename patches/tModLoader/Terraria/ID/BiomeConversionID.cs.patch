@@ -4,6 +4,6 @@
  	public const int Sand = 5;
  	public const int Snow = 6;
  	public const int Dirt = 7;
-+	public const int PurificationPowder = 8;
++	public const int PurificationPowder = 8; // Added by TML
 +	public static readonly int Count = 9;
  }

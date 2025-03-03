@@ -3,12 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
-using static Terraria.ModLoader.TileLoader;
-using static Terraria.WorldBuilding.Actions;
 
 namespace Terraria.ModLoader;
 
@@ -24,7 +23,7 @@ public static class WallLoader
 	/// <summary> Maps Wall type to the Item type that places the wall. </summary>
 	internal static readonly Dictionary<int, int> wallTypeToItemType = new();
 	public delegate bool ConvertWall(int i, int j, int type, int conversionType);
-	internal static readonly List<ConvertWall>[][] wallConversionDelegates = new();
+	internal static List<ConvertWall>[][] wallConversionDelegates = new List<ConvertWall>[WallID.Count][];
 	private static bool loaded = false;
 
 	private static Func<int, int, int, bool, bool>[] HookKillSound;
@@ -94,10 +93,6 @@ public static class WallLoader
 		Array.Resize(ref Main.wallFrame, nextWall);
 		Array.Resize(ref Main.wallFrameCounter, nextWall);
 		Array.Resize(ref wallConversionDelegates, nextWall);
-
-		for (int i = 0; i < nextWall; i++) {
-			Array.Resize(ref wallConversionDelegates[i], BiomeConversionID.Count);
-		}
 
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
 		// Remove generic arguments once fixed.
@@ -260,13 +255,13 @@ public static class WallLoader
 
 
 	/// <summary>
-	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert(int, int, int, bool)"/>
+	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert"/>
 	/// </summary>
-	public static void RegisterConversion(int wallType, int conversionType, ConvertTile conversionDelegate)
+	public static void RegisterConversion(int wallType, int conversionType, ConvertWall conversionDelegate)
 	{
-		if (wallConversionDelegates[wallType][conversionType] == null)
-			wallConversionDelegates[wallType][conversionType] = new();
-		wallConversionDelegates[wallType][conversionType].Add(conversionDelegate);
+		var conversions = wallConversionDelegates[wallType] ??= new List<ConvertWall>[BiomeConversionID.Count];
+		var list = conversions[conversionType] ??= new();
+		list.Add(conversionDelegate);
 	}
 
 	public static bool Convert(int i, int j, int conversionType)
@@ -277,10 +272,14 @@ public static class WallLoader
 			return false;
 		}
 
-		if (wallConversionDelegates[type][conversionType] != null) {
-			foreach (var hook in CollectionsMarshal.AsSpan(wallConversionDelegates[type][conversionType])) {
-				if (!hook(i, j, type, conversionType)) {
-					return false;
+		var conversions = wallConversionDelegates[type];
+		if (conversions != null) {
+			var list = conversions[conversionType];
+			if (list != null) {
+				foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+					if (!hook(i, j, type, conversionType)) {
+						return false;
+					}
 				}
 			}
 		}

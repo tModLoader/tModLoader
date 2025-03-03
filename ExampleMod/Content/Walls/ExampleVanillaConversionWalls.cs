@@ -35,18 +35,17 @@ namespace ExampleMod.Content.Tiles
 
 		//This code is called when the game attempts to convert our hallowed wall into a new biome
 		public override bool Convert(int i, int j, int conversionType) {
-			//Yellow solution also converts evil/hallowed walls back into purity, so don't forget that check!
-			else if(conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand) {
-				WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Corruption) {
-				WorldGen.ConvertWall(i, j, ModContent.TileType<CorruptFossilWall>());
-				return false;
-			}
-			else if(conversionType == BiomeConversionID.Crimson) {
-				WorldGen.ConvertWall(i, j, ModContent.TileType<CrimsonFossilWall>());
-				return false;
+			switch (conversionType) {
+				case BiomeConversionID.Purity:
+				case BiomeConversionID.Sand:
+					WorldGen.ConvertWall(i, j, TileID.DesertFossil);
+					return false;
+				case BiomeConversionID.Corruption:
+					WorldGen.ConvertWall(i, j, ModContent.WallType<CorruptFossilWall>());
+					return false;
+				case BiomeConversionID.Crimson:
+					WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
+					return false;
 			}
 
 			return true;
@@ -70,22 +69,23 @@ namespace ExampleMod.Content.Tiles
 			if (conversionType == BiomeConversionID.Corruption)
 				WorldGen.ConvertWall(i, j, Type);
 			else
-				WorldGen.ConvertWall(i, j, ModContent.TileType<CrimsonFossilWall>());
+				WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
 			return false;
 		}
 
 		public override bool Convert(int i, int j, int conversionType) {
-			if (conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand) {
-				WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Hallow) {
-				WorldGen.ConvertWall(i, j, ModContent.TileType<HallowedFossilWall>());
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Crimson) {
-				WorldGen.ConvertWall(i, j, ModContent.TileType<CrimsonFossilWall>());
-				return false;
+			switch (conversionType) {
+				case BiomeConversionID.Purity:
+				case BiomeConversionID.Sand:
+				// Eventhough this is a corrupt wall, we do not need to check for BiomeConversionID.PurificationPowder, since purification powder doesnt work on walls
+					WorldGen.ConvertWall(i, j, TileID.DesertFossil);
+					return false;
+				case BiomeConversionID.Hallow:
+					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
+					return false;
+				case BiomeConversionID.Crimson:
+					WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
+					return false;
 			}
 
 			return true;
@@ -101,17 +101,17 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override bool Convert(int i, int j, int conversionType) {
-			if (conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand) {
-				WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Corruption) {
-				WorldGen.ConvertWall(i, j, ModContent.TileType<CorruptFossilWall>());
-				return false;
-			}
-			else if (conversionType == BiomeConversionID.Hallow) {
-				WorldGen.ConvertWall(i, j, ModContent.TileType<HallowedFossilWall>());
-				return false;
+			switch (conversionType) {
+				case BiomeConversionID.Purity:
+				case BiomeConversionID.Sand:
+					WorldGen.ConvertWall(i, j, TileID.DesertFossil);
+					return false;
+				case BiomeConversionID.Hallow:
+					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
+					return false;
+				case BiomeConversionID.Corruption:
+					WorldGen.ConvertWall(i, j, ModContent.WallType<CorruptFossilWall>());
+					return false;
 			}
 
 			return true;
@@ -122,7 +122,7 @@ namespace ExampleMod.Content.Tiles
 	internal class HallowedFossilWallItem : ModItem
 	{
 		public override void SetDefaults() {
-			Item.DefaultToPlaceableWall(ModContent.TileType<HallowedFossilWall>());
+			Item.DefaultToPlaceableWall(ModContent.WallType<HallowedFossilWall>());
 		}
 
 		public override void AddRecipes() {
@@ -133,10 +133,10 @@ namespace ExampleMod.Content.Tiles
 		}
 	}
 
-	internal class CorruptFossilTileItem : ModItem
+	internal class CorruptFossillWallItem : ModItem
 	{
 		public override void SetDefaults() {
-			Item.DefaultToPlaceableWall(ModContent.TileType<CorruptFossilWall>());
+			Item.DefaultToPlaceableWall(ModContent.WallType<CorruptFossilWall>());
 		}
 
 		public override void AddRecipes() {
@@ -147,10 +147,10 @@ namespace ExampleMod.Content.Tiles
 		}
 	}
 
-	internal class CrimsonFossilTileItem : ModItem
+	internal class CrimsonFossillWallItem : ModItem
 	{
 		public override void SetDefaults() {
-			Item.DefaultToPlaceableWall(ModContent.TileType<CrimsonFossilWall>());
+			Item.DefaultToPlaceableWall(ModContent.WallType<CrimsonFossilWall>());
 		}
 
 		public override void AddRecipes() {

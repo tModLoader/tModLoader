@@ -174,11 +174,11 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <summary>
 	/// Allows you to change what happens when this tile/wall is converted into another biome. Return false to stop the game from converting the tile normally. Returns true by default.
 	/// <para/> Purification powder uses a separate conversionType, as it doesn't convert hallowed tiles back to purity tiles. Be sure to check for <see cref="BiomeConversionID.PurificationPowder"/> as well as <see cref="BiomeConversionID.Purity"/> when handling corruption/crimson tiles.
-	/// <para/> You can use <see cref="WorldGen.ConvertTile(int, int, int, bool)"/> or <see cref="WorldGen.ConvertWall(int, int, ushort)"/> to automatically handle tile framing and multiplayer syncing.
+	/// <para/> You can use <see cref="WorldGen.ConvertTile"/> or <see cref="WorldGen.ConvertWall"/> to automatically handle tile framing and multiplayer syncing.
 	/// </summary>
 	/// <param name="i"></param>
 	/// <param name="j"></param>
-	/// <param name="conversionType">The <see cref="ID.BiomeConversionID"/> of the conversion</param>
+	/// <param name="conversionType">The <see cref="BiomeConversionID"/> of the conversion</param>
 	/// <returns></returns>
 	public virtual bool Convert(int i, int j, int conversionType)
 	{

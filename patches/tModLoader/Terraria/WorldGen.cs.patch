@@ -2157,11 +2157,11 @@
 +	public static void ConvertTile(int i, int j, int newType, bool tryBreakTrees = false)
 +	{
 +		Tile tile = Main.tile[i, j];
-+		if (tile.TileType == newType)
++		if (tile.type == (ushort)newType)
 +			return;
 +		if (tryBreakTrees)
 +			TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
-+		tile.type = newType;
++		tile.type = (ushort)newType;
 +		SquareTileFrame(i, j);
 +		if (Main.netMode == 1)
 +			NetMessage.SendTileSquare(-1, i, j);
@@ -2174,12 +2174,12 @@
 +	/// <param name="i">The X coordinate of the target tile.</param>
 +	/// <param name="j">The Y coordinate of the target tile.</param>
 +	/// <param name="newType">The new type to convert the wall into</param>
-+	public static void ConvertWall(int i, int j, ushort newType)
++	public static void ConvertWall(int i, int j, int newType)
 +	{
 +		Tile tile = Main.tile[i, j];
-+		if (tile.wall == newType)
++		if (tile.wall == (ushort)newType)
 +			return;
-+		tile.wall = newType;
++		tile.wall = (ushort)newType;
 +		SquareWallFrame(i, j);
 +		if (Main.netMode == 1)
 +			NetMessage.SendTileSquare(-1, i, j);
