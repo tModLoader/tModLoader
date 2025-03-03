@@ -837,11 +837,10 @@
  			vector.Y -= 8f;
  			vector2.Y -= 8f;
  		}
-@@ -7209,6 +_,8 @@
+@@ -7209,6 +_,7 @@
  				color = new Color(255, 255, 255, 0);
  				break;
  		}
-+
 +		TileLoader.GetTile(type)?.AdjustMultiTileVineParameters(topLeftX, topLeftY, ref num3, ref num4, ref num5, ref flag2, ref num2, ref texture2D, ref color);
  
  		if (flag2)

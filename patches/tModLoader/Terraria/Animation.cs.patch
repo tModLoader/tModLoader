@@ -9,23 +9,15 @@
  {
  	private static List<Animation> _animations;
  	private static Dictionary<Point16, Animation> _temporaryAnimations;
-@@ -87,6 +_,11 @@
+@@ -86,6 +_,11 @@
+ 
  				break;
  			}
- 		}
-+		if(AnimationFrameDatas.TryGetValue(type, out var data)) {
++		}
++		if (AnimationFrameDatas.TryGetValue(type, out var data)) {
 +			_frameMax = data.frames.Length;
 +			_frameCounterMax = data.frameRate;
 +			_frameData = data.frames;
-+		}
- 	}
- 
- 	public static void NewTemporaryAnimation(int type, ushort tileType, int x, int y)
-@@ -162,6 +_,7 @@
  		}
  	}
  
-+	// TODO: Need an example of this. Would require SetDefaults type as well maybe, or alternate approach. Network. Could just use tileType, but that won't allow multiple animations per tile. 
- 	public static bool GetTemporaryFrame(int x, int y, out int frameData)
- 	{
- 		Point16 key = new Point16(x, y);
