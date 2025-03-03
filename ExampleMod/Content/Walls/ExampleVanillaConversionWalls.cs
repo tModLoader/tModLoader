@@ -1,0 +1,164 @@
+using ExampleMod.Content.Items;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ObjectData;
+
+namespace ExampleMod.Content.Tiles
+{
+	// These three classes showcase how to create wall that act as corruption/crimson/hallow versions of vanilla walls.
+	// For this example, we will be making vanilla's desert fossil walls convertible into the three spreading biomes
+	public class HallowedFossilWall : ModWall
+	{
+		public override void SetStaticDefaults() {
+			WallID.Sets.Hallow[Type] = true;
+			DustType = DustID.Pearlsand;
+			AddMapEntry(new Color(157, 76, 152));
+
+			//We need to register a conversion from the vanilla desert fossil wall into our modded variants, so our custom code can be called when the game attempts to convert the vanilla wall
+			//We could register all three conversions in this class and reuse the same method for all three by checking for the conversionType there if we wanted to take up less space.
+			//Note: WallID.DesertFossil is unused, WallID.DesertFossilEcho is the only fossil wall that can be placed ingame
+			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Hallow, ConvertToHallow);
+		}
+
+		public bool ConvertToHallow(int i, int j, int type, int conversionType) {
+
+			//This method is called whenever hallow biome conversion happens on a desert fossil wall, as per the RegisterConversion we called in SetStaticDefaults
+			//We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or walls
+
+			//We can use the ConvertWall utility method to change the fossil wall into our hallowed fossil wall, and it'll automatically handle wall frame updates and network syncing!
+			WorldGen.ConvertWall(i, j, Type);
+			return false;
+		}
+
+		//This code is called when the game attempts to convert our hallowed wall into a new biome
+		public override bool Convert(int i, int j, int conversionType) {
+			//Yellow solution also converts evil/hallowed walls back into purity, so don't forget that check!
+			else if(conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand) {
+				WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
+				return false;
+			}
+			else if (conversionType == BiomeConversionID.Corruption) {
+				WorldGen.ConvertWall(i, j, ModContent.TileType<CorruptFossilWall>());
+				return false;
+			}
+			else if(conversionType == BiomeConversionID.Crimson) {
+				WorldGen.ConvertWall(i, j, ModContent.TileType<CrimsonFossilWall>());
+				return false;
+			}
+
+			return true;
+		}
+	}
+
+	public class CorruptFossilWall : ModWall
+	{
+		public override void SetStaticDefaults() {
+			WallID.Sets.Corrupt[Type] = true;
+			DustType = DustID.Corruption;
+			AddMapEntry(new Color(65, 48, 99));
+
+			//We do the same thing as the hallow one. For this one, lets show how it would look to register multiple conversions from the same vanilla wall
+			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Corruption, ConvertToEvilBiome);
+			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Crimson, ConvertToEvilBiome);
+		}
+
+		public bool ConvertToEvilBiome(int i, int j, int type, int conversionType) {
+			//Since we registered two conversions with this same method, we can use conversiontype to determine which one is happening
+			if (conversionType == BiomeConversionID.Corruption)
+				WorldGen.ConvertWall(i, j, Type);
+			else
+				WorldGen.ConvertWall(i, j, ModContent.TileType<CrimsonFossilWall>());
+			return false;
+		}
+
+		public override bool Convert(int i, int j, int conversionType) {
+			if (conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand) {
+				WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
+				return false;
+			}
+			else if (conversionType == BiomeConversionID.Hallow) {
+				WorldGen.ConvertWall(i, j, ModContent.TileType<HallowedFossilWall>());
+				return false;
+			}
+			else if (conversionType == BiomeConversionID.Crimson) {
+				WorldGen.ConvertWall(i, j, ModContent.TileType<CrimsonFossilWall>());
+				return false;
+			}
+
+			return true;
+		}
+	}
+
+	public class CrimsonFossilWall : ModWall
+	{
+		public override void SetStaticDefaults() {
+			WallID.Sets.Crimson[Type] = true;
+			DustType = DustID.Crimstone;
+			AddMapEntry(new Color(112, 33, 32));
+		}
+
+		public override bool Convert(int i, int j, int conversionType) {
+			if (conversionType == BiomeConversionID.Purity || conversionType == BiomeConversionID.Sand) {
+				WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
+				return false;
+			}
+			else if (conversionType == BiomeConversionID.Corruption) {
+				WorldGen.ConvertWall(i, j, ModContent.TileType<CorruptFossilWall>());
+				return false;
+			}
+			else if (conversionType == BiomeConversionID.Hallow) {
+				WorldGen.ConvertWall(i, j, ModContent.TileType<HallowedFossilWall>());
+				return false;
+			}
+
+			return true;
+		}
+	}
+
+	#region Items
+	internal class HallowedFossilWallItem : ModItem
+	{
+		public override void SetDefaults() {
+			Item.DefaultToPlaceableWall(ModContent.TileType<HallowedFossilWall>());
+		}
+
+		public override void AddRecipes() {
+			CreateRecipe(4)
+				.AddIngredient<HallowedFossilTileItem>()
+				.AddTile(TileID.WorkBenches)
+				.Register();
+		}
+	}
+
+	internal class CorruptFossilTileItem : ModItem
+	{
+		public override void SetDefaults() {
+			Item.DefaultToPlaceableWall(ModContent.TileType<CorruptFossilWall>());
+		}
+
+		public override void AddRecipes() {
+			CreateRecipe(4)
+				.AddIngredient<CorruptFossilTileItem>()
+				.AddTile(TileID.WorkBenches)
+				.Register();
+		}
+	}
+
+	internal class CrimsonFossilTileItem : ModItem
+	{
+		public override void SetDefaults() {
+			Item.DefaultToPlaceableWall(ModContent.TileType<CrimsonFossilWall>());
+		}
+
+		public override void AddRecipes() {
+			CreateRecipe(4)
+				.AddIngredient<CrimsonFossilTileItem>()
+				.AddTile(TileID.WorkBenches)
+				.Register();
+		}
+	}
+	#endregion
+}

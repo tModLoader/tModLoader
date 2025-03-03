@@ -7,6 +7,8 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using static Terraria.ModLoader.TileLoader;
+using static Terraria.WorldBuilding.Actions;
 
 namespace Terraria.ModLoader;
 
@@ -21,6 +23,8 @@ public static class WallLoader
 	internal static readonly IList<GlobalWall> globalWalls = new List<GlobalWall>();
 	/// <summary> Maps Wall type to the Item type that places the wall. </summary>
 	internal static readonly Dictionary<int, int> wallTypeToItemType = new();
+	public delegate bool ConvertWall(int i, int j, int type, int conversionType);
+	internal static readonly List<ConvertWall>[][] wallConversionDelegates = new();
 	private static bool loaded = false;
 
 	private static Func<int, int, int, bool, bool>[] HookKillSound;
@@ -42,7 +46,6 @@ public static class WallLoader
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
-	private static Func<int, int, int, int, bool>[] HookConvert;
 
 	internal static int ReserveWallID()
 	{
@@ -90,6 +93,11 @@ public static class WallLoader
 		Array.Resize(ref Main.wallLargeFrames, nextWall);
 		Array.Resize(ref Main.wallFrame, nextWall);
 		Array.Resize(ref Main.wallFrameCounter, nextWall);
+		Array.Resize(ref wallConversionDelegates, nextWall);
+
+		for (int i = 0; i < nextWall; i++) {
+			Array.Resize(ref wallConversionDelegates[i], BiomeConversionID.Count);
+		}
 
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
 		// Remove generic arguments once fixed.
@@ -106,7 +114,6 @@ public static class WallLoader
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalWalls, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalWalls, g => g.PlaceInWorld);
-		ModLoader.BuildGlobalHook(ref HookConvert, globalWalls, g => g.Convert);
 
 		if (!unloading) {
 			loaded = true;
@@ -251,17 +258,30 @@ public static class WallLoader
 		}
 	}
 
-	public static bool Convert(int i, int j, int conversionType, bool fromPurificationPowder = false)
+
+	/// <summary>
+	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert(int, int, int, bool)"/>
+	/// </summary>
+	public static void RegisterConversion(int wallType, int conversionType, ConvertTile conversionDelegate)
+	{
+		if (wallConversionDelegates[wallType][conversionType] == null)
+			wallConversionDelegates[wallType][conversionType] = new();
+		wallConversionDelegates[wallType][conversionType].Add(conversionDelegate);
+	}
+
+	public static bool Convert(int i, int j, int conversionType)
 	{
 		int type = Main.tile[i, j].wall;
 		ModWall modWall = GetWall(type);
-		if (modWall != null && !modWall.Convert(i, j, conversionType, fromPurificationPowder)) {
+		if (modWall != null && !modWall.Convert(i, j, conversionType)) {
 			return false;
 		}
 
-		foreach (var hook in HookConvert) {
-			if (!hook(i, j, type, conversionType, fromPurificationPowder)) {
-				return false;
+		if (wallConversionDelegates[type][conversionType] != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(wallConversionDelegates[type][conversionType])) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
+				}
 			}
 		}
 		return true;

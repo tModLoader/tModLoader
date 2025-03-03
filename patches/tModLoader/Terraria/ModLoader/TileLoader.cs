@@ -43,6 +43,8 @@ public static class TileLoader
 	internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
 	/// <summary> Maps Tile type and Tile style to the Item type that places the tile with the style. </summary>
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
+	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
+	internal static readonly List<ConvertTile>[][] tileConversionDelegates = new();
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -98,7 +100,6 @@ public static class TileLoader
 	private static Action[] HookPostSetupTileMerge;
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
-	private static Func<int, int, int, int, bool>[] HookConvert;
 
 	internal static int ReserveTileID()
 	{
@@ -191,9 +192,11 @@ public static class TileLoader
 		Array.Resize(ref GameContent.Metadata.TileMaterials.MaterialsByTileId, nextTile);
 		Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);
 		Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);
+		Array.Resize(ref tileConversionDelegates, nextTile);
 
 		for (int i = 0; i < nextTile; i++) { //oh dear
 			Array.Resize(ref Main.tileMerge[i], nextTile);
+			Array.Resize(ref tileConversionDelegates[i], BiomeConversionID.Count);
 		}
 
 		for (int i = TileID.Count; i < nextTile; i++) {
@@ -204,6 +207,7 @@ public static class TileLoader
 		while (TileObjectData._data.Count < nextTile) {
 			TileObjectData._data.Add(null);
 		}
+
 
 		//Hooks
 
@@ -247,7 +251,6 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
-		ModLoader.BuildGlobalHook(ref HookConvert, globalTiles, g => g.Convert);
 
 		if (!unloading) {
 			loaded = true;
@@ -688,17 +691,31 @@ public static class TileLoader
 		}
 	}
 
-	public static bool Convert(int i, int j, int conversionType, bool fromPurificationPowder = false)
+
+	/// <summary>
+	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert(int, int, int, bool)"/>
+	/// </summary>
+	public static void RegisterConversion(int tileType, int conversionType, ConvertTile conversionDelegate)
+	{
+		if (tileConversionDelegates[tileType][conversionType] == null)
+			tileConversionDelegates[tileType][conversionType] = new();
+		tileConversionDelegates[tileType][conversionType].Add(conversionDelegate);
+	}
+
+
+	public static bool Convert(int i, int j, int conversionType)
 	{
 		int type = Main.tile[i, j].type;
 		ModTile modTile = GetTile(type);
-		if (modTile != null && !modTile.Convert(i, j, conversionType, fromPurificationPowder)) {
+		if (modTile != null && !modTile.Convert(i, j, conversionType)) {
 			return false;
 		}
 
-		foreach (var hook in HookConvert) {
-			if (!hook(i, j, type, conversionType, fromPurificationPowder)) {
-				return false;
+		if (tileConversionDelegates[type][conversionType] != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(tileConversionDelegates[type][conversionType])) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
+				}
 			}
 		}
 		return true;

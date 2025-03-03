@@ -1,0 +1,9 @@
+--- src/TerrariaNetCore/Terraria/ID/BiomeConversionID.cs
++++ src/tModLoader/Terraria/ID/BiomeConversionID.cs
+@@ -10,4 +_,6 @@
+ 	public const int Sand = 5;
+ 	public const int Snow = 6;
+ 	public const int Dirt = 7;
++	public const int PurificationPowder = 8;
++	public static readonly int Count = 9;
+ }
