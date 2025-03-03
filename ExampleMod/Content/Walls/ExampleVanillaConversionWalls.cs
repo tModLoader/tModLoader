@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
-namespace ExampleMod.Content.Tiles
+namespace ExampleMod.Content.Walls
 {
 	// These three classes showcase how to create wall that act as corruption/crimson/hallow versions of vanilla walls.
 	// For this example, we will be making vanilla's desert fossil walls convertible into the three spreading biomes
