@@ -180,7 +180,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <param name="j"></param>
 	/// <param name="conversionType">The <see cref="ID.BiomeConversionID"/> of the conversion</param>
 	/// <param name="fromPurificationPowder">If this conversion was caused by purification powder.<br/>
-	/// Walls are not affected by purification powder, so this hook isn't called on ModWalls.</param>
+	/// Walls are not affected by purification powder, so this will always be false for walls</param>
 	/// <returns></returns>
 	public virtual bool Convert(int i, int j, int conversionType, bool fromPurificationPowder = false)
 	{

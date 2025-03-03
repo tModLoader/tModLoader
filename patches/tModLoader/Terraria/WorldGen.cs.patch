@@ -3740,292 +3740,82 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
-@@ -55302,144 +_,156 @@
+@@ -55301,7 +_,13 @@
+ 					if (!(Math.Abs((double)m - vector2D.X) + Math.Abs((double)n - vector2D.Y) < (double)num2 * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015)))
  						continue;
  
++					bool convertWall = WallLoader.Convert(m, n, good ? 2 : crimson ? 4 : 1);
++					bool convertTile = TileLoader.Convert(m, n, good ? 2 : crimson ? 4 : 1);
++
  					if (good) {
-+						if (WallLoader.Convert(m, n, 2)) {
--						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68 || Main.tile[m, n].wall == 69 || Main.tile[m, n].wall == 81)
-+							if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68 || Main.tile[m, n].wall == 69 || Main.tile[m, n].wall == 81)
--							Main.tile[m, n].wall = 70;
-+								Main.tile[m, n].wall = 70;
--						else if (Main.tile[m, n].wall == 216)
-+							else if (Main.tile[m, n].wall == 216)
--							Main.tile[m, n].wall = 219;
-+								Main.tile[m, n].wall = 219;
--						else if (Main.tile[m, n].wall == 187)
-+							else if (Main.tile[m, n].wall == 187)
--							Main.tile[m, n].wall = 222;
-+								Main.tile[m, n].wall = 222;
--						else if (Main.tile[m, n].wall == 3 || Main.tile[m, n].wall == 83)
-+							else if (Main.tile[m, n].wall == 3 || Main.tile[m, n].wall == 83)
--							Main.tile[m, n].wall = 28;
-+								Main.tile[m, n].wall = 28;
-+						}
++						if (!convertWall)
++							goto SkipHallowWallConversion;
++
+ 						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68 || Main.tile[m, n].wall == 69 || Main.tile[m, n].wall == 81)
+ 							Main.tile[m, n].wall = 70;
+ 						else if (Main.tile[m, n].wall == 216)
+@@ -55311,6 +_,10 @@
+ 						else if (Main.tile[m, n].wall == 3 || Main.tile[m, n].wall == 83)
+ 							Main.tile[m, n].wall = 28;
  
-+						if (TileLoader.Convert(m, n, 2)) {
--						if (flag && Main.tile[m, n].type == 225) {
-+							if (flag && Main.tile[m, n].type == 225) {
--							Main.tile[m, n].type = 117;
-+								Main.tile[m, n].type = 117;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (flag && Main.tile[m, n].type == 230) {
-+							else if (flag && Main.tile[m, n].type == 230) {
--							Main.tile[m, n].type = 402;
-+								Main.tile[m, n].type = 402;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 2) {
-+							else if (Main.tile[m, n].type == 2) {
--							Main.tile[m, n].type = 109;
-+								Main.tile[m, n].type = 109;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 25 || Main.tile[m, n].type == 203) {
-+							else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 25 || Main.tile[m, n].type == 203) {
--							Main.tile[m, n].type = 117;
-+								Main.tile[m, n].type = 117;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 112 || Main.tile[m, n].type == 234) {
-+							else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 112 || Main.tile[m, n].type == 234) {
--							Main.tile[m, n].type = 116;
-+								Main.tile[m, n].type = 116;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 661 || Main.tile[m, n].type == 662) {
-+							else if (Main.tile[m, n].type == 661 || Main.tile[m, n].type == 662) {
--							Main.tile[m, n].type = 60;
-+								Main.tile[m, n].type = 60;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 23 || Main.tile[m, n].type == 199) {
-+							else if (Main.tile[m, n].type == 23 || Main.tile[m, n].type == 199) {
--							Main.tile[m, n].type = 109;
-+								Main.tile[m, n].type = 109;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 163 || Main.tile[m, n].type == 200) {
-+							else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 163 || Main.tile[m, n].type == 200) {
--							Main.tile[m, n].type = 164;
-+								Main.tile[m, n].type = 164;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 396) {
-+							else if (Main.tile[m, n].type == 396) {
--							Main.tile[m, n].type = 403;
-+								Main.tile[m, n].type = 403;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 397) {
-+							else if (Main.tile[m, n].type == 397) {
--							Main.tile[m, n].type = 402;
-+								Main.tile[m, n].type = 402;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
-+							}
++						SkipHallowWallConversion:
++						if (!convertTile)
++							goto SkipTileConversion;
++
+ 						if (flag && Main.tile[m, n].type == 225) {
+ 							Main.tile[m, n].type = 117;
+ 							SquareTileFrame(m, n);
+@@ -55353,6 +_,9 @@
  						}
  					}
  					else if (crimson) {
-+						if (WallLoader.Convert(m, n, 4)) {
--						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
-+							if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
--							Main.tile[m, n].wall = 81;
-+								Main.tile[m, n].wall = 81;
--						else if (Main.tile[m, n].wall == 216)
-+							else if (Main.tile[m, n].wall == 216)
--							Main.tile[m, n].wall = 218;
-+								Main.tile[m, n].wall = 218;
--						else if (Main.tile[m, n].wall == 187)
-+							else if (Main.tile[m, n].wall == 187)
--							Main.tile[m, n].wall = 221;
-+								Main.tile[m, n].wall = 221;
-+						}
++						if (!convertWall)
++							goto SkipCrimsonWallConversion;
++
+ 						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
+ 							Main.tile[m, n].wall = 81;
+ 						else if (Main.tile[m, n].wall == 216)
+@@ -55360,6 +_,10 @@
+ 						else if (Main.tile[m, n].wall == 187)
+ 							Main.tile[m, n].wall = 221;
  
-+						if (TileLoader.Convert(m, n, 4)) {
--						if (flag && Main.tile[m, n].type == 225) {
-+							if (flag && Main.tile[m, n].type == 225) {
--							Main.tile[m, n].type = 203;
-+								Main.tile[m, n].type = 203;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (flag && Main.tile[m, n].type == 230) {
-+							else if (flag && Main.tile[m, n].type == 230) {
--							Main.tile[m, n].type = 399;
-+								Main.tile[m, n].type = 399;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 661) {
-+							else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 661) {
--							Main.tile[m, n].type = 662;
-+								Main.tile[m, n].type = 662;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
-+							else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
--							Main.tile[m, n].type = 199;
-+								Main.tile[m, n].type = 199;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
-+							else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
--							Main.tile[m, n].type = 203;
-+								Main.tile[m, n].type = 203;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
-+							else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
--							Main.tile[m, n].type = 234;
-+								Main.tile[m, n].type = 234;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
-+							else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
--							Main.tile[m, n].type = 200;
-+								Main.tile[m, n].type = 200;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 396) {
-+							else if (Main.tile[m, n].type == 396) {
--							Main.tile[m, n].type = 401;
-+								Main.tile[m, n].type = 401;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 397) {
-+							else if (Main.tile[m, n].type == 397) {
--							Main.tile[m, n].type = 399;
-+								Main.tile[m, n].type = 399;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
-+							}
++						SkipCrimsonWallConversion:
++						if (!convertTile)
++							goto SkipTileConversion;
++
+ 						if (flag && Main.tile[m, n].type == 225) {
+ 							Main.tile[m, n].type = 203;
+ 							SquareTileFrame(m, n);
+@@ -55398,6 +_,9 @@
  						}
  					}
  					else {
-+						if (WallLoader.Convert(m, n, 1)) {
--						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
-+							if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
--							Main.tile[m, n].wall = 69;
-+								Main.tile[m, n].wall = 69;
--						else if (Main.tile[m, n].wall == 216)
-+							else if (Main.tile[m, n].wall == 216)
--							Main.tile[m, n].wall = 217;
-+								Main.tile[m, n].wall = 217;
--						else if (Main.tile[m, n].wall == 187)
-+							else if (Main.tile[m, n].wall == 187)
--							Main.tile[m, n].wall = 220;
-+								Main.tile[m, n].wall = 220;
-+						}
++						if (!convertWall)
++							goto SkipCorruptionWallConversion;
++
+ 						if (Main.tile[m, n].wall == 63 || Main.tile[m, n].wall == 65 || Main.tile[m, n].wall == 66 || Main.tile[m, n].wall == 68)
+ 							Main.tile[m, n].wall = 69;
+ 						else if (Main.tile[m, n].wall == 216)
+@@ -55405,6 +_,10 @@
+ 						else if (Main.tile[m, n].wall == 187)
+ 							Main.tile[m, n].wall = 220;
  
-+						if (TileLoader.Convert(m, n, 1)) {
--						if (flag && Main.tile[m, n].type == 225) {
-+							if (flag && Main.tile[m, n].type == 225) {
--							Main.tile[m, n].type = 25;
-+								Main.tile[m, n].type = 25;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (flag && Main.tile[m, n].type == 230) {
-+							else if (flag && Main.tile[m, n].type == 230) {
--							Main.tile[m, n].type = 398;
-+								Main.tile[m, n].type = 398;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 662) {
-+							else if (Main.tile[m, n].type == 60 || Main.tile[m, n].type == 662) {
--							Main.tile[m, n].type = 661;
-+								Main.tile[m, n].type = 661;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
-+							else if (Main.tile[m, n].type == 2 || Main.tile[m, n].type == 109) {
--							Main.tile[m, n].type = 23;
-+								Main.tile[m, n].type = 23;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
-+							else if (Main.tile[m, n].type == 1 || Main.tile[m, n].type == 117) {
--							Main.tile[m, n].type = 25;
-+								Main.tile[m, n].type = 25;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
-+							else if (Main.tile[m, n].type == 53 || Main.tile[m, n].type == 123 || Main.tile[m, n].type == 116) {
--							Main.tile[m, n].type = 112;
-+								Main.tile[m, n].type = 112;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
-+							else if (Main.tile[m, n].type == 161 || Main.tile[m, n].type == 164) {
--							Main.tile[m, n].type = 163;
-+								Main.tile[m, n].type = 163;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 396) {
-+							else if (Main.tile[m, n].type == 396) {
--							Main.tile[m, n].type = 400;
-+								Main.tile[m, n].type = 400;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
--						}
-+							}
--						else if (Main.tile[m, n].type == 397) {
-+							else if (Main.tile[m, n].type == 397) {
--							Main.tile[m, n].type = 398;
-+								Main.tile[m, n].type = 398;
--							SquareTileFrame(m, n);
-+								SquareTileFrame(m, n);
-+							}
++						SkipCorruptionWallConversion:
++						if (!convertTile)
++							goto SkipTileConversion;
++
+ 						if (flag && Main.tile[m, n].type == 225) {
+ 							Main.tile[m, n].type = 25;
+ 							SquareTileFrame(m, n);
+@@ -55442,6 +_,8 @@
+ 							SquareTileFrame(m, n);
  						}
  					}
++
++					SkipTileConversion:
  				}
+ 			}
+ 
 @@ -55722,6 +_,10 @@
  		}
  	}
