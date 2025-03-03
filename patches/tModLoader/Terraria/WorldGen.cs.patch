@@ -3765,8 +3765,12 @@
  						if (flag && Main.tile[m, n].type == 225) {
  							Main.tile[m, n].type = 117;
  							SquareTileFrame(m, n);
-@@ -55353,6 +_,9 @@
+@@ -55351,8 +_,13 @@
+ 							Main.tile[m, n].type = 402;
+ 							SquareTileFrame(m, n);
  						}
++					SkipTileConversion:
++						;
  					}
  					else if (crimson) {
 +						if (!convertWall)
@@ -3786,8 +3790,12 @@
  						if (flag && Main.tile[m, n].type == 225) {
  							Main.tile[m, n].type = 203;
  							SquareTileFrame(m, n);
-@@ -55398,6 +_,9 @@
+@@ -55396,8 +_,13 @@
+ 							Main.tile[m, n].type = 399;
+ 							SquareTileFrame(m, n);
  						}
++					SkipTileConversion:
++						;
  					}
  					else {
 +						if (!convertWall)
@@ -3807,15 +3815,15 @@
  						if (flag && Main.tile[m, n].type == 225) {
  							Main.tile[m, n].type = 25;
  							SquareTileFrame(m, n);
-@@ -55442,6 +_,8 @@
+@@ -55441,6 +_,8 @@
+ 							Main.tile[m, n].type = 398;
  							SquareTileFrame(m, n);
  						}
- 					}
-+
 +					SkipTileConversion:
++						;
+ 					}
  				}
  			}
- 
 @@ -55722,6 +_,10 @@
  		}
  	}
