@@ -130,7 +130,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
 			// Unlike a typical tile, campfire tiles intentionally still spawn dust even when the tile is invisible. This means we do NOT check visible as other examples do.
 
 			Tile tile = Main.tile[i, j];

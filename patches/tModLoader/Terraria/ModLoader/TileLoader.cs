@@ -76,7 +76,7 @@ public static class TileLoader
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 	private static DelegateDrawEffects[] HookDrawEffects;
-	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookDrawTilesEmitParticles;
+	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookEmitParticles;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 	private static Action<int, int, int>[] HookRandomUpdate;
@@ -227,7 +227,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateDrawEffects>(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
-		ModLoader.BuildGlobalHook(ref HookDrawTilesEmitParticles, globalTiles, g => g.DrawTilesEmitParticles);
+		ModLoader.BuildGlobalHook(ref HookEmitParticles, globalTiles, g => g.EmitParticles);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
@@ -839,12 +839,12 @@ public static class TileLoader
 		}
 	}
 
-	public static void DrawTilesEmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	public static void EmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
-		foreach (var hook in HookDrawTilesEmitParticles) {
+		foreach (var hook in HookEmitParticles) {
 			hook(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, visible);
 		}
-		GetTile(typeCache)?.DrawTilesEmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible);
+		GetTile(typeCache)?.EmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible);
 	}
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)

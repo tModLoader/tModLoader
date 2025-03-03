@@ -164,8 +164,8 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
-	/// <inheritdoc cref="ModTile.DrawTilesEmitParticles(int, int, Tile, short, short, Color, bool)"/>
-	public virtual void DrawTilesEmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	/// <inheritdoc cref="ModTile.EmitParticles(int, int, Tile, short, short, Color, bool)"/>
+	public virtual void EmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
 	}
 

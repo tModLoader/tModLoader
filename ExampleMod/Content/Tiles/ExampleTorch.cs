@@ -171,7 +171,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
 			if (!visible) {
 				return;
 			}

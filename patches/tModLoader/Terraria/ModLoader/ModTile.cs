@@ -428,7 +428,7 @@ public abstract class ModTile : ModBlockType
 	/// <param name="tileLight"></param>
 	/// <param name="visible"></param>
 	/// <returns></returns>
-	public virtual void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	public virtual void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
 	}
 

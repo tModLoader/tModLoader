@@ -129,7 +129,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 		}
 
-		public override void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
 			if (Main.rand.NextBool(40) && tileFrameY < 54) {
 				StyleID style = (StyleID)(tileFrameX / 54);
 				// The following math makes dust only spawn at the tile coordinates of the flames:

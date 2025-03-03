@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Tiles
 			return true;
 		}
 
-		public override void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
 			// This code spawns the music notes when the music box is open.
 			Tile tile = Main.tile[i, j];
 
