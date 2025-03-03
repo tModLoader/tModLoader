@@ -130,27 +130,23 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		// TODO: Move to DrawTilesEmitParticles
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
-			if (Main.gamePaused || !Main.instance.IsActive) {
-				return;
-			}
-			if (!Lighting.UpdateEveryFrame || new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) == 0) {
-				Tile tile = Main.tile[i, j];
-				// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
-				if (tile.TileFrameY == 0 && Main.rand.NextBool(3) && ((Main.drawToScreen && Main.rand.NextBool(4)) || !Main.drawToScreen)) {
-					Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
-					if (tile.TileFrameX == 0)
-						dust.position.X += Main.rand.Next(8);
+		public override void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+			// Unlike a typical tile, campfire tiles intentionally still spawn dust even when the tile is invisible. This means we do NOT check visible as other examples do.
 
-					if (tile.TileFrameX == 36)
-						dust.position.X -= Main.rand.Next(8);
+			Tile tile = Main.tile[i, j];
+			// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
+			if (tile.TileFrameY == 0 && Main.rand.NextBool(3) && ((Main.drawToScreen && Main.rand.NextBool(4)) || !Main.drawToScreen)) {
+				Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
+				if (tile.TileFrameX == 0)
+					dust.position.X += Main.rand.Next(8);
 
-					dust.alpha += Main.rand.Next(100);
-					dust.velocity *= 0.2f;
-					dust.velocity.Y -= 0.5f + Main.rand.Next(10) * 0.1f;
-					dust.fadeIn = 0.5f + Main.rand.Next(10) * 0.1f;
-				}
+				if (tile.TileFrameX == 36)
+					dust.position.X -= Main.rand.Next(8);
+
+				dust.alpha += Main.rand.Next(100);
+				dust.velocity *= 0.2f;
+				dust.velocity.Y -= 0.5f + Main.rand.Next(10) * 0.1f;
+				dust.fadeIn = 0.5f + Main.rand.Next(10) * 0.1f;
 			}
 		}
 

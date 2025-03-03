@@ -76,7 +76,7 @@ public static class TileLoader
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 	private static DelegateDrawEffects[] HookDrawEffects;
-	private static Func<int, int, Tile, ushort, short, short, Color, bool, bool>[] HookDrawTilesEmitParticles;
+	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookDrawTilesEmitParticles;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 	private static Action<int, int, int>[] HookRandomUpdate;
@@ -839,14 +839,12 @@ public static class TileLoader
 		}
 	}
 
-	public static bool DrawTilesEmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	public static void DrawTilesEmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
 		foreach (var hook in HookDrawTilesEmitParticles) {
-			if (!hook(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, visible)) {
-				return false;
-			}
+			hook(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, visible);
 		}
-		return GetTile(typeCache)?.DrawTilesEmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible) ?? true;
+		GetTile(typeCache)?.DrawTilesEmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible);
 	}
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)

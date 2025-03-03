@@ -526,12 +526,11 @@
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
-@@ -5001,6 +_,8 @@
+@@ -5001,6 +_,7 @@
  	private void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
  	{
  		bool num = IsVisible(tileCache);
-+		if (!TileLoader.DrawTilesEmitParticles(i, j, tileCache,  typeCache, tileFrameX, tileFrameY, tileLight, num))
-+			return;
++		TileLoader.DrawTilesEmitParticles(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, num);
  		int leafFrequency = _leafFrequency;
  		leafFrequency /= 4;
  		if (typeCache == 244 && tileFrameX == 18 && tileFrameY == 18 && _rand.Next(2) == 0) {

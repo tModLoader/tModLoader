@@ -171,7 +171,11 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override bool DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+		public override void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+			if (!visible) {
+				return;
+			}
+
 			if (Main.rand.NextBool(40) && tileFrameX < 66) {
 				int dustChoice = ModContent.DustType<Sparkle>();
 				Dust dust;
@@ -190,8 +194,6 @@ namespace ExampleMod.Content.Tiles
 				dust.velocity *= 0.3f;
 				dust.velocity.Y -= 1.5f;
 			}
-
-			return true;
 		}
 	}
 }

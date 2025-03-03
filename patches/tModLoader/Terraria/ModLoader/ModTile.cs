@@ -418,10 +418,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Used to spawn Dust or Gore particle effects.
 	/// Note that this is called even if the tile is invisible due to echo coating, so checking <paramref name="visible"/> should be used if dust should not be spawned unless the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock.
-	///
-	/// <para/> The <paramref name="tileFrameX"/> and <paramref name="tileFrameY"/> values differ from the Tile frame values in that they incorporate the changes from <see cref="SetDrawPositions"/> and likely should be used instead of <see cref="Tile.TileFrameX"/> and Y.
-	///
-	/// Returns true by default. Return false to stop the game from running code for <see cref="Main.tileShine"/> and shooting star dust while in near the shimmer.
+	/// <para/> The <paramref name="tileFrameX"/> and <paramref name="tileFrameY"/> values differ from the Tile frame values in that they incorporate the changes from <see cref="SetDrawPositions"/> and likely should be used instead of <see cref="Tile.TileFrameX"/> and Y directly.
 	/// </summary>
 	/// <param name="i"></param>
 	/// <param name="j"></param>
@@ -431,9 +428,8 @@ public abstract class ModTile : ModBlockType
 	/// <param name="tileLight"></param>
 	/// <param name="visible"></param>
 	/// <returns></returns>
-	public virtual bool DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	public virtual void DrawTilesEmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
-		return true;
 	}
 
 	/// <summary>
