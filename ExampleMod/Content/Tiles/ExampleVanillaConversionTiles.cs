@@ -5,6 +5,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using ExampleMod.Content.Walls;
 
 namespace ExampleMod.Content.Tiles
 {
@@ -20,6 +21,8 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.HallowCountCollection.Add(Type);
 			DustType = DustID.Pearlsand;
 			AddMapEntry(new Color(157, 76, 152));
+			TileID.Sets.ChecksForMerge[Type] = true;
+			Main.tileMerge[TileID.HallowSandstone][Type] = true;
 
 			//We need to register a conversion from the vanilla desert fossil into our modded variants., so our custom code can be called when the game attempts to convert the vanilla tile
 			//We could register all three conversions in this class and reuse the same method for all three by checking for the conversionType there if we wanted to take up less space.
@@ -84,6 +87,12 @@ namespace ExampleMod.Content.Tiles
 				WorldGen.Convert(testX, testY, BiomeConversionID.Hallow, 1);
 			}
 		}
+
+		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
+			//We use this method to set the merge values of the adjacent tiles to -2 if the tile nearby is a pearlsandstone block
+			//-2 is what terraria uses to designate the tiles that will merge with ours using the custom frames
+			WorldGen.TileMergeAttempt(-2, TileID.HallowSandstone, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+		}
 	}
 
 	public class CorruptFossilTile : ModTile
@@ -96,6 +105,8 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.CorruptCountCollection.Add(Type);
 			DustType = DustID.Corruption;
 			AddMapEntry(new Color(65, 48, 99));
+			TileID.Sets.ChecksForMerge[Type] = true;
+			Main.tileMerge[TileID.CorruptSandstone][Type] = true;
 
 			//We do the same thing as the hallow one. For this one, lets show how it would look to register multiple conversions from the same vanilla tile
 			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Corruption, ConvertToEvilBiome);
@@ -106,8 +117,10 @@ namespace ExampleMod.Content.Tiles
 			//Since we registered two conversions with this same method, we can use conversiontype to determine which one is happening
 			if (conversionType == BiomeConversionID.Corruption)
 				WorldGen.ConvertTile(i, j, Type);
-			else
-				WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
+			else {
+				int crimsonTileType = ModContent.TileType<CrimsonFossilTile>();
+				WorldGen.ConvertTile(i, j, crimsonTileType);
+			}
 			return false;
 		}
 
@@ -150,6 +163,10 @@ namespace ExampleMod.Content.Tiles
 				WorldGen.Convert(testX, testY, BiomeConversionID.Corruption, 1);
 			}
 		}
+
+		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
+			WorldGen.TileMergeAttempt(-2, TileID.CorruptSandstone, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+		}
 	}
 
 	public class CrimsonFossilTile : ModTile
@@ -162,6 +179,9 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.CrimsonCountCollection.Add(Type);
 			DustType = DustID.Crimstone;
 			AddMapEntry(new Color(112, 33, 32));
+
+			TileID.Sets.ChecksForMerge[Type] = true;
+			Main.tileMerge[TileID.CrimsonSandstone][Type] = true;
 		}
 
 		public override bool Convert(int i, int j, int conversionType) {
@@ -203,6 +223,10 @@ namespace ExampleMod.Content.Tiles
 				WorldGen.Convert(testX, testY, BiomeConversionID.Crimson, 1);
 			}
 		}
+
+		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
+			WorldGen.TileMergeAttempt(-2, TileID.CrimsonSandstone, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+		}
 	}
 
 	#region Items
@@ -228,7 +252,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<CorruptFossillWallItem>(4)
+				.AddIngredient<CorruptFossilWallItem>(4)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 		}
@@ -242,7 +266,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<CrimsonFossillWallItem>(4)
+				.AddIngredient<CrimsonFossilWallItem>(4)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 		}

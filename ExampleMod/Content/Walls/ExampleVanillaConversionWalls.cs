@@ -5,6 +5,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using ExampleMod.Content.Tiles;
 
 namespace ExampleMod.Content.Walls
 {
@@ -38,7 +39,7 @@ namespace ExampleMod.Content.Walls
 			switch (conversionType) {
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
-					WorldGen.ConvertWall(i, j, TileID.DesertFossil);
+					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
 					return false;
 				case BiomeConversionID.Corruption:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<CorruptFossilWall>());
@@ -78,7 +79,7 @@ namespace ExampleMod.Content.Walls
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
 				// Eventhough this is a corrupt wall, we do not need to check for BiomeConversionID.PurificationPowder, since purification powder doesnt work on walls
-					WorldGen.ConvertWall(i, j, TileID.DesertFossil);
+					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
 					return false;
 				case BiomeConversionID.Hallow:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
@@ -104,7 +105,7 @@ namespace ExampleMod.Content.Walls
 			switch (conversionType) {
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
-					WorldGen.ConvertWall(i, j, TileID.DesertFossil);
+					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
 					return false;
 				case BiomeConversionID.Hallow:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
@@ -133,7 +134,7 @@ namespace ExampleMod.Content.Walls
 		}
 	}
 
-	internal class CorruptFossillWallItem : ModItem
+	internal class CorruptFossilWallItem : ModItem
 	{
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableWall(ModContent.WallType<CorruptFossilWall>());
@@ -147,7 +148,7 @@ namespace ExampleMod.Content.Walls
 		}
 	}
 
-	internal class CrimsonFossillWallItem : ModItem
+	internal class CrimsonFossilWallItem : ModItem
 	{
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableWall(ModContent.WallType<CrimsonFossilWall>());

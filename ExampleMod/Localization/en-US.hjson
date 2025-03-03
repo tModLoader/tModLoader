@@ -1037,6 +1037,36 @@ Mods: {
 				DisplayName: "{$NPCs.ExampleWormHead.DisplayName} Banner"
 				Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
 			}
+
+			CorruptFossilTileItem: {
+				DisplayName: Corrupt Fossil Tile Item
+				Tooltip: ""
+			}
+
+			CrimsonFossilTileItem: {
+				DisplayName: Crimson Fossil Tile Item
+				Tooltip: ""
+			}
+
+			HallowedFossilTileItem: {
+				DisplayName: Hallowed Fossil Tile Item
+				Tooltip: ""
+			}
+
+			CorruptFossilWallItem: {
+				DisplayName: Corrupt Fossil Wall Item
+				Tooltip: ""
+			}
+
+			CrimsonFossilWallItem: {
+				DisplayName: Crimson Fossil Wall Item
+				Tooltip: ""
+			}
+
+			HallowedFossilWallItem: {
+				DisplayName: Hallowed Fossil Wall Item
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
