@@ -656,16 +656,23 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Customizes a tile drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, specifically how the tile reacts to wind and player interactions.
 	/// <para/> The parameters are as follows:
-	/// <list type="bullet">
-	/// <item> overrideWindCycle - Defaults to null - Set this to a value to apply physics to all rows of a multitile evenly instead of proportional to how tall the tile is. Set this to 1 for tiles representing solid objects. </item>
-	/// <item> windPushPowerX - Defaults to 1f - How much the forces will push the tile horizontally, although it is currently unused. </item>
-	/// <item> windPushPowerY - Defaults to -4f - How much the forces will push the tile vertically. Tiles representing solid objects should set this to 0, the default value works well for cloth objects like banners.</item>
-	/// <item> dontRotateTopTiles - Defaults to false - If true, the top row will not be affected and will be stationary</item>
-	/// <item> totalWindMultiplier - Defaults to 0.15f - Scales all wind forces </item>
-	/// <item> glowTexture - Defaults to null - Defines an additional texture to be drawn using glowColor</item>
-	/// <item> glowColor - Defaults to Color.Transparent - The color glowTexture should be drawn using</item>
-	/// </list>
+	/// <br/> <b><paramref name="overrideWindCycle"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='overrideWindCycle']"/>
+	/// <br/> <b><paramref name="windPushPowerX"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='windPushPowerX']"/>
+	/// <br/> <b><paramref name="windPushPowerY"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='windPushPowerY']"/>
+	/// <br/> <b><paramref name="dontRotateTopTiles"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='dontRotateTopTiles']"/>
+	/// <br/> <b><paramref name="totalWindMultiplier"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='totalWindMultiplier']"/>
+	/// <br/> <b><paramref name="glowTexture"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='glowTexture']"/>
+	/// <br/> <b><paramref name="glowColor"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='glowColor']"/>
 	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="overrideWindCycle">Defaults to null - Set this to a value to apply physics to all rows of a multitile evenly instead of proportional to how tall the tile is. Set this to 1 for tiles representing solid objects or any tile where misaligned tiles would look wrong.</param>
+	/// <param name="windPushPowerX">Defaults to 1f - How much the forces will push the tile horizontally, although it is currently unused.</param>
+	/// <param name="windPushPowerY">Defaults to -4f - How much the forces will push the tile vertically. Tiles representing solid objects should set this to 0, the default value works well for cloth objects like banners.</param>
+	/// <param name="dontRotateTopTiles">Defaults to false - If true, the top row will not be affected and will be stationary</param>
+	/// <param name="totalWindMultiplier">Defaults to 0.15f - Scales all wind forces</param>
+	/// <param name="glowTexture">Defaults to null - Defines an additional texture to be drawn using glowColor</param>
+	/// <param name="glowColor">Defaults to Color.Transparent - The color glowTexture should be drawn using</param>
 	public virtual void AdjustMultiTileVineParameters(int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor)
 	{
 	}
