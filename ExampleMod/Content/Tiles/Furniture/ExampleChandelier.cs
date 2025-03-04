@@ -213,7 +213,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 					break;
 				case StyleID.Flesh:
 					overrideWindCycle = null;
-					windPushPowerX = -1f;
+					windPushPowerY = -1f;
 					dontRotateTopTiles = true;
 					totalWindMultiplier *= 0.3f;
 					break;

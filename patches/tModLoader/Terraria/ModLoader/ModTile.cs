@@ -417,18 +417,17 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Used to spawn Dust or Gore particle effects.
-	/// Note that this is called even if the tile is invisible due to echo coating, so checking <paramref name="visible"/> should be used if dust should not be spawned unless the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock.
+	/// <para/> Note that this is called even if the tile is invisible due to echo coating, so check <paramref name="visible"/> if dust should only be spawned if the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock.
 	/// <para/> The <paramref name="tileFrameX"/> and <paramref name="tileFrameY"/> values differ from the Tile frame values in that they incorporate the changes from <see cref="SetDrawPositions"/> and likely should be used instead of <see cref="Tile.TileFrameX"/> and Y directly.
 	/// </summary>
-	/// <param name="i"></param>
-	/// <param name="j"></param>
-	/// <param name="tileCache"></param>
-	/// <param name="tileFrameX"></param>
-	/// <param name="tileFrameY"></param>
-	/// <param name="tileLight"></param>
-	/// <param name="visible"></param>
-	/// <returns></returns>
-	public virtual void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="tile">The tile at the coordinates</param>
+	/// <param name="tileFrameX">The tile frame that is being drawn.</param>
+	/// <param name="tileFrameY">The tile frame that is being drawn.</param>
+	/// <param name="tileLight">The color the tile is being drawn using.</param>
+	/// <param name="visible">Whether or not the tile is visible due to echo coating.</param>
+	public virtual void EmitParticles(int i, int j, Tile tile, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
 	}
 
@@ -645,8 +644,8 @@ public abstract class ModTile : ModBlockType
 	/// <br/> Return false to block the tile from being replaced. Returns true by default.
 	/// <br/> Use this for dynamic logic. <see cref="ID.TileID.Sets.DoesntGetReplacedWithTileReplacement"/>, <see cref="ID.TileID.Sets.DoesntPlaceWithTileReplacement"/>, and <see cref="ID.TileID.Sets.PreventsTileReplaceIfOnTopOfIt"/> cover the most common use cases and should be used instead if possible.
 	/// </summary>
-	/// <param name="i"></param>
-	/// <param name="j"></param>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="tileTypeBeingPlaced"></param>
 	/// <returns></returns>
 	public virtual bool CanReplace(int i, int j, int tileTypeBeingPlaced)
@@ -655,27 +654,29 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Customizes a tile drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>
+	/// Customizes a tile drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, specifically how the tile reacts to wind and player interactions.
+	/// <para/> The parameters are as follows:
+	/// <list type="bullet">
+	/// <item> overrideWindCycle - Defaults to null - Set this to a value to apply physics to all rows of a multitile evenly instead of proportional to how tall the tile is. Set this to 1 for tiles representing solid objects. </item>
+	/// <item> windPushPowerX - Defaults to 1f - How much the forces will push the tile horizontally, although it is currently unused. </item>
+	/// <item> windPushPowerY - Defaults to -4f - How much the forces will push the tile vertically. Tiles representing solid objects should set this to 0, the default value works well for cloth objects like banners.</item>
+	/// <item> dontRotateTopTiles - Defaults to false - If true, the top row will not be affected and will be stationary</item>
+	/// <item> totalWindMultiplier - Defaults to 0.15f - Scales all wind forces </item>
+	/// <item> glowTexture - Defaults to null - Defines an additional texture to be drawn using glowColor</item>
+	/// <item> glowColor - Defaults to Color.Transparent - The color glowTexture should be drawn using</item>
+	/// </list>
 	/// </summary>
-	/// <param name="i"></param>
-	/// <param name="j"></param>
-	/// <param name="overrideWindCycle">null</param>
-	/// <param name="windPushPowerX">1f</param>
-	/// <param name="windPushPowerY">-4f</param>
-	/// <param name="dontRotateTopTiles">false</param>
-	/// <param name="totalWindMultiplier">0.15f</param>
-	/// <param name="glowTexture">null</param>
-	/// <param name="glowColor">Color.Transparent</param>
 	public virtual void AdjustMultiTileVineParameters(int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor)
 	{
 	}
 
 	/// <summary>
-	/// Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>.
+	/// Use to populate <paramref name="tileFlameData"/> with flame drawing parameters.
+	/// <para/> Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, other tiles should draw flames manually in <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L124">ExampleLamp.cs</see>.
 	/// </summary>
-	/// <param name="i"></param>
-	/// <param name="j"></param>
-	/// <param name="tileFlameData"></param>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="tileFlameData">Contains parameters for drawing the flame.</param>
 	public virtual void GetTileFlameData(int i, int j, ref GameContent.Drawing.TileDrawing.TileFlameData tileFlameData)
 	{
 	}

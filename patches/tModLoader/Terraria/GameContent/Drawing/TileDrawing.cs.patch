@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,33 +_,43 @@
+@@ -11,33 +_,46 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -42,6 +42,9 @@
  		Count
  	}
  
++	/// <summary>
++	/// Contains parameters for controlling how a flame overlay on a tile will be drawn. Used by <see cref="ModTile.GetTileFlameData(int, int, ref TileFlameData)"/>.
++	/// </summary>
 -	private struct TileFlameData
 +	public struct TileFlameData
  	{
