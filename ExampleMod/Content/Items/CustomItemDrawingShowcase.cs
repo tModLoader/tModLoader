@@ -67,8 +67,9 @@ namespace ExampleMod.Content.Items
 		}
 
 		private string GetMessageForDrawMode() {
-			if (drawMode >= 0 && drawMode < DrawModeText.Length)
+			if (DrawModeText.IndexInRange(drawMode)) {
 				return DrawModeText[drawMode].Value;
+			}
 
 			return "Unknown mode";
 		}

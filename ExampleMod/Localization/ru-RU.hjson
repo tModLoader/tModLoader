@@ -902,7 +902,6 @@ Mods: {
 				// Mode_2: "{0}% extra knockback"
 				// Mode_3: "{0}% extra critical hit damage"
 				// Mode_4: "{0} extra armor penetration. Test against high defense enemy"
-				# This is similar to the Lightning Aura and Flymeal weapon effects
 				// Mode_5: "{0}% extra armor penetration. Ignores {0}% of enemy defense"
 				// Mode_6: Will apply ExampleDefenseDebuff, reducing defense by {0}%
 				// Mode_7: On hit, gives player ExampleDodgeBuff to dodge the next hit

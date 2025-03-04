@@ -102,6 +102,7 @@ namespace ExampleMod.Content.Items.Weapons
 				2 => ModeText[2].Format(ExtraKnockback),
 				3 => ModeText[3].Format(ExtraCriticalHitDamage),
 				4 => ModeText[4].Format(ExtraArmorPenetration),
+				// This is similar to the Lightning Aura and Flymeal weapon effects
 				5 => ModeText[5].Format(ExtraScalingArmorPenetration),
 				6 => ModeText[6].Format(ExampleDefenseDebuff.DefenseReductionPercent),
 				7 => ModeText[7].Value,
