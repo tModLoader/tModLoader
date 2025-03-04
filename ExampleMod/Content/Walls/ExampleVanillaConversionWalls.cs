@@ -35,21 +35,19 @@ namespace ExampleMod.Content.Walls
 		}
 
 		//This code is called when the game attempts to convert our hallowed wall into a new biome
-		public override bool Convert(int i, int j, int conversionType) {
+		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
 					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-					return false;
+					return;
 				case BiomeConversionID.Corruption:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<CorruptFossilWall>());
-					return false;
+					return;
 				case BiomeConversionID.Crimson:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
-					return false;
+					return;
 			}
-
-			return true;
 		}
 	}
 
@@ -74,22 +72,20 @@ namespace ExampleMod.Content.Walls
 			return false;
 		}
 
-		public override bool Convert(int i, int j, int conversionType) {
+		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
 				// Eventhough this is a corrupt wall, we do not need to check for BiomeConversionID.PurificationPowder, since purification powder doesnt work on walls
 					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-					return false;
+					return;
 				case BiomeConversionID.Hallow:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
-					return false;
+					return;
 				case BiomeConversionID.Crimson:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
-					return false;
+					return;
 			}
-
-			return true;
 		}
 	}
 
@@ -101,21 +97,19 @@ namespace ExampleMod.Content.Walls
 			AddMapEntry(new Color(112, 33, 32));
 		}
 
-		public override bool Convert(int i, int j, int conversionType) {
+		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
 					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-					return false;
+					return;
 				case BiomeConversionID.Hallow:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
-					return false;
+					return;
 				case BiomeConversionID.Corruption:
 					WorldGen.ConvertWall(i, j, ModContent.WallType<CorruptFossilWall>());
-					return false;
+					return;
 			}
-
-			return true;
 		}
 	}
 
