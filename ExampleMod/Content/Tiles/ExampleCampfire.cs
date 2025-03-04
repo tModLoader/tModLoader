@@ -135,7 +135,7 @@ namespace ExampleMod.Content.Tiles
 
 			Tile tile = Main.tile[i, j];
 			// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
-			if (tile.TileFrameY == 0 && Main.rand.NextBool(3) && ((Main.drawToScreen && Main.rand.NextBool(4)) || !Main.drawToScreen)) {
+			if (tile.TileFrameY == 0 && Main.rand.NextBool(3)) {
 				Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
 				if (tile.TileFrameX == 0)
 					dust.position.X += Main.rand.Next(8);
@@ -171,10 +171,7 @@ namespace ExampleMod.Content.Tiles
 			if (tile.TileFrameY < 36) {
 				Color color = new Color(255, 255, 255, 0);
 
-				Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-				if (Main.drawToScreen) {
-					zero = Vector2.Zero;
-				}
+				Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 				int width = 16;
 				int offsetY = 0;

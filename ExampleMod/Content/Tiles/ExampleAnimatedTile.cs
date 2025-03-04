@@ -119,7 +119,7 @@ namespace ExampleMod.Content.Tiles
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
-			// Press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
+			// While at 100% world zoom, press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
 			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			Main.spriteBatch.Draw(

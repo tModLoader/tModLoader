@@ -145,11 +145,7 @@ namespace ExampleMod.Content.Tiles
 				offsetY = 4;
 			}
 
-			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-
-			if (Main.drawToScreen) {
-				zero = Vector2.Zero;
-			}
+			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 			Color color = new Color(100, 100, 100, 0);

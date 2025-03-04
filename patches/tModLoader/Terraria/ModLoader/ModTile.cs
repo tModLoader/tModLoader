@@ -420,6 +420,7 @@ public abstract class ModTile : ModBlockType
 	/// Used to spawn Dust or Gore particle effects.
 	/// <para/> Note that this is called even if the tile is invisible due to echo coating, so check <paramref name="visible"/> if dust should only be spawned if the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock.
 	/// <para/> The <paramref name="tileFrameX"/> and <paramref name="tileFrameY"/> values differ from the Tile frame values in that they incorporate the changes from <see cref="SetDrawPositions"/> and should normally be used instead of <see cref="Tile.TileFrameX"/> and Y directly.
+	/// <para/> This method is only called under the conditions where particle effects are intended to spawn, that being the game is active, not paused, and at the intended frequency determined by the lighting mode. There is no need to check for these conditions in this method.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

@@ -132,11 +132,7 @@ namespace ExampleMod.Content.Tiles
 				effects = SpriteEffects.FlipHorizontally;
 			}
 
-			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-
-			if (Main.drawToScreen) {
-				zero = Vector2.Zero;
-			}
+			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			int width = 16;
 			int offsetY = 0;
