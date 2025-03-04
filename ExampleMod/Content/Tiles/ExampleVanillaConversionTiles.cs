@@ -81,11 +81,14 @@ namespace ExampleMod.Content.Tiles
 			//Chlorophyte prevents and repels biome spread, so we should account for that
 			if (WorldGen.nearbyChlorophyte(testX, testY)) {
 				WorldGen.ChlorophyteDefense(testX, testY);
+				return;
 			}
-			//Sunflowers prevent spread
-			else if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0) {
-				WorldGen.Convert(testX, testY, BiomeConversionID.Hallow, 1);
-			}
+
+			//Sunflowers prevent spread in a very limited area
+			if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0)
+				return;
+
+			WorldGen.Convert(testX, testY, BiomeConversionID.Hallow, 1);
 		}
 
 		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
@@ -143,12 +146,14 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void RandomUpdate(int i, int j) {
+			// Don't spread the biome if disabled by journey mode
 			if (!WorldGen.AllowedToSpreadInfections)
 				return;
+			// Spreading tiles (besides grass) don't spread until hardmode. After plantera, the spread rate is also reduced, so we have to account for that
 			if (!Main.hardMode || (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)))
 				return;
 
-			//Check a random nearby tile and try to convert it into hallow
+			//Check a random nearby tile and try to convert it into corruption
 			int testX = i + WorldGen.genRand.Next(-3, 4);
 			int testY = j + WorldGen.genRand.Next(-3, 4);
 			if (!WorldGen.InWorld(testX, testY, 10))
@@ -157,11 +162,14 @@ namespace ExampleMod.Content.Tiles
 			//Chlorophyte prevents and repels biome spread, so we should account for that
 			if (WorldGen.nearbyChlorophyte(testX, testY)) {
 				WorldGen.ChlorophyteDefense(testX, testY);
+				return;
 			}
-			//Sunflowers prevent spread
-			else if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0) {
-				WorldGen.Convert(testX, testY, BiomeConversionID.Corruption, 1);
-			}
+
+			//Sunflowers prevent spread in a very limited area
+			if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0)
+				return;
+
+			WorldGen.Convert(testX, testY, BiomeConversionID.Corruption, 1);
 		}
 
 		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
@@ -203,12 +211,14 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void RandomUpdate(int i, int j) {
+			// Don't spread the biome if disabled by journey mode
 			if (!WorldGen.AllowedToSpreadInfections)
 				return;
+			// Spreading tiles (besides grass) don't spread until hardmode. After plantera, the spread rate is also reduced, so we have to account for that
 			if (!Main.hardMode || (NPC.downedPlantBoss && WorldGen.genRand.NextBool(2)))
 				return;
 
-			//Check a random nearby tile and try to convert it into hallow
+			//Check a random nearby tile and try to convert it into crimson
 			int testX = i + WorldGen.genRand.Next(-3, 4);
 			int testY = j + WorldGen.genRand.Next(-3, 4);
 			if (!WorldGen.InWorld(testX, testY, 10))
@@ -217,11 +227,14 @@ namespace ExampleMod.Content.Tiles
 			//Chlorophyte prevents and repels biome spread, so we should account for that
 			if (WorldGen.nearbyChlorophyte(testX, testY)) {
 				WorldGen.ChlorophyteDefense(testX, testY);
+				return;
 			}
-			//Sunflowers prevent spread
-			else if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0) {
-				WorldGen.Convert(testX, testY, BiomeConversionID.Crimson, 1);
-			}
+
+			//Sunflowers prevent spread in a very limited area
+			if (WorldGen.CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0)
+				return;
+
+			WorldGen.Convert(testX, testY, BiomeConversionID.Crimson, 1);
 		}
 
 		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {

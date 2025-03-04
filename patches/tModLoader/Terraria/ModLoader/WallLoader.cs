@@ -257,6 +257,9 @@ public static class WallLoader
 	/// <summary>
 	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert"/>
 	/// </summary>
+	/// <param name="wallType">The wall type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the wall should use custom conversion code.</param>
+	/// <param name="conversionDelegate">Code to run when the wall attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</param>
 	public static void RegisterConversion(int wallType, int conversionType, ConvertWall conversionDelegate)
 	{
 		var conversions = wallConversionDelegates[wallType] ??= new List<ConvertWall>[BiomeConversionID.Count];
@@ -267,22 +270,17 @@ public static class WallLoader
 	public static bool Convert(int i, int j, int conversionType)
 	{
 		int type = Main.tile[i, j].wall;
-		ModWall modWall = GetWall(type);
-		if (modWall != null && !modWall.Convert(i, j, conversionType)) {
-			return false;
-		}
-
-		var conversions = wallConversionDelegates[type];
-		if (conversions != null) {
-			var list = conversions[conversionType];
-			if (list != null) {
-				foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-					if (!hook(i, j, type, conversionType)) {
-						return false;
-					}
+		var list = wallConversionDelegates[type]?[conversionType];
+		if (list != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
 				}
 			}
 		}
+
+		ModWall modWall = GetWall(type);
+		modWall?.Convert(i, j, conversionType);
 		return true;
 	}
 

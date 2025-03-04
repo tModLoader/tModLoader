@@ -1499,7 +1499,7 @@
  							continue;
  
  						if (type == 10) {
-+							if (TileLoader.Convert(num96, num97, BiomeConversionID.PurificationPowder))
++							if (!TileLoader.Convert(num96, num97, BiomeConversionID.PurificationPowder))
 +								goto SkipPurificationConversion;
  							if (Main.tile[num96, num97].type == 23 || Main.tile[num96, num97].type == 199) {
  								Main.tile[num96, num97].type = 2;

@@ -690,10 +690,12 @@ public static class TileLoader
 		}
 	}
 
-
 	/// <summary>
 	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert"/>
 	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use custom conversion code.</param>
+	/// <param name="conversionDelegate">Code to run when the tile attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</param>
 	public static void RegisterConversion(int tileType, int conversionType, ConvertTile conversionDelegate)
 	{
 		var conversions = tileConversionDelegates[tileType] ??= new List<ConvertTile>[BiomeConversionID.Count];
@@ -705,22 +707,17 @@ public static class TileLoader
 	public static bool Convert(int i, int j, int conversionType)
 	{
 		int type = Main.tile[i, j].type;
-		ModTile modTile = GetTile(type);
-		if (modTile != null && !modTile.Convert(i, j, conversionType)) {
-			return false;
-		}
-
-		var conversions = tileConversionDelegates[type];
-		if (conversions != null) {
-			var list = conversions[conversionType];
-			if (list != null) {
-				foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-					if (!hook(i, j, type, conversionType)) {
-						return false;
-					}
+		var list = tileConversionDelegates[type]?[conversionType];
+		if (list != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
 				}
 			}
 		}
+
+		ModTile modTile = GetTile(type);
+		modTile?.Convert(i, j, conversionType);
 		return true;
 	}
 
