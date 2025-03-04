@@ -14,7 +14,6 @@ namespace ExampleMod.Content
 	public class ExampleInfoDisplay : InfoDisplay
 	{
 		public static LocalizedText CurrentMinionsText { get; private set; }
-
 		public static LocalizedText NoMinionsText { get; private set; }
 
 		public override void SetStaticDefaults() {

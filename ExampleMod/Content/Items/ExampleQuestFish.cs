@@ -8,12 +8,12 @@ namespace ExampleMod.Content.Items
 	public class ExampleQuestFish : ModItem
 	{
 		public static LocalizedText DescriptionText { get; private set; }
-
 		public static LocalizedText CatchLocationText { get; private set; }
 
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 2;
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true; // All vanilla fish can be placed in a weapon rack.
+
 			DescriptionText = this.GetLocalization("Description");
 			CatchLocationText = this.GetLocalization("CatchLocation");
 		}

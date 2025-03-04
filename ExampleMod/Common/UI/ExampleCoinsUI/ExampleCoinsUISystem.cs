@@ -22,8 +22,8 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 		}
 
 		public override void PostSetupContent() {
-		// Create custom interface which can swap between different UIStates
-		exampleCoinUserInterface = new UserInterface();
+			// Create custom interface which can swap between different UIStates
+			exampleCoinUserInterface = new UserInterface();
 			// Creating custom UIState
 			exampleCoinsUI = new ExampleCoinsUIState();
 

@@ -11,7 +11,6 @@ namespace ExampleMod.Content.Items
 	public class ExampleTooltipsItem : ModItem
 	{
 		public static LocalizedText RemoveMeText { get; private set; }
-
 		public static LocalizedText FaceText { get; private set; }
 
 		public override void SetStaticDefaults() {

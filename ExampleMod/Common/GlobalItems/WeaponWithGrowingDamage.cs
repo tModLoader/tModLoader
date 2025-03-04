@@ -19,9 +19,7 @@ namespace ExampleMod.Common.GlobalItems
 		public static int experiencePerLevel = 100;
 		private int bonusValuePerItem;
 		public int level => experience / experiencePerLevel;
-
 		public static LocalizedText LevelText { get; private set; }
-
 		public static LocalizedText ExperienceText { get; private set; }
 
 		public override bool InstancePerEntity => true;

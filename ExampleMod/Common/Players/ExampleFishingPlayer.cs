@@ -14,7 +14,6 @@ namespace ExampleMod.Common.Players
 	public class ExampleFishingPlayer : ModPlayer
 	{
 		public static LocalizedText WrongText { get; private set; }
-
 		public bool hasExampleCrateBuff;
 
 		public override void SetStaticDefaults() {

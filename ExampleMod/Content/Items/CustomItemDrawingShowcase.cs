@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Localization;
@@ -38,10 +39,7 @@ namespace ExampleMod.Content.Items
 		private const int Count = 5;
 
 		public static LocalizedText RightClickText { get; private set; }
-
 		public static LocalizedText[] DrawModeText { get; private set; }
-
-		public static LocalizedText DrawMode_UnknownText { get; private set; }
 
 		public override void Load() {
 			backTexture = ModContent.Request<Texture2D>(Texture + "_Back");
@@ -50,8 +48,7 @@ namespace ExampleMod.Content.Items
 
 		public override void SetStaticDefaults() {
 			RightClickText = this.GetLocalization("RightClick");
-			DrawModeText = [this.GetLocalization("DrawMode_0"), this.GetLocalization("DrawMode_1"), this.GetLocalization("DrawMode_2"), this.GetLocalization("DrawMode_3"), this.GetLocalization("DrawMode_4")];
-			DrawMode_UnknownText = this.GetLocalization("DrawMode_Unknown");
+			DrawModeText = Enumerable.Range(0, 5).Select(i => this.GetLocalization($"DrawMode_{i}")).ToArray();
 		}
 
 		public override void SetDefaults() {
@@ -73,7 +70,7 @@ namespace ExampleMod.Content.Items
 			if (drawMode >= 0 && drawMode < DrawModeText.Length)
 				return DrawModeText[drawMode].Value;
 
-			return DrawMode_UnknownText.Value;
+			return "Unknown mode";
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -16,12 +17,11 @@ namespace ExampleMod.Content.BuilderToggles
 	public class ExampleBuilderToggle : BuilderToggle
 	{
 		public static LocalizedText CurrentColorText { get; private set; }
-
 		public static LocalizedText[] ColorText { get; private set; }
 
 		public override void SetStaticDefaults() {
 			CurrentColorText = this.GetLocalization("CurrentColor");
-			ColorText = [this.GetLocalization("Color_0"), this.GetLocalization("Color_1"), this.GetLocalization("Color_2"), this.GetLocalization("Color_3")];
+			ColorText = Enumerable.Range(0, 4).Select(i => this.GetLocalization($"Color_{i}")).ToArray();
 		}
 
 		public override bool Active() => Main.LocalPlayer.HeldItem.IsAir;

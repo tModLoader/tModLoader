@@ -12,7 +12,6 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public int timer;
-
 		public static LocalizedText CountdownText { get; private set; }
 
 		public override void SetStaticDefaults() {

@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Placeable
 	// The real strength of this approach is when you have many items that vary by small changes, like how these 2 trap items vary only by placeStyle.
 	public class ExampleTrap : ModItem
 	{
-		public static LocalizedText InvalidStyleText { get; private set; }
-
 		// This inner class is an ILoadable, the game will automatically call the Load method when loading this mod.
 		// Using this class, we manually call AddContent with 2 instances of the ExampleTrap class. This adds them to the game.
 		public class ExampleTrapLoader : ILoadable
@@ -47,16 +45,12 @@ namespace ExampleMod.Content.Items.Placeable
 			if (style == 1) {
 				return "ExampleTrapChlorophyteBullet";
 			}
-			throw new Exception(InvalidStyleText.Value);
+			throw new Exception("Invalid style");
 		}
 
 		// Content loaded multiple times must have a non-default constructor. This is where unique data is passed in to be used later. This also prevents the game from attempting to add this ModItem to the game automatically.
 		public ExampleTrap(int placeStyle) {
 			this.placeStyle = placeStyle;
-		}
-
-		public override void SetStaticDefaults() {
-			InvalidStyleText = this.GetLocalization("InvalidStyle");
 		}
 
 		public override void SetDefaults() {

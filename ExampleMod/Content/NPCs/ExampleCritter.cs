@@ -21,8 +21,6 @@ namespace ExampleMod.Content.NPCs
 	{
 		private const int ClonedNPCID = NPCID.Frog; // Easy to change type for your modder convenience
 
-		public static LocalizedText ErrorText { get; private set; }
-
 		public override void Load() {
 			IL_Wiring.HitWireSingle += HookFrogStatue;
 		}
@@ -87,7 +85,7 @@ namespace ExampleMod.Content.NPCs
 				}
 
 				// Couldn't find the right place to insert.
-				throw new Exception(ErrorText.Value);
+				throw new Exception("Hook location not found, switch(*) { case 61: ...");
 			}
 			catch {
 				// If there are any failures with the IL editing, this method will dump the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
@@ -109,8 +107,6 @@ namespace ExampleMod.Content.NPCs
 
 			// This is so it appears between the frog and the gold frog
 			NPCID.Sets.NormalGoldCritterBestiaryPriority.Insert(NPCID.Sets.NormalGoldCritterBestiaryPriority.IndexOf(ClonedNPCID) + 1, Type);
-
-			ErrorText = this.GetLocalization("Error");
 		}
 
 		public override void SetDefaults() {

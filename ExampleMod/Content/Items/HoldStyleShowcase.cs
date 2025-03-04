@@ -12,7 +12,6 @@ namespace ExampleMod.Content.Items
 	public class HoldStyleShowcase : ModItem
 	{
 		public static LocalizedText SwitchingText { get; private set; }
-
 		public static LocalizedText ThisIsText { get; private set; }
 
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword";

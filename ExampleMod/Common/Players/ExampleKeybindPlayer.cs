@@ -13,17 +13,14 @@ namespace ExampleMod.Common.Players
 	{
 		private int LearningExampleKeybindHeldTimer;
 		private int LearningExampleKeybindDoubleTapTimer;
-
 		public static LocalizedText RandomBuffText { get; private set; }
-
-		public static LocalizedText LearningExampleHalfText { get; private set; }
-
-		public static LocalizedText LearningExampleQuarterText { get; private set; }
+		public static LocalizedText LearningExampleHeldText { get; private set; }
+		public static LocalizedText LearningExampleDoubleTapText { get; private set; }
 
 		public override void SetStaticDefaults() {
 			RandomBuffText = Mod.GetLocalization($"{nameof(ExampleKeybindPlayer)}.RandomBuff");
-			LearningExampleHalfText = Mod.GetLocalization($"{nameof(ExampleKeybindPlayer)}.LearningExampleHalf");
-			LearningExampleQuarterText = Mod.GetLocalization($"{nameof(ExampleKeybindPlayer)}.LearningExampleQuarter");
+			LearningExampleHeldText = Mod.GetLocalization($"{nameof(ExampleKeybindPlayer)}.LearningExampleHeld");
+			LearningExampleDoubleTapText = Mod.GetLocalization($"{nameof(ExampleKeybindPlayer)}.LearningExampleDoubleTap");
 		}
 
 		public override void ProcessTriggers(TriggersSet triggersSet) {
@@ -40,7 +37,7 @@ namespace ExampleMod.Common.Players
 			if (KeybindSystem.LearningExampleKeybind.Current) {
 				LearningExampleKeybindHeldTimer++;
 				if (LearningExampleKeybindHeldTimer == 30) {
-					Main.NewText(LearningExampleHalfText);
+					Main.NewText(LearningExampleHeldText);
 				}
 			}
 			else {
@@ -51,7 +48,7 @@ namespace ExampleMod.Common.Players
 			LearningExampleKeybindDoubleTapTimer = Math.Max(0, LearningExampleKeybindDoubleTapTimer - 1);
 			if (KeybindSystem.LearningExampleKeybind.JustPressed) {
 				if (LearningExampleKeybindDoubleTapTimer > 0) {
-					Main.NewText(LearningExampleQuarterText);
+					Main.NewText(LearningExampleDoubleTapText);
 				}
 				else {
 					// On 1st press, set timer for 15, if a 2nd press happens before it reaches 0, it will be a double tap.

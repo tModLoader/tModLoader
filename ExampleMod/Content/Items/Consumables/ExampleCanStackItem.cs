@@ -1,5 +1,4 @@
-﻿using log4net.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -21,9 +20,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public string craftedPlayerName = string.Empty;
 
 		public static LocalizedText CraftedPlayerNameCannotOpenText { get; private set; }
-
 		public static LocalizedText CraftedPlayerNameOtherText { get; private set; }
-
 		public static LocalizedText CraftedPlayerNameEmptyText { get; private set; }
 
 		public override void SetStaticDefaults() {

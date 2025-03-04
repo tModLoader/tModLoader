@@ -9,9 +9,7 @@ namespace ExampleMod.Content.Items
 	public class ExampleResearchPresent : ModItem
 	{
 		public static LocalizedText NoAccessoryText { get; private set; }
-
 		public static LocalizedText NewAccessoryText { get; private set; }
-
 		public static LocalizedText AllAccessoryText { get; private set; }
 
 		public override void SetStaticDefaults() {

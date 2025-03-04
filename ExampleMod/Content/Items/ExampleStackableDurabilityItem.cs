@@ -17,7 +17,6 @@ namespace ExampleMod.Content.Items
 		// All items in the stack have the same durability
 		// Durability is combined and averaged when stacking
 		public float durability;
-
 		public static LocalizedText DurabilityText { get; private set; }
 
 		public override void SetStaticDefaults() {

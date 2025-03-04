@@ -9,9 +9,7 @@ namespace ExampleMod.Common.Commands
 	public class ExampleTimeCommand : ModCommand
 	{
 		public static LocalizedText UsageText { get; private set; }
-
 		public static LocalizedText DescriptionText { get; private set; }
-
 		public static LocalizedText[] ErrorText { get; private set; }
 
 		public override void SetStaticDefaults() {

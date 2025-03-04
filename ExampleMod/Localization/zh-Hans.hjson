@@ -48,8 +48,8 @@ Mods: {
 
 		ExampleKeybindPlayer: {
 			// RandomBuff: ExampleMod's ModKeybind was just pressed. The {0} buff was given to the player.
-			// LearningExampleHalf: LearningExampleKeybind held for half a second
-			// LearningExampleQuarter: LearningExampleKeybind double tapped within a quarter of a a second
+			// LearningExampleHeld: LearningExampleKeybind held for half a second
+			// LearningExampleDoubleTap: LearningExampleKeybind double tapped within a quarter of a second
 		}
 
 		Keybinds: {
@@ -110,11 +110,7 @@ Mods: {
 
 			// MinionBossMinion.DisplayName: Minion Boss Minion
 			// PartyZombie.DisplayName: Party Zombie
-
-			ExampleCritterNPC: {
-				// DisplayName: Lava Frog
-				// Error: Hook location not found, switch(*) { case 61: ...
-			}
+			// ExampleCritterNPC.DisplayName: Lava Frog
 
 			ExampleTownPet: {
 				// DisplayName: Example Town Pet
@@ -889,13 +885,11 @@ Mods: {
 			ExampleTrapIchorBullet: {
 				// DisplayName: Example Trap - {$ItemName.IchorBullet}
 				// Tooltip: ""
-				// InvalidStyle: Invalid style
 			}
 
 			ExampleTrapChlorophyteBullet: {
 				// DisplayName: Example Trap - {$ItemName.ChlorophyteBullet}
 				// Tooltip: ""
-				// InvalidStyle: Invalid style
 			}
 
 			HitModifiersShowcase: {
@@ -912,7 +906,6 @@ Mods: {
 				// Mode_5: "{0}% extra armor penetration. Ignores {0}% of enemy defense"
 				// Mode_6: Will apply ExampleDefenseDebuff, reducing defense by {0}%
 				// Mode_7: On hit, gives player ExampleDodgeBuff to dodge the next hit
-				// UnknownMode: Unknown mode
 			}
 
 			AbsorbTeamDamageAccessory: {
@@ -1092,7 +1085,6 @@ Mods: {
 				// DrawMode_2: Draw a texture behind the item
 				// DrawMode_3: Draw a highlight border similar to the Boss Bag visual effect
 				// DrawMode_4: Draws the item rocking left and right
-				// DrawMode_Unknown: Unknown mode
 			}
 
 			ExampleSandRod: {
@@ -1394,6 +1386,9 @@ Mods: {
 			FreeBaitBuilderToggle.NameText: 免费鱼饵：{0}
 		}
 
+		# This is the command names for mod emotes
+		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
+		# If there is a collision, one will just override the other
 		Emotes: {
 			// ExampleBiomeEmote.Command: exbiome
 			// ExampleBoneMerchantEmote.Command: exbonemerchant
@@ -1404,9 +1399,6 @@ Mods: {
 			// MinionBossEmote.Command: exminionboss
 		}
 
-		# This is the command names for mod emotes
-		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
-		# If there is a collision, one will just override the other
 		// NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
 
 		Commands: {

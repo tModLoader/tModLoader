@@ -36,7 +36,6 @@ namespace ExampleMod.Common.Players
 	public class ExampleModWingSlot : ModAccessorySlot
 	{
 		public static LocalizedText WingsText { get; private set; }
-
 		public static LocalizedText WingsDyeText { get; private set; }
 
 		public override void SetupContent() {

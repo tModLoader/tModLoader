@@ -18,9 +18,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		public static ExampleFullscreenUI instance;
 		private static LocalizedText HeaderText { get; set; }
 		private static LocalizedText DescriptionText { get; set; }
-
 		private static LocalizedText NothingText { get; set; }
-
 		private static LocalizedText IsSetText { get; set; }
 
 		private UIText itemDefinitionMessage;

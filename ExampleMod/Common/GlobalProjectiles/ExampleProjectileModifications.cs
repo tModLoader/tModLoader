@@ -16,7 +16,6 @@ namespace ExampleMod.Common.GlobalProjectiles
 		// These are set when the user specifies that they want a trail.
 		private Color trailColor;
 		private bool trailActive;
-
 		public static LocalizedText HitMessage { get; private set; }
 
 		// Here, a method is provided for setting the above fields.

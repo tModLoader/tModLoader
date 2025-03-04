@@ -33,18 +33,13 @@ namespace ExampleMod.Content.Items.Weapons
 		public const int ExtraScalingArmorPenetration = 50;
 
 		public static LocalizedText SwitchingText { get; private set; }
-
 		public static LocalizedText CurrentModeText { get; private set; }
-
 		public static LocalizedText[] ModeText { get; private set; }
-
-		public static LocalizedText UnknownModeText { get; private set; }
 
 		public override void SetStaticDefaults() {
 			SwitchingText = this.GetLocalization("Switching");
 			CurrentModeText = this.GetLocalization("CurrentMode");
 			ModeText = Enumerable.Range(0, 8).Select(i => this.GetLocalization($"Mode_{i}")).ToArray();
-			UnknownModeText = this.GetLocalization("UnknownMode");
 		}
 
 		public override void SetDefaults() {
@@ -110,7 +105,7 @@ namespace ExampleMod.Content.Items.Weapons
 				5 => ModeText[5].Format(ExtraScalingArmorPenetration),
 				6 => ModeText[6].Format(ExampleDefenseDebuff.DefenseReductionPercent),
 				7 => ModeText[7].Value,
-				_ => UnknownModeText.Value,
+				_ => "Unknown mode",
 			};
 		}
 

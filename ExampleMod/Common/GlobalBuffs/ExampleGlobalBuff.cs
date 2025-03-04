@@ -13,7 +13,6 @@ namespace ExampleMod.Common.GlobalBuffs
 	public class ExampleGlobalBuff : GlobalBuff
 	{
 		public static LocalizedText RemainingTimeText { get; private set; }
-
 		public static LocalizedText CannotCancelText { get; private set; }
 
 		public override void SetStaticDefaults() {
