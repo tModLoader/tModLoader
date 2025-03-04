@@ -4,6 +4,7 @@ using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -13,7 +14,13 @@ namespace ExampleMod.Content.Items
 	{
 		public Color[] colors;
 
+		public static LocalizedText EMText { get; private set; }
+
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
+
+		public override void SetStaticDefaults() {
+			EMText = this.GetLocalization("EM");
+		}
 
 		public override void SetDefaults() {
 			Item.useAnimation = 30;
@@ -42,7 +49,7 @@ namespace ExampleMod.Content.Items
 				return;
 
 			for (int i = 0; i < colors.Length; i++) {
-				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, "Example " + i) { OverrideColor = colors[i] };
+				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, EMText.Format(i)) { OverrideColor = colors[i] };
 				tooltips.Add(tooltipLine);
 			}
 		}

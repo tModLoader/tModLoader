@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
@@ -40,6 +41,8 @@ namespace ExampleMod.Content.NPCs
 		public ref float AI_Timer => ref NPC.ai[1];
 		public ref float AI_FlutterTime => ref NPC.ai[2];
 
+		public static LocalizedText GotStompedText { get; private set; }
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
 
@@ -49,6 +52,8 @@ namespace ExampleMod.Content.NPCs
 			// This NPC will be immune to the Poisoned debuff.
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
 			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<Buffs.ExampleGravityDebuff>()] = true;
+
+			GotStompedText = this.GetLocalization("GotStomped");
 		}
 
 		public override void SetDefaults() {
@@ -249,7 +254,7 @@ namespace ExampleMod.Content.NPCs
 				Rectangle extraDamageHitbox = new Rectangle(npcHitbox.X + 12, npcHitbox.Y + 18, npcHitbox.Width - 24, npcHitbox.Height - 18);
 				if (victimHitbox.Intersects(extraDamageHitbox)) {
 					damageMultiplier *= 2f;
-					Main.NewText("You got stomped");
+					Main.NewText(GotStompedText.Value);
 				}
 			}
 			return true;

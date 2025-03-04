@@ -18,6 +18,8 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		public static ExampleFullscreenUI instance;
 		private static LocalizedText HeaderText { get; set; }
 		private static LocalizedText DescriptionText { get; set; }
+		private static LocalizedText NothingText { get; set; }
+		private static LocalizedText IsSetText { get; set; }
 
 		private UIText itemDefinitionMessage;
 
@@ -25,6 +27,8 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			instance = this;
 			HeaderText = mod.GetLocalization("UI.ExampleFullscreenUI.Header");
 			DescriptionText = mod.GetLocalization("UI.ExampleFullscreenUI.Description");
+			NothingText = mod.GetLocalization("UI.ExampleFullscreenUI.Nothing");
+			IsSetText = mod.GetLocalization("UI.ExampleFullscreenUI.IsSet");
 		}
 
 		public void Unload() {
@@ -121,10 +125,10 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			var itemDefinition = config.itemDefinitionExample;
 			string configEntryLabel = Language.GetTextValue(config.GetLocalizationKey("itemDefinitionExample.Label"));
 			if (itemDefinition.Type == ItemID.None || itemDefinition.IsUnloaded) {
-				return $"\"{configEntryLabel}\" is set to nothing";
+				return NothingText.Format(configEntryLabel);
 			}
 			else {
-				return $"\"{configEntryLabel}\" is set to \"{itemDefinition.DisplayName}\": [i:{itemDefinition.Type}]";
+				return IsSetText.Format(configEntryLabel, itemDefinition.DisplayName, itemDefinition.Type);
 			}
 		}
 	}

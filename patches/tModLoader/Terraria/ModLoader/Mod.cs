@@ -50,6 +50,11 @@ public partial class Mod
 	public List<string> TranslationForMods { get; internal set; }
 
 	/// <summary>
+	/// The path to the source folder the mod was built from.
+	/// </summary>
+	public string SourceFolder { get; internal set; }
+
+	/// <summary>
 	/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
@@ -65,6 +70,10 @@ public partial class Mod
 	/// Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
+	/// <summary>
+	/// Whether or not all music loaded by this mod will automatically have <see cref="MusicID.Sets.SkipsVolumeRemap"/> set to true.
+	/// </summary>
+	public bool MusicSkipsVolumeRemap { get; init; } = false;
 	/// <summary>
 	/// Whether or not this mod will automatically add images in the "Backgrounds" folder as background textures to the game. This means you do not need to manually call <see cref="BackgroundTextureLoader.AddBackgroundTexture(Mod, string)"/>.
 	/// </summary>

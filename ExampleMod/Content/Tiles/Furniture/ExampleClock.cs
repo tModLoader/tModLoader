@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override bool RightClick(int x, int y) {
-			string text = "AM";
+			string text = Language.GetTextValue("GameUI.TimeAtMorning");
 			// Get current weird time
 			double time = Main.time;
 			if (!Main.dayTime) {
@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 
 			if (time >= 12.0) {
-				text = "PM";
+				text = Language.GetTextValue("GameUI.TimePastMorning");
 			}
 
 			int intTime = (int)time;
@@ -75,7 +75,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 
 			// Whack it all together to get a HH:MM format
-			Main.NewText($"Time: {intTime}:{text2} {text}", 255, 240, 20);
+			Main.NewText(Language.GetTextValue("CLI.Time", $"{intTime}:{text2} {text}"), 255, 240, 20);
 			return true;
 		}
 

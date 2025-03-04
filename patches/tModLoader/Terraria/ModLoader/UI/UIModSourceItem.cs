@@ -323,9 +323,9 @@ internal class UIModSourceItem : UIPanel
 			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 				localMod = new LocalMod(ModLocation.Local, modFile);
 
-			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
+			string icon = Path.Combine(localMod.properties.modSource, "icon_workshop.png");
 			if (!File.Exists(icon))
-				icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
+				icon = Path.Combine(localMod.properties.modSource, "icon.png");
 
 			WorkshopHelper.PublishMod(localMod, icon);
 		}

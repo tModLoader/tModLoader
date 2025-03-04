@@ -15,6 +15,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleChest : ModTile
 	{
+		public static LocalizedText LockedText { get; private set; }
+
 		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileSpelunker[Type] = true;
@@ -64,6 +66,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 			TileObjectData.addTile(Type);
+
+			LockedText = this.GetLocalization("Locked");
 		}
 
 		// This example shows using GetItemDrops to manually decide item drops. This example is for a tile with a TileObjectData.
@@ -100,7 +104,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			if (Main.dayTime) {
-				Main.NewText("The chest stubbornly refuses to open in the light of the day. Try again at night.", Color.Orange);
+				Main.NewText(LockedText, Color.Orange);
 				return false;
 			}
 
