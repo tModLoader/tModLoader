@@ -233,6 +233,7 @@
 		"LoadErrorUnknownXNBFileHint": "Unknown xnb file {0}. Perhaps it should be in Fonts/ or Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
 		"LoadErrorLoadOnlyMethod": "Method {0} can only be called from Mod.Load or Mod.Autoload.",
+		"LoadErrorPreResizeArraysCall": "Method {0} may only be called after ResizeArrays. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
 		"LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
 		"LoadErrorNotLoading": "Mod.AddContent can only be called during loading",

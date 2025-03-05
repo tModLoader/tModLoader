@@ -24,6 +24,13 @@ public static class BiomeConversionLoader
 		//Nothing for now
 	}
 
+	internal static void PostSetupContent()
+	{
+		foreach (ModBiomeConversion conversion in conversions) {
+			conversion.PostSetupContent();
+		}
+	}
+
 	internal static void Unload()
 	{
 		conversions.Clear();

@@ -88,7 +88,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 	public class ExampleHellSolutionConversion : ModBiomeConversion
 	{
-		public override void SetStaticDefaults() {
+		public override void PostSetupContent() {
 
 			// Go over every tile and add a conversion to it for our conversion type if they're part of the list of usual conversion tiles
 			for (int i = 0; i < TileLoader.TileCount; i++) {

@@ -26,4 +26,12 @@ public abstract class ModBiomeConversion : ModType
 	{
 		SetStaticDefaults();
 	}
+
+	/// <summary>
+	/// Allows you to run code after the mod's content has been setup (ID sets have been filled, etc). <br/>
+	/// Use <see cref="TileLoader.RegisterConversion"/> and <see cref="WallLoader.RegisterConversion"/> in this hook if you want to implement conversions that rely on <see cref="ID.TileID.Sets.Conversion"/> and <see cref="ID.WallID.Sets.Conversion"/> sets being fully populated.
+	/// </summary>
+	public virtual void PostSetupContent()
+	{
+	}
 }

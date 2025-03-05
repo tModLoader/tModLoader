@@ -98,7 +98,7 @@ namespace ExampleMod.Content.Items.Ammo
 		public static int ChairType;
 		public static int WorkbenchType;
 
-		public override void SetStaticDefaults() {
+		public override void PostSetupContent() {
 
 			// Cache the conversion types.
 			WallType = ModContent.WallType<ExampleWall>();
