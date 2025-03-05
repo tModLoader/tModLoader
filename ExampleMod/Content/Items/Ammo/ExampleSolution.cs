@@ -267,8 +267,8 @@ namespace ExampleMod.Content.Items.Ammo
 
 		public bool ConvertWalls(int i, int j, int type, int conversionType) {
 
-			// Turn all walls into example walls or unsafe example walls, depending on world height (We cached the types in SetStaticDefaults)
-			int wallType = j < Main.worldSurface ? WallType : UnsafeWallType;
+			// Turn all walls into example walls or unsafe example walls, depending on if the original wall was safe or not (Main.wallHouse is what determines that)
+			int wallType = Main.wallHouse[type] ? WallType : UnsafeWallType;
 			WorldGen.ConvertWall(i, j, wallType);
 			return false;
 		}
