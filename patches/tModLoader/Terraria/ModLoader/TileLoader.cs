@@ -698,7 +698,7 @@ public static class TileLoader
 	/// <param name="conversionDelegate">Code to run when the tile attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</param>
 	public static void RegisterConversion(int tileType, int conversionType, ConvertTile conversionDelegate)
 	{
-		var conversions = tileConversionDelegates[tileType] ??= new List<ConvertTile>[BiomeConversionID.Count];
+		var conversions = tileConversionDelegates[tileType] ??= new List<ConvertTile>[BiomeConversionID.BiomeConversionCount];
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}

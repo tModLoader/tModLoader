@@ -2163,7 +2163,7 @@
  				if (tile.type == 492) {
  					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 477);
  					tile.type = 477;
-@@ -39914,9 +_,52 @@
+@@ -39914,8 +_,84 @@
  					if (Main.netMode == 1)
  						NetMessage.SendData(17, -1, -1, null, 0, k, l);
  				}
@@ -2172,7 +2172,7 @@
 +				;
  			}
  		}
- 	}
++	}
 +
 +	/// <summary>
 +	/// Converts the single tile at the given coordinate into a specified new tile type<br/>
@@ -2213,9 +2213,41 @@
 +			NetMessage.SendTileSquare(-1, i, j);
 +	}
 +
++	/// <summary>
++	/// Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <see cref="ModBlockType.RandomUpdate"/> to let your infectious tiles spread around<br/>
++	/// Automatically checks for the journey mode biome spread toggle, hardmode, spread speed decrease after plantera, chlorophyte protection and sunflower protection.
++	/// </summary>
++	/// <param name="x">X coordinate of the spreading tile</param>
++	/// <param name="y">Y coordinate of the spreading tile</param>
++	/// <param name="conversionType">The <see cref="BiomeConversionID"/> of the spreading tile</param>
++	/// <param name="range">Tile range for potential conversion targets</param>
++	/// <returns>If the tile was successfully converted</returns>
++	public static bool SpreadInfectionToNearbyTile(int x, int y, int conversionType, int range = 3)
++	{
++		if (!AllowedToSpreadInfections)
++			return false;
++		if (!Main.hardMode || (NPC.downedPlantBoss && genRand.NextBool(2)))
++			return false;
++
++		int testX = x + genRand.Next(-range, range + 1);
++		int testY = y + genRand.Next(-range, range + 1);
++		if (!InWorld(testX, testY, 10))
++			return false;
++
++		if (nearbyChlorophyte(testX, testY)) {
++			ChlorophyteDefense(testX, testY);
++			return false;
++		}
++
++		if (CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0)
++			return false;
++
++		int preConversionType = Main.tile[testX, testY].type;
++		Convert(testX, testY, conversionType, 1);
++		return preConversionType != Main.tile[testX, testY].type;
+ 	}
  
  	public static void CactusFrame(int i, int j)
- 	{
 @@ -40114,7 +_,7 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;
@@ -2952,12 +2984,15 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
-@@ -50715,6 +_,21 @@
+@@ -50715,6 +_,24 @@
  					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
  						continue;
  
 +					int preHookType = Main.tile[num11, num12].type;
 +					if (!TileLoader.Convert(num11, num12, 1)) {
++						if (preHookType == Main.tile[num11, num12].type)
++							continue;
++
 +						if (genRand.Next(2) == 0)
 +							flag2 = true;
 +
@@ -2974,12 +3009,15 @@
  					if (Main.tile[num11, num12].type == 2) {
  						if (genRand.Next(2) == 0)
  							flag2 = true;
-@@ -50799,6 +_,21 @@
+@@ -50799,6 +_,24 @@
  					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
  						continue;
  
 +					int preHookType = Main.tile[num13, num14].type;
 +					if (!TileLoader.Convert(num13, num14, 4)) {
++						if (preHookType == Main.tile[num13, num14].type)
++							continue;
++
 +						if (genRand.Next(2) == 0)
 +							flag3 = true;
 +
@@ -2996,12 +3034,15 @@
  					if (Main.tile[num13, num14].type == 2) {
  						if (genRand.Next(2) == 0)
  							flag3 = true;
-@@ -50878,6 +_,21 @@
+@@ -50878,6 +_,24 @@
  			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
  				continue;
  
 +			int preHookType = Main.tile[num15, num16].type;
 +			if (!TileLoader.Convert(num15, num16, 2)) {
++				if (preHookType == Main.tile[num15, num16].type)
++					continue;
++
 +				if (genRand.Next(2) == 0)
 +					flag4 = true;
 +
