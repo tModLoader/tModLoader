@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Tiles;
+﻿using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
@@ -62,7 +63,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 			if (Progress > (float)spawnDustTreshold) {
 				float dustScale = 1f;
-				int dustType = ModContent.DustType<Dusts.ExampleSolution>();
+				int dustType = ModContent.DustType<ExampleSolutionDust>();
 
 				if (Progress == spawnDustTreshold + 1)
 					dustScale = 0.2f;
