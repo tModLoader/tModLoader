@@ -1067,6 +1067,11 @@ Mods: {
 				// DisplayName: Hallowed Fossil Wall Item
 				// Tooltip: ""
 			}
+
+			ExampleHellSolution: {
+				// DisplayName: Example Hell Solution
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1113,6 +1118,7 @@ Mods: {
 			// ExampleRocketProjectile.DisplayName: Example Rocket Projectile
 			// ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
 			// ExampleArrowProjectile.DisplayName: Example Arrow Projectile
+			// ExampleHellSolutionProjectile.DisplayName: Example Hell Solution Projectile
 		}
 
 		Buffs: {

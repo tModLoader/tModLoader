@@ -1,21 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent.Dyes;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Content.Items
+namespace ExampleMod.Content.Items.Ammo
 {
-	public class ExampleSolution : ModItem
+	public class ExampleHellSolution : ModItem
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 99;
-			ItemID.Sets.SortingPriorityTerraforming[Type] = 101; // One past dirt soulution
+			ItemID.Sets.SortingPriorityTerraforming[Type] = 101; // One past dirt solution
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToSolution(ModContent.ProjectileType<ExampleSolutionProjectile>());
+			Item.DefaultToSolution(ModContent.ProjectileType<ExampleHellSolutionProjectile>());
 		}
 
 		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
@@ -23,7 +21,7 @@ namespace ExampleMod.Content.Items
 		}
 	}
 
-	public class ExampleSolutionProjectile : ModProjectile
+	public class ExampleHellSolutionProjectile : ModProjectile
 	{
 		public static int ConversionType;
 
@@ -33,7 +31,7 @@ namespace ExampleMod.Content.Items
 
 		public override void SetStaticDefaults() {
 			// Cache the conversion type here instead of repeately fetching it every frame
-			ConversionType = ModContent.GetInstance<ExampleSolutionConversion>().Type;
+			ConversionType = ModContent.GetInstance<ExampleHellSolutionConversion>().Type;
 		}
 
 		public override void SetDefaults() {
@@ -88,7 +86,7 @@ namespace ExampleMod.Content.Items
 		}
 	}
 
-	public class ExampleSolutionConversion : ModBiomeConversion
+	public class ExampleHellSolutionConversion : ModBiomeConversion
 	{
 		public override void SetStaticDefaults() {
 
@@ -97,9 +95,7 @@ namespace ExampleMod.Content.Items
 				if (TileID.Sets.Conversion.Grass[i] ||
 					TileID.Sets.Conversion.GolfGrass[i])
 					TileLoader.RegisterConversion(i, Type, HellifyGrass);
-			}
 
-			for (int i = 0; i < TileLoader.TileCount; i++) {
 				if (TileID.Sets.Conversion.Dirt[i] ||
 					TileID.Sets.Conversion.Stone[i] ||
 					TileID.Sets.Conversion.Sand[i])
@@ -171,65 +167,69 @@ namespace ExampleMod.Content.Items
 		}
 
 		public void FindAndConvertTree(int i, int j, int tileTypeAbove) {
-			if (tileTypeAbove != -1 && TileID.Sets.IsATreeTrunk[tileTypeAbove]) {
 
-				int treeBottom = j;
-				int treeTop = treeBottom - 1;
-				int treeCenterX = i;
+			if (tileTypeAbove == -1)
+				return;
 
-				// Check for if the tile is the tree's "trunk" or just the root tiles on the side
-				// We do this by checking for the specific tile frame of the tree tile.
-				// Necessary because the "IsATreeTrunk" ID set doesn't care about the tile's frame and returns true even if the tile isnt the tree's "trunk"
-				int treeFrameX = Main.tile[treeCenterX, treeTop].TileFrameX / 22;
-				int treeFrameY = Main.tile[treeCenterX, treeTop].TileFrameY / 22;
-				bool isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
+			if (!TileID.Sets.IsATreeTrunk[tileTypeAbove])
+				return;
 
-				// Niche edgecase check: If a grass block was placed under a tree's branch, it shouldnt be converted at all, as it is not actually attached to the grass tile below
-				bool isTreeBranch = (treeFrameX == 3 && treeFrameY < 3) || (treeFrameX == 4 && treeFrameY >= 3 && treeFrameY < 6);
-				if (isTreeBranch)
-					return;
+			int treeBottom = j;
+			int treeTop = treeBottom - 1;
+			int treeCenterX = i;
 
-				// If the tile above wasn't a tree trunk but instead a root tile on the side, check the adjacent two tiles to find it
-				if (!isTreeTrunk) {
-					for (int x = treeCenterX - 1; x < treeCenterX + 2; x += 2) {
+			// Check for if the tile is the tree's "trunk" or just the root tiles on the side
+			// We do this by checking for the specific tile frame of the tree tile.
+			// Necessary because the "IsATreeTrunk" ID set doesn't care about the tile's frame and returns true even if the tile isnt the tree's "trunk"
+			int treeFrameX = Main.tile[treeCenterX, treeTop].TileFrameX / 22;
+			int treeFrameY = Main.tile[treeCenterX, treeTop].TileFrameY / 22;
+			bool isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
 
-						Tile topTile = Main.tile[x, treeTop];
-						if (!topTile.HasTile || !TileID.Sets.IsATreeTrunk[topTile.TileType])
-							continue;
+			// Niche edgecase check: If a grass block was placed under a tree's branch, it shouldnt be converted at all, as it is not actually attached to the grass tile below
+			bool isTreeBranch = (treeFrameX == 3 && treeFrameY < 3) || (treeFrameX == 4 && treeFrameY >= 3 && treeFrameY < 6);
+			if (isTreeBranch)
+				return;
 
-						// Check for tree trunk framing
-						treeFrameX = topTile.TileFrameX / 22;
-						treeFrameY = topTile.TileFrameY / 22;
-						isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
+			// If the tile above wasn't a tree trunk but instead a root tile on the side, check the adjacent two tiles to find it
+			if (!isTreeTrunk) {
+				for (int x = treeCenterX - 1; x < treeCenterX + 2; x += 2) {
 
-						// We found our tree trunk center
-						if (isTreeTrunk) {
-							treeCenterX = x;
-							break;
-						}
+					Tile topTile = Main.tile[x, treeTop];
+					if (!topTile.HasTile || !TileID.Sets.IsATreeTrunk[topTile.TileType])
+						continue;
+
+					// Check for tree trunk framing
+					treeFrameX = topTile.TileFrameX / 22;
+					treeFrameY = topTile.TileFrameY / 22;
+					isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
+
+					// We found our tree trunk center
+					if (isTreeTrunk) {
+						treeCenterX = x;
+						break;
 					}
 				}
+			}
 
-				// Find the top of the tree by repeatedly going up until we don't find any more tree tiles
-				while (treeTop >= 0 && Main.tile[treeCenterX, treeTop].HasTile && TileID.Sets.IsATreeTrunk[Main.tile[treeCenterX, treeTop].TileType])
-					treeTop--;
+			// Find the top of the tree by repeatedly going up until we don't find any more tree tiles
+			while (treeTop >= 0 && Main.tile[treeCenterX, treeTop].HasTile && TileID.Sets.IsATreeTrunk[Main.tile[treeCenterX, treeTop].TileType])
+				treeTop--;
 
-				// Turn all the tiles around it into hell trees
-				for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
-					for (int y = treeTop; y < treeBottom; y++) {
-						Tile t = Main.tile[x, y];
-						if (t.HasTile && TileID.Sets.IsATreeTrunk[t.TileType])
-							t.TileType = TileID.TreeAsh;
-					}
+			// Turn all the tiles around it into hell trees
+			for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
+				for (int y = treeTop; y < treeBottom; y++) {
+					Tile t = Main.tile[x, y];
+					if (t.HasTile && TileID.Sets.IsATreeTrunk[t.TileType])
+						t.TileType = TileID.TreeAsh;
 				}
+			}
 
-				// Turn the floor into ash grass (We have to convert the adjacent tiles, otherwise the side root tiles may get broken)
-				// The framing will happen naturally when the floor tile below gets converted and frames the other adjacent tiles, so we don't need to use WorldGen.Convert here
-				for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
-					Tile t = Main.tile[x, treeBottom];
-					if (t.HasTile && TileID.Sets.Conversion.Grass[t.TileType] || TileID.Sets.Conversion.GolfGrass[t.TileType])
-						t.TileType = TileID.AshGrass;
-				}
+			// Turn the floor into ash grass (We have to convert the adjacent tiles, otherwise the side root tiles may get broken)
+			// The framing will happen naturally when the floor tile below gets converted and frames the other adjacent tiles, so we don't need to use WorldGen.Convert here
+			for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
+				Tile t = Main.tile[x, treeBottom];
+				if (t.HasTile && TileID.Sets.Conversion.Grass[t.TileType] || TileID.Sets.Conversion.GolfGrass[t.TileType])
+					t.TileType = TileID.AshGrass;
 			}
 		}
 
