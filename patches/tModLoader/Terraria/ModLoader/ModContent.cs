@@ -516,6 +516,7 @@ public static class ModContent
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
+		BiomeConversionID.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();

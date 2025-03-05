@@ -9,7 +9,6 @@ namespace Terraria.ID;
 public static partial class BiomeConversionID
 {
 	internal static readonly Dictionary<string, int> nameToId = new();
-	private static readonly Dictionary<string, Dictionary<string, int>> tieredDict = new();
 	internal static readonly Dictionary<int, string> idToName = new();
 
 	internal static int nextConversion = Count;
@@ -17,6 +16,13 @@ public static partial class BiomeConversionID
 	/// Gives the total amount of biome conversions, including modded ones
 	/// </summary>
 	public static int BiomeConversionCount => nextConversion;
+
+	public static void Unload()
+	{
+		nameToId.Clear();
+		idToName.Clear();
+		nextConversion = Count;
+	}
 
 	public static int RegisterBiomeConversionID(Mod mod, string conversionName)
 	{
@@ -28,66 +34,54 @@ public static partial class BiomeConversionID
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorDuplicateName", "BiomeConversionID", conversionFullName));
 
 		nameToId[conversionFullName] = nextConversion;
-		if (!tieredDict.TryGetValue(mod.Name, out var subDictionary))
-			tieredDict[mod.Name] = subDictionary = new();
-
-		subDictionary[conversionName] = nextConversion;
-
 		return nextConversion++;
 	}
 
 	/// <summary>
-	/// Attempts to retrieve the modded conversion ID associated with the given name and mod name. Caching the result is recommended.<br/>
-	/// Returns -1 if no conversion was found registered under that name.
-	/// </summary>
-	/// <param name="modName">Name of the mod the conversion was registered from</param>
-	/// <param name="conversionName">Name of the registered conversion</param>
-	/// <returns>The numerical ID of the biome conversion using the given name and mod name</returns>
-	public static int TryGetConversionID(string modName, string conversionName)
-	{
-		if (!tieredDict.TryGetValue(modName, out var subDictionary))
-			return -1;
-
-		return subDictionary.TryGetValue(conversionName, out int conversionID) ? conversionID : -1;
-	}
-
-	/// <summary>
 	/// Attempts to retrieve the modded conversion ID associated with the given name from the specified mod. Caching the result is recommended.<br/>
-	/// Returns -1 if no conversion was found registered under that name.
 	/// </summary>
 	/// <param name="mod">Mod the conversion was registered from</param>
 	/// <param name="conversionName">Name of the registered conversion</param>
-	/// <returns>The numerical ID of the biome conversion using the given name and mod name</returns>
-	public static int TryGetConversionID(Mod mod, string conversionName)
-	{
-		if (!tieredDict.TryGetValue(mod.Name, out var subDictionary))
-			return -1;
+	/// <param name="conversionID">The conversion ID matching the mod and name provided (if it was found)</param>
+	/// <returns>Whether or not a conversion was found with the matching mod and name</returns>
+	public static bool TryGetConversionID(Mod mod, string conversionName, out int conversionID) => TryGetConversionID(mod.Name, conversionName, out conversionID);
 
-		return subDictionary.TryGetValue(conversionName, out int conversionID) ? conversionID : -1;
+	/// <summary>
+	/// Attempts to retrieve the modded conversion ID associated with the given name and mod name. Caching the result is recommended.<br/>
+	/// </summary>
+	/// <param name="modName">Name of the mod the conversion was registered from</param>
+	/// <param name="conversionName">Name of the registered conversion</param>
+	/// <param name="conversionID">The conversion ID matching the mod and name provided (if it was found)</param>
+	/// <returns>Whether or not a conversion was found with the matching mod and name</returns>
+	public static bool TryGetConversionID(string modName, string conversionName, out int conversionID)
+	{
+		string conversionFullName = $"{modName}/{conversionName}";
+		return TryGetConversionID(conversionFullName, out conversionID);
 	}
 
 	/// <summary>
 	/// Attempts to retrieve the modded conversion ID associated with the given full name. Caching the result is recommended.<br/>
-	/// Returns -1 if no conversion was found registered under that name.
 	/// </summary>
 	/// <param name="conversionFullName">The full name of the registered conversion ("ModName/ConversionName")</param>
-	/// <returns>The numerical ID of the biome conversion using the given name</returns>
-	public static int TryGetConversionID(string conversionFullName)
+	/// <param name="conversionID">The conversion ID matching the mod and name provided (if it was found)</param>
+	/// <returns>Whether or not a conversion was found with the matching full name</returns>
+	public static bool TryGetConversionID(string conversionFullName, out int conversionID)
 	{
-		return nameToId.TryGetValue(conversionFullName, out int conversionID) ? conversionID : -1;
+		return nameToId.TryGetValue(conversionFullName, out conversionID);
 	}
 
 	/// <summary>
-	/// Attempts to find the full name for the given modded conversion ID. Vanilla conversion IDs and invalid IDs will return an empty string<br/>
+	/// Attempts to find the full name for the given modded conversion ID. Vanilla conversion IDs and invalid IDs will return false<br/>
 	/// </summary>
 	/// <param name="conversionID">The biome conversion ID to find the full name for</param>
-	/// <returns>The full name of the conversion ID ("ModName/ConversionName")</returns>
-	public static string GetConversionName(int conversionID)
+	/// <param name="conversionName">The conversion name associated to this ID (if found)</param>
+	/// <returns>Whether or not a modded conversion name was found with the matching ID</returns>
+	public static bool TryGetConversionName(int conversionID, out string conversionName)
 	{
+		conversionName = "";
 		//Vanilla conversions
 		if (conversionID < Count)
-			return "";
-
-		return idToName.TryGetValue(conversionID, out string conversionName) ? conversionName : "";
+			return false;
+		return idToName.TryGetValue(conversionID, out conversionName);
 	}
 }

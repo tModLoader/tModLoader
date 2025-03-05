@@ -270,6 +270,7 @@ public static class TileLoader
 		tiles.Clear();
 		globalTiles.Clear();
 		tileTypeAndTileStyleToItemType.Clear();
+		tileConversionDelegates = new List<ConvertTile>[TileID.Count][];
 
 		// Has to be ran on the main thread, since this may dispose textures.
 		Main.QueueMainThreadAction(() => {

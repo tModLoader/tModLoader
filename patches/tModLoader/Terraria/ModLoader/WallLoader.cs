@@ -122,6 +122,7 @@ public static class WallLoader
 		nextWall = WallID.Count;
 		globalWalls.Clear();
 		wallTypeToItemType.Clear();
+		wallConversionDelegates = new List<ConvertWall>[WallID.Count][];
 	}
 
 	//change type of Terraria.Tile.wall to ushort and fix associated compile errors
