@@ -263,7 +263,7 @@ public static class WallLoader
 	/// <param name="conversionDelegate">Code to run when the wall attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</param>
 	public static void RegisterConversion(int wallType, int conversionType, ConvertWall conversionDelegate)
 	{
-		var conversions = wallConversionDelegates[wallType] ??= new List<ConvertWall>[BiomeConversionID.BiomeConversionCount];
+		var conversions = wallConversionDelegates[wallType] ??= new List<ConvertWall>[BiomeConversionLoader.BiomeConversionCount];
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}

@@ -516,7 +516,7 @@ public static class ModContent
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
-		BiomeConversionID.Unload();
+		BiomeConversionLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -584,6 +584,7 @@ public static class ModContent
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
 		BuilderToggleLoader.ResizeArrays();
+		BiomeConversionLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {

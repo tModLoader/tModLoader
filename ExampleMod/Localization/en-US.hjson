@@ -243,12 +243,12 @@ Mods: {
 				Tooltip: Chases enemies through walls
 			}
 
-			ExampleSolutionItem: {
-				DisplayName: Monochromatic Solution
+			ExampleSolution: {
+				DisplayName: Example Solution
 				Tooltip:
 					'''
 					Used by the Clentaminator
-					Spreads the example
+					Spreads the underworld
 					'''
 			}
 
