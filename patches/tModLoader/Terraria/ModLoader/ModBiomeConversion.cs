@@ -18,6 +18,7 @@ public abstract class ModBiomeConversion : ModType
 
 	protected sealed override void Register()
 	{
+		ModTypeLookup<ModBiomeConversion>.Register(this);
 		Type = BiomeConversionLoader.Register(this);
 	}
 

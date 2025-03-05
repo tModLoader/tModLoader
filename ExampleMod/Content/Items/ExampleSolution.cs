@@ -11,12 +11,11 @@ namespace ExampleMod.Content.Items
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 99;
-			ItemID.Sets.SortingPriorityTerraforming[Type] = 101; //One past dirt soulution
+			ItemID.Sets.SortingPriorityTerraforming[Type] = 101; // One past dirt soulution
 		}
 
 		public override void SetDefaults() {
 			Item.DefaultToSolution(ModContent.ProjectileType<ExampleSolutionProjectile>());
-			return;
 		}
 
 		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
@@ -24,12 +23,13 @@ namespace ExampleMod.Content.Items
 		}
 	}
 
-	public class ExampleSolutionProjectile : ModProjectile {
+	public class ExampleSolutionProjectile : ModProjectile
+	{
+		public static int ConversionType;
 
 		public ref float Progress => ref Projectile.ai[0];
 		// Solutions shot by the terraformer get an increase in conversion area size, indicated by the second AI parameter being set to 1
 		public bool ShotFromTerraformer => Projectile.ai[1] == 1f;
-		public static int ConversionType;
 
 		public override void SetStaticDefaults() {
 			// Cache the conversion type here instead of repeately fetching it every frame
@@ -88,27 +88,28 @@ namespace ExampleMod.Content.Items
 		}
 	}
 
-	public class ExampleSolutionConversion : ModBiomeConversion {
+	public class ExampleSolutionConversion : ModBiomeConversion
+	{
 		public override void SetStaticDefaults() {
 
-			//Go over every tile and add a conversion to it for our conversion type if they're part of the list of usual conversion tiles
+			// Go over every tile and add a conversion to it for our conversion type if they're part of the list of usual conversion tiles
 			for (int i = 0; i < TileLoader.TileCount; i++) {
-				if (TileID.Sets.Conversion.Dirt[i] ||
-					TileID.Sets.Conversion.Grass[i] ||
-					TileID.Sets.Conversion.GolfGrass[i] ||
-					TileID.Sets.Conversion.Stone[i] ||
-					TileID.Sets.Conversion.Sand[i])
-					TileLoader.RegisterConversion(i, Type, HellifyTile);
+				if (TileID.Sets.Conversion.Grass[i] ||
+					TileID.Sets.Conversion.GolfGrass[i])
+					TileLoader.RegisterConversion(i, Type, HellifyGrass);
 			}
 
-			//Manually register clay
-			TileLoader.RegisterConversion(TileID.ClayBlock, Type, HellifyTile);
+			for (int i = 0; i < TileLoader.TileCount; i++) {
+				if (TileID.Sets.Conversion.Dirt[i] ||
+					TileID.Sets.Conversion.Stone[i] ||
+					TileID.Sets.Conversion.Sand[i])
+					TileLoader.RegisterConversion(i, Type, ConvertToAsh);
+			}
 
-			//Manually register small plants to turn into hell plants
-			TileLoader.RegisterConversion(TileID.Plants, Type, HellifyTile);
-			TileLoader.RegisterConversion(TileID.Plants2, Type, HellifyTile);
+			// Manually register clay
+			TileLoader.RegisterConversion(TileID.ClayBlock, Type, ConvertToAsh);
 
-			//Do the same for walls
+			// Do the same for walls
 			for (int i = 0; i < WallLoader.WallCount; i++) {
 				if (WallID.Sets.Conversion.Dirt[i] ||
 					WallID.Sets.Conversion.Grass[i] ||
@@ -117,107 +118,124 @@ namespace ExampleMod.Content.Items
 			}
 		}
 
-		public bool HellifyTile(int i, int j, int type, int conversionType) {
+		public bool ConvertToAsh(int i, int j, int type, int conversionType) {
+			WorldGen.ConvertTile(i, j, TileID.Ash, true);
+			return false;
+		}
 
-			//Turn tiles into hell-appropriate versions
-			if (type == TileID.ClayBlock || TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Dirt[type] || TileID.Sets.Conversion.Sand[type]) {
-				WorldGen.ConvertTile(i, j, TileID.Ash, true);
-				return false;
+		public bool HellifyGrass(int i, int j, int type, int conversionType) {
+
+			int tileTypeAbove = -1;
+			if (j > 1 && Main.tile[i, j - 1].HasTile)
+				tileTypeAbove = Main.tile[i, j - 1].TileType;
+
+			// Convert trees above grass into hell trees
+			// Most vanilla trees usually automatically turn into the type that matches the grass below, but not ashwood trees
+			FindAndConvertTree(i, j, tileTypeAbove);
+
+			// Convert plants above grass into ash plants
+			// Do note, for most other conversions this wouldn't be necessary, as plants convert automatically into the type that matches the grass they're on when framed
+			// Sadly for us, hell plants don't share this behavior, so we will have to do it ourselves otherwise they'll break
+			// If you were making a modded biome with its own plants, you'll need to mimic this code as well to handle conversion from a vanilla grass tile into your modded grass block
+			// To handle conversion from your modded plants back to vanilla ones, you can include checks for floor tile in ModTile.TileFrame() and then convert it to the appropriate vanilla plant from there
+			if (tileTypeAbove == TileID.Plants ||
+				tileTypeAbove == TileID.CorruptPlants ||
+				tileTypeAbove == TileID.CrimsonPlants ||
+				tileTypeAbove == TileID.HallowedPlants ||
+				tileTypeAbove == TileID.Plants2 ||
+				tileTypeAbove == TileID.HallowedPlants2) {
+
+				Tile tileAbove = Main.tile[i, j - 1];
+
+				// Trim the top of 2 tall plants, since hell plants only have 1 tall plants
+				// If you were making a modded biome and had 2 tall plants you could ignore this part and convert 2 tall plants into the appropriate modded 2 tall plant
+				if (j > 2 && (tileTypeAbove == TileID.Plants2 || tileTypeAbove == TileID.HallowedPlants2)) {
+					Tile tileTwiceAbove = Main.tile[i, j - 2];
+					if (tileTwiceAbove.TileType == tileTypeAbove) {
+						tileTwiceAbove.HasTile = false;
+						tileTwiceAbove.TileType = 0;
+					}
+
+					// Reset the Y frame, since the bottom half of tall plants would have a higher Y frame
+					tileAbove.TileFrameY = 0;
+				}
+
+				// Doing the change by directly setting the TileType without using WorldGen.Convert, otherwise the plant would break immediately as we haven't converted the grass below yet
+				tileAbove.TileType = TileID.AshPlants;
+				// We also reset the X frame, since hell plants have much less variants compared to other biome plants (only 10 compared to forest plant's 44!)
+				tileAbove.TileFrameX = (short)(WorldGen.genRand.Next(10) * 18);
 			}
-			if (TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.GolfGrass[type]) {
-				int tileAbove = -1;
-				if (j > 1 && Main.tile[i, j - 1].HasTile)
-					tileAbove = Main.tile[i, j - 1].TileType;
 
-				// Convert trees above grass into hell trees
-				if (tileAbove != -1 && TileID.Sets.IsATreeTrunk[tileAbove]) {
-					int treeBottom = j;
-					int treeTop = treeBottom - 1;
-					int treeCenterX = i;
+			WorldGen.ConvertTile(i, j, TileID.AshGrass);
+			return false;
+		}
 
-					// Check for if the tile is the tree's "trunk" or just the root tiles on the side / branches
-					// This code was taken from Main.DrawTileCracks(), as branches and roots don't draw cracks, but simplified since we aren't interested in tree branches
-					// Necessary because the "IsATreeTrunk" ID set doesn't care about the tile's frame and returns true even if the tile isnt the tree's "trunk"
-					int treeFrameX = Main.tile[treeCenterX, treeTop].TileFrameX / 22;
-					int treeFrameY = Main.tile[treeCenterX, treeTop].TileFrameY / 22;
-					bool isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
-					
-					// If the tile above wasn't a tree trunk, check the adjacent two tiles to find it
-					if (!isTreeTrunk) {
-						for (int x = treeCenterX - 1; x < treeCenterX + 2; x += 2) {
+		public void FindAndConvertTree(int i, int j, int tileTypeAbove) {
+			if (tileTypeAbove != -1 && TileID.Sets.IsATreeTrunk[tileTypeAbove]) {
 
-							if (!Main.tile[x, treeTop].HasTile || !TileID.Sets.IsATreeTrunk[Main.tile[x, treeTop].TileType])
-								continue;
+				int treeBottom = j;
+				int treeTop = treeBottom - 1;
+				int treeCenterX = i;
 
-							treeFrameX = Main.tile[x, treeTop].TileFrameX / 22;
-							treeFrameY = Main.tile[x, treeTop].TileFrameY / 22;
-							isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
+				// Check for if the tile is the tree's "trunk" or just the root tiles on the side
+				// We do this by checking for the specific tile frame of the tree tile.
+				// Necessary because the "IsATreeTrunk" ID set doesn't care about the tile's frame and returns true even if the tile isnt the tree's "trunk"
+				int treeFrameX = Main.tile[treeCenterX, treeTop].TileFrameX / 22;
+				int treeFrameY = Main.tile[treeCenterX, treeTop].TileFrameY / 22;
+				bool isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
 
-							// We found our tree trunk center
-							if (isTreeTrunk) {
-								treeCenterX = x;
-								break;
-							}
+				// Niche edgecase check: If a grass block was placed under a tree's branch, it shouldnt be converted at all, as it is not actually attached to the grass tile below
+				bool isTreeBranch = (treeFrameX == 3 && treeFrameY < 3) || (treeFrameX == 4 && treeFrameY >= 3 && treeFrameY < 6);
+				if (isTreeBranch)
+					return;
+
+				// If the tile above wasn't a tree trunk but instead a root tile on the side, check the adjacent two tiles to find it
+				if (!isTreeTrunk) {
+					for (int x = treeCenterX - 1; x < treeCenterX + 2; x += 2) {
+
+						Tile topTile = Main.tile[x, treeTop];
+						if (!topTile.HasTile || !TileID.Sets.IsATreeTrunk[topTile.TileType])
+							continue;
+
+						// Check for tree trunk framing
+						treeFrameX = topTile.TileFrameX / 22;
+						treeFrameY = topTile.TileFrameY / 22;
+						isTreeTrunk = (treeFrameX != 1 && treeFrameX != 2) || treeFrameY < 6;
+
+						// We found our tree trunk center
+						if (isTreeTrunk) {
+							treeCenterX = x;
+							break;
 						}
 					}
+				}
 
-					// Find the top of the tree by repeatedly going up
-					while (treeTop >= 0 && Main.tile[treeCenterX, treeTop].HasTile && TileID.Sets.IsATreeTrunk[Main.tile[treeCenterX, treeTop].TileType])
-						treeTop--;
+				// Find the top of the tree by repeatedly going up until we don't find any more tree tiles
+				while (treeTop >= 0 && Main.tile[treeCenterX, treeTop].HasTile && TileID.Sets.IsATreeTrunk[Main.tile[treeCenterX, treeTop].TileType])
+					treeTop--;
 
-					// Turn all the tiles around it into hell trees
-					for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
-						for (int y = treeTop; y < treeBottom; y++) {
-							Tile t = Main.tile[x, y];
-							if (t.HasTile && TileID.Sets.IsATreeTrunk[t.TileType])
-								t.TileType = TileID.TreeAsh;
-						}
-					}
-
-					// Turn the floor into grass (Extra code to let the side roots survive)
-					// The framing will happen naturally when the floor tile below gets converted and frames the other tiles
-					for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
-						Tile t = Main.tile[x, treeBottom];
-						if (t.HasTile && TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.GolfGrass[type])
-							t.TileType = TileID.AshGrass;
+				// Turn all the tiles around it into hell trees
+				for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
+					for (int y = treeTop; y < treeBottom; y++) {
+						Tile t = Main.tile[x, y];
+						if (t.HasTile && TileID.Sets.IsATreeTrunk[t.TileType])
+							t.TileType = TileID.TreeAsh;
 					}
 				}
 
-				//Convert plants above into ash plants
-				if (tileAbove == TileID.Plants) {
-					Tile t = Main.tile[i, j - 1];
-					t.TileType = TileID.AshPlants;
+				// Turn the floor into ash grass (We have to convert the adjacent tiles, otherwise the side root tiles may get broken)
+				// The framing will happen naturally when the floor tile below gets converted and frames the other adjacent tiles, so we don't need to use WorldGen.Convert here
+				for (int x = treeCenterX - 1; x < treeCenterX + 2; x++) {
+					Tile t = Main.tile[x, treeBottom];
+					if (t.HasTile && TileID.Sets.Conversion.Grass[t.TileType] || TileID.Sets.Conversion.GolfGrass[t.TileType])
+						t.TileType = TileID.AshGrass;
 				}
-
-				WorldGen.ConvertTile(i, j, TileID.AshGrass);
-				return false;
 			}
-
-			//Convert 1 tall plants and break 2 tall ones
-			if (type == TileID.Plants) {
-
-				//Convert the tile below so that the plants don't immediately destroy upon framing
-				if (j < Main.maxTilesY - 1 && Main.tile[i, j + 1].HasTile && TileID.Sets.Conversion.Grass[Main.tile[i, j + 1].TileType]) {
-					Tile t = Main.tile[i, j + 1];
-					t.TileType = TileID.AshGrass;
-				}
-
-				WorldGen.ConvertTile(i, j, TileID.AshPlants);
-				return false;
-			}
-			if (type == TileID.Plants2) {
-				WorldGen.KillTile(i, j);
-				if (Main.netMode != 0)
-					NetMessage.SendTileSquare(-1, i, j);
-				return false;
-			}
-
-			return true;
 		}
 
 		public bool HellifyWall(int i, int j, int type, int conversionType) {
 
-			//Random pick of lava walls, except smouldering stone because that one looks too different
+			// Random pick of lava walls, except smouldering stone because that one looks too different
 			WorldGen.ConvertWall(i, j, WallID.Lava1Echo + WorldGen.genRand.Next(3));
 			return false;
 		}

@@ -30,12 +30,9 @@ public static class BiomeConversionLoader
 		BiomeConversionCount = BiomeConversionID.Count;
 	}
 
-	internal static int ReserveID() => BiomeConversionCount++;
-
 	public static int Register(ModBiomeConversion conversion)
 	{
-		int type = ReserveID();
-		ModTypeLookup<ModBiomeConversion>.Register(conversion);
+		int type = BiomeConversionCount++;
 		conversions.Add(conversion);
 		return type;
 	}

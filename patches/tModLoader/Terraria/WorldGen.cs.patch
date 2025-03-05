@@ -2909,20 +2909,22 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
-@@ -50715,6 +_,24 @@
+@@ -50708,6 +_,9 @@
+ 				if (!InWorld(num11, num12, 10))
+ 					continue;
+ 
++				if (!Main.tile[num11, num12].active())
++					continue;
++
+ 				if (nearbyChlorophyte(num11, num12)) {
+ 					ChlorophyteDefense(num11, num12);
+ 				}
+@@ -50715,6 +_,19 @@
  					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
  						continue;
  
 +					int preHookType = Main.tile[num11, num12].type;
-+					if (!TileLoader.Convert(num11, num12, 1)) {
-+						if (preHookType == Main.tile[num11, num12].type)
-+							continue;
-+
-+						if (genRand.Next(2) == 0)
-+							flag2 = true;
-+
-+						continue;
-+					}
++					bool convertTile = !TileLoader.Convert(num11, num12, 1);
 +
 +					if (preHookType != Main.tile[num11, num12].type) {
 +						if (genRand.Next(2) == 0)
@@ -2931,23 +2933,28 @@
 +						continue;
 +					}
 +
++					if (!convertTile)
++						continue;
++
  					if (Main.tile[num11, num12].type == 2) {
  						if (genRand.Next(2) == 0)
  							flag2 = true;
-@@ -50799,6 +_,24 @@
+@@ -50792,6 +_,9 @@
+ 				if (!InWorld(num13, num14, 10))
+ 					continue;
+ 
++				if (!Main.tile[num13, num14].active())
++					continue;
++
+ 				if (nearbyChlorophyte(num13, num14)) {
+ 					ChlorophyteDefense(num13, num14);
+ 				}
+@@ -50799,6 +_,19 @@
  					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
  						continue;
  
 +					int preHookType = Main.tile[num13, num14].type;
-+					if (!TileLoader.Convert(num13, num14, 4)) {
-+						if (preHookType == Main.tile[num13, num14].type)
-+							continue;
-+
-+						if (genRand.Next(2) == 0)
-+							flag3 = true;
-+
-+						continue;
-+					}
++					bool convertTile = !TileLoader.Convert(num13, num14, 4);
 +
 +					if (preHookType != Main.tile[num13, num14].type) {
 +						if (genRand.Next(2) == 0)
@@ -2956,23 +2963,21 @@
 +						continue;
 +					}
 +
++					if (!convertTile)
++						continue;
++
  					if (Main.tile[num13, num14].type == 2) {
  						if (genRand.Next(2) == 0)
  							flag3 = true;
-@@ -50878,6 +_,24 @@
+@@ -50878,6 +_,22 @@
  			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
  				continue;
  
-+			int preHookType = Main.tile[num15, num16].type;
-+			if (!TileLoader.Convert(num15, num16, 2)) {
-+				if (preHookType == Main.tile[num15, num16].type)
-+					continue;
-+
-+				if (genRand.Next(2) == 0)
-+					flag4 = true;
-+
++			if (!Main.tile[num15, num16].active())
 +				continue;
-+			}
++
++			int preHookType = Main.tile[num15, num16].type;
++			bool convertTile = !TileLoader.Convert(num15, num16, 2);
 +
 +			if (preHookType != Main.tile[num15, num16].type) {
 +				if (genRand.Next(2) == 0)
@@ -2980,6 +2985,9 @@
 +
 +				continue;
 +			}
++
++			if (!convertTile)
++				continue;
 +
  			if (Main.tile[num15, num16].type == 2) {
  				if (genRand.Next(2) == 0)

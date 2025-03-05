@@ -47,8 +47,10 @@ public partial class WorldGen
 		Tile tile = Main.tile[i, j];
 		if (tile.type == (ushort)newType)
 			return;
+
 		if (tryBreakTrees)
 			TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
+
 		tile.type = (ushort)newType;
 		SquareTileFrame(i, j);
 		if (Main.netMode != 0)
@@ -67,6 +69,7 @@ public partial class WorldGen
 		Tile tile = Main.tile[i, j];
 		if (tile.wall == (ushort)newType)
 			return;
+
 		tile.wall = (ushort)newType;
 		SquareWallFrame(i, j);
 		if (Main.netMode != 0)
@@ -86,6 +89,7 @@ public partial class WorldGen
 	{
 		if (!AllowedToSpreadInfections)
 			return false;
+
 		if (!Main.hardMode || (NPC.downedPlantBoss && genRand.NextBool(2)))
 			return false;
 
