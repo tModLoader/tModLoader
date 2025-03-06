@@ -1,6 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonDropWithRerolls.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonDropWithRerolls.cs
-@@ -21,7 +_,7 @@
+@@ -16,12 +_,12 @@
+ 	{
+ 		bool flag = false;
+ 		for (int i = 0; i < timesToRoll; i++) {
+-			flag = flag || info.player.RollLuck(chanceDenominator) < chanceNumerator;
++			flag = flag || info.RollLuck(chanceDenominator) < chanceNumerator;
+ 		}
  
  		ItemDropAttemptResult result;
  		if (flag) {

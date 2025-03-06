@@ -8,7 +8,7 @@
  using System.Threading;
  using System.Threading.Tasks;
  using Microsoft.Xna.Framework;
-@@ -22,13 +_,16 @@
+@@ -22,13 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -18,6 +18,7 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
++using Terraria.GameContent.ItemDropRules;
  
  namespace Terraria;
  
@@ -26,6 +27,16 @@
  {
  	public static class WorldSize
  	{
+@@ -393,7 +_,8 @@
+ 						tile.lava(lava: false);
+ 						if (SolidTile(item.X, item.Y + 1) && genRand.Next(3) == 0) {
+ 							if (genRand.Next(15) == 0)
+-								AddBuriedChest(item.X, item.Y, 939, notNearOtherChests: true, 15, trySlope: false, 0);
++								//AddBuriedChest(item.X, item.Y, 939, notNearOtherChests: true, 15, trySlope: false, 0);
++								AddBuriedChest(item.X, item.Y, ChestLootLoader.LootPoolNames.Web, notNearOtherChests: true, 15, trySlope: false, 0);
+ 							else
+ 								PlacePot(item.X, item.Y, 28, genRand.Next(19, 21));
+ 						}
 @@ -780,6 +_,7 @@
  	public static readonly int oceanDistance = 250;
  	public static readonly int beachDistance = 380;
@@ -534,6 +545,87 @@
  								flag37 = true;
  						}
  
+@@ -9985,7 +_,8 @@
+ 					num551 = genRand.Next((int)Main.worldSurface, Main.maxTilesY - 400);
+ 
+ 				ushort wall = Main.tile[num550, num551].wall;
++				//if (Main.wallDungeon[wall] || wall == 87 || oceanDepths(num550, num551) || !AddBuriedChest(num550, num551, 0, notNearOtherChests: false, -1, trySlope: false, 0)) {
+-				if (Main.wallDungeon[wall] || wall == 87 || oceanDepths(num550, num551) || !AddBuriedChest(num550, num551, 0, notNearOtherChests: false, -1, trySlope: false, 0)) {
++				if (Main.wallDungeon[wall] || wall == 87 || oceanDepths(num550, num551) || !AddBuriedChest(num550, num551, null, notNearOtherChests: false, -1, trySlope: false, 0)) {
+ 					num548--;
+ 					num549--;
+ 				}
+@@ -9999,7 +_,8 @@
+ 				progress.Set((double)(num552 + num546) / (double)num547);
+ 				int num553 = genRand.Next(20, Main.maxTilesX - 20);
+ 				int num554 = genRand.Next(Main.UnderworldLayer, Main.maxTilesY - 50);
++				//if (Main.wallDungeon[Main.tile[num553, num554].wall] || !AddBuriedChest(num553, num554, 0, notNearOtherChests: false, -1, trySlope: false, 0)) {
+-				if (Main.wallDungeon[Main.tile[num553, num554].wall] || !AddBuriedChest(num553, num554, 0, notNearOtherChests: false, -1, trySlope: false, 0)) {
++				if (Main.wallDungeon[Main.tile[num553, num554].wall] || !AddBuriedChest(num553, num554, null, notNearOtherChests: false, -1, trySlope: false, 0)) {
+ 					num548--;
+ 					num552--;
+ 				}
+@@ -10088,7 +_,8 @@
+ 						}
+ 					}
+ 
++					//if (flag31 && AddBuriedChest(num538, num539, 0, notNearOtherChests: true, -1, trySlope: false, 0)) {
+-					if (flag31 && AddBuriedChest(num538, num539, 0, notNearOtherChests: true, -1, trySlope: false, 0)) {
++					if (flag31 && AddBuriedChest(num538, num539, null, notNearOtherChests: true, -1, trySlope: false, 0)) {
+ 						flag30 = true;
+ 					}
+ 					else {
+@@ -10105,8 +_,9 @@
+ 			for (int num531 = 0; num531 < GenVars.numJChests; num531++) {
+ 				double value7 = (double)num531 / (double)GenVars.numJChests;
+ 				progress.Set(value7);
+-				int nextJungleChestItem = GetNextJungleChestItem();
++				//int nextJungleChestItem = GetNextJungleChestItem();
+-				if (!AddBuriedChest(GenVars.JChestX[num531] + genRand.Next(2), GenVars.JChestY[num531], nextJungleChestItem, notNearOtherChests: false, 10, trySlope: false, 0)) {
++				//if (!AddBuriedChest(GenVars.JChestX[num531] + genRand.Next(2), GenVars.JChestY[num531], nextJungleChestItem, notNearOtherChests: false, 10, trySlope: false, 0)) {
++				if (!AddBuriedChest(GenVars.JChestX[num531] + genRand.Next(2), GenVars.JChestY[num531], ChestLootLoader.LootPoolNames.Jungle, notNearOtherChests: false, 10, trySlope: false, 0)) {
+ 					for (int num532 = GenVars.JChestX[num531] - 1; num532 <= GenVars.JChestX[num531] + 1; num532++) {
+ 						for (int num533 = GenVars.JChestY[num531]; num533 <= GenVars.JChestY[num531] + 2; num533++) {
+ 							KillTile(num532, num533);
+@@ -10122,7 +_,7 @@
+ 						}
+ 					}
+ 
+-					AddBuriedChest(GenVars.JChestX[num531], GenVars.JChestY[num531], nextJungleChestItem, notNearOtherChests: false, 10, trySlope: false, 0);
++					AddBuriedChest(GenVars.JChestX[num531], GenVars.JChestY[num531], ChestLootLoader.LootPoolNames.Jungle, notNearOtherChests: false, 10, trySlope: false, 0);
+ 				}
+ 			}
+ 		});
+@@ -10146,7 +_,8 @@
+ 					int num521 = genRand.Next(GenVars.oceanCaveTreasure[num518].Y - (int)num519 / 2, GenVars.oceanCaveTreasure[num518].Y + (int)num519 / 2 + 1);
+ 					num520 = ((num520 >= Main.maxTilesX) ? ((int)((double)num520 + num519 / 2.0)) : ((int)((double)num520 - num519 / 2.0)));
+ 					if (Main.tile[num520, num521].liquid > 250 && (Main.tile[num520, num521].liquidType() == 0 || notTheBees || remixWorldGen))
+-						flag28 = AddBuriedChest(num520, num521, contain, notNearOtherChests: false, 17, trySlope: true, 0);
++						//flag28 = AddBuriedChest(num520, num521, contain, notNearOtherChests: false, 17, trySlope: true, 0);
++						flag28 = AddBuriedChest(num520, num521, ChestLootLoader.LootPoolNames.WaterOceanCave, notNearOtherChests: false, 17, trySlope: true, 0);
+ 				}
+ 			}
+ 
+@@ -10192,7 +_,8 @@
+ 						num528 = genRand.Next(50, Main.UnderworldLayer);
+ 					}
+ 
+-					flag29 = AddBuriedChest(num527, num528, num525, notNearOtherChests: false, 17, num527 < beachDistance || num527 > Main.maxTilesX - beachDistance, 0);
++					//flag29 = AddBuriedChest(num527, num528, num525, notNearOtherChests: false, 17, num527 < beachDistance || num527 > Main.maxTilesX - beachDistance, 0);
++					flag29 = AddBuriedChest(num527, num528, ChestLootLoader.LootPoolNames.WaterAnywhere, notNearOtherChests: false, 17, num527 < beachDistance || num527 > Main.maxTilesX - beachDistance, 0);
+ 					num526++;
+ 					if (num526 > 10000)
+ 						break;
+@@ -10208,7 +_,8 @@
+ 						num530 = genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
+ 					}
+ 
+-					flag29 = AddBuriedChest(num529, num530, num525, notNearOtherChests: false, 17, num529 < beachDistance || num529 > Main.maxTilesX - beachDistance, 0);
++					//flag29 = AddBuriedChest(num529, num530, num525, notNearOtherChests: false, 17, num529 < beachDistance || num529 > Main.maxTilesX - beachDistance, 0);
++					flag29 = AddBuriedChest(num529, num530, ChestLootLoader.LootPoolNames.WaterAnywhere, notNearOtherChests: false, 17, num529 < beachDistance || num529 > Main.maxTilesX - beachDistance, 0);
+ 					num526++;
+ 					if (num526 > 10000)
+ 						break;
 @@ -13065,12 +_,17 @@
  					if (TileID.Sets.BasicChest[Main.tile[num64, num65].type]) {
  						int num104 = Main.tile[num64, num65].frameX / 18;
@@ -767,6 +859,42 @@
  					flag4 = true;
  
  				if (!flag3) {
+@@ -15976,7 +_,8 @@
+ 							break;
+ 					}
+ 
+-					AddBuriedChest((num23 + num24) / 2, num10, num25, notNearOtherChests: false, 1, trySlope: false, 0);
++					//AddBuriedChest((num23 + num24) / 2, num10, num25, notNearOtherChests: false, 1, trySlope: false, 0);
++					AddBuriedChest((num23 + num24) / 2, num10, ChestLootLoader.LootPoolNames.PyramidGold, notNearOtherChests: false, 1, trySlope: false, 0);
+ 					int num26 = genRand.Next(1, 10);
+ 					for (int num27 = 0; num27 < num26; num27++) {
+ 						int i2 = genRand.Next(num23, num24);
+@@ -17425,17 +_,21 @@
+ 					int num12 = genRand.Next(Main.maxTilesX / 8, Main.maxTilesX - Main.maxTilesX / 8);
+ 					int num13 = genRand.Next((int)Main.rockLayer, Main.maxTilesY - 350);
+ 					if (!IsTileNearby(num12, num13, 53, 20) && !IsTileNearby(num12, num13, 147, 20) && !IsTileNearby(num12, num13, 59, 20))
++						flag = AddBuriedChest(num12, num13, ChestLootLoader.LootPoolNames.LivingWood, notNearOtherChests: false, 12, trySlope: false, 0);
+-						flag = AddBuriedChest(num12, num13, contain, notNearOtherChests: false, 12, trySlope: false, 0);
++						//flag = AddBuriedChest(num12, num13, contain, notNearOtherChests: false, 12, trySlope: false, 0);
+ 				}
+ 			}
+ 
+ 			if (crimson)
+-				AddBuriedChest(num8, Y, 0, notNearOtherChests: false, 14, trySlope: false, 0);
++				//AddBuriedChest(num8, Y, 0, notNearOtherChests: false, 14, trySlope: false, 0);
++				AddBuriedChest(num8, Y, null, notNearOtherChests: false, 12, trySlope: false, 0);
+ 			else
+-				AddBuriedChest(num8, Y, 0, notNearOtherChests: false, 7, trySlope: false, 0);
++				//AddBuriedChest(num8, Y, 0, notNearOtherChests: false, 7, trySlope: false, 0);
++				AddBuriedChest(num8, Y, null, notNearOtherChests: false, 12, trySlope: false, 0);
+ 		}
+ 		else {
+-			AddBuriedChest(num8, Y, contain, notNearOtherChests: false, 12, trySlope: false, 0);
++			//AddBuriedChest(num8, Y, contain, notNearOtherChests: false, 12, trySlope: false, 0);
++			AddBuriedChest(num8, Y, ChestLootLoader.LootPoolNames.LivingWood, notNearOtherChests: false, 12, trySlope: false, 0);
+ 		}
+ 	}
+ 
 @@ -17443,7 +_,7 @@
  	{
  		int treeHeight = 1;
@@ -992,6 +1120,100 @@
  									flag2 = true;
  									break;
  								}
+@@ -21466,7 +_,8 @@
+ 		while (num5 > 0.0) {
+ 			int num6 = genRand.Next(tLeft, tRight);
+ 			int num7 = genRand.Next(tTop, tBottom);
+-			if (Main.tile[num6, num7].wall == 87 && !Main.tile[num6, num7].active() && AddBuriedChest(num6, num7, contain, notNearOtherChests: true, 16, trySlope: false, 0)) {
++			//if (Main.tile[num6, num7].wall == 87 && !Main.tile[num6, num7].active() && AddBuriedChest(num6, num7, contain, notNearOtherChests: true, 16, trySlope: false, 0)) {
++			if (Main.tile[num6, num7].wall == 87 && !Main.tile[num6, num7].active() && AddBuriedChest(num6, num7, ChestLootLoader.LootPoolNames.Lihzahrd, notNearOtherChests: true, 16, trySlope: false, 0)) {
+ 				num5 -= 1.0;
+ 				num2 = 0;
+ 			}
+@@ -22706,7 +_,8 @@
+ 						break;
+ 				}
+ 
+-				flag5 = AddBuriedChest(num81, num82, contain, notNearOtherChests: false, style2, trySlope: false, chestTileType);
++				//flag5 = AddBuriedChest(num81, num82, contain, notNearOtherChests: false, style2, trySlope: false, chestTileType);
++				flag5 = AddBuriedChest(num81, num82, ChestLootLoader.LootPoolNames.BiomeChestCommon, notNearOtherChests: false, style2, trySlope: false, chestTileType, contain);
+ 			}
+ 		}
+ 
+@@ -22829,7 +_,28 @@
+ 		}
+ 
+ 		Main.statusText = Lang.gen[58].Value + " 95%";
+-		int num92 = 1;
++		int num92 = 0;
++		List<int> chestContents = [];
++		{
++			List<ItemPoolEntry> chestContentsEntries = ChestLootLoader.GetItemPool(ChestLootLoader.ItemPoolNames.DungeonGoldRare);
++			chestContents.Capacity = chestContentsEntries.Count;
++			DropAttemptInfo dropInfo = new() {
++				IsExpertMode = Main.expertMode,
++				IsMasterMode = Main.masterMode,
++				rng = genRand,
++			};
++			for (int i = 0; i < chestContentsEntries.Count; i++) {
++				ItemPoolEntry entry = chestContentsEntries[i];
++				bool shouldSkip = false;
++				for (int j = 0; j < entry.Conditions.Count && !shouldSkip; j++) {
++					if (!entry.Conditions[j].CanDrop(dropInfo))
++						shouldSkip = true;
++				}
++				if (shouldSkip)
++					continue;
++				chestContents.Add(entry.Type);
++			}
++		}
+ 		for (int num93 = 0; num93 < GenVars.numDRooms; num93++) {
+ 			int num94 = 0;
+ 			while (num94 < 1000) {
+@@ -22838,9 +_,10 @@
+ 				int num96 = GenVars.dRoomY[num93] + genRand.Next(-num95, num95 + 1);
+ 				int num97 = 0;
+ 				int style3 = 2;
++				/*
+ 				if (num92 == 1)
+ 					num92++;
+-
++				
+ 				switch (num92) {
+ 					case 2:
+ 						num97 = 155;
+@@ -22869,7 +_,11 @@
+ 						num92 = 0;
+ 						break;
+ 				}
+-
++				*/
++				num97 = chestContents[num92 % chestContents.Count];
++				if (num97 == ItemID.GoldenKey) {
++					style3 = 0;
++				}
+ 				if ((double)num96 < Main.worldSurface + 50.0) {
+ 					num97 = 327;
+ 					style3 = 0;
+@@ -22880,7 +_,8 @@
+ 					continue;
+ 				}
+ 
+-				if (AddBuriedChest(i3, num96, num97, notNearOtherChests: false, style3, trySlope: false, 0)) {
++				//if (AddBuriedChest(i3, num96, num97, notNearOtherChests: false, style3, trySlope: false, 0)) {
++				if (AddBuriedChest(i3, num96, num97 == ItemID.GoldenKey ? ChestLootLoader.LootPoolNames.DungeonWoodenCommon : ChestLootLoader.LootPoolNames.DungeonCommon, notNearOtherChests: false, style3, trySlope: false, 0, num97)) {
+ 					num94 += 1000;
+ 					num92++;
+ 				}
+@@ -25570,7 +_,7 @@
+ 		return false;
+ 	}
+ 
+-	private static bool IsDungeon(int x, int y)
++	internal static bool IsDungeon(int x, int y)
+ 	{
+ 		if ((double)y < Main.worldSurface)
+ 			return false;
 @@ -25584,6 +_,18 @@
  		return false;
  	}
@@ -1011,6 +1233,26 @@
  	public static bool AddBuriedChest(int i, int j, int contain = 0, bool notNearOtherChests = false, int Style = -1, bool trySlope = false, ushort chestTileType = 0)
  	{
  		if (chestTileType == 0)
+@@ -25724,7 +_,7 @@
+ 
+ 			if (chestTileType == 21 && num7 > Main.maxTilesY - 205 && contain == 0) {
+ 				flag7 = true;
+-				contain = GenVars.hellChestItem[GenVars.hellChest];
++				contain = GenVars.hellChestItem[GenVars.hellChest % GenVars.hellChestItem.Length];
+ 				num9 = 4;
+ 				flag11 = true;
+ 				if (getGoodWorldGen && genRand.Next(num) == 0)
+@@ -25777,8 +_,10 @@
+ 			if (num8 >= 0) {
+ 				if (flag11) {
+ 					GenVars.hellChest++;
++					/*
+ 					if (GenVars.hellChest >= GenVars.hellChestItem.Length)
+ 						GenVars.hellChest = 0;
++					*/
+ 				}
+ 
+ 				Chest chest = Main.chest[num8];
 @@ -26845,9 +_,10 @@
  			Main.tile[i, j] = new Tile();
  
@@ -2837,6 +3079,28 @@
  	public static void TileRunner(int i, int j, double strength, int steps, int type, bool addTile = false, double speedX = 0.0, double speedY = 0.0, bool noYChange = false, bool overRide = true, int ignoreTileType = -1)
  	{
  		if (!GenVars.mudWall) {
+@@ -57694,6 +_,8 @@
+ 			Main.tile[num9, num12].slope(0);
+ 		}
+ 
++		AddBuriedChest(i, num10 - 3, ChestLootLoader.LootPoolNames.FloatingIsland, notNearOtherChests: false, getGoodWorldGen ? 2 : 13, trySlope: false, 0);
++		/*
+ 		int contain = 0;
+ 		int num13 = GenVars.skyIslandHouseCount;
+ 		if (num13 > 3)
+@@ -57714,10 +_,12 @@
+ 				break;
+ 		}
+ 
++		
+ 		if (getGoodWorldGen)
+ 			AddBuriedChest(i, num10 - 3, contain, notNearOtherChests: false, 2, trySlope: false, 0);
+ 		else
+ 			AddBuriedChest(i, num10 - 3, contain, notNearOtherChests: false, 13, trySlope: false, 0);
++		*/
+ 
+ 		if (islandStyle > 0) {
+ 			for (int num14 = 0; num14 < 100000; num14++) {
 @@ -58741,7 +_,7 @@
  			Main.tile[x, y + 1] = new Tile();
  

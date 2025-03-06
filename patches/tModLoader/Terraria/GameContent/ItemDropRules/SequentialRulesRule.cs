@@ -36,7 +36,7 @@ public class SequentialRulesRule : IItemDropRule, INestedItemDropRule
 	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction)
 	{
 		ItemDropAttemptResult result = default;
-		if (info.player.RollLuck(chanceDenominator) == 0) {
+		if (info.RollLuck(chanceDenominator) == 0) {
 			for (int i = 0; i < rules.Length; i++) {
 				IItemDropRule rule = rules[i];
 				result = resolveAction(rule, info);

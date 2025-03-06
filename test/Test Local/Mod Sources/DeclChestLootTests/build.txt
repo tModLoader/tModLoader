@@ -1,0 +1,6 @@
+displayName = DeclChestLootTests
+author = DeclChestLootTests
+version = 0.1
+
+includeSource = true
+modReferences = ItemSourceHelper

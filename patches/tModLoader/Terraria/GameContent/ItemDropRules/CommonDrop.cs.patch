@@ -16,10 +16,12 @@
  		this.itemId = itemId;
  		this.chanceDenominator = chanceDenominator;
  		this.amountDroppedMinimum = amountDroppedMinimum;
-@@ -28,7 +_,7 @@
+@@ -27,8 +_,8 @@
+ 	public virtual ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
  	{
  		ItemDropAttemptResult result;
- 		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
+-		if (info.player.RollLuck(chanceDenominator) < chanceNumerator) {
++		if (info.RollLuck(chanceDenominator) < chanceNumerator) {
 -			CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
 +			CommonCode.DropItem(info, itemId, info.rng.Next(amountDroppedMinimum, amountDroppedMaximum + 1));
  			result = default(ItemDropAttemptResult);

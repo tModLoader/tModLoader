@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Biomes/CaveHouse/HouseBuilder.cs
 +++ src/tModLoader/Terraria/GameContent/Biomes/CaveHouse/HouseBuilder.cs
+@@ -4,6 +_,7 @@
+ using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Terraria.GameContent.Generation;
++using Terraria.ModLoader;
+ using Terraria.Utilities;
+ using Terraria.WorldBuilding;
+ 
 @@ -59,7 +_,7 @@
  
  	private UnifiedRandom _random => WorldGen.genRand;
@@ -9,3 +17,53 @@
  
  	private HouseBuilder()
  	{
+@@ -339,7 +_,8 @@
+ 			ushort chestTileType = (ushort)((num2 && UsesContainers2) ? 467 : 21);
+ 			int style = (num2 ? ChestStyle : 0);
+ 			for (int i = 0; i < 10; i++) {
++				//if (flag = WorldGen.AddBuriedChest(_random.Next(2, room.Width - 2) + room.X, num, 0, notNearOtherChests: false, style, trySlope: false, chestTileType))
+-				if (flag = WorldGen.AddBuriedChest(_random.Next(2, room.Width - 2) + room.X, num, 0, notNearOtherChests: false, style, trySlope: false, chestTileType))
++				if (flag = WorldGen.AddBuriedChest(_random.Next(2, room.Width - 2) + room.X, num, null, notNearOtherChests: false, style, trySlope: false, chestTileType))
+ 					break;
+ 			}
+ 
+@@ -347,7 +_,8 @@
+ 				break;
+ 
+ 			for (int j = room.X + 2; j <= room.X + room.Width - 2; j++) {
++				//if (flag = WorldGen.AddBuriedChest(j, num, 0, notNearOtherChests: false, style, trySlope: false, chestTileType))
+-				if (flag = WorldGen.AddBuriedChest(j, num, 0, notNearOtherChests: false, style, trySlope: false, chestTileType))
++				if (flag = WorldGen.AddBuriedChest(j, num, null, notNearOtherChests: false, style, trySlope: false, chestTileType))
+ 					break;
+ 			}
+ 
+@@ -362,7 +_,8 @@
+ 				ushort chestTileType2 = (ushort)((num4 && UsesContainers2) ? 467 : 21);
+ 				int style2 = (num4 ? ChestStyle : 0);
+ 				for (int k = 0; k < 10; k++) {
++					//if (flag = WorldGen.AddBuriedChest(_random.Next(2, room2.Width - 2) + room2.X, num3, 0, notNearOtherChests: false, style2, trySlope: false, chestTileType2))
+-					if (flag = WorldGen.AddBuriedChest(_random.Next(2, room2.Width - 2) + room2.X, num3, 0, notNearOtherChests: false, style2, trySlope: false, chestTileType2))
++					if (flag = WorldGen.AddBuriedChest(_random.Next(2, room2.Width - 2) + room2.X, num3, null, notNearOtherChests: false, style2, trySlope: false, chestTileType2))
+ 						break;
+ 				}
+ 
+@@ -370,7 +_,8 @@
+ 					break;
+ 
+ 				for (int l = room2.X + 2; l <= room2.X + room2.Width - 2; l++) {
++					//if (flag = WorldGen.AddBuriedChest(l, num3, 0, notNearOtherChests: false, style2, trySlope: false, chestTileType2))
+-					if (flag = WorldGen.AddBuriedChest(l, num3, 0, notNearOtherChests: false, style2, trySlope: false, chestTileType2))
++					if (flag = WorldGen.AddBuriedChest(l, num3, null, notNearOtherChests: false, style2, trySlope: false, chestTileType2))
+ 						break;
+ 				}
+ 
+@@ -388,7 +_,8 @@
+ 			bool num6 = num5 > (int)Main.worldSurface;
+ 			ushort chestTileType3 = (ushort)((num6 && UsesContainers2) ? 467 : 21);
+ 			int style3 = (num6 ? ChestStyle : 0);
+-			if (flag = WorldGen.AddBuriedChest(i2, num5, 0, notNearOtherChests: false, style3, trySlope: false, chestTileType3))
++			//if (flag = WorldGen.AddBuriedChest(i2, num5, 0, notNearOtherChests: false, style3, trySlope: false, chestTileType3))
++			if (WorldGen.AddBuriedChest(i2, num5, null, notNearOtherChests: false, style3, trySlope: false, chestTileType3))
+ 				break;
+ 		}
+ 	}
