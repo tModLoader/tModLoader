@@ -340,6 +340,14 @@
  				break;
  		}
  
+@@ -1181,6 +_,7 @@
+ 				value4 = normalTileRect;
+ 				value4.Y = 0;
+ 				value4.Height = 10;
++				value4.X %= num10 < 3 ? 108 : 54; // Added by TML. Accounts for tilesheets with multiple columns
+ 				Main.spriteBatch.Draw(TextureAssets.CageTop[num10].Value, position, value4, drawData.finalColor, 0f, _zero, 1f, drawData.tileSpriteEffect, 0f);
+ 			}
+ 			else {
 @@ -1265,6 +_,9 @@
  			case 662:
  				return 4;
