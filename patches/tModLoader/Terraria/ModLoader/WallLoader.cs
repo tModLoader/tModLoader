@@ -268,7 +268,7 @@ public static class WallLoader
 	public static void RegisterConversion(int wallType, int conversionType, ConvertWall conversionDelegate)
 	{
 		if (wallConversionDelegates == null)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorPreResizeArraysCall", "WallLoader.RegisterConversion"));
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "WallLoader.RegisterConversion"));
 
 		var conversions = wallConversionDelegates[wallType] ??= new List<ConvertWall>[BiomeConversionLoader.BiomeConversionCount];
 		var list = conversions[conversionType] ??= new();

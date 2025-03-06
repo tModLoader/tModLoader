@@ -180,7 +180,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		Mod = mod;
 
 		if (!Mod.loading)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorLoadOnlyMethod", "AddTileEntity"));
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		Load();
 		Load_Obsolete(mod);

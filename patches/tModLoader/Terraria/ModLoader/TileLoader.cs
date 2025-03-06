@@ -703,7 +703,7 @@ public static class TileLoader
 	public static void RegisterConversion(int tileType, int conversionType, ConvertTile conversionDelegate)
 	{
 		if (tileConversionDelegates == null)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorPreResizeArraysCall", "TileLoader.RegisterConversion"));
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversion"));
 
 		var conversions = tileConversionDelegates[tileType] ??= new List<ConvertTile>[BiomeConversionLoader.BiomeConversionCount];
 		var list = conversions[conversionType] ??= new();

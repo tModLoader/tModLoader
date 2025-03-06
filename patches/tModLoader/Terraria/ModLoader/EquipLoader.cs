@@ -268,7 +268,7 @@ public static class EquipLoader
 	public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null, EquipTexture equipTexture = null)
 	{
 		if (!mod.loading)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorLoadOnlyMethod", "AddEquipTexture"));
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		if (name == null && item == null)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorEquipTextureMissingParameters"));
