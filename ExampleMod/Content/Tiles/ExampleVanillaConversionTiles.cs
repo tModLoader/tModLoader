@@ -24,8 +24,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.HallowSandstone][Type] = true;
 
-			//We need to register a conversion from the vanilla desert fossil into our modded variants., so our custom code can be called when the game attempts to convert the vanilla tile
-			//We could register all three conversions in this class and reuse the same method for all three by checking for the conversionType there if we wanted to take up less space.
+			//We need to register a conversion from the vanilla desert fossil into our modded variants, so our custom code can be called when the game attempts to convert the vanilla tile
 			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Hallow, ConvertToHallow);
 		}
 
@@ -87,19 +86,11 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.CorruptSandstone][Type] = true;
 
-			//We do the same thing as the hallow one. For this one, lets show how it would look to register multiple conversions from the same vanilla tile
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Corruption, ConvertToEvilBiome);
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Crimson, ConvertToEvilBiome);
+			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Corruption, ConvertToCorruption);
 		}
 
-		public bool ConvertToEvilBiome(int i, int j, int type, int conversionType) {
-			//Since we registered two conversions with this same method, we can use conversiontype to determine which one is happening
-			if (conversionType == BiomeConversionID.Corruption)
-				WorldGen.ConvertTile(i, j, Type);
-			else {
-				//int crimsonTileType = ModContent.TileType<CrimsonFossilTile>();
-				WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
-			}
+		public bool ConvertToCorruption(int i, int j, int type, int conversionType) {
+			WorldGen.ConvertTile(i, j, Type);
 			return false;
 		}
 
@@ -138,9 +129,15 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.CrimsonCountCollection.Add(Type);
 			DustType = DustID.Crimstone;
 			AddMapEntry(new Color(112, 33, 32));
-
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.CrimsonSandstone][Type] = true;
+
+			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Crimson, ConvertToCrimson);
+		}
+
+		public bool ConvertToCrimson(int i, int j, int type, int conversionType) {
+			WorldGen.ConvertTile(i, j, Type);
+			return false;
 		}
 
 		public override void Convert(int i, int j, int conversionType) {

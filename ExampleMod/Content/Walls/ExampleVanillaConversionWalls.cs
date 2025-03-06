@@ -19,7 +19,6 @@ namespace ExampleMod.Content.Walls
 			AddMapEntry(new Color(157, 76, 152));
 
 			//We need to register a conversion from the vanilla desert fossil wall into our modded variants, so our custom code can be called when the game attempts to convert the vanilla wall
-			//We could register all three conversions in this class and reuse the same method for all three by checking for the conversionType there if we wanted to take up less space.
 			//Note: WallID.DesertFossil is unused, WallID.DesertFossilEcho is the only fossil wall that can be placed ingame
 			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Hallow, ConvertToHallow);
 		}
@@ -58,17 +57,11 @@ namespace ExampleMod.Content.Walls
 			DustType = DustID.Corruption;
 			AddMapEntry(new Color(65, 48, 99));
 
-			//We do the same thing as the hallow one. For this one, lets show how it would look to register multiple conversions from the same vanilla wall
-			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Corruption, ConvertToEvilBiome);
-			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Crimson, ConvertToEvilBiome);
+			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Corruption, ConvertToCorruption);
 		}
 
-		public bool ConvertToEvilBiome(int i, int j, int type, int conversionType) {
-			//Since we registered two conversions with this same method, we can use conversiontype to determine which one is happening
-			if (conversionType == BiomeConversionID.Corruption)
-				WorldGen.ConvertWall(i, j, Type);
-			else
-				WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
+		public bool ConvertToCorruption(int i, int j, int type, int conversionType) {
+			WorldGen.ConvertWall(i, j, Type);
 			return false;
 		}
 
@@ -95,6 +88,13 @@ namespace ExampleMod.Content.Walls
 			WallID.Sets.Crimson[Type] = true;
 			DustType = DustID.Crimstone;
 			AddMapEntry(new Color(112, 33, 32));
+
+			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Crimson, ConvertToCrimson);
+		}
+
+		public bool ConvertToCrimson(int i, int j, int type, int conversionType) {
+			WorldGen.ConvertWall(i, j, Type);
+			return false;
 		}
 
 		public override void Convert(int i, int j, int conversionType) {
