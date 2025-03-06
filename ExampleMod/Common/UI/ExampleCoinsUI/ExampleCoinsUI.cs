@@ -36,7 +36,7 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			// Next, we create another UIElement that we will place. Since we will be calling `coinCounterPanel.Append(playButton);`, Left and Top are relative to the top left of the coinCounterPanel UIElement. 
 			// By properly nesting UIElements, we can position things relatively to each other easily.
 			Asset<Texture2D> buttonPlayTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay");
-			ExampleUIHoverImageButton playButton = new ExampleUIHoverImageButton(buttonPlayTexture, "Reset Coins Per Minute Counter");
+			ExampleUIHoverImageButton playButton = new ExampleUIHoverImageButton(buttonPlayTexture, Language.GetTextValue("Mods.ExampleMod.UI.ExampleCoinsUIState.Reset"));
 			SetRectangle(playButton, left: 110f, top: 10f, width: 22f, height: 22f);
 			// UIHoverImageButton doesn't do anything when Clicked. Here we assign a method that we'd like to be called when the button is clicked.
 			playButton.OnLeftClick += new MouseEvent(PlayButtonClicked);

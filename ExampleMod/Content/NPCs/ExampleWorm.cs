@@ -45,7 +45,7 @@ namespace ExampleMod.Content.NPCs
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Looks like a Digger fell into some aqua-colored paint. Oh well.")
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExampleWormHead")
 			]);
 		}
 

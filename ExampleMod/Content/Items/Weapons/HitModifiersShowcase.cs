@@ -4,7 +4,9 @@ using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
+using System.Linq;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -24,6 +26,21 @@ namespace ExampleMod.Content.Items.Weapons
 
 		private const int numberOfModes = 8;
 		private int mode = 0;
+
+		public const int ExtraKnockback = 50;
+		public const int ExtraCriticalHitDamage = 200;
+		public const int ExtraArmorPenetration = 10;
+		public const int ExtraScalingArmorPenetration = 50;
+
+		public static LocalizedText SwitchingText { get; private set; }
+		public static LocalizedText CurrentModeText { get; private set; }
+		public static LocalizedText[] ModeText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			SwitchingText = this.GetLocalization("Switching");
+			CurrentModeText = this.GetLocalization("CurrentMode");
+			ModeText = Enumerable.Range(0, 8).Select(i => this.GetLocalization($"Mode_{i}")).ToArray();
+		}
 
 		public override void SetDefaults() {
 			Item.width = 40;
@@ -62,12 +79,12 @@ namespace ExampleMod.Content.Items.Weapons
 				if (mode >= numberOfModes) {
 					mode = 0;
 				}
-				Main.NewText($"Switching to mode #{mode}: {GetMessageForMode()}");
+				Main.NewText(SwitchingText.Format(mode, GetMessageForMode()));
 				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync. 
 				Item.NetStateChanged();
 			}
 			else {
-				Main.NewText($"Mode #{mode}: {GetMessageForMode()}");
+				Main.NewText(CurrentModeText.Format(mode, GetMessageForMode()));
 			}
 			return true;
 		}
@@ -79,27 +96,18 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		private string GetMessageForMode() {
-			switch (mode) {
-				case 0:
-					return "Normal damage behavior";
-				case 1:
-					return "Damage variation disabled";
-				case 2:
-					return "50% extra knockback";
-				case 3:
-					return "200% extra critical hit damage";
-				case 4:
-					return "10 extra armor penetration. Test against high defense enemy";
-				case 5:
-					// This is similar to the Lightning Aura and Flymeal weapon effects
-					return "50% extra armor penetration. Ignores 50% of enemy defense";
-				case 6:
-					return "Will apply ExampleDefenseDebuff, reducing defense by 25%";
-				case 7:
-					return "On hit, gives player ExampleDodgeBuff to dodge the next hit";
-
-			}
-			return "Unknown mode";
+			return mode switch {
+				0 => ModeText[0].Value,
+				1 => ModeText[1].Value,
+				2 => ModeText[2].Format(ExtraKnockback),
+				3 => ModeText[3].Format(ExtraCriticalHitDamage),
+				4 => ModeText[4].Format(ExtraArmorPenetration),
+				// This is similar to the Lightning Aura and Flymeal weapon effects
+				5 => ModeText[5].Format(ExtraScalingArmorPenetration),
+				6 => ModeText[6].Format(ExampleDefenseDebuff.DefenseReductionPercent),
+				7 => ModeText[7].Value,
+				_ => "Unknown mode",
+			};
 		}
 
 		public override void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers) {
@@ -108,16 +116,17 @@ namespace ExampleMod.Content.Items.Weapons
 				modifiers.DamageVariationScale *= 0f;
 			}
 			if (mode == 2) {
-				modifiers.Knockback += .5f;
+				modifiers.Knockback += ExtraKnockback / 100f;
 			}
 			else if (mode == 3) {
-				modifiers.CritDamage += 2f; // Default crit is 100% more than a normal hit, so with this in effect, crits should deal 4x damage
+				modifiers.CritDamage += ExtraCriticalHitDamage / 100f; // Default crit is 100% more than a normal hit, so with this in effect, crits should deal 4x damage
 			}
 			else if (mode == 4) {
-				modifiers.ArmorPenetration += 10f;
+				modifiers.ArmorPenetration += ExtraArmorPenetration;
 			}
 			else if (mode == 5) {
-				modifiers.ScalingArmorPenetration += 0.5f;
+				// This is similar to the Lightning Aura and Flymeal weapon effects
+				modifiers.ScalingArmorPenetration += ExtraScalingArmorPenetration / 100f;
 			}
 
 			// Below is an example of using ModifyHitInfo to alter the final value of damage, between Modify and OnHit hooks.

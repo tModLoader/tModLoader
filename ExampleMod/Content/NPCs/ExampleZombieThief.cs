@@ -55,7 +55,7 @@ namespace ExampleMod.Content.NPCs
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("This type of zombie really like Example Items. They steal them as soon as they find some."),
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExampleZombieThief"),
 			]);
 		}
 

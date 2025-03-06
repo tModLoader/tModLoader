@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalProjectiles
@@ -15,6 +16,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 		// These are set when the user specifies that they want a trail.
 		private Color trailColor;
 		private bool trailActive;
+		public static LocalizedText HitMessage { get; private set; }
 
 		// Here, a method is provided for setting the above fields.
 		public void SetTrail(Color color) {
@@ -22,11 +24,15 @@ namespace ExampleMod.Common.GlobalProjectiles
 			trailActive = true;
 		}
 
+		public override void SetStaticDefaults() {
+			HitMessage = Mod.GetLocalization($"{nameof(ExampleProjectileModifications)}.HitMessage");
+		}
+
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (sayTimesHitOnThirdHit) {
 				ProjectileModificationGlobalNPC globalNPC = target.GetGlobalNPC<ProjectileModificationGlobalNPC>();
 				if (globalNPC.timesHitByModifiedProjectiles % 3 == 0) {
-					Main.NewText($"This NPC has been hit with a modified projectile {globalNPC.timesHitByModifiedProjectiles} times.");
+					Main.NewText(HitMessage.Format(globalNPC.timesHitByModifiedProjectiles));
 				}
 				target.GetGlobalNPC<ProjectileModificationGlobalNPC>().timesHitByModifiedProjectiles += 1;
 			}

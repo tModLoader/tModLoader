@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,343 @@
+@@ -63,79 +_,347 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -254,6 +254,10 @@
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int extraUpdates;
++	/// <summary>
++	/// If true, the projectile will have penetrate set to -1 and damage set to 0 when damaging an NPC and having penetrate reach 0. What this effectively does is keep the projectile from dying once it satisfies the penetrate limit while also making the projectile harmless, allowing it to despawn later in some other manner rather than immediately. 
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool stopsDealingDamageAfterPenetrateHits;
  	public int numUpdates;
 +
