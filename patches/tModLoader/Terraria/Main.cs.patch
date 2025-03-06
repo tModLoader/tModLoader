@@ -2885,12 +2885,21 @@
  		int num12 = 0;
  		for (int j = 0; j < numLines; j++) {
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
-@@ -16228,14 +_,32 @@
- 			Utils.DrawInvBG(spriteBatch, new Microsoft.Xna.Framework.Rectangle(X - num17, Y - num18, (int)zero.X + num17 * 2, (int)zero.Y + num18 + num18 / 2), new Microsoft.Xna.Framework.Color(23, 25, 81, 255) * 0.925f);
- 		}
+@@ -16219,9 +_,10 @@
+ 		if ((float)Y + zero.Y + (float)num13 > (float)num15)
+ 			Y = (int)((float)num15 - zero.Y - (float)num13);
  
 +		bool globalCanDraw = ItemLoader.PreDrawTooltip(HoverItem, lines.AsReadOnly(), ref X, ref Y);
-+
+ 		int num16 = 0;
+ 		num3 = (float)(int)mouseTextColor / 255f;
+-		if (settingsEnabled_OpaqueBoxBehindTooltips) {
++		if (globalCanDraw && settingsEnabled_OpaqueBoxBehindTooltips) {
+ 			num3 = MathHelper.Lerp(num3, 1f, 1f);
+ 			int num17 = 14;
+ 			int num18 = 9;
+@@ -16229,13 +_,29 @@
+ 		}
+ 
  		for (int k = 0; k < numLines; k++) {
 +			drawableLines[k].OriginalX = X;
 +			drawableLines[k].OriginalY = Y + num16;
