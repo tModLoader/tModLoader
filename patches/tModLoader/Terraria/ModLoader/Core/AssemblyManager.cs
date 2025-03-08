@@ -334,16 +334,32 @@ public static class AssemblyManager
 
 	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
 	{
+		Type loadingType = null;
 		try {
 			return mod.Assemblies.ToDictionary(a => a, asm =>
 				mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
 					.Where(mType => IsLoadable(mod, mType))
-					.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
+					.Select(mType => {
+						loadingType = mType;
+						return asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false);
+					})
 					.ToArray());
 		}
 		catch (Exception e) {
+			if (loadingType != null) {
+				foreach (MethodInfo method in loadingType?.GetMethods()) {
+					// check if it is an abstract method which is not overriden, and originates from tModLoader's assembly
+					if (method.IsAbstract && method.DeclaringType != loadingType &&	method.DeclaringType != null && Assembly.GetAssembly(method.DeclaringType)?.ToString() == Assembly.GetExecutingAssembly().ToString()) {
+						throw new Exceptions.GetLoadableTypesException(
+							"This mod seems to contain a class which inherits from TML but do not implement required methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in class \"{loadingType.FullName}\" caused this error.\n\n" +	e.Message,
+							e
+						);
+					}
+				}
+			}
+
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] is Type type ? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + $"The \"{loadingType}\" class caused this error.\n\n" + e.Message,
 				e
 			);
 		}
