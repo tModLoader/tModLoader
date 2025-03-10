@@ -125,6 +125,7 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonUpgradeLang { get; internal set; }
 	public static Asset<Texture2D> ButtonRunTModPorter { get; internal set; }
 	public static Asset<Texture2D> ButtonOpenFolder { get; internal set; }
+	public static Asset<Texture2D> ButtonOpenFolderCustom { get; internal set; }
 	public static Asset<Texture2D> ButtonTranslationModTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderBgTexture { get; internal set; }
@@ -160,6 +161,7 @@ public static class UICommon
 		ButtonUpgradeLang = LoadEmbeddedTexture("UI.ButtonUpgradeLang");
 		ButtonRunTModPorter = LoadEmbeddedTexture("UI.ButtonRunTModPorter");
 		ButtonOpenFolder = LoadEmbeddedTexture("UI.ButtonOpenFolder");
+		ButtonOpenFolderCustom = LoadEmbeddedTexture("UI.ButtonOpenFolderCustom");
 		ButtonTranslationModTexture = LoadEmbeddedTexture("UI.ButtonTranslationMod");
 		LoaderTexture = LoadEmbeddedTexture("UI.Loader");
 		LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG");

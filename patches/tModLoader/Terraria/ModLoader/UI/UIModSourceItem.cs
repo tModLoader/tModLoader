@@ -155,7 +155,8 @@ internal class UIModSourceItem : UIPanel
 		}
 
 		if (File.Exists(csprojFile)) {
-			var openFolderButton = new UIHoverImage(UICommon.ButtonOpenFolder, Lang.inter[110].Value) {
+			bool customModSourceFolder = builtMod != null && !string.IsNullOrWhiteSpace(builtMod.properties.modSource) && builtMod.properties.modSource != Path.Combine(ModCompile.ModSourcePath, modName);
+			var openFolderButton = new UIHoverImage(customModSourceFolder ? UICommon.ButtonOpenFolderCustom : UICommon.ButtonOpenFolder, customModSourceFolder ? Language.GetTextValue("tModLoader.MSOpenCustomSourceFolder", builtMod.properties.modSource) : Lang.inter[110].Value) {
 				RemoveFloatingPointsFromDrawPosition = true,
 				UseTooltipMouseText = true,
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
@@ -163,17 +164,6 @@ internal class UIModSourceItem : UIPanel
 			};
 			openFolderButton.OnLeftClick += (a, b) => Utils.OpenFolder(_mod);
 			Append(openFolderButton);
-			contextButtonsLeft -= 26;
-		}
-
-		if (builtMod != null && !string.IsNullOrWhiteSpace(builtMod.properties.modSource) && builtMod.properties.modSource != Path.Combine(ModCompile.ModSourcePath, modName)) {
-			var customSourceFolderIcon = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.MSCustomSourceFolder", builtMod.properties.modSource) ) {
-				RemoveFloatingPointsFromDrawPosition = true,
-				UseTooltipMouseText = true,
-				Left = { Pixels = contextButtonsLeft, Percent = 1f },
-				Top = { Pixels = 4 }
-			};
-			Append(customSourceFolderIcon);
 			contextButtonsLeft -= 26;
 		}
 	}

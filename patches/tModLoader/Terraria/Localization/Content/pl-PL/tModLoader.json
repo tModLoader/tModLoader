@@ -500,7 +500,7 @@
 		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
 		"MSLastBuilt": "Ostatnio skompilowano: {0}",
 		"MSCreateMod": "Stwórz Moda",
-		// "MSCustomSourceFolder": "Custom source path: {0}",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "LINK: Dowiedz się więcej o przygotowaniu Modów do nowej wersji tML",
 		"WikiLink": "Przeglądaj Wiki",
 		"ExampleModLink": "Sprawdź przykładowy mod",

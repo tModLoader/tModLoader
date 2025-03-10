@@ -500,7 +500,7 @@
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
 		"MSLastBuilt": "Последняя сборка: {0}",
 		"MSCreateMod": "Создать мод",
-		// "MSCustomSourceFolder": "Custom source path: {0}",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "Информация о переносе модов",
 		"WikiLink": "tModLoader Wiki",
 		"ExampleModLink": "Примеры в Example Mod",
