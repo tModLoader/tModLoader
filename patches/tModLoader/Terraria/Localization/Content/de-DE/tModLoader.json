@@ -500,6 +500,7 @@
 		"MSModSourcesCantHaveSpaces": "(Modquellen-Ordner können keine Leerzeichen haben!)",
 		"MSLastBuilt": "Letzte Erstellung: {0}",
 		"MSCreateMod": "Mod erstellen",
+		// "MSCustomSourceFolder": "Custom source path: {0}",
 		"VersionUpgrade": "LINK: Über die Mod-Migration der neuesten Aktualisierung erfahren",
 		// "WikiLink": "Explore the Wiki",
 		"ExampleModLink": "Seh dir den Beispiel Mod an",

@@ -502,6 +502,7 @@
 		"MSModSourcesCantHaveSpaces": "（ModSources 文件夹不能含有空格）",
 		"MSLastBuilt": "上次构建时间：{0}",
 		"MSCreateMod": "创建模组",
+		// "MSCustomSourceFolder": "Custom source path: {0}",
 		"VersionUpgrade": "了解如何将模组迁移到1.4",
 		"WikiLink": "查看 Wiki",
 		"ExampleModLink": "查看示例模组（Example Mod）",

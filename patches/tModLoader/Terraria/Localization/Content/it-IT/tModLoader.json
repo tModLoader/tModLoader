@@ -502,6 +502,7 @@
 		// "MSModSourcesCantHaveSpaces": "(ModSources folders can't have spaces)",
 		// "MSLastBuilt": "Last built: {0}",
 		// "MSCreateMod": "Create Mod",
+		// "MSCustomSourceFolder": "Custom source path: {0}",
 		// "VersionUpgrade": "Learn about Mod Migration",
 		// "WikiLink": "Explore the Wiki",
 		// "ExampleModLink": "Check Out the Example Mod",

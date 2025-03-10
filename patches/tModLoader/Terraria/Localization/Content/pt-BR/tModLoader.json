@@ -500,6 +500,7 @@
 		"MSModSourcesCantHaveSpaces": "(Pastas de Fontes de Mod não podem ter espaços)",
 		"MSLastBuilt": "Construído pela última vez: {0}",
 		"MSCreateMod": "Criar Mod",
+		// "MSCustomSourceFolder": "Custom source path: {0}",
 		"VersionUpgrade": "Aprenda sobre a Migração de Mods",
 		"WikiLink": "Explore o wiki",
 		"ExampleModLink": "Confira o Example Mod",

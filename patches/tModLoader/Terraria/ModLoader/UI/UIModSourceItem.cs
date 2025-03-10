@@ -165,6 +165,17 @@ internal class UIModSourceItem : UIPanel
 			Append(openFolderButton);
 			contextButtonsLeft -= 26;
 		}
+
+		if (builtMod != null && !string.IsNullOrWhiteSpace(builtMod.properties.modSource) && builtMod.properties.modSource != Path.Combine(ModCompile.ModSourcePath, modName)) {
+			var customSourceFolderIcon = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.MSCustomSourceFolder", builtMod.properties.modSource) ) {
+				RemoveFloatingPointsFromDrawPosition = true,
+				UseTooltipMouseText = true,
+				Left = { Pixels = contextButtonsLeft, Percent = 1f },
+				Top = { Pixels = 4 }
+			};
+			Append(customSourceFolderIcon);
+			contextButtonsLeft -= 26;
+		}
 	}
 
 	protected override void DrawChildren(SpriteBatch spriteBatch)
