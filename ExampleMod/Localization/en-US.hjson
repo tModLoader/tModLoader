@@ -1143,6 +1143,15 @@ Mods: {
 					Spreads the underworld
 					'''
 			}
+
+			ExampleDrawTooltips: {
+				DisplayName: Example Draw Tooltips
+				Tooltip:
+					'''
+					This item showcases various tooltip drawing hooks
+					This line has a custom icon on it
+					'''
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

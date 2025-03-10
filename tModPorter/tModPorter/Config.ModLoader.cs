@@ -545,5 +545,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalProjectile", from: "Kill", to: "OnKill");
 		HookRemoved("Terraria.ModLoader.ModProjectile", "ModifyFishingLine", "Use ModItem.ModifyFishingLine");
 		HookRemoved("Terraria.ModLoader.BuilderToggle", "DisplayColorTexture", "Use BuilderToggle.Draw");
+		// 2025.03
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreDrawTooltip", "PreDrawTooltip now has new parameters, set boxDrawn if applicable.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawTooltip", "PreDrawTooltip now has new parameters, set boxDrawn if applicable");
 	}
 }

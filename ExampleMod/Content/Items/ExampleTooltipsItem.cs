@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
+	// Showcases manipulating item tooltips. For examples of drawing tooltips using custom logic, see ExampleDrawTooltips.cs.
 	public class ExampleTooltipsItem : ModItem
 	{
 		public static LocalizedText RemoveMeText { get; private set; }

@@ -42,6 +42,11 @@ public class TooltipLine
 	/// </summary>
 	public Color? OverrideColor;
 
+	/// <summary>
+	/// Additional space allocated to this tooltip to accommodate additional drawing, such as an image or icon.
+	/// </summary>
+	public Vector2 OffsetTextSize;
+
 	internal bool OneDropLogo;
 
 	/// <summary>

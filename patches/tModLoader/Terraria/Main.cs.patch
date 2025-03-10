@@ -2866,7 +2866,7 @@
  				numLines++;
  				if (num6 > 0)
  					color = new Microsoft.Xna.Framework.Color((byte)(220f * num4), (byte)(220f * num4), (byte)(198f * num4), a);
-@@ -16184,12 +_,18 @@
+@@ -16184,15 +_,22 @@
  			}
  			else if (hoverItem.type != 3817) {
  				array[numLines] = Lang.tip[51].Value;
@@ -2885,25 +2885,31 @@
  		int num12 = 0;
  		for (int j = 0; j < numLines; j++) {
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
-@@ -16219,9 +_,10 @@
++			stringSize += drawableLines[j].OffsetTextSize;
+ 			if (stringSize.X > zero.X)
+ 				zero.X = stringSize.X;
+ 
+@@ -16219,9 +_,11 @@
  		if ((float)Y + zero.Y + (float)num13 > (float)num15)
  			Y = (int)((float)num15 - zero.Y - (float)num13);
  
-+		bool globalCanDraw = ItemLoader.PreDrawTooltip(HoverItem, lines.AsReadOnly(), ref X, ref Y);
++		bool boxDrawn = false;
++		bool globalCanDraw = ItemLoader.PreDrawTooltip(HoverItem, lines.AsReadOnly(), zero, ref X, ref Y, ref boxDrawn);
  		int num16 = 0;
  		num3 = (float)(int)mouseTextColor / 255f;
 -		if (settingsEnabled_OpaqueBoxBehindTooltips) {
-+		if (globalCanDraw && settingsEnabled_OpaqueBoxBehindTooltips) {
++		if (globalCanDraw && !boxDrawn && settingsEnabled_OpaqueBoxBehindTooltips) {
  			num3 = MathHelper.Lerp(num3, 1f, 1f);
  			int num17 = 14;
  			int num18 = 9;
-@@ -16229,13 +_,29 @@
+@@ -16229,13 +_,30 @@
  		}
  
  		for (int k = 0; k < numLines; k++) {
 +			drawableLines[k].OriginalX = X;
 +			drawableLines[k].OriginalY = Y + num16;
 +
++			num12 = 0; // Reset PreDrawTooltipLine's yOffset parameter.
 +			/*
  			if (k == yoyoLogo) {
 +			*/
