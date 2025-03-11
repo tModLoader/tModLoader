@@ -348,10 +348,10 @@ public static class AssemblyManager
 		catch (Exception e) {
 			if (loadingType != null) {
 				foreach (MethodInfo method in loadingType?.GetMethods()) {
-					// check if it is an abstract method which is not overriden, and originates from tModLoader's assembly
-					if (method.IsAbstract && method.DeclaringType != loadingType &&	method.DeclaringType != null && Assembly.GetAssembly(method.DeclaringType)?.ToString() == Assembly.GetExecutingAssembly().ToString()) {
-						throw new Exceptions.GetLoadableTypesException(
-							"This mod seems to contain a class which inherits from TML but do not implement required methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in class \"{loadingType.FullName}\" caused this error.\n\n" +	e.Message,
+					// Check if it is an abstract method which is not overridden and originates from tModLoader's assembly
+					if (method.IsAbstract && method.DeclaringType != loadingType &&	method.DeclaringType != null && Assembly.GetAssembly(method.DeclaringType)?.FullName == Assembly.GetExecutingAssembly().FullName) {
+						throw new Exception(
+							"This mod seems to contain a class which inherits from a tModLoader class but does not implement required abstract methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{loadingType.FullName}\" caused this error.\n\n" + e.Message,
 							e
 						);
 					}
