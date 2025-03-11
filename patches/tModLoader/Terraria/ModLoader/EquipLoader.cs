@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Initializers;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
@@ -267,10 +268,10 @@ public static class EquipLoader
 	public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null, EquipTexture equipTexture = null)
 	{
 		if (!mod.loading)
-			throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		if (name == null && item == null)
-			throw new Exception("AddEquipTexture requires either an item or a name be provided");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorEquipTextureMissingParameters"));
 
 		if (equipTexture == null)
 			equipTexture = new EquipTexture();

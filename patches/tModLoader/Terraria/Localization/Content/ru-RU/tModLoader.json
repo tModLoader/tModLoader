@@ -232,6 +232,8 @@
 		"LoadErrorEffectFailedToLoad": "Не удалось загрузить шейдерный эффект {0}",
 		"LoadErrorUnknownXNBFileHint": "Неизвестный xnb файл {0}. Возможно, его следует поместить в папку Fonts/ или Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Загрузка сжатых шейдерных эффектов невозможна.",
+		// "LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
+		// "LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
 		"LoadErrorNotLoading": "Mod.AddContent можно вызвать только во время загрузки",
 		"LoadErrorDuplicateName": "Невозможно добавить два {0} с одинаковым названием: {1}. Возможно, оба класса имеют общее название, но находятся в разных пространствах имён при автозагрузке, либо вы вручную вызвали метод AddContent с одинаковыми названиями {0}, или, возможно, существует другой класс с таким же именем (legacyname), который используется.",
@@ -500,6 +502,7 @@
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
 		"MSLastBuilt": "Последняя сборка: {0}",
 		"MSCreateMod": "Создать мод",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "Информация о переносе модов",
 		"WikiLink": "tModLoader Wiki",
 		"ExampleModLink": "Примеры в Example Mod",

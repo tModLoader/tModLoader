@@ -27,12 +27,13 @@ public static class AssemblyManager
 		public readonly TmodFile modFile;
 		public readonly BuildProperties properties;
 
-		public List<ModLoadContext> dependencies = new List<ModLoadContext>();
+		public List<ModLoadContext> dependencies = [];
+		public List<ModLoadContext> dependents;
 
 		public Assembly assembly;
-		public IDictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
-		public IDictionary<string, byte[]> assemblyBytes = new Dictionary<string, byte[]>();
-		public IDictionary<Assembly, Type[]> loadableTypes = new Dictionary<Assembly, Type[]>();
+		public Dictionary<string, Assembly> assemblies = [];
+		public Dictionary<string, byte[]> assemblyBytes = [];
+		public Dictionary<Assembly, Type[]> loadableTypes;
 		public long bytesLoaded = 0;
 
 		public ModLoadContext(LocalMod mod) : base(mod.Name, true)
@@ -47,6 +48,7 @@ public static class AssemblyManager
 		{
 			// required for this to actually unload
 			dependencies = null;
+			dependents = null;
 			assembly = null;
 			assemblies = null;
 			loadableTypes = null;
@@ -332,7 +334,7 @@ public static class AssemblyManager
 	/// <returns></returns>
 	public static Type[] GetLoadableTypes(Assembly assembly) => AssemblyLoadContext.GetLoadContext(assembly) is ModLoadContext mlc ? mlc.loadableTypes[assembly] : assembly.GetTypes();
 
-	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
+	private static Dictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
 	{
 		try {
 			return mod.Assemblies.ToDictionary(a => a, asm =>
@@ -405,8 +407,9 @@ public static class AssemblyManager
 				ForceJITOnMethod(method);
 			}
 			catch (Exception e) {
-				if (AssemblyManager.GetAssemblyOwner(method.DeclaringType.Assembly, out string modName))
+				if (GetAssemblyOwner(method.DeclaringType.Assembly, out string modName))
 					e.Data["mod"] = modName;
+
 				exceptions.Enqueue((e, method));
 			}
 		}, token).ConfigureAwait(false);
@@ -471,5 +474,52 @@ public static class AssemblyManager
 				throw new Exception($"{method} overrides a method which doesn't exist in any base class");
 		}
 	}
+
+	/// <summary>
+	/// Searches the assembly dependency tree for a subtype of <paramref name="parentType"/> with <see cref="Type.FullName"/> = <paramref name="name"/>
+	/// </summary>
+	public static Type FindSubtype(Type parentType, string name)
+	{
+		return FindTypes(parentType.Assembly, name).Where(t => t.IsAssignableTo(parentType)).FirstOrDefault();
+	}
+
+	/// <summary>
+	/// Searches the assembly dependency tree of <paramref name="referencedAssembly"/> for a type with <see cref="Type.FullName"/> = <paramref name="name"/>
+	/// </summary>
+	public static IEnumerable<Type> FindTypes(Assembly referencedAssembly, string name)
+	{
+		if (referencedAssembly.GetType(name) is Type type)
+			yield return type;
+
+		foreach (var assembly in EnumerateDependents(referencedAssembly))
+			if (assembly.GetType(name) is Type type2)
+				yield return type2;
+	}
+
+	private static IEnumerable<Assembly> EnumerateDependents(Assembly referencedAssembly)
+	{
+		var hostAlc = AssemblyLoadContext.GetLoadContext(referencedAssembly);
+
+		var deps = GetDependents(hostAlc).SelectMany(alc => alc.Assemblies);
+
+		var root = GetRoot(hostAlc);
+		if (referencedAssembly != root)
+			deps = deps.Concat(hostAlc.Assemblies.Where(a => a != referencedAssembly));
+
+		return deps;
+	}
+
+	private static AssemblyLoadContext tMLAlc = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
+	private static Assembly GetRoot(AssemblyLoadContext alc) => alc switch {
+		ModLoadContext mlc => mlc.assembly,
+		_ when alc == tMLAlc => Assembly.GetExecutingAssembly(),
+		_ => throw new NotSupportedException()
+	};
+
+	private static IEnumerable<AssemblyLoadContext> GetDependents(AssemblyLoadContext alc) => alc switch {
+		ModLoadContext mlc => mlc.dependents ??= new TopoSort<ModLoadContext>(loadedModContexts.Values, c => c.dependencies).AllDependendents(mlc).ToList(),
+		_ when alc == tMLAlc => loadedModContexts.Values,
+		_ => throw new NotSupportedException()
+	};
 }
 #endif

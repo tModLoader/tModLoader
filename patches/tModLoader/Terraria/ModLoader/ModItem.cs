@@ -150,7 +150,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Allows you to change whether or not a weapon receives generic prefixes. Return true if the item should receive generic prefixes and false if it should only receive them from another category.
 	/// </summary>
 	public virtual bool WeaponPrefix()
-		=> Item.DamageType.GetsPrefixesFor(DamageClass.Melee) && Item.noUseGraphic;
+		=> (Item.DamageType.GetsPrefixesFor(DamageClass.Melee) && Item.noUseGraphic) || Item.DamageType.GetsPrefixesFor(DamageClass.Generic);
 
 	/// <summary>
 	/// Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not.

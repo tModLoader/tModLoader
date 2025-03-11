@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
@@ -179,7 +180,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		Mod = mod;
 
 		if (!Mod.loading)
-			throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		Load();
 		Load_Obsolete(mod);

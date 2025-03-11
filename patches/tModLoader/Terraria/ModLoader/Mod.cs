@@ -225,7 +225,7 @@ public partial class Mod
 	public int AddNPCHeadTexture(int npcType, string texture)
 	{
 		if (!loading)
-			throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		int slot = NPCHeadLoader.ReserveHeadSlot();
 
@@ -252,7 +252,7 @@ public partial class Mod
 	public int AddBossHeadTexture(string texture, int npcType = -1)
 	{
 		if (!loading)
-			throw new Exception("AddBossHeadTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
 		NPCHeadLoader.bossHeads[texture] = slot;

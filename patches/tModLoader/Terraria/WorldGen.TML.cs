@@ -4,6 +4,7 @@ using Terraria.GameContent.Generation;
 using Terraria.WorldBuilding;
 using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace Terraria;
 
@@ -32,4 +33,82 @@ public partial class WorldGen
 	{
 		MonoModHooks.Add(pass._method.Method, hookDelegate);
 	}
+
+	/// <summary>
+	/// Converts the single tile at the given coordinate into a specified new tile type<br/>
+	/// Automatically handles tile framing and multiplayer syncing.
+	/// </summary>
+	/// <param name="i">The X coordinate of the target tile.</param>
+	/// <param name="j">The Y coordinate of the target tile.</param>
+	/// <param name="newType">The new type to convert the tile into</param>
+	/// <param name="tryBreakTrees">Should the conversion try to break trees above the converted tile if the new type is invalid for the tree</param>
+	public static void ConvertTile(int i, int j, int newType, bool tryBreakTrees = false)
+	{
+		Tile tile = Main.tile[i, j];
+		if (tile.type == (ushort)newType)
+			return;
+
+		if (tryBreakTrees)
+			TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
+
+		tile.type = (ushort)newType;
+		SquareTileFrame(i, j);
+		if (Main.netMode != 0)
+			NetMessage.SendTileSquare(-1, i, j);
+	}
+
+	/// <summary>
+	/// Converts the single wall at the given coordinate into a specified new wall type<br/>
+	/// Automatically handles wall framing and multiplayer syncing.
+	/// </summary>
+	/// <param name="i">The X coordinate of the target tile.</param>
+	/// <param name="j">The Y coordinate of the target tile.</param>
+	/// <param name="newType">The new type to convert the wall into</param>
+	public static void ConvertWall(int i, int j, int newType)
+	{
+		Tile tile = Main.tile[i, j];
+		if (tile.wall == (ushort)newType)
+			return;
+
+		tile.wall = (ushort)newType;
+		SquareWallFrame(i, j);
+		if (Main.netMode != 0)
+			NetMessage.SendTileSquare(-1, i, j);
+	}
+
+	/// <summary>
+	/// Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <see cref="ModBlockType.RandomUpdate"/> to let your infectious tiles spread around<br/>
+	/// Automatically checks for the journey mode biome spread toggle, hardmode, spread speed decrease after plantera, chlorophyte protection and sunflower protection.
+	/// </summary>
+	/// <param name="x">X coordinate of the spreading tile</param>
+	/// <param name="y">Y coordinate of the spreading tile</param>
+	/// <param name="conversionType">The <see cref="BiomeConversionID"/> of the spreading tile</param>
+	/// <param name="range">Tile range for potential conversion targets</param>
+	/// <returns>If the tile was successfully converted</returns>
+	public static bool SpreadInfectionToNearbyTile(int x, int y, int conversionType, int range = 3)
+	{
+		if (!AllowedToSpreadInfections)
+			return false;
+
+		if (!Main.hardMode || (NPC.downedPlantBoss && genRand.NextBool(2)))
+			return false;
+
+		int testX = x + genRand.Next(-range, range + 1);
+		int testY = y + genRand.Next(-range, range + 1);
+		if (!InWorld(testX, testY, 10))
+			return false;
+
+		if (nearbyChlorophyte(testX, testY)) {
+			ChlorophyteDefense(testX, testY);
+			return false;
+		}
+
+		if (CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0)
+			return false;
+
+		int preConversionType = Main.tile[testX, testY].type;
+		Convert(testX, testY, conversionType, 1);
+		return preConversionType != Main.tile[testX, testY].type;
+	}
+
 }

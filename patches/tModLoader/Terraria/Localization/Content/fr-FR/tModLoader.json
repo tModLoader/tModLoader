@@ -232,6 +232,8 @@
 		"LoadErrorEffectFailedToLoad": "Le dossier d'effets situé en {0} n'a pas chargé correctement",
 		"LoadErrorUnknownXNBFileHint": "Dossier xnb inconnu : {0}. Possiblement devrait être en Fonts/ ou Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Impossible de charger des effets compressés.",
+		// "LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
+		// "LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
 		"LoadErrorNotLoading": "Mod.AddContent ne peut être appelé que pendant le chargement",
 		"LoadErrorDuplicateName": "Impossible d'ajouter deux {0} portant le même nom: {1}. Peut-être que 2 classes partagent un nom de classe mais dans des espaces de noms différents lors du chargement automatique ou que vous avez appelé manuellement AddContent avec 2 {0} du même nom.",
@@ -500,6 +502,7 @@
 		"MSModSourcesCantHaveSpaces": "(Les noms de dossiers de Mods sources ne peuvent pas avoir d'espace)",
 		// "MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Créer un Mod",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "LIEN: En savoir plus sur la migration des Mods pour la dernière mise à jour",
 		// "WikiLink": "Explore the Wiki",
 		// "ExampleModLink": "Check Out the Example Mod",

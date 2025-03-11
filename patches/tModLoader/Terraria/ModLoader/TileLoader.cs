@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -43,6 +44,8 @@ public static class TileLoader
 	internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
 	/// <summary> Maps Tile type and Tile style to the Item type that places the tile with the style. </summary>
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
+	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
+	internal static List<ConvertTile>[][] tileConversionDelegates = null;
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -205,6 +208,8 @@ public static class TileLoader
 			TileObjectData._data.Add(null);
 		}
 
+		tileConversionDelegates = new List<ConvertTile>[nextTile][];
+
 		//Hooks
 
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
@@ -269,6 +274,7 @@ public static class TileLoader
 		globalTiles.Clear();
 		tileTypeAndTileStyleToItemType.Clear();
 		Animation.Unload();
+		tileConversionDelegates = null;
 
 		// Has to be ran on the main thread, since this may dispose textures.
 		Main.QueueMainThreadAction(() => {
@@ -687,6 +693,41 @@ public static class TileLoader
 		foreach (var hook in HookModifyLight) {
 			hook(i, j, type, ref r, ref g, ref b);
 		}
+	}
+
+	/// <summary>
+	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert"/> <br/>
+	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use custom conversion code.</param>
+	/// <param name="conversionDelegate">Code to run when the tile attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</param>
+	public static void RegisterConversion(int tileType, int conversionType, ConvertTile conversionDelegate)
+	{
+		if (tileConversionDelegates == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversion"));
+
+		var conversions = tileConversionDelegates[tileType] ??= new List<ConvertTile>[BiomeConversionLoader.BiomeConversionCount];
+		var list = conversions[conversionType] ??= new();
+		list.Add(conversionDelegate);
+	}
+
+
+	public static bool Convert(int i, int j, int conversionType)
+	{
+		int type = Main.tile[i, j].type;
+		var list = tileConversionDelegates[type]?[conversionType];
+		if (list != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
+				}
+			}
+		}
+
+		ModTile modTile = GetTile(type);
+		modTile?.Convert(i, j, conversionType);
+		return true;
 	}
 
 	public static bool? IsTileDangerous(int i, int j, int type, Player player)

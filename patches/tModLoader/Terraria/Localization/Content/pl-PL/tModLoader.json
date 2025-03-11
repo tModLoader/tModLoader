@@ -232,6 +232,8 @@
 		"LoadErrorEffectFailedToLoad": "Plik z efektem {0}, nie mógł być załadowany.",
 		"LoadErrorUnknownXNBFileHint": "Nieznany plik xnb {0}. Być może powinien znajdować się w Fonts/ lub Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Nie można załadować skompresowanych efektów",
+		// "LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
+		// "LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
 		"LoadErrorNotLoading": "Mod.AddContent może być wywołany tylko podczas ładowania",
 		"LoadErrorDuplicateName": "Nie można dodać dwóch {0} o tej samej nazwie: {1}. Być może 2 klasy dzielą nazwę klasy, ale znajdują się w różnych przestrzeniach nazw podczas autoloadingu lub ręcznie wywołałeś AddContent z 2 {0} o tej samej nazwie.",
@@ -500,6 +502,7 @@
 		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
 		"MSLastBuilt": "Ostatnio skompilowano: {0}",
 		"MSCreateMod": "Stwórz Moda",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "LINK: Dowiedz się więcej o przygotowaniu Modów do nowej wersji tML",
 		"WikiLink": "Przeglądaj Wiki",
 		"ExampleModLink": "Sprawdź przykładowy mod",
