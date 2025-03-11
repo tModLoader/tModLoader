@@ -37,6 +37,9 @@ public sealed class DrawableTooltipLine : TooltipLine
 	/// </summary>
 	public new readonly bool IsModifierBad;
 
+	/// <inheritdoc cref="TooltipLine.OffsetTextSize"/>
+	public new readonly Vector2 OffsetTextSize;
+
 	/// <summary>
 	/// The X position where the tooltip would be drawn that is not adjusted by mods.
 	/// </summary>
@@ -116,6 +119,7 @@ public sealed class DrawableTooltipLine : TooltipLine
 		OverrideColor = parent.OverrideColor;
 		OneDropLogo = parent.OneDropLogo;
 		Text = parent.Text;
+		OffsetTextSize = parent.OffsetTextSize;
 
 		Index = index;
 		OriginalX = x;

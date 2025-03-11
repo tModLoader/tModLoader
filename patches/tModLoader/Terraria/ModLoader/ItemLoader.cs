@@ -2111,13 +2111,19 @@ public static class ItemLoader
 
 	private delegate bool DelegatePreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y);
 	private static HookList HookPreDrawTooltip = AddHook<DelegatePreDrawTooltip>(g => g.PreDrawTooltip);
+	private delegate bool DelegatePreDrawTooltip2(Item item, ReadOnlyCollection<TooltipLine> lines, Vector2 textAreaSize, ref int x, ref int y, ref bool boxDrawn);
+	private static HookList HookPreDrawTooltip2 = AddHook<DelegatePreDrawTooltip2>(g => g.PreDrawTooltip);
 
-	public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+	public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, Vector2 textAreaSize, ref int x, ref int y, ref bool boxDrawn)
 	{
 		bool ret = item.ModItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
+		ret &= item.ModItem?.PreDrawTooltip(lines, textAreaSize, ref x, ref y, ref boxDrawn) ?? true;
 
 		foreach (var g in HookPreDrawTooltip.Enumerate(item)) {
 			ret &= g.PreDrawTooltip(item, lines, ref x, ref y);
+		}
+		foreach (var g in HookPreDrawTooltip2.Enumerate(item)) {
+			ret &= g.PreDrawTooltip(item, lines, textAreaSize, ref x, ref y, ref boxDrawn);
 		}
 
 		return ret;

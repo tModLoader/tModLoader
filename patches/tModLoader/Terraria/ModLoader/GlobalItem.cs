@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using System;
 
 namespace Terraria.ModLoader;
 
@@ -1066,15 +1067,24 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	{
 	}
 
+	[Obsolete("Use the other overload instead")]
+	public virtual bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+	{
+		return true;
+	}
+
 	/// <summary>
 	/// Allows you to do things before this item's tooltip is drawn.
+	/// <para/> Set <paramref name="boxDrawn"/> to true if the item tooltip background has been drawn. If it is already true, either the ModItem or an earlier GlobalItem has already drawn the item tooltip, so it would be best to not draw a duplicate background.
 	/// </summary>
 	/// <param name="item">The item</param>
 	/// <param name="lines">The tooltip lines for this item</param>
+	/// <param name="textAreaSize">The sum of the sizes of all tooltip lines</param>
 	/// <param name="x">The top X position for this tooltip. It is where the first line starts drawing</param>
 	/// <param name="y">The top Y position for this tooltip. It is where the first line starts drawing</param>
+	/// <param name="boxDrawn">Whether or not the hover text box has been drawn</param>
 	/// <returns>Whether or not to draw this tooltip</returns>
-	public virtual bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+	public virtual bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, Vector2 textAreaSize, ref int x, ref int y, ref bool boxDrawn)
 	{
 		return true;
 	}
