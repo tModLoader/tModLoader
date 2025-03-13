@@ -359,7 +359,7 @@ public static class AssemblyManager
 			}
 
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + $"The \"{loadingType}\" class caused this error.\n\n" + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (loadingType != null? $"The \"{loadingType}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
