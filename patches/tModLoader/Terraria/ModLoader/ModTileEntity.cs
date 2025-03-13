@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ObjectData;
 
 namespace Terraria.ModLoader;
 
@@ -151,7 +153,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 	}
 
 	/// <summary>
-	/// Should never be called on ModTileEntity. Replaced by NetSend and Save.
+	/// Should never be called on ModTileEntity. Replaced by NetSend and SaveData.
 	/// Would make the base method internal if not for patch size
 	/// </summary>
 	public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
@@ -160,7 +162,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 	}
 
 	/// <summary>
-	/// Should never be called on ModTileEntity. Replaced by NetReceive and Load
+	/// Should never be called on ModTileEntity. Replaced by NetReceive and LoadData
 	/// Would make the base method internal if not for patch size
 	/// </summary>
 	public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
@@ -208,6 +210,29 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 	public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
 	{
 		return -1;
+	}
+
+	/// <summary>
+	/// A generic <see cref="PlacementHook"/> that should work for the <see cref="TileObjectData.HookPostPlaceMyPlayer"/> of any typical ModTileEntity. Will result in this ModTileEntity being placed in the top left corner of the multitile.
+	/// </summary>
+	public PlacementHook Generic_HookPostPlaceMyPlayer => new PlacementHook(Generic_Hook_AfterPlacement, -1, 0, true);
+
+	/// <summary>
+	/// A generic implementation of <see cref="Hook_AfterPlacement(int, int, int, int, int, int)"/> that should work for the <see cref="TileObjectData.HookPostPlaceMyPlayer"/> of any typical ModTileEntity. Will result in this ModTileEntity being placed in the top left corner of the multitile.
+	/// <para/> Use <see cref="Generic_HookPostPlaceMyPlayer"/> directly or pair this with <c>-1, 0, true</c> as the remaining parameters of <see cref="PlacementHook"/>.
+	/// </summary>
+	public int Generic_Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
+	{
+		TileObjectData tileData = TileObjectData.GetTileData(type, style, alternate);
+		Point16 topLeft = TileObjectData.TopLeft(i, j);
+
+		if (Main.netMode == NetmodeID.MultiplayerClient) {
+			NetMessage.SendTileSquare(Main.myPlayer, topLeft.X, topLeft.Y, tileData.Width, tileData.Height);
+			NetMessage.SendData(MessageID.TileEntityPlacement, number: topLeft.X, number2: topLeft.Y, number3: Type);
+			return -1;
+		}
+
+		return Place(topLeft.X, topLeft.Y);
 	}
 
 	/// <summary>

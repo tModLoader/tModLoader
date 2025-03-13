@@ -141,4 +141,7 @@ public partial class TileObjectData
 		j -= partY;
 		return new Point16(i, j);
 	}
+
+	/// <inheritdoc cref="TopLeft(int, int)"/>
+	public static Point16 TopLeft(Point16 point) => TopLeft(point.X, point.Y);
 }

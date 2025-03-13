@@ -89,20 +89,6 @@ namespace ExampleMod.Content.TileEntities
 			Tile tile = Main.tile[x, y];
 			return tile.HasTile && tile.TileType == ModContent.TileType<BasicTileEntityTile>();
 		}
-
-		// This code can be used in any other typical tile entity as-is without any changes.
-		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
-			TileObjectData tileData = TileObjectData.GetTileData(type, style, alternate);
-			Point16 topLeft = TileObjectData.TopLeft(i, j);
-
-			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				NetMessage.SendTileSquare(Main.myPlayer, topLeft.X, topLeft.Y, tileData.Width, tileData.Height);
-				NetMessage.SendData(MessageID.TileEntityPlacement, number: topLeft.X, number2: topLeft.Y, number3: Type);
-				return -1;
-			}
-
-			return Place(topLeft.X, topLeft.Y);
-		}
 	}
 
 	// BasicTileEntityTile is the Tile that BasicTileEntityTile attaches to.
@@ -123,7 +109,7 @@ namespace ExampleMod.Content.TileEntities
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 
 			// Tell the tile to place the Tile Entity on the tile after placing it.
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<BasicTileEntity>().Hook_AfterPlacement, -1, 0, true);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = ModContent.GetInstance<BasicTileEntity>().Generic_HookPostPlaceMyPlayer;
 
 			// The additional "states" in BasicTileEntityTile.png are laid out vertically. If additional styles were added to this example later we'd want those placed horizontally.
 			TileObjectData.newTile.StyleHorizontal = true;
@@ -144,7 +130,7 @@ namespace ExampleMod.Content.TileEntities
 		// The following hooks all show accessing the Tile Entity and using it to adjust the behavior and look of this Tile.
 
 		public static string MapHoverText(string name, int i, int j) {
-			if (TryGetBasicTileEntity(i, j, out BasicTileEntity tileEntity)) {
+			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
 				return StatusText.Format(tileEntity.WaterFillPercentage);
 			}
 			else {
@@ -160,7 +146,7 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			if (TryGetBasicTileEntity(i, j, out BasicTileEntity tileEntity)) {
+			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
 				tileFrameY = (short)(tileFrameY + (tileEntity.WaterFillStage * 38));
 
 				// We can uncomment this code to spawn dust at the tile entity position for debugging purposes. Some developer mods also have tools to visualize tile entities.
@@ -173,7 +159,7 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override void MouseOver(int i, int j) {
-			if (TryGetBasicTileEntity(i, j, out BasicTileEntity tileEntity)) {
+			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
 				Player player = Main.LocalPlayer;
 				player.noThrow = 2;
 				player.cursorItemIconEnabled = true;
@@ -183,7 +169,7 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override bool RightClick(int i, int j) {
-			if (!TryGetBasicTileEntity(i, j, out BasicTileEntity tileEntity)) {
+			if (!TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
 				return true;
 			}
 			if (tileEntity.WaterFillPercentage == 100) {
@@ -202,17 +188,6 @@ namespace ExampleMod.Content.TileEntities
 			Main.NewText(StatusText.Format(tileEntity.WaterFillPercentage));
 
 			return true;
-		}
-
-		// This helper method retrieves the BasicTileEntity instance from any tile coordinate of the placed tile.
-		public static bool TryGetBasicTileEntity(int i, int j, out BasicTileEntity entity) {
-			Point16 topLeft = TileObjectData.TopLeft(i, j);
-			if (TileEntity.ByPosition.TryGetValue(topLeft, out var tileEntity) && tileEntity is BasicTileEntity basicTileEntity) {
-				entity = basicTileEntity;
-				return true;
-			}
-			entity = null;
-			return false;
 		}
 	}
 
