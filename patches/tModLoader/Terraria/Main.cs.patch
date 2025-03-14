@@ -4998,6 +4998,16 @@
  		spriteBatch.End();
  		spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, GameViewMatrix.ZoomMatrix);
  		PlayerInput.SetZoom_UI();
+@@ -34983,6 +_,9 @@
+ 		DrawInterface_Resources_ClearBuffs();
+ 		if (!ingameOptionsWindow && !playerInventory && !inFancyUI)
+ 			DrawInterface_Resources_Buffs();
++
++		spriteBatch.End();
++		spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, UIScaleMatrix);
+ 	}
+ 
+ 	public static void DrawInterface_Resources_ClearBuffs()
 @@ -35027,10 +_,18 @@
  			if (num5 == 147)
  				bannerMouseOver = true;
