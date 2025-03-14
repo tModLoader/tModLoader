@@ -334,24 +334,27 @@ public static class AssemblyManager
 
 	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
 	{
-		Type loadingType = null;
 		try {
 			return mod.Assemblies.ToDictionary(a => a, asm =>
 				mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
 					.Where(mType => IsLoadable(mod, mType))
-					.Select(mType => {
-						loadingType = mType;
-						return asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false);
-					})
+					.Select(mType => GetType(asm, mType))
 					.ToArray());
 		}
 		catch (Exception e) {
-			if (loadingType != null) {
-				foreach (MethodInfo method in loadingType?.GetMethods()) {
-					// Check if it is an abstract method which is not overridden and originates from tModLoader's assembly
-					if (method.IsAbstract && method.DeclaringType != loadingType &&	method.DeclaringType != null && Assembly.GetAssembly(method.DeclaringType)?.FullName == Assembly.GetExecutingAssembly().FullName) {
+			if (e.Data["type"] != null) {
+				foreach (MethodInfo method in ((Type)e.Data["type"]).GetMethods()) {
+					// Check if it is an abstract method which is not overridden
+					if (method.IsAbstract && method.DeclaringType != null && method.DeclaringType != (Type)e.Data["type"]) {
+						if (method.DeclaringType.Assembly.FullName == Assembly.GetExecutingAssembly().FullName)	{
+							throw new Exception(
+								"This mod seems to contain a class which inherits from a tModLoader class but does not implement required abstract methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{((Type)e.Data["type"]).FullName}\" caused this error.\n\n" + e.Message,
+								e
+							);
+						}
+
 						throw new Exception(
-							"This mod seems to contain a class which inherits from a tModLoader class but does not implement required abstract methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{loadingType.FullName}\" caused this error.\n\n" + e.Message,
+							"This mod seems to contain a class which inherits from a class in another mod but does not implement required abstract methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{((Type)e.Data["type"]).FullName}\" caused this error.\n\n" + e.Message,
 							e
 						);
 					}
@@ -359,7 +362,7 @@ public static class AssemblyManager
 			}
 
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (loadingType != null? $"The \"{loadingType}\" class caused this error.\n\n" : "") + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] != null? $"The \"{((Type)e.Data["type"]).FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
@@ -385,6 +388,24 @@ public static class AssemblyManager
 			return type.GetInterfaces().All(i => IsLoadable(mod, i));
 		}
 		catch (FileNotFoundException e) {
+			e.Data["type"] = type;
+			throw;
+		}
+	}
+
+	/// <summary>
+	/// Gets and validates the <see cref="Type"/> from the given <see cref="Assembly"/>.
+	/// </summary>
+	/// <param name="assembly">Assembly to load type from</param>
+	/// <param name="type">Target type to get</param>
+	/// <returns></returns>
+	#nullable enable
+	private static Type? GetType(Assembly assembly, Type type) {
+	#nullable disable
+		try {
+			return assembly.GetType(type.FullName, throwOnError: true, ignoreCase: false);
+		}
+		catch (TypeLoadException e)	{
 			e.Data["type"] = type;
 			throw;
 		}
