@@ -342,19 +342,20 @@ public static class AssemblyManager
 					.ToArray());
 		}
 		catch (Exception e) {
-			if (e.Data["type"] != null) {
-				foreach (MethodInfo method in ((Type)e.Data["type"]).GetMethods()) {
+			Type type = (Type)e.Data["type"];
+			if (type != null) {
+				foreach (MethodInfo method in type.GetMethods()) {
 					// Check if it is an abstract method which is not overridden
-					if (method.IsAbstract && method.DeclaringType != null && method.DeclaringType != (Type)e.Data["type"]) {
+					if (method.IsAbstract && method.DeclaringType != null && method.DeclaringType != type) {
 						if (method.DeclaringType.Assembly.FullName == Assembly.GetExecutingAssembly().FullName)	{
 							throw new Exception(
-								"This mod seems to contain a class which inherits from a tModLoader class but does not implement required abstract methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{((Type)e.Data["type"]).FullName}\" caused this error.\n\n" + e.Message,
+								"This mod seems to contain a class which inherits from a tModLoader class but does not implement required abstract methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{type.FullName}\" caused this error.\n\n" + e.Message,
 								e
 							);
 						}
 
 						throw new Exception(
-							"This mod seems to contain a class which inherits from a class in another mod but does not implement required abstract methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{((Type)e.Data["type"]).FullName}\" caused this error.\n\n" + e.Message,
+							"This mod seems to contain a class which inherits from a class in another mod but does not implement required abstract methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{type.FullName}\" caused this error.\n\n" + e.Message,
 							e
 						);
 					}
@@ -362,7 +363,7 @@ public static class AssemblyManager
 			}
 
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] != null? $"The \"{((Type)e.Data["type"]).FullName}\" class caused this error.\n\n" : "") + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (type != null? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
