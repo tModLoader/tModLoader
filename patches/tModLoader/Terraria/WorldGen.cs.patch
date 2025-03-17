@@ -2846,15 +2846,20 @@
  			case 48:
  			case 137:
  			case 138:
-@@ -58764,6 +_,7 @@
+@@ -58764,6 +_,8 @@
  				}
  				if (Main.tile[x, y - 1].active()) {
  					switch (Main.tile[x, y - 1].type) {
-+						case var t when TileID.Sets.BasicChest[t] || TileID.Sets.BasicDresser[t]:
++						case var t when TileID.Sets.BasicChest[t] || TileID.Sets.BasicDresser[t] || TileID.Sets.PreventsTileHammeringIfOnTopOfIt[t]:
++						/*
  						case 21:
  						case 26:
  						case 77:
-@@ -58780,6 +_,7 @@
+@@ -58777,9 +_,11 @@
+ 						case 475:
+ 						case 488:
+ 						case 597:
++						*/
  							return false;
  					}
  				}
