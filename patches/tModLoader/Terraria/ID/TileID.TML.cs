@@ -19,6 +19,13 @@ partial class TileID
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
 
+		/// <summary>
+		/// Prevents a tile immediately below a tile of this type from being hammered (sloped). Since a sloped tile would break a typical bottom tile anchor, this prevents such tiles from being broken in this manner. Anything in <see cref="BasicChest"/> or <see cref="BasicDresser"/> are also protected in the same manner. This is typically used for tiles that shouldn't break as easily as other tiles, such as tiles containing Tile Entities holding items.
+		/// <para/> Some examples include DemonAltar, Teleporter, Mannequins, and HatRack.
+		/// <para/> See also <see cref="PreventsTileRemovalIfOnTopOfIt"/>, which is frequently set in tandem with this.
+		/// </summary>
+		public static bool[] PreventsTileHammeringIfOnTopOfIt = Factory.CreateBoolSet(false, 21, 26, 77, 88, 235, 237, 441, 467, 468, 470, 475, 488, 597);
+
 		/// <summary>Used in <see cref="FallingBlockProjectile"/>.</summary>
 		public class FallingBlockProjectileInfo
 		{
