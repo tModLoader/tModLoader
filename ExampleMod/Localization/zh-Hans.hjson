@@ -1114,7 +1114,7 @@ Mods: {
 				// DisplayName: Basic Tile Entity Item
 				// Tooltip: Collects rain water. Right Click when full to claim a water bucket.
 			}
-			
+
 			CorruptFossilTileItem: {
 				// DisplayName: Corrupt Fossil Tile Item
 				// Tooltip: ""
