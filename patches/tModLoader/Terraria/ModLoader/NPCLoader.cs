@@ -17,6 +17,7 @@ using Terraria.ModLoader.Utilities;
 using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.IO;
 using Terraria.GameContent.Personalities;
+using System.Diagnostics;
 
 namespace Terraria.ModLoader;
 
@@ -31,7 +32,7 @@ public static class NPCLoader
 	internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 	internal static readonly IDictionary<int, int> itemToBanner = new Dictionary<int, int>();
 	/// <summary>
-	/// Allows you to stop an NPC from dropping loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for either removing an item or change the drop rate of an item in the NPC's loot table. To change the drop rate of an item, use the PreNPCLoot hook, spawn the item yourself, then add the item's ID to this list.
+	/// Allows you to stop an NPC from dropping specific loot by adding item IDs to this list. This list will be cleared whenever NPCLoot ends. Useful for dynamically removing an item in the NPC's loot table. To remove an item drop use the <see cref="ModNPC.PreKill"/> hook to add the item's ID to this list. Editing the drop rules themselves is usually the better and more compatible approach, however.
 	/// </summary>
 	public static readonly IList<int> blockLoot = new List<int>();
 
@@ -118,7 +119,7 @@ public static class NPCLoader
 			// Detect NPC with BannerItem set but Banner not set.
 			// Detect modded Banner values with no associated Banner item.
 			// Detect NPC with BannerItem values that don't match the BannerItem associated with the Banner.
-			if (npc.BannerItem != 0 && npc.Banner == 0 || npc.Banner != 0 && npc.Banner >= NPCID.Count && (!bannerToItem.ContainsKey(npc.Banner) || bannerToItem[npc.Banner] != npc.BannerItem)) {
+			if (npc.BannerItem != 0 && npc.Banner == 0 || npc.Banner >= NPCID.Count && (!bannerToItem.ContainsKey(npc.Banner) || npc.BannerItem != 0 && bannerToItem[npc.Banner] != npc.BannerItem)) {
 				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", npc.Mod.Name, npc.Name));
 			}
 		}
@@ -353,24 +354,31 @@ public static class NPCLoader
 
 	public static byte[] WriteExtraAI(NPC npc)
 	{
+		// Data is ordered as follows: GlobalProjectile BitWriter, ModProjectile Bytes, GlobalProjectile Bytes
 		using var stream = new MemoryStream();
 		using var modWriter = new BinaryWriter(stream);
 
-		npc.ModNPC?.SendExtraAI(modWriter);
-
 		using var bufferedStream = new MemoryStream();
-		using var globalWriter = new BinaryWriter(bufferedStream);
+		using var binaryWriter = new BinaryWriter(bufferedStream);
 
 		BitWriter bitWriter = new BitWriter();
 
-		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
-			g.SendExtraAI(npc, bitWriter, globalWriter);
-		}
+		npc.ModNPC?.SendExtraAI(binaryWriter);
 
+		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
+			g.SendExtraAI(npc, bitWriter, binaryWriter);
+		}
+	
 		bitWriter.Flush(modWriter);
 		modWriter.Write(bufferedStream.ToArray());
 
-		return stream.ToArray();
+		byte[] bytes = stream.ToArray();
+		// If the only byte is the bitWriter.Flush length byte, no extra data.
+		if (bytes.Length == 1) {
+			Debug.Assert(bytes[0] == 0);
+			return null;
+		}
+		return bytes;
 	}
 
 	public static byte[] ReadExtraAI(BinaryReader reader)
@@ -385,14 +393,15 @@ public static class NPCLoader
 		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
-		npc.ModNPC?.ReceiveExtraAI(modReader);
-
-		BitReader bitReader = new BitReader(modReader);
-
-		bool anyGlobals = false;
+		GlobalNPC lastGlobalNPC = null;
 		try {
+			BitReader bitReader = new BitReader(modReader);
+
+			var bitReaderEnd = stream.Position;
+			npc.ModNPC?.ReceiveExtraAI(modReader);
+
 			foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
-				anyGlobals = true;
+				lastGlobalNPC = g;
 				g.ReceiveExtraAI(npc, bitReader, modReader);
 			}
 
@@ -401,19 +410,21 @@ public static class NPCLoader
 			}
 
 			if (stream.Position < stream.Length) {
-				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
+				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length - bitReaderEnd} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (Exception e) {
+		catch (Exception) {
 			string message = $"Error in ReceiveExtraAI for NPC {npc.ModNPC?.FullName ?? npc.TypeName}";
-			if (anyGlobals) {
+			if (lastGlobalNPC != null) {
 				message += ", may be caused by one of these GlobalNPCs:";
 				foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
 					message += $"\n\t{g.FullName}";
+					if (lastGlobalNPC == g)
+						break;
 				}
 			}
 
-			Logging.tML.Error(message, e);
+			Logging.tML.Error(message);
 		}
 	}
 

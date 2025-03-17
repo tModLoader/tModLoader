@@ -37,6 +37,7 @@ public static class ModLoader
 	public static bool ShowFirstLaunchWelcomeMessage;
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
+	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
 	public static int LatestNewsTimestamp; 
 
@@ -75,7 +76,8 @@ public static class ModLoader
 	internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 	internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
+	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found so it should only be used for mods known to be enabled, such as a strong mod dependency.
+	/// <para/> Use <see cref="TryGetMod(string, out Mod)"/> instead if the mod might not be enabled. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	public static Mod GetMod(string name) => modsByName[name];
 
@@ -372,6 +374,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
+		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
 	}
 
 	internal static void LoadConfiguration()
@@ -399,6 +402,7 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
+		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
 	}
 
 	internal static void MigrateSettings()

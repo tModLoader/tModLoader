@@ -55,4 +55,12 @@ itemFoundData.CopyTo(itemsFound, 0);
 	<CreateNamedXSetFinalKeyB>
 		<para/> The final key for this named ID set using this overload will be: <c>"{mod.Name}/{key}"</c>
 	</CreateNamedXSetFinalKeyB>
+	<AIMethodOrder>
+		<para/> The order of the AI related methods is: <code>
+if (PreAI()) {
+	VanillaAI()
+	AI()
+}
+PostAI()</code>
+	</AIMethodOrder>
 </Common>

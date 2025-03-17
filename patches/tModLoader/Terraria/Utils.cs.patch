@@ -96,6 +96,17 @@
  	public static float MultiLerp(float percent, params float[] floats)
  	{
  		float num = 1f / ((float)floats.Length - 1f);
+@@ -175,6 +_,10 @@
+ 		return (t - from) / (to - from);
+ 	}
+ 
++	/// <summary>
++	/// Remaps an input value (<paramref name="fromValue"/>) in the range of <paramref name="fromMin"/> to <paramref name="fromMax"/> to the corresponding value proportionally along the range from <paramref name="toMin"/> to <paramref name="toMax"/>.
++	/// <para/> For example, an input of (1.5f, 1, 3, 20, 30) would result in 22.5 because 1.5 is 25% between 1 and 3 and 25% between 20 and 30 is 22.5.
++	/// </summary>
+ 	public static float Remap(float fromValue, float fromMin, float fromMax, float toMin, float toMax, bool clamped = true) => MathHelper.Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
+ 
+ 	public static void ClampWithinWorld(ref int minX, ref int minY, ref int maxX, ref int maxY, bool lastValuesInclusiveToIteration = false, int fluffX = 0, int fluffY = 0)
 @@ -278,6 +_,10 @@
  		return (t - from) / (to - from);
  	}

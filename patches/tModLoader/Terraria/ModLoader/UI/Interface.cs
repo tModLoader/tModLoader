@@ -132,9 +132,9 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 			}
 
-			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare && !ModLoader.WarnedFamilyShareDontShowAgain) {
 				ModLoader.WarnedFamilyShare = true;
-				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
+				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode, altButtonText: Language.GetTextValue("tModLoader.DontShowAgain"), altButtonAction: () => { ModLoader.WarnedFamilyShareDontShowAgain = true; Main.SaveSettings(); } );
 			}
 
 			/* For Major Updates that span multi-month

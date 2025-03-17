@@ -42,6 +42,8 @@ namespace ExampleMod.Content.NPCs
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
 
+		public static LocalizedText UpgradedText { get; private set; }
+
 		public override void Load() {
 			// Adds our Shimmer Head to the NPCHeadLoader.
 			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
@@ -93,6 +95,8 @@ namespace ExampleMod.Content.NPCs
 				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
 				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Shimmer_Party")
 			);
+
+			UpgradedText = this.GetLocalization("Upgraded");
 		}
 
 		public override void SetDefaults() {
@@ -113,18 +117,17 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				// Sets the preferred biomes of this town NPC listed in the bestiary.
 				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Hailing from a mysterious greyscale cube world, the Example Person is here to help you understand everything about tModLoader."),
+				// Sets your NPC's flavor text in the bestiary. (use localization keys)
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson_1"),
 
 				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
-			});
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson_2")
+			]);
 		}
 
 		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
@@ -287,7 +290,7 @@ namespace ExampleMod.Content.NPCs
 				if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
 					SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
+					Main.npcChatText = UpgradedText.Value;
 
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
 					var entitySource = NPC.GetSource_GiftOrReward();

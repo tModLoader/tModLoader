@@ -164,7 +164,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Example Minion Boss that spawns minions on spawn, summoned with a spawn item. Showcases boss minion handling, multiplayer considerations, and custom boss bar.")
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.MinionBossBody")
 			});
 		}
 

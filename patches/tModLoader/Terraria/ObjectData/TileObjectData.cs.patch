@@ -400,13 +400,14 @@
  	public bool StyleHorizontal {
  		get {
  			if (_tileObjectStyle == null)
-@@ -707,6 +_,11 @@
+@@ -707,6 +_,12 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Used by alternate placements to offset the calculated placement style.
-+	/// <para/> Equal to the value passed into <see cref="addAlternate(int)"/>. 
++	/// <para/> Equal to the value passed into <see cref="addAlternate(int)"/>.
++	/// <para/> If using <see cref="GetTileData(Tile)"/> note that this is <b>NOT the tile style or placement style</b> of that Tile. Use <see cref="GetTileInfo(Tile, ref int, ref int)"/> or <see cref="GetTileStyle(Tile)"/> instead to query those.
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int Style {

@@ -7,7 +7,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -84,13 +_,34 @@
+@@ -84,13 +_,35 @@
  	};
  	public static TownNPCProfiles Instance = new TownNPCProfiles();
  
@@ -36,6 +36,7 @@
  	public static ITownNPCProfile LegacyWithSimpleShimmer(string subPath, int headIdNormal, int headIdShimmered, bool uniquePartyTexture = true, bool uniquePartyTextureShimmered = true) => new Profiles.StackedNPCProfile(new Profiles.LegacyNPCProfile("Images/TownNPCs/" + subPath, headIdNormal, includeDefault: true, uniquePartyTexture), new Profiles.LegacyNPCProfile("Images/TownNPCs/Shimmered/" + subPath, headIdShimmered, includeDefault: true, uniquePartyTextureShimmered));
  	public static ITownNPCProfile TransformableWithSimpleShimmer(string subPath, int headIdNormal, int headIdShimmered, bool uniqueCreditTexture = true, bool uniqueCreditTextureShimmered = true) => new Profiles.StackedNPCProfile(new Profiles.TransformableNPCProfile("Images/TownNPCs/" + subPath, headIdNormal, uniqueCreditTexture), new Profiles.TransformableNPCProfile("Images/TownNPCs/Shimmered/" + subPath, headIdShimmered, uniqueCreditTextureShimmered));
  
++	/// <summary> Retrieves the head index of this town NPC, accounting for shimmer and other variants. Returns -1 if no head index found. (See also <see cref="TextureAssets.NpcHead"/>, <see cref="AutoloadHead"/>, <see cref="Mod.AddNPCHeadTexture(int, string)"/>) </summary>
  	public static int GetHeadIndexSafe(NPC npc)
  	{
 -		if (Instance.GetProfile(npc.type, out var profile))

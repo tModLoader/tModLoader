@@ -4211,7 +4211,17 @@
  
  			if (stoned != lastStoned) {
  				if (whoAmI == Main.myPlayer && stoned) {
-@@ -19566,11 +_,14 @@
+@@ -19559,18 +_,24 @@
+ 						num21 = (int)((position.Y - 1f) / 16f);
+ 
+ 					for (int num22 = num19; num22 <= num20; num22++) {
++						/*
+ 						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && (Main.tile[num22, num21].type == 189 || Main.tile[num22, num21].type == 196 || Main.tile[num22, num21].type == 460 || Main.tile[num22, num21].type == 666)) {
++						*/
++						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && TileID.Sets.NegatesFallDamage[Main.tile[num22, num21].type]) {
+ 							num18 = 0;
+ 							break;
+ 						}
  					}
  				}
  
@@ -6813,6 +6823,19 @@
  
  			bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  			ItemCheck_CutTiles(sItem, itemRectangle, shouldIgnore2);
+@@ -34195,8 +_,12 @@
+ 			NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, sItem.makeNPC, sItem.placeStyle, whoAmI);
+ 		}
+ 		else if (position.X / 16f - (float)tileRangeX - (float)sItem.tileBoost <= (float)tileTargetX && (position.X + (float)width) / 16f + (float)tileRangeX + (float)sItem.tileBoost - 1f >= (float)tileTargetX && position.Y / 16f - (float)tileRangeY - (float)sItem.tileBoost <= (float)tileTargetY && (position.Y + (float)height) / 16f + (float)tileRangeY + (float)sItem.tileBoost - 2f >= (float)tileTargetY) {
++			/*
+ 			int num = Main.mouseX + (int)Main.screenPosition.X;
+ 			int num2 = Main.mouseY + (int)Main.screenPosition.Y;
++			*/
++			int num = (int)Main.MouseWorld.X;
++			int num2 = (int)Main.MouseWorld.Y;
+ 			int i = num / 16;
+ 			int j = num2 / 16;
+ 			if (!WorldGen.SolidTile(i, j)) {
 @@ -34216,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;
@@ -8419,7 +8442,7 @@
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
  		binaryWriter.Write(279);
-@@ -41992,8 +_,30 @@
+@@ -41992,8 +_,31 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
@@ -8441,6 +8464,7 @@
 +		if (string.IsNullOrEmpty(path))
 +			return;
 +
++		Main.statusText = Language.GetTextValue("tModLoader.BackingUpPlayerFile");
 +		BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);

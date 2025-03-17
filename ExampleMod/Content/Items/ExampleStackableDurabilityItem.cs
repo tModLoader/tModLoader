@@ -5,6 +5,7 @@ using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -16,6 +17,11 @@ namespace ExampleMod.Content.Items
 		// All items in the stack have the same durability
 		// Durability is combined and averaged when stacking
 		public float durability;
+		public static LocalizedText DurabilityText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			DurabilityText = this.GetLocalization("Durability");
+		}
 
 		public override void SetDefaults() {
 			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
@@ -58,7 +64,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			tooltips.Add(new TooltipLine(Mod, "ExampleStackableDurabilityItem", $"Durability: {(int)(durability * 100)}%") { OverrideColor = Color.LightGreen });
+			tooltips.Add(new TooltipLine(Mod, "ExampleStackableDurabilityItem", DurabilityText.Format((int)(durability * 100))) { OverrideColor = Color.LightGreen });
 		}
 
 		private static float WeightedAverage(float durability1, int stack1, float durability2, int stack2) {

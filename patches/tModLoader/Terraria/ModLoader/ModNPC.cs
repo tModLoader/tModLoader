@@ -237,6 +237,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool PreAI()
@@ -246,12 +247,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. This will only be called if PreAI returns true.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	public virtual void AI()
 	{
 	}
 
-	//Allows you to determine how this NPC behaves. This will be called regardless of what PreAI returns.
+	/// <summary>
+	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
+	/// </summary>
 	public virtual void PostAI()
 	{
 	}
@@ -306,6 +311,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Whether or not to run the code for checking whether this NPC will remain active. Return false to stop this NPC from being despawned and to stop this NPC from counting towards the limit for how many NPCs can exist near a player. Returns true by default.
+	/// <para/> See also <see cref="NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots"/> for an option that still counts towards NPC spawn limits.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool CheckActive()
@@ -332,7 +338,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). Returns true by default.
+	/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). This method can also be used to dynamically prevent specific item loot using <see cref="NPCLoader.blockLoot"/>, but editing the drop rules themselves is usually the better approach.
+	/// <para/> Returning false will skip dropping loot, the <see cref="NPCLoader.OnKill(NPC)"/> methods, and logic setting boss flags (<see cref="NPC.DoDeathEvents"/>).
+	/// <para/> Returns true by default. 
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool PreKill()
@@ -415,8 +423,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this NPC does to a player. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to modify the damage, etc., that this NPC does to a player. 
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -455,8 +464,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. <br/>
-	/// Runs in single player or on the server. <br/>
+	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. 
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Runs in single player or on the server.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -501,8 +511,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. 
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
@@ -535,6 +546,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="modifiers"></param>
@@ -554,6 +566,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
+	/// This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
 	/// </summary>
 	/// <param name="modifiers"></param>
 	public virtual void ModifyIncomingHit(ref NPC.HitModifiers modifiers)

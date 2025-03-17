@@ -66,7 +66,7 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
 			return false;
 		}
-		
+
 		if (modFile.TModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor()) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.WrongVersionCantPublishError");
 			return false;
@@ -85,10 +85,28 @@ public partial class WorkshopSocialModule
 		using var defaultDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{DescriptionFileName}"));
 		string defaultDescription = defaultDescriptionStream.ReadToEnd();
 		string modDescription = Encoding.UTF8.GetString(modFile.GetBytes(DescriptionFileName));
+		if (modDescription == defaultDescription) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionInvalid", DescriptionFileName));
+			return false;
+		}
 
-		if (modDescription.Count(char.IsLetterOrDigit) < MinimumDefaultDescriptionCharacters || modDescription == defaultDescription) {
+		if (modDescription.Count(char.IsLetterOrDigit) < MinimumDefaultDescriptionCharacters) {
 			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionLengthTooShort", DescriptionFileName));
 			return false;
+		}
+
+		// Check workshop description
+		const string WorkshopDescriptionFileName = "description_workshop.txt";
+		if (modFile.HasFile(WorkshopDescriptionFileName)) {
+			const string formattingGuidePage = "https://steamcommunity.com/comment/Guide/formattinghelp";
+			using var defaultWorkshopDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{WorkshopDescriptionFileName}"));
+			string defaultWorkshopDescription = defaultWorkshopDescriptionStream.ReadToEnd();
+			string workshopDescription = Encoding.UTF8.GetString(modFile.GetBytes(WorkshopDescriptionFileName));
+
+			if (workshopDescription == defaultWorkshopDescription || workshopDescription.Contains(formattingGuidePage)) {
+				IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModWorkshopDescriptionInvalid", WorkshopDescriptionFileName, DescriptionFileName));
+				return false;
+			}
 		}
 
 		// Check mod icon
@@ -143,7 +161,7 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
-		
+
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
 		if (MakeTemporaryFolder(contentFolderPath)) {
@@ -310,7 +328,7 @@ public partial class WorkshopSocialModule
 		Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
 
 		// folder which will be used for the upload when the artifact is downloaded in post-build action. 
-		Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder); 
+		Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder);
 
 		// The Folder where we will put all the files that should be included in the build artifact
 		string publishFolder = $"{ModOrganizer.modPath}/Workshop";

@@ -336,7 +336,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -223,9 +_,25 @@
+@@ -223,61 +_,225 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -360,9 +360,12 @@
 +	/// Denotes whether or not Skeletron Prime has been defeated at least once in the current world.
 +	/// </summary>
  	public static bool downedMechBoss3 = false;
++	/// <summary>
++	/// True for the indexed NPC type (<see cref="NPC.type"/>) if there are any active NPC in the world. This array is updated once a game update and could technically be incorrect for a game update if an NPC spawned or despawned this game update. It is much more efficient than the <see cref="AnyNPCs"/> method, but <see cref="AnyNPCs"/> should be used for code that needs to know for sure if an NPC is active right now or not.
++	/// </summary>
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,193 @@
+ 	private static int spawnRate = defaultSpawnRate;
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -544,6 +547,9 @@
 +	/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
 +	/// </summary>
  	public float value;
++	/// <summary>
++	/// The coin value of dropped coins this NPC has picked up. The <see href="https://terraria.wiki.gg/wiki/Coin_pickup_in_Expert_Mode">Coin pickup in Expert Mode wiki page has more details.</see> See also <see cref="NPCID.Sets.RespawnEnemyID"/> and <see cref="NPCID.Sets.CantTakeLunchMoney"/>.
++	/// </summary>
  	public int extraValue;
 +	/// <summary>
 +	/// Indicates that this NPC does not currently take damage, attacks won't hit it. Some example usage includes Blazing Wheel, Spike Ball, Golem Head during 2nd phase, Jellyfish while electrified, and Granite Golem while shielding.
@@ -785,6 +791,14 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
+@@ -1263,6 +_,7 @@
+ 		return true;
+ 	}
+ 
++	/// <summary> Retrieves the default head index of the town NPC type. To account for shimmer and other variants use <see cref="TownNPCProfiles.GetHeadIndexSafe(NPC)"/> instead. Returns -1 if no head index found. </summary>
+ 	public static int TypeToDefaultHeadIndex(int type)
+ 	{
+ 		switch (type) {
 @@ -1345,7 +_,10 @@
  			case 684:
  				return 53;
@@ -1125,6 +1139,15 @@
  		if (aiStyle == 0) {
  			if (Main.netMode != 1) {
  				for (int i = 0; i < 255; i++) {
+@@ -19686,7 +_,7 @@
+ 				num567 = Main.player[target].position.Y + (float)(Main.player[target].height / 2) - vector69.Y;
+ 				num568 = (float)Math.Sqrt(num566 * num566 + num567 * num567);
+ 				rotation = (float)Math.Atan2(num567, num566) - 1.57f;
+-				if (Main.netMode == 1) {
++				if (Main.netMode != NetmodeID.MultiplayerClient) { // TML: Fix inverted netmode check
+ 					localAI[0] += 1f;
+ 					if (localAI[0] > 80f) {
+ 						localAI[0] = 0f;
 @@ -31736,7 +_,7 @@
  			timeLeft = 86400;
  		}
@@ -1704,6 +1727,15 @@
  	public void TargetClosest(bool faceTarget = true)
  	{
  		float distance = 0f;
+@@ -58329,7 +_,7 @@
+ 			netUpdate = true;
+ 	}
+ 
+-	public bool DoesntDespawnToInactivityAndCountsNPCSlots() => type == 668;
++	public bool DoesntDespawnToInactivityAndCountsNPCSlots() => NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots[type];
+ 
+ 	public bool DoesntDespawnToInactivity()
+ 	{
 @@ -58438,6 +_,9 @@
  		if (!active || DoesntDespawnToInactivity())
  			return;
@@ -2914,6 +2946,15 @@
  		bool result = false;
  		if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
  			result = true;
+@@ -74607,7 +_,7 @@
+ 
+ 			if (Collision.shimmer) {
+ 				shimmerWet = true;
+-				AddBuff(353, 100);
++				AddBuff(BuffID.Shimmer, 100, true); // TML: Pass true to quiet as clients execute this as well.
+ 			}
+ 		}
+ 
 @@ -74862,6 +_,9 @@
  		if (IsABestiaryIconDummy)
  			newColor = Color.White;

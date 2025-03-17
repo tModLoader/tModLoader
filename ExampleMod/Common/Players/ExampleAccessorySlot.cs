@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -34,6 +35,14 @@ namespace ExampleMod.Common.Players
 
 	public class ExampleModWingSlot : ModAccessorySlot
 	{
+		public static LocalizedText WingsText { get; private set; }
+		public static LocalizedText WingsDyeText { get; private set; }
+
+		public override void SetupContent() {
+			WingsText = Mod.GetLocalization($"{nameof(ExampleModWingSlot)}.Wings");
+			WingsDyeText = Mod.GetLocalization($"{nameof(ExampleModWingSlot)}.WingsDye");
+		}
+
 		public override bool CanAcceptItem(Item checkItem, AccessorySlotType context) {
 			if (checkItem.wingSlot > 0) // if is Wing, then can go in slot
 				return true;
@@ -70,10 +79,10 @@ namespace ExampleMod.Common.Players
 			switch (context) {
 				case AccessorySlotType.FunctionalSlot:
 				case AccessorySlotType.VanitySlot:
-					Main.hoverItemName = "Wings";
+					Main.hoverItemName = WingsText.Value;
 					break;
 				case AccessorySlotType.DyeSlot:
-					Main.hoverItemName = "Wings Dye";
+					Main.hoverItemName = WingsDyeText.Value;
 					break;
 			}
 		}

@@ -8,6 +8,9 @@ partial class ItemDropDatabase
 	private Dictionary<int, List<IItemDropRule>> _entriesByItemId = new Dictionary<int, List<IItemDropRule>>();
 	private Dictionary<int, List<int>> _itemIdsByType = new Dictionary<int, List<int>>();
 
+	/// <summary>
+	/// Retrieves all the registered <see cref="IItemDropRule"/> for this specific item type.
+	/// </summary>
 	public List<IItemDropRule> GetRulesForItemID(int itemID)
 	{
 		List<IItemDropRule> list = new List<IItemDropRule>();

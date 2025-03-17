@@ -260,6 +260,15 @@
  	public static int renderCount = 99;
  	private const int MF_BYPOSITION = 1024;
  	public static GraphicsDeviceManager graphics;
+@@ -606,7 +_,7 @@
+ 	public static BasicDebugDrawer DebugDrawer;
+ 	public static SamplerState SamplerStateForCursor = SamplerState.LinearClamp;
+ 	public static GenerationProgress AutogenProgress = new GenerationProgress();
+-	private static Process tServer;
++	internal static Process tServer;
+ 	private static Stopwatch saveTime = new Stopwatch();
+ 	public static KeyboardState keyState;
+ 	public static KeyboardState oldKeyState;
 @@ -625,6 +_,9 @@
  	public static float armorAlpha = 1f;
  	public static float[] buffAlpha = new float[BuffID.Count];
@@ -424,7 +433,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,44 +_,112 @@
+@@ -829,44 +_,129 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -501,11 +510,25 @@
 +	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
 +	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile negates <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see> and causes the player to bounce when landed on. Vanilla entries include PinkSlimeBlock, SillyBalloonPink, SillyBalloonPurple, and SillyBalloonGreen. Defaults to false.
++	/// <para/> See also <see cref="TileID.Sets.NegatesFallDamage"/>.
++	/// </summary>
  	public static bool[] tileBouncy = new bool[TileID.Count];
 +	/// <summary>
-+	/// The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The <see href="https://terraria.wiki.gg/wiki/Metal_Detector">Metal Detector wiki page</see> lists existing values to use as reference.
++	/// The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The <see href="https://terraria.wiki.gg/wiki/Metal_Detector">Metal Detector wiki page</see> lists existing values to use as reference. <see href="https://terraria.wiki.gg/wiki/Fairies">Fairies</see> leading to treasure also take this into account.
 +	/// </summary>
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
++	/// <summary>
++	/// When set to 1 or 2, this tile will use a tiled pattern for the tile variation rather than the random <see cref="Tile.TileFrameNumber"/> choice (The info below counts from 1 rather than 0 for illustrative purposes). Only applicable to terrain/framed tiles. Defaults to 0.
++	/// <para/> A value of 1 results in a 3x4 pattern used by Smoothe Marble Block (<see cref="TileID.MarbleBlock"/>) and others: <code>2 4 2
++	/// 1 3 1
++	/// 2 2 4
++	/// 1 1 3 </code>
++	/// <para/> A value of 2 results in a 2x2 pattern used by Lunar Rust Brick (<see cref="TileID.LunarBrick"/>) and others:<code>1 2
++	/// 3 4 </code>
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#custom-tile-variation">Basic Tile wiki guide</see> has diagrams of these options.
++	/// </summary>
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
  	public static bool[] tileRope = new bool[TileID.Count];
@@ -528,6 +551,9 @@
  	public static bool[] tilePile = new bool[TileID.Count];
  	public static bool[] tileBlendAll = new bool[TileID.Count];
  	public static short[] tileGlowMask = new short[TileID.Count];
++	/// <summary>
++	/// Indicates that this tile contains items. All chests and dressers need to set this to save and load chest contents. <see cref="TileID.Sets.IsAContainer"/> should also be set in tandem.
++	/// </summary>
  	public static bool[] tileContainer = new bool[TileID.Count];
 +	/// <summary>
 +	/// Indicates that a tile is a "sign" and will be paired with a <see cref="Sign"/> instance. Right click, hover, saving, and network syncing behaviors are all handled automatically. Note that signs are expected to be 2x2 tiles with pixel dimensions 36x36 and will likely not work correctly for other dimensions.
@@ -687,7 +713,7 @@
  	public static int spawnTileY;
  	public static bool npcChatRelease;
  	public static bool editSign;
-@@ -1044,8 +_,11 @@
+@@ -1044,13 +_,18 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
  	public static int oldNPCShop;
@@ -700,6 +726,13 @@
  	public static ItemShopSellbackHelper shopSellbackHelper = new ItemShopSellbackHelper();
  	public static int[] travelShop = new int[40];
  	public static List<string> anglerWhoFinishedToday = new List<string>();
+ 	public static bool anglerQuestFinished;
++	/// <summary> The index of the current Angler Quest item within <see cref="anglerQuestItemNetIDs"/>. </summary>
+ 	public static int anglerQuest;
++	/// <summary> The Angler Quest item options. The current quest is contained in <see cref="anglerQuest"/>. </summary>
+ 	public static int[] anglerQuestItemNetIDs = new int[41] {
+ 		2450,
+ 		2451,
 @@ -1119,6 +_,9 @@
  	public static bool temporaryGUIScaleSliderUpdate = false;
  	public static bool InGuideCraftMenu;
@@ -1028,8 +1061,17 @@
  
  	public static void AnglerQuestSwap()
  	{
-@@ -2962,6 +_,7 @@
+@@ -2959,9 +_,16 @@
+ 		anglerQuestFinished = false;
+ 		bool flag = NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || hardMode || NPC.downedSlimeKing || NPC.downedQueenBee;
+ 		bool flag2 = true;
++		int tryCount = 0;
  		while (flag2) {
++			if (++tryCount > 1000) {
++				anglerQuest = 0;
++				Logging.tML.Warn("AnglerQuestSwap try count limit exceeded, a mod might have bad IsAnglerQuestAvailable logic"); // Fix #4488
++				break;
++			}
  			flag2 = false;
  			anglerQuest = rand.Next(anglerQuestItemNetIDs.Length);
 +			// Patch note: ↑flag2 and num↓ are used below.
@@ -1618,7 +1660,7 @@
 +						Console.WriteLine(entry.Item1 + new string('\t', num2 - entry.Item1.Length / 8) + entry.Item2);
 +					}
  				}
-+				else if (CommandLoader.HandleCommand(text, commandCaller)) { }
++				else if (CommandLoader.HandleCommand(text2, commandCaller)) { }
  				else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  					if (!Liquid.panicMode)
  						Liquid.StartPanic();

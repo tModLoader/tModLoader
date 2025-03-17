@@ -38,6 +38,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <returns></returns>
@@ -48,6 +49,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to determine how any projectile behaves. This will only be called if PreAI returns true.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="projectile"></param>
 	public virtual void AI(Projectile projectile)
@@ -56,6 +58,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to determine how any projectile behaves. This will be called regardless of what PreAI returns.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="projectile"></param>
 	public virtual void PostAI(Projectile projectile)
