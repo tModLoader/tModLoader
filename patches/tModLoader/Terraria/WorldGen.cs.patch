@@ -34,6 +34,24 @@
  	public static bool crimson;
  	public static int[] tileCounts = new int[TileID.Count];
  	public static int totalEvil;
+@@ -816,6 +_,9 @@
+ 	private static bool mergeDown;
+ 	private static bool mergeLeft;
+ 	private static bool mergeRight;
++	/// <summary>
++	/// If true, tiles being destroyed won't drop their items. Used during meteor dropping to prevent item spawns. Note that tiles indirectly killed through nearby tile framing, for example, will still drop their item, so this won't prevent all drops.
++	/// </summary>
+ 	private static bool stopDrops;
+ 	public static bool noLiquidCheck;
+ 	public static bool AllowedToSpreadInfections = true;
+@@ -825,6 +_,7 @@
+ 	public static int _genRandSeed = -2;
+ 	public static int _lastSeed;
+ 	public static string statusText = "";
++	/// <summary> Is true while a multitile is being destroyed. </summary>
+ 	public static bool destroyObject;
+ 	public static int spawnDelay;
+ 	public static int prioritizedTownNPCType;
 @@ -889,14 +_,22 @@
  	public static int SmallConsecutivesFound = 0;
  	public static int SmallConsecutivesEliminated = 0;

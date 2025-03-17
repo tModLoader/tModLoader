@@ -758,7 +758,15 @@
  	public int SpawnY = -1;
  	public Vector2? PotionOfReturnOriginalUsePosition;
  	public Vector2? PotionOfReturnHomePosition;
-@@ -1231,24 +_,84 @@
+@@ -1227,28 +_,92 @@
+ 	public static int tileRangeY = 4;
+ 	public int lastTileRangeX;
+ 	public int lastTileRangeY;
++	/// <summary>
++	/// The tile coordinates of the tile location currently being targeted by the local players cursor for left click purposes. Since this takes into account the smart cursor feature, it isn't necessarily the tile directly under the cursor. For right clicks, see <see cref="Main.SmartInteractX"/>
++	/// </summary>
+ 	public static int tileTargetX;
++	/// <inheritdoc cref="tileTargetX"/>
  	public static int tileTargetY;
  	public static float defaultGravity = 0.4f;
  	public static int jumpHeight = 15;
@@ -1274,6 +1282,17 @@
  	public void HealEffect(int healAmount, bool broadcast = true)
  	{
  		CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.HealLife, healAmount);
+@@ -2421,6 +_,10 @@
+ 			NetMessage.SendData(43, -1, -1, null, whoAmI, manaAmount);
+ 	}
+ 
++	/// <summary>
++	/// If the tile location currently being targetted by the players mouse (<see cref="tileTargetX"/>) has a tile of the specified tile type, then item usage will be blocked until the player releases the use button (left mouse button) and clicks again.
++	/// <para/> What this typically means in practice is that an auto-swinging pickaxe will not attempt to swing again until the player deliberately releases the mouse button and clicks again. This is usually used by tile entities that drop their contained item when mined to prevent the player from accidentally mining the tile itself when attempting to "mine" the item from the tile entity.
++	/// </summary>
+ 	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
+ 	{
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
