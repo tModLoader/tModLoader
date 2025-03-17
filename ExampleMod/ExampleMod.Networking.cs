@@ -23,7 +23,6 @@ namespace ExampleMod
 			ExampleDodge,
 			ExampleTownPetUnlockOrExchange,
 			ExampleResourceEffect,
-			BasicTileEntityClaimWater
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -58,13 +57,6 @@ namespace ExampleMod
 					break;
 				case MessageType.ExampleResourceEffect:
 					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);
-					break;
-				case MessageType.BasicTileEntityClaimWater:
-					int ID = reader.ReadInt32();
-					if (TileEntity.ByID[ID] is BasicTileEntity basicTileEntity) {
-						// Will cause syncNeeded to be set which will sync the data to other clients
-						basicTileEntity.WaterFillLevel = 0;
-					}
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);

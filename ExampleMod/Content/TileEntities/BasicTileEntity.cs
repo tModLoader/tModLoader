@@ -20,7 +20,8 @@ namespace ExampleMod.Content.TileEntities
 	// - ModTile - the tile that the ModTileEntity will be attached to.
 	// - ModItem - places the tile.
 
-	// BasicTileEntity is essentially a water barrel that collects water while it is raining. 
+	// BasicTileEntity is essentially a water barrel that collects water while it is raining.
+	// Once full, the tile can be mined or right clicked to produce 1 free Water Bucket item. 
 	public class BasicTileEntity : ModTileEntity
 	{
 		private bool syncNeeded; // Used to track when a network sync is needed
@@ -73,25 +74,26 @@ namespace ExampleMod.Content.TileEntities
 			*/
 		}
 
-		// Tile Entities update every game update. Regular tiles can only ever update at random intervals.
+		// Tile Entities update every game update. Regular tiles can only ever update at random intervals. This is one of the main reasons for making a tile entity.
 		public override void Update() {
 			if (Main.raining) {
 				WaterFillLevel += 1;
 			}
-			// Update does not run for multiplayer clients, changes other clients need requires syncing the data.
+			// Update does not run for multiplayer clients, changes to data that other clients need requires syncing the data to them.
 			if (syncNeeded) {
 				// The TileEntitySharing message will trigger NetSend, manually syncing the changed data.
 				NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
 			}
 		}
 
+		// IsTileValidForEntity is required, usually you can use this code directly.
 		public override bool IsTileValidForEntity(int x, int y) {
 			Tile tile = Main.tile[x, y];
 			return tile.HasTile && tile.TileType == ModContent.TileType<BasicTileEntityTile>();
 		}
 	}
 
-	// BasicTileEntityTile is the Tile that BasicTileEntityTile attaches to.
+	// BasicTileEntityTile is the Tile that BasicTileEntity attaches to.
 	// The most important parts are the TileObjectData.newTile.HookPostPlaceMyPlayer assignment and the KillMultiTile method.
 	// All of the other methods show very commonly desired functionality, but are not required for a working Tile Entity.
 	public class BasicTileEntityTile : ModTile
@@ -104,21 +106,22 @@ namespace ExampleMod.Content.TileEntities
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			// These 3 are used to prevent the tile from being killed by accident. Item holding tiles usually do this to prevent losing the item or having to place the tile again, which would feel bad for the player.
+			TileID.Sets.PreventsTileRemovalIfOnTopOfIt[Type] = true;
+			TileID.Sets.PreventsTileHammeringIfOnTopOfIt[Type] = true;
+			TileID.Sets.AvoidedByMeteorLanding[Type] = true;
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
-
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			// Tell the tile to place the Tile Entity on the tile after placing it.
 			TileObjectData.newTile.HookPostPlaceMyPlayer = ModContent.GetInstance<BasicTileEntity>().Generic_HookPostPlaceMyPlayer;
-
 			// The additional "states" in BasicTileEntityTile.png are laid out vertically. If additional styles were added to this example later we'd want those placed horizontally.
 			TileObjectData.newTile.StyleHorizontal = true;
-
 			TileObjectData.addTile(Type);
 
 			// Etc
 			AddMapEntry(new Color(200, 200, 200), CreateMapEntryName(), MapHoverText);
-
 			StatusText = this.GetLocalization(nameof(StatusText));
 		}
 
@@ -127,8 +130,23 @@ namespace ExampleMod.Content.TileEntities
 			ModContent.GetInstance<BasicTileEntity>().Kill(i, j);
 		}
 
-		// The following hooks all show accessing the Tile Entity and using it to adjust the behavior and look of this Tile.
+		// The following hooks all show accessing the Tile Entity and using it to adjust the behavior and look of this Tile. 
 
+		// Changing the visuals of tile according to the corresponding data.
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
+				tileFrameY = (short)(tileFrameY + (tileEntity.WaterFillStage * 38));
+
+				// We can uncomment this code to spawn dust at the tile entity position for debugging purposes. Some developer mods also have tools to visualize tile entities.
+				/*
+				if (TileObjectData.IsTopLeft(i, j)) {
+					Dust.QuickDust(tileEntity.Position.X, tileEntity.Position.Y, Color.Green);
+				}
+				*/
+			}
+		}
+
+		// The text shown when hovering over this tile on the fullscren map.
 		public static string MapHoverText(string name, int i, int j) {
 			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
 				return StatusText.Format(tileEntity.WaterFillPercentage);
@@ -142,19 +160,6 @@ namespace ExampleMod.Content.TileEntities
 					return $"{name}: World section not loaded yet";
 				}
 				return $"{name}: No TileEntity found at coordinate";
-			}
-		}
-
-		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
-				tileFrameY = (short)(tileFrameY + (tileEntity.WaterFillStage * 38));
-
-				// We can uncomment this code to spawn dust at the tile entity position for debugging purposes. Some developer mods also have tools to visualize tile entities.
-				/*
-				if (TileObjectData.IsTopLeft(i, j)) {
-					Dust.QuickDust(tileEntity.Position.X, tileEntity.Position.Y, Color.Green);
-				}
-				*/
 			}
 		}
 
@@ -173,21 +178,51 @@ namespace ExampleMod.Content.TileEntities
 				return true;
 			}
 			if (tileEntity.WaterFillPercentage == 100) {
+				/* While it is tempting to spawn the item like this, this will not work correctly in multiplayer. See below for the correct approach.
 				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_TileInteraction(i, j), ItemID.WaterBucket);
 				tileEntity.WaterFillLevel = 0;
+				*/
 				SoundEngine.PlaySound(SoundID.Drown);
 
+				// This example follows the convention of similar vanilla tile entitites that drop items: When right clicked, the tile will be "mined" and the item is released by the KillTile code running on the server, which will automatically spawn the item and adjust the tile entity data on the server preventing various potential network syncing issues.
+				WorldGen.KillTile(i, j, fail: true);
 				if (Main.netMode == NetmodeID.MultiplayerClient) {
-					// The server is in charge of the Tile Entity, we need to inform the server that we took all the water so that the data stays in sync on other clients.
-					var packet = Mod.GetPacket();
-					packet.Write((byte)ExampleMod.MessageType.BasicTileEntityClaimWater);
-					packet.Write(tileEntity.ID);
-					packet.Send();
+					// This is sending the KillTile manipulation for the (i, j) coordinates. number4 being 1f means KillTile should fail. This is what will cause KillTile to run on the server, ultimately spawning the Water Bucket item and setting WaterFillLevel back to 0. 
+					NetMessage.SendData(MessageID.TileManipulation, number: 0, number2: i, number3: j, number4: 1f);
 				}
+				// You can use a different approach for the item dropping, if you prefer, but care must be taken to ensure that multiple users interacting with the tile do not result in duplicate item spawns due to network latency or desync. This means using a custom ModPacket to inform the server to do something rather than running the code on the client.
 			}
-			Main.NewText(StatusText.Format(tileEntity.WaterFillPercentage));
+			else {
+				// If not full, show a chat message showing the fill percentage.
+				Main.NewText(StatusText.Format(tileEntity.WaterFillPercentage));
+			}
 
 			return true;
+		}
+
+		public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
+			// Some tile entities that hold items, like Weapon Rack and Item Frame, release their item when hit with a pickaxe. When doing this they will not be destroyed on the first hit no matter how strong the pickaxe is.
+			// Others like Hat Rack and Mannequin do not release the item and prevent the tile from being mined at all.
+
+			// This example releases the item.
+			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity) && tileEntity.WaterFillPercentage == 100) {
+				// When KillTile is called on this tile but we have a Water Bucket to give, we prevent the tile from being mined by setting fail to true.
+				fail = true;
+
+				// The item is only spawned on the server or in single player. In multiplayer the KillTile is synced so this code will automatically spawn the item on the server and sync the WaterFillLevel changes to the clients.
+				if (Main.netMode != NetmodeID.MultiplayerClient) {
+					// By convention, EntitySource_TileBreak is used for TileEntity dropping items instead of EntitySource_TileInteraction
+					Item.NewItem(new EntitySource_TileBreak(i, j), tileEntity.Position.X * 16, tileEntity.Position.Y * 16, 32, 32, ItemID.WaterBucket);
+					tileEntity.WaterFillLevel = 0;
+				}
+
+				if (Main.netMode != NetmodeID.Server) {
+					// This helps prevent accidentally mining the tile completely in one mouse click. The user will be forced to click again if they want to actually mine the tile as well.
+					Main.LocalPlayer.InterruptItemUsageIfOverTile(Type);
+				}
+
+				SoundEngine.PlaySound(SoundID.Drown);
+			}
 		}
 	}
 
