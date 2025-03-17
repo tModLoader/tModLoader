@@ -261,6 +261,14 @@
  					item2.position = position3;
  					item2.velocity = velocity3;
  					item2.active = true;
+@@ -1252,6 +_,7 @@
+ 					itemSyncPersistentStats.PasteInto(item2);
+ 				}
+ 				else {
++					if (num105 == 400) Main.timeItemSlotCannotBeReusedFor[num105] = 0; // Fix #4372
+ 					if (Main.timeItemSlotCannotBeReusedFor[num105] > 0)
+ 						break;
+ 
 @@ -1278,6 +_,7 @@
  					item4.netDefaults(num107);
  					item4.Prefix(prefixWeWant2);

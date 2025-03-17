@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\tModLoader.targets" />
+	<ItemGroup>
+		<ProjectReference Include="../SerializableDep/SerializableDep.csproj" />
+	</ItemGroup>
+</Project>

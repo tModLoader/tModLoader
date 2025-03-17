@@ -336,7 +336,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -223,9 +_,25 @@
+@@ -223,61 +_,225 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -360,9 +360,12 @@
 +	/// Denotes whether or not Skeletron Prime has been defeated at least once in the current world.
 +	/// </summary>
  	public static bool downedMechBoss3 = false;
++	/// <summary>
++	/// True for the indexed NPC type (<see cref="NPC.type"/>) if there are any active NPC in the world. This array is updated once a game update and could technically be incorrect for a game update if an NPC spawned or despawned this game update. It is much more efficient than the <see cref="AnyNPCs"/> method, but <see cref="AnyNPCs"/> should be used for code that needs to know for sure if an NPC is active right now or not.
++	/// </summary>
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,196 @@
+ 	private static int spawnRate = defaultSpawnRate;
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -1724,6 +1727,15 @@
  	public void TargetClosest(bool faceTarget = true)
  	{
  		float distance = 0f;
+@@ -58329,7 +_,7 @@
+ 			netUpdate = true;
+ 	}
+ 
+-	public bool DoesntDespawnToInactivityAndCountsNPCSlots() => type == 668;
++	public bool DoesntDespawnToInactivityAndCountsNPCSlots() => NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots[type];
+ 
+ 	public bool DoesntDespawnToInactivity()
+ 	{
 @@ -58438,6 +_,9 @@
  		if (!active || DoesntDespawnToInactivity())
  			return;

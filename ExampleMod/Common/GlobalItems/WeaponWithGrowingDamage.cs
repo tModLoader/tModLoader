@@ -6,6 +6,7 @@ using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -18,6 +19,8 @@ namespace ExampleMod.Common.GlobalItems
 		public static int experiencePerLevel = 100;
 		private int bonusValuePerItem;
 		public int level => experience / experiencePerLevel;
+		public static LocalizedText LevelText { get; private set; }
+		public static LocalizedText ExperienceText { get; private set; }
 
 		public override bool InstancePerEntity => true;
 
@@ -30,6 +33,12 @@ namespace ExampleMod.Common.GlobalItems
 			//Apply to weapons
 			return lateInstantiation && entity.damage > 0;
 		}
+
+		public override void SetStaticDefaults() {
+			LevelText = Mod.GetLocalization($"{nameof(WeaponWithGrowingDamage)}.Level");
+			ExperienceText = Mod.GetLocalization($"{nameof(WeaponWithGrowingDamage)}.Experience");
+		}
+
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;
 			GainExperience(item, tag.Get<int>("experience"));//Load experience tag
@@ -96,9 +105,9 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (experience > 0) {
-				tooltips.Add(new TooltipLine(Mod, "level", $"Level: {level}") { OverrideColor = Color.LightGreen });
-				string levelString = $" ({(level + 1) * experiencePerLevel - experience} to next level)";
-				tooltips.Add(new TooltipLine(Mod, "experience", $"Experience: {experience}{levelString}") { OverrideColor = Color.White });
+				tooltips.Add(new TooltipLine(Mod, "level", LevelText.Format(level)) { OverrideColor = Color.LightGreen });
+				int nextLevelExperience = (level + 1) * experiencePerLevel - experience;
+				tooltips.Add(new TooltipLine(Mod, "experience", ExperienceText.Format(experience, nextLevelExperience)) { OverrideColor = Color.White });
 			}
 		}
 

@@ -1,3 +1,6 @@
+using System;
+using Terraria;
+using Terraria.Enums;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles.Banners
@@ -34,7 +37,7 @@ namespace ExampleMod.Content.Tiles.Banners
 	{
 		public void Load(Mod mod) {
 			// For each entry in EnemyBanner.StyleID, we dynamically load an AutoloadedBannerItem. 
-			foreach (StyleID styleID in Enum.GetValues(typeof(StyleID))) {
+			foreach (EnemyBanner.StyleID styleID in Enum.GetValues(typeof(EnemyBanner.StyleID))) {
 				mod.AddContent(new AutoloadedBannerItem(styleID.ToString() + "Banner", (int)styleID));
 			}
 		}

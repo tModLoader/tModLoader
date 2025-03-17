@@ -19,6 +19,14 @@
  	public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  	public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
  	public SoundEffectInstance SoundInstanceMoonlordCry;
+@@ -60,6 +_,7 @@
+ 	public SoundEffectInstance SoundInstanceShatter;
+ 	public Asset<SoundEffect> SoundCamera;
+ 	public SoundEffectInstance SoundInstanceCamera;
++	internal const int ZombieSoundCount = 131; // Maintenance helper. Keep equal with the lower array's length, add new fields to SoundID.TML.cs if increased.
+ 	public Asset<SoundEffect>[] SoundZombie = new Asset<SoundEffect>[131];
+ 	public SoundEffectInstance[] SoundInstanceZombie = new SoundEffectInstance[131];
+ 	public Asset<SoundEffect>[] SoundRoar = new Asset<SoundEffect>[3];
 @@ -99,6 +_,7 @@
  
  	private void LoadAll()

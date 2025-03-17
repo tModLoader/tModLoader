@@ -232,9 +232,9 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
-			});
+			]);
 		}
 
 		public override void HitEffect(NPC.HitInfo hit) {

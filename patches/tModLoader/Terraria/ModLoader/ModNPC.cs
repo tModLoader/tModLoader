@@ -237,6 +237,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool PreAI()
@@ -246,12 +247,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how this NPC behaves. This will only be called if PreAI returns true.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	public virtual void AI()
 	{
 	}
 
-	//Allows you to determine how this NPC behaves. This will be called regardless of what PreAI returns.
+	/// <summary>
+	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
+	/// </summary>
 	public virtual void PostAI()
 	{
 	}
@@ -306,6 +311,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Whether or not to run the code for checking whether this NPC will remain active. Return false to stop this NPC from being despawned and to stop this NPC from counting towards the limit for how many NPCs can exist near a player. Returns true by default.
+	/// <para/> See also <see cref="NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots"/> for an option that still counts towards NPC spawn limits.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool CheckActive()

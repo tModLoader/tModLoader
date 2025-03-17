@@ -788,4 +788,14 @@ internal static class ModOrganizer
 
 		return parentDir;
 	}
+
+	// NOTE: This does not search the workshop, only checks locally available mods
+	internal static string GetDisplayNameCleanFromLocalModsOrDefaultToModName(string modname)
+	{
+		var localMods = AllFoundMods.Where(m => string.Equals(modname, m.Name));
+		if (!localMods.Any())
+			return modname;
+
+		return localMods.FirstOrDefault().DisplayNameClean;
+	}
 }

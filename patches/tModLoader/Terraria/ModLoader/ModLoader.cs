@@ -37,6 +37,7 @@ public static class ModLoader
 	public static bool ShowFirstLaunchWelcomeMessage;
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
+	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
 	public static int LatestNewsTimestamp; 
 
@@ -373,6 +374,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
+		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
 	}
 
 	internal static void LoadConfiguration()
@@ -400,6 +402,7 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
+		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
 	}
 
 	internal static void MigrateSettings()

@@ -1,11 +1,24 @@
 ﻿using Terraria;
 using Terraria.DataStructures;
+using Terraria.Localization;
 using Terraria.ModLoader;
+using System.Linq;
 
 namespace ExampleMod.Common.Commands
 {
 	public class ExampleItemCommand : ModCommand
 	{
+		public static LocalizedText UsageText { get; private set; }
+		public static LocalizedText DescriptionText { get; private set; }
+		public static LocalizedText[] ErrorText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			string key = $"Commands.{nameof(ExampleItemCommand)}.";
+			UsageText = Mod.GetLocalization($"{key}Usage");
+			DescriptionText = Mod.GetLocalization($"{key}Description");
+			ErrorText = Enumerable.Range(0, 3).Select(i => Mod.GetLocalization($"{key}Error_{i}")).ToArray();
+		}
+
 		// CommandType.Chat means that command can be used in Chat in SP and MP
 		public override CommandType Type
 			=> CommandType.Chat;
@@ -16,19 +29,16 @@ namespace ExampleMod.Common.Commands
 
 		// A short usage explanation for this command
 		public override string Usage
-			=> "/item <type|name> [stack]" +
-			"\n type — ItemID of item." +
-			"\n name — name of Item in current localization." +
-			"\n Replace spaces in item name with underscores.";
+			=> UsageText.Value;
 
 		// A short description of this command
 		public override string Description
-			=> "Spawn an item by name or by typeId";
+			=> DescriptionText.Value;
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
 			// Checking input Arguments
 			if (args.Length == 0)
-				throw new UsageException("At least one argument was expected.");
+				throw new UsageException(ErrorText[0].Value);
 
 			// If we can't parse the int, it means we have a name (or a wrong use of the command)
 			// In that case type be equal to 0
@@ -47,14 +57,14 @@ namespace ExampleMod.Common.Commands
 			}
 
 			if (type <= 0 || type >= ItemLoader.ItemCount)
-				throw new UsageException(string.Format("Unknown item — Must be valid name or 0 < type < {0}", ItemLoader.ItemCount));
+				throw new UsageException(ErrorText[1].Format(ItemLoader.ItemCount));
 
 			// If the command has at least two arguments, we try to get the stack value
 			// Default stack is 1
 			int stack = 1;
 			if (args.Length >= 2) {
 				if (!int.TryParse(args[1], out stack))
-					throw new UsageException("Stack value must be integer, but met: " + args[1]);
+					throw new UsageException(ErrorText[2].Format(args[1]));
 			}
 
 			// Spawn the item where the calling player is

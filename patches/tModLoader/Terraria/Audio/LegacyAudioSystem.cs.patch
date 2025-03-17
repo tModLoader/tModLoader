@@ -1,9 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -4,6 +_,7 @@
+@@ -2,8 +_,11 @@
+ using System.Collections;
+ using System.Collections.Generic;
  using System.IO;
++using System.Linq;
  using Microsoft.Xna.Framework.Audio;
  using ReLogic.Content.Sources;
++using Terraria.ID;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria.Audio;
@@ -59,7 +63,20 @@
  	public void LoadCue(int cueIndex, string cueName)
  	{
  		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
-@@ -256,7 +_,8 @@
+@@ -245,18 +_,19 @@
+ 					MusicReplayDelay = Main.rand.Next(14400, 21601);
+ 
+ 				AudioTracks[i].Reuse();
+-				AudioTracks[i].SetVariable("Volume", totalVolume);
++				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
+ 				AudioTracks[i].Play();
+ 			}
+ 		}
+ 		else {
+-			AudioTracks[i].SetVariable("Volume", totalVolume);
++			AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
+ 		}
+ 	}
  
  	public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible)
  	{
@@ -69,3 +86,12 @@
  			return;
  
  		if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {
+@@ -271,7 +_,7 @@
+ 				AudioTracks[i].Stop(AudioStopOptions.Immediate);
+ 			}
+ 			else {
+-				AudioTracks[i].SetVariable("Volume", totalVolume);
++				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect"  : "Volume", totalVolume);
+ 			}
+ 		}
+ 		else {

@@ -121,6 +121,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
@@ -131,6 +132,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. This will only be called if PreAI returns true.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void AI(NPC npc)
@@ -139,6 +141,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void PostAI(NPC npc)

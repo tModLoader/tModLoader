@@ -4230,7 +4230,17 @@
  
  			if (stoned != lastStoned) {
  				if (whoAmI == Main.myPlayer && stoned) {
-@@ -19566,11 +_,14 @@
+@@ -19559,18 +_,24 @@
+ 						num21 = (int)((position.Y - 1f) / 16f);
+ 
+ 					for (int num22 = num19; num22 <= num20; num22++) {
++						/*
+ 						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && (Main.tile[num22, num21].type == 189 || Main.tile[num22, num21].type == 196 || Main.tile[num22, num21].type == 460 || Main.tile[num22, num21].type == 666)) {
++						*/
++						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && TileID.Sets.NegatesFallDamage[Main.tile[num22, num21].type]) {
+ 							num18 = 0;
+ 							break;
+ 						}
  					}
  				}
  

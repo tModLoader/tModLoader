@@ -81,7 +81,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("A minion protecting his boss from taking damage by sacrificing itself. If none are alive, the boss is exposed to damage.")
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.MinionBossMinion")
 			});
 		}
 
