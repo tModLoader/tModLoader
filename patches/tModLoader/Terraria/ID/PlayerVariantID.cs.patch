@@ -1,9 +1,11 @@
 --- src/TerrariaNetCore/Terraria/ID/PlayerVariantID.cs
 +++ src/tModLoader/Terraria/ID/PlayerVariantID.cs
-@@ -5,8 +_,21 @@
+@@ -4,9 +_,22 @@
+ {
  	public class Sets
  	{
- 		public static SetFactory Factory = new SetFactory(Count);
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(Count, nameof(PlayerVariantID));
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given skin variant (<see cref="Player.skinVariant"/>), then that variant is for a male (<see cref="Player.Male"/>) player.

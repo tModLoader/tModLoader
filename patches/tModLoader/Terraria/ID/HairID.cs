@@ -5,7 +5,7 @@ public class HairID
 {
 	public class Sets
 	{
-		public static SetFactory Factory = new SetFactory(Count);
+		public static SetFactory Factory = new SetFactory(Count, nameof(HairID));
 
 		// Created based on 'backHairDraw' definition in 'Player.GetHairSettings'.
 		/// <summary>

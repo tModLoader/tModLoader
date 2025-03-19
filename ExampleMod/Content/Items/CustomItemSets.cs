@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Items
 		// To create a named ID set for items, we use the ItemID.Sets.Factory.CreateNamedXSet method and provide a string key.
 		// We can also pass in any initial data, in this case we are indicating that FieryGreatsword and ExampleSword should be true in this set. Note that it is also possible to set these set values in SetStaticDefaults instead, which is more typical. See ExampleFlail.cs for an example.
 		// This method also exposes the set for other mods to access via this key. The key and default value must be consistent with other mods.
-		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSet(nameof(ExampleMod), FlamingWeaponCustomSetKey, false, ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>());
+		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSetWithInfo(FlamingWeaponCustomSetKey, false, "Causes \"Hahahah, burn!\" to randomly show in chat when used", ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>());
 		// Note that by using the ReinitializeDuringResizeArrays approach, ModContent.ItemType<ExampleSword>() is a valid input since modded content IDs will be assigned and retrievable during the reinitialization. Without ReinitializeDuringResizeArrays the code will incorrectly use 0 as the value of ModContent.ItemType<ExampleSword>() because modded IDs haven't been assigned yet.
 
 		// If a named ID set is specific to content in your mod, consider using the CreateNamedBoolSet(string modName, string key, ...) overload instead to avoid any potential conflicts with another mod that happens to use that same key for unrelated purposes.
@@ -45,9 +45,6 @@ namespace ExampleMod.Content.Items
 			// We can further edit the ID sets here. These changes will still be consistent between all mods accessing this set since the array reference is shared.
 			CustomItemSets.FlamingWeapon[ItemID.FireWhip] = true;
 			CustomItemSets.FlamingWeapon[ItemID.HelFire] = true;
-
-			// Developer metadata can be registered so other mods can view named ID sets using the "/customsets" chat command.
-			ItemID.Sets.Factory.RegisterAdditionalInfoForNamedSet<bool>($"{nameof(ExampleMod)}/{CustomItemSets.FlamingWeaponCustomSetKey}", "Causes \"Hahahah, burn!\" to randomly show in chat when used");
 		}
 	}
 

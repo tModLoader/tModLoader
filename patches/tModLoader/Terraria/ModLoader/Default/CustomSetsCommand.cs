@@ -17,7 +17,7 @@ internal class CustomSetsCommand : ModCommand
 	public override void Action(CommandCaller caller, string input, string[] args)
 	{
 		var sb = new StringBuilder();
-		foreach (var factory in SetFactory.setFactories) {
+		foreach (var factory in SetFactory.SetFactories) {
 			string metadata = factory.CustomMetadataInfo();
 			sb.Append(metadata);
 		}
@@ -25,7 +25,7 @@ internal class CustomSetsCommand : ModCommand
 		string outputText = sb.ToString();
 		caller.Reply(outputText);
 
-		string outputPath = Path.Combine(Logging.LogDir, "CustomSetData.txt");
+		string outputPath = Path.Combine(Logging.LogDir, "CustomSets.txt");
 		File.WriteAllText(outputPath, outputText);
 
 		caller.Reply($"Data written to '{outputPath}'");

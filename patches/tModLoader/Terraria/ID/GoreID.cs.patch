@@ -12,7 +12,7 @@
 +	public static partial class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(GoreLoader.GoreCount);
++		public static SetFactory Factory = new SetFactory(GoreLoader.GoreCount, nameof(GoreID));
 +
 +		/// <summary>
 +		/// If non-zero for a given gore type (<see cref="Gore.type"/>), that gore will follow special AI rules.

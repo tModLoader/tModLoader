@@ -75,11 +75,7 @@ namespace ExampleMod.Content.Items.Accessories
 	public class WaspNestGlobalItem : GlobalItem
 	{
 		// This is a custom item set, facilitating mod collaboration. See CustomItemSets.cs for more information.
-		public static bool[] CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateNamedBoolSet(nameof(ExampleMod), nameof(CantEquipWith_HiveBackpack), false, ItemID.HiveBackpack);
-
-		public override void SetStaticDefaults() {
-			ItemID.Sets.Factory.RegisterAdditionalInfoForNamedSet<bool>($"{nameof(ExampleMod)}/{nameof(CantEquipWith_HiveBackpack)}", "Accessories that can't be equipped alongside the Hive Backpack item");
-		}
+		public static bool[] CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateNamedBoolSetWithInfo(nameof(ExampleMod), nameof(CantEquipWith_HiveBackpack), false, "Accessories that can't be equipped alongside the Hive Backpack item", ItemID.HiveBackpack);
 
 		// Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
 		public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {

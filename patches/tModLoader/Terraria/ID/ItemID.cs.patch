@@ -77,12 +77,12 @@
 -	public class Sets
 +	public partial class Sets
  	{
+-		public static SetFactory Factory = new SetFactory(Count);
 +		/// <summary>
 +		/// Used for creating sets indexed by item type (<see cref="Item.type"/>).
 +		/// <para/> <inheritdoc cref="SetFactory"/>
 +		/// </summary>
--		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
++		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount, nameof(ItemID));
 +
 +		/// <summary>
 +		/// The list of items processed after normal items in <see cref="ContentSamples.Initialize"/>.

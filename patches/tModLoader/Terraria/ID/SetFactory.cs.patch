@@ -13,19 +13,14 @@
  {
  	protected int _size;
  	private readonly Queue<int[]> _intBufferCache = new Queue<int[]>();
-@@ -11,9 +_,12 @@
- 	private readonly Queue<bool[]> _boolBufferCache = new Queue<bool[]>();
+@@ -12,6 +_,7 @@
  	private readonly Queue<float[]> _floatBufferCache = new Queue<float[]>();
  	private object _queueLock = new object();
-+	private string ContainingClassName;
  
++	[Obsolete("Use the new overload", true)]
  	public SetFactory(int size)
  	{
-+		ContainingClassName = new StackTrace().GetFrames().FirstOrDefault(x => x.GetMethod().Name == ".cctor")?.GetMethod().ReflectedType.FullName ?? "Unknown";
-+
  		if (size == 0)
- 			throw new ArgumentOutOfRangeException("size cannot be 0, the intializer for Count must run first");
- 
 @@ -70,8 +_,10 @@
  		}
  	}
@@ -62,7 +57,7 @@
  
 +	/// <summary>
 +	/// Creates and returns an array ID set of the supplied Type. This should be used for creating ID sets not covered by the other methods, such as for classes (string, List&lt;T&gt;), nullable primitives (bool?), and structs (Color).
-+	/// <para/> All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateCustomSet<string></string>(null, ItemID.CopperOre, "Ugly", ItemID.SilverOre, "Pretty")</c> will result in an array filled with null except the CopperOre index will have a value of "Ugly" and the SilverOre index a value of "Pretty".
++	/// <para/> All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateCustomSet&lt;string&gt;(null, ItemID.CopperOre, "Ugly", ItemID.SilverOre, "Pretty")</c> will result in an array filled with null except the CopperOre index will have a value of "Ugly" and the SilverOre index a value of "Pretty".
 +	/// <para/> Note that for non-null class values used for <paramref name="defaultState"/>, the reference will be shared with all default entries, so be mindful when working with these sets to not accidentally affect the shared default state object. For example passing in <c>new List&lt;int&gt;</c> as <paramref name="defaultState"/> will make it very likely to be misused on accident.
 +	/// </summary>
  	public T[] CreateCustomSet<T>(T defaultState, params object[] inputs)

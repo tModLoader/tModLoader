@@ -10,7 +10,7 @@
  	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(MountLoader.MountCount);
++		public static SetFactory Factory = new SetFactory(MountLoader.MountCount, nameof(MountID));
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount is categorized as a minecart.

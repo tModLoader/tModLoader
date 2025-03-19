@@ -10,7 +10,7 @@
  	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount);
++		public static SetFactory Factory = new SetFactory(NPCHeadLoader.NPCHeadCount, nameof(NPCHeadID));
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC head ID, then that NPC head will never be drawn in the housing UI.

@@ -7,7 +7,7 @@ public static class MusicID
 {
 	public static partial class Sets
 	{
-		public static SetFactory Factory = new SetFactory(MusicLoader.MusicCount);
+		public static SetFactory Factory = new SetFactory(MusicLoader.MusicCount, nameof(MusicID));
 		/// <summary>
 		/// Skips Terraria's <see cref="Terraria.Audio.ASoundEffectBasedAudioTrack.ReMapVolumeToMatchXact(float)"/> function to make music play at its intended volume.
 		/// <para/>This should be set in <see cref="ModType.SetStaticDefaults()"/>, preferably <see cref="ModSystem"/>
