@@ -569,7 +569,7 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	private static void ResizeArrays(bool unloading = false)
 	{
-		SetFactory.SetFactories.Clear();
+		SetFactory.ResizeArrays(unloading);
 		DamageClassLoader.ResizeArrays();
 		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
