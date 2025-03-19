@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria.DataStructures;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -53,6 +54,7 @@ public static partial class SystemLoader
 				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
 			foreach (var typesToReinitialize in reinitializeTypes) {
+				using var _ = new ModContent.TrackCurrentlyLoadingMod(mod.Name);
 				// Uninitialized static ctor will be initialized twice here for some reason.
 				LoaderUtils.ResetStaticMembers(typesToReinitialize); // Not necessarily ILoadable
 			}

@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/SetFactory.cs
 +++ src/tModLoader/Terraria/ID/SetFactory.cs
-@@ -3,7 +_,7 @@
+@@ -1,9 +_,11 @@
+ using System;
+ using System.Collections.Generic;
++using System.Diagnostics;
++using System.Linq;
  
  namespace Terraria.ID;
  
@@ -9,6 +13,19 @@
  {
  	protected int _size;
  	private readonly Queue<int[]> _intBufferCache = new Queue<int[]>();
+@@ -11,9 +_,12 @@
+ 	private readonly Queue<bool[]> _boolBufferCache = new Queue<bool[]>();
+ 	private readonly Queue<float[]> _floatBufferCache = new Queue<float[]>();
+ 	private object _queueLock = new object();
++	private string ContainingClassName;
+ 
+ 	public SetFactory(int size)
+ 	{
++		ContainingClassName = new StackTrace().GetFrames().FirstOrDefault(x => x.GetMethod().Name == ".cctor")?.GetMethod().ReflectedType.FullName ?? "Unknown";
++
+ 		if (size == 0)
+ 			throw new ArgumentOutOfRangeException("size cannot be 0, the intializer for Count must run first");
+ 
 @@ -70,8 +_,10 @@
  		}
  	}

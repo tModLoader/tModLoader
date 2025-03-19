@@ -406,6 +406,7 @@ public static class ModContent
 		MemoryTracking.Checkpoint();
 		int num = 0;
 		foreach (var mod in ModLoader.Mods) {
+			using var _2 = new ModContent.TrackCurrentlyLoadingMod(mod.Name);
 			token.ThrowIfCancellationRequested();
 			Interface.loadMods.SetCurrentMod(num++, mod);
 			try {
@@ -568,6 +569,7 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	private static void ResizeArrays(bool unloading = false)
 	{
+		SetFactory.setFactories.Clear();
 		DamageClassLoader.ResizeArrays();
 		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
@@ -684,5 +686,20 @@ public static class ModContent
 					$"Avoid using {nameof(AssetRequestMode)}.{nameof(AssetRequestMode.ImmediateLoad)} during mod loading where possible");
 			}
 		}
+	}
+
+	[ThreadStatic]
+	private static string currentMod = null;
+	internal static string CurrentlyLoadingMod => currentMod ?? "Unknown";
+
+	public ref struct TrackCurrentlyLoadingMod
+	{
+		private string prev;
+		public TrackCurrentlyLoadingMod(string mod)
+		{
+			prev = currentMod;
+			currentMod = mod;
+		}
+		public void Dispose() => currentMod = prev;
 	}
 }

@@ -3,8 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using ReLogic.Utilities;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ID;
 
@@ -16,14 +18,23 @@ namespace Terraria.ID;
 public partial class SetFactory
 {
 	// Additional code to support named custom sets for ad-hoc collaboration
-	private record SetMetadata(object defaultValue, object array);
 
-	private ConcurrentDictionary<(string, Type), SetMetadata> setMetadataMapping = new ConcurrentDictionary<(string, Type), SetMetadata>();
+	// Contains all SetFactory instances relating to named ID sets.
+	internal static HashSet<SetFactory> setFactories = new HashSet<SetFactory>();
+
+	private record SetMetadata(object defaultValue, object array);
+	private record SetNameTypePair(string setName, Type type);
+
+	private ConcurrentDictionary<SetNameTypePair, SetMetadata> setMetadataMapping = new ConcurrentDictionary<SetNameTypePair, SetMetadata>();
+	private ConcurrentDictionary<SetNameTypePair, HashSet<string>> involvedMods = new ConcurrentDictionary<SetNameTypePair, HashSet<string>>();
+	private ConcurrentDictionary<SetNameTypePair, Dictionary<string, string>> setDescriptions = new ConcurrentDictionary<SetNameTypePair, Dictionary<string, string>>();
 
 	// Each SetFactory will be re-created on mod reload, so this doesn't need to be called by tModLoader code.
 	public void Clear()
 	{
 		setMetadataMapping.Clear();
+		involvedMods.Clear();
+		setDescriptions.Clear();
 	}
 
 	// Copies of existing methods with an additional key parameter.
@@ -85,6 +96,11 @@ public partial class SetFactory
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input)
 	{
+		// The "global namespace" aspect to this feature is disabled until we get more modder feedback. In the meantime modders are free to collaborate "globally" by using "Terraria" as the mod name if they wish.
+		if (!key.Contains("/")) {
+			throw new Exception($"Custom sets must be registerd with a key that contains `/`. Usually in the form of 'ModName/SetName'. The key '{key}' is not valid, either adjust the key or use an overload that requires a mod or mod name to be passed in.");
+		}
+
 		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
 		if (!ContentCache.contentLoadingFinished) {
 			// If a set is initialized early, throw an error if the class containing the set doesn't have ReinitializeDuringResizeArrays
@@ -95,7 +111,7 @@ public partial class SetFactory
 
 		// Note: Intended to be load order independent as long as all parties agree on default value. Any deviation will throw exception.
 		SetMetadata newMetadata = new SetMetadata(defaultValue, input);
-		(string key, Type) dictionaryKey = (key, typeof(T));
+		SetNameTypePair dictionaryKey = new SetNameTypePair(key, typeof(T));
 		SetMetadata existingMetadata = setMetadataMapping.GetOrAdd(dictionaryKey, newMetadata);
 
 		if (!EqualityComparer<object>.Default.Equals(newMetadata.defaultValue, existingMetadata.defaultValue)) { // Primitive might be boxed, so != doesn't work.
@@ -119,7 +135,15 @@ public partial class SetFactory
 					value[i] = input[i];
 				}
 			}
+
+			if(ModCompile.activelyModding)
+				Logging.tML.Info($"Custom Set '{key}' (Type: {typeof(T).Name}) is merging with additional data");
 		}
+
+		// We need to trach which SetFactory, the set name/Type/default value, metadata strings from each mod for each set, and the list of mods using each set.
+		setFactories.Add(this);
+		var modList = involvedMods.GetOrAdd(dictionaryKey, new HashSet<string>());
+		modList.Add(ModContent.CurrentlyLoadingMod);
 
 		input = value;
 	}
@@ -133,4 +157,53 @@ public partial class SetFactory
 	/// <inheritdoc cref="RegisterNamedCustomSet{T}(string, T, ref T[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' />
 	/// </summary>
 	public void RegisterNamedCustomSet<T>(Mod mod, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSet($"{mod.Name}/{key}", defaultValue, ref input);
+
+	/// <inheritdoc cref="RegisterAdditionalInfoForNamedSet{T}(string, string)"/>
+	public void RegisterAdditionalInfoForNamedSet<T>(string modName, string key, string additionalInfo) => RegisterAdditionalInfoForNamedSet<T>($"{modName}/{key}", additionalInfo);
+	/// <inheritdoc cref="RegisterAdditionalInfoForNamedSet{T}(string, string)"/>
+	public void RegisterAdditionalInfoForNamedSet<T>(Mod mod, string key, string additionalInfo) => RegisterAdditionalInfoForNamedSet<T>($"{mod.Name}/{key}", additionalInfo);
+	/// <summary>
+	/// Registers additional info for a "named ID set" matching the key and Type provided. This info serves to communicate to other mod makers interested in interfacing with this set what the entries in the set mean and what your mod does with entries in the set. Multiple mods can register additional info and they will all be available to view.
+	/// <para/> Modders can use the "/customsets" chat command to output a complete listing of additional information for all named ID sets to "CustomSetData.txt" in the logs directory.
+	/// </summary>
+	public void RegisterAdditionalInfoForNamedSet<T>(string key, string additionalInfo)
+	{
+		SetNameTypePair dictionaryKey = new SetNameTypePair(key, typeof(T));
+		if (additionalInfo != null) {
+			string calleeModName = ModContent.CurrentlyLoadingMod;
+			var setDescription = setDescriptions.GetOrAdd(dictionaryKey, new Dictionary<string, string>());
+			setDescription[calleeModName] = additionalInfo;
+		}
+	}
+
+	internal string CustomMetadataInfo()
+	{
+		// TODO: How do I get Terraria.ID.ItemID from the object?
+		// var mapping = new Dictionary<SetFactory, string>() {
+		// 	[ItemID.Sets.Factory] = "ItemID",
+		// 	[NPCID.Sets.Factory] = "NPCID",
+		// 	[ProjectileID.Sets.Factory] = "ProjectileID",
+		// 	[TileID.Sets.Factory] = "TileID",
+		// 	// TODO: full listing.
+		// };
+
+		// Return all involved mods, all descriptions, all types and names
+		var sb = new StringBuilder();
+		foreach (var (key, value) in setMetadataMapping) {
+			string setName = ContainingClassName ?? this.GetType().FullName;
+		//	if (false && mapping.TryGetValue(this, out string name))
+		//		setName = name;
+
+			sb.AppendLine($"{setName}, \"{key.setName}\", {key.type.Name}, default value {value.defaultValue}:");
+			var mods = involvedMods.GetValueOrDefault(key);
+			if (mods != null)
+				sb.AppendLine($"\tUsed by: {string.Join(", ", mods)}");
+			var descriptions = setDescriptions.GetValueOrDefault(key);
+			if (descriptions != null) {
+				var lines = descriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
+				sb.AppendLine($"\tAdditional Info:\n{string.Join("\n", lines)}");
+			}
+		}
+		return sb.ToString();
+	}
 }
