@@ -562,6 +562,7 @@
 		"CommandModListClientMods": "Client Mods:",
 		"CommandModListModlist": "Modlist:",
 		"CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		"CommandCustomSetsUsage": "/customsets [ModName|SetKey] [-v (output values)]",
 
 		// Mod Building
 		"Building": "Building: {0}",

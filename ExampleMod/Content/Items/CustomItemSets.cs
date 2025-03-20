@@ -57,23 +57,4 @@ namespace ExampleMod.Content.Items
 			}
 		}
 	}
-
-	// This command helps visualize the custom ID set data to verify its contents.
-	// Type /customsets in chat to view the contents of these sets
-	public class CustomSetsCommand : ModCommand
-	{
-		public override string Command => "customsets";
-
-		public override string Description => "View custom ID set values, see CustomItemSets.cs";
-
-		public override CommandType Type => CommandType.Chat;
-
-		public override void Action(CommandCaller caller, string input, string[] args) {
-			caller.Reply("True values in FlamingWeapon: " + string.Join(", ", CustomItemSets.FlamingWeapon.GetTrueIndexes().Select(ItemID.Search.GetName)));
-			// Or, to see display names instead of internal names:
-			// caller.Reply("True values in FlamingWeapon: " + string.Join(", ", CustomItemSets.FlamingWeapon.GetTrueIndexes().Select(Lang.GetItemNameValue)));
-
-			caller.Reply("True values in CantEquipWith_HiveBackpack: " + string.Join(", ", WaspNestGlobalItem.CantEquipWith_HiveBackpack.GetTrueIndexes().Select(ItemID.Search.GetName)));
-		}
-	}
 }

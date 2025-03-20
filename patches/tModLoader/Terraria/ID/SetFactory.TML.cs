@@ -299,26 +299,55 @@ public partial class SetFactory
 	/// <summary> <inheritdoc cref="RegisterNamedCustomSet{T}(Mod, string, T, ref T[])"/> </summary>
 	public void RegisterNamedCustomSetWithInfo<T>(Mod mod, string key, T defaultValue, string additionalInfo, ref T[] input) => RegisterNamedCustomSetWithInfo($"{mod.Name}/{key}", defaultValue, additionalInfo, ref input);
 
-	internal string CustomMetadataInfo()
 	{
-		// Return all involved mods, all descriptions, all types and names
 		var sb = new StringBuilder();
-		foreach (var (key, value) in setMetadataMapping) {
+		if (setKey != null) {
+			if (setKey.Contains("/")) {
+				var specificSet = setMetadataMapping.FirstOrDefault(x => x.Key.setName.Equals(setKey, StringComparison.OrdinalIgnoreCase));
+				if (specificSet.Key != null) {
+					OutputText(sb, specificSet.Key, specificSet.Value);
+				}
+			}
+			else {
+				// If no '/', setKey is mod name
+				foreach (var (key, value) in setMetadataMapping) {
+					if (value.involvedMods.Contains(setKey) || key.setName.StartsWith($"{setKey}/", StringComparison.OrdinalIgnoreCase)) {
+						OutputText(sb, key, value);
+					}
+				}
+			}
+		}
+		else {
+			// Return all involved mods, all descriptions, all types and names
+			foreach (var (key, value) in setMetadataMapping) {
+				OutputText(sb, key, value);
+			}
+		}
+		return sb.ToString();
+
+		void OutputText(StringBuilder sb, SetNameTypePair setNameTypePair, SetMetadata metadata)
+		{
 			string setName = ContainingClassName ?? this.GetType().FullName;
-			sb.AppendLine($"{setName}, \"{key.setName}\", {key.type.Name}, default value {value.defaultValue ?? "null"}:");
-			if (value.involvedMods != null)
-				sb.AppendLine($"\tUsed by: {string.Join(", ", value.involvedMods)}");
-			if (value.setDescriptions != null) {
-				var lines = value.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
+
+			sb.AppendLine($"{setName}, \"{setNameTypePair.setName}\", {setNameTypePair.type.Name}, default value {metadata.defaultValue ?? "null"}");
+			if (metadata.involvedMods != null)
+				sb.AppendLine($"\tUsed by: {string.Join(", ", metadata.involvedMods)}");
+			if (metadata.setDescriptions?.Any() == true) {
+				var lines = metadata.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
 				sb.AppendLine($"\tAdditional Info:\n{string.Join("\n", lines)}");
 			}
-			if (MergedSets.TryGetValue(new SetFactoryTypeTypePair(ContainingClassName, key.type), out List<HashSet<string>> registeredSets)) {
-				var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(key.setName));
+			if (MergedSets.TryGetValue(new SetFactoryTypeTypePair(ContainingClassName, setNameTypePair.type), out List<HashSet<string>> registeredSets)) {
+				var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(setNameTypePair.setName));
 				if (matchingSet != null) {
 					sb.AppendLine($"\tMerged Set Names: {string.Join(", ", matchingSet)}");
 				}
 			}
+			if (printValues) {
+				// No way to map SetFactory to corresponding idDictionary, so can't do something like .Select(ItemID.Search.GetName)
+				var array = (metadata.array as Array).Cast<object>().ToArray();
+				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{pair.i}, {pair.x ?? "null"}]");
+				sb.AppendLine($"\tNon-default values: {string.Join(", ", nonDefault)}");
+			}
 		}
-		return sb.ToString();
 	}
 }
