@@ -248,7 +248,7 @@ public partial class SetFactory
 		SetMetadata existingMetadata = setMetadataMapping.GetOrAdd(dictionaryKey, newMetadata);
 
 		if (!EqualityComparer<object>.Default.Equals(newMetadata.defaultValue, existingMetadata.defaultValue)) { // Primitive might be boxed, so != doesn't work.
-			throw new Exception($"Previously registered named ID set for '{key}'{keyChangedHint} has a default value of '{existingMetadata.defaultValue ?? "null"}' provided by the mod(s) [{string.Join(", ", existingMetadata.involvedMods)}] but '{newMetadata.defaultValue ?? "null"}' was supplied by '{ModContent.CurrentlyLoadingMod}'. This named ID set can not be registered.\n\nIf you are the developer of this mod, please visit https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets to see how existing mods are using named ID sets and adjust accordingly.");
+			throw new Exception($"Previously registered named ID set in {ContainingClassName} named '{key}'{keyChangedHint} has a default value of '{existingMetadata.defaultValue ?? "null"}' provided by the mod(s) [{string.Join(", ", existingMetadata.involvedMods)}] but '{newMetadata.defaultValue ?? "null"}' was supplied by '{ModContent.CurrentlyLoadingMod}'. This named ID set can not be registered.\n\nIf you are the developer of this mod, please visit https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets to see how existing mods are using named ID sets and adjust accordingly.");
 		}
 
 		T[] value = (T[])existingMetadata.array;
@@ -266,14 +266,16 @@ public partial class SetFactory
 			// For conflicts, mods loading after will have final say.
 			for (int i = 0; i < input.Length; i++) {
 				if (!EqualityComparer<T>.Default.Equals(input[i], defaultValue)) {
+					if (!EqualityComparer<T>.Default.Equals(input[i], value[i])) {
+						anyChanges = true;
+					}
 					value[i] = input[i];
-					anyChanges = true;
 				}
 			}
 
 			// TODO: This code will run currently for all sets due to duplicate static initializer issue.
 			if (anyChanges && ModCompile.activelyModding)
-				Logging.tML.Info($"Custom Set '{key}'{keyChangedHint} (Type: {typeof(T).Name}) is merging with additional data from '{ModContent.CurrentlyLoadingMod}'. It previously had data from [{string.Join(", ", existingMetadata.involvedMods)}]");
+				Logging.tML.Info($"Custom Set '{key}'{keyChangedHint} (Type: {typeof(T).Name}, SetFactory: {ContainingClassName}) is merging with additional data from '{ModContent.CurrentlyLoadingMod}'. It previously had data from [{string.Join(", ", existingMetadata.involvedMods)}]");
 		}
 
 		// We need to trach which SetFactory, the set name/Type/default value, metadata strings from each mod for each set, and the list of mods using each set.

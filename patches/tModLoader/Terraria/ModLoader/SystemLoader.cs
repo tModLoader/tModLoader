@@ -61,6 +61,7 @@ public static partial class SystemLoader
 		}
 
 		foreach (var system in HookResizeArrays.Enumerate()) {
+			using var _ = new ModContent.TrackCurrentlyLoadingMod(system.Mod.Name);
 			system.ResizeArrays();
 		}
 	}
