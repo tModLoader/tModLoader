@@ -48,10 +48,6 @@ namespace ExampleMod.Content.Items.Accessories
 			}
 		}
 
-		public override void SetStaticDefaults() {
-			WaspNestGlobalItem.CantEquipWith_HiveBackpack[Type] = true; // Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
-		}
-
 		public override void SetDefaults() {
 			int realBackSlot = Item.backSlot;
 			Item.CloneDefaults(ItemID.HiveBackpack);
@@ -68,21 +64,10 @@ namespace ExampleMod.Content.Items.Accessories
 			waspNestPlayer.strongBeesUpgrade = true;
 			waspNestPlayer.strongBeesItem = Item;
 		}
-	}
 
-	// We can safely use ReinitializeDuringResizeArrays on this class to properly initialize CantEquipWith_HiveBackpack because there are no other static fields that we wouldn't want to reset, but if we did have that then we would want to move CantEquipWith_HiveBackpack to it's own class or move it to CustomItemSets.
-	[ReinitializeDuringResizeArrays]
-	public class WaspNestGlobalItem : GlobalItem
-	{
-		// This is a custom item set, facilitating mod collaboration. See CustomItemSets.cs for more information.
-		public static bool[] CantEquipWith_HiveBackpack = ItemID.Sets.Factory.CreateNamedBoolSetWithInfo(nameof(ExampleMod), nameof(CantEquipWith_HiveBackpack), false, "Accessories that can't be equipped alongside the Hive Backpack item", ItemID.HiveBackpack);
-
-		// Don't allow Hive Pack and Wasp Nest (or any other similar accessory) to be equipped at the same time.
 		public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
-			if (CantEquipWith_HiveBackpack[equippedItem.type] && CantEquipWith_HiveBackpack[incomingItem.type]) {
-				return false;
-			}
-			return true;
+			// Don't allow Hive Pack and Wasp Nest to be equipped at the same time.
+			return incomingItem.type != ItemID.HiveBackpack;
 		}
 	}
 
