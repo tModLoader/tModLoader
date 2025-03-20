@@ -146,7 +146,7 @@ namespace ExampleMod.Content.TileEntities
 			}
 		}
 
-		// The text shown when hovering over this tile on the fullscren map.
+		// The text shown when hovering over this tile on the fullscreen map.
 		public static string MapHoverText(string name, int i, int j) {
 			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity)) {
 				return StatusText.Format(tileEntity.WaterFillPercentage);
@@ -178,19 +178,19 @@ namespace ExampleMod.Content.TileEntities
 				return true;
 			}
 			if (tileEntity.WaterFillPercentage == 100) {
-				/* While it is tempting to spawn the item like this, this will not work correctly in multiplayer. See below for the correct approach.
+				/* While it is tempting to spawn the item like this, this risks duplicating the item in multiplayer. See below for the correct approach.
 				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_TileInteraction(i, j), ItemID.WaterBucket);
 				tileEntity.WaterFillLevel = 0;
 				*/
 				SoundEngine.PlaySound(SoundID.Drown);
 
-				// This example follows the convention of similar vanilla tile entitites that drop items: When right clicked, the tile will be "mined" and the item is released by the KillTile code running on the server, which will automatically spawn the item and adjust the tile entity data on the server preventing various potential network syncing issues.
+				// This example follows the convention of similar vanilla tile entities that drop items: When right clicked, the tile will be "mined" and the item is released by the KillTile code running on the server, which will automatically spawn the item and adjust the tile entity data on the server preventing various potential network syncing issues.
 				WorldGen.KillTile(i, j, fail: true);
 				if (Main.netMode == NetmodeID.MultiplayerClient) {
 					// This is sending the KillTile manipulation for the (i, j) coordinates. number4 being 1f means KillTile should fail. This is what will cause KillTile to run on the server, ultimately spawning the Water Bucket item and setting WaterFillLevel back to 0. 
 					NetMessage.SendData(MessageID.TileManipulation, number: 0, number2: i, number3: j, number4: 1f);
 				}
-				// You can use a different approach for the item dropping, if you prefer, but care must be taken to ensure that multiple users interacting with the tile do not result in duplicate item spawns due to network latency or desync. This means using a custom ModPacket to inform the server to do something rather than running the code on the client.
+				// If you don't want to use TileManipulation and KillTile, you may send a custom packet instead. Whatever you do, running the code on the server ensures that multiple users interacting with the tile does not result in duplicate item spawns due to network latency or desync.
 			}
 			else {
 				// If not full, show a chat message showing the fill percentage.
@@ -208,6 +208,7 @@ namespace ExampleMod.Content.TileEntities
 			if (TileEntity.TryGet(i, j, out BasicTileEntity tileEntity) && tileEntity.WaterFillPercentage == 100) {
 				// When KillTile is called on this tile but we have a Water Bucket to give, we prevent the tile from being mined by setting fail to true.
 				fail = true;
+				// Note that fail might already be set to true, such as when RightClick or the TileManipulation network message sent from RightClick calls KillTile. We still check for WaterFillPercentage though, to ensure that this tile should still drop the item.
 
 				// The item is only spawned on the server or in single player. In multiplayer the KillTile is synced so this code will automatically spawn the item on the server and sync the WaterFillLevel changes to the clients.
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
