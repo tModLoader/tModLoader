@@ -20,25 +20,32 @@ namespace ExampleMod.Content.Items
 	public static class CustomItemSets
 	{
 		// Named ID set example. This will behave the same as any other ItemID.Sets array.
-		public const string FlamingWeaponCustomSetKey = "FlamingWeapon"; // This string MUST be consistent between mods working together.
+		public const string FlamingWeaponCustomSetKey = "FlamingWeapon";
 
 		// To create a named ID set for items, we use the ItemID.Sets.Factory.CreateNamedXSet method and provide a string key.
+		// The key we provide using this method overload will automatically have "ModName/" added to the start, meaning that the real key for this example is "ExampleMod/FlamingWeapon".
 		// We can also pass in any initial data, in this case we are indicating that FieryGreatsword and ExampleSword should be true in this set. Note that it is also possible to set these set values in SetStaticDefaults instead, which is more typical. See ExampleFlail.cs for an example.
-		// This method also exposes the set for other mods to access via this key. The key and default value must be consistent with other mods.
+		// Finally, we can pass in a description as well, explaining how this mod uses the set. Other mods can view this description using the /customsets chat command.
+		// This method also exposes the set for other mods to access via this key. The key and default value must be consistent with other mods. Remember that the Mod name is part of the key that that other mods will be using to access this set.
 		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSetWithInfo(FlamingWeaponCustomSetKey, false, "Causes \"Hahahah, burn!\" to randomly show in chat when used", ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>());
-		// Note that by using the ReinitializeDuringResizeArrays approach, ModContent.ItemType<ExampleSword>() is a valid input since modded content IDs will be assigned and retrievable during the reinitialization. Without ReinitializeDuringResizeArrays the code will incorrectly use 0 as the value of ModContent.ItemType<ExampleSword>() because modded IDs haven't been assigned yet.
+		// Note that by using the ReinitializeDuringResizeArrays approach, ModContent.ItemType<ExampleSword>() is a valid input since modded content IDs will be assigned and retrievable during the reinitialization. Without ReinitializeDuringResizeArrays the code will incorrectly use 0 as the value of ModContent.ItemType<ExampleSword>() because modded IDs haven't been assigned yet when the class is first initialized.
 
-		// If a named ID set is specific to content in your mod, consider using the CreateNamedBoolSet(string modName, string key, ...) overload instead to avoid any potential conflicts with another mod that happens to use that same key for unrelated purposes.
 		// If sharing a custom ID set with other mods is not needed at all, the CreateXSet methods can be used to create a non-named custom ID set.
 	}
 
 	public class CustomItemSetsSystem : ModSystem
 	{
+		public override void Load() {
+			// The MergeSets method can be used in rare situations where sets with different names need to be merged but the mods can't just release an update with the common set name. 
+			// SetFactory.MergeSets(ItemID.Sets.Factory, typeof(bool), "OtherMod/FireWeapons", "ExampleMod/FlamingWeapon");
+		}
+
 		public override void ResizeArrays() {
 			// ResizeArrays is the earliest method called after all content has loaded and have been assigned ID values.
 			// This is where methods such as SetFactory.CreateNamedBoolSet should be called if not using the ReinitializeDuringResizeArrays attribute to do this automatically with a field initializer.
 
-			// For example, we could put "CustomItemSets.FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSet(FlamingWeaponCustomSetKey, false, ItemID.FieryGreatsword);" here instead of in the CustomItemSets class field initializers.
+			// For example, we could put "CustomItemSets.FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSet(CustomItemSets.FlamingWeaponCustomSetKey, false, ItemID.FieryGreatsword);" here instead of in the CustomItemSets class field initializers.
+			// We could also move the FlamingWeapon field to this class if we make sure to use [ReinitializeDuringResizeArrays] and have no other static fields that we wouldn't want to reset.
 		}
 
 		public override void SetStaticDefaults() {
@@ -48,7 +55,7 @@ namespace ExampleMod.Content.Items
 		}
 	}
 
-	// This class showcases the actual use of our FlamingWeapon set in this mod. Each mod using a shared set might have their own interpretation of the set and their corresponding effects. 
+	// This class showcases the actual use of our FlamingWeapon set in this mod. Each mod using a shared set might have their own interpretation of the set and their corresponding effects. Modders can use the /customsets chat command to output all the registered named ID sets and corresponding metadata, including additional info passed in by mods using each set. It is up to mod makers to collaborate to ensure that the meaning and effects of named sets are sensible.
 	public class CustomSetsModPlayer : ModPlayer
 	{
 		public override void OnHitAnything(float x, float y, Entity victim) {

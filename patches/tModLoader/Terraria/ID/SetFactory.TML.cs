@@ -260,17 +260,19 @@ public partial class SetFactory
 				// This could potentially happen for willBeReinitialized sets if the modder makes the array manually for the current content count instead of using the SetFactory as intended.
 			}
 
+			bool anyChanges = false;
 			// To merge, we find entries in the input that aren't defaultValue and assign them to the result.
 			// Existing changes should persist as long as mods agree on the defaultValue passed in and used in CreateXSet
 			// For conflicts, mods loading after will have final say.
 			for (int i = 0; i < input.Length; i++) {
 				if (!EqualityComparer<T>.Default.Equals(input[i], defaultValue)) {
 					value[i] = input[i];
+					anyChanges = true;
 				}
 			}
 
 			// TODO: This code will run currently for all sets due to duplicate static initializer issue.
-			if (ModCompile.activelyModding)
+			if (anyChanges && ModCompile.activelyModding)
 				Logging.tML.Info($"Custom Set '{key}'{keyChangedHint} (Type: {typeof(T).Name}) is merging with additional data from '{ModContent.CurrentlyLoadingMod}'. It previously had data from [{string.Join(", ", existingMetadata.involvedMods)}]");
 		}
 
@@ -299,6 +301,7 @@ public partial class SetFactory
 	/// <summary> <inheritdoc cref="RegisterNamedCustomSet{T}(Mod, string, T, ref T[])"/> </summary>
 	public void RegisterNamedCustomSetWithInfo<T>(Mod mod, string key, T defaultValue, string additionalInfo, ref T[] input) => RegisterNamedCustomSetWithInfo($"{mod.Name}/{key}", defaultValue, additionalInfo, ref input);
 
+	internal string CustomMetadataInfo(string setKey, bool printValues)
 	{
 		var sb = new StringBuilder();
 		if (setKey != null) {
