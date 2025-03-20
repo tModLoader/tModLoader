@@ -24,8 +24,6 @@ namespace ExampleMod.Content.TileEntities
 	// Once full, the tile can be mined or right clicked to produce 1 free Water Bucket item. 
 	public class BasicTileEntity : ModTileEntity
 	{
-		private bool syncNeeded; // Used to track when a network sync is needed
-
 		// This water barrel will fill up in 1 minute of rain, or 3600 game updates.
 		private const int MaxFill = 3600;
 		private const int SyncInterval = MaxFill / 10;
@@ -36,13 +34,17 @@ namespace ExampleMod.Content.TileEntities
 			get { return waterFillLevel; }
 			set {
 				int newFillLevel = Math.Clamp(value, 0, MaxFill);
-				if (waterFillLevel / SyncInterval != newFillLevel / SyncInterval) {
+				bool syncNeeded = waterFillLevel / SyncInterval != newFillLevel / SyncInterval;
+				waterFillLevel = newFillLevel;
+				if (syncNeeded) {
 					// To reduce network spam while raining, we only sync this tile entity at 10% fill intervals.
 					// This may or may not be the correct approach for other ModTileEntity, depending on how accurate of
 					// data the client will need access to.
-					syncNeeded = true;
+					if (Main.netMode == NetmodeID.Server) {
+						// The TileEntitySharing message will trigger NetSend, manually syncing the changed data.
+						NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
+					}
 				}
-				waterFillLevel = newFillLevel;
 			}
 		}
 
@@ -63,7 +65,6 @@ namespace ExampleMod.Content.TileEntities
 
 		public override void NetSend(BinaryWriter writer) {
 			writer.Write(WaterFillLevel);
-			syncNeeded = false;
 		}
 
 		public override void NetReceive(BinaryReader reader) {
@@ -78,11 +79,7 @@ namespace ExampleMod.Content.TileEntities
 		public override void Update() {
 			if (Main.raining) {
 				WaterFillLevel += 1;
-			}
-			// Update does not run for multiplayer clients, changes to data that other clients need requires syncing the data to them.
-			if (syncNeeded) {
-				// The TileEntitySharing message will trigger NetSend, manually syncing the changed data.
-				NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
+				// Update does not run for multiplayer clients. Changes to data that other clients need requires syncing the data to them. In this example this happens in the WaterFillLevel setter.
 			}
 		}
 

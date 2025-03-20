@@ -388,7 +388,7 @@
  	public const byte ChestName = 69;
  	public const byte BugCatching = 70;
  	public const byte BugReleasing = 71;
-@@ -91,15 +_,39 @@
+@@ -91,15 +_,44 @@
  	public const byte InvasionProgressReport = 78;
  	public const byte PlaceObject = 79;
  	public const byte SyncPlayerChestIndex = 80;
@@ -418,6 +418,11 @@
 +	// The client Player.inventoryChestStack flag is set
 +	// The server performs the quickstack and sends a SyncEquipment packet to all players
  	public const byte QuickStackChests = 85;
++	/// <summary>
++	/// Syncs the data of a TileEntity from server to clients. Will cause TileEntities to send and receive their data to sync their values. (<see cref="ModLoader.ModTileEntity.NetSend(System.IO.BinaryWriter)"/>, <see cref="ModLoader.ModTileEntity.NetReceive(System.IO.BinaryReader)"/>)
++	/// <para/> NetMessage.SendData parameters:
++	/// <br/><b>number:</b> The <see cref="DataStructures.TileEntity.ID"/>
++	/// </summary>
  	public const byte TileEntitySharing = 86;
  	public const byte TileEntityPlacement = 87;
  	public const byte ItemTweaker = 88;
