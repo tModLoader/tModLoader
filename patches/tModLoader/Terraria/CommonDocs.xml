@@ -46,19 +46,12 @@ itemFoundData.CopyTo(itemsFound, 0);
 		<para/> The index values are as follows: <br/> 0: Down <br/> 1: Up <br/> 2: Right <br/> 3: Left
 	</CardinalDirections>
 	<CreateNamedXSetNotes>
+		<para/> <b>Named ID set:</b>
 		<para/> This method registers the custom ID set, making it a "named ID set". This named ID set will be shared and merged with other named ID sets registered by other mods with the same final key, default state, and Type.
-		<para/> The additionalInfo parameter in the "WithInfo" versions of this method can be used to register additional information about the named ID set. This info serves to communicate to other mod makers interested in interfacing with this set what the entries in the set mean and what your mod does with entries in the set. Multiple mods can register additional info and they will all be available to view. Modders can use the "/customsets" chat command to output a complete listing of additional information for all named ID sets to "CustomSets.txt" in the logs directory.
+		<para/> The <paramref name="setKey"/> parameter determines the final key of this set.
+		<para/> The <paramref name="setKey"/> can optionally contain additional info by chaining the <see cref="SetKey.WithInfo(string)"/> method. This info will be used to register additional information about the named ID set. This info serves to communicate to other mod makers interested in interfacing with this set what the entries in the set mean and what your mod does with entries in the set. Multiple mods can register additional info and they will all be available to view. Modders can use the "/customsets" chat command to output a complete listing of additional information for all named ID sets to "CustomSets.txt" in the logs directory.
 		<para/> More information on properly using these methods can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom and Named ID Sets pull request</see>. Named ID set keys used by other mods are listed in the <see href="https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets">Named ID Sets wiki page</see>, please read and consult this page to collaborate on named ID set key meanings.
 	</CreateNamedXSetNotes>
-	<CreateNamedXSetFinalKeyA>
-		<para/> The final key for this named ID set using this overload will be: <c>"{modName}/{key}"</c>
-	</CreateNamedXSetFinalKeyA>
-	<CreateNamedXSetFinalKeyB>
-		<para/> The final key for this named ID set using this overload will be: <c>"{mod.Name}/{key}"</c>
-	</CreateNamedXSetFinalKeyB>
-	<CreateNamedXSetFinalKeyC>
-		<para/> The final key for this named ID set using this overload will be <c>"{key}"</c> directly if it contains a "/". Otherwise, the final key will be derived automatically from the currently loading mod: <c>"{loadingMod.Name}/{key}"</c>
-	</CreateNamedXSetFinalKeyC>
 	<AIMethodOrder>
 		<para/> The order of the AI related methods is: <code>
 if (PreAI()) {
