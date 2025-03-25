@@ -13,6 +13,10 @@ namespace ExampleMod.Common
 	// ModMapLayers are used to draw icons and other things over the map. Pylons and spawn/bed icons are examples of vanilla map layers. This example adds an icon over the dungeon.
 	public class ExampleMapLayer : ModMapLayer
 	{
+		public override Position GetDefaultPosition() {
+			return new Before(IMapLayer.Pings);
+		}
+
 		// In the Draw method, we draw everything. Consulting vanilla examples in the source code is a good resource for properly using this Draw method.
 		public override void Draw(ref MapOverlayDrawContext context, ref string text) {
 			// Here we define the scale that we wish to draw the icon when hovered and not hovered.

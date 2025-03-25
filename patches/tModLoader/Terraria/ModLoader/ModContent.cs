@@ -544,7 +544,8 @@ public static class ModContent
 		Config.ConfigManager.Unload();
 		CustomCurrencyManager.Initialize();
 		EffectsTracker.RemoveModEffects();
-		Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+		// Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+		MapLayerLoader.Unload();
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 		Main.gameTips.Reset();
 
@@ -583,6 +584,7 @@ public static class ModContent
 		BuffLoader.ResizeArrays();
 		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
+		MapLayerLoader.ResizeArrays();
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
 		BuilderToggleLoader.ResizeArrays();

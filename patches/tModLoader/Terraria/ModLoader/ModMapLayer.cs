@@ -9,6 +9,8 @@ public abstract class ModMapLayer : ModType, IMapLayer
 {
 	public bool Visible { get; set; } = true;
 
+	public virtual Position GetDefaultPosition() => new Append();
+
 	/// <summary>
 	/// This method is called when this MapLayer is to be drawn. Map layers are drawn after the map itself is drawn. Use <see cref="MapOverlayDrawContext.Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Color, DataStructures.SpriteFrame, float, float, Terraria.UI.Alignment)"/> as described in ExampleMod and in vanilla examples for full compatibility and simplicity of code.
 	/// </summary>
@@ -19,6 +21,6 @@ public abstract class ModMapLayer : ModType, IMapLayer
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModMapLayer>.Register(this);
-		Main.MapIcons.AddLayer(this);
+		MapLayerLoader.Add(this);
 	}
 }
