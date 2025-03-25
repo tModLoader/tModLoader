@@ -15,6 +15,7 @@ internal class CustomSetsCommand : ModCommand
 	public override void Action(CommandCaller caller, string input, string[] args)
 	{
 		bool printValues = false;
+		bool openFile = false;
 		string setKey = null;
 		for (int i = 0; i < args.Length; i++) {
 			if (args[i] == "-h") {
@@ -23,6 +24,9 @@ internal class CustomSetsCommand : ModCommand
 			}
 			else if (args[i] == "-v") {
 				printValues = true;
+			}
+			else if (args[i] == "-o") {
+				openFile = true;
 			}
 			else {
 				setKey = args[i];
@@ -48,6 +52,9 @@ internal class CustomSetsCommand : ModCommand
 
 		string outputPath = Path.Combine(Logging.LogDir, "CustomSets.txt");
 		File.WriteAllText(outputPath, outputText);
+		if (openFile) {
+			Utils.OpenFolder(Logging.LogDir);
+		}
 
 		caller.Reply($"Data written to '{outputPath}'");
 	}
