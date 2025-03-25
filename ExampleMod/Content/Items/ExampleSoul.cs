@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items
 		}
 
           public override Color? GetAlpha(Color lightColor) {
-            return new Color(255, 255, 255, 50); // Makes this item render at full brightness
+            return new Color(255, 255, 255, 50); // Makes this item render at full brightness.
         }
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
