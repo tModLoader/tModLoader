@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using ReLogic.Reflection;
 using ReLogic.Utilities;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
@@ -89,10 +90,12 @@ public partial class SetFactory
 	private ConcurrentDictionary<SetNameTypePair, SetMetadata> setMetadataMapping = new ConcurrentDictionary<SetNameTypePair, SetMetadata>();
 
 	private string ContainingClassName;
+	private IdDictionary search;
 
-	public SetFactory(int size, string idClassName)
+	public SetFactory(int size, string idClassName, IdDictionary search = null)
 	{
 		ContainingClassName = idClassName ?? "Unknown";
+		this.search = search;
 		if (SetFactories.Any(x => x.ContainingClassName == ContainingClassName))
 			throw new Exception("SetFactory instances must have unique names");
 		SetFactories.Add(this);
@@ -350,8 +353,8 @@ public partial class SetFactory
 			if (printValues) {
 				// No way to map SetFactory to corresponding idDictionary, so can't do something like .Select(ItemID.Search.GetName)
 				var array = (metadata.array as Array).Cast<object>().ToArray();
-				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{pair.i}, {pair.x ?? "null"}]");
-				sb.AppendLine($"\tNon-default values: {string.Join(", ", nonDefault)}");
+				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{(search?.TryGetName(pair.i, out string name) == true ? name : pair.i)}, {pair.x ?? "null"}]");
+				sb.AppendLine($"\tNon-default value2: {string.Join(", ", nonDefault)}");
 			}
 		}
 	}
