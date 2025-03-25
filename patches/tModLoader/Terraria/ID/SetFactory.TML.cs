@@ -116,45 +116,45 @@ public partial class SetFactory
 	/// <summary> <inheritdoc cref="CreateCustomSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
 	public T[] CreateNamedCustomSet<T>(string key, T defaultState, params object[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateCustomSet(defaultState, inputs));
 	/// <summary> <inheritdoc cref="CreateCustomSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public T[] CreateNamedCustomSetWithInfo<T>(string key, T defaultState, string additionalInfo, params object[] inputs) => RegisterNamedCustomSetWithInfo(key, defaultState, additionalInfo, CreateCustomSet(defaultState, inputs));
+	public T[] CreateNamedCustomSetWithInfo<T>(string key, string additionalInfo, T defaultState, params object[] inputs) => RegisterNamedCustomSetWithInfo(key, additionalInfo, defaultState, CreateCustomSet(defaultState, inputs));
 	/// <summary> <inheritdoc cref="CreateFloatSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
 	public float[] CreateNamedFloatSet(string key, float defaultState, params float[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateFloatSet(defaultState, inputs));
 	/// <summary> <inheritdoc cref="CreateFloatSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public float[] CreateNamedFloatSetWithInfo(string key, float defaultState, string additionalInfo, params float[] inputs) => RegisterNamedCustomSetWithInfo(key, defaultState, additionalInfo, CreateFloatSet(defaultState, inputs));
+	public float[] CreateNamedFloatSetWithInfo(string key, string additionalInfo, float defaultState, params float[] inputs) => RegisterNamedCustomSetWithInfo(key, additionalInfo, defaultState, CreateFloatSet(defaultState, inputs));
 	public ushort[] CreateNamedUshortSet(string key, ushort defaultState, params ushort[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateUshortSet(defaultState, inputs));
-	public ushort[] CreateNamedUshortSetWithInfo(string key, ushort defaultState, string additionalInfo, params ushort[] inputs) => RegisterNamedCustomSetWithInfo(key, defaultState, additionalInfo, CreateUshortSet(defaultState, inputs));
+	public ushort[] CreateNamedUshortSetWithInfo(string key, string additionalInfo, ushort defaultState, params ushort[] inputs) => RegisterNamedCustomSetWithInfo(key, additionalInfo, defaultState, CreateUshortSet(defaultState, inputs));
 	/// <summary> <inheritdoc cref="CreateIntSet(int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
 	public int[] CreateNamedIntSet(string key, int defaultState, params int[] inputs) => RegisterNamedCustomSet(key, defaultState, CreateIntSet(defaultState, inputs));
 	/// <summary> <inheritdoc cref="CreateIntSet(int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public int[] CreateNamedIntSetWithInfo(string key, int defaultState, string additionalInfo, params int[] inputs) => RegisterNamedCustomSetWithInfo(key, defaultState, additionalInfo, CreateIntSet(defaultState, inputs));
+	public int[] CreateNamedIntSetWithInfo(string key, string additionalInfo, int defaultState, params int[] inputs) => RegisterNamedCustomSetWithInfo(key, additionalInfo, defaultState, CreateIntSet(defaultState, inputs));
 	/// <summary> <inheritdoc cref="CreateIntSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
 	public int[] CreateNamedIntSet(string key, params int[] types) => RegisterNamedCustomSet(key, -1, CreateIntSet(types));
 	/// <summary> <inheritdoc cref="CreateIntSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public int[] CreateNamedIntSetWithInfo(string key, string additionalInfo, params int[] types) => RegisterNamedCustomSetWithInfo(key, -1, additionalInfo, CreateIntSet(types));
+	public int[] CreateNamedIntSetWithInfo(string key, string additionalInfo, params int[] types) => RegisterNamedCustomSetWithInfo(key, additionalInfo, -1, CreateIntSet(types));
 	/// <summary> <inheritdoc cref="CreateBoolSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
 	public bool[] CreateNamedBoolSet(string key, params int[] types) => RegisterNamedCustomSet(key, false, CreateBoolSet(false, types));
 	/// <summary> <inheritdoc cref="CreateBoolSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public bool[] CreateNamedBoolSetWithInfo(string key, string additionalInfo, params int[] types) => RegisterNamedCustomSetWithInfo(key, false, additionalInfo, CreateBoolSet(false, types));
+	public bool[] CreateNamedBoolSetWithInfo(string key, string additionalInfo, params int[] types) => RegisterNamedCustomSetWithInfo(key, additionalInfo, false, CreateBoolSet(false, types));
 	/// <summary> <inheritdoc cref="CreateBoolSet(bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
 	public bool[] CreateNamedBoolSet(string key, bool defaultState, params int[] types) => RegisterNamedCustomSet(key, defaultState, CreateBoolSet(defaultState, types));
 	/// <summary> <inheritdoc cref="CreateBoolSet(bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary> <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public bool[] CreateNamedBoolSetWithInfo(string key, bool defaultState, string additionalInfo, params int[] types) => RegisterNamedCustomSetWithInfo(key, defaultState, additionalInfo, CreateBoolSet(defaultState, types));
+	public bool[] CreateNamedBoolSetWithInfo(string key, string additionalInfo, bool defaultState, params int[] types) => RegisterNamedCustomSetWithInfo(key, additionalInfo, defaultState, CreateBoolSet(defaultState, types));
 
 	// modName + key overloads
 	/// <summary> <inheritdoc cref="CreateNamedCustomSet{T}(string, T, object[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public T[] CreateNamedCustomSet<T>(string modName, string key, T defaultState, params object[] inputs) => CreateNamedCustomSet<T>($"{modName}/{key}", defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedCustomSet{T}(string, T, object[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
-	public T[] CreateNamedCustomSetWithInfo<T>(string modName, string key, T defaultState, string additionalInfo, params object[] inputs) => CreateNamedCustomSetWithInfo<T>($"{modName}/{key}", defaultState, additionalInfo, inputs);
+	public T[] CreateNamedCustomSetWithInfo<T>(string modName, string key, string additionalInfo, T defaultState, params object[] inputs) => CreateNamedCustomSetWithInfo<T>($"{modName}/{key}", additionalInfo, defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedFloatSet(string, float, float[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public float[] CreateNamedFloatSet(string modName, string key, float defaultState, params float[] inputs) => CreateNamedFloatSet($"{modName}/{key}", defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedFloatSet(string, float, float[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
-	public float[] CreateNamedFloatSetWithInfo(string modName, string key, float defaultState, string additionalInfo, params float[] inputs) => CreateNamedFloatSetWithInfo($"{modName}/{key}", defaultState, additionalInfo, inputs);
+	public float[] CreateNamedFloatSetWithInfo(string modName, string key, string additionalInfo, float defaultState, params float[] inputs) => CreateNamedFloatSetWithInfo($"{modName}/{key}", additionalInfo, defaultState, inputs);
 	public ushort[] CreateNamedUshortSet(string modName, string key, ushort defaultState, params ushort[] inputs) => CreateNamedUshortSet($"{modName}/{key}", defaultState, inputs);
-	public ushort[] CreateNamedUshortSetWithInfo(string modName, string key, ushort defaultState, string additionalInfo, params ushort[] inputs) => CreateNamedUshortSetWithInfo($"{modName}/{key}", defaultState, additionalInfo, inputs);
+	public ushort[] CreateNamedUshortSetWithInfo(string modName, string key, string additionalInfo, ushort defaultState, params ushort[] inputs) => CreateNamedUshortSetWithInfo($"{modName}/{key}", additionalInfo, defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public int[] CreateNamedIntSet(string modName, string key, int defaultState, params int[] inputs) => CreateNamedIntSet($"{modName}/{key}", defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
-	public int[] CreateNamedIntSetWithInfo(string modName, string key, int defaultState, string additionalInfo, params int[] inputs) => CreateNamedIntSetWithInfo($"{modName}/{key}", defaultState, additionalInfo, inputs);
+	public int[] CreateNamedIntSetWithInfo(string modName, string key, string additionalInfo, int defaultState, params int[] inputs) => CreateNamedIntSetWithInfo($"{modName}/{key}", additionalInfo, defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public int[] CreateNamedIntSet(string modName, string key, params int[] types) => CreateNamedIntSet($"{modName}/{key}", types);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
@@ -162,54 +162,54 @@ public partial class SetFactory
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public bool[] CreateNamedBoolSet(string modName, string key, params int[] types) => CreateNamedBoolSet($"{modName}/{key}", false, types);
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
-	public bool[] CreateNamedBoolSetWithInfo(string modName, string key, string additionalInfo, params int[] types) => CreateNamedBoolSetWithInfo($"{modName}/{key}", false, additionalInfo, types);
+	public bool[] CreateNamedBoolSetWithInfo(string modName, string key, string additionalInfo, params int[] types) => CreateNamedBoolSetWithInfo($"{modName}/{key}", additionalInfo, false, types);
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
 	public bool[] CreateNamedBoolSet(string modName, string key, bool defaultState, params int[] types) => CreateNamedBoolSet($"{modName}/{key}", defaultState, types);
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' /> </summary>
-	public bool[] CreateNamedBoolSetWithInfo(string modName, string key, bool defaultState, string additionalInfo, params int[] types) => CreateNamedBoolSetWithInfo($"{modName}/{key}", defaultState, additionalInfo, types);
+	public bool[] CreateNamedBoolSetWithInfo(string modName, string key, string additionalInfo, bool defaultState, params int[] types) => CreateNamedBoolSetWithInfo($"{modName}/{key}", additionalInfo, defaultState, types);
 
 	// Mod + key overloads
 	/// <summary> <inheritdoc cref="CreateNamedCustomSet{T}(string, T, object[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public T[] CreateNamedCustomSet<T>(Mod mod, string key, T defaultState, params object[] inputs) => CreateNamedCustomSet<T>($"{mod.Name}/{key}", defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedCustomSet{T}(string, T, object[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
-	public T[] CreateNamedCustomSetWithInfo<T>(Mod mod, string key, T defaultState, string additionalInfo, params object[] inputs) => CreateNamedCustomSetWithInfo<T>($"{mod.Name}/{key}", defaultState, additionalInfo, inputs);
+	public T[] CreateNamedCustomSetWithInfo<T>(Mod mod, string key, string additionalInfo, T defaultState, params object[] inputs) => CreateNamedCustomSetWithInfo<T>($"{mod.Name}/{key}", additionalInfo, defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedFloatSet(string, float, float[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public float[] CreateNamedFloatSet(Mod mod, string key, float defaultState, params float[] inputs) => CreateNamedFloatSet($"{mod.Name}/{key}", defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedFloatSet(string, float, float[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
-	public float[] CreateNamedFloatSetWithInfo(Mod mod, string key, float defaultState, string additionalInfo, params float[] inputs) => CreateNamedFloatSetWithInfo($"{mod.Name}/{key}", defaultState, additionalInfo, inputs);
+	public float[] CreateNamedFloatSetWithInfo(Mod mod, string key, string additionalInfo, float defaultState, params float[] inputs) => CreateNamedFloatSetWithInfo($"{mod.Name}/{key}", additionalInfo, defaultState, inputs);
 	public ushort[] CreateNamedUshortSet(Mod mod, string key, ushort defaultState, params ushort[] inputs) => CreateNamedUshortSet($"{mod.Name}/{key}", defaultState, inputs);
-	public ushort[] CreateNamedUshortSetWithInfo(Mod mod, string key, ushort defaultState, string additionalInfo, params ushort[] inputs) => CreateNamedUshortSetWithInfo($"{mod.Name}/{key}", defaultState, additionalInfo, inputs);
+	public ushort[] CreateNamedUshortSetWithInfo(Mod mod, string key, string additionalInfo, ushort defaultState, params ushort[] inputs) => CreateNamedUshortSetWithInfo($"{mod.Name}/{key}", additionalInfo, defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public int[] CreateNamedIntSet(Mod mod, string key, int defaultState, params int[] inputs) => CreateNamedIntSet($"{mod.Name}/{key}", defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
-	public int[] CreateNamedIntSetWithInfo(Mod mod, string key, int defaultState, string additionalInfo, params int[] inputs) => CreateNamedIntSetWithInfo($"{mod.Name}/{key}", defaultState, additionalInfo, inputs);
+	public int[] CreateNamedIntSetWithInfo(Mod mod, string key, string additionalInfo, int defaultState, params int[] inputs) => CreateNamedIntSetWithInfo($"{mod.Name}/{key}", additionalInfo, defaultState, inputs);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public int[] CreateNamedIntSet(Mod mod, string key, params int[] types) => CreateNamedIntSet($"{mod.Name}/{key}", -1, types);
 	/// <summary> <inheritdoc cref="CreateNamedIntSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
-	public int[] CreateNamedIntSetWithInfo(Mod mod, string key, string additionalInfo, params int[] types) => CreateNamedIntSetWithInfo($"{mod.Name}/{key}", -1, additionalInfo, types);
+	public int[] CreateNamedIntSetWithInfo(Mod mod, string key, string additionalInfo, params int[] types) => CreateNamedIntSetWithInfo($"{mod.Name}/{key}", additionalInfo, -1, types);
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public bool[] CreateNamedBoolSet(Mod mod, string key, params int[] types) => CreateNamedBoolSet($"{mod.Name}/{key}", false, types);
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
-	public bool[] CreateNamedBoolSetWithInfo(Mod mod, string key, string additionalInfo, params int[] types) => CreateNamedBoolSetWithInfo($"{mod.Name}/{key}", false, additionalInfo, types);
+	public bool[] CreateNamedBoolSetWithInfo(Mod mod, string key, string additionalInfo, params int[] types) => CreateNamedBoolSetWithInfo($"{mod.Name}/{key}", additionalInfo, false, types);
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
 	public bool[] CreateNamedBoolSet(Mod mod, string key, bool defaultState, params int[] types) => CreateNamedBoolSet($"{mod.Name}/{key}", defaultState, types);
 	/// <summary> <inheritdoc cref="CreateNamedBoolSet(string, bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' /> </summary>
-	public bool[] CreateNamedBoolSetWithInfo(Mod mod, string key, bool defaultState, string additionalInfo, params int[] types) => CreateNamedBoolSetWithInfo($"{mod.Name}/{key}", defaultState, additionalInfo, types);
+	public bool[] CreateNamedBoolSetWithInfo(Mod mod, string key, string additionalInfo, bool defaultState, params int[] types) => CreateNamedBoolSetWithInfo($"{mod.Name}/{key}", additionalInfo, defaultState, types);
 
 	// These 2 are private to prevent potential modder mistake of not using the return value.
 	private T[] RegisterNamedCustomSet<T>(string key, T defaultValue, T[] input)
 	{
-		RegisterNamedCustomSetWithInfo(key, defaultValue, null, ref input);
+		RegisterNamedCustomSetWithInfo(key, null, defaultValue, ref input);
 		return input;
 	}
-	private T[] RegisterNamedCustomSetWithInfo<T>(string key, T defaultValue, string additionalInfo, T[] input)
+	private T[] RegisterNamedCustomSetWithInfo<T>(string key, string additionalInfo, T defaultValue, T[] input)
 	{
-		RegisterNamedCustomSetWithInfo(key, defaultValue, additionalInfo, ref input);
+		RegisterNamedCustomSetWithInfo(key, additionalInfo, defaultValue, ref input);
 		return input;
 	}
 
-	/// <inheritdoc cref="RegisterNamedCustomSetWithInfo{T}(string, T, string, ref T[])"/>
-	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo(key, defaultValue, null, ref input);
+	/// <inheritdoc cref="RegisterNamedCustomSetWithInfo{T}(string, string, T, ref T[])"/>
+	public void RegisterNamedCustomSet<T>(string key, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo(key, null, defaultValue, ref input);
 
 	/// <summary>
 	/// Manually registers a named ID set. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateNamedXSet methods, but this method can be used for manually initialized arrays.
@@ -217,7 +217,7 @@ public partial class SetFactory
 	/// <para/> Throws an exception if the data length or default value does not match a named ID set with the same key registered before this.
 	/// </summary>
 	/// <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public void RegisterNamedCustomSetWithInfo<T>(string key, T defaultValue, string additionalInfo, ref T[] input)
+	public void RegisterNamedCustomSetWithInfo<T>(string key, string additionalInfo, T defaultValue, ref T[] input)
 	{
 		// Modders are free to collaborate "globally" by using "Terraria" as the mod name if they wish.
 		if (!key.Contains("/")) {
@@ -291,20 +291,20 @@ public partial class SetFactory
 	}
 
 	/// <summary>
-	/// <inheritdoc cref="RegisterNamedCustomSetWithInfo{T}(string, T, string, ref T[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' />
+	/// <inheritdoc cref="RegisterNamedCustomSetWithInfo{T}(string, string, T, ref T[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyA' />
 	/// </summary>
-	public void RegisterNamedCustomSet<T>(string modName, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo($"{modName}/{key}", defaultValue, null, ref input);
+	public void RegisterNamedCustomSet<T>(string modName, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo($"{modName}/{key}", null, defaultValue, ref input);
 
 	/// <summary> <inheritdoc cref="RegisterNamedCustomSet{T}(string, string, T, ref T[])"/> </summary>
-	public void RegisterNamedCustomSetWithInfo<T>(string modName, string key, T defaultValue, string additionalInfo, ref T[] input) => RegisterNamedCustomSetWithInfo($"{modName}/{key}", defaultValue, additionalInfo, ref input);
+	public void RegisterNamedCustomSetWithInfo<T>(string modName, string key, string additionalInfo, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo($"{modName}/{key}", additionalInfo, defaultValue, ref input);
 
 	/// <summary>
-	/// <inheritdoc cref="RegisterNamedCustomSetWithInfo{T}(string, T, string, ref T[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' />
+	/// <inheritdoc cref="RegisterNamedCustomSetWithInfo{T}(string, string, T, ref T[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyB' />
 	/// </summary>
-	public void RegisterNamedCustomSet<T>(Mod mod, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo($"{mod.Name}/{key}", defaultValue, null, ref input);
+	public void RegisterNamedCustomSet<T>(Mod mod, string key, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo($"{mod.Name}/{key}", null, defaultValue, ref input);
 
 	/// <summary> <inheritdoc cref="RegisterNamedCustomSet{T}(Mod, string, T, ref T[])"/> </summary>
-	public void RegisterNamedCustomSetWithInfo<T>(Mod mod, string key, T defaultValue, string additionalInfo, ref T[] input) => RegisterNamedCustomSetWithInfo($"{mod.Name}/{key}", defaultValue, additionalInfo, ref input);
+	public void RegisterNamedCustomSetWithInfo<T>(Mod mod, string key, string additionalInfo, T defaultValue, ref T[] input) => RegisterNamedCustomSetWithInfo($"{mod.Name}/{key}", additionalInfo, defaultValue, ref input);
 
 	internal string CustomMetadataInfo(string setKey, bool printValues)
 	{
@@ -351,10 +351,10 @@ public partial class SetFactory
 				}
 			}
 			if (printValues) {
-				// No way to map SetFactory to corresponding idDictionary, so can't do something like .Select(ItemID.Search.GetName)
+				// Some SetFactory might not have a corresponding idDictionary
 				var array = (metadata.array as Array).Cast<object>().ToArray();
 				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{(search?.TryGetName(pair.i, out string name) == true ? name : pair.i)}, {pair.x ?? "null"}]");
-				sb.AppendLine($"\tNon-default value2: {string.Join(", ", nonDefault)}");
+				sb.AppendLine($"\tNon-default value: {string.Join(", ", nonDefault)}");
 			}
 		}
 	}

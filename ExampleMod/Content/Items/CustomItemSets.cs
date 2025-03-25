@@ -1,8 +1,5 @@
-﻿using ExampleMod.Common.Configs;
-using ExampleMod.Content.Items.Accessories;
-using ExampleMod.Content.Items.Weapons;
+﻿using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,7 +24,12 @@ namespace ExampleMod.Content.Items
 		// We can also pass in any initial data, in this case we are indicating that FieryGreatsword and ExampleSword should be true in this set. Note that it is also possible to set these set values in SetStaticDefaults instead, which is more typical. See ExampleFlail.cs for an example.
 		// Finally, we can pass in a description as well, explaining how this mod uses the set. Other mods can view this description using the /customsets chat command.
 		// This method also exposes the set for other mods to access via this key. The key and default value must be consistent with other mods. Remember that the Mod name is part of the key that that other mods will be using to access this set.
-		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSetWithInfo(FlamingWeaponCustomSetKey, false, "Causes \"Hahahah, burn!\" to randomly show in chat when used", ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>());
+		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSetWithInfo(
+			FlamingWeaponCustomSetKey,
+			"Causes \"Hahahah, burn!\" to randomly show in chat when used",
+			false,
+			ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>()
+		);
 		// Note that by using the ReinitializeDuringResizeArrays approach, ModContent.ItemType<ExampleSword>() is a valid input since modded content IDs will be assigned and retrievable during the reinitialization. Without ReinitializeDuringResizeArrays the code will incorrectly use 0 as the value of ModContent.ItemType<ExampleSword>() because modded IDs haven't been assigned yet when the class is first initialized.
 
 		// If sharing a custom ID set with other mods is not needed at all, the CreateXSet methods can be used to create a non-named custom ID set.
