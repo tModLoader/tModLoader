@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items
 		// By registering the set, other mods can access it the key. The key and default value must be consistent with other mods. Remember that the Mod name is part of the key that that other mods will be using to access this set.
 		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedSet(FlamingWeaponCustomSetKey)
 			.Description("Causes \"Hahahah, burn!\" to randomly show in chat when used")
-			.RegisterBoolSet(false, ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>(), ItemID.PadThai);
+			.RegisterBoolSet(false, ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>());
 		// Note that by using the ReinitializeDuringResizeArrays approach, ModContent.ItemType<ExampleSword>() is a valid input since modded content IDs will be assigned and retrievable during the reinitialization. Without ReinitializeDuringResizeArrays the code will incorrectly use 0 as the value of ModContent.ItemType<ExampleSword>() because modded IDs haven't been assigned yet when the class is first initialized.
 
 		// If sharing a custom ID set with other mods is not needed at all, the CreateXSet methods can be used to create a non-named custom ID set. Use this option for sets you are positive will never be accessed by other mods.
