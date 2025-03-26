@@ -14,55 +14,67 @@ namespace Terraria.ID;
 /// <summary>
 /// SetFactory is responsible for creating "custom ID sets" for content. "Custom ID sets" refers to arrays indexed by content ids. The ID set contains data applying to all instances of content of a specific type. This is typically metadata or data controlling how code will interact with each type of content. Each vanilla ID class contains a SetFactory instance called "Factory" which is used to initialize the ID sets contained within the ID class.
 /// <para/> For example <see cref="ItemID.Sets.Factory"/> is used to initialize <see cref="ItemID.Sets.IsFood"/> with true values for food items such as <see cref="ItemID.PadThai"/>. Modded content updates ID sets in <see cref="ModType.SetStaticDefaults"/>: <c>ItemID.Sets.IsFood[Type] = true;</c>. Code in tModLoader and individual mods might consult the data in <see cref="ItemID.Sets.IsFood"/> for whatever purpose they want.
-/// <para/> Mods can make their own custom ID sets through the methods of this class. The methods with "Named" in their method name facilitate collaborative "named ID sets". Mods using the same "named ID set" will share a reference to the same array merging together all the entries and changes. More information can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom and Named ID Sets pull request</see>.
+/// <para/> Mods can make their own custom ID sets through the methods of this class. The <see cref="CreateNamedSet(string)"/> methods create custom ID sets that facilitate collaborative "named ID sets". Mods using the same "named ID set" will share a reference to the same array merging together all the entries and changes. More information can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom and Named ID Sets pull request</see>.
 /// </summary>
 public partial class SetFactory
 {
 	/// <summary>
-	/// Used to construct the key for this named ID set. 
+	/// Used to construct the key for this "named ID set". Must be chained with a <c>RegisterXSet</c> method to create and register the set for sharing.
 	/// </summary>
 	public class SetKey
 	{
-		public string fullKey;
-		public string additionalInfo;
+		private SetFactory factory;
+		internal readonly string fullKey;
+		internal string description;
 
-		/// <summary>
-		/// <inheritdoc cref="SetKey"/>
-		/// <para/> The final key for this named ID set using this overload will be <c>"{key}"</c> directly if it contains a "/". Otherwise, the final key will be derived automatically from the currently loading mod: <c>"{loadingMod.Name}/{key}"</c>
-		/// </summary>
-		public SetKey(string fullKey)
+		internal SetKey(SetFactory factory, string fullKey)
 		{
+			this.factory = factory;
 			this.fullKey = fullKey;
 		}
-		/// <summary>
-		/// <inheritdoc cref="SetKey"/>
-		/// <para/> The final key for this named ID set using this overload will be: <c>"{modName}/{key}"</c>
-		/// </summary>
-		public SetKey(string modName, string key)
+
+		internal SetKey(SetFactory factory, string modName, string key)
 		{
+			this.factory = factory;
 			this.fullKey = $"{modName}/{key}";
 		}
-		/// <summary>
-		/// <inheritdoc cref="SetKey"/>
-		/// <para/> The final key for this named ID set using this overload will be: <c>"{mod.Name}/{key}"</c>
-		/// </summary>
-		public SetKey(Mod mod, string key)
+
+		internal SetKey(SetFactory factory, Mod mod, string key)
 		{
+			this.factory = factory;
 			this.fullKey = $"{mod.Name}/{key}";
 		}
 
 		/// <summary>
-		/// Adds additional info to this SetKey.
-		/// <para/> This info will be used to register additional information about the named ID set. This info serves to communicate to other mod makers interested in interfacing with this set what the entries in the set mean and what your mod does with entries in the set. Multiple mods can register additional info and they will all be available to view. Modders can use the "/customsets" chat command to output a complete listing of additional information for all named ID sets to "CustomSets.txt" in the logs directory.
+		/// Adds a description to this named ID set.
+		/// <para/> This description serves to communicate to other mod makers interested in interfacing with this set what the entries in the set mean and what your mod does with entries in the set. Multiple mods can register a description and they will all be available to view. Modders can use the "/customsets" chat command to output a complete listing of descriptions for all named ID sets to "CustomSets.txt" in the logs directory.
 		/// </summary>
-		public SetKey WithInfo(string additionalInfo)
+		public SetKey Description(string description)
 		{
-			this.additionalInfo = additionalInfo;
+			this.description = description;
 			return this;
 		}
 
-		public static implicit operator SetKey(string fullKey) => new SetKey(fullKey);
-		//public static implicit operator SetKey((string modName, string key) s) => new SetKey(s.modName, s.key);
+		/// <summary> <inheritdoc cref="CreateCustomSet"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
+		public T[] RegisterCustomSet<T>(T defaultState, params object[] inputs) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateCustomSet(defaultState, inputs));
+
+		/// <summary> <inheritdoc cref="CreateFloatSet"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
+		public float[] RegisterFloatSet(float defaultState, params float[] inputs) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateFloatSet(defaultState, inputs));
+
+		/// <summary> <inheritdoc cref="CreateUshortSet(ushort, ushort[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
+		public ushort[] RegisterUshortSet(ushort defaultState, params ushort[] inputs) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateUshortSet(defaultState, inputs));
+
+		/// <summary> <inheritdoc cref="CreateIntSet(int, int[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
+		public int[] RegisterIntSet(int defaultState, params int[] inputs) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateIntSet(defaultState, inputs));
+
+		/// <summary> <inheritdoc cref="CreateIntSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
+		public int[] RegisterIntSet(params int[] types) => factory.RegisterNamedCustomSet(this, -1, factory.CreateIntSet(types));
+
+		/// <summary> <inheritdoc cref="CreateBoolSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
+		public bool[] RegisterBoolSet(params int[] types) => factory.RegisterNamedCustomSet(this, false, factory.CreateBoolSet(false, types));
+
+		/// <summary> <inheritdoc cref="CreateBoolSet(bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
+		public bool[] RegisterBoolSet(bool defaultState, params int[] types) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateBoolSet(defaultState, types));
 	}
 
 	private class SetMetadata
@@ -88,8 +100,6 @@ public partial class SetFactory
 			return false;
 		}
 	}
-
-	// Additional code to support named custom sets for ad-hoc collaboration
 
 	// Contains all SetFactory instances.
 	internal static HashSet<SetFactory> SetFactories = new HashSet<SetFactory>();
@@ -159,21 +169,22 @@ public partial class SetFactory
 		setMetadataMapping.Clear();
 	}
 
-	// Copies of existing methods with an additional key parameter.
-	/// <summary> <inheritdoc cref="CreateCustomSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
-	public T[] CreateNamedCustomSet<T>(SetKey setKey, T defaultState, params object[] inputs) => RegisterNamedCustomSet(setKey, defaultState, CreateCustomSet(defaultState, inputs));
-	/// <summary> <inheritdoc cref="CreateFloatSet"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
-	public float[] CreateNamedFloatSet(SetKey setKey, float defaultState, params float[] inputs) => RegisterNamedCustomSet(setKey, defaultState, CreateFloatSet(defaultState, inputs));
-	/// <summary> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
-	public ushort[] CreateNamedUshortSet(SetKey setKey, ushort defaultState, params ushort[] inputs) => RegisterNamedCustomSet(setKey, defaultState, CreateUshortSet(defaultState, inputs));
-	/// <summary> <inheritdoc cref="CreateIntSet(int, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
-	public int[] CreateNamedIntSet(SetKey setKey, int defaultState, params int[] inputs) => RegisterNamedCustomSet(setKey, defaultState, CreateIntSet(defaultState, inputs));
-	/// <summary> <inheritdoc cref="CreateIntSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
-	public int[] CreateNamedIntSet(SetKey setKey, params int[] types) => RegisterNamedCustomSet(setKey, -1, CreateIntSet(types));
-	/// <summary> <inheritdoc cref="CreateBoolSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
-	public bool[] CreateNamedBoolSet(SetKey setKey, params int[] types) => RegisterNamedCustomSet(setKey, false, CreateBoolSet(false, types));
-	/// <summary> <inheritdoc cref="CreateBoolSet(bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' /> </summary>
-	public bool[] CreateNamedBoolSet(SetKey setKey, bool defaultState, params int[] types) => RegisterNamedCustomSet(setKey, defaultState, CreateBoolSet(defaultState, types));
+	/// <summary>
+	/// <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' />
+	/// <para/> The final key for this named ID set using this overload will be <c>"{key}"</c> directly if it contains a "/". Otherwise, the final key will be derived automatically from the currently loading mod: <c>"{loadingMod.Name}/{key}"</c>
+	/// </summary>
+	public SetKey CreateNamedSet(string fullKey) => new SetKey(this, fullKey);
+	/// <summary>
+	/// <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' />
+	/// <para/> The final key for this named ID set using this overload will be: <c>"{modName}/{key}"</c>
+	/// </summary>
+	public SetKey CreateNamedSet(string modName, string key) => new SetKey(this, modName, key);
+	/// <summary>
+	/// <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' />
+	/// <para/> The final key for this named ID set using this overload will be: <c>"{mod.Name}/{key}"</c>
+	/// <see cref="CreateNamedSet(string)"/>
+	/// </summary>
+	public SetKey CreateNamedSet(Mod mod, string key) => new SetKey(this, mod, key);
 
 	// This is private to prevent potential modder mistake of not using the return value.
 	private T[] RegisterNamedCustomSet<T>(SetKey setKey, T defaultValue, T[] input)
@@ -183,7 +194,7 @@ public partial class SetFactory
 	}
 
 	/// <summary>
-	/// Manually registers a named ID set. This is typically done through the Terraria.ID.XID.Sets.Factory.CreateNamedXSet methods, but this method can be used for manually initialized arrays.
+	/// Manually registers a named ID set. This is typically done through the <c>Terraria.ID.XID.Sets.Factory.CreateNamedSet().RegisterXSet()</c> methods, but this method can be used for manually initialized arrays.
 	/// <para/> The set reference passed in might be changed by this method when merging with existing data.
 	/// <para/> Throws an exception if the data length or default value does not match a named ID set with the same key registered before this.
 	/// </summary>
@@ -191,7 +202,7 @@ public partial class SetFactory
 	public void RegisterNamedCustomSet<T>(SetKey setKey, T defaultValue, ref T[] input)
 	{
 		string key = setKey.fullKey;
-		string additionalInfo = setKey.additionalInfo;
+		string description = setKey.description;
 
 		// Modders are free to collaborate "globally" by using "Terraria" as the mod name if they wish.
 		if (!key.Contains("/")) {
@@ -257,8 +268,8 @@ public partial class SetFactory
 
 		// We need to trach which SetFactory, the set name/Type/default value, metadata strings from each mod for each set, and the list of mods using each set.
 		existingMetadata.involvedMods.Add(ModContent.CurrentlyLoadingMod);
-		if (!string.IsNullOrWhiteSpace(additionalInfo)) {
-			existingMetadata.setDescriptions[ModContent.CurrentlyLoadingMod] = additionalInfo;
+		if (!string.IsNullOrWhiteSpace(description)) {
+			existingMetadata.setDescriptions[ModContent.CurrentlyLoadingMod] = description;
 		}
 
 		input = value;
@@ -276,7 +287,7 @@ public partial class SetFactory
 			}
 			else {
 				// If no '/', setKey is mod name
-				foreach (var (key, value) in setMetadataMapping) {
+				foreach (var (key, value) in setMetadataMapping.OrderBy(x => x.Key.setName)) {
 					if (value.involvedMods.Contains(setKey) || key.setName.StartsWith($"{setKey}/", StringComparison.OrdinalIgnoreCase)) {
 						OutputText(sb, key, value);
 					}
@@ -285,7 +296,7 @@ public partial class SetFactory
 		}
 		else {
 			// Return all involved mods, all descriptions, all types and names
-			foreach (var (key, value) in setMetadataMapping) {
+			foreach (var (key, value) in setMetadataMapping.OrderBy(x=>x.Key.setName)) {
 				OutputText(sb, key, value);
 			}
 		}
@@ -300,7 +311,7 @@ public partial class SetFactory
 				sb.AppendLine($"\tUsed by: {string.Join(", ", metadata.involvedMods)}");
 			if (metadata.setDescriptions?.Any() == true) {
 				var lines = metadata.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
-				sb.AppendLine($"\tAdditional Info:\n{string.Join("\n", lines)}");
+				sb.AppendLine($"\tDescriptions:\n{string.Join("\n", lines)}");
 			}
 			if (MergedSets.TryGetValue(new SetFactoryTypeTypePair(ContainingClassName, setNameTypePair.type), out List<HashSet<string>> registeredSets)) {
 				var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(setNameTypePair.setName));
@@ -312,7 +323,7 @@ public partial class SetFactory
 				// Some SetFactory might not have a corresponding idDictionary
 				var array = (metadata.array as Array).Cast<object>().ToArray();
 				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{(search?.TryGetName(pair.i, out string name) == true ? name : pair.i)}, {pair.x ?? "null"}]");
-				sb.AppendLine($"\tNon-default value: {string.Join(", ", nonDefault)}");
+				sb.AppendLine($"\tNon-default values: {string.Join(", ", nonDefault)}");
 			}
 		}
 	}

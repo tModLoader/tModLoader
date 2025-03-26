@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Items.Weapons;
+﻿using ExampleMod.Content.Items.Consumables;
+using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -19,19 +20,19 @@ namespace ExampleMod.Content.Items
 		// Named ID set example. This will behave the same as any other ItemID.Sets array.
 		public const string FlamingWeaponCustomSetKey = "FlamingWeapon";
 
-		// To create a named ID set for items, we use the ItemID.Sets.Factory.CreateNamedXSet method and provide a string key.
+		// To create a named ID set for items, we use the ItemID.Sets.Factory.CreateNamedSet method and provide a string key.
 		// The key we provide using this method overload will automatically have "ModName/" added to the start, meaning that the real key for this example is "ExampleMod/FlamingWeapon".
-		// We can also pass in any initial data, in this case we are indicating that FieryGreatsword and ExampleSword should be true in this set. Note that it is also possible to set these set values in SetStaticDefaults instead, which is more typical. See ExampleFlail.cs for an example.
-		// Finally, we can pass in a description as well, explaining how this mod uses the set. Other mods can view this description using the /customsets chat command.
-		// This method also exposes the set for other mods to access via this key. The key and default value must be consistent with other mods. Remember that the Mod name is part of the key that that other mods will be using to access this set.
-		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSet(
-			new SetFactory.SetKey(FlamingWeaponCustomSetKey).WithInfo("Causes \"Hahahah, burn!\" to randomly show in chat when used"),
-			false,
-			ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>()
-		);
+		// This is then optionally followed by the Decription method. The description explains how this mod uses the set. Other mods can view this description using the /customsets chat command.
+		// Finally the RegisterXSet method is called to register the set.
+		// We can pass in any initial data to the RegisterXSet method, in this case we are indicating that FieryGreatsword and ExampleSword should be true in this set. Note that it is also possible to set these set values in SetStaticDefaults instead, which is more typical. See ExampleFlail.cs for an example.
+		// By registering the set, other mods can access it the key. The key and default value must be consistent with other mods. Remember that the Mod name is part of the key that that other mods will be using to access this set.
+		public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedSet(FlamingWeaponCustomSetKey)
+			.Description("Causes \"Hahahah, burn!\" to randomly show in chat when used")
+			.RegisterBoolSet(false, ItemID.FieryGreatsword, ModContent.ItemType<ExampleSword>(), ItemID.PadThai);
 		// Note that by using the ReinitializeDuringResizeArrays approach, ModContent.ItemType<ExampleSword>() is a valid input since modded content IDs will be assigned and retrievable during the reinitialization. Without ReinitializeDuringResizeArrays the code will incorrectly use 0 as the value of ModContent.ItemType<ExampleSword>() because modded IDs haven't been assigned yet when the class is first initialized.
 
-		// If sharing a custom ID set with other mods is not needed at all, the CreateXSet methods can be used to create a non-named custom ID set.
+		// If sharing a custom ID set with other mods is not needed at all, the CreateXSet methods can be used to create a non-named custom ID set. Use this option for sets you are positive will never be accessed by other mods.
+		// public static int[] UnsharedSetExample_SpicyLevel = ItemID.Sets.Factory.CreateIntSet(0, ItemID.PadThai, 5, ModContent.ItemType<ExampleFoodItem>(), 10);
 	}
 
 	public class CustomItemSetsSystem : ModSystem
@@ -43,9 +44,9 @@ namespace ExampleMod.Content.Items
 
 		public override void ResizeArrays() {
 			// ResizeArrays is the earliest method called after all content has loaded and have been assigned ID values.
-			// This is where methods such as SetFactory.CreateNamedBoolSet should be called if not using the ReinitializeDuringResizeArrays attribute to do this automatically with a field initializer.
+			// This is where methods such as SetFactory.CreateNamedSet should be called if not using the ReinitializeDuringResizeArrays attribute to do this automatically with a field initializer.
 
-			// For example, we could put "CustomItemSets.FlamingWeapon = ItemID.Sets.Factory.CreateNamedBoolSet(CustomItemSets.FlamingWeaponCustomSetKey, false, ItemID.FieryGreatsword);" here instead of in the CustomItemSets class field initializers.
+			// For example, we could put "CustomItemSets.FlamingWeapon = ItemID.Sets.Factory.CreateNamedSet(CustomItemSets.FlamingWeaponCustomSetKey).RegisterBoolSet(false, ItemID.FieryGreatsword);" here instead of in the CustomItemSets class field initializers.
 			// We could also move the FlamingWeapon field to this class if we make sure to use [ReinitializeDuringResizeArrays] and have no other static fields that we wouldn't want to reset.
 		}
 

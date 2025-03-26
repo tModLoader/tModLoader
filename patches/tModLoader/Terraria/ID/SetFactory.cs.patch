@@ -43,6 +43,14 @@
  	public int[] CreateIntSet(int defaultState, params int[] inputs)
  	{
  		if (inputs.Length % 2 != 0)
+@@ -105,6 +_,7 @@
+ 		return intBuffer;
+ 	}
+ 
++	/// <summary> Creates and returns a ushort array ID set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateUshortSet(0, ItemID.CopperOre, 10, ItemID.SilverOre, 20)</c> will result in an array filled with 0 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
+ 	public ushort[] CreateUshortSet(ushort defaultState, params ushort[] inputs)
+ 	{
+ 		if (inputs.Length % 2 != 0)
 @@ -122,6 +_,7 @@
  		return ushortBuffer;
  	}
