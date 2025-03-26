@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria.Map;
-using static Terraria.Map.IMapLayer;
-
 namespace Terraria.ModLoader;
 public static class MapLayerLoader
 {
@@ -21,60 +19,70 @@ public static class MapLayerLoader
 
 	private static IEnumerable<IMapLayer> ModdedLayers => MapLayers.Skip(DefaultLayerCount);
 
+	internal static void Add(IMapLayer layer) => MapLayers.Add(layer);
+
 	internal static void Unload()
 	{
 		MapLayers.RemoveRange(DefaultLayerCount, MapLayerCount - DefaultLayerCount);
-		
-		var overlay = new MapIconOverlay();
-		foreach (IMapLayer layer in MapLayers) {
-			overlay.AddLayer(layer);
-		}
-		Main.MapIcons = overlay;
 	}
 
 	internal static void ResizeArrays()
 	{
-		List<IMapLayer> sortedLayers = MapLayers[..DefaultLayerCount];
+		var sortingSlots = new List<IMapLayer>[DefaultLayerCount + 1];
+		for (int i = 0; i < sortingSlots.Length; ++i)
+			sortingSlots[i] = [];
+
 		foreach (IMapLayer layer in ModdedLayers) {
-			Position position = layer.GetDefaultPosition();
+			var position = layer.GetDefaultPosition();
 
 			switch (position) {
-				case Before before: {
-					int index = sortedLayers.IndexOf(before.Layer);
-					if (index is not -1) {
-						sortedLayers.Insert(index, layer);
-					}
-					else {
-						sortedLayers.Add(layer);
-					}
+				case IMapLayer.After after: {
+					int afterParent = MapLayers.IndexOf(after.Layer) is int index and not -1 ? index + 1 : 0;
+					sortingSlots[afterParent].Add(layer);
 
 					break;
 				}
-				case After after: {
-					int index = sortedLayers.IndexOf(after.Layer);
-					if (index is not -1) {
-						sortedLayers.Insert(index + 1, layer);
-					}
-					else {
-						sortedLayers.Add(layer);
-					}
+				case IMapLayer.Before before: {
+					int beforeParent = MapLayers.IndexOf(before.Layer) is int index and not -1 ? index : sortingSlots.Length - 1;
+					sortingSlots[beforeParent].Add(layer);
 
 					break;
-				}
-				case Append: {
-					sortedLayers.Add(layer);
-					break;
-				}
+				}	
 				default: {
-					throw new ArgumentException($"IMapLayer {layer} has unknown {position}");
+					var ex = new ArgumentException($"IMapLayer {layer} has unknown Position {position}");
+					if (layer is ModMapLayer modLayer)
+						ex.Data["mod"] = modLayer.Mod.Name;
+					throw ex;
 				}
 			}
 		}
 
+		List<IMapLayer> sortedLayers = [];
+
+		for (int i = 0; i < DefaultLayerCount + 1; i++) {
+			var elements = sortingSlots[i];
+			var sort = new TopoSort<IMapLayer>(elements,
+				l => l.GetModdedConstraints()?.OfType<IMapLayer.After>().Select(a => a.Layer).Where(elements.Contains) ?? [],
+				l => l.GetModdedConstraints()?.OfType<IMapLayer.Before>().Select(b => b.Layer).Where(elements.Contains) ?? []);
+
+			foreach (IMapLayer layer in sort.Sort()) {
+				sortedLayers.Add(layer);
+			}
+
+			if (i < DefaultLayerCount)
+				sortedLayers.Add(MapLayers[i]);
+		}
+
+		Main.MapIcons = CreateOverlayWithLayers(sortedLayers);
+		Main.Pings = (PingMapLayer)IMapLayer.Pings;
+	}
+
+	private static MapIconOverlay CreateOverlayWithLayers(IEnumerable<IMapLayer> layers)
+	{
 		var overlay = new MapIconOverlay();
-		foreach (IMapLayer layer in sortedLayers) {
+		foreach (IMapLayer layer in layers) {
 			overlay.AddLayer(layer);
 		}
-		Main.MapIcons = overlay;
+		return overlay;
 	}
 }

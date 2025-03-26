@@ -526,6 +526,7 @@ public static class ModContent
 
 		GlobalBackgroundStyleLoader.Unload();
 		PlayerDrawLayerLoader.Unload();
+		MapLayerLoader.Unload();
 		SystemLoader.Unload();
 		ResizeArrays(true);
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -544,8 +545,6 @@ public static class ModContent
 		Config.ConfigManager.Unload();
 		CustomCurrencyManager.Initialize();
 		EffectsTracker.RemoveModEffects();
-		// Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
-		MapLayerLoader.Unload();
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 		Main.gameTips.Reset();
 
