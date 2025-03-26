@@ -84,31 +84,36 @@ public partial class WorldGen
 	/// <param name="y">Y coordinate of the spreading tile</param>
 	/// <param name="conversionType">The <see cref="BiomeConversionID"/> of the spreading tile</param>
 	/// <param name="range">Tile range for potential conversion targets</param>
-	/// <returns>If the tile was successfully converted</returns>
-	public static bool SpreadInfectionToNearbyTile(int x, int y, int conversionType, int range = 3)
+	public static void SpreadInfectionToNearbyTile(int x, int y, int conversionType, int range = 3)
 	{
 		if (!AllowedToSpreadInfections)
-			return false;
+			return;
 
 		if (!Main.hardMode || (NPC.downedPlantBoss && genRand.NextBool(2)))
-			return false;
+			return;
 
-		int testX = x + genRand.Next(-range, range + 1);
-		int testY = y + genRand.Next(-range, range + 1);
-		if (!InWorld(testX, testY, 10))
-			return false;
+		// Vanilla keeps trying to spread the infection to neighboring tiles, with a 1/2 chance to stop after each converted tile
+		bool keepSpreading = true;
+		while (keepSpreading) {
+			keepSpreading = false;
+			int testX = x + genRand.Next(-range, range + 1);
+			int testY = y + genRand.Next(-range, range + 1);
+			if (!InWorld(testX, testY, 10))
+				return;
 
-		if (nearbyChlorophyte(testX, testY)) {
-			ChlorophyteDefense(testX, testY);
-			return false;
+			if (nearbyChlorophyte(testX, testY)) {
+				ChlorophyteDefense(testX, testY);
+				return;
+			}
+
+			if (CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
+				return;
+
+			int preConversionType = Main.tile[testX, testY].type;
+			Convert(testX, testY, conversionType, true, false);
+			if (preConversionType != Main.tile[testX, testY].type)
+				keepSpreading = genRand.NextBool(2); // 1 in 2 chance to attempt to spread to another tile if we successfuly converted the first one
 		}
-
-		if (CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) <= 0)
-			return false;
-
-		int preConversionType = Main.tile[testX, testY].type;
-		Convert(testX, testY, conversionType, 1);
-		return preConversionType != Main.tile[testX, testY].type;
 	}
 
 }

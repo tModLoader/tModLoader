@@ -1930,10 +1930,11 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,6 +_,23 @@
+@@ -39342,7 +_,34 @@
  		return true;
  	}
  
+-	public static void Convert(int i, int j, int conversionType, int size = 4)
 +	/// <summary>
 +	/// Converts biome variant tiles and walls to a target biome.<br/>
 +	/// Converts a 9x9 square by default, but can be adjusted with the <paramref name="size"/> parameter.
@@ -1951,16 +1952,27 @@
 +	/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
 +	/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
 +	/// </param>
- 	public static void Convert(int i, int j, int conversionType, int size = 4)
++	public static void Convert(int i, int j, int conversionType, int size = 4) => Convert(i, j, conversionType, size, true, true);
++
++	/// <inheritdoc cref="Convert(int, int, int, int)"/>
++	/// <param name="tiles">If the conversion should affect tiles</param>
++	/// <param name="walls">If the conversion should affect walls</param>
++	public static void Convert(int i, int j, int conversionType, bool tiles = true, bool walls = true) => Convert(i, j, conversionType, 0, tiles, walls);
++
++	/// <inheritdoc cref="Convert(int, int, int, int)"/>
++	/// <param name="tiles">If the conversion should affect tiles</param>
++	/// <param name="walls">If the conversion should affect walls</param>
++	public static void Convert(int i, int j, int conversionType, int size = 4, bool tiles = true, bool walls = true)
  	{
  		for (int k = i - size; k <= i + size; k++) {
+ 			for (int l = j - size; l <= j + size; l++) {
 @@ -39352,9 +_,16 @@
  				Tile tile = Main.tile[k, l];
  				int type = tile.type;
  				int wall = tile.wall;
 +
-+				bool convertWall = wall > 0 && WallLoader.Convert(k, l, conversionType);
-+				bool convertTile = tile.HasTile && TileLoader.Convert(k, l, conversionType);
++				bool convertWall = walls && wall > 0 && WallLoader.Convert(k, l, conversionType);
++				bool convertTile = tiles && tile.HasTile && TileLoader.Convert(k, l, conversionType);
 +
  				switch (conversionType) {
  					case 4:
