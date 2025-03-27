@@ -77,8 +77,9 @@ public partial class SetFactory
 
 	private abstract class SetMetadata
 	{
-		internal HashSet<string> involvedMods = [];
-		internal Dictionary<string, string> setDescriptions = [];
+		public readonly HashSet<string> registeredNames = [];
+		public readonly HashSet<string> involvedMods = [];
+		public readonly Dictionary<string, string> setDescriptions = [];
 
 		public abstract object DefaultValue { get; }
 		public abstract IEnumerable<(int i, object v)> EnumerateNonDefaultValues();
@@ -114,8 +115,9 @@ public partial class SetFactory
 	internal static List<SetFactory> SetFactories = new();
 
 	internal record SetFactoryNameTypePair(string setFactoryName, Type type);
+
 	// This is static since SetFactory instances are reset during ResizeArrays. Default value issues will be detected during RegisterNamedCustomSetWithInfo.
-	internal static ConcurrentDictionary<SetFactoryNameTypePair, List<HashSet<string>>> MergedSets = new ConcurrentDictionary<SetFactoryNameTypePair, List<HashSet<string>>>();
+	internal static ConcurrentDictionary<SetFactoryNameTypePair, Dictionary<string, HashSet<string>>> MergedSets = new ();
 
 	/// <summary>
 	/// Causes sets registered with the provided keys (and matching SetFactory and Type) to be merged as if they are registered with the same key. This is useful for situations where established set keys are determined to have identical meaning but the involved mods are incapable of updating to collaborate on the shared key, either due to dependent mods or inactivity.
@@ -130,20 +132,23 @@ public partial class SetFactory
 		if (inputSetNames == null || inputSetNames.Length <= 1)
 			return;
 
-		var registeredSets = MergedSets.GetOrAdd(new SetFactoryNameTypePair(ContainingClassName, typeof(T)), new List<HashSet<string>>());
-		// Take every existing set matching any input, merge them with inputs and remove excess sets.
-		var existing = registeredSets.Where(registeredSet => inputSetNames.Any(a => registeredSet.Contains(a))).ToList();
-		if (existing.Any()) {
-			var toKeep = existing.First();
-			foreach (var toRemove in existing.Skip(1)) {
-				toKeep.UnionWith(toRemove);
-				registeredSets.Remove(toRemove);
-			}
-			toKeep.UnionWith(inputSetNames);
-		}
-		else {
-			registeredSets.Add(new HashSet<string>(inputSetNames));
-		}
+		var mergeRegistry = MergedSets.GetOrAdd(new SetFactoryNameTypePair(ContainingClassName, typeof(T)), _ => new());
+		var merged = inputSetNames.ToHashSet();
+		var requestedMerge = string.Join(", ", merged);
+
+		foreach (var name in inputSetNames)
+			if (mergeRegistry.TryGetValue(name, out var existingMerge))
+				merged.UnionWith(existingMerge);
+
+		foreach (var name in merged)
+			mergeRegistry[name] = merged;
+
+		var finalMerge = string.Join(", ", merged);
+		var log = $"Custom {ContainingClassName} {typeof(T).Name}[] sets {{{requestedMerge}}} merged by {ModContent.CurrentlyLoadingMod}.";
+		if (finalMerge != requestedMerge)
+			log += $" Result: {{{finalMerge}}}";
+
+		Logging.tML.Debug(log);
 	}
 
 	public static void ResizeArrays(bool unloading)
@@ -157,7 +162,7 @@ public partial class SetFactory
 	private readonly Func<int, string> GetName;
 
 	private record SetNameTypePair(string Name, Type Type);
-	private readonly ConcurrentDictionary<SetNameTypePair, SetMetadata> setMetadataMapping = new();
+	private readonly ConcurrentDictionary<SetNameTypePair, SetMetadata> namedSets = new();
 
 	public SetFactory(int size, string idClassName, IdDictionary search) : this(size, idClassName, id => search.TryGetName(id, out var name) ? name : null) { }
 
@@ -182,7 +187,7 @@ public partial class SetFactory
 	// Each SetFactory will be re-created on mod reload, so this doesn't need to be called by tModLoader code.
 	public void Clear()
 	{
-		setMetadataMapping.Clear();
+		namedSets.Clear();
 	}
 
 	/// <summary>
@@ -220,6 +225,7 @@ public partial class SetFactory
 		if (ContainingClassName == null)
 			throw new ArgumentException("Cannot register named sets on a SetFactory whith no name (using the obsolete constructor)");
 
+		string unmergedKey = setKey.fullKey;
 		string key = setKey.fullKey;
 		string description = setKey.description;
 
@@ -233,56 +239,61 @@ public partial class SetFactory
 			return; // too early to be doing anything
 		}
 
-		// If sets with different names are to be merged, find the actual key, which will be the 1st alternate name registered with MergeSets().
-		string keyChangedHint = "";
-		if (MergedSets.TryGetValue(new SetFactoryNameTypePair(ContainingClassName, typeof(T)), out List<HashSet<string>> registeredSets)) {
-			var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(key));
-			if (matchingSet != null) {
-				string newKey = matchingSet.OrderBy(x => x).First();
-				if (newKey != key) {
-					keyChangedHint = $" (originally '{key}')"; // Logs might be confusing without this.
-					key = newKey;
-				}
-			}
-		}
+		if (MergedSets.TryGetValue(new(ContainingClassName, typeof(T)), out var mergeRegistry) && mergeRegistry.TryGetValue(key, out var merged)) {
+			key = $"{{{string.Join(", ", merged)}}}";
+		} 
 
-		var newMetadata = new SetMetadata<T>(defaultValue, input);
-		var existingMetadata = (SetMetadata<T>)setMetadataMapping.GetOrAdd(new(key, typeof(T)), newMetadata);
+		var originalInput = input;
+		var metadata = (SetMetadata<T>)namedSets.GetOrAdd(new(key, typeof(T)), _ => new SetMetadata<T>(defaultValue, originalInput));
 
-		if (!EqualityComparer<T>.Default.Equals(newMetadata.defaultValue, existingMetadata.defaultValue)) {
-			throw new Exception($"Previously registered named ID set in {ContainingClassName} named '{key}'{keyChangedHint} has a default value of '{existingMetadata.DefaultValue ?? "null"}' provided by the mod(s) [{string.Join(", ", existingMetadata.involvedMods)}] but '{newMetadata.DefaultValue ?? "null"}' was supplied by '{ModContent.CurrentlyLoadingMod}'. This named ID set can not be registered." +
+		if (!EqualityComparer<T>.Default.Equals(defaultValue, metadata.defaultValue)) {
+			string conflictMergeInfo = "";
+			if (metadata.registeredNames.Any() && !metadata.registeredNames.Contains(unmergedKey))
+				conflictMergeInfo = $"\nThis set has been merged with [{string.Join(", ", metadata.registeredNames)}]. Check the logs to see if another mod is causing this conflict.";
+
+			throw new Exception(
+				$"Failed to register {ContainingClassName} {typeof(T).Name}[] set {unmergedKey}. Default value ({(object)defaultValue ?? "null"}) conflicts with existing default value ({metadata.DefaultValue ?? "null"}) registered by the mod(s) [{string.Join(", ", metadata.involvedMods)}]" +
+				conflictMergeInfo +
 				$"\n\nIf you are the developer of this mod, please visit https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets to see how existing mods are using named ID sets and adjust accordingly.");
 		}
 
-		var value = existingMetadata.array;
-
 		// If it already exists, merge the data
+		var value = metadata.array;
 		if (value != input) {
 			if (value.Length != input.Length) {
 				throw new Exception("Input set and existing set are of different lengths.");
 				// This could potentially happen for willBeReinitialized sets if the modder makes the array manually for the current content count instead of using the SetFactory as intended.
 			}
 
-			bool anyChanges = false;
-			// To merge, we find entries in the input that aren't defaultValue and assign them to the result.
-			// For conflicts, mods loading after will have final say.
+			int newEntries = 0;
+			int replacedEntries = 0;
 			for (int i = 0; i < input.Length; i++) {
 				if (!EqualityComparer<T>.Default.Equals(input[i], defaultValue)) {
-					if (!EqualityComparer<T>.Default.Equals(input[i], value[i])) {
-						anyChanges = true;
-					}
+					if (EqualityComparer<T>.Default.Equals(input[i], value[i]))
+						continue;
+
+					if (!EqualityComparer<T>.Default.Equals(value[i], defaultValue))
+						replacedEntries++;
+					else
+						newEntries++;
+
 					value[i] = input[i];
 				}
 			}
 
-			if (anyChanges && ModCompile.activelyModding)
-				Logging.tML.Info($"Custom Set '{key}'{keyChangedHint} (Type: {typeof(T).Name}, SetFactory: {ContainingClassName}) is merging with additional data from '{ModContent.CurrentlyLoadingMod}'. It previously had data from [{string.Join(", ", existingMetadata.involvedMods)}]");
+			if (newEntries + replacedEntries > 0 && ModCompile.activelyModding) {
+				var log = $"Custom {ContainingClassName} {typeof(T).Name}[] set {key} updated by {ModContent.CurrentlyLoadingMod}.";
+				if (replacedEntries > 0) log += $" {replacedEntries} non-default entries were replaced.";
+				log += $" Previously registered by [{string.Join(", ", metadata.involvedMods)}]";
+				Logging.tML.Debug(log);
+			}
 		}
 
 		// We need to trach which SetFactory, the set name/Type/default value, metadata strings from each mod for each set, and the list of mods using each set.
-		existingMetadata.involvedMods.Add(ModContent.CurrentlyLoadingMod);
+		metadata.registeredNames.Add(unmergedKey);
+		metadata.involvedMods.Add(ModContent.CurrentlyLoadingMod);
 		if (!string.IsNullOrWhiteSpace(description)) {
-			existingMetadata.setDescriptions[ModContent.CurrentlyLoadingMod] = description;
+			metadata.setDescriptions[ModContent.CurrentlyLoadingMod] = description;
 		}
 
 		input = value;
@@ -293,14 +304,14 @@ public partial class SetFactory
 		var sb = new StringBuilder();
 		if (setKey != null) {
 			if (setKey.Contains('/')) {
-				var specificSet = setMetadataMapping.FirstOrDefault(x => x.Key.Name.Equals(setKey, StringComparison.OrdinalIgnoreCase));
+				var specificSet = namedSets.FirstOrDefault(x => x.Key.Name.Equals(setKey, StringComparison.OrdinalIgnoreCase));
 				if (specificSet.Key != null) {
 					OutputText(sb, specificSet.Key, specificSet.Value);
 				}
 			}
 			else {
 				// If no '/', setKey is mod name
-				foreach (var (key, value) in setMetadataMapping.OrderBy(x => x.Key.Name)) {
+				foreach (var (key, value) in namedSets.OrderBy(x => x.Key.Name)) {
 					if (value.involvedMods.Contains(setKey) || key.Name.StartsWith($"{setKey}/", StringComparison.OrdinalIgnoreCase)) {
 						OutputText(sb, key, value);
 					}
@@ -309,7 +320,7 @@ public partial class SetFactory
 		}
 		else {
 			// Return all involved mods, all descriptions, all types and names
-			foreach (var (key, value) in setMetadataMapping.OrderBy(x=>x.Key.Name)) {
+			foreach (var (key, value) in namedSets.OrderBy(x=>x.Key.Name)) {
 				OutputText(sb, key, value);
 			}
 		}
@@ -317,17 +328,11 @@ public partial class SetFactory
 
 		void OutputText(StringBuilder sb, SetNameTypePair setNameTypePair, SetMetadata metadata)
 		{
-			sb.AppendLine($"{ContainingClassName}, \"{setNameTypePair.Name}\", {setNameTypePair.Type.Name}, default value {metadata.DefaultValue ?? "null"}");
+			sb.AppendLine($"{ContainingClassName}, {setNameTypePair.Type.Name}[], {setNameTypePair.Name}, default value {metadata.DefaultValue ?? "null"}");
 			sb.AppendLine($"\tUsed by: {string.Join(", ", metadata.involvedMods)}");
 			if (metadata.setDescriptions.Any()) {
 				var lines = metadata.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
 				sb.AppendLine($"\tDescriptions:\n{string.Join("\n", lines)}");
-			}
-			if (MergedSets.TryGetValue(new SetFactoryNameTypePair(ContainingClassName, setNameTypePair.Type), out List<HashSet<string>> registeredSets)) {
-				var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(setNameTypePair.Name));
-				if (matchingSet != null) {
-					sb.AppendLine($"\tMerged Set Names: {string.Join(", ", matchingSet)}");
-				}
 			}
 			if (printValues) {
 				var nonDefault = metadata.EnumerateNonDefaultValues().Select(pair => $"[{GetName?.Invoke(pair.i) ?? pair.i.ToString()}, {pair.v ?? "null"}]");
