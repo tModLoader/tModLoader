@@ -315,7 +315,7 @@ public partial class SetFactory
 		IEnumerable<SetMetadata> sets = namedSets.Values.OrderBy(x => x.name);
 
 		if (searchTerm != null) {
-			sets = sets.Where(set => set.involvedMods.Contains(searchTerm) || set.name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+			sets = sets.Where(set => set.involvedMods.Any(s => s.Equals(searchTerm, StringComparison.OrdinalIgnoreCase)) || set.name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
 		}
 
 		// Return all involved mods, all descriptions, all types and names
