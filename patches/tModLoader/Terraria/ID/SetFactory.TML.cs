@@ -9,7 +9,6 @@ using ReLogic.Reflection;
 using ReLogic.Utilities;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
-using static Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions;
 
 namespace Terraria.ID;
 
@@ -310,17 +309,13 @@ public partial class SetFactory
 		input = value;
 	}
 
-	internal string CustomMetadataInfo(string prefix, bool printValues)
+	internal string CustomMetadataInfo(string searchTerm, bool printValues)
 	{
 		var sb = new StringBuilder();
 		IEnumerable<SetMetadata> sets = namedSets.Values.OrderBy(x => x.name);
 
-		if (prefix != null) {
-			// If no '/', setKey is mod name
-			if (!prefix.Contains('/'))
-				prefix += '/';
-
-			sets = sets.Where(set => set.involvedMods.Contains(prefix) || set.name.Contains(prefix, StringComparison.OrdinalIgnoreCase));
+		if (searchTerm != null) {
+			sets = sets.Where(set => set.involvedMods.Contains(searchTerm) || set.name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
 		}
 
 		// Return all involved mods, all descriptions, all types and names

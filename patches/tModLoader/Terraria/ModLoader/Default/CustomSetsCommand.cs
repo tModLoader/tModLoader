@@ -16,7 +16,7 @@ internal class CustomSetsCommand : ModCommand
 	{
 		bool printValues = false;
 		bool openFile = false;
-		string setKey = null;
+		string searchTerm = null;
 		for (int i = 0; i < args.Length; i++) {
 			if (args[i] == "-h") {
 				caller.Reply(Usage);
@@ -29,21 +29,16 @@ internal class CustomSetsCommand : ModCommand
 				openFile = true;
 			}
 			else {
-				setKey = args[i];
+				searchTerm = args[i];
 			}
 		}
 
 		var sb = new StringBuilder();
-		if (setKey != null) {
-			if (!setKey.Contains("/")) {
-				sb.AppendLine($"Outputting all named ID sets used by or registered to the mod '{setKey}':");
-			}
-			else {
-				sb.AppendLine($"Outputting all named ID sets with the key '{setKey}':");
-			}
+		if (searchTerm != null) {
+			sb.AppendLine($"Outputting all named ID sets from the search term '{searchTerm}':");
 		}
 		foreach (var factory in SetFactory.SetFactories) {
-			string metadata = factory.CustomMetadataInfo(setKey, printValues);
+			string metadata = factory.CustomMetadataInfo(searchTerm, printValues);
 			sb.Append(metadata);
 		}
 
