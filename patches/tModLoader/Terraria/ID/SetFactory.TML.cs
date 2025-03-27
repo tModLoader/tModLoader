@@ -75,28 +75,39 @@ public partial class SetFactory
 		public bool[] RegisterBoolSet(bool defaultState, params int[] types) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateBoolSet(defaultState, types));
 	}
 
-	private class SetMetadata
+	private abstract class SetMetadata
 	{
-		internal readonly object defaultValue;
-		internal readonly object array;
 		internal HashSet<string> involvedMods = [];
 		internal Dictionary<string, string> setDescriptions = [];
 
-		public SetMetadata(object defaultValue, object array)
+		public abstract object DefaultValue { get; }
+		public abstract IEnumerable<(int i, object v)> EnumerateNonDefaultValues();
+	}
+
+	private class SetMetadata<T> : SetMetadata
+	{
+		public readonly T defaultValue;
+		public readonly T[] array;
+
+		public SetMetadata(T defaultValue, T[] array)
 		{
 			this.defaultValue = defaultValue;
 			this.array = array;
 		}
 
+		public override object DefaultValue => defaultValue;
+		public override IEnumerable<(int, object)> EnumerateNonDefaultValues()
+		{
+			for (int i = 0; i < array.Length; i++) {
+				var v = array[i];
+				if (!EqualityComparer<T>.Default.Equals(defaultValue, v))
+					yield return (i, v);
+			}
+		}
+
 		public override int GetHashCode() => defaultValue.GetHashCode() ^ array.GetHashCode();
 
-		public override bool Equals(object obj)
-		{
-			if (obj is SetMetadata metadata) {
-				return defaultValue?.Equals(metadata.defaultValue) == true && array.Equals(metadata.array);
-			}
-			return false;
-		}
+		public override bool Equals(object obj) => obj is SetMetadata<T> metadata && EqualityComparer<T>.Default.Equals(defaultValue, metadata.defaultValue) && array == metadata.array;
 	}
 
 	// Contains all SetFactory instances.
@@ -142,11 +153,11 @@ public partial class SetFactory
 			MergedSets = new(); // SetFactory.MergedSets.Clear() crashes the game for some reason?
 	}
 
-	private record SetNameTypePair(string setName, Type type);
-	private ConcurrentDictionary<SetNameTypePair, SetMetadata> setMetadataMapping = new ConcurrentDictionary<SetNameTypePair, SetMetadata>();
-
 	private readonly string ContainingClassName;
 	private readonly Func<int, string> GetName;
+
+	private record SetNameTypePair(string Name, Type Type);
+	private readonly ConcurrentDictionary<SetNameTypePair, SetMetadata> setMetadataMapping = new();
 
 	public SetFactory(int size, string idClassName, IdDictionary search) : this(size, idClassName, id => search.TryGetName(id, out var name) ? name : null) { }
 
@@ -212,6 +223,16 @@ public partial class SetFactory
 		string key = setKey.fullKey;
 		string description = setKey.description;
 
+		if (!ContentCache.contentLoadingFinished) {
+			static bool IsReinitArraysCctor(MethodBase method) => method != null && method.MemberType == MemberTypes.Constructor && method.IsStatic && method.DeclaringType?.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null;
+			bool willBeReinitialized = new StackTrace().GetFrames().Any(frame => IsReinitArraysCctor(frame.GetMethod()));
+			if (!willBeReinitialized)
+				throw new Exception($"Custom sets cannot be initialized during Load phase, except via the static constructor of a class with [ReinitializeDuringResizeArrays]." +
+					$"\r\nThis ensures that all content has been registered and that the custom set will have the correct length");
+
+			return; // too early to be doing anything
+		}
+
 		// If sets with different names are to be merged, find the actual key, which will be the 1st alternate name registered with MergeSets().
 		string keyChangedHint = "";
 		if (MergedSets.TryGetValue(new SetFactoryNameTypePair(ContainingClassName, typeof(T)), out List<HashSet<string>> registeredSets)) {
@@ -225,25 +246,15 @@ public partial class SetFactory
 			}
 		}
 
-		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
-		if (!ContentCache.contentLoadingFinished) {
-			bool IsReinitArraysCctor(MethodBase method) => method != null && method.MemberType == MemberTypes.Constructor && method.IsStatic && method.DeclaringType?.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null;
-			bool willBeReinitialized = new StackTrace().GetFrames().Any(frame => IsReinitArraysCctor(frame.GetMethod()));
-			if (!willBeReinitialized)
-				throw new Exception($"Custom sets cannot be initialized during Load phase, except via the static constructor of a class with [ReinitializeDuringResizeArrays]." +
-					$"\r\nThis ensures that all content has been registered and that the custom set will have the correct length");
+		var newMetadata = new SetMetadata<T>(defaultValue, input);
+		var existingMetadata = (SetMetadata<T>)setMetadataMapping.GetOrAdd(new(key, typeof(T)), newMetadata);
+
+		if (!EqualityComparer<T>.Default.Equals(newMetadata.defaultValue, existingMetadata.defaultValue)) {
+			throw new Exception($"Previously registered named ID set in {ContainingClassName} named '{key}'{keyChangedHint} has a default value of '{existingMetadata.DefaultValue ?? "null"}' provided by the mod(s) [{string.Join(", ", existingMetadata.involvedMods)}] but '{newMetadata.DefaultValue ?? "null"}' was supplied by '{ModContent.CurrentlyLoadingMod}'. This named ID set can not be registered." +
+				$"\n\nIf you are the developer of this mod, please visit https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets to see how existing mods are using named ID sets and adjust accordingly.");
 		}
 
-		// Note: Intended to be load order independent as long as all parties agree on default value. Any deviation will throw exception.
-		SetMetadata newMetadata = new SetMetadata(defaultValue, input);
-		SetNameTypePair dictionaryKey = new SetNameTypePair(key, typeof(T));
-		SetMetadata existingMetadata = setMetadataMapping.GetOrAdd(dictionaryKey, newMetadata);
-
-		if (!EqualityComparer<object>.Default.Equals(newMetadata.defaultValue, existingMetadata.defaultValue)) { // Primitive might be boxed, so != doesn't work.
-			throw new Exception($"Previously registered named ID set in {ContainingClassName} named '{key}'{keyChangedHint} has a default value of '{existingMetadata.defaultValue ?? "null"}' provided by the mod(s) [{string.Join(", ", existingMetadata.involvedMods)}] but '{newMetadata.defaultValue ?? "null"}' was supplied by '{ModContent.CurrentlyLoadingMod}'. This named ID set can not be registered.\n\nIf you are the developer of this mod, please visit https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets to see how existing mods are using named ID sets and adjust accordingly.");
-		}
-
-		T[] value = (T[])existingMetadata.array;
+		var value = existingMetadata.array;
 
 		// If it already exists, merge the data
 		if (value != input) {
@@ -254,7 +265,6 @@ public partial class SetFactory
 
 			bool anyChanges = false;
 			// To merge, we find entries in the input that aren't defaultValue and assign them to the result.
-			// Existing changes should persist as long as mods agree on the defaultValue passed in and used in CreateXSet
 			// For conflicts, mods loading after will have final say.
 			for (int i = 0; i < input.Length; i++) {
 				if (!EqualityComparer<T>.Default.Equals(input[i], defaultValue)) {
@@ -265,7 +275,6 @@ public partial class SetFactory
 				}
 			}
 
-			// TODO: This code will run currently for all sets due to duplicate static initializer issue.
 			if (anyChanges && ModCompile.activelyModding)
 				Logging.tML.Info($"Custom Set '{key}'{keyChangedHint} (Type: {typeof(T).Name}, SetFactory: {ContainingClassName}) is merging with additional data from '{ModContent.CurrentlyLoadingMod}'. It previously had data from [{string.Join(", ", existingMetadata.involvedMods)}]");
 		}
@@ -283,16 +292,16 @@ public partial class SetFactory
 	{
 		var sb = new StringBuilder();
 		if (setKey != null) {
-			if (setKey.Contains("/")) {
-				var specificSet = setMetadataMapping.FirstOrDefault(x => x.Key.setName.Equals(setKey, StringComparison.OrdinalIgnoreCase));
+			if (setKey.Contains('/')) {
+				var specificSet = setMetadataMapping.FirstOrDefault(x => x.Key.Name.Equals(setKey, StringComparison.OrdinalIgnoreCase));
 				if (specificSet.Key != null) {
 					OutputText(sb, specificSet.Key, specificSet.Value);
 				}
 			}
 			else {
 				// If no '/', setKey is mod name
-				foreach (var (key, value) in setMetadataMapping.OrderBy(x => x.Key.setName)) {
-					if (value.involvedMods.Contains(setKey) || key.setName.StartsWith($"{setKey}/", StringComparison.OrdinalIgnoreCase)) {
+				foreach (var (key, value) in setMetadataMapping.OrderBy(x => x.Key.Name)) {
+					if (value.involvedMods.Contains(setKey) || key.Name.StartsWith($"{setKey}/", StringComparison.OrdinalIgnoreCase)) {
 						OutputText(sb, key, value);
 					}
 				}
@@ -300,7 +309,7 @@ public partial class SetFactory
 		}
 		else {
 			// Return all involved mods, all descriptions, all types and names
-			foreach (var (key, value) in setMetadataMapping.OrderBy(x=>x.Key.setName)) {
+			foreach (var (key, value) in setMetadataMapping.OrderBy(x=>x.Key.Name)) {
 				OutputText(sb, key, value);
 			}
 		}
@@ -308,25 +317,20 @@ public partial class SetFactory
 
 		void OutputText(StringBuilder sb, SetNameTypePair setNameTypePair, SetMetadata metadata)
 		{
-			string setName = ContainingClassName ?? this.GetType().FullName;
-
-			sb.AppendLine($"{setName}, \"{setNameTypePair.setName}\", {setNameTypePair.type.Name}, default value {metadata.defaultValue ?? "null"}");
-			if (metadata.involvedMods != null)
-				sb.AppendLine($"\tUsed by: {string.Join(", ", metadata.involvedMods)}");
-			if (metadata.setDescriptions?.Any() == true) {
+			sb.AppendLine($"{ContainingClassName}, \"{setNameTypePair.Name}\", {setNameTypePair.Type.Name}, default value {metadata.DefaultValue ?? "null"}");
+			sb.AppendLine($"\tUsed by: {string.Join(", ", metadata.involvedMods)}");
+			if (metadata.setDescriptions.Any()) {
 				var lines = metadata.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
 				sb.AppendLine($"\tDescriptions:\n{string.Join("\n", lines)}");
 			}
-			if (MergedSets.TryGetValue(new SetFactoryNameTypePair(ContainingClassName, setNameTypePair.type), out List<HashSet<string>> registeredSets)) {
-				var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(setNameTypePair.setName));
+			if (MergedSets.TryGetValue(new SetFactoryNameTypePair(ContainingClassName, setNameTypePair.Type), out List<HashSet<string>> registeredSets)) {
+				var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(setNameTypePair.Name));
 				if (matchingSet != null) {
 					sb.AppendLine($"\tMerged Set Names: {string.Join(", ", matchingSet)}");
 				}
 			}
 			if (printValues) {
-				// Some SetFactory might not have a corresponding idDictionary
-				var array = (metadata.array as Array).Cast<object>().ToArray();
-				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{GetName?.Invoke(pair.i) ?? pair.i.ToString()}, {pair.x ?? "null"}]");
+				var nonDefault = metadata.EnumerateNonDefaultValues().Select(pair => $"[{GetName?.Invoke(pair.i) ?? pair.i.ToString()}, {pair.v ?? "null"}]");
 				sb.AppendLine($"\tNon-default values: {string.Join(", ", nonDefault)}");
 			}
 		}
