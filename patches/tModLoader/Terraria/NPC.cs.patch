@@ -336,7 +336,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -223,61 +_,225 @@
+@@ -223,61 +_,229 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -478,6 +478,10 @@
 +	/// The portion ("frame") of this NPC's spritesheet that will be drawn. ModNPC should adjust this in <see cref="ModNPC.FindFrame(int)"/>.
 +	/// </summary>
  	public Rectangle frame;
++	/// <summary>
++	/// If set, this NPC's texture will be drawn using the specified color. Mainly used by slime variants. The coloring effect works best when used with greyscale NPC textures.
++	/// <para/> Defaults to <c>Color.Transparent</c>, meaning no tint.
++	/// </summary>
  	public Color color;
 +
 +	/// <summary>

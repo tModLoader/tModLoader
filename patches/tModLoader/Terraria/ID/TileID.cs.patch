@@ -15,7 +15,7 @@
  	{
  		public static class Conversion
  		{
-@@ -106,19 +_,75 @@
+@@ -106,19 +_,79 @@
  			};
  		}
  
@@ -61,6 +61,9 @@
 +		/// </summary>
  		public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +
++		/// <summary>
++		/// If true, tiles of this type in a slightly larger range than the normal destruction will be destroyed by a meteor. Contains tree tiles, CorruptThorns, and CrimsonThorns, suggesting that the heat from the meteor's impact burned up those tiles.
++		/// </summary>
  		public static bool[] GetsDestroyedForMeteors = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
  		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +		/// <summary>
@@ -68,6 +71,7 @@
 +		/// <br/> Use <see cref="ModTile.CanKillTile(int, int, ref bool)"/> or <see cref="GlobalTile.CanKillTile(int, int, int, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
 +		/// <br/> To affect tile replace behavior in a similar manner, see <see cref="PreventsTileReplaceIfOnTopOfIt"/>
 +		/// <br/> Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack).
++		/// <para/> See also <see cref="PreventsTileHammeringIfOnTopOfIt"/>, which is frequently set in tandem with this.
 +		/// </summary>
  		public static bool[] PreventsTileRemovalIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634);
 +		/// <summary>

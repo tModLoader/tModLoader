@@ -19,6 +19,13 @@ partial class TileID
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
 
+		/// <summary>
+		/// Prevents a tile immediately below a tile of this type from being hammered (sloped). Since a sloped tile would break a typical bottom tile anchor, this prevents such tiles from being broken in this manner. Anything in <see cref="BasicChest"/> or <see cref="BasicDresser"/> are also protected in the same manner. This is typically used for tiles that shouldn't break as easily as other tiles, such as tiles containing Tile Entities holding items.
+		/// <para/> Some examples include DemonAltar, Teleporter, Mannequins, and HatRack.
+		/// <para/> See also <see cref="PreventsTileRemovalIfOnTopOfIt"/>, which is frequently set in tandem with this.
+		/// </summary>
+		public static bool[] PreventsTileHammeringIfOnTopOfIt = Factory.CreateBoolSet(false, 21, 26, 77, 88, 235, 237, 441, 467, 468, 470, 475, 488, 597);
+
 		/// <summary>Used in <see cref="FallingBlockProjectile"/>.</summary>
 		public class FallingBlockProjectileInfo
 		{
@@ -99,9 +106,11 @@ partial class TileID
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530, 637, 655);
 
-		/// <summary> Whether or not this tile prevents a meteor from landing near it.</summary>
+		/// <summary> Whether or not this tile prevents a meteor from landing near it.
+		/// <para/> Contains LihzahrdBrick, DisplayDoll, HatRack, FallenLog, and TeleportationPylon.
+		/// </summary>
 		/// <remarks> Note: Chests and Dungeon tiles are not in this set, but also prevent landing (handled through <see cref="BasicChest"/> and <see cref="Main.tileDungeon"/>)</remarks>
-		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 448, 597);
+		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 488, 597);
 
 		/// <summary>
 		/// Whether or not this tile will prevent sand/slush from falling beneath it.

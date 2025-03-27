@@ -34,6 +34,24 @@
  	public static bool crimson;
  	public static int[] tileCounts = new int[TileID.Count];
  	public static int totalEvil;
+@@ -816,6 +_,9 @@
+ 	private static bool mergeDown;
+ 	private static bool mergeLeft;
+ 	private static bool mergeRight;
++	/// <summary>
++	/// If true, tiles being destroyed won't drop their items. Used during meteor dropping to prevent item spawns. Note that tiles indirectly killed through nearby tile framing, for example, will still drop their item, so this won't prevent all drops.
++	/// </summary>
+ 	private static bool stopDrops;
+ 	public static bool noLiquidCheck;
+ 	public static bool AllowedToSpreadInfections = true;
+@@ -825,6 +_,7 @@
+ 	public static int _genRandSeed = -2;
+ 	public static int _lastSeed;
+ 	public static string statusText = "";
++	/// <summary> Is true while a multitile is being destroyed. </summary>
+ 	public static bool destroyObject;
+ 	public static int spawnDelay;
+ 	public static int prioritizedTownNPCType;
 @@ -889,14 +_,22 @@
  	public static int SmallConsecutivesFound = 0;
  	public static int SmallConsecutivesEliminated = 0;
@@ -1912,10 +1930,15 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,6 +_,23 @@
+@@ -39342,7 +_,30 @@
  		return true;
  	}
  
+-	public static void Convert(int i, int j, int conversionType, int size = 4)
++	// legacy overload for abi compat, remove in 1.4.5
++	/// <inheritdoc cref="Convert(int, int, int, int, bool, bool)"/>
++	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
++
 +	/// <summary>
 +	/// Converts biome variant tiles and walls to a target biome.<br/>
 +	/// Converts a 9x9 square by default, but can be adjusted with the <paramref name="size"/> parameter.
@@ -1933,16 +1956,19 @@
 +	/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
 +	/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
 +	/// </param>
- 	public static void Convert(int i, int j, int conversionType, int size = 4)
++	/// <param name="tiles">If the conversion should affect tiles</param>
++	/// <param name="walls">If the conversion should affect walls</param>
++	public static void Convert(int i, int j, int conversionType, int size = 4, bool tiles = true, bool walls = true)
  	{
  		for (int k = i - size; k <= i + size; k++) {
+ 			for (int l = j - size; l <= j + size; l++) {
 @@ -39352,9 +_,16 @@
  				Tile tile = Main.tile[k, l];
  				int type = tile.type;
  				int wall = tile.wall;
 +
-+				bool convertWall = wall > 0 && WallLoader.Convert(k, l, conversionType);
-+				bool convertTile = tile.HasTile && TileLoader.Convert(k, l, conversionType);
++				bool convertWall = walls && wall > 0 && WallLoader.Convert(k, l, conversionType);
++				bool convertTile = tiles && tile.HasTile && TileLoader.Convert(k, l, conversionType);
 +
  				switch (conversionType) {
  					case 4:
@@ -3211,15 +3237,20 @@
  			case 48:
  			case 137:
  			case 138:
-@@ -58764,6 +_,7 @@
+@@ -58764,6 +_,8 @@
  				}
  				if (Main.tile[x, y - 1].active()) {
  					switch (Main.tile[x, y - 1].type) {
-+						case var t when TileID.Sets.BasicChest[t] || TileID.Sets.BasicDresser[t]:
++						case var t when TileID.Sets.BasicChest[t] || TileID.Sets.BasicDresser[t] || TileID.Sets.PreventsTileHammeringIfOnTopOfIt[t]:
++						/*
  						case 21:
  						case 26:
  						case 77:
-@@ -58780,6 +_,7 @@
+@@ -58777,9 +_,11 @@
+ 						case 475:
+ 						case 488:
+ 						case 597:
++						*/
  							return false;
  					}
  				}

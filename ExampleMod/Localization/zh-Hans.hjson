@@ -149,6 +149,11 @@ Mods: {
 				// DefaultSignText: Right-click me!
 				// MapEntry: Example Sign
 			}
+
+			BasicTileEntityTile: {
+				// MapEntry: Basic Tile Entity Tile
+				// StatusText: Filled: {0}%
+			}
 		}
 
 		Items: {
@@ -1103,6 +1108,11 @@ Mods: {
 			ExampleWormHeadBanner: {
 				// DisplayName: "{$NPCs.ExampleWormHead.DisplayName} Banner"
 				// Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
+			}
+
+			BasicTileEntityItem: {
+				// DisplayName: Basic Tile Entity Item
+				// Tooltip: Collects rain water. Right Click when full to claim a water bucket.
 			}
 
 			CorruptFossilTileItem: {
