@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -216,10 +216,11 @@ public partial class SetFactory
 
 		// Could make a ModLoader.loadStage enum or another bool, but this behaves exactly how we want anyway.
 		if (!ContentCache.contentLoadingFinished) {
-			// If a set is initialized early, throw an error if the class containing the set doesn't have ReinitializeDuringResizeArrays
-			bool willBeReinitialized = new StackTrace().GetFrames().Any(frame => frame.GetMethod()?.DeclaringType?.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null);
+			bool IsReinitArraysCctor(MethodBase method) => method != null && method.MemberType == MemberTypes.Constructor && method.IsStatic && method.DeclaringType?.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null;
+			bool willBeReinitialized = new StackTrace().GetFrames().Any(frame => IsReinitArraysCctor(frame.GetMethod()));
 			if (!willBeReinitialized)
-				throw new Exception($"Custom sets must be initialized from a class with the ReinitializeDuringResizeArrays attribute. This ensures that all content has been registered and that the custom set will have the correct length");
+				throw new Exception($"Custom sets cannot be initialized during Load phase, except via the static constructor of a class with [ReinitializeDuringResizeArrays]." +
+					$"\r\nThis ensures that all content has been registered and that the custom set will have the correct length");
 		}
 
 		// Note: Intended to be load order independent as long as all parties agree on default value. Any deviation will throw exception.
