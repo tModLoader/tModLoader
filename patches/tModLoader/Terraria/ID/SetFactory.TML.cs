@@ -21,35 +21,32 @@ public partial class SetFactory
 	/// <summary>
 	/// Used to construct the key for this "named ID set". Must be chained with a <c>RegisterXSet</c> method to create and register the set for sharing.
 	/// </summary>
-	public class SetKey
+	public class NamedSetKey
 	{
-		private SetFactory factory;
+		private readonly SetFactory factory;
 		internal readonly string fullKey;
 		internal string description;
 
-		internal SetKey(SetFactory factory, string fullKey)
+		internal NamedSetKey(SetFactory factory, string fullKey)
 		{
 			this.factory = factory;
+
+			// Modders are free to collaborate "globally" by using "Terraria" as the mod name if they wish.
+			if (!fullKey.Contains('/')) {
+				fullKey = $"{ModContent.CurrentlyLoadingMod}/{fullKey}";
+			}
+
 			this.fullKey = fullKey;
 		}
 
-		internal SetKey(SetFactory factory, string modName, string key)
-		{
-			this.factory = factory;
-			this.fullKey = $"{modName}/{key}";
-		}
-
-		internal SetKey(SetFactory factory, Mod mod, string key)
-		{
-			this.factory = factory;
-			this.fullKey = $"{mod.Name}/{key}";
-		}
+		internal NamedSetKey(SetFactory factory, string modName, string key) : this(factory, $"{modName}/{key}") { }
+		internal NamedSetKey(SetFactory factory, Mod mod, string key) : this(factory, mod.Name, key) { }
 
 		/// <summary>
 		/// Adds a description to this named ID set.
 		/// <para/> This description serves to communicate to other mod makers interested in interfacing with this set what the entries in the set mean and what your mod does with entries in the set. Multiple mods can register a description and they will all be available to view. Modders can use the "/customsets" chat command to output a complete listing of descriptions for all named ID sets to "CustomSets.txt" in the logs directory.
 		/// </summary>
-		public SetKey Description(string description)
+		public NamedSetKey Description(string description)
 		{
 			this.description = description;
 			return this;
@@ -68,10 +65,10 @@ public partial class SetFactory
 		public int[] RegisterIntSet(int defaultState, params int[] inputs) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateIntSet(defaultState, inputs));
 
 		/// <summary> <inheritdoc cref="CreateIntSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
-		public int[] RegisterIntSet(params int[] types) => factory.RegisterNamedCustomSet(this, -1, factory.CreateIntSet(types));
+		public int[] RegisterIntSet(params int[] types) => RegisterIntSet(-1, types);
 
 		/// <summary> <inheritdoc cref="CreateBoolSet(int[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
-		public bool[] RegisterBoolSet(params int[] types) => factory.RegisterNamedCustomSet(this, false, factory.CreateBoolSet(false, types));
+		public bool[] RegisterBoolSet(params int[] types) => RegisterBoolSet(false, types);
 
 		/// <summary> <inheritdoc cref="CreateBoolSet(bool, int[])"/> <include file = 'CommonDocs.xml' path='Common/RegisterXSetNotes' /> </summary>
 		public bool[] RegisterBoolSet(bool defaultState, params int[] types) => factory.RegisterNamedCustomSet(this, defaultState, factory.CreateBoolSet(defaultState, types));
@@ -173,21 +170,21 @@ public partial class SetFactory
 	/// <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' />
 	/// <para/> The final key for this named ID set using this overload will be <c>"{key}"</c> directly if it contains a "/". Otherwise, the final key will be derived automatically from the currently loading mod: <c>"{loadingMod.Name}/{key}"</c>
 	/// </summary>
-	public SetKey CreateNamedSet(string fullKey) => new SetKey(this, fullKey);
+	public NamedSetKey CreateNamedSet(string fullKey) => new NamedSetKey(this, fullKey);
 	/// <summary>
 	/// <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' />
 	/// <para/> The final key for this named ID set using this overload will be: <c>"{modName}/{key}"</c>
 	/// </summary>
-	public SetKey CreateNamedSet(string modName, string key) => new SetKey(this, modName, key);
+	public NamedSetKey CreateNamedSet(string modName, string key) => new NamedSetKey(this, modName, key);
 	/// <summary>
 	/// <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' />
 	/// <para/> The final key for this named ID set using this overload will be: <c>"{mod.Name}/{key}"</c>
 	/// <see cref="CreateNamedSet(string)"/>
 	/// </summary>
-	public SetKey CreateNamedSet(Mod mod, string key) => new SetKey(this, mod, key);
+	public NamedSetKey CreateNamedSet(Mod mod, string key) => new NamedSetKey(this, mod, key);
 
 	// This is private to prevent potential modder mistake of not using the return value.
-	private T[] RegisterNamedCustomSet<T>(SetKey setKey, T defaultValue, T[] input)
+	private T[] RegisterNamedCustomSet<T>(NamedSetKey setKey, T defaultValue, T[] input)
 	{
 		RegisterNamedCustomSet(setKey, defaultValue, ref input);
 		return input;
@@ -199,15 +196,10 @@ public partial class SetFactory
 	/// <para/> Throws an exception if the data length or default value does not match a named ID set with the same key registered before this.
 	/// </summary>
 	/// <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
-	public void RegisterNamedCustomSet<T>(SetKey setKey, T defaultValue, ref T[] input)
+	public void RegisterNamedCustomSet<T>(NamedSetKey setKey, T defaultValue, ref T[] input)
 	{
 		string key = setKey.fullKey;
 		string description = setKey.description;
-
-		// Modders are free to collaborate "globally" by using "Terraria" as the mod name if they wish.
-		if (!key.Contains("/")) {
-			key = $"{ModContent.CurrentlyLoadingMod}/{key}";
-		}
 
 		// If sets with different names are to be merged, find the actual key, which will be the 1st alternate name registered with MergeSets().
 		string keyChangedHint = "";
