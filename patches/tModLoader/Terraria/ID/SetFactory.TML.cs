@@ -320,7 +320,7 @@ public partial class SetFactory
 			if (!prefix.Contains('/'))
 				prefix += '/';
 
-			sets = sets.Where(set => set.involvedMods.Contains(prefix) || set.name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+			sets = sets.Where(set => set.involvedMods.Contains(prefix) || set.name.Contains(prefix, StringComparison.OrdinalIgnoreCase));
 		}
 
 		// Return all involved mods, all descriptions, all types and names
