@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using ReLogic.Reflection;
 using ReLogic.Utilities;
@@ -110,14 +111,15 @@ public partial class SetFactory
 	/// <para/> Essentially, the sets will be merged and share the same data. The default value must still be consistent between the sets.
 	/// <para/> This must be called before the ResizeArrays stage of mod loading, such as in a Load method.
 	/// </summary>
-	public static void MergeSets(SetFactory setFactory, Type type, params string[] inputSetNames)
+	public void MergeNamedSets<T>(params string[] inputSetNames)
 	{
-		if (ContentCache.contentLoadingFinished) {
+		if (ContentCache.contentLoadingFinished)
 			throw new Exception("MergeSets can only be called before sets are initialized, such as in Load.");
-		}
+
 		if (inputSetNames == null || inputSetNames.Length == 0)
 			return;
-		var registeredSets = MergedSets.GetOrAdd(new SetFactoryTypeTypePair(setFactory.ContainingClassName, type), new List<HashSet<string>>());
+
+		var registeredSets = MergedSets.GetOrAdd(new SetFactoryTypeTypePair(ContainingClassName, typeof(T)), new List<HashSet<string>>());
 		// Take every existing set matching any input, merge them with inputs and remove excess sets.
 		var existing = registeredSets.Where(registeredSet => inputSetNames.Any(a => registeredSet.Contains(a))).ToList();
 		if (existing.Any()) {

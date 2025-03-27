@@ -1,4 +1,4 @@
-﻿using ExampleMod.Content.Items.Consumables;
+using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -38,8 +38,8 @@ namespace ExampleMod.Content.Items
 	public class CustomItemSetsSystem : ModSystem
 	{
 		public override void Load() {
-			// The MergeSets method can be used in rare situations where sets with different names need to be merged but the mods can't just release an update with the common set name. 
-			// SetFactory.MergeSets(ItemID.Sets.Factory, typeof(bool), "OtherMod/FireWeapons", "ExampleMod/FlamingWeapon");
+			// The MergeNamedSets method can be used in rare situations where sets with different names need to be merged but the mods can't just release an update with the common set name. 
+			// ItemID.Sets.Factory.MergeNamedSets<bool>("OtherMod/FireWeapons", "ExampleMod/FlamingWeapon");
 		}
 
 		public override void ResizeArrays() {
