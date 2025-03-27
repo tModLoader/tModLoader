@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -7,6 +10,7 @@ using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static Terraria.Map.IMapLayer;
 
 namespace ExampleMod.Common
 {
@@ -14,6 +18,8 @@ namespace ExampleMod.Common
 	public class ExampleMapLayer : ModMapLayer
 	{
 		public override Position GetDefaultPosition() {
+			// Here you can define where to put this layer in the vanilla map layer order.
+			// In this case we go before the pings layer since all other vanilla map layers are ordered before pings,
 			return new Before(IMapLayer.Pings);
 		}
 
@@ -47,6 +53,35 @@ namespace ExampleMod.Common
 		public override void NetReceive(BinaryReader reader) {
 			Main.dungeonX = reader.ReadInt32();
 			Main.dungeonY = reader.ReadInt32();
+		}
+	}
+
+	// This example makes any ExampleItems that are on the ground in the world show up on the map.
+	public class ExampleItemMapLayer : ModMapLayer
+	{
+		public override Position GetDefaultPosition() {
+			return new Before(IMapLayer.Pings);
+		}
+
+		public override IEnumerable<Position> GetModdedConstraints() {
+			// By default, modded map layers are positioned between two vanilla layers (via After and Before) and are ordered in load order.
+			// This hook allows you to organize where this map layer is located relative to other modded map layers that are also
+			// placed between the same two vanilla map layers.
+			// In this case ExampleItems will always show up underneath the dungeon icon.
+			yield return new Before(ModContent.GetInstance<ExampleMapLayer>());
+		}
+
+		public override void Draw(ref MapOverlayDrawContext context, ref string text) {
+			foreach (Item item in Main.ActiveItems) {
+				if (item.type == ModContent.ItemType<ExampleItem>()) {
+					Texture2D itemTexture = TextureAssets.Item[item.type].Value;
+
+					// item.position is in world coordinates, so divide by 16 to convert it to tile coordinates.
+					Vector2 tilePosition = item.position / 16f;
+
+					context.Draw(itemTexture, tilePosition, Alignment.Center);
+				}
+			}
 		}
 	}
 }
