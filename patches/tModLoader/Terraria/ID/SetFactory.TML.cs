@@ -129,7 +129,7 @@ public partial class SetFactory
 	internal record SetFactoryNameTypePair(string setFactoryName, Type type);
 
 	// This is static since SetFactory instances are reset during ResizeArrays. Default value issues will be detected during RegisterNamedCustomSetWithInfo.
-	internal static ConcurrentDictionary<SetFactoryNameTypePair, Dictionary<string, HashSet<string>>> MergedSets = new ();
+	internal static ConcurrentDictionary<SetFactoryNameTypePair, Dictionary<string, HashSet<string>>> MergedSets = new();
 
 	/// <summary>
 	/// Causes sets registered with the provided keys (and matching SetFactory and Type) to be merged as if they are registered with the same key. This is useful for situations where established set keys are determined to have identical meaning but the involved mods are incapable of updating to collaborate on the shared key, either due to dependent mods or inactivity.
@@ -251,7 +251,7 @@ public partial class SetFactory
 
 		if (MergedSets.TryGetValue(new(ContainingClassName, typeof(T)), out var mergeRegistry) && mergeRegistry.TryGetValue(key, out var merged)) {
 			key = $"{{{string.Join(", ", merged)}}}";
-		} 
+		}
 
 		var originalInput = input;
 		var metadata = (SetMetadata<T>)namedSets.GetOrAdd((key, typeof(T)), _ => new SetMetadata<T>(key, typeof(T), defaultValue, originalInput));
@@ -327,7 +327,8 @@ public partial class SetFactory
 
 		void OutputText(StringBuilder sb, SetMetadata set)
 		{
-			sb.AppendLine($"{ContainingClassName} {set.type.Name}[] {set.name}");
+			string typeName = set.type.IsGenericType ? $"{set.type.Name}({string.Join(", ", set.type.GenericTypeArguments.Select(x => x.Name))})" : set.type.Name;
+			sb.AppendLine($"{ContainingClassName} {typeName}[] {set.name}");
 			sb.AppendLine($"\tDefault Value: {set.DefaultValue ?? "null"}");
 			sb.AppendLine($"\tUsed by: {string.Join(", ", set.involvedMods)}");
 
