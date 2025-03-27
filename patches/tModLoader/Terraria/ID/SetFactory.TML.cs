@@ -9,6 +9,7 @@ using ReLogic.Reflection;
 using ReLogic.Utilities;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using static Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions;
 
 namespace Terraria.ID;
 
@@ -36,6 +37,9 @@ public partial class SetFactory
 			if (!fullKey.Contains('/')) {
 				fullKey = $"{ModContent.CurrentlyLoadingMod}/{fullKey}";
 			}
+
+			if (fullKey.Contains(' '))
+				throw new ArgumentException("Set names may not contain spaces");
 
 			this.fullKey = fullKey;
 		}
@@ -328,15 +332,29 @@ public partial class SetFactory
 
 		void OutputText(StringBuilder sb, SetNameTypePair setNameTypePair, SetMetadata metadata)
 		{
-			sb.AppendLine($"{ContainingClassName}, {setNameTypePair.Type.Name}[], {setNameTypePair.Name}, default value {metadata.DefaultValue ?? "null"}");
+			sb.AppendLine($"{ContainingClassName} {setNameTypePair.Type.Name}[] {setNameTypePair.Name}");
+			sb.AppendLine($"\tDefault Value: {metadata.DefaultValue ?? "null"}");
 			sb.AppendLine($"\tUsed by: {string.Join(", ", metadata.involvedMods)}");
-			if (metadata.setDescriptions.Any()) {
+
+			if (metadata.setDescriptions.Count == 1) {
+				sb.AppendLine($"\tDescription: {metadata.setDescriptions.Values.Single()}");
+			}
+			else if (metadata.setDescriptions.Count() > 1) {
 				var lines = metadata.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
 				sb.AppendLine($"\tDescriptions:\n{string.Join("\n", lines)}");
 			}
 			if (printValues) {
-				var nonDefault = metadata.EnumerateNonDefaultValues().Select(pair => $"[{GetName?.Invoke(pair.i) ?? pair.i.ToString()}, {pair.v ?? "null"}]");
-				sb.AppendLine($"\tNon-default values: {string.Join(", ", nonDefault)}");
+				sb.AppendLine($"\tContents:");
+				if (setNameTypePair.Type == typeof(bool)) {
+					foreach (var (i, v) in metadata.EnumerateNonDefaultValues())
+						sb.AppendLine($"\t\t{GetName?.Invoke(i) ?? i.ToString()}");
+				}
+				else {
+					foreach (var (i, v) in metadata.EnumerateNonDefaultValues())
+						sb.AppendLine($"\t\t{GetName?.Invoke(i) ?? i.ToString()}, {v ?? "null"}");
+				}
+
+				sb.AppendLine();
 			}
 		}
 	}
