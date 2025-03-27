@@ -156,7 +156,7 @@ public partial class SetFactory
 			mergeRegistry[name] = merged;
 
 		var finalMerge = string.Join(", ", merged);
-		var log = $"Custom {ContainingClassName} {typeof(T).Name}[] sets {{{requestedMerge}}} merged by {ModContent.CurrentlyLoadingMod}.";
+		var log = $"Custom {ContainingClassName} {FullTypeName(typeof(T))}[] sets {{{requestedMerge}}} merged by {ModContent.CurrentlyLoadingMod}.";
 		if (finalMerge != requestedMerge)
 			log += $" Result: {{{finalMerge}}}";
 
@@ -199,6 +199,8 @@ public partial class SetFactory
 	{
 		namedSets.Clear();
 	}
+
+	internal string FullTypeName(Type type) => type.IsGenericType ? $"{type.Name}({string.Join(", ", type.GenericTypeArguments.Select(x => x.Name))})" : type.Name;
 
 	/// <summary>
 	/// <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetNotes' />
@@ -262,7 +264,7 @@ public partial class SetFactory
 				conflictMergeInfo = $"\nThis set has been merged with [{string.Join(", ", metadata.registeredNames)}]. Check the logs to see if another mod is causing this conflict.";
 
 			throw new Exception(
-				$"Failed to register {ContainingClassName} {typeof(T).Name}[] set {unmergedKey}. Default value ({(object)defaultValue ?? "null"}) conflicts with existing default value ({metadata.DefaultValue ?? "null"}) registered by the mod(s) [{string.Join(", ", metadata.involvedMods)}]" +
+				$"Failed to register {ContainingClassName} {FullTypeName(typeof(T))}[] set {unmergedKey}. Default value ({(object)defaultValue ?? "null"}) conflicts with existing default value ({metadata.DefaultValue ?? "null"}) registered by the mod(s) [{string.Join(", ", metadata.involvedMods)}]" +
 				conflictMergeInfo +
 				$"\n\nIf you are the developer of this mod, please visit https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets to see how existing mods are using named ID sets and adjust accordingly.");
 		}
@@ -292,7 +294,7 @@ public partial class SetFactory
 			}
 
 			if (newEntries + replacedEntries > 0 && ModCompile.activelyModding) {
-				var log = $"Custom {ContainingClassName} {typeof(T).Name}[] set {key} updated by {ModContent.CurrentlyLoadingMod}.";
+				var log = $"Custom {ContainingClassName} {FullTypeName(typeof(T))}[] set {key} updated by {ModContent.CurrentlyLoadingMod}.";
 				if (replacedEntries > 0) log += $" {replacedEntries} non-default entries were replaced.";
 				log += $" Previously registered by [{string.Join(", ", metadata.involvedMods)}]";
 				Logging.tML.Debug(log);
@@ -327,8 +329,7 @@ public partial class SetFactory
 
 		void OutputText(StringBuilder sb, SetMetadata set)
 		{
-			string typeName = set.type.IsGenericType ? $"{set.type.Name}({string.Join(", ", set.type.GenericTypeArguments.Select(x => x.Name))})" : set.type.Name;
-			sb.AppendLine($"{ContainingClassName} {typeName}[] {set.name}");
+			sb.AppendLine($"{ContainingClassName} {FullTypeName(set.type)}[] {set.name}");
 			sb.AppendLine($"\tDefault Value: {set.DefaultValue ?? "null"}");
 			sb.AppendLine($"\tUsed by: {string.Join(", ", set.involvedMods)}");
 
