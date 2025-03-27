@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
+﻿using System.Collections.Generic;
 
 namespace Terraria.Map;
+
 public partial interface IMapLayer
 {
 	public static IMapLayer Spawn { get; private set; } = new SpawnMapLayer();
@@ -23,8 +19,6 @@ public partial interface IMapLayer
 	#region Sort Positions
 
 	public abstract class Position;
-
-	public sealed class Append : Position;
 
 	public sealed class Before : Position
 	{
