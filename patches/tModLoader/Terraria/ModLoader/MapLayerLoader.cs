@@ -37,23 +37,35 @@ public static class MapLayerLoader
 
 			switch (position) {
 				case IMapLayer.After after: {
-					int afterParent = MapLayers.IndexOf(after.Layer) is int index and not -1 ? index + 1 : 0;
-					sortingSlots[afterParent].Add(layer);
+					int afterIndex = MapLayers.IndexOf(after.Layer);
+					if (afterIndex >= DefaultLayerCount)
+						throw BlameMapLayerException(new ArgumentException($"IMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
 
+					int slotIndex = afterIndex is not -1 ? afterIndex + 1 : 0;
+
+					sortingSlots[slotIndex].Add(layer);
 					break;
 				}
 				case IMapLayer.Before before: {
-					int beforeParent = MapLayers.IndexOf(before.Layer) is int index and not -1 ? index : sortingSlots.Length - 1;
-					sortingSlots[beforeParent].Add(layer);
+					int beforeIndex = MapLayers.IndexOf(before.Layer);
+					if (beforeIndex >= DefaultLayerCount)
+						throw BlameMapLayerException(new ArgumentException($"IMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
 
+					int slotIndex = beforeIndex is not -1 ? beforeIndex : sortingSlots.Length - 1;
+
+					sortingSlots[slotIndex].Add(layer);
 					break;
 				}	
 				default: {
 					var ex = new ArgumentException($"IMapLayer {layer} has unknown Position {position}");
-					if (layer is ModMapLayer modLayer)
-						ex.Data["mod"] = modLayer.Mod.Name;
-					throw ex;
+					throw BlameMapLayerException(ex);
 				}
+			}
+
+			Exception BlameMapLayerException(Exception ex) {
+				if (layer is ModMapLayer moddedLayer)
+					ex.Data["mod"] = moddedLayer.Mod.Name;
+				return ex;
 			}
 		}
 
