@@ -81,9 +81,18 @@ public partial class SetFactory
 
 	private abstract class SetMetadata
 	{
+		public readonly string name;
+		public readonly Type type;
+
 		public readonly HashSet<string> registeredNames = [];
 		public readonly HashSet<string> involvedMods = [];
-		public readonly Dictionary<string, string> setDescriptions = [];
+		public readonly Dictionary<string, string> descriptions = [];
+
+		protected SetMetadata(string name, Type type)
+		{
+			this.name = name;
+			this.type = type;
+		}
 
 		public abstract object DefaultValue { get; }
 		public abstract IEnumerable<(int i, object v)> EnumerateNonDefaultValues();
@@ -94,7 +103,7 @@ public partial class SetFactory
 		public readonly T defaultValue;
 		public readonly T[] array;
 
-		public SetMetadata(T defaultValue, T[] array)
+		public SetMetadata(string name, Type type, T defaultValue, T[] array) : base(name, type)
 		{
 			this.defaultValue = defaultValue;
 			this.array = array;
@@ -164,9 +173,7 @@ public partial class SetFactory
 
 	private readonly string ContainingClassName;
 	private readonly Func<int, string> GetName;
-
-	private record SetNameTypePair(string Name, Type Type);
-	private readonly ConcurrentDictionary<SetNameTypePair, SetMetadata> namedSets = new();
+	private readonly ConcurrentDictionary<(string name, Type type), SetMetadata> namedSets = new();
 
 	public SetFactory(int size, string idClassName, IdDictionary search) : this(size, idClassName, id => search.TryGetName(id, out var name) ? name : null) { }
 
@@ -248,7 +255,7 @@ public partial class SetFactory
 		} 
 
 		var originalInput = input;
-		var metadata = (SetMetadata<T>)namedSets.GetOrAdd(new(key, typeof(T)), _ => new SetMetadata<T>(defaultValue, originalInput));
+		var metadata = (SetMetadata<T>)namedSets.GetOrAdd((key, typeof(T)), _ => new SetMetadata<T>(key, typeof(T), defaultValue, originalInput));
 
 		if (!EqualityComparer<T>.Default.Equals(defaultValue, metadata.defaultValue)) {
 			string conflictMergeInfo = "";
@@ -297,60 +304,54 @@ public partial class SetFactory
 		metadata.registeredNames.Add(unmergedKey);
 		metadata.involvedMods.Add(ModContent.CurrentlyLoadingMod);
 		if (!string.IsNullOrWhiteSpace(description)) {
-			metadata.setDescriptions[ModContent.CurrentlyLoadingMod] = description;
+			metadata.descriptions[ModContent.CurrentlyLoadingMod] = description;
 		}
 
 		input = value;
 	}
 
-	internal string CustomMetadataInfo(string setKey, bool printValues)
+	internal string CustomMetadataInfo(string prefix, bool printValues)
 	{
 		var sb = new StringBuilder();
-		if (setKey != null) {
-			if (setKey.Contains('/')) {
-				var specificSet = namedSets.FirstOrDefault(x => x.Key.Name.Equals(setKey, StringComparison.OrdinalIgnoreCase));
-				if (specificSet.Key != null) {
-					OutputText(sb, specificSet.Key, specificSet.Value);
-				}
-			}
-			else {
-				// If no '/', setKey is mod name
-				foreach (var (key, value) in namedSets.OrderBy(x => x.Key.Name)) {
-					if (value.involvedMods.Contains(setKey) || key.Name.StartsWith($"{setKey}/", StringComparison.OrdinalIgnoreCase)) {
-						OutputText(sb, key, value);
-					}
-				}
-			}
+		IEnumerable<SetMetadata> sets = namedSets.Values.OrderBy(x => x.name);
+
+		if (prefix != null) {
+			// If no '/', setKey is mod name
+			if (!prefix.Contains('/'))
+				prefix += '/';
+
+			sets = sets.Where(set => set.involvedMods.Contains(prefix) || set.name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
 		}
-		else {
-			// Return all involved mods, all descriptions, all types and names
-			foreach (var (key, value) in namedSets.OrderBy(x=>x.Key.Name)) {
-				OutputText(sb, key, value);
-			}
+
+		// Return all involved mods, all descriptions, all types and names
+		foreach (var set in sets) {
+			OutputText(sb, set);
 		}
+
 		return sb.ToString();
 
-		void OutputText(StringBuilder sb, SetNameTypePair setNameTypePair, SetMetadata metadata)
+		void OutputText(StringBuilder sb, SetMetadata set)
 		{
-			sb.AppendLine($"{ContainingClassName} {setNameTypePair.Type.Name}[] {setNameTypePair.Name}");
-			sb.AppendLine($"\tDefault Value: {metadata.DefaultValue ?? "null"}");
-			sb.AppendLine($"\tUsed by: {string.Join(", ", metadata.involvedMods)}");
+			sb.AppendLine($"{ContainingClassName} {set.type.Name}[] {set.name}");
+			sb.AppendLine($"\tDefault Value: {set.DefaultValue ?? "null"}");
+			sb.AppendLine($"\tUsed by: {string.Join(", ", set.involvedMods)}");
 
-			if (metadata.setDescriptions.Count == 1) {
-				sb.AppendLine($"\tDescription: {metadata.setDescriptions.Values.Single()}");
+			if (set.descriptions.Count == 1) {
+				sb.AppendLine($"\tDescription: {set.descriptions.Values.Single()}");
 			}
-			else if (metadata.setDescriptions.Count() > 1) {
-				var lines = metadata.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
+			else if (set.descriptions.Count() > 1) {
+				var lines = set.descriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
 				sb.AppendLine($"\tDescriptions:\n{string.Join("\n", lines)}");
 			}
+
 			if (printValues) {
 				sb.AppendLine($"\tContents:");
-				if (setNameTypePair.Type == typeof(bool)) {
-					foreach (var (i, v) in metadata.EnumerateNonDefaultValues())
+				if (set.type == typeof(bool)) {
+					foreach (var (i, v) in set.EnumerateNonDefaultValues())
 						sb.AppendLine($"\t\t{GetName?.Invoke(i) ?? i.ToString()}");
 				}
 				else {
-					foreach (var (i, v) in metadata.EnumerateNonDefaultValues())
+					foreach (var (i, v) in set.EnumerateNonDefaultValues())
 						sb.AppendLine($"\t\t{GetName?.Invoke(i) ?? i.ToString()}, {v ?? "null"}");
 				}
 
