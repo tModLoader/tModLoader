@@ -100,11 +100,11 @@ public partial class SetFactory
 	}
 
 	// Contains all SetFactory instances.
-	internal static HashSet<SetFactory> SetFactories = new HashSet<SetFactory>();
+	internal static List<SetFactory> SetFactories = new();
 
-	internal record SetFactoryTypeTypePair(string setFactoryName, Type type);
+	internal record SetFactoryNameTypePair(string setFactoryName, Type type);
 	// This is static since SetFactory instances are reset during ResizeArrays. Default value issues will be detected during RegisterNamedCustomSetWithInfo.
-	internal static ConcurrentDictionary<SetFactoryTypeTypePair, List<HashSet<string>>> MergedSets = new ConcurrentDictionary<SetFactoryTypeTypePair, List<HashSet<string>>>();
+	internal static ConcurrentDictionary<SetFactoryNameTypePair, List<HashSet<string>>> MergedSets = new ConcurrentDictionary<SetFactoryNameTypePair, List<HashSet<string>>>();
 
 	/// <summary>
 	/// Causes sets registered with the provided keys (and matching SetFactory and Type) to be merged as if they are registered with the same key. This is useful for situations where established set keys are determined to have identical meaning but the involved mods are incapable of updating to collaborate on the shared key, either due to dependent mods or inactivity.
@@ -116,10 +116,10 @@ public partial class SetFactory
 		if (ContentCache.contentLoadingFinished)
 			throw new Exception("MergeSets can only be called before sets are initialized, such as in Load.");
 
-		if (inputSetNames == null || inputSetNames.Length == 0)
+		if (inputSetNames == null || inputSetNames.Length <= 1)
 			return;
 
-		var registeredSets = MergedSets.GetOrAdd(new SetFactoryTypeTypePair(ContainingClassName, typeof(T)), new List<HashSet<string>>());
+		var registeredSets = MergedSets.GetOrAdd(new SetFactoryNameTypePair(ContainingClassName, typeof(T)), new List<HashSet<string>>());
 		// Take every existing set matching any input, merge them with inputs and remove excess sets.
 		var existing = registeredSets.Where(registeredSet => inputSetNames.Any(a => registeredSet.Contains(a))).ToList();
 		if (existing.Any()) {
@@ -139,21 +139,27 @@ public partial class SetFactory
 	{
 		SetFactories.Clear();
 		if (unloading)
-			MergedSets = new ConcurrentDictionary<SetFactoryTypeTypePair, List<HashSet<string>>>(); // SetFactory.MergedSets.Clear() crashes the game for some reason?
+			MergedSets = new(); // SetFactory.MergedSets.Clear() crashes the game for some reason?
 	}
 
 	private record SetNameTypePair(string setName, Type type);
 	private ConcurrentDictionary<SetNameTypePair, SetMetadata> setMetadataMapping = new ConcurrentDictionary<SetNameTypePair, SetMetadata>();
 
-	private string ContainingClassName;
-	private IdDictionary search;
+	private readonly string ContainingClassName;
+	private readonly Func<int, string> GetName;
 
-	public SetFactory(int size, string idClassName, IdDictionary search = null)
+	public SetFactory(int size, string idClassName, IdDictionary search) : this(size, idClassName, id => search.TryGetName(id, out var name) ? name : null) { }
+
+	public SetFactory(int size, string idClassName, Func<int, string> getName = null)
 	{
-		ContainingClassName = idClassName ?? "Unknown";
-		this.search = search;
+		ArgumentNullException.ThrowIfNull(idClassName);
+
+		ContainingClassName = idClassName;
+		GetName = getName;
+
 		if (SetFactories.Any(x => x.ContainingClassName == ContainingClassName))
 			throw new Exception("SetFactory instances must have unique names");
+
 		SetFactories.Add(this);
 
 		if (size == 0)
@@ -200,12 +206,15 @@ public partial class SetFactory
 	/// <remarks> <include file = 'CommonDocs.xml' path='Common/CreateNamedXSetFinalKeyC' /> </remarks>
 	public void RegisterNamedCustomSet<T>(NamedSetKey setKey, T defaultValue, ref T[] input)
 	{
+		if (ContainingClassName == null)
+			throw new ArgumentException("Cannot register named sets on a SetFactory whith no name (using the obsolete constructor)");
+
 		string key = setKey.fullKey;
 		string description = setKey.description;
 
 		// If sets with different names are to be merged, find the actual key, which will be the 1st alternate name registered with MergeSets().
 		string keyChangedHint = "";
-		if (MergedSets.TryGetValue(new SetFactoryTypeTypePair(ContainingClassName, typeof(T)), out List<HashSet<string>> registeredSets)) {
+		if (MergedSets.TryGetValue(new SetFactoryNameTypePair(ContainingClassName, typeof(T)), out List<HashSet<string>> registeredSets)) {
 			var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(key));
 			if (matchingSet != null) {
 				string newKey = matchingSet.OrderBy(x => x).First();
@@ -308,7 +317,7 @@ public partial class SetFactory
 				var lines = metadata.setDescriptions.Select(x => $"\t\t{x.Key}: {x.Value}");
 				sb.AppendLine($"\tDescriptions:\n{string.Join("\n", lines)}");
 			}
-			if (MergedSets.TryGetValue(new SetFactoryTypeTypePair(ContainingClassName, setNameTypePair.type), out List<HashSet<string>> registeredSets)) {
+			if (MergedSets.TryGetValue(new SetFactoryNameTypePair(ContainingClassName, setNameTypePair.type), out List<HashSet<string>> registeredSets)) {
 				var matchingSet = registeredSets.FirstOrDefault(x => x.Contains(setNameTypePair.setName));
 				if (matchingSet != null) {
 					sb.AppendLine($"\tMerged Set Names: {string.Join(", ", matchingSet)}");
@@ -317,7 +326,7 @@ public partial class SetFactory
 			if (printValues) {
 				// Some SetFactory might not have a corresponding idDictionary
 				var array = (metadata.array as Array).Cast<object>().ToArray();
-				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{(search?.TryGetName(pair.i, out string name) == true ? name : pair.i)}, {pair.x ?? "null"}]");
+				var nonDefault = array.Select((x, i) => (i, x)).Where(pair => !EqualityComparer<object>.Default.Equals(metadata.defaultValue, pair.x)).Select(pair => $"[{GetName?.Invoke(pair.i) ?? pair.i.ToString()}, {pair.x ?? "null"}]");
 				sb.AppendLine($"\tNon-default values: {string.Join(", ", nonDefault)}");
 			}
 		}

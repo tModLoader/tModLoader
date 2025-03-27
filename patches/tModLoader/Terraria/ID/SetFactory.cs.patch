@@ -17,7 +17,7 @@
  	private readonly Queue<float[]> _floatBufferCache = new Queue<float[]>();
  	private object _queueLock = new object();
  
-+	[Obsolete("Use the new overload", true)]
++	[Obsolete("Use the new overloads to support named sets", true)]
  	public SetFactory(int size)
  	{
  		if (size == 0)
