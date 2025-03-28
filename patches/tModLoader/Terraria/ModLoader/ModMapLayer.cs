@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Terraria.Map;
-using static Terraria.Map.IMapLayer;
 
 namespace Terraria.ModLoader;
 
@@ -42,4 +41,30 @@ public abstract class ModMapLayer : ModType, IMapLayer
 		ModTypeLookup<ModMapLayer>.Register(this);
 		MapLayerLoader.Add(this);
 	}
+
+	#region Sort Positions
+
+	public abstract class Position;
+
+	public sealed class Before : Position
+	{
+		public IMapLayer Layer { get; }
+
+		public Before(IMapLayer layer)
+		{
+			Layer = layer;
+		}
+	}
+
+	public sealed class After : Position
+	{
+		public IMapLayer Layer { get; }
+
+		public After(IMapLayer layer)
+		{
+			Layer = layer;
+		}
+	}
+
+	#endregion
 }

@@ -17,7 +17,7 @@ public static class MapLayerLoader
 
 	internal static readonly int DefaultLayerCount = MapLayers.Count;
 
-	private static IEnumerable<IMapLayer> ModdedLayers => MapLayers.Skip(DefaultLayerCount);
+	private static IEnumerable<ModMapLayer> ModdedLayers => MapLayers.Skip(DefaultLayerCount).Cast<ModMapLayer>();
 
 	internal static void Add(IMapLayer layer) => MapLayers.Add(layer);
 
@@ -28,28 +28,28 @@ public static class MapLayerLoader
 
 	internal static void ResizeArrays()
 	{
-		var sortingSlots = new List<IMapLayer>[DefaultLayerCount + 1];
+		var sortingSlots = new List<ModMapLayer>[DefaultLayerCount + 1];
 		for (int i = 0; i < sortingSlots.Length; ++i)
 			sortingSlots[i] = [];
 
-		foreach (IMapLayer layer in ModdedLayers) {
+		foreach (ModMapLayer layer in ModdedLayers) {
 			var position = layer.GetDefaultPosition();
 
 			switch (position) {
-				case IMapLayer.After after: {
+				case ModMapLayer.After after: {
 					int afterIndex = MapLayers.IndexOf(after.Layer);
 					if (afterIndex >= DefaultLayerCount)
-						throw BlameMapLayerException(new ArgumentException($"IMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
+						throw BlameMapLayerException(new ArgumentException($"ModMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
 
 					int slotIndex = afterIndex is not -1 ? afterIndex + 1 : 0;
 
 					sortingSlots[slotIndex].Add(layer);
 					break;
 				}
-				case IMapLayer.Before before: {
+				case ModMapLayer.Before before: {
 					int beforeIndex = MapLayers.IndexOf(before.Layer);
 					if (beforeIndex >= DefaultLayerCount)
-						throw BlameMapLayerException(new ArgumentException($"IMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
+						throw BlameMapLayerException(new ArgumentException($"ModMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
 
 					int slotIndex = beforeIndex is not -1 ? beforeIndex : sortingSlots.Length - 1;
 
@@ -57,7 +57,7 @@ public static class MapLayerLoader
 					break;
 				}	
 				default: {
-					var ex = new ArgumentException($"IMapLayer {layer} has unknown Position {position}");
+					var ex = new ArgumentException($"ModMapLayer {layer} has unknown Position {position}");
 					throw BlameMapLayerException(ex);
 				}
 			}
@@ -74,8 +74,8 @@ public static class MapLayerLoader
 		for (int i = 0; i < DefaultLayerCount + 1; i++) {
 			var elements = sortingSlots[i];
 			var sort = new TopoSort<IMapLayer>(elements,
-				l => l.GetModdedConstraints()?.OfType<IMapLayer.After>().Select(a => a.Layer).Where(elements.Contains) ?? [],
-				l => l.GetModdedConstraints()?.OfType<IMapLayer.Before>().Select(b => b.Layer).Where(elements.Contains) ?? []);
+				l => (l as ModMapLayer)?.GetModdedConstraints()?.OfType<ModMapLayer.After>().Select(a => a.Layer).Where(elements.Contains) ?? [],
+				l => (l as ModMapLayer)?.GetModdedConstraints()?.OfType<ModMapLayer.Before>().Select(b => b.Layer).Where(elements.Contains) ?? []);
 
 			foreach (IMapLayer layer in sort.Sort()) {
 				sortedLayers.Add(layer);

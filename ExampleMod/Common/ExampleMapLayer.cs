@@ -10,7 +10,6 @@ using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static Terraria.Map.IMapLayer;
 
 namespace ExampleMod.Common
 {
