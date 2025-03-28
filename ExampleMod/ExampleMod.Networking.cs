@@ -1,5 +1,6 @@
 using ExampleMod.Common.Players;
 using ExampleMod.Common.Systems;
+using ExampleMod.Content.Buffs;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using ExampleMod.Content.TileEntities;
@@ -23,6 +24,7 @@ namespace ExampleMod
 			ExampleDodge,
 			ExampleTownPetUnlockOrExchange,
 			ExampleResourceEffect,
+			ExampleStackingBuffPlayerSync,
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -57,6 +59,11 @@ namespace ExampleMod
 					break;
 				case MessageType.ExampleResourceEffect:
 					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);
+					break;
+				case MessageType.ExampleStackingBuffPlayerSync:
+					byte fromPlayer = reader.ReadByte();
+					ExampleStackingBuffPlayer player = Main.player[fromPlayer].GetModPlayer<ExampleStackingBuffPlayer>();
+					player.ReceivePlayerSync(reader);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
