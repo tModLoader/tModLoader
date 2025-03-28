@@ -27,6 +27,8 @@ using Terraria.GameContent;
 using System.Reflection;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using Terraria.GameContent.Prefixes;
 
 namespace Terraria.ModLoader;
 
@@ -380,6 +382,31 @@ public static class ModContent
 		BossBarLoader.GotoSavedStyle();
 
 		ModOrganizer.SaveLastLaunchedMods();
+	}
+
+	internal static void DedServPreInit()
+	{
+		// The server doesn't naturally init these, and then the constructors get run twice in ResizeArrays
+		RuntimeHelpers.RunClassConstructor(typeof(AmmoID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(DustID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(MountID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(NPCHeadID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(HairID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(PrefixID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(PrefixLegacy.ItemSets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Head.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Body.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Legs.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.HandOn.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.HandOff.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Back.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Front.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Shoe.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Waist.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Wing.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Face.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Beard.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Balloon.Sets).TypeHandle);
 	}
 
 	private static async Task JITModsAsync(CancellationToken token)

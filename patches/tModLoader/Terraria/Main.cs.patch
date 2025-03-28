@@ -1377,9 +1377,9 @@
  		dedServ = true;
  		showSplash = false;
  		Initialize();
++		ModContent.DedServPreInit();
 +
 +		bool reloadMods;
-+
 +		do {
 +			ModLoader.ModLoader.Reload();
 +			DedServ_PostModLoad(out reloadMods);
