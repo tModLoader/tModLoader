@@ -11,16 +11,16 @@ public abstract class ModMapLayer : ModType, IMapLayer
 	public bool Visible { get; set; } = true;
 
 	/// <summary>
-	/// Returns the map layer's default position in regard to vanilla's map layer ordering. Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide a map layer.<br/><br/>
+	/// Returns the map layer's default position in regard to vanilla's map layer ordering. Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide a map layer. You can also use <see cref="BeforeFirstVanillaLayer"/> or <see cref="AfterLastVanillaLayer"/> to put your layer at the start/end of the vanilla layer order.<br/><br/>
 	///
 	/// <b>NOTE:</b> The position must specify a vanilla <see cref="IMapLayer"/> otherwise an exception will be thrown.<br/>
 	/// By default, this hook positions this map layer after all vanilla layers.
 	/// </summary>
-	public virtual Position GetDefaultPosition() => new Before(null);
+	public virtual Position GetDefaultPosition() => AfterLastVanillaLayer;
 
 	/// <summary>
 	/// Modded layers are placed between vanilla layers via <see cref="GetDefaultPosition"/> and, by default, are sorted in load order.<br/>
-	/// This hook allow you to sort this map layer before/after other modded layers that were placed between the same two vanilla layers.<br/>
+	/// This hook allows you to sort this map layer before/after other modded layers that were placed between the same two vanilla layers.<br/>
 	/// Example:
 	/// <para>
 	/// <c>yield return new After(ModContent.GetInstance&lt;ExampleMapLayer&gt;());</c>
@@ -43,6 +43,9 @@ public abstract class ModMapLayer : ModType, IMapLayer
 	}
 
 	#region Sort Positions
+
+	public static Position BeforeFirstVanillaLayer => new Before(MapLayerLoader.FirstVanillaLayer);
+	public static Position AfterLastVanillaLayer => new After(MapLayerLoader.LastVanillaLayer);
 
 	public abstract class Position;
 

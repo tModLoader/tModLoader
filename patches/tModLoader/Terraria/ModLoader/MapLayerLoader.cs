@@ -17,6 +17,10 @@ public static class MapLayerLoader
 
 	internal static readonly int DefaultLayerCount = MapLayers.Count;
 
+	internal static IMapLayer FirstVanillaLayer => MapLayers[0];
+
+	internal static IMapLayer LastVanillaLayer => MapLayers[DefaultLayerCount - 1];
+
 	private static IEnumerable<ModMapLayer> ModdedLayers => MapLayers.Skip(DefaultLayerCount).Cast<ModMapLayer>();
 
 	internal static void Add(IMapLayer layer) => MapLayers.Add(layer);
@@ -38,22 +42,18 @@ public static class MapLayerLoader
 			switch (position) {
 				case ModMapLayer.After after: {
 					int afterIndex = MapLayers.IndexOf(after.Layer);
-					if (afterIndex >= DefaultLayerCount)
+					if (afterIndex >= DefaultLayerCount || afterIndex is -1)
 						throw BlameMapLayerException(new ArgumentException($"ModMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
 
-					int slotIndex = afterIndex is not -1 ? afterIndex + 1 : 0;
-
-					sortingSlots[slotIndex].Add(layer);
+					sortingSlots[afterIndex + 1].Add(layer);
 					break;
 				}
 				case ModMapLayer.Before before: {
 					int beforeIndex = MapLayers.IndexOf(before.Layer);
-					if (beforeIndex >= DefaultLayerCount)
+					if (beforeIndex >= DefaultLayerCount || beforeIndex is -1)
 						throw BlameMapLayerException(new ArgumentException($"ModMapLayer {layer} did not refer to a vanilla map layer in GetDefaultPosition()"));
 
-					int slotIndex = beforeIndex is not -1 ? beforeIndex : sortingSlots.Length - 1;
-
-					sortingSlots[slotIndex].Add(layer);
+					sortingSlots[beforeIndex].Add(layer);
 					break;
 				}	
 				default: {
