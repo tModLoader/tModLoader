@@ -1292,6 +1292,21 @@ Mods: {
 				// DisplayName: Example Weapon Imbue
 				// Description: "{$Items.ExampleFlask.Tooltip}"
 			}
+
+			ExampleStackingBuffOne: {
+				// DisplayName: Example Stacking Buff
+				// Description: You have one extra life!
+			}
+
+			ExampleStackingBuffThree: {
+				// DisplayName: Example Stacking Buff
+				// Description: You have two extra lives!
+			}
+
+			ExampleStackingBuffTwo: {
+				// DisplayName: Example Stacking Buff
+				// Description: You have three extra lives!
+			}
 		}
 
 		// RecipeConditions.Night: At Low Health
