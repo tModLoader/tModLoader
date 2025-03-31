@@ -175,5 +175,10 @@ public partial class NPCID
 		/// <para/> Defaults to false.
 		/// </summary>
 		public static bool[] NeverDropsResourcePickups = Factory.CreateBoolSet(MotherSlime, CorruptSlime, Slimer);
+
+		/// <summary>
+		/// This NPC will not despawn due to being far offscreen, but will still count towards <see cref="Player.nearbyActiveNPCs"/>. Unlike returning false in <see cref="ModNPC.CheckActive"/>, this NPC still counts towards spawn limits. 
+		/// </summary>
+		public static bool[] DoesntDespawnToInactivityAndCountsNPCSlots = Factory.CreateBoolSet(Deerclops);
 	}
 }

@@ -197,7 +197,7 @@ public static class ModContent
 	/// </summary>
 	public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
 
-	/// <inheritdoc cref="BackgroundTextureLoader.GetBackgroundSlot"/>
+	/// <inheritdoc cref="BackgroundTextureLoader.GetBackgroundSlot(string)"/>
 	public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
 
 	/// <summary>
@@ -214,6 +214,11 @@ public static class ModContent
 	/// Get the id (type) of a ModGore by class. Assumes one instance per class.
 	/// </summary>
 	public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
+
+	/// <summary>
+	/// Get the id (type) of a ModCloud by class. Assumes one instance per class.
+	/// </summary>
+	public static int CloudType<T>() where T : ModCloud => GetInstance<T>()?.Type ?? 0;
 
 	/// <summary>
 	/// Get the id (type) of a ModItem by class. Assumes one instance per class.
@@ -327,6 +332,7 @@ public static class ModContent
 		ContentSamples.Initialize();
 		TileLoader.PostSetupContent();
 		BuffLoader.PostSetupContent();
+		BiomeConversionLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
@@ -462,6 +468,7 @@ public static class ModContent
 	internal static void UnloadModContent()
 	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+		CloudLoader.Unload();
 
 		int i = 0;
 		foreach (var mod in ModLoader.Mods.Reverse()) {
@@ -510,6 +517,7 @@ public static class ModContent
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
+		BiomeConversionLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -548,6 +556,7 @@ public static class ModContent
 		// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
 		CreativeItemSacrificesCatalog.Instance.Initialize();
+		ContentSamples.CreativeResearchItemPersistentIdOverride.Clear();
 		ContentSamples.Initialize();
 		SetupBestiary();
 
@@ -577,11 +586,13 @@ public static class ModContent
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
 		BuilderToggleLoader.ResizeArrays();
+		BiomeConversionLoader.ResizeArrays();
 		SystemLoader.ResizeArrays();
 
 		if (!Main.dedServ) {
 			GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 			GoreLoader.ResizeAndFillArrays();
+			CloudLoader.ResizeAndFillArrays(unloading);
 		}
 
 		LoaderManager.ResizeArrays();

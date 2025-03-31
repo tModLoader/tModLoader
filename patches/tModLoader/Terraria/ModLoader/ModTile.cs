@@ -91,6 +91,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Manually registers an item to drop for the provided tile styles. Use this for tile styles that don't have an item that places them. For example, open door tiles don't have any item that places them, but they should drop an item when destroyed. A tile style with no registered drop and no fallback drop will not drop anything when destroyed.<br/><br/>
+	/// Manually registered item drops take precedence over the automatic item drop system.<br/><br/>
 	/// This method can also be used to register the fallback item drop. The fallback item will drop for any tile with a style that does not have a manual or automatic item drop.<br/>
 	/// To register the fallback item, omit the tileStyles parameter.<br/><br/>
 	/// If a mod removes content, manually specifying a replacement/fallback item allows users to recover something from the tile.<br/>
@@ -283,7 +284,11 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which aesthetics like monoliths and music boxes and clocks work. It is false for campfires and heart lanterns.
+	/// Allows you to make things happen when this tile is within a certain range of the player, such as how banners, campfire, and monoliths work.
+	/// <para/> This method will be called on tiles within 2 specific ranges, once for calculating visual effects and another time for calculating gameplay effects:
+	/// <para/> When calculating <b>visual effects</b>, the <paramref name="closer"/> parameter will be <see langword="true"/>. The visual effect range depend on the game window resolution, zoom level, and lighting mode, so it will not be reliable for gameplay effects but rather it adjusts to the players view of the game world. This is suitable for monoliths, water fountains, and music boxes.
+	/// <para/> When calculating <b>gameplay effects</b>, the <paramref name="closer"/> parameter will be <see langword="false"/>. The gameplay effect range will always be a 169x124 tile rectangle centered on the player. This is suitable for tiles that give buffs like the sunflower, banners, heart lantern, and campfire.
+	/// <para/> Make sure to check <paramref name="closer"/> when using this method to ensure the effects of this tile are applying to the intended range.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -380,6 +385,7 @@ public abstract class ModTile : ModBlockType
 	///}</code>
 	///	or, to mimic another tile, simply:
 	///	<code>frame = Main.tileFrame[TileID.FireflyinaBottle];</code></example>
+	///	<para/> <b>Note:</b> For the smoothest animation, <paramref name="frameCounter"/> should count up to a multiple of 4 before advancing the <paramref name="frame"/> value. This is because tiles are rendered every 4 game draws but this method is called every game update. Values that aren't multiples of 4 would result in some frames drawing for twice as long as the next animation frame, resulting in jerky animation. Similarly, attempting to change frames at intervals shorter than 4 will result in skipped animation frames.
 	/// </summary>
 	public virtual void AnimateTile(ref int frame, ref int frameCounter)
 	{
@@ -400,7 +406,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
-	/// SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.
+	/// <para/> Can also be used to register this tile location for additional rendering after all tiles are drawn normally. <see cref="SpecialDraw(int, int, SpriteBatch)"/> will be called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> here or in <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -411,7 +417,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
+	/// Special Draw. Allows for additional rendering after all tiles are drawn normally. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> or <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

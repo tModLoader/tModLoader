@@ -1,6 +1,7 @@
 using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
+using Terraria.ObjectData;
 
 namespace Terraria.DataStructures;
 
@@ -32,9 +33,32 @@ public partial class TileEntity
 
 	/// <summary>
 	/// Receives custom data sent in the <see cref="NetSend"/> hook.
-	/// <br/>Called while receiving tile data (!lightReceive) and when <see cref="MessageID.TileEntitySharing"/> is received (lightReceive).
-	/// <br/>Only called on the client.
+	/// <para/> Called while receiving tile data (!lightReceive) and when <see cref="MessageID.TileEntitySharing"/> is received (lightReceive).
+	/// <para/> Note that this is called on a new instance that will replace the existing instance at the <see cref="Position"/>, if any. <see cref="ID"/> is not necessarily assigned yet when this is called.
+	/// <para/> Only called on the client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
 	public virtual void NetReceive(BinaryReader reader) => ReadExtraData(reader, true);
+
+	/// <summary>
+	/// Attempts to retrieve the TileEntity at the given coordinates of the specified Type (<typeparamref name="T"/>). Works with any provided coordinate belonging to the multitile. Note that this method assumes the TileEntity is placed in the top left corner of the multitile.
+	/// </summary>
+	/// <typeparam name="T">The type to get the entity as</typeparam>
+	/// <param name="i">The tile X-coordinate</param>
+	/// <param name="j">The tile Y-coordinate</param>
+	/// <param name="entity">The found <typeparamref name="T"/> instance, if there was one.</param>
+	/// <returns><see langword="true"/> if there was a <typeparamref name="T"/> instance, or <see langword="false"/> if there was no entity present OR the entity was not a <typeparamref name="T"/> instance.</returns>
+	public static bool TryGet<T>(int i, int j, out T entity) where T : TileEntity
+	{
+		Point16 topLeft = TileObjectData.TopLeft(i, j);
+		if (ByPosition.TryGetValue(topLeft, out var existing) && existing is T existingAsT) {
+			entity = existingAsT;
+			return true;
+		}
+		entity = null;
+		return false;
+	}
+
+	/// <inheritdoc cref="TryGet{T}(int, int, out T)"/>
+	public static bool TryGet<T>(Point16 point, out T entity) where T : TileEntity => TryGet<T>(point.X, point.Y, out entity);
 }

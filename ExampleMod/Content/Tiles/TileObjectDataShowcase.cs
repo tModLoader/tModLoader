@@ -111,8 +111,7 @@ namespace ExampleMod.Content.Tiles
 
 			// This math finds the top left corner of the tile.
 			Tile tile = Main.tile[i, j];
-			int topX = i - (tile.TileFrameX % 256) % 32 / 16;
-			int topY = j - (tile.TileFrameY % 128) % 32 / 16;
+			(int topX, int topY) = TileObjectData.TopLeft(i, j);
 
 			// 96 is the Y position of the "Fra 3" sprites in the spritesheet. (32 * 3)
 			short frameAdjustment = (short)(tile.TileFrameY % 128 >= 96 ? -96 : 96);

@@ -1,7 +1,9 @@
+using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -58,7 +60,9 @@ namespace ExampleMod.Content.Items.Accessories
 			// The original Hive Pack sets strongBees.
 			player.strongBees = true;
 			// Here we add an additional effect
-			player.GetModPlayer<WaspNestPlayer>().strongBeesUpgrade = true;
+			WaspNestPlayer waspNestPlayer = player.GetModPlayer<WaspNestPlayer>();
+			waspNestPlayer.strongBeesUpgrade = true;
+			waspNestPlayer.strongBeesItem = Item;
 		}
 
 		public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
@@ -70,9 +74,38 @@ namespace ExampleMod.Content.Items.Accessories
 	public class WaspNestPlayer : ModPlayer
 	{
 		public bool strongBeesUpgrade;
+		public Item strongBeesItem; // Some effects need to refer back to the accessory Item
 
 		public override void ResetEffects() {
 			strongBeesUpgrade = false;
+			strongBeesItem = null;
+		}
+
+		// Spawn a bee when damaged, similar to the Honey Comb accessory effect
+		// This is just an example of the concept of storing an Item instance for accessory effects and GetSource_Accessory or GetSource_Accessory_OnHurt,
+		// if you actually are making an accessory with the existing Honey Comb effect, just set "player.honeyCombItem = Item;" in UpdateAccessory instead
+		public override void OnHurt(Player.HurtInfo info) {
+			if(Player.whoAmI != Main.myPlayer) {
+				return;
+			}
+
+			if (strongBeesItem != null && Main.rand.NextBool(3)) {
+				int baseDamage = 20;
+
+				// By storing the Item instance, we can create varying effects for different "tiers" of accessories. 
+				if(strongBeesItem.ModItem is WaspNest) {
+					baseDamage += 10;
+				}
+
+				/*
+				if (strongBeesItem.ModItem is WaspNestV2) {
+					baseDamage += 30;
+				}
+				*/
+
+				IEntitySource projectileSource_Accessory = Player.GetSource_Accessory_OnHurt(strongBeesItem, info.DamageSource);
+				Projectile.NewProjectile(projectileSource_Accessory, Player.Center, Utils.NextVector2Circular(Main.rand, 3, 3), Player.beeType(), Player.beeDamage(baseDamage), Player.beeKB(0f), Main.myPlayer);
+			}
 		}
 	}
 }

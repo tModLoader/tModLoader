@@ -51,7 +51,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			// Any final custom global buff immunity logic can go in GlobalNPC.SetDefaults, if necessary. (This runs after ModNPC.SetDefaults) 
 			// Try to stick with the provided functionality for maximum compatibility instead of doing things manually.
 			// For example, the following buff inheritance will apply if the NPC is immune to ANY of the specified buffs:
-			// BuffID.Sets.GrantImmunityWith[ModContent.BuffType<PoisonFire>()].AddRange(new int[] { BuffID.OnFire, BuffID.Poisoned });
+			// BuffID.Sets.GrantImmunityWith[ModContent.BuffType<PoisonFire>()].AddRange([BuffID.OnFire, BuffID.Poisoned]);
 			// If the intention is only be immune to PoisonFire if immune to both OnFire AND Poisoned, that effect could be done here.
 		}
 	}

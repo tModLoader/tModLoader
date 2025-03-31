@@ -50,6 +50,11 @@ public partial class Mod
 	public List<string> TranslationForMods { get; internal set; }
 
 	/// <summary>
+	/// The path to the source folder the mod was built from.
+	/// </summary>
+	public string SourceFolder { get; internal set; }
+
+	/// <summary>
 	/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
@@ -58,9 +63,17 @@ public partial class Mod
 	/// </summary>
 	public bool GoreAutoloadingEnabled { get; init; } = true;
 	/// <summary>
+	/// Whether or not this mod will automatically add images in the "Clouds" folder as clouds to the game. This means you do not need to manually call <see cref="CloudLoader.AddCloudFromTexture(Mod, string, float, bool)"/> or make a <see cref="ModCloud"/> class to add them to the game, but they will have the default spawn chance and be counted as normal clouds if autoloaded in this manner. Defaults to true.
+	/// </summary>
+	public bool CloudAutoloadingEnabled { get; init; } = true;
+	/// <summary>
 	/// Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
+	/// <summary>
+	/// Whether or not all music loaded by this mod will automatically have <see cref="MusicID.Sets.SkipsVolumeRemap"/> set to true.
+	/// </summary>
+	public bool MusicSkipsVolumeRemap { get; init; } = false;
 	/// <summary>
 	/// Whether or not this mod will automatically add images in the "Backgrounds" folder as background textures to the game. This means you do not need to manually call <see cref="BackgroundTextureLoader.AddBackgroundTexture(Mod, string)"/>.
 	/// </summary>
@@ -85,7 +98,8 @@ public partial class Mod
 	/// <summary>
 	/// Provides access to assets (textures, sounds, shaders, etc) contained within this mod. The main usage is to call the <see cref="AssetRepository.Request{T}(string)"/> method to retrieve an Asset&lt;T&gt; instance:
 	/// <code>Asset&lt;Texture2D&gt; balloonTexture = Mod.Assets.Request&lt;Texture2D&gt;("Content/Items/Armor/SimpleAccessory_Balloon");</code>
-	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required. 
+	/// Do not include the mod name in the Request method call, the path supplied should not include the mod name. This is different from using <see cref="ModContent.Request{T}(string, AssetRequestMode)"/> where the mod name is required.
+	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Assets">Assets guide on the wiki</see> for more information.
 	/// </summary>
 	public AssetRepository Assets { get; private set; }
 
@@ -93,6 +107,7 @@ public partial class Mod
 
 	internal short netID = -1;
 	public short NetID => netID;
+	/// <summary> If true, this mod has a <see cref="NetID"/> assigned. This is mainly useful for checking if a <see cref="ModSide.NoSync"/> mod is present on the server from a client to determine if a <see cref="ModPacket"/> can be sent to the server or not. </summary>
 	public bool IsNetSynced => netID >= 0;
 
 	private IDisposable fileHandle;
@@ -210,7 +225,7 @@ public partial class Mod
 	public int AddNPCHeadTexture(int npcType, string texture)
 	{
 		if (!loading)
-			throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		int slot = NPCHeadLoader.ReserveHeadSlot();
 
@@ -237,7 +252,7 @@ public partial class Mod
 	public int AddBossHeadTexture(string texture, int npcType = -1)
 	{
 		if (!loading)
-			throw new Exception("AddBossHeadTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
 		NPCHeadLoader.bossHeads[texture] = slot;
@@ -301,15 +316,19 @@ public partial class Mod
 	}
 
 	/// <summary>
-	/// Creates a ModPacket object that you can write to and then send between servers and clients.
+	/// Creates a <see cref="ModPacket"/> object that you can write to and then send between servers and clients.
 	/// </summary>
 	/// <param name="capacity">The capacity.</param>
 	/// <returns></returns>
 	/// <exception cref="System.Exception">Cannot get packet for " + Name + " because it does not exist on the other side</exception>
 	public ModPacket GetPacket(int capacity = 256)
 	{
-		if (netID < 0)
-			throw new Exception("Cannot get packet for " + Name + " because it does not exist on the other side");
+		if (netID < 0) {
+			if (Main.netMode == NetmodeID.SinglePlayer)
+				throw new Exception("GetPacket should only be called during multiplayer");
+			else
+				throw new Exception($"Cannot get packet for {Name} because it does not exist on the {(Main.dedServ ? "client": "server")}. GetPacket should not be called for server-side or client-side mods.");
+		}
 
 		var p = new ModPacket(MessageID.ModPacket, capacity + 5);
 		if (ModNet.NetModCount < 256)

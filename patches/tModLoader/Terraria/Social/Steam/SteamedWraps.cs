@@ -72,6 +72,8 @@ public static class SteamedWraps
 
 	internal static void Initialize()
 	{
+		InitializeModTags();
+
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
 			SteamAvailable = true;
 			SteamClient = true;
@@ -676,5 +678,41 @@ public static class SteamedWraps
 				}
 			}
 		}
+	}
+
+	public static readonly List<WorkshopTagOption> ModTags = new List<WorkshopTagOption>();
+
+	private static void InitializeModTags()
+	{
+		// Common Mod Focuses
+		AddModTag("tModLoader.TagsContent", "New Content");
+		AddModTag("tModLoader.TagsUtility", "Utilities");
+		AddModTag("tModLoader.TagsLibrary", "Library");
+		AddModTag("tModLoader.TagsQoL", "Quality of Life");
+
+		// Tweaks
+		AddModTag("tModLoader.TagsGameplay", "Gameplay Tweaks");
+		AddModTag("tModLoader.TagsAudio", "Audio Tweaks");
+		AddModTag("tModLoader.TagsVisual", "Visual Tweaks");
+
+		// TBD Grouping
+		//AddModTag("tModLoader.TagsLang", "Localization Support");
+		AddModTag("tModLoader.TagsGen", "Custom World Gen"); // Note: Don't change internal name to "World Gen" here or on steam, it will most likely break legacy modders publishing updates. Unless we are sure the steam backend handles migrating from legacy internal names, keep the internal names consistent.
+
+		// Languages
+		AddModTag("tModLoader.TagsLanguage_English", "English");
+		AddModTag("tModLoader.TagsLanguage_German", "German");
+		AddModTag("tModLoader.TagsLanguage_Italian", "Italian");
+		AddModTag("tModLoader.TagsLanguage_French", "French");
+		AddModTag("tModLoader.TagsLanguage_Spanish", "Spanish");
+		AddModTag("tModLoader.TagsLanguage_Russian", "Russian");
+		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
+		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
+		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
+	}
+
+	private static void AddModTag(string tagNameKey, string tagInternalName)
+	{
+		ModTags.Add(new WorkshopTagOption(tagNameKey, tagInternalName));
 	}
 }

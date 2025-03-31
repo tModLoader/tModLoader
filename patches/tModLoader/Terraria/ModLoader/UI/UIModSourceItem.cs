@@ -36,7 +36,7 @@ internal class UIModSourceItem : UIPanel
 	private Task<string[]> langFileTask;
 	private Task<bool> sourceUpgradeTask;
 	private CancellationToken _modSourcesToken;
-	
+
 	public UIModSourceItem(string mod, LocalMod builtMod, CancellationToken modSourcesToken)
 	{
 		_mod = mod;
@@ -155,7 +155,8 @@ internal class UIModSourceItem : UIPanel
 		}
 
 		if (File.Exists(csprojFile)) {
-			var openFolderButton = new UIHoverImage(UICommon.ButtonOpenFolder, Lang.inter[110].Value) {
+			bool customModSourceFolder = builtMod != null && !string.IsNullOrWhiteSpace(builtMod.properties.modSource) && builtMod.properties.modSource != Path.Combine(ModCompile.ModSourcePath, modName);
+			var openFolderButton = new UIHoverImage(customModSourceFolder ? UICommon.ButtonOpenFolderCustom : UICommon.ButtonOpenFolder, customModSourceFolder ? Language.GetTextValue("tModLoader.MSOpenCustomSourceFolder", builtMod.properties.modSource) : Lang.inter[110].Value) {
 				RemoveFloatingPointsFromDrawPosition = true,
 				UseTooltipMouseText = true,
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
@@ -323,9 +324,9 @@ internal class UIModSourceItem : UIPanel
 			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 				localMod = new LocalMod(ModLocation.Local, modFile);
 
-			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
+			string icon = Path.Combine(localMod.properties.modSource, "icon_workshop.png");
 			if (!File.Exists(icon))
-				icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
+				icon = Path.Combine(localMod.properties.modSource, "icon.png");
 
 			WorkshopHelper.PublishMod(localMod, icon);
 		}
@@ -420,16 +421,22 @@ internal class UIModSourceItem : UIPanel
 			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
 			string args = $"\"{csprojFile}\"";
-			var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-			var porterPath = Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
+			var tMLPath = Path.GetDirectoryName(Path.GetFullPath(Assembly.GetExecutingAssembly().Location));
+			var porterPath = Path.Combine(tMLPath, "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
 
 			var porterInfo = new ProcessStartInfo() {
 				FileName = porterPath,
 				Arguments = args,
+				WorkingDirectory = tMLPath,
 				UseShellExecute = true
 			};
 
-			var porter = Process.Start(porterInfo);
+			try {
+				var porter = ModCompile.StartOnHost(porterInfo);
+			}
+			catch (Exception ex) {
+				Logging.tML.Error("Failed to start tModPorter", ex);
+			}
 		};
 
 		Append(portModButton);

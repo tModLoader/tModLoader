@@ -2,8 +2,10 @@ using ExampleMod.Common.Players;
 using ExampleMod.Common.Systems;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
+using ExampleMod.Content.TileEntities;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,7 +22,7 @@ namespace ExampleMod
 			ExampleTeleportToStatue,
 			ExampleDodge,
 			ExampleTownPetUnlockOrExchange,
-			ExampleResourceEffect
+			ExampleResourceEffect,
 		}
 
 		// Override this method to handle network packets sent for this mod.

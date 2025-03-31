@@ -1459,6 +1459,25 @@ public static class PlayerLoader
 		return true;
 	}
 
+	private static HookList HookArmorSetBonusActivated = AddHook<Action>(p => p.ArmorSetBonusActivated);
+
+	public static void ArmorSetBonusActivated(Player player)
+	{
+		foreach (var modPlayer in HookArmorSetBonusActivated.Enumerate(player)) {
+			modPlayer.ArmorSetBonusActivated();
+		}
+	}
+
+	private static HookList HookArmorSetBonusHeld = AddHook<Action<int>>(p => p.ArmorSetBonusHeld);
+
+	public static void ArmorSetBonusHeld(Player player, int holdTime)
+	{
+		foreach (var modPlayer in HookArmorSetBonusHeld.Enumerate(player)) {
+			modPlayer.ArmorSetBonusHeld(holdTime);
+		}
+	}
+}
+
 	private static HookList HookOnEquipmentLoadoutSwitched = AddHook<Action<int>>(p => p.OnEquipmentLoadoutSwitched);
 
 	public static void OnEquipmentLoadoutSwitched(Player player, int loadoudIndex)

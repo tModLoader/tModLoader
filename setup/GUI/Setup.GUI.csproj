@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">    
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<ApplicationIcon>tModLoaderSetup.ico</ApplicationIcon>
+		<UseWindowsForms>True</UseWindowsForms>
+		<UseWPF>True</UseWPF>
+		<OutputType>WinExe</OutputType>
+		<RootNamespace>Terraria.ModLoader.Setup.GUI</RootNamespace>
+		<AssemblyName>setup-gui</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PatchReviewer\DiffPatch\DiffPatch.csproj" />
+		<ProjectReference Include="..\PatchReviewer\PatchReviewer.csproj" />
+		<ProjectReference Include="..\Core\Setup.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+	</ItemGroup>
+</Project>

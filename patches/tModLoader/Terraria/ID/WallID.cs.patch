@@ -16,11 +16,12 @@
  		public static bool[] CanBeConvertedToGlowingMushroom = Factory.CreateBoolSet(64, 67, 15, 247);
  		public static bool[] AllowsUndergroundDesertEnemiesToSpawn = Factory.CreateBoolSet(187, 220, 222, 221, 216, 217, 219, 218);
  		public static bool[] Transparent = Factory.CreateBoolSet(88, 89, 90, 91, 92, 241);
-@@ -382,4 +_,7 @@
+@@ -382,4 +_,8 @@
  	public const ushort VioletMossBlockWall = 345;
  	public const ushort RainbowMossBlockWall = 346;
  	public static readonly ushort Count = 347;
 +
 +	// Added by TML.
++	/// <inheritdoc cref="IdDictionary"/>
 +	public static readonly IdDictionary Search = IdDictionary.Create<WallID, ushort>();
  }

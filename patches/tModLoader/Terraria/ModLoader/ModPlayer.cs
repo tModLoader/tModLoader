@@ -216,9 +216,30 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
+	/// <para/> Read <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleKeybindPlayer.cs">ExampleKeybindPlayer.cs</see> for examples and information on using this hook.
 	/// </summary>
 	/// <param name="triggersSet"></param>
 	public virtual void ProcessTriggers(TriggersSet triggersSet)
+	{
+	}
+
+	/// <summary>
+	/// This is called when the player activates their armor set bonus by double tapping down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true). As an example, the Vortex armor uses this to toggle stealth mode.
+	/// <para /> Use this to implement armor set bonuses that need to be activated by the player.
+	/// <para /> Don't forget to check if your armor set is active.
+	/// <para/> While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <see cref="Player.holdDownCardinalTimer"/> and <see cref="Player.doubleTapCardinalTimer"/> directly in other hooks for similar effects if needed.
+	/// </summary>
+	public virtual void ArmorSetBonusActivated()
+	{
+	}
+
+	/// <summary>
+	/// This is called when the player activates their armor set bonus by holding down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true) for some amount of time. The <paramref name="holdTime"/> parameter indicates how many ticks the key has been held down for. As an example, the Stardust armor prior to 1.4.4 used to use this to set the location of the Stardust Guardian if <paramref name="holdTime"/> was greater than 60.
+	/// <para /> Use this to implement armor set bonuses that need to be activated by the player.
+	/// <para /> Don't forget to check if your armor set is active.
+	/// <para/> While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <see cref="Player.holdDownCardinalTimer"/> and <see cref="Player.doubleTapCardinalTimer"/> directly in other hooks for similar effects if needed.
+	/// </summary>
+	public virtual void ArmorSetBonusHeld(int holdTime)
 	{
 	}
 
@@ -1017,7 +1038,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Note that the fullBright parameter only works if r, g, b, and/or a is not equal to 1. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br/>
+	/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br/>
 	/// This will be called multiple times a frame if a player afterimage is being drawn. Check <code>if(drawinfo.shadow == 0f)</code> to do some logic only when drawing the original player image. For example, spawning dust only for the original player image is commonly the desired behavior.
 	/// </summary>
 	/// <param name="drawInfo"></param>
@@ -1081,6 +1102,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called when a player disconnects.
+	/// <para/> Called on the server when this player disconnects.
+	/// <para/> Called on other clients when this player disconnects.
 	/// </summary>
 	public virtual void PlayerDisconnect()
 	{

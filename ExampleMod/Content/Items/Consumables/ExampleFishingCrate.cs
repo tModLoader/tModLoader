@@ -36,17 +36,17 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void ModifyItemLoot(ItemLoot itemLoot) {
 			// Drop a special weapon/accessory etc. specific to this crate's theme (i.e. Sky Crate dropping Fledgling Wings or Starfury)
-			int[] themedDrops = new int[] {
+			int[] themedDrops = [
 				ModContent.ItemType<Accessories.ExampleBeard>(),
 				ModContent.ItemType<Accessories.ExampleStatBonusAccessory>()
-			};
+			];
 			itemLoot.Add(ItemDropRule.OneFromOptionsNotScalingWithLuck(1, themedDrops));
 
 			// Drop coins
 			itemLoot.Add(ItemDropRule.Common(ItemID.GoldCoin, 4, 5, 13));
 
 			// Drop pre-hm ores, with the addition of one from ExampleMod
-			IItemDropRule[] oreTypes = new IItemDropRule[] {
+			IItemDropRule[] oreTypes = [
 				ItemDropRule.Common(ItemID.CopperOre, 1, 30, 50),
 				ItemDropRule.Common(ItemID.TinOre, 1, 30, 50),
 				ItemDropRule.Common(ItemID.IronOre, 1, 30, 50),
@@ -56,11 +56,11 @@ namespace ExampleMod.Content.Items.Consumables
 				ItemDropRule.Common(ItemID.GoldOre, 1, 30, 50),
 				ItemDropRule.Common(ItemID.PlatinumOre, 1, 30, 50),
 				ItemDropRule.Common(ModContent.ItemType<Placeable.ExampleOre>(), 1, 30, 50),
-			};
+			];
 			itemLoot.Add(new OneFromRulesRule(7, oreTypes));
 
 			// Drop pre-hm bars (except copper/tin), with the addition of one from ExampleMod
-			IItemDropRule[] oreBars = new IItemDropRule[] {
+			IItemDropRule[] oreBars = [
 				ItemDropRule.Common(ItemID.IronBar, 1, 10, 21),
 				ItemDropRule.Common(ItemID.LeadBar, 1, 10, 21),
 				ItemDropRule.Common(ItemID.SilverBar, 1, 10, 21),
@@ -68,11 +68,11 @@ namespace ExampleMod.Content.Items.Consumables
 				ItemDropRule.Common(ItemID.GoldBar, 1, 10, 21),
 				ItemDropRule.Common(ItemID.PlatinumBar, 1, 10, 21),
 				ItemDropRule.Common(ModContent.ItemType<Placeable.ExampleBar>(), 1, 10, 21),
-			};
+			];
 			itemLoot.Add(new OneFromRulesRule(4, oreBars));
 
 			// Drop an "exploration utility" potion, with the addition of one from ExampleMod
-			IItemDropRule[] explorationPotions = new IItemDropRule[] {
+			IItemDropRule[] explorationPotions = [
 				ItemDropRule.Common(ItemID.ObsidianSkinPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.SpelunkerPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.HunterPotion, 1, 2, 5),
@@ -80,21 +80,21 @@ namespace ExampleMod.Content.Items.Consumables
 				ItemDropRule.Common(ItemID.MiningPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.HeartreachPotion, 1, 2, 5),
 				ItemDropRule.Common(ModContent.ItemType<Consumables.ExampleBuffPotion>(), 1, 2, 5),
-			};
+			];
 			itemLoot.Add(new OneFromRulesRule(4, explorationPotions));
 
 			// Drop (pre-hm) resource potion
-			IItemDropRule[] resourcePotions = new IItemDropRule[] {
+			IItemDropRule[] resourcePotions = [
 				ItemDropRule.Common(ItemID.HealingPotion, 1, 5, 18),
 				ItemDropRule.Common(ItemID.ManaPotion, 1, 5, 18),
-			};
+			];
 			itemLoot.Add(new OneFromRulesRule(2, resourcePotions));
 
 			// Drop (high-end) bait
-			IItemDropRule[] highendBait = new IItemDropRule[] {
+			IItemDropRule[] highendBait = [
 				ItemDropRule.Common(ItemID.JourneymanBait, 1, 2, 7),
 				ItemDropRule.Common(ItemID.MasterBait, 1, 2, 7),
-			};
+			];
 			itemLoot.Add(new OneFromRulesRule(2, highendBait));
 		}
 	}

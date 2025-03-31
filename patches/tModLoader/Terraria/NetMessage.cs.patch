@@ -111,7 +111,19 @@
  					break;
  				}
  				case 22:
-@@ -636,9 +_,11 @@
+@@ -602,6 +_,11 @@
+ 					bitsByte4[0] = nPC2.statsAreScaledForThisManyPlayers > 1;
+ 					bitsByte4[1] = nPC2.SpawnedFromStatue;
+ 					bitsByte4[2] = nPC2.strengthMultiplier != 1f;
++
++					byte[] extraAI = NPCLoader.WriteExtraAI(nPC2);
++					bool hasExtraAI = extraAI?.Length > 0;
++					bitsByte4[3] = hasExtraAI; // This bit is unused by vanilla
++
+ 					writer.Write(bitsByte4);
+ 					for (int m = 0; m < NPC.maxAI; m++) {
+ 						if (array[m])
+@@ -636,9 +_,13 @@
  						}
  					}
  
@@ -119,7 +131,9 @@
 +					if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  						writer.Write((byte)nPC2.releaseOwner);
  
-+					NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
++					if (hasExtraAI) {
++						NPCLoader.SendExtraAI(writer, extraAI);
++					}
 +
  					break;
  				}
