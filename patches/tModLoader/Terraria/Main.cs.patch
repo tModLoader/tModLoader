@@ -5004,7 +5004,7 @@
  			DrawInterface_Resources_Buffs();
 +
 +		spriteBatch.End();
-+		spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, UIScaleMatrix);
++		spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, UIScaleMatrix); // #4578 vanilla fix
  	}
  
  	public static void DrawInterface_Resources_ClearBuffs()
