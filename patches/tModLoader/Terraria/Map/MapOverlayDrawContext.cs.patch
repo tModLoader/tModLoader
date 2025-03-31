@@ -9,3 +9,21 @@
  {
  	public struct DrawResult
  	{
+@@ -49,6 +_,8 @@
+ 	}
+ 
+ 	public DrawResult Draw(Texture2D texture, Vector2 position, Color color, SpriteFrame frame, float scaleIfNotSelected, float scaleIfSelected, Alignment alignment)
++		=> Draw(texture, position, color, frame, scaleIfNotSelected, scaleIfSelected, alignment, SpriteEffects.None);
++	public DrawResult Draw(Texture2D texture, Vector2 position, Color color, SpriteFrame frame, float scaleIfNotSelected, float scaleIfSelected, Alignment alignment, SpriteEffects spriteEffects)
+ 	{
+ 		position = (position - _mapPosition) * _mapScale + _mapOffset;
+ 		if (_clippingRect.HasValue && !_clippingRect.Value.Contains(position.ToPoint()))
+@@ -64,7 +_,7 @@
+ 		if (num2)
+ 			scale = _drawScale * scaleIfSelected;
+ 
+-		Main.spriteBatch.Draw(texture, position2, sourceRectangle, color, 0f, vector, scale, SpriteEffects.None, 0f);
++		Main.spriteBatch.Draw(texture, position2, sourceRectangle, color, 0f, vector, scale, spriteEffects, 0f);
+ 		return new DrawResult(num2);
+ 	}
+ }
