@@ -232,7 +232,7 @@
  	public static RenderTarget2D screenTarget;
  	public static RenderTarget2D screenTargetSwap;
  	public static int maxMapUpdates = 250000;
-@@ -560,8 +_,8 @@
+@@ -560,14 +_,21 @@
  	public static bool clearMap;
  	public static int mapTargetX = 5;
  	public static int mapTargetY = 2;
@@ -243,6 +243,29 @@
  	public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
  	public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
  	public const int numInfoIcons = 13;
+ 	public static Microsoft.Xna.Framework.Color OurFavoriteColor = new Microsoft.Xna.Framework.Color(255, 231, 69);
+ 	public static bool mapInit;
+ 	public static bool mapEnabled = true;
++	/// <summary>
++	/// Dictates how the non-<see cref="mapFullscreen"/> map is displayed.
++	/// <para/> Can be one of the following values/modes:
++	/// <br/><b>0:</b> The minimap has been hidden.
++	/// <br/><b>1:</b> The minimap is visible.
++	/// <br/><b>2:</b> The overlay map is visible.
++	/// </summary>
+ 	public static int mapStyle = 1;
+ 	public static float grabMapX;
+ 	public static float grabMapY;
+@@ -580,6 +_,9 @@
+ 	public static float mapMinimapAlpha = 1f;
+ 	public static float mapOverlayScale = 2.5f;
+ 	public static float mapOverlayAlpha = 0.35f;
++	/// <summary>
++	/// If true, the map is currently in fullscreen mode. See also <see cref="Main.mapStyle"/>, note that the overlay map does not count as the fullscreen map.
++	/// </summary>
+ 	public static bool mapFullscreen;
+ 	public static bool resetMapFull;
+ 	public static float mapFullscreenScale = 4f;
 @@ -592,12 +_,12 @@
  	private int lastTileX;
  	private int firstTileY;

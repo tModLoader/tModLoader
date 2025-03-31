@@ -16,11 +16,9 @@ namespace ExampleMod.Common
 	// ModMapLayers are used to draw icons and other things over the map. Pylons and spawn/bed icons are examples of vanilla map layers. This example adds an icon over the dungeon.
 	public class ExampleMapLayer : ModMapLayer
 	{
-		public override Position GetDefaultPosition() {
-			// Here you can define where to put this layer in the vanilla map layer order.
-			// In this case we go before the pings layer since all other vanilla map layers are ordered before pings,
-			return new Before(IMapLayer.Pings);
-		}
+		// Here you can define where to put this layer in the vanilla map layer order.
+		// In this case we go before the pings layer since all other vanilla map layers are ordered before pings,
+		public override Position GetDefaultPosition() => new Before(IMapLayer.Pings);
 
 		// In the Draw method, we draw everything. Consulting vanilla examples in the source code is a good resource for properly using this Draw method.
 		public override void Draw(ref MapOverlayDrawContext context, ref string text) {
@@ -58,9 +56,7 @@ namespace ExampleMod.Common
 	// This example makes any ExampleItems that are on the ground in the world show up on the map.
 	public class ExampleItemMapLayer : ModMapLayer
 	{
-		public override Position GetDefaultPosition() {
-			return new Before(IMapLayer.Pings);
-		}
+		public override Position GetDefaultPosition() => new Before(IMapLayer.Pings);
 
 		public override IEnumerable<Position> GetModdedConstraints() {
 			// By default, modded map layers are positioned between two vanilla layers (via After and Before) and are ordered in load order.
@@ -71,6 +67,12 @@ namespace ExampleMod.Common
 		}
 
 		public override void Draw(ref MapOverlayDrawContext context, ref string text) {
+			// We can check Main.mapStyle or Main.mapFullscreen to limit drawing to specific map modes.
+			// This example doesn't draw on the overlay map, but draws on the minimap and fullscreen map.
+			if (Main.mapStyle == 2) {
+				return;
+			}
+
 			foreach (Item item in Main.ActiveItems) {
 				if (item.type == ModContent.ItemType<ExampleItem>()) {
 					Texture2D itemTexture = TextureAssets.Item[item.type].Value;
