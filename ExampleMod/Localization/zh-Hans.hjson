@@ -1114,6 +1114,7 @@ Mods: {
 				// DisplayName: Example Chandelier
 				// Tooltip: ""
 			}
+
 			BasicTileEntityItem: {
 				// DisplayName: Basic Tile Entity Item
 				// Tooltip: Collects rain water. Right Click when full to claim a water bucket.
