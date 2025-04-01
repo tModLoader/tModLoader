@@ -90,8 +90,6 @@ public static partial class SystemLoader
 				system.OnModLoad();
 			}
 		}
-
-
 	}
 
 	internal static void OnModUnload(Mod mod)
