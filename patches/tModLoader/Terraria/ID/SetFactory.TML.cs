@@ -276,25 +276,18 @@ public partial class SetFactory
 				// This could potentially happen for willBeReinitialized sets if the modder makes the array manually for the current content count instead of using the SetFactory as intended.
 			}
 
-			int newEntries = 0;
-			int replacedEntries = 0;
 			for (int i = 0; i < input.Length; i++) {
 				if (!EqualityComparer<T>.Default.Equals(input[i], defaultValue)) {
 					if (EqualityComparer<T>.Default.Equals(input[i], value[i]))
 						continue;
 
-					if (!EqualityComparer<T>.Default.Equals(value[i], defaultValue))
-						replacedEntries++;
-					else
-						newEntries++;
-
 					value[i] = input[i];
 				}
 			}
 
-			if (newEntries + replacedEntries > 0 && ModCompile.activelyModding) {
-				var log = $"Custom {ContainingClassName} {FullTypeName(typeof(T))}[] set {key} updated by {ModContent.CurrentlyLoadingMod}.";
-				if (replacedEntries > 0) log += $" {replacedEntries} non-default entries were replaced.";
+			// Detecting new and replaced entries for logging has been removed since it could be misleading since the entries will be updated in SetStaticDefaults anyway.
+			if (ModCompile.activelyModding && !metadata.involvedMods.Contains(ModContent.CurrentlyLoadingMod)) {
+				var log = $"Custom {ContainingClassName} {FullTypeName(typeof(T))}[] set {key} registered by {ModContent.CurrentlyLoadingMod}.";
 				log += $" Previously registered by [{string.Join(", ", metadata.involvedMods)}]";
 				Logging.tML.Debug(log);
 			}
