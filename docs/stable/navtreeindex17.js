@@ -1,5 +1,10 @@
 var NAVTREEINDEX17 =
 {
+"class_player.html#a55a3e1f7654bcdb1eb261b332f9319c1":[3,0,969,48],
+"class_player.html#a561ab9c2b927fc8eaccc954a6562b14f":[3,0,969,113],
+"class_player.html#a578a632a00be063b32a07d30e0f420fc":[3,0,969,26],
+"class_player.html#a579382395e10ab8a10ba1c52254892d5":[3,0,969,20],
+"class_player.html#a590dce4227b207c8976811be19f2cf64":[3,0,969,131],
 "class_player.html#a5bedc6fd55c5ada0eea747a1a6fb067a":[3,0,969,150],
 "class_player.html#a5c801ca91e9ad4a2ea2a259f78125b60":[3,0,969,130],
 "class_player.html#a5d4afad08867cd0283fc7dbf33974041":[3,0,969,94],
@@ -141,7 +146,9 @@ var NAVTREEINDEX17 =
 "class_player_1_1_smart_cursor_settings.html":[3,0,969,16],
 "class_player_data_initializer.html":[3,0,970],
 "class_player_death_reason.html":[3,0,971],
-"class_player_death_reason.html#a6171817be69d166d82feaf78b89954c6":[3,0,971,0],
+"class_player_death_reason.html#a6171817be69d166d82feaf78b89954c6":[3,0,971,2],
+"class_player_death_reason.html#a70390da44580f018bc6d927484a0bd79":[3,0,971,1],
+"class_player_death_reason.html#a9746b6e09cc9dc036c1152dc4b4059ff":[3,0,971,0],
 "class_player_difficulty_i_d.html":[3,0,972],
 "class_player_draw_helper.html":[3,0,973],
 "class_player_draw_layer.html":[3,0,974],
@@ -242,12 +249,5 @@ var NAVTREEINDEX17 =
 "class_popup_text.html#a00c0066594c7f345ed6fa8943baddd7c":[3,0,1002,19],
 "class_popup_text.html#a04beb1444dea0bed25b693da66168f6e":[3,0,1002,32],
 "class_popup_text.html#a17b464f634ed32f77fbbbe7225b5406e":[3,0,1002,2],
-"class_popup_text.html#a19524e6ea5ab4e0cd17ba0bbda2d896a":[3,0,1002,23],
-"class_popup_text.html#a1ee25fe4204100e6a407c206657f5a2a":[3,0,1002,14],
-"class_popup_text.html#a2d492898905d2b7b7793edfd7937c310":[3,0,1002,10],
-"class_popup_text.html#a2df6720b394b39a88e0dcfdd71b09722":[3,0,1002,24],
-"class_popup_text.html#a336d49dd69b74af1fbe96d71d56237e9":[3,0,1002,21],
-"class_popup_text.html#a407b6f10acda7104be368598c1735527":[3,0,1002,13],
-"class_popup_text.html#a4838ca639ef46eb3b9fdd3a94359e1aa":[3,0,1002,20],
-"class_popup_text.html#a5298cb6f1bd49647ec1f4172bb71c406":[3,0,1002,33]
+"class_popup_text.html#a19524e6ea5ab4e0cd17ba0bbda2d896a":[3,0,1002,23]
 };

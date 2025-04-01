@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -109,8 +109,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteSelfTo</b> (Bina
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9746b6e09cc9dc036c1152dc4b4059ff"><td class="memItemLeft" align="right" valign="top"><a id="a9746b6e09cc9dc036c1152dc4b4059ff" name="a9746b6e09cc9dc036c1152dc4b4059ff"></a>
+static <a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ByCustomReason</b> (<a class="el" href="class_network_text.html">NetworkText</a> reason)</td></tr>
+<tr class="memdesc:a9746b6e09cc9dc036c1152dc4b4059ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">A localized custom death message. Each client will see the death message in their own language, unlike with <a class="el" href="class_player_death_reason.html#a70390da44580f018bc6d927484a0bd79" title="A custom death message. This overload does not support localization, all players will see the same te...">ByCustomReason(string)</a>. Text substitutions can be provided by using LocalizedText.ToNetworkText(object[]) or NetworkText.FromKey(string, object[]). <br /></td></tr>
+<tr class="separator:a9746b6e09cc9dc036c1152dc4b4059ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70390da44580f018bc6d927484a0bd79"><td class="memItemLeft" align="right" valign="top"><a id="a70390da44580f018bc6d927484a0bd79" name="a70390da44580f018bc6d927484a0bd79"></a>
 static <a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ByCustomReason</b> (string reasonInEnglish)</td></tr>
+<tr class="memdesc:a70390da44580f018bc6d927484a0bd79"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom death message. This overload does not support localization, all players will see the same text regardless of their language settings. Use <a class="el" href="class_player_death_reason.html#a9746b6e09cc9dc036c1152dc4b4059ff" title="A localized custom death message. Each client will see the death message in their own language,...">ByCustomReason(NetworkText)</a> instead for localization support. <br /></td></tr>
 <tr class="separator:a70390da44580f018bc6d927484a0bd79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab67ae349ed233cdcb9e34799f454223e"><td class="memItemLeft" align="right" valign="top"><a id="ab67ae349ed233cdcb9e34799f454223e" name="ab67ae349ed233cdcb9e34799f454223e"></a>
 static <a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ByNPC</b> (int index)</td></tr>
@@ -136,6 +141,9 @@ static <a class="el" href="class_player_death_reason.html">PlayerDeathReason</a>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:aacc907f3fd06935f9a7bfcdcd1f33a63"><td class="memItemLeft" align="right" valign="top"><a id="aacc907f3fd06935f9a7bfcdcd1f33a63" name="aacc907f3fd06935f9a7bfcdcd1f33a63"></a>
+ref <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CustomReason</b><code> [get]</code></td></tr>
+<tr class="separator:aacc907f3fd06935f9a7bfcdcd1f33a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1773794c66981f1aa6c83779e4c14fdc"><td class="memItemLeft" align="right" valign="top"><a id="a1773794c66981f1aa6c83779e4c14fdc" name="a1773794c66981f1aa6c83779e4c14fdc"></a>
 ref string&#160;</td><td class="memItemRight" valign="bottom"><b>SourceCustomReason</b><code> [get]</code></td></tr>
 <tr class="separator:a1773794c66981f1aa6c83779e4c14fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>

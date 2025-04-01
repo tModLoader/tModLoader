@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -91,23 +91,59 @@ $(document).ready(function(){initNavTree('class_mod_packet.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 
-<p>This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a Send method that's used to actually send everything you've written between client and server.  
+<p>Used to send data between the server and client. Syncing data is essential for keeping clients up to date with changes to the game state. <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> is used to sync arbitrary data, most commonly data corresponding to this mod. The Intermediate netcode wiki pageexplains more about this concept. Initialize a <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> using the <a class="el" href="class_mod.html#ae95db58d653971959368e4a7e56c1d94" title="Creates a ModPacket object that you can write to and then send between servers and clients.">Mod.GetPacket(int)</a> method. This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a <a class="el" href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688" title="Sends all the information you&#39;ve written to this ModPacket over the network to clients or the server....">Send(int, int)</a> method that's used to actually send everything you've written between client and server. <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> has all the same methods as BinaryWriter, and some additional ones.  
  <a href="class_mod_packet.html#details">More...</a></p>
 
 <p>Inherits BinaryWriter.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a54393cf0ee63ef5c497a6850d4e8b688"><td class="memItemLeft" align="right" valign="top"><a id="a54393cf0ee63ef5c497a6850d4e8b688" name="a54393cf0ee63ef5c497a6850d4e8b688"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (int toClient=-1, int ignoreClient=-1)</td></tr>
-<tr class="memdesc:a54393cf0ee63ef5c497a6850d4e8b688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends all the information you've written between client and server. If the toClient parameter is non-negative, this packet will only be sent to the specified client. If the ignoreClient parameter is non-negative, this packet will not be sent to the specified client. <br /></td></tr>
+<tr class="memitem:a54393cf0ee63ef5c497a6850d4e8b688"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688">Send</a> (int toClient=-1, int ignoreClient=-1)</td></tr>
+<tr class="memdesc:a54393cf0ee63ef5c497a6850d4e8b688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends all the information you've written to this <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> over the network to clients or the server. When called on a client, the data will be sent to the server and the optional parameters are ignored. When called on a server, the data will be sent to either all clients, all clients except a specific client, or just a specific client:  <a href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688">More...</a><br /></td></tr>
 <tr class="separator:a54393cf0ee63ef5c497a6850d4e8b688"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a Send method that's used to actually send everything you've written between client and server. </p>
-<p ><a class="el" href="class_mod_packet.html" title="This class inherits from BinaryWriter. This means that you can use all of its writing functions to se...">ModPacket</a> has all the same methods as BinaryWriter, and some additional ones. </p>
+<div class="textblock"><p >Used to send data between the server and client. Syncing data is essential for keeping clients up to date with changes to the game state. <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> is used to sync arbitrary data, most commonly data corresponding to this mod. The Intermediate netcode wiki page</p>
+<p >explains more about this concept. </p>
+<p >Initialize a <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> using the <a class="el" href="class_mod.html#ae95db58d653971959368e4a7e56c1d94" title="Creates a ModPacket object that you can write to and then send between servers and clients.">Mod.GetPacket(int)</a> method. </p>
+<p >This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a <a class="el" href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688" title="Sends all the information you&#39;ve written to this ModPacket over the network to clients or the server....">Send(int, int)</a> method that's used to actually send everything you've written between client and server. </p>
+<p ><a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> has all the same methods as BinaryWriter, and some additional ones. </p>
 <dl class="section see"><dt>See also</dt><dd>System.IO.BinaryWriter</dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a54393cf0ee63ef5c497a6850d4e8b688" name="a54393cf0ee63ef5c497a6850d4e8b688"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54393cf0ee63ef5c497a6850d4e8b688">&#9670;&nbsp;</a></span>Send()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ModPacket.Send </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>toClient</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ignoreClient</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends all the information you've written to this <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> over the network to clients or the server. When called on a client, the data will be sent to the server and the optional parameters are ignored. When called on a server, the data will be sent to either all clients, all clients except a specific client, or just a specific client: </p>
+<p ><code> // Sends to all connected clients packet.Send();</code></p>
+<p ><code>// Sends to a specific client only packet.Send(toClient: somePlayer.whoAmI);</code></p>
+<p ><code>// Sends to all other clients except a specific client packet.Send(ignoreClient: somePlayer.whoAmI); </code> Typically if data is sent from a client to the server, the server will then need to relay this to all other clients to keep them in sync. This is when the <em>ignoreClient</em>  option will be used. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

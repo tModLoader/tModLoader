@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.01</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -551,7 +551,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetEffects<
 <b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_mod_player.html#aeaf390061d5840291f92c6fd929dc599">More...</a><br /></td></tr>
 <tr class="separator:aeaf390061d5840291f92c6fd929dc599"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7893e4b2639c4bf7d6e8872ce346fd38"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a7893e4b2639c4bf7d6e8872ce346fd38">SendClientChanges</a> (<a class="el" href="class_mod_player.html">ModPlayer</a> clientPlayer)</td></tr>
-<tr class="memdesc:a7893e4b2639c4bf7d6e8872ce346fd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or <a class="el" href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688" title="Sends all the information you&#39;ve written between client and server. If the toClient parameter is non-...">ModPacket.Send</a>.  <a href="class_mod_player.html#a7893e4b2639c4bf7d6e8872ce346fd38">More...</a><br /></td></tr>
+<tr class="memdesc:a7893e4b2639c4bf7d6e8872ce346fd38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or <a class="el" href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688" title="Sends all the information you&#39;ve written to this ModPacket over the network to clients or the server....">ModPacket.Send</a>.  <a href="class_mod_player.html#a7893e4b2639c4bf7d6e8872ce346fd38">More...</a><br /></td></tr>
 <tr class="separator:a7893e4b2639c4bf7d6e8872ce346fd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a891a9922ddd7f63b9d4e56e4231f3838"><td class="memItemLeft" align="right" valign="top"><a id="a891a9922ddd7f63b9d4e56e4231f3838" name="a891a9922ddd7f63b9d4e56e4231f3838"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetControls</b> ()</td></tr>
@@ -4584,7 +4584,7 @@ Setting <a class="el" href="struct_fishing_attempt.html#a0bf19447a860097836fd278
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or <a class="el" href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688" title="Sends all the information you&#39;ve written between client and server. If the toClient parameter is non-...">ModPacket.Send</a>. </p>
+<p>Allows you to sync any information that has changed between the server and client. Here, you should check the information you have copied in the clientClone parameter; if they differ between this player and the clientPlayer parameter, then you should send that information using NetMessage.SendData or <a class="el" href="class_mod_packet.html#a54393cf0ee63ef5c497a6850d4e8b688" title="Sends all the information you&#39;ve written to this ModPacket over the network to clients or the server....">ModPacket.Send</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">clientPlayer</td><td></td></tr>

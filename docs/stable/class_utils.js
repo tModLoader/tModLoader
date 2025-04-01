@@ -17,6 +17,7 @@ var class_utils =
     [ "NextFloat", "class_utils.html#a1534059d7f850e4f2763b6e254ef97f1", null ],
     [ "PingPongFrom01To010", "class_utils.html#a5bd4180566ed24a75277cb4c102a1c85", null ],
     [ "ReceiveBitArray", "class_utils.html#af154fd00f5cb2d5b6dfac3ecebce62e2", null ],
+    [ "Remap", "class_utils.html#a23f48b35de52dee38ed81c44222431e1", null ],
     [ "SafeNormalize", "class_utils.html#a4e70ac2591faca81e9cfc1a11d86bc5a", null ],
     [ "SendBitArray", "class_utils.html#a61052d8ca30048a078b060895ca931ae", null ],
     [ "ToDirectionInt", "class_utils.html#af6c4d91bbedc8425a021369677117ccb", null ],
