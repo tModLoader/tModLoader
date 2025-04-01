@@ -188,8 +188,7 @@ public partial class SetFactory
 
 		SetFactories.Add(this);
 
-		if (size == 0)
-			throw new ArgumentOutOfRangeException("size cannot be 0, the initializer for Count must run first");
+		// Note: The original SetFactory method threw an exception if size is 0. This restriction has been removed since it is likely that modded usages might have 0 if no content is loaded.
 
 		_size = size;
 	}
