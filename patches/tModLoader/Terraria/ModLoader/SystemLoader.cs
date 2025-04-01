@@ -61,7 +61,7 @@ public static partial class SystemLoader
 		}
 
 		foreach (var typesToReinitialize in TypesWithResizeArraysAttribute(mod.Code))
-			LoaderUtils.ResetStaticMembers(typesToReinitialize);
+			RunStaticCtorIfNotAlreadyRun(typesToReinitialize);
 	}
 
 	internal static void ResizeArrays(bool unloading)
