@@ -278,9 +278,6 @@ public partial class SetFactory
 
 			for (int i = 0; i < input.Length; i++) {
 				if (!EqualityComparer<T>.Default.Equals(input[i], defaultValue)) {
-					if (EqualityComparer<T>.Default.Equals(input[i], value[i]))
-						continue;
-
 					value[i] = input[i];
 				}
 			}
