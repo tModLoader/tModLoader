@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,29 +_,39 @@
+@@ -11,33 +_,46 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -42,6 +42,14 @@
  		Count
  	}
  
++	/// <summary>
++	/// Contains parameters for controlling how a flame overlay on a tile will be drawn. Used by <see cref="ModTile.GetTileFlameData(int, int, ref TileFlameData)"/>.
++	/// </summary>
+-	private struct TileFlameData
++	public struct TileFlameData
+ 	{
+ 		public Texture2D flameTexture;
+ 		public ulong flameSeed;
 @@ -56,8 +_,8 @@
  	private const float FORCE_FOR_MIN_WIND = 0.08f;
  	private const float FORCE_FOR_MAX_WIND = 1.2f;
@@ -348,7 +356,7 @@
  				Main.spriteBatch.Draw(TextureAssets.CageTop[num10].Value, position, value4, drawData.finalColor, 0f, _zero, 1f, drawData.tileSpriteEffect, 0f);
  			}
  			else {
-@@ -1265,6 +_,9 @@
+@@ -1265,12 +_,21 @@
  			case 662:
  				return 4;
  			default:
@@ -358,6 +366,18 @@
  				return -1;
  		}
  	}
+ 
+ 	private TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
+ 	{
++		if (type >= TileID.Count) {
++			TileFlameData tileFlameData = default(TileFlameData);
++			TileLoader.GetTile(type)?.GetTileFlameData(tileX, tileY, ref tileFlameData);
++			return tileFlameData;
++		}
++
+ 		switch (type) {
+ 			case 270: {
+ 				TileFlameData tileFlameData = default(TileFlameData);
 @@ -2359,6 +_,9 @@
  		if (WorldGen.IsPalmOasisTree(x))
  			num += 4;
@@ -526,6 +546,14 @@
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
+@@ -5001,6 +_,7 @@
+ 	private void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
+ 	{
+ 		bool num = IsVisible(tileCache);
++		TileLoader.EmitParticles(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, num);
+ 		int leafFrequency = _leafFrequency;
+ 		leafFrequency /= 4;
+ 		if (typeCache == 244 && tileFrameX == 18 && tileFrameY == 18 && _rand.Next(2) == 0) {
 @@ -5544,14 +_,28 @@
  		}
  	}
@@ -829,3 +857,11 @@
  			vector.Y -= 8f;
  			vector2.Y -= 8f;
  		}
+@@ -7209,6 +_,7 @@
+ 				color = new Color(255, 255, 255, 0);
+ 				break;
+ 		}
++		TileLoader.GetTile(type)?.AdjustMultiTileVineParameters(topLeftX, topLeftY, ref num3, ref num4, ref num5, ref flag2, ref num2, ref texture2D, ref color);
+ 
+ 		if (flag2)
+ 			vector += new Vector2(0f, 16f);

@@ -79,6 +79,7 @@ public static class TileLoader
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 	private static DelegateDrawEffects[] HookDrawEffects;
+	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookEmitParticles;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 	private static Action<int, int, int>[] HookRandomUpdate;
@@ -231,6 +232,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateDrawEffects>(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
+		ModLoader.BuildGlobalHook(ref HookEmitParticles, globalTiles, g => g.EmitParticles);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
@@ -271,6 +273,7 @@ public static class TileLoader
 		tiles.Clear();
 		globalTiles.Clear();
 		tileTypeAndTileStyleToItemType.Clear();
+		Animation.Unload();
 		tileConversionDelegates = null;
 
 		// Has to be ran on the main thread, since this may dispose textures.
@@ -875,6 +878,14 @@ public static class TileLoader
 		foreach (var hook in HookDrawEffects) {
 			hook(i, j, type, spriteBatch, ref drawData);
 		}
+	}
+
+	public static void EmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	{
+		foreach (var hook in HookEmitParticles) {
+			hook(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, visible);
+		}
+		GetTile(typeCache)?.EmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible);
 	}
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)

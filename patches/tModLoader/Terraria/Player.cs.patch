@@ -3252,13 +3252,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  					}
-@@ -13858,6 +_,13 @@
+@@ -13858,6 +_,16 @@
  				if (tile == null)
  					return;
  
 +				if (tile.type >= TileID.Count) {
-+					if (tile.active() && TileID.Sets.Torch[tile.type])
++					if (tile.active() && TileID.Sets.Torch[tile.type]) {
 +						NearbyModTorch.Add(tile.type);
++						if (tile.frameX < 66)
++							nearbyTorches++;
++					}
 +
 +					continue;
 +				}
@@ -3266,6 +3269,25 @@
  				if (!tile.active() || tile.type != 4 || tile.frameX < 0 || tile.frameY < 0)
  					continue;
  
+@@ -13887,7 +_,8 @@
+ 		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
+ 			int num = unlitTorchX[i];
+ 			int num2 = unlitTorchY[i];
++			
+-			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
++			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
+ 				Main.tile[num, num2].frameX -= 66;
+ 				NetMessage.SendTileSquare(-1, num, num2);
+ 			}
+@@ -13923,7 +_,7 @@
+ 		for (int i = num3; i <= value2; i++) {
+ 			for (int j = value3; j <= value4; j++) {
+ 				Tile tile = Main.tile[i, j];
+-				if (tile != null && (tile.active() & (tile.type == 4)) && tile.frameX < 66) {
++				if (tile != null && (tile.active() & (TileID.Sets.Torch[tile.type])) && tile.frameX < 66) {
+ 					_torchAttackPosX[num] = i;
+ 					_torchAttackPosY[num] = j;
+ 					num++;
 @@ -13943,7 +_,7 @@
  				NetMessage.SendData(4, -1, -1, null, whoAmI);
  
@@ -3275,6 +3297,22 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
+@@ -13955,13 +_,14 @@
+ 			int num4 = Main.rand.Next(num);
+ 			int num5 = _torchAttackPosX[num4];
+ 			int num6 = _torchAttackPosY[num4];
+-			if (Main.tile[num5, num6].type == 4 && Main.tile[num5, num6].frameX < 66) {
++			if (TileID.Sets.Torch[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
+ 				float num7 = 8f;
+ 				int num8 = 20;
+ 				if (num8 < 10)
+ 					num8 = 10;
+ 
+ 				int num9 = (int)MathHelper.Clamp(Main.tile[num5, num6].frameY / 22, 0f, TorchID.Count - 1);
++				// TODO: Full Torch god support for modded torches would require TorchID.Dust support, but this is fine for now.
+ 				num9 = TorchID.Dust[num9];
+ 				Main.tile[num5, num6].frameX += 66;
+ 				unlitTorchX[numberOfTorchAttacksMade] = num5;
 @@ -13991,6 +_,9 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;

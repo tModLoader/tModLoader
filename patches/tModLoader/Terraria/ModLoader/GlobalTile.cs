@@ -151,16 +151,13 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
-	/// <summary>
-	/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
-	/// SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type">The Tile type of the tile being drawn</param>
-	/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
-	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
+	/// <inheritdoc cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/>
 	public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
+	}
+
+	/// <inheritdoc cref="ModTile.EmitParticles(int, int, Tile, short, short, Color, bool)"/>
+	public virtual void EmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
 	}
 
