@@ -149,6 +149,11 @@ Mods: {
 				DefaultSignText: Right-click me!
 				MapEntry: Example Sign
 			}
+
+			BasicTileEntityTile: {
+				MapEntry: Basic Tile Entity Tile
+				StatusText: Filled: {0}%
+			}
 		}
 
 		Items: {
@@ -1108,6 +1113,10 @@ Mods: {
 			ExampleChandelier: {
 				DisplayName: Example Chandelier
 				Tooltip: ""
+			}
+			BasicTileEntityItem: {
+				DisplayName: Basic Tile Entity Item
+				Tooltip: Collects rain water. Right Click when full to claim a water bucket.
 			}
 
 			CorruptFossilTileItem: {

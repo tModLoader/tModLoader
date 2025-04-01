@@ -232,10 +232,10 @@
 		"LoadErrorEffectFailedToLoad": "Не удалось загрузить шейдерный эффект {0}",
 		"LoadErrorUnknownXNBFileHint": "Неизвестный xnb файл {0}. Возможно, его следует поместить в папку Fonts/ или Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Загрузка сжатых шейдерных эффектов невозможна.",
-		// "LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
-		// "LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
+		"LoadErrorCallDuringLoad": "{0} можно вызывать только после полной загрузки контента. Пожалуйста, перенесите соответствующий код из хука Load() в хук SetStaticDefaults() или PostSetupContent().",
+		"LoadErrorEquipTextureMissingParameters": "Для использования AddEquipTexture необходимо указать либо предмет, либо его имя — ни то, ни другое не было найдено.",
 
-		"LoadErrorNotLoading": "Mod.AddContent можно вызвать только во время загрузки",
+		"LoadErrorNotLoading": "Добавление пользовательского контента возможно только во время выполнения Mod.Load или Mod.Autoload.",
 		"LoadErrorDuplicateName": "Невозможно добавить два {0} с одинаковым названием: {1}. Возможно, оба класса имеют общее название, но находятся в разных пространствах имён при автозагрузке, либо вы вручную вызвали метод AddContent с одинаковыми названиями {0}, или, возможно, существует другой класс с таким же именем (legacyname), который используется.",
 
 		"LoadErrorResourceNotFoundPathHint": "Ожидаемый ресурс не был найден:\n    {0}\nБлижайшее предположение: (Есть ли там опечатка или ошибка в расположении папок?)\n    {1}",
@@ -502,7 +502,7 @@
 		"MSModSourcesCantHaveSpaces": "(Папка с исходным кодом мода не может содержать пробелы)",
 		"MSLastBuilt": "Последняя сборка: {0}",
 		"MSCreateMod": "Создать мод",
-		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
+		"MSOpenCustomSourceFolder": "Открыть пользовательскую папку с исходниками: {0}",
 		"VersionUpgrade": "Информация о переносе модов",
 		"WikiLink": "tModLoader Wiki",
 		"ExampleModLink": "Примеры в Example Mod",

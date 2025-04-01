@@ -19,7 +19,6 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
-using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
@@ -526,6 +525,7 @@ public static class ModContent
 
 		GlobalBackgroundStyleLoader.Unload();
 		PlayerDrawLayerLoader.Unload();
+		MapLayerLoader.Unload();
 		SystemLoader.Unload();
 		ResizeArrays(true);
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -544,7 +544,6 @@ public static class ModContent
 		Config.ConfigManager.Unload();
 		CustomCurrencyManager.Initialize();
 		EffectsTracker.RemoveModEffects();
-		Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 		Main.gameTips.Reset();
 
@@ -556,6 +555,7 @@ public static class ModContent
 		// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
 		CreativeItemSacrificesCatalog.Instance.Initialize();
+		ContentSamples.CreativeResearchItemPersistentIdOverride.Clear();
 		ContentSamples.Initialize();
 		SetupBestiary();
 
@@ -582,6 +582,7 @@ public static class ModContent
 		BuffLoader.ResizeArrays();
 		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
+		MapLayerLoader.ResizeArrays();
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
 		BuilderToggleLoader.ResizeArrays();

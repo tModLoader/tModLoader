@@ -91,6 +91,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Manually registers an item to drop for the provided tile styles. Use this for tile styles that don't have an item that places them. For example, open door tiles don't have any item that places them, but they should drop an item when destroyed. A tile style with no registered drop and no fallback drop will not drop anything when destroyed.<br/><br/>
+	/// Manually registered item drops take precedence over the automatic item drop system.<br/><br/>
 	/// This method can also be used to register the fallback item drop. The fallback item will drop for any tile with a style that does not have a manual or automatic item drop.<br/>
 	/// To register the fallback item, omit the tileStyles parameter.<br/><br/>
 	/// If a mod removes content, manually specifying a replacement/fallback item allows users to recover something from the tile.<br/>

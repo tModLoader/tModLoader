@@ -1450,6 +1450,17 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
+@@ -46387,6 +_,10 @@
+ 		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="SetDefaults(int)"/> to change this item to another item type while preserving <see cref="Item.favorited"/>. Used by right click code of items that transform into other items, such as how <see cref="ItemID.Shellphone"/> cycles between different items for different destinations. Does not preserve modded data.
++	/// </summary>
++	/// <param name="to"></param>
+ 	public void ChangeItemType(int to)
+ 	{
+ 		bool flag = favorited;
 @@ -46422,7 +_,7 @@
  		return false;
  	}

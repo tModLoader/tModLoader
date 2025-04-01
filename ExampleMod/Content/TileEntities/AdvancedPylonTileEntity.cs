@@ -21,12 +21,6 @@ namespace ExampleMod.Content.TileEntities
 		// This is the main crux of this TileEntity; its pylon functionality will only work when this boolean is true.
 		public bool isActive;
 
-		public override void OnNetPlace() {
-			// This hook is only ever called on the server; its purpose is to give more freedom in terms of syncing FROM the server to clients, which we take advantage of
-			// by making sure to sync whenever this hook is called:
-			NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
-		}
-
 		public override void NetSend(BinaryWriter writer) {
 			// We want to make sure that our data is synced properly across clients and server.
 			// NetSend is called whenever a TileEntitySharing message is sent, so the game will handle this automatically for us,
