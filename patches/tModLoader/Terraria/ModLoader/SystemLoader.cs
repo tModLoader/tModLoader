@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using Terraria.DataStructures;
 using Terraria.Graphics;
 using Terraria.IO;
@@ -41,23 +43,38 @@ public static partial class SystemLoader
 		SystemsByMod.Clear();
 	}
 
+	internal static IEnumerable<Type> TypesWithResizeArraysAttribute(Assembly assembly) => AssemblyManager.GetLoadableTypes(assembly)
+				.Where(t => t.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null)
+				.OrderBy(type => type.FullName, StringComparer.OrdinalIgnoreCase);
+
+	/// <summary>
+	/// LoaderUtils.ResetStaticMembers does not mark the class constructor as having run via normal means
+	/// and running the class constructor after ResizeArrays can cause issues due to duplicate registration.
+	/// </summary>
+	internal static void EnsureResizeArraysAttributeStaticCtorsRun(Mod mod)
+	{
+		void RunStaticCtorIfNotAlreadyRun(Type type)
+		{
+			RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+			foreach (var nestedType in type.GetNestedTypes())
+				RunStaticCtorIfNotAlreadyRun(type);
+		}
+
+		foreach (var typesToReinitialize in TypesWithResizeArraysAttribute(mod.Code))
+			LoaderUtils.ResetStaticMembers(typesToReinitialize);
+	}
+
 	internal static void ResizeArrays(bool unloading)
 	{
 		RebuildHooks();
 
-		if (unloading) {
+		if (unloading)
 			return;
-		}
-		foreach (var mod in ModLoader.Mods) {
-			var reinitializeTypes = AssemblyManager.GetLoadableTypes(mod.Code)
-				.Where(t => t.GetAttribute<ReinitializeDuringResizeArraysAttribute>() != null)
-				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			foreach (var typesToReinitialize in reinitializeTypes) {
-				using var _ = new ModContent.TrackCurrentlyLoadingMod(mod.Name);
-				// Uninitialized static ctor will be initialized twice here for some reason.
-				LoaderUtils.ResetStaticMembers(typesToReinitialize); // Not necessarily ILoadable
-			}
+		foreach (var mod in ModLoader.Mods) {
+			using var _ = new ModContent.TrackCurrentlyLoadingMod(mod.Name);
+			foreach (var typesToReinitialize in TypesWithResizeArraysAttribute(mod.Code))
+				LoaderUtils.ResetStaticMembers(typesToReinitialize);
 		}
 
 		foreach (var system in HookResizeArrays.Enumerate()) {
@@ -73,6 +90,8 @@ public static partial class SystemLoader
 				system.OnModLoad();
 			}
 		}
+
+
 	}
 
 	internal static void OnModUnload(Mod mod)

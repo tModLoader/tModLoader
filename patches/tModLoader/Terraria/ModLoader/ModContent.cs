@@ -310,6 +310,7 @@ public static class ModContent
 			mod.Autoload();
 			mod.Load();
 			SystemLoader.OnModLoad(mod);
+			SystemLoader.EnsureResizeArraysAttributeStaticCtorsRun(mod);
 			mod.loading = false;
 		});
 
