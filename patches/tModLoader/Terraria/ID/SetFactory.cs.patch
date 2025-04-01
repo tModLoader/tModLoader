@@ -1,10 +1,9 @@
 --- src/TerrariaNetCore/Terraria/ID/SetFactory.cs
 +++ src/tModLoader/Terraria/ID/SetFactory.cs
-@@ -1,9 +_,11 @@
+@@ -1,9 +_,10 @@
  using System;
  using System.Collections.Generic;
-+using System.Diagnostics;
-+using System.Linq;
++using Terraria.ModLoader;
  
  namespace Terraria.ID;
  
@@ -32,7 +31,15 @@
  	public bool[] CreateBoolSet(bool defaultState, params int[] types)
  	{
  		bool[] boolBuffer = GetBoolBuffer();
-@@ -86,8 +_,10 @@
+@@ -80,14 +_,18 @@
+ 		}
+ 
+ 		for (int j = 0; j < types.Length; j++) {
++			if (!ContentCache.contentLoadingFinished && types[j] >= _size)
++				continue;
+ 			boolBuffer[types[j]] = !defaultState;
+ 		}
+ 
  		return boolBuffer;
  	}
  
@@ -43,7 +50,15 @@
  	public int[] CreateIntSet(int defaultState, params int[] inputs)
  	{
  		if (inputs.Length % 2 != 0)
-@@ -105,6 +_,7 @@
+@@ -99,12 +_,15 @@
+ 		}
+ 
+ 		for (int j = 0; j < inputs.Length; j += 2) {
++			if (!ContentCache.contentLoadingFinished && inputs[j] >= _size)
++				continue;
+ 			intBuffer[inputs[j]] = inputs[j + 1];
+ 		}
+ 
  		return intBuffer;
  	}
  
@@ -51,7 +66,15 @@
  	public ushort[] CreateUshortSet(ushort defaultState, params ushort[] inputs)
  	{
  		if (inputs.Length % 2 != 0)
-@@ -122,6 +_,7 @@
+@@ -116,12 +_,15 @@
+ 		}
+ 
+ 		for (int j = 0; j < inputs.Length; j += 2) {
++			if (!ContentCache.contentLoadingFinished && inputs[j] >= _size)
++				continue;
+ 			ushortBuffer[inputs[j]] = inputs[j + 1];
+ 		}
+ 
  		return ushortBuffer;
  	}
  
@@ -59,7 +82,15 @@
  	public float[] CreateFloatSet(float defaultState, params float[] inputs)
  	{
  		if (inputs.Length % 2 != 0)
-@@ -139,6 +_,11 @@
+@@ -133,12 +_,19 @@
+ 		}
+ 
+ 		for (int j = 0; j < inputs.Length; j += 2) {
++			if (!ContentCache.contentLoadingFinished && inputs[j] >= _size)
++				continue;
+ 			floatBuffer[(int)inputs[j]] = inputs[j + 1];
+ 		}
+ 
  		return floatBuffer;
  	}
  
@@ -71,3 +102,12 @@
  	public T[] CreateCustomSet<T>(T defaultState, params object[] inputs)
  	{
  		if (inputs.Length % 2 != 0)
+@@ -151,6 +_,8 @@
+ 
+ 		if (inputs != null) {
+ 			for (int j = 0; j < inputs.Length; j += 2) {
++				if (!ContentCache.contentLoadingFinished && (inputs[j] is ushort a && a >= _size || inputs[j] is int b && b >= _size || inputs[j] is short c && c >= _size))
++					continue;
+ 				T val = (typeof(T).IsPrimitive ? ((T)inputs[j + 1]) : ((typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>)) ? ((T)inputs[j + 1]) : ((!typeof(T).IsClass) ? ((T)Convert.ChangeType(inputs[j + 1], typeof(T))) : ((T)inputs[j + 1]))));
+ 				if (inputs[j] is ushort)
+ 					array[(ushort)inputs[j]] = val;
