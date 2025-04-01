@@ -94,6 +94,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				Animation.NewTemporaryAnimation(turningOnAnimationType, Type, topX, topY);
 			}
 		}
+
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			if (Main.tile[i, j].TileFrameY / 54 != 0) {
 				return;

@@ -1109,6 +1109,7 @@ Mods: {
 				// DisplayName: Example Chandelier
 				// Tooltip: ""
 			}
+
 			CorruptFossilTileItem: {
 				// DisplayName: Corrupt Fossil Tile Item
 				// Tooltip: ""
