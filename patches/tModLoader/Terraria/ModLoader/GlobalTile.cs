@@ -173,6 +173,34 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
+	/// Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile.
+	/// <para>Return false to stop this section from drawing normally. Returns true by default.</para>
+	/// </summary>
+	/// <param name="type">The Tile type of the preview that will be drawn.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="frame">The source rectangle that this section will use for rendering.</param>
+	/// <param name="position">The position at which this section will be drawn.</param>
+	/// <param name="color">The color with which this section will be drawn. This is red when overlapping with another tile.</param>
+	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that will be used to draw this section.</param>
+	public virtual bool PreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle? frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile.
+	/// </summary>
+	/// <param name="type">The Tile type of the preview that was drawn.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="frame">The source rectangle that was used for rendering this section.</param>
+	/// <param name="position">The position at which this section was drawn.</param>
+	/// <param name="color">The color with which this section was drawn.</param>
+	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that were used to draw this section.</param>
+	public virtual void PostDrawPreview(int type, SpriteBatch spriteBatch, Rectangle? frame, Vector2 position, Color color, SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <summary>
 	/// Called for every tile that updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>

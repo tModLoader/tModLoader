@@ -82,6 +82,9 @@ public static class TileLoader
 	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookEmitParticles;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
+	private delegate bool DelegatePreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle? frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects);
+	private static DelegatePreDrawPreview[] HookPreDrawPreview;
+	private static Action<int, SpriteBatch, Rectangle?, Vector2, Color, SpriteEffects>[] HookPostDrawPreview;
 	private static Action<int, int, int>[] HookRandomUpdate;
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
@@ -235,6 +238,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookEmitParticles, globalTiles, g => g.EmitParticles);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
+		ModLoader.BuildGlobalHook<GlobalTile, DelegatePreDrawPreview>(ref HookPreDrawPreview, globalTiles, g => g.PreDrawPreview);
+		ModLoader.BuildGlobalHook(ref HookPostDrawPreview, globalTiles, g => g.PostDrawPreview);
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateTileFrame>(ref HookTileFrame, globalTiles, g => g.TileFrame);
 		ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
@@ -907,6 +912,25 @@ public static class TileLoader
 
 		foreach (var hook in HookSpecialDraw) {
 			hook(specialTileX, specialTileY, type, spriteBatch);
+		}
+	}
+
+	public static bool PreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle? frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects)
+	{
+		foreach (var hook in HookPreDrawPreview) {
+			if (!hook(type, spriteBatch, ref frame, ref position, ref color, ref spriteEffects)) {
+				return false;
+			}
+		}
+		return GetTile(type)?.PreDrawPreview(spriteBatch, ref frame, ref position, ref color, ref spriteEffects) ?? true;
+	}
+
+	public static void PostDrawPreview(int type, SpriteBatch spriteBatch, Rectangle? frame, Vector2 position, Color color, SpriteEffects spriteEffects)
+	{
+		GetTile(type)?.PostDrawPreview(spriteBatch, frame, position, color, spriteEffects);
+
+		foreach (var hook in HookPostDrawPreview) {
+			hook(type, spriteBatch, frame, position, color, spriteEffects);
 		}
 	}
 
