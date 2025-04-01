@@ -184,6 +184,7 @@ var hierarchy =
     [ "BinaryIO", "class_binary_i_o.html", null ],
     [ "BinaryWriterHelper", "struct_binary_writer_helper.html", null ],
     [ "BiomeConversionID", "class_biome_conversion_i_d.html", null ],
+    [ "BiomeConversionLoader", "class_biome_conversion_loader.html", null ],
     [ "BiomePreferenceListTrait.BiomePreference", "class_biome_preference_list_trait_1_1_biome_preference.html", null ],
     [ "BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes", "class_bestiary_database_n_p_cs_populator_1_1_common_tags_1_1_spawn_conditions_1_1_biomes.html", null ],
     [ "BirthdayParty", "class_birthday_party.html", null ],
@@ -1441,6 +1442,7 @@ var hierarchy =
             [ "ModSurfaceBackgroundStyle", "class_mod_surface_background_style.html", null ],
             [ "ModUndergroundBackgroundStyle", "class_mod_underground_background_style.html", null ]
           ] ],
+          [ "ModBiomeConversion", "class_mod_biome_conversion.html", null ],
           [ "ModBossBarStyle", "class_mod_boss_bar_style.html", null ],
           [ "ModCommand", "class_mod_command.html", [
             [ "HelpCommand", "class_help_command.html", null ]
@@ -2058,6 +2060,7 @@ var hierarchy =
     [ "MagicMissileDrawer", "struct_magic_missile_drawer.html", null ],
     [ "MapHelper", "class_map_helper.html", null ],
     [ "MapIconOverlay", "class_map_icon_overlay.html", null ],
+    [ "MapLayerLoader", "class_map_layer_loader.html", null ],
     [ "MapLegend", "class_map_legend.html", null ],
     [ "MapOverlayDrawContext", "struct_map_overlay_draw_context.html", null ],
     [ "MapTile", "struct_map_tile.html", null ],
@@ -2230,6 +2233,10 @@ var hierarchy =
       [ "PlayerDrawLayer.BeforeParent", "class_player_draw_layer_1_1_before_parent.html", null ],
       [ "PlayerDrawLayer.Between", "class_player_draw_layer_1_1_between.html", null ],
       [ "PlayerDrawLayer.Multiple", "class_player_draw_layer_1_1_multiple.html", null ]
+    ] ],
+    [ "Position", "class_position.html", [
+      [ "ModMapLayer.After", "class_mod_map_layer_1_1_after.html", null ],
+      [ "ModMapLayer.Before", "class_mod_map_layer_1_1_before.html", null ]
     ] ],
     [ "PotionOfReturnGateHelper", "struct_potion_of_return_gate_helper.html", null ],
     [ "PotionOfReturnHelper", "class_potion_of_return_helper.html", null ],

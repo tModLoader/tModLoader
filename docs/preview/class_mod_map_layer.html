@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('class_mod_map_layer.html',''); initRes
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -98,11 +99,31 @@ $(document).ready(function(){initNavTree('class_mod_map_layer.html',''); initRes
 
 <p>Inherits <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a>, and <a class="el" href="interface_i_map_layer.html">IMapLayer</a>.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_map_layer_1_1_after.html">After</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_map_layer_1_1_before.html">Before</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5e2e4a953b09a8e1e2b6ae5348f82fc4"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_map_layer.html#a5e2e4a953b09a8e1e2b6ae5348f82fc4">Draw</a> (ref <a class="el" href="struct_map_overlay_draw_context.html">MapOverlayDrawContext</a> <a class="el" href="class_popup_text.html#a8cac2161a4e515cc8febf90ffa63b8c2">context</a>, ref string text)</td></tr>
-<tr class="memdesc:a5e2e4a953b09a8e1e2b6ae5348f82fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called when this MapLayer is to be drawn. Map layers are drawn after the map itself is drawn. Use MapOverlayDrawContext.Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Color, DataStructures.SpriteFrame, float, float, Terraria.UI.Alignment) as described in ExampleMod and in vanilla examples for full compatibility and simplicity of code.  <a href="class_mod_map_layer.html#a5e2e4a953b09a8e1e2b6ae5348f82fc4">More...</a><br /></td></tr>
+<tr class="memdesc:a5e2e4a953b09a8e1e2b6ae5348f82fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method is called when this MapLayer is to be drawn. Map layers are drawn after the map itself is drawn. Use MapOverlayDrawContext.Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Color, DataStructures.SpriteFrame, float, float, Terraria.UI.Alignment) as described in ExampleMod and in vanilla examples for full compatibility and simplicity of code. <em>context</em> : Contains the scaling and positional data of the map being drawn. You should use the <a class="el" href="struct_map_overlay_draw_context.html#ac54289f6f6faac70426f43c39bdfbc8d">MapOverlayDrawContext.Draw</a> method for all drawing. <em>text</em> : The mouse hover text. Assign a value typically if the user is hovering over something you draw. Note that MapLayers are drawn on the fullscreen map, overlay map, and minimap. Use <a class="el" href="class_main.html#a58961eae96ee9efb264129e4abc2f328" title="If true, the map is currently in fullscreen mode. See also Main.mapStyle, note that the overlay map d...">Main.mapFullscreen</a> and <a class="el" href="class_main.html#a1e1d5abe83f033a0a5c307bf6f051691" title="Dictates how the non-mapFullscreen map is displayed. Can be one of the following values/modes:  0: Th...">Main.mapStyle</a> to limit drawing to specific map modes if appropriate.  <a href="class_mod_map_layer.html#a5e2e4a953b09a8e1e2b6ae5348f82fc4">More...</a><br /></td></tr>
 <tr class="separator:a5e2e4a953b09a8e1e2b6ae5348f82fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6263bdd2b922abc53e90b5e7d492ce56"><td class="memItemLeft" align="right" valign="top"><a id="a6263bdd2b922abc53e90b5e7d492ce56" name="a6263bdd2b922abc53e90b5e7d492ce56"></a>
+virtual <a class="el" href="class_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetDefaultPosition</b> ()</td></tr>
+<tr class="memdesc:a6263bdd2b922abc53e90b5e7d492ce56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the map layer's default position in regard to vanilla's map layer ordering. Make use of e.g. <a class="el" href="class_mod_map_layer_1_1_before.html">Before</a>/<a class="el" href="class_mod_map_layer_1_1_after.html">After</a>, and provide a map layer. You can also use BeforeFirstVanillaLayer or AfterLastVanillaLayer to put your layer at the start/end of the vanilla layer order.<br  />
+<br  />
+ <b>NOTE:</b> The position must specify a vanilla <a class="el" href="interface_i_map_layer.html">IMapLayer</a> otherwise an exception will be thrown. Use <a class="el" href="class_extra_jump.html#a2eb467696fc892b30b212a3eeeceb2cf" title="Modded jumps are placed between vanilla jumps via GetDefaultPosition and, by default,...">GetModdedConstraints</a> to order modded layers.<br  />
+<br  />
+ By default, this hook positions this map layer after all vanilla layers. <br /></td></tr>
+<tr class="separator:a6263bdd2b922abc53e90b5e7d492ce56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a9aaf46d989713b72e02e69264681de"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_position.html">Position</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_map_layer.html#a6a9aaf46d989713b72e02e69264681de">GetModdedConstraints</a> ()</td></tr>
+<tr class="memdesc:a6a9aaf46d989713b72e02e69264681de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modded layers are placed between vanilla layers via <a class="el" href="class_extra_jump.html#af1dab013ba93bcdad238c9b21fa264f4" title="Returns this extra jump&#39;s default position in regard to the vanilla extra jumps. Make use of e....">GetDefaultPosition</a> and, by default, are sorted in load order.<br  />
+ This hook allows you to sort this map layer before/after other modded layers that were placed between the same two vanilla layers.<br  />
+ Example:  <a href="class_mod_map_layer.html#a6a9aaf46d989713b72e02e69264681de">More...</a><br /></td></tr>
+<tr class="separator:a6a9aaf46d989713b72e02e69264681de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
 <tr class="memitem:a1f09f8efa3cca58e0fd122c14eaf666e inherit pub_methods_class_mod_type"><td class="memItemLeft" align="right" valign="top">virtual TModType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e">Clone</a> (TEntity newEntity)</td></tr>
 <tr class="memdesc:a1f09f8efa3cca58e0fd122c14eaf666e inherit pub_methods_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e">More...</a><br /></td></tr>
@@ -209,6 +230,12 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a3c6a2a96f2c192593ac37d7f61a5d982"><td class="memItemLeft" align="right" valign="top"><a id="a3c6a2a96f2c192593ac37d7f61a5d982" name="a3c6a2a96f2c192593ac37d7f61a5d982"></a>
+static <a class="el" href="class_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AfterLastVanillaLayer</b><code> [get]</code></td></tr>
+<tr class="separator:a3c6a2a96f2c192593ac37d7f61a5d982"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99dda2e8d17c9977b4d21094dfc3e4c2"><td class="memItemLeft" align="right" valign="top"><a id="a99dda2e8d17c9977b4d21094dfc3e4c2" name="a99dda2e8d17c9977b4d21094dfc3e4c2"></a>
+static <a class="el" href="class_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BeforeFirstVanillaLayer</b><code> [get]</code></td></tr>
+<tr class="separator:a99dda2e8d17c9977b4d21094dfc3e4c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a897b428ff08debaf9f7bfcd9addb1894"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_map_layer.html#a897b428ff08debaf9f7bfcd9addb1894">Visible</a> = true<code> [get, set]</code></td></tr>
 <tr class="separator:a897b428ff08debaf9f7bfcd9addb1894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a></td></tr>
@@ -266,6 +293,15 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="memdesc:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this.  <a href="class_mod_type.html#abf8b5495dff140a4be73e09e6f1f3c53">More...</a><br /></td></tr>
 <tr class="separator:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_i_map_layer"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_i_map_layer')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_i_map_layer.html">IMapLayer</a></td></tr>
+<tr class="memitem:a0a79e43263aa6f358ee5dc263840a3f5 inherit properties_interface_i_map_layer"><td class="memItemLeft" align="right" valign="top"><a id="a0a79e43263aa6f358ee5dc263840a3f5" name="a0a79e43263aa6f358ee5dc263840a3f5"></a>
+static <a class="el" href="interface_i_map_layer.html">IMapLayer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Pings</b> = new <a class="el" href="class_ping_map_layer.html">PingMapLayer</a>()<code> [get]</code></td></tr>
+<tr class="separator:a0a79e43263aa6f358ee5dc263840a3f5 inherit properties_interface_i_map_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a266290b474a2f17218557c0c508fae inherit properties_interface_i_map_layer"><td class="memItemLeft" align="right" valign="top"><a id="a4a266290b474a2f17218557c0c508fae" name="a4a266290b474a2f17218557c0c508fae"></a>
+static <a class="el" href="interface_i_map_layer.html">IMapLayer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Pylons</b> = new <a class="el" href="class_teleport_pylons_map_layer.html">TeleportPylonsMapLayer</a>()<code> [get]</code></td></tr>
+<tr class="separator:a4a266290b474a2f17218557c0c508fae inherit properties_interface_i_map_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f269124b417b59bde55e7dfec509ef5 inherit properties_interface_i_map_layer"><td class="memItemLeft" align="right" valign="top"><a id="a1f269124b417b59bde55e7dfec509ef5" name="a1f269124b417b59bde55e7dfec509ef5"></a>
+static <a class="el" href="interface_i_map_layer.html">IMapLayer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Spawn</b> = new <a class="el" href="class_spawn_map_layer.html">SpawnMapLayer</a>()<code> [get]</code></td></tr>
+<tr class="separator:a1f269124b417b59bde55e7dfec509ef5 inherit properties_interface_i_map_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c8cb94e7ebadef043190b63503b130a inherit properties_interface_i_map_layer"><td class="memItemLeft" align="right" valign="top"><a id="a1c8cb94e7ebadef043190b63503b130a" name="a1c8cb94e7ebadef043190b63503b130a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Visible</b><code> [get, set]</code></td></tr>
 <tr class="separator:a1c8cb94e7ebadef043190b63503b130a inherit properties_interface_i_map_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,16 +343,47 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Visible</b><code> [ge
 </table>
 </div><div class="memdoc">
 
-<p>This method is called when this MapLayer is to be drawn. Map layers are drawn after the map itself is drawn. Use MapOverlayDrawContext.Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Color, DataStructures.SpriteFrame, float, float, Terraria.UI.Alignment) as described in ExampleMod and in vanilla examples for full compatibility and simplicity of code. </p>
+<p>This method is called when this MapLayer is to be drawn. Map layers are drawn after the map itself is drawn. Use MapOverlayDrawContext.Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Color, DataStructures.SpriteFrame, float, float, Terraria.UI.Alignment) as described in ExampleMod and in vanilla examples for full compatibility and simplicity of code. <em>context</em> : Contains the scaling and positional data of the map being drawn. You should use the <a class="el" href="struct_map_overlay_draw_context.html#ac54289f6f6faac70426f43c39bdfbc8d">MapOverlayDrawContext.Draw</a> method for all drawing. <em>text</em> : The mouse hover text. Assign a value typically if the user is hovering over something you draw. Note that MapLayers are drawn on the fullscreen map, overlay map, and minimap. Use <a class="el" href="class_main.html#a58961eae96ee9efb264129e4abc2f328" title="If true, the map is currently in fullscreen mode. See also Main.mapStyle, note that the overlay map d...">Main.mapFullscreen</a> and <a class="el" href="class_main.html#a1e1d5abe83f033a0a5c307bf6f051691" title="Dictates how the non-mapFullscreen map is displayed. Can be one of the following values/modes:  0: Th...">Main.mapStyle</a> to limit drawing to specific map modes if appropriate. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">context</td><td>Contains the scaling and positional data of the map being drawn. You should use the MapOverlayDrawContext.Draw method for all drawing</td></tr>
+    <tr><td class="paramname">context</td><td>Contains the scaling and positional data of the map being drawn. You should use the <a class="el" href="struct_map_overlay_draw_context.html#ac54289f6f6faac70426f43c39bdfbc8d">MapOverlayDrawContext.Draw</a> method for all drawing</td></tr>
     <tr><td class="paramname">text</td><td>The mouse hover text. Assign a value typically if the user is hovering over something you draw</td></tr>
   </table>
   </dd>
 </dl>
 
 <p>Implements <a class="el" href="interface_i_map_layer.html">IMapLayer</a>.</p>
+
+</div>
+</div>
+<a id="a6a9aaf46d989713b72e02e69264681de" name="a6a9aaf46d989713b72e02e69264681de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a9aaf46d989713b72e02e69264681de">&#9670;&nbsp;</a></span>GetModdedConstraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_position.html">Position</a> &gt; ModMapLayer.GetModdedConstraints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Modded layers are placed between vanilla layers via <a class="el" href="class_extra_jump.html#af1dab013ba93bcdad238c9b21fa264f4" title="Returns this extra jump&#39;s default position in regard to the vanilla extra jumps. Make use of e....">GetDefaultPosition</a> and, by default, are sorted in load order.<br  />
+ This hook allows you to sort this map layer before/after other modded layers that were placed between the same two vanilla layers.<br  />
+ Example: </p>
+<p ><code>yield return new <a class="el" href="class_mod_map_layer_1_1_after.html">After</a>(ModContent.GetInstance&lt;ExampleMapLayer&gt;());</code> </p>
+<p >By default, this hook returns <code>null</code>, which indicates that this map layer has no modded ordering constraints. </p>
 
 </div>
 </div>

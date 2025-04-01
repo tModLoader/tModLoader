@@ -4,6 +4,7 @@ var class_mod_tile_entity =
     [ "ConstructFromType", "class_mod_tile_entity.html#af7238b15e8012a7506c9a789b94e2991", null ],
     [ "CountInWorld", "class_mod_tile_entity.html#a3dfc878cc8094fe9835ae95f4721d475", null ],
     [ "Find", "class_mod_tile_entity.html#a2bca38dc405a98801e3e8d0a7e6cce87", null ],
+    [ "Generic_Hook_AfterPlacement", "class_mod_tile_entity.html#a2cb3fb6c9f71f05d539929e2dbef854b", null ],
     [ "Hook_AfterPlacement", "class_mod_tile_entity.html#aaed88174c794676cae24b755433688d9", null ],
     [ "IsLoadingEnabled", "class_mod_tile_entity.html#a62fe77a359a49c0d9cd451747c6636ff", null ],
     [ "IsTileValidForEntity", "class_mod_tile_entity.html#a8415b71088157d5fcf4ed024cffe868d", null ],
@@ -21,6 +22,7 @@ var class_mod_tile_entity =
     [ "Unload", "class_mod_tile_entity.html#a83168046b06f7d71e6737bdae0c697e2", null ],
     [ "WriteExtraData", "class_mod_tile_entity.html#a4a3657e1593a657423e23e7ac5fc6596", null ],
     [ "FullName", "class_mod_tile_entity.html#a3d22ba9a458f5ddc9a1c8b8af6f62de9", null ],
+    [ "Generic_HookPostPlaceMyPlayer", "class_mod_tile_entity.html#a660c81549cac0a9f97da1ba2cbf6c15a", null ],
     [ "Mod", "class_mod_tile_entity.html#a63f5794896436be91424907fefae0677", null ],
     [ "Name", "class_mod_tile_entity.html#a9b09596a4a2a5a8ba65d67ae1250d468", null ],
     [ "Type", "class_mod_tile_entity.html#a050c2f128dc2c135bb9731f33de4eb18", null ]

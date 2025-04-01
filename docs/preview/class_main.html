@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -630,8 +630,8 @@ static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetWorldPath
 <tr class="memitem:aeacaba8e97c7bb4c4bdc50e1994a06f5"><td class="memItemLeft" align="right" valign="top"><a id="aeacaba8e97c7bb4c4bdc50e1994a06f5" name="aeacaba8e97c7bb4c4bdc50e1994a06f5"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>GoToWorldSelect</b> ()</td></tr>
 <tr class="separator:aeacaba8e97c7bb4c4bdc50e1994a06f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59fbb50deb6d5e9be07dfa3198b38b6a"><td class="memItemLeft" align="right" valign="top"><a id="a59fbb50deb6d5e9be07dfa3198b38b6a" name="a59fbb50deb6d5e9be07dfa3198b38b6a"></a>
-static Microsoft.Xna.Framework.Color&#160;</td><td class="memItemRight" valign="bottom"><b>hslToRgb</b> (float Hue, float Saturation, float Luminosity, byte a=byte.MaxValue)</td></tr>
+<tr class="memitem:a59fbb50deb6d5e9be07dfa3198b38b6a"><td class="memItemLeft" align="right" valign="top">static Microsoft.Xna.Framework.Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main.html#a59fbb50deb6d5e9be07dfa3198b38b6a">hslToRgb</a> (float Hue, float Saturation, float Luminosity, byte a=byte.MaxValue)</td></tr>
+<tr class="memdesc:a59fbb50deb6d5e9be07dfa3198b38b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a "Hue, Saturation, and Luminance" (HSL) representation (HSL Wikipedia page) of a color to a Color. Input values should range from 0f to 1f. This differs from other representations of HSL, where the hue is denoted as a degree from 0 to 360, so divide by 360f if converting from that representation. A fully saturated color can be retrieved using 1f for <em>Saturation</em>  and 0.5f for <em>Luminosity</em> . This is most commonly used to smoothly transition between colors by passing in hue values that are the result of interpolating between values. Doing math using an HSL representation of a Color is often easier than doing math on an RGB representation of a Color. This example generated a random fully saturated color: <code>Color color = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.5f);</code> This example generates a color based on the projectile rotation:  <a href="class_main.html#a59fbb50deb6d5e9be07dfa3198b38b6a">More...</a><br /></td></tr>
 <tr class="separator:a59fbb50deb6d5e9be07dfa3198b38b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ecf7958fb0cf3c32dc38bc5e5fad159"><td class="memItemLeft" align="right" valign="top"><a id="a7ecf7958fb0cf3c32dc38bc5e5fad159" name="a7ecf7958fb0cf3c32dc38bc5e5fad159"></a>
 static Microsoft.Xna.Framework.Color&#160;</td><td class="memItemRight" valign="bottom"><b>hslToRgb</b> (Vector3 hslVector)</td></tr>
@@ -2389,6 +2389,7 @@ static <a class="el" href="class_file_metadata.html">FileMetadata</a>&#160;</td>
 <tr class="separator:a0089e343a0f65078891a71b2b97aa8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58961eae96ee9efb264129e4abc2f328"><td class="memItemLeft" align="right" valign="top"><a id="a58961eae96ee9efb264129e4abc2f328" name="a58961eae96ee9efb264129e4abc2f328"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>mapFullscreen</b></td></tr>
+<tr class="memdesc:a58961eae96ee9efb264129e4abc2f328"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the map is currently in fullscreen mode. See also <a class="el" href="class_main.html#a1e1d5abe83f033a0a5c307bf6f051691" title="Dictates how the non-mapFullscreen map is displayed. Can be one of the following values/modes:  0: Th...">Main.mapStyle</a>, note that the overlay map does not count as the fullscreen map. <br /></td></tr>
 <tr class="separator:a58961eae96ee9efb264129e4abc2f328"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d9ba1b58b9555671804dac29840e8fd"><td class="memItemLeft" align="right" valign="top"><a id="a7d9ba1b58b9555671804dac29840e8fd" name="a7d9ba1b58b9555671804dac29840e8fd"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>mapFullscreenPos</b> = new Vector2(-1f, -1f)</td></tr>
@@ -2440,6 +2441,10 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>MapScale</b> 
 <tr class="separator:a8af3dc4ebaa45e536a73ab92942b2c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e1d5abe83f033a0a5c307bf6f051691"><td class="memItemLeft" align="right" valign="top"><a id="a1e1d5abe83f033a0a5c307bf6f051691" name="a1e1d5abe83f033a0a5c307bf6f051691"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>mapStyle</b> = 1</td></tr>
+<tr class="memdesc:a1e1d5abe83f033a0a5c307bf6f051691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictates how the non-<a class="el" href="class_main.html#a58961eae96ee9efb264129e4abc2f328" title="If true, the map is currently in fullscreen mode. See also Main.mapStyle, note that the overlay map d...">mapFullscreen</a> map is displayed. Can be one of the following values/modes: <br  />
+<b>0:</b> The minimap has been hidden. <br  />
+<b>1:</b> The minimap is visible. <br  />
+<b>2:</b> The overlay map is visible. <br /></td></tr>
 <tr class="separator:a1e1d5abe83f033a0a5c307bf6f051691"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affbc2bc4db525ba6eb3926eb191c867e"><td class="memItemLeft" align="right" valign="top"><a id="affbc2bc4db525ba6eb3926eb191c867e" name="affbc2bc4db525ba6eb3926eb191c867e"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>mapTargetX</b> = 5</td></tr>
@@ -3418,6 +3423,7 @@ static <a class="el" href="class_list.html">List</a>&lt; Microsoft.Xna.Framework
 <tr class="separator:abf564d771cc14285f922cf396a1a5911"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4a469a959ba2fd9a236b1b5e7abb0cf"><td class="memItemLeft" align="right" valign="top"><a id="af4a469a959ba2fd9a236b1b5e7abb0cf" name="af4a469a959ba2fd9a236b1b5e7abb0cf"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>SmartInteractX</b></td></tr>
+<tr class="memdesc:af4a469a959ba2fd9a236b1b5e7abb0cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tile coordinate of the tile location currently being targeted by the local player's cursor for interaction/right click purposes, assuming the smart cursor feature is enabled and a tile is being targeted by it. Will be -1 if a tile isn't being smart interacted with. Since this takes into account the smart cursor feature, it isn't necessarily the tile directly under the cursor. For left clicks, see <a class="el" href="class_player.html#aee846a4e94125bd0915d86b5f872d7a7" title="The tile coordinates of the tile location currently being targeted by the local players cursor for le...">Player.tileTargetX</a> <br /></td></tr>
 <tr class="separator:af4a469a959ba2fd9a236b1b5e7abb0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7393073cdbad7e8a4743cde3351e53f"><td class="memItemLeft" align="right" valign="top"><a id="ad7393073cdbad7e8a4743cde3351e53f" name="ad7393073cdbad7e8a4743cde3351e53f"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>SmartInteractY</b></td></tr>
@@ -4805,6 +4811,57 @@ EventHandler&lt; EventArgs &gt;&#160;</td><td class="memItemRight" valign="botto
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a59fbb50deb6d5e9be07dfa3198b38b6a" name="a59fbb50deb6d5e9be07dfa3198b38b6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59fbb50deb6d5e9be07dfa3198b38b6a">&#9670;&nbsp;</a></span>hslToRgb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Microsoft.Xna.Framework.Color Main.hslToRgb </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Hue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Saturation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Luminosity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>a</em> = <code>byte.MaxValue</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a "Hue, Saturation, and Luminance" (HSL) representation (HSL Wikipedia page) of a color to a Color. Input values should range from 0f to 1f. This differs from other representations of HSL, where the hue is denoted as a degree from 0 to 360, so divide by 360f if converting from that representation. A fully saturated color can be retrieved using 1f for <em>Saturation</em>  and 0.5f for <em>Luminosity</em> . This is most commonly used to smoothly transition between colors by passing in hue values that are the result of interpolating between values. Doing math using an HSL representation of a Color is often easier than doing math on an RGB representation of a Color. This example generated a random fully saturated color: <code>Color color = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.5f);</code> This example generates a color based on the projectile rotation: </p>
+<p ><code>float hue = <a class="el" href="class_projectile.html#a1930b7d39f4eb350478ad2d5e24b4dcf" title="Rotation of the projectile. Radians not Degrees. Use MathHelper if you want to convert degrees to rad...">Projectile.rotation</a> / MathHelper.TwoPi; Color color = Main.hslToRgb(hue, 1f, 0.5f);</code> </p>
 
 </div>
 </div>

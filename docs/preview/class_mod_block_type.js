@@ -2,6 +2,7 @@ var class_mod_block_type =
 [
     [ "CanExplode", "class_mod_block_type.html#aa5c6d92b20f6423cecce3d41f752e516", null ],
     [ "CanPlace", "class_mod_block_type.html#a64aff3a9492ab53b1ece08f24e192407", null ],
+    [ "Convert", "class_mod_block_type.html#ab4fa1ce604c4733ba414475f536d91ed", null ],
     [ "CreateDust", "class_mod_block_type.html#a963e7583cc1daae4829e39645f073a36", null ],
     [ "CreateMapEntryName", "class_mod_block_type.html#ab3684805ba8ad1a6e53abca3b296bcf2", null ],
     [ "GetMapOption", "class_mod_block_type.html#a1eb86bab3931fab99321128f768d6ef9", null ],

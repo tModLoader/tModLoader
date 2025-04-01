@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -468,6 +468,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Chlorophyte</b
 <tr class="separator:a621aea7667ae58d44f50777a75629875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7a3306c541c81a255266366f68cff6d"><td class="memItemLeft" align="right" valign="top"><a id="ae7a3306c541c81a255266366f68cff6d" name="ae7a3306c541c81a255266366f68cff6d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ChlorophyteDefense</b> (int x, int y)</td></tr>
+<tr class="memdesc:ae7a3306c541c81a255266366f68cff6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when an evil biome or hallow tile attempts to spread onto a tile but Chlorophyte (ore or bricks) is found nearby. If the tile targeted by the spreading biome happened to already be converted, this code will purify it back to its regular variant.<br  />
+ This code differs from regular purity conversion such as clentaminator's green solution, as it turns corrupt, crimson and hallowed grass into jungle grass instead of regular grass.<br  />
+ For more info, see Biome <a class="el" href="class_world_gen_1_1_spread.html">Spread</a> wiki page. <br /></td></tr>
 <tr class="separator:ae7a3306c541c81a255266366f68cff6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb70255908f8f541680bb80608228062"><td class="memItemLeft" align="right" valign="top"><a id="afb70255908f8f541680bb80608228062" name="afb70255908f8f541680bb80608228062"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAllBrokenTraps</b> ()</td></tr>
@@ -496,10 +499,21 @@ static <a class="el" href="class_list.html">List</a>&lt; Color &gt;&#160;</td><t
 <tr class="memitem:a50b815aba7c007ed8c88dac983ad185b"><td class="memItemLeft" align="right" valign="top"><a id="a50b815aba7c007ed8c88dac983ad185b" name="a50b815aba7c007ed8c88dac983ad185b"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumePostGenActions</b> (<a class="el" href="class_structure_map.html">StructureMap</a> structures)</td></tr>
 <tr class="separator:a50b815aba7c007ed8c88dac983ad185b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c0e5140584ee1a66fa8e98e5fef5494"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a4c0e5140584ee1a66fa8e98e5fef5494">Convert</a> (int i, int j, int conversionType, int size=4)</td></tr>
-<tr class="memdesc:a4c0e5140584ee1a66fa8e98e5fef5494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts biome variant tiles and walls to a target biome.<br  />
- Converts a 9x9 square by default, but can be adjusted with the <em>size</em>  parameter.  <a href="class_world_gen.html#a4c0e5140584ee1a66fa8e98e5fef5494">More...</a><br /></td></tr>
-<tr class="separator:a4c0e5140584ee1a66fa8e98e5fef5494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9a6326773a1c85649d59d8a2ab6bf1"><td class="memItemLeft" align="right" valign="top"><a id="a8d9a6326773a1c85649d59d8a2ab6bf1" name="a8d9a6326773a1c85649d59d8a2ab6bf1"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>Convert</b> (int i, int j, int conversionType, int size)</td></tr>
+<tr class="separator:a8d9a6326773a1c85649d59d8a2ab6bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3708e3da9f373cad064eb35b7d2710d7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a3708e3da9f373cad064eb35b7d2710d7">Convert</a> (int i, int j, int conversionType, int size=4, bool tiles=true, bool walls=true)</td></tr>
+<tr class="memdesc:a3708e3da9f373cad064eb35b7d2710d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts biome variant tiles and walls to a target biome.<br  />
+ Converts a 9x9 square by default, but can be adjusted with the <em>size</em>  parameter.  <a href="class_world_gen.html#a3708e3da9f373cad064eb35b7d2710d7">More...</a><br /></td></tr>
+<tr class="separator:a3708e3da9f373cad064eb35b7d2710d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a8b218eba48d8b0d018eb87eb2b78b253">ConvertTile</a> (int i, int j, int newType, bool tryBreakTrees=false)</td></tr>
+<tr class="memdesc:a8b218eba48d8b0d018eb87eb2b78b253"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single tile at the given coordinate into a specified new tile type<br  />
+ Automatically handles tile framing and multiplayer syncing.  <a href="class_world_gen.html#a8b218eba48d8b0d018eb87eb2b78b253">More...</a><br /></td></tr>
+<tr class="separator:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4959269f52c93923394fc70bd91c0b39"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a4959269f52c93923394fc70bd91c0b39">ConvertWall</a> (int i, int j, int newType)</td></tr>
+<tr class="memdesc:a4959269f52c93923394fc70bd91c0b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single wall at the given coordinate into a specified new wall type<br  />
+ Automatically handles wall framing and multiplayer syncing.  <a href="class_world_gen.html#a4959269f52c93923394fc70bd91c0b39">More...</a><br /></td></tr>
+<tr class="separator:a4959269f52c93923394fc70bd91c0b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70bc90add7ec93b7ff0fbcedb67c4539"><td class="memItemLeft" align="right" valign="top"><a id="a70bc90add7ec93b7ff0fbcedb67c4539" name="a70bc90add7ec93b7ff0fbcedb67c4539"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>countDirtTiles</b> (int x, int y)</td></tr>
 <tr class="separator:a70bc90add7ec93b7ff0fbcedb67c4539"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1509,6 +1523,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>SpreadDesertWa
 <tr class="memitem:ab6654ceaf40aab41d2b2f29819448650"><td class="memItemLeft" align="right" valign="top"><a id="ab6654ceaf40aab41d2b2f29819448650" name="ab6654ceaf40aab41d2b2f29819448650"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SpreadGrass</b> (int i, int j, int dirt=0, int grass=2, bool repeat=true, <a class="el" href="struct_tile_color_cache.html">TileColorCache</a> color=default(<a class="el" href="struct_tile_color_cache.html">TileColorCache</a>))</td></tr>
 <tr class="separator:ab6654ceaf40aab41d2b2f29819448650"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c7927f8924d2179b021defe4bced4d7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a8c7927f8924d2179b021defe4bced4d7">SpreadInfectionToNearbyTile</a> (int x, int y, int conversionType, int range=3)</td></tr>
+<tr class="memdesc:a8c7927f8924d2179b021defe4bced4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <a class="el" href="class_global_block_type.html#a9da51a1b147d80bd6d94727bb6927734" title="Called for every tile/wall the world randomly decides to update in a given tick. Useful for things su...">ModBlockType.RandomUpdate</a> to let your infectious tiles spread around<br  />
+ Automatically checks for the journey mode biome spread toggle, hardmode, spread speed decrease after plantera, chlorophyte protection and sunflower protection.  <a href="class_world_gen.html#a8c7927f8924d2179b021defe4bced4d7">More...</a><br /></td></tr>
+<tr class="separator:a8c7927f8924d2179b021defe4bced4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acec70933ff068d98720dfb051597281c"><td class="memItemLeft" align="right" valign="top"><a id="acec70933ff068d98720dfb051597281c" name="acec70933ff068d98720dfb051597281c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SquareTileFrame</b> (int i, int j, bool resetFrame=true)</td></tr>
 <tr class="separator:acec70933ff068d98720dfb051597281c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1744,6 +1762,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>desertBG</b></t
 <tr class="separator:a8ff32c8989252b2bafa9ab88353c1dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad6cabf503176ae0fa12673dfd56fd28"><td class="memItemLeft" align="right" valign="top"><a id="aad6cabf503176ae0fa12673dfd56fd28" name="aad6cabf503176ae0fa12673dfd56fd28"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>destroyObject</b></td></tr>
+<tr class="memdesc:aad6cabf503176ae0fa12673dfd56fd28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is true while a multitile is being destroyed. <br /></td></tr>
 <tr class="separator:aad6cabf503176ae0fa12673dfd56fd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f4ccd1d115e584d95a56738c8fc48a9"><td class="memItemLeft" align="right" valign="top"><a id="a5f4ccd1d115e584d95a56738c8fc48a9" name="a5f4ccd1d115e584d95a56738c8fc48a9"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>dontStarveWorldGen</b> = false</td></tr>
@@ -2143,8 +2162,8 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
 
 </div>
 </div>
-<a id="a4c0e5140584ee1a66fa8e98e5fef5494" name="a4c0e5140584ee1a66fa8e98e5fef5494"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c0e5140584ee1a66fa8e98e5fef5494">&#9670;&nbsp;</a></span>Convert()</h2>
+<a id="a3708e3da9f373cad064eb35b7d2710d7" name="a3708e3da9f373cad064eb35b7d2710d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3708e3da9f373cad064eb35b7d2710d7">&#9670;&nbsp;</a></span>Convert()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2174,7 +2193,19 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>size</em> = <code>4</code>&#160;</td>
+          <td class="paramname"><em>size</em> = <code>4</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>tiles</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>walls</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2201,6 +2232,121 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
     <tr><td class="paramname">size</td><td>When using this method to convert tiles, a square centered on the target tile is converted into those of the target biome.<br  />
  This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br  />
  Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely. </td></tr>
+    <tr><td class="paramname">tiles</td><td>If the conversion should affect tiles</td></tr>
+    <tr><td class="paramname">walls</td><td>If the conversion should affect walls</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8b218eba48d8b0d018eb87eb2b78b253" name="a8b218eba48d8b0d018eb87eb2b78b253"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b218eba48d8b0d018eb87eb2b78b253">&#9670;&nbsp;</a></span>ConvertTile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WorldGen.ConvertTile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>tryBreakTrees</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the single tile at the given coordinate into a specified new tile type<br  />
+ Automatically handles tile framing and multiplayer syncing. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The X coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">j</td><td>The Y coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">newType</td><td>The new type to convert the tile into</td></tr>
+    <tr><td class="paramname">tryBreakTrees</td><td>Should the conversion try to break trees above the converted tile if the new type is invalid for the tree</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4959269f52c93923394fc70bd91c0b39" name="a4959269f52c93923394fc70bd91c0b39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4959269f52c93923394fc70bd91c0b39">&#9670;&nbsp;</a></span>ConvertWall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WorldGen.ConvertWall </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the single wall at the given coordinate into a specified new wall type<br  />
+ Automatically handles wall framing and multiplayer syncing. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The X coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">j</td><td>The Y coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">newType</td><td>The new type to convert the wall into</td></tr>
   </table>
   </dd>
 </dl>
@@ -2665,6 +2811,66 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a8c7927f8924d2179b021defe4bced4d7" name="a8c7927f8924d2179b021defe4bced4d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c7927f8924d2179b021defe4bced4d7">&#9670;&nbsp;</a></span>SpreadInfectionToNearbyTile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WorldGen.SpreadInfectionToNearbyTile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>range</em> = <code>3</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <a class="el" href="class_global_block_type.html#a9da51a1b147d80bd6d94727bb6927734" title="Called for every tile/wall the world randomly decides to update in a given tick. Useful for things su...">ModBlockType.RandomUpdate</a> to let your infectious tiles spread around<br  />
+ Automatically checks for the journey mode biome spread toggle, hardmode, spread speed decrease after plantera, chlorophyte protection and sunflower protection. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>X coordinate of the spreading tile</td></tr>
+    <tr><td class="paramname">y</td><td>Y coordinate of the spreading tile</td></tr>
+    <tr><td class="paramname">conversionType</td><td>The <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a> of the spreading tile</td></tr>
+    <tr><td class="paramname">range</td><td><a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> range for potential conversion targets</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

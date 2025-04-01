@@ -18,7 +18,7 @@ var searchData=
   ['hidedrawlayers_15',['HideDrawLayers',['../class_mod_player.html#a770a4ba46aae89ce2282c820415f6273',1,'ModPlayer']]],
   ['hijackgetdata_16',['HijackGetData',['../class_mod_system.html#a9b117373c4a4f0cf900e7935d1e55785',1,'ModSystem']]],
   ['hijacksenddata_17',['HijackSendData',['../class_mod_system.html#a5888a1efc913620528bb24cd6c1b631d',1,'ModSystem']]],
-  ['hiteffect_18',['HitEffect',['../class_global_n_p_c.html#ab615151eee3cfcc10172db52a80703a6',1,'GlobalNPC.HitEffect()'],['../class_mod_n_p_c.html#a9ac8099138100a46319697f4aa247e41',1,'ModNPC.HitEffect()']]],
+  ['hiteffect_18',['HitEffect',['../class_mod_n_p_c.html#a9ac8099138100a46319697f4aa247e41',1,'ModNPC.HitEffect()'],['../class_global_n_p_c.html#ab615151eee3cfcc10172db52a80703a6',1,'GlobalNPC.HitEffect()']]],
   ['hitwire_19',['HitWire',['../class_global_tile.html#aac0b41a49c4d1eeb01f99d4aa258e64e',1,'GlobalTile.HitWire()'],['../class_mod_tile.html#a5b1684845a6ec628f504c00f9a514c5c',1,'ModTile.HitWire()']]],
   ['holditem_20',['HoldItem',['../class_global_item.html#a53772da58269908c19423f0e15de1845',1,'GlobalItem.HoldItem()'],['../class_item_loader.html#a7ea68e4596a838658829313abdfccfce',1,'ItemLoader.HoldItem()'],['../class_mod_item.html#ac058f5c57ae5fcbc8c733800a44a2ec2',1,'ModItem.HoldItem()']]],
   ['holditemframe_21',['HoldItemFrame',['../class_global_item.html#ab196d1456fda94cd6f9d909e644864b4',1,'GlobalItem.HoldItemFrame()'],['../class_item_loader.html#af9539871994cbfd1231dcc64e9111be8',1,'ItemLoader.HoldItemFrame()'],['../class_mod_item.html#a1785d991829509ec95f637d9951a79a9',1,'ModItem.HoldItemFrame()']]],
@@ -28,5 +28,6 @@ var searchData=
   ['hook_5fafterplacement_25',['Hook_AfterPlacement',['../class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835',1,'TEModdedPylon.Hook_AfterPlacement()'],['../class_mod_tile_entity.html#aaed88174c794676cae24b755433688d9',1,'ModTileEntity.Hook_AfterPlacement()']]],
   ['horizontalwingspeeds_26',['HorizontalWingSpeeds',['../class_equip_texture.html#a64a2fc6585ed6572c8ee6f9a38d58d6a',1,'EquipTexture.HorizontalWingSpeeds()'],['../class_global_item.html#a474d8ac526b4825679fe0ffd1a3c8d75',1,'GlobalItem.HorizontalWingSpeeds()'],['../class_item_loader.html#a63ab5851c7ca82709e87726764430b72',1,'ItemLoader.HorizontalWingSpeeds()'],['../class_mod_item.html#a2efe38fe8dcda065568f4a360266f70f',1,'ModItem.HorizontalWingSpeeds()']]],
   ['hoverslot_27',['HoverSlot',['../class_mod_player.html#a5d9f891f665434805a4e6e3b8fabd4f0',1,'ModPlayer']]],
-  ['hurtplayer_28',['HurtPlayer',['../class_projectile.html#a40ec930728c7494383d7b9e88d7cd1c9',1,'Projectile']]]
+  ['hsltorgb_28',['hslToRgb',['../class_main.html#a59fbb50deb6d5e9be07dfa3198b38b6a',1,'Main']]],
+  ['hurtplayer_29',['HurtPlayer',['../class_projectile.html#a40ec930728c7494383d7b9e88d7cd1c9',1,'Projectile']]]
 ];

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('class_tile_loader.html',''); initResiz
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_tile_loader-members.html">List of all members</a>  </div>
@@ -95,6 +96,12 @@ $(document).ready(function(){initNavTree('class_tile_loader.html',''); initResiz
 <p>This serves as the central class from which tile-related functions are supported and carried out.  
  <a href="class_tile_loader.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ac8c3d0710052549ae29e1cb09c0a3cbe"><td class="memItemLeft" align="right" valign="top"><a id="ac8c3d0710052549ae29e1cb09c0a3cbe" name="ac8c3d0710052549ae29e1cb09c0a3cbe"></a>
+delegate bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertTile</b> (int i, int j, int type, int conversionType)</td></tr>
+<tr class="separator:ac8c3d0710052549ae29e1cb09c0a3cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a74dbcd2b233625a98ee1869d76ca29a8"><td class="memItemLeft" align="right" valign="top"><a id="a74dbcd2b233625a98ee1869d76ca29a8" name="a74dbcd2b233625a98ee1869d76ca29a8"></a>
@@ -139,6 +146,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckModTile</
 <tr class="memitem:a8bb489f1f8192903f2763f17027eca08"><td class="memItemLeft" align="right" valign="top"><a id="a8bb489f1f8192903f2763f17027eca08" name="a8bb489f1f8192903f2763f17027eca08"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>CloseDoorID</b> (<a class="el" href="struct_tile.html">Tile</a> tile)</td></tr>
 <tr class="separator:a8bb489f1f8192903f2763f17027eca08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad22b08e12a21e43b11902ceac879bf1d"><td class="memItemLeft" align="right" valign="top"><a id="ad22b08e12a21e43b11902ceac879bf1d" name="ad22b08e12a21e43b11902ceac879bf1d"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Convert</b> (int i, int j, int conversionType)</td></tr>
+<tr class="separator:ad22b08e12a21e43b11902ceac879bf1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2c34bfa9ca884ee91cfff6f3e825727"><td class="memItemLeft" align="right" valign="top"><a id="ae2c34bfa9ca884ee91cfff6f3e825727" name="ae2c34bfa9ca884ee91cfff6f3e825727"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CreateDust</b> (int i, int j, int type, ref int dustType)</td></tr>
 <tr class="separator:ae2c34bfa9ca884ee91cfff6f3e825727"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -287,6 +297,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>RandomUpdate</
 <tr class="memitem:a61d9fc62dbc99fb9b11e332731ac4c76"><td class="memItemLeft" align="right" valign="top"><a id="a61d9fc62dbc99fb9b11e332731ac4c76" name="a61d9fc62dbc99fb9b11e332731ac4c76"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RecountTiles</b> (<a class="el" href="class_scene_metrics.html">SceneMetrics</a> metrics)</td></tr>
 <tr class="separator:a61d9fc62dbc99fb9b11e332731ac4c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56a8c9a569d918151d73ee4287678e6d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_loader.html#a56a8c9a569d918151d73ee4287678e6d">RegisterConversion</a> (int tileType, int conversionType, ConvertTile conversionDelegate)</td></tr>
+<tr class="memdesc:a56a8c9a569d918151d73ee4287678e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a tile type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded tiles, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_tile_i_d_1_1_sets_1_1_conversion.html">TileID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_tile_loader.html#a56a8c9a569d918151d73ee4287678e6d">More...</a><br /></td></tr>
+<tr class="separator:a56a8c9a569d918151d73ee4287678e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1715aa2a85d0012d07125b8ed495b90e"><td class="memItemLeft" align="right" valign="top"><a id="a1715aa2a85d0012d07125b8ed495b90e" name="a1715aa2a85d0012d07125b8ed495b90e"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>RightClick</b> (int i, int j)</td></tr>
 <tr class="separator:a1715aa2a85d0012d07125b8ed495b90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -411,6 +425,59 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileCount</b><c
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="class_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a> instance in the tiles array, null if not found.</dd></dl>
+
+</div>
+</div>
+<a id="a56a8c9a569d918151d73ee4287678e6d" name="a56a8c9a569d918151d73ee4287678e6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56a8c9a569d918151d73ee4287678e6d">&#9670;&nbsp;</a></span>RegisterConversion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void TileLoader.RegisterConversion </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ConvertTile&#160;</td>
+          <td class="paramname"><em>conversionDelegate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a tile type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded tiles, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_tile_i_d_1_1_sets_1_1_conversion.html">TileID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tileType</td><td>The tile type that has is affected by this custom conversion.</td></tr>
+    <tr><td class="paramname">conversionType</td><td>The conversion type for which the tile should use custom conversion code.</td></tr>
+    <tr><td class="paramname">conversionDelegate</td><td>Code to run when the tile attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -2,9 +2,9 @@ var searchData=
 [
   ['nado_0',['Nado',['../class_proj_a_i_style_i_d.html#ac287843cf5b25787ef769668964daaf5',1,'ProjAIStyleID']]],
   ['nail_1',['Nail',['../class_proj_a_i_style_i_d.html#a42e20528e17295a74c9777da1336f852',1,'ProjAIStyleID']]],
-  ['name_2',['name',['../class_chest.html#a36fff2ef1f14fb62a0776989eb387f47',1,'Chest']]],
+  ['name_2',['name',['../class_player.html#ac8bcb50bf826874dfa2d162af367d013',1,'Player.name()'],['../class_chest.html#a36fff2ef1f14fb62a0776989eb387f47',1,'Chest.name()']]],
   ['name_3',['Name',['../class_tooltip_line.html#ae3e22079f327ae9558f570d92a7587d1',1,'TooltipLine']]],
-  ['name_4',['name',['../class_popup_text.html#a6f804e078d02d0e7990cd857deddd2a9',1,'PopupText.name()'],['../class_player.html#ac8bcb50bf826874dfa2d162af367d013',1,'Player.name()']]],
+  ['name_4',['name',['../class_popup_text.html#a6f804e078d02d0e7990cd857deddd2a9',1,'PopupText']]],
   ['natureandweather_5',['NatureAndWeather',['../class_emote_i_d_1_1_category.html#a20c9336b4a2451f9543d637a1fc1eb2f',1,'EmoteID::Category']]],
   ['nearbyactivenpcs_6',['nearbyActiveNPCs',['../class_player.html#a7f561320008c7a527b6b6c5f7159aecd',1,'Player']]],
   ['nebulaarcanum_7',['NebulaArcanum',['../class_proj_a_i_style_i_d.html#a02fa86d4de19b6d33d72e9650796ecd9',1,'ProjAIStyleID']]],
@@ -74,12 +74,13 @@ var searchData=
   ['npcpersistentidsbynetids_71',['NpcPersistentIdsByNetIds',['../class_content_samples.html#af79d86f1de1ba3cd9a8dd5a87e18f0da',1,'ContentSamples']]],
   ['npcproj_72',['npcProj',['../class_projectile.html#abe3803a7cad9a036d46d49a07cfed50a',1,'Projectile']]],
   ['npcsbynetid_73',['NpcsByNetId',['../class_content_samples.html#a793a5e2f47721ef9ad5bb343e700d0a3',1,'ContentSamples']]],
-  ['npcslots_74',['npcSlots',['../class_n_p_c.html#ae1c91873c3b58b70afca2cfe7ddc8355',1,'NPC']]],
-  ['npcswillrespawn_75',['NPCsWillRespawn',['../class_game_tip_i_d.html#a13194f13c7330484824896799c624db7',1,'GameTipID']]],
-  ['numactive_76',['numActive',['../class_popup_text.html#a6145919d220fe6cf3c804fa073d13d65',1,'PopupText']]],
-  ['numavailablerecipes_77',['numAvailableRecipes',['../class_main.html#a2d402b31a2d46de5fd1c1dcdb450bcb5',1,'Main']]],
-  ['numminions_78',['numMinions',['../class_player.html#a11c3cde217cc9f8f8f0e7769d377b13b',1,'Player']]],
-  ['nursecannotremovedebuff_79',['NurseCannotRemoveDebuff',['../class_buff_i_d_1_1_sets.html#ade6dfddb5663e4c8e601ad077dc8e1f0',1,'BuffID::Sets']]],
-  ['nurseneedslifecrystaltomovein_80',['NurseNeedsLifeCrystalToMoveIn',['../class_game_tip_i_d.html#a9e02292609bc3f21e0bc4b58dec0733d',1,'GameTipID']]],
-  ['nursesyringe_81',['NurseSyringe',['../class_proj_a_i_style_i_d.html#ae7a86ffadca584b906bc91b75dcb54d8',1,'ProjAIStyleID']]]
+  ['npcsfoundforcheckactive_74',['npcsFoundForCheckActive',['../class_n_p_c.html#a4146f2cb1b03dbaf72429e8b2a752745',1,'NPC']]],
+  ['npcslots_75',['npcSlots',['../class_n_p_c.html#ae1c91873c3b58b70afca2cfe7ddc8355',1,'NPC']]],
+  ['npcswillrespawn_76',['NPCsWillRespawn',['../class_game_tip_i_d.html#a13194f13c7330484824896799c624db7',1,'GameTipID']]],
+  ['numactive_77',['numActive',['../class_popup_text.html#a6145919d220fe6cf3c804fa073d13d65',1,'PopupText']]],
+  ['numavailablerecipes_78',['numAvailableRecipes',['../class_main.html#a2d402b31a2d46de5fd1c1dcdb450bcb5',1,'Main']]],
+  ['numminions_79',['numMinions',['../class_player.html#a11c3cde217cc9f8f8f0e7769d377b13b',1,'Player']]],
+  ['nursecannotremovedebuff_80',['NurseCannotRemoveDebuff',['../class_buff_i_d_1_1_sets.html#ade6dfddb5663e4c8e601ad077dc8e1f0',1,'BuffID::Sets']]],
+  ['nurseneedslifecrystaltomovein_81',['NurseNeedsLifeCrystalToMoveIn',['../class_game_tip_i_d.html#a9e02292609bc3f21e0bc4b58dec0733d',1,'GameTipID']]],
+  ['nursesyringe_82',['NurseSyringe',['../class_proj_a_i_style_i_d.html#ae7a86ffadca584b906bc91b75dcb54d8',1,'ProjAIStyleID']]]
 ];

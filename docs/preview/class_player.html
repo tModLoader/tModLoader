@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -849,6 +849,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>InOpposingTeam</b> (<
 <tr class="separator:a552d70105ee605bc438a8dd13b0f7e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88f173d9ed9f86cddc8a18ac445a93af"><td class="memItemLeft" align="right" valign="top"><a id="a88f173d9ed9f86cddc8a18ac445a93af" name="a88f173d9ed9f86cddc8a18ac445a93af"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>InterruptItemUsageIfOverTile</b> (int tileTypeToBeOver)</td></tr>
+<tr class="memdesc:a88f173d9ed9f86cddc8a18ac445a93af"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the tile location currently being targetted by the players mouse (<a class="el" href="class_player.html#aee846a4e94125bd0915d86b5f872d7a7" title="The tile coordinates of the tile location currently being targeted by the local players cursor for le...">tileTargetX</a>) has a tile of the specified tile type, then item usage will be blocked until the player releases the use button (left mouse button) and clicks again. What this typically means in practice is that an auto-swinging pickaxe will not attempt to swing again until the player deliberately releases the mouse button and clicks again. This is usually used by tile entities that drop their contained item when mined to prevent the player from accidentally mining the tile itself when attempting to "mine" the item from the tile entity. <br /></td></tr>
 <tr class="separator:a88f173d9ed9f86cddc8a18ac445a93af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c46a44deab1a9bfff82bebc009e29e9"><td class="memItemLeft" align="right" valign="top"><a id="a0c46a44deab1a9bfff82bebc009e29e9" name="a0c46a44deab1a9bfff82bebc009e29e9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>InZonePurity</b> ()</td></tr>
@@ -1558,7 +1559,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckSpawn</b>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearPlayerTempInfo</b> ()</td></tr>
 <tr class="separator:a0d33c705c0b394b284c1800408b7b126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f3e6eafbdbb24e5283a06ccab3fee5a"><td class="memItemLeft" align="right" valign="top"><a id="a8f3e6eafbdbb24e5283a06ccab3fee5a" name="a8f3e6eafbdbb24e5283a06ccab3fee5a"></a>
-static byte&#160;</td><td class="memItemRight" valign="bottom"><b>FindClosest</b> (Vector2 Position, int Width, int Height)</td></tr>
+static byte&#160;</td><td class="memItemRight" valign="bottom"><b>FindClosest</b> (Vector2 <a class="el" href="class_position.html">Position</a>, int Width, int Height)</td></tr>
 <tr class="separator:a8f3e6eafbdbb24e5283a06ccab3fee5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae51737dd3cf3d6d1377460a456ef158e"><td class="memItemLeft" align="right" valign="top"><a id="ae51737dd3cf3d6d1377460a456ef158e" name="ae51737dd3cf3d6d1377460a456ef158e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FixLoadedData_EliminiateDuplicateAccessories</b> (<a class="el" href="class_item.html">Item</a>[] armorArray)</td></tr>
@@ -1567,10 +1568,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>FixLoadedData_
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetAnglerRewardRarityMultiplier</b> (int questsDone)</td></tr>
 <tr class="separator:a17a07a49457991f16236e1cec1ebd00b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeeb48874b6ea93ff26ecde3f3c966b7f"><td class="memItemLeft" align="right" valign="top"><a id="aeeb48874b6ea93ff26ecde3f3c966b7f" name="aeeb48874b6ea93ff26ecde3f3c966b7f"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestPlayersLuck</b> (Point Position)</td></tr>
+static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestPlayersLuck</b> (Point <a class="el" href="class_position.html">Position</a>)</td></tr>
 <tr class="separator:aeeb48874b6ea93ff26ecde3f3c966b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe1e32ea81f56600af3187319d6f198b"><td class="memItemLeft" align="right" valign="top"><a id="abe1e32ea81f56600af3187319d6f198b" name="abe1e32ea81f56600af3187319d6f198b"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestPlayersLuck</b> (Vector2 Position)</td></tr>
+static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestPlayersLuck</b> (Vector2 <a class="el" href="class_position.html">Position</a>)</td></tr>
 <tr class="separator:abe1e32ea81f56600af3187319d6f198b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedb49ea92cefc2eaad067d447a155aef"><td class="memItemLeft" align="right" valign="top"><a id="aedb49ea92cefc2eaad067d447a155aef" name="aedb49ea92cefc2eaad067d447a155aef"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestRollLuck</b> (int x, int y, int range)</td></tr>
@@ -4839,6 +4840,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>tileRangeY</b> 
 <tr class="separator:adf1e37218130cdb0486210959f2817a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee846a4e94125bd0915d86b5f872d7a7"><td class="memItemLeft" align="right" valign="top"><a id="aee846a4e94125bd0915d86b5f872d7a7" name="aee846a4e94125bd0915d86b5f872d7a7"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>tileTargetX</b></td></tr>
+<tr class="memdesc:aee846a4e94125bd0915d86b5f872d7a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tile coordinates of the tile location currently being targeted by the local players cursor for left click purposes. Since this takes into account the smart cursor feature, it isn't necessarily the tile directly under the cursor. For right clicks, see <a class="el" href="class_main.html#af4a469a959ba2fd9a236b1b5e7abb0cf" title="The tile coordinate of the tile location currently being targeted by the local player&#39;s cursor for in...">Main.SmartInteractX</a> <br /></td></tr>
 <tr class="separator:aee846a4e94125bd0915d86b5f872d7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50b663114d49addf51cc552e1267bd05"><td class="memItemLeft" align="right" valign="top"><a id="a50b663114d49addf51cc552e1267bd05" name="a50b663114d49addf51cc552e1267bd05"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>tileTargetY</b></td></tr>

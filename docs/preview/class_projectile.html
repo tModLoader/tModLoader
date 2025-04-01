@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -226,10 +226,10 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>GetLastPrismHue</b> 
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>getRect</b> ()</td></tr>
 <tr class="separator:a0133e73e3ee32fc8aae1c7fdb6bb4cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f806f65d156557703737a5c65a4776e"><td class="memItemLeft" align="right" valign="top"><a id="a2f806f65d156557703737a5c65a4776e" name="a2f806f65d156557703737a5c65a4776e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ghostHeal</b> (int dmg, Vector2 Position, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ghostHeal</b> (int dmg, Vector2 <a class="el" href="class_position.html">Position</a>, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
 <tr class="separator:a2f806f65d156557703737a5c65a4776e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fe3aef3a052eee68c6be9a7c475da24"><td class="memItemLeft" align="right" valign="top"><a id="a1fe3aef3a052eee68c6be9a7c475da24" name="a1fe3aef3a052eee68c6be9a7c475da24"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ghostHurt</b> (int dmg, Vector2 Position, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ghostHurt</b> (int dmg, Vector2 <a class="el" href="class_position.html">Position</a>, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
 <tr class="separator:a1fe3aef3a052eee68c6be9a7c475da24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40ec930728c7494383d7b9e88d7cd1c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_projectile.html#a40ec930728c7494383d7b9e88d7cd1c9">HurtPlayer</a> (Rectangle hitbox)</td></tr>
 <tr class="memdesc:a40ec930728c7494383d7b9e88d7cd1c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hurts the local player if the player intersects the specified hitbox.  <a href="class_projectile.html#a40ec930728c7494383d7b9e88d7cd1c9">More...</a><br /></td></tr>
@@ -319,7 +319,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TurretShouldPersist</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (int i)</td></tr>
 <tr class="separator:a57c1343e41caae4d624bad95782ca112"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00b1d51ccdadf02a4793071b899ad926"><td class="memItemLeft" align="right" valign="top"><a id="a00b1d51ccdadf02a4793071b899ad926" name="a00b1d51ccdadf02a4793071b899ad926"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>vampireHeal</b> (int dmg, Vector2 Position, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>vampireHeal</b> (int dmg, Vector2 <a class="el" href="class_position.html">Position</a>, <a class="el" href="class_entity.html">Entity</a> victim)</td></tr>
 <tr class="separator:a00b1d51ccdadf02a4793071b899ad926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6e79fa9b984a7f33c5363092ddc482a"><td class="memItemLeft" align="right" valign="top"><a id="aa6e79fa9b984a7f33c5363092ddc482a" name="aa6e79fa9b984a7f33c5363092ddc482a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaAI</b> ()</td></tr>
@@ -749,6 +749,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>stepSpeed</b> = 1f</
 <tr class="separator:acfca3a77d8685f83d806ea045399c3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a429ede72a0f9a3eec95ab976b8510551"><td class="memItemLeft" align="right" valign="top"><a id="a429ede72a0f9a3eec95ab976b8510551" name="a429ede72a0f9a3eec95ab976b8510551"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>stopsDealingDamageAfterPenetrateHits</b></td></tr>
+<tr class="memdesc:a429ede72a0f9a3eec95ab976b8510551"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the projectile will have penetrate set to -1 and damage set to 0 when damaging an <a class="el" href="class_n_p_c.html">NPC</a> and having penetrate reach 0. What this effectively does is keep the projectile from dying once it satisfies the penetrate limit while also making the projectile harmless, allowing it to despawn later in some other manner rather than immediately. <br  />
+ Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a429ede72a0f9a3eec95ab976b8510551"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2087937999fc8c7aedfcd120b999f3e"><td class="memItemLeft" align="right" valign="top"><a id="ae2087937999fc8c7aedfcd120b999f3e" name="ae2087937999fc8c7aedfcd120b999f3e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>tileCollide</b></td></tr>
