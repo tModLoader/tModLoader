@@ -16,6 +16,18 @@
  	private Dictionary<int, List<IItemDropRule>> _entriesByNpcNetId = new Dictionary<int, List<IItemDropRule>>();
  	private Dictionary<int, List<int>> _npcNetIdsByType = new Dictionary<int, List<int>>();
  	private int _masterModeDropRng = 4;
+@@ -30,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Retrieves all the registered <see cref="IItemDropRule"/> for this specific NPC type.
++	/// </summary>
++	/// <param name="npcNetId"></param>
++	/// <param name="includeGlobalDrops">If true then global drop rules will also be retrieved</param>
+ 	public List<IItemDropRule> GetRulesForNPCID(int npcNetId, bool includeGlobalDrops = true)
+ 	{
+ 		List<IItemDropRule> list = new List<IItemDropRule>();
 @@ -60,7 +_,7 @@
  		return entry;
  	}

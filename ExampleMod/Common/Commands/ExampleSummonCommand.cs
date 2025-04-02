@@ -1,12 +1,25 @@
 ﻿using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
+using System.Linq;
 
 namespace ExampleMod.Common.Commands
 {
 	public class ExampleSummonCommand : ModCommand
 	{
+		public static LocalizedText UsageText { get; private set; }
+		public static LocalizedText DescriptionText { get; private set; }
+		public static LocalizedText[] ErrorText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			string key = $"Commands.{nameof(ExampleSummonCommand)}.";
+			UsageText = Mod.GetLocalization($"{key}Usage");
+			DescriptionText = Mod.GetLocalization($"{key}Description");
+			ErrorText = Enumerable.Range(0, 5).Select(i => Mod.GetLocalization($"{key}Error_{i}")).ToArray();
+		}
+
 		// CommandType.World means that command can be used in Chat in SP and MP, but executes on the Server in MP
 		public override CommandType Type
 			=> CommandType.World;
@@ -17,23 +30,19 @@ namespace ExampleMod.Common.Commands
 
 		// A short usage explanation for this command
 		public override string Usage
-			=> "/summon type [[~]x] [[~]y] [number]" +
-			"\n type - NPCID of NPC." +
-			"\n x and y - position of spawn." +
-			"\n ~ - to use position relative to player." +
-			"\n number - number of NPC's to spawn.";
+			=> UsageText.Value;
 
 		// A short description of this command
 		public override string Description
-			=> "Spawn a NPC by NPCID";
+			=> DescriptionText.Value;
 
 		public override void Action(CommandCaller caller, string input, string[] args) {
 			// Checking input Arguments
 			if (args.Length == 0) {
-				throw new UsageException("At least one argument was expected.");
+				throw new UsageException(ErrorText[0].Value);
 			}
 			if (!int.TryParse(args[0], out int type)) {
-				throw new UsageException(args[0] + " is not a correct integer value.");
+				throw new UsageException(ErrorText[1].Format(args[0]));
 			}
 
 			// Default values for spawn
@@ -53,7 +62,7 @@ namespace ExampleMod.Common.Commands
 				}
 				// Parsing X position
 				if (!int.TryParse(args[1], out xSpawnPosition)) {
-					throw new UsageException(args[1] + " is not a correct X position (must be valid integer value).");
+					throw new UsageException(ErrorText[2].Format(args[1]));
 				}
 			}
 
@@ -66,7 +75,7 @@ namespace ExampleMod.Common.Commands
 				}
 				// Parsing Y position
 				if (!int.TryParse(args[2], out ySpawnPosition)) {
-					throw new UsageException(args[2] + " is not a correct Y position (must be valid integer value).");
+					throw new UsageException(ErrorText[3].Format(args[2]));
 				}
 			}
 
@@ -81,7 +90,7 @@ namespace ExampleMod.Common.Commands
 			// If command has number argument
 			if (args.Length > 3) {
 				if (!int.TryParse(args[3], out numToSpawn)) {
-					throw new UsageException(args[3] + " is not a correct number (must be valid integer value).");
+					throw new UsageException(ErrorText[4].Format(args[3]));
 				}
 			}
 

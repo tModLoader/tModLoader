@@ -25,6 +25,11 @@ ExampleModConfig: {
 	}
 
 	Headers.Items: Items
+
+	AdditionalFlamingWeaponEntries: {
+		Label: Additional Flaming Weapon Entries
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseAccessibility: {

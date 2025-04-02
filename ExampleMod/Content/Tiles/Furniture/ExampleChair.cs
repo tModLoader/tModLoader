@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
 
 			DustType = ModContent.DustType<Sparkle>();
-			AdjTiles = new int[] { TileID.Chairs };
+			AdjTiles = [TileID.Chairs];
 			VanillaFallbackOnModDeletion = TileID.Chairs;
 
 			// Names
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.CoordinatePaddingFix = new Point16(0, 2);
 			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft;
 			// The following 3 lines are needed if you decide to add more styles and stack them vertically

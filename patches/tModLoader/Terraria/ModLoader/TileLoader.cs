@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -43,6 +44,8 @@ public static class TileLoader
 	internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
 	/// <summary> Maps Tile type and Tile style to the Item type that places the tile with the style. </summary>
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
+	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
+	internal static List<ConvertTile>[][] tileConversionDelegates = null;
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -76,6 +79,7 @@ public static class TileLoader
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 	private static DelegateDrawEffects[] HookDrawEffects;
+	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookEmitParticles;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 	private static Action<int, int, int>[] HookRandomUpdate;
@@ -96,6 +100,8 @@ public static class TileLoader
 	private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
 	private static Action[] HookPostSetupTileMerge;
+	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
+	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
 
 	internal static int ReserveTileID()
 	{
@@ -202,6 +208,8 @@ public static class TileLoader
 			TileObjectData._data.Add(null);
 		}
 
+		tileConversionDelegates = new List<ConvertTile>[nextTile][];
+
 		//Hooks
 
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
@@ -224,6 +232,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateDrawEffects>(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
+		ModLoader.BuildGlobalHook(ref HookEmitParticles, globalTiles, g => g.EmitParticles);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
@@ -242,6 +251,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 		ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
 		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
+		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
+		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
 
 		if (!unloading) {
 			loaded = true;
@@ -262,6 +273,8 @@ public static class TileLoader
 		tiles.Clear();
 		globalTiles.Clear();
 		tileTypeAndTileStyleToItemType.Clear();
+		Animation.Unload();
+		tileConversionDelegates = null;
 
 		// Has to be ran on the main thread, since this may dispose textures.
 		Main.QueueMainThreadAction(() => {
@@ -682,6 +695,41 @@ public static class TileLoader
 		}
 	}
 
+	/// <summary>
+	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert"/> <br/>
+	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use custom conversion code.</param>
+	/// <param name="conversionDelegate">Code to run when the tile attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</param>
+	public static void RegisterConversion(int tileType, int conversionType, ConvertTile conversionDelegate)
+	{
+		if (tileConversionDelegates == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversion"));
+
+		var conversions = tileConversionDelegates[tileType] ??= new List<ConvertTile>[BiomeConversionLoader.BiomeConversionCount];
+		var list = conversions[conversionType] ??= new();
+		list.Add(conversionDelegate);
+	}
+
+
+	public static bool Convert(int i, int j, int conversionType)
+	{
+		int type = Main.tile[i, j].type;
+		var list = tileConversionDelegates[type]?[conversionType];
+		if (list != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
+				}
+			}
+		}
+
+		ModTile modTile = GetTile(type);
+		modTile?.Convert(i, j, conversionType);
+		return true;
+	}
+
 	public static bool? IsTileDangerous(int i, int j, int type, Player player)
 	{
 		bool? retVal = null;
@@ -832,6 +880,14 @@ public static class TileLoader
 		}
 	}
 
+	public static void EmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
+	{
+		foreach (var hook in HookEmitParticles) {
+			hook(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, visible);
+		}
+		GetTile(typeCache)?.EmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible);
+	}
+
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 	{
 		// TODO: Pass in TileDrawInfo so mods don't need to replicate existing SetDrawPositions logic. For example, ExampleTorch repeated logic (SetDrawPositions/PostDraw)
@@ -880,6 +936,22 @@ public static class TileLoader
 		}
 
 		return flag;
+	}
+
+	public static void PostTileFrame(int type, int i, int j, int up, int down, int left, int right, int upLeft, int upRight, int downLeft, int downRight)
+	{
+		ModTile modTile = GetTile(type);
+		if (modTile != null) {
+			modTile.PostTileFrame(i, j, up, down, left, right, upLeft, upRight, downLeft, downRight);
+		}
+	}
+
+	public static void ModifyFrameMerge(int type, int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
+	{
+		ModTile modTile = GetTile(type);
+		if (modTile != null) {
+			modTile.ModifyFrameMerge(i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+		}
 	}
 
 	public static void PickPowerCheck(Tile target, int pickPower, ref int damage)
@@ -1223,5 +1295,18 @@ public static class TileLoader
 				}
 			}
 		}
+	}
+
+	public static bool GlobalShakeTree(int x, int y, TreeTypes treeType)
+	{
+		foreach (var hook in HookPreShakeTree) {
+			hook(x, y, treeType);
+		}
+
+		foreach (var hook in HookShakeTree) {
+			if (hook(x, y, treeType))
+				return true;
+		}
+		return false;
 	}
 }

@@ -98,7 +98,8 @@ public struct StatModifier
 	/// Use this to apply the modifiers of this <see cref="StatModifier"/> to the <paramref name="baseValue"/>. You should assign
 	/// the value passed in to the return result. For example:
 	/// <para><br><c>damage = CritDamage.ApplyTo(damage)</c></br></para>
-	/// <br></br>could be used to apply a crit damage modifier to a base damage value 
+	/// <br></br>could be used to apply a crit damage modifier to a base damage value
+	/// <para/> Note that when using this to calculate the final damage of a <see cref="DamageClass"/> make sure to use <see cref="Player.GetTotalDamage(DamageClass)"/> not <see cref="Player.GetDamage(DamageClass)"/> to account for inherited damage modifiers such as Generic damage.
 	/// </summary>
 	/// <remarks>For help understanding the meanings of the applied values please make note of documentation for:
 	/// <list type="bullet">

@@ -1,0 +1,23 @@
+--- src/TerrariaNetCore/Terraria/Animation.cs
++++ src/tModLoader/Terraria/Animation.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria;
+ 
+-public class Animation
++public partial class Animation
+ {
+ 	private static List<Animation> _animations;
+ 	private static Dictionary<Point16, Animation> _temporaryAnimations;
+@@ -86,6 +_,11 @@
+ 
+ 				break;
+ 			}
++		}
++		if (AnimationFrameDatas.TryGetValue(type, out var data)) {
++			_frameMax = data.frames.Length;
++			_frameCounterMax = data.frameRate;
++			_frameData = data.frames;
+ 		}
+ 	}
+ 

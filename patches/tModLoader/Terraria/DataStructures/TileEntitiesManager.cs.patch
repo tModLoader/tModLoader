@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntitiesManager.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntitiesManager.cs
-@@ -3,10 +_,11 @@
+@@ -3,12 +_,13 @@
  
  namespace Terraria.DataStructures;
  
@@ -11,8 +11,11 @@
  	private Dictionary<int, TileEntity> _types = new Dictionary<int, TileEntity>();
 +	public static int VanillaTypeCount;
  
- 	private int AssignNewID() => _nextEntityID++;
+-	private int AssignNewID() => _nextEntityID++;
++	private int AssignNewID() => _nextEntityID++; // TODO: This is cast to byte later. Is there a limit of 255 tile entities? This may be causing issues for large modpacks, investigate.
  
+ 	private bool InvalidEntityID(int id)
+ 	{
 @@ -28,6 +_,7 @@
  		Register(new TEHatRack());
  		Register(new TEFoodPlatter());

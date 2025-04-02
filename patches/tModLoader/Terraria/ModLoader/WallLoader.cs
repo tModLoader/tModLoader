@@ -3,9 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
@@ -21,6 +23,8 @@ public static class WallLoader
 	internal static readonly IList<GlobalWall> globalWalls = new List<GlobalWall>();
 	/// <summary> Maps Wall type to the Item type that places the wall. </summary>
 	internal static readonly Dictionary<int, int> wallTypeToItemType = new();
+	public delegate bool ConvertWall(int i, int j, int type, int conversionType);
+	internal static List<ConvertWall>[][] wallConversionDelegates = null;
 	private static bool loaded = false;
 
 	private static Func<int, int, int, bool, bool>[] HookKillSound;
@@ -89,6 +93,9 @@ public static class WallLoader
 		Array.Resize(ref Main.wallLargeFrames, nextWall);
 		Array.Resize(ref Main.wallFrame, nextWall);
 		Array.Resize(ref Main.wallFrameCounter, nextWall);
+		Array.Resize(ref wallConversionDelegates, nextWall);
+
+		wallConversionDelegates = new List<ConvertWall>[WallID.Count][];
 
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
 		// Remove generic arguments once fixed.
@@ -118,6 +125,7 @@ public static class WallLoader
 		nextWall = WallID.Count;
 		globalWalls.Clear();
 		wallTypeToItemType.Clear();
+		wallConversionDelegates = null;
 	}
 
 	//change type of Terraria.Tile.wall to ushort and fix associated compile errors
@@ -248,6 +256,42 @@ public static class WallLoader
 			hook(i, j, type, ref r, ref g, ref b);
 		}
 	}
+
+
+	/// <summary>
+	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert"/> <br/>
+	/// If you need to register conversions that rely on <see cref="WallID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="wallType">The wall type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the wall should use custom conversion code.</param>
+	/// <param name="conversionDelegate">Code to run when the wall attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</param>
+	public static void RegisterConversion(int wallType, int conversionType, ConvertWall conversionDelegate)
+	{
+		if (wallConversionDelegates == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "WallLoader.RegisterConversion"));
+
+		var conversions = wallConversionDelegates[wallType] ??= new List<ConvertWall>[BiomeConversionLoader.BiomeConversionCount];
+		var list = conversions[conversionType] ??= new();
+		list.Add(conversionDelegate);
+	}
+
+	public static bool Convert(int i, int j, int conversionType)
+	{
+		int type = Main.tile[i, j].wall;
+		var list = wallConversionDelegates[type]?[conversionType];
+		if (list != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
+				}
+			}
+		}
+
+		ModWall modWall = GetWall(type);
+		modWall?.Convert(i, j, conversionType);
+		return true;
+	}
+
 	//in Terraria.WorldGen.UpdateWorld after each call to TileLoader.RandomUpdate call
 	//  WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
 	//  WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);

@@ -12,6 +12,7 @@ namespace Terraria.ModLoader.Config;
 
 /// <summary>
 /// Classes implementing EntityDefinition serve to function as a way to save and load the identities of various Terraria objects. Only the identity is preserved, no other data such as stack size, damage, etc. These classes are well suited for ModConfig, but can be saved and loaded in a TagCompound as well.
+/// <para/> An EntityDefinition can potentially refer to content removed from a mod or content from a mod not currently enabled. Use <see cref="IsUnloaded"/> to check if this is the case, especially before using <see cref="Type"/> as an index into an array. It is usually desirable to preserve all unloaded EntityDefinition entries so user data is not lost, so structure your code accordingly.
 /// </summary>
 public abstract class EntityDefinition : TagSerializable
 {
@@ -24,6 +25,9 @@ public abstract class EntityDefinition : TagSerializable
 	public virtual bool IsUnloaded
 		=> Type <= 0 && !(Mod == "Terraria" && Name == "None" || Mod == "" && Name == "");
 
+	/// <summary>
+	/// The content ID of the content this EntityDefinition represents. Will be -1 for <see cref="IsUnloaded"/> EntityDefinition.
+	/// </summary>
 	[JsonIgnore]
 	public abstract int Type { get; }
 
@@ -80,6 +84,7 @@ public abstract class EntityDefinition : TagSerializable
 
 /// <summary>
 /// ItemDefinition represents an Item identity. A typical use for this class is usage in ModConfig, perhaps to facilitate an Item tweaking mod.
+/// <para/> <inheritdoc/>
 /// </summary>
 // JSONItemConverter should allow this to be used as a dictionary key.
 [TypeConverter(typeof(ToFromStringConverter<ItemDefinition>))]
@@ -105,6 +110,10 @@ public class ItemDefinition : EntityDefinition
 	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Items.UnloadedItem.DisplayName") : Lang.GetItemNameValue(Type);
 }
 
+/// <summary>
+/// ProjectileDefinition represents a Projectile identity.
+/// <para/> <inheritdoc/>
+/// </summary>
 [TypeConverter(typeof(ToFromStringConverter<ProjectileDefinition>))]
 public class ProjectileDefinition : EntityDefinition
 {
@@ -128,6 +137,10 @@ public class ProjectileDefinition : EntityDefinition
 	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Unloaded") : Lang.GetProjectileName(Type).Value;
 }
 
+/// <summary>
+/// NPCDefinition represents an NPC identity.
+/// <para/> <inheritdoc/>
+/// </summary>
 [TypeConverter(typeof(ToFromStringConverter<NPCDefinition>))]
 public class NPCDefinition : EntityDefinition
 {
@@ -151,6 +164,10 @@ public class NPCDefinition : EntityDefinition
 	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Unloaded") : Lang.GetNPCNameValue(Type);
 }
 
+/// <summary>
+/// PrefixDefinition represents a Prefix identity.
+/// <para/> <inheritdoc/>
+/// </summary>
 [TypeConverter(typeof(ToFromStringConverter<PrefixDefinition>))]
 public class PrefixDefinition : EntityDefinition
 {
@@ -187,6 +204,10 @@ public class PrefixDefinition : EntityDefinition
 	}
 }
 
+/// <summary>
+/// BuffDefinition represents an Buff identity.
+/// <para/> <inheritdoc/>
+/// </summary>
 [TypeConverter(typeof(ToFromStringConverter<BuffDefinition>))]
 public class BuffDefinition : EntityDefinition
 {
@@ -215,6 +236,10 @@ public class BuffDefinition : EntityDefinition
 	public override string DisplayName => IsUnloaded ? Language.GetTextValue("Mods.ModLoader.Unloaded") : Lang.GetBuffName(Type);
 }
 
+/// <summary>
+/// TileDefinition represents a Tile identity.
+/// <para/> <inheritdoc/>
+/// </summary>
 [TypeConverter(typeof(ToFromStringConverter<TileDefinition>))]
 public class TileDefinition : EntityDefinition
 {
