@@ -41,6 +41,7 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 			Mount.Initialize();
 
 		Type = MountLoader.ReserveMountID();
+		MountID.Search.Add(FullName, Type);
 
 		ModTypeLookup<ModMount>.Register(this);
 		MountLoader.mountDatas[Type] = this;

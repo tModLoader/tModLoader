@@ -3105,6 +3105,19 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -52948,10 +_,11 @@
+ 		if (!tile.active())
+ 			return false;
+ 
++		// TODO: TryToggleLight handles the feature where rain extinguishes light sources in The Constant worlds. It is currently unsupported for non-torch modded tiles. Modded lights with WaterDeath will be destroyed instead of extinguished.
+ 		switch (tile.type) {
+ 			default:
+ 				return false;
+-			case 4:
++			case ushort _ when TileID.Sets.Torch[tile.type]:
+ 				Wiring.ToggleTorch(x, y, tile, forcedState);
+ 				return true;
+ 			case 33:
 @@ -53002,7 +_,7 @@
  			return false;
  

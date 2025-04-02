@@ -281,6 +281,14 @@
  	public static int ToInt(this bool value)
  	{
  		if (!value)
+@@ -1089,6 +_,7 @@
+ 		return false;
+ 	}
+ 
++	/// <summary> Returns a list of the indexes within this array that are <see langword="true"/>. </summary>
+ 	public static List<int> GetTrueIndexes(this bool[] array)
+ 	{
+ 		List<int> list = new List<int>();
 @@ -1383,14 +_,26 @@
  			text.Substring(0, maxCharactersDisplayed);
  

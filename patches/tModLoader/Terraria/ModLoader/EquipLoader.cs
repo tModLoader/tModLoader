@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Reflection;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -150,6 +151,26 @@ public static class EquipLoader
 			_ => 0,
 		};
 
+	internal static IdDictionary GetSearch(EquipType type)
+		=> type switch {
+			EquipType.Head => ArmorIDs.Head.Search,
+			EquipType.Body => ArmorIDs.Body.Search,
+			EquipType.Legs => ArmorIDs.Legs.Search,
+			EquipType.HandsOn => ArmorIDs.HandOn.Search,
+			EquipType.HandsOff => ArmorIDs.HandOff.Search,
+			EquipType.Back => ArmorIDs.Back.Search,
+			EquipType.Front => ArmorIDs.Front.Search,
+			EquipType.Shoes => ArmorIDs.Shoe.Search,
+			EquipType.Waist => ArmorIDs.Waist.Search,
+			EquipType.Wings => ArmorIDs.Wing.Search,
+			EquipType.Shield => ArmorIDs.Shield.Search,
+			EquipType.Neck => ArmorIDs.Neck.Search,
+			EquipType.Face => ArmorIDs.Face.Search,
+			EquipType.Beard => ArmorIDs.Beard.Search,
+			EquipType.Balloon => ArmorIDs.Balloon.Search,
+			_ => throw new ArgumentOutOfRangeException(nameof(type)),
+		};
+
 	internal static Asset<Texture2D>[] GetTextureArray(EquipType type)
 		=> type switch {
 			EquipType.Head => TextureAssets.ArmorHead,
@@ -283,6 +304,7 @@ public static class EquipLoader
 		equipTexture.Type = type;
 		equipTexture.Item = item;
 		int slot = equipTexture.Slot = ReserveEquipID(type);
+		GetSearch(type).Add(equipTexture.Name, slot);
 
 		equipTextures[type][slot] = equipTexture;
 		mod.equipTextures[Tuple.Create(name ?? item.Name, type)] = equipTexture;

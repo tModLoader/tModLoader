@@ -54,15 +54,15 @@ namespace ExampleMod.Content.Tiles
 			Tile tile = Main.tile[i, j];
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
-			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
-			// Press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
+			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting modes
+			// While at 100% world zoom, press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
 			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			// Because height of third tile is different we change it
 			int height = tile.TileFrameY % AnimationFrameHeight == 36 ? 18 : 16;
 
 			// Offset along the Y axis depending on the current frame
-			int frameYOffset = Main.tileFrame[Type] * AnimationFrameHeight;
+			int frameYOffset = (Main.tileFrame[Type] + 1) * AnimationFrameHeight;
 
 			// Firstly we draw the original texture and then glow mask texture
 			spriteBatch.Draw(
