@@ -85,43 +85,95 @@ $(document).ready(function(){initNavTree('class_set_factory.html',''); initResiz
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_set_factory-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SetFactory Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="class_set_factory.html" title="SetFactory is responsible for creating &quot;custom ID sets&quot; for content. &quot;Custom ID sets&quot; refers to array...">SetFactory</a> is responsible for creating "custom ID sets" for content. "Custom ID sets" refers to arrays indexed by content ids. The ID set contains data applying to all instances of content of a specific type. This is typically metadata or data controlling how code will interact with each type of content. Each vanilla ID class contains a <a class="el" href="class_set_factory.html" title="SetFactory is responsible for creating &quot;custom ID sets&quot; for content. &quot;Custom ID sets&quot; refers to array...">SetFactory</a> instance called "Factory" which is used to initialize the ID sets contained within the ID class. For example <a class="el" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58" title="Used for creating sets indexed by item type (Item.type).">ItemID.Sets.Factory</a> is used to initialize <a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">ItemID.Sets.IsFood</a> with true values for food items such as ItemID.PadThai. Modded content updates ID sets in <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModType.SetStaticDefaults</a>: <code><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">ItemID.Sets.IsFood</a>[Type] = true;</code>. Code in tModLoader and individual mods might consult the data in <a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">ItemID.Sets.IsFood</a> for whatever purpose they want. Mods can make their own custom ID sets through the methods of this class. The <a class="el" href="class_set_factory.html#afe2d312996ab87b6089d3abbf2096d41" title="The final key for this named ID set using this overload will be &quot;{key}&quot; directly if it contains a &quot;/&quot;...">CreateNamedSet(string)</a> methods create custom ID sets that facilitate collaborative "named ID sets". Mods using the same "named ID set" will share a reference to the same array merging together all the entries and changes. More information can be found in the Custom and Named ID Sets pull request.  
+ <a href="class_set_factory.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_factory_1_1_named_set_key.html">NamedSetKey</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to construct the key for this "named ID set". Must be chained with a <code>RegisterXSet</code> method to create and register the set for sharing.  <a href="class_set_factory_1_1_named_set_key.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abf913a0627d71a18ff663eb7069f2f3a"><td class="memItemLeft" align="right" valign="top"><a id="abf913a0627d71a18ff663eb7069f2f3a" name="abf913a0627d71a18ff663eb7069f2f3a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SetFactory</b> (int size)</td></tr>
 <tr class="separator:abf913a0627d71a18ff663eb7069f2f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a475589ba7df5c76bb6ddc7ac191fba1c"><td class="memItemLeft" align="right" valign="top"><a id="a475589ba7df5c76bb6ddc7ac191fba1c" name="a475589ba7df5c76bb6ddc7ac191fba1c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SetFactory</b> (int size, string idClassName, Func&lt; int, string &gt; getName=null)</td></tr>
+<tr class="separator:a475589ba7df5c76bb6ddc7ac191fba1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1bd60bb2a5ad069e599bf9ae4d53a85"><td class="memItemLeft" align="right" valign="top"><a id="ab1bd60bb2a5ad069e599bf9ae4d53a85" name="ab1bd60bb2a5ad069e599bf9ae4d53a85"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SetFactory</b> (int size, string idClassName, IdDictionary search)</td></tr>
+<tr class="separator:ab1bd60bb2a5ad069e599bf9ae4d53a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ce13739b49af04da0702116d9015be2"><td class="memItemLeft" align="right" valign="top"><a id="a9ce13739b49af04da0702116d9015be2" name="a9ce13739b49af04da0702116d9015be2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr>
+<tr class="separator:a9ce13739b49af04da0702116d9015be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a763786af909f0ade6a3ed0257560c60f"><td class="memItemLeft" align="right" valign="top"><a id="a763786af909f0ade6a3ed0257560c60f" name="a763786af909f0ade6a3ed0257560c60f"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateBoolSet</b> (bool defaultState, params int[] types)</td></tr>
+<tr class="memdesc:a763786af909f0ade6a3ed0257560c60f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns a bool array ID set. All values will be <em>defaultState</em>  except the indexes passed in (<em>types</em> ) will be the opposite of <em>defaultState</em> . <br /></td></tr>
 <tr class="separator:a763786af909f0ade6a3ed0257560c60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4952be28f1304056a6bb61eba71be7cc"><td class="memItemLeft" align="right" valign="top"><a id="a4952be28f1304056a6bb61eba71be7cc" name="a4952be28f1304056a6bb61eba71be7cc"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateBoolSet</b> (params int[] types)</td></tr>
+<tr class="memdesc:a4952be28f1304056a6bb61eba71be7cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns a bool array ID set. All values will be false except the indexes passed in (<em>types</em> ) will be true. <br /></td></tr>
 <tr class="separator:a4952be28f1304056a6bb61eba71be7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10997d501d01843fd6b8d7f8fa2eaddb"><td class="memItemLeft" align="right" valign="top"><a id="a10997d501d01843fd6b8d7f8fa2eaddb" name="a10997d501d01843fd6b8d7f8fa2eaddb"></a>
 T[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateCustomSet&lt; T &gt;</b> (T defaultState, params object[] inputs)</td></tr>
+<tr class="memdesc:a10997d501d01843fd6b8d7f8fa2eaddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns an array ID set of the supplied Type. This should be used for creating ID sets not covered by the other methods, such as for classes (string, <a class="el" href="class_list.html">List</a>&lt;T&gt;), nullable primitives (bool?), and structs (Color). All values are <em>defaultState</em>  except for the values passed in as <em>inputs</em> . The <em>inputs</em>  contain index value pairs listed one after the other. For example <code>CreateCustomSet&lt;string&gt;(null, ItemID.CopperOre, "Ugly", ItemID.SilverOre, "Pretty")</code> will result in an array filled with null except the CopperOre index will have a value of "Ugly" and the SilverOre index a value of "Pretty". Note that for non-null class values used for <em>defaultState</em> , the reference will be shared with all default entries, so be mindful when working with these sets to not accidentally affect the shared default state object. For example passing in <code>new <a class="el" href="class_list.html">List</a>&lt;int&gt;</code> as <em>defaultState</em>  will make it very likely to be misused on accident. <br /></td></tr>
 <tr class="separator:a10997d501d01843fd6b8d7f8fa2eaddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a864dd95cb4a87b9b9d7b253944fd5627"><td class="memItemLeft" align="right" valign="top"><a id="a864dd95cb4a87b9b9d7b253944fd5627" name="a864dd95cb4a87b9b9d7b253944fd5627"></a>
 float[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateFloatSet</b> (float defaultState, params float[] inputs)</td></tr>
+<tr class="memdesc:a864dd95cb4a87b9b9d7b253944fd5627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns a float array ID set. All values are <em>defaultState</em>  except for the values passed in as <em>inputs</em> . The <em>inputs</em>  contain index value pairs listed one after the other. For example <code>CreateFloatSet(1f, ItemID.CopperOre, 1.5f, ItemID.SilverOre, 2.3f)</code> will result in an array filled with 1f except the CopperOre index will have a value of 1.5f and the SilverOre index a value of 2.3f. <br /></td></tr>
 <tr class="separator:a864dd95cb4a87b9b9d7b253944fd5627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0829d13a98bb3dd24f266e2a9f6cb82c"><td class="memItemLeft" align="right" valign="top"><a id="a0829d13a98bb3dd24f266e2a9f6cb82c" name="a0829d13a98bb3dd24f266e2a9f6cb82c"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateIntSet</b> (int defaultState, params int[] inputs)</td></tr>
+<tr class="memdesc:a0829d13a98bb3dd24f266e2a9f6cb82c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns an int array ID set. All values are <em>defaultState</em>  except for the values passed in as <em>inputs</em> . The <em>inputs</em>  contain index value pairs listed one after the other. For example <code>CreateIntSet(-1, ItemID.CopperOre, 10, ItemID.SilverOre, 20)</code> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. <br /></td></tr>
 <tr class="separator:a0829d13a98bb3dd24f266e2a9f6cb82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09b894e452a474bdaa6522901ad15708"><td class="memItemLeft" align="right" valign="top"><a id="a09b894e452a474bdaa6522901ad15708" name="a09b894e452a474bdaa6522901ad15708"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateIntSet</b> (params int[] types)</td></tr>
+<tr class="memdesc:a09b894e452a474bdaa6522901ad15708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns an int array ID set. All values are -1 except for the values passed in as <em>types</em> . The <em>types</em>  contain index value pairs listed one after the other. For example <code>CreateIntSet([ItemID.CopperOre, 10, ItemID.SilverOre, 20])</code> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. <br /></td></tr>
 <tr class="separator:a09b894e452a474bdaa6522901ad15708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3c0cece3d70c3204c19814606e5cf60"><td class="memItemLeft" align="right" valign="top"><a id="ad3c0cece3d70c3204c19814606e5cf60" name="ad3c0cece3d70c3204c19814606e5cf60"></a>
+<a class="el" href="class_set_factory_1_1_named_set_key.html">NamedSetKey</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreateNamedSet</b> (<a class="el" href="class_mod.html">Mod</a> mod, string key)</td></tr>
+<tr class="memdesc:ad3c0cece3d70c3204c19814606e5cf60"><td class="mdescLeft">&#160;</td><td class="mdescRight">The final key for this named ID set using this overload will be: <code>"{mod.Name}/{key}"</code> <a class="el" href="class_set_factory.html#afe2d312996ab87b6089d3abbf2096d41" title="The final key for this named ID set using this overload will be &quot;{key}&quot; directly if it contains a &quot;/&quot;...">CreateNamedSet(string)</a> <br /></td></tr>
+<tr class="separator:ad3c0cece3d70c3204c19814606e5cf60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe2d312996ab87b6089d3abbf2096d41"><td class="memItemLeft" align="right" valign="top"><a id="afe2d312996ab87b6089d3abbf2096d41" name="afe2d312996ab87b6089d3abbf2096d41"></a>
+<a class="el" href="class_set_factory_1_1_named_set_key.html">NamedSetKey</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreateNamedSet</b> (string fullKey)</td></tr>
+<tr class="memdesc:afe2d312996ab87b6089d3abbf2096d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">The final key for this named ID set using this overload will be <code>"{key}"</code> directly if it contains a "/". Otherwise, the final key will be derived automatically from the currently loading mod: <code>"{loadingMod.Name}/{key}"</code> <br /></td></tr>
+<tr class="separator:afe2d312996ab87b6089d3abbf2096d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94269fe9fd84c093917befcf22ccbeaa"><td class="memItemLeft" align="right" valign="top"><a id="a94269fe9fd84c093917befcf22ccbeaa" name="a94269fe9fd84c093917befcf22ccbeaa"></a>
+<a class="el" href="class_set_factory_1_1_named_set_key.html">NamedSetKey</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreateNamedSet</b> (string modName, string key)</td></tr>
+<tr class="memdesc:a94269fe9fd84c093917befcf22ccbeaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The final key for this named ID set using this overload will be: <code>"{modName}/{key}"</code> <br /></td></tr>
+<tr class="separator:a94269fe9fd84c093917befcf22ccbeaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac89f3c7bd47965770494e20b4d16e3cf"><td class="memItemLeft" align="right" valign="top"><a id="ac89f3c7bd47965770494e20b4d16e3cf" name="ac89f3c7bd47965770494e20b4d16e3cf"></a>
 ushort[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateUshortSet</b> (ushort defaultState, params ushort[] inputs)</td></tr>
+<tr class="memdesc:ac89f3c7bd47965770494e20b4d16e3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns a ushort array ID set. All values are <em>defaultState</em>  except for the values passed in as <em>inputs</em> . The <em>inputs</em>  contain index value pairs listed one after the other. For example <code>CreateUshortSet(0, ItemID.CopperOre, 10, ItemID.SilverOre, 20)</code> will result in an array filled with 0 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. <br /></td></tr>
 <tr class="separator:ac89f3c7bd47965770494e20b4d16e3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a826502177497d0ee48ddaf3d579e6"><td class="memItemLeft" align="right" valign="top"><a id="af7a826502177497d0ee48ddaf3d579e6" name="af7a826502177497d0ee48ddaf3d579e6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MergeNamedSets&lt; T &gt;</b> (params string[] inputSetNames)</td></tr>
+<tr class="memdesc:af7a826502177497d0ee48ddaf3d579e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Causes sets registered with the provided keys (and matching <a class="el" href="class_set_factory.html" title="SetFactory is responsible for creating &quot;custom ID sets&quot; for content. &quot;Custom ID sets&quot; refers to array...">SetFactory</a> and Type) to be merged as if they are registered with the same key. This is useful for situations where established set keys are determined to have identical meaning but the involved mods are incapable of updating to collaborate on the shared key, either due to dependent mods or inactivity. Essentially, the sets will be merged and share the same data. The default value must still be consistent between the sets. This must be called before the ResizeArrays stage of mod loading, such as in a Load method. <br /></td></tr>
+<tr class="separator:af7a826502177497d0ee48ddaf3d579e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab303381f183793371133cf3e097ddec5"><td class="memItemLeft" align="right" valign="top"><a id="ab303381f183793371133cf3e097ddec5" name="ab303381f183793371133cf3e097ddec5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Recycle&lt; T &gt;</b> (T[] buffer)</td></tr>
 <tr class="separator:ab303381f183793371133cf3e097ddec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f86d340913cae6d9348fc220f4123e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_factory.html#a8f86d340913cae6d9348fc220f4123e9">RegisterNamedCustomSet&lt; T &gt;</a> (<a class="el" href="class_set_factory_1_1_named_set_key.html">NamedSetKey</a> setKey, T defaultValue, ref T[] input)</td></tr>
+<tr class="memdesc:a8f86d340913cae6d9348fc220f4123e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually registers a named ID set. This is typically done through the <code>Terraria.ID.XID.Sets.Factory.CreateNamedSet().RegisterXSet()</code> methods, but this method can be used for manually initialized arrays. The set reference passed in might be changed by this method when merging with existing data. Throws an exception if the data length or default value does not match a named ID set with the same key registered before this.  <a href="class_set_factory.html#a8f86d340913cae6d9348fc220f4123e9">More...</a><br /></td></tr>
+<tr class="separator:a8f86d340913cae6d9348fc220f4123e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a39a2c1d4e4275fa582f3e45382f04c8b"><td class="memItemLeft" align="right" valign="top"><a id="a39a2c1d4e4275fa582f3e45382f04c8b" name="a39a2c1d4e4275fa582f3e45382f04c8b"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResizeArrays</b> (bool unloading)</td></tr>
+<tr class="separator:a39a2c1d4e4275fa582f3e45382f04c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -144,6 +196,48 @@ Protected Attributes</h2></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>_size</b></td></tr>
 <tr class="separator:a74d4aa7c042164e9a79a6040c9e624c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p ><a class="el" href="class_set_factory.html" title="SetFactory is responsible for creating &quot;custom ID sets&quot; for content. &quot;Custom ID sets&quot; refers to array...">SetFactory</a> is responsible for creating "custom ID sets" for content. "Custom ID sets" refers to arrays indexed by content ids. The ID set contains data applying to all instances of content of a specific type. This is typically metadata or data controlling how code will interact with each type of content. Each vanilla ID class contains a <a class="el" href="class_set_factory.html" title="SetFactory is responsible for creating &quot;custom ID sets&quot; for content. &quot;Custom ID sets&quot; refers to array...">SetFactory</a> instance called "Factory" which is used to initialize the ID sets contained within the ID class. </p>
+<p >For example <a class="el" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58" title="Used for creating sets indexed by item type (Item.type).">ItemID.Sets.Factory</a> is used to initialize <a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">ItemID.Sets.IsFood</a> with true values for food items such as ItemID.PadThai. Modded content updates ID sets in <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModType.SetStaticDefaults</a>: <code><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">ItemID.Sets.IsFood</a>[Type] = true;</code>. Code in tModLoader and individual mods might consult the data in <a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">ItemID.Sets.IsFood</a> for whatever purpose they want. </p>
+<p >Mods can make their own custom ID sets through the methods of this class. The <a class="el" href="class_set_factory.html#afe2d312996ab87b6089d3abbf2096d41" title="The final key for this named ID set using this overload will be &quot;{key}&quot; directly if it contains a &quot;/&quot;...">CreateNamedSet(string)</a> methods create custom ID sets that facilitate collaborative "named ID sets". Mods using the same "named ID set" will share a reference to the same array merging together all the entries and changes. More information can be found in the Custom and Named ID Sets pull request</p>
+<p >. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8f86d340913cae6d9348fc220f4123e9" name="a8f86d340913cae6d9348fc220f4123e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f86d340913cae6d9348fc220f4123e9">&#9670;&nbsp;</a></span>RegisterNamedCustomSet&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetFactory.RegisterNamedCustomSet&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_set_factory_1_1_named_set_key.html">NamedSetKey</a>&#160;</td>
+          <td class="paramname"><em>setKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>defaultValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref T[]&#160;</td>
+          <td class="paramname"><em>input</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Manually registers a named ID set. This is typically done through the <code>Terraria.ID.XID.Sets.Factory.CreateNamedSet().RegisterXSet()</code> methods, but this method can be used for manually initialized arrays. The set reference passed in might be changed by this method when merging with existing data. Throws an exception if the data length or default value does not match a named ID set with the same key registered before this. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

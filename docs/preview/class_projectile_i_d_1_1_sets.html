@@ -171,7 +171,7 @@ static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>ExtendedCan
  Defaults to <code>null</code>.  <a href="class_projectile_i_d_1_1_sets.html#a55510f0139e16d3251fa9eb51690d38e">More...</a><br /></td></tr>
 <tr class="separator:a55510f0139e16d3251fa9eb51690d38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab66d76ae9787e9c32369522cf8ef830d"><td class="memItemLeft" align="right" valign="top"><a id="ab66d76ae9787e9c32369522cf8ef830d" name="ab66d76ae9787e9c32369522cf8ef830d"></a>
-static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(ProjectileLoader.ProjectileCount)</td></tr>
+static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(ProjectileLoader.ProjectileCount, nameof(<a class="el" href="class_projectile_i_d.html">ProjectileID</a>), <a class="el" href="class_projectile_i_d.html#ae00e96d29cf262e1891dd8b7258cc815">Search</a>)</td></tr>
 <tr class="separator:ab66d76ae9787e9c32369522cf8ef830d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a935f885823fca92a7aa292ba6f107691"><td class="memItemLeft" align="right" valign="top"><a id="a935f885823fca92a7aa292ba6f107691" name="a935f885823fca92a7aa292ba6f107691"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>FallingBlockDoesNotFallThroughPlatforms</b> = Factory.CreateBoolSet(false, 71, 179, 40, 39, 17, 812, 411, 412, 413, 414, 31, 67, 56, 241, 42, 68, 65, 354)</td></tr>
@@ -437,7 +437,7 @@ static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>YoyosTopSpe
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= Factory.CreateBoolSet(<span class="keyword">false</span>, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives,</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= Factory.<a class="code hl_function" href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">CreateBoolSet</a>(<span class="keyword">false</span>, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives,</div>
 <div class="line">            GrenadeI, RocketI, ProximityMineI, GrenadeII, RocketII, ProximityMineII, GrenadeIII, RocketIII, ProximityMineIII, GrenadeIV, RocketIV, ProximityMineIV,</div>
 <div class="line">            Landmine, RocketSkeleton, RocketSnowmanI, RocketSnowmanII, RocketSnowmanIII, RocketSnowmanIV, StickyGrenade, StickyDynamite, BouncyBomb, BouncyGrenade,</div>
 <div class="line">            BombFish, PartyGirlGrenade, BouncyDynamite, DD2GoblinBomb, ScarabBomb, ClusterRocketI, ClusterGrenadeI, ClusterMineI, ClusterFragmentsI, ClusterRocketII,</div>
@@ -445,6 +445,7 @@ static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>YoyosTopSpe
 <div class="line">            MiniNukeRocketI, MiniNukeGrenadeI, MiniNukeMineI, MiniNukeRocketII, MiniNukeGrenadeII, MiniNukeMineII, DryRocket, DryGrenade, DryMine, ClusterSnowmanRocketI,</div>
 <div class="line">            ClusterSnowmanRocketII, WetSnowmanRocket, LavaSnowmanRocket, HoneySnowmanRocket, MiniNukeSnowmanRocketI, MiniNukeSnowmanRocketII, DrySnowmanRocket,</div>
 <div class="line">            ClusterSnowmanFragmentsI, ClusterSnowmanFragmentsII, WetBomb, LavaBomb, HoneyBomb, DryBomb, DirtBomb, DirtStickyBomb, SantankMountRocket, TNTBarrel)</div>
+<div class="ttc" id="aclass_set_factory_html_a4952be28f1304056a6bb61eba71be7cc"><div class="ttname"><a href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">SetFactory.CreateBoolSet</a></div><div class="ttdeci">bool[] CreateBoolSet(params int[] types)</div><div class="ttdoc">Creates and returns a bool array ID set. All values will be false except the indexes passed in (types...</div></div>
 </div><!-- fragment -->
 <p>Contains all of the projectiles that are classified as explosives. This includes all vanilla projectiles using <a class="el" href="class_proj_a_i_style_i_d.html#a1516383015bc0311f5003dc05905bd92" title="Note that projectiles using ProjectileID.Sets.Explosive will utilize much of the custom logic corresp...">ProjAIStyleID.Explosive</a> and any modded projectiles that should be regarded as explosives that do not necessarily use that aiStyle. This set facilitates implementing explosive projectiles without limiting them to using <a class="el" href="class_proj_a_i_style_i_d.html#a1516383015bc0311f5003dc05905bd92" title="Note that projectiles using ProjectileID.Sets.Explosive will utilize much of the custom logic corresp...">ProjAIStyleID.Explosive</a> directly, allowing for custom AI code to be used without sacrificing other expected behaviors. Projectiles using this set need to also use ModLoader.ModProjectile.PrepareBombToBlow. Several shared behaviors of explosive projectiles will be automatically applied to projectiles using this set: <a class="el" href="class_projectile_i_d_1_1_sets.html">Sets</a> the timeLeft to 3 and the projectile direction when colliding with an <a class="el" href="class_n_p_c.html">NPC</a> or player in PVP (so the explosive can detonate). Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds. Note that code should check both <code>(projectile.aiStyle == <a class="el" href="class_proj_a_i_style_i_d.html#a1516383015bc0311f5003dc05905bd92" title="Note that projectiles using ProjectileID.Sets.Explosive will utilize much of the custom logic corresp...">ProjAIStyleID.Explosive</a> || <a class="el" href="class_projectile_i_d_1_1_sets.html#a7350c2bce03eca2dc7c4e7d5f1043539" title="Contains all of the projectiles that are classified as explosives. This includes all vanilla projecti...">ProjectileID.Sets.Explosive</a>[projectile.type])</code> for any code targeting explosive projectiles since this set might not be complete. </p>
 
@@ -632,13 +633,14 @@ static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>YoyosTopSpe
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= Factory.CreateFloatSet(1f,</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= Factory.<a class="code hl_function" href="class_set_factory.html#a864dd95cb4a87b9b9d7b253944fd5627">CreateFloatSet</a>(1f,</div>
 <div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.Smolstar, 0.75f,</div>
 <div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.DD2LightningAuraT1, 0.5f,</div>
 <div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.DD2LightningAuraT2, 0.5f,</div>
 <div class="line">            <a class="code hl_class" href="class_projectile_i_d.html">ProjectileID</a>.DD2LightningAuraT3, 0.5f</div>
 <div class="line">        )</div>
 <div class="ttc" id="aclass_projectile_i_d_html"><div class="ttname"><a href="class_projectile_i_d.html">ProjectileID</a></div><div class="ttdef"><b>Definition:</b> ProjectileID.cs:10</div></div>
+<div class="ttc" id="aclass_set_factory_html_a864dd95cb4a87b9b9d7b253944fd5627"><div class="ttname"><a href="class_set_factory.html#a864dd95cb4a87b9b9d7b253944fd5627">SetFactory.CreateFloatSet</a></div><div class="ttdeci">float[] CreateFloatSet(float defaultState, params float[] inputs)</div><div class="ttdoc">Creates and returns a float array ID set. All values are defaultState  except for the values passed i...</div><div class="ttdef"><b>Definition:</b> SetFactory.cs:139</div></div>
 </div><!-- fragment -->
 <p>Used to scale down summon tag damage for fast hitting minions and sentries. </p>
 

@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"class_item.html#af0415741ce7179b5adf69e3a8c643172":[3,0,627,141],
+"class_item.html#af12f64d3bea397bd4d322c2321f3339c":[3,0,627,121],
+"class_item.html#af1ae960811fed2407701b6689bb234ce":[3,0,627,133],
 "class_item.html#af408dfdaffd7c3e1920615c9ad124079":[3,0,627,88],
 "class_item.html#af434c7f5ff93e08087fae8ae21afdd5e":[3,0,627,35],
 "class_item.html#af50e755297ab9529ba9282c0a16aa0c4":[3,0,627,162],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "class_item_rarity_i_d.html#addbd93958a7b8193ee8c2809a5c0c435":[3,0,647,0],
 "class_item_rarity_i_d.html#adeab9153159ceeafb92219128afc4e77":[3,0,647,4],
 "class_item_rarity_i_d.html#ae2a04a3733b7443b7fe1dd5a376d13c9":[3,0,647,1],
-"class_item_rarity_i_d.html#af0ab2b06b23ed7fb48c1276073b03966":[3,0,647,11],
-"class_item_shop_sellback_helper.html":[3,0,648],
-"class_item_slot.html":[3,0,649],
-"class_item_slot_1_1_context.html":[3,0,649,0]
+"class_item_rarity_i_d.html#af0ab2b06b23ed7fb48c1276073b03966":[3,0,647,11]
 };

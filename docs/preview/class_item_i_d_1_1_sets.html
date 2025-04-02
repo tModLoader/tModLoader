@@ -209,7 +209,7 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>Extractinator
 <tr class="memdesc:af0737632d94e0a1506f93cb062be8935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates which extractinator type an item belongs to. An extractType of 0 represents the default extraction (Silt and Slush). 0, ItemID.DesertFossil, ItemID.OldShoe, and ItemID.LavaMoss are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The Extractinator wiki pagehas more info. Use this in conjunction with <a class="el" href="class_mod_item.html#aa982f3c4e5ec5ffc4a8162d1524fba8f" title="Allows you to modify what item, and in what quantity, is obtained when any item belonging to the extr...">ModItem.ExtractinatorUse(int, ref int, ref int)</a> or <a class="el" href="class_global_item.html#a70babf50f55402c074c12965794d1fe8" title="Allows you to modify what item, and in what quantity, is obtained when an item of the given type is f...">GlobalItem.ExtractinatorUse(int, int, ref int, ref int)</a>. Defaults to -1. <br /></td></tr>
 <tr class="separator:af0737632d94e0a1506f93cb062be8935"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8deb61d9534ebf888326dcd693554a58"><td class="memItemLeft" align="right" valign="top"><a id="a8deb61d9534ebf888326dcd693554a58" name="a8deb61d9534ebf888326dcd693554a58"></a>
-static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(ItemLoader.ItemCount)</td></tr>
+static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(ItemLoader.ItemCount, nameof(<a class="el" href="class_item_i_d.html">ItemID</a>), <a class="el" href="class_item_i_d.html#a521e105c1bcc2eb1e8455a0a21e01398">Search</a>)</td></tr>
 <tr class="memdesc:a8deb61d9534ebf888326dcd693554a58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for creating sets indexed by item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>). <br /></td></tr>
 <tr class="separator:a8deb61d9534ebf888326dcd693554a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a852a1e0cfca668d91fdaf7e803316c13"><td class="memItemLeft" align="right" valign="top"><a id="a852a1e0cfca668d91fdaf7e803316c13" name="a852a1e0cfca668d91fdaf7e803316c13"></a>
@@ -695,12 +695,13 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WorksInVoidB
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateBoolSet(</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.<a class="code hl_function" href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">CreateBoolSet</a>(</div>
 <div class="line">            BugNet,</div>
 <div class="line">            GoldenBugNet,</div>
 <div class="line">            FireproofBugNet</div>
 <div class="line">        )</div>
-<div class="ttc" id="aclass_item_i_d_1_1_sets_html_a8deb61d9534ebf888326dcd693554a58"><div class="ttname"><a href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">ItemID.Sets.Factory</a></div><div class="ttdeci">static SetFactory Factory</div><div class="ttdoc">Used for creating sets indexed by item type (Item.type).</div><div class="ttdef"><b>Definition:</b> ItemID.cs:84</div></div>
+<div class="ttc" id="aclass_item_i_d_1_1_sets_html_a8deb61d9534ebf888326dcd693554a58"><div class="ttname"><a href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">ItemID.Sets.Factory</a></div><div class="ttdeci">static SetFactory Factory</div><div class="ttdoc">Used for creating sets indexed by item type (Item.type).</div><div class="ttdef"><b>Definition:</b> ItemID.cs:85</div></div>
+<div class="ttc" id="aclass_set_factory_html_a4952be28f1304056a6bb61eba71be7cc"><div class="ttname"><a href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">SetFactory.CreateBoolSet</a></div><div class="ttdeci">bool[] CreateBoolSet(params int[] types)</div><div class="ttdoc">Creates and returns a bool array ID set. All values will be false except the indexes passed in (types...</div></div>
 </div><!-- fragment -->
 <p>Set for catching tools (bug net-type items which can catch critters).<br  />
  If you want your catching tool to be able to catch the Underworld's lava critters, don't forget to use the <a class="el" href="class_item_i_d_1_1_sets.html#a03d3a12274ee07320bdf9a80d19025de" title="Set for catching tools which can catch the Underworld&#39;s lava critters.  Don&#39;t forget to use the Catch...">LavaproofCatchingTool</a> set in conjunction with this one. </p>
@@ -726,12 +727,13 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WorksInVoidB
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateIntSet(0,</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.<a class="code hl_function" href="class_set_factory.html#a09b894e452a474bdaa6522901ad15708">CreateIntSet</a>(0,</div>
 <div class="line">            CopperCoin,   1,</div>
 <div class="line">            SilverCoin,   100,</div>
 <div class="line">            GoldCoin,     10000,</div>
 <div class="line">            PlatinumCoin, 1000000</div>
 <div class="line">        )</div>
+<div class="ttc" id="aclass_set_factory_html_a09b894e452a474bdaa6522901ad15708"><div class="ttname"><a href="class_set_factory.html#a09b894e452a474bdaa6522901ad15708">SetFactory.CreateIntSet</a></div><div class="ttdeci">int[] CreateIntSet(params int[] types)</div><div class="ttdoc">Creates and returns an int array ID set. All values are -1 except for the values passed in as types ....</div></div>
 </div><!-- fragment -->
 <p>Set for defining how much coin luck according to its stack this item gives to nearby players when thrown into shimmer (Entity.shimmerWet).<br  />
  Includes the 4 vanilla coin types by default. The value represents the "price" of the currency in copper coins. For other items, default value is 0, which means it will not give coin luck.<br  />
@@ -1117,7 +1119,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateBoolSet(</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.<a class="code hl_function" href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">CreateBoolSet</a>(</div>
 <div class="line">            PiranhaGun, PainterPaintballGun, Toxikarp, Harpoon, AleThrowingGlove</div>
 <div class="line">        )</div>
 </div><!-- fragment -->
@@ -1179,7 +1181,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateBoolSet(</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.<a class="code hl_function" href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">CreateBoolSet</a>(</div>
 <div class="line">            GoldenBugNet,</div>
 <div class="line">            FireproofBugNet</div>
 <div class="line">        )</div>
@@ -1393,7 +1395,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateBoolSet(</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.<a class="code hl_function" href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">CreateBoolSet</a>(</div>
 <div class="line">            KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,</div>
 <div class="line">            SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag, DeerclopsBossBag</div>
 <div class="line">        )</div>
@@ -1478,7 +1480,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.CreateBoolSet(</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58">Factory</a>.<a class="code hl_function" href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">CreateBoolSet</a>(</div>
 <div class="line">            Spear,</div>
 <div class="line">            Trident,</div>
 <div class="line">            Swordfish,</div>

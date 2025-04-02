@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"class_entity_source___boss_spawn.html":[3,0,317],
+"class_entity_source___boss_spawn.html#a70798afd3e246700e23286b6cf28af65":[3,0,317,0],
 "class_entity_source___boss_spawn.html#aa5fd09a8a4ee17aad84a1182acb2a75c":[3,0,317,1],
 "class_entity_source___buff.html":[3,0,318],
 "class_entity_source___buff.html#a360138d29f7f5ad2fb1ff0b46b2a63a4":[3,0,318,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "class_game_tip_i_d.html#a68ee47c5c58be47b0bf40499182be099":[3,0,433,13],
 "class_game_tip_i_d.html#a6a692443068d55187ddc067ae7ebc7c1":[3,0,433,43],
 "class_game_tip_i_d.html#a6cffacbd5e18718cb00093fea0995eba":[3,0,433,80],
-"class_game_tip_i_d.html#a6fbc71f06e6cef139d1c9fea3c5530dd":[3,0,433,38],
-"class_game_tip_i_d.html#a716de8cd0fb7d68ac01320b6ed24b4e1":[3,0,433,102],
-"class_game_tip_i_d.html#a727da10b73b3eb465314bf121fc1e593":[3,0,433,31]
+"class_game_tip_i_d.html#a6fbc71f06e6cef139d1c9fea3c5530dd":[3,0,433,38]
 };

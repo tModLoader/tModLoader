@@ -1,5 +1,12 @@
 var NAVTREEINDEX16 =
 {
+"class_n_p_c_debuff_immunity_data.html#a52610200cee3fe8d9f11f17b4e02b407":[3,0,901,0],
+"class_n_p_c_debuff_immunity_data.html#ae8dcac94d27dcef250f549ad877f3717":[3,0,901,3],
+"class_n_p_c_definition.html":[3,0,902],
+"class_n_p_c_definition.html#a66b580671aeb9bf4e9415057c0ed1220":[3,0,902,0],
+"class_n_p_c_follow_state.html":[3,0,903],
+"class_n_p_c_head_draw_render_target_content.html":[3,0,905],
+"class_n_p_c_head_i_d.html":[3,0,906],
 "class_n_p_c_head_i_d_1_1_sets.html":[3,0,906,0],
 "class_n_p_c_head_i_d_1_1_sets.html#a7ca6884ce77d49e49475ea14a90f1cad":[3,0,906,0,0],
 "class_n_p_c_head_loader.html":[3,0,907],
@@ -125,7 +132,7 @@ var NAVTREEINDEX16 =
 "class_name_plate_info_element.html":[3,0,863],
 "class_name_plate_info_element.html#aadf74d51eadf39067583acd93902463f":[3,0,863,0],
 "class_name_tag_handler.html":[3,0,864],
-"class_native_file_dialog.html":[3,0,866],
+"class_native_file_dialog.html":[3,0,865],
 "class_nebula_pillar_big_progress_bar.html":[3,0,867],
 "class_nebula_sky.html":[3,0,868],
 "class_nested_u_i_grid.html":[3,0,869],
@@ -242,12 +249,5 @@ var NAVTREEINDEX16 =
 "class_player.html#a2fbbfa6eb4a875d1f5e39087ea356c24":[3,0,972,164],
 "class_player.html#a32316bda22ef6f043114926a0a9d6909":[3,0,972,109],
 "class_player.html#a3323cc53dd50a26dfcd15ebdcab5e121":[3,0,972,130],
-"class_player.html#a344519dc47381dd60771d75cb7660260":[3,0,972,56],
-"class_player.html#a35399bea3ca0caff04615abdc7889d6f":[3,0,972,165],
-"class_player.html#a35fb2e87fe029f718ffa79d6d9fbf0a4":[3,0,972,145],
-"class_player.html#a39278b6c7ec05fbee2a78736772e02c7":[3,0,972,34],
-"class_player.html#a395bdfdd1cff8473a9b1ad4a3060b4ec":[3,0,972,199],
-"class_player.html#a39a13c4eeca802d67f88f96ccb050844":[3,0,972,83],
-"class_player.html#a3b1f18a7795a870bbd130ee923f6b13e":[3,0,972,57],
-"class_player.html#a3bd2523a3b0b07f3f2b656d5bf17faa7":[3,0,972,201]
+"class_player.html#a344519dc47381dd60771d75cb7660260":[3,0,972,56]
 };

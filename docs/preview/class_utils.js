@@ -6,6 +6,7 @@ var class_utils =
     [ "Frame", "class_utils.html#ada68951072cd4fdc7e20a5d57d7b1873", null ],
     [ "Frame", "class_utils.html#af8ae312e8da4a79a51b2fada5851cbf9", null ],
     [ "GetDayTimeAs24FloatStartingFromMidnight", "class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723", null ],
+    [ "GetTrueIndexes", "class_utils.html#ae99d584536fc77db47630fc66c03dc72", null ],
     [ "MultiLerp", "class_utils.html#a54b07febc0e0b2f0703a75feb2287a5b", null ],
     [ "Next< T >", "class_utils.html#a89069d24f25560e0c9d565dd55e2187f", null ],
     [ "Next< T >", "class_utils.html#a20b08c978c09a4c4046fd34c2510df05", null ],

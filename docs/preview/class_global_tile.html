@@ -129,8 +129,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanDrop</b> (
 <tr class="memitem:adc7f9d3882d68ea2cb10f583bba375d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#adc7f9d3882d68ea2cb10f583bba375d3">ChangeWaterfallStyle</a> (int type, ref int style)</td></tr>
 <tr class="memdesc:adc7f9d3882d68ea2cb10f583bba375d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the style of waterfall that passes through or over any tile.  <a href="class_global_tile.html#adc7f9d3882d68ea2cb10f583bba375d3">More...</a><br /></td></tr>
 <tr class="separator:adc7f9d3882d68ea2cb10f583bba375d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea84cf25c26547b18259d51b979397f1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#aea84cf25c26547b18259d51b979397f1">DrawEffects</a> (int i, int j, int type, SpriteBatch spriteBatch, ref <a class="el" href="class_tile_draw_info.html">TileDrawInfo</a> drawData)</td></tr>
-<tr class="memdesc:aea84cf25c26547b18259d51b979397f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in. SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.  <a href="class_global_tile.html#aea84cf25c26547b18259d51b979397f1">More...</a><br /></td></tr>
+<tr class="memitem:aea84cf25c26547b18259d51b979397f1"><td class="memItemLeft" align="right" valign="top"><a id="aea84cf25c26547b18259d51b979397f1" name="aea84cf25c26547b18259d51b979397f1"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawEffects</b> (int i, int j, int type, SpriteBatch spriteBatch, ref <a class="el" href="class_tile_draw_info.html">TileDrawInfo</a> drawData)</td></tr>
 <tr class="separator:aea84cf25c26547b18259d51b979397f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bbde788cba66acfd18f62fec2b139af"><td class="memItemLeft" align="right" valign="top"><a id="a7bbde788cba66acfd18f62fec2b139af" name="a7bbde788cba66acfd18f62fec2b139af"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, int type)</td></tr>
@@ -141,6 +141,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int
 <tr class="memitem:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0">DropCritterChance</a> (int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)</td></tr>
 <tr class="memdesc:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.  <a href="class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0">More...</a><br /></td></tr>
 <tr class="separator:a8d81c5aceb5f569a24f6cc85ec077fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cfb6d8bb2a5a68664d6e2c468adda8c"><td class="memItemLeft" align="right" valign="top"><a id="a3cfb6d8bb2a5a68664d6e2c468adda8c" name="a3cfb6d8bb2a5a68664d6e2c468adda8c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>EmitParticles</b> (int i, int j, <a class="el" href="struct_tile.html">Tile</a> <a class="el" href="class_tile_draw_info.html#ad25e3c1f189d125deb8d905bdc1bd0c7">tileCache</a>, ushort <a class="el" href="class_tile_draw_info.html#a236849a2a66346d32c8d9eae20617489">typeCache</a>, short <a class="el" href="class_tile_draw_info.html#a54143aaaa4b09d555c9e6656669fb704">tileFrameX</a>, short <a class="el" href="class_tile_draw_info.html#a2f9f82164727933578d0528c31eba859">tileFrameY</a>, Color tileLight, bool visible)</td></tr>
+<tr class="separator:a3cfb6d8bb2a5a68664d6e2c468adda8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b78b88d68fb1b0fc11cc70371a87320"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320">FloorVisuals</a> (int type, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a5b78b88d68fb1b0fc11cc70371a87320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a player stands on the given type of tile. For example, you can make the player slide as if on ice.  <a href="class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320">More...</a><br /></td></tr>
 <tr class="separator:a5b78b88d68fb1b0fc11cc70371a87320"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -689,72 +692,6 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
   <table class="params">
     <tr><td class="paramname">type</td><td></td></tr>
     <tr><td class="paramname">style</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aea84cf25c26547b18259d51b979397f1" name="aea84cf25c26547b18259d51b979397f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea84cf25c26547b18259d51b979397f1">&#9670;&nbsp;</a></span>DrawEffects()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void GlobalTile.DrawEffects </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>j</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">SpriteBatch&#160;</td>
-          <td class="paramname"><em>spriteBatch</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="class_tile_draw_info.html">TileDrawInfo</a>&#160;</td>
-          <td class="paramname"><em>drawData</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in. SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
-    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
-    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> type of the tile being drawn</td></tr>
-    <tr><td class="paramname">spriteBatch</td><td>The SpriteBatch that should be used for all draw calls</td></tr>
-    <tr><td class="paramname">drawData</td><td>Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</td></tr>
   </table>
   </dd>
 </dl>

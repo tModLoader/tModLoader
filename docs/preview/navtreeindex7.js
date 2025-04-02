@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"class_group_option_button.html#a5d0e3cd7e96c8cc3a3e4ec86aa529356":[3,0,487,1],
+"class_group_option_button.html#a6d57dae7d6d2cf6211fcdd6d941963d7":[3,0,487,2],
+"class_group_option_button.html#a7180495c26b64d222d9d18d1f46b88cd":[3,0,487,0],
 "class_hair_i_d.html":[3,0,488],
 "class_hair_i_d_1_1_sets.html":[3,0,488,0],
 "class_hair_i_d_1_1_sets.html#a3572d25190356ece1c2d1a46b5d766f6":[3,0,488,0,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "class_item.html#aed7ee0f67ec31f0674b4bebec7897acf":[3,0,627,5],
 "class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8":[3,0,627,120],
 "class_item.html#aee75bcf06e3325fe8c165a3b24a0ae73":[3,0,627,15],
-"class_item.html#aee93c1f1a86db882300293a86afc3e67":[3,0,627,45],
-"class_item.html#af0415741ce7179b5adf69e3a8c643172":[3,0,627,141],
-"class_item.html#af12f64d3bea397bd4d322c2321f3339c":[3,0,627,121],
-"class_item.html#af1ae960811fed2407701b6689bb234ce":[3,0,627,133]
+"class_item.html#aee93c1f1a86db882300293a86afc3e67":[3,0,627,45]
 };
