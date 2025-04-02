@@ -563,6 +563,8 @@
 		"CommandModListSyncedMods": "已同步模组：",
 		"CommandModListClientMods": "客户端模组：",
 		"CommandModListModlist": "模组列表：",
+		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "构建中：{0}",

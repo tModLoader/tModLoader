@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -35,6 +36,7 @@ public abstract class ModHair : ModTexturedType
 	{
 		ModTypeLookup<ModHair>.Register(this);
 		Type = HairLoader.Register(this);
+		HairID.Search.Add(FullName, Type);
 	}
 
 	public sealed override void SetupContent()

@@ -70,18 +70,19 @@
  		public BannerEffect(float normalDamageDealt, float expertDamageDealt, float normalDamageReceived, float expertDamageReceived)
  		{
  			NormalDamageDealt = normalDamageDealt;
-@@ -36,9 +_,17 @@
+@@ -36,9 +_,18 @@
  		}
  	}
  
 -	public class Sets
 +	public partial class Sets
  	{
+-		public static SetFactory Factory = new SetFactory(Count);
 +		/// <summary>
 +		/// Used for creating sets indexed by item type (<see cref="Item.type"/>).
++		/// <para/> <inheritdoc cref="SetFactory"/>
 +		/// </summary>
--		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
++		public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount, nameof(ItemID), Search);
 +
 +		/// <summary>
 +		/// The list of items processed after normal items in <see cref="ContentSamples.Initialize"/>.
