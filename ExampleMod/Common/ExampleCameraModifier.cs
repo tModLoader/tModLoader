@@ -16,15 +16,17 @@ namespace ExampleMod.Common
 		// This makes sure that other modifiers of the same identity don't run at the same time
 		public string UniqueIdentity { get; private set; }
 		public bool Finished { get; private set; }
+
 		public ExampleCameraModifier(Vector2 position, int frames, string uniqueIdentity = null) {
 			_position = position - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
 			_framesToLast = frames;
 			UniqueIdentity = uniqueIdentity;
 		}
-		public void Update(ref CameraInfo cameraInfo) {
-			float lerpT = MathHelper.Clamp(MathF.Sin(MathHelper.Pi * Utils.GetLerpValue(0, _framesToLast, _framesLasted)) * 2, 0, 1);
 
+		public void Update(ref CameraInfo cameraInfo) {
 			// Smoothly pans the camera from the start position to the desired position, and back
+			float progress = Utils.GetLerpValue(0, _framesToLast, _framesLasted);
+			float lerpT = MathHelper.Clamp(MathF.Sin(MathHelper.Pi * progress) * 2, 0, 1); // Multiplying by 2 here makes the camera linger at the desired position for longer
 			cameraInfo.CameraPosition = Vector2.Lerp(cameraInfo.CameraPosition, _position, lerpT);
 
 			// Pauses the effect if the game is tabbed out or paused
