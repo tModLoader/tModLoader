@@ -38,10 +38,10 @@ public sealed class UpdateLocalizationFilesTask : SetupOperation
 		return Task.CompletedTask;
 	}
 
-	public override void FinishedPrompt()
+	public override async ValueTask FinishedPrompt()
 	{
 		if (success) {
-			userPrompt.Inform("Success", "Make sure you diff tModLoader after this.");
+			await userPrompt.Inform("Success", "Make sure you diff tModLoader after this.");
 		}
 	}
 }

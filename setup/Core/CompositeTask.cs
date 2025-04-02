@@ -23,13 +23,13 @@ namespace Terraria.ModLoader.Setup.Core
 
 		public override bool Warnings() => tasks.Any(x => x.Warnings());
 
-		public override void FinishedPrompt()
+		public override async ValueTask FinishedPrompt()
 		{
 			if (failed != null)
-				failed.FinishedPrompt();
+				await failed.FinishedPrompt();
 			else
 				foreach (var task in tasks)
-					task.FinishedPrompt();
+					await task.FinishedPrompt();
 		}
 
 		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)

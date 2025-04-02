@@ -17,13 +17,13 @@ namespace Terraria.ModLoader.Setup.Core
 			programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 		}
 
-		public override bool StartupWarning()
+		public override async ValueTask<bool> StartupWarning()
 		{
 			if (programSettings.NoPrompts) {
 				return true;
 			}
 
-			return userPrompt.Prompt(
+			return await userPrompt.Prompt(
 				"Ready for Setup",
 				"Any changes in /src will be lost.",
 				PromptOptions.OKCancel);

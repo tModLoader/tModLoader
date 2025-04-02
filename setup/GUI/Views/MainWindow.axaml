@@ -1,0 +1,95 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Setup.GUI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Setup.GUI.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/tModLoaderSetup.ico"
+        Title="tModLoader Setup"
+        Width="400"
+        Height="550">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Window.Resources>
+        <system:Int32 x:Key="ExactPatchMode">0</system:Int32>
+        <system:Int32 x:Key="OffsetPatchMode">1</system:Int32>
+        <system:Int32 x:Key="FuzzyPatchMode">2</system:Int32>
+        <system:Int32 x:Key="Zero">0</system:Int32>
+    </Window.Resources>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Options">
+                <MenuItem Header="Select Terraria directory" Command="{Binding SelectTerrariaDirectoryCommand}" />
+                <MenuItem Header="Select custom TML output directory"
+                          Command="{Binding SelectTModLoaderDirectoryCommand}" />
+                <MenuItem Header="Reset diff timestamps" Command="{Binding ResetDiffTimestampsCommand}" />
+                <MenuItem Header="Format after decompile" Command="{Binding ToggleFormatAfterDecompilingCommand}"
+                          IsChecked="{Binding FormatAfterDecompiling}" ToggleType="CheckBox" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Decompile Server" Command="{Binding DecompileServerCommand}" />
+                <MenuItem Header="Format" Command="{Binding FormatCommand}" />
+                <MenuItem Header="HookGen" Command="{Binding HookGenCommand}" />
+                <MenuItem Header="Simplify" Command="{Binding SimplifyCommand}" />
+                <MenuItem Header="Update Localization Files" Command="{Binding UpdateLocalizationFilesCommand}" />
+            </MenuItem>
+            <MenuItem Header="Patch">
+                <MenuItem Header="Exact" Command="{Binding SetExactPatchModeCommand}"
+                          IsChecked="{Binding SelectedPatchMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={StaticResource ExactPatchMode}}"
+                          ToggleType="CheckBox" />
+                <MenuItem Header="Offset" Command="{Binding SetOffsetPatchModeCommand}"
+                          IsChecked="{Binding SelectedPatchMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={StaticResource OffsetPatchMode}}"
+                          ToggleType="CheckBox" />
+                <MenuItem Header="Fuzzy" Command="{Binding SetFuzzyPatchModeCommand}"
+                          IsChecked="{Binding SelectedPatchMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={StaticResource FuzzyPatchMode}}"
+                          ToggleType="CheckBox" />
+            </MenuItem>
+        </Menu>
+
+        <Grid RowDefinitions="Auto,5,Auto,5,*,5,Auto,5,Auto" Margin="20">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,*">
+                <Grid.Styles>
+                    <Style Selector="Button[(Grid.Column)=0]">
+                        <Setter Property="Margin" Value="0 0 0 8" />
+                    </Style>
+                    <Style Selector="Button[(Grid.Column)=1]">
+                        <Setter Property="Margin" Value="8 0 0 8" />
+                    </Style>
+                </Grid.Styles>
+                
+                <Button Grid.Row="0" Grid.Column="0" Command="{Binding SetupCommand}">Setup</Button>
+                <Button Grid.Row="0" Grid.Column="1" Command="{Binding DecompileCommand}">Decompile</Button>
+                <Button Grid.Row="1" Grid.Column="0" Command="{Binding DiffTerrariaCommand}">Diff Terraria</Button>
+                <Button Grid.Row="1" Grid.Column="1" Command="{Binding PatchTerrariaCommand}">Patch Terraria</Button>
+                <Button Grid.Row="2" Grid.Column="0" Command="{Binding DiffTerrariaNetCoreCommand}">Diff TerrariaNetCore</Button>
+                <Button Grid.Row="2" Grid.Column="1" Command="{Binding PatchTerrariaNetCoreCommand}">Patch TerrariaNetCore</Button>
+                <Button Grid.Row="3" Grid.Column="0" Command="{Binding DiffTModLoaderCommand}">Diff tModLoader</Button>
+                <Button Grid.Row="3" Grid.Column="1" Command="{Binding PatchTModLoaderCommand}">Patch tModLoader</Button>
+                <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding RegenSourceCommand}">Regenerate Source</Button>
+            </Grid>
+
+            <TextBlock Grid.Row="2" Text="{Binding TaskText}" />
+            <TextBlock Grid.Row="4" Text="{Binding StatusText}" />
+            <ProgressBar Grid.Row="6" Value="{Binding CurrentProgress}" Maximum="{Binding MaxProgress}">
+                <ProgressBar.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="NoCommandRunning" Converter="{x:Static BoolConverters.Not}" />
+                        <Binding Path="MaxProgress" Converter="{x:Static ObjectConverters.IsNotNull}" />
+                        <Binding Path="MaxProgress" Converter="{x:Static ObjectConverters.NotEqual}" ConverterParameter="{StaticResource Zero}" />
+                    </MultiBinding>
+                </ProgressBar.IsVisible>
+            </ProgressBar>
+            <Button Grid.Row="8" Command="{Binding CancelCommand}" IsVisible="{Binding !NoCommandRunning}">Cancel</Button>
+        </Grid>
+    </DockPanel>
+
+</Window>

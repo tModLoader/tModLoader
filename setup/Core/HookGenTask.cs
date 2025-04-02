@@ -49,9 +49,9 @@ namespace Terraria.ModLoader.Setup.Core
 			return Task.CompletedTask;
 		}
 
-		public override void FinishedPrompt()
+		public override async ValueTask FinishedPrompt()
 		{
-			userPrompt.Inform("Success", "Success. Make sure you diff tModLoader after this");
+			await userPrompt.Inform("Success", "Success. Make sure you diff tModLoader after this");
 		}
 
 		private void HookGen(ITaskProgress taskProgress, string inputPath, string outputPath, string dotnetReferencesDirectory, CancellationToken cancellationToken = default)

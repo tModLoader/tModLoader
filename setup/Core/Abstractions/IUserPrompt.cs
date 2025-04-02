@@ -13,7 +13,7 @@ public interface IUserPrompt
 	/// <param name="options">Options value that describes which options are shown to the user.</param>
 	/// <param name="severity">An optional severity.</param>
 	/// <returns><see langword="true"/> if the user confirmed the prompt; otherwise <see langword="false"/></returns>
-	bool Prompt(
+	Task<bool> Prompt(
 		string caption,
 		string text,
 		PromptOptions options,
@@ -25,5 +25,5 @@ public interface IUserPrompt
 	/// <param name="caption">The caption.</param>
 	/// <param name="text">The text.</param>
 	/// <param name="severity">An optional severity.</param>
-	void Inform(string caption, string text, PromptSeverity severity = PromptSeverity.Information);
+	Task Inform(string caption, string text, PromptSeverity severity = PromptSeverity.Information);
 }

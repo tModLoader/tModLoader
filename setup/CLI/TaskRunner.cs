@@ -32,7 +32,7 @@ public sealed class TaskRunner
 
 			await task.ConfigurationPrompt(cancellationToken);
 
-			if (!task.StartupWarning())
+			if (!await task.StartupWarning())
 				return 0;
 
 			if (settings.PlainProgress) {
@@ -62,7 +62,7 @@ public sealed class TaskRunner
 				}
 			}
 
-			task.FinishedPrompt();
+			await task.FinishedPrompt();
 
 			(string text, Color color) = GetCompletionText(task);
 			AnsiConsole.Write(new Text(text + '\n', new Style(foreground: color, decoration: Decoration.Bold)));
