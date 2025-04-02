@@ -1158,6 +1158,11 @@ Mods: {
 					Spreads the underworld
 					''' */
 			}
+
+			CameraModifierShowcase: {
+				// DisplayName: Camera Modifier Showcase
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
