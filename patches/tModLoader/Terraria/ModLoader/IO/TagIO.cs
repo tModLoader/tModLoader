@@ -185,7 +185,30 @@ public static class TagIO
 		throw new IOException($"Invalid NBT payload type '{t}'");
 	}
 
-	private static Type GetListElementType(Type type) => type.GetElementType() ?? type.GetGenericArguments()[0];
+	private static Type GetListElementType(Type type)
+	{
+		var elemType = type.GetElementType();
+		if (elemType is not null)
+			return elemType;
+
+		Type? enumerableType = null;
+		foreach (Type interfaceType in type.GetInterfaces()) {
+			if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) {
+
+				// Prevent the possibility of ambiguity
+				if (enumerableType is not null)
+					throw new IOException($"Invalid NBT payload type '{type}'");
+
+				enumerableType = interfaceType;
+			}
+		}
+
+		// type is IList but not IEnumerable<T>
+		if (enumerableType is null)
+			throw new IOException($"Invalid NBT payload type '{type}'");
+
+		return enumerableType.GetGenericArguments()[0];
+	}
 
 	public static object Serialize(object value)
 	{
