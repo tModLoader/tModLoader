@@ -93,9 +93,8 @@ public static class WallLoader
 		Array.Resize(ref Main.wallLargeFrames, nextWall);
 		Array.Resize(ref Main.wallFrame, nextWall);
 		Array.Resize(ref Main.wallFrameCounter, nextWall);
-		Array.Resize(ref wallConversionDelegates, nextWall);
 
-		wallConversionDelegates = new List<ConvertWall>[WallID.Count][];
+		wallConversionDelegates = new List<ConvertWall>[nextWall][];
 
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
 		// Remove generic arguments once fixed.
