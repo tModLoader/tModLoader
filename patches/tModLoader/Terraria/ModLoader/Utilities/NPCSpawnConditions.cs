@@ -325,7 +325,7 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 			=> new(CompareType.Or, tileIDs.Select<int, ISubSpawnCondition>((tileID) =>
 				new SubSpawnCondition((info) => info.ProperGroundTileType == tileID) { MetaData = nameof(ProperGroundSpawnTile) + ":" + tileID }));
 
-		public static ConditionWrapper PlayerCenterSpawnTile(params int[] tileIDs)
+		public static ConditionWrapper PlayerCentreSpawnTile(params int[] tileIDs)
 			=> new(CompareType.Or, tileIDs.Select<int, ISubSpawnCondition>((tileID) =>
 				new SubSpawnCondition((info) => info.GetPlayerCentreTile().wall == tileID) { MetaData = nameof(ProperGroundSpawnTile) + ":" + tileID }));
 
@@ -405,7 +405,7 @@ public record class ConditionWrapper(CompareType CurrentCompare, IEnumerable<ISu
 
 	public static ConditionWrapper CreateConditional(ISubSpawnCondition condition, ISubSpawnCondition whenTrue, ISubSpawnCondition whenFalse)
 		=> new(CompareType.Or, new ISubSpawnCondition[] {
-			new ConditionWrapper(CompareType.And, condition+ whenTrue ),
+			new ConditionWrapper(CompareType.And, condition + whenTrue ),
 			new ConditionWrapper(CompareType.And, condition.GetNot() + whenFalse ),
 		});
 }

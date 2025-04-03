@@ -108,5 +108,11 @@ public abstract class ModBiome : ModSceneEffect, IShoppingBiome, ILocalizedModTy
 	{
 	}
 
+	/// <summary>
+	/// Override this to 
+	/// </summary>
+	public virtual bool BiomePrioritySpawns()
+		=> true;
+
 	bool IShoppingBiome.IsInBiome(Player player) => IsSceneEffectActive(player);
 }

@@ -549,7 +549,7 @@ public static class SpawnCondition
 
 		Gnome = new();
 		//(!Main.remixWorld && !flag7 && (!Main.dayTime || Main.tile[num, num2].wall > 0) && Main.tile[num8, num9].wall == 244 && !Main.eclipse && !Main.bloodMoon && Main.player[k].RollLuck(30) == 0 && CountNPCS(624) <= Main.rand.Next(3))
-		baseCondition += Gnome.AddAndReturn(new CalculatedSpawnCondition(!RemixWorld & !InfoWater & (!TimeDay | HasTrueWallTile) & PlayerCenterSpawnTile(WallID.LivingWoodUnsafe) & !Eclipse & !BloodMoon & SpawnCap(NPCID.Gnome, 3),
+		baseCondition += Gnome.AddAndReturn(new CalculatedSpawnCondition(!RemixWorld & !InfoWater & (!TimeDay | HasTrueWallTile) & PlayerCentreSpawnTile(WallID.LivingWoodUnsafe) & !Eclipse & !BloodMoon & SpawnCap(NPCID.Gnome, 3),
 			(info) => (3 - NPC.CountNPCS(NPCID.Gnome)) / 3f * GetPlayerRollWeight(info, 30))); //29
 
 		//ReLogic??? I will cry on you and that is a threat
@@ -799,5 +799,5 @@ public static class SpawnCondition
 // TODO: Add names for windy day spawns,
 // TODO: Finish gem critter calculator,
 // TODO: obsolete inaccurate names, return correct
-// TODO: explore viability of larger category based abstraction layer to wrap vanilla a little better (Something like ~Biome => Liquid? => Other Conditions => Gold Critter? => Spawn)
+// Unrealistic: explore viability of larger category based abstraction layer to wrap vanilla a little better (Something like ~Biome => Liquid? => Other Conditions => Gold Critter? => Spawn)
 // TODO: Poke at ModBiome for spawn blocking stuff?
