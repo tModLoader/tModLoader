@@ -5,7 +5,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -6,12 +_,17 @@
+@@ -6,12 +_,15 @@
  using Terraria.GameContent.UI.States;
  using Terraria.IO;
  using Terraria.Localization;
@@ -14,8 +14,6 @@
 +using Terraria.ModLoader.Config;
  using Terraria.Social;
  using Terraria.UI;
-+using Terraria.ModLoader.IO;
-+using Microsoft.Xna.Framework.Input;
  
  namespace Terraria.GameContent.UI.Elements;
  
