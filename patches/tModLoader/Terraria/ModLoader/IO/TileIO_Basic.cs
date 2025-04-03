@@ -65,6 +65,7 @@ internal static partial class TileIO
 					}
 					else if (canPurgeOldData) {
 						entry.type = entry.loadedType = entry.vanillaReplacementType;
+						purgedData.Add(entry);
 					}
 					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
 						entry.type = (ushort)entries.Count;
@@ -74,7 +75,7 @@ internal static partial class TileIO
 				}
 			}
 
-			this.entries =  entries.ToArray();
+			this.entries = entries.ToArray();
 		}
 
 		protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
@@ -249,6 +250,17 @@ internal static partial class TileIO
 		}
 
 		WorldIO.ValidateSigns(); //call this at end
+		if (canPurgeOldData) {
+			Logging.tML.Info("Unloaded tiles and walls have been purged from this world using the Ctrl-Alt-Shift shortcut while selecting the world. If this was unintentional please restore to a backup.");
+			var purgedTiles = purgedData.OfType<TileEntry>();
+			var purgedWalls = purgedData.OfType<WallEntry>();
+			if (purgedTiles.Any())
+				Logging.tML.Info($"Purged tiles: {string.Join(", ", purgedTiles.Select(x => $"{x.modName}/{x.name}"))}");
+			if(purgedWalls.Any())
+				Logging.tML.Info($"Purged walls: {string.Join(", ", purgedWalls.Select(x => $"{x.modName}/{x.name}"))}");
+			purgedData.Clear();
+			canPurgeOldData = false;
+		}
 	}
 
 	//TODO: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
@@ -260,7 +272,8 @@ internal static partial class TileIO
 		return tag;
 	}
 
-	internal static bool canPurgeOldData => Main.keyState.PressingShift(); //for deleting unloaded mod data in a save; should point to UI flag; temp false
+	internal static HashSet<ModBlockEntry> purgedData = [];
+	internal static bool canPurgeOldData; //for deleting unloaded mod data in a save; can be reworked to point to UI flag; for now ctrl+alt+shift when selecting a world will do it.
 
 	internal static void ResetUnloadedTypes()
 	{

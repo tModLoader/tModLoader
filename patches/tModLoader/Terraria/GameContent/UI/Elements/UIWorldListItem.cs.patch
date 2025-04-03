@@ -5,7 +5,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -6,12 +_,15 @@
+@@ -6,12 +_,17 @@
  using Terraria.GameContent.UI.States;
  using Terraria.IO;
  using Terraria.Localization;
@@ -14,6 +14,8 @@
 +using Terraria.ModLoader.Config;
  using Terraria.Social;
  using Terraria.UI;
++using Terraria.ModLoader.IO;
++using Microsoft.Xna.Framework.Input;
  
  namespace Terraria.GameContent.UI.Elements;
  
@@ -92,6 +94,18 @@
  		if (listeningElement == evt.Target && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
  			_data.SetAsActive();
  			SoundEngine.PlaySound(10);
+@@ -267,8 +_,10 @@
+ 			else
+ 				Main.menuMode = 10;
+ 
+-			if (!Main.menuMultiplayer)
++			if (!Main.menuMultiplayer) {
++				TileIO.canPurgeOldData = Main.keyState.PressingShift() && Main.keyState.PressingControl() && (Main.keyState.IsKeyDown(Keys.LeftAlt) || Main.keyState.IsKeyDown(Keys.RightAlt));
+ 				WorldGen.playWorld();
++			}
+ 		}
+ 	}
+ 
 @@ -281,6 +_,9 @@
  			return true;
  		}
