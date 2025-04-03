@@ -84,7 +84,8 @@
 +	/// <summary>
 +	/// The maximum length that <see cref="name"/> is allowed to be.
 +	/// </summary>
- 	public const int MaxNameLength = 20;
+-	public const int MaxNameLength = 20;
++	public const int MaxNameLength = 63;
 +
 +	/// <summary>
 +	/// The items this chest contains.
@@ -574,7 +575,7 @@
  	public static void DestroyChestDirect(int X, int Y, int id)
  	{
  		if (id < 0 || id >= Main.chest.Length)
-@@ -637,13 +_,27 @@
+@@ -637,23 +_,44 @@
  		}
  	}
  
@@ -588,23 +589,26 @@
 +	public int AddItemToShop(Item newItem)
  	{
  		int num = Main.shopSellbackHelper.Remove(newItem);
-+
- 		if (num >= newItem.stack)
+-		if (num >= newItem.stack)
 -			return;
-+			return 0;
- 
++
++		if (num >= newItem.stack) {
++			for (int i = 0; i < 39; i++)
++				if (item[i] != null && item[i].type == newItem.type)
++					return i;
++			return 0; // Technically this shouldn't happen
++		}
++
 +		//TML:
 +		// When selling to vendor with full inventory, replace 2nd to last
 +		// item rather than have the item disappear to facilitate PostSellItem Item reference.
-+
-+		/*
+ 
  		for (int i = 0; i < 39; i++) {
-+		*/
-+		for (int i = 0; i < 38; i++) {
- 			if (item[i] == null || item[i].type == 0) {
+-			if (item[i] == null || item[i].type == 0) {
++			if (item[i] == null || item[i].type == 0 || i == 38) {
  				item[i] = newItem.Clone();
  				item[i].favorited = false;
-@@ -651,9 +_,15 @@
+ 				item[i].buyOnce = true;
  				item[i].stack -= num;
  				_ = item[i].value;
  				_ = 0;
@@ -702,7 +706,7 @@
 +	/// <summary>
 +	/// Visually opens the chest at <paramref name="worldPosition"/> for <paramref name="duration"/> ticks.
 +	/// </summary>
-+	/// <param name="worldPosition">The position of the chest to ask, in tile coordinates.</param>
++	/// <param name="worldPosition">The position of the chest to ask, in world coordinates.</param>
 +	/// <param name="duration">The duration of the eating animation in ticks.</param>
  	public static void AskForChestToEatItem(Vector2 worldPosition, int duration)
  	{

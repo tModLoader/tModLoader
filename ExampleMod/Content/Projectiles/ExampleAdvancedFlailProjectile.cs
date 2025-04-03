@@ -19,6 +19,9 @@ namespace ExampleMod.Content.Projectiles
 		private const string ChainTexturePath = "ExampleMod/Content/Projectiles/ExampleAdvancedFlailProjectileChain"; // The folder path to the flail chain sprite
 		private const string ChainTextureExtraPath = "ExampleMod/Content/Projectiles/ExampleAdvancedFlailProjectileChainExtra";  // This texture and related code is optional and used for a unique effect
 
+		private static Asset<Texture2D> chainTexture;
+		private static Asset<Texture2D> chainTextureExtra; // This texture and related code is optional and used for a unique effect
+
 		private enum AIState
 		{
 			Spinning,
@@ -38,6 +41,11 @@ namespace ExampleMod.Content.Projectiles
 		public ref float StateTimer => ref Projectile.ai[1];
 		public ref float CollisionCounter => ref Projectile.localAI[0];
 		public ref float SpinningStateTimer => ref Projectile.localAI[1];
+
+		public override void Load() {
+			chainTexture = ModContent.Request<Texture2D>(ChainTexturePath);
+			chainTextureExtra = ModContent.Request<Texture2D>(ChainTextureExtraPath);
+		}
 
 		public override void SetStaticDefaults() {
 			// These lines facilitate the trail drawing
@@ -431,9 +439,6 @@ namespace ExampleMod.Content.Projectiles
 			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. The flail itself still draws incorrectly due to another similar bug. This should be removed once the vanilla bug is fixed.
 			playerArmPosition.Y -= Main.player[Projectile.owner].gfxOffY;
 
-			Asset<Texture2D> chainTexture = ModContent.Request<Texture2D>(ChainTexturePath);
-			Asset<Texture2D> chainTextureExtra = ModContent.Request<Texture2D>(ChainTextureExtraPath); // This texture and related code is optional and used for a unique effect
-
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
 			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap. 
@@ -493,10 +498,11 @@ namespace ExampleMod.Content.Projectiles
 
 			// Add a motion trail when moving forward, like most flails do (don't add trail if already hit a tile)
 			if (CurrentAIState == AIState.LaunchingForward) {
-				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+				Texture2D projectileTexture = TextureAssets.Projectile[Type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-				for (int k = 0; k < Projectile.oldPos.Length && k < StateTimer; k++) {
+				int afterimageCount = Math.Min(Projectile.oldPos.Length - 1, (int)StateTimer);
+				for (int k = afterimageCount; k > 0; k--) {
 					Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 					Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 					Main.spriteBatch.Draw(projectileTexture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k / (float)Projectile.oldPos.Length / 3, spriteEffects, 0f);

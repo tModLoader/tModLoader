@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MonoMod.Core.Platforms;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
 using Terraria.Utilities;
 
 namespace Terraria.ModLoader.IO;
@@ -209,7 +212,23 @@ internal static class PlayerIO
 		var saveData = new TagCompound();
 
 		foreach (var modPlayer in player.modPlayers) {
-			modPlayer.SaveData(saveData);
+			try {
+				modPlayer.SaveData(saveData);
+			}
+			catch (Exception e) {
+				// Unlike LoadData, we don't throw error because we don't want users to lose game progress.
+				var message = NetworkText.FromKey("tModLoader.SavePlayerDataExceptionWarning", modPlayer.Name, modPlayer.Mod.Name, "\n\n" + e.ToString());
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: false);
+
+				list.Add(new TagCompound {
+					["mod"] = modPlayer.Mod.Name,
+					["name"] = modPlayer.Name,
+					["error"] = e.ToString()
+				});
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 
 			if (saveData.Count == 0)
 				continue;
@@ -230,6 +249,11 @@ internal static class PlayerIO
 		foreach (var tag in list) {
 			string modName = tag.GetString("mod");
 			string modPlayerName = tag.GetString("name");
+
+			if (tag.TryGet<string>("error", out string errorMessage)) {
+				player.ModSaveErrors[$"{modName}/{modPlayerName}.SaveData"] = errorMessage;
+				continue;
+			}
 
 			if (ModContent.TryFind<ModPlayer>(modName, modPlayerName, out var modPlayerBase)) {
 				var modPlayer = player.GetModPlayer(modPlayerBase);

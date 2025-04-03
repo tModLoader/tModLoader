@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Items.Weapons
 {
 	// This is an example gun designed to best demonstrate the various tML hooks that can be used for ammo-related specifications.
+	// The ammo wiki guide, https://github.com/tModLoader/tModLoader/wiki/Basic-Ammo, is a good resource for learning how the ammo system works.
 	public class ExampleSpecificAmmoGun : ModItem
 	{
 		public static readonly int FreeAmmoChance1 = 20;
@@ -73,6 +74,10 @@ namespace ExampleMod.Content.Items.Weapons
 			// For this example, we'll forcefully deny Cursed Bullets from being used as ammunition, but otherwise make no changes to the ammo pool.
 			if (ammo.type == ItemID.CursedBullet)
 				return false;
+
+			// This code would allow this weapon to use Arrow ammo. A modder making such a weapon would want to make sure the item tooltip informs the user about these ammo irregularities.
+			//if (ammo.ammo == AmmoID.Arrow) {
+			//	return true;
 
 			// Oh, and a word of advice: always default to returning null, as per the above.
 			// Defaulting to returning true or false may have unintended consequences on what you can or can't use as ammo.

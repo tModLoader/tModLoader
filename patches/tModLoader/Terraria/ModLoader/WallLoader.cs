@@ -45,8 +45,6 @@ public static class WallLoader
 
 	internal static int ReserveWallID()
 	{
-		if (ModNet.AllowVanillaClients) throw new Exception("Adding walls breaks vanilla client compatibility");
-
 		int reserveID = nextWall;
 		nextWall++;
 		return reserveID;

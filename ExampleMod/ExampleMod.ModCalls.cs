@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 namespace ExampleMod
 {
 	// This is a partial class, meaning some of its parts were split into other files. See ExampleMod.*.cs for other portions.
+	// The class is partial to organize similar code together to clarify what is related.
+	// This class extends from the Mod class as seen in ExampleMod.cs. Make sure to extend from the mod class, ": Mod", in your own code if using this file as a template for you mods Mod class.
 	partial class ExampleMod
 	{
 		// The following code allows other mods to "call" Example Mod data.

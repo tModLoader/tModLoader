@@ -34,6 +34,9 @@ ADD --chown=tml:tml https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.
 # directory as this file, comment out the above line and uncomment this line:
 # COPY --chown=tml:tml manage-tModLoaderServer.sh .
 
+# Make management script executable. Fixes "Permission Denied" error on some systems.
+RUN chmod +x manage-tModLoaderServer.sh
+
 RUN ./manage-tModLoaderServer.sh install-tml --github --tml-version $TML_VERSION
 
 EXPOSE 7777

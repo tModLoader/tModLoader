@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -4,10 +_,11 @@
+@@ -4,24 +_,32 @@
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
  using Terraria.GameInput;
@@ -13,7 +13,18 @@
  {
  	public static TileEntitiesManager manager;
  	public const int MaxEntitiesPerChunk = 1000;
-@@ -22,6 +_,9 @@
+ 	public static object EntityCreationLock = new object();
++	/// <summary> Maps <see cref="ID"/> to TileEntity instances. </summary>
+ 	public static Dictionary<int, TileEntity> ByID = new Dictionary<int, TileEntity>();
++	/// <summary> Maps tile coordinate locations to the TileEntity at that location. </summary>
+ 	public static Dictionary<Point16, TileEntity> ByPosition = new Dictionary<Point16, TileEntity>();
+ 	public static int TileEntitiesNextID;
++	/// <summary> A unique ID for each TileEntity instance in the world. </summary>
+ 	public int ID;
++	/// <summary> The tile coordinate location of this TileEntity. Will typically be the top left corner of the corresponding multitile, but not necessarily. </summary>
+ 	public Point16 Position;
+ 	public byte type;
+ 
  	public static event Action _UpdateStart;
  	public static event Action _UpdateEnd;
  
@@ -74,7 +85,7 @@
  		writer.Write(Position.Y);
 +
 +		//Call NetSend instead of the vanilla method when in modded contexts.
-+		if (networkSend && !ModNet.AllowVanillaClients) {
++		if (networkSend) {
 +			NetSend(writer);
 +
 +			return;
@@ -94,7 +105,7 @@
  		Position = new Point16(reader.ReadInt16(), reader.ReadInt16());
 +
 +		//Call NetReceive instead of the vanilla method when in modded contexts.
-+		if (networkSend && !ModNet.AllowVanillaClients) {
++		if (networkSend) {
 +			NetReceive(reader);
 +
 +			return;

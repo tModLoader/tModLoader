@@ -92,26 +92,6 @@
  		if (listeningElement == evt.Target && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
  			_data.SetAsActive();
  			SoundEngine.PlaySound(10);
-@@ -267,8 +_,18 @@
- 			else
- 				Main.menuMode = 10;
- 
--			if (!Main.menuMultiplayer)
-+			if (!Main.menuMultiplayer) {
-+				ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
-+
-+				if (ConfigManager.AnyModNeedsReload()) {
-+					ModLoader.ModLoader.OnSuccessfulLoad += PlayReload();
-+					ModLoader.ModLoader.Reload();
-+					return;
-+				}
-+
-+				ConfigManager.OnChangedAll();
- 				WorldGen.playWorld();
-+			}
- 		}
- 	}
- 
 @@ -281,6 +_,9 @@
  			return true;
  		}

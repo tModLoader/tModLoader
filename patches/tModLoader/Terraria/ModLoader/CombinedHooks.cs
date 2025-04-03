@@ -125,6 +125,15 @@ public static class CombinedHooks
 		PlayerLoader.MeleeEffects(player, sItem, itemRectangle);
 	}
 
+	public static void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+		ProjectileLoader.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
+
+		if (projectile.TryGetOwner(out var realPlayer)) {
+			PlayerLoader.EmitEnchantmentVisualsAt(realPlayer, projectile, boxPosition, boxWidth, boxHeight);
+		}
+	}
+
 	public static bool? CanHitNPCWithProj(Projectile proj, NPC npc)
 	{
 		bool? ret = null;

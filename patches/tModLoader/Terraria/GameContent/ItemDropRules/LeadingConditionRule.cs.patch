@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/LeadingConditionRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/LeadingConditionRule.cs
+@@ -2,6 +_,10 @@
+ 
+ namespace Terraria.GameContent.ItemDropRules;
+ 
++/// <summary>
++/// A drop rule that doesn't drop any items by itself, rather it contains just a <see cref="IItemDropRuleCondition"/>. Use <see cref="Chains.OnSuccess(IItemDropRule, IItemDropRule, bool)"/>, OnFailedConditions, or OnFailedRoll to attach other item drop rules to this rule. This can be useful for avoiding code repetition while writing logical item drop code.
++/// <para/> See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#chaining-rules">Chaining Rules section of the Basic NPC Drops and Loot Guide</see> for more information and examples.
++/// </summary>
+ public class LeadingConditionRule : IItemDropRule
+ {
+ 	public IItemDropRuleCondition condition;

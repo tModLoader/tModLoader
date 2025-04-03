@@ -20,9 +20,8 @@ namespace ExampleMod.Common.GlobalNPCs
 				}
 				// Count how many ExampleJavelinProjectile are attached to this npc.
 				int exampleJavelinCount = 0;
-				for (int i = 0; i < 1000; i++) {
-					Projectile p = Main.projectile[i];
-					if (p.active && p.type == ModContent.ProjectileType<ExampleJavelinProjectile>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI) {
+				foreach (var p in Main.ActiveProjectiles) {
+					if (p.type == ModContent.ProjectileType<ExampleJavelinProjectile>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI) {
 						exampleJavelinCount++;
 					}
 				}

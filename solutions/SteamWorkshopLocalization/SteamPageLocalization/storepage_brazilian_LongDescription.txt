@@ -1,0 +1,36 @@
+Cave, Lute e Construa pelo mundo de mods criados por jogadores de Terraria como você usando o tModLoader - esta DLC torna a criação de mods uma realidade!
+
+tModLoader (TML) é uma modificação e expansão do jogo Terraria de código aberto que é dirigido pela comunidade e que torna possível criar e jogar com mods. TML expande suas aventurias terrarianas com muito conteúdo novo para explorar, criado pela comunidade do Terraria! TML permite que os jogadores criem e joguem mods do Terraria e é projetado de tal maneira que possibilite uma jogatina só ou junto com amigos - utilizando apenas um mod, ou vários; você que escolhe como jogar!
+
+OBSERVAÇÃO: É necessário que todos os jogadores participantes instalem o TML se desejam jogar juntos. Jogadores vanilla não conseguem jogar com jogadores utilizando o TML.
+
+---
+
+[b][u][h2]SUPORTE[/h2][/u][/b]
+Procura ajuda? Você pode receber auxílio no nosso tópico de fórum nos Fóruns da Comunidade do Terraria ou em nosso servidor do Discord! Estes são os melhores recursos para receber auxílio, e estão vinculados diretamente no nosso website, localizado abaixo de nossa página na loja do Steam.
+
+tModLoader é um projeto de código aberto. Isso significa que o código está livremente disponível e qualquer um pode contribuir ao projeto. Nosso projeto pode ser encontrado no Github, vinculado em nosso website.
+
+Quer aprender mais sobre o funcionamento interno do tModLoader? Talvez você queira utilizar o tModLoader agora mesmo? Você pode começar lendo nosso guia para jogadores vinculado abaixo de nossa página no Steam, sob "Ver o Manual". Também existem páginas para desenvovledores e contribuidores. Nosso wiki também está cheio de guias que te ensinam a criar mods usando o tModLoader.
+
+---
+
+[b][u][h2]Perguntas Frequentes[/h2][/u][/b]
+Aqui estão algumas coisas importantes de se saber antes de instalar e mergulhar direto no tModLoader:
+
+[b][list][*]Você não precisa fazer backups
+[*]Simplesmente atualize o Terraria para a 1.4 e instale o tModLoader através do Steam
+[*]Você pode jogar Terraria vanilla e TML juntos; O tModLoader é tratado como um jogo separado pelo Steam.
+[*]tModLoader supports Terraria 1.3 and 1.4
+[*]A Oficina Steam possui suporte integrado (porém não é necessário, existe um navegador de mods nativo no jogo)
+[*]Com o novo lançamento, o tModLoader pode ser instalado em qualquer lugar, independentemente da localização ou se é uma instalação do Steam.
+[*]tModLoader funcionará no Windows, Mac e Linux[/list][/b]
+
+[b]Como isso me afetará? Meus mods ainda funcionarão quando o Terraria 1.4 lançar?[/b]
+Como esta atualização trouxe muitas mudanças ao tModLoader, a maioria, se não todos os mods estarão inoperáveis. Apesar do tempo que fornecemos para os criadores de mods atualizarem seus mods, é provável que alguns mods nunca serão atualizados a esta versão. Então, é possível que você não consiga utilizar todos os mods que você utilizava na 1.3
+
+[b]Isso significa que o tModLoader atualizou para a 1.4?[/b]
+tModLoader possui suporte para Terraria 1.3.5 e Terraria 1.4.
+
+[b]E o suporte para a Oficina Steam?[/b]
+A Oficina Steam possui suporte integrado.

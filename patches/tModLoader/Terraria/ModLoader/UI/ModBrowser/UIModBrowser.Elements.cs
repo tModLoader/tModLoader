@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
-using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -27,20 +27,25 @@ internal partial class UIModBrowser
 	private UIPanel _filterTextBoxBackground;
 	internal UIInputTextField FilterTextBox;
 	private UIBrowserStatus _browserStatus;
+	private UIModTagFilterDropdown modTagFilterDropdown;
 
 	/* Filters */
 	public UIBrowserFilterToggle<ModBrowserSortMode> SortModeFilterToggle;
+	public UIBrowserFilterToggle<ModBrowserTimePeriod> TimePeriodToggle;
 	public UIBrowserFilterToggle<UpdateFilter> UpdateFilterToggle;
 	public UIBrowserFilterToggle<SearchFilter> SearchFilterToggle;
 	public UIBrowserFilterToggle<ModSideFilter> ModSideFilterToggle;
+	public UICycleImage TagFilterToggle;
 
 	internal void Reset()
 	{
 		ModList?.SetEnumerable(null);
 		SearchFilterToggle?.SetCurrentState(SearchFilter.Name);
+		TimePeriodToggle?.SetCurrentState(ModBrowserTimePeriod.OneWeek);
 		UpdateFilterToggle?.SetCurrentState(UpdateFilter.All);
 		ModSideFilterToggle?.SetCurrentState(ModSideFilter.All);
-		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
+		SortModeFilterToggle?.SetCurrentState(ModBrowserSortMode.Hot);
+		ResetTagFilters();
 	}
 
 	private void UpdateHandler(object sender, EventArgs e)
@@ -154,7 +159,7 @@ internal partial class UIModBrowser
 
 		FilterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
 			Top = { Pixels = 5 },
-			Left = { Pixels = -160, Percent = 1f },
+			Left = { Pixels = -161, Percent = 1f },
 			Width = { Pixels = 100 },
 			Height = { Pixels = 20 }
 		};
@@ -173,26 +178,46 @@ internal partial class UIModBrowser
 		};
 
 		SortModeFilterToggle = new UIBrowserFilterToggle<ModBrowserSortMode>(0, 0) {
-			Left = new StyleDimension { Pixels = 0 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 0 * 36 }
+		};
+		TimePeriodToggle = new UIBrowserFilterToggle<ModBrowserTimePeriod>(34 * 8, 0) {
+			Left = new StyleDimension { Pixels = 1 * 36 }
 		};
 		UpdateFilterToggle = new UIBrowserFilterToggle<UpdateFilter>(34, 0) {
-			Left = new StyleDimension { Pixels = 1 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 2 * 36 }
 		};
 		SearchFilterToggle = new UIBrowserFilterToggle<SearchFilter>(34 * 2, 0) {
-			Left = new StyleDimension { Pixels = 545f }
+			Left = new StyleDimension { Pixels = 544f }
 		};
 		ModSideFilterToggle = new UIBrowserFilterToggle<ModSideFilter>(34 * 5, 0) {
-			Left = new StyleDimension { Pixels = 2 * 36 + 8 }
+			Left = new StyleDimension { Pixels = 3 * 36 }
 		};
-		SearchFilterToggle.SetCurrentState(SearchFilter.Name);
-		UpdateFilterToggle.SetCurrentState(UpdateFilter.All);
-		ModSideFilterToggle.SetCurrentState(ModSideFilter.All);
-		SortModeFilterToggle.SetCurrentState(ModBrowserSortMode.RecentlyUpdated);
+		TagFilterToggle = new UICycleImage(UICommon.ModBrowserIconsTexture, 2, 32, 32, 34 * 9, 0, 2) {
+			Left = new StyleDimension { Pixels = 4 * 36 }
+		};
+		TagFilterToggle.OnLeftClick += OpenOrCloseTagFilterDropdown;
+		TagFilterToggle.OnLeftClick += (a, b) => RefreshTagFilterState(); // Undo the automatic state cycle rather than modify existing public UIElement class.
+		TagFilterToggle.OnRightClick += (a, b) => RefreshTagFilterState();
+
+		Reset(); // Set filters to default states
+
+		modTagFilterDropdown = new UIModTagFilterDropdown();
+		modTagFilterDropdown.OnLeftClick += (a, b) => {
+			if (a.Target == modTagFilterDropdown) {
+				CloseTagFilterDropdown();
+			}
+		};
+		OnLeftClick += (a, b) => {
+			if (a.Target == this) {
+				CloseTagFilterDropdown();
+			}
+		};
+		modTagFilterDropdown.OnClickingTag += () => UpdateNeeded = true; // Triggers a workshop refresh
 
 		_browserStatus = new UIBrowserStatus() {
 			VAlign = 1f,
-			Top = { Pixels = -65 +25 -32 }, // Allign with _reloadButton
-			Left = { Pixels = 545f } // Allign with SearchFilterToggle
+			Top = { Pixels = -65 + 25 - 32 }, // Align with _reloadButton
+			Left = { Pixels = 545f } // Align with SearchFilterToggle
 		};
 		_rootElement.Append(_browserStatus);
 
@@ -201,10 +226,13 @@ internal partial class UIModBrowser
 
 		CategoryButtons.Add(SortModeFilterToggle);
 		_upperMenuContainer.Append(SortModeFilterToggle);
+		CategoryButtons.Add(TimePeriodToggle);
+		_upperMenuContainer.Append(TimePeriodToggle);
 		CategoryButtons.Add(UpdateFilterToggle);
 		_upperMenuContainer.Append(UpdateFilterToggle);
 		CategoryButtons.Add(ModSideFilterToggle);
 		_upperMenuContainer.Append(ModSideFilterToggle);
+		_upperMenuContainer.Append(TagFilterToggle);
 		CategoryButtons.Add(SearchFilterToggle);
 		_upperMenuContainer.Append(SearchFilterToggle);
 
@@ -215,5 +243,27 @@ internal partial class UIModBrowser
 		_backgroundElement.Append(_upperMenuContainer);
 
 		Append(_rootElement);
+	}
+
+	private void CloseTagFilterDropdown()
+	{
+		_backgroundElement.RemoveChild(modTagFilterDropdown);
+		// We could do UpdateNeeded = true; here instead of in modTagFilterDropdown.OnClickingTag for responsiveness. It won't update until the drop down is closed. However, the responsiveness is only an issue in debug.
+	}
+
+	private void OpenOrCloseTagFilterDropdown(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (modTagFilterDropdown.Parent != null) {
+			CloseTagFilterDropdown();
+			return;
+		}
+
+		_backgroundElement.RemoveChild(modTagFilterDropdown);
+		_backgroundElement.Append(modTagFilterDropdown);
+	}
+
+	internal void RefreshTagFilterState()
+	{
+		TagFilterToggle.SetCurrentState(CategoryTagsFilter.Any() || LanguageTagFilter != -1 ? 1 : 0);
 	}
 }

@@ -543,5 +543,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ProjectileLoader", from: "Kill", to: "OnKill");
 		RenameMethod("Terraria.ModLoader.ModProjectile", from: "Kill", to: "OnKill");
 		RenameMethod("Terraria.ModLoader.GlobalProjectile", from: "Kill", to: "OnKill");
+		HookRemoved("Terraria.ModLoader.ModProjectile", "ModifyFishingLine", "Use ModItem.ModifyFishingLine");
+		HookRemoved("Terraria.ModLoader.BuilderToggle", "DisplayColorTexture", "Use BuilderToggle.Draw");
 	}
 }

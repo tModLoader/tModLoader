@@ -6,7 +6,14 @@
 cd "$(dirname "$0")"
 . ./BashUtils.sh
 
-echo "You are on platform: \"$_uname\""
+echo "You are on platform: \"$_uname\" arch: \"$_arch\""
+
+# Detect arm64 launches and the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
+if [ "$_arch" = "arm64" ] && [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
+	echo "arm64 environment with Rosetta detected, restarting under arch -x86_64"
+	# Note this only changes the environment, so that dotnet install scripts download an x86 version. Launching an x86 process from an arm shell or vice versa does not require using arch, or otherwise intentionally invoking Rosetta.
+	exec arch -x86_64 ./ScriptCaller.sh "$@"
+fi
 
 LaunchLogs="$root_dir/tModLoader-Logs"
 
@@ -27,50 +34,43 @@ if [ -f "$NativeLog" ]; then
 fi
 touch "$NativeLog"
 
-if [[ "$_uname" == *"_NT"* ]]; then
-	echo "Windows Version $WINDOWS_MAJOR.$WINDOWS_MINOR" 2>&1 | tee -a "$LogFile"
-	if [[ $WINDOWS_MAJOR -ge 10 ]]; then 
-		./QuickEditDisable.exe 2>&1 | tee -a "$LogFile"
-	fi
-fi
-
-if [[ "$WINDOWS_MAJOR" == "0" || ! -z "$WINEHOMEDIR" ]]; then
-	echo "Proton has been detected. It is highly recommended to not use it as it causes all manner of issues. Please disable Proton and launch again. See https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#disable-proton for information on moving save data to the correct location." 2>&1 | tee -a "$LogFile"
-fi
+# Environment variable fixes & Platform Cleanups
+. ./EnvironmentFix.sh
 
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
 
-if [[ "$_uname" == *"_NT"* ]]; then
-	run_script ./Remove13_64Bit.sh  2>&1 | tee -a "$LogFile"
-fi
-
-. ./UnixLinkerFix.sh
-
+# Get Dotnet Version expecting to have installed
 source ./DotNetVersion.sh
 
+# Attempt to fix first time Crash To Desktop due to dotnet install failure
 if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
 	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 	rm -rf "$dotnet_dir"
 	mkdir "$dotnet_dir"
 fi
 
+# Dotnet binaries Fixes (Proton, AppleSilicon)
 if [[ "$_uname" == *"_NT"* ]]; then
-	if [[ -f "$install_dir/dotnet" ]]; then
+	if [[ -f "$dotnet_dir/dotnet" ]]; then
 		echo "A non-Windows dotnet executable was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
 	fi
 else
-	if [[ -f "$install_dir/dotnet.exe" ]]; then
+	if [[ -f "$dotnet_dir/dotnet.exe" ]]; then
 		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	elif [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
+		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 		mkdir "$dotnet_dir"
 	fi
 fi
 
+# Installing Dotnet
 run_script ./InstallDotNet.sh  2>&1 | tee -a "$LogFile"
-
 
 echo "Attempting Launch..."  2>&1 | tee -a "$LogFile"
 
@@ -94,11 +94,11 @@ else
 	fi
 fi
 
-if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
+if [[ -f "$dotnet_dir/dotnet" || -f "$dotnet_dir/dotnet.exe" ]]; then
 	export DOTNET_ROLL_FORWARD=Disable
-	echo "Launched Using Local Dotnet. Launch command: \"$install_dir/dotnet\" tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
-	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
+	echo "Launched Using Local Dotnet. Launch command: \"$dotnet_dir/dotnet\" tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
+	[[ -f "$dotnet_dir/dotnet" ]] && chmod a+x "$dotnet_dir/dotnet"
+	exec "$dotnet_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
 else
 	echo "Launched Using System Dotnet. Launch command: dotnet tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
 	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"

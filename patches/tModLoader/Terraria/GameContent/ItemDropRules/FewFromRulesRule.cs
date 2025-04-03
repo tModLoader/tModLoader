@@ -19,14 +19,14 @@ public class FewFromRulesRule : IItemDropRule, INestedItemDropRule
 		private set;
 	}
 
-	public FewFromRulesRule(int amount, int chanceNumerator, params IItemDropRule[] options)
+	public FewFromRulesRule(int amount, int chanceDenominator, params IItemDropRule[] options)
 	{
 		if (amount > options.Length) {
 			throw new ArgumentOutOfRangeException(nameof(amount), $"{nameof(amount)} must be less than the number of {nameof(options)}");
 		}
 
 		this.amount = amount;
-		chanceDenominator = chanceNumerator;
+		this.chanceDenominator = chanceDenominator;
 		this.options = options;
 		ChainedRules = new List<IItemDropRuleChainAttempt>();
 	}

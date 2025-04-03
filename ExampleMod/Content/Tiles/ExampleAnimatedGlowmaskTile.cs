@@ -1,8 +1,10 @@
 using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -11,6 +13,8 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleAnimatedGlowmaskTile : ModTile
 	{
+		private Asset<Texture2D> glowTexture;
+
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
 		public override void SetStaticDefaults() {
@@ -37,6 +41,8 @@ namespace ExampleMod.Content.Tiles
 			// The height of a group of animation frames for this tile
 			// Defaults to 0, which disables animations
 			AnimationFrameHeight = 56;
+
+			glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
 		}
 
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
@@ -46,8 +52,6 @@ namespace ExampleMod.Content.Tiles
 
 		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile").Value;
-			Texture2D glowTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile_Glow").Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
@@ -62,14 +66,14 @@ namespace ExampleMod.Content.Tiles
 
 			// Firstly we draw the original texture and then glow mask texture
 			spriteBatch.Draw(
-				texture,
+				TextureAssets.Tile[Type].Value,
 				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
 				new Rectangle(tile.TileFrameX, tile.TileFrameY + frameYOffset, 16, height),
 				Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);
 			// Make sure to draw with Color.White or at least a color that is fully opaque
 			// Achieve opaqueness by increasing the alpha channel closer to 255. (lowering closer to 0 will achieve transparency)
 			spriteBatch.Draw(
-				glowTexture,
+				glowTexture.Value,
 				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
 				new Rectangle(tile.TileFrameX, tile.TileFrameY + frameYOffset, 16, height),
 				Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

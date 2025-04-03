@@ -22,6 +22,30 @@
  {
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
+@@ -48,6 +_,10 @@
+ 	public static int maxAI = 4;
+ 	public int netSpam;
+ 	public static int goldCritterChance = 400;
++	/// <summary>
++	/// Indexed by BannerIDs, counts how many kills a specific enemy (or group of enemies with a shared BannerID) has in this world. Kill counts are stored on the world and are synced in multiplayer. Used by the <see cref="ItemID.TallyCounter"/> and for dropping banners. See also <see cref="ItemID.Sets.KillsToBanner"/>.
++	/// <para/> Note that Bestiary kill counts are tracked separately and per each NPC type instead of sharing a kill count with all other NPC types using the same BannerID.
++	/// </summary>
+ 	public static int[] killCount = new int[NPCID.Count];
+ 	public static float totalInvasionPoints = 0f;
+ 	public static float waveKills = 0f;
+@@ -55,6 +_,12 @@
+ 	public const float nameOverIncrement = 0.025f;
+ 	public const float nameOverDistance = 350f;
+ 	public float nameOver;
++	/// <summary>
++	/// Indicates that this NPC was spawned by a statue. Mainly affects item drops.
++	/// <para/> Prevents item drops in pre-hardmode if <see cref="NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue"/> is true. Also prevents item drops if <see cref="NPCID.Sets.StatueSpawnedDropRarity"/> isn't -1 and either a random value is higher than that chance or the npc was not damaged by a player.
++	/// <para/> Prevents <see cref="NPC.CatchNPC(int, int)"/>.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool SpawnedFromStatue;
+ 	public bool CanBeReplacedByOtherNPCs;
+ 	public bool dripping;
 @@ -65,19 +_,52 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
@@ -66,7 +90,7 @@
 +	/// </summary>
  	public float gfxOffY;
 +	/// <summary>
-+	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>.
++	/// Has nothing to do with the speed that this NPC travels, that is dictated by AI code adjusting <see cref="Entity.velocity"/>. This affects how quickly <see cref="gfxOffY"/> is adjusted.
 +	/// </summary>
  	public float stepSpeed;
 +	/*
@@ -90,7 +114,13 @@
  	public int realLife = -1;
  	private string _givenName = "";
  	public static int sWidth = 1920;
-@@ -111,9 +_,15 @@
+@@ -107,13 +_,22 @@
+ 	private static int spawnRangeY = (int)((double)(sHeight / 16) * 0.7);
+ 	public static int safeRangeX = (int)((double)(sWidth / 16) * 0.52);
+ 	public static int safeRangeY = (int)((double)(sHeight / 16) * 0.52);
++	/// <summary> The X distance from the player determining the active range governing instant NPC despawning </summary>
+ 	private static int activeRangeX = (int)((double)sWidth * 2.1);
++	/// <summary> The Y distance from the player determining the active range governing instant NPC despawning </summary>
  	private static int activeRangeY = (int)((double)sHeight * 2.1);
  	private static int townRangeX = sWidth;
  	private static int townRangeY = sHeight;
@@ -102,6 +132,7 @@
 +	/// </summary>
  	public float npcSlots = 1f;
  	private static bool noSpawnCycle = false;
++	/// <summary> Default despawn time. Set to 750 or 12.5 seconds. Use to update <see cref="timeLeft"/> when the NPC is close to any player. </summary>
 -	private static int activeTime = 750;
 +	public static int activeTime = 750;
  	private static int defaultSpawnRate = 600;
@@ -120,6 +151,41 @@
  	public bool canDisplayBuffs = true;
  	public bool midas;
  	public bool ichor;
+@@ -136,14 +_,34 @@
+ 	public bool shadowFlame;
+ 	public bool soulDrain;
+ 	public bool shimmering;
++	/// <summary>
++	/// The rate of this player's life regeneration or loss in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs.
++	/// <br/> For example, subtracting <c>12</c> from this value loses <c>12 / 120</c> = <c>1/10</c> health per tick, or 6 health per second.
++	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
++	/// <br/> This value should be subtracted from in <see cref="ModNPC.UpdateLifeRegen(ref int)"/> or <see cref="GlobalNPC.UpdateLifeRegen(NPC, ref int)"/>. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example. The game does not actually use positive life regen for NPC, so positive values might not work as expected. 
++	/// </summary>
+ 	public int lifeRegen;
++	/// <summary>
++	/// This NPC's accumulated life regeneration.
++	/// <br/> If this value reaches or exceeds <c>120</c>, the NPC gains <c><see cref="lifeRegenCount"/> / 120</c> health and this value decreases until it no longer exceeds <c>120</c>.
++	/// <br/> If this value reaches or exceeds <c>-120</c>, the NPC loses health in the same way.
++	/// <br/> In either case, text will appear above the NPC indicating the life regeneration or life loss.
++	/// </summary>
+ 	public int lifeRegenCount;
+ 	public int lifeRegenExpectedLossPerSecond = -1;
+ 	public bool confused;
+ 	public bool loveStruck;
+ 	public bool stinky;
+ 	public bool dryadWard;
++	/// <summary>
++	/// Indicates that damage dealt to this NPC will not cause its life to go down. It can still receive hits and damage numbers will be shown, but the damage will not be applied to <see cref="life"/>. Only used by <see cref="NPCID.TargetDummy"/>.
++	/// <para/> Defaults to false.
++	/// </summary>
+ 	public bool immortal;
++	/// <summary>
++	/// If false, this NPC will be ignored by <see cref="CanBeChasedBy"/>, meaning that entities won't specifically target this NPC. The cultists set this to true, helping ensure that they are not accidentally killed by minions or homing weapons. Duke Fishron uses this during his 3rd phase while he is invisible, resulting in homing weapons and minions being unable to target him effectively. 
++	/// <para/> Defaults to true.
++	/// </summary>
+ 	public bool chaseable = true;
+ 	public bool canGhostHeal = true;
+ 	public bool javelined;
 @@ -182,35 +_,149 @@
  	public static bool unlockedArmsDealerSpawn = false;
  	public static bool unlockedNurseSpawn = false;
@@ -296,7 +362,7 @@
  	public static bool downedMechBoss3 = false;
  	public static bool[] npcsFoundForCheckActive = new bool[NPCID.Count];
  	public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -233,51 +_,172 @@
+@@ -233,51 +_,196 @@
  	private static int maxSpawns = defaultMaxSpawns;
  	public int soundDelay;
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
@@ -333,7 +399,16 @@
 +	/// </summary>
  	public int aiStyle;
  	public bool justHit;
++	/// <summary>
++	/// Despawn timer in charge of determining when an NPC that is offscreen but not far away enough to immediately despawn will despawn naturally. Gets set to <see cref="activeTime"/> when near any player and decreases each update otherwise. The <see href="https://terraria.wiki.gg/wiki/NPC_despawning">NPC despawning wiki page</see> has more information. <see cref="ModNPC.CheckActive"/> can be used to prevent an NPC outside the immediate despawn range from despawning.
++	/// </summary> 
  	public int timeLeft;
++	/// <summary>
++	/// The Player that this NPC is currently targeting, represented as the index of that Player within <see cref="Main.player"/> (the Player's <see cref="Entity.whoAmI"/>).
++	/// <para/> This is typically set by calling the <see cref="NPC.TargetClosest(bool)"/> method. Use <see cref="HasValidTarget"/> to check if <see cref="target"/> has a valid value before accessing <c>Main.player[NPC.target]</c> and doing logic dealing with the targeted player.
++	/// <para/> Defaults to -1.
++	/// <para/> Some NPC support targeting other NPC (<see cref="SupportsNPCTargets"/>). For these NPC, <see cref="target"/> will be set to a value between 300 and 500. See <see cref="HasNPCTarget"/>, <see cref="TranslatedTargetIndex"/>, and <see cref="NPCID.Sets.UsesNewTargetting"/> for more information on that feature.
++	/// </summary>
  	public int target = -1;
 +
 +	/// <summary>
@@ -396,6 +471,9 @@
  	public int lifeMax;
  	public Rectangle targetRect;
  	public double frameCounter;
++	/// <summary>
++	/// The portion ("frame") of this NPC's spritesheet that will be drawn. ModNPC should adjust this in <see cref="ModNPC.FindFrame(int)"/>.
++	/// </summary>
  	public Rectangle frame;
  	public Color color;
 +
@@ -439,6 +517,11 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noTileCollide;
++	/// <summary>
++	/// Set to true in <see cref="ModNPC.AI"/> or other suitable places to trigger the NPC syncing code (<see cref="MessageID.SyncNPC"/>). This will sync position, life, and other data about this NPC from the server to the clients. Modded data from <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="GlobalNPC.SendExtraAI(NPC, ModLoader.IO.BitWriter, System.IO.BinaryWriter)"/> will be included.
++	/// <para/> Use this to sync changes so that the client's NPC instances stay in sync with the server's. Only changes that are non-Deterministic on the client's side, such as random decisions or code only running on the server, need to be synced. The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode wiki page</see> goes into more details and links to examples.
++	/// <para/> As the server is in charge of NPC, changes to NPC data should only happen on the server in multiplayer.
++	/// </summary>
  	public bool netUpdate;
  	public bool netUpdate2;
  	public bool collideX;
@@ -461,7 +544,14 @@
 +	/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
 +	/// </summary>
  	public float value;
++	/// <summary>
++	/// The coin value of dropped coins this NPC has picked up. The <see href="https://terraria.wiki.gg/wiki/Coin_pickup_in_Expert_Mode">Coin pickup in Expert Mode wiki page has more details.</see> See also <see cref="NPCID.Sets.RespawnEnemyID"/> and <see cref="NPCID.Sets.CantTakeLunchMoney"/>.
++	/// </summary>
  	public int extraValue;
++	/// <summary>
++	/// Indicates that this NPC does not currently take damage, attacks won't hit it. Some example usage includes Blazing Wheel, Spike Ball, Golem Head during 2nd phase, Jellyfish while electrified, and Granite Golem while shielding.
++	/// <para/> Defaults to false.
++	/// </summary>
  	public bool dontTakeDamage;
  	private int catchableNPCTempImmunityCounter;
 +	/// <summary>
@@ -499,6 +589,27 @@
  	public static int ladyBugGoodLuckTime = 43200;
  	public static int ladyBugBadLuckTime = -10800;
  	private static int ladyBugRainTime = 1800;
+@@ -409,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Checks if <see cref="target"/> is a valid Player to target. This checks that <see cref="target"/> has a valid value and that the specified Player is alive, active, not a ghost.
++	/// <para/> If this NPC supports targeting other NPC (<see cref="SupportsNPCTargets"/>), then this will check if that NPC is still active.
++	/// </summary>
+ 	public bool HasValidTarget {
+ 		get {
+ 			if (!HasPlayerTarget || !Main.player[target].active || Main.player[target].dead || Main.player[target].ghost) {
+@@ -440,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Shorthand for checking <see cref="NPCID.Sets.UsesNewTargetting"/>.
++	/// </summary>
+ 	public bool SupportsNPCTargets => NPCID.Sets.UsesNewTargetting[type];
+ 
+ 	public int TranslatedTargetIndex {
 @@ -462,8 +_,20 @@
  		}
  	}
@@ -548,8 +659,23 @@
  	public string GivenName {
  		get {
  			return _givenName;
-@@ -532,7 +_,7 @@
+@@ -521,6 +_,9 @@
+ 		}
+ 	}
  
++	/// <summary>
++	/// The transparency of the NPC expressed as a float value from 0f (transparent) to 1f (opaque). This property wraps <see cref="alpha"/>.
++	/// </summary>
+ 	public float Opacity {
+ 		get {
+ 			return 1f - (float)alpha / 255f;
+@@ -530,9 +_,12 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if either <see cref="NPCID.Sets.ActsLikeTownNPC"/> or <see cref="townNPC"/> is true.
++	/// </summary>
  	public bool isLikeATownNPC {
  		get {
 -			if (type == 453)
@@ -668,6 +794,14 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
+@@ -1263,6 +_,7 @@
+ 		return true;
+ 	}
+ 
++	/// <summary> Retrieves the default head index of the town NPC type. To account for shimmer and other variants use <see cref="TownNPCProfiles.GetHeadIndexSafe(NPC)"/> instead. Returns -1 if no head index found. </summary>
+ 	public static int TypeToDefaultHeadIndex(int type)
+ 	{
+ 		switch (type) {
 @@ -1345,7 +_,10 @@
  			case 684:
  				return 53;
@@ -776,6 +910,15 @@
  		setFrameSize = false;
  		netSkip = -2;
  		realLife = -1;
+@@ -2254,7 +_,7 @@
+ 		boss = false;
+ 		noTileCollide = false;
+ 		rotation = 0f;
+-		active = true;
++		active = Type != 0;
+ 		alpha = 0;
+ 		color = default(Color);
+ 		collideX = false;
 @@ -6970,7 +_,9 @@
  			DeathSound = SoundID.NPCDeath1;
  			npcSlots = 0.1f;
@@ -999,6 +1142,15 @@
  		if (aiStyle == 0) {
  			if (Main.netMode != 1) {
  				for (int i = 0; i < 255; i++) {
+@@ -19686,7 +_,7 @@
+ 				num567 = Main.player[target].position.Y + (float)(Main.player[target].height / 2) - vector69.Y;
+ 				num568 = (float)Math.Sqrt(num566 * num566 + num567 * num567);
+ 				rotation = (float)Math.Atan2(num567, num566) - 1.57f;
+-				if (Main.netMode == 1) {
++				if (Main.netMode != NetmodeID.MultiplayerClient) { // TML: Fix inverted netmode check
+ 					localAI[0] += 1f;
+ 					if (localAI[0] > 80f) {
+ 						localAI[0] = 0f;
 @@ -31736,7 +_,7 @@
  			timeLeft = 86400;
  		}
@@ -1531,6 +1683,27 @@
  					Asset<Texture2D> textureNPCShouldUse = profile.GetTextureNPCShouldUse(this);
  					if (textureNPCShouldUse.IsLoaded) {
  						num = textureNPCShouldUse.Height() / Main.npcFrameCount[type];
+@@ -57957,11 +_,20 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Spawns a <see cref="CombatText"/> indicating the NPC healed <paramref name="healAmount"/> life and syncs it if <paramref name="broadcast"/> is true.
++	/// <para/> Note that this doesn't actually heal the NPC, it only spawns the floating text. To heal an NPC, <see cref="NPC.life"/> must be increased without exceeding <see cref="NPC.lifeMax"/>, <see cref="HealEffect(int, bool)"/> should be called, and <see cref="NPC.netUpdate"/> should be set to true.
++	/// <para/> Since the server has ownership over NPC, this should only be called on the server in multiplayer situations.
++	/// </summary>
+ 	public void HealEffect(int healAmount, bool broadcast = true)
+ 	{
+ 		HealEffect(new Rectangle((int)position.X, (int)position.Y, width, height), healAmount, broadcast);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="HealEffect(int, bool)" />
++	/// <br/><br/>This particular overload allows customizing the spawn location of the text.
++	/// </summary>
+ 	public static void HealEffect(Rectangle r, int healAmount, bool broadcast = true)
+ 	{
+ 		if (broadcast && Main.netMode == 2)
 @@ -58083,7 +_,13 @@
  				if (Main.tile[x, y].type == 467)
  					number2 = 5;
@@ -1545,6 +1718,18 @@
  				NetMessage.SendTileSquare(-1, x, y, 3);
  			}
  
+@@ -58229,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Targets the closest alive Player and optionally faces towards that Player. This will set <see cref="target"/> to the targeted player, as well as <see cref="Entity.direction"/> if <paramref name="faceTarget"/> is true.
++	/// <para/> Make sure to check <see cref="HasValidTarget"/> before accessing <see cref="target"/>.
++	/// </summary>
++	/// <param name="faceTarget"></param>
+ 	public void TargetClosest(bool faceTarget = true)
+ 	{
+ 		float distance = 0f;
 @@ -58438,6 +_,9 @@
  		if (!active || DoesntDespawnToInactivity())
  			return;
@@ -1753,6 +1938,23 @@
  			if (Main.netMode == 2)
  				NetMessage.SendData(7);
  		}
+@@ -59829,14 +_,14 @@
+ 
+ 	private void NPCLoot_DropCommonLifeAndMana(Player closestPlayer)
+ 	{
+-		if (type != 16 && type != 81 && type != 121 && closestPlayer.RollLuck(6) == 0 && lifeMax > 1 && damage > 0) {
++		if (!NPCID.Sets.NeverDropsResourcePickups[type] && closestPlayer.RollLuck(6) == 0 && lifeMax > 1 && damage > 0) {
+ 			if (Main.rand.Next(2) == 0 && closestPlayer.statMana < closestPlayer.statManaMax2)
+ 				Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 184);
+ 			else if (Main.rand.Next(2) == 0 && closestPlayer.statLife < closestPlayer.statLifeMax2)
+ 				Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 58);
+ 		}
+ 
+-		if (type != 16 && type != 81 && type != 121 && closestPlayer.RollLuck(2) == 0 && lifeMax > 1 && damage > 0 && closestPlayer.statMana < closestPlayer.statManaMax2)
++		if (!NPCID.Sets.NeverDropsResourcePickups[type] && closestPlayer.RollLuck(2) == 0 && lifeMax > 1 && damage > 0 && closestPlayer.statMana < closestPlayer.statManaMax2)
+ 			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 184);
+ 	}
+ 
 @@ -59945,6 +_,7 @@
  		}
  	}
@@ -2011,6 +2213,16 @@
  							num110 = 5;
  							num110 -= Main.CurrentFrameFlags.ActivePlayersCount / 2;
  							if (num110 < 2)
+@@ -63451,7 +_,8 @@
+ 			else if (Main.hardMode && (Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && Main.rand.Next(200) == 0) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 172);
+ 			}
+-			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && (Main.player[k].armor[1].type == 4256 || (Main.player[k].armor[1].type >= 1282 && Main.player[k].armor[1].type <= 1287)) && Main.player[k].armor[0].type != 238))) {
++			// Uses flag added by TML to support modded gem robes for Tim spawn rate increase.
++			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && Main.player[k].hasGemRobe && Main.player[k].armor[0].type != 238))) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 45);
+ 			}
+ 			else if (flag10 && Main.rand.Next(4) != 0) {
 @@ -63539,6 +_,11 @@
  				}
  			}
@@ -2115,7 +2327,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,163 @@
+@@ -64591,26 +_,165 @@
  
  		return armorPenetration / 2;
  	}
@@ -2193,6 +2405,8 @@
 +			modifiers.Knockback += 0.1f;
 +
 +		modifiers.Knockback *= knockBackResist;
++		if (knockBackResist == 0)
++			modifiers.DisableKnockback();
 +
 +		NPCLoader.ModifyIncomingHit(this, ref modifiers);
 +		return modifiers;
@@ -2483,6 +2697,20 @@
  	public void DelBuff(int buffIndex)
  	{
  		buffTime[buffIndex] = 0;
+@@ -72274,6 +_,13 @@
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+ 
++	/// <summary>
++	/// Returns true if this NPC should be considered an enemy to attack. Used by various player, projectile, mount, and town npc logic. For example homing projectiles like Chlorophyte bullet won't target friendly NPC, critters, or NPC that are currently flagged as invulnerable. Note that the <paramref name="attacker"/> parameter is unused.
++	/// <para/> The logic checks that the NPC meets all of the following criteria: <see cref="Entity.active"/>, <see cref="chaseable"/>, <see cref="lifeMax"/> > 5 (to ignore critters), <see cref="dontTakeDamage"/> (unless <paramref name="ignoreDontTakeDamage"/>) is true), not <see cref="friendly"/>, and not <see cref="immortal"/>.
++	/// </summary>
++	/// <param name="attacker"></param>
++	/// <param name="ignoreDontTakeDamage"></param>
++	/// <returns></returns>
+ 	public bool CanBeChasedBy(object attacker = null, bool ignoreDontTakeDamage = false)
+ 	{
+ 		if (active && chaseable && lifeMax > 5 && (!dontTakeDamage || ignoreDontTakeDamage) && !friendly)
 @@ -72432,9 +_,16 @@
  	public void UpdateNPC(int i)
  	{
@@ -2735,6 +2963,15 @@
  		bool result = false;
  		if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
  			result = true;
+@@ -74607,7 +_,7 @@
+ 
+ 			if (Collision.shimmer) {
+ 				shimmerWet = true;
+-				AddBuff(353, 100);
++				AddBuff(BuffID.Shimmer, 100, true); // TML: Pass true to quiet as clients execute this as well.
+ 			}
+ 		}
+ 
 @@ -74862,6 +_,9 @@
  		if (IsABestiaryIconDummy)
  			newColor = Color.White;

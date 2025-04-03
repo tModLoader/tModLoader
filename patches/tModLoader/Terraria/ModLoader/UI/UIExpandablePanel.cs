@@ -32,6 +32,7 @@ internal class UIExpandablePanel : UIPanel
 		SetPadding(6);
 
 		expandButton = new UIHoverImage(CollapsedTexture, Language.GetTextValue("tModLoader.ModConfigExpand"));
+		expandButton.UseTooltipMouseText = true;
 		expandButton.Top.Set(3, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-25, 1f);
 		expandButton.OnLeftClick += (a, b) => {
@@ -39,6 +40,14 @@ internal class UIExpandablePanel : UIPanel
 			pendingChanges = true;
 		};
 		Append(expandButton);
+	}
+
+	public void Collapse()
+	{
+		if (expanded) {
+			expanded = false;
+			pendingChanges = true;
+		}
 	}
 
 	public override void Update(GameTime gameTime)

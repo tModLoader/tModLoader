@@ -1515,6 +1515,11 @@ public static class ItemLoader
 			source.favorited = false;
 		}
 
+		if (destination.shopCustomPrice != source.shopCustomPrice) {
+			// If attempting to stack items with custom prices, null them out to prevent exploits. Fixes #4370 while preserving normal resell behavior.
+			destination.shopCustomPrice = null;
+		}
+
 		destination.stack += numTransferred;
 		if (!infiniteSource)
 			source.stack -= numTransferred;
@@ -2214,6 +2219,24 @@ public static class ItemLoader
 		}
 
 		return tooltips;
+	}
+
+	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
+	{
+		Player player = Main.player[projectile.owner];
+		Item item = player.inventory[player.selectedItem];
+
+		if (item.ModItem == null)
+			return;
+
+		Vector2 lineOriginOffset = Vector2.Zero;
+
+		item.ModItem.ModifyFishingLine(projectile, ref lineOriginOffset, ref lineColor);
+
+		polePosX += lineOriginOffset.X * player.direction;
+		if (player.direction < 0)
+			polePosX -= 13f;
+		polePosY += lineOriginOffset.Y * player.gravDir;
 	}
 
 	internal static HookList HookSaveData = AddHook<Action<Item, TagCompound>>(g => g.SaveData);

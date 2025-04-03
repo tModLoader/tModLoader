@@ -14,10 +14,17 @@ namespace Terraria;
 public partial class Player : IEntityWithInstances<ModPlayer>
 {
 	internal IList<string> usedMods;
+	/// <summary> Contains error messages from ModPlayer.SaveData from a previous player save retrieved from the .tplr. Shown when entering a world and on player select menu. Maps ModSystem.FullName.MethodName to exception string.</summary>
+	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();
 	internal string modPack;
 	internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
 	public Item equippedWings = null;
+
+	/// <summary>
+	/// Set by any gem robe when worn by the player in the functional armor slot. Increases the spawn rate of <see cref="NPCID.Tim"/>.
+	/// </summary>
+	public bool hasGemRobe = false;
 
 	/// <summary>
 	/// Causes <see cref="SmartSelectLookup"/> to run the next time an item animation is finished, even if <see cref="controlUseItem"/> is held. <br/>
@@ -63,6 +70,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public int ConsumedManaCrystals {
 		get => consumedManaCrystals;
 		set => consumedManaCrystals = Utils.Clamp(value, 0, ManaCrystalMax);
+	}
+
+	/// <summary>
+	/// Checks or sets <see cref="meleeEnchant"/>, indicating if a melee enchantment is active or not. Mods can check the <see cref="meleeEnchant"/> value directly to act on existing melee enchantments, but modded melee enchantments do not have specific assigned values.
+	/// </summary>
+	public bool MeleeEnchantActive {
+		get => meleeEnchant > 0;
+		set => meleeEnchant = 255;
 	}
 
 	/// <summary>

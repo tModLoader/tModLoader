@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Enums;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this.
+/// This class allows you to modify the behavior of any tile in the game, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalTile : GlobalBlockType
 {
@@ -86,13 +88,7 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
-	/// <summary>
-	/// Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type">The tile type</param>
-	/// <param name="closer"></param>
+	/// <inheritdoc cref="ModTile.NearbyEffects(int, int, bool)"/>
 	public virtual void NearbyEffects(int i, int j, int type, bool closer)
 	{
 	}
@@ -320,5 +316,31 @@ public abstract class GlobalTile : GlobalBlockType
 	/// </summary>
 	public virtual void PostSetupTileMerge()
 	{
+	}
+
+	/// <summary>
+	/// This hook runs before <see cref="ShakeTree(int, int, TreeTypes)"/> and is intended to be used to spawn bonus tree shaking drops and prevent existing drops using <see cref="NPCLoader.blockLoot"/>.
+	/// <para/> The tile coordinates provided indicates the leafy top of the tree where entities should be spawned.
+	/// <para/> Runs on the server or singleplayer.
+	/// </summary>
+	/// <param name="x">The x tile coordinate of the tree.</param>
+	/// <param name="y">The y tile coordinate of the top of the tree.</param>
+	/// <param name="treeType">The type of tree that is being shaken. Modded trees will be <see cref="TreeTypes.Custom"/> by default.</param>
+	public virtual void PreShakeTree(int x, int y, TreeTypes treeType)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs when any tree is shaken (See the <see href="https://terraria.wiki.gg/wiki/Trees#Shaking">Tree Shaking wiki page</see>). It is intended to be used to drop the primary item (or NPC). Use <see cref="PreShakeTree(int, int, TreeTypes)"/> to implement bonus drops instead, since this method isn't guaranteed to be called if another mod rolls an item drop.
+	/// <para/> If a drop happens, return true to signify that a primary drop has been spawned and to prevent other mods and vanilla code from also attempting to drop the primary item. When spawning the drop be sure to use <see cref="EntitySource_ShakeTree"/> as the source.
+	/// <para/> The tile coordinates provided indicates the leafy top of the tree where entities should be spawned.
+	/// <para/> Returns false by default. Runs on the server or singleplayer.
+	/// </summary>
+	/// <param name="x">The x tile coordinate of the tree.</param>
+	/// <param name="y">The y tile coordinate of the top of the tree.</param>
+	/// <param name="treeType">The type of tree that is being shaken. Modded trees will be <see cref="TreeTypes.Custom"/> by default.</param>
+	public virtual bool ShakeTree(int x, int y, TreeTypes treeType)
+	{
+		return false;
 	}
 }

@@ -17,7 +17,7 @@ public abstract class ModBossBarStyle : ModType
 	/// <summary>
 	/// Controls the name that shows up in the menu selection. If not overridden, it will use this mod's display name.
 	/// </summary>
-	public virtual string DisplayName => Mod.DisplayName;
+	public virtual string DisplayName => Mod.DisplayNameClean;
 
 	/// <summary>
 	/// Return true to skip update code for boss bars. Useful if you want to use your own code for finding out which NPCs to track. Returns false by default.

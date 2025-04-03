@@ -90,15 +90,19 @@ public partial class NPCID
 		static Sets()
 		{
 			ImmuneToAllBuffs = Factory.CreateBoolSet();
-			ImmuneToRegularBuffs  = Factory.CreateBoolSet();
+			ImmuneToRegularBuffs = Factory.CreateBoolSet();
 			SpecificDebuffImmunity = Factory.CreateCustomSet<bool?[]>(null);
-			for (int type = 0; type < NPCLoader.NPCCount; type++) {
+			for (int type = 0; type < NPCLoader.NPCCount; type++)
+			{
 				SpecificDebuffImmunity[type] = new bool?[BuffLoader.BuffCount];
-				if (DebuffImmunitySets.TryGetValue(type, out var data) && data != null) {
+				if (DebuffImmunitySets.TryGetValue(type, out var data) && data != null)
+				{
 					ImmuneToAllBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips && data.ImmuneToWhips;
-					ImmuneToRegularBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips;				
-					if (data.SpecificallyImmuneTo != null) {
-						foreach (var buff in data.SpecificallyImmuneTo) {
+					ImmuneToRegularBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips;
+					if (data.SpecificallyImmuneTo != null)
+					{
+						foreach (var buff in data.SpecificallyImmuneTo)
+						{
 							SpecificDebuffImmunity[type][buff] = true;
 						}
 					}
@@ -106,7 +110,7 @@ public partial class NPCID
 				SpecificDebuffImmunity[type][BuffID.Shimmer] = ShimmerImmunity[type];
 			}
 		}
-		
+
 		// All BelongsToInvasion set IDs taken from NPC.GetNPCInvasionGroup
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Goblin Army invasion.
@@ -162,5 +166,22 @@ public partial class NPCID
 		/// When spawning a new npc, if the player's luck roll returns that the NPC should be golden, spawns the ID corresponding to its type instead.
 		/// </summary>
 		public static int[] GoldCritterRedirect = Factory.CreateIntSet(-1);
+		// IDs taken from Player.GetPettingInfo
+		/// <summary>
+		/// While petting, the number of pixels away the player stands from the NPC. Defaults to 36 pixels.
+		/// </summary>
+		public static int[] PlayerDistanceWhilePetting = Factory.CreateIntSet(36, TownCat, 28, TownBunny, 24, TownSlimeBlue, 26, TownSlimeGreen, 26, TownSlimeOld, 26, TownSlimePurple, 26, TownSlimeRainbow, 26, TownSlimeYellow, 26, TownSlimeRed, 22, TownSlimeCopper, 20);
+
+		// IDs taken from Player.GetPettingInfo
+		/// <summary>
+		/// While petting, the player's arm will be angled up by default. If the NPC is in this set, the player's armor will be angled down instead. Defaults to false.
+		/// </summary>
+		public static bool[] IsPetSmallForPetting = Factory.CreateBoolSet(TownCat, TownBunny, TownSlimeBlue, TownSlimeGreen, TownSlimeOld, TownSlimePurple, TownSlimeRainbow, TownSlimeYellow, TownSlimeRed, TownSlimeCopper);
+
+		/// <summary>
+		/// NPC in this set do not drop resource pickups, such as hearts or star items. Vanilla entries in this set include MotherSlime, CorruptSlime, and Slimer, all of which spawn other NPC when killed, suggesting that they split apart rather than died, hinting at why they shouldn't drop resource pickups.
+		/// <para/> Defaults to false.
+		/// </summary>
+		public static bool[] NeverDropsResourcePickups = Factory.CreateBoolSet(MotherSlime, CorruptSlime, Slimer);
 	}
 }

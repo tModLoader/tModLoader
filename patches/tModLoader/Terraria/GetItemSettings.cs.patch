@@ -1,0 +1,23 @@
+--- src/TerrariaNetCore/Terraria/GetItemSettings.cs
++++ src/tModLoader/Terraria/GetItemSettings.cs
+@@ -2,6 +_,12 @@
+ 
+ namespace Terraria;
+ 
++/// <summary>
++/// Contains settings for the popup text shown when using <see cref="Player.GetItem(int, Terraria.Item, Terraria.GetItemSettings)"/>. The contained static fields can be used to match vanilla behavior for various actions.
++/// <para/> <b>LongText:</b> <inheritdoc cref="PopupText.NewText(PopupTextContext, Item, int, bool, bool)" path="/param[@name='longText']"/>
++/// <br/> <b>NoText:</b> If <see langword="true"/>, no <see cref="PopupText"/> will spawn.
++/// <br/> <b>CanGoIntoVoidVault:</b> If <see langword="true"/>, the item can be placed into the Void Vault.
++/// </summary>
+ public struct GetItemSettings
+ {
+ 	public static GetItemSettings InventoryEntityToPlayerInventorySettings = new GetItemSettings(LongText: false, NoText: true);
+@@ -18,6 +_,7 @@
+ 	public readonly bool CanGoIntoVoidVault;
+ 	public readonly Action<Item> StepAfterHandlingSlotNormally;
+ 
++	/// <inheritdoc cref="GetItemSettings"/>
+ 	public GetItemSettings(bool LongText = false, bool NoText = false, bool CanGoIntoVoidVault = false, Action<Item> StepAfterHandlingSlotNormally = null)
+ 	{
+ 		this.LongText = LongText;

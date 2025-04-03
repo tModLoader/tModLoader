@@ -32,15 +32,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override string Texture => "ExampleMod/Content/Tiles/Furniture/RelicPedestal";
 
 		public override void Load() {
-			if (!Main.dedServ) {
-				// Cache the extra texture displayed on the pedestal
-				RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
-			}
-		}
-
-		public override void Unload() {
-			// Unload the extra texture displayed on the pedestal
-			RelicTexture = null;
+			// Cache the extra texture displayed on the pedestal
+			RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
 		}
 
 		public override void SetStaticDefaults() {

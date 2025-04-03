@@ -1,0 +1,19 @@
+--- src/TerrariaNetCore/Terraria/GameContent/TextureAssets.cs
++++ src/tModLoader/Terraria/GameContent/TextureAssets.cs
+@@ -4,6 +_,16 @@
+ 
+ namespace Terraria.GameContent;
+ 
++/// <summary>
++/// Contains the <see cref="Texture2D"/> assets used by the game, each stored as an <c>Asset&lt;Texture2D&gt;</c>.
++/// <para/> Note that the vanilla entries in <see cref="Item"/>, <see cref="Npc"/>, <see cref="Projectile"/>, <see cref="Gore"/>, <see cref="Wall"/>, <see cref="Tile"/>, <see cref="ItemFlame"/>, <see cref="Background"/>, and all of the player equipment and hair related fields are not necessarily loaded. Use the <see cref="Main.LoadItem(int)"/> or similar methods before attempting to use those texture assets. Modded content in these arrays are always preloaded during mod loading.
++/// <para/> For example, the following code could be used to access the Acorn item texture asset.
++/// <code>
++///	Main.instance.LoadItem(ItemID.Acorn);
++///	var acornTexture = TextureAssets.Item[ItemID.Acorn];
++/// </code>
++/// <para/> See <see href="https://github.com/tModLoader/tModLoader/wiki/Assets#preload-textures">the Asset wiki page</see> for more information.
++/// </summary>
+ public static class TextureAssets
+ {
+ 	public static class RenderTargets

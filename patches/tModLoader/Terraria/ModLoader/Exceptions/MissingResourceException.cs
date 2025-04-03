@@ -31,6 +31,9 @@ public class MissingResourceException : Exception
 	{
 		if(reasons.Count > 0) {
 			reasons.Insert(0, $"Failed to load asset: \"{assetPath}\"");
+			if (reasons.Any(x => x.Contains("Texture2D creation failed! Error Code: The parameter is incorrect."))) {
+				reasons.Insert(1, "The most common reason for this \"Texture2D creation failed!\" error is a malformed .png file. Make sure you are saving textures in the .png format and are not just renaming the file extension of your texture files to .png, that does not work.");
+			}
 			return string.Join(Environment.NewLine, reasons);
 		}
 
@@ -38,7 +41,12 @@ public class MissingResourceException : Exception
 		if (closestMatch != null && closestMatch != "") {
 			// TODO: UIMessageBox still doesn't display long sequences of colored text correct.
 			(string a, string b) = LevenshteinDistance.ComputeColorTaggedString(assetPath, closestMatch);
-			return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", assetPath, closestMatch) + "\n" + a + "\n" + b + "\n";
+			string message = Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", assetPath, closestMatch) + "\n" + a + "\n" + b + "\n";
+			if (new System.Diagnostics.StackTrace().ToString().Contains("Terraria.ModLoader.EquipLoader.AddEquipTexture")) {
+				// Errors from Extra textures sometimes mislead modders, need to inform them.
+				message += $"\n{Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundEquipTextureHint")}\n";
+			}
+			return message;
 		}
 		return assetPath;
 	}

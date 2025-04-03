@@ -40,8 +40,6 @@ public static class BuffLoader
 
 	internal static int ReserveBuffID()
 	{
-		if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
-
 		int reserveID = nextBuff;
 		nextBuff++;
 		return reserveID;
