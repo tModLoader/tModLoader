@@ -5,7 +5,7 @@ namespace Terraria.Map;
 public partial struct MapOverlayDrawContext
 {
 	/// <summary>
-	/// The position of the top left corner of the map in tile coordinates. Note that this will always be <see cref="Vector2.Zero"/> when drawing the overlay and fullscreen maps.
+	/// The tile coordinate that the top left corner of the map is showing. Note that this will always be <see cref="Vector2.Zero"/> when drawing the overlay and fullscreen maps.
 	/// </summary>
 	public readonly Vector2 MapPosition => _mapPosition;
 
