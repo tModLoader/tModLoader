@@ -563,6 +563,8 @@
 		"CommandModListModlist": "Modlist:",
 		"CommandCustomSetsDescription": "Displays a list of named ID sets.",
 		"CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		"CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		"CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "Building: {0}",
