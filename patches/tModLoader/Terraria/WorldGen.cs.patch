@@ -2950,7 +2950,7 @@
  						continue;
  
 +					int preHookType = Main.tile[num11, num12].type;
-+					bool convertTile = !TileLoader.Convert(num11, num12, 1);
++					bool convertTile = TileLoader.Convert(num11, num12, 1);
 +
 +					if (preHookType != Main.tile[num11, num12].type) {
 +						if (genRand.Next(2) == 0)
@@ -2980,7 +2980,7 @@
  						continue;
  
 +					int preHookType = Main.tile[num13, num14].type;
-+					bool convertTile = !TileLoader.Convert(num13, num14, 4);
++					bool convertTile = TileLoader.Convert(num13, num14, 4);
 +
 +					if (preHookType != Main.tile[num13, num14].type) {
 +						if (genRand.Next(2) == 0)
@@ -3003,7 +3003,7 @@
 +				continue;
 +
 +			int preHookType = Main.tile[num15, num16].type;
-+			bool convertTile = !TileLoader.Convert(num15, num16, 2);
++			bool convertTile = TileLoader.Convert(num15, num16, 2);
 +
 +			if (preHookType != Main.tile[num15, num16].type) {
 +				if (genRand.Next(2) == 0)
