@@ -1962,13 +1962,15 @@
  	{
  		for (int k = i - size; k <= i + size; k++) {
  			for (int l = j - size; l <= j + size; l++) {
-@@ -39352,9 +_,16 @@
+@@ -39352,9 +_,18 @@
  				Tile tile = Main.tile[k, l];
  				int type = tile.type;
  				int wall = tile.wall;
 +
 +				bool convertWall = walls && wall > 0 && WallLoader.Convert(k, l, conversionType);
 +				bool convertTile = tiles && tile.HasTile && TileLoader.Convert(k, l, conversionType);
++				if (conversionType >= BiomeConversionID.Count)
++					continue;
 +
  				switch (conversionType) {
  					case 4:
