@@ -487,6 +487,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		if (!invisible)
 			UpdateVisibleAccessory(slot, item, modded);
+
+		ItemLoader.UpdateVisibleAccessory(item, this, invisible);
 	}
 
 	/// <summary>
