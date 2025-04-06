@@ -224,10 +224,11 @@ internal static class ModOrganizer
 	/// <summary>
 	/// Returns changes based on last time <see cref="SaveLastLaunchedMods"/> was called. Can be null if no changes.
 	/// </summary>
-	internal static string DetectModChangesForInfoMessage()
+	internal static string DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)
 	{
 		// Only display if enabled and file exists
 		if (!ModLoader.showNewUpdatedModsInfo || !File.Exists(lastLaunchedModsFilePath)) {
+			removedMods = null;
 			return null;
 		}
 
@@ -257,6 +258,7 @@ internal static class ModOrganizer
 			var newMods = new List<string>();
 			var updatedMods = new List<string>();
 			var messages = new StringBuilder();
+			removedMods = lastMods.Keys.Where(name => !currMods.ContainsKey(name));
 			foreach (var item in currMods) {
 				string name = item.Key;
 				var localMod = item.Value;
@@ -269,6 +271,16 @@ internal static class ModOrganizer
 				else if (lastMods.TryGetValue(name, out var lastVersion) && lastVersion < version) {
 					updatedMods.Add(name);
 					modsThatUpdatedSinceLastLaunch.Add((name, lastVersion));
+				}
+			}
+
+			//TODO: This code was added hastily in response to a popular mod being transferred ownership by reuploading it.
+			// Revisit this code at a later date, as its not optimized for UX
+			if (removedMods.Count() > 0) {
+				messages.Append(Language.GetTextValue("tModLoader.ShowRemovedModsInfoMessageUpdatedMods"));
+				foreach (var removedMod in removedMods) {
+					string name = removedMod;
+					messages.Append($"\n  {name} was removed.");
 				}
 			}
 
@@ -294,6 +306,7 @@ internal static class ModOrganizer
 			return messages.Length > 0 ? messages.ToString() : null;
 		}
 		catch {
+			removedMods = null;
 			return null;
 		}
 	}
