@@ -751,16 +751,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Allows you to set custom draw flags for this accessory that can be checked in a <see cref="PlayerDrawLayer"/> or other drawcode. Not required if using pre-existing layers (e.g. face, back).
 	/// </summary>
 	/// <param name="player">The player.</param>
-	/// <param name="hideVisual">if set to <c>true</c> the accessory is hidden.</param>
-	public virtual void UpdateVisibleAccessory(Player player, bool hideVisual)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to set custom draw flags for this accessory when equipped in a vanity slot. The flags can then be checked in a <see cref="PlayerDrawLayer"/> or other drawcode. Not required if using pre-existing layers (e.g. face, back).
-	/// </summary>
-	/// <param name="player">The player.</param>
-	public virtual void UpdateVisibleVanityAccessory(Player player)
+	/// <param name="vanity">Whether or not this accessory is in a social slot.</param>
+	public virtual void UpdateVisibleAccessory(Player player, bool vanity)
 	{
 	}
 

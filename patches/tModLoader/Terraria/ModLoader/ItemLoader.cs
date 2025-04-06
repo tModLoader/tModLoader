@@ -1238,34 +1238,17 @@ public static class ItemLoader
 	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateVisibleAccessory);
 
 	/// <summary>
-	/// Hook at the end of Player.TML.UpdateVisibleAccessories that can be called to set flags related to player drawing.
+	/// Hook at the end of Player.UpdateVisibleAccessory that can be called to set flags related to player drawing.
 	/// </summary>
-	public static void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
+	public static void UpdateVisibleAccessory(Item item, Player player, bool vanity)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.UpdateVisibleAccessory(player, hideVisual);
+		item.ModItem?.UpdateVisibleAccessory(player, vanity);
 
 		foreach (var g in HookUpdateVisibleAccessory.Enumerate(item)) {
-			g.UpdateVisibleAccessory(item, player, hideVisual);
-		}
-	}
-
-	private static HookList HookUpdateVisibleVanityAccessory = AddHook<Action<Item, Player>>(g => g.UpdateVisibleVanityAccessory);
-
-	/// <summary>
-	/// Hook within Player.UpdateVisibleAccessories that can be called to set flags related to player drawing.
-	/// </summary>
-	public static void UpdateVisibleVanityAccessory(Item item, Player player)
-	{
-		if (item.IsAir)
-			return;
-
-		item.ModItem?.UpdateVisibleVanityAccessory(player);
-
-		foreach (var g in HookUpdateVisibleVanityAccessory.Enumerate(item)) {
-			g.UpdateVisibleVanityAccessory(item, player);
+			g.UpdateVisibleAccessory(item, player, vanity);
 		}
 	}
 

@@ -5296,7 +5296,7 @@
  		for (int i = 3; i < 10; i++) {
  			if (!IsItemSlotUnlockedAndUsable(i))
  				continue;
-@@ -28531,14 +_,29 @@
+@@ -28531,14 +_,27 @@
  			if (!hideVisibleAccessory[i])
  				UpdateVisibleAccessory(i, item);
  		}
@@ -5314,11 +5314,9 @@
  		for (int j = 13; j < 20; j++) {
  			if (IsItemSlotUnlockedAndUsable(j)) {
  				Item item2 = armor[j];
--				if (!ItemIsVisuallyIncompatible(item2))
-+				if (!ItemIsVisuallyIncompatible(item2)) {
- 					UpdateVisibleAccessory(j, item2);
-+					ItemLoader.UpdateVisibleVanityAccessory(item2, this);
-+				}
+ 				if (!ItemIsVisuallyIncompatible(item2))
+-					UpdateVisibleAccessory(j, item2);
++					UpdateVisibleAccessory(j, item2, vanity: true);
  			}
 +			// Extra patch context
  		}
@@ -5341,8 +5339,8 @@
  	}
  
 -	private void UpdateVisibleAccessory(int itemSlot, Item item)
-+	//TML: Made public, 'modded' parameter added.
-+	public void UpdateVisibleAccessory(int itemSlot, Item item, bool modded = false)
++	//TML: Made public, 'modded' and 'vanity' parameters added.
++	public void UpdateVisibleAccessory(int itemSlot, Item item, bool modded = false, bool vanity = false)
  	{
  		if (item.stringColor > 0)
  			stringColor = item.stringColor;
@@ -5370,6 +5368,15 @@
  		if (item.type == 3581)
  			yoraiz0rDarkness = true;
  
+@@ -28662,6 +_,8 @@
+ 
+ 		if (item.type == 5075)
+ 			hasRainbowCursor = true;
++
++		ItemLoader.UpdateVisibleAccessory(item, this, vanity);
+ 	}
+ 
+ 	public void SetArmorEffectVisuals(Player drawPlayer)
 @@ -28799,6 +_,9 @@
  		if (drawPlayer.head == 267)
  			yoraiz0rDarkness = true;
