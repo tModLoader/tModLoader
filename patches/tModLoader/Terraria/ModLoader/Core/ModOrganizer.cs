@@ -228,7 +228,7 @@ internal static class ModOrganizer
 	{
 		// Only display if enabled and file exists
 		if (!ModLoader.showNewUpdatedModsInfo || !File.Exists(lastLaunchedModsFilePath)) {
-			removedMods = null;
+			removedMods = [];
 			return null;
 		}
 
@@ -306,7 +306,7 @@ internal static class ModOrganizer
 			return messages.Length > 0 ? messages.ToString() : null;
 		}
 		catch {
-			removedMods = null;
+			removedMods = [];
 			return null;
 		}
 	}
