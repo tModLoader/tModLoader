@@ -753,7 +753,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <param name="player">The player.</param>
 	/// <param name="vanity">Whether or not this accessory is in a social slot.</param>
 	/// <param name="itemSlot">The accessory slot this item is in</param>
-	public virtual void UpdateVisibleAccessory(Player player, bool vanity, int itemSlot)
+	/// <param name="hideVisual">if set to <c>true</c> the accessory is hidden, sounds counterintuitive but this can be used for certain effects regarding the shape of the player without showing the accessory itself.</param>
+	public virtual void UpdateVisibleAccessory(Player player, bool vanity, int itemSlot, bool hideVisual)
 	{
 	}
 
