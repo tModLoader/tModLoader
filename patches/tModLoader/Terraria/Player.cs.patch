@@ -5373,7 +5373,7 @@
  		if (item.type == 5075)
  			hasRainbowCursor = true;
 +
-+		ItemLoader.UpdateVisibleAccessory(item, this, vanity);
++		ItemLoader.UpdateVisibleAccessory(item, this, vanity, itemSlot);
  	}
  
  	public void SetArmorEffectVisuals(Player drawPlayer)

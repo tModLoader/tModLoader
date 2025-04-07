@@ -752,7 +752,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="vanity">Whether or not this accessory is in a social slot.</param>
-	public virtual void UpdateVisibleAccessory(Player player, bool vanity)
+	/// <param name="itemSlot">The accessory slot this item is in</param>
+	public virtual void UpdateVisibleAccessory(Player player, bool vanity, int itemSlot)
 	{
 	}
 
