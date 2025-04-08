@@ -346,7 +346,7 @@ namespace ExampleMod.Content.CustomModType
 		}
 
 		public void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch) {
-			Color color = Color.Lerp(Color.White, new Color(255, 255, 255, 0), Utils.Clamp(scale, 0, 1f));
+			Color color = Color.White * Utils.Clamp(scale, 0, 1f);
 			spriteBatch.Draw(texture.Value, settings.AnchorPosition + LocalPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0f);
 		}
 	}
