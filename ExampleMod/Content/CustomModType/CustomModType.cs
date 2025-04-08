@@ -5,6 +5,7 @@ using ReLogic.Reflection;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.Localization;
@@ -150,12 +151,7 @@ namespace ExampleMod.Content.CustomModType
 			activeVictoryPose.ElapsedPoseTime = 0;
 			activeVictoryPose.OnStartPose(Player);
 
-			AdvancedPopupRequest request = default;
-			request.Text = activeVictoryPose.VictoryCheer.Value;
-			request.DurationInFrames = activeVictoryPose.PoseTime / 2;
-			request.Velocity = new Vector2(0, -10);
-			request.Color = Color.ForestGreen;
-			PopupText.NewText(request, Player.Center);
+			ChatHelper.DisplayMessage(activeVictoryPose.VictoryCheer.ToNetworkText(), Color.White, (byte)Main.myPlayer);
 
 			Asset<Texture2D> texture = ModContent.Request<Texture2D>(activeVictoryPose.Texture);
 			Rectangle? frame = activeVictoryPose.GetTextureFrame(texture);
