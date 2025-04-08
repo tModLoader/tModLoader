@@ -54,10 +54,10 @@ public static class PlayerDrawLayerLoader
 		}
 
 		foreach (var (layer, b) in betweens) {
-			if (b.Layer1 is { } after && !positions.ContainsKey(after))
-				throw new ArgumentException($"{layer.FullName} cannot be positioned after {after.FullName} because it does not have a fixed position. Consider using AfterParent or referring to a different layer (or null)");
-			if (b.Layer2 is { } before && !positions.ContainsKey(before))
-				throw new ArgumentException($"{layer.FullName} cannot be positioned after {before.FullName} because it does not have a fixed position. Consider using BeforeParent or referring to a different layer (or null)");
+			if (b.Layer1 is { } after && !betweens.ContainsKey(after))
+				throw new ArgumentException($"{layer.FullName} cannot be positioned after {after.FullName} because {after.FullName} does not have a fixed position. Consider using AfterParent or referring to a different layer (or null)");
+			if (b.Layer2 is { } before && !betweens.ContainsKey(before))
+				throw new ArgumentException($"{layer.FullName} cannot be positioned after {before.FullName} because {before.FullName} does not have a fixed position. Consider using BeforeParent or referring to a different layer (or null)");
 		}
 
 		var sort = new TopoSort<PlayerDrawLayer>(betweens.Keys,
