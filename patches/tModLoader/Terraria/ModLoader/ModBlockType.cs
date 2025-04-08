@@ -115,6 +115,14 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Whether or not the tile/wall at the given coordinates can be teleported to with methods such as Teleportation Potions or the Rod of Discord.
+	/// </summary>
+	public virtual bool CanBeTeleportedTo(int i, int j)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to draw things behind the tile/wall at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>

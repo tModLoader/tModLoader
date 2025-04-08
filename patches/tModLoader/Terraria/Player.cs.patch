@@ -7192,6 +7192,16 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35439,6 +_,9 @@
+ 
+ 		int num = (int)(pointPoisition.X / 16f);
+ 		int num2 = (int)(pointPoisition.Y / 16f);
++		if (!TileLoader.CanBeTeleportedTo(num, num2, (int)Main.tile[num, num2].TileType) || !WallLoader.CanBeTeleportedTo(num, num2, (int)Main.tile[num, num2].WallType))
++			return;
++
+ 		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
+ 			return;
+ 
 @@ -35479,7 +_,10 @@
  			}
  		}
@@ -8917,6 +8927,16 @@
  			adjTile[n] = false;
  			oldAdjTile[n] = false;
  		}
+@@ -43262,6 +_,9 @@
+ 			if (Main.tile[num2, num3] == null)
+ 				Main.tile[num2, num3] = new Tile();
+ 
++			if (!TileLoader.CanBeTeleportedTo(num2, num3, Main.tile[num2, num3].TileType) || !WallLoader.CanBeTeleportedTo(num2, num3, (int)Main.tile[num2, num3].WallType))
++				continue;
++
+ 			if ((settings.avoidWalls && Main.tile[num2, num3].wall > 0) || (Main.tile[num2, num3].wall == 87 && (double)num3 > Main.worldSurface && !NPC.downedPlantBoss) || (Main.wallDungeon[Main.tile[num2, num3].wall] && (double)num3 > Main.worldSurface && !NPC.downedBoss3))
+ 				continue;
+ 
 @@ -43332,11 +_,29 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);

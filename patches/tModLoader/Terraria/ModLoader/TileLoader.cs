@@ -66,6 +66,7 @@ public static class TileLoader
 	private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
 	private static DelegateKillTile[] HookKillTile;
 	private static Func<int, int, int, bool>[] HookCanExplode;
+	private static Func<int, int, int, bool>[] HookCanBeTeleportedTo;
 	private static Action<int, int, int, bool>[] HookNearbyEffects;
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
@@ -223,6 +224,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateCanKillTile>(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateKillTile>(ref HookKillTile, globalTiles, g => g.KillTile);
 		ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
+		ModLoader.BuildGlobalHook(ref HookCanBeTeleportedTo, globalTiles, g => g.CanBeTeleportedTo);
 		ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
@@ -661,6 +663,15 @@ public static class TileLoader
 			}
 		}
 		return true;
+	}
+	public static bool CanBeTeleportedTo(int i, int j, int type)
+	{
+		foreach (var hook in HookCanBeTeleportedTo) {
+			if (!hook(i, j, type)) {
+				return false;
+			}
+		}
+		return GetTile(type)?.CanBeTeleportedTo(i, j) ?? true;
 	}
 
 	public static void NearbyEffects(int i, int j, int type, bool closer)
