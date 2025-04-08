@@ -191,23 +191,17 @@ public static class TagIO
 		if (elemType is not null)
 			return elemType;
 
-		Type? enumerableType = null;
-		foreach (Type interfaceType in type.GetInterfaces()) {
-			if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) {
+		while (true) {
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+				return type.GetGenericArguments()[0];
 
-				// Prevent the possibility of ambiguity
-				if (enumerableType is not null)
-					throw new IOException($"Invalid NBT payload type '{type}'");
+			if (type.BaseType is null)
+				break;
 
-				enumerableType = interfaceType;
-			}
+			type = type.BaseType;
 		}
 
-		// type is IList but not IEnumerable<T>
-		if (enumerableType is null)
-			throw new IOException($"Invalid NBT payload type '{type}'");
-
-		return enumerableType.GetGenericArguments()[0];
+		throw new IOException($"Invalid NBT payload type '{type}'");
 	}
 
 	public static object Serialize(object value)
