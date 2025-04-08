@@ -8937,6 +8937,16 @@
  			if ((settings.avoidWalls && Main.tile[num2, num3].wall > 0) || (Main.tile[num2, num3].wall == 87 && (double)num3 > Main.worldSurface && !NPC.downedPlantBoss) || (Main.wallDungeon[Main.tile[num2, num3].wall] && (double)num3 > Main.worldSurface && !NPC.downedBoss3))
  				continue;
  
+@@ -43301,6 +_,9 @@
+ 					continue;
+ 			}
+ 
++			if (!TileLoader.CanBeTeleportedTo(i, j, Main.tile[i, j].TileType) || !WallLoader.CanBeTeleportedTo(i, j, (int)Main.tile[i, j].WallType))
++				continue;
++
+ 			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
+ 				continue;
+ 
 @@ -43332,11 +_,29 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);
