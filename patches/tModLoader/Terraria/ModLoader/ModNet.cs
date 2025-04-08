@@ -621,7 +621,7 @@ public static class ModNet
 			ReadUnderflowBypass = false;
 			GetMod(id)?.HandlePacket(reader, whoAmI);
 			if (!ReadUnderflowBypass && reader.BaseStream.Position - start != actualLength) {
-				throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id).Name} in HandlePacket");
+				throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id)?.Name ?? "Unknown mod"} in HandlePacket");
 			}
 		}
 		catch { }

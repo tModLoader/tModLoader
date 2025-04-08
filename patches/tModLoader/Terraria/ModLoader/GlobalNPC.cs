@@ -653,6 +653,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
+	/// <para/> The traveling merchant shop is handled separately in <see cref="SetupTravelShop(int[], ref int)"/>.
 	/// </summary>
 	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
 	public virtual void ModifyShop(NPCShop shop)

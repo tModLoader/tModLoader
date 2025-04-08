@@ -253,7 +253,7 @@ public partial class NPC
 	}
 
 	/// <summary>
-	/// Represents a finalized damage calculation for damage about to be applied to an NPC. This is the result of the all modifications done previously in a <see cref="HitModifiers"/> provided to the ModifyHit hooks.
+	/// Represents a finalized damage calculation for damage about to be applied to an NPC. This is the result of all modifications done previously in a <see cref="HitModifiers"/> provided to the ModifyHit hooks.
 	/// </summary>
 	public struct HitInfo
 	{

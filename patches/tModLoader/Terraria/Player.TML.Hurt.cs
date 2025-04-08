@@ -185,7 +185,7 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// Represents a finalized damage calculation for damage about to be applied to a Player. This is the result of the all modifications done previously in a <see cref="HurtModifiers"/> provided to various hooks.
+	/// Represents a finalized damage calculation for damage about to be applied to a Player. This is the result of all modifications done previously in a <see cref="HurtModifiers"/> provided to various hooks.
 	/// </summary>
 	public struct HurtInfo
 	{
