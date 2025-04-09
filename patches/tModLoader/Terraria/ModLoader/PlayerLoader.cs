@@ -1476,4 +1476,14 @@ public static class PlayerLoader
 			modPlayer.ArmorSetBonusHeld(holdTime);
 		}
 	}
+
+	private static HookList HookCanBeTeleportedTo = AddHook<Func<int, int, string, bool>>(p => p.CanBeTeleportedTo);
+
+	public static bool CanBeTeleportedTo(Player player, int i, int j, string context){
+		foreach (var modPlayer in HookCanBeTeleportedTo.Enumerate(player)) {
+			if (!modPlayer.CanBeTeleportedTo(i, j, context))
+				return false;
+		}
+		return true;
+	}
 }

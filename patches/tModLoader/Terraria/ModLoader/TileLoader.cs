@@ -665,16 +665,6 @@ public static class TileLoader
 		return true;
 	}
 
-	public static bool CanBeTeleportedTo(int i, int j, int type)
-	{
-		foreach (var hook in HookCanBeTeleportedTo) {
-			if (!hook(i, j, type)) {
-				return false;
-			}
-		}
-		return GetTile(type)?.CanBeTeleportedTo(i, j) ?? true;
-	}
-
 	public static void NearbyEffects(int i, int j, int type, bool closer)
 	{
 		GetTile(type)?.NearbyEffects(i, j, closer);

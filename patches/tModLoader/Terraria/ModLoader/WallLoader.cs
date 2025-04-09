@@ -38,7 +38,7 @@ public static class WallLoader
 	private static DelegateKillWall[] HookKillWall;
 	private static Func<int, int, int, bool>[] HookCanPlace;
 	private static Func<int, int, int, bool>[] HookCanExplode;
-	private static Func<int, int, int, bool>[] HookCanBeTeleportedTo;
+	private static Func<int, int, int, Player, string, bool>[] HookCanBeTeleportedTo;
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Action<int, int, int>[] HookRandomUpdate;
@@ -248,14 +248,14 @@ public static class WallLoader
 		return GetWall(type)?.CanExplode(i, j) ?? true;
 	}
 
-	public static bool CanBeTeleportedTo(int i, int j, int type)
+	public static bool CanBeTeleportedTo(int i, int j, int type, Player player, string context)
 	{
 		foreach (var hook in HookCanBeTeleportedTo) {
-			if (!hook(i, j, type)) {
+			if (!hook(i, j, type, player, context)) {
 				return false;
 			}
 		}
-		return GetWall(type)?.CanBeTeleportedTo(i, j) ?? true;
+		return GetWall(type)?.CanBeTeleportedTo(i, j, player, context) ?? true;
 	}
 
 	//in Terraria.Lighting.PreRenderPhase after wall modifies light call

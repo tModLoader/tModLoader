@@ -71,12 +71,6 @@ public abstract class GlobalBlockType : ModType
 		return true;
 	}
 
-	/// <inheritdoc cref="ModBlockType.CanBeTeleportedTo(int, int)"/>
-	public virtual bool CanBeTeleportedTo(int i, int j, int type)
-	{
-		return true;
-	}
-
 	/// <summary>
 	/// Allows you to draw things behind the tile/wall at the given coordinates. Return false to stop the game from drawing the tile/wall normally. Returns true by default.
 	/// </summary>
