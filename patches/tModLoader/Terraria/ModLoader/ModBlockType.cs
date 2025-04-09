@@ -116,6 +116,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Whether or not the tile/wall at the given coordinates can be teleported to with methods such as Teleportation Potions or the Rod of Discord.
+	/// <para/> This gets called in <see cref="Player.CheckForGoodTeleportationSpot(ref bool, int, int, int, int, Player.RandomTeleportationAttemptSettings)"/>.
 	/// </summary>
 	public virtual bool CanBeTeleportedTo(int i, int j)
 	{
