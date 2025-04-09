@@ -298,7 +298,7 @@ public static class TileLoader
 	//  and add && !checkStay to if statement that sets flag4
 	public static void CheckModTile(int i, int j, int type)
 	{
-		if(type <= TileID.Count) {
+		if (type <= TileID.Count) {
 			return;
 		}
 		if (WorldGen.destroyObject) {
@@ -664,6 +664,7 @@ public static class TileLoader
 		}
 		return true;
 	}
+
 	public static bool CanBeTeleportedTo(int i, int j, int type)
 	{
 		foreach (var hook in HookCanBeTeleportedTo) {

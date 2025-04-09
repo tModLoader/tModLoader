@@ -257,6 +257,7 @@ public static class WallLoader
 		}
 		return GetWall(type)?.CanBeTeleportedTo(i, j) ?? true;
 	}
+
 	//in Terraria.Lighting.PreRenderPhase after wall modifies light call
 	//  WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
 	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
@@ -267,7 +268,6 @@ public static class WallLoader
 			hook(i, j, type, ref r, ref g, ref b);
 		}
 	}
-
 
 	/// <summary>
 	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert"/> <br/>

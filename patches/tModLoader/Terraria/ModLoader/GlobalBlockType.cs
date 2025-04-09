@@ -71,10 +71,7 @@ public abstract class GlobalBlockType : ModType
 		return true;
 	}
 
-	/// <summary>
-	/// Whether or not the tile/wall at the given coordinates can be teleported to with methods such as Teleportation Potions or the Rod of Discord.
-	/// <para/> This gets called in <see cref="Player.CheckForGoodTeleportationSpot(ref bool, int, int, int, int, Player.RandomTeleportationAttemptSettings)"/>.
-	/// </summary>
+	/// <inheritdoc cref="ModBlockType.CanBeTeleportedTo(int, int)"/>
 	public virtual bool CanBeTeleportedTo(int i, int j, int type)
 	{
 		return true;
