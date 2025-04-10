@@ -1477,11 +1477,11 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookCanBeTeleportedTo = AddHook<Func<int, int, string, bool>>(p => p.CanBeTeleportedTo);
+	private static HookList HookCanBeTeleportedTo = AddHook<Func<Vector2, string, bool>>(p => p.CanBeTeleportedTo);
 
-	public static bool CanBeTeleportedTo(Player player, int i, int j, string context){
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, string context){
 		foreach (var modPlayer in HookCanBeTeleportedTo.Enumerate(player)) {
-			if (!modPlayer.CanBeTeleportedTo(i, j, context))
+			if (!modPlayer.CanBeTeleportedTo(teleportPosition, context))
 				return false;
 		}
 		return true;

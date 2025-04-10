@@ -7196,7 +7196,7 @@
  		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
  			return;
  
-+		if (!CombinedHooks.CanBeTeleportedTo(this, num, num2, "TeleportRod"))
++		if (!CombinedHooks.CanBeTeleportedTo(this, pointPoisition, num, num2, "TeleportRod"))
 +			return;
 +
  		Teleport(pointPoisition, 1);
@@ -8931,7 +8931,7 @@
  			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
  				continue;
  
-+			if (!CombinedHooks.CanBeTeleportedTo(this, i, j, "CheckForGoodTeleportationSpot"))
++			if (!CombinedHooks.CanBeTeleportedTo(this, vector, i, j, "CheckForGoodTeleportationSpot"))
 +				continue;
 +
  			Vector2 vector2 = Vector2.UnitX * 16f;
