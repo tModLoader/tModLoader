@@ -334,7 +334,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Choose if this item will be consumed or not when used as bait. return null for vanilla behavior.
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The Player that owns the bait</param>
 	public virtual bool? CanConsumeBait(Player player)
@@ -344,7 +344,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to prevent an item from being researched by returning false. True is the default behavior.
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanResearch()
 	{
@@ -353,7 +353,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create custom behavior when an item is accepted by the Research function
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
 	public virtual void OnResearched(bool fullyResearched)
@@ -638,7 +638,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
-	/// <para/> This method is only called on the on the client of the player holding the weapon.
+	/// <para/> This method is only called on the client of the player holding the weapon.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -965,7 +965,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split.  This hook is called before the stack values are modified.
+	/// Allows you to make things happen when an item stack is split. This hook is called before the stack values are modified.
 	/// <para/> This item is the item clone being stacked onto from <paramref name="source"/> and always has a stack of zero.
 	/// <para/> Called on the local client only.
 	/// </summary>
