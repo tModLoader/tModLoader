@@ -57,6 +57,7 @@ namespace ExampleMod.Content.CustomModType
 		}
 
 		private void StartPose(ModVictoryPose newPose) {
+			// Create a clone of the template instance so we can modify fields like ElapsedPoseTime freely.
 			activeVictoryPose = newPose.Clone();
 
 			// Reset timers.
