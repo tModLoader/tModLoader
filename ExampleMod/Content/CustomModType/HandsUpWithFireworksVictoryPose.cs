@@ -25,7 +25,7 @@ namespace ExampleMod.Content.CustomModType
 
 			if (ElapsedPoseTime == 30 || ElapsedPoseTime == 60) {
 				SpawnFirework(player);
-				SoundEngine.PlaySound(SoundID.Thunder);
+				SoundEngine.PlaySound(SoundID.Thunder with { Type = SoundType.Sound }, player.Center);
 			}
 		}
 

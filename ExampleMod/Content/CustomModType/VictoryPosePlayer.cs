@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.IO;
 using Terraria;
 using Terraria.Chat;
 using Terraria.Graphics.Renderers;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.CustomModType
@@ -20,7 +22,7 @@ namespace ExampleMod.Content.CustomModType
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			// Detect when we defeat an enemy.
-			if (!target.active) {
+			if (!target.active && Player.whoAmI == Main.myPlayer) {
 				// Start a victory pose
 				StartRandomPose(target.boss);
 			}
@@ -36,20 +38,34 @@ namespace ExampleMod.Content.CustomModType
 				return; // Don't interrupt an ongoing pose
 			}
 
+			ModVictoryPose newPose;
 			if (boss) {
 				// Choose from all the poses
-				activeVictoryPose = Main.rand.Next(VictoryPoseLoader.VictoryPoses);
+				newPose = Main.rand.Next(VictoryPoseLoader.VictoryPoses);
 			}
 			else {
 				// Choose from only the NonBoss set
 				int randomNonBossVictoryPoseIndex = Main.rand.Next(VictoryPoseID.Sets.NonBoss.GetTrueIndexes());
-				activeVictoryPose = VictoryPoseLoader.VictoryPoses[randomNonBossVictoryPoseIndex];
+				newPose = VictoryPoseLoader.VictoryPoses[randomNonBossVictoryPoseIndex];
 			}
+			StartPose(newPose);
+
+			if (Main.netMode == NetmodeID.MultiplayerClient) {
+				// Inform other clients about the pose to sync the visuals.
+				SendStartVictoryPoseMessage(Player.whoAmI, activeVictoryPose);
+			}
+		}
+
+		private void StartPose(ModVictoryPose newPose) {
+			activeVictoryPose = newPose.Clone();
+
 			// Reset timers.
 			activeVictoryPose.ElapsedPoseTime = 0;
 			activeVictoryPose.OnStartPose(Player);
 
-			ChatHelper.DisplayMessage(activeVictoryPose.VictoryCheer.ToNetworkText(), Color.White, (byte)Main.myPlayer);
+			if (Main.netMode != NetmodeID.Server) {
+				ChatHelper.DisplayMessage(activeVictoryPose.VictoryCheer.ToNetworkText(), Color.White, (byte)Player.whoAmI);
+			}
 
 			Asset<Texture2D> texture = ModContent.Request<Texture2D>(activeVictoryPose.Texture);
 			Rectangle? frame = activeVictoryPose.GetTextureFrame(texture);
@@ -57,8 +73,13 @@ namespace ExampleMod.Content.CustomModType
 				AccelerationPerFrame = new Vector2(0f, 0.16350001f),
 				ScaleOffsetPerFrame = 1f / 60f,
 			});
+		}
 
-			// TODO: A real implementation would want to sync the pose to other clients with a ModPacket
+		private void StartPoseDirect(ModVictoryPose newPose) {
+			// The "direct" version of this method is intended for network scenarios.
+			// Checks for activeVictoryPose are skipped since we can assume the pose from the network is more correct. (in cases of desync)
+			// If there is an activeVictoryPose it will be interrupted.
+			StartPose(newPose);
 		}
 
 		public override void PostUpdate() {
@@ -73,6 +94,33 @@ namespace ExampleMod.Content.CustomModType
 				activeVictoryPose.OnEndPose(Player);
 				activeVictoryPose = null;
 			}
+		}
+
+		public static void HandleStartVictoryPoseMessage(BinaryReader reader, int whoAmI) {
+			int player = reader.ReadByte();
+			if (Main.netMode == NetmodeID.Server) {
+				// This check forces the affected player to be whichever client sent the message to the server, this prevents other clients from spoofing a message for another player. This is a typical approach for untrusted messages from clients.
+				player = whoAmI;
+			}
+
+			int poseIndex = reader.ReadInt32();
+			ModVictoryPose pose = VictoryPoseLoader.VictoryPoses[poseIndex];
+			if (player != Main.myPlayer) {
+				Main.player[player].GetModPlayer<VictoryPosePlayer>().StartPoseDirect(pose);
+			}
+
+			if (Main.netMode == NetmodeID.Server) {
+				// If the server receives this message, it sends it to all other clients to sync the effects.
+				SendStartVictoryPoseMessage(player, pose);
+			}
+		}
+
+		public static void SendStartVictoryPoseMessage(int whoAmI, ModVictoryPose pose) {
+			ModPacket packet = ModContent.GetInstance<ExampleMod>().GetPacket();
+			packet.Write((byte)ExampleMod.MessageType.StartVictoryPose);
+			packet.Write((byte)whoAmI);
+			packet.Write(pose.Type);
+			packet.Send(ignoreClient: whoAmI);
 		}
 	}
 

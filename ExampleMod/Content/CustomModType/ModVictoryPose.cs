@@ -48,6 +48,13 @@ namespace ExampleMod.Content.CustomModType
 			SetStaticDefaults(); // Finally, we call SetStaticDefaults, where each ModVictoryPose class will implement their specific logic.
 		}
 
+		// Because ElapsedPoseTime is tracked on the ModVictoryPose itself, we need a way to make a new instance of ModVictoryPose so multiple of the same type can potentially exist at once with multiple players each doing a pose.
+		// This Clone method does that. Not every ModType needs a Clone method, but if a ModType won't be treated as a singleton, it might be necessary.
+		public virtual ModVictoryPose Clone() {
+			var clone = (ModVictoryPose)MemberwiseClone();
+			return clone;
+		}
+
 		// These virtual methods are the "hooks" we provide that other modders can use to customize their ModVictoryPose behaviors.
 		// It is useful to document these methods so that other mods using it can understand what each method does. They can view the documentation by hovering over the method name. Typing "///" in Visual Studio will generate a documentation stub, after that add any information you want to the "summary" section. See https://github.com/tModLoader/tModLoader/wiki/Why-Use-an-IDE#mod-documentation for more information about how to enable documentation support in your mod.
 		// If your mod has a GitHub wiki, you might want to also document these methods there as well as an additional reference.
