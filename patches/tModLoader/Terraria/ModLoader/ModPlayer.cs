@@ -793,7 +793,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Return true or false to say the target can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
 	/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
 	/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br>
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// <para/> NOTE: this does not classify the given item as a catch tool, which is necessary for catching NPCs in the first place.
 	/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
 	/// </summary>
