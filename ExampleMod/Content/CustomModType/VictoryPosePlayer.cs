@@ -77,8 +77,8 @@ namespace ExampleMod.Content.CustomModType
 
 		private void StartPoseDirect(ModVictoryPose newPose) {
 			// The "direct" version of this method is intended for network scenarios.
-			// Checks for activeVictoryPose are skipped since we can assume the pose from the network is more correct. (in cases of desync)
-			// If there is an activeVictoryPose it will be interrupted.
+			// Even if there is an activeVictoryPose, we will immediately end it since we can assume the pose from the network is more correct. (in cases of network desync or lag)
+			activeVictoryPose?.OnEndPose(Player);
 			StartPose(newPose);
 		}
 
