@@ -25,9 +25,6 @@ public enum SoundLimitBehavior
 /// </summary>
 public record struct SoundStyle
 {
-	private const float MinPitchValue = -1f;
-	private const float MaxPitchValue = 1f;
-
 	private static readonly UnifiedRandom Random = new();
 
 	private int[]? variants;
@@ -128,7 +125,7 @@ public record struct SoundStyle
 	/// </summary>
 	public float Pitch {
 		get => pitch;
-		set => pitch = MathHelper.Clamp(value, MinPitchValue, MaxPitchValue);
+		set => pitch = value;
 	}
 
 	/// <summary>
@@ -153,23 +150,17 @@ public record struct SoundStyle
 	public (float minPitch, float maxPitch) PitchRange {
 		get {
 			float halfVariance = PitchVariance;
-			float minPitch = Math.Max(MinPitchValue, Pitch - halfVariance);
-			float maxPitch = Math.Min(MaxPitchValue, Pitch + halfVariance);
+			float minPitch = Pitch - halfVariance;
+			float maxPitch = Pitch + halfVariance;
 
 			return (minPitch, maxPitch);
 		}
 		set {
-			float minPitch = value.minPitch;
-			float maxPitch = value.maxPitch;
-
-			if (minPitch > maxPitch)
+			if (value.minPitch > value.maxPitch)
 				throw new ArgumentException("Min pitch cannot be greater than max pitch.", nameof(value));
 			
-			minPitch = Math.Max(MinPitchValue, minPitch);
-			maxPitch = Math.Min(MaxPitchValue, maxPitch);
-
-			Pitch = (minPitch + maxPitch) * 0.5f;
-			PitchVariance = maxPitch - minPitch;
+			Pitch = (value.minPitch + value.maxPitch) * 0.5f;
+			PitchVariance = value.maxPitch - value.minPitch;
 		}
 	}
 
@@ -249,7 +240,7 @@ public record struct SoundStyle
 	}
 
 	public float GetRandomPitch()
-		=> MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), MinPitchValue, MaxPitchValue);
+		=> Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance);
 
 	internal SoundStyle WithVolume(float volume)
 		=> this with { Volume = volume };
