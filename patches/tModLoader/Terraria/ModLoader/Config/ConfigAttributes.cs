@@ -406,7 +406,7 @@ public class OptionStringsAttribute : Attribute
 
 /// <summary>
 /// Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
-/// Defaults are: float: 0.01f - byte/int/uint: 1
+/// Defaults are: float: 0.01f - byte/int/uint/long/ulong: 1
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class IncrementAttribute : Attribute
@@ -428,6 +428,16 @@ public class IncrementAttribute : Attribute
 		Increment = increment;
 	}
 
+	public IncrementAttribute(long increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(ulong increment)
+	{
+		Increment = increment;
+	}
+
 	public IncrementAttribute(byte increment)
 	{
 		Increment = increment;
@@ -435,7 +445,7 @@ public class IncrementAttribute : Attribute
 }
 
 /// <summary>
-/// Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255
+/// Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint/long/ulong: 0, 100 - byte: 0, 255
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class RangeAttribute : Attribute
@@ -456,6 +466,18 @@ public class RangeAttribute : Attribute
 	}
 
 	public RangeAttribute(uint min, uint max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(long min, long max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(ulong min, ulong max)
 	{
 		Min = min;
 		Max = max;
