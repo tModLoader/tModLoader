@@ -1163,6 +1163,16 @@ Mods: {
 				// DisplayName: Camera Modifier Showcase
 				// Tooltip: ""
 			}
+
+			RubyEarrings: {
+				// DisplayName: Ruby Earrings
+				// Tooltip: ""
+			}
+
+			SapphireEarrings: {
+				// DisplayName: Sapphire Earrings
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
