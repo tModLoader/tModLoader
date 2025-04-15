@@ -13,6 +13,8 @@ services:
       #   GID: 1000
     ports:
       - 7777:7777
+    tty: true
+    stdin_open: true
     volumes:
       - ./tModLoader:/tModLoader
       # Optional volumes below. These files/folders MUST exist on the host

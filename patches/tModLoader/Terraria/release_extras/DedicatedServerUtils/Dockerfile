@@ -11,7 +11,7 @@ FROM alpine:3.20
 
 # TODO try to get gcompat working
 RUN apk update \
-    && apk add --no-cache bash curl nano file tmux libgcc libstdc++ icu-libs \
+    && apk add --no-cache bash curl nano file libgcc libstdc++ icu-libs \
     # && echo "x86" > /etc/apk/arch \
     # && apk add --no-cache gcompat \
     # && echo "x86_64" > /etc/apk/arch \
@@ -63,64 +63,20 @@ COPY --chown=tml:tml --chmod=0755 <<EOF ./.bin/steamcmd
 exec ~/Steam/steamcmd.sh "\$@"
 EOF
 
-# Create an execute for tmux to be used outside of the container
-COPY --chown=tml:tml --chmod=0755 <<EOF ./.bin/execute
-#\!/bin/bash
-
-tmux send-keys -t tml "\$1" Enter
-EOF
-
-# Convenience script to directly attach to the tmux session
-COPY --chown=tml:tml --chmod=0755 <<EOF ./.bin/attach
-#\!/bin/bash
-
-tmux attach -d
-EOF
-
-# Create the entrypoint which sets up tmux
-COPY --chown=tml:tml --chmod=0755 <<EOF ./.bin/entrypoint
-#!/bin/bash
-
-umask "${UMASK}"
-
-# Ensure directories exist before ownership changing
-#mkdir -p /tModLoader/Mods /tModLoader/Worlds
-
-pipe=/tmp/tmod.pipe
-
-function stop() {
-	echo "Server received SIGTERM, shutting down..."
-	execute "say Server shutting down in 10s..."
-	sleep ${SHUTDOWN_TIME}
-	execute "exit"
-	tmux wait tml &> /dev/null
-	rm -f \$pipe
-}
-
-# Trap the shutdown
-trap stop TERM INT
-echo "Starting tModLoader server..."
-
-rm -f \$pipe
-mkfifo \$pipe
-tmux new-session -d -s tml "~/manage-tModLoaderServer.sh start --folder /tModLoader"
-tmux pipe-pane -o -t tml "cat >> \$pipe" &
-cat \$pipe &
-
-# Use wait instead of `tmux wait tml &> /dev/null` so that trapping the shutdown works properly
-wait \${!}
-EOF
-
 # Update SteamCMD and verify latest version
 RUN steamcmd +quit
 
 # To make local edits to the management script, change this URL to a local path for manage-tModLoaderServer.sh
-ADD --chown=tml:tml --chmod=0755 https://raw.githubusercontent.com/tModLoader/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh .
+# Currently using turtletowerz/tModLoader to fetch management script (required until changes merged into upstream)
+ADD --chown=tml:tml --chmod=0755 https://raw.githubusercontent.com/turtletowerz/tModLoader/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/manage-tModLoaderServer.sh .
 
 # Make management script executable and manually add the logs directory to fix the "Permission Denied" error on most systems.
 # Adding write permissions for the logs is necessary because when Docker mounts a volume that doesn't exist on the host it mounts both host and container as root
 RUN ISDOCKER=1 ./manage-tModLoaderServer.sh install-tml --github
 
+# Use stream editor to fix a self-process-reference in ScriptCaller.sh to work with source/exec (required until changes bundled into release)
+RUN sed -i 's|cd "$(dirname "$0")"|cd "$(dirname "${BASH_SOURCE[0]}")"|' ./server/LaunchUtils/ScriptCaller.sh
+
 EXPOSE 7777
 
-ENTRYPOINT [ "entrypoint" ]
+ENTRYPOINT [ "./manage-tModLoaderServer.sh", "start", "--folder", "/tModLoader" ]

@@ -3,7 +3,7 @@
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
-cd "$(dirname "$0")"
+cd "$(dirname "${BASH_SOURCE[0]}")"
 . ./BashUtils.sh
 
 echo "You are on platform: \"$_uname\" arch: \"$_arch\""
