@@ -30,13 +30,13 @@ public static class PlayerDrawLayerLoader
 
 		PlayerLoader.ModifyDrawLayerOrdering(positions);
 
-		// net core please!!
-		//foreach (var (layer, pos) in positions.ToArray()) {
-		foreach (var kv in positions.ToArray()) {
-			var layer = kv.Key;
-			switch (kv.Value) {
-				case Between _:
-					continue;
+		var betweens = new Dictionary<PlayerDrawLayer, Between>();
+
+		foreach (var (layer, pos) in positions.ToArray()) {
+			switch (pos) {
+				case Between b:
+					betweens.Add(layer, b);
+					break;
 				case BeforeParent b:
 					b.Parent.AddChildBefore(layer);
 					break;
@@ -45,19 +45,25 @@ public static class PlayerDrawLayerLoader
 					break;
 				case Multiple m:
 					int slot = 0;
-					foreach (var (pos, cond) in m.Positions)
-						positions.Add(new PlayerDrawLayerSlot(layer, cond, slot++), pos);
+					foreach (var (b, cond) in m.Positions)
+						betweens.Add(new PlayerDrawLayerSlot(layer, cond, slot++), b);
 					break;
 				default:
-					throw new ArgumentException($"PlayerDrawLayer {layer} has unknown Position type {kv.Value}");
+					throw new ArgumentException($"PlayerDrawLayer {layer} has unknown Position type {pos}");
 			}
-
-			positions.Remove(kv.Key);
 		}
 
-		var sort = new TopoSort<PlayerDrawLayer>(positions.Keys,
-			l => new[] { ((Between)positions[l]).Layer1 }.Where(l => l != null),
-			l => new[] { ((Between)positions[l]).Layer2 }.Where(l => l != null));
+		foreach (var (layer, b) in betweens) {
+			if (b.Layer1 is { } after && !betweens.ContainsKey(after))
+				throw new ArgumentException($"{layer.FullName} cannot be positioned after {after.FullName} because {after.FullName} does not have a fixed position. Consider using AfterParent or referring to a different layer (or null)");
+			if (b.Layer2 is { } before && !betweens.ContainsKey(before))
+				throw new ArgumentException($"{layer.FullName} cannot be positioned after {before.FullName} because {before.FullName} does not have a fixed position. Consider using BeforeParent or referring to a different layer (or null)");
+		}
+
+		var sort = new TopoSort<PlayerDrawLayer>(betweens.Keys,
+			l => betweens[l].Layer1 is { } v ? [v] : [],
+			l => betweens[l].Layer2 is { } v ? [v] : []
+		);
 
 		_drawOrder = sort.Sort().ToArray();
 	}

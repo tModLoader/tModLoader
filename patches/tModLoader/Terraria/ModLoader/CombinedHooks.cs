@@ -322,4 +322,9 @@ public static class CombinedHooks
 	{
 		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
 	}
+
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, int i, int j, string context)
+	{
+		return PlayerLoader.CanBeTeleportedTo(player, teleportPosition, context) && WallLoader.CanBeTeleportedTo(i, j, Main.tile[i, j].WallType, player, context);
+	}
 }

@@ -16,7 +16,7 @@
 +	public static partial class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(ProjectileLoader.ProjectileCount);
++		public static SetFactory Factory = new SetFactory(ProjectileLoader.ProjectileCount, nameof(ProjectileID), Search);
 +
 +		/// <summary>
 +		/// Determines the idle animation of a player's pets on the player select screen.

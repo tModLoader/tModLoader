@@ -561,6 +561,8 @@
 		"CommandModListSyncedMods": "Mods sincronizados:",
 		"CommandModListClientMods": "Mods do cliente:",
 		"CommandModListModlist": "Lista de mods:",
+		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "Construindo: {0}",

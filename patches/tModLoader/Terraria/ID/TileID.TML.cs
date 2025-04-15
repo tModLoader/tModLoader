@@ -172,6 +172,7 @@ partial class TileID
 
 		/// <summary>
 		/// A version of <see cref="TileID.Sets.SwaysInWindBasic"/> that functions with multitiles. Causes the tile to sway along with the wind and player interaction.
+		/// <para/> <see cref="ModTile.AdjustMultiTileVineParameters(int, int, ref float?, ref float, ref float, ref bool, ref float, ref Microsoft.Xna.Framework.Graphics.Texture2D, ref Microsoft.Xna.Framework.Color)"/> can be used to customize how the tile sways with wind and player interaction.
 		/// <para/> <b>NOTE:</b> Requires calling <see cref="TileDrawing.AddSpecialPoint"/> in <c>ModTile.PreDraw</c> for the coordinates of the top left tile of the multitile. Use either
 		/// <see cref="TileDrawing.TileCounterType.MultiTileVine"/> or <see cref="TileDrawing.TileCounterType.MultiTileGrass"/>, depending on what kind of sway interaction you want.
 		/// </summary>

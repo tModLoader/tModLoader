@@ -41,6 +41,45 @@ namespace ExampleMod.Content.Tiles
 			int tileCageFrameIndex = TileDrawing.GetSmallAnimalCageFrame(i, j, tile.TileFrameX, tile.TileFrameY);
 			frameYOffset = Main.frogCageFrame[tileCageFrameIndex] * AnimationFrameHeight;
 		}
+
+		// Here is an example of what manually implementing the critter cage frames for a unique animation would look like.
+		// This is the worm cage animation code, which is the simplest vanilla example.
+		// See the Main.AnimateTiles_CritterCages source code and https://terraria.wiki.gg/wiki/Cages#Action_patterns to work out how existing animations are implemented if you wish to implement a custom critter animation. 
+		/*
+		public static int[] cageFrames = new int[Main.cageFrames];
+		public static int[] cageFrameCounters = new int[Main.cageFrames];
+
+		public override void AnimateTile(ref int frame, ref int frameCounter) {
+			for (int i = 0; i < Main.cageFrames; i++) { // The for loop updates the frames for each of the staggered animations.
+				cageFrameCounters[i]++;
+				if (cageFrameCounters[i] < Main.rand.Next(30, 91)) // Adds randomness to the animation speed
+					continue;
+
+				cageFrameCounters[i] = 0;
+				if (!Main.rand.NextBool(4))
+					continue;
+
+				// Initially the frame is in the 'O' animation, frames 0 - 8
+				cageFrames[i]++;
+				if (cageFrames[i] == 9 && Main.rand.NextBool(2))
+					cageFrames[i] = 0; // 50% chance to restart the 'O' animation, otherwise proceed to '8' animation (frames 9 - 18)
+
+				// Once the '8' animation is finished, either restart the '0' or '8' animation
+				if (cageFrames[i] > 18) {
+					if (Main.rand.NextBool(2))
+						cageFrames[i] = 9;
+					else
+						cageFrames[i] = 0;
+				}
+			}
+		}
+
+		public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
+			Tile tile = Main.tile[i, j];
+			int tileCageFrameIndex = TileDrawing.GetSmallAnimalCageFrame(i, j, tile.TileFrameX, tile.TileFrameY);
+			frameYOffset = cageFrames[tileCageFrameIndex] * AnimationFrameHeight;
+		}
+		*/
 	}
 
 	public class ExampleCritterCageItem : ModItem

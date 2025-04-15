@@ -690,6 +690,7 @@ internal class UIModItem : UIPanel
 		ModOrganizer.DeleteMod(_mod);
 
 		CloseDialog(evt, listeningElement);
+		Interface.modsMenu.StoreCurrentScrollPosition();
 		Interface.modsMenu.Activate();
 	}
 

@@ -110,7 +110,7 @@ public partial class WorldGen
 				return;
 
 			int preConversionType = Main.tile[testX, testY].type;
-			Convert(testX, testY, conversionType, size: 1, tiles: true, walls: false);
+			Convert(testX, testY, conversionType, size: 0, tiles: true, walls: false);
 			if (preConversionType != Main.tile[testX, testY].type)
 				keepSpreading = genRand.NextBool(2); // 1 in 2 chance to attempt to spread to another tile if we successfuly converted the first one
 		}

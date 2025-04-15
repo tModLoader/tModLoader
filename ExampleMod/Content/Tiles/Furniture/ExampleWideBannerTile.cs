@@ -49,5 +49,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// We must return false here to prevent the normal tile drawing code from drawing the default static tile. Without this a duplicate tile will be drawn.
 			return false;
 		}
+
+		// Unlike ExampleChandelier and ExampleAnimatedTile, this tile does not use AdjustMultiTileVineParameters because the default parameters exhibit the correct physics behavior.
 	}
 }

@@ -232,7 +232,7 @@
  	public static RenderTarget2D screenTarget;
  	public static RenderTarget2D screenTargetSwap;
  	public static int maxMapUpdates = 250000;
-@@ -560,8 +_,8 @@
+@@ -560,14 +_,21 @@
  	public static bool clearMap;
  	public static int mapTargetX = 5;
  	public static int mapTargetY = 2;
@@ -243,6 +243,29 @@
  	public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
  	public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
  	public const int numInfoIcons = 13;
+ 	public static Microsoft.Xna.Framework.Color OurFavoriteColor = new Microsoft.Xna.Framework.Color(255, 231, 69);
+ 	public static bool mapInit;
+ 	public static bool mapEnabled = true;
++	/// <summary>
++	/// Dictates how the non-<see cref="mapFullscreen"/> map is displayed.
++	/// <para/> Can be one of the following values/modes:
++	/// <br/><b>0:</b> The minimap has been hidden.
++	/// <br/><b>1:</b> The minimap is visible.
++	/// <br/><b>2:</b> The overlay map is visible.
++	/// </summary>
+ 	public static int mapStyle = 1;
+ 	public static float grabMapX;
+ 	public static float grabMapY;
+@@ -580,6 +_,9 @@
+ 	public static float mapMinimapAlpha = 1f;
+ 	public static float mapOverlayScale = 2.5f;
+ 	public static float mapOverlayAlpha = 0.35f;
++	/// <summary>
++	/// If true, the map is currently in fullscreen mode. See also <see cref="Main.mapStyle"/>, note that the overlay map does not count as the fullscreen map.
++	/// </summary>
+ 	public static bool mapFullscreen;
+ 	public static bool resetMapFull;
+ 	public static float mapFullscreenScale = 4f;
 @@ -592,12 +_,12 @@
  	private int lastTileX;
  	private int firstTileY;
@@ -1377,9 +1400,9 @@
  		dedServ = true;
  		showSplash = false;
  		Initialize();
++		ModContent.DedServPreInit();
 +
 +		bool reloadMods;
-+
 +		do {
 +			ModLoader.ModLoader.Reload();
 +			DedServ_PostModLoad(out reloadMods);
@@ -1523,13 +1546,15 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4563,6 +_,10 @@
+@@ -4563,6 +_,12 @@
  		catch {
  		}
  
 +		// Run one tick to JIT all the game content now rather than when a player connects
-+		Logging.ServerConsoleLine("Running one update...");
-+		Update(new GameTime());
++		Logging.ServerConsoleLine("Running engine preload...");
++		Debug.Assert(!IsEnginePreloaded);
++		IsEnginePreloaded = true;
++		OnEnginePreload?.Invoke();
 +
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
  			WriteFancyWorldLoadErrorToConsole();
@@ -2040,10 +2065,17 @@
  		else if (flag9) {
  			newMusic = 82;
  		}
-@@ -10009,6 +_,9 @@
+@@ -10009,6 +_,16 @@
  		}
  		else if (flag13) {
  			newMusic = 82;
++		}
++		// These 2 are now Event priority.
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon) {
++			newMusic = 82;
++		}
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon) {
++			newMusic = 82;
 +		}
 +		else if (modPriority >= SceneEffectPriority.Environment) {
 +			newMusic = modMusic;
@@ -2080,6 +2112,20 @@
  		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  			if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2)) {
  				if (player[myPlayer].ZoneUndergroundDesert)
+@@ -10156,11 +_,13 @@
+ 				newMusic = 64;
+ 		}
+ 
++		/* Moved to Event priority
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon)
+ 			newMusic = 82;
+ 
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon)
+ 			newMusic = 82;
++		*/
+ 	}
+ 
+ 	private void UpdateAudio_DecideOnNewMusic()
 @@ -10199,7 +_,11 @@
  		if (lastMusicPlayed == 50)
  			musicNoCrossFade[51] = true;
@@ -2248,10 +2294,17 @@
  		else if (flag9) {
  			newMusic = 35;
  		}
-@@ -10481,6 +_,9 @@
+@@ -10481,6 +_,16 @@
  		else if (flag13) {
  			newMusic = 41;
  		}
++		// These 2 are now Event priority.
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon) {
++			newMusic = 30;
++		}
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon) {
++			newMusic = 32;
++		}
 +		else if (modPriority >= SceneEffectPriority.Environment) {
 +			newMusic = modMusic;
 +		}
@@ -2288,6 +2341,20 @@
  		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && (remixWorld || !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16))) {
  			if (player[myPlayer].ZoneHallow) {
  				if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2))
+@@ -10715,11 +_,13 @@
+ 				newMusic = 3;
+ 		}
+ 
++		/* Moved to Event priority
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon)
+ 			newMusic = 30;
+ 
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon)
+ 			newMusic = 32;
++		*/
+ 	}
+ 
+ 	private void UpdateWindyDayState()
 @@ -10866,12 +_,15 @@
  		float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  		if (cloudBGActive > 0f) {
@@ -5010,6 +5077,16 @@
  		spriteBatch.End();
  		spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, GameViewMatrix.ZoomMatrix);
  		PlayerInput.SetZoom_UI();
+@@ -34983,6 +_,9 @@
+ 		DrawInterface_Resources_ClearBuffs();
+ 		if (!ingameOptionsWindow && !playerInventory && !inFancyUI)
+ 			DrawInterface_Resources_Buffs();
++
++		spriteBatch.End();
++		spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, UIScaleMatrix); // #4578 vanilla fix
+ 	}
+ 
+ 	public static void DrawInterface_Resources_ClearBuffs()
 @@ -35027,10 +_,18 @@
  			if (num5 == 147)
  				bannerMouseOver = true;
