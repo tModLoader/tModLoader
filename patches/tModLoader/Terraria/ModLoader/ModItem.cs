@@ -749,12 +749,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to set custom draw flags for this accessory that can be checked in a <see cref="PlayerDrawLayer"/> or other drawcode. Not required if using pre-existing layers (e.g. face, back).
+	/// <para/> <paramref name="hideVisual"/> indicates if the accessory is hidden (in a non-vanity accessory slot that is set to hidden). It sounds counterintuitive for this method to be called on hidden accessories, but this can be used for effects where the visuals of an accessory should be forced despite the player hiding the accessory. For example, wings will always show while in the air and the Shield of Cthulhu will always show while its dash is active even while hidden.
 	/// </summary>
-	/// <param name="player">The player.</param>
-	/// <param name="vanity">Whether or not this accessory is in a social slot.</param>
-	/// <param name="itemSlot">The accessory slot this item is in</param>
-	/// <param name="hideVisual">if set to <c>true</c> the accessory is hidden, sounds counterintuitive but this can be used for certain effects regarding the shape of the player without showing the accessory itself.</param>
-	public virtual void UpdateVisibleAccessory(Player player, bool vanity, int itemSlot, bool hideVisual)
+	public virtual void UpdateVisibleAccessory(Player player, bool hideVisual)
 	{
 	}
 

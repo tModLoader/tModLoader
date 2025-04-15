@@ -618,10 +618,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	{
 	}
 
-	/// <summary>
-	/// Allows you to set custom draw flags for this accessory that can be checked in a <see cref="PlayerDrawLayer"/> or other drawcode. Not required if using pre-existing layers (e.g. face, back).
-	/// </summary>
-	public virtual void UpdateVisibleAccessory(Item item, Player player, bool vanity, int itemSlot, bool hideVisual)
+	/// <inheritdoc cref="ModItem.UpdateVisibleAccessory(Player, bool)"/>
+	public virtual void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
 	{
 	}
 

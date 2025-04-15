@@ -10,8 +10,8 @@ namespace ExampleMod.Common.CustomEquipmentSlot
 	/// </summary>
 	public class EarringsGlobalItem : GlobalItem
 	{
-		public override void UpdateVisibleAccessory(Item item, Player player, bool vanity, int itemSlot, bool hideVisual) {
-			// UpdateVisibleAccessory is called even when not visible, so we need this check
+		public override void UpdateVisibleAccessory(Item item, Player player, bool hideVisual) {
+			// UpdateVisibleAccessory is called even when not visible to allow for some advanced usages, so we need this check
 			if (hideVisual) {
 				return;
 			}

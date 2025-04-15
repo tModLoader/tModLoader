@@ -1235,20 +1235,20 @@ public static class ItemLoader
 		}
 	}
 
-	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool, int, bool>>(g => g.UpdateVisibleAccessory);
+	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateVisibleAccessory);
 
 	/// <summary>
 	/// Hook at the end of Player.UpdateVisibleAccessory that can be called to set flags related to player drawing.
 	/// </summary>
-	public static void UpdateVisibleAccessory(Item item, Player player, bool vanity, int itemSlot, bool hideVisual)
+	public static void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.UpdateVisibleAccessory(player, vanity, itemSlot, hideVisual);
+		item.ModItem?.UpdateVisibleAccessory(player, hideVisual);
 
 		foreach (var g in HookUpdateVisibleAccessory.Enumerate(item)) {
-			g.UpdateVisibleAccessory(item, player, vanity, itemSlot, hideVisual);
+			g.UpdateVisibleAccessory(item, player, hideVisual);
 		}
 	}
 

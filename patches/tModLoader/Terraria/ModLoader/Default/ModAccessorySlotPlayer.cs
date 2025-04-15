@@ -112,7 +112,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
 				var vanitySlot = k + SlotCount;
 				if (!Player.ItemIsVisuallyIncompatible(exAccessorySlot[vanitySlot]))
-					Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true, true);
+					Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true);
 			}
 		}
 	}

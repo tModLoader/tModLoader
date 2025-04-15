@@ -1,7 +1,7 @@
 ﻿This file is a guide for the various classes of this folder. To view this readme file correctly formatted, please visit [ExampleMod/Common/CustomEquipmentSlot/README.md](https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Common/CustomEquipmentSlot/README.md).
 
 # Custom Equipment Slot
-This folder shows implementing a custom equipment slot. 
+This folder shows implementing a custom equipment slot.
 
 An "equipment slot" is essentially a `PlayerDrawLayer` that is shared by several items corresponding to a position on the player character. For example, all boots accessories in the game use the `EquipType.Shoes` equipment slot. When the player wears multiple boot accessories, the game will only render the latest visible boots rather than layering all the equipment textures over each other.
 
@@ -12,13 +12,13 @@ Here are the classes involved in implementing a complete custom equipment slot. 
 This class manages loading and tracking the equipment textures of items using this custom equipment slot.
 
 ### EarringsGlobalItem
-This class assigns earring equipment slot IDs and the corresponding dye/shader to `EarringsPlayer` so they are available in `EarringsDrawLayer`. 
+This class assigns earring equipment slot IDs and the corresponding dye/shader to `EarringsPlayer` so they are available in `EarringsDrawLayer`.
 
 ### EarringsPlayer
 This class stores which earring slot will be drawn, and with which dye/shader.
 
 ### EarringsDrawLayer
-This is a `PlayerDrawLayer` class that renders the earrings custom equipment slot. 
+This is a `PlayerDrawLayer` class that renders the earrings custom equipment slot.
 
 ### AutoloadEquip_EarringAttribute
 It attribute will cause an annotated `ModItem` class to attempt to autoload an earrings equipment texture. This works even in other mods. This is similar to how `AutoloadEquip` is used to autoload textures for vanilla equipment slots.
