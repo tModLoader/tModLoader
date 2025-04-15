@@ -25,6 +25,7 @@ namespace ExampleMod
 			ExampleTownPetUnlockOrExchange,
 			ExampleResourceEffect,
 			StartVictoryPose,
+			CancelVictoryPose,
 		}
 
 		// Override this method to handle network packets sent for this mod.

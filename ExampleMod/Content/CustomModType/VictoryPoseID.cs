@@ -14,7 +14,7 @@ namespace ExampleMod.Content.CustomModType
 		[ReinitializeDuringResizeArrays]
 		public static class Sets
 		{
-			public static SetFactory Factory = new SetFactory(VictoryPoseLoader.VictoryPoses.Count, "ExampleMod/VictoryPoseID", Search);
+			public static SetFactory Factory = new SetFactory(VictoryPoseLoader.victoryPoses.Count, "ExampleMod/VictoryPoseID", Search);
 
 			public static bool[] NonBoss = Factory.CreateNamedSet("NonBoss")
 				.Description("Victory poses in this set are options to be chosen when defeating a regular enemy")

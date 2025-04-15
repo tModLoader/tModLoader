@@ -23,7 +23,8 @@ namespace ExampleMod.Content.CustomModType
 				player.bodyFrame.Y = player.bodyFrame.Height * 5; // 2 Hands up / falling
 			}
 
-			if (ElapsedPoseTime == 30 || ElapsedPoseTime == 60) {
+			float elapsedPoseTime = ElapsedPoseTime(player);
+			if (elapsedPoseTime == 30 || elapsedPoseTime == 60) {
 				SpawnFirework(player);
 				SoundEngine.PlaySound(SoundID.Thunder with { Type = SoundType.Sound }, player.Center);
 			}

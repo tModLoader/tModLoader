@@ -14,11 +14,16 @@ namespace ExampleMod.Content.CustomModType
 
 	/// <summary>
 	/// This class handles applying and updating the active ModVictoryPose.
-	/// <para/> When an enemy is defeated, there is a chance that the player will start a pose. For bosses it is guaranteed. 
+	/// <para/> It also handles the default trigger for starting a pose, defeating an enemy. When a regular enemy is defeated, there is a chance that the player will start a pose. For bosses it is guaranteed.
+	/// <para/> Other mods can use the API exposed in <see cref="VictoryPoseLoader"/> to implement their own systems for triggering a pose.
 	/// </summary>
-	public class VictoryPosePlayer : ModPlayer
+	internal class VictoryPosePlayer : ModPlayer
 	{
+		/// <summary> The pose that is currently playing. </summary>
 		public ModVictoryPose activeVictoryPose;
+
+		/// <summary> How long the active ModVictoryPose has been active. Will be -1 if there is no active pose. </summary>
+		public int ElapsedPoseTime { get; internal set; }
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			// Detect when we defeat an enemy.
@@ -34,34 +39,34 @@ namespace ExampleMod.Content.CustomModType
 				return;
 			}
 
-			if (activeVictoryPose != null) {
-				return; // Don't interrupt an ongoing pose
-			}
-
 			ModVictoryPose newPose;
 			if (boss) {
 				// Choose from all the poses
-				newPose = Main.rand.Next(VictoryPoseLoader.VictoryPoses);
+				newPose = Main.rand.Next(VictoryPoseLoader.victoryPoses);
 			}
 			else {
 				// Choose from only the NonBoss set
 				int randomNonBossVictoryPoseIndex = Main.rand.Next(VictoryPoseID.Sets.NonBoss.GetTrueIndexes());
-				newPose = VictoryPoseLoader.VictoryPoses[randomNonBossVictoryPoseIndex];
+				newPose = VictoryPoseLoader.victoryPoses[randomNonBossVictoryPoseIndex];
 			}
-			StartPose(newPose);
 
-			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				// Inform other clients about the pose to sync the visuals.
-				SendStartVictoryPoseMessage(Player.whoAmI, activeVictoryPose);
-			}
+			// Attempt to start the chosen pose. Since forced is false, we will not interrupt an ongoing pose.
+			VictoryPoseLoader.StartPose(newPose, forced: false);
 		}
 
-		private void StartPose(ModVictoryPose newPose) {
-			// Create a clone of the template instance so we can modify fields like ElapsedPoseTime freely.
-			activeVictoryPose = newPose.Clone();
+		// Handles starting a pose, but does not do network sync, that needs to be done by calling code.
+		internal bool StartPose(ModVictoryPose newPose, bool forced = false) {
+			if (activeVictoryPose != null) {
+				if (forced) {
+					EndPose();
+				}
+				else {
+					return false;
+				}
+			}
 
-			// Reset timers.
-			activeVictoryPose.ElapsedPoseTime = 0;
+			ElapsedPoseTime = 0;
+			activeVictoryPose = newPose;
 			activeVictoryPose.OnStartPose(Player);
 
 			if (Main.netMode != NetmodeID.Server) {
@@ -74,13 +79,20 @@ namespace ExampleMod.Content.CustomModType
 				AccelerationPerFrame = new Vector2(0f, 0.16350001f),
 				ScaleOffsetPerFrame = 1f / 60f,
 			});
+
+			return true;
 		}
 
 		private void StartPoseDirect(ModVictoryPose newPose) {
 			// The "direct" version of this method is intended for network scenarios.
 			// Even if there is an activeVictoryPose, we will immediately end it since we can assume the pose from the network is more correct. (in cases of network desync or lag)
+			StartPose(newPose, forced: true);
+		}
+
+		internal void EndPose() {
 			activeVictoryPose?.OnEndPose(Player);
-			StartPose(newPose);
+			activeVictoryPose = null;
+			ElapsedPoseTime = -1;
 		}
 
 		public override void PostUpdate() {
@@ -90,10 +102,9 @@ namespace ExampleMod.Content.CustomModType
 			}
 
 			activeVictoryPose.Update(Player);
-			activeVictoryPose.ElapsedPoseTime++;
-			if (activeVictoryPose.ElapsedPoseTime >= activeVictoryPose.PoseTime) {
-				activeVictoryPose.OnEndPose(Player);
-				activeVictoryPose = null;
+			ElapsedPoseTime++;
+			if (ElapsedPoseTime >= activeVictoryPose.PoseTime) {
+				EndPose();
 			}
 		}
 
@@ -105,7 +116,7 @@ namespace ExampleMod.Content.CustomModType
 			}
 
 			int poseIndex = reader.ReadInt32();
-			ModVictoryPose pose = VictoryPoseLoader.VictoryPoses[poseIndex];
+			ModVictoryPose pose = VictoryPoseLoader.victoryPoses[poseIndex];
 			if (player != Main.myPlayer) {
 				Main.player[player].GetModPlayer<VictoryPosePlayer>().StartPoseDirect(pose);
 			}
@@ -121,6 +132,29 @@ namespace ExampleMod.Content.CustomModType
 			packet.Write((byte)ExampleMod.MessageType.StartVictoryPose);
 			packet.Write((byte)whoAmI);
 			packet.Write(pose.Type);
+			packet.Send(ignoreClient: whoAmI);
+		}
+
+		public static void HandleCancelVictoryPoseMessage(BinaryReader reader, int whoAmI) {
+			int player = reader.ReadByte();
+			if (Main.netMode == NetmodeID.Server) {
+				player = whoAmI;
+			}
+
+			if (player != Main.myPlayer) {
+				Main.player[player].GetModPlayer<VictoryPosePlayer>().EndPose();
+			}
+
+			if (Main.netMode == NetmodeID.Server) {
+				// If the server receives this message, it sends it to all other clients to sync the effects.
+				SendCancelVictoryPoseMessage(player);
+			}
+		}
+
+		public static void SendCancelVictoryPoseMessage(int whoAmI) {
+			ModPacket packet = ModContent.GetInstance<ExampleMod>().GetPacket();
+			packet.Write((byte)ExampleMod.MessageType.CancelVictoryPose);
+			packet.Write((byte)whoAmI);
 			packet.Send(ignoreClient: whoAmI);
 		}
 	}

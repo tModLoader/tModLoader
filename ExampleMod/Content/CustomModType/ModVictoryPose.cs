@@ -25,8 +25,6 @@ namespace ExampleMod.Content.CustomModType
 		// Properties relating to the ModVictoryPose. Modders set PoseTime in SetStaticDefaults.
 		/// <summary> How long the pose will last. Defaults to 60 (1 second). </summary>
 		public int PoseTime { get; set; } = 60;
-		/// <summary> How long the pose has been active </summary>
-		public int ElapsedPoseTime { get; internal set; }
 
 		// Since this implements ILocalizedModType, all keys from this ModType will default to using Mods.ModName.VictoryPoses.ClassName.KeyName. This should be unique to avoid conflicts with other mods
 		public virtual string LocalizationCategory => "VictoryPoses";
@@ -46,13 +44,6 @@ namespace ExampleMod.Content.CustomModType
 			_ = VictoryCheer; // By calling this here, we ensure that the localization key is populated into the localization files.
 			VictoryPoseID.Search.Add(FullName, Type); // Populate the Search IdDictionary
 			SetStaticDefaults(); // Finally, we call SetStaticDefaults, where each ModVictoryPose class will implement their specific logic.
-		}
-
-		// Because ElapsedPoseTime is tracked on the ModVictoryPose itself, we need a way to make a new instance of ModVictoryPose so multiple of the same type can potentially exist at once with multiple players each doing a pose.
-		// This Clone method does that. Not every ModType needs a Clone method, but if a ModType won't be treated as a singleton, it might be necessary.
-		public virtual ModVictoryPose Clone() {
-			var clone = (ModVictoryPose)MemberwiseClone();
-			return clone;
 		}
 
 		// These virtual methods are the "hooks" we provide that other modders can use to customize their ModVictoryPose behaviors.
@@ -84,8 +75,9 @@ namespace ExampleMod.Content.CustomModType
 			return null;
 		}
 
+		/// <inheritdoc cref="VictoryPosePlayer.ElapsedPoseTime"/>
+		public static float ElapsedPoseTime(Player player) => player.GetModPlayer<VictoryPosePlayer>().ElapsedPoseTime;
+
 		// TODO: A real implementation might want to add support for conditions or customizable spawn rates
 	}
-
-	
 }

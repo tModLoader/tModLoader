@@ -14,11 +14,13 @@ This class is the custom `ModType` that other mods will inherit from. Think of i
 ### HandsUpVictoryPose, HandsUpWithFireworksVictoryPose, and NonAutoloadVictoryPose
 These are all "content" added by this mod. They are the default victory poses available unless other mods add their own. `HandsUpVictoryPose` and `HandsUpWithFireworksVictoryPose` are autoloaded as normal, while `NonAutoloadVictoryPose` shows off manually loading multiple instances of a single `ModVictoryPose` class in `NonAutoloadVictoryPose.NonAutoloadVictoryPoseLoader`.
 
-### VictoryPosePlayer 
-This `ModPlayer` class handles applying and updating the active `ModVictoryPose`. The file also contains `PoseIconParticle`, a custom `IParticle` example which is used to render an image in the game world.
-
 ### VictoryPoseLoader 
 This class handles tracking all registered `ModVictoryPose` content. `ModVictoryPose` calls `VictoryPoseLoader.Add` to assign an ID value and register the content.
+
+This is the also the main API exposed and intended to be used by other mods. For example, other mods could use the API to trigger a specific ModVictoryPose manually, such as when they craft a specific item.
+
+### VictoryPosePlayer 
+This `ModPlayer` class handles applying and updating the active `ModVictoryPose`. It also handles the default trigger for starting a pose, which is defeating an enemy. The file also contains `PoseIconParticle`, a custom `IParticle` example which is used to render an image in the game world.
 
 ### VictoryPoseID and VictoryPoseID.Sets
 `VictoryPoseID` and `VictoryPoseID.Sets` manage the ID sets for `ModVictoryPose`. Like with other content, it can be useful to be able to have "sets" for storing content-specific data.
