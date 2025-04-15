@@ -9,14 +9,13 @@ namespace ExampleMod.Common.CustomEquipmentSlot
 	/// </summary>
 	public class EarringsPlayer : ModPlayer
 	{
-		// The earring equipment slot ID.
-		public int earring = -1; // Actually, should this be ear?
+		// The earring item type.
+		public int earring;
+		// The dye/shader used to draw the earring.
 		public int earringShader;
 
 		public override void ResetEffects() {
-			// TODO: Do we need a ResetVisibleAccessories? Player.Update and UpdateDead don't have the usual ResetEffects->ResetVisibleAccessories call order so there might be some edge case.
-
-			earring = -1;
+			earring = 0;
 			earringShader = 0;
 		}
 	}

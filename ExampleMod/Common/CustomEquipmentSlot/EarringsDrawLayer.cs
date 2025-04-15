@@ -15,7 +15,7 @@ namespace ExampleMod.Common.CustomEquipmentSlot
 		public override bool IsHeadLayer => true;
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
-			return drawInfo.drawPlayer.GetModPlayer<EarringsPlayer>().earring > -1;
+			return drawInfo.drawPlayer.GetModPlayer<EarringsPlayer>().earring > 0;
 		}
 
 		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Head);
