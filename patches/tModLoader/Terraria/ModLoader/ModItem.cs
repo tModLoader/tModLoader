@@ -759,6 +759,16 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Allows tracking custom shader values corresponding to specific items or custom player layers for equipped accessories. <paramref name="dye"/> is the <see cref="Item.dye"/> of the item in the dye slot. <paramref name="hideVisual"/> indicates if this item is in a non-vanity accessory slot that is set to hidden. Most implementations will not assign shaders if the accessory is hidden, but there are rare cases where it is desired to assign the shader regardless of accessory visibility. One example is Hand Of Creation, the player can disable visibility of the accessory to prevent the backpack visuals from showing, but the stool will still be properly dyed by the corresponding dye item when visible. 
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="dye"></param>
+	/// <param name="hideVisual"></param>
+	public virtual void UpdateItemDye(Player player, int dye, bool hideVisual)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to create special effects (such as dust) when this item's equipment texture of the given equipment type is displayed on the player. Note that this hook is only ever called through this item's associated equipment texture.
 	/// </summary>
 	/// <param name="player">The player.</param>

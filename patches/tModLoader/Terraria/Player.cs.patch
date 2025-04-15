@@ -1913,7 +1913,12 @@
  	{
  		if (armorItem.IsAir)
  			return;
-@@ -7020,13 +_,13 @@
+@@ -7017,16 +_,18 @@
+ 		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count && (cShieldFallback == -1 || !flag))
+ 			cShieldFallback = dyeItem.dye;
+ 
++		ItemLoader.UpdateItemDye(armorItem, this, dyeItem.dye, flag); // Call early to support hideVisuals bypassing
++
  		if (!num && flag)
  			return;
  

@@ -50,6 +50,17 @@ namespace ExampleMod.Common.CustomEquipmentSlot
 			}
 		}
 
+		public override void UpdateItemDye(Item item, Player player, int dye, bool hideVisual) {
+			// UpdateItemDye is called even when not visible to allow for some advanced usages, so we need this check
+			if (hideVisual) {
+				return;
+			}
+
+			if (earringSlot > 0) {
+				player.GetModPlayer<EarringsPlayer>().earringShader = dye;
+			}
+		}
+
 		internal void AddEarringTexture(int type, string texture) {
 			if (earringItemToSlot.ContainsKey(type))
 				return; // Hack to not auto-register multiple times.

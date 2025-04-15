@@ -1252,6 +1252,17 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookUpdateItemDye = AddHook<Action<Item, Player, int, bool>>(g => g.UpdateItemDye);
+
+	public static void UpdateItemDye(Item item, Player player, int dye, bool hideVisual)
+	{
+		item.ModItem?.UpdateItemDye(player, dye, hideVisual);
+
+		foreach (var g in HookUpdateItemDye.Enumerate(item)) {
+			g.UpdateItemDye(item, player, dye, hideVisual);
+		}
+	}
+
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 
 	/// <summary>
