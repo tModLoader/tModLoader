@@ -479,10 +479,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			return;
 
 		if (item.wingSlot > 0) {
-			if (invisible || velocity.Y == 0f || mount.Active) {
-				wings = 0;
+			if (invisible && (velocity.Y == 0f || mount.Active))
 				return;
-			}
 
 			wings = item.wingSlot;
 		}
