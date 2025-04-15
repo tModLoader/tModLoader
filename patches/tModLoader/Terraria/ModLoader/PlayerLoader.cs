@@ -1479,7 +1479,8 @@ public static class PlayerLoader
 
 	private static HookList HookCanBeTeleportedTo = AddHook<Func<Vector2, string, bool>>(p => p.CanBeTeleportedTo);
 
-	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, string context){
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, string context)
+	{
 		foreach (var modPlayer in HookCanBeTeleportedTo.Enumerate(player)) {
 			if (!modPlayer.CanBeTeleportedTo(teleportPosition, context))
 				return false;
@@ -1489,10 +1490,10 @@ public static class PlayerLoader
 
 	private static HookList HookOnEquipmentLoadoutSwitched = AddHook<Action<int>>(p => p.OnEquipmentLoadoutSwitched);
 
-	public static void OnEquipmentLoadoutSwitched(Player player, int loadoudIndex)
+	public static void OnEquipmentLoadoutSwitched(Player player, int loadoutIndex)
 	{
 		foreach (var modPlayer in HookOnEquipmentLoadoutSwitched.Enumerate(player)) {
-			modPlayer.OnEquipmentLoadoutSwitched(loadoudIndex);
+			modPlayer.OnEquipmentLoadoutSwitched(loadoutIndex);
 		}
 	}
 }
