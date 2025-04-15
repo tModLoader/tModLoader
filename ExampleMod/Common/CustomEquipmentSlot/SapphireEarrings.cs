@@ -4,11 +4,12 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.CustomEquipmentSlot
 {
+	// A vanity accessory showcasing our custom earring equipment slot
 	public class SapphireEarrings : ModItem
 	{
 		public override void SetStaticDefaults() {
 			// The non-[AutoloadEquip_Earring] approach also works.
-			Item.GetGlobalItem<EarringsGlobalItem>().AddEarringTexture(Type, Texture + "_Earrings");
+			EarringsLoader.AddEarringTexture(Type, Texture + "_Earrings");
 		}
 
 		public override void SetDefaults() {

@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.CustomEquipmentSlot
 {
+	// A vanity accessory showcasing our custom earring equipment slot
 	[AutoloadEquip_Earring]
 	public class RubyEarrings : ModItem
 	{

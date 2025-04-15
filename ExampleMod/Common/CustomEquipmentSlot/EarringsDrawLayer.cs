@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Common.CustomEquipmentSlot
 {
+	// Note: To fully understand this example, please start by reading https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Common/CustomEquipmentSlot/README.md
+
 	/// <summary>
 	/// EarringsDrawLayer is a PlayerDrawLayer that renders a custom equipment slot. 
 	/// </summary>
@@ -22,7 +24,7 @@ namespace ExampleMod.Common.CustomEquipmentSlot
 			Player drawPlayer = drawInfo.drawPlayer;
 			EarringsPlayer earringsPlayer = drawPlayer.GetModPlayer<EarringsPlayer>();
 			int earring = earringsPlayer.earring;
-			var earringTexture = EarringsGlobalItem.earringSlotToTexture[earring];
+			var earringTexture = EarringsLoader.earringItemToTexture[earring];
 
 			// Calculate where to draw this layer. 
 			var drawPosition = new Vector2(
