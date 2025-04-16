@@ -6,13 +6,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
-	[AutoloadEquip(EquipType.Shield)]
+	[AutoloadEquip(EquipType.Shield)] // Load the spritesheet you create as a shield for the player when it is equipped.
 	public class ExampleShield : ModItem
 	{
-		public override void Load() { 
-			//EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Shield}", EquipType.Shield, this);
-		}
-
 		public override void SetDefaults() {
 			Item.width = 24;
 			Item.height = 28;
