@@ -2,9 +2,9 @@ using Terraria.Enums;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Common.CustomEquipmentSlot
+namespace ExampleMod.Common.CustomVisualEquipType
 {
-	// A vanity accessory showcasing our custom earring equipment slot
+	// A vanity accessory showcasing our custom earring EquipType
 	public class SapphireEarrings : ModItem
 	{
 		public override void SetStaticDefaults() {

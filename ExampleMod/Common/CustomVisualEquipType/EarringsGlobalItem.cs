@@ -1,12 +1,12 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Common.CustomEquipmentSlot
+namespace ExampleMod.Common.CustomVisualEquipType
 {
-	// Note: To fully understand this example, please start by reading https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Common/CustomEquipmentSlot/README.md
+	// Note: To fully understand this example, please start by reading https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Common/CustomVisualEquipType/README.md
 
 	/// <summary>
-	/// EarringsGlobalItem applies earring equipment slot IDs and the corresponding dye/shader.
+	/// EarringsGlobalItem applies the custom earring EquipType values of the accessory items and the corresponding dye/shader items to the player.
 	/// </summary>
 	public class EarringsGlobalItem : GlobalItem
 	{

@@ -1,11 +1,11 @@
 using Terraria.ModLoader;
 
-namespace ExampleMod.Common.CustomEquipmentSlot
+namespace ExampleMod.Common.CustomVisualEquipType
 {
-	// Note: To fully understand this example, please start by reading https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Common/CustomEquipmentSlot/README.md
+	// Note: To fully understand this example, please start by reading https://github.com/tModLoader/tModLoader/tree/stable/ExampleMod/Common/CustomVisualEquipType/README.md
 
 	/// <summary>
-	/// EarringsPlayer stores which earring slot will be drawn, and with which dye/shader.
+	/// EarringsPlayer stores which earring will be drawn, and with which dye/shader.
 	/// </summary>
 	public class EarringsPlayer : ModPlayer
 	{
