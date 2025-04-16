@@ -38,6 +38,7 @@ public static class WallLoader
 	private static DelegateKillWall[] HookKillWall;
 	private static Func<int, int, int, bool>[] HookCanPlace;
 	private static Func<int, int, int, bool>[] HookCanExplode;
+	private static Func<int, int, int, Player, string, bool>[] HookCanBeTeleportedTo;
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Action<int, int, int>[] HookRandomUpdate;
@@ -106,6 +107,7 @@ public static class WallLoader
 		ModLoader.BuildGlobalHook<GlobalWall, DelegateWallFrame>(ref HookWallFrame, globalWalls, g => g.WallFrame);
 		ModLoader.BuildGlobalHook(ref HookCanPlace, globalWalls, g => g.CanPlace);
 		ModLoader.BuildGlobalHook(ref HookCanExplode, globalWalls, g => g.CanExplode);
+		ModLoader.BuildGlobalHook(ref HookCanBeTeleportedTo, globalWalls, g => g.CanBeTeleportedTo);
 		ModLoader.BuildGlobalHook<GlobalWall, DelegateModifyLight>(ref HookModifyLight, globalWalls, g => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalWalls, g => g.RandomUpdate);
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
@@ -245,6 +247,17 @@ public static class WallLoader
 		}
 		return GetWall(type)?.CanExplode(i, j) ?? true;
 	}
+
+	public static bool CanBeTeleportedTo(int i, int j, int type, Player player, string context)
+	{
+		foreach (var hook in HookCanBeTeleportedTo) {
+			if (!hook(i, j, type, player, context)) {
+				return false;
+			}
+		}
+		return GetWall(type)?.CanBeTeleportedTo(i, j, player, context) ?? true;
+	}
+
 	//in Terraria.Lighting.PreRenderPhase after wall modifies light call
 	//  WallLoader.ModifyLight(n, num17, wall, ref num18, ref num19, ref num20);
 	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
@@ -255,7 +268,6 @@ public static class WallLoader
 			hook(i, j, type, ref r, ref g, ref b);
 		}
 	}
-
 
 	/// <summary>
 	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert"/> <br/>

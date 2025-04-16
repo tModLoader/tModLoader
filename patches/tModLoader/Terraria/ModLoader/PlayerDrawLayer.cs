@@ -64,7 +64,9 @@ public abstract partial class PlayerDrawLayer : ModType
 	/// <returns> Whether or not this layer will be visible by default. Modders can hide layers later, if needed.</returns>
 	public virtual bool GetDefaultVisibility(PlayerDrawSet drawInfo) => true;
 
-	/// <summary> Returns the layer's default position in regards to other layers. Make use of e.g <see cref="BeforeParent"/>/<see cref="AfterParent"/>, and provide a layer (usually a vanilla one from <see cref="PlayerDrawLayers"/>). </summary>
+	/// <summary>
+	/// Returns the layer's default position in regards to other layers. Make use of <see cref="BeforeParent"/>, <see cref="AfterParent"/>, <see cref="Between"/>, or <see cref="Multiple"/> to indicate the position. Use other layers as arguments, usually vanilla layers contained in the <see cref="PlayerDrawLayers"/>. <see cref="PlayerDrawLayers.BeforeFirstVanillaLayer"/> and <see cref="PlayerDrawLayers.AfterLastVanillaLayer"/> are also possible values.
+	/// </summary>
 	public abstract Position GetDefaultPosition();
 
 	internal void ResetVisibility(PlayerDrawSet drawInfo)

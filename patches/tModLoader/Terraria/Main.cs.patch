@@ -1389,7 +1389,7 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4157,17 +_,32 @@
+@@ -4157,17 +_,31 @@
  			}
  		}
  		else {
@@ -1400,7 +1400,6 @@
  		dedServ = true;
  		showSplash = false;
  		Initialize();
-+		ModContent.DedServPreInit();
 +
 +		bool reloadMods;
 +		do {
@@ -1789,11 +1788,12 @@
  		musicFade[50] = 1f;
  		if (dedServ)
  			netMode = 2;
-@@ -5095,6 +_,7 @@
+@@ -5095,6 +_,8 @@
  			if (!dedServ)
  				Lighting.Clear();
  		};
 +		WorldGen.AddGenPasses();
++		ModContent.RunEarlyClassConstructors();
  
  		DontStarveSeed.Initialize();
  		ResourceSetsManager = new PlayerResourceSetsManager();

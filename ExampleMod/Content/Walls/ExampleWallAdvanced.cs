@@ -1,3 +1,4 @@
+using ExampleMod.Common.Systems;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -51,6 +52,11 @@ namespace ExampleMod.Content.Walls
 				}
 			}
 			return base.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber);
+		}
+
+		public override bool CanBeTeleportedTo(int i, int j, Player player, string context) {
+			// Limit teleportation similar to how teleporting to a location with Dungeon walls or Lihzahrd walls is limited by defeating some bosses.
+			return DownedBossSystem.downedMinionBoss;
 		}
 	}
 }
