@@ -104,7 +104,7 @@ function get_version {
 		echo "$tml_version"
 	elif [[ -r "$folder/Mods/tmlversion.txt" ]]; then
 		# Format the tmlversion file appropriately, as it is missing padded 0's on months/days
-		echo "v$(cat "$folder/Mods/tmlversion.txt" | sed -E "s/\.([0-9])\./\.0\1\./g")"
+		echo "v$(cat "$folder/Mods/tmlversion.txt" | sed -E 's/\.([0-9])\./\.0\1\./g')"
 	else
 		# Get the latest release if no other options are provided
 		local release_url="https://api.github.com/repos/tModLoader/tModLoader/releases/latest"
@@ -219,7 +219,7 @@ function install_tml {
 function install_workshop_mods {
 	verify_steamcmd
 	
-	if ! [[ -d "$folder/Mods" ]]; then
+	if ! [[ -d "Mods" ]]; then
 		echo "Mods folder does not exist, please run install-tml command or create a 'Mods' folder before installing mods"
 		exit
 	fi
@@ -235,16 +235,17 @@ function install_workshop_mods {
 	echo "Installing workshop mods"
 
 	local steamcmd_command
-	lines=$(cat install.txt)
-	for line in $lines; do
+	local lines=0
+	while read -r line; do
+		lines=$((lines + 1))
 		steamcmd_command="$steamcmd_command +workshop_download_item 1281930 $line"
-	done
+	done <install.txt 
 
-	eval "$steam_cmd +force_install_dir $folder +login anonymous $steamcmd_command +quit"
+	eval "'$steam_cmd' +force_install_dir '$folder' +login anonymous$steamcmd_command +quit"
+
+	echo -e "\nInstalled $lines mods"
 
 	popd
-
-	echo "Installed $(wc -l $lines) mods"
 }
 
 function print_help {
@@ -366,20 +367,19 @@ case $cmd in
 		if is_in_docker; then
 			mkdir -p "$folder/Mods" "$folder/Worlds"
 			install_workshop_mods
+			cd "$HOME/server" || exit
 		elif ! [[ -f "$folder/server/start-tModLoaderServer.sh" ]]; then
 			echo "A tModLoader server is not installed yet, please run the install or install-tml command before starting a server"
 			exit 1
-		fi
-
-		if is_in_docker; then
-			cd "$HOME/server" || exit
-			chmod +x ./LaunchUtils/ScriptCaller.sh
-      			source ./LaunchUtils/ScriptCaller.sh -server -config "$folder/serverconfig.txt" -steamworkshopfolder "$folder/steamapps/workshop" -tmlsavedirectory "$folder" $start_args
 		else
 			cd "$folder/server" || exit
-			chmod +x start-tModLoaderServer.sh
-			./start-tModLoaderServer.sh -nosteam -config "$folder/serverconfig.txt" -steamworkshopfolder "$folder/steamapps/workshop" -tmlsavedirectory "$folder" "$start_args"
 		fi
+
+		# Use stream editor to fix a self-process-reference in ScriptCaller.sh to work with source/exec (required until changes bundled into release)
+		# TODO: Remove once this is merged into stable
+		sed -i 's|cd "$(dirname "$0")"|cd "$(dirname "${BASH_SOURCE[0]}")"|' ./LaunchUtils/ScriptCaller.sh
+		chmod +x ./LaunchUtils/ScriptCaller.sh
+      	source ./LaunchUtils/ScriptCaller.sh -server -config "$folder/serverconfig.txt" -steamworkshopfolder "$folder/steamapps/workshop" -tmlsavedirectory "$folder" $start_args
 		;;
 	*)
 		echo "Invalid Command: $1"

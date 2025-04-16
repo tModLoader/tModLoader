@@ -72,11 +72,12 @@ The steam workshop does not use mod names to identify mods, so you must create a
    * **To check if Compose V2 is installed in this package**, run `docker compose version`. If the command errors, your manager still uses V1 and will need to additionally install the `docker-compose` package. All commands below assume Compose V2 is installed, so if you have V1 replace any `docker compose` commands with `docker-compose`
 3. Download [docker-compose.yml](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/docker-compose.yml) and the [Dockerfile](https://github.com/tModLoader/tModLoader/tree/1.4.4/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Dockerfile)
 4. Edit `docker-compose.yml` with your GID and UID. These can be found by running `id`, and generally default to 1000
-   * You can also set the `TMLVERSION` arg to your compose file to set a specific tModLoader version. Read about how to set build arguments
-5. Run `docker compose up -d`
-   * To attach to the server console run `docker exec -it tml attach`. To detach from the console press `Ctrl-P Ctrl-Q` to avoid shutting down or `Ctrl-C` to detach and shutdown the server
-   * This command will create the `Mods` and `Worlds` directories if they don't already exist
+   * **IMPORTANT:** Make sure all files in the `tModLoader` folder also have this same UID/GID. This can be set by running `chown -R UID:GID tModLoader`
+   * You can optionally also set the `TMLVERSION` arg to get a specific tModLoader version
+5. Run `docker compose up -d`. This command will create the `Mods` and `Worlds` directories if they don't already exist
+   * To attach to the server console run `docker attach tml`. To detach from the console press `Ctrl-P Ctrl-Q` to avoid shutting down or `Ctrl-C` to detach and shutdown the server
 
+### TODO: Edit
 ### Running Commands
 To run commands inside the container, run `docker exec -it tml execute "YOUR COMMAND"`. An example hello world would be `docker exec -it tml execute "say Hello World!"`. The quotes are required around the entire command because tmux can only accept one argument to be passed, otherwise the command is sent as a single word without spaces
 
@@ -98,11 +99,13 @@ To explore all the options before continuing, run `./manage-tModLoaderServer.sh 
       2. Run `./manage-tModLoaderServer.sh install-tml --username your_steam_username` and enter any password/2fa if necessary. tModLoader will install to the `server` directory in your installation folder
    
    * **Github**
-      1. Run `./manage-tModLoaderServer.sh install-tml --github`. This will install the latest GitHub release, which is the same version as released on Steam. 
+      1. Run `./manage-tModLoaderServer.sh install-tml --github`. This will install the latest GitHub release, which is the same version as released on Steam
          * If you wish to use a specific/legacy tModLoader version from Github, provide either a `tmlversion.txt` file from a modpack or pass the `TMLVERSION` environment variable with a specific version, e.g. `v2022.06.96.4`
-3. Install any necessary mods
-   * Mods will be automatically installed during the tModLoader installation step, but can also be installed separately by running `./manage-tModLoaderServer.sh install-mods`. No mods will be installed if `install.txt` is missing, and no mods will be enabled if `enabled.json` is missing. **You will need a `Mods/enabled.json` to contain all Mods that you want enabled, including local mods**. 
+3. Install any necessary mods with `./manage-tModLoaderServer.sh install-mods`
+   * Run . No mods will be installed if `install.txt` is missing, and no mods will be enabled if `enabled.json` is missing. **You will need a `Mods/enabled.json` to contain all Mods that you want enabled, including local mods**
 4. Start the server with `./manage-tModLoaderServer.sh start`. Be sure to pass in `--folder` again if you used a custom location during installation
+
+**NOTE**: These steps can be combined into a single command, `./manage-tModLoaderServer.sh install ...` which installs TML and the provided mods in one command
 
 ### Updating
 `./manage-tModLoaderServer.sh install` will update both TML and your mods. To update just mods, run the `install-mods` command. To only update TML, run the `install-tml` command
