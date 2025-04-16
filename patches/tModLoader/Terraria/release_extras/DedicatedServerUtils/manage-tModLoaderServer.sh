@@ -368,18 +368,18 @@ case $cmd in
 			mkdir -p "$folder/Mods" "$folder/Worlds"
 			install_workshop_mods
 			cd "$HOME/server" || exit
-		elif ! [[ -f "$folder/server/start-tModLoaderServer.sh" ]]; then
+		elif ! [[ -f "$folder/server/LaunchUtils/ScriptCaller.sh" ]]; then
 			echo "A tModLoader server is not installed yet, please run the install or install-tml command before starting a server"
 			exit 1
 		else
 			cd "$folder/server" || exit
 		fi
 
-		# Use stream editor to fix a self-process-reference in ScriptCaller.sh to work with source/exec (required until changes bundled into release)
-		# TODO: Remove once this is merged into stable
+		# NOTE: Technically BASH_SOURCE is >= Bash 3.0, but this version is over 20 years old so the chance of any issues is minimal
 		sed -i 's|cd "$(dirname "$0")"|cd "$(dirname "${BASH_SOURCE[0]}")"|' ./LaunchUtils/ScriptCaller.sh
+
 		chmod +x ./LaunchUtils/ScriptCaller.sh
-      	source ./LaunchUtils/ScriptCaller.sh -server -config "$folder/serverconfig.txt" -steamworkshopfolder "$folder/steamapps/workshop" -tmlsavedirectory "$folder" $start_args
+		source ./LaunchUtils/ScriptCaller.sh -server -config "$folder/serverconfig.txt" -steamworkshopfolder "$folder/steamapps/workshop" -tmlsavedirectory "$folder" $start_args
 		;;
 	*)
 		echo "Invalid Command: $1"
