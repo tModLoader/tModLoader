@@ -5,7 +5,7 @@
  			int num = _widthLimitInPixels;
  			if (num == -1)
 -				num = Main.screenWidth - 320;
-+				num = (int)((Main.screenWidth - 320) / Main.UIScale); // TML fix: scale NewText by UIScale.
++				num = (int)(Main.screenWidth / Main.UIScale - 320); // TML fix: scale NewText by UIScale.
  
  			List<List<TextSnippet>> list = Utils.WordwrapStringSmart(OriginalText, _color, FontAssets.MouseText.Value, num, 10);
  			_parsedText.Clear();
