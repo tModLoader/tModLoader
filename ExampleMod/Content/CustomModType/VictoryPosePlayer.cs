@@ -22,11 +22,11 @@ namespace ExampleMod.Content.CustomModType
 		/// <summary> The pose that is currently playing. </summary>
 		public ModVictoryPose activeVictoryPose;
 
-		/// <summary> How long the active ModVictoryPose has been active. Will be -1 if there is no active pose. </summary>
+		/// <summary> How long the active ModVictoryPose has been active. Will be -1 if there is no active pose. Can be used during <see cref="ModVictoryPose.Update(Player)"/> to drive effects. </summary>
 		public int ElapsedPoseTime { get; internal set; }
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			// Detect when we defeat an enemy.
+			// Detect when we defeat an enemy by doing the final hit.
 			if (!target.active && Player.whoAmI == Main.myPlayer) {
 				// Start a victory pose
 				StartRandomPose(target.boss);

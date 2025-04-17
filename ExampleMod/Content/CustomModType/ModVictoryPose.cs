@@ -46,6 +46,9 @@ namespace ExampleMod.Content.CustomModType
 			SetStaticDefaults(); // Finally, we call SetStaticDefaults, where each ModVictoryPose class will implement their specific logic.
 		}
 
+		/// <inheritdoc cref="VictoryPosePlayer.ElapsedPoseTime"/>
+		public static float ElapsedPoseTime(Player player) => player.GetModPlayer<VictoryPosePlayer>().ElapsedPoseTime;
+
 		// These virtual methods are the "hooks" we provide that other modders can use to customize their ModVictoryPose behaviors.
 		// It is useful to document these methods so that other mods using it can understand what each method does. They can view the documentation by hovering over the method name. Typing "///" in Visual Studio will generate a documentation stub, after that add any information you want to the "summary" section. See https://github.com/tModLoader/tModLoader/wiki/Why-Use-an-IDE#mod-documentation for more information about how to enable documentation support in your mod.
 		// If your mod has a GitHub wiki, you might want to also document these methods there as well as an additional reference.
@@ -75,9 +78,6 @@ namespace ExampleMod.Content.CustomModType
 			return null;
 		}
 
-		/// <inheritdoc cref="VictoryPosePlayer.ElapsedPoseTime"/>
-		public static float ElapsedPoseTime(Player player) => player.GetModPlayer<VictoryPosePlayer>().ElapsedPoseTime;
-
-		// TODO: A real implementation might want to add support for conditions or customizable spawn rates
+		// TODO: A real implementation might want to add hooks to support additional conditions or customizable spawn rates
 	}
 }
