@@ -748,6 +748,24 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Allows you to set custom draw flags for this accessory that can be checked in a <see cref="PlayerDrawLayer"/> or other drawcode. Not required if using pre-existing layers (e.g. face, back).
+	/// <para/> <paramref name="hideVisual"/> indicates if the accessory is hidden (in a non-vanity accessory slot that is set to hidden). It sounds counterintuitive for this method to be called on hidden accessories, but this can be used for effects where the visuals of an accessory should be forced despite the player hiding the accessory. For example, wings will always show while in the air and the Shield of Cthulhu will always show while its dash is active even while hidden.
+	/// </summary>
+	public virtual void UpdateVisibleAccessory(Player player, bool hideVisual)
+	{
+	}
+
+	/// <summary>
+	/// Allows tracking custom shader values corresponding to specific items or custom player layers for equipped accessories. <paramref name="dye"/> is the <see cref="Item.dye"/> of the item in the dye slot. <paramref name="hideVisual"/> indicates if this item is in a non-vanity accessory slot that is set to hidden. Most implementations will not assign shaders if the accessory is hidden, but there are rare cases where it is desired to assign the shader regardless of accessory visibility. One example is Hand Of Creation, the player can disable visibility of the accessory to prevent the backpack visuals from showing, but the stool will still be properly dyed by the corresponding dye item when visible. 
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="dye"></param>
+	/// <param name="hideVisual"></param>
+	public virtual void UpdateItemDye(Player player, int dye, bool hideVisual)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to create special effects (such as dust) when this item's equipment texture of the given equipment type is displayed on the player. Note that this hook is only ever called through this item's associated equipment texture.
 	/// </summary>
 	/// <param name="player">The player.</param>

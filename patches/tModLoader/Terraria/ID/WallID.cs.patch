@@ -12,7 +12,7 @@
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(WallLoader.WallCount);
++		public static SetFactory Factory = new SetFactory(WallLoader.WallCount, nameof(WallID), Search);
  		public static bool[] CanBeConvertedToGlowingMushroom = Factory.CreateBoolSet(64, 67, 15, 247);
  		public static bool[] AllowsUndergroundDesertEnemiesToSpawn = Factory.CreateBoolSet(187, 220, 222, 221, 216, 217, 219, 218);
  		public static bool[] Transparent = Factory.CreateBoolSet(88, 89, 90, 91, 92, 241);

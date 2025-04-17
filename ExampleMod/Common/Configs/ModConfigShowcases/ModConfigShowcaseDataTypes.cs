@@ -26,6 +26,8 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public EquipType SomeEnum;
 		public byte SomeByte;
 		public uint SomeUInt;
+		public long SomeLong;
+		public ulong SomeULong;
 
 		// Structs - These require special code. We've implemented Color and Vector2 so far.
 		public Color SomeColor;

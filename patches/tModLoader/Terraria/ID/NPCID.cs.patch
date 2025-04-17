@@ -119,7 +119,7 @@
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(NPCLoader.NPCCount);
++		public static SetFactory Factory = new SetFactory(NPCLoader.NPCCount, nameof(NPCID), Search);
 +
 +		/// <summary>
 +		/// Determines the special spawning rules for an NPC to use when respawning using the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).

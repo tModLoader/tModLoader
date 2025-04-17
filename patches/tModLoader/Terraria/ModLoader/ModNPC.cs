@@ -425,6 +425,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the damage, etc., that this NPC does to a player. 
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> The final hit values such as the final damage can only be retrieved from the HurtInfo in the <see cref="OnHitPlayer(Player, Player.HurtInfo)"/> hook.
 	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="target"></param>
@@ -434,8 +435,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs). <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs).
+	/// <para/> Changes to the hit such as the damage must be done by modifying the HurtModifiers properties in the <see cref="ModifyHitPlayer(Player, ref Player.HurtModifiers)"/> hook.
+	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hurtInfo"></param>
@@ -466,6 +468,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC. 
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> The final hit values such as the final damage can only be retrieved from the HitInfo in the <see cref="OnHitNPC(NPC, NPC.HitInfo)"/> hook.
 	/// <para/> Runs in single player or on the server.
 	/// </summary>
 	/// <param name="target"></param>
@@ -475,8 +478,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC hits a friendly NPC. <br/>
-	/// Runs in single player or on the server. <br/>
+	/// Allows you to create special effects when this NPC hits a friendly NPC.
+	/// <para/> Changes to the hit such as the damage must be done by modifying the HitModifiers properties in the <see cref="ModifyHitNPC(NPC, ref NPC.HitModifiers)"/> hook.
+	/// <para/> Runs in single player or on the server.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
@@ -513,6 +517,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon. 
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> The final hit values such as the final damage can only be retrieved from the HitInfo in the <see cref="OnHitByItem(Player, Item, NPC.HitInfo, int)"/> hook.
 	/// <para/> Runs on the local client.
 	/// </summary>
 	/// <param name="player"></param>
@@ -523,8 +528,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this NPC is hit by a melee weapon. <br/>
-	/// Runs on the client or server doing the damage. <br/>
+	/// Allows you to create special effects when this NPC is hit by a melee weapon.
+	/// <para/> Changes to the hit such as the damage must be done by modifying the HitModifiers properties in the <see cref="ModifyHitByItem(Player, Item, ref NPC.HitModifiers)"/> hook.
+	/// <para/> Runs on the client or server doing the damage.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
@@ -547,6 +553,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a projectile. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> The final hit values such as the final damage can only be retrieved from the HitInfo in the <see cref="OnHitByProjectile(Projectile, NPC.HitInfo, int)"/> hook.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="modifiers"></param>
@@ -556,6 +563,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this NPC is hit by a projectile.
+	/// <para/> Changes to the hit such as the damage must be done by modifying the HitModifiers properties in the <see cref="ModifyHitByProjectile(Projectile, ref NPC.HitModifiers)"/> hook.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="hit"></param>

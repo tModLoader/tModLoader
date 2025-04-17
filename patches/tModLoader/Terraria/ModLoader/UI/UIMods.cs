@@ -564,6 +564,11 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		modListViewPosition = modList.ViewPosition;
 	}
 
+	internal void StoreCurrentScrollPosition()
+	{
+		modListViewPosition = modList.ViewPosition;
+	}
+
 	internal void Populate()
 	{
 		modItemsTask = Task.Run(() => {

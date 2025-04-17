@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using Microsoft.Build.Framework;
 using Terraria.UI.Chat;
 using Microsoft.Xna.Framework;
+using Terraria.Social.Base;
 
 namespace Terraria.ModLoader.UI;
 
@@ -190,14 +191,14 @@ internal static class Interface
 
 				// Find dependencies that need to be downloaded.
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
-				bool promptDepDownloads = missingDeps.Count != 0;
-
-				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}";
-				if (promptDepDownloads) {
+				
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)}";
+				if (missingDeps.Any()) {
 					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
 				}
 				message = message.Trim('\n');
 
+				bool promptDepDownloads = missingDeps.Any() || removedMods.Any();
 
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
 				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
@@ -213,14 +214,44 @@ internal static class Interface
 						downloads.Add(item);
 					}
 
-					await UIModBrowser.DownloadMods(
-						downloads,
-						loadModsID);
+					if (downloads.Any()) {
+						await UIModBrowser.DownloadMods(
+							downloads,
+							loadModsID);
+					}
 
-					Main.QueueMainThreadAction(() => {
-						Main.menuMode = Interface.loadModsID;
-						Main.MenuUI.SetState(null);
-					});
+					//TODO: This code was added hastily in response to a popular mod being transferred ownership by reuploading it.
+					// Revisit this code at a later date. Its not apparent how well the interaction of both dependencies and removed mods will play out in terms of UX
+					HashSet<ModPubId_t> removedDownloads = new();
+					foreach (var slug in removedMods) {
+						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item) || item == null) {
+							Logging.tML.Error($"Could not find removed mod on Workshop: {slug}");
+							continue;
+						}
+
+						removedDownloads.Add(item.PublishId);
+					}
+
+					if (removedDownloads.Any()) {
+						modBrowser.Activate();
+						modBrowser.FilterTextBox.Text = "";
+						modBrowser.SpecialModPackFilter = removedDownloads.ToList();
+						modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
+						modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
+						modBrowser.ModSideFilterMode = ModSideFilter.All;
+						modBrowser.ResetTagFilters();
+						SoundEngine.PlaySound(SoundID.MenuOpen);
+
+						modBrowser.reloadOnExit = true;
+						modBrowser.PreviousUIState = null;
+						Main.menuMode = modBrowserID;
+					}
+					else {
+						Main.QueueMainThreadAction(() => {
+							Main.menuMode = Interface.loadModsID;
+							Main.MenuUI.SetState(null);
+						});
+					}
 				};
 
 				if (!string.IsNullOrWhiteSpace(message)) {

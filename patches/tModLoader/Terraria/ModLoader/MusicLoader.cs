@@ -96,6 +96,8 @@ public sealed class MusicLoader : ILoader
 		musicByPath[musicPath] = id;
 		musicExtensions[musicPath] = chosenExtension;
 		musicSkipsVolumeRemap[id] = mod.MusicSkipsVolumeRemap;
+
+		MusicID.Search.Add(musicPath, id);
 	}
 
 	/// <summary>

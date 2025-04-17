@@ -43,4 +43,10 @@ public abstract class GlobalWall : GlobalBlockType
 	{
 		return true;
 	}
+
+	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(int, int, string)"/>
+	public virtual bool CanBeTeleportedTo(int i, int j, int type, Player player, string context)
+	{
+		return true;
+	}
 }
