@@ -618,6 +618,16 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	{
 	}
 
+	/// <inheritdoc cref="ModItem.UpdateVisibleAccessory(Player, bool)"/>
+	public virtual void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
+	{
+	}
+
+	/// <inheritdoc cref="ModItem.UpdateItemDye(Player, int, bool)"/>
+	public virtual void UpdateItemDye(Item item, Player player, int dye, bool hideVisual)
+	{
+	}
+
 	/// <summary>
 	/// Allows you to determine whether the player is wearing an armor set, and return a name for this set.
 	/// If there is no armor set, return the empty string.

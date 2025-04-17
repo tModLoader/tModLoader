@@ -1913,7 +1913,12 @@
  	{
  		if (armorItem.IsAir)
  			return;
-@@ -7020,13 +_,13 @@
+@@ -7017,16 +_,18 @@
+ 		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count && (cShieldFallback == -1 || !flag))
+ 			cShieldFallback = dyeItem.dye;
+ 
++		ItemLoader.UpdateItemDye(armorItem, this, dyeItem.dye, flag); // Call early to support hideVisuals bypassing
++
  		if (!num && flag)
  			return;
  
@@ -5367,6 +5372,15 @@
  		if (item.type == 3581)
  			yoraiz0rDarkness = true;
  
+@@ -28662,6 +_,8 @@
+ 
+ 		if (item.type == 5075)
+ 			hasRainbowCursor = true;
++
++		ItemLoader.UpdateVisibleAccessory(item, this, false);
+ 	}
+ 
+ 	public void SetArmorEffectVisuals(Player drawPlayer)
 @@ -28799,6 +_,9 @@
  		if (drawPlayer.head == 267)
  			yoraiz0rDarkness = true;
