@@ -124,6 +124,16 @@ ModConfigShowcaseDataTypes: {
 		// Tooltip: ""
 	}
 
+	SomeLong: {
+		// Label: Some Long
+		// Tooltip: ""
+	}
+
+	SomeULong: {
+		// Label: Some ULong
+		// Tooltip: ""
+	}
+
 	SomeColor: {
 		// Label: Some Color
 		// Tooltip: ""

@@ -84,8 +84,8 @@ internal class IntInputElement : ConfigElement
 internal class LongElement : ConfigElement
 {
 	public IList<long> LongList { get; set; }
-	public long Min { get; set; } = 0;
-	public long Max { get; set; } = 100;
+	public long Min { get; set; } = long.MinValue;
+	public long Max { get; set; } = long.MaxValue;
 	public long Increment { get; set; } = 1;
 
 	public override void OnBind()
@@ -160,8 +160,8 @@ internal class LongElement : ConfigElement
 internal class ULongElement : ConfigElement
 {
 	public IList<ulong> ULongList { get; set; }
-	public ulong Min { get; set; } = 0;
-	public ulong Max { get; set; } = 100;
+	public ulong Min { get; set; } = ulong.MinValue;
+	public ulong Max { get; set; } = ulong.MaxValue;
 	public ulong Increment { get; set; } = 1;
 
 	public override void OnBind()
