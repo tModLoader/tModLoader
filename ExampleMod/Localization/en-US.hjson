@@ -94,6 +94,7 @@ Mods: {
 				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
 				Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
 				Upgraded: I upgraded your {$ItemName.HiveBackpack} to a {$Mods.ExampleMod.Items.WaspNest.DisplayName}
+				Death: {0} is gone... 
 			}
 
 			ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
