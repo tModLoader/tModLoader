@@ -1329,13 +1329,13 @@ public static class NPCLoader
 
 	public static LocalizedText DeathMessage(NPC npc)
 	{
-		if (npc.ModNPC?.DeathMessage() != null)
-			return npc.ModNPC?.DeathMessage();
-
 		foreach (var g in HookDeathMessage.Enumerate()) {
 			if (g.DeathMessage(npc) != null)
 				return g.DeathMessage(npc);
 		}
+
+		if (npc.ModNPC?.DeathMessage() != null)
+			return npc.ModNPC?.DeathMessage();
 
 		return null;
 	}
