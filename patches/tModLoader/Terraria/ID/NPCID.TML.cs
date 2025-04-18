@@ -23,7 +23,9 @@ public partial class NPCID
 
 		//IDs of the Angler and Princess
 		/// <summary>
-		/// If true, the given Town NPC won't drop a tombstone on death and will have the "NPC has left!" death message unless specified otherwise by <see cref="ModNPC.TownNPCDeathMessage"/>.
+		/// If true, the given Town NPC won't drop a tombstone on death in hardcore mode and will have the "NPC has left!" death message unless specified otherwise by <see cref="ModNPC.TownNPCDeathMessage"/>.
+		/// <br/> This does NOT affect the gore spawned when the NPC dies.
+		/// <para/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] IsTownChild = Factory.CreateBoolSet(369, 663);
 
