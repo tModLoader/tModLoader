@@ -388,7 +388,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Sets a unique message when the NPC dies. 
-		public override LocalizedText TownNPCDeathMessage() {
+		public override LocalizedText DeathMessage() {
 			return Language.GetText("Mods.ExampleMod.NPCs.ExamplePerson.Death").WithFormatArgs(NPC.GivenName);
 		}
 

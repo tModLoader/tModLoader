@@ -1324,17 +1324,17 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate LocalizedText DelegateTownNPCDeathMessage(NPC npc);
-	private static HookList HookTownNPCDeathMessage = AddHook<DelegateTownNPCDeathMessage>(g => g.TownNPCDeathMessage);
+	private delegate LocalizedText DelegateDeathMessage(NPC npc);
+	private static HookList HookDeathMessage = AddHook<DelegateDeathMessage>(g => g.DeathMessage);
 
-	public static LocalizedText TownNPCDeathMessage(NPC npc)
+	public static LocalizedText DeathMessage(NPC npc)
 	{
-		if (npc.ModNPC?.TownNPCDeathMessage() != null)
-			return npc.ModNPC?.TownNPCDeathMessage();
+		if (npc.ModNPC?.DeathMessage() != null)
+			return npc.ModNPC?.DeathMessage();
 
-		foreach (var g in HookTownNPCDeathMessage.Enumerate()) {
-			if (g.TownNPCDeathMessage(npc) != null)
-				return g.TownNPCDeathMessage(npc);
+		foreach (var g in HookDeathMessage.Enumerate()) {
+			if (g.DeathMessage(npc) != null)
+				return g.DeathMessage(npc);
 		}
 
 		return null;

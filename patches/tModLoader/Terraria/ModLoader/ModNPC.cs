@@ -810,11 +810,12 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the Town NPC's death notification. This also affects what the dropped tombstone will say.
-	/// <br/> Return <see langword="null"/> for vanilla behavior, being "NPC was slain..." by default or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>.
+	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC.
+	/// <br/> Return <see langword="null"/> for vanilla behavior, being "NPC has been defeated!" for bosses and "NPC was slain..." or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/> for town NPCs.
+	/// <para/> This won't have any effect if the given NPC isn't a town NPC or a boss.
 	/// </summary>
 	/// <returns></returns>
-	public virtual LocalizedText TownNPCDeathMessage()
+	public virtual LocalizedText DeathMessage()
 	{
 		return null;
 	}

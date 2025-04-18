@@ -1782,8 +1782,8 @@
  				}
  			}
  
-+			if (NPCLoader.TownNPCDeathMessage(this) != null)
-+				networkText = NPCLoader.TownNPCDeathMessage(this).ToNetworkText();
++			if (NPCLoader.DeathMessage(this) != null)
++				networkText = NPCLoader.DeathMessage(this).ToNetworkText();
 +
  			if (flag)
  				DropTombstoneTownNPC(networkText);
@@ -1934,7 +1934,7 @@
  		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
  		int num2 = Main.rand.Next(5) + 5;
  		for (int i = 0; i < num2; i++) {
-@@ -59394,7 +_,8 @@
+@@ -59394,9 +_,16 @@
  		}
  	}
  
@@ -1942,8 +1942,17 @@
 -	private void DoDeathEvents_CelebrateBossDeath()
 +	private void DoDeathEvents_CelebrateBossDeath(string typeName)
  	{
- 		if (type == 125 || type == 126) {
++		if (NPCLoader.DeathMessage(this) != null) {
++			if (Main.netMode == 0)
++				Main.NewText(NPCLoader.DeathMessage(this).Value, 175, 75);
++			else if (Main.netMode == 2)
++				ChatHelper.BroadcastChatMessage(NPCLoader.DeathMessage(this).ToNetworkText(), new Color(175, 75, 255));
++		}
+-		if (type == 125 || type == 126) {
++		else if (type == 125 || type == 126) {
  			if (Main.netMode == 0)
+ 				Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Plural", Language.GetTextValue("Enemies.TheTwins")), 175, 75);
+ 			else if (Main.netMode == 2)
 @@ -59409,7 +_,7 @@
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", NetworkText.FromKey("Enemies.MoonLord")), new Color(175, 75, 255));
  		}
