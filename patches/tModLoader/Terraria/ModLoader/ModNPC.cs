@@ -810,6 +810,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Allows you to modify the Town NPC's death notification. This also affects what the dropped tombstone will say.
+	/// <para/> Return <c>null</c> for vanilla behavior.
+	/// </summary>
+	/// <returns></returns>
+	public virtual LocalizedText TownNPCDeathMessage()
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to determine the damage and knockback of this town NPC's attack before the damage is scaled. (More information on scaling in GlobalNPC.BuffTownNPCs.)
 	/// </summary>
 	/// <param name="damage"></param>

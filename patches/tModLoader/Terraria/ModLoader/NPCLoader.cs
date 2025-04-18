@@ -1323,6 +1323,23 @@ public static class NPCLoader
 			g.BuffTownNPC(ref damageMult, ref defense);
 		}
 	}
+
+	private delegate LocalizedText DelegateTownNPCDeathMessage(NPC npc);
+	private static HookList HookTownNPCDeathMessage = AddHook<DelegateTownNPCDeathMessage>(g => g.TownNPCDeathMessage);
+
+	public static LocalizedText TownNPCDeathMessage(NPC npc)
+	{
+		if (npc.ModNPC?.TownNPCDeathMessage() != null)
+			return npc.ModNPC?.TownNPCDeathMessage();
+
+		foreach (var g in HookTownNPCDeathMessage.Enumerate()) {
+			if (g.TownNPCDeathMessage(npc) != null)
+				return g.TownNPCDeathMessage(npc);
+		}
+
+		return null;
+	}
+
 	//attack type 0 = throwing
 	//  num405 = type, num406 = damage, knockBack, scaleFactor7 = speed multiplier, num407 = attack delay
 	//  num408 = unknown, maxValue3 = unknown, num409 = gravity correction factor, num411 = random speed offset

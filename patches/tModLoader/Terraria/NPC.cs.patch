@@ -1769,6 +1769,25 @@
  		noSpawnCycle = true;
  		if (townNPC && type != 37 && type != 453) {
  			if (Main.netMode != 2)
+@@ -58658,7 +_,7 @@
+ 			bool flag = true;
+ 			NetworkText fullNetName = GetFullNetName();
+ 			int num7 = 19;
+-			if (type == 369 || type == 663 || NPCID.Sets.IsTownPet[type]) {
++			if (NPCID.Sets.IsTownChild[type] || NPCID.Sets.IsTownPet[type]) {
+ 				num7 = 36;
+ 				flag = false;
+ 			}
+@@ -58674,6 +_,9 @@
+ 				}
+ 			}
+ 
++			if (NPCLoader.TownNPCDeathMessage(this) != null)
++				networkText = NPCLoader.TownNPCDeathMessage(this).ToNetworkText();
++
+ 			if (flag)
+ 				DropTombstoneTownNPC(networkText);
+ 
 @@ -58695,13 +_,14 @@
  		if (townNPC && Main.netMode != 1 && homeless && WorldGen.prioritizedTownNPCType == type)
  			WorldGen.prioritizedTownNPCType = 0;

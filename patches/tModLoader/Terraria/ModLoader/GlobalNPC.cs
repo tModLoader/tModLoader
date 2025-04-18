@@ -8,6 +8,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
@@ -721,6 +722,12 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="defense"></param>
 	public virtual void BuffTownNPC(ref float damageMult, ref int defense)
 	{
+	}
+
+	/// <inheritdoc cref="ModNPC.TownNPCDeathMessage"/>
+	public virtual LocalizedText TownNPCDeathMessage(NPC npc)
+	{
+		return null;
 	}
 
 	/// <summary>

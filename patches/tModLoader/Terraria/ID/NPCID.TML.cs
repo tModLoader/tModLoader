@@ -21,6 +21,12 @@ public partial class NPCID
 		/// </summary>
 		public static bool[] SpawnFromLastEmptySlot = Factory.CreateBoolSet(222, 245);
 
+		//IDs of the Angler and Princess
+		/// <summary>
+		/// If true, the given Town NPC won't drop a tombstone on death and will have the "NPC has left!" death message unless specified otherwise by <see cref="ModNPC.TownNPCDeathMessage"/>.
+		/// </summary>
+		public static bool[] IsTownChild = Factory.CreateBoolSet(369, 663);
+
 		//Default ID is the skeleton merchant
 		/// <summary>
 		/// Whether or not a given NPC will act like a town NPC in terms of AI, animations, and attacks, but not in other regards, such as appearing on the minimap, like the bone merchant in vanilla.
