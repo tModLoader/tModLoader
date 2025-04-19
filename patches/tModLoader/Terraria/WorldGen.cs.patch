@@ -2910,7 +2910,7 @@
  		if (!Main.remixWorld)
  			return;
  
-+		if (!TileLoader.Convert(x, y, 0))
++		if (!TileLoader.Convert(x, y, 9))
 +			return;
 +
  		if (Main.tile[x, y].type == 23 || Main.tile[x, y].type == 199 || Main.tile[x, y].type == 661 || Main.tile[x, y].type == 662) {
@@ -2937,6 +2937,25 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
+@@ -50637,6 +_,18 @@
+ 					if (!InWorld(num8, num9, 2) || !Main.tile[num8, num9].active())
+ 						continue;
+ 
++					int preHookType = Main.tile[num8, num9].type;
++					bool convertTile = TileLoader.Convert(num8, num9, 9);
++
++					if (preHookType != Main.tile[num8, num9].type) {
++						flag = true;
++
++						continue;
++					}
++
++					if (!convertTile)
++						continue;
++
+ 					if (Main.tile[num8, num9].type == 661 || Main.tile[num8, num9].type == 662 || Main.tile[num8, num9].type == 23 || Main.tile[num8, num9].type == 199 || Main.tile[num8, num9].type == 2 || Main.tile[num8, num9].type == 477 || Main.tile[num8, num9].type == 492 || Main.tile[num8, num9].type == 109) {
+ 						Main.tile[num8, num9].type = 60;
+ 						SquareTileFrame(num8, num9);
 @@ -50708,6 +_,9 @@
  				if (!InWorld(num11, num12, 10))
  					continue;
