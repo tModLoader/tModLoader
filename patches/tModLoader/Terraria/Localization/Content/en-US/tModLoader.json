@@ -515,6 +515,8 @@
 		"MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET {0} SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
 		"DownloadNetSDK": "Download .NET SDK",
 		"DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
+		"MSSourceIssue": "Mod Source Issue",
+		"MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "ModName (no spaces)",
