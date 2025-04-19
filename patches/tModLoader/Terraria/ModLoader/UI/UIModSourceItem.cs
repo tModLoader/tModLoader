@@ -206,7 +206,7 @@ internal class UIModSourceItem : UIPanel
 		// Display Run tModPorter when .csproj is valid
 		if (sourceUpgradeTask is { IsCompleted: true }) {
 			try {
-				bool result = sourceUpgradeTask.Result;
+				bool result = sourceUpgradeTask.GetAwaiter().GetResult();
 
 				// Source upgrade needed.
 				if (result) {
@@ -459,7 +459,7 @@ internal class UIModSourceItem : UIPanel
 			Top = { Pixels = 4 }
 		};
 
-		string fullError = Language.GetTextValue("tModLoader.MSSourceIssueMessage", "\n\n" + e.ToString());
+		string fullError = Language.GetTextValue("tModLoader.MSSourceIssueMessage", modName, "\n\n" + e.ToString());
 		modSaveErrorWarning.OnLeftClick += (a, b) => {
 			Interface.infoMessage.Show(fullError, 888, Interface.modSources);
 		};

@@ -516,7 +516,7 @@
 		"DownloadNetSDK": "Загрузить .NET SDK",
 		"DevModsInSandbox": "tModLoader не может разрабатывать моды в среде песочницы (например, в Flatpak). Пожалуйста, убедитесь, что вы установили Steam непосредственно на вашу систему.",
 		// "MSSourceIssue": "Mod Source Issue",
-		// "MSSourceIssueMessage": "The following error was found with this mod's source: {0}",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "Имя мода (без пробелов)",

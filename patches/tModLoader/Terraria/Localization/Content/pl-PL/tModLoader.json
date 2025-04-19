@@ -516,7 +516,7 @@
 		"DownloadNetSDK": "Pobierz .NET SDK",
 		"DevModsInSandbox": "tModLoader nie może rozwijać modów podczas działania w piaskownicy (np. w przypadku Flatpak). Upewnij się, że zainstalowano Steam bezpośrednio na Twoim systemie.",
 		// "MSSourceIssue": "Mod Source Issue",
-		// "MSSourceIssueMessage": "The following error was found with this mod's source: {0}",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "NazwaModa (bez spacji)",

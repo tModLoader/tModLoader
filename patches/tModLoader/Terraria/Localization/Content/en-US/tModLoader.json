@@ -516,7 +516,7 @@
 		"DownloadNetSDK": "Download .NET SDK",
 		"DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
 		"MSSourceIssue": "Mod Source Issue",
-		"MSSourceIssueMessage": "The following error was found with this mod's source: {0}",
+		"MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "ModName (no spaces)",
