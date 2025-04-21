@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
@@ -26,7 +28,7 @@ public static class DamageClassLoader
 	static DamageClassLoader()
 	{
 		RegisterDefaultClasses();
-		ResizeArrays();
+		ResizeArrays(fromStaticCtor: true);
 	}
 
 	internal static int Add(DamageClass damageClass)
@@ -35,8 +37,12 @@ public static class DamageClassLoader
 		return DamageClasses.Count - 1;
 	}
 
-	internal static void ResizeArrays()
+	internal static void ResizeArrays(bool fromStaticCtor = false)
 	{
+		if (!fromStaticCtor) { // prevents double registration
+			LoaderUtils.ResetStaticMembers(typeof(DamageClass));
+		}
+
 		RebuildEffectInheritanceCache();
 	}
 
