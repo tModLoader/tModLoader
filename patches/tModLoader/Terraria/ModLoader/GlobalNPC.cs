@@ -725,9 +725,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <inheritdoc cref="ModNPC.DeathMessage"/>
-	public virtual LocalizedText DeathMessage(NPC npc)
+	public virtual bool DeathMessage(NPC npc, ref NetworkText customText, ref Color color)
 	{
-		return null;
+		return false;
 	}
 
 	/// <summary>

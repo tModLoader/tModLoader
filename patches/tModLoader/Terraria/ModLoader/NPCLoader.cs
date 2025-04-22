@@ -1324,20 +1324,21 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate LocalizedText DelegateDeathMessage(NPC npc);
+	private delegate bool DelegateDeathMessage(NPC npc, ref NetworkText custom, ref Color color);
 	private static HookList HookDeathMessage = AddHook<DelegateDeathMessage>(g => g.DeathMessage);
 
-	public static LocalizedText DeathMessage(NPC npc)
+	public static bool DeathMessage(NPC npc, ref NetworkText customText, ref Color color)
 	{
-		foreach (var g in HookDeathMessage.Enumerate()) {
-			if (g.DeathMessage(npc) != null)
-				return g.DeathMessage(npc);
+		if(npc.ModNPC != null && Language.Exists(npc.ModNPC.GetLocalizationKey("DeathMessage"))) {
+			customText = NetworkText.FromKey(npc.ModNPC.GetLocalizationKey("DeathMessage"), npc.GetFullNetName());
 		}
 
-		if (npc.ModNPC?.DeathMessage() != null)
-			return npc.ModNPC?.DeathMessage();
+		foreach (var g in HookDeathMessage.Enumerate()) {
+			if (!g.DeathMessage(npc, ref customText, ref color))
+				return true;
+		}
 
-		return null;
+		return !npc.ModNPC?.DeathMessage(ref customText, ref color) ?? false;
 	}
 
 	//attack type 0 = throwing

@@ -387,9 +387,15 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		// Sets a unique message when the NPC dies. 
-		public override LocalizedText DeathMessage() {
-			return Language.GetText("Mods.ExampleMod.NPCs.ExamplePerson.Death").WithFormatArgs(NPC.GivenName);
+		public override bool DeathMessage(ref NetworkText customText, ref Color color) {
+			// Sets a unique message when the NPC dies. By default, the DeathMessage localization key, if it exists for this ModNPC, will be used.
+			// See also NPCID.Sets.IsTownChild if you just want the message used by Angler and Princess.
+			// This example shows how you would further customize the message, in this case just for the shimmer variant.
+			if (NPC.IsShimmerVariant) {
+				customText = NetworkText.FromKey(this.GetLocalizationKey("DeathMessageAlt"), NPC.GetFullNetName());
+				color = Color.Yellow;
+			}
+			return true;
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {

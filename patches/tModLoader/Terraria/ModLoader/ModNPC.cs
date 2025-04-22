@@ -810,14 +810,14 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC.
-	/// <br/> Return <see langword="null"/> for vanilla behavior, being "NPC has been defeated!" for bosses and "NPC was slain..." or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/> for town NPCs.
+	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC. The text color can also be modified.
+	/// <para/> By default the text will be "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>) for town NPCs. Town NPC usually use <see cref="NPC.GetFullNetName"/> to retrieve the NPC name in the form of "GivenName the TypeName". For modded NPC, if a localization key for the ModNPC named "DeathMessage" exists, it will automatically be used and populated with <see cref="NPC.GetFullNetName"/> even without using this hook.
 	/// <para/> This won't have any effect if the given NPC isn't a town NPC or a boss.
+	/// <para/> Return false to skip the vanilla code for sending the message if the death message is handled by this method. Returns true by default.
 	/// </summary>
-	/// <returns></returns>
-	public virtual LocalizedText DeathMessage()
+	public virtual bool DeathMessage(ref NetworkText customText, ref Color color)
 	{
-		return null;
+		return true;
 	}
 
 	/// <summary>
