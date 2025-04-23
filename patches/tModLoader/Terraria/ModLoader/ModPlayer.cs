@@ -85,7 +85,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is where you set any fields related to INFORMATION accessories based on the passed in player argument.
-	/// <para/> Called for the local client.
+	/// <para/> Called on the local client.
 	/// <para/> Note that this hook is only called if all of the requirements
 	/// for a "nearby teammate" is met, which is when the other player is on the same team and within a certain distance, determined by the following code:
 	/// <code>(Main.player[i].Center - base.Center).Length() &lt; 800f</code>
@@ -710,6 +710,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
 	/// By default, returns true; return false to prevent ammo consumption. <br></br>
 	/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
+	/// n
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
@@ -806,7 +807,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to make things happen when the given item attempts to catch the given NPC.
-	/// <para/> Called only on the local client.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC which the player attempted to catch.</param>
 	/// <param name="item">The item used to catch the given NPC.</param>
@@ -830,7 +831,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center.
-	/// <para/> Called on the local client.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
@@ -841,7 +842,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a player can hit the given NPC. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <returns>True by default</returns>
@@ -853,7 +854,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to determine whether a player melee attack can collide the given NPC by swinging a melee weapon.
 	/// Use <see cref="CanHitNPCWithItem(Item, NPC)"/> instead for Guide Voodoo Doll-type effects.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item">The weapon item the player is holding.</param>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
@@ -868,7 +869,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc that this player does to an NPC.
-	/// <para/> This method is only called on the local client.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -878,7 +879,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when this player hits an NPC.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
@@ -889,7 +890,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -901,7 +902,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon.
-	/// <para/> This method is only called on the on the client of the player holding the weapon.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -912,7 +913,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when this player hits an NPC by swinging a melee weapon (for example how the Pumpkin Sword creates pumpkin heads).
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -924,7 +925,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a projectile created by this player can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -936,7 +937,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that a projectile created by this player does to an NPC.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -947,7 +948,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when a projectile created by this player hits an NPC (for example, inflicting debuffs).
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -959,7 +960,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a melee weapon swung by this player can hit the given opponent player. Return false to block this weapon from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -971,7 +972,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a projectile created by this player can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -983,7 +984,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether the given NPC can hit this player. Return false to block this player from being hit by the NPC. Returns true by default. CooldownSlot determines which of the player's cooldown counters (<see cref="ImmunityCooldownID"/>) to use, and defaults to -1 (<see cref="ImmunityCooldownID.General"/>).
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="cooldownSlot"></param>
@@ -995,7 +996,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that an NPC does to this player.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
 	{
@@ -1003,7 +1004,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs).
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
 	{
@@ -1011,7 +1012,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether the given hostile projectile can hit this player. Return false to block this player from being hit. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <returns></returns>
@@ -1022,7 +1023,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
 	{
@@ -1030,7 +1031,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when a hostile projectile hits this player.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
 	{

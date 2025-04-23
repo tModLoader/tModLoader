@@ -599,7 +599,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine whether this melee weapon can hit the given NPC when swung. Return true to allow hitting the target, return false to block this weapon from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -612,7 +612,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung.
 	/// <para/> Use <see cref="CanHitNPC(Player, NPC)"/> instead for Flymeal-type effects.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
 	/// <param name="player">The player wielding this item.</param>
@@ -627,7 +627,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC.
-	/// <para/> This method is only called on the on the client of the player holding the weapon.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -638,7 +638,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
-	/// <para/> This method is only called on the client of the player holding the weapon.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -650,7 +650,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine whether this melee weapon can hit the given opponent player when swung. Return false to block this weapon from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -664,7 +664,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that this melee weapon does to a player.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -675,7 +675,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this melee weapon hits a player.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>

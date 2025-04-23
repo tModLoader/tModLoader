@@ -288,7 +288,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine whether this projectile can hit the given opponent player. Return false to block this projectile from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target">The target</param>
 	public virtual bool CanHitPvp(Player target)
@@ -298,7 +298,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine whether this hostile projectile can hit the given player. Return false to block this projectile from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the server only.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	public virtual bool CanHitPlayer(Player target)
@@ -308,7 +308,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
-	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="modifiers"></param>
@@ -318,7 +318,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to create special effects when this hostile projectile hits a player.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="info"></param>

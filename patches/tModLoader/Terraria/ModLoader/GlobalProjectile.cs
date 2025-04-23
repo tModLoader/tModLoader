@@ -251,7 +251,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to determine whether a projectile can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
@@ -263,7 +263,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to determine whether a hostile projectile can hit the given player. Return false to block the projectile from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the server only.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
@@ -275,7 +275,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a hostile projectile does to a player.
-	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
@@ -286,7 +286,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to create special effects when a hostile projectile hits a player. <br/>
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>

@@ -512,7 +512,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to determine whether a melee weapon can hit the given NPC when swung. Return true to allow hitting the target, return false to block the weapon from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual bool? CanHitNPC(Item item, Player player, NPC target)
 	{
@@ -522,7 +522,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung.
 	/// <para/> Use <see cref="CanHitNPC(Item, Player, NPC)"/> instead for Flymeal-type effects.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item">The weapon item the player is holding.</param>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
@@ -538,7 +538,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
-	/// <para/> This method is only called on the on the client of the player holding the weapon.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
@@ -546,7 +546,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
-	/// <para/> This method is only called on the client of the player holding the weapon.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
@@ -554,7 +554,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to determine whether a melee weapon can hit the given opponent player when swung. Return false to block the weapon from hitting the target. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual bool CanHitPvp(Item item, Player player, Player target)
 	{
@@ -563,7 +563,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
@@ -571,7 +571,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits a player.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
