@@ -640,6 +640,12 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 			else
 				e = new StringInputElement();
 		}
+		else if (type == typeof(long)) {
+			e = new LongElement();
+		}
+		else if (type == typeof(ulong)) {
+			e = new ULongElement();
+		}
 		else if (type.IsEnum) {
 			if (list != null)
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");

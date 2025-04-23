@@ -1110,6 +1110,11 @@ Mods: {
 				// Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
 			}
 
+			ExampleChandelier: {
+				// DisplayName: Example Chandelier
+				// Tooltip: ""
+			}
+
 			BasicTileEntityItem: {
 				// DisplayName: Basic Tile Entity Item
 				// Tooltip: Collects rain water. Right Click when full to claim a water bucket.
@@ -1152,6 +1157,21 @@ Mods: {
 					Used by the Clentaminator
 					Spreads the underworld
 					''' */
+			}
+
+			CameraModifierShowcase: {
+				// DisplayName: Camera Modifier Showcase
+				// Tooltip: ""
+			}
+
+			RubyEarrings: {
+				// DisplayName: Ruby Earrings
+				// Tooltip: ""
+			}
+
+			SapphireEarrings: {
+				// DisplayName: Sapphire Earrings
+				// Tooltip: ""
 			}
 		}
 
@@ -1501,6 +1521,13 @@ Mods: {
 			}
 
 			// ShowFullscreenUICommand.Description: Show the example fullscreen UI
+		}
+
+		VictoryPoses: {
+			// HandsUpVictoryPose.VictoryCheer: Wooo! Yeah!
+			// HandsUpWithFireworksVictoryPose.VictoryCheer: I'm on fire today!
+			// ShortPose.VictoryCheer: Yay!
+			// LongPose.VictoryCheer: We did it!
 		}
 	}
 }

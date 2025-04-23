@@ -20,7 +20,7 @@
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
++		public static SetFactory Factory = new SetFactory(TileLoader.TileCount, nameof(TileID), Search);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then players will slip on that tile.

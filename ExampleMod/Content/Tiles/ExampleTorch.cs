@@ -145,11 +145,7 @@ namespace ExampleMod.Content.Tiles
 				offsetY = 4;
 			}
 
-			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-
-			if (Main.drawToScreen) {
-				zero = Vector2.Zero;
-			}
+			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 			Color color = new Color(100, 100, 100, 0);
@@ -168,6 +164,31 @@ namespace ExampleMod.Content.Tiles
 				float yy = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
 
 				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + xx, j * 16 - (int)Main.screenPosition.Y + offsetY + yy) + zero, new Rectangle(frameX, frameY, width, height), color, 0f, default, 1f, SpriteEffects.None, 0f);
+			}
+		}
+
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+			if (!visible) {
+				return;
+			}
+
+			if (Main.rand.NextBool(40) && tileFrameX < 66) {
+				int dustChoice = ModContent.DustType<Sparkle>();
+				Dust dust;
+				Vector2 spawnPosition = tileFrameX switch {
+					22 => new Vector2(i * 16 + 6, j * 16),
+					44 => new Vector2(i * 16 + 2, j * 16),
+					_ => new Vector2(i * 16 + 4, j * 16)
+				};
+
+				dust = Dust.NewDustDirect(new Vector2(i * 16 + 4, j * 16), 4, 4, dustChoice, 0f, 0f, 100);
+
+				if (!Main.rand.NextBool(3)) {
+					dust.noGravity = true;
+				}
+
+				dust.velocity *= 0.3f;
+				dust.velocity.Y -= 1.5f;
 			}
 		}
 	}

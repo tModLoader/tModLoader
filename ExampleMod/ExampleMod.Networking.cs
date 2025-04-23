@@ -1,5 +1,6 @@
 using ExampleMod.Common.Players;
 using ExampleMod.Common.Systems;
+using ExampleMod.Content.CustomModType;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using ExampleMod.Content.TileEntities;
@@ -23,6 +24,8 @@ namespace ExampleMod
 			ExampleDodge,
 			ExampleTownPetUnlockOrExchange,
 			ExampleResourceEffect,
+			StartVictoryPose,
+			CancelVictoryPose,
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -57,6 +60,9 @@ namespace ExampleMod
 					break;
 				case MessageType.ExampleResourceEffect:
 					ExampleResourcePlayer.HandleExampleResourceEffectMessage(reader, whoAmI);
+					break;
+				case MessageType.StartVictoryPose:
+					VictoryPosePlayer.HandleStartVictoryPoseMessage(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);

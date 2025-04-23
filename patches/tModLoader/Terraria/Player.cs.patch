@@ -1913,7 +1913,12 @@
  	{
  		if (armorItem.IsAir)
  			return;
-@@ -7020,13 +_,13 @@
+@@ -7017,16 +_,18 @@
+ 		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count && (cShieldFallback == -1 || !flag))
+ 			cShieldFallback = dyeItem.dye;
+ 
++		ItemLoader.UpdateItemDye(armorItem, this, dyeItem.dye, flag); // Call early to support hideVisuals bypassing
++
  		if (!num && flag)
  			return;
  
@@ -3252,13 +3257,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  					}
-@@ -13858,6 +_,13 @@
+@@ -13858,6 +_,16 @@
  				if (tile == null)
  					return;
  
 +				if (tile.type >= TileID.Count) {
-+					if (tile.active() && TileID.Sets.Torch[tile.type])
++					if (tile.active() && TileID.Sets.Torch[tile.type]) {
 +						NearbyModTorch.Add(tile.type);
++						if (tile.frameX < 66)
++							nearbyTorches++;
++					}
 +
 +					continue;
 +				}
@@ -3266,6 +3274,25 @@
  				if (!tile.active() || tile.type != 4 || tile.frameX < 0 || tile.frameY < 0)
  					continue;
  
+@@ -13887,7 +_,8 @@
+ 		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
+ 			int num = unlitTorchX[i];
+ 			int num2 = unlitTorchY[i];
++			
+-			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
++			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
+ 				Main.tile[num, num2].frameX -= 66;
+ 				NetMessage.SendTileSquare(-1, num, num2);
+ 			}
+@@ -13923,7 +_,7 @@
+ 		for (int i = num3; i <= value2; i++) {
+ 			for (int j = value3; j <= value4; j++) {
+ 				Tile tile = Main.tile[i, j];
+-				if (tile != null && (tile.active() & (tile.type == 4)) && tile.frameX < 66) {
++				if (tile != null && (tile.active() & (TileID.Sets.Torch[tile.type])) && tile.frameX < 66) {
+ 					_torchAttackPosX[num] = i;
+ 					_torchAttackPosY[num] = j;
+ 					num++;
 @@ -13943,7 +_,7 @@
  				NetMessage.SendData(4, -1, -1, null, whoAmI);
  
@@ -3275,6 +3302,22 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
+@@ -13955,13 +_,14 @@
+ 			int num4 = Main.rand.Next(num);
+ 			int num5 = _torchAttackPosX[num4];
+ 			int num6 = _torchAttackPosY[num4];
+-			if (Main.tile[num5, num6].type == 4 && Main.tile[num5, num6].frameX < 66) {
++			if (TileID.Sets.Torch[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
+ 				float num7 = 8f;
+ 				int num8 = 20;
+ 				if (num8 < 10)
+ 					num8 = 10;
+ 
+ 				int num9 = (int)MathHelper.Clamp(Main.tile[num5, num6].frameY / 22, 0f, TorchID.Count - 1);
++				// TODO: Full Torch god support for modded torches would require TorchID.Dust support, but this is fine for now.
+ 				num9 = TorchID.Dust[num9];
+ 				Main.tile[num5, num6].frameX += 66;
+ 				unlitTorchX[numberOfTorchAttacksMade] = num5;
 @@ -13991,6 +_,9 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;
@@ -5329,6 +5372,15 @@
  		if (item.type == 3581)
  			yoraiz0rDarkness = true;
  
+@@ -28662,6 +_,8 @@
+ 
+ 		if (item.type == 5075)
+ 			hasRainbowCursor = true;
++
++		ItemLoader.UpdateVisibleAccessory(item, this, false);
+ 	}
+ 
+ 	public void SetArmorEffectVisuals(Player drawPlayer)
 @@ -28799,6 +_,9 @@
  		if (drawPlayer.head == 267)
  			yoraiz0rDarkness = true;
@@ -7154,6 +7206,16 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35442,6 +_,9 @@
+ 		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
+ 			return;
+ 
++		if (!CombinedHooks.CanBeTeleportedTo(this, pointPoisition, num, num2, "TeleportRod"))
++			return;
++
+ 		Teleport(pointPoisition, 1);
+ 		NetMessage.SendData(65, -1, -1, null, 0, whoAmI, pointPoisition.X, pointPoisition.Y, 1);
+ 		if (sItem.type != 1326)
 @@ -35479,7 +_,10 @@
  			}
  		}
@@ -8879,6 +8941,16 @@
  			adjTile[n] = false;
  			oldAdjTile[n] = false;
  		}
+@@ -43304,6 +_,9 @@
+ 			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
+ 				continue;
+ 
++			if (!CombinedHooks.CanBeTeleportedTo(this, vector, i, j, "CheckForGoodTeleportationSpot"))
++				continue;
++
+ 			Vector2 vector2 = Vector2.UnitX * 16f;
+ 			if (Collision.TileCollision(vector - vector2, vector2, width, height, fallThrough: false, fall2: false, (int)gravDir) != vector2)
+ 				continue;
 @@ -43332,11 +_,29 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);

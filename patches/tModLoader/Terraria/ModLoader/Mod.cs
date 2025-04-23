@@ -230,6 +230,7 @@ public partial class Mod
 		int slot = NPCHeadLoader.ReserveHeadSlot();
 
 		NPCHeadLoader.heads[texture] = slot;
+		NPCHeadID.Search.Add(texture, slot);
 
 		if (!Main.dedServ) {
 			ModContent.Request<Texture2D>(texture);

@@ -25,6 +25,11 @@ ExampleModConfig: {
 	}
 
 	// Headers.Items: Items
+
+	AdditionalFlamingWeaponEntries: {
+		// Label: Additional Flaming Weapon Entries
+		// Tooltip: ""
+	}
 }
 
 ModConfigShowcaseAccessibility: {
@@ -116,6 +121,16 @@ ModConfigShowcaseDataTypes: {
 
 	SomeUInt: {
 		// Label: Some UInt
+		// Tooltip: ""
+	}
+
+	SomeLong: {
+		// Label: Some Long
+		// Tooltip: ""
+	}
+
+	SomeULong: {
+		// Label: Some ULong
 		// Tooltip: ""
 	}
 

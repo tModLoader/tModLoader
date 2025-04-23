@@ -435,4 +435,13 @@ public abstract partial class ModSystem : ModType
 	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
+
+	/// <summary>
+	/// Called after all mods register content and before all mods start setting up content. This can be used to initialize data structures dependent on the count of various content IDs, usually through SetFactory instances directly.
+	/// <para/> For example, <c>ItemID.Sets.Factory.CreateBoolSet(false, ItemID.PoisonDart, ItemID.PoisonedKnife)</c> will create an array with length equal to the total number of items in the game with the specified item types set to true.
+	/// <para/> The CreateNamedXSet methods can be used to expose an ID set for other mods to use by name without a mod dependency.
+	/// <para/> See also <see cref="ReinitializeDuringResizeArraysAttribute "/> for another similar option.
+	/// </summary>
+	public virtual void ResizeArrays() {
+	}
 }

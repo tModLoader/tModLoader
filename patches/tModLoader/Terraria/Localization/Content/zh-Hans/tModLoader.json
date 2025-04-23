@@ -25,6 +25,7 @@
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\n更新模组：",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
 		"DependenciesNeededForOtherMods": "\n以下依赖缺失：",
 		"InstallDependencies": "安装依赖",
 		"ContinueAnyway": "忽略并继续",
@@ -476,8 +477,8 @@
 		"WorldCustomDataSaveFail": "上次保存该世界时报告了以下错误。 相关模组中的数据可能会丢失：{0}",
 		"PlayerLoadWorldFail": "尝试加载世界时遇到问题",
 		"SaveWorldHeaderExceptionWarning": "在保存自定义世界头数据时遇到错误，由于“{1}”模组中的“{0}.SaveWorldHeader”出现错误，与该类相关的数据将不会保存。",
-		"SaveWorldDataExceptionWarning": "在保存自定义世界数据时遇到错误，由于“{1}”模组中的“{0}.SaveWorldData”出现错误。与该类相关的数据将不会保存：{2}",
-		"SavePlayerDataExceptionWarning": "，在保存自定义人物数据时遇到错误，由于“{1}”模组中的“{0}.SaveData”重新错误，与该类相关的数据将不会保存： {2}",
+		"SaveWorldDataExceptionWarning": "在保存自定义世界数据时遇到错误，由于“{1}”模组中的“{0}.SaveWorldData”出现错误，与该类相关的数据将不会保存：{2}",
+		"SavePlayerDataExceptionWarning": "在保存自定义人物数据时遇到错误，由于“{1}”模组中的“{0}.SaveData”出现错误，与该类相关的数据将不会保存：{2}",
 		"ViewSaveErrorMessage": "查看已保存的错误信息",
 		"CloudWarning": "云存档剩余空间不足, 无法保存至云端",
 		"PlayerFromNewerTModMightNotWork": "该人物来自较新的tModLoader，可能无法正常运作",
@@ -516,6 +517,8 @@
 		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET {0} SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
 		"DownloadNetSDK": "下载 .NET SDK",
 		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "模组内部名称（无空格）",
@@ -563,6 +566,8 @@
 		"CommandModListSyncedMods": "已同步模组：",
 		"CommandModListClientMods": "客户端模组：",
 		"CommandModListModlist": "模组列表：",
+		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "构建中：{0}",
