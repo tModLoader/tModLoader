@@ -404,6 +404,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to customize what happens when this boss dies, such as which name is displayed in the defeat message and what type of potion it drops.
+	/// <para/> Note that <see cref="DeathMessage(ref NetworkText, ref Color)"/> gives more control over the defeat message and supports localization and should be used instead.
 	/// </summary>
 	/// <param name="name"></param>
 	/// <param name="potionType"></param>
@@ -811,9 +812,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC. The text color can also be modified.
-	/// <para/> By default the text will be "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>) for town NPCs. Town NPC usually use <see cref="NPC.GetFullNetName"/> to retrieve the NPC name in the form of "GivenName the TypeName". For modded NPC, if a localization key for the ModNPC named "DeathMessage" exists, it will automatically be used and populated with <see cref="NPC.GetFullNetName"/> even without using this hook.
+	/// <para/> By default the text will be "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>) for town NPCs. Town NPC usually use <see cref="NPC.GetFullNetName"/> to retrieve the NPC name in the form of "GivenName the TypeName". For modded NPC, if a localization key for the ModNPC named "DeathMessage" exists, it will automatically be used and populated with <see cref="NPC.GetFullNetName"/> (or <see cref="NPC.GetTypeNetName"/> if a boss) even without using this hook.
+	/// <para/> The keys "Announcement.HasBeenDefeated_Plural" and "Announcement.HasBeenDefeated_Single" will be useful if creating a boss defeat message with a custom boss name. For example <c>customText = NetworkText.FromKey("Announcement.HasBeenDefeated_Plural", NetworkText.FromKey("Mods.MyMod.NPCs.MyBoss.TheTriplets"));</c> could be used for a death message for a boss with multiple enemies similar to The Twins. 
 	/// <para/> This won't have any effect if the given NPC isn't a town NPC or a boss.
-	/// <para/> Return false to skip the vanilla code for sending the message if the death message is handled by this method. Returns true by default.
+	/// <para/> Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default.
 	/// </summary>
 	public virtual bool DeathMessage(ref NetworkText customText, ref Color color)
 	{

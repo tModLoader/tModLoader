@@ -1330,7 +1330,7 @@ public static class NPCLoader
 	public static bool DeathMessage(NPC npc, ref NetworkText customText, ref Color color)
 	{
 		if(npc.ModNPC != null && Language.Exists(npc.ModNPC.GetLocalizationKey("DeathMessage"))) {
-			customText = NetworkText.FromKey(npc.ModNPC.GetLocalizationKey("DeathMessage"), npc.GetFullNetName());
+			customText = NetworkText.FromKey(npc.ModNPC.GetLocalizationKey("DeathMessage"), npc.boss ? npc.GetTypeNetName() : npc.GetFullNetName());
 		}
 
 		foreach (var g in HookDeathMessage.Enumerate()) {
