@@ -28,7 +28,7 @@ public static class DamageClassLoader
 	static DamageClassLoader()
 	{
 		RegisterDefaultClasses();
-		ResizeArrays(fromStaticCtor: true);
+		RebuildEffectInheritanceCache();
 	}
 
 	internal static int Add(DamageClass damageClass)
@@ -37,10 +37,12 @@ public static class DamageClassLoader
 		return DamageClasses.Count - 1;
 	}
 
-	internal static void ResizeArrays(bool fromStaticCtor = false)
+	internal static void ResizeArrays()
 	{
-		if (!fromStaticCtor) { // prevents double registration
-			LoaderUtils.ResetStaticMembers(typeof(DamageClass));
+		LoaderUtils.ResetStaticMembers(typeof(DamageClass));
+
+		foreach (var damageClass in DamageClasses) {
+			DamageClass.Search.Add(damageClass.FullName, damageClass.Type); // SetupContent isn't called on vanilla classes, so doing this here counts them all.
 		}
 
 		RebuildEffectInheritanceCache();
