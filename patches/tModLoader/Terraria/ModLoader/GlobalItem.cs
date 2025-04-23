@@ -46,7 +46,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Gets called when any item spawns in world
-	/// <para/> Called on local and server clients.
+	/// <para/> Called on the local client or the server where Item.NewItem is called.
 	/// </summary>
 	public virtual void OnSpawn(Item item, IEntitySource source)
 	{
@@ -471,7 +471,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <para/> Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.
 	/// <para/> Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.
 	/// <para/> If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.
-	/// <para/> NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+	/// <para/> NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use <see cref="ItemID.Sets.CatchingTool"/>.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
@@ -1123,7 +1123,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Whether or not specific conditions have been satisfied for the Angler to be able to request the given item. (For example, Hardmode.)
 	/// Returns true by default.
 	/// <para/> This method is not instanced.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual bool IsAnglerQuestAvailable(int type)
 	{

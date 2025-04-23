@@ -45,7 +45,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Gets called when any NPC spawns in world
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void OnSpawn(NPC npc, IEntitySource source)
 	{
@@ -181,7 +181,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the frame from an NPC's texture that is drawn, which is necessary in order to animate NPCs.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="frameHeight"></param>
@@ -203,7 +203,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <para/> Essentially, modders implementing damage over time debuffs should subtract from <see cref="NPC.lifeRegen"/> a number that is twice as large as the intended damage per second. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example of this.
 	/// <para/> The damage parameter is the number that appears above the NPC's head if it takes damage over time.
 	/// <para/> Multiple debuffs work together by following some conventions: <see cref="NPC.lifeRegen"/> should not be assigned a number, rather it should be subtracted from. <paramref name="damage"/> should only be assigned if the intended popup text is larger then its current value.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
@@ -213,7 +213,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Whether or not to run the code for checking whether an NPC will remain active. Return false to stop the NPC from being despawned and to stop the NPC from counting towards the limit for how many NPCs can exist near a player. Returns true by default.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
@@ -224,7 +224,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Whether or not an NPC should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop the NPC from being killed. Returns true by default.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
@@ -235,7 +235,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
 	public virtual bool SpecialOnKill(NPC npc)
@@ -261,7 +261,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to determine how and when an NPC can fall through platforms and similar tiles.
 	/// <para/> Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	public virtual bool? CanFallThroughPlatforms(NPC npc)
 	{
@@ -355,7 +355,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine whether an NPC can hit the given friendly NPC. Return false to block the NPC from hitting the target, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -367,7 +367,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="attacker"></param>
@@ -607,7 +607,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the chance of NPCs spawning around the given player and the maximum number of NPCs that can spawn around the player. Lower spawnRates mean a higher chance for NPCs to spawn.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="spawnRate"></param>
@@ -618,7 +618,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the range at which NPCs can spawn around the given player. The spawnRanges determine that maximum distance NPCs can spawn from the player, and the safeRanges determine the minimum distance.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="spawnRangeX"></param>
@@ -632,7 +632,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter maps NPC types to their spawning weights (likelihood to spawn compared to other NPCs). A type of 0 in the pool represents the default vanilla NPC spawning.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="pool"></param>
 	/// <param name="spawnInfo"></param>
@@ -642,7 +642,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to customize an NPC (for example, its position or ai array) after it naturally spawns and before it is synced between servers and clients. As of right now, this only works for modded NPCs.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="tileX"></param>
@@ -741,7 +741,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Whether this NPC can be teleported to a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc">The NPC</param>
 	/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
@@ -752,7 +752,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc">The NPC</param>
 	/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>

@@ -145,7 +145,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Gets called when your NPC spawns in world
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void OnSpawn(IEntitySource source) { }
 
@@ -261,7 +261,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	public virtual void PostAI()
@@ -290,7 +290,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the frame from this NPC's texture that is drawn, which is necessary in order to animate NPCs.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="frameHeight"></param>
 	public virtual void FindFrame(int frameHeight)
@@ -311,7 +311,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <para/>Essentially, modders implementing damage over time debuffs should subtract from <see cref="NPC.lifeRegen"/> a number that is twice as large as the intended damage per second. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example of this.
 	/// <para/>The damage parameter is the number that appears above the NPC's head if it takes damage over time.
 	/// <para/>Multiple debuffs work together by following some conventions: <see cref="NPC.lifeRegen"/> should not be assigned a number, rather it should be subtracted from. <paramref name="damage"/> should only be assigned if the intended popup text is larger then its current value.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="damage"></param>
 	public virtual void UpdateLifeRegen(ref int damage)
@@ -321,7 +321,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Whether or not to run the code for checking whether this NPC will remain active. Return false to stop this NPC from being despawned and to stop this NPC from counting towards the limit for how many NPCs can exist near a player. Returns true by default.
 	/// <para/> See also <see cref="NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots"/> for an option that still counts towards NPC spawn limits.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool CheckActive()
@@ -331,7 +331,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Whether or not this NPC should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop this NPC from being killed. Returns true by default.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool CheckDead()
@@ -341,7 +341,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
 	public virtual bool SpecialOnKill()
@@ -353,7 +353,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to determine whether or not this NPC will do anything upon death (besides dying). This method can also be used to dynamically prevent specific item loot using <see cref="NPCLoader.blockLoot"/>, but editing the drop rules themselves is usually the better approach.
 	/// <para/> Returning false will skip dropping loot, the <see cref="NPCLoader.OnKill(NPC)"/> methods, and logic setting boss flags (<see cref="NPC.DoDeathEvents"/>).
 	/// <para/> Returns true by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool PreKill()
@@ -373,7 +373,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to determine how and when this NPC can fall through platforms and similar tiles.
 	/// <para/> Return true to allow this NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
-	/// <para/> Called on the server and remote clients.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	public virtual bool? CanFallThroughPlatforms()
 	{
@@ -418,7 +418,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to customize what happens when this boss dies, such as which name is displayed in the defeat message and what type of potion it drops.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="name"></param>
 	/// <param name="potionType"></param>
@@ -463,7 +463,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine whether this NPC can hit the given friendly NPC. Return false to block the NPC from hitting the target, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <returns></returns>
@@ -474,7 +474,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="attacker"></param>
 	/// <returns></returns>
@@ -700,7 +700,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use spawnInfo.player and not Main.LocalPlayer when checking Player or ModPlayer fields, otherwise your mod won't work in Multiplayer.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="spawnInfo"></param>
 	/// <returns></returns>
@@ -711,7 +711,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to customize how this NPC is created when it naturally spawns (for example, its position or ai array). Return the return value of NPC.NewNPC. By default this method spawns this NPC on top of the tile at the given coordinates.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="tileX"></param>
 	/// <param name="tileY"></param>
@@ -727,7 +727,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <para/> Town NPC spawn conditions typically check if specific bosses have been defeated (<see cref="NPC.downedGolemBoss"/>), the npc has been "saved" somewhere in the world, or any player has specific items in their inventory. To check for inventory items, iterate over <see cref="Main.ActivePlayers"/> and check <see cref="Player.HasItem(int)"/> or <see cref="Player.CountItem(int, int)"/>, returning true if any player satisfies the requirement.
 	/// <para/> To support allowing town NPC to respawn without needing to meet the original respawn requirements, a feature added in Terraria v1.4.4, store a bool in a <see cref="ModSystem"/> and check it. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExamplePerson.cs#L184">ExamplePerson.CanTownNPCSpawn</see> and <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Systems/TownNPCRespawnSystem.cs">TownNPCRespawnSystem.cs</see> show an example of this.
 	/// <para/> Returns false by default, preventing the town NPC from spawning.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="numTownNPCs"></param>
 	/// <returns></returns>
@@ -835,7 +835,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Whether this NPC can be teleported to a King or Queen statue. Returns false by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
 	public virtual bool CanGoToStatue(bool toKingStatue)
@@ -845,7 +845,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
 	public virtual void OnGoToStatue(bool toKingStatue)

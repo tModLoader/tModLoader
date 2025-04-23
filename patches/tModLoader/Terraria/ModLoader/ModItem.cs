@@ -99,7 +99,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Gets called when your item spawns in world.
-	/// <para/> Called on local and server clients.
+	/// <para/> Called on the local client or the server where Item.NewItem is called.
 	/// </summary>
 	public virtual void OnSpawn(IEntitySource source)
 	{
@@ -107,7 +107,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Called when this item is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on the local client only, except during mod loading on clients and the server where it is called once for every ModItem.
 	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft this created item.
 	/// </summary>
 	public virtual void OnCreated(ItemCreationContext context)
@@ -561,7 +561,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.
 	/// <para/> Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.
 	/// <para/> If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.
-	/// <para/> NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+	/// <para/> NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use <see cref="ItemID.Sets.CatchingTool"/>.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="target">The NPC the player is trying to catch.</param>
@@ -1348,7 +1348,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Whether or not specific conditions have been satisfied for the Angler to be able to request this item. (For example, Hardmode.) Returns true by default.
-	/// <para/> Called on the server only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual bool IsAnglerQuestAvailable()
 	{
