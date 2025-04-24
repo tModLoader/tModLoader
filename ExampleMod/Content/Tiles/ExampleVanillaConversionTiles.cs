@@ -42,6 +42,8 @@ namespace ExampleMod.Content.Tiles
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
 				// Purification powder doesn't convert hallow tiles back into purity, so we don't check for BiomeCoversionID.PurificationPowder
+				// And Chlorophyte conversion is usually the same as purity, except it tries to create jungle tiles and destroy plants. In this case, neither is needed to it's gonna have the exact same behavior as purity
+				case BiomeConversionID.Chlorophyte:
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand: // Yellow (desert) solution also converts evil/hallowed tiles back into purity, so don't forget that check!
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
@@ -96,6 +98,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
+				case BiomeConversionID.Chlorophyte:
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
 				case BiomeConversionID.PurificationPowder:
@@ -142,6 +145,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
+				case BiomeConversionID.Chlorophyte:
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
 				case BiomeConversionID.PurificationPowder:
