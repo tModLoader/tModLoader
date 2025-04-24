@@ -1,5 +1,6 @@
 var class_damage_class =
 [
+    [ "Sets", "class_damage_class_1_1_sets.html", "class_damage_class_1_1_sets" ],
     [ "CountsAsClass", "class_damage_class.html#a3cd4770a051bbaf124cbed5ebce0a9c1", null ],
     [ "CountsAsClass< T >", "class_damage_class.html#ad873ee1178673c074e86106a3aaa575f", null ],
     [ "GetEffectInheritance", "class_damage_class.html#a77b2b674f7dce78e0087e4470ee82800", null ],

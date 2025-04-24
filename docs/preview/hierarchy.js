@@ -2355,6 +2355,7 @@ var hierarchy =
     [ "ArmorIDs.Wing.Sets", "class_armor_i_ds_1_1_wing_1_1_sets.html", null ],
     [ "BuffID.Sets", "class_buff_i_d_1_1_sets.html", null ],
     [ "CaptureBiome.Sets", "class_capture_biome_1_1_sets.html", null ],
+    [ "DamageClass.Sets", "class_damage_class_1_1_sets.html", null ],
     [ "DustID.Sets", "class_dust_i_d_1_1_sets.html", null ],
     [ "GoreID.Sets", "class_gore_i_d_1_1_sets.html", null ],
     [ "HairID.Sets", "class_hair_i_d_1_1_sets.html", null ],

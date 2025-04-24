@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"class_n_p_c.html#a1da4ee190169363d9e6aeecf9dbf6c7c":[3,0,898,46],
+"class_n_p_c.html#a2058fe9156b2db462ef8773ec787273f":[3,0,898,62],
 "class_n_p_c.html#a2292855a6c7c224ef4d0c6f2e1bf9038":[3,0,898,130],
 "class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e":[3,0,898,121],
 "class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698":[3,0,898,114],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "class_n_p_c_a_i_style_i_d.html#afaf5f07937dedf82dade38b819d53a87":[3,0,900,114],
 "class_n_p_c_a_i_style_i_d.html#afd2aafa78fcbcc210da31aa7a2156263":[3,0,900,84],
 "class_n_p_c_a_i_style_i_d.html#afef3ba136cbfd2c0f82a20d9039841ac":[3,0,900,32],
-"class_n_p_c_debuff_immunity_data.html":[3,0,901],
-"class_n_p_c_debuff_immunity_data.html#a09c62858d2383537df08de4da51bed9b":[3,0,901,1],
-"class_n_p_c_debuff_immunity_data.html#a164ab7150ef00bc2a2786c38a8da1afa":[3,0,901,2]
+"class_n_p_c_debuff_immunity_data.html":[3,0,901]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"class_recipe_loader.html#aeaaa89370b17536181962f67826a9a96":[3,0,1058,3],
+"class_rectangle_serializer.html":[3,0,1059],
 "class_red_wire_visibility_builder_toggle.html":[3,0,1060],
 "class_ref.html":[3,0,1061],
 "class_reflective_armor_shader_data.html":[3,0,1062],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "class_t_e_item_frame.html#a7efaab7670626ba141faaeb5a448c294":[3,0,1215,3],
 "class_t_e_item_frame.html#a8c302b9477e1295a59782c7c57aa2727":[3,0,1215,2],
 "class_t_e_item_frame.html#abf8f2f669298cb42025c267d95b1a83f":[3,0,1215,1],
-"class_t_e_logic_sensor.html":[3,0,1221],
-"class_t_e_logic_sensor.html#a56343145e8660a2a8692f17833f40ea8":[3,0,1221,0],
-"class_t_e_modded_pylon.html":[3,0,1222]
+"class_t_e_logic_sensor.html":[3,0,1221]
 };

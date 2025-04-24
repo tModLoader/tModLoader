@@ -1,5 +1,7 @@
 var NAVTREEINDEX26 =
 {
+"struct_n_p_c_loot.html":[3,0,915],
+"struct_n_p_c_loot.html#a38c0f123b6dab2b182511a92fa2fa677":[3,0,915,1],
 "struct_n_p_c_loot.html#ac814c42103e2d4cfb8e128c78fe767ec":[3,0,915,0],
 "struct_n_p_c_spawn_info.html":[3,0,922],
 "struct_n_p_c_spawn_info.html#a0e8769976f0f0bfaec1759f726885812":[3,0,922,13],
@@ -247,5 +249,5 @@ var NAVTREEINDEX26 =
 "struct_world_gen_1_1_check_tree_settings.html":[3,0,1504,0],
 "struct_world_gen_1_1_grow_tree_settings.html":[3,0,1504,1],
 "struct_world_gen_1_1_tile_merge_cull_cache.html":[3,0,1504,6],
-"structnativefiledialog_1_1nfdpathset__t.html":[3,0,866,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[3,0,865,0]
 };

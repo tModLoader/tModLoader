@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"class_t_e_logic_sensor.html#a56343145e8660a2a8692f17833f40ea8":[3,0,1221,0],
+"class_t_e_modded_pylon.html":[3,0,1222],
 "class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d":[3,0,1222,1],
 "class_t_e_modded_pylon.html#ac860190da827531768861db274c5d835":[3,0,1222,0],
 "class_t_e_teleportation_pylon.html":[3,0,1226],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "class_tile_object_data.html#a49f102639c55f4674f789006642c683e":[3,0,1259,7],
 "class_tile_object_data.html#a4b578ad84fa243c51aefb2c8a427eae8":[3,0,1259,69],
 "class_tile_object_data.html#a501d072f3a6d9099fc061bc89cd23857":[3,0,1259,64],
-"class_tile_object_data.html#a53b8bac9565ef3dfaf7db671e3155cc2":[3,0,1259,0],
-"class_tile_object_data.html#a55539e335e28c0132b60ca230207f534":[3,0,1259,1],
-"class_tile_object_data.html#a56ccd4e7bec9f2c5e7777aff29b08ab1":[3,0,1259,30]
+"class_tile_object_data.html#a53b8bac9565ef3dfaf7db671e3155cc2":[3,0,1259,0]
 };

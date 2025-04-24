@@ -5,7 +5,7 @@ var searchData=
   ['faceemote_2',['FaceEmote',['../class_n_p_c_i_d_1_1_sets.html#a8eb76f9f51694093c3de14e390d01e9c',1,'NPCID::Sets']]],
   ['faceleft_3',['faceLeft',['../class_buff_i_d_1_1_sets_1_1_buff_mount_data.html#a469c33dcc90baee7ace5c020cb50442a',1,'BuffID::Sets::BuffMountData']]],
   ['faceplayersvelocity_4',['FacePlayersVelocity',['../class_mount_i_d_1_1_sets.html#ad1291fafa125fc4bceaca28b17cb050b',1,'MountID::Sets']]],
-  ['factory_5',['Factory',['../class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58',1,'ItemID::Sets']]],
+  ['factory_5',['Factory',['../class_item_i_d_1_1_sets.html#a8deb61d9534ebf888326dcd693554a58',1,'ItemID.Sets.Factory()'],['../class_damage_class_1_1_sets.html#ad34c952f132103bd297ead339141af83',1,'DamageClass.Sets.Factory()']]],
   ['fadein_6',['fadeIn',['../class_dust.html#acd020535ddcd254ab6d7b805baf7bdfa',1,'Dust']]],
   ['fairy_7',['Fairy',['../class_n_p_c_a_i_style_i_d.html#abf0cf854cd6baecccefae1926d729a01',1,'NPCAIStyleID']]],
   ['fairyglowstick_8',['FairyGlowStick',['../class_proj_a_i_style_i_d.html#a5ac1cc25e3d4b591ca0424d6f58bbd6d',1,'ProjAIStyleID']]],

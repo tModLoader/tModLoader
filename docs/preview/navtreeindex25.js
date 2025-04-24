@@ -1,5 +1,7 @@
 var NAVTREEINDEX25 =
 {
+"interface_i_player_renderer.html":[3,0,602],
+"interface_i_player_resources_display_set.html":[3,0,603],
 "interface_i_pooled_particle.html":[3,0,604],
 "interface_i_power_subcategory_element.html":[3,0,605],
 "interface_i_preference_provider_element.html":[3,0,606],
@@ -247,7 +249,5 @@ var NAVTREEINDEX25 =
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#adf25ec146a82217bac9b73889d94395f":[3,0,909,0,0,12],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ae5cd6fd4218c34220e1f8196e38e2134":[3,0,909,0,0,0],
 "struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#af0b33faedea8c33fee13c458daa839cb":[3,0,909,0,0,7],
-"struct_n_p_c_kill_attempt.html":[3,0,910],
-"struct_n_p_c_loot.html":[3,0,915],
-"struct_n_p_c_loot.html#a38c0f123b6dab2b182511a92fa2fa677":[3,0,915,1]
+"struct_n_p_c_kill_attempt.html":[3,0,910]
 };

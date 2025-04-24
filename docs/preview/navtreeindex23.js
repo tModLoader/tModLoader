@@ -1,5 +1,7 @@
 var NAVTREEINDEX23 =
 {
+"class_u_i_resource_pack.html":[3,0,1375],
+"class_u_i_resource_pack.html#a700e04ef0e91eb40fdbd4a8773e7602c":[3,0,1375,0],
 "class_u_i_resource_pack.html#a89291d8567a137d81218a691b9270b70":[3,0,1375,1],
 "class_u_i_resource_pack_info_button.html":[3,0,1376],
 "class_u_i_resource_pack_info_menu.html":[3,0,1377],
@@ -247,7 +249,5 @@ var NAVTREEINDEX23 =
 "class_workshop_social_module.html":[3,0,1500],
 "class_workshop_tag_option.html":[3,0,1501],
 "class_world_file.html":[3,0,1502],
-"class_world_file_1_1_tile_packer.html":[3,0,1502,0],
-"class_world_file_data.html":[3,0,1503],
-"class_world_file_data.html#a84a45caece0c389abb68b713a56a4183":[3,0,1503,0]
+"class_world_file_1_1_tile_packer.html":[3,0,1502,0]
 };
