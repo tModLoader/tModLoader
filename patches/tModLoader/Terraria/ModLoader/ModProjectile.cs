@@ -308,7 +308,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="modifiers"></param>
@@ -318,7 +318,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to create special effects when this hostile projectile hits a player.
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="info"></param>
@@ -345,7 +345,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual Color? GetAlpha(Color lightColor)
 	{
@@ -354,7 +354,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to draw things behind this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual bool PreDrawExtras()
 	{
@@ -363,7 +363,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
 	public virtual bool PreDraw(ref Color lightColor)
@@ -373,7 +373,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to draw things in front of this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. This method is called even if PreDraw returns false.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
 	public virtual void PostDraw(Color lightColor)
@@ -451,7 +451,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// When used in conjunction with <c>Projectile.hide = true</c> (<see cref="Projectile.hide"/>), allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 	{

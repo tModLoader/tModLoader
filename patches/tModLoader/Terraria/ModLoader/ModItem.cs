@@ -664,7 +664,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that this melee weapon does to a player.
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -675,7 +675,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this melee weapon hits a player.
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -689,7 +689,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> Return true if the item actually did something, to force itemTime.
 	/// <para/> Return false to keep itemTime at 0.
 	/// <para/> Return null for vanilla behavior.
-	/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -697,7 +697,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when this item's use animation starts.
-	/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player. </param>
 	public virtual void UseAnimation(Player player) { }
@@ -805,7 +805,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows tracking custom shader values corresponding to specific items or custom player layers for equipped accessories. <paramref name="dye"/> is the <see cref="Item.dye"/> of the item in the dye slot. <paramref name="hideVisual"/> indicates if this item is in a non-vanity accessory slot that is set to hidden. Most implementations will not assign shaders if the accessory is hidden, but there are rare cases where it is desired to assign the shader regardless of accessory visibility. One example is Hand Of Creation, the player can disable visibility of the accessory to prevent the backpack visuals from showing, but the stool will still be properly dyed by the corresponding dye item when visible. 
+	/// Allows tracking custom shader values corresponding to specific items or custom player layers for equipped accessories. <paramref name="dye"/> is the <see cref="Item.dye"/> of the item in the dye slot. <paramref name="hideVisual"/> indicates if this item is in a non-vanity accessory slot that is set to hidden. Most implementations will not assign shaders if the accessory is hidden, but there are rare cases where it is desired to assign the shader regardless of accessory visibility. One example is Hand Of Creation, the player can disable visibility of the accessory to prevent the backpack visuals from showing, but the stool will still be properly dyed by the corresponding dye item when visible.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="dye"></param>
@@ -962,7 +962,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
 	/// <para/> This is only called when attempting to stack with an item of the same type.
-	/// <para/> Called only on the client the item is reserved for.
+	/// <para/> Called on the local client or server, depending on who the item is reserved for.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
@@ -1097,7 +1097,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to customize this item's movement when lying in the world. Note that this will not be called if this item is currently being grabbed by a player.
-	/// <para/> Called on local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	/// <param name="gravity">The gravity.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed.</param>
@@ -1107,7 +1107,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
-	/// <para/> Called on local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdate()
 	{
@@ -1168,7 +1168,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="lightColor">Color of the light.</param>
 	/// <returns></returns>
@@ -1180,7 +1180,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
 	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
@@ -1203,7 +1203,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false.
 	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 	/// Vector2 drawOrigin = itemFrame.Size() / 2f;

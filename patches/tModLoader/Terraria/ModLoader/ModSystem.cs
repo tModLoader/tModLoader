@@ -127,121 +127,121 @@ public abstract partial class ModSystem : ModType
 	/// Use this if you want to do something before anything in the World gets updated.
 	/// Called after UI updates, but before anything in the World (Players, NPCs, Projectiles, Tiles) gets updated.
 	/// <para /> When <see cref="Main.autoPause" /> is true or <see cref="Main.FrameSkipMode" /> is 0 or 2, the game may do a partial update. This means that it only updates menus and some animations, but not the World or Entities. This hook - and every hook after it - only gets called on frames with a full update.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdateEntities() { }
 
 	/// <summary>
 	/// Called before Players get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdatePlayers() { }
 
 	/// <summary>
 	/// Called after Players get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdatePlayers() { }
 
 	/// <summary>
 	/// Called before NPCs get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdateNPCs() { }
 
 	/// <summary>
 	/// Called after NPCs get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateNPCs() { }
 
 	/// <summary>
 	/// Called before Gores get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdateGores() { }
 
 	/// <summary>
 	/// Called after Gores get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateGores() { }
 
 	/// <summary>
 	/// Called before Projectiles get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdateProjectiles() { }
 
 	/// <summary>
 	/// Called after Projectiles get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateProjectiles() { }
 
 	/// <summary>
 	/// Called before Items get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdateItems() { }
 
 	/// <summary>
 	/// Called after Items get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateItems() { }
 
 	/// <summary>
 	/// Called before Dusts get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdateDusts() { }
 
 	/// <summary>
 	/// Called after Dusts get updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateDusts() { }
 
 	/// <summary>
 	/// Called before Time gets updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PreUpdateTime() { }
 
 	/// <summary>
 	/// Called after Time gets updated.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateTime() { }
 
 	/// <summary>
 	/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night.
-	/// <para/> This hook is not called for multiplayer clients.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void PreUpdateWorld() { }
 
 	/// <summary>
 	/// Use this method to have things happen in the world. In vanilla Terraria, a good example of code suitable for this hook is how Falling Stars fall to the ground during the night.
-	/// <para/> This hook is not called for multiplayer clients.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void PostUpdateWorld() { }
 
 	/// <summary>
 	/// Called before Invasions get updated.
-	/// <para/> This hook is not called for multiplayer clients.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void PreUpdateInvasions() { }
 
 	/// <summary>
 	/// Called after Invasions get updated.
-	/// <para/> This hook is not called for multiplayer clients.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void PostUpdateInvasions() { }
 
 	/// <summary>
 	/// Called after the Network got updated, this is the last hook that happens in an update.
-	/// <para/> This hook is not called for multiplayer clients.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void PostUpdateEverything() { }
 
@@ -289,13 +289,14 @@ public abstract partial class ModSystem : ModType
 	public virtual void PostUpdateInput() { }
 
 	/// <summary>
-	/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.
+	/// Called when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void PreSaveAndQuit() { }
 
 	/// <summary>
 	/// Called after drawing Tiles. Can be used for drawing a tile overlay akin to wires. Note that spritebatch should be begun and ended within this method.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual void PostDrawTiles() { }
 
@@ -303,7 +304,7 @@ public abstract partial class ModSystem : ModType
 	/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
 	/// All fields are measured in in-game minutes per real-life second (min/sec).
 	/// You may want to consider <see cref="Main.IsFastForwardingTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
-	/// <para/> Called on the local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	/// <param name="timeRate">The speed at which time flows in min/sec.</param>
 	/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
@@ -403,7 +404,7 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Use this to reset any fields you set in any of your ModTile.NearbyEffects hooks back to their default values.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual void ResetNearbyTileEffects() { }
 
@@ -416,7 +417,7 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Allows you to modify color of light the sun emits.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="tileColor">Tile lighting color</param>
 	/// <param name="backgroundColor">Background lighting color</param>
@@ -424,7 +425,7 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Allows you to modify overall brightness of lights. Can be used to create effects similar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="scale">Brightness scale</param>
 	public virtual void ModifyLightingBrightness(ref float scale) { }
@@ -432,7 +433,7 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are.
 	/// <para/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
 

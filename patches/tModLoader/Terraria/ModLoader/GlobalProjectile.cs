@@ -275,7 +275,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a hostile projectile does to a player.
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
@@ -286,7 +286,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to create special effects when a hostile projectile hits a player. <br/>
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="target"></param>
@@ -310,7 +310,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which a projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="lightColor"></param>
@@ -322,7 +322,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to draw things behind a projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	public virtual bool PreDrawExtras(Projectile projectile)
@@ -332,7 +332,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
@@ -343,7 +343,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to draw things in front of a projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. This method is called even if PreDraw returns false.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
@@ -353,7 +353,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="index"></param>

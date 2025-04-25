@@ -191,7 +191,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
-	/// <para/> Called on local, server and remote clients.
+	/// <para/> Called on local, server, and remote clients.
 	/// <para/> Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/>
 	/// </summary>
 	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
@@ -250,7 +250,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// <para/> Called in single player or on the server only.
 	/// <para/> Most item drops should be done via drop rules registered in <see cref="ModifyNPCLoot(NPC, NPCLoot)"/> or <see cref="ModifyGlobalLoot(GlobalLoot)"/>. Some dynamic NPC drops, such as additional hearts, are more suited for OnKill instead. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossMinion.cs#L101">MinionBossMinion.cs</see> shows an example of an NPC that drops additional hearts. See <see cref="NPC.lastInteraction"/> and <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#player-who-killed-npc">Player who killed NPC wiki section</see> as well for determining which players attacked or killed this NPC.
 	/// </summary>
 	/// <param name="npc"></param>
@@ -333,7 +334,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to modify the damage, etc., that an NPC does to a player.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -343,8 +344,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when an NPC hits a player (for example, inflicting debuffs). <br/>
-	/// Only runs on the local client in multiplayer.
+	/// Allows you to create special effects when an NPC hits a player (for example, inflicting debuffs).
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -380,7 +381,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC does to a friendly NPC.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> Runs in single player or on the server.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -391,7 +392,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to create special effects when an NPC hits a friendly NPC.
-	/// <para/> Runs in single player or on the server.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -433,7 +434,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
@@ -445,7 +446,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to create special effects when an NPC is hit by a melee weapon.
-	/// <para/> Runs on the client or server doing the damage.
+	/// <para/> Called on the client doing the damage.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
@@ -495,7 +496,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> Called on the local client only.
+	/// <para/> Can be called on the local client or server, depending on who is dealing damage.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="modifiers"></param>
@@ -505,7 +506,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
@@ -515,7 +516,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to customize the rotation of an NPC's boss head icon on the map.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="rotation"></param>
@@ -525,7 +526,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to flip an NPC's boss head icon on the map.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="spriteEffects"></param>
@@ -535,7 +536,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which an NPC is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="drawColor"></param>
@@ -547,7 +548,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to add special visual effects to an NPC (such as creating dust), and modify the color in which the NPC is drawn.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="drawColor"></param>
@@ -557,7 +558,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc">The NPC that is being drawn</param>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
@@ -571,7 +572,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc">The NPC that is being drawn</param>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
@@ -583,7 +584,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="index"></param>
@@ -593,7 +594,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to control how the health bar for the given NPC is drawn. The hbPosition parameter is the same as Main.hbPosition; it determines whether the health bar gets drawn above or below the NPC by default. The scale parameter is the health bar's size. By default, it will be the normal 1f; most bosses set this to 1.5f. Return null to let the normal vanilla health-bar-drawing code to run. Return false to stop the health bar from being drawn. Return true to draw the health bar in the position specified by the position parameter (note that this is the world position, not screen position).
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="hbPosition"></param>
@@ -719,7 +720,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.
-	/// <para/> Called on the local client only.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="shop"></param>
 	/// <param name="nextSlot"></param>
@@ -917,7 +918,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to change the emote that the NPC will pick
-	/// <para/> Called on the server.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="closestPlayer">The <see cref="Player"/> closest to the NPC. You can check the biome the player is in and let the NPC pick the emote that corresponds to the biome.</param>

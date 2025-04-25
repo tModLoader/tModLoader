@@ -101,6 +101,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of any item in its use animation.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item. </param>
 	/// <param name="player"> The player. </param>
@@ -563,7 +564,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
@@ -571,7 +572,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits a player.
-	/// <para/> Called on the client taking damage
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
@@ -582,12 +583,13 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <para/> Return true if the item actually did something, to force itemTime.
 	/// <para/> Return false to keep itemTime at 0.
 	/// <para/> Return null for vanilla behavior.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool? UseItem(Item item, Player player) => null;
 
 	/// <summary>
 	/// Allows you to make things happen when an item's use animation starts.
-	/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UseAnimation(Item item, Player player) { }
 
@@ -793,9 +795,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to add and modify the loot items that spawn from bag items when opened.
-	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
-	/// <br/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
-	/// <br/> This hook is not instanced.
+	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
+	/// <para/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
+	/// <para/> This hook is not instanced.
 	/// </summary>
 	/// <param name="item">A default item of the type being opened, not the actual item instance</param>
 	/// <param name="itemLoot">A reference to the item drop database for this item type</param>
@@ -821,7 +823,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to prevent items from stacking in the world.
 	/// <para/> This is only called when two items of the same type attempt to stack.
-	/// <para/> Called only on the client the item is reserved for.
+	/// <para/> Called on the local client or server, depending on who the item is reserved for.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -947,7 +949,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to customize an item's movement when lying in the world. Note that this will not be called if the item is currently being grabbed by a player.
-	/// <para/> Called on local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void Update(Item item, ref float gravity, ref float maxFallSpeed)
 	{
@@ -955,7 +957,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to make things happen when an item is lying in the world. This will always be called, even when the item is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
-	/// <para/> Called on local client and server.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdate(Item item)
 	{
@@ -1007,7 +1009,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which an item is drawn. Return null to use the default color (normally light color). Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual Color? GetAlpha(Item item, Color lightColor)
 	{
@@ -1123,7 +1125,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Whether or not specific conditions have been satisfied for the Angler to be able to request the given item. (For example, Hardmode.)
 	/// Returns true by default.
 	/// <para/> This method is not instanced.
-	/// <para/> Called in single player or on the server only.
+	/// <para/> Called on the server only.
 	/// </summary>
 	public virtual bool IsAnglerQuestAvailable(int type)
 	{

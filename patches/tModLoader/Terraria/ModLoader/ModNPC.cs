@@ -120,7 +120,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to change the emote that the NPC will pick
-	/// <para/> Called on the server.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="closestPlayer">The <see cref="Player"/> closest to the NPC. You can check the biome the player is in and let the NPC pick the emote that corresponds to the biome.</param>
 	/// <param name="emoteList">A list of emote IDs from which the NPC will randomly select one</param>
@@ -261,7 +261,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
-	/// <para/> Called on the server and clients.
+	/// <para/> Called on the server and remote clients.
 	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	public virtual void PostAI()
@@ -270,8 +270,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// If you are storing AI information outside of the NPC.ai array, use this to send that AI information between clients and servers, which will be handled in <see cref="ReceiveExtraAI"/>.
-	/// <para/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on NPC creation, on player join, or whenever NPC.netUpdate is set to true in the update loop for that tick.
-	/// <para/>Only called on the server.
+	/// <para/> Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on NPC creation, on player join, or whenever NPC.netUpdate is set to true in the update loop for that tick.
+	/// <para/> Only called on the server.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
 	public virtual void SendExtraAI(BinaryWriter writer)
@@ -280,8 +280,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
-	/// <para/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
-	/// <para/>Only called on the client.
+	/// <para/> Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
+	/// <para/> Only called on the client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
 	public virtual void ReceiveExtraAI(BinaryReader reader)
@@ -299,7 +299,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
-	/// <para/> Called on local, server and remote clients.
+	/// <para/> Called on local, server, and remote clients.
 	/// <para/> Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (NPC.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds.
 	/// </summary>
 	public virtual void HitEffect(NPC.HitInfo hit)
@@ -362,7 +362,8 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this NPC dies (for example, dropping items manually and setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// Allows you to make things happen when this NPC dies (for example, dropping items manually and setting ModSystem fields).
+	/// <para/> Called in single player or on the server only.
 	/// <para/> Most item drops should be done via drop rules registered in <see cref="ModifyNPCLoot(NPCLoot)"/>. Some dynamic NPC drops, such as additional hearts, are more suited for OnKill instead. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossMinion.cs#L101">MinionBossMinion.cs</see> shows an example of an NPC that drops additional hearts. See <see cref="NPC.lastInteraction"/> and <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#player-who-killed-npc">Player who killed NPC wiki section</see> as well for determining which players attacked or killed this NPC.
 	/// <para/> Bosses need to set flags when they are defeated, and some bosses run world generation code such as spawning new ore. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossBody.cs#L218">MinionBossMinion.cs</see> shows an example of these effects.
 	/// </summary>
@@ -441,8 +442,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the damage, etc., that this NPC does to a player.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> The final hit values such as the final damage can only be retrieved from the HurtInfo in the <see cref="OnHitPlayer(Player, Player.HurtInfo)"/> hook.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -452,8 +452,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs).
-	/// <para/> Changes to the hit such as the damage must be done by modifying the HurtModifiers properties in the <see cref="ModifyHitPlayer(Player, ref Player.HurtModifiers)"/> hook.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hurtInfo"></param>
@@ -486,8 +485,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC does to a friendly NPC.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> The final hit values such as the final damage can only be retrieved from the HitInfo in the <see cref="OnHitNPC(NPC, NPC.HitInfo)"/> hook.
-	/// <para/> Runs in single player or on the server.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -497,8 +495,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this NPC hits a friendly NPC.
-	/// <para/> Changes to the hit such as the damage must be done by modifying the HitModifiers properties in the <see cref="ModifyHitNPC(NPC, ref NPC.HitModifiers)"/> hook.
-	/// <para/> Runs in single player or on the server.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
@@ -537,8 +534,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that this NPC takes from a melee weapon.
 	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> The final hit values such as the final damage can only be retrieved from the HitInfo in the <see cref="OnHitByItem(Player, Item, NPC.HitInfo, int)"/> hook.
-	/// <para/> Runs on the local client.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
@@ -549,8 +545,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects when this NPC is hit by a melee weapon.
-	/// <para/> Changes to the hit such as the damage must be done by modifying the HitModifiers properties in the <see cref="ModifyHitByItem(Player, Item, ref NPC.HitModifiers)"/> hook.
-	/// <para/> Runs on the client or server doing the damage.
+	/// <para/> Called on the client doing the damage.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
@@ -586,7 +581,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to create special effects when this NPC is hit by a projectile.
 	/// <para/> Changes to the hit such as the damage must be done by modifying the HitModifiers properties in the <see cref="ModifyHitByProjectile(Projectile, ref NPC.HitModifiers)"/> hook.
-	/// <para/> Called on the local client only.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="hit"></param>
@@ -598,7 +593,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <summary>
 	/// Allows you to use a custom damage formula for when this NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
 	/// This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
-	/// <para/> Called on the local client only.
+	/// <para/> Can be called on the local client or server, depending on who is dealing damage.
 	/// </summary>
 	/// <param name="modifiers"></param>
 	public virtual void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
@@ -607,7 +602,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
 	public virtual void BossHeadSlot(ref int index)
@@ -616,7 +611,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to customize the rotation of this NPC's boss head icon on the map.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="rotation"></param>
 	public virtual void BossHeadRotation(ref float rotation)
@@ -625,7 +620,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to flip this NPC's boss head icon on the map.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="spriteEffects"></param>
 	public virtual void BossHeadSpriteEffects(ref SpriteEffects spriteEffects)
@@ -634,7 +629,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which this NPC is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="drawColor"></param>
 	/// <returns></returns>
@@ -645,7 +640,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to add special visual effects to this NPC (such as creating dust), and modify the color in which the NPC is drawn.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="drawColor"></param>
 	public virtual void DrawEffects(ref Color drawColor)
@@ -654,7 +649,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to draw things behind this NPC, or to modify the way this NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
 	/// <param name="screenPos">The screen position used to translate world position into screen position</param>
@@ -667,7 +662,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
 	/// <param name="screenPos">The screen position used to translate world position into screen position</param>
@@ -678,7 +673,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// When used in conjunction with "NPC.hide = true", allows you to specify that this NPC should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="index"></param>
 	public virtual void DrawBehind(int index)
@@ -687,7 +682,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to control how the health bar for this NPC is drawn. The hbPosition parameter is the same as Main.hbPosition; it determines whether the health bar gets drawn above or below the NPC by default. The scale parameter is the health bar's size. By default, it will be the normal 1f; most bosses set this to 1.5f. Return null to let the normal vanilla health-bar-drawing code to run. Return false to stop the health bar from being drawn. Return true to draw the health bar in the position specified by the position parameter (note that this is the world position, not screen position).
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="hbPosition"></param>
 	/// <param name="scale"></param>
@@ -925,7 +920,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type (<see cref="NPCID.Sets.AttackType"/>) of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.<br/>
 	/// To use an actual item sprite, use <code>Main.GetItemDrawFrame(itemTypeHere, out item, out itemFrame);
 	/// horizontalHoldoutOffset = (int)Main.DrawPlayerItemPos(1f, itemType).X - someOffsetHere</code>
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="itemFrame"></param>
@@ -937,7 +932,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to customize how this town NPC's weapon is drawn when this NPC is swinging it (this NPC must have an attack type (<see cref="NPCID.Sets.AttackType"/>) of 3). <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, <paramref name="itemSize"/> is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), <paramref name="scale"/> is the multiplier for the item's drawing size, and <paramref name="offset"/> is the offset from which to draw the item from its normal position. The item texture can be any texture, but if it is an item texture you can use  <see cref="Main.GetItemDrawFrame(int, out Texture2D, out Rectangle)"/> to set <paramref name="item"/> and <paramref name="itemFrame"/> easily.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="itemFrame"></param>
@@ -995,7 +990,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to change the location and sprite direction of the chat bubble that shows up while hovering over a Town NPC.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="position">
 	/// <br>The default position is:</br>
@@ -1013,7 +1008,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <br>Allows you to fully control the location of the party and sprite direction of the party while an NPC is wearing it.</br>
 	/// <br><seealso cref="NPCID.Sets.HatOffsetY"/> can be used instead of this hook for a constant Y offset.</br>
 	/// <br><seealso cref="NPCID.Sets.NPCFramingGroup"/> can be additionally be used for the Y offset for the Town NPC's animations.</br>
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="position">
 	/// <br>This is the final position right before the party hat gets drawn which is generally the top center of the NPC's hitbox.</br>
@@ -1026,7 +1021,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to change the location and sprite direction of the emote bubble when anchored to an NPC.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="position">
 	/// <br>The default position is:</br>

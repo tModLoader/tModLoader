@@ -249,7 +249,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <para/> Use this to implement armor set bonuses that need to be activated by the player.
 	/// <para/> Don't forget to check if your armor set is active.
 	/// <para/> While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <see cref="Player.holdDownCardinalTimer"/> and <see cref="Player.doubleTapCardinalTimer"/> directly in other hooks for similar effects if needed.
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void ArmorSetBonusHeld(int holdTime)
 	{
@@ -257,7 +257,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void SetControls()
 	{
@@ -265,7 +265,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called sometime after SetControls is called, and right before all the buffs update on this player. This hook can be used to add buffs to the player based on the player's state (for example, the Campfire buff is added if the player is near a Campfire).
-	/// <para/> Called for local, server, and remote clients.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PreUpdateBuffs()
 	{
@@ -273,7 +273,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called right after all of this player's buffs update on the player. This can be used to modify the effects that the buff updates had on this player, and can also be used for general update tasks.
-	/// <para/> Called for local, server, and remote clients.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostUpdateBuffs()
 	{
@@ -281,7 +281,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called after Update Accessories.
-	/// <para/> Called for local, server, and remote clients.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateEquips()
 	{
@@ -289,7 +289,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called right after all of this player's equipment and armor sets update on the player, which is sometime after PostUpdateBuffs is called. This can be used to modify the effects that the equipment had on this player, and can also be used for general update tasks.
-	/// <para/> Called for local, server, and remote clients.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostUpdateEquips()
 	{
@@ -449,14 +449,11 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to make a player immune to damage from a certain source, or at a certain time. <br/>
-	/// Vanilla examples include shimmer and journey god mode.<br/>
-	/// <br/>
-	/// Runs before dodges are used, or any damage calculations are performed. <br/>
-	/// Runs on all players, on all clients, so checking Player == Main.LocalPlayer is advisable. <br/>
-	/// If immunity is determined on the local player, the hit will not be sent across the network. <br/>
-	/// <br/>
-	/// In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player.
+	/// Allows you to make a player immune to damage from a certain source, or at a certain time.
+	/// Vanilla examples include shimmer and journey god mode. Runs before dodges are used, or any damage calculations are performed.
+	/// <para/> If immunity is determined on the local player, the hit will not be sent across the network.
+	/// <para/> In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
 	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
@@ -468,13 +465,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges.<br/>
-	/// Vanilla example is black belt.<br/>
-	/// For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.<br/>
-	/// <br/>
-	/// Only runs on the local client of the player receiving the damage. <br/>
-	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
-	/// If visual indication of the dodge is required on remote clients, you will need to send your own packet.
+	/// Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges. Vanilla example is black belt.
+	/// <para/> For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.
+	/// <para/> Called on the local client receiving damage.
+	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network. If visual indication of the dodge is required on remote clients, you will need to send your own packet.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool FreeDodge(Player.HurtInfo info)
@@ -483,13 +477,11 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to dodge damage for a player.<br/>
-	/// Vanilla examples include hallowed armor shadow dodge, and brain of confusion.<br/>
-	/// For dodges which are 'free' and should be used before triggering consumables, use <see cref="FreeDodge"/> instead.<br/>
-	/// <br/>
-	/// Only runs on the local client of the player receiving the damage. <br/>
-	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
-	/// You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
+	/// Allows you to dodge damage for a player. Vanilla examples include hallowed armor shadow dodge, and brain of confusion.
+	/// <para/> For dodges which are 'free' and should be used before triggering consumables, use <see cref="FreeDodge"/> instead.
+	/// <para/> Called on the local client receiving damage.
+	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network.
+	/// <para/> You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool ConsumableDodge(Player.HurtInfo info)
@@ -498,11 +490,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to adjust an instance of player taking damage. <br/>
-	/// Called only for the local client taking damage. <br/>
-	/// Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br/>
-	/// Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible. <br/>
-	/// The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
+	/// Allows you to adjust an instance of player taking damage.
+	/// <para/> Called on the local client taking damage.
+	/// <para/> Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible.
+	/// <para/> The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
 	/// </summary>
 	public virtual void ModifyHurt(ref Player.HurtModifiers modifiers)
 	{
@@ -510,7 +501,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to make anything happen when the player takes damage.
-	/// <para/> Called only for the local client taking damage.
+	/// <para/> Called on the local client taking damage.
 	/// <para/> Called right before health is reduced.
 	/// </summary>
 	public virtual void OnHurt(Player.HurtInfo info)
@@ -519,7 +510,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to make anything happen when the player takes damage.
-	/// <para/> Called only for the local client taking damage
+	/// <para/> Called on the local client taking damage
 	/// <para/> Only called if the player survives the hit.
 	/// </summary>
 	public virtual void PostHurt(Player.HurtInfo info)
@@ -710,7 +701,6 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
 	/// By default, returns true; return false to prevent ammo consumption. <br></br>
 	/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
-	/// n
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
@@ -1051,7 +1041,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to change the item or enemy the player gets when successfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 	/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
 	/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave &lt;0 for no item</param>
@@ -1064,7 +1054,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the item caught by the fishing player, including stack
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="fish">The item (Fish) to modify</param>
 	public virtual void ModifyCaughtFish(Item fish)
@@ -1074,7 +1064,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior.
 	/// Not consuming will always take priority over forced consumption
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="bait">The item (bait) that would be consumed</param>
 	public virtual bool? CanConsumeBait(Item bait)
@@ -1083,8 +1073,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the player's fishing power. As an example of the type of stuff that should go here, the phase of the moon can influence fishing power. <br/>
-	/// Called for the local client only.
+	/// Allows you to modify the player's fishing power. As an example of the type of stuff that should go here, the phase of the moon can influence fishing power.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="fishingRod"></param>
 	/// <param name="bait"></param>
@@ -1095,7 +1085,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to add to, change, or remove from the items the player earns when finishing an Angler quest. The rareMultiplier is a number between 0.15 and 1 inclusively; the lower it is the higher chance there should be for the player to earn rare items.
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="rareMultiplier"></param>
 	/// <param name="rewardItems"></param>
@@ -1105,7 +1095,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify what items are possible for the player to earn when giving a Strange Plant to the Dye Trader.
-	/// <para/> Called for the local client only.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="rewardPool"></param>
 	public virtual void GetDyeTraderReward(List<int> rewardPool)
@@ -1115,7 +1105,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache.
 	/// <para/> This will be called multiple times a frame if a player afterimage is being drawn. Check <code>if(drawinfo.shadow == 0f)</code> to do some logic only when drawing the original player image. For example, spawning dust only for the original player image is commonly the desired behavior.
-	/// <para/> Called for local and remote clients.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	/// <param name="r"></param>
@@ -1129,7 +1119,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the drawing parameters of the player before drawing begins.
-	/// <para/> Called for local and remote clients.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
@@ -1148,7 +1138,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the visibility of layers about to be drawn. Layers can be accessed via <see cref="PlayerDrawLayerLoader.Layers"/>
-	/// <para/> Called for local and remote clients.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	public virtual void HideDrawLayers(PlayerDrawSet drawInfo)
@@ -1188,7 +1178,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
+	/// Called when the player enters the world. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void OnEnterWorld()
 	{
@@ -1298,7 +1289,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual bool? CanAutoReuseItem(Item item) => null;
 
 	/// <summary>
-	/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
+	/// Called while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="nurse">The Nurse NPC instance.</param>
 	/// <param name="health">How much health the player gains.</param>
@@ -1311,7 +1303,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Called on the Client while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See the <see href="https://terraria.wiki.gg/wiki/Nurse">Nurse wiki page</see> for the default pricing.
+	/// Called while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See the <see href="https://terraria.wiki.gg/wiki/Nurse">Nurse wiki page</see> for the default pricing.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="nurse">The Nurse NPC instance.</param>
 	/// <param name="health">How much health the player gains.</param>
@@ -1322,7 +1315,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Called on the Client after the player heals themselves with the Nurse NPC.
+	/// Called after the player heals themselves with the Nurse NPC.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="nurse">The Nurse npc providing the heal.</param>
 	/// <param name="health">How much health the player gained.</param>
