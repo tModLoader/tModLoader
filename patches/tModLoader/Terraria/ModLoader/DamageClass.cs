@@ -134,8 +134,8 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<DamageClass>.Register(this);
-
 		Type = DamageClassLoader.Add(this);
+		Search.Add(FullName, Type);
 	}
 
 	public sealed override void SetupContent()
