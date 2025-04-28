@@ -106,20 +106,20 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Use this hook to modify <see cref="Main.screenPosition"/> after weapon zoom and camera lerp have taken place.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// <para/> Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.
 	/// </summary>
 	public virtual void ModifyScreenPosition() { }
 
 	/// <summary>
 	/// Allows you to set the transformation of the screen that is drawn. (Translations, rotations, scales, etc.)
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual void ModifyTransformMatrix(ref SpriteViewMatrix Transform) { }
 
 	/// <summary>
 	/// Ran every update and suitable for calling Update for UserInterface classes
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual void UpdateUI(GameTime gameTime) { }
 
@@ -247,7 +247,7 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Allows you to modify the elements of the in-game interface that get drawn. GameInterfaceLayer can be found in the Terraria.UI namespace. Check the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Interface-layers-values">Vanilla Interface layers values wiki page</see> for vanilla interface layer names
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="layers">The layers.</param>
 	public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
@@ -262,14 +262,14 @@ public abstract partial class ModSystem : ModType
 	/// <summary>
 	/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
 	/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	public virtual void PostDrawInterface(SpriteBatch spriteBatch) { }
 
 	/// <summary>
 	/// Called right before map icon overlays are drawn. Use this hook to selectively hide existing <see cref="IMapLayer"/> or <see cref="ModMapLayer"/>
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="layers"></param>
 	/// <param name="mapOverlayDrawContext"></param>
@@ -277,14 +277,14 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Called while the fullscreen map is active. Allows custom drawing to the map. Using <see cref="ModMapLayer"/> is more compatible and allows drawing on the minimap and fullscreen maps.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="mouseText">The mouse text.</param>
 	public virtual void PostDrawFullscreenMap(ref string mouseText) { }
 
 	/// <summary>
 	/// Called after the input keys are polled. Allows for modifying things like scroll wheel if your custom drawing should capture that.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual void PostUpdateInput() { }
 

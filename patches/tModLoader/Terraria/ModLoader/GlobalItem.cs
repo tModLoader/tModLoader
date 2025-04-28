@@ -304,7 +304,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
 	/// </summary>
 	/// <param name="weapon">The item that is using the given ammo.</param>
 	/// <param name="ammo">The ammo item being used by the given weapon.</param>
@@ -872,7 +872,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned by the ModItem or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
+	/// Returns whether the reforge will take place. If false is returned by the ModItem or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreReforge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
 	/// <para/> Called on the local client only.
 	/// </summary>

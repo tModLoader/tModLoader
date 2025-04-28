@@ -762,7 +762,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine whether this town NPC wears a party hat during a party. Returns true by default.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool UsesPartyHat()
