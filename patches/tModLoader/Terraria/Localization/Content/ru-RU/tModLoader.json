@@ -23,7 +23,7 @@
 		"ShowNewUpdatedModsInfoMessage": "С прошлого запуска были добавлены или обновлены следующие моды из Мастерской (вы можете отключить это сообщение в настройках):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nБыли добавлены новые моды:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nБыли обновлены следующие моды:",
-		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
+		"ShowRemovedModsInfoMessageUpdatedMods": "\nМоды, удалённые с момента последнего запуска. Если какой-либо из них был удалён по ошибке, нажмите «Загрузить зависимости», чтобы появилась возможность повторно загрузить мод.",
 		"DependenciesNeededForOtherMods": "\nОтсутствуют некоторые зависимости:",
 		"InstallDependencies": "Установить зависимости",
 		"ContinueAnyway": "Продолжить в любом случае",
@@ -515,8 +515,8 @@
 		"MSNetSDKNotFound": "Разработка модов для tModLoader требует установки .NET {0} SDK, но оно не было обнаружено. Нажмите кнопку \"Загрузить .NET SDK\" ниже для получения подробных инструкций. После установки вам возможно понадобится перезапустить tModLoader.",
 		"DownloadNetSDK": "Загрузить .NET SDK",
 		"DevModsInSandbox": "tModLoader не может разрабатывать моды в среде песочницы (например, в Flatpak). Пожалуйста, убедитесь, что вы установили Steam непосредственно на вашу систему.",
-		// "MSSourceIssue": "Mod Source Issue",
-		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
+		"MSSourceIssue": "Проблема с исходным кодом мода",
+		"MSSourceIssueMessage": "В исходном коде мода {0} обнаружена следующая ошибка: {1}",
 
 		// Create Mod
 		"CreateModName": "Имя мода (без пробелов)",
@@ -564,8 +564,8 @@
 		"CommandModListSyncedMods": "Синхронизируемые моды:",
 		"CommandModListClientMods": "Клиентские моды:",
 		"CommandModListModlist": "Список модов:",
-		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
-		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		"CommandCustomSetsDescription": "Отображает список имён ID sets.",
+		"CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (показать значения)] [-o (открыть лог-папку)]",
 
 		// Mod Building
 		"Building": "Идёт сборка: {0}",
