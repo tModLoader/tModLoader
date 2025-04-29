@@ -17,7 +17,7 @@
 +			// Modifications by TML:
 +			.Concat(
 +				ModLoader.ModLoader.Mods
-+				.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod && !NPCID.Sets.NPCBestiaryDrawOffset[npc.Type].Hide))
++				.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod && (!NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(npc.Type, out var drawModifiers) || !drawModifiers.Hide)))
 +				.Select(mod => mod.ModSourceBestiaryInfoElement)
 +			)
 +			.Concat(

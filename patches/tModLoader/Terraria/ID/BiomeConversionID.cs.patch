@@ -8,10 +8,11 @@
  {
  	public const int Purity = 0;
  	public const int Corruption = 1;
-@@ -10,4 +_,6 @@
+@@ -10,4 +_,7 @@
  	public const int Sand = 5;
  	public const int Snow = 6;
  	public const int Dirt = 7;
 +	public const int PurificationPowder = 8; // Added by TML
-+	public static readonly int Count = 9;
++	public const int Chlorophyte = 9; // Added by TML
++	public static readonly int Count = 10;
  }

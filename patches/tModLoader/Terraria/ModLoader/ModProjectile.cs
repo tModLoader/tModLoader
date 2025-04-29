@@ -81,8 +81,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Gets called when your projectiles spawns in world.<br/>
-	/// Called on the client or server spawning the projectile via Projectile.NewProjectile.<br/>
+	/// Gets called when your projectiles spawns in world.
+	/// <para/> Called on the client or server spawning the projectile via Projectile.NewProjectile.
 	/// </summary>
 	public virtual void OnSpawn(IEntitySource source)
 	{
@@ -106,6 +106,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>
 	/// Allows you to determine how this projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns>Whether or not to stop other AI.</returns>
 	public virtual bool PreAI()
@@ -115,8 +116,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine how this projectile behaves. This will only be called if PreAI returns true.
-	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#custom-ai">Basic Projectile Guide</see> teaches the basics of writing a custom AI, such as timers, gravity, rotation, etc.
+	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#custom-ai">Basic Projectile Guide</see> teaches the basics of writing a custom AI, such as timers, gravity, rotation, etc.
 	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void AI()
 	{
@@ -125,6 +127,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>
 	/// Allows you to determine how this projectile behaves. This will be called regardless of what PreAI returns.
 	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostAI()
 	{
@@ -132,8 +135,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// If you are storing AI information outside of the Projectile.ai array, use this to send that AI information between clients and servers, which will be handled in <see cref="ReceiveExtraAI"/>.
-	/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
-	/// <br/>Can be called on both server and client, depending on who owns the projectile.
+	/// <para/> Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
 	public virtual void SendExtraAI(BinaryWriter writer)
@@ -142,8 +145,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
-	/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully received.
-	/// <br/>Can be called on both server and client, depending on who owns the projectile.
+	/// <para/> Called whenever <see cref="MessageID.SyncProjectile"/> is successfully received.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
 	public virtual void ReceiveExtraAI(BinaryReader reader)
@@ -152,6 +155,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Whether or not this projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool ShouldUpdatePosition()
 	{
@@ -160,6 +164,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine how this projectile interacts with tiles. Return false if you completely override or cancel this projectile's tile collision behavior. Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="width"> The width of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to Projectile.width. </param>
 	/// <param name="height"> The height of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to Projectile.height. </param>
@@ -173,6 +178,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with Projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="oldVelocity">The velocity of the projectile upon collision.</param>
 	public virtual bool OnTileCollide(Vector2 oldVelocity)
@@ -182,6 +188,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	public virtual bool? CanCutTiles()
 	{
@@ -190,6 +197,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Code ran when the projectile cuts tiles. Only runs if CanCutTiles() returns true. Useful when programming lasers and such.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	public virtual void CutTiles()
 	{
@@ -197,6 +205,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool PreKill(int timeLeft)
 	{
@@ -204,7 +213,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use `if (Projectile.owner == Main.myPlayer)` if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
+	/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	public virtual void OnKill(int timeLeft)
 	{
@@ -220,6 +230,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Return false to prevent it from doing any sort of damage.
 	/// Return true if you want the projectile to do damage regardless of the default blacklist.
 	/// Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool? CanDamage()
 	{
@@ -228,6 +239,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Whether or not this minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if this projectile is considered a pet (<see cref="Main.projPet"/>).
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool MinionContactDamage()
 	{
@@ -236,6 +248,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to change the hitbox used by this projectile for damaging players and NPCs.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="hitbox"></param>
 	public virtual void ModifyDamageHitbox(ref Rectangle hitbox)
@@ -244,6 +257,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine whether this projectile can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	public virtual bool? CanHitNPC(NPC target)
@@ -252,7 +266,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
+	/// Allows you to modify the damage, knockback, etc., that this projectile does to an NPC.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="modifiers">The modifiers for this strike.</param>
@@ -261,7 +276,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.
+	/// Allows you to create special effects when this projectile hits an NPC (for example, inflicting debuffs).
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="hit">The damage.</param>
@@ -272,6 +288,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine whether this projectile can hit the given opponent player. Return false to block this projectile from hitting the target. Returns true by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target">The target</param>
 	public virtual bool CanHitPvp(Player target)
@@ -281,6 +298,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine whether this hostile projectile can hit the given player. Return false to block this projectile from hitting the target. Returns true by default.
+	/// <para/> Called on the server only.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	public virtual bool CanHitPlayer(Player target)
@@ -290,6 +308,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that this hostile projectile does to a player.
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="modifiers"></param>
@@ -298,8 +317,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this hostile projectile hits a player. <br/>
-	/// Only runs on the local client in multiplayer.
+	/// Allows you to create special effects when this hostile projectile hits a player.
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="target">The target.</param>
 	/// <param name="info"></param>
@@ -309,6 +328,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to use custom collision detection between this projectile and a player or NPC that this projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="projHitbox">The hitbox of the projectile.</param>
 	/// <param name="targetHitbox">The hitbox of the target.</param>
@@ -325,6 +345,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual Color? GetAlpha(Color lightColor)
 	{
@@ -333,6 +354,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to draw things behind this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual bool PreDrawExtras()
 	{
@@ -341,6 +363,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
 	public virtual bool PreDraw(ref Color lightColor)
@@ -350,6 +373,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to draw things in front of this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. This method is called even if PreDraw returns false.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
 	public virtual void PostDraw(Color lightColor)
@@ -358,6 +382,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool? CanUseGrapple(Player player)
 	{
@@ -366,6 +391,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void UseGrapple(Player player, ref int type)
 	{
@@ -373,6 +399,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// How far away this grappling hook can travel away from its player before it retracts.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual float GrappleRange()
 	{
@@ -381,6 +408,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void NumGrappleHooks(Player player, ref int numHooks)
 	{
@@ -388,6 +416,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void GrappleRetreatSpeed(Player player, ref float speed)
 	{
@@ -395,6 +424,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void GrapplePullSpeed(Player player, ref float speed)
 	{
@@ -402,6 +432,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY)
 	{
@@ -409,8 +440,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Whether or not the grappling hook can latch onto the given position in tile coordinates.
-	/// <br/>This position may be air or an actuated tile!
-	/// <br/>Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default.
+	/// <para/>This position may be air or an actuated tile!
+	/// <para/>Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool? GrappleCanLatchOnTo(Player player, int x, int y)
 	{
@@ -419,6 +451,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// When used in conjunction with <c>Projectile.hide = true</c> (<see cref="Projectile.hide"/>), allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
 	{
@@ -427,6 +460,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>
 	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. By defaults tileCollide is set to false and alpha is set to 255. Use this to adjust damage, knockBack, and the projectile hitbox (Projectile.Resize).
 	/// <para/> Called during Projectile.PrepareBombToBlow, which is called by default during Projectile.AI_016 and during Projectile.Kill for the aforementioned projectiles.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	public virtual void PrepareBombToBlow()
 	{
@@ -435,6 +469,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary>
 	/// Called when <see cref="Projectile.EmitEnchantmentVisualsAt(Vector2, int, int)"/> is called. Typically used to spawn visual effects (Dust) indicating weapon enchantments such as flasks, frost armor, or magma stone effects. This is similar to how items spawn visual effects in <see cref="CombinedHooks.MeleeEffects(Player, Item, Rectangle)"/>, but for projectiles instead. A typical weapon enchantment would likely include similar code in both to support weapon enchantment visuals for both items and projectiles.
 	/// <para/> Projectiles can use <see cref="Projectile.noEnchantments"/> to indicate that a projectile should not be considered for enchantment visuals, so check that field if relevant.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
 	{

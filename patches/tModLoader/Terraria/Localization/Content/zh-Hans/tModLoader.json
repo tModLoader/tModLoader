@@ -25,6 +25,7 @@
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\n更新模组：",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
 		"DependenciesNeededForOtherMods": "\n以下依赖缺失：",
 		"InstallDependencies": "安装依赖",
 		"ContinueAnyway": "忽略并继续",
@@ -516,6 +517,8 @@
 		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET {0} SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
 		"DownloadNetSDK": "下载 .NET SDK",
 		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "模组内部名称（无空格）",

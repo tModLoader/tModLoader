@@ -23,6 +23,7 @@
 		"ShowNewUpdatedModsInfoMessage": "Los siguientes mods se han añadido o actualizado desde el último inicio (puedes desactivar este mensaje en la configuración):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nMods nuevos:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nMods actualizados:",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
 		"DependenciesNeededForOtherMods": "\nFaltan algunas dependencias:",
 		"InstallDependencies": "Instalar dependencias",
 		"ContinueAnyway": "Continuar de todas formas",
@@ -514,6 +515,8 @@
 		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
 		"DownloadNetSDK": "Descargar el SDK de .NET",
 		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		// "CreateModName": "ModName (no spaces)",

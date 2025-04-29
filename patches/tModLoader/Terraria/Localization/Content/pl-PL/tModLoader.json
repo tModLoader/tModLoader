@@ -23,6 +23,7 @@
 		"ShowNewUpdatedModsInfoMessage": "Poniższe Mody zostały zaktualizowane lub dodane do Steam Workshop od czasu ostatniego uruchomienia gry (możesz wyłączyć to powiadomienie w ustawieniach):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNowe Mody:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nZaktualizowane Mody:",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
 		"DependenciesNeededForOtherMods": "\nBrakuje niektórych zależności:",
 		"InstallDependencies": "Zainstaluj zależności",
 		"ContinueAnyway": "Kontynuuj mimo to",
@@ -514,6 +515,8 @@
 		"MSNetSDKNotFound": "Tworzenie modów dla tModLoadera wymaga zainstalowania .NET {0} SDK, ale nie zostało to wykryte. Kliknij poniżej przycisk \"Pobierz .NET SDK\" w celu uzyskania instrukcji instalacji. Po zainstalowaniu może być konieczne ponowne uruchomienie tModLoadera.",
 		"DownloadNetSDK": "Pobierz .NET SDK",
 		"DevModsInSandbox": "tModLoader nie może rozwijać modów podczas działania w piaskownicy (np. w przypadku Flatpak). Upewnij się, że zainstalowano Steam bezpośrednio na Twoim systemie.",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "NazwaModa (bez spacji)",

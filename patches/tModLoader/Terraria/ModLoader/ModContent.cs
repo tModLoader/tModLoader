@@ -384,9 +384,9 @@ public static class ModContent
 		ModOrganizer.SaveLastLaunchedMods();
 	}
 
-	internal static void DedServPreInit()
+	internal static void RunEarlyClassConstructors()
 	{
-		// The server doesn't naturally init these, and then the constructors get run twice in ResizeArrays
+		// The server (or client with Main.SkipAssemblyLoad) doesn't naturally init these, and then the constructors get run twice in ResizeArrays
 		RuntimeHelpers.RunClassConstructor(typeof(AmmoID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(DustID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(MountID.Sets).TypeHandle);
@@ -407,6 +407,7 @@ public static class ModContent
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Face.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Beard.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Balloon.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(DamageClass.Sets).TypeHandle);
 	}
 
 	private static async Task JITModsAsync(CancellationToken token)

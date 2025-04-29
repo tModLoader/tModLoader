@@ -205,17 +205,23 @@ internal class UIModSourceItem : UIPanel
 
 		// Display Run tModPorter when .csproj is valid
 		if (sourceUpgradeTask is { IsCompleted: true }) {
-			bool result = sourceUpgradeTask.Result;
+			try {
+				bool result = sourceUpgradeTask.GetAwaiter().GetResult();
 
-			// Source upgrade needed.
-			if (result) {
-				AddCsProjUpgradeButton();
+				// Source upgrade needed.
+				if (result) {
+					AddCsProjUpgradeButton();
+				}
+				else {
+					AddModPorterButton();
+				}
 			}
-			else {
-				AddModPorterButton();
+			catch (Exception e) {
+				AddErrorButton(e);
 			}
-
-			sourceUpgradeTask = null;
+			finally {
+				sourceUpgradeTask = null;
+			}
 		}
 	}
 
@@ -440,6 +446,25 @@ internal class UIModSourceItem : UIPanel
 		};
 
 		Append(portModButton);
+
+		contextButtonsLeft -= 26;
+	}
+
+	private void AddErrorButton(Exception e)
+	{
+		var modSaveErrorWarning = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.MSSourceIssue")) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = contextButtonsLeft, Percent = 1f },
+			Top = { Pixels = 4 }
+		};
+
+		string fullError = Language.GetTextValue("tModLoader.MSSourceIssueMessage", modName, "\n\n" + e.ToString());
+		modSaveErrorWarning.OnLeftClick += (a, b) => {
+			Interface.infoMessage.Show(fullError, 888, Interface.modSources);
+		};
+
+		Append(modSaveErrorWarning);
 
 		contextButtonsLeft -= 26;
 	}

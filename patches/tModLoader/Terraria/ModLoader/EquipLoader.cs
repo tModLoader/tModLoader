@@ -304,10 +304,10 @@ public static class EquipLoader
 		equipTexture.Type = type;
 		equipTexture.Item = item;
 		int slot = equipTexture.Slot = ReserveEquipID(type);
-		GetSearch(type).Add(equipTexture.Name, slot);
+		GetSearch(type).Add($"{mod.Name}/{equipTexture.Name}", slot);
 
 		equipTextures[type][slot] = equipTexture;
-		mod.equipTextures[Tuple.Create(name ?? item.Name, type)] = equipTexture;
+		mod.equipTextures[Tuple.Create(equipTexture.Name, type)] = equipTexture;
 
 		if (item != null) {
 			if (!idToSlot.TryGetValue(item.Type, out var slots))
