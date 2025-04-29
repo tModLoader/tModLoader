@@ -1108,15 +1108,17 @@
  	public int breathCDMax {
  		get {
 -			int num = 7;
-+			int num = 1;
++			var calculated = breathEffectiveness;
  			if (inventory[selectedItem].type == 186 && itemAnimation == 0)
- 				num *= 2;
+-				num *= 2;
++				calculated += 1;
  
  			if (accDivingHelm)
- 				num *= 6;
+-				num *= 6;
++				calculated *= 6;
  
 -			return num;
-+			return (int)((breathEffectiveness * num).ApplyTo(7));
++			return (int)(calculated.ApplyTo(7));
  		}
  	}
  
