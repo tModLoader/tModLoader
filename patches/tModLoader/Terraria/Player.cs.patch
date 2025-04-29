@@ -1104,7 +1104,7 @@
 +	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
  	public Item HeldItem => inventory[selectedItem];
  
-+	/// <summary> How long it takes for <see cref="breathCD"/> to cause <see cref="breath"/> to decrease by 1. Defaults to 7 and is increased by factors such as holding a Breathing Reed, which doubles this, or having a Diving Gear, which multiplies this by 6, to make the process of losing breath value slower. </summary>
++	/// <summary> How long it takes for <see cref="breathCD"/> to cause <see cref="breath"/> to decrease by 1. Defaults to 7 before <see cref="breathEffectiveness"/> is applied. </summary>
  	public int breathCDMax {
  		get {
 -			int num = 7;
