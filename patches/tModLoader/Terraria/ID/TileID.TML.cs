@@ -179,8 +179,9 @@ partial class TileID
 		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
 
 		/// <summary>
-		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Vanilla entries include Cloud, RainCloud, SnowCloud, and PoopBlock. Defaults to false.
-		/// <para/> See also <see cref="Main.tileBouncy"/>.
+		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Vanilla entries include Cloud, RainCloud, SnowCloud, and PoopBlock.
+		/// <br/><br/> Defaults to <see langword="false"/>.
+		/// <br/><br/> See also <see cref="Main.tileBouncy"/>.
 		/// </summary>
 		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
 
