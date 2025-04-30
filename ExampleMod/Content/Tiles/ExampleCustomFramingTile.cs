@@ -30,7 +30,6 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void PostTileFrame(int i, int j, int up, int down, int left, int right, int upLeft, int upRight, int downLeft, int downRight) {
-
 			//For every even X and Y coordinate, we will offset the tile's horizontal and vertical frame by the size of the sheet so the tile's frame ends up using the alternate version on the sheet, making a pattern that spans 2x2 tiles
 			if (i % 2 == 0) {
 				Tile t = Main.tile[i, j];
