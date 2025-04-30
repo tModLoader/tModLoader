@@ -1972,7 +1972,7 @@
  	{
 +		Color color = new Color(175, 75, 255);
 +		NetworkText custom = null;
-+		// Note: typeName comes from NPC.TypeName->NPCLoader.ModifyTypeName and NPCLoader.BossLoot, but is just a literal string and won't be localized on other clients properly if used it is not used in DeathMessage.
++		// Note: typeName comes from NPC.TypeName->NPCLoader.ModifyTypeName and NPCLoader.BossLoot, but is just a literal string and won't be localized on other clients properly if used, so it is not used in DeathMessage.
 +		bool skipMessage = NPCLoader.DeathMessage(this, ref custom, ref color);
 +		if (skipMessage) {
 +		}
