@@ -403,7 +403,7 @@
  	public int heldProj = -1;
 +	/// <summary> A countdown timer for <see cref="breath"/>. Ticks up every frame the player is holding their breath underwater. Once it reaches <see cref="breathCDMax"/>, resets back to 0 and breath is reduced by 1. </summary>
  	public int breathCD;
-+	/// <summary> The max value of <see cref="breath"/>. Defaults to 200. The total ticks before starting to drown is <c>breathMax * breathCDMax</c>. <para/> Effects like Breathing Rod and Diving Gear affect <see cref="breathEffectiveness"/> rather than edit this value. </summary>
++	/// <summary> The max value of <see cref="breath"/>. Defaults to 200. The total ticks before starting to drown is <c>breathMax * breathCDMax</c>. <para/> Effects like Breathing Reed and Diving Gear affect <see cref="breathEffectiveness"/> rather than edit this value. </summary>
  	public int breathMax = 200;
 +	/// <summary> The current amount of breath the player has (<see href="https://terraria.wiki.gg/wiki/Breath_meter">Breath info on the wiki</see>). <see cref="breathCD"/> controls how often the value decreases. Once 0, the player will start to take drowning damage. When out of liquid increases by 3 each tick. </summary>
  	public int breath = 200;
