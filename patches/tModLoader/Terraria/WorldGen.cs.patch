@@ -3611,6 +3611,15 @@
  								if (TileID.Sets.IsVine[num]) {
  									up = ((tile2 == null) ? num : ((!tile2.nactive()) ? (-1) : ((!tile2.bottomSlope()) ? tile2.type : (-1))));
  									if (num != up) {
+@@ -63276,7 +_,7 @@
+ 								if (!noTileActions && tile.active() && TileID.Sets.Falling[num])
+ 									SpawnFallingBlockProjectile(i, j, tile, tile2, tile3, num);
+ 
+-								if ((rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0) || flag14) {
++								if ((tile.frameX != frameX && tile.frameY != frameY && frameX >= 0 && frameY >= 0) || flag14) {
+ 									tileReframeCount++;
+ 									if (tileReframeCount < 25) {
+ 										bool num50 = mergeUp;
 @@ -63321,7 +_,7 @@
  			currentMerge = -1;
  	}
