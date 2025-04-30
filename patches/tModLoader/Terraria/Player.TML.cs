@@ -19,6 +19,20 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	internal string modPack;
 	internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
+	/// <summary>
+	/// Modified Vanilla Dash Priority (see ModDash PR for more information)
+	/// 1) Solar Flare
+	/// 2) Shield of Cthulu
+	/// 3) Tabi / Master Ninja Gear
+	/// 4) Crystal Asssassin Armor
+	/// 
+	/// Note: If decided in the future to backtrack on the modified dash priority,
+	/// remember to adjust the ModDash structure accordingly.
+	/// </summary>
+	public bool useModdedDashPriority = true;
+	public bool shieldOfCthulu;
+	public bool tabi;
+
 	public Item equippedWings = null;
 
 	/// <summary>
@@ -674,5 +688,20 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		if (anyJumpCancelled)
 			jump = 0;
+	}
+
+	enum DashTier
+	{
+		Weapons,             // 0
+		Consumables,         // 1
+		BeforeSolarFlare,    // 2
+		Default,             // 3
+		AfterCrystalAssassin // 4
+	}
+
+	public bool PerformModDash()
+	{
+		// TODO
+		return false;
 	}
 }
