@@ -408,6 +408,7 @@ public static class ModContent
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Beard.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Balloon.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(DamageClass.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(MusicID.Sets).TypeHandle);
 	}
 
 	private static async Task JITModsAsync(CancellationToken token)
