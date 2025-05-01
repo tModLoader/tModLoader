@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -210,6 +210,12 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>PlatformFrameWi
 <tr class="memitem:a1259ff7e3245e11734fce620525432a3"><td class="memItemLeft" align="right" valign="top"><a id="a1259ff7e3245e11734fce620525432a3" name="a1259ff7e3245e11734fce620525432a3"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SyncObjectPlacement</b> (int tileX, int tileY, int type, int style, int dir)</td></tr>
 <tr class="separator:a1259ff7e3245e11734fce620525432a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45afc3af91fef05eeb35b71a861c3bd0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_point16.html">Point16</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_object_data.html#a45afc3af91fef05eeb35b71a861c3bd0">TopLeft</a> (int i, int j)</td></tr>
+<tr class="memdesc:a45afc3af91fef05eeb35b71a861c3bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the coordinates of the top left tile of the multitile at the location provided. Returns Point16.NegativeOne if no tile exists at the coordinates. If the tile does not have a <a class="el" href="class_tile_object_data.html" title="Contains tile properties for multitiles dictating how they are placed and how they behave....">TileObjectData</a>, such as if it were a normal terrain tile, the provided coordinates will be returned.  <a href="class_tile_object_data.html#a45afc3af91fef05eeb35b71a861c3bd0">More...</a><br /></td></tr>
+<tr class="separator:a45afc3af91fef05eeb35b71a861c3bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee226f6a61c6e4707887154e8043f34"><td class="memItemLeft" align="right" valign="top"><a id="aeee226f6a61c6e4707887154e8043f34" name="aeee226f6a61c6e4707887154e8043f34"></a>
+static <a class="el" href="struct_point16.html">Point16</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TopLeft</b> (<a class="el" href="struct_point16.html">Point16</a> point)</td></tr>
+<tr class="separator:aeee226f6a61c6e4707887154e8043f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -534,6 +540,52 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Width</b><code> [get, 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a45afc3af91fef05eeb35b71a861c3bd0" name="a45afc3af91fef05eeb35b71a861c3bd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45afc3af91fef05eeb35b71a861c3bd0">&#9670;&nbsp;</a></span>TopLeft()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="struct_point16.html">Point16</a> TileObjectData.TopLeft </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the coordinates of the top left tile of the multitile at the location provided. Returns Point16.NegativeOne if no tile exists at the coordinates. If the tile does not have a <a class="el" href="class_tile_object_data.html" title="Contains tile properties for multitiles dictating how they are placed and how they behave....">TileObjectData</a>, such as if it were a normal terrain tile, the provided coordinates will be returned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td></td></tr>
+    <tr><td class="paramname">j</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

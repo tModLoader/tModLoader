@@ -8,6 +8,7 @@ var class_item =
     [ "CanApplyPrefix", "class_item.html#aed7ee0f67ec31f0674b4bebec7897acf", null ],
     [ "CanHavePrefixes", "class_item.html#a7c6119fa462a77f03a6d2fb59d73d257", null ],
     [ "CanRollPrefix", "class_item.html#ab996e4fb774cb5494446147a6eb22d73", null ],
+    [ "ChangeItemType", "class_item.html#ab84f4bfdd8120b688cf6952b6eb90477", null ],
     [ "ClearNameOverride", "class_item.html#a98eb0daeff26b7342d2fcf37232d2984", null ],
     [ "CloneDefaults", "class_item.html#adb93f144a74dca503475c213525bbc68", null ],
     [ "CopyNetStateTo", "class_item.html#a3cc4bce9d2b8ac615ad7460925df5ae4", null ],

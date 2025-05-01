@@ -3,6 +3,7 @@ var class_content_samples =
     [ "BestiaryHelper", "class_content_samples_1_1_bestiary_helper.html", null ],
     [ "CommonlyUsedContentSamples", "class_content_samples_1_1_commonly_used_content_samples.html", null ],
     [ "CreativeHelper", "class_content_samples_1_1_creative_helper.html", "class_content_samples_1_1_creative_helper" ],
+    [ "AddItemResearchOverride", "class_content_samples.html#a336b0dbdba535eda4da0de2f70ca779e", null ],
     [ "CreativeResearchItemPersistentIdOverride", "class_content_samples.html#a02d880d240eb241e8f4f43151ae306d9", null ],
     [ "ItemCreativeSortingId", "class_content_samples.html#ac6fd569f4f0876f1567b7f30fdee86cb", null ],
     [ "ItemNetIdsByPersistentIds", "class_content_samples.html#a0436d4c4434a13c690c2738ccb60df44", null ],

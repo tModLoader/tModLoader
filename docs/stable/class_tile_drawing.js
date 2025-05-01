@@ -1,5 +1,6 @@
 var class_tile_drawing =
 [
+    [ "TileFlameData", "struct_tile_drawing_1_1_tile_flame_data.html", null ],
     [ "TileCounterType", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8", [
       [ "Tree", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a3b0c14770e6bd663518496da60f524da", null ],
       [ "DisplayDoll", "class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a29dc53dc2741f38f7160c08ada377c31", null ],

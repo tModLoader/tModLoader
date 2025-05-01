@@ -24,6 +24,7 @@ var class_n_p_c_i_d_1_1_sets =
     [ "DangerDetectRange", "class_n_p_c_i_d_1_1_sets.html#a60b67bfab7ef4ac6f5d5e358a50c1ae5", null ],
     [ "DangerThatPreventsOtherDangers", "class_n_p_c_i_d_1_1_sets.html#ada11bdb09a7a6392e42e9ec02687f5c3", null ],
     [ "DemonEyes", "class_n_p_c_i_d_1_1_sets.html#aa026211dff83787043791734914174c1", null ],
+    [ "DoesntDespawnToInactivityAndCountsNPCSlots", "class_n_p_c_i_d_1_1_sets.html#ab3f5c34d3df305269cdaeb6a2bc9bb55", null ],
     [ "DontDoHardmodeScaling", "class_n_p_c_i_d_1_1_sets.html#aa160c57e6400c73f230b4a4ad30dac7d", null ],
     [ "ExtraFramesCount", "class_n_p_c_i_d_1_1_sets.html#a1f8cab6d7197eeddf58f343478747171", null ],
     [ "ExtraTextureCount", "class_n_p_c_i_d_1_1_sets.html#a77e7574396ab5a7e9c93ae439e088729", null ],

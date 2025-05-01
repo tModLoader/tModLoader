@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -131,8 +131,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanFillEmptyAmmoSlot<
 <tr class="memitem:a8319b9e87eee141565bc6719e6a68a8a"><td class="memItemLeft" align="right" valign="top"><a id="a8319b9e87eee141565bc6719e6a68a8a" name="a8319b9e87eee141565bc6719e6a68a8a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShimmer</b> ()</td></tr>
 <tr class="separator:a8319b9e87eee141565bc6719e6a68a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab84f4bfdd8120b688cf6952b6eb90477"><td class="memItemLeft" align="right" valign="top"><a id="ab84f4bfdd8120b688cf6952b6eb90477" name="ab84f4bfdd8120b688cf6952b6eb90477"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeItemType</b> (int to)</td></tr>
+<tr class="memitem:ab84f4bfdd8120b688cf6952b6eb90477"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#ab84f4bfdd8120b688cf6952b6eb90477">ChangeItemType</a> (int to)</td></tr>
+<tr class="memdesc:ab84f4bfdd8120b688cf6952b6eb90477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls SetDefaults(int) to change this item to another item type while preserving <a class="el" href="class_item.html#a4a0a7262701b6fa4d9b596adaf4d6980" title="If true, then the given item is favorited.  Favorited items cannot be dropped, automatically moved in...">Item.favorited</a>. Used by right click code of items that transform into other items, such as how ItemID.Shellphone cycles between different items for different destinations. Does not preserve modded data.  <a href="class_item.html#ab84f4bfdd8120b688cf6952b6eb90477">More...</a><br /></td></tr>
 <tr class="separator:ab84f4bfdd8120b688cf6952b6eb90477"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98eb0daeff26b7342d2fcf37232d2984"><td class="memItemLeft" align="right" valign="top"><a id="a98eb0daeff26b7342d2fcf37232d2984" name="a98eb0daeff26b7342d2fcf37232d2984"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearNameOverride</b> ()</td></tr>
@@ -1719,6 +1719,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if this <a class="el" href="class_item.html">Item</a> can receive prefixes (<a class="el" href="class_item.html#a7c6119fa462a77f03a6d2fb59d73d257" title="Determines if this Item can receive prefixes.">CanHavePrefixes</a>) and if PrefixLoader.CanRoll(Item, int) returns <code>true</code>, <code>false</code> otherwise.</dd></dl>
 <p >Just because a prefix can be rolled does not mean it can be applied &ndash; use <a class="el" href="class_item.html#aed7ee0f67ec31f0674b4bebec7897acf" title="Determines if this Item can receive the given prefix.">CanApplyPrefix(int)</a> to check for that.</p>
+
+</div>
+</div>
+<a id="ab84f4bfdd8120b688cf6952b6eb90477" name="ab84f4bfdd8120b688cf6952b6eb90477"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab84f4bfdd8120b688cf6952b6eb90477">&#9670;&nbsp;</a></span>ChangeItemType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Item.ChangeItemType </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>to</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calls SetDefaults(int) to change this item to another item type while preserving <a class="el" href="class_item.html#a4a0a7262701b6fa4d9b596adaf4d6980" title="If true, then the given item is favorited.  Favorited items cannot be dropped, automatically moved in...">Item.favorited</a>. Used by right click code of items that transform into other items, such as how ItemID.Shellphone cycles between different items for different destinations. Does not preserve modded data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">to</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

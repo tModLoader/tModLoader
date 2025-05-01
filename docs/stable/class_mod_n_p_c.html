@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -180,7 +180,7 @@ Return true to allow this <a class="el" href="class_n_p_c.html">NPC</a> to fall 
 <tr class="memdesc:ac16303f877056c0683199c9e0e7eaccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the location and sprite direction of the chat bubble that shows up while hovering over a Town <a class="el" href="class_n_p_c.html">NPC</a>.  <a href="class_mod_n_p_c.html#ac16303f877056c0683199c9e0e7eaccd">More...</a><br /></td></tr>
 <tr class="separator:ac16303f877056c0683199c9e0e7eaccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8690e744dc2cd66099c9d52799f00366"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">CheckActive</a> ()</td></tr>
-<tr class="memdesc:a8690e744dc2cd66099c9d52799f00366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to run the code for checking whether this <a class="el" href="class_n_p_c.html">NPC</a> will remain active. Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being despawned and to stop this <a class="el" href="class_n_p_c.html">NPC</a> from counting towards the limit for how many NPCs can exist near a player. Returns true by default.  <a href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">More...</a><br /></td></tr>
+<tr class="memdesc:a8690e744dc2cd66099c9d52799f00366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to run the code for checking whether this <a class="el" href="class_n_p_c.html">NPC</a> will remain active. Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being despawned and to stop this <a class="el" href="class_n_p_c.html">NPC</a> from counting towards the limit for how many NPCs can exist near a player. Returns true by default. See also <a class="el" href="class_n_p_c_i_d_1_1_sets.html#ab3f5c34d3df305269cdaeb6a2bc9bb55" title="This NPC will not despawn due to being far offscreen, but will still count towards Player....">NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots</a> for an option that still counts towards <a class="el" href="class_n_p_c.html">NPC</a> spawn limits.  <a href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366">More...</a><br /></td></tr>
 <tr class="separator:a8690e744dc2cd66099c9d52799f00366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7959b63210678df1758aa7443ee5fb89"><td class="memItemLeft" align="right" valign="top"><a id="a7959b63210678df1758aa7443ee5fb89" name="a7959b63210678df1758aa7443ee5fb89"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConditions</b> (int left, int right, int top, int bottom)</td></tr>
@@ -1261,7 +1261,7 @@ Code: <code>npc.position.Y - TextureAssets.Chat.Height() - (float)(int)screenPos
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not to run the code for checking whether this <a class="el" href="class_n_p_c.html">NPC</a> will remain active. Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being despawned and to stop this <a class="el" href="class_n_p_c.html">NPC</a> from counting towards the limit for how many NPCs can exist near a player. Returns true by default. </p>
+<p>Whether or not to run the code for checking whether this <a class="el" href="class_n_p_c.html">NPC</a> will remain active. Return false to stop this <a class="el" href="class_n_p_c.html">NPC</a> from being despawned and to stop this <a class="el" href="class_n_p_c.html">NPC</a> from counting towards the limit for how many NPCs can exist near a player. Returns true by default. See also <a class="el" href="class_n_p_c_i_d_1_1_sets.html#ab3f5c34d3df305269cdaeb6a2bc9bb55" title="This NPC will not despawn due to being far offscreen, but will still count towards Player....">NPCID.Sets.DoesntDespawnToInactivityAndCountsNPCSlots</a> for an option that still counts towards <a class="el" href="class_n_p_c.html">NPC</a> spawn limits. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>

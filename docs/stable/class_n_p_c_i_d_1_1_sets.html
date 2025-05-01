@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -228,6 +228,10 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DemonEyes</b
  If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is a type of demon eye. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aa026211dff83787043791734914174c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3f5c34d3df305269cdaeb6a2bc9bb55"><td class="memItemLeft" align="right" valign="top"><a id="ab3f5c34d3df305269cdaeb6a2bc9bb55" name="ab3f5c34d3df305269cdaeb6a2bc9bb55"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DoesntDespawnToInactivityAndCountsNPCSlots</b> = Factory.CreateBoolSet(Deerclops)</td></tr>
+<tr class="memdesc:ab3f5c34d3df305269cdaeb6a2bc9bb55"><td class="mdescLeft">&#160;</td><td class="mdescRight">This <a class="el" href="class_n_p_c.html">NPC</a> will not despawn due to being far offscreen, but will still count towards <a class="el" href="class_player.html#a7f561320008c7a527b6b6c5f7159aecd" title="The sum of the NPC.npcSlots values of NPC within the active range of this Player. Used to set NPC spa...">Player.nearbyActiveNPCs</a>. Unlike returning false in <a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366" title="Whether or not to run the code for checking whether this NPC will remain active. Return false to stop...">ModNPC.CheckActive</a>, this <a class="el" href="class_n_p_c.html">NPC</a> still counts towards spawn limits. <br /></td></tr>
+<tr class="separator:ab3f5c34d3df305269cdaeb6a2bc9bb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa160c57e6400c73f230b4a4ad30dac7d"><td class="memItemLeft" align="right" valign="top"><a id="aa160c57e6400c73f230b4a4ad30dac7d" name="aa160c57e6400c73f230b4a4ad30dac7d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DontDoHardmodeScaling</b> = Factory.CreateBoolSet(5, 13, 14, 15, 267, 113, 114, 115, 116, 117, 118, 119, 658, 659, 660, 400, 522)</td></tr>
 <tr class="memdesc:aa160c57e6400c73f230b4a4ad30dac7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> will not have its stats increased in <a class="el" href="class_main.html#a03b02e2e8dbe5623836170e09168858c" title="Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds.">Main.expertMode</a> or higher difficulties. <br  />
@@ -251,7 +255,7 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraTextureC
  Defaults to <code>0</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#a8eb76f9f51694093c3de14e390d01e9c">More...</a><br /></td></tr>
 <tr class="separator:a8eb76f9f51694093c3de14e390d01e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abff61947024756e4d697cfea0b1abad4"><td class="memItemLeft" align="right" valign="top"><a id="abff61947024756e4d697cfea0b1abad4" name="abff61947024756e4d697cfea0b1abad4"></a>
-static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(NPCLoader.NPCCount)</td></tr>
+static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(NPCLoader.NPCCount, nameof(<a class="el" href="class_n_p_c_i_d.html">NPCID</a>), <a class="el" href="class_n_p_c_i_d.html#a36ec8396555c16f3a6a087b8e56222e9">Search</a>)</td></tr>
 <tr class="separator:abff61947024756e4d697cfea0b1abad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50b6b0f56e0acbc9e71e95519e098485"><td class="memItemLeft" align="right" valign="top"><a id="a50b6b0f56e0acbc9e71e95519e098485" name="a50b6b0f56e0acbc9e71e95519e098485"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>FighterUsesDD2PortalAppearEffect</b> = Factory.CreateBoolSet(552, 553, 554, 561, 562, 563, 555, 556, 557, 576, 577, 568, 569, 570, 571, 572, 573, 564, 565)</td></tr>

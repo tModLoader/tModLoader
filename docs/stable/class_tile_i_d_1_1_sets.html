@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -141,8 +141,8 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>AllTiles</b>
 <tr class="memitem:a861b4911243320a58c1af61bb94b9bf7"><td class="memItemLeft" align="right" valign="top"><a id="a861b4911243320a58c1af61bb94b9bf7" name="a861b4911243320a58c1af61bb94b9bf7"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Ash</b> = Factory.CreateBoolSet(57)</td></tr>
 <tr class="separator:a861b4911243320a58c1af61bb94b9bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d101531bc983eb74a49b4055de8b313"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313">AvoidedByMeteorLanding</a> = Factory.CreateBoolSet(226, 470, 475, 448, 597)</td></tr>
-<tr class="memdesc:a6d101531bc983eb74a49b4055de8b313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile prevents a meteor from landing near it. <a href="class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313">More...</a><br /></td></tr>
+<tr class="memitem:a6d101531bc983eb74a49b4055de8b313"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313">AvoidedByMeteorLanding</a> = Factory.CreateBoolSet(226, 470, 475, 488, 597)</td></tr>
+<tr class="memdesc:a6d101531bc983eb74a49b4055de8b313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile prevents a meteor from landing near it. Contains LihzahrdBrick, DisplayDoll, HatRack, FallenLog, and TeleportationPylon.  <a href="class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313">More...</a><br /></td></tr>
 <tr class="separator:a6d101531bc983eb74a49b4055de8b313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d93dd2054d05cd842021a54ddc54a8a"><td class="memItemLeft" align="right" valign="top"><a id="a3d93dd2054d05cd842021a54ddc54a8a" name="a3d93dd2054d05cd842021a54ddc54a8a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>AvoidedByNPCs</b> = Factory.CreateBoolSet(21, 467, 55, 85, 395, 88, 463, 334, 29, 97, 99, 356, 663, 425, 440, 209, 441, 468, 471, 491, 510, 511, 520, 573)</td></tr>
@@ -348,7 +348,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DrawsWalls</
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>DungeonBiome</b> = Factory.CreateIntSet(0, 41, 1, 43, 1, 44, 1, 481, 1, 482, 1, 483, 1)</td></tr>
 <tr class="separator:a7de7a1c208c025a062348181f7aa5de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65540e26deee676c3082e23cfea894c3"><td class="memItemLeft" align="right" valign="top"><a id="a65540e26deee676c3082e23cfea894c3" name="a65540e26deee676c3082e23cfea894c3"></a>
-static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(TileLoader.TileCount)</td></tr>
+static <a class="el" href="class_set_factory.html">SetFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Factory</b> = new <a class="el" href="class_set_factory.html">SetFactory</a>(TileLoader.TileCount, nameof(<a class="el" href="class_tile_i_d.html">TileID</a>), <a class="el" href="class_tile_i_d.html#a21305dbc2a35d7e7fd177d5395eb34bc">Search</a>)</td></tr>
 <tr class="separator:a65540e26deee676c3082e23cfea894c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0098d22c058970386f8ee18bc385df9b"><td class="memItemLeft" align="right" valign="top"><a id="a0098d22c058970386f8ee18bc385df9b" name="a0098d22c058970386f8ee18bc385df9b"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Falling</b> = Factory.CreateBoolSet(53, 234, 112, 116, 224, 123, 330, 331, 332, 333, 495)</td></tr>
@@ -380,6 +380,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>GetsCheckedF
 <tr class="separator:a63d69a36b8301dce0e14934aeecec6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a004f2df5a0af2eb56b0df3629848359a"><td class="memItemLeft" align="right" valign="top"><a id="a004f2df5a0af2eb56b0df3629848359a" name="a004f2df5a0af2eb56b0df3629848359a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>GetsDestroyedForMeteors</b> = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634)</td></tr>
+<tr class="memdesc:a004f2df5a0af2eb56b0df3629848359a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, tiles of this type in a slightly larger range than the normal destruction will be destroyed by a meteor. Contains tree tiles, CorruptThorns, and CrimsonThorns, suggesting that the heat from the meteor's impact burned up those tiles. <br /></td></tr>
 <tr class="separator:a004f2df5a0af2eb56b0df3629848359a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33c329634cd1d29f98c38e5a8177d27e"><td class="memItemLeft" align="right" valign="top"><a id="a33c329634cd1d29f98c38e5a8177d27e" name="a33c329634cd1d29f98c38e5a8177d27e"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Grass</b> = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633)</td></tr>
@@ -513,7 +514,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Mud</b> = Fa
 <tr class="separator:a3970c2b8b2eeb0ca3d29651a8d48badf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f8ae5e160f4c40a230fc10d7e621b1"><td class="memItemLeft" align="right" valign="top"><a id="a38f8ae5e160f4c40a230fc10d7e621b1" name="a38f8ae5e160f4c40a230fc10d7e621b1"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>MultiTileSway</b> = Factory.CreateBoolSet(false)</td></tr>
-<tr class="memdesc:a38f8ae5e160f4c40a230fc10d7e621b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A version of <a class="el" href="class_tile_i_d_1_1_sets.html#a672992e3566d96e0818e520da4063e05" title="If true, this tile will render as if it were affected by wind and player interaction and is anchored ...">TileID.Sets.SwaysInWindBasic</a> that functions with multitiles. Causes the tile to sway along with the wind and player interaction. <b>NOTE:</b> Requires calling <a class="el" href="class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac" title="Registers a tile coordinate to use custom drawing code corresponding to the TileCounterType provided....">TileDrawing.AddSpecialPoint</a> in <code>ModTile.PreDraw</code> for the coordinates of the top left tile of the multitile. Use either <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a5e6f4d3726467dd261fe68460c4c5055" title="Tile will sway as if anchored above. Affected by wind and player interaction. Used by TileID....">TileDrawing.TileCounterType.MultiTileVine</a> or <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aaa2b4dab37d59bac74628eeb73139ff2" title="Tile will sway as if anchored below. Affected by wind but not player interaction. Used by TileID....">TileDrawing.TileCounterType.MultiTileGrass</a>, depending on what kind of sway interaction you want. <br /></td></tr>
+<tr class="memdesc:a38f8ae5e160f4c40a230fc10d7e621b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A version of <a class="el" href="class_tile_i_d_1_1_sets.html#a672992e3566d96e0818e520da4063e05" title="If true, this tile will render as if it were affected by wind and player interaction and is anchored ...">TileID.Sets.SwaysInWindBasic</a> that functions with multitiles. Causes the tile to sway along with the wind and player interaction. ModTile.AdjustMultiTileVineParameters(int, int, ref float?, ref float, ref float, ref bool, ref float, ref Microsoft.Xna.Framework.Graphics.Texture2D, ref Microsoft.Xna.Framework.Color) can be used to customize how the tile sways with wind and player interaction. <b>NOTE:</b> Requires calling <a class="el" href="class_tile_drawing.html#a0af170d8db0cc8598e746425fad62eac" title="Registers a tile coordinate to use custom drawing code corresponding to the TileCounterType provided....">TileDrawing.AddSpecialPoint</a> in <code>ModTile.PreDraw</code> for the coordinates of the top left tile of the multitile. Use either <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8a5e6f4d3726467dd261fe68460c4c5055" title="Tile will sway as if anchored above. Affected by wind and player interaction. Used by TileID....">TileDrawing.TileCounterType.MultiTileVine</a> or <a class="el" href="class_tile_drawing.html#aa39bb62f00a066f5fb70057f6301fff8aaa2b4dab37d59bac74628eeb73139ff2" title="Tile will sway as if anchored below. Affected by wind but not player interaction. Used by TileID....">TileDrawing.TileCounterType.MultiTileGrass</a>, depending on what kind of sway interaction you want. <br /></td></tr>
 <tr class="separator:a38f8ae5e160f4c40a230fc10d7e621b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85ab701a0ef49444cf710c3443778a14"><td class="memItemLeft" align="right" valign="top"><a id="a85ab701a0ef49444cf710c3443778a14" name="a85ab701a0ef49444cf710c3443778a14"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>MushroomBiome</b> = Factory.CreateIntSet(0, 70, 1, 71, 1, 72, 1, 528, 1)</td></tr>
@@ -555,12 +556,16 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Platforms</b
 <tr class="memitem:ad8a3338d13c14792154c3793dc960375"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets.html#ad8a3338d13c14792154c3793dc960375">PreventsSandfall</a> = Factory.CreateBoolSet(26, 77, 80, 323, 470, 475, 597)</td></tr>
 <tr class="memdesc:ad8a3338d13c14792154c3793dc960375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile will prevent sand/slush from falling beneath it.  <a href="class_tile_i_d_1_1_sets.html#ad8a3338d13c14792154c3793dc960375">More...</a><br /></td></tr>
 <tr class="separator:ad8a3338d13c14792154c3793dc960375"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a199dc2050d23de06bdbee5da7c6dd5fd"><td class="memItemLeft" align="right" valign="top"><a id="a199dc2050d23de06bdbee5da7c6dd5fd" name="a199dc2050d23de06bdbee5da7c6dd5fd"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PreventsTileHammeringIfOnTopOfIt</b> = Factory.CreateBoolSet(false, 21, 26, 77, 88, 235, 237, 441, 467, 468, 470, 475, 488, 597)</td></tr>
+<tr class="memdesc:a199dc2050d23de06bdbee5da7c6dd5fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevents a tile immediately below a tile of this type from being hammered (sloped). Since a sloped tile would break a typical bottom tile anchor, this prevents such tiles from being broken in this manner. Anything in <a class="el" href="class_tile_i_d_1_1_sets.html#a823e24fe5a08c36240e05f929f56e2f0" title="Indicates that this tile is a basic 2x2 chest. It is important to note that chests must be 2x2 tiles ...">BasicChest</a> or <a class="el" href="class_tile_i_d_1_1_sets.html#aaa4f939e0fcfbe5f6a344d3769e7fdde" title="Indicates that this tile is a basic 3x2 dresser. It is important to note that dressers must be 3x2 ti...">BasicDresser</a> are also protected in the same manner. This is typically used for tiles that shouldn't break as easily as other tiles, such as tiles containing <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> Entities holding items. Some examples include DemonAltar, Teleporter, Mannequins, and HatRack. See also <a class="el" href="class_tile_i_d_1_1_sets.html#a1dca1ebb1a02559d712fe70155ecf7d4" title="Prevents a tile immediately below a tile of this type from being mineable.   Use ModTile....">PreventsTileRemovalIfOnTopOfIt</a>, which is frequently set in tandem with this. <br /></td></tr>
+<tr class="separator:a199dc2050d23de06bdbee5da7c6dd5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dca1ebb1a02559d712fe70155ecf7d4"><td class="memItemLeft" align="right" valign="top"><a id="a1dca1ebb1a02559d712fe70155ecf7d4" name="a1dca1ebb1a02559d712fe70155ecf7d4"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PreventsTileRemovalIfOnTopOfIt</b> = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634)</td></tr>
 <tr class="memdesc:a1dca1ebb1a02559d712fe70155ecf7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevents a tile immediately below a tile of this type from being mineable. <br  />
  Use <a class="el" href="class_mod_tile.html#aa30e725d1f6f14c2df4f763a8ef87667" title="Allows you to determine whether or not the tile at the given coordinates can be hit by anything....">ModTile.CanKillTile(int, int, ref bool)</a> or GlobalTile.CanKillTile(int, int, int, ref bool) to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work. <br  />
  To affect tile replace behavior in a similar manner, see <a class="el" href="class_tile_i_d_1_1_sets.html#a0ffb8223f3a721bbeaeee866d909e781" title="Prevents a tile immediately below a tile of this type from being replaceable via the block swap featu...">PreventsTileReplaceIfOnTopOfIt</a> <br  />
- Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack). <br /></td></tr>
+ Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack). See also <a class="el" href="class_tile_i_d_1_1_sets.html#a199dc2050d23de06bdbee5da7c6dd5fd" title="Prevents a tile immediately below a tile of this type from being hammered (sloped)....">PreventsTileHammeringIfOnTopOfIt</a>, which is frequently set in tandem with this. <br /></td></tr>
 <tr class="separator:a1dca1ebb1a02559d712fe70155ecf7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ffb8223f3a721bbeaeee866d909e781"><td class="memItemLeft" align="right" valign="top"><a id="a0ffb8223f3a721bbeaeee866d909e781" name="a0ffb8223f3a721bbeaeee866d909e781"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PreventsTileReplaceIfOnTopOfIt</b> = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634)</td></tr>
@@ -676,7 +681,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WallsMergeWi
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool [] TileID.Sets.AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 448, 597)</td>
+          <td class="memname">bool [] TileID.Sets.AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 488, 597)</td>
         </tr>
       </table>
   </td>
@@ -686,7 +691,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WallsMergeWi
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not this tile prevents a meteor from landing near it.</p>
+<p>Whether or not this tile prevents a meteor from landing near it. Contains LihzahrdBrick, DisplayDoll, HatRack, FallenLog, and TeleportationPylon. </p>
 <p >Note: Chests and Dungeon tiles are not in this set, but also prevent landing (handled through <a class="el" href="class_tile_i_d_1_1_sets.html#a823e24fe5a08c36240e05f929f56e2f0" title="Indicates that this tile is a basic 2x2 chest. It is important to note that chests must be 2x2 tiles ...">BasicChest</a> and Main.tileDungeon)</p>
 
 </div>

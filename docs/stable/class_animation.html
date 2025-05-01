@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -87,6 +87,8 @@ $(document).ready(function(){initNavTree('class_animation.html',''); initResizab
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_animation-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Animation Class Reference</div></div>
 </div><!--header-->
@@ -94,6 +96,9 @@ $(document).ready(function(){initNavTree('class_animation.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a3518c5ca73c0fbb257718af9b4218d07"><td class="memItemLeft" align="right" valign="top"><a id="a3518c5ca73c0fbb257718af9b4218d07" name="a3518c5ca73c0fbb257718af9b4218d07"></a>
+record&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationFrameData</b> (int frameRate, int[] frames)</td></tr>
+<tr class="separator:a3518c5ca73c0fbb257718af9b4218d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae683fd38fa158518a7cec2cff41d5b41"><td class="memItemLeft" align="right" valign="top"><a id="ae683fd38fa158518a7cec2cff41d5b41" name="ae683fd38fa158518a7cec2cff41d5b41"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></tr>
 <tr class="separator:ae683fd38fa158518a7cec2cff41d5b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,9 +114,27 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b>
 <tr class="memitem:a1862233704284355d8c73553f55e568f"><td class="memItemLeft" align="right" valign="top"><a id="a1862233704284355d8c73553f55e568f" name="a1862233704284355d8c73553f55e568f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>NewTemporaryAnimation</b> (int type, ushort tileType, int x, int y)</td></tr>
 <tr class="separator:a1862233704284355d8c73553f55e568f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23edf8f44b572a5ef32300b6659f485e"><td class="memItemLeft" align="right" valign="top"><a id="a23edf8f44b572a5ef32300b6659f485e" name="a23edf8f44b572a5ef32300b6659f485e"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterTemporaryAnimation</b> (int frameRate, int[] frames)</td></tr>
+<tr class="separator:a23edf8f44b572a5ef32300b6659f485e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d086cf2f7efe071b5e70e64fe8a5ef9"><td class="memItemLeft" align="right" valign="top"><a id="a7d086cf2f7efe071b5e70e64fe8a5ef9" name="a7d086cf2f7efe071b5e70e64fe8a5ef9"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>Unload</b> ()</td></tr>
+<tr class="separator:a7d086cf2f7efe071b5e70e64fe8a5ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79ca95d8e77de26563bdfa292e1d549f"><td class="memItemLeft" align="right" valign="top"><a id="a79ca95d8e77de26563bdfa292e1d549f" name="a79ca95d8e77de26563bdfa292e1d549f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateAll</b> ()</td></tr>
 <tr class="separator:a79ca95d8e77de26563bdfa292e1d549f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ad9966af1d18424146a208cfd2a9dc182"><td class="memItemLeft" align="right" valign="top"><a id="ad9966af1d18424146a208cfd2a9dc182" name="ad9966af1d18424146a208cfd2a9dc182"></a>
+static Dictionary&lt; int, AnimationFrameData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationFrameDatas</b> = new()</td></tr>
+<tr class="separator:ad9966af1d18424146a208cfd2a9dc182"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:ac1875b369c1f841ca9f89afda2e994d8"><td class="memItemLeft" align="right" valign="top"><a id="ac1875b369c1f841ca9f89afda2e994d8" name="ac1875b369c1f841ca9f89afda2e994d8"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCount</b> = 5<code> [get]</code></td></tr>
+<tr class="separator:ac1875b369c1f841ca9f89afda2e994d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('class_wall_loader.html',''); initResiz
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_wall_loader-members.html">List of all members</a>  </div>
@@ -95,6 +96,12 @@ $(document).ready(function(){initNavTree('class_wall_loader.html',''); initResiz
 <p>This serves as the central class from which wall-related functions are supported and carried out.  
  <a href="class_wall_loader.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a260dab8a65b2d0269a13d9e8b1bf593c"><td class="memItemLeft" align="right" valign="top"><a id="a260dab8a65b2d0269a13d9e8b1bf593c" name="a260dab8a65b2d0269a13d9e8b1bf593c"></a>
+delegate bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertWall</b> (int i, int j, int type, int conversionType)</td></tr>
+<tr class="separator:a260dab8a65b2d0269a13d9e8b1bf593c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a97a9ebea38be3ffc0d7730033c881ee5"><td class="memItemLeft" align="right" valign="top"><a id="a97a9ebea38be3ffc0d7730033c881ee5" name="a97a9ebea38be3ffc0d7730033c881ee5"></a>
@@ -106,6 +113,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanExplode</b>
 <tr class="memitem:a276ea0ec0c99fe5f00dc4c9d89dffc9a"><td class="memItemLeft" align="right" valign="top"><a id="a276ea0ec0c99fe5f00dc4c9d89dffc9a" name="a276ea0ec0c99fe5f00dc4c9d89dffc9a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPlace</b> (int i, int j, int type)</td></tr>
 <tr class="separator:a276ea0ec0c99fe5f00dc4c9d89dffc9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac220cc1061da13abb4cff93b1abf21d0"><td class="memItemLeft" align="right" valign="top"><a id="ac220cc1061da13abb4cff93b1abf21d0" name="ac220cc1061da13abb4cff93b1abf21d0"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Convert</b> (int i, int j, int conversionType)</td></tr>
+<tr class="separator:ac220cc1061da13abb4cff93b1abf21d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a297527e50446b9f3d0c2cd45fbd508c8"><td class="memItemLeft" align="right" valign="top"><a id="a297527e50446b9f3d0c2cd45fbd508c8" name="a297527e50446b9f3d0c2cd45fbd508c8"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CreateDust</b> (int i, int j, int type, ref int dustType)</td></tr>
 <tr class="separator:a297527e50446b9f3d0c2cd45fbd508c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +150,10 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreDraw</b> (i
 <tr class="memitem:a5f7fd2d4b912b3cb3a4fc3c37f78cebc"><td class="memItemLeft" align="right" valign="top"><a id="a5f7fd2d4b912b3cb3a4fc3c37f78cebc" name="a5f7fd2d4b912b3cb3a4fc3c37f78cebc"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RandomUpdate</b> (int i, int j, int type)</td></tr>
 <tr class="separator:a5f7fd2d4b912b3cb3a4fc3c37f78cebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f91c964d84df346689a44103c395617"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wall_loader.html#a6f91c964d84df346689a44103c395617">RegisterConversion</a> (int wallType, int conversionType, ConvertWall conversionDelegate)</td></tr>
+<tr class="memdesc:a6f91c964d84df346689a44103c395617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a wall type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded walls, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_wall_loader.html#a6f91c964d84df346689a44103c395617">More...</a><br /></td></tr>
+<tr class="separator:a6f91c964d84df346689a44103c395617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67ae44c6a3da0fb45ca10e1597b86007"><td class="memItemLeft" align="right" valign="top"><a id="a67ae44c6a3da0fb45ca10e1597b86007" name="a67ae44c6a3da0fb45ca10e1597b86007"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>WallFrame</b> (int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber)</td></tr>
 <tr class="separator:a67ae44c6a3da0fb45ca10e1597b86007"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,7 +166,61 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>WallCount</b><c
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This serves as the central class from which wall-related functions are supported and carried out. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6f91c964d84df346689a44103c395617" name="a6f91c964d84df346689a44103c395617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f91c964d84df346689a44103c395617">&#9670;&nbsp;</a></span>RegisterConversion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WallLoader.RegisterConversion </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wallType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ConvertWall&#160;</td>
+          <td class="paramname"><em>conversionDelegate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a wall type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded walls, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wallType</td><td>The wall type that has is affected by this custom conversion.</td></tr>
+    <tr><td class="paramname">conversionType</td><td>The conversion type for which the wall should use custom conversion code.</td></tr>
+    <tr><td class="paramname">conversionDelegate</td><td>Code to run when the wall attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.02</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -126,7 +126,7 @@ static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</t
   <a href="class_language.html#ae3cd200b00ed005379aa712464e298fc">More...</a><br /></td></tr>
 <tr class="separator:ae3cd200b00ed005379aa712464e298fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f392308c3f9927bacc3d83792b46408"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#a9f392308c3f9927bacc3d83792b46408">GetTextValue</a> (string key)</td></tr>
-<tr class="memdesc:a9f392308c3f9927bacc3d83792b46408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the text value for a specified localization key. The text returned will be for the currently selected language.  <a href="class_language.html#a9f392308c3f9927bacc3d83792b46408">More...</a><br /></td></tr>
+<tr class="memdesc:a9f392308c3f9927bacc3d83792b46408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the text value for a specified localization key. The text returned will be for the currently selected language. Note that modded localization entries are not loaded until the ModLoader.Mod.SetupContent stage, so attempting to use GetTextValue during Load methods will not work. Consider using <a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc" title="Retrieves a LocalizedText object for a specified localization key. The actual text value can be retri...">GetText</a> instead.  <a href="class_language.html#a9f392308c3f9927bacc3d83792b46408">More...</a><br /></td></tr>
 <tr class="separator:a9f392308c3f9927bacc3d83792b46408"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf03bb2bbbb9b5f19cf12ca449e16078"><td class="memItemLeft" align="right" valign="top"><a id="aaf03bb2bbbb9b5f19cf12ca449e16078" name="aaf03bb2bbbb9b5f19cf12ca449e16078"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextValue</b> (string key, object arg0)</td></tr>
@@ -343,7 +343,7 @@ If no existing localization exists for the key, it will be defined so it can be 
 </table>
 </div><div class="memdoc">
 
-<p>Retrieves the text value for a specified localization key. The text returned will be for the currently selected language. </p>
+<p>Retrieves the text value for a specified localization key. The text returned will be for the currently selected language. Note that modded localization entries are not loaded until the ModLoader.Mod.SetupContent stage, so attempting to use GetTextValue during Load methods will not work. Consider using <a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc" title="Retrieves a LocalizedText object for a specified localization key. The actual text value can be retri...">GetText</a> instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">key</td><td></td></tr>
