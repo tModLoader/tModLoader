@@ -180,7 +180,7 @@
  					}
  				}
  				if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
-@@ -573,10 +_,20 @@
+@@ -573,10 +_,19 @@
  				break;
  			case 1:
  				if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem) && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
@@ -194,7 +194,6 @@
 +						break;
 +
  					Utils.Swap(ref inv[slot], ref Main.mouseItem);
-+
  					SoundEngine.PlaySound(7);
  					if (inv[slot].stack > 0) {
 -						switch (context) {
@@ -233,11 +232,8 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
-@@ -657,9 +_,10 @@
- 			case 2:
- 				if (Main.mouseItem.stack == 1 && Main.mouseItem.dye > 0 && inv[slot].type > 0 && inv[slot].type != Main.mouseItem.type) {
+@@ -659,7 +_,7 @@
  					Utils.Swap(ref inv[slot], ref Main.mouseItem);
-+
  					SoundEngine.PlaySound(7);
  					if (inv[slot].stack > 0) {
 -						switch (context) {
@@ -337,7 +333,7 @@
  		if (Main.npcShop > 0 && !inv[slot].favorited) {
  			Chest chest = Main.instance.shop[Main.npcShop];
  			if (inv[slot].type < 71 || inv[slot].type > 74) {
-+				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, inv[slot])) { } else				
  				if (player.SellItem(inv[slot])) {
 +					// Moved below AnnounceTransfer
 +					/*

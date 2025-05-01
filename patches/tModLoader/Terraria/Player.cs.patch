@@ -4206,7 +4206,7 @@
  						int num15 = -1;
 -						if (Main.keyState.IsKeyDown(Keys.D1)) {
 +						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
-+						if (PlayerInput.Triggers.Current.Hotbar1) {
++						if (PlayerInput.Triggers.Current.Hotbar1) { 
  							num15 = 0;
  							flag10 = true;
  						}
@@ -6970,7 +6970,7 @@
  			Rectangle rectangle = new Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
  			bool flag = itemRectangle.Intersects(rectangle);
  			int type = sItem.type;
-@@ -34388,21 +_,38 @@
+@@ -34388,21 +_,39 @@
  				flag = ((!_spawnVolcanoExplosion) ? (flag || flag2) : flag2);
  			}
  
@@ -6995,8 +6995,9 @@
  			int weaponCrit = GetWeaponCrit(sItem);
  			if (Main.rand.Next(1, 101) <= weaponCrit)
  				flag3 = true;
- 
++			
 +			skipStandardCritCalcs:
+ 
 +			/*
  			int num2 = Item.NPCtoBanner(nPC.BannerID());
  			if (num2 > 0 && HasNPCBannerBuff(num2))
