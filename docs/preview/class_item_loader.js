@@ -71,6 +71,7 @@ var class_item_loader =
     [ "UpdateInventory", "class_item_loader.html#a8f2b898d35a7bfd4aecdaa5de7ca3c4d", null ],
     [ "UpdateVanity", "class_item_loader.html#a501f454f4e3472c9577cf85f15ce0ecd", null ],
     [ "UpdateVanitySet", "class_item_loader.html#adb37e5deb1a50d8f8b4e4fa0a74fd2ab", null ],
+    [ "UpdateVisibleAccessory", "class_item_loader.html#a75093c69e98a05c93ea5cd27f999427a", null ],
     [ "UseItem", "class_item_loader.html#a4508bd46594e816ba6c8811cf6f896b1", null ],
     [ "UseItemFrame", "class_item_loader.html#a949b07546df7b3f8aaf1e7bd85c78a83", null ],
     [ "UseItemHitbox", "class_item_loader.html#a8da67083aeb88eabde0ee0a8d01be3f3", null ],

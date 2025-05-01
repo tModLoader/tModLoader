@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,7 +92,9 @@ $(document).ready(function(){initNavTree('class_increment_attribute.html',''); i
 </div><!--header-->
 <div class="contents">
 
-<p>Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values. Defaults are: float: 0.01f - byte/int/uint: 1  
+<p>Use this to set an increment for sliders (if using <a class="el" href="class_slider_attribute.html" title="Affects whether this data will be presented as a slider or an input field. Add this attribute to use ...">SliderAttribute</a>) or the +/- buttons. The slider will move by the amount assigned. The +/- buttons will adjust the value by the amount as well. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values. Defaults are as follows: <br  />
+<b>float:</b> 0.01f <br  />
+<b>byte/int/uint/long/ulong:</b> 1 When using this, you might need to cast the arguments to the desired numeric type to call the correct overload.  
  <a href="class_increment_attribute.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_attribute.html">Attribute</a>.</p>
@@ -108,9 +110,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a287b442476046ce817a60deb82b47c01"><td class="memItemLeft" align="right" valign="top"><a id="a287b442476046ce817a60deb82b47c01" name="a287b442476046ce817a60deb82b47c01"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>IncrementAttribute</b> (int increment)</td></tr>
 <tr class="separator:a287b442476046ce817a60deb82b47c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dbc3f323e6d0c6e55a679ad4040baa5"><td class="memItemLeft" align="right" valign="top"><a id="a7dbc3f323e6d0c6e55a679ad4040baa5" name="a7dbc3f323e6d0c6e55a679ad4040baa5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>IncrementAttribute</b> (long increment)</td></tr>
+<tr class="separator:a7dbc3f323e6d0c6e55a679ad4040baa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67d386d22acd342de3dfec2d12107ccd"><td class="memItemLeft" align="right" valign="top"><a id="a67d386d22acd342de3dfec2d12107ccd" name="a67d386d22acd342de3dfec2d12107ccd"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>IncrementAttribute</b> (uint increment)</td></tr>
 <tr class="separator:a67d386d22acd342de3dfec2d12107ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b6d145a844c29d4f878dd7f704c0950"><td class="memItemLeft" align="right" valign="top"><a id="a3b6d145a844c29d4f878dd7f704c0950" name="a3b6d145a844c29d4f878dd7f704c0950"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>IncrementAttribute</b> (ulong increment)</td></tr>
+<tr class="separator:a3b6d145a844c29d4f878dd7f704c0950"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -119,7 +127,12 @@ object&#160;</td><td class="memItemRight" valign="bottom"><b>Increment</b><code>
 <tr class="separator:a49bfa710a63c5b1e3603a50fe0ca4158"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values. Defaults are: float: 0.01f - byte/int/uint: 1 </p>
+<div class="textblock"><p >Use this to set an increment for sliders (if using <a class="el" href="class_slider_attribute.html" title="Affects whether this data will be presented as a slider or an input field. Add this attribute to use ...">SliderAttribute</a>) or the +/- buttons. The slider will move by the amount assigned. The +/- buttons will adjust the value by the amount as well. </p>
+<p >Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values. </p>
+<p >Defaults are as follows: <br  />
+<b>float:</b> 0.01f <br  />
+<b>byte/int/uint/long/ulong:</b> 1 </p>
+<p >When using this, you might need to cast the arguments to the desired numeric type to call the correct overload. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

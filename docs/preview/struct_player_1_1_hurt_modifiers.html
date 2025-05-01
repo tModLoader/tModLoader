@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -93,6 +93,9 @@ $(document).ready(function(){initNavTree('struct_player_1_1_hurt_modifiers.html'
   <div class="headertitle"><div class="title">Player.HurtModifiers Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Represents a damage calculation in the process of being calculated for damage to be applied to a <a class="el" href="class_player.html">Player</a>. The final damage calculation will be present in the resulting <a class="el" href="struct_player_1_1_hurt_info.html" title="Represents a finalized damage calculation for damage about to be applied to a Player....">HurtInfo</a> provided to various hooks.  
+ <a href="struct_player_1_1_hurt_modifiers.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -217,11 +220,13 @@ Events</h2></td></tr>
 <tr class="memitem:a0a923ca8e55f3480471ef0e4de14af57"><td class="memItemLeft" align="right" valign="top"><a id="a0a923ca8e55f3480471ef0e4de14af57" name="a0a923ca8e55f3480471ef0e4de14af57"></a>
 HurtInfoModifier&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyHurtInfo</b> = null</td></tr>
 <tr class="memdesc:a0a923ca8e55f3480471ef0e4de14af57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use with caution and consider other alternatives first.<br  />
- Can be used to register a callback to freely modify the <a class="el" href="struct_player_1_1_hurt_info.html">HurtInfo</a> produced by ToHurtInfo before it is returned<br  />
+ Can be used to register a callback to freely modify the <a class="el" href="struct_player_1_1_hurt_info.html" title="Represents a finalized damage calculation for damage about to be applied to a Player....">HurtInfo</a> produced by ToHurtInfo before it is returned<br  />
  If multiple mods register different callbacks which modify the hurt info in different ways the results could be a mess! <br /></td></tr>
 <tr class="separator:a0a923ca8e55f3480471ef0e4de14af57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents a damage calculation in the process of being calculated for damage to be applied to a <a class="el" href="class_player.html">Player</a>. The final damage calculation will be present in the resulting <a class="el" href="struct_player_1_1_hurt_info.html" title="Represents a finalized damage calculation for damage about to be applied to a Player....">HurtInfo</a> provided to various hooks. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -97,6 +97,7 @@ var class_player =
     [ "blockExtraJumps", "class_player.html#a17723372fe66f95973d2f455b0981cb1", null ],
     [ "breath", "class_player.html#a5d4afad08867cd0283fc7dbf33974041", null ],
     [ "breathCD", "class_player.html#ac38cb5d629d17037af10b32851edb081", null ],
+    [ "breathEffectiveness", "class_player.html#ae23494ce6afc378bc6cb6412ad31f92e", null ],
     [ "breathMax", "class_player.html#afb1a86181d00d990994768e665c8b1f2", null ],
     [ "buffImmune", "class_player.html#ac060ab24f091f7549c6c8dbf56511ec0", null ],
     [ "buffTime", "class_player.html#ad65cbf630961d6c316fd46e0a23dced9", null ],

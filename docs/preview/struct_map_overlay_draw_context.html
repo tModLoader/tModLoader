@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('struct_map_overlay_draw_context.html',
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="struct_map_overlay_draw_context-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MapOverlayDrawContext Struct Reference</div></div>
 </div><!--header-->
@@ -107,11 +108,37 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac54289f6f6faac70426f43c39bdfbc8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0b5a14195c5e4b9d4f120099c39d23d"><td class="memItemLeft" align="right" valign="top"><a id="ad0b5a14195c5e4b9d4f120099c39d23d" name="ad0b5a14195c5e4b9d4f120099c39d23d"></a>
 <a class="el" href="struct_map_overlay_draw_context_1_1_draw_result.html">DrawResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (Texture2D texture, Vector2 position, Color color, <a class="el" href="struct_sprite_frame.html">SpriteFrame</a> frame, float scaleIfNotSelected, float scaleIfSelected, <a class="el" href="struct_alignment.html">Alignment</a> alignment)</td></tr>
-<tr class="memdesc:ad0b5a14195c5e4b9d4f120099c39d23d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the texture (icon) over the map using the provided arguments. Check the returned DrawResult.IsMouseOver to check if the mouse is hovering over this icon. This is usually used to assign the <code>text</code> parameter of ModLoader.ModMapLayer.Draw(ref MapOverlayDrawContext, ref string) to the hover text of the icon. Note that the <em>position</em>  argument expects tile coordinates expressed as a Vector2. Don't scale tile coordinates to world coordinates by multiplying by 16. If you are working with world coordinates you'll need to divide them by 16 to convert them to tile coordinates. <br /></td></tr>
 <tr class="separator:ad0b5a14195c5e4b9d4f120099c39d23d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad482e3cd177cecce84d14dbcc820e8f1"><td class="memItemLeft" align="right" valign="top"><a id="ad482e3cd177cecce84d14dbcc820e8f1" name="ad482e3cd177cecce84d14dbcc820e8f1"></a>
+<a class="el" href="struct_map_overlay_draw_context_1_1_draw_result.html">DrawResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (Texture2D texture, Vector2 position, Color color, <a class="el" href="struct_sprite_frame.html">SpriteFrame</a> frame, float scaleIfNotSelected, float scaleIfSelected, <a class="el" href="struct_alignment.html">Alignment</a> alignment, SpriteEffects spriteEffects)</td></tr>
+<tr class="memdesc:ad482e3cd177cecce84d14dbcc820e8f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the texture (icon) over the map using the provided arguments. Check the returned DrawResult.IsMouseOver to check if the mouse is hovering over this icon. This is usually used to assign the <code>text</code> parameter of ModLoader.ModMapLayer.Draw(ref MapOverlayDrawContext, ref string) to the hover text of the icon. Note that the <em>position</em>  argument expects tile coordinates expressed as a Vector2. Don't scale tile coordinates to world coordinates by multiplying by 16. If you are working with world coordinates you'll need to divide them by 16 to convert them to tile coordinates. <br /></td></tr>
+<tr class="separator:ad482e3cd177cecce84d14dbcc820e8f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38b40e6a75b0bbb868f635872a02a33a"><td class="memItemLeft" align="right" valign="top"><a id="a38b40e6a75b0bbb868f635872a02a33a" name="a38b40e6a75b0bbb868f635872a02a33a"></a>
 <a class="el" href="struct_map_overlay_draw_context_1_1_draw_result.html">DrawResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (Texture2D texture, Vector2 position, <a class="el" href="struct_sprite_frame.html">SpriteFrame</a> frame, <a class="el" href="struct_alignment.html">Alignment</a> alignment)</td></tr>
 <tr class="separator:a38b40e6a75b0bbb868f635872a02a33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:aa0c048d330c43e98fcf436dcc77fd174"><td class="memItemLeft" align="right" valign="top"><a id="aa0c048d330c43e98fcf436dcc77fd174" name="aa0c048d330c43e98fcf436dcc77fd174"></a>
+readonly? Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>ClippingRectangle</b><code> [get]</code></td></tr>
+<tr class="memdesc:aa0c048d330c43e98fcf436dcc77fd174"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bounding box of the map in screen coordinates. This is used in vanilla to make icons disappear on the minimap when they go out of view. Note this only applies to the minimap and will be <code>null</code> when drawing the overlay and fullscreen maps. <br /></td></tr>
+<tr class="separator:aa0c048d330c43e98fcf436dcc77fd174"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef6f540bdf4135ae8a9c9dfbb4b2ffed"><td class="memItemLeft" align="right" valign="top"><a id="aef6f540bdf4135ae8a9c9dfbb4b2ffed" name="aef6f540bdf4135ae8a9c9dfbb4b2ffed"></a>
+readonly float&#160;</td><td class="memItemRight" valign="bottom"><b>DrawScale</b><code> [get]</code></td></tr>
+<tr class="memdesc:aef6f540bdf4135ae8a9c9dfbb4b2ffed"><td class="mdescLeft">&#160;</td><td class="mdescRight">A scale multiplier for the size of the icons on the map. This is typically passed as the 'scale' parameter of draw calls and accounts for things like Main.UIScale. <br /></td></tr>
+<tr class="separator:aef6f540bdf4135ae8a9c9dfbb4b2ffed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e504374f7079a7ba7e98f9986e6449c"><td class="memItemLeft" align="right" valign="top"><a id="a7e504374f7079a7ba7e98f9986e6449c" name="a7e504374f7079a7ba7e98f9986e6449c"></a>
+readonly Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MapOffset</b><code> [get]</code></td></tr>
+<tr class="memdesc:a7e504374f7079a7ba7e98f9986e6449c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the top left corner of the map in screen coordinates. <br /></td></tr>
+<tr class="separator:a7e504374f7079a7ba7e98f9986e6449c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15a172d96c90f556775e266f24bbb1cd"><td class="memItemLeft" align="right" valign="top"><a id="a15a172d96c90f556775e266f24bbb1cd" name="a15a172d96c90f556775e266f24bbb1cd"></a>
+readonly Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MapPosition</b><code> [get]</code></td></tr>
+<tr class="memdesc:a15a172d96c90f556775e266f24bbb1cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tile coordinate that the top left corner of the map is showing. Note that this will always be Vector2.Zero when drawing the overlay and fullscreen maps. <br /></td></tr>
+<tr class="separator:a15a172d96c90f556775e266f24bbb1cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affbfc254f8d6ae8c77746bb12b8498fc"><td class="memItemLeft" align="right" valign="top"><a id="affbfc254f8d6ae8c77746bb12b8498fc" name="affbfc254f8d6ae8c77746bb12b8498fc"></a>
+readonly float&#160;</td><td class="memItemRight" valign="bottom"><b>MapScale</b><code> [get]</code></td></tr>
+<tr class="memdesc:affbfc254f8d6ae8c77746bb12b8498fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A scale multiplier for the size of the tiles on the map. See Main.mapMinimapScale, Main.mapFullscreenScale, and Main.mapOverlayScale. <br /></td></tr>
+<tr class="separator:affbfc254f8d6ae8c77746bb12b8498fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

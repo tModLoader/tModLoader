@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -89,6 +89,7 @@ $(document).ready(function(){initNavTree('class_tile_drawing.html',''); initResi
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_tile_drawing-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TileDrawing Class Reference</div></div>
@@ -157,9 +158,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CrawlToTopOfVineAndAd
 <tr class="memitem:a01dc0d84a570e822e96f8b282535fcc0"><td class="memItemLeft" align="right" valign="top"><a id="a01dc0d84a570e822e96f8b282535fcc0" name="a01dc0d84a570e822e96f8b282535fcc0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (bool solidLayer, bool forRenderTargets, bool intoRenderTargets, int waterStyleOverride=-1)</td></tr>
 <tr class="separator:a01dc0d84a570e822e96f8b282535fcc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ce07a58e0f7ba653d28299717f86b5"><td class="memItemLeft" align="right" valign="top"><a id="a92ce07a58e0f7ba653d28299717f86b5" name="a92ce07a58e0f7ba653d28299717f86b5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawAnimatedTile_AdjustForVisionChangers</b> (int i, int j, <a class="el" href="struct_tile.html">Tile</a> tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)</td></tr>
+<tr class="separator:a92ce07a58e0f7ba653d28299717f86b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b3895909459e767b4c1e22dbb884f6b"><td class="memItemLeft" align="right" valign="top"><a id="a9b3895909459e767b4c1e22dbb884f6b" name="a9b3895909459e767b4c1e22dbb884f6b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawLiquidBehindTiles</b> (int waterStyleOverride=-1)</td></tr>
 <tr class="separator:a9b3895909459e767b4c1e22dbb884f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b37bfda3f0dc98dcc77c036cd224bc4"><td class="memItemLeft" align="right" valign="top"><a id="a2b37bfda3f0dc98dcc77c036cd224bc4" name="a2b37bfda3f0dc98dcc77c036cd224bc4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawTiles_EmitParticles</b> (int j, int i, <a class="el" href="struct_tile.html">Tile</a> tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)</td></tr>
+<tr class="separator:a2b37bfda3f0dc98dcc77c036cd224bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6df169adf2c8f5633790dc49e340889a"><td class="memItemLeft" align="right" valign="top"><a id="a6df169adf2c8f5633790dc49e340889a" name="a6df169adf2c8f5633790dc49e340889a"></a>
+Color&#160;</td><td class="memItemRight" valign="bottom"><b>DrawTiles_GetLightOverride</b> (int j, int i, <a class="el" href="struct_tile.html">Tile</a> tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)</td></tr>
+<tr class="separator:a6df169adf2c8f5633790dc49e340889a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02189b771b065777d7952f6713cdca80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_drawing.html#a02189b771b065777d7952f6713cdca80">EmitLivingTreeLeaf</a> (int i, int j, int leafGoreType)</td></tr>
 <tr class="memdesc:a02189b771b065777d7952f6713cdca80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emits a single living tree leaf or other gore instance directly below the target tile.<br  />
  With a 50% chance, also emits a second leaf or other gore instance directly to the side of the target tile, dependent on wind direction.<br  />
@@ -174,6 +184,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawLiquidBehindTiles
 <tr class="memdesc:a7bc4d74d7f3676df9d16be1e84203ff7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emits a single living tree leaf or other gore instance directly to the side of the target tile, dependent on wind direction.<br  />
   <a href="class_tile_drawing.html#a7bc4d74d7f3676df9d16be1e84203ff7">More...</a><br /></td></tr>
 <tr class="separator:a7bc4d74d7f3676df9d16be1e84203ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf631ef4dc3c850f56f1f9d939bf90d9"><td class="memItemLeft" align="right" valign="top"><a id="abf631ef4dc3c850f56f1f9d939bf90d9" name="abf631ef4dc3c850f56f1f9d939bf90d9"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>GetHighestWindGridPushComplex</b> (int topLeftX, int topLeftY, int sizeX, int sizeY, int totalPushTime, float pushForcePerFrame, int loops, bool swapLoopDir)</td></tr>
+<tr class="memdesc:abf631ef4dc3c850f56f1f9d939bf90d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how much wind should affect a multitile of the given size and top left target location on the current update tick. Similar to <a class="el" href="class_tile_drawing.html#a0a974e7cce603c1475e06cc59403f48e" title="Determines how much wind should affect a theoretical tile at the target location on the current updat...">GetWindGridPushComplex</a>, but for a multitile area instead of a single tile. <br /></td></tr>
+<tr class="separator:abf631ef4dc3c850f56f1f9d939bf90d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae75724b3584f2abc954c364fdcd366c"><td class="memItemLeft" align="right" valign="top"><a id="aae75724b3584f2abc954c364fdcd366c" name="aae75724b3584f2abc954c364fdcd366c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileDrawData</b> (int x, int y, <a class="el" href="struct_tile.html">Tile</a> tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)</td></tr>
 <tr class="separator:aae75724b3584f2abc954c364fdcd366c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,6 +197,9 @@ Texture2D&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileDrawTextu
 <tr class="memitem:a450154113644915f7fd9f8c2850fd556"><td class="memItemLeft" align="right" valign="top"><a id="a450154113644915f7fd9f8c2850fd556" name="a450154113644915f7fd9f8c2850fd556"></a>
 Texture2D&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileDrawTexture</b> (<a class="el" href="struct_tile.html">Tile</a> tile, int tileX, int tileY, int paintOverride)</td></tr>
 <tr class="separator:a450154113644915f7fd9f8c2850fd556"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc64a742dfdee589eb33a15835a98cec"><td class="memItemLeft" align="right" valign="top"><a id="acc64a742dfdee589eb33a15835a98cec" name="acc64a742dfdee589eb33a15835a98cec"></a>
+<a class="el" href="struct_tile_drawing_1_1_tile_flame_data.html">TileFlameData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileFlameData</b> (int tileX, int tileY, int type, int tileFrameY)</td></tr>
+<tr class="separator:acc64a742dfdee589eb33a15835a98cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d8e1eeeecc9edcabad2342ea30a3f87"><td class="memItemLeft" align="right" valign="top"><a id="a3d8e1eeeecc9edcabad2342ea30a3f87" name="a3d8e1eeeecc9edcabad2342ea30a3f87"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileOutlineInfo</b> (int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor)</td></tr>
 <tr class="separator:a3d8e1eeeecc9edcabad2342ea30a3f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +213,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileOutlineInfo</b
 <tr class="memdesc:a0a974e7cce603c1475e06cc59403f48e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how much wind should affect a theoretical tile at the target location on the current update tick.<br  />
  More complex version of <a class="el" href="class_tile_drawing.html#abe15be9a969503e07756f13a89d5923e" title="Determines how much wind should affect a theoretical tile at the target location on the current updat...">GetWindGridPush</a>.  <a href="class_tile_drawing.html#a0a974e7cce603c1475e06cc59403f48e">More...</a><br /></td></tr>
 <tr class="separator:a0a974e7cce603c1475e06cc59403f48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29dfe68a43fe76abca36bad321f80177"><td class="memItemLeft" align="right" valign="top"><a id="a29dfe68a43fe76abca36bad321f80177" name="a29dfe68a43fe76abca36bad321f80177"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>InAPlaceWithWind</b> (int x, int y, int width, int height)</td></tr>
+<tr class="separator:a29dfe68a43fe76abca36bad321f80177"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a571485737560e3fb67c3ebe2d79e4290"><td class="memItemLeft" align="right" valign="top"><a id="a571485737560e3fb67c3ebe2d79e4290" name="a571485737560e3fb67c3ebe2d79e4290"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PostDrawTiles</b> (bool solidLayer, bool forRenderTargets, bool intoRenderTargets)</td></tr>
 <tr class="separator:a571485737560e3fb67c3ebe2d79e4290"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,6 +260,21 @@ Vanilla only uses <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d
 <tr class="memitem:a659c5f36626e9f85d00ba2da8c2bd6d0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_drawing.html#a659c5f36626e9f85d00ba2da8c2bd6d0">IsVisible</a> (<a class="el" href="struct_tile.html">Tile</a> tile)</td></tr>
 <tr class="memdesc:a659c5f36626e9f85d00ba2da8c2bd6d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the tile is visible. Tiles painted with Echo Coating as well as the Echo Platform, Echo Block, and Ghostly Stinkbug Blocker tiles will all be invisible unless the player has Echo Sight (Nearby active Echo Chamber tile or wearing Spectre Goggles)  <a href="class_tile_drawing.html#a659c5f36626e9f85d00ba2da8c2bd6d0">More...</a><br /></td></tr>
 <tr class="separator:a659c5f36626e9f85d00ba2da8c2bd6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aa0b34a1461952ce912b338083c913f4f"><td class="memItemLeft" align="right" valign="top"><a id="aa0b34a1461952ce912b338083c913f4f" name="aa0b34a1461952ce912b338083c913f4f"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>_grassWindCounter</b></td></tr>
+<tr class="separator:aa0b34a1461952ce912b338083c913f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564afdd28673a21b676f21c4fab940a5"><td class="memItemLeft" align="right" valign="top"><a id="a564afdd28673a21b676f21c4fab940a5" name="a564afdd28673a21b676f21c4fab940a5"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>_sunflowerWindCounter</b></td></tr>
+<tr class="separator:a564afdd28673a21b676f21c4fab940a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e15a13a4cc02ba05334b7fe58ebf657"><td class="memItemLeft" align="right" valign="top"><a id="a1e15a13a4cc02ba05334b7fe58ebf657" name="a1e15a13a4cc02ba05334b7fe58ebf657"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>_treeWindCounter</b></td></tr>
+<tr class="separator:a1e15a13a4cc02ba05334b7fe58ebf657"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3aebe7f94f21b8805e12d3103aee099"><td class="memItemLeft" align="right" valign="top"><a id="ae3aebe7f94f21b8805e12d3103aee099" name="ae3aebe7f94f21b8805e12d3103aee099"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>_vineWindCounter</b></td></tr>
+<tr class="separator:ae3aebe7f94f21b8805e12d3103aee099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -101,140 +101,133 @@ $(document).ready(function(){initNavTree('class_global_projectile.html',''); ini
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae382cd43946d98f63705ba53f11e95c4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#ae382cd43946d98f63705ba53f11e95c4">AI</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:ae382cd43946d98f63705ba53f11e95c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any projectile behaves. This will only be called if PreAI returns true.   <a href="class_global_projectile.html#ae382cd43946d98f63705ba53f11e95c4">More...</a><br /></td></tr>
+<tr class="memdesc:ae382cd43946d98f63705ba53f11e95c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any projectile behaves. This will only be called if PreAI returns true.  Called on local, server, and remote clients.  <a href="class_global_projectile.html#ae382cd43946d98f63705ba53f11e95c4">More...</a><br /></td></tr>
 <tr class="separator:ae382cd43946d98f63705ba53f11e95c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3f4a96e191b663a18a2954e937e3859"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859">CanCutTiles</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:ad3f4a96e191b663a18a2954e937e3859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.  <a href="class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859">More...</a><br /></td></tr>
+<tr class="memdesc:ad3f4a96e191b663a18a2954e937e3859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision. Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859">More...</a><br /></td></tr>
 <tr class="separator:ad3f4a96e191b663a18a2954e937e3859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a753c7dee80e6baa02563972e3ee8ca4c"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a753c7dee80e6baa02563972e3ee8ca4c">CanDamage</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:a753c7dee80e6baa02563972e3ee8ca4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Return true if you want the projectile to do damage regardless of the default blacklist. Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.  <a href="class_global_projectile.html#a753c7dee80e6baa02563972e3ee8ca4c">More...</a><br /></td></tr>
+<tr class="memdesc:a753c7dee80e6baa02563972e3ee8ca4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Return true if you want the projectile to do damage regardless of the default blacklist. Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default. Called on local, server, and remote clients.  <a href="class_global_projectile.html#a753c7dee80e6baa02563972e3ee8ca4c">More...</a><br /></td></tr>
 <tr class="separator:a753c7dee80e6baa02563972e3ee8ca4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ba4688ef1a35afaf9eee211f8215152"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a1ba4688ef1a35afaf9eee211f8215152">CanHitNPC</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_n_p_c.html">NPC</a> target)</td></tr>
-<tr class="memdesc:a1ba4688ef1a35afaf9eee211f8215152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a projectile can hit the given <a class="el" href="class_n_p_c.html">NPC</a>. Return true to allow hitting the target, return false to block the projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.  <a href="class_global_projectile.html#a1ba4688ef1a35afaf9eee211f8215152">More...</a><br /></td></tr>
+<tr class="memdesc:a1ba4688ef1a35afaf9eee211f8215152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a projectile can hit the given <a class="el" href="class_n_p_c.html">NPC</a>. Return true to allow hitting the target, return false to block the projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default. Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#a1ba4688ef1a35afaf9eee211f8215152">More...</a><br /></td></tr>
 <tr class="separator:a1ba4688ef1a35afaf9eee211f8215152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d97d78bc59bbfffc14c6ff2a5f06085"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a8d97d78bc59bbfffc14c6ff2a5f06085">CanHitPlayer</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> target)</td></tr>
-<tr class="memdesc:a8d97d78bc59bbfffc14c6ff2a5f06085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a hostile projectile can hit the given player. Return false to block the projectile from hitting the target. Returns true by default.  <a href="class_global_projectile.html#a8d97d78bc59bbfffc14c6ff2a5f06085">More...</a><br /></td></tr>
+<tr class="memdesc:a8d97d78bc59bbfffc14c6ff2a5f06085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a hostile projectile can hit the given player. Return false to block the projectile from hitting the target. Returns true by default. Called on the server only.  <a href="class_global_projectile.html#a8d97d78bc59bbfffc14c6ff2a5f06085">More...</a><br /></td></tr>
 <tr class="separator:a8d97d78bc59bbfffc14c6ff2a5f06085"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3acb66c947f9aa8d1982ee67a996dedc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a3acb66c947f9aa8d1982ee67a996dedc">CanHitPvp</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> target)</td></tr>
-<tr class="memdesc:a3acb66c947f9aa8d1982ee67a996dedc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a projectile can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.  <a href="class_global_projectile.html#a3acb66c947f9aa8d1982ee67a996dedc">More...</a><br /></td></tr>
+<tr class="memdesc:a3acb66c947f9aa8d1982ee67a996dedc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether a projectile can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default. Called on the client hitting the target.  <a href="class_global_projectile.html#a3acb66c947f9aa8d1982ee67a996dedc">More...</a><br /></td></tr>
 <tr class="separator:a3acb66c947f9aa8d1982ee67a996dedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4198a3eb67f263b0908a34670a747560"><td class="memItemLeft" align="right" valign="top"><a id="a4198a3eb67f263b0908a34670a747560" name="a4198a3eb67f263b0908a34670a747560"></a>
 virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseGrapple</b> (int type, <a class="el" href="class_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a4198a3eb67f263b0908a34670a747560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default. <br /></td></tr>
+<tr class="memdesc:a4198a3eb67f263b0908a34670a747560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default. Called on the local client only. <br /></td></tr>
 <tr class="separator:a4198a3eb67f263b0908a34670a747560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a879804e1fe16878669c695542bce30ac"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a879804e1fe16878669c695542bce30ac">Colliding</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, Rectangle projHitbox, Rectangle targetHitbox)</td></tr>
-<tr class="memdesc:a879804e1fe16878669c695542bce30ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use custom collision detection between a projectile and a player or <a class="el" href="class_n_p_c.html">NPC</a> that the projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc.  <a href="class_global_projectile.html#a879804e1fe16878669c695542bce30ac">More...</a><br /></td></tr>
+<tr class="memdesc:a879804e1fe16878669c695542bce30ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use custom collision detection between a projectile and a player or <a class="el" href="class_n_p_c.html">NPC</a> that the projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc. Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#a879804e1fe16878669c695542bce30ac">More...</a><br /></td></tr>
 <tr class="separator:a879804e1fe16878669c695542bce30ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa280593fd4a5a8ae59c6155c7003b4ac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#aa280593fd4a5a8ae59c6155c7003b4ac">CutTiles</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:aa280593fd4a5a8ae59c6155c7003b4ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">CanCutTiles()</a> returns true. Useful when programming lasers and such.  <a href="class_global_projectile.html#aa280593fd4a5a8ae59c6155c7003b4ac">More...</a><br /></td></tr>
+<tr class="memdesc:aa280593fd4a5a8ae59c6155c7003b4ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">CanCutTiles()</a> returns true. Useful when programming lasers and such. Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#aa280593fd4a5a8ae59c6155c7003b4ac">More...</a><br /></td></tr>
 <tr class="separator:aa280593fd4a5a8ae59c6155c7003b4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f9e00da967e11713bf0ddb174ace4cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a1f9e00da967e11713bf0ddb174ace4cf">DrawBehind</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int index, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindNPCsAndTiles, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindNPCs, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindProjectiles, <a class="el" href="class_list.html">List</a>&lt; int &gt; overPlayers, <a class="el" href="class_list.html">List</a>&lt; int &gt; overWiresUI)</td></tr>
-<tr class="memdesc:a1f9e00da967e11713bf0ddb174ace4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.  <a href="class_global_projectile.html#a1f9e00da967e11713bf0ddb174ace4cf">More...</a><br /></td></tr>
+<tr class="memdesc:a1f9e00da967e11713bf0ddb174ace4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. Called on local and remote clients.  <a href="class_global_projectile.html#a1f9e00da967e11713bf0ddb174ace4cf">More...</a><br /></td></tr>
 <tr class="separator:a1f9e00da967e11713bf0ddb174ace4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a389fd74e5373373ce71c4c150605c2a8"><td class="memItemLeft" align="right" valign="top"><a id="a389fd74e5373373ce71c4c150605c2a8" name="a389fd74e5373373ce71c4c150605c2a8"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>EmitEnchantmentVisualsAt</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, Vector2 boxPosition, int boxWidth, int boxHeight)</td></tr>
 <tr class="separator:a389fd74e5373373ce71c4c150605c2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc285f00d9b30c848c3a09bf72ab3e19"><td class="memItemLeft" align="right" valign="top">virtual ? Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#afc285f00d9b30c848c3a09bf72ab3e19">GetAlpha</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, Color lightColor)</td></tr>
-<tr class="memdesc:afc285f00d9b30c848c3a09bf72ab3e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which a projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.  <a href="class_global_projectile.html#afc285f00d9b30c848c3a09bf72ab3e19">More...</a><br /></td></tr>
+<tr class="memdesc:afc285f00d9b30c848c3a09bf72ab3e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which a projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. Called on local and remote clients.  <a href="class_global_projectile.html#afc285f00d9b30c848c3a09bf72ab3e19">More...</a><br /></td></tr>
 <tr class="separator:afc285f00d9b30c848c3a09bf72ab3e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cff32f253b958654907864b83c1687c"><td class="memItemLeft" align="right" valign="top"><a id="a8cff32f253b958654907864b83c1687c" name="a8cff32f253b958654907864b83c1687c"></a>
 virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleCanLatchOnTo</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> player, int x, int y)</td></tr>
-<tr class="memdesc:a8cff32f253b958654907864b83c1687c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the grappling hook can latch onto the given position in tile coordinates. <br  />
-This position may be air or an actuated tile! <br  />
-Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default. <br /></td></tr>
+<tr class="memdesc:a8cff32f253b958654907864b83c1687c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the grappling hook can latch onto the given position in tile coordinates. This position may be air or an actuated tile! Return true to make it latch, false to prevent it, or null to apply vanilla conditions. Returns null by default. Called on local, server, and remote clients. <br /></td></tr>
 <tr class="separator:a8cff32f253b958654907864b83c1687c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a697d37549978cf832d78bbd33ed59985"><td class="memItemLeft" align="right" valign="top"><a id="a697d37549978cf832d78bbd33ed59985" name="a697d37549978cf832d78bbd33ed59985"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrapplePullSpeed</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> player, ref float speed)</td></tr>
-<tr class="memdesc:a697d37549978cf832d78bbd33ed59985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16. <br /></td></tr>
+<tr class="memdesc:a697d37549978cf832d78bbd33ed59985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed at which the grapple pulls the player after hitting something. Defaults to 11, but the Bat Hook uses 16. Called on local, server, and remote clients. <br /></td></tr>
 <tr class="separator:a697d37549978cf832d78bbd33ed59985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2063b0c6e9419e4f998bf424efe515ee"><td class="memItemLeft" align="right" valign="top"><a id="a2063b0c6e9419e4f998bf424efe515ee" name="a2063b0c6e9419e4f998bf424efe515ee"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleRetreatSpeed</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> player, ref float speed)</td></tr>
-<tr class="memdesc:a2063b0c6e9419e4f998bf424efe515ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24. <br /></td></tr>
+<tr class="memdesc:a2063b0c6e9419e4f998bf424efe515ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed at which the grapple retreats back to the player after not hitting anything. Defaults to 11, but vanilla hooks go up to 24. Called on local, server, and remote clients. <br /></td></tr>
 <tr class="separator:a2063b0c6e9419e4f998bf424efe515ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bca3eda926bf9c9f33709c29c974c99"><td class="memItemLeft" align="right" valign="top"><a id="a9bca3eda926bf9c9f33709c29c974c99" name="a9bca3eda926bf9c9f33709c29c974c99"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>GrappleTargetPoint</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> player, ref float grappleX, ref float grappleY)</td></tr>
-<tr class="memdesc:a9bca3eda926bf9c9f33709c29c974c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile. <br /></td></tr>
+<tr class="memdesc:a9bca3eda926bf9c9f33709c29c974c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile. Called on local, server, and remote clients. <br /></td></tr>
 <tr class="separator:a9bca3eda926bf9c9f33709c29c974c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8549625bd6f77b103d841c06bd4358f3"><td class="memItemLeft" align="right" valign="top"><a id="a8549625bd6f77b103d841c06bd4358f3" name="a8549625bd6f77b103d841c06bd4358f3"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Kill</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
 <tr class="separator:a8549625bd6f77b103d841c06bd4358f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88d91943cb6bc13dae77215521fbfd3f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f">MinionContactDamage</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:a88d91943cb6bc13dae77215521fbfd3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet.  <a href="class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f">More...</a><br /></td></tr>
+<tr class="memdesc:a88d91943cb6bc13dae77215521fbfd3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet. Called on local, server, and remote clients.  <a href="class_global_projectile.html#a88d91943cb6bc13dae77215521fbfd3f">More...</a><br /></td></tr>
 <tr class="separator:a88d91943cb6bc13dae77215521fbfd3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95833a5b7ef90ea821dba19c39cf498c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a95833a5b7ef90ea821dba19c39cf498c">ModifyDamageHitbox</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, ref Rectangle hitbox)</td></tr>
-<tr class="memdesc:a95833a5b7ef90ea821dba19c39cf498c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by a projectile for damaging players and NPCs.  <a href="class_global_projectile.html#a95833a5b7ef90ea821dba19c39cf498c">More...</a><br /></td></tr>
+<tr class="memdesc:a95833a5b7ef90ea821dba19c39cf498c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by a projectile for damaging players and NPCs. Called on local, server, and remote clients.  <a href="class_global_projectile.html#a95833a5b7ef90ea821dba19c39cf498c">More...</a><br /></td></tr>
 <tr class="separator:a95833a5b7ef90ea821dba19c39cf498c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e0c4dd070b49cbd6733afdb3bbfbe39"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a4e0c4dd070b49cbd6733afdb3bbfbe39">ModifyHitNPC</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_n_p_c.html">NPC</a> target, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
-<tr class="memdesc:a4e0c4dd070b49cbd6733afdb3bbfbe39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that a projectile does to an <a class="el" href="class_n_p_c.html">NPC</a>. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_global_projectile.html#a4e0c4dd070b49cbd6733afdb3bbfbe39">More...</a><br /></td></tr>
+<tr class="memdesc:a4e0c4dd070b49cbd6733afdb3bbfbe39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that a projectile does to an <a class="el" href="class_n_p_c.html">NPC</a>. Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#a4e0c4dd070b49cbd6733afdb3bbfbe39">More...</a><br /></td></tr>
 <tr class="separator:a4e0c4dd070b49cbd6733afdb3bbfbe39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2209322b5b62212dc783793593b013d1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a2209322b5b62212dc783793593b013d1">ModifyHitPlayer</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> target, ref <a class="el" href="struct_player_1_1_hurt_modifiers.html">Player.HurtModifiers</a> modifiers)</td></tr>
-<tr class="memdesc:a2209322b5b62212dc783793593b013d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a hostile projectile does to a player.  <a href="class_global_projectile.html#a2209322b5b62212dc783793593b013d1">More...</a><br /></td></tr>
+<tr class="memdesc:a2209322b5b62212dc783793593b013d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a hostile projectile does to a player. Called on the client taking damage.  <a href="class_global_projectile.html#a2209322b5b62212dc783793593b013d1">More...</a><br /></td></tr>
 <tr class="separator:a2209322b5b62212dc783793593b013d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdd60cd89fbd36fdf5762123b8ce92"><td class="memItemLeft" align="right" valign="top"><a id="a6dcdd60cd89fbd36fdf5762123b8ce92" name="a6dcdd60cd89fbd36fdf5762123b8ce92"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NumGrappleHooks</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> player, ref int numHooks)</td></tr>
-<tr class="memdesc:a6dcdd60cd89fbd36fdf5762123b8ce92"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3. <br /></td></tr>
+<tr class="memdesc:a6dcdd60cd89fbd36fdf5762123b8ce92"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3. Called on the local client only. <br /></td></tr>
 <tr class="separator:a6dcdd60cd89fbd36fdf5762123b8ce92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a08fc927070c2999498affbb00e7b25"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a6a08fc927070c2999498affbb00e7b25">OnHitNPC</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_n_p_c.html">NPC</a> target, <a class="el" href="struct_n_p_c_1_1_hit_info.html">NPC.HitInfo</a> hit, int damageDone)</td></tr>
-<tr class="memdesc:a6a08fc927070c2999498affbb00e7b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a projectile hits an <a class="el" href="class_n_p_c.html">NPC</a> (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_global_projectile.html#a6a08fc927070c2999498affbb00e7b25">More...</a><br /></td></tr>
+<tr class="memdesc:a6a08fc927070c2999498affbb00e7b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a projectile hits an <a class="el" href="class_n_p_c.html">NPC</a> (for example, inflicting debuffs). Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#a6a08fc927070c2999498affbb00e7b25">More...</a><br /></td></tr>
 <tr class="separator:a6a08fc927070c2999498affbb00e7b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a124c3a586e8c1eeb6fd81eb8b59b1c0f">OnHitPlayer</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_player.html">Player</a> target, <a class="el" href="struct_player_1_1_hurt_info.html">Player.HurtInfo</a> info)</td></tr>
 <tr class="memdesc:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a hostile projectile hits a player. <br  />
- Only runs on the local client in multiplayer.  <a href="class_global_projectile.html#a124c3a586e8c1eeb6fd81eb8b59b1c0f">More...</a><br /></td></tr>
+ Called on the client taking damage.  <a href="class_global_projectile.html#a124c3a586e8c1eeb6fd81eb8b59b1c0f">More...</a><br /></td></tr>
 <tr class="separator:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd4b89da038710058b217f6b8a309ae5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">OnKill</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
-<tr class="memdesc:afd4b89da038710058b217f6b8a309ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds).  <a href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">More...</a><br /></td></tr>
+<tr class="memdesc:afd4b89da038710058b217f6b8a309ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">More...</a><br /></td></tr>
 <tr class="separator:afd4b89da038710058b217f6b8a309ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e5a20d5923e842b14cfe959ca515138"><td class="memItemLeft" align="right" valign="top"><a id="a5e5a20d5923e842b14cfe959ca515138" name="a5e5a20d5923e842b14cfe959ca515138"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
-<tr class="memdesc:a5e5a20d5923e842b14cfe959ca515138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any projectiles spawns in world <br /></td></tr>
+<tr class="memdesc:a5e5a20d5923e842b14cfe959ca515138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any projectiles spawns in world Called on the client or server spawning the projectile via <a class="el" href="class_projectile.html#a12d3dcb18e6aaafa375f02747fe388f6" title="This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and...">Projectile.NewProjectile</a>. <br /></td></tr>
 <tr class="separator:a5e5a20d5923e842b14cfe959ca515138"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8e35ed4da134f82eb1497e1f25f7ebe"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#ae8e35ed4da134f82eb1497e1f25f7ebe">OnTileCollide</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, Vector2 oldVelocity)</td></tr>
-<tr class="memdesc:ae8e35ed4da134f82eb1497e1f25f7ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when a projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.  <a href="class_global_projectile.html#ae8e35ed4da134f82eb1497e1f25f7ebe">More...</a><br /></td></tr>
+<tr class="memdesc:ae8e35ed4da134f82eb1497e1f25f7ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when a projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default. Called on local, server, and remote clients.  <a href="class_global_projectile.html#ae8e35ed4da134f82eb1497e1f25f7ebe">More...</a><br /></td></tr>
 <tr class="separator:ae8e35ed4da134f82eb1497e1f25f7ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c55cf1e52b090382507fa515d8b3712"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a1c55cf1e52b090382507fa515d8b3712">PostAI</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:a1c55cf1e52b090382507fa515d8b3712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any projectile behaves. This will be called regardless of what PreAI returns.   <a href="class_global_projectile.html#a1c55cf1e52b090382507fa515d8b3712">More...</a><br /></td></tr>
+<tr class="memdesc:a1c55cf1e52b090382507fa515d8b3712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any projectile behaves. This will be called regardless of what PreAI returns.  Called on local, server, and remote clients.  <a href="class_global_projectile.html#a1c55cf1e52b090382507fa515d8b3712">More...</a><br /></td></tr>
 <tr class="separator:a1c55cf1e52b090382507fa515d8b3712"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d495c6f4474fc336eefb49a1dad54c9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a7d495c6f4474fc336eefb49a1dad54c9">PostDraw</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, Color lightColor)</td></tr>
-<tr class="memdesc:a7d495c6f4474fc336eefb49a1dad54c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. This method is called even if PreDraw returns false.  <a href="class_global_projectile.html#a7d495c6f4474fc336eefb49a1dad54c9">More...</a><br /></td></tr>
+<tr class="memdesc:a7d495c6f4474fc336eefb49a1dad54c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. This method is called even if PreDraw returns false. Called on local and remote clients.  <a href="class_global_projectile.html#a7d495c6f4474fc336eefb49a1dad54c9">More...</a><br /></td></tr>
 <tr class="separator:a7d495c6f4474fc336eefb49a1dad54c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06f3edfe13af2f84d8d86bcdbddbf1c6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a06f3edfe13af2f84d8d86bcdbddbf1c6">PreAI</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:a06f3edfe13af2f84d8d86bcdbddbf1c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.   <a href="class_global_projectile.html#a06f3edfe13af2f84d8d86bcdbddbf1c6">More...</a><br /></td></tr>
+<tr class="memdesc:a06f3edfe13af2f84d8d86bcdbddbf1c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.  Called on local, server, and remote clients.  <a href="class_global_projectile.html#a06f3edfe13af2f84d8d86bcdbddbf1c6">More...</a><br /></td></tr>
 <tr class="separator:a06f3edfe13af2f84d8d86bcdbddbf1c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac78cad6eb87a2801a722a7175d535a09"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#ac78cad6eb87a2801a722a7175d535a09">PreDraw</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, ref Color lightColor)</td></tr>
-<tr class="memdesc:ac78cad6eb87a2801a722a7175d535a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.  <a href="class_global_projectile.html#ac78cad6eb87a2801a722a7175d535a09">More...</a><br /></td></tr>
+<tr class="memdesc:ac78cad6eb87a2801a722a7175d535a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default. Called on local and remote clients.  <a href="class_global_projectile.html#ac78cad6eb87a2801a722a7175d535a09">More...</a><br /></td></tr>
 <tr class="separator:ac78cad6eb87a2801a722a7175d535a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7918fb6519d9c3987a4ddf85679081c0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a7918fb6519d9c3987a4ddf85679081c0">PreDrawExtras</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:a7918fb6519d9c3987a4ddf85679081c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.  <a href="class_global_projectile.html#a7918fb6519d9c3987a4ddf85679081c0">More...</a><br /></td></tr>
+<tr class="memdesc:a7918fb6519d9c3987a4ddf85679081c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default. Called on local and remote clients.  <a href="class_global_projectile.html#a7918fb6519d9c3987a4ddf85679081c0">More...</a><br /></td></tr>
 <tr class="separator:a7918fb6519d9c3987a4ddf85679081c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5087e52a8c3ca87b23c78d7088447783"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a5087e52a8c3ca87b23c78d7088447783">PreKill</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
-<tr class="memdesc:a5087e52a8c3ca87b23c78d7088447783"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying.  <a href="class_global_projectile.html#a5087e52a8c3ca87b23c78d7088447783">More...</a><br /></td></tr>
+<tr class="memdesc:a5087e52a8c3ca87b23c78d7088447783"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying. Called on local, server, and remote clients.  <a href="class_global_projectile.html#a5087e52a8c3ca87b23c78d7088447783">More...</a><br /></td></tr>
 <tr class="separator:a5087e52a8c3ca87b23c78d7088447783"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d1bc24dd73492b513454acc77102e5e"><td class="memItemLeft" align="right" valign="top"><a id="a0d1bc24dd73492b513454acc77102e5e" name="a0d1bc24dd73492b513454acc77102e5e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrepareBombToBlow</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
 <tr class="separator:a0d1bc24dd73492b513454acc77102e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a267a74b8f38e1055900ce61370ea71ee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a267a74b8f38e1055900ce61370ea71ee">ReceiveExtraAI</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_bit_reader.html">BitReader</a> bitReader, BinaryReader binaryReader)</td></tr>
-<tr class="memdesc:a267a74b8f38e1055900ce61370ea71ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468" title="Use this judiciously to avoid straining the network.  Checks and methods such as GlobalType&lt;TEntity,...">SendExtraAI</a>. <br  />
-Called whenever MessageID.SyncProjectile is successfully received. <br  />
-Can be called on both server and client, depending on who owns the projectile.  <a href="class_global_projectile.html#a267a74b8f38e1055900ce61370ea71ee">More...</a><br /></td></tr>
+<tr class="memdesc:a267a74b8f38e1055900ce61370ea71ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468" title="Use this judiciously to avoid straining the network. Checks and methods such as GlobalType&lt;TEntity,...">SendExtraAI</a>. Called whenever MessageID.SyncProjectile is successfully received. Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#a267a74b8f38e1055900ce61370ea71ee">More...</a><br /></td></tr>
 <tr class="separator:a267a74b8f38e1055900ce61370ea71ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad94e9a25154e9eaf98dfc61e4053c468"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468">SendExtraAI</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="class_bit_writer.html">BitWriter</a> bitWriter, BinaryWriter binaryWriter)</td></tr>
-<tr class="memdesc:ad94e9a25154e9eaf98dfc61e4053c468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this judiciously to avoid straining the network. <br  />
-Checks and methods such as <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity</a> can reduce how much data must be sent for how many projectiles. <br  />
-Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
-Can be called on both server and client, depending on who owns the projectile.  <a href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468">More...</a><br /></td></tr>
+<tr class="memdesc:ad94e9a25154e9eaf98dfc61e4053c468"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this judiciously to avoid straining the network. Checks and methods such as <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity</a> can reduce how much data must be sent for how many projectiles. Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468">More...</a><br /></td></tr>
 <tr class="separator:ad94e9a25154e9eaf98dfc61e4053c468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a868df7036d919181c61c707d7fa8ff3e"><td class="memItemLeft" align="right" valign="top"><a id="a868df7036d919181c61c707d7fa8ff3e" name="a868df7036d919181c61c707d7fa8ff3e"></a>
 sealed override void&#160;</td><td class="memItemRight" valign="bottom"><b>SetupContent</b> ()</td></tr>
 <tr class="separator:a868df7036d919181c61c707d7fa8ff3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29b87a7d0521e450674cd8ac4ed3a381"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#a29b87a7d0521e450674cd8ac4ed3a381">ShouldUpdatePosition</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:a29b87a7d0521e450674cd8ac4ed3a381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the given projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default.  <a href="class_global_projectile.html#a29b87a7d0521e450674cd8ac4ed3a381">More...</a><br /></td></tr>
+<tr class="memdesc:a29b87a7d0521e450674cd8ac4ed3a381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the given projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default. Called on local, server, and remote clients.  <a href="class_global_projectile.html#a29b87a7d0521e450674cd8ac4ed3a381">More...</a><br /></td></tr>
 <tr class="separator:a29b87a7d0521e450674cd8ac4ed3a381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae41a39dbb0a108cbe311dac1c0fda242"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#ae41a39dbb0a108cbe311dac1c0fda242">TileCollideStyle</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)</td></tr>
-<tr class="memdesc:ae41a39dbb0a108cbe311dac1c0fda242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default.  <a href="class_global_projectile.html#ae41a39dbb0a108cbe311dac1c0fda242">More...</a><br /></td></tr>
+<tr class="memdesc:ae41a39dbb0a108cbe311dac1c0fda242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default. Called on local, server, and remote clients.  <a href="class_global_projectile.html#ae41a39dbb0a108cbe311dac1c0fda242">More...</a><br /></td></tr>
 <tr class="separator:ae41a39dbb0a108cbe311dac1c0fda242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24da8a1d31d232c090607771aa3c655b"><td class="memItemLeft" align="right" valign="top"><a id="a24da8a1d31d232c090607771aa3c655b" name="a24da8a1d31d232c090607771aa3c655b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UseGrapple</b> (<a class="el" href="class_player.html">Player</a> player, ref int type)</td></tr>
-<tr class="memdesc:a24da8a1d31d232c090607771aa3c655b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc. <br /></td></tr>
+<tr class="memdesc:a24da8a1d31d232c090607771aa3c655b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc. Called on the local client only. <br /></td></tr>
 <tr class="separator:a24da8a1d31d232c090607771aa3c655b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_global_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_global_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_global_type.html">GlobalType&lt; Projectile, GlobalProjectile &gt;</a></td></tr>
 <tr class="memitem:ab5e97b8867e8ef797fa2b0d15c962be0 inherit pub_methods_class_global_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0">AppliesToEntity</a> (TEntity entity, bool lateInstantiation)</td></tr>
@@ -357,7 +350,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine how any projectile behaves. This will only be called if PreAI returns true.  </p>
+<p>Allows you to determine how any projectile behaves. This will only be called if PreAI returns true.  Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -391,7 +384,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision. </p>
+<p>Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision. Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -426,7 +419,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Return true if you want the projectile to do damage regardless of the default blacklist. Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default. </p>
+<p>Whether or not the given projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Return true if you want the projectile to do damage regardless of the default blacklist. Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default. Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -471,7 +464,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine whether a projectile can hit the given <a class="el" href="class_n_p_c.html">NPC</a>. Return true to allow hitting the target, return false to block the projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default. </p>
+<p>Allows you to determine whether a projectile can hit the given <a class="el" href="class_n_p_c.html">NPC</a>. Return true to allow hitting the target, return false to block the projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default. Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -517,7 +510,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine whether a hostile projectile can hit the given player. Return false to block the projectile from hitting the target. Returns true by default. </p>
+<p>Allows you to determine whether a hostile projectile can hit the given player. Return false to block the projectile from hitting the target. Returns true by default. Called on the server only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -563,7 +556,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine whether a projectile can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default. </p>
+<p>Allows you to determine whether a projectile can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default. Called on the client hitting the target. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -615,7 +608,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to use custom collision detection between a projectile and a player or <a class="el" href="class_n_p_c.html">NPC</a> that the projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc. </p>
+<p>Allows you to use custom collision detection between a projectile and a player or <a class="el" href="class_n_p_c.html">NPC</a> that the projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc. Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -652,7 +645,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">CanCutTiles()</a> returns true. Useful when programming lasers and such. </p>
+<p>Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_global_projectile.html#ad3f4a96e191b663a18a2954e937e3859" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">CanCutTiles()</a> returns true. Useful when programming lasers and such. Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -726,7 +719,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. </p>
+<p>When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. Called on local and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -776,7 +769,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine the color and transparency in which a projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. </p>
+<p>Allows you to determine the color and transparency in which a projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. Called on local and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -812,7 +805,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet. </p>
+<p>Whether or not a minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if the projectile is considered a pet. Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -857,7 +850,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to change the hitbox used by a projectile for damaging players and NPCs. </p>
+<p>Allows you to change the hitbox used by a projectile for damaging players and NPCs. Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -908,7 +901,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, knockback, etc., that a projectile does to an <a class="el" href="class_n_p_c.html">NPC</a>. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
+<p>Allows you to modify the damage, knockback, etc., that a projectile does to an <a class="el" href="class_n_p_c.html">NPC</a>. Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -960,7 +953,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the damage, etc., that a hostile projectile does to a player. </p>
+<p>Allows you to modify the damage, etc., that a hostile projectile does to a player. Called on the client taking damage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1018,7 +1011,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to create special effects when a projectile hits an <a class="el" href="class_n_p_c.html">NPC</a> (for example, inflicting debuffs). This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server. </p>
+<p>Allows you to create special effects when a projectile hits an <a class="el" href="class_n_p_c.html">NPC</a> (for example, inflicting debuffs). Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1072,7 +1065,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </div><div class="memdoc">
 
 <p>Allows you to create special effects when a hostile projectile hits a player. <br  />
- Only runs on the local client in multiplayer. </p>
+ Called on the client taking damage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1118,7 +1111,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). </p>
+<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1163,7 +1156,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine what happens when a projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default. </p>
+<p>Allows you to determine what happens when a projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default. Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1199,7 +1192,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine how any projectile behaves. This will be called regardless of what PreAI returns.  </p>
+<p>Allows you to determine how any projectile behaves. This will be called regardless of what PreAI returns.  Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1243,7 +1236,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things in front of a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. This method is called even if PreDraw returns false. </p>
+<p>Allows you to draw things in front of a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. This method is called even if PreDraw returns false. Called on local and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td>The projectile. </td></tr>
@@ -1278,7 +1271,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.  </p>
+<p>Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.  Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1323,7 +1316,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default. </p>
+<p>Allows you to draw things behind a projectile, or to modify the way the projectile is drawn. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default. Called on local and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td>The projectile. </td></tr>
@@ -1358,7 +1351,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things behind a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default. </p>
+<p>Allows you to draw things behind a projectile. Use the <code>Main.EntitySpriteDraw</code> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default. Called on local and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td>The projectile. </td></tr>
@@ -1402,7 +1395,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying. </p>
+<p>Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying. Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1454,9 +1447,7 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Use this to receive information that was sent in <a class="el" href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468" title="Use this judiciously to avoid straining the network.  Checks and methods such as GlobalType&lt;TEntity,...">SendExtraAI</a>. <br  />
-Called whenever MessageID.SyncProjectile is successfully received. <br  />
-Can be called on both server and client, depending on who owns the projectile. </p>
+<p>Use this to receive information that was sent in <a class="el" href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468" title="Use this judiciously to avoid straining the network. Checks and methods such as GlobalType&lt;TEntity,...">SendExtraAI</a>. Called whenever MessageID.SyncProjectile is successfully received. Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td>The projectile.</td></tr>
@@ -1508,10 +1499,7 @@ Can be called on both server and client, depending on who owns the projectile. <
 </table>
 </div><div class="memdoc">
 
-<p>Use this judiciously to avoid straining the network. <br  />
-Checks and methods such as <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity</a> can reduce how much data must be sent for how many projectiles. <br  />
-Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. <br  />
-Can be called on both server and client, depending on who owns the projectile. </p>
+<p>Use this judiciously to avoid straining the network. Checks and methods such as <a class="el" href="class_global_type.html#ab5e97b8867e8ef797fa2b0d15c962be0" title="Use this to control whether or not this global should be run on the provided entity instance.">GlobalType&lt;TEntity, TGlobal&gt;.AppliesToEntity</a> can reduce how much data must be sent for how many projectiles. Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever <a class="el" href="class_projectile.html#acfedbe4036472a2e64e258e04242d095" title="Set to true in ModProjectile.AI or other suitable places to trigger the Projectile syncing code (Mess...">Projectile.netUpdate</a> is set to true in the update loop for that tick. Can be called on the local client or server, depending on who owns the projectile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td>The projectile.</td></tr>
@@ -1547,7 +1535,7 @@ Can be called on both server and client, depending on who owns the projectile. <
 </table>
 </div><div class="memdoc">
 
-<p>Whether or not the given projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default. </p>
+<p>Whether or not the given projectile should update its position based on factors such as its velocity, whether it is in liquid, etc. Return false to make its velocity have no effect on its position. Returns true by default. Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
@@ -1610,7 +1598,7 @@ Can be called on both server and client, depending on who owns the projectile. <
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default. </p>
+<p>Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default. Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td>The projectile. </td></tr>

@@ -22,10 +22,11 @@ var searchData=
   ['drawoffsety_19',['DrawOffsetY',['../class_mod_n_p_c.html#a4a447f89174f9cf5f1e82b0eaef5928a',1,'ModNPC']]],
   ['draworiginoffsetx_20',['DrawOriginOffsetX',['../class_mod_projectile.html#a996ee9f31263fcf9d384237537eff592',1,'ModProjectile']]],
   ['draworiginoffsety_21',['DrawOriginOffsetY',['../class_mod_projectile.html#a03cbd1be6a2b2595c3d972cf8eddce10',1,'ModProjectile']]],
-  ['drawstepdown_22',['DrawStepDown',['../class_tile_object_data.html#a6bb93a6902a27d4a98609248ebde9175',1,'TileObjectData']]],
-  ['drawstyleoffset_23',['DrawStyleOffset',['../class_tile_object_data.html#a194df1b26b0d7025cc4efecd604c07b5',1,'TileObjectData']]],
-  ['drawverticalalignment_24',['DrawVerticalAlignment',['../class_accessory_slot_loader.html#a5a76ad789c8fa80b92f6447a02c7b927',1,'AccessorySlotLoader']]],
-  ['drawxoffset_25',['DrawXOffset',['../class_tile_object_data.html#ad7cbe8530627b1be8821d39ac2e733ca',1,'TileObjectData']]],
-  ['drawyoffset_26',['DrawYOffset',['../class_tile_object_data.html#ab3dc177bd0e2f673da78a72aea393da1',1,'TileObjectData']]],
-  ['dusttype_27',['DustType',['../class_mod_block_type.html#aa83de9a9f6db248a1d359918cf8a5b9a',1,'ModBlockType']]]
+  ['drawscale_22',['DrawScale',['../struct_map_overlay_draw_context.html#aef6f540bdf4135ae8a9c9dfbb4b2ffed',1,'MapOverlayDrawContext']]],
+  ['drawstepdown_23',['DrawStepDown',['../class_tile_object_data.html#a6bb93a6902a27d4a98609248ebde9175',1,'TileObjectData']]],
+  ['drawstyleoffset_24',['DrawStyleOffset',['../class_tile_object_data.html#a194df1b26b0d7025cc4efecd604c07b5',1,'TileObjectData']]],
+  ['drawverticalalignment_25',['DrawVerticalAlignment',['../class_accessory_slot_loader.html#a5a76ad789c8fa80b92f6447a02c7b927',1,'AccessorySlotLoader']]],
+  ['drawxoffset_26',['DrawXOffset',['../class_tile_object_data.html#ad7cbe8530627b1be8821d39ac2e733ca',1,'TileObjectData']]],
+  ['drawyoffset_27',['DrawYOffset',['../class_tile_object_data.html#ab3dc177bd0e2f673da78a72aea393da1',1,'TileObjectData']]],
+  ['dusttype_28',['DustType',['../class_mod_block_type.html#aa83de9a9f6db248a1d359918cf8a5b9a',1,'ModBlockType']]]
 ];

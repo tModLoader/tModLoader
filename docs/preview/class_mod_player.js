@@ -8,6 +8,7 @@ var class_mod_player =
     [ "CanAutoReuseItem", "class_mod_player.html#a5ddd550c1c3a464c384977f3796ae85e", null ],
     [ "CanBeHitByNPC", "class_mod_player.html#a27a99d21ce153d5d65124db1b6d0f00e", null ],
     [ "CanBeHitByProjectile", "class_mod_player.html#a1492d374034e69d02adb0038a6005172", null ],
+    [ "CanBeTeleportedTo", "class_mod_player.html#a82a3f9cdb4e9e39963899b55e9057f94", null ],
     [ "CanBuyItem", "class_mod_player.html#a616c7e69196c1295fc3632eda9ae4068", null ],
     [ "CanCatchNPC", "class_mod_player.html#a3c9624ec6c3b57029b7bae77ddfed535", null ],
     [ "CanConsumeAmmo", "class_mod_player.html#adc004b059ed61ae339bd5acc1fd02245", null ],

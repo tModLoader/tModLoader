@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -114,6 +114,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddMapEntry</b> (Colo
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AnimateWall</b> (ref byte <a class="el" href="class_chest.html#ae76d638726f49cd5ace0826598ece9d9">frame</a>, ref byte <a class="el" href="class_chest.html#a8c2a8ab4d3868cf3a8a4f127af8fd4c1">frameCounter</a>)</td></tr>
 <tr class="memdesc:abb03d61e21db8baa402eb3acf4ae52a3 inherit pub_methods_class_mod_wall"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to animate your wall. Use frameCounter to keep track of how long the current frame has been active, and use frame to change the current frame. Walls are drawn every 4 frames. <br /></td></tr>
 <tr class="separator:abb03d61e21db8baa402eb3acf4ae52a3 inherit pub_methods_class_mod_wall"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8e6dc7cb6f50eb81241c78a6a88d77d inherit pub_methods_class_mod_wall"><td class="memItemLeft" align="right" valign="top"><a id="ae8e6dc7cb6f50eb81241c78a6a88d77d" name="ae8e6dc7cb6f50eb81241c78a6a88d77d"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeTeleportedTo</b> (int i, int j, <a class="el" href="class_player.html">Player</a> player, string <a class="el" href="class_popup_text.html#a8cac2161a4e515cc8febf90ffa63b8c2">context</a>)</td></tr>
+<tr class="separator:ae8e6dc7cb6f50eb81241c78a6a88d77d inherit pub_methods_class_mod_wall"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f0546972f19658b7c7e55b557df2024 inherit pub_methods_class_mod_wall"><td class="memItemLeft" align="right" valign="top"><a id="a9f0546972f19658b7c7e55b557df2024" name="a9f0546972f19658b7c7e55b557df2024"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Drop</b> (int i, int j, ref int type)</td></tr>
 <tr class="memdesc:a9f0546972f19658b7c7e55b557df2024 inherit pub_methods_class_mod_wall"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the tile's default item (the type parameter). Returns true by default. <br  />
