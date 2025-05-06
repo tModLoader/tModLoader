@@ -567,7 +567,7 @@
 		"CommandModListClientMods": "客户端模组：",
 		"CommandModListModlist": "模组列表：",
 		"CommandCustomSetsDescription": "显示已命名的ID集列表。",
-		"CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (输出值)] [-o (打开日志文件夹)]",
+		"CommandCustomSetsUsage": "/customsets [模组名|设置Key|搜索词] [-v (输出值)] [-o (打开日志文件夹)]",
 
 		// Mod Building
 		"Building": "构建中：{0}",
