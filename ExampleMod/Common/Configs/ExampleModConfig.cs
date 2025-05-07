@@ -21,8 +21,9 @@ namespace ExampleMod.Common.Configs
 		[ReloadRequired]
 		public bool WeaponWithGrowingDamageToggle;
 
+		[Header("Other")]
 		[DefaultValue(true)]
 		[ReloadRequired]
-		public bool LoadoutSupportToggle;
+		public bool WingSlotLoadoutSupportToggle;
 	}
 }

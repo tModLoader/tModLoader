@@ -12,11 +12,6 @@ namespace ExampleMod.Common.Players
 		// If the class is empty, everything will default to a basic vanilla slot.
 	}
 
-	public class ExampleLoadoutSupportModAccessorySlot : ModAccessorySlot
-	{
-		public override bool HasEquipmentLoadoutSupport => ModContent.GetInstance<ExampleModConfig>().LoadoutSupportToggle;
-	}
-
 	public class ExampleCustomLocationAndTextureSlot : ModAccessorySlot
 	{
 		// We will place the slot to be at the center of the map, making the decision not to follow the internal UI handling
@@ -43,6 +38,10 @@ namespace ExampleMod.Common.Players
 	{
 		public static LocalizedText WingsText { get; private set; }
 		public static LocalizedText WingsDyeText { get; private set; }
+
+		// This slot can toggle between supporting loadouts and not supporting loadouts. By not supporting loadouts, a player would only need to craft a single Wing instead of one for each loadout they plan to switch between.
+		// This setting must be server-side and requires a reload if changed.
+		public override bool HasEquipmentLoadoutSupport => ModContent.GetInstance<ExampleModConfig>().WingSlotLoadoutSupportToggle;
 
 		public override void SetupContent() {
 			WingsText = Mod.GetLocalization($"{nameof(ExampleModWingSlot)}.Wings");

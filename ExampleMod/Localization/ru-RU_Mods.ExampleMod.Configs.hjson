@@ -24,16 +24,14 @@ ExampleModConfig: {
 		// Tooltip: ""
 	}
 
-	LoadoutSupportToggle: {
-		Label: Enable loadout support for ExampleLoadoutSupportModAccessorySlot
-		Tooltip: Disabling will discard any equipped items in the slot!
+	WingSlotLoadoutSupportToggle: {
+		// Label: Loadout support for ExampleModWingSlot
+		// Tooltip: Disable this to share a single Wing item between all loadouts!
 	}
 
-	// Headers.Items: Items
-
-	AdditionalFlamingWeaponEntries: {
-		// Label: Additional Flaming Weapon Entries
-		// Tooltip: ""
+	Headers: {
+		// Items: Items
+		// Other: Other
 	}
 }
 
