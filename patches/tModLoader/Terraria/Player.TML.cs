@@ -496,6 +496,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public void DropItem(IEntitySource source, Vector2 position, ref Item item)
 	{
+		// Same as Player.TryDroppingSingleItem except item passed by ref. (doesn't actually do anything different though)
 		if (item.stack > 0) {
 			int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item);
 			var itemDrop = Main.item[itemDropId];
@@ -509,7 +510,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 				NetMessage.SendData(21, -1, -1, null, itemDropId);
 		}
 
-		item.TurnToAir();
+		item.TurnToAir(fullReset: true);
 	}
 
 	public int GetHealLife(Item item, bool quickHeal = false)
