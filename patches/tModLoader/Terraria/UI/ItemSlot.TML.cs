@@ -1,7 +1,6 @@
 using System;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Default;
 
 namespace Terraria.UI;
 

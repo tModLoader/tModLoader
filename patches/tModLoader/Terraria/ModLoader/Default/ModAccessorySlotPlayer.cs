@@ -23,7 +23,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	internal bool[] exHideAccessory;
 	/// <summary> Which shared slots have loadout conflicts. Note that it is tracked individually for Functional and Vanity but both are disabled if there is a conflict. </summary>
 	internal bool[] exAccessorySlotLoadoutConflict;
+	/// <summary> All slots that can potentially show for this user. First the loaded ModAccessorySlots, followed by any unloaded slots. </summary>
 	private readonly Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots = [];
+	/// <summary> Which slots are shared, indexed by ModAccessorySlot.Type </summary>
 	private readonly HashSet<int> sharedLoadoutSlotTypes = [];
 	/// <inheritdoc cref="ExEquipmentLoadout"/>
 	private ExEquipmentLoadout[] exLoadouts;
