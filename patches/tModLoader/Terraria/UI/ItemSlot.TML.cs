@@ -12,8 +12,7 @@ public partial class ItemSlot
 		//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
 		accSlotToSwapTo = -1;
 		var accLoader = LoaderManager.Get<AccessorySlotLoader>();
-		ModAccessorySlotPlayer modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(player);
-		var accessories = modSlotPlayer.GetAllModSlotAccessoriesForCurrentLoadout();
+		var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
 
 		//TML: Check if there is an empty slot available in functional slots, and if not, track the last available slot
 		for (int i = 3; i < 10; i++) {
@@ -76,7 +75,7 @@ public partial class ItemSlot
 			}
 
 			result = accessories[num3].Clone();
-			modSlotPlayer.SetAccessoryForCurrentLoadout(num3, item.Clone());
+			accessories[num3] = item.Clone();
 		}
 		else {
 			int num3 = 3 + accSlotToSwapTo;
@@ -101,8 +100,8 @@ public partial class ItemSlot
 	{
 		Item item2 = item;
 		var msPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-		var dyes = msPlayer.GetAllModSlotDyesForCurrentLoadout();
-		int dyeSlotCount = dyes.Length;
+		int dyeSlotCount = 0;
+		var dyes = msPlayer.exDyesAccessory;
 
 		for (int i = 0; i < dyeSlotCount; i++) {
 			if (dyes[i].type == 0) {
@@ -117,7 +116,7 @@ public partial class ItemSlot
 		}
 
 		item2 = dyes[dyeSlotCount].Clone();
-		msPlayer.SetDyeItemForCurrentLoadout(dyeSlotCount, item.Clone());
+		dyes[dyeSlotCount] = item.Clone();
 
 		SoundEngine.PlaySound(7);
 		Recipe.FindRecipes();
@@ -126,7 +125,9 @@ public partial class ItemSlot
 	}
 
 	// Copy of Acc check, but runs hooks which take the local player as a context.
-	internal static bool AccCheck_ForLocalPlayer(Item[] itemCollection, Item item, int slot)
+	internal static bool AccCheck_ForLocalPlayer(Item[] itemCollection, Item item, int slot) => AccCheck_ForPlayer(Main.LocalPlayer, itemCollection, item, slot);
+
+	internal static bool AccCheck_ForPlayer(Player player, Item[] itemCollection, Item item, int slot)
 	{
 		if (isEquipLocked(item.type))
 			return true;
@@ -139,7 +140,7 @@ public partial class ItemSlot
 				return !ItemLoader.CanEquipAccessory(item, slot % 20, slot >= 20);
 		}
 
-		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
+		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(player);
 		var modCount = modSlotPlayer.SlotCount;
 		bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
 

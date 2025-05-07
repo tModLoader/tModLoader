@@ -468,7 +468,7 @@
  	public sbyte handon = -1;
  	public sbyte handoff = -1;
  	public sbyte back = -1;
-@@ -869,6 +_,23 @@
+@@ -869,6 +_,26 @@
  	public sbyte faceFlower = -1;
  	public sbyte balloonFront = -1;
  	public sbyte beard = -1;
@@ -489,6 +489,9 @@
 +	public int faceFlower = -1;
 +	public int balloonFront = -1;
 +	public int beard = -1;
++	/// <summary>
++	/// Indicates if the corresponding <see cref="armor"/> accessory is set to be hidden or not. 
++	/// </summary>
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
@@ -1455,12 +1458,20 @@
  					return bank4.item[j];
  			}
  		}
+@@ -3204,6 +_,7 @@
+ 	{
+ 		bool flag = itemTime > 0 || itemAnimation > 0;
+ 		if ((whoAmI != Main.myPlayer || (!flag && !CCed && !dead)) && loadoutIndex != CurrentLoadoutIndex && loadoutIndex >= 0 && loadoutIndex < Loadouts.Length) {
++			int oldLoadoutIndex = CurrentLoadoutIndex;
+ 			Loadouts[CurrentLoadoutIndex].Swap(this);
+ 			Loadouts[loadoutIndex].Swap(this);
+ 			CurrentLoadoutIndex = loadoutIndex;
 @@ -3218,6 +_,8 @@
  					UniqueInfoPiece = loadoutIndex
  				}, whoAmI);
  			}
 +
-+			PlayerLoader.OnEquipmentLoadoutSwitched(this, loadoutIndex);
++			PlayerLoader.OnEquipmentLoadoutSwitched(this, oldLoadoutIndex, loadoutIndex);
  		}
  	}
  
@@ -8808,7 +8819,7 @@
  				continue;
  
  			for (int j = i + 1; j < 10; j++) {
-@@ -42856,7 +_,30 @@
+@@ -42856,7 +_,29 @@
  	private static void LoadPlayer_LastMinuteFixes(Player newPlayer)
  	{
  		newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, PlayerVariantID.Count - 1);
@@ -8818,9 +8829,8 @@
 +		}
 +
 +		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(newPlayer);
-+		Item[] modSlotAccessories = modSlotPlayer.GetAllModSlotAccessoriesForCurrentLoadout();
 +		for (int i = 0; i < modSlotPlayer.SlotCount; i++) {
-+			LoadPlayer_LastMinuteFixes(newPlayer, modSlotAccessories[i]);
++			LoadPlayer_LastMinuteFixes(newPlayer, modSlotPlayer.exAccessorySlot[i]);
 +		}
 +
 +		LoadPlayer_Finish(newPlayer);

@@ -1487,12 +1487,12 @@ public static class PlayerLoader
 		return true;
 	}
 
-	private static HookList HookOnEquipmentLoadoutSwitched = AddHook<Action<int>>(p => p.OnEquipmentLoadoutSwitched);
+	private static HookList HookOnEquipmentLoadoutSwitched = AddHook<Action<int, int>>(p => p.OnEquipmentLoadoutSwitched);
 
-	public static void OnEquipmentLoadoutSwitched(Player player, int loadoutIndex)
+	public static void OnEquipmentLoadoutSwitched(Player player, int oldLoadoutIndex, int loadoutIndex)
 	{
 		foreach (var modPlayer in HookOnEquipmentLoadoutSwitched.Enumerate(player)) {
-			modPlayer.OnEquipmentLoadoutSwitched(loadoutIndex);
+			modPlayer.OnEquipmentLoadoutSwitched(oldLoadoutIndex, loadoutIndex);
 		}
 	}
 }

@@ -38,34 +38,34 @@ public abstract class ModAccessorySlot : ModType
 
 	/// <summary>
 	/// Gets or sets a value indicating whether this slot supports equipment loadouts. If <see langword="false"/>,
-	/// the slot's item is shared between all loadouts. Defaults to <see langword="false"/>.
-	/// Changing this value requires a reload.
-	/// Changing the value from <see langword="true"/> to <see langword="false"/> will discard any item currently
-	/// equipped in the slot in any loadout.
-	/// Changing the value from <see langword="false"/> to <see langword="true"/> moves items from the previously shared
-	/// slot to the first loadout.
+	/// the slot's item is shared between all loadouts.
+	/// <br/><br/> Defaults to <see langword="false"/>.
+	/// <br/><br/> Changing this value requires a reload. This value is not allowed to be different between multiplayer clients or issues will occur.
+	/// <br/><br/> Changing the value from <see langword="true"/> to <see langword="false"/> will cause the extra items to be spawned on the player when they enter the world.
+	/// <br/> Changing the value from <see langword="false"/> to <see langword="true"/> will result in the currently selected loadout to hold the items.
+	/// <br/><br/> Slots that don't support loadouts will appear with the default green background texture, as if they were an accessory in loadout #1 or from before loadout support was added to the game.
 	/// </summary>
 	public virtual bool HasEquipmentLoadoutSupport => false;
 
 	// Get/Set Properties for fetching slot information
 	public Item FunctionalItem {
-		get => ModSlotPlayer.GetFunctionalItemForCurrentLoadout(Type);
-		set => ModSlotPlayer.SetFunctionalItemForCurrentLoadout(Type, value);
+		get => ModSlotPlayer.exAccessorySlot[Type];
+		set => ModSlotPlayer.exAccessorySlot[Type] = value;
 	}
 
 	public Item VanityItem {
-		get => ModSlotPlayer.GetVanityItemForCurrentLoadout(Type);
-		set => ModSlotPlayer.SetVanityItemForCurrentLoadout(Type, value);
+		get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount];
+		set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount] = value;
 	}
 
 	public Item DyeItem {
-		get => ModSlotPlayer.GetDyeItemForCurrentLoadout(Type);
-		set => ModSlotPlayer.SetDyeItemForCurrentLoadout(Type, value);
+		get => ModSlotPlayer.exDyesAccessory[Type];
+		set => ModSlotPlayer.exDyesAccessory[Type] = value;
 	}
 
 	public bool HideVisuals {
-		get => ModSlotPlayer.GetHideAccessoryForCurrentLoadout(Type);
-		set => ModSlotPlayer.SetHideAccessoryForCurrentLoadout(Type, value);
+		get => ModSlotPlayer.exHideAccessory[Type];
+		set => ModSlotPlayer.exHideAccessory[Type] = value;
 	}
 
 	public bool IsEmpty => FunctionalItem.IsAir && VanityItem.IsAir && DyeItem.IsAir;

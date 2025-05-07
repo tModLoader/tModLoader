@@ -367,7 +367,7 @@
  				break;
  			case 10:
 -				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).GetAllAccessoriesForCurrentLoadout(), checkItem, slot)))
++				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
 +					result = 1;
 +				break;
 +			case Context.ModdedAccessorySlot:
@@ -381,7 +381,7 @@
  				break;
  			case 11:
 -				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).GetAllAccessoriesForCurrentLoadout(), checkItem, slot)))
++				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
  					result = 1;
  				break;
  			case 12:
@@ -519,7 +519,7 @@
 +		*/
 +
 +		if (flag && Math.Abs(context) == 11) {
-+			var accessories = AccessorySlotLoader.ModSlotPlayer(player).GetAllModSlotAccessoriesForCurrentLoadout();
++			var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
 +			for (int invNum = 0; invNum < 2; invNum++) {
 +				var checkInv = player.armor;
 +				int startIndex = 3;
@@ -632,15 +632,18 @@
  		}
  	}
  
-@@ -1508,6 +_,12 @@
+@@ -1508,6 +_,15 @@
  					value = TextureAssets.InventoryBack13.Value;
  					color2 = GetColorByLoadout(slot, context);
  					break;
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot:
 +				case Context.ModdedDyeSlot:
-+					value = LoaderManager.Get<AccessorySlotLoader>().GetBackgroundTexture(slot, context);
-+					color2 = GetColorByLoadout(slot, Math.Abs(context));
++					(value, bool shared) = LoaderManager.Get<AccessorySlotLoader>().GetBackgroundTexture(slot, context);
++					if (!shared) {
++						color2 = GetColorByLoadout(slot, Math.Abs(context));
++					}
++					// TODO: Hook to allow customizing color, even if shared.
 +					break;
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;
