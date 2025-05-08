@@ -1281,7 +1281,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to disallow the player from equipping this accessory. Return false to disallow equipping this accessory.
 	/// <para/> Do not use this to check for mutually exclusive accessories being equipped, that check is only possible via <see cref="CanAccessoryBeEquippedWith(Item, Item, Player)"/>
 	/// <para/> Returns <see langword="true"/> by default.
-	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
@@ -1295,7 +1294,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
 	/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
 	/// <para/> This method exists because manually checking <see cref="Player.armor"/> in <see cref="CanEquipAccessory(Player, int, bool)"/> will not correctly account for modded accessory slots.
-	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
 	{

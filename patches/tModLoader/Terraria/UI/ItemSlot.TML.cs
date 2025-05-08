@@ -124,11 +124,16 @@ public partial class ItemSlot
 	}
 
 	// Copy of Acc check, but runs hooks which take the local player as a context.
+	/// <inheritdoc cref="AccCheck_ForPlayer(Player, Item[], Item, int)"/>
 	internal static bool AccCheck_ForLocalPlayer(Item[] itemCollection, Item item, int slot) => AccCheck_ForPlayer(Main.LocalPlayer, itemCollection, item, slot);
 
+	/// <summary>
+	/// Checks if placing <paramref name="item"/> into index <paramref name="slot"/> of <paramref name="itemCollection"/> works or not. <paramref name="itemCollection"/> corresponds to the <paramref name="player"/>'s accessories. 
+	/// <br/><br/> This is a replacement for <see cref="AccCheck(Item[], Item, int)"/> that takes into account player-specific checks and hooks.
+	/// <br/><br/> Returns true if can't equip and false if placing the accessory is ok. 
+	/// </summary>
 	internal static bool AccCheck_ForPlayer(Player player, Item[] itemCollection, Item item, int slot)
 	{
-		// Returns true if can't equip, false if OK
 		if (isEquipLocked(item.type))
 			return true;
 
@@ -136,9 +141,8 @@ public partial class ItemSlot
 			if (itemCollection[slot].IsTheSameAs(item))
 				return false;
 
-			// Issue: CanEquipAccessory and CanAccessoryBeEquippedWith assume local player. Docs also mention that they are only called on the local client only.
-			if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[slot], item))
-				return !ItemLoader.CanEquipAccessory(item, slot >= 20 ? slot - 20 : slot, slot >= 20);
+			if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player, itemCollection[slot], item))
+				return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 		}
 
 		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(player);
@@ -146,12 +150,12 @@ public partial class ItemSlot
 		bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
 
 		for (int i = targetVanity ? 13 : 3; i < (targetVanity ? 20 : 10); i++) {
-			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player, itemCollection[i], item))
 				return true;
 		}
 
 		for (int i = (targetVanity ? modCount : 0) + 20; i < (targetVanity ? modCount * 2 : modCount) + 20; i++) {
-			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player, itemCollection[i], item))
 				return true;
 		}
 
@@ -160,6 +164,6 @@ public partial class ItemSlot
 				return true;
 		}
 
-		return !ItemLoader.CanEquipAccessory(item, slot >= 20 ? slot - 20 : slot, slot >= 20);
+		return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 	}
 }

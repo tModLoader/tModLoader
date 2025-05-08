@@ -2057,11 +2057,29 @@ public static class ItemLoader
 		return true;
 	}
 
+	public static bool CanEquipAccessory(Player player, Item item, int slot, bool modded)
+	{
+		if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))
+			return false;
+
+		foreach (var g in HookCanEquipAccessory.Enumerate(item)) {
+			if (!g.CanEquipAccessory(item, player, slot, modded))
+				return false;
+		}
+
+		return true;
+	}
+
 	private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
 
 	public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem)
 	{
 		Player player = Main.player[Main.myPlayer];
+		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
+	}
+
+	public static bool CanAccessoryBeEquippedWith(Player player, Item equippedItem, Item incomingItem)
+	{
 		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
 	}
 

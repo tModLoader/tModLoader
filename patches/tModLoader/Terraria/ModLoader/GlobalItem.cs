@@ -1075,7 +1075,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.
-	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item that is attempting to equip.</param>
 	/// <param name="player">The player.</param>
@@ -1089,7 +1088,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
 	/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
-	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
 	{
