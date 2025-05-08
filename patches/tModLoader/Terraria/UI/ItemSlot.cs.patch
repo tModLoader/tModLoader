@@ -632,18 +632,19 @@
  		}
  	}
  
-@@ -1508,6 +_,15 @@
+@@ -1508,6 +_,16 @@
  					value = TextureAssets.InventoryBack13.Value;
  					color2 = GetColorByLoadout(slot, context);
  					break;
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot:
 +				case Context.ModdedDyeSlot:
-+					(value, bool shared) = LoaderManager.Get<AccessorySlotLoader>().GetBackgroundTexture(slot, context);
-+					if (!shared) {
++					AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
++					(value, bool sharedOrCustomTexture) = accessorySlotLoader.GetBackgroundTexture(slot, context);
++					if (!sharedOrCustomTexture) {
 +						color2 = GetColorByLoadout(slot, Math.Abs(context));
 +					}
-+					// TODO: Hook to allow customizing color, even if shared.
++					accessorySlotLoader.Get(slot).BackgroundDrawColor(accessorySlotLoader.ContextToEnum(context), ref color2);
 +					break;
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;

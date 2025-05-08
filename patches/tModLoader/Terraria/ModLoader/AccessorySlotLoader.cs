@@ -409,15 +409,15 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		switch (context) {
 			case -10:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalBackgroundTexture, out var funcTexture))
-					return (funcTexture.Value, false);
+					return (funcTexture.Value, true);
 				break;
 			case -11:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityBackgroundTexture, out var vanityTexture))
-					return (vanityTexture.Value, false);
+					return (vanityTexture.Value, true);
 				break;
 			case -12:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeBackgroundTexture, out var dyeTexture))
-					return (dyeTexture.Value, false);
+					return (dyeTexture.Value, true);
 				break;
 		}
 

@@ -42,7 +42,7 @@ public abstract class ModAccessorySlot : ModType
 	/// <br/><br/> Defaults to <see langword="false"/>.
 	/// <br/><br/> Changing this value requires a reload. This value is not allowed to be different between multiplayer clients or issues will occur.
 	/// <br/><br/> Changing the value from <see langword="true"/> to <see langword="false"/> will cause the extra items to be spawned on the player when they enter the world.
-	/// <br/> Changing the value from <see langword="false"/> to <see langword="true"/> will result in the currently selected loadout to hold the items.
+	/// <br/> Changing the value from <see langword="false"/> to <see langword="true"/> will result in the currently selected loadout holding the items.
 	/// <br/><br/> Slots that don't support loadouts will appear with the default green background texture, as if they were an accessory in loadout #1 or from before loadout support was added to the game.
 	/// </summary>
 	public virtual bool HasEquipmentLoadoutSupport => false;
@@ -143,4 +143,10 @@ public abstract class ModAccessorySlot : ModType
 	/// Allows you to do stuff while the player is hovering over this slot.
 	/// </summary>
 	public virtual void OnMouseHover(AccessorySlotType context) { }
+
+	/// <summary>
+	/// Allows customizing the background texture draw color.
+	/// <br/><br/> For <see cref="HasEquipmentLoadoutSupport"/> slots without a custom texture, the color will already have been adjusted for the current loadout (ItemSlot.GetColorByLoadout), otherwise the color will be <see cref="Main.inventoryBack"/>, which will oscillate all values between 180 and 240.
+	/// </summary>
+	public virtual void BackgroundDrawColor(AccessorySlotType context, ref Color color) { }
 }

@@ -24,6 +24,7 @@ namespace ExampleMod.Common.Players
 		// Background Textures -> In general, you can use most of the existing vanilla ones to get different colors
 		public override string VanityBackgroundTexture => "Terraria/Images/Inventory_Back14"; // yellow
 		public override string FunctionalBackgroundTexture => "Terraria/Images/Inventory_Back7"; // pale blue
+		public override string DyeBackgroundTexture => "Terraria/Images/Inventory_Back13"; // white. Since it is white, the color assigned in BackgroundDrawColor will be the exact color it appears as.
 
 		// Icon textures. Nominal image size is 32x32. Piggy bank is 16x24 but it still works as it's drawn centered.
 		public override string VanityTexture => "Terraria/Images/Item_" + ItemID.PiggyBank;
@@ -31,6 +32,12 @@ namespace ExampleMod.Common.Players
 		// We will keep it hidden most of the time so that it isn't an intrusive example
 		public override bool IsHidden() {
 			return IsEmpty; // Only show when it contains an item, items can end up in functional slots via quick swap (right click accessory)
+		}
+
+		public override void BackgroundDrawColor(AccessorySlotType context, ref Color color) {
+			if (context == AccessorySlotType.DyeSlot) {
+				color = Main.DiscoColor * (Main.invAlpha / 255);
+			}
 		}
 	}
 
