@@ -223,17 +223,16 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public void DropItems(IEntitySource itemSource)
 	{
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
-		var pos = Player.position + Player.Size / 2;
 		for (int i = 0; i < SlotCount; i++) {
 			// Drop all items, even if not ModdedIsItemSlotUnlockedAndUsable, to match vanilla behavior.
-			Player.DropItem(itemSource, pos, ref exAccessorySlot[i]);
-			Player.DropItem(itemSource, pos, ref exAccessorySlot[i + SlotCount]);
-			Player.DropItem(itemSource, pos, ref exDyesAccessory[i]);
+			Player.TryDroppingSingleItem(itemSource, exAccessorySlot[i]);
+			Player.TryDroppingSingleItem(itemSource, exAccessorySlot[i + SlotCount]);
+			Player.TryDroppingSingleItem(itemSource, exDyesAccessory[i]);
 
 			foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
-				Player.DropItem(itemSource, pos, ref equipmentLoadout.ExAccessorySlot[i]);
-				Player.DropItem(itemSource, pos, ref equipmentLoadout.ExAccessorySlot[i + SlotCount]);
-				Player.DropItem(itemSource, pos, ref equipmentLoadout.ExDyesAccessory[i]);
+				Player.TryDroppingSingleItem(itemSource, equipmentLoadout.ExAccessorySlot[i]);
+				Player.TryDroppingSingleItem(itemSource, equipmentLoadout.ExAccessorySlot[i + SlotCount]);
+				Player.TryDroppingSingleItem(itemSource, equipmentLoadout.ExDyesAccessory[i]);
 			}
 		}
 	}
