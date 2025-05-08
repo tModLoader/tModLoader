@@ -128,6 +128,7 @@ public partial class ItemSlot
 
 	internal static bool AccCheck_ForPlayer(Player player, Item[] itemCollection, Item item, int slot)
 	{
+		// Returns true if can't equip, false if OK
 		if (isEquipLocked(item.type))
 			return true;
 
@@ -135,8 +136,9 @@ public partial class ItemSlot
 			if (itemCollection[slot].IsTheSameAs(item))
 				return false;
 
+			// Issue: CanEquipAccessory and CanAccessoryBeEquippedWith assume local player. Docs also mention that they are only called on the local client only.
 			if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[slot], item))
-				return !ItemLoader.CanEquipAccessory(item, slot % 20, slot >= 20);
+				return !ItemLoader.CanEquipAccessory(item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 		}
 
 		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(player);
@@ -158,6 +160,6 @@ public partial class ItemSlot
 				return true;
 		}
 
-		return !ItemLoader.CanEquipAccessory(item, slot % 20, slot >= 20);
+		return !ItemLoader.CanEquipAccessory(item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 	}
 }
