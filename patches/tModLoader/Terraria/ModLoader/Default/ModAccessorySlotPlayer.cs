@@ -21,8 +21,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	internal Item[] exDyesAccessory;
 	/// <summary> <see cref="ModAccessorySlot"/> corollary to <see cref="Player.hideVisibleAccessory"/>. </summary>
 	internal bool[] exHideAccessory;
-	/// <summary> Which shared slots have loadout conflicts. Note that it is tracked individually for Functional and Vanity but both are disabled if there is a conflict. </summary>
-	internal bool[] exAccessorySlotLoadoutConflict;
 	/// <summary> All slots that can potentially show for this user. First the loaded ModAccessorySlots, followed by any unloaded slots. </summary>
 	private readonly Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots = [];
 	/// <summary> Which slots are shared, indexed by ModAccessorySlot.Type </summary>
@@ -63,11 +61,10 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 	internal void ResetAndSizeAccessoryArrays()
 	{
-		int size = slots.Count;
+		int size = SlotCount;
 		exAccessorySlot = new Item[2 * size];
 		exDyesAccessory = new Item[size];
 		exHideAccessory = new bool[size];
-		exAccessorySlotLoadoutConflict = new bool[2 * size];
 
 		for (int i = 0; i < size; i++) {
 			exDyesAccessory[i] = new Item();
@@ -325,55 +322,58 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		exLoadouts[oldLoadoutIndex].Swap(this);
 		exLoadouts[loadoutIndex].Swap(this);
 
-		if (Player.whoAmI == Main.myPlayer && Main.netMode != NetmodeID.SinglePlayer) {
-			CopyClientState(Main.clientPlayer.GetModPlayer<ModAccessorySlotPlayer>());
+		if (Player.whoAmI == Main.myPlayer) {
+			if(Main.netMode != NetmodeID.SinglePlayer) {
+				CopyClientState(Main.clientPlayer.GetModPlayer<ModAccessorySlotPlayer>());
 
-			// TODO: Test if needed?
-			if (Player.direction == 1) {
-				for (int i = 0; i < LoadedSlotCount; i++) {
-					NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
+				// TODO: Test if needed?
+				if (Player.direction == 1) {
+					for (int i = 0; i < LoadedSlotCount; i++) {
+						NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
+					}
 				}
 			}
-		}
 
-		DetectConflictsWithSharedSlots();
+			DetectConflictsWithSharedSlots();
+		}
 	}
 
-	private void DetectConflictsWithSharedSlots()
+	private void DetectConflictsWithSharedSlots() // Only called on local client.
 	{
-		// Might be easier to just sync exAccessorySlotLoadoutConflict than run this on other clients, especially if we need to support HasEquipmentLoadoutSupport being a client-side config. (either sync this or sync sharedLoadoutSlotTypes to support that)
-
 		// Handle conflicts that arise from supporting shared slots.
-		Item temp = new Item();
-		for (int i = 0; i < exAccessorySlot.Length; i++) {
+		bool anyConflict = false;
+		for (int i = 0; i < exAccessorySlot.Length / 2; i++) {
 			if (IsSharedSlot(i)) {
-				Utils.Swap(ref exAccessorySlot[i], ref temp); // Swap out item for check otherwise false negative.
-				if (!temp.IsAir && !Loader.ModSlotCheckForPlayer(Player, temp, i, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot)) {
-					exAccessorySlotLoadoutConflict[i] = true;
-				}
-				else {
-					exAccessorySlotLoadoutConflict[i] = false;
-				}
-				Utils.Swap(ref exAccessorySlot[i], ref temp);
+				anyConflict |= Loader.IsAccessoryInConflict(Player, exAccessorySlot[i], i, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
+				anyConflict |= Loader.IsAccessoryInConflict(Player, exAccessorySlot[i + SlotCount], i + SlotCount, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
 			}
 		}
 
-		if (Main.myPlayer == Player.whoAmI && exAccessorySlotLoadoutConflict.Any(x => x)) {
+		if (anyConflict) {
 			Main.NewText(Language.GetTextValue("tModLoader.SharedAccessorySlotConflictMessage"));
+			// TODO: Main.NewText doesn't work with ModPlayer.OnEnterWorld in multiplayer since the chat is cleared during the joining process. This will need to be fixed and also affects ExampleMod usages of OnEnterWorld as well.
 		}
 	}
 
 	// If we allow HasEquipmentLoadoutSupport to differ per-client, this might not be suitable without extra changes.
 	internal bool IsSharedSlot(int slotType)
 	{
-		return sharedLoadoutSlotTypes.Contains(slotType % slots.Count);
+		return sharedLoadoutSlotTypes.Contains(slotType % SlotCount);
 	}
 
 	internal bool SharedSlotHasLoadoutConflict(int slotType)
 	{
-		int functional = slotType % slots.Count;
-		int vanity = functional + slots.Count;
-		return exAccessorySlotLoadoutConflict[functional] || exAccessorySlotLoadoutConflict[vanity];
+		if (!IsSharedSlot(slotType))
+			return false;
+
+		int functional = slotType % SlotCount;
+		int vanity = functional + SlotCount;
+
+		// Handle conflicts that arise from supporting shared slots.
+		bool functionalIssue = Loader.IsAccessoryInConflict(Player, exAccessorySlot[functional], functional, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
+		bool vanityIssue = Loader.IsAccessoryInConflict(Player, exAccessorySlot[vanity], vanity, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
+
+		return functionalIssue || vanityIssue;
 	}
 
 	// Extended Loadout, contains Item instances for ModAccessorySlot for a specific loadout index.

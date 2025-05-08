@@ -173,7 +173,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			flag4 = !ModdedCanSlotBeShown(slot);
 			// flag3 && flag4: If not usable (flag3) and hidden when not usable (flag4), don't draw.
 
-			// If there is a loadout conflict, force not usable to allow user to fix the issue.
+			// If there is a loadout conflict, force not usable but allow user to fix the issue by forcing it to show.
 			if (ModSlotPlayer(Player).SharedSlotHasLoadoutConflict(slot)) {
 				flag3 = true;
 				loadoutConflict = true;
@@ -370,7 +370,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 			ItemSlot.MouseHover(items, Math.Abs(context), slot);
 
-			if (context < 0) { 
+			if (context < 0) {
 				OnHover(slot, context);
 
 				// Override custom hover text for this important information
@@ -380,7 +380,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				}
 
 				// Debug Code: 
-				// Main.hoverItemName += " - Slot #" + slot;
+				Main.hoverItemName += " - Slot #" + slot;
 			}
 		}
 		DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc), isHovered);
@@ -474,11 +474,6 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	{
 		ModAccessorySlot slot = Get(index, player);
 		ModAccessorySlotPlayer modAccessorySlotPlayer = ModSlotPlayer(player);
-		if (modAccessorySlotPlayer.exAccessorySlot[index].IsAir && modAccessorySlotPlayer.exAccessorySlotLoadoutConflict[index]) {
-			// TODO: This only works when taking an item out of this slot, not taking another conflicting item out of another slot.
-			// We'll need to detect any change somehow, but that will be very involved possibly?
-			modAccessorySlotPlayer.exAccessorySlotLoadoutConflict[index] = false;
-		}
 		return (ignoreLoadoutConflict || !modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(index)) && slot.IsEnabled();
 	}
 
@@ -503,9 +498,20 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
 		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
 
-	/// <inheritdoc cref="ModSlotCheck(Item, int, int)"/>
-	public bool ModSlotCheckForPlayer(Player player, Item checkItem, int slot, int context) => CanPlayerAcceptItem(player, slot, checkItem, context) &&
-		!ItemSlot.AccCheck_ForPlayer(player, player.armor.Concat(ModSlotPlayer(player).exAccessorySlot).ToArray(), checkItem, slot + player.armor.Length);
+	/// <summary>
+	/// Similar to <see cref="ModSlotCheck(Item, int, int)"/> except it ignores the item in <paramref name="slot"/> since that item is being passed in as <paramref name="checkItem"/>.
+	/// </summary>
+	public bool IsAccessoryInConflict(Player player, Item checkItem, int slot, int context)
+	{
+		if (checkItem.IsAir)
+			return false;
+		bool canGoInSlot = CanPlayerAcceptItem(player, slot, checkItem, context);
+		if (!canGoInSlot)
+			return true;
+		Item[] itemCollection = player.armor.Concat(ModSlotPlayer(player).exAccessorySlot).ToArray();
+		itemCollection[slot + player.armor.Length] = new Item();
+		return ItemSlot.AccCheck_ForPlayer(player, itemCollection, checkItem, slot + player.armor.Length);
+	}
 
 	/// <summary>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.

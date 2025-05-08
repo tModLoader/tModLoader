@@ -769,6 +769,14 @@
  			}
  		}
  
+@@ -2166,6 +_,7 @@
+ 		return true;
+ 	}
+ 
++	// Vanilla usages other than for tile entities acting like players replaced with AccCheck_ForLocalPlayer to support player-specific checks and hooks.
+ 	public static bool AccCheck(Item[] itemCollection, Item item, int slot)
+ 	{
+ 		if (isEquipLocked(item.type))
 @@ -2195,6 +_,7 @@
  		return false;
  	}
