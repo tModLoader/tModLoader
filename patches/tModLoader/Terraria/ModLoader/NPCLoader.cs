@@ -565,6 +565,7 @@ public static class NPCLoader
 	public static void BossLoot(NPC npc, ref string name, ref int potionType)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
+		npc.ModNPC?.BossLoot(ref potionType);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
@@ -1324,21 +1325,17 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate bool DelegateDeathMessage(NPC npc, ref NetworkText custom, ref Color color);
-	private static HookList HookDeathMessage = AddHook<DelegateDeathMessage>(g => g.DeathMessage);
+	private delegate bool DelegateModifyDeathMessage(NPC npc, ref NetworkText custom, ref Color color);
+	private static HookList HookModifyDeathMessage = AddHook<DelegateModifyDeathMessage>(g => g.ModifyDeathMessage);
 
-	public static bool DeathMessage(NPC npc, ref NetworkText customText, ref Color color)
+	public static bool ModifyDeathMessage(NPC npc, ref NetworkText customText, ref Color color)
 	{
-		if(npc.ModNPC != null && Language.Exists(npc.ModNPC.GetLocalizationKey("DeathMessage"))) {
-			customText = NetworkText.FromKey(npc.ModNPC.GetLocalizationKey("DeathMessage"), npc.boss ? npc.GetTypeNetName() : npc.GetFullNetName());
-		}
-
-		foreach (var g in HookDeathMessage.Enumerate()) {
-			if (!g.DeathMessage(npc, ref customText, ref color))
+		foreach (var g in HookModifyDeathMessage.Enumerate()) {
+			if (!g.ModifyDeathMessage(npc, ref customText, ref color))
 				return true;
 		}
 
-		return !npc.ModNPC?.DeathMessage(ref customText, ref color) ?? false;
+		return !npc.ModNPC?.ModifyDeathMessage(ref customText, ref color) ?? false;
 	}
 
 	//attack type 0 = throwing

@@ -44,6 +44,12 @@ namespace ExampleMod.Content.NPCs
 
 		public static LocalizedText UpgradedText { get; private set; }
 
+
+		// Sets a unique message when the NPC dies.
+		// See also NPCID.Sets.IsTownChild if you just want the message used by Angler and Princess.
+		// See ModifyDeathMessage() way below for more details
+		public override LocalizedText DeathMessage => Language.GetText(this.GetLocalizationKey("DeathMessage"));
+
 		public override void Load() {
 			// Adds our Shimmer Head to the NPCHeadLoader.
 			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
@@ -387,9 +393,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool DeathMessage(ref NetworkText customText, ref Color color) {
-			// Sets a unique message when the NPC dies. By default, the DeathMessage localization key, if it exists for this ModNPC, will be used.
-			// See also NPCID.Sets.IsTownChild if you just want the message used by Angler and Princess.
+		public override bool ModifyDeathMessage(ref NetworkText customText, ref Color color) {
 			// This example shows how you would further customize the message, in this case just for the shimmer variant.
 			if (NPC.IsShimmerVariant) {
 				customText = NetworkText.FromKey(this.GetLocalizationKey("DeathMessageAlt"), NPC.GetFullNetName());

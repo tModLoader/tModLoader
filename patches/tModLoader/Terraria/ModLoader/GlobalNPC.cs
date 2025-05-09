@@ -724,8 +724,11 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 	}
 
-	/// <inheritdoc cref="ModNPC.DeathMessage"/>
-	public virtual bool DeathMessage(NPC npc, ref NetworkText customText, ref Color color)
+	/// <summary>
+	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC. The text color can also be modified.
+	/// <para/> Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default.
+	/// </summary>
+	public virtual bool ModifyDeathMessage(NPC npc, ref NetworkText customText, ref Color color)
 	{
 		return true;
 	}

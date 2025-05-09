@@ -34,6 +34,15 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
+	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC.
+	/// <para/> This won't have any effect if the given NPC isn't a town NPC or a boss.
+	/// <para/> Returns null by default, with the text being "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>) for town NPCs.
+	/// <para/> The keys "Announcement.HasBeenDefeated_Plural" and "Announcement.HasBeenDefeated_Single" will be useful if creating a generic boss defeat message with a custom boss name. For example:
+	/// <br/> <c>Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(Language.GetTextValue("Mods.MyMod.NPCs.MyBoss.TheTriplets"))</c>
+	/// </summary>
+	public virtual LocalizedText DeathMessage => null;
+
+	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.<br/>
 	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Npc"/> indexed by <see cref="Type"/> if needed. <br/>
 	/// You can use a vanilla texture by returning <c>$"Terraria/Images/NPC_{NPCID.NPCNameHere}"</c> <br/>
@@ -402,14 +411,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	{
 	}
 
-	/// <summary>
-	/// Allows you to customize what happens when this boss dies, such as which name is displayed in the defeat message and what type of potion it drops.
-	/// <para/> Note that <see cref="DeathMessage(ref NetworkText, ref Color)"/> gives more control over the defeat message and supports localization and should be used instead.
-	/// </summary>
-	/// <param name="name"></param>
-	/// <param name="potionType"></param>
+	[Obsolete("Use BossLoot(ref int potionType) instead. The name can be changed by modifying DeathMessage")]
 	public virtual void BossLoot(ref string name, ref int potionType)
 	{
+	}
+	/// <summary>
+	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops.
+	/// </summary>
+	public virtual void BossLoot(ref int potionType)
+	{
+
 	}
 
 	/// <summary>
@@ -811,13 +822,11 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC. The text color can also be modified.
-	/// <para/> By default the text will be "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>) for town NPCs. Town NPC usually use <see cref="NPC.GetFullNetName"/> to retrieve the NPC name in the form of "GivenName the TypeName". For modded NPC, if a localization key for the ModNPC named "DeathMessage" exists, it will automatically be used and populated with <see cref="NPC.GetFullNetName"/> (or <see cref="NPC.GetTypeNetName"/> if a boss) even without using this hook.
-	/// <para/> The keys "Announcement.HasBeenDefeated_Plural" and "Announcement.HasBeenDefeated_Single" will be useful if creating a boss defeat message with a custom boss name. For example <c>customText = NetworkText.FromKey("Announcement.HasBeenDefeated_Plural", NetworkText.FromKey("Mods.MyMod.NPCs.MyBoss.TheTriplets"));</c> could be used for a death message for a boss with multiple enemies similar to The Twins. 
-	/// <para/> This won't have any effect if the given NPC isn't a town NPC or a boss.
+	/// Allows you to modify <see cref="DeathMessage"/> which only applies to bosses and town NPCs. The text color can also be modified.
+	/// <para/> This is intended for more advanced use cases, you should only be modifying <see cref="DeathMessage"/> for basic usages.
 	/// <para/> Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default.
 	/// </summary>
-	public virtual bool DeathMessage(ref NetworkText customText, ref Color color)
+	public virtual bool ModifyDeathMessage(ref NetworkText customText, ref Color color)
 	{
 		return true;
 	}

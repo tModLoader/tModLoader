@@ -1794,8 +1794,8 @@
  			}
  
 +			Color color = new Color(255, 25, 25);
-+			NetworkText custom = null;
-+			bool skipMessage = NPCLoader.DeathMessage(this, ref custom, ref color);
++			NetworkText custom = ModNPC?.DeathMessage?.ToNetworkText();
++			bool skipMessage = NPCLoader.ModifyDeathMessage(this, ref custom, ref color);
 +			networkText = custom ?? networkText;
 +
  			if (flag)
@@ -1971,9 +1971,9 @@
 +	private void DoDeathEvents_CelebrateBossDeath(string typeName)
  	{
 +		Color color = new Color(175, 75, 255);
-+		NetworkText custom = null;
++		NetworkText custom = ModNPC?.DeathMessage?.ToNetworkText();
 +		// Note: typeName comes from NPC.TypeName->NPCLoader.ModifyTypeName and NPCLoader.BossLoot, but is just a literal string and won't be localized on other clients properly if used, so it is not used in DeathMessage.
-+		bool skipMessage = NPCLoader.DeathMessage(this, ref custom, ref color);
++		bool skipMessage = NPCLoader.ModifyDeathMessage(this, ref custom, ref color);
 +		if (skipMessage) {
 +		}
 +		else if (custom != null) {
