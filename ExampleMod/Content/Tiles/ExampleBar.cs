@@ -21,5 +21,10 @@ namespace ExampleMod.Content.Tiles
 
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.MetalBar")); // localized text for "Metal Bar"
 		}
+
+		public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
+			WorldGen.Check1x1(i, j, Type);
+			return false;
+		}
 	}
 }
