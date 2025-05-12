@@ -23,6 +23,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
+			// This check will destroy this tile if the tile below has become slopped such that it doesn't have a solid top side. 
 			WorldGen.Check1x1(i, j, Type);
 			return false;
 		}

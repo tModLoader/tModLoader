@@ -3039,6 +3039,17 @@
  			if (Main.tile[num15, num16].type == 2) {
  				if (genRand.Next(2) == 0)
  					flag4 = true;
+@@ -51041,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Returns true if there is a solid tile at the provided tile coordinates suitable for a tile to be anchored above.
++	/// <br/><br/> Specifically, this checks that the tile is active, unactuated, is <see cref="Main.tileSolid"/> or <see cref="Main.tileSolidTop"/>, isn't a half block, and it has a solid top side (top isn't sloped).
++	/// </summary>
+ 	public static bool SolidTileAllowBottomSlope(int i, int j)
+ 	{
+ 		try {
 @@ -52049,9 +_,20 @@
  
  	public static void UpdateWorld()
