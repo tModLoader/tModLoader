@@ -33,6 +33,11 @@ ExampleModConfig: {
 		Items: Items
 		Other: Other
 	}
+
+	AdditionalFlamingWeaponEntries: {
+		Label: Additional Flaming Weapon Entries
+		Tooltip: ""
+	}
 }
 
 ModConfigShowcaseAccessibility: {
