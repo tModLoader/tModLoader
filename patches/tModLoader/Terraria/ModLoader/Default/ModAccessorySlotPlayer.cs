@@ -80,7 +80,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		exLoadouts = Enumerable.Range(0, Player.Loadouts.Length)
 			.Select(loadoutIndex => new ExEquipmentLoadout(loadoutIndex, SlotCount, Player.Loadouts[loadoutIndex]))
 			.ToArray();
-		// TODO: Check if this is the most correct place for this.
 	}
 
 	public override void SaveData(TagCompound tag)
@@ -117,10 +116,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 
 		for (int i = 0; i < order.Count; i++) {
-			if (i >= dyes.Count)
-				continue; // Temp, old save approach didn't save these. Will be an issue on existing stables.
-			// TODO: Is above check needed? What is it talking about?
-
 			int type = slots[order[i]].SlotType;
 
 			// Place loaded items in to the correct slot
@@ -435,7 +430,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			IList<Item> dyes;
 			IList<bool> visible;
 
-			this.ResetAndSizeAccessoryArrays(slots.Count); // shouldn't be necessary?
+			this.ResetAndSizeAccessoryArrays(slots.Count);
 
 			tag = tag.GetCompound(identifier);
 			items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();

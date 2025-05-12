@@ -469,7 +469,6 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 	public bool ModdedIsItemSlotUnlockedAndUsable(int index, Player player) => ModdedIsItemSlotUnlockedAndUsable(index, player, ignoreLoadoutConflict: false);
 
-	// TODO: Is checking exAccessorySlotLoadoutConflict here too broad? Need to check each one individually, might not be correct.
 	public bool ModdedIsItemSlotUnlockedAndUsable(int index, Player player, bool ignoreLoadoutConflict)
 	{
 		ModAccessorySlot slot = Get(index, player);
