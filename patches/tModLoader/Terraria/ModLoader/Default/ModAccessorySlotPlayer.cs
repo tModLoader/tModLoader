@@ -326,11 +326,8 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			if(Main.netMode != NetmodeID.SinglePlayer) {
 				CopyClientState(Main.clientPlayer.GetModPlayer<ModAccessorySlotPlayer>());
 
-				// TODO: Test if needed?
-				if (Player.direction == 1) {
-					for (int i = 0; i < LoadedSlotCount; i++) {
-						NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
-					}
+				for (int i = 0; i < LoadedSlotCount; i++) {
+					NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
 				}
 			}
 

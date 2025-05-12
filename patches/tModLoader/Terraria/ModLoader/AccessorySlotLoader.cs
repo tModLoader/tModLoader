@@ -380,7 +380,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				}
 
 				// Debug Code: 
-				Main.hoverItemName += " - Slot #" + slot;
+				// Main.hoverItemName += " - Slot #" + slot;
 			}
 		}
 		DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc), isHovered);
