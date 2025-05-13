@@ -26,7 +26,7 @@ public partial class ItemSlot
 		//TML: Check our modded functional slots
 		if (accSlotToSwapTo < 0) {
 			for (int i = 0; i < accessories.Length / 2; i++) {
-				if (accLoader.ModdedIsItemSlotUnlockedAndUsable(i, player)) {
+				if (accLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, player, vanity: false)) {
 					if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item, (int)Context.ModdedAccessorySlot) && ItemLoader.CanEquipAccessory(item, i, true)) {
 						accSlotToSwapTo = i + 20;
 						break;

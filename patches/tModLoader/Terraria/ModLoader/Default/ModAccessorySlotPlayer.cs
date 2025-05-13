@@ -155,7 +155,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: false)) {
 				Player.UpdateVisibleAccessories(exAccessorySlot[k], exHideAccessory[k], k, true);
 			}
 		}
@@ -169,7 +169,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: true)) {
 				var vanitySlot = k + SlotCount;
 				if (!Player.ItemIsVisuallyIncompatible(exAccessorySlot[vanitySlot]))
 					Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true);
@@ -190,7 +190,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		int end = socialSlots ? SlotCount * 2 : SlotCount;
 
 		for (int i = start; i < end; i++) {
-			if (loader.ModdedIsItemSlotUnlockedAndUsable(i, Player)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, Player, vanity: socialSlots)) {
 				int num = i % exDyesAccessory.Length;
 				Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
 			}
@@ -205,7 +205,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsItemSlotUnlockedAndUsable(k, Player)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: false)) {
 				loader.CustomUpdateEquips(k, Player);
 			}
 		}
@@ -353,19 +353,21 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		return sharedLoadoutSlotTypes.Contains(slotType % SlotCount);
 	}
 
-	internal bool SharedSlotHasLoadoutConflict(int slotType)
+	internal bool SharedSlotHasLoadoutConflict(int slotType, bool vanitySlot)
 	{
 		if (!IsSharedSlot(slotType))
 			return false;
 
+		// Handle conflicts that arise from supporting shared slots.
 		int functional = slotType % SlotCount;
 		int vanity = functional + SlotCount;
 
-		// Handle conflicts that arise from supporting shared slots.
-		bool functionalIssue = Loader.IsAccessoryInConflict(Player, exAccessorySlot[functional], functional, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
-		bool vanityIssue = Loader.IsAccessoryInConflict(Player, exAccessorySlot[vanity], vanity, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
-
-		return functionalIssue || vanityIssue;
+		if (vanitySlot) {
+			return Loader.IsAccessoryInConflict(Player, exAccessorySlot[vanity], vanity, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
+		}
+		else {
+			return Loader.IsAccessoryInConflict(Player, exAccessorySlot[functional], functional, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
+		}
 	}
 
 	// Extended Loadout, contains Item instances for ModAccessorySlot for a specific loadout index.
