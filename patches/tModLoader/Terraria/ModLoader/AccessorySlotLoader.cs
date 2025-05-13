@@ -497,6 +497,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
 		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
 
+	private static Item dummyAccessoryCheckItem = new Item();
 	/// <summary>
 	/// Similar to <see cref="ModSlotCheck(Item, int, int)"/> except it ignores the item in <paramref name="slot"/> since that item is being passed in as <paramref name="checkItem"/>.
 	/// </summary>
@@ -508,7 +509,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		if (!canGoInSlot)
 			return true;
 		Item[] itemCollection = player.armor.Concat(ModSlotPlayer(player).exAccessorySlot).ToArray();
-		itemCollection[slot + player.armor.Length] = new Item();
+		itemCollection[slot + player.armor.Length] = dummyAccessoryCheckItem;
 		return ItemSlot.AccCheck_ForPlayer(player, itemCollection, checkItem, slot + player.armor.Length);
 	}
 
