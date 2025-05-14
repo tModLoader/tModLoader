@@ -55,14 +55,13 @@ internal class PurgeUnloadedCommand : ModCommand
 
 		Dictionary<string, int> purgedTiles = [];
 		Dictionary<string, int> purgedWalls = [];
-		var unloadedTileTypes = TileIO.Tiles.unloadedTypes.ToHashSet();
+		var unloadedTileTypes = TileID.Sets.Factory.CreateBoolSet(TileIO.Tiles.unloadedTypes.Select(x => (int)x).ToArray());
 		var unloadedWallType = ModContent.WallType<UnloadedWall>();
-		List<Point16> coordinates = [];
 
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 				Tile t = Main.tile[i, j];
-				if (purgeTiles && t.HasTile && t.TileType >= TileID.Count && unloadedTileTypes.Contains(t.TileType)) {
+				if (purgeTiles && t.HasTile && unloadedTileTypes[t.TileType]) {
 					ushort type = TileIO.Tiles.unloadedEntryLookup.Lookup(i, j);
 					var info = TileIO.Tiles.entries[type];
 					if (modName == null || info.modName.Equals(modName, StringComparison.OrdinalIgnoreCase)) {
@@ -71,7 +70,6 @@ internal class PurgeUnloadedCommand : ModCommand
 						purgedTiles[key] = currentCount + 1;
 						if (actuallyPurge) {
 							t.TileType = info.vanillaReplacementType;
-							coordinates.Add(new Point16(i, j));
 						}
 					}
 				}
@@ -89,9 +87,8 @@ internal class PurgeUnloadedCommand : ModCommand
 			}
 		}
 
-		foreach ((int i, int j) in coordinates) {
-			WorldGen.TileFrame(i, j);
-		}
+		if (actuallyPurge && (purgedTiles.Count != 0 || purgedWalls.Count != 0))
+			Main.sectionManager.SetAllSectionsLoaded();
 
 		if (modName != null)
 			caller.Reply($"Only removing unloaded content belonging to the mod \"{modName}\".");
@@ -100,7 +97,7 @@ internal class PurgeUnloadedCommand : ModCommand
 		if (purgedTiles.Count != 0)
 			caller.Reply($"Unloaded tiles: {string.Join(", ", purgedTiles.Select(x => $"{x.Key} ({x.Value})"))}");
 		if (purgedWalls.Count != 0)
-			caller.Reply($"Unloaded walls: {string.Join(", ", purgedWalls.Select(x=>$"{x.Key} ({x.Value})"))}");
+			caller.Reply($"Unloaded walls: {string.Join(", ", purgedWalls.Select(x => $"{x.Key} ({x.Value})"))}");
 		if (!actuallyPurge)
 			caller.Reply("The '-p' flag was not set, this is a dry run, no tiles or walls were actually removed.");
 		if (purgedTiles.Count == 0 && purgedWalls.Count == 0)
