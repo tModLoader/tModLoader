@@ -37,6 +37,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Called when the <paramref name="item"/> is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
+	/// <para/> Called on the local client only.
 	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft the <paramref name="item"/>.
 	/// </summary>
 	public virtual void OnCreated(Item item, ItemCreationContext context)
@@ -45,6 +46,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Gets called when any item spawns in world
+	/// <para/> Called on the local client or the server where Item.NewItem is called.
 	/// </summary>
 	public virtual void OnSpawn(Item item, IEntitySource source)
 	{
@@ -80,6 +82,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Returns whether or not any item can be used. Returns true by default. The inability to use a specific item overrides this, so use this to stop an item from being used.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool CanUseItem(Item item, Player player)
 	{
@@ -88,8 +91,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
-	/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
-	/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+	/// <para/> Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.
+	/// <para/> Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item. </param>
 	/// <param name="player"> The player. </param>
@@ -97,6 +101,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of any item in its use animation.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item. </param>
 	/// <param name="player"> The player. </param>
@@ -105,6 +110,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of the item the player is currently holding.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item. </param>
 	/// <param name="player"> The player. </param>
@@ -113,6 +119,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to make things happen when the player is holding an item (for example, torches make light and water candles increase spawn rate).
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void HoldItem(Item item, Player player)
 	{
@@ -120,27 +127,31 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to change the effective useTime of an item.
-	/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
 	public virtual float UseTimeMultiplier(Item item, Player player) => 1f;
 
 	/// <summary>
 	/// Allows you to change the effective useAnimation of an item.
-	/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
 	public virtual float UseAnimationMultiplier(Item item, Player player) => 1f;
 
 	/// <summary>
 	/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
-	/// <br/> Useful for status effects.
+	/// <para/> Useful for status effects.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
 	public virtual float UseSpeedMultiplier(Item item, Player player) => 1f;
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healLife"/> value.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -152,6 +163,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healMana"/> value.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -163,7 +175,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.mana"/>, modify the <paramref name="reduce"/> and <paramref name="mult"/> parameters.
+	/// <para/> <b>Do not</b> modify <see cref="Item.mana"/>, modify the <paramref name="reduce"/> and <paramref name="mult"/> parameters.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -177,6 +190,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Allows you to make stuff happen when a player doesn't have enough mana for an item they are trying to use.
 	/// If the player has high enough mana after this hook runs, mana consumption will happen normally.
 	/// Only runs once per item use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -187,6 +201,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to make stuff happen when a player consumes mana on use of an item.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -198,7 +213,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -220,6 +236,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to choose if a given bait will be consumed by a given player
 	/// Not consuming will always take priority over forced consumption
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="bait">The bait being used</param>
 	/// <param name="player">The player using the item</param>
@@ -230,6 +247,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent an item from being researched by returning false. True is the default behavior.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item being researched</param>
 	public virtual bool CanResearch(Item item)
@@ -238,7 +256,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to create custom behavior when an item is accepted by the Research function 
+	/// Allows you to create custom behavior when an item is accepted by the Research function
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item being researched</param>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
@@ -249,7 +268,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.knockBack"/>, modify the <paramref name="knockback"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.knockBack"/>, modify the <paramref name="knockback"/> parameter.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -261,7 +281,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.crit"/>, modify the <paramref name="crit"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.crit"/>, modify the <paramref name="crit"/> parameter.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
@@ -274,6 +295,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Whether or not having no ammo prevents an item that uses ammo from shooting.
 	/// Return false to allow shooting with no ammo in the inventory, in which case the item will act as if the default ammo for it is being used.
 	/// Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool NeedsAmmo(Item item, Player player)
 	{
@@ -282,6 +304,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
+	/// <para/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
 	/// </summary>
 	/// <param name="weapon">The item that is using the given ammo.</param>
 	/// <param name="ammo">The ammo item being used by the given weapon.</param>
@@ -299,9 +322,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Whether or not the given ammo item is valid for the given weapon; called on the weapon. If this, or <see cref="CanBeChosenAsAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon. <br></br>
-	/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid. <br></br>
-	/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not the given ammo item is valid for the given weapon; called on the weapon. If this, or <see cref="CanBeChosenAsAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon.
+	/// <para/> By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid.
+	/// <para/> If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon that this hook is being called for.</param>
 	/// <param name="ammo">The ammo that the weapon is attempting to select.</param>
@@ -313,9 +337,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Whether or not the given ammo item is valid for the given weapon; called on the ammo. If this, or <see cref="CanChooseAmmo"/> on the weapon, returns false, then the ammo will not be valid for this weapon. <br></br>
-	/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid. <br></br>
-	/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not the given ammo item is valid for the given weapon; called on the ammo. If this, or <see cref="CanChooseAmmo"/> on the weapon, returns false, then the ammo will not be valid for this weapon.
+	/// <para/> By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid.
+	/// <para/> If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="ammo">The ammo that this hook is being called for.</param>
 	/// <param name="weapon">The weapon attempting to select the ammo.</param>
@@ -327,9 +352,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Whether or not the given ammo item will be consumed; called on the weapon.<br></br>
-	/// By default, returns true; return false to prevent ammo consumption.<br></br>
-	/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not the given ammo item will be consumed; called on the weapon.
+	/// <para/> By default, returns true; return false to prevent ammo consumption.
+	/// <para/> If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon that this hook is being called for.</param>
 	/// <param name="ammo">The ammo that the weapon is attempting to consume.</param>
@@ -341,9 +367,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Whether or not the given ammo item will be consumed; called on the ammo.<br></br>
-	/// By default, returns true; return false to prevent ammo consumption.<br></br>
-	/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not the given ammo item will be consumed; called on the ammo.
+	/// <para/> By default, returns true; return false to prevent ammo consumption.
+	/// <para/> If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="ammo">The ammo that this hook is being called for.</param>
 	/// <param name="weapon">The weapon attempting to consume the ammo.</param>
@@ -355,8 +382,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the weapon.<br></br>
-	/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the weapon.
+	/// <para/> Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The currently-active weapon.</param>
 	/// <param name="ammo">The ammo that the given weapon is currently using.</param>
@@ -366,8 +394,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the ammo.<br></br>
-	/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the ammo.
+	/// <para/> Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="ammo">The currently-active ammo.</param>
 	/// <param name="weapon">The weapon that is currently using the given ammo.</param>
@@ -378,6 +407,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent an item from shooting a projectile on use. Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item being used. </param>
 	/// <param name="player"> The player using the item. </param>
@@ -388,8 +418,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.<br/>
-	/// These parameters will be provided to <see cref="Shoot(Item, Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
+	/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.
+	/// <para/> These parameters will be provided to <see cref="Shoot(Item, Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item"> The item being used. </param>
 	/// <param name="player"> The player using the item. </param>
@@ -403,8 +434,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
-	/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters. 
+	/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+	/// <para/> This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item"> The item being used. </param>
 	/// <param name="player"> The player using the item. </param>
@@ -421,6 +453,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Changes the hitbox of a melee weapon when it is used.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
 	{
@@ -428,18 +461,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to give melee weapons special effects, such as creating light or dust.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void MeleeEffects(Item item, Player player, Rectangle hitbox)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to determine whether the given item can catch the given NPC.<br></br>
-	/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
-	/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
-	/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
-	/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
-	/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+	/// Allows you to determine whether the given item can catch the given NPC.
+	/// <para/> Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.
+	/// <para/> Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.
+	/// <para/> If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.
+	/// <para/> NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use <see cref="ItemID.Sets.CatchingTool"/>.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
 	/// <param name="target">The NPC the player is trying to catch.</param>
@@ -452,6 +486,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to make things happen when the given item attempts to catch the given NPC.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item used to catch the given NPC.</param>
 	/// <param name="npc">The NPC which the player attempted to catch.</param>
@@ -463,7 +498,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.scale"/>, modify the <paramref name="scale"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.scale"/>, modify the <paramref name="scale"/> parameter.
+	/// <para/> Called on local and remote clients
 	/// </summary>
 	/// <param name="item">The item to modify the scale of.</param>
 	/// <param name="player">The player wielding the given item.</param>
@@ -477,6 +513,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to determine whether a melee weapon can hit the given NPC when swung. Return true to allow hitting the target, return false to block the weapon from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual bool? CanHitNPC(Item item, Player player, NPC target)
 	{
@@ -484,8 +521,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung. <br/>
-	/// Use <see cref="CanHitNPC(Item, Player, NPC)"/> instead for Flymeal-type effects.
+	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung.
+	/// <para/> Use <see cref="CanHitNPC(Item, Player, NPC)"/> instead for Flymeal-type effects.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item">The weapon item the player is holding.</param>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
@@ -500,8 +538,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC. <br/>
-	/// This method is only called on the on the client of the player holding the weapon. <br/>
+	/// Allows you to modify the damage, knockback, etc., that a melee weapon does to an NPC.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
 	{
@@ -509,6 +547,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to create special effects when a melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
 	{
@@ -516,6 +555,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to determine whether a melee weapon can hit the given opponent player when swung. Return false to block the weapon from hitting the target. Returns true by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	public virtual bool CanHitPvp(Item item, Player player, Player target)
 	{
@@ -524,14 +564,15 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that a melee weapon does to a player.
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	public virtual void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a melee weapon hits a player. <br/>
-	/// Called on local, server and remote clients. <br/>
+	/// Allows you to create special effects when a melee weapon hits a player.
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	public virtual void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo)
 	{
@@ -539,20 +580,23 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to make things happen when an item is used. The return value controls whether or not ApplyItemTime will be called for the player.
-	/// <br/> Return true if the item actually did something, to force itemTime.
-	/// <br/> Return false to keep itemTime at 0.
-	/// <br/> Return null for vanilla behavior.
+	/// <para/> Return true if the item actually did something, to force itemTime.
+	/// <para/> Return false to keep itemTime at 0.
+	/// <para/> Return null for vanilla behavior.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool? UseItem(Item item, Player player) => null;
 
 	/// <summary>
 	/// Allows you to make things happen when an item's use animation starts.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UseAnimation(Item item, Player player) { }
 
 	/// <summary>
 	/// If the item is consumable and this returns true, then the item will be consumed upon usage. Returns true by default.
 	/// If false is returned, the OnConsumeItem hook is never called.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool ConsumeItem(Item item, Player player)
 	{
@@ -562,6 +606,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to make things happen when this item is consumed.
 	/// Called before the item stack is reduced.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void OnConsumeItem(Item item, Player player)
 	{
@@ -569,11 +614,13 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the player's animation when an item is being used.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UseItemFrame(Item item, Player player) { }
 
 	/// <summary>
 	/// Allows you to modify the player's animation when the player is holding an item.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void HoldItemFrame(Item item, Player player) { }
 
@@ -586,6 +633,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to make things happen when an item is in the player's inventory. This should NOT be used for information accessories;
 	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateInventory(Item item, Player player)
 	{
@@ -594,11 +642,13 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
 	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateInfoAccessory(Item item, Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to armors and accessories, such as increased damage.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateEquip(Item item, Player player)
 	{
@@ -606,6 +656,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to give effects to accessories. The hideVisual parameter is whether the player has marked the accessory slot to be hidden from being drawn on the player.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateAccessory(Item item, Player player, bool hideVisual)
 	{
@@ -613,6 +664,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to give effects to this accessory when equipped in a vanity slot. Vanilla uses this for boot effects, wings and merman/werewolf visual flags
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateVanity(Item item, Player player)
 	{
@@ -629,11 +681,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether the player is wearing an armor set, and return a name for this set.
-	/// If there is no armor set, return the empty string.
-	/// Returns the empty string by default.
-	///
-	/// This method is not instanced.
+	/// Allows you to determine whether the player is wearing an armor set, and return a name for this set. If there is no armor set, return the empty string. Returns the empty string by default.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual string IsArmorSet(Item head, Item body, Item legs)
 	{
@@ -643,8 +693,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to give set bonuses to your armor set with the given name.
 	/// The set name will be the same as returned by IsArmorSet.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateArmorSet(Player player, string set)
 	{
@@ -654,8 +704,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set.
 	/// This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks, and will use items in the social slots if they exist.
 	/// By default this will return the same value as the IsArmorSet hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual string IsVanitySet(int head, int body, int legs)
 	{
@@ -683,8 +733,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to create special effects (such as the necro armor's hurt noise) when the player wears the vanity set with the given name returned by IsVanitySet.
 	/// This hook is called regardless of whether the player is frozen in any way.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PreUpdateVanitySet(Player player, string set)
 	{
@@ -692,8 +742,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to create special effects (such as dust) when the player wears the vanity set with the given name returned by IsVanitySet. This hook will only be called if the player is not frozen in any way.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateVanitySet(Player player, string set)
 	{
@@ -701,8 +751,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to determine special visual effects a vanity has on the player without having to code them yourself.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
 	/// </summary>
 	public virtual void ArmorSetShadows(Player player, string set)
@@ -711,11 +761,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the equipment that the player appears to be wearing.
-	///
-	/// Note that type and equipSlot are not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs.
-	/// You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
-	///
-	/// This method is not instanced.
+	/// <para/> Note that type and equipSlot are not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs.
+	/// <para/> You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="armorSlot">head armor (0), body armor (1) or leg armor (2).</param>
 	/// <param name="type">The equipment texture ID of the item that the player is wearing.</param>
@@ -728,6 +777,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Returns whether or not an item does something when right-clicked in the inventory. Returns false by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanRightClick(Item item)
 	{
@@ -735,7 +785,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item is right-clicked in the inventory. Useful for goodie bags.
+	/// Allows you to make things happen when this item is right-clicked in the inventory. By default this will consume the item by 1 stack, so return false in <see cref="ConsumeItem(Player)"/> if that behavior is undesired.
+	/// <para/> This is only called if the item can be right-clicked, meaning <see cref="ItemID.Sets.OpenableBag"/> is true for the item type or <see cref="GlobalItem.CanRightClick"/> returns true.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void RightClick(Item item, Player player)
 	{
@@ -743,9 +795,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to add and modify the loot items that spawn from bag items when opened.
-	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
-	/// <br/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
-	/// <br/> This hook is not instanced.
+	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exclusive drops for bosses.
+	/// <para/> This hook only runs once per item type during mod loading, any dynamic behavior must be contained in the rules themselves.
+	/// <para/> This hook is not instanced.
 	/// </summary>
 	/// <param name="item">A default item of the type being opened, not the actual item instance</param>
 	/// <param name="itemLoot">A reference to the item drop database for this item type</param>
@@ -755,9 +807,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent items from stacking.
-	/// <br/>This is only called when two items of the same type attempt to stack.
-	/// <br/>This is usually not called for coins and ammo in the inventory/UI.
-	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
+	/// <para/>This is only called when two items of the same type attempt to stack.
+	/// <para/>This is usually not called for coins and ammo in the inventory/UI.
+	/// <para/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -769,7 +822,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent items from stacking in the world.
-	/// <br/>This is only called when two items of the same type attempt to stack.
+	/// <para/> This is only called when two items of the same type attempt to stack.
+	/// <para/> Called on the local client or server, depending on who the item is reserved for.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -780,8 +834,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when items stack together.<br/>
-	/// This hook is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
+	/// Allows you to make things happen when items stack together.
+	/// <para/> This hook is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -791,7 +846,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split.  This hook is called before the stack values are modified.
+	/// Allows you to make things happen when an item stack is split. This hook is called before the stack values are modified.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="destination">
 	/// The item instance that <paramref name="source"/> will transfer items to, and is usually a clone of <paramref name="source"/>.<br/>
@@ -807,6 +863,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Returns if the normal reforge pricing is applied.
 	/// If true or false is returned and the price is altered, the price will equal the altered price.
 	/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount)
 	{
@@ -815,8 +872,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned by the ModItem or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
+	/// Returns whether the reforge will take place. If false is returned by the ModItem or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreReforge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanReforge(Item item)
 	{
@@ -825,6 +883,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void PreReforge(Item item)
 	{
@@ -833,6 +892,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer.
 	/// Useful for modifying modded data based on the reforge result.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void PostReforge(Item item)
 	{
@@ -840,8 +900,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the colors in which the player's armor and their surrounding accessories are drawn, in addition to which glow mask and in what color is drawn.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual void DrawArmorColor(EquipType type, int slot, Player drawPlayer, float shadow, ref Color color,
 		ref int glowMask, ref Color glowMaskColor)
@@ -850,8 +910,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify which glow mask and in what color is drawn on the player's arms. Note that this is only called for body armor.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual void ArmorArmGlowMask(int slot, Player drawPlayer, float shadow, ref int glowMask, ref Color color)
 	{
@@ -859,6 +919,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the speeds at which you rise and fall when wings are equipped.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void VerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
@@ -867,6 +928,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify the horizontal flight speed and acceleration of wings.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
 	{
@@ -877,8 +939,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Called when wings visually appear on the player.
 	/// Use to animate wings, create dusts, invoke sounds, and create lights. False will keep everything the same.
 	/// True, you need to handle all animations in your own code.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool WingUpdate(int wings, Player player, bool inUse)
 	{
@@ -887,6 +949,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to customize an item's movement when lying in the world. Note that this will not be called if the item is currently being grabbed by a player.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void Update(Item item, ref float gravity, ref float maxFallSpeed)
 	{
@@ -894,6 +957,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to make things happen when an item is lying in the world. This will always be called, even when the item is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdate(Item item)
 	{
@@ -901,6 +965,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify how close an item must be to the player in order to move towards the player.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void GrabRange(Item item, Player player, ref int grabRange)
 	{
@@ -908,6 +973,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify the way an item moves towards the player. Return false to allow the vanilla grab style to take place. Returns false by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool GrabStyle(Item item, Player player)
 	{
@@ -916,6 +982,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine whether or not the item can be picked up
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool CanPickup(Item item, Player player)
 	{
@@ -924,6 +991,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to make special things happen when the player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool OnPickup(Item item, Player player)
 	{
@@ -932,6 +1000,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool ItemSpace(Item item, Player player)
 	{
@@ -940,6 +1009,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which an item is drawn. Return null to use the default color (normally light color). Returns null by default.
+	/// <para/> Called on all clients.
 	/// </summary>
 	public virtual Color? GetAlpha(Item item, Color lightColor)
 	{
@@ -982,8 +1052,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to determine the offset of an item's sprite when used by the player.
 	/// This is only used for items with a useStyle of 5 that aren't staves.
 	/// Return null to use the item's default holdout offset; returns null by default.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local and remote clients.
 	/// <example><code>return new Vector2(10, 0);</code></example>
 	/// </summary>
 	public virtual Vector2? HoldoutOffset(int type)
@@ -995,8 +1065,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to determine the point on an item's sprite that the player holds onto when using the item.
 	/// The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5.
 	/// Return null to use the item's default holdout origin; returns null by default.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	public virtual Vector2? HoldoutOrigin(int type)
 	{
@@ -1005,6 +1075,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to disallow the player from equipping an accessory. Return false to disallow equipping the accessory. Returns true by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item that is attempting to equip.</param>
 	/// <param name="player">The player.</param>
@@ -1018,6 +1089,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
 	/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
 	{
@@ -1031,6 +1103,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <para/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
 	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see>.
 	/// <para/> This method is not instanced.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="extractType">The extractinator type corresponding to the items being processed</param>
 	/// <param name="extractinatorBlockType">Which Extractinator tile is being used, <see cref="TileID.Extractinator"/> or <see cref="TileID.ChlorophyteExtractinator"/>.</param>
@@ -1042,6 +1115,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify how many of an item a player obtains when the player fishes that item.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void CaughtFishStack(int type, ref int stack)
 	{
@@ -1050,8 +1124,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Whether or not specific conditions have been satisfied for the Angler to be able to request the given item. (For example, Hardmode.)
 	/// Returns true by default.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on the server only.
 	/// </summary>
 	public virtual bool IsAnglerQuestAvailable(int type)
 	{
@@ -1061,8 +1135,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to set what the Angler says when the Quest button is clicked in his chat.
 	/// The chat parameter is his dialogue, and catchLocation should be set to "Caught at [location]" for the given type.
-	///
-	/// This method is not instanced.
+	/// <para/> This method is not instanced.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void AnglerChat(int type, ref string chat, ref string catchLocation)
 	{
@@ -1078,6 +1152,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things before this item's tooltip is drawn.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item</param>
 	/// <param name="lines">The tooltip lines for this item</param>
@@ -1091,6 +1166,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item</param>
 	/// <param name="lines">The tooltip lines for this item</param>
@@ -1100,6 +1176,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item</param>
 	/// <param name="line">The line that would be drawn</param>
@@ -1112,6 +1189,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things after a tooltip line of this item is drawn. The line contains draw info.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item</param>
 	/// <param name="line">The line that was drawn</param>
@@ -1121,6 +1199,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify all the tooltips that display for the given item. See here for information about TooltipLine. To hide tooltips, please use <see cref="TooltipLine.Hide"/> and defensive coding.
+	/// <para/> Called on a clone of the item, not the original. Modifying instanced fields will have no effect.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 	{

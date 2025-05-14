@@ -85,6 +85,13 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public const int ManaCrystalMax = 9;
 
+	/// <summary>
+	/// How effectively the player can hold their breath underwater. Controls how long it takes for <see cref="breath"/> to decrease. Breathing Reed adds 1 (100%) to this value and Diving Gear multiplies it by 6.
+	/// <para/> Modded effects should add to this instead of multiplying to avoid values getting unreasonable large. Adding 1.5f for example will increase breath time by 150%.
+	/// <para/> Applied in the calculation of <see cref="breathCDMax"/>.
+	/// </summary>
+	public StatModifier breathEffectiveness = StatModifier.Default;
+
 	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
 	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;

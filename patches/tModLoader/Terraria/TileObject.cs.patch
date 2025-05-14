@@ -36,6 +36,14 @@
  						flag4 = true;
  
  					if (flag4 || flag2 || flag3) {
+@@ -330,6 +_,7 @@
+ 									flag5 = true;
+ 							}
+ 							else if (Main.tileSolid[tileSafely.type] && Main.tileSolidTop[tileSafely.type]) {
++								// This is buggy since it doesn't check TopSlope and HalfBrick like WorldGen.SolidTileAllowBottomSlope does, causing issues with placing ontop of hammerable tiles like MetalBar. This bug left in until vanilla fix since it might be complicated.
+ 								flag5 = true;
+ 							}
+ 						}
 @@ -373,7 +_,7 @@
  					Tile tileSafely = Framing.GetTileSafely(num8 + num29, num9 + num28);
  					bool flag6 = false;

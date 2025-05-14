@@ -25,6 +25,7 @@
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\n更新模组：",
+		"ShowRemovedModsInfoMessageUpdatedMods": "\n自上次启动以来，以下模组已被删除。 如果有模组被误删，请点击“安装依赖”以重新下载。",
 		"DependenciesNeededForOtherMods": "\n以下依赖缺失：",
 		"InstallDependencies": "安装依赖",
 		"ContinueAnyway": "忽略并继续",
@@ -328,7 +329,7 @@
 		"ReloadRequiredExplanationDisable": "[c/{0}:禁用]",
 		"ReloadRequiredExplanationConfigChanged": "暂时[c/{0}:修改配置]",
 		"ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:恢复配置]",
-		"ReloadRequiredHostAndPlayModWasDisabledHint": "你之前启用的某个模组在服务器上运行时出现错误，因此已被自动禁用。 查看server.log以调查这些问题。 点击此处查看此问题的常见问题解答。",
+		"ReloadRequiredHostAndPlayModWasDisabledHint": "你之前启用的某个模组在服务器上运行时出现错误，因此已被自动禁用。 请查看server.log以解决这些问题。 点击此处查看常见问题解答。",
 
 		// UIAsyncList
 		"ALLoading": "加载中……",
@@ -516,6 +517,8 @@
 		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方的“下载 .NET {0} SDK”按钮获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
 		"DownloadNetSDK": "下载 .NET SDK",
 		"DevModsInSandbox": "在沙盒（如 Flatpak）中运行的 tModLoader 无法开发模组，请直接在你的系统上安装 Steam",
+		"MSSourceIssue": "模组源码出现问题",
+		"MSSourceIssueMessage": "在{0}模组的源码中发现了以下错误：{1}",
 
 		// Create Mod
 		"CreateModName": "模组内部名称（无空格）",
@@ -563,14 +566,14 @@
 		"CommandModListSyncedMods": "已同步模组：",
 		"CommandModListClientMods": "客户端模组：",
 		"CommandModListModlist": "模组列表：",
-		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
-		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		"CommandCustomSetsDescription": "显示已命名的ID集列表。",
+		"CommandCustomSetsUsage": "/customsets [模组名|设置Key|搜索词] [-v (输出值)] [-o (打开日志文件夹)]",
 
 		// Mod Building
 		"Building": "构建中：{0}",
 		"ReadingProperties": "读取中：{0}",
 		"Compiling": "编译中 {0}",
-		"CompilationResult": "编译完成时,出现{0}个错误与{1}个警告",
+		"CompilationResult": "编译完成，出现{0}个错误与{1}个警告",
 		"LoadingPrecompiled": "从 {1} 加载预编译的 {0} ",
 		"EnabledEAC": "编辑并继续路径：{0}",
 		"Packaging": "合包中：{0}",
@@ -759,10 +762,10 @@
 		"SimpleCondition": "掉落：{0}"
 	},
 	"Conditions": {
-		"NearWater": "需要水",
-		"NearLava": "需要岩浆",
-		"NearHoney": "需要蜂蜜",
-		"NearShimmer": "需要微光",
+		"NearWater": "需要位于水附近",
+		"NearLava": "需要位于岩浆附近",
+		"NearHoney": "需要位于蜂蜜附近",
+		"NearShimmer": "需要位于微光附近",
 
 		"TimeDay": "需要在白天",
 		"TimeNight": "需要在夜晚",
