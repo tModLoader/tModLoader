@@ -146,7 +146,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 		AutoStaticDefaults();
 		SetStaticDefaults();
 		NPCID.Search.Add(FullName, Type);
-//		_ = DeathMessage;
+		_ = DeathMessage;
 	}
 
 	/// <summary>
