@@ -2625,7 +2625,7 @@
  	}
  
 +	/// <summary>
-+	/// Returns the index within <see cref="Main.npc"/> of the the first active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// Returns the index within <see cref="Main.npc"/> of the first active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
 +	/// <param name="Type"></param>
 +	/// <returns></returns>
