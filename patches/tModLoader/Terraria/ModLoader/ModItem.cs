@@ -98,7 +98,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Gets called when your item spawns in world
+	/// Gets called when your item spawns in world.
+	/// <para/> Called on the local client or the server where Item.NewItem is called.
 	/// </summary>
 	public virtual void OnSpawn(IEntitySource source)
 	{
@@ -106,6 +107,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Called when this item is created. The <paramref name="context"/> parameter indicates the context of the item creation and can be used in logic for the desired effect.
+	/// <para/> Called on the local client only, except during mod loading on clients and the server where it is called once for every ModItem.
 	/// <para/> Known <see cref="ItemCreationContext"/> include: <see cref="InitializationItemCreationContext"/>, <see cref="BuyItemCreationContext"/>, <see cref="JourneyDuplicationItemCreationContext"/>, and <see cref="RecipeItemCreationContext"/>. Some of these provide additional context such as how <see cref="RecipeItemCreationContext"/> includes the items consumed to craft this created item.
 	/// </summary>
 	public virtual void OnCreated(ItemCreationContext context)
@@ -187,6 +189,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Returns whether or not this item can be used. By default returns true.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	public virtual bool CanUseItem(Player player)
@@ -196,14 +199,16 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the autoswing (auto-reuse) behavior of this item without having to mess with Item.autoReuse.
-	/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
-	/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+	/// <para/> Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.
+	/// <para/> Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player. </param>
 	public virtual bool? CanAutoReuseItem(Player player) => null;
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of this item in its use animation.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player. </param>
 	/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
@@ -211,6 +216,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of this item when the player is holding it.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player. </param>
 	/// <param name="heldItemFrame"> The source rectangle for the held item's texture. </param>
@@ -218,6 +224,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when the player is holding this item (for example, torches make light and water candles increase spawn rate).
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void HoldItem(Player player)
@@ -226,27 +233,31 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to change the effective useTime of an item.
-	/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
 	public virtual float UseTimeMultiplier(Player player) => 1f;
 
 	/// <summary>
 	/// Allows you to change the effective useAnimation of an item.
-	/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
 	public virtual float UseAnimationMultiplier(Player player) => 1f;
 
 	/// <summary>
 	/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
-	/// <br/> Useful for status effects.
+	/// <para/> Useful for status effects.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
 	public virtual float UseSpeedMultiplier(Player player) => 1f;
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healLife"/> value.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -257,6 +268,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healMana"/> value.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -267,7 +279,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana this item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.mana"/>, modify the <paramref name="reduce"/> and <paramref name="mult"/> parameters.
+	/// <para/> <b>Do not</b> modify <see cref="Item.mana"/>, modify the <paramref name="reduce"/> and <paramref name="mult"/> parameters.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
@@ -280,6 +293,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use.
 	/// If the player has high enough mana after this hook runs, mana consumption will happen normally.
 	/// Only runs once per item use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="neededMana">The mana needed to use the item.</param>
@@ -289,6 +303,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make stuff happen when a player consumes mana on use of this item.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="manaConsumed">The mana consumed from the player.</param>
@@ -299,7 +314,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
@@ -318,6 +334,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Choose if this item will be consumed or not when used as bait. return null for vanilla behavior.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The Player that owns the bait</param>
 	public virtual bool? CanConsumeBait(Player player)
@@ -327,6 +344,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to prevent an item from being researched by returning false. True is the default behavior.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanResearch()
 	{
@@ -335,6 +353,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create custom behavior when an item is accepted by the Research function
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
 	public virtual void OnResearched(bool fullyResearched)
@@ -344,7 +363,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.knockBack"/>, modify the <paramref name="knockback"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.knockBack"/>, modify the <paramref name="knockback"/> parameter.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
@@ -355,7 +375,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.crit"/>, modify the <paramref name="crit"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.crit"/>, modify the <paramref name="crit"/> parameter.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
@@ -367,6 +388,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Whether or not having no ammo prevents an item that uses ammo from shooting.
 	/// Return false to allow shooting with no ammo in the inventory, in which case this item will act as if the default ammo for it is being used.
 	/// Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual bool NeedsAmmo(Player player)
 	{
@@ -375,6 +397,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using. This hook is called on the ammo.
+	/// <para/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
 	/// </summary>
 	/// <param name="weapon">The item that is using this ammo.</param>
 	/// <param name="player">The player using the item.</param>
@@ -391,9 +414,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Whether or not the given ammo item is valid for this weapon. If this, or <see cref="CanBeChosenAsAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon. <br></br>
-	/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid. <br></br>
-	/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not the given ammo item is valid for this weapon. If this, or <see cref="CanBeChosenAsAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon.
+	/// <para/> By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid.
+	/// <para/> If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="ammo">The ammo that the weapon is attempting to select.</param>
 	/// <param name="player">The player which this weapon and the potential ammo belong to.</param>
@@ -404,9 +428,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Whether or not this ammo item is valid for the given weapon. If this, or <see cref="CanChooseAmmo"/> on the weapon, returns false, then the ammo will not be valid for this weapon.<br></br>
-	/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid.<br></br>
-	/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not this ammo item is valid for the given weapon. If this, or <see cref="CanChooseAmmo"/> on the weapon, returns false, then the ammo will not be valid for this weapon.
+	/// <para/> By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid.
+	/// <para/> If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon attempting to select the ammo.</param>
 	/// <param name="player">The player which the weapon and this potential ammo belong to.</param>
@@ -417,9 +442,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
-	/// By default, returns true; return false to prevent ammo consumption.<br></br>
-	/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not the given ammo item will be consumed by this weapon.
+	/// <para/> By default, returns true; return false to prevent ammo consumption.
+	/// <para/> If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="ammo">The ammo that the weapon is attempting to consume.</param>
 	/// <param name="player">The player which this weapon and the ammo belong to.</param>
@@ -430,9 +456,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Whether or not this ammo item will be consumed by the given weapon.<br></br>
-	/// By default, returns true; return false to prevent ammo consumption.<br></br>
-	/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// Whether or not this ammo item will be consumed by the given weapon.
+	/// <para/> By default, returns true; return false to prevent ammo consumption.
+	/// <para/> If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon attempting to consume the ammo.</param>
 	/// <param name="player">The player which the weapon and this ammo belong to.</param>
@@ -443,8 +470,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when the given ammo is consumed by this weapon.<br></br>
-	/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// Allows you to make things happen when the given ammo is consumed by this weapon.
+	/// <para/> Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="ammo">The ammo that this weapon is currently using.</param>
 	/// <param name="player">The player which this weapon and the ammo belong to.</param>
@@ -453,8 +481,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when this ammo is consumed by the given weapon.<br></br>
-	/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// Allows you to make things happen when this ammo is consumed by the given weapon.
+	/// <para/> Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon that is currently using this ammo.</param>
 	/// <param name="player">The player which the weapon and this ammo belong to.</param>
@@ -464,6 +493,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to prevent this item from shooting a projectile on use. Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player using the item. </param>
 	/// <returns></returns>
@@ -473,8 +503,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.<br/>
-	/// These parameters will be provided to <see cref="Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
+	/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.
+	/// <para/> These parameters will be provided to <see cref="Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player"> The player using the item. </param>
 	/// <param name="position"> The center position of the projectile. </param>
@@ -487,8 +518,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
-	/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters.
+	/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+	/// <para/> This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player"> The player using the item. </param>
 	/// <param name="source"> The projectile source's information. </param>
@@ -505,6 +537,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Changes the hitbox of this melee weapon when it is used.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="hitbox">The hitbox.</param>
@@ -515,6 +548,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to give this melee weapon special effects, such as creating light or dust.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="hitbox">The hitbox.</param>
@@ -523,12 +557,12 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this item can catch the given NPC.<br></br>
-	/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
-	/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
-	/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
-	/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
-	/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+	/// Allows you to determine whether this item can catch the given NPC.
+	/// <para/> Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.
+	/// <para/> Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.
+	/// <para/> If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.
+	/// <para/> NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use <see cref="ItemID.Sets.CatchingTool"/>.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="target">The NPC the player is trying to catch.</param>
 	/// <param name="player">The player attempting to catch the NPC.</param>
@@ -540,6 +574,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when this item attempts to catch the given NPC.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC which the player attempted to catch.</param>
 	/// <param name="player">The player attempting to catch the given NPC.</param>
@@ -550,7 +585,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.
-	/// <br/><br/> <b>Do not</b> modify <see cref="Item.scale"/>, modify the <paramref name="scale"/> parameter.
+	/// <para/> <b>Do not</b> modify <see cref="Item.scale"/>, modify the <paramref name="scale"/> parameter.
+	/// <para/> Called on local and remote clients
 	/// </summary>
 	/// <param name="player">The player wielding this item.</param>
 	/// <param name="scale">
@@ -563,6 +599,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine whether this melee weapon can hit the given NPC when swung. Return true to allow hitting the target, return false to block this weapon from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -573,8 +610,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung. <br/>
-	/// Use <see cref="CanHitNPC(Player, NPC)"/> instead for Flymeal-type effects.
+	/// Allows you to determine whether a melee weapon can collide with the given NPC when swung.
+	/// <para/> Use <see cref="CanHitNPC(Player, NPC)"/> instead for Flymeal-type effects.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
 	/// <param name="player">The player wielding this item.</param>
@@ -588,8 +626,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC. <br/>
-	/// This method is only called on the on the client of the player holding the weapon. <br/>
+	/// Allows you to modify the damage, knockback, etc., that this melee weapon does to an NPC.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -599,8 +637,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads). <br/>
-	/// This method is only called on the on the client of the player holding the weapon. <br/>
+	/// Allows you to create special effects when this melee weapon hits an NPC (for example how the Pumpkin Sword creates pumpkin heads).
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -612,6 +650,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine whether this melee weapon can hit the given opponent player when swung. Return false to block this weapon from hitting the target. Returns true by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -624,8 +663,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that this melee weapon does to a player. <br/>
-	/// Called on local, server and remote clients. <br/>
+	/// Allows you to modify the damage, etc., that this melee weapon does to a player.
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -635,8 +674,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this melee weapon hits a player. <br/>
-	/// Called on local, server and remote clients. <br/>
+	/// Allows you to create special effects when this melee weapon hits a player.
+	/// <para/> Called on the client taking damage.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="target">The target.</param>
@@ -647,10 +686,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when this item is used. The return value controls whether or not ApplyItemTime will be called for the player.
-	/// <br/> Return true if the item actually did something, to force itemTime.
-	/// <br/> Return false to keep itemTime at 0.
-	/// <br/> Return null for vanilla behavior.
-	/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+	/// <para/> Return true if the item actually did something, to force itemTime.
+	/// <para/> Return false to keep itemTime at 0.
+	/// <para/> Return null for vanilla behavior.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -658,7 +697,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when this item's use animation starts.
-	/// <para/> Runs on all clients and server. Use <code>if (player.whoAmI == Main.myPlayer)</code> and <code>if (Main.netMode == NetmodeID.??)</code> if appropriate.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player. </param>
 	public virtual void UseAnimation(Player player) { }
@@ -666,6 +705,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// If this item is consumable and this returns true, then this item will be consumed upon usage. Returns true by default.
 	/// If false is returned, the OnConsumeItem hook is never called.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -677,6 +717,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to make things happen when this item is consumed.
 	/// Called before the item stack is reduced.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void OnConsumeItem(Player player)
@@ -685,12 +726,14 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the player's animation when this item is being used.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UseItemFrame(Player player) { }
 
 	/// <summary>
 	/// Allows you to modify the player's animation when the player is holding this item.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void HoldItemFrame(Player player) { }
@@ -698,6 +741,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to make this item usable by right-clicking. When this item is used by right-clicking, <see cref="Player.altFunctionUse"/> will be set to 2. Check the value of altFunctionUse in <see cref="UseItem(Player)"/> to apply right-click specific logic. For auto-reusing through right clicking, see also <see cref="ItemID.Sets.ItemsThatAllowRepeatedRightClick"/>.
 	/// <para/> Returns false by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -709,6 +753,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to make things happen when this item is in the player's inventory. This should NOT be used for information accessories;
 	/// use <seealso cref="UpdateInfoAccessory"/> for those instead.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateInventory(Player player)
@@ -718,12 +763,14 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to set information accessory fields with the passed in player argument. This hook should only be used for information
 	/// accessory fields such as the Radar, Lifeform Analyzer, and others. Using it for other fields will likely cause weird side-effects.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player to be affected the information accessory. </param>
 	public virtual void UpdateInfoAccessory(Player player) { }
 
 	/// <summary>
 	/// Allows you to give effects to this armor or accessory, such as increased damage.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateEquip(Player player)
@@ -732,6 +779,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to give effects to this accessory. The hideVisual parameter is whether the player has marked the accessory slot to be hidden from being drawn on the player.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="hideVisual">if set to <c>true</c> the accessory is hidden.</param>
@@ -741,6 +789,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to give effects to this accessory when equipped in a vanity slot. Vanilla uses this for boot effects, wings and merman/werewolf visual flags
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateVanity(Player player)
@@ -756,7 +805,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows tracking custom shader values corresponding to specific items or custom player layers for equipped accessories. <paramref name="dye"/> is the <see cref="Item.dye"/> of the item in the dye slot. <paramref name="hideVisual"/> indicates if this item is in a non-vanity accessory slot that is set to hidden. Most implementations will not assign shaders if the accessory is hidden, but there are rare cases where it is desired to assign the shader regardless of accessory visibility. One example is Hand Of Creation, the player can disable visibility of the accessory to prevent the backpack visuals from showing, but the stool will still be properly dyed by the corresponding dye item when visible. 
+	/// Allows tracking custom shader values corresponding to specific items or custom player layers for equipped accessories. <paramref name="dye"/> is the <see cref="Item.dye"/> of the item in the dye slot. <paramref name="hideVisual"/> indicates if this item is in a non-vanity accessory slot that is set to hidden. Most implementations will not assign shaders if the accessory is hidden, but there are rare cases where it is desired to assign the shader regardless of accessory visibility. One example is Hand Of Creation, the player can disable visibility of the accessory to prevent the backpack visuals from showing, but the stool will still be properly dyed by the corresponding dye item when visible.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="dye"></param>
@@ -767,6 +816,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects (such as dust) when this item's equipment texture of the given equipment type is displayed on the player. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="type">The type.</param>
@@ -776,6 +826,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Returns whether or not the head armor, body armor, and leg armor make up a set. If this returns true, then this item's UpdateArmorSet method will be called. Returns false by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="head">The head.</param>
 	/// <param name="body">The body.</param>
@@ -787,6 +838,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to give set bonuses to the armor set that this armor is in. Set player.setBonus to a string for the bonus description.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateArmorSet(Player player)
@@ -795,6 +847,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="head">The head.</param>
 	/// <param name="body">The body.</param>
@@ -824,6 +877,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects (such as the necro armor's hurt noise) when the player wears this item's vanity set. This hook is called regardless of whether the player is frozen in any way. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void PreUpdateVanitySet(Player player)
@@ -832,6 +886,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to create special effects (such as dust) when the player wears this item's vanity set. This hook will only be called if the player is not frozen in any way. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void UpdateVanitySet(Player player)
@@ -840,6 +895,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. Note that this hook is only ever called through this item's associated equipment texture. Use the player.armorEffectDraw bools to activate the desired effects.
+	/// <para/> Called on local, server, and remote clients.
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
 	/// </summary>
 	/// <param name="player">The player.</param>
@@ -851,6 +907,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Allows you to modify the equipment that the player appears to be wearing. This is most commonly used to add legs to robes and for swapping to female variant textures if <paramref name="male"/> is false for head and leg armor. This hook will only be called for head armor, body armor, and leg armor. Note that equipSlot is not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
 	/// <para/> If this hook is called on body armor, equipSlot allows you to modify the leg armor the player appears to be wearing. If you modify it, make sure to set robes to true. If this hook is called on leg armor, equipSlot allows you to modify the leg armor the player appears to be wearing, and the robes parameter is useless. The same is true for head armor.
 	/// <para/> Note that this hook is only ever called through this item's associated equipment texture.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="male">if set to <c>true</c> [male].</param>
 	/// <param name="equipSlot">The equip slot.</param>
@@ -861,6 +918,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Returns whether or not this item does something when it is right-clicked in the inventory. Returns false by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanRightClick()
 	{
@@ -870,6 +928,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to make things happen when this item is right-clicked in the inventory. By default this will consume the item by 1 stack, so return false in <see cref="ConsumeItem(Player)"/> if that behavior is undesired.
 	/// <para/> This is only called if the item can be right-clicked, meaning <see cref="ItemID.Sets.OpenableBag"/> is true for the item type or either <see cref="ModItem.CanRightClick"/> or <see cref="GlobalItem.CanRightClick"/> return true.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual void RightClick(Player player)
@@ -888,9 +947,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to decide if this item is allowed to stack with another of its type.
-	/// <br/>This is only called when attempting to stack with an item of the same type.
-	/// <br/>This is not called for coins in inventory/UI.
-	/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
+	/// <para/> This is only called when attempting to stack with an item of the same type.
+	/// <para/> This is not called for coins in inventory/UI.
+	/// <para/> This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
@@ -901,7 +961,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
-	/// <br/>This is only called when attempting to stack with an item of the same type.
+	/// <para/> This is only called when attempting to stack with an item of the same type.
+	/// <para/> Called on the local client or server, depending on who the item is reserved for.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
@@ -911,8 +972,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when items stack together.<br/>
-	/// This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
+	/// Allows you to make things happen when items stack together.
+	/// <para/> This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
@@ -921,8 +983,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split.  This hook is called before the stack values are modified.<br/>
-	/// This item is the item clone being stacked onto from <paramref name="source"/> and always has a stack of zero.
+	/// Allows you to make things happen when an item stack is split. This hook is called before the stack values are modified.
+	/// <para/> This item is the item clone being stacked onto from <paramref name="source"/> and always has a stack of zero.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="source">The original item that will have it's stack reduced.</param>
 	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
@@ -934,6 +997,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Returns if the normal reforge pricing is applied.
 	/// If true or false is returned and the price is altered, the price will equal the altered price.
 	/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount)
 	{
@@ -942,8 +1006,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
-	/// Returns whether the reforge will take place. If false is returned by this or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreRefoge and PostReforge hooks will not be called.
+	/// Returns whether the reforge will take place. If false is returned by this or any GlobalItem, the item will not be reforged, the cost to reforge will not be paid, and PreReforge and PostReforge hooks will not be called.
 	/// Reforging preserves modded data on the item.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanReforge()
 	{
@@ -952,6 +1017,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// This hook gets called immediately before an item gets reforged by the Goblin Tinkerer.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void PreReforge()
 	{
@@ -960,6 +1026,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// This hook gets called immediately after an item gets reforged by the Goblin Tinkerer.
 	/// Useful for modifying modded data based on the reforge result.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void PostReforge()
 	{
@@ -967,6 +1034,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the colors in which this armor and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawPlayer">The draw player.</param>
 	/// <param name="shadow">The shadow.</param>
@@ -979,6 +1047,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify which glow mask and in what color is drawn on the player's arms. Note that this is only called for body armor. Also note that this hook is only ever called through this item's associated equipment texture.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawPlayer">The draw player.</param>
 	/// <param name="shadow">The shadow.</param>
@@ -990,6 +1059,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the speeds at which you rise and fall when these wings are equipped.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="ascentWhenFalling">The ascent when falling.</param>
@@ -1004,6 +1074,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify these wing's horizontal flight speed and acceleration.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="speed">The speed.</param>
@@ -1014,6 +1085,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="inUse">if set to <c>true</c> [in use].</param>
@@ -1025,6 +1097,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to customize this item's movement when lying in the world. Note that this will not be called if this item is currently being grabbed by a player.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	/// <param name="gravity">The gravity.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed.</param>
@@ -1034,6 +1107,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdate()
 	{
@@ -1041,6 +1115,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify how close this item must be to the player in order to move towards the player.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="grabRange">The grab range.</param>
@@ -1050,6 +1125,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify the way this item moves towards the player. Return true if you override this hook; returning false will allow the vanilla grab style to take place. Returns false by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -1060,6 +1136,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine whether or not the item can be picked up
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	public virtual bool CanPickup(Player player)
@@ -1069,6 +1146,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to make special things happen when the player picks up this item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -1079,6 +1157,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Return true to specify that the item can be picked up despite not having enough room in inventory. Useful for something like hearts or experience items. Use in conjunction with OnPickup to actually consume the item and handle it.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
@@ -1089,6 +1168,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which this item is drawn. Return null to use the default color (normally light color). Returns null by default.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="lightColor">Color of the light.</param>
 	/// <returns></returns>
@@ -1100,6 +1180,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
 	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
@@ -1122,6 +1203,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false.
 	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
@@ -1141,6 +1223,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
 	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Called on the local client only.
 	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
@@ -1160,6 +1243,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false.
 	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="position">The screen position of the center of the inventory slot.</param>
@@ -1175,6 +1259,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine the offset of this item's sprite when used by the player. This is only used for items with a useStyle of 5 that aren't staves. Return null to use the vanilla holdout offset; returns null by default.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <returns></returns>
 	public virtual Vector2? HoldoutOffset()
@@ -1184,6 +1269,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine the point on this item's sprite that the player holds onto when using this item. The origin is from the bottom left corner of the sprite. This is only used for staves with a useStyle of 5. Return null to use the vanilla holdout origin (zero); returns null by default.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <returns></returns>
 	public virtual Vector2? HoldoutOrigin()
@@ -1195,6 +1281,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to disallow the player from equipping this accessory. Return false to disallow equipping this accessory.
 	/// <para/> Do not use this to check for mutually exclusive accessories being equipped, that check is only possible via <see cref="CanAccessoryBeEquippedWith(Item, Item, Player)"/>
 	/// <para/> Returns <see langword="true"/> by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
@@ -1208,6 +1295,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
 	/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
 	/// <para/> This method exists because manually checking <see cref="Player.armor"/> in <see cref="CanEquipAccessory(Player, int, bool)"/> will not correctly account for modded accessory slots.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
 	{
@@ -1221,6 +1309,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <para/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
 	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see>.
 	/// <para/> This method is not instanced.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="extractinatorBlockType">Which Extractinator tile is being used, <see cref="TileID.Extractinator"/> or <see cref="TileID.ChlorophyteExtractinator"/>.</param>
 	/// <param name="resultType">Type of the result.</param>
@@ -1231,6 +1320,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// If this item is a fishing pole, allows you to modify the origin and color of its fishing line.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="bobber">The bobber projectile</param>
 	/// <param name="lineOriginOffset"> The offset of the fishing line's origin from the player's center. </param>
@@ -1241,6 +1331,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to determine how many of this item a player obtains when the player fishes this item.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="stack">The stack.</param>
 	public virtual void CaughtFishStack(ref int stack)
@@ -1257,6 +1348,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Whether or not specific conditions have been satisfied for the Angler to be able to request this item. (For example, Hardmode.) Returns true by default.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual bool IsAnglerQuestAvailable()
 	{
@@ -1265,6 +1357,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to set what the Angler says when he requests for this item. The description parameter is his dialogue, and catchLocation should be set to "\n(Caught at [location])".
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="description">The description.</param>
 	/// <param name="catchLocation">The catch location.</param>
@@ -1332,6 +1425,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things before this item's tooltip is drawn.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="lines">The tooltip lines for this item</param>
 	/// <param name="x">The top X position for this tooltip. It is where the first line starts drawing</param>
@@ -1344,6 +1438,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="lines">The tooltip lines for this item</param>
 	public virtual void PostDrawTooltip(ReadOnlyCollection<DrawableTooltipLine> lines)
@@ -1352,6 +1447,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things before a tooltip line of this item is drawn. The line contains draw info.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="line">The line that would be drawn</param>
 	/// <param name="yOffset">The Y offset added for next tooltip lines</param>
@@ -1363,6 +1459,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to do things after a tooltip line of this item is drawn. The line contains draw info.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="line">The line that was drawn</param>
 	public virtual void PostDrawTooltipLine(DrawableTooltipLine line)
@@ -1371,6 +1468,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify all the tooltips that display for this item. See here for information about TooltipLine. To hide tooltips, please use <see cref="TooltipLine.Hide"/> and defensive coding.
+	/// <para/> Called on a clone of the item, not the original. Modifying instanced fields will have no effect.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="tooltips">The tooltips.</param>
 	public virtual void ModifyTooltips(List<TooltipLine> tooltips)

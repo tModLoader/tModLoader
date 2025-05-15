@@ -23,6 +23,7 @@
 		"ShowNewUpdatedModsInfoMessage": "Die folgenden Mods wurden seit letztem Start vom Workshop aus hinzugefügt oder aktualisiert (Du kannst diese Nachricht in den Einstellungen deaktivieren):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNeue Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nAktualisierte Mods:",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
 		"DependenciesNeededForOtherMods": "\nEinige Abhängigkeiten fehlen:",
 		"InstallDependencies": "Installiere Abhängigkeiten",
 		"ContinueAnyway": "Trotzdem fortfahren",
@@ -514,6 +515,8 @@
 		"MSNetSDKNotFound": "Um Mods zu erstellen, muss die .NET {0} SDK installiert sein, diese wurde aber nicht erkannt. Klicke die  „.NET SDK herunterladen“  Schaltfläche unten, um zu Installationsanweisungen zu gelangen. Nach dem Installieren muss tModLoader möglicherweise neu gestartet werden.",
 		"DownloadNetSDK": ".NET SDK herunterladen",
 		"DevModsInSandbox": "tModLoader kann keine Mods entwickeln, während er in einer Sandbox läuft (wie Flatpak). Bitte stell sicher dass Steam direkt auf dem System installiert ist.",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		// "CreateModName": "ModName (no spaces)",

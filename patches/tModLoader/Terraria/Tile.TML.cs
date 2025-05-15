@@ -90,22 +90,22 @@ public readonly partial struct Tile
 	public bool IsHalfBlock { get => Get<TileWallWireStateData>().IsHalfBlock; set => Get<TileWallWireStateData>().IsHalfBlock = value; }
 
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid top side (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeDownRight"/>).<br/>
+	/// If the top side of a tile is sloped (<see cref="Slope"/>), meaning the bottom side is solid. (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeDownRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="topSlope"/>.
 	/// </summary>
 	public bool TopSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeDownRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid bottom side (<see cref="SlopeType.SlopeUpLeft"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
+	/// If the bottom side of a tile is sloped (<see cref="Slope"/>), meaning the top side is solid. (<see cref="SlopeType.SlopeUpLeft"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="bottomSlope"/>.
 	/// </summary>
 	public bool BottomSlope => Slope == SlopeType.SlopeUpLeft || Slope == SlopeType.SlopeUpRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid left side (<see cref="SlopeType.SlopeDownRight"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
+	/// If the left side of a tile is sloped (<see cref="Slope"/>), meaning the right side is solid. (<see cref="SlopeType.SlopeDownRight"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="leftSlope"/>.
 	/// </summary>
 	public bool LeftSlope => Slope == SlopeType.SlopeDownRight || Slope == SlopeType.SlopeUpRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid right side (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeUpLeft"/>).<br/>
+	/// If the right side of a tile is sloped (<see cref="Slope"/>), meaning the left side is solid. (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeUpLeft"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="rightSlope"/>.
 	/// </summary>
 	public bool RightSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeUpLeft;

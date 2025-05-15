@@ -1,5 +1,3 @@
-using ExampleMod.Content.Biomes;
-using ExampleMod.Content.Dusts;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -22,7 +20,6 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(200, 200, 200));
 		}
 
-
 		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
 			//We use this method to set the merge values of the adjacent tiles to -2 if the tile nearby is a snow block
 			//-2 is what terraria uses to designate the tiles that will merge with ours using the custom frames
@@ -30,12 +27,14 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void PostTileFrame(int i, int j, int up, int down, int left, int right, int upLeft, int upRight, int downLeft, int downRight) {
-			//For every even Y coordinate, we will offset the tile's vertical frame by the size of the sheet so the tile's frame ends up using the alternate version on the duplicated sheet below
+			//For every even X and Y coordinate, we will offset the tile's horizontal and vertical frame by the size of the sheet so the tile's frame ends up using the alternate version on the sheet, making a pattern that spans 2x2 tiles
+			Tile t = Main.tile[i, j];
+			if (i % 2 == 0) {
+				t.TileFrameX += 288;
+			}
 			if (j % 2 == 0) {
-				Tile t = Main.tile[i, j];
 				t.TileFrameY += 270;
 			}
-				
 		}
 	}
 

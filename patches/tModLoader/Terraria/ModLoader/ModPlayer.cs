@@ -66,6 +66,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is where you reset any fields you add to your ModPlayer subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void ResetEffects()
 	{
@@ -74,6 +75,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// This is where you reset any fields related to INFORMATION accessories to their "default" states. This is identical to ResetEffects(); but should ONLY be used to
 	/// reset info accessories. It will cause unintended side-effects if used with other fields.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <remarks>
 	/// This method is called in tandem with <seealso cref="ResetEffects"/>, but it also called in <seealso cref="Player.RefreshInfoAccs"/> even when the game is paused;
@@ -82,15 +84,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual void ResetInfoAccessories() { }
 
 	/// <summary>
-	/// This is where you set any fields related to INFORMATION accessories based on the passed in player argument. Note that this hook is only called if all of the requirements
+	/// This is where you set any fields related to INFORMATION accessories based on the passed in player argument.
+	/// <para/> Called on the local client.
+	/// <para/> Note that this hook is only called if all of the requirements
 	/// for a "nearby teammate" is met, which is when the other player is on the same team and within a certain distance, determined by the following code:
 	/// <code>(Main.player[i].Center - base.Center).Length() &lt; 800f</code>
 	/// </summary>
 	public virtual void RefreshInfoAccessoriesFromTeamPlayers(Player otherPlayer) { }
 
 	/// <summary>
-	/// Allows you to modify the player's max stats.  This hook runs after vanilla increases from the Life Crystal, Life Fruit and Mana Crystal are applied<br/>
-	/// <b>NOTE:</b> You should NOT modify <see cref="Player.statLifeMax"/> nor <see cref="Player.statManaMax"/> here.  Use the <paramref name="health"/> and <paramref name="mana"/> parameters.
+	/// Allows you to modify the player's max stats.  This hook runs after vanilla increases from the Life Crystal, Life Fruit and Mana Crystal are applied
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> <b>NOTE:</b> You should NOT modify <see cref="Player.statLifeMax"/> nor <see cref="Player.statManaMax"/> here.  Use the <paramref name="health"/> and <paramref name="mana"/> parameters.
 	/// <para/> Also note that unlike many other tModLoader hooks, the default implementation of this hook has code that will assign <paramref name="health"/> and <paramref name="mana"/> to <see cref="StatModifier.Default"/>. Take care to place <c>base.ModifyMaxStats(out health, out mana);</c> before any other code you add to this hook to avoid issues, if you use it.
 	/// </summary>
 	/// <param name="health">The modifier to the player's maximum health</param>
@@ -103,6 +108,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Similar to <see cref="ResetEffects"/>, except this is only called when the player is dead. If this is called, then <see cref="ResetEffects"/> will not be called.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateDead()
 	{
@@ -117,16 +123,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to save custom data for this player.
-	/// <br/>
-	/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
-	/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+	/// <para/> <b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+	/// <para/> <b>NOTE:</b> Try to only save data that isn't default values.
 	/// </summary>
 	/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
 	public virtual void SaveData(TagCompound tag) { }
 
 	/// <summary>
 	/// Allows you to load custom data that you have saved for this player.
-	/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
+	/// <para/> <b>Try to write defensive loading code that won't crash if something's missing.</b>
 	/// </summary>
 	/// <param name="tag"> The TagCompound to load data from. </param>
 	public virtual void LoadData(TagCompound tag) { }
@@ -178,6 +183,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateBadLifeRegen()
 	{
@@ -185,6 +191,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing Player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment Player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateLifeRegen()
 	{
@@ -192,6 +199,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the power of the player's natural life regeneration. This can be done by multiplying the regen parameter by any number. For example, campfires multiply it by 1.1, while walking multiplies it by 0.5.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="regen"></param>
 	public virtual void NaturalLifeRegen(ref float regen)
@@ -209,6 +217,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// This is called at the beginning of every tick update for this player, after checking whether the player exists. <br/>
 	/// This can be used to adjust timers and cooldowns.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PreUpdate()
 	{
@@ -216,6 +225,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Use this to check on keybinds you have registered. While SetControls is set even while in text entry mode, this hook is only called during gameplay.
+	/// <para/> Called on the local client only.
 	/// <para/> Read <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleKeybindPlayer.cs">ExampleKeybindPlayer.cs</see> for examples and information on using this hook.
 	/// </summary>
 	/// <param name="triggersSet"></param>
@@ -225,9 +235,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called when the player activates their armor set bonus by double tapping down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true). As an example, the Vortex armor uses this to toggle stealth mode.
-	/// <para /> Use this to implement armor set bonuses that need to be activated by the player.
-	/// <para /> Don't forget to check if your armor set is active.
+	/// <para/> Use this to implement armor set bonuses that need to be activated by the player.
+	/// <para/> Don't forget to check if your armor set is active.
 	/// <para/> While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <see cref="Player.holdDownCardinalTimer"/> and <see cref="Player.doubleTapCardinalTimer"/> directly in other hooks for similar effects if needed.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void ArmorSetBonusActivated()
 	{
@@ -235,9 +246,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called when the player activates their armor set bonus by holding down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true) for some amount of time. The <paramref name="holdTime"/> parameter indicates how many ticks the key has been held down for. As an example, the Stardust armor prior to 1.4.4 used to use this to set the location of the Stardust Guardian if <paramref name="holdTime"/> was greater than 60.
-	/// <para /> Use this to implement armor set bonuses that need to be activated by the player.
-	/// <para /> Don't forget to check if your armor set is active.
+	/// <para/> Use this to implement armor set bonuses that need to be activated by the player.
+	/// <para/> Don't forget to check if your armor set is active.
 	/// <para/> While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <see cref="Player.holdDownCardinalTimer"/> and <see cref="Player.doubleTapCardinalTimer"/> directly in other hooks for similar effects if needed.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void ArmorSetBonusHeld(int holdTime)
 	{
@@ -245,6 +257,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void SetControls()
 	{
@@ -252,6 +265,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called sometime after SetControls is called, and right before all the buffs update on this player. This hook can be used to add buffs to the player based on the player's state (for example, the Campfire buff is added if the player is near a Campfire).
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PreUpdateBuffs()
 	{
@@ -259,6 +273,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called right after all of this player's buffs update on the player. This can be used to modify the effects that the buff updates had on this player, and can also be used for general update tasks.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostUpdateBuffs()
 	{
@@ -266,6 +281,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called after Update Accessories.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void UpdateEquips()
 	{
@@ -273,6 +289,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called right after all of this player's equipment and armor sets update on the player, which is sometime after PostUpdateBuffs is called. This can be used to modify the effects that the equipment had on this player, and can also be used for general update tasks.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostUpdateEquips()
 	{
@@ -301,6 +318,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called after miscellaneous update code is called in Player.Update, which is sometime after PostUpdateEquips is called. This can be used for general update tasks.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostUpdateMiscEffects()
 	{
@@ -308,6 +326,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called after the player's horizontal speeds are modified, which is sometime after PostUpdateMiscEffects is called, and right before the player's horizontal position is updated. Use this to modify maxRunSpeed, accRunSpeed, runAcceleration, and similar variables before the player moves forwards/backwards.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostUpdateRunSpeeds()
 	{
@@ -315,6 +334,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called right before modifying the player's position based on velocity. Use this to make direct changes to the velocity.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PreUpdateMovement()
 	{
@@ -322,14 +342,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// This is called at the very end of the Player.Update method. Final general update tasks can be placed here.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostUpdate()
 	{
 	}
 
 	/// <summary>
-	/// Use this hook to modify the jump duration from an extra jump.<br/>
-	/// Vanilla's extra jumps use the following values:
+	/// Use this hook to modify the jump duration from an extra jump.
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> Vanilla's extra jumps use the following values:
 	/// <para>
 	/// Basilisk mount: 0.75<br/>
 	/// Blizzard in a Bottle: 1.5<br/>
@@ -350,6 +372,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// An extra condition for whether an extra jump can be started.  Returns <see langword="true"/> by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="jump">The jump that would be performed</param>
 	/// <returns><see langword="true"/> to let the jump be started, <see langword="false"/> otherwise.</returns>
@@ -359,8 +382,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Effects that should appear when the extra jump starts should happen here.<br/>
-	/// For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
+	/// Effects that should appear when the extra jump starts should happen here.
+	/// <para/> For example, the Cloud in a Bottle's initial puff of smoke is spawned here.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="jump">The jump being performed</param>
 	/// <param name="playSound">Whether the poof sound should play.  Set this parameter to <see langword="false"/> if you want to play a different sound.</param>
@@ -369,8 +393,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpState.Active"/> flag for an extra jump is set from <see langword="true"/> to <see langword="false"/> when the extra jump's duration has expired<br/>
-	/// This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
+	/// This hook runs before the <see cref="ExtraJumpState.Active"/> flag for an extra jump is set from <see langword="true"/> to <see langword="false"/> when the extra jump's duration has expired
+	/// <para/> This occurs when a grappling hook is thrown, the player grabs onto a rope, the jump's duration has finished and when the player's frozen, turned to stone or webbed.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="jump">The jump that was performed</param>
 	public virtual void OnExtraJumpEnded(ExtraJump jump)
@@ -378,8 +403,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/><br/>
-	/// This occurs at the start of the grounded jump and while the player is grounded.
+	/// This hook runs before the <see cref="ExtraJumpState.Available"/> flag for an extra jump is set to <see langword="true"/> in <see cref="Player.RefreshDoubleJumps"/>
+	/// <para/> This occurs at the start of the grounded jump and while the player is grounded.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="jump">The jump instance</param>
 	public virtual void OnExtraJumpRefreshed(ExtraJump jump)
@@ -387,16 +413,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Effects that should appear while the player is performing an extra jump should happen here.<br/>
-	/// For example, the Sandstorm in a Bottle's dusts are spawned here.
+	/// Effects that should appear while the player is performing an extra jump should happen here.
+	/// <para/> For example, the Sandstorm in a Bottle's dusts are spawned here.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void ExtraJumpVisuals(ExtraJump jump)
 	{
 	}
 
 	/// <summary>
-	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.ShowVisuals(Player)"/> from executing on <paramref name="jump"/>.<br/>
-	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
+	/// Return <see langword="false"/> to prevent <see cref="ExtraJump.ShowVisuals(Player)"/> from executing on <paramref name="jump"/>.
+	/// <para/> By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="jump">The jump instance</param>
 	public virtual bool CanShowExtraJumpVisuals(ExtraJump jump)
@@ -414,20 +442,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the armor and accessories that visually appear on the player. In addition, you can create special effects around this character, such as creating dust.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void FrameEffects()
 	{
 	}
 
 	/// <summary>
-	/// Allows you to make a player immune to damage from a certain source, or at a certain time. <br/>
-	/// Vanilla examples include shimmer and journey god mode.<br/>
-	/// <br/>
-	/// Runs before dodges are used, or any damage calculations are performed. <br/>
-	/// Runs on all players, on all clients, so checking Player == Main.LocalPlayer is advisable. <br/>
-	/// If immunity is determined on the local player, the hit will not be sent across the network. <br/>
-	/// <br/>
-	/// In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player.
+	/// Allows you to make a player immune to damage from a certain source, or at a certain time.
+	/// Vanilla examples include shimmer and journey god mode. Runs before dodges are used, or any damage calculations are performed.
+	/// <para/> If immunity is determined on the local player, the hit will not be sent across the network.
+	/// <para/> In pvp the hit will be sent regardless, and all clients will determine immunity independently, though it only really matters for the receiving player.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="damageSource">The source of the damage (projectile, NPC, etc)</param>
 	/// <param name="cooldownCounter">The <see cref="ImmunityCooldownID"/> of the hit</param>
@@ -439,13 +465,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges.<br/>
-	/// Vanilla example is black belt.<br/>
-	/// For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.<br/>
-	/// <br/>
-	/// Only runs on the local client of the player receiving the damage. <br/>
-	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
-	/// If visual indication of the dodge is required on remote clients, you will need to send your own packet.
+	/// Allows you to dodge damage for a player. Intended for guaranteed 'free' or random dodges. Vanilla example is black belt.
+	/// <para/> For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.
+	/// <para/> Called on the local client receiving damage.
+	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network. If visual indication of the dodge is required on remote clients, you will need to send your own packet.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool FreeDodge(Player.HurtInfo info)
@@ -454,13 +477,11 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to dodge damage for a player.<br/>
-	/// Vanilla examples include hallowed armor shadow dodge, and brain of confusion.<br/>
-	/// For dodges which are 'free' and should be used before triggering consumables, use <see cref="FreeDodge"/> instead.<br/>
-	/// <br/>
-	/// Only runs on the local client of the player receiving the damage. <br/>
-	/// If dodge is determined on the local player, the hit will not be sent across the network. <br/>
-	/// You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
+	/// Allows you to dodge damage for a player. Vanilla examples include hallowed armor shadow dodge, and brain of confusion.
+	/// <para/> For dodges which are 'free' and should be used before triggering consumables, use <see cref="FreeDodge"/> instead.
+	/// <para/> Called on the local client receiving damage.
+	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network.
+	/// <para/> You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool ConsumableDodge(Player.HurtInfo info)
@@ -469,38 +490,38 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to adjust an instance of player taking damage. <br/>
-	/// Called on local, server and remote clients. <br/>
-	/// Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. <br/>
-	/// Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible. <br/>
-	/// The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
+	/// Allows you to adjust an instance of player taking damage.
+	/// <para/> Called on the local client taking damage.
+	/// <para/> Only use this hook if you need to modify the hurt parameters in some way, eg consuming a buff which reduces the damage of the next hit. Use <see cref="OnHurt"/> or <see cref="PostHurt"/> instead where possible.
+	/// <para/> The player will always take at least 1 damage. To prevent damage use <see cref="ImmuneTo"/> or <see cref="FreeDodge"/> <br/>
 	/// </summary>
 	public virtual void ModifyHurt(ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to make anything happen when the player takes damage. <br/>
-	/// Called on local, server and remote clients. <br/>
-	/// Called right before health is reduced.
+	/// Allows you to make anything happen when the player takes damage.
+	/// <para/> Called on the local client taking damage.
+	/// <para/> Called right before health is reduced.
 	/// </summary>
 	public virtual void OnHurt(Player.HurtInfo info)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to make anything happen when the player takes damage. <br/>
-	/// Called on local, server and remote clients. <br/>
-	/// Only called if the player survives the hit.
+	/// Allows you to make anything happen when the player takes damage.
+	/// <para/> Called on the local client taking damage
+	/// <para/> Only called if the player survives the hit.
 	/// </summary>
 	public virtual void PostHurt(Player.HurtInfo info)
 	{
 	}
 
 	/// <summary>
-	/// This hook is called whenever the player is about to be killed after reaching 0 health.<br/><br/>
-	/// Set the <paramref name="playSound"/> parameter to false to stop the death sound from playing. Set the <paramref name="genDust"/> parameter to false to stop the dust from being created. These are useful for creating your own sound or dust to replace the normal death effects, such as how the Frost armor set spawns <see cref="DustID.IceTorch"/> instead of <see cref="DustID.Blood"/>. For mod compatibility, it is recommended to check if these values are true before setting them to true and spawning dust or playing sounds to avoid overlapping sounds and dust effects.<br/><br/>
-	/// Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
+	/// This hook is called whenever the player is about to be killed after reaching 0 health.
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> Set the <paramref name="playSound"/> parameter to false to stop the death sound from playing. Set the <paramref name="genDust"/> parameter to false to stop the dust from being created. These are useful for creating your own sound or dust to replace the normal death effects, such as how the Frost armor set spawns <see cref="DustID.IceTorch"/> instead of <see cref="DustID.Blood"/>. For mod compatibility, it is recommended to check if these values are true before setting them to true and spawning dust or playing sounds to avoid overlapping sounds and dust effects.
+	/// <para/> Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.
 	/// </summary>
 	/// <param name="damage"></param>
 	/// <param name="hitDirection"></param>
@@ -517,6 +538,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to make anything happen when the player dies.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="damage"></param>
 	/// <param name="hitDirection"></param>
@@ -528,6 +550,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called before vanilla makes any luck calculations. Return false to prevent vanilla from making their luck calculations. Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="luck"></param>
 	public virtual bool PreModifyLuck(ref float luck)
@@ -537,6 +560,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify a player's luck amount.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="luck"></param>
 	public virtual void ModifyLuck(ref float luck)
@@ -545,6 +569,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to do anything before the update code for the player's held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool PreItemCheck()
@@ -554,6 +579,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to do anything after the update code for the player's held item is run. Hooks for the middle of the held item update code have more specific names in ModItem and ModPlayer.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void PostItemCheck()
 	{
@@ -561,27 +587,31 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to change the effective useTime of an item.
-	/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns> The multiplier on the usage time. 1f by default. Values greater than 1 increase the item use's length. </returns>
 	public virtual float UseTimeMultiplier(Item item) => 1f;
 
 	/// <summary>
 	/// Allows you to change the effective useAnimation of an item.
-	/// <br/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Note that this hook may cause items' actions to run less or more times than they should per a single use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns>The multiplier on the animation time. 1f by default. Values greater than 1 increase the item animation's length. </returns>
 	public virtual float UseAnimationMultiplier(Item item) => 1f;
 
 	/// <summary>
 	/// Allows you to safely change both useTime and useAnimation while keeping the values relative to each other.
-	/// <br/> Useful for status effects.
+	/// <para/> Useful for status effects.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <returns> The multiplier on the use speed. 1f by default. Values greater than 1 increase the overall item speed. </returns>
 	public virtual float UseSpeedMultiplier(Item item) => 1f;
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healLife"/> value.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -592,6 +622,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <see cref="Item.healMana"/> value.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
@@ -602,6 +633,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to temporarily modify the amount of mana an item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="reduce">Used for decreasingly stacking buffs (most common). Only ever use -= on this field.</param>
@@ -614,6 +646,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Allows you to make stuff happen when a player doesn't have enough mana for the item they are trying to use.
 	/// If the player has high enough mana after this hook runs, mana consumption will happen normally.
 	/// Only runs once per item use.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="neededMana">The mana needed to use the item.</param>
@@ -623,6 +656,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to make stuff happen when a player consumes mana on use of an item.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="manaConsumed">The mana consumed from the player.</param>
@@ -633,6 +667,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
@@ -643,6 +678,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item being used.</param>
 	/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
@@ -653,6 +689,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
@@ -664,6 +701,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
 	/// By default, returns true; return false to prevent ammo consumption. <br></br>
 	/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon that this player is attempting to use.</param>
 	/// <param name="ammo">The ammo that the given weapon is attempting to consume.</param>
@@ -676,6 +714,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to make things happen when the given ammo is consumed by the given weapon.<br></br>
 	/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="weapon">The weapon that is currently using the given ammo.</param>
 	/// <param name="ammo">The ammo that the given weapon is currently using.</param>
@@ -685,6 +724,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to prevent an item from shooting a projectile on use. Returns true by default.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item being used. </param>
 	/// <returns></returns>
@@ -695,6 +735,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item"> The item being used. </param>
 	/// <param name="position"> The center position of the projectile. </param>
@@ -708,6 +749,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item"> The item being used. </param>
 	/// <param name="source"> The projectile source's information. </param>
@@ -724,6 +766,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to give this player's melee weapon special effects, such as creating light or dust. This is typically used to implement a weapon enchantment, similar to flasks, frost armor, or magma stone effects.
 	/// <para/> If implementing a weapon enchantment, also implement <see cref="EmitEnchantmentVisualsAt(Projectile, Vector2, int, int)"/> to support enchantment visuals for projectiles as well.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="hitbox"></param>
@@ -740,8 +783,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// Allows you to determine whether the given item can catch the given NPC.<br></br>
 	/// Return true or false to say the target can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
 	/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
-	/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
-	/// NOTE: this does not classify the given item as a catch tool, which is necessary for catching NPCs in the first place.<br></br>
+	/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br>
+	/// <para/> Called on the local client only.
+	/// <para/> NOTE: this does not classify the given item as a catch tool, which is necessary for catching NPCs in the first place.
 	/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
 	/// </summary>
 	/// <param name="target">The NPC the player is trying to catch.</param>
@@ -753,6 +797,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to make things happen when the given item attempts to catch the given NPC.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC which the player attempted to catch.</param>
 	/// <param name="item">The item used to catch the given NPC.</param>
@@ -763,6 +808,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.
+	/// <para/> Called on local and remote clients
 	/// </summary>
 	/// <param name="item">The item to modify the scale of.</param>
 	/// <param name="scale">
@@ -774,8 +820,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center. <br/>
-	/// Called on the local client. <br/>
+	/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
@@ -786,6 +832,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a player can hit the given NPC. Returns true by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <returns>True by default</returns>
@@ -795,11 +842,12 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to determine whether a player melee attack can collide the given NPC by swinging a melee weapon. <br/>
+	/// Allows you to determine whether a player melee attack can collide the given NPC by swinging a melee weapon.
 	/// Use <see cref="CanHitNPCWithItem(Item, NPC)"/> instead for Guide Voodoo Doll-type effects.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item">The weapon item the player is holding.</param>
-	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
 	/// <param name="target">The target npc.</param>
 	/// <returns>
 	/// Return true to allow colliding the target, return false to block the player weapon from colliding the target, and return null to use the vanilla code for whether the target can be colliding by melee weapon. Returns null by default.
@@ -810,8 +858,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc that this player does to an NPC. <br/>
-	/// This method is only called on the on the local client. <br/>
+	/// Allows you to modify the damage, knockback, etc that this player does to an NPC.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="modifiers"></param>
@@ -821,6 +869,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when this player hits an NPC.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="hit"></param>
@@ -831,6 +880,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a player can hit the given NPC by swinging a melee weapon. Return true to allow hitting the target, return false to block this player from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -841,8 +891,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon. <br/>
-	/// This method is only called on the on the client of the player holding the weapon. <br/>
+	/// Allows you to modify the damage, knockback, etc., that this player does to an NPC by swinging a melee weapon.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -853,6 +903,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when this player hits an NPC by swinging a melee weapon (for example how the Pumpkin Sword creates pumpkin heads).
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -864,6 +915,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a projectile created by this player can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -875,6 +927,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that a projectile created by this player does to an NPC.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -885,6 +938,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to create special effects when a projectile created by this player hits an NPC (for example, inflicting debuffs).
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -896,6 +950,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a melee weapon swung by this player can hit the given opponent player. Return false to block this weapon from hitting the target. Returns true by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="item"></param>
 	/// <param name="target"></param>
@@ -907,6 +962,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether a projectile created by this player can hit the given opponent player. Return false to block the projectile from hitting the target. Returns true by default.
+	/// <para/> Called on the client hitting the target.
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <param name="target"></param>
@@ -918,6 +974,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether the given NPC can hit this player. Return false to block this player from being hit by the NPC. Returns true by default. CooldownSlot determines which of the player's cooldown counters (<see cref="ImmunityCooldownID"/>) to use, and defaults to -1 (<see cref="ImmunityCooldownID.General"/>).
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="cooldownSlot"></param>
@@ -928,16 +985,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that an NPC does to this player. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to modify the damage, etc., that an NPC does to this player.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs). <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to create special effects when an NPC hits this player (for example, inflicting debuffs).
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
 	{
@@ -945,6 +1002,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to determine whether the given hostile projectile can hit this player. Return false to block this player from being hit. Returns true by default.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	/// <param name="proj"></param>
 	/// <returns></returns>
@@ -954,16 +1012,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the damage, etc., that a hostile projectile does to this player. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to modify the damage, etc., that a hostile projectile does to this player.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when a hostile projectile hits this player. <br/>
-	/// Runs on the local client. <br/>
+	/// Allows you to create special effects when a hostile projectile hits this player.
+	/// <para/> Called on the client taking damage
 	/// </summary>
 	public virtual void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
 	{
@@ -971,8 +1029,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to change information about the ongoing fishing attempt before caught items/NPCs are decided, after all vanilla information has been gathered.
-	/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
-	/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
+	/// <para/> Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
+	/// <para/> Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
+	/// <para/> Called for the local client only.
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
 	public virtual void ModifyFishingAttempt(ref FishingAttempt attempt)
@@ -982,6 +1041,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to change the item or enemy the player gets when successfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 	/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
 	/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave &lt;0 for no item</param>
@@ -994,6 +1054,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the item caught by the fishing player, including stack
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="fish">The item (Fish) to modify</param>
 	public virtual void ModifyCaughtFish(Item fish)
@@ -1003,6 +1064,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behavior.
 	/// Not consuming will always take priority over forced consumption
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="bait">The item (bait) that would be consumed</param>
 	public virtual bool? CanConsumeBait(Item bait)
@@ -1012,6 +1074,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the player's fishing power. As an example of the type of stuff that should go here, the phase of the moon can influence fishing power.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="fishingRod"></param>
 	/// <param name="bait"></param>
@@ -1022,6 +1085,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to add to, change, or remove from the items the player earns when finishing an Angler quest. The rareMultiplier is a number between 0.15 and 1 inclusively; the lower it is the higher chance there should be for the player to earn rare items.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="rareMultiplier"></param>
 	/// <param name="rewardItems"></param>
@@ -1031,6 +1095,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify what items are possible for the player to earn when giving a Strange Plant to the Dye Trader.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="rewardPool"></param>
 	public virtual void GetDyeTraderReward(List<int> rewardPool)
@@ -1038,8 +1103,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache. <br/>
-	/// This will be called multiple times a frame if a player afterimage is being drawn. Check <code>if(drawinfo.shadow == 0f)</code> to do some logic only when drawing the original player image. For example, spawning dust only for the original player image is commonly the desired behavior.
+	/// Allows you to create special effects when this player is drawn, such as creating dust, modifying the color the player is drawn in, etc. The fullBright parameter makes it so that the drawn player ignores the modified color and lighting. Make sure to add the indexes of any dusts you create to drawInfo.DustCache, and the indexes of any gore you create to drawInfo.GoreCache.
+	/// <para/> This will be called multiple times a frame if a player afterimage is being drawn. Check <code>if(drawinfo.shadow == 0f)</code> to do some logic only when drawing the original player image. For example, spawning dust only for the original player image is commonly the desired behavior.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	/// <param name="r"></param>
@@ -1053,6 +1119,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the drawing parameters of the player before drawing begins.
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
@@ -1070,7 +1137,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the visibility of layers about to be drawn
+	/// Allows you to modify the visibility of layers about to be drawn. Layers can be accessed via <see cref="PlayerDrawLayerLoader.Layers"/>
+	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	public virtual void HideDrawLayers(PlayerDrawSet drawInfo)
@@ -1079,7 +1147,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Use this hook to modify <see cref="Main.screenPosition"/> after weapon zoom and camera lerp have taken place.
-	/// <br/> Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.
+	/// <para/> Called on the local client only.
+	/// <para/> Also consider using <c>Main.instance.CameraModifiers.Add(CameraModifier);</c> as shown in ExampleMods MinionBossBody for screen shakes.
 	/// </summary>
 	public virtual void ModifyScreenPosition()
 	{
@@ -1087,6 +1156,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Use this to modify the zoom factor for the player. The zoom correlates to the percentage of half the screen size the zoom can reach. A value of -1 passed in means no vanilla scope is in effect. A value of 1.0 means the scope can zoom half a screen width/height away, putting the player on the edge of the game screen. Vanilla values include .8, .6666, and .5.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="zoom"></param>
 	public virtual void ModifyZoom(ref float zoom)
@@ -1094,23 +1164,22 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Called on clients when a player connects.
+	/// Called on remote clients when a player connects.
 	/// </summary>
 	public virtual void PlayerConnect()
 	{
 	}
 
 	/// <summary>
-	/// Called when a player disconnects.
-	/// <para/> Called on the server when this player disconnects.
-	/// <para/> Called on other clients when this player disconnects.
+	/// Called on the server and remote clients when a player disconnects.
 	/// </summary>
 	public virtual void PlayerDisconnect()
 	{
 	}
 
 	/// <summary>
-	/// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
+	/// Called when the player enters the world. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void OnEnterWorld()
 	{
@@ -1118,6 +1187,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called when a player respawns in the world.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void OnRespawn()
 	{
@@ -1125,6 +1195,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called whenever the player shift-clicks an item slot. This can be used to override default clicking behavior (ie. selling, trashing, moving items).
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="inventory">The array of items the slot is part of.</param>
 	/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
@@ -1137,7 +1208,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called whenever the player hovers over an item slot. This can be used to override <see cref="Main.cursorOverride"/>
-	/// <br>See <see cref="ID.CursorOverrideID"/> for cursor override style IDs</br>
+	/// <para/> Called on the local client only.
+	/// <para/> See <see cref="ID.CursorOverrideID"/> for cursor override style IDs
 	/// </summary>
 	/// <param name="inventory">The array of items the slot is part of.</param>
 	/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
@@ -1150,6 +1222,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called whenever the player sells an item to an NPC.
+	/// <para/> Called on the local client only.
 	/// <para/> Note that <paramref name="item"/> might be an item sold by the NPC, not an item to buy back. Check <see cref="Item.buyOnce"/> if relevant to your logic.
 	/// </summary>
 	/// <param name="vendor">The NPC vendor.</param>
@@ -1161,6 +1234,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Return false to prevent a transaction. Called before the transaction.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="vendor">The NPC vendor.</param>
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>
@@ -1173,6 +1247,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Called whenever the player buys an item from an NPC.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="vendor">The NPC vendor.</param>
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>
@@ -1183,6 +1258,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Return false to prevent a transaction. Called before the transaction.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="vendor">The NPC vendor.</param>
 	/// <param name="shopInventory">The current inventory of the NPC shop.</param>
@@ -1195,6 +1271,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Return false to prevent an item from being used. By default returns true.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item">The item the player is attempting to use.</param>
 	public virtual bool CanUseItem(Item item)
@@ -1204,14 +1281,16 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
-	/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
-	/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+	/// <para/> Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.
+	/// <para/> Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item. </param>
 	public virtual bool? CanAutoReuseItem(Item item) => null;
 
 	/// <summary>
-	/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
+	/// Called while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="nurse">The Nurse NPC instance.</param>
 	/// <param name="health">How much health the player gains.</param>
@@ -1224,7 +1303,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Called on the Client while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See the <see href="https://terraria.wiki.gg/wiki/Nurse">Nurse wiki page</see> for the default pricing.
+	/// Called while the nurse chat is displayed and after ModifyNurseHeal. Allows custom pricing for Nurse services. See the <see href="https://terraria.wiki.gg/wiki/Nurse">Nurse wiki page</see> for the default pricing.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="nurse">The Nurse NPC instance.</param>
 	/// <param name="health">How much health the player gains.</param>
@@ -1235,7 +1315,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Called on the Client after the player heals themselves with the Nurse NPC.
+	/// Called after the player heals themselves with the Nurse NPC.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="nurse">The Nurse npc providing the heal.</param>
 	/// <param name="health">How much health the player gained.</param>
@@ -1248,6 +1329,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Called when the player is created in the menu.
 	/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
 	/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
@@ -1259,6 +1341,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to modify the items that will be added to the player's inventory. Useful if you want to stop vanilla or other mods from adding an item.
 	/// You can access a mod's items by using the mod's internal name as the indexer, such as: additions["ModName"]. To access vanilla items you can use "Terraria" as the index.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="itemsByMod">The items that will be added. Each key is the internal mod name of the mod adding the items. Vanilla items use the "Terraria" key.</param>
 	/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
@@ -1276,6 +1359,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Called when Recipe.FindRecipes is called or the player is crafting an item
 	/// You can use this method to add items as the materials that may be used for crafting items
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="itemConsumedCallback">The action that gets invoked when the item is consumed</param>
 	/// <returns>A list of the items that may be used as crafting materials or null if none are available.</returns>
@@ -1287,6 +1371,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="item">The item being picked up</param>
 	/// <returns></returns>

@@ -950,6 +950,14 @@
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2160,6 +_,7 @@
+ 
+ 			_uiScaleUsed = value;
+ 			_uiScaleMatrix = Matrix.CreateScale(value, value, 1f);
++			chatMonitor.OnResolutionChange(); // TML fix: scale NewText by UIScale.
+ 		}
+ 	}
+ 
 @@ -2212,6 +_,7 @@
  		}
  	}

@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using ReLogic.Reflection;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -13,6 +15,16 @@ namespace Terraria.ModLoader;
 /// </remarks>
 public abstract class DamageClass : ModType, ILocalizedModType
 {
+	public class Sets
+	{
+		/// <summary>
+		/// Used for creating sets indexed by DamageClass type (<see cref="DamageClass.Type"/>).
+		/// <para/> <inheritdoc cref="SetFactory"/>
+		/// </summary>
+		public static SetFactory Factory = new SetFactory(DamageClassLoader.DamageClassCount, nameof(DamageClass), Search);
+	}
+	public static IdDictionary Search = IdDictionary.Create<DamageClass, int>();
+
 	/// <summary>
 	/// Default damage class for non-classed weapons and items, does not benefit from Generic bonuses
 	/// </summary>
@@ -122,8 +134,8 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<DamageClass>.Register(this);
-
 		Type = DamageClassLoader.Add(this);
+		Search.Add(FullName, Type);
 	}
 
 	public sealed override void SetupContent()
