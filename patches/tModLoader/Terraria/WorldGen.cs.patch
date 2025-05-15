@@ -1962,13 +1962,15 @@
  	{
  		for (int k = i - size; k <= i + size; k++) {
  			for (int l = j - size; l <= j + size; l++) {
-@@ -39352,9 +_,16 @@
+@@ -39352,9 +_,18 @@
  				Tile tile = Main.tile[k, l];
  				int type = tile.type;
  				int wall = tile.wall;
 +
 +				bool convertWall = walls && wall > 0 && WallLoader.Convert(k, l, conversionType);
 +				bool convertTile = tiles && tile.HasTile && TileLoader.Convert(k, l, conversionType);
++				if (conversionType >= BiomeConversionID.Count)
++					continue;
 +
  				switch (conversionType) {
  					case 4:
@@ -2908,7 +2910,7 @@
  		if (!Main.remixWorld)
  			return;
  
-+		if (!TileLoader.Convert(x, y, 0))
++		if (!TileLoader.Convert(x, y, 9))
 +			return;
 +
  		if (Main.tile[x, y].type == 23 || Main.tile[x, y].type == 199 || Main.tile[x, y].type == 661 || Main.tile[x, y].type == 662) {
@@ -2935,6 +2937,25 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
+@@ -50637,6 +_,18 @@
+ 					if (!InWorld(num8, num9, 2) || !Main.tile[num8, num9].active())
+ 						continue;
+ 
++					int preHookType = Main.tile[num8, num9].type;
++					bool convertTile = TileLoader.Convert(num8, num9, 9);
++
++					if (preHookType != Main.tile[num8, num9].type) {
++						flag = true;
++
++						continue;
++					}
++
++					if (!convertTile)
++						continue;
++
+ 					if (Main.tile[num8, num9].type == 661 || Main.tile[num8, num9].type == 662 || Main.tile[num8, num9].type == 23 || Main.tile[num8, num9].type == 199 || Main.tile[num8, num9].type == 2 || Main.tile[num8, num9].type == 477 || Main.tile[num8, num9].type == 492 || Main.tile[num8, num9].type == 109) {
+ 						Main.tile[num8, num9].type = 60;
+ 						SquareTileFrame(num8, num9);
 @@ -50708,6 +_,9 @@
  				if (!InWorld(num11, num12, 10))
  					continue;
@@ -2950,7 +2971,7 @@
  						continue;
  
 +					int preHookType = Main.tile[num11, num12].type;
-+					bool convertTile = !TileLoader.Convert(num11, num12, 1);
++					bool convertTile = TileLoader.Convert(num11, num12, 1);
 +
 +					if (preHookType != Main.tile[num11, num12].type) {
 +						if (genRand.Next(2) == 0)
@@ -2980,7 +3001,7 @@
  						continue;
  
 +					int preHookType = Main.tile[num13, num14].type;
-+					bool convertTile = !TileLoader.Convert(num13, num14, 4);
++					bool convertTile = TileLoader.Convert(num13, num14, 4);
 +
 +					if (preHookType != Main.tile[num13, num14].type) {
 +						if (genRand.Next(2) == 0)
@@ -3003,7 +3024,7 @@
 +				continue;
 +
 +			int preHookType = Main.tile[num15, num16].type;
-+			bool convertTile = !TileLoader.Convert(num15, num16, 2);
++			bool convertTile = TileLoader.Convert(num15, num16, 2);
 +
 +			if (preHookType != Main.tile[num15, num16].type) {
 +				if (genRand.Next(2) == 0)
@@ -3018,6 +3039,17 @@
  			if (Main.tile[num15, num16].type == 2) {
  				if (genRand.Next(2) == 0)
  					flag4 = true;
+@@ -51041,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Returns true if there is a solid tile at the provided tile coordinates suitable for a tile to be anchored above.
++	/// <br/><br/> Specifically, this checks that the tile is active, unactuated, is <see cref="Main.tileSolid"/> or <see cref="Main.tileSolidTop"/>, isn't a half block, and it has a solid top side (top isn't sloped).
++	/// </summary>
+ 	public static bool SolidTileAllowBottomSlope(int i, int j)
+ 	{
+ 		try {
 @@ -52049,9 +_,20 @@
  
  	public static void UpdateWorld()
@@ -3590,6 +3622,15 @@
  								if (TileID.Sets.IsVine[num]) {
  									up = ((tile2 == null) ? num : ((!tile2.nactive()) ? (-1) : ((!tile2.bottomSlope()) ? tile2.type : (-1))));
  									if (num != up) {
+@@ -63276,7 +_,7 @@
+ 								if (!noTileActions && tile.active() && TileID.Sets.Falling[num])
+ 									SpawnFallingBlockProjectile(i, j, tile, tile2, tile3, num);
+ 
+-								if ((rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0) || flag14) {
++								if ((tile.frameX != frameX && tile.frameY != frameY && frameX >= 0 && frameY >= 0) || flag14) { // #4640 - Account for tile frameX/Y changes within TileLoader.PostTileFrame
+ 									tileReframeCount++;
+ 									if (tileReframeCount < 25) {
+ 										bool num50 = mergeUp;
 @@ -63321,7 +_,7 @@
  			currentMerge = -1;
  	}

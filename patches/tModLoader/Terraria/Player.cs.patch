@@ -403,7 +403,7 @@
  	public int heldProj = -1;
 +	/// <summary> A countdown timer for <see cref="breath"/>. Ticks up every frame the player is holding their breath underwater. Once it reaches <see cref="breathCDMax"/>, resets back to 0 and breath is reduced by 1. </summary>
  	public int breathCD;
-+	/// <summary> The max value of <see cref="breath"/>. Defaults to 200. The total ticks before starting to drown is <c>breathMax * breathCDMax</c>.</summary>
++	/// <summary> The max value of <see cref="breath"/>. Defaults to 200. The total ticks before starting to drown is <c>breathMax * breathCDMax</c>. <para/> Effects like Breathing Reed and Diving Gear affect <see cref="breathEffectiveness"/> rather than edit this value. </summary>
  	public int breathMax = 200;
 +	/// <summary> The current amount of breath the player has (<see href="https://terraria.wiki.gg/wiki/Breath_meter">Breath info on the wiki</see>). <see cref="breathCD"/> controls how often the value decreases. Once 0, the player will start to take drowning damage. When out of liquid increases by 3 each tick. </summary>
  	public int breath = 200;
@@ -1115,20 +1115,31 @@
  	public bool ZoneUnderworldHeight {
  		get {
  			return zone3[4];
-@@ -1998,10 +_,13 @@
+@@ -1998,18 +_,20 @@
  
  	public Vector2 Directions => new Vector2(direction, gravDir);
  
 +	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
  	public Item HeldItem => inventory[selectedItem];
  
-+	/// <summary> How long it takes for <see cref="breathCD"/> to cause <see cref="breath"/> to decrease by 1. Defaults to 7 and is increased by factors such as holding a Breathing Reed, which doubles this, or having a Diving Gear, which multiplies this by 6, to make the process of losing breath value slower. </summary>
++	/// <summary> How long it takes for <see cref="breathCD"/> to cause <see cref="breath"/> to decrease by 1. Defaults to 7 before <see cref="breathEffectiveness"/> is applied. </summary>
  	public int breathCDMax {
  		get {
-+			// TODO: hook or StatModifier breathEffectiveness
- 			int num = 7;
+-			int num = 7;
++			var calculated = breathEffectiveness;
  			if (inventory[selectedItem].type == 186 && itemAnimation == 0)
- 				num *= 2;
+-				num *= 2;
++				calculated += 1;
+ 
+ 			if (accDivingHelm)
+-				num *= 6;
++				calculated *= 6;
+ 
+-			return num;
++			return (int)(calculated.ApplyTo(7));
+ 		}
+ 	}
+ 
 @@ -2085,6 +_,10 @@
  		}
  	}
@@ -1913,7 +1924,12 @@
  	{
  		if (armorItem.IsAir)
  			return;
-@@ -7020,13 +_,13 @@
+@@ -7017,16 +_,18 @@
+ 		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count && (cShieldFallback == -1 || !flag))
+ 			cShieldFallback = dyeItem.dye;
+ 
++		ItemLoader.UpdateItemDye(armorItem, this, dyeItem.dye, flag); // Call early to support hideVisuals bypassing
++
  		if (!num && flag)
  			return;
  
@@ -3433,11 +3449,12 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
-@@ -14505,6 +_,7 @@
+@@ -14505,6 +_,8 @@
  		dashType = 0;
  		spikedBoots = 0;
  		blackBelt = false;
 +		breathMax = 200; // Added by TML.
++		breathEffectiveness = StatModifier.Default;
  		lavaMax = 0;
  		archery = false;
  		poisoned = false;
@@ -5367,6 +5384,15 @@
  		if (item.type == 3581)
  			yoraiz0rDarkness = true;
  
+@@ -28662,6 +_,8 @@
+ 
+ 		if (item.type == 5075)
+ 			hasRainbowCursor = true;
++
++		ItemLoader.UpdateVisibleAccessory(item, this, false);
+ 	}
+ 
+ 	public void SetArmorEffectVisuals(Player drawPlayer)
 @@ -28799,6 +_,9 @@
  		if (drawPlayer.head == 267)
  			yoraiz0rDarkness = true;
@@ -7192,6 +7218,16 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35442,6 +_,9 @@
+ 		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
+ 			return;
+ 
++		if (!CombinedHooks.CanBeTeleportedTo(this, pointPoisition, num, num2, "TeleportRod"))
++			return;
++
+ 		Teleport(pointPoisition, 1);
+ 		NetMessage.SendData(65, -1, -1, null, 0, whoAmI, pointPoisition.X, pointPoisition.Y, 1);
+ 		if (sItem.type != 1326)
 @@ -35479,7 +_,10 @@
  			}
  		}
@@ -8917,6 +8953,16 @@
  			adjTile[n] = false;
  			oldAdjTile[n] = false;
  		}
+@@ -43304,6 +_,9 @@
+ 			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
+ 				continue;
+ 
++			if (!CombinedHooks.CanBeTeleportedTo(this, vector, i, j, "CheckForGoodTeleportationSpot"))
++				continue;
++
+ 			Vector2 vector2 = Vector2.UnitX * 16f;
+ 			if (Collision.TileCollision(vector - vector2, vector2, width, height, fallThrough: false, fall2: false, (int)gravDir) != vector2)
+ 				continue;
 @@ -43332,11 +_,29 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);

@@ -61,6 +61,23 @@
  	private Dictionary<Point, int> _displayDollTileEntityPositions = new Dictionary<Point, int>();
  	private Dictionary<Point, int> _hatRackTileEntityPositions = new Dictionary<Point, int>();
  	private Dictionary<Point, int> _trainingDummyTileEntityPositions = new Dictionary<Point, int>();
+@@ -69,10 +_,16 @@
+ 	private int[] _specialTileX = new int[1000];
+ 	private int[] _specialTileY = new int[1000];
+ 	private UnifiedRandom _rand;
++	public double _treeWindCounter;
++	public double _grassWindCounter;
++	public double _sunflowerWindCounter;
++	public double _vineWindCounter;
++	/*
+ 	private double _treeWindCounter;
+ 	private double _grassWindCounter;
+ 	private double _sunflowerWindCounter;
+ 	private double _vineWindCounter;
++	*/
+ 	private WindGrid _windGrid = new WindGrid();
+ 	private bool _shouldShowInvisibleBlocks;
+ 	private bool _shouldShowInvisibleBlocks_LastFrame;
 @@ -114,7 +_,12 @@
  
  	private Gore[] _gore => Main.gore;
@@ -367,7 +384,8 @@
  		}
  	}
  
- 	private TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
+-	private TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
++	public TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
  	{
 +		if (type >= TileID.Count) {
 +			TileFlameData tileFlameData = default(TileFlameData);
@@ -432,9 +450,12 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3179,7 +_,7 @@
+@@ -3177,9 +_,9 @@
+ 		}
+ 	}
  
- 	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
+-	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
++	public bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
  
 -	private void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)
 +	public void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)
@@ -546,8 +567,21 @@
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
-@@ -5001,6 +_,7 @@
- 	private void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
+@@ -4949,7 +_,7 @@
+ 		_specialTilesCount = 0;
+ 	}
+ 
+-	private Color DrawTiles_GetLightOverride(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
++	public Color DrawTiles_GetLightOverride(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
+ 	{
+ 		if (tileCache.fullbrightBlock())
+ 			return Color.White;
+@@ -4998,9 +_,10 @@
+ 		return tileLight;
+ 	}
+ 
+-	private void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
++	public void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
  	{
  		bool num = IsVisible(tileCache);
 +		TileLoader.EmitParticles(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, num);
@@ -731,9 +765,12 @@
  
  		return texture2D;
  	}
-@@ -6394,7 +_,7 @@
+@@ -6392,9 +_,9 @@
+ 		}
+ 	}
  
- 	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
+-	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
++	public void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
  	{
 -		if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
 +		if (_localPlayer.dangerSense && IsTileDangerous(i, j, _localPlayer, tileCache, typeCache)) {
@@ -837,6 +874,19 @@
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  
+@@ -7007,7 +_,11 @@
+ 		return num / (float)num2;
+ 	}
+ 
++	/// <summary>
++	/// Determines how much wind should affect a multitile of the given size and top left target location on the current update tick.
++	/// <para/> Similar to <see cref="GetWindGridPushComplex"/>, but for a multitile area instead of a single tile.
++	/// </summary>
+-	private float GetHighestWindGridPushComplex(int topLeftX, int topLeftY, int sizeX, int sizeY, int totalPushTime, float pushForcePerFrame, int loops, bool swapLoopDir)
++	public float GetHighestWindGridPushComplex(int topLeftX, int topLeftY, int sizeX, int sizeY, int totalPushTime, float pushForcePerFrame, int loops, bool swapLoopDir)
+ 	{
+ 		float result = 0f;
+ 		int num = int.MaxValue;
 @@ -7041,7 +_,19 @@
  		Vector2 vector2 = new Vector2(0f, -2f);
  		vector += vector2;

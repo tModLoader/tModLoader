@@ -1235,6 +1235,34 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateVisibleAccessory);
+
+	/// <summary>
+	/// Hook at the end of Player.UpdateVisibleAccessory that can be called to set flags related to player drawing.
+	/// </summary>
+	public static void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateVisibleAccessory(player, hideVisual);
+
+		foreach (var g in HookUpdateVisibleAccessory.Enumerate(item)) {
+			g.UpdateVisibleAccessory(item, player, hideVisual);
+		}
+	}
+
+	private static HookList HookUpdateItemDye = AddHook<Action<Item, Player, int, bool>>(g => g.UpdateItemDye);
+
+	public static void UpdateItemDye(Item item, Player player, int dye, bool hideVisual)
+	{
+		item.ModItem?.UpdateItemDye(player, dye, hideVisual);
+
+		foreach (var g in HookUpdateItemDye.Enumerate(item)) {
+			g.UpdateItemDye(item, player, dye, hideVisual);
+		}
+	}
+
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 
 	/// <summary>
