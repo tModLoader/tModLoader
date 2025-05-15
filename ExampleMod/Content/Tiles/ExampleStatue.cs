@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Tiles
 				}
 			}
 
-			// Calculcate the center of this tile to use as an entity spawning position.
+			// Calculate the center of this tile to use as an entity spawning position.
 			// Note that we use 0.65 for height because even though the statue takes 3 blocks, its appearance is shorter.
 			float spawnX = (x + TileWidth * 0.5f) * 16;
 			float spawnY = (y + TileHeight * 0.65f) * 16;
