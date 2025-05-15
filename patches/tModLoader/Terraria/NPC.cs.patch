@@ -1789,12 +1789,16 @@
  				num7 = 36;
  				flag = false;
  			}
-@@ -58674,13 +_,26 @@
+@@ -58674,13 +_,30 @@
  				}
  			}
  
 +			Color color = new Color(255, 25, 25);
-+			NetworkText custom = ModNPC?.DeathMessage?.ToNetworkText();
++			NetworkText custom = null;
++			if (ModNPC?.DeathMessage is LocalizedText customDeathMessage) {
++				// Modder might have already used WithFormatArgs/BoundArgs to fill out custom name as well.
++				custom = customDeathMessage.BoundArgs != null ? customDeathMessage.ToNetworkText() : customDeathMessage.ToNetworkText(GetFullNetName());
++			}
 +			bool skipMessage = NPCLoader.ModifyDeathMessage(this, ref custom, ref color);
 +			networkText = custom ?? networkText;
 +
@@ -1962,7 +1966,7 @@
  		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
  		int num2 = Main.rand.Next(5) + 5;
  		for (int i = 0; i < num2; i++) {
-@@ -59394,25 +_,39 @@
+@@ -59394,25 +_,43 @@
  		}
  	}
  
@@ -1971,7 +1975,11 @@
 +	private void DoDeathEvents_CelebrateBossDeath(string typeName)
  	{
 +		Color color = new Color(175, 75, 255);
-+		NetworkText custom = ModNPC?.DeathMessage?.ToNetworkText();
++		NetworkText custom = null;
++		if(ModNPC?.DeathMessage is LocalizedText customDeathMessage) {
++			// Modder might have already used WithFormatArgs/BoundArgs to fill out custom boss fight name as well.
++			custom = customDeathMessage.BoundArgs != null ? customDeathMessage.ToNetworkText() : customDeathMessage.ToNetworkText(GetFullNetName());
++		}
 +		// Note: typeName comes from NPC.TypeName->NPCLoader.ModifyTypeName and NPCLoader.BossLoot, but is just a literal string and won't be localized on other clients properly if used, so it is not used in DeathMessage.
 +		bool skipMessage = NPCLoader.ModifyDeathMessage(this, ref custom, ref color);
 +		if (skipMessage) {

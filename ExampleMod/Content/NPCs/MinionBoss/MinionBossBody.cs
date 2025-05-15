@@ -15,6 +15,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.NPCs.MinionBoss
@@ -91,6 +92,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			return count;
 		}
+
+		// This will result in "The Minion Boss and his minions have been defeated!" instead of just "Minion Boss has been defeated!" being shown in chat when this boss is defeated.
+		public override LocalizedText DeathMessage => Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(this.GetLocalization("BossFightName"));
 
 		public override void Load() {
 			// We want to give it a second boss head icon, so we register one
@@ -235,7 +239,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			*/
 		}
 
-		public override void BossLoot(ref string name, ref int potionType) {
+		public override void BossLoot(ref int potionType) {
 			// Here you'd want to change the potion type that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
 			// (Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
 		}

@@ -108,6 +108,7 @@ Mods: {
 				DisplayName: Minion Boss
 				# This is part of ModIntegrationsSystem.cs: Information for the player so he knows how to encounter the boss
 				BossChecklistIntegration.SpawnInfo: Use a [i:ExampleMod/MinionBossSummonItem]
+				BossFightName: The Minion Boss and his minions
 			}
 
 			MinionBossMinion.DisplayName: Minion Boss Minion

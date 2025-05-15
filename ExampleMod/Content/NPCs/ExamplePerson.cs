@@ -44,11 +44,10 @@ namespace ExampleMod.Content.NPCs
 
 		public static LocalizedText UpgradedText { get; private set; }
 
-
 		// Sets a unique message when the NPC dies.
 		// See also NPCID.Sets.IsTownChild if you just want the message used by Angler and Princess.
 		// See ModifyDeathMessage() way below for more details
-		public override LocalizedText DeathMessage => Language.GetText(this.GetLocalizationKey("DeathMessage"));
+		public override LocalizedText DeathMessage => this.GetLocalization("DeathMessage");
 
 		public override void Load() {
 			// Adds our Shimmer Head to the NPCHeadLoader.
@@ -183,7 +182,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnSpawn(IEntitySource source) {
-			if(source is EntitySource_SpawnNPC) {
+			if (source is EntitySource_SpawnNPC) {
 				// A TownNPC is "unlocked" once it successfully spawns into the world.
 				TownNPCRespawnSystem.unlockedExamplePersonSpawn = true;
 			}

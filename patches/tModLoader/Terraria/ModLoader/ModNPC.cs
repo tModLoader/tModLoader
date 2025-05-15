@@ -35,10 +35,11 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC.
+	/// <para/> If substitutions are not provided by using <see cref="LocalizedText.WithFormatArgs"/>, the NPC name will be substituted into the "{0}" placeholder.
 	/// <para/> This won't have any effect if the given NPC isn't a town NPC or a boss.
 	/// <para/> Returns null by default, with the text being "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>) for town NPCs.
 	/// <para/> The keys "Announcement.HasBeenDefeated_Plural" and "Announcement.HasBeenDefeated_Single" will be useful if creating a generic boss defeat message with a custom boss name. For example:
-	/// <br/> <c>Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(Language.GetTextValue("Mods.MyMod.NPCs.MyBoss.TheTriplets"))</c>
+	/// <br/> <c>Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(Language.GetText("Mods.MyMod.NPCs.MyBoss.TheTriplets"))</c>. Make sure to use GetText instead of GetTextValue when using WithFormatArgs so the message will properly sync.
 	/// </summary>
 	public virtual LocalizedText DeathMessage => null;
 
@@ -145,6 +146,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 		AutoStaticDefaults();
 		SetStaticDefaults();
 		NPCID.Search.Add(FullName, Type);
+//		_ = DeathMessage;
 	}
 
 	/// <summary>
@@ -866,8 +868,9 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify <see cref="DeathMessage"/> which only applies to bosses and town NPCs. The text color can also be modified.
-	/// <para/> This is intended for more advanced use cases, you should only be modifying <see cref="DeathMessage"/> for basic usages.
+	/// Allows you to modify the death message of a town NPC or boss (potentially derived from <see cref="DeathMessage"/>). This also affects what the dropped tombstone will say in the case of a town NPC. The text color can also be modified.
+	/// <para/> When modifying the death message, use <see cref="NPC.GetFullNetName"/> to retrieve the NPC name to use in substitutions.
+	/// <para/> This is intended for more advanced use cases, you should be modifying only <see cref="DeathMessage"/> for basic usages.
 	/// <para/> Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default.
 	/// </summary>
 	public virtual bool ModifyDeathMessage(ref NetworkText customText, ref Color color)
