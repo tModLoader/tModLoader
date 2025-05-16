@@ -453,7 +453,7 @@ public abstract class ModTile : ModBlockType
 	/// <param name="position">The position at which this section will be drawn.</param>
 	/// <param name="color">The color with which this section will be drawn. This is red when overlapping with another tile.</param>
 	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that will be used to draw this section.</param>
-	public virtual bool PreDrawPreview(SpriteBatch spriteBatch, ref Rectangle? frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects)
+	public virtual bool PreDrawPreview(SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects)
 	{
 		return true;
 	}
@@ -466,7 +466,7 @@ public abstract class ModTile : ModBlockType
 	/// <param name="position">The position at which this section was drawn.</param>
 	/// <param name="color">The color with which this section was drawn.</param>
 	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that were used to draw this section.</param>
-	public virtual void PostDrawPreview(SpriteBatch spriteBatch, Rectangle? frame, Vector2 position, Color color, SpriteEffects spriteEffects)
+	public virtual void PostDrawPreview(SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, SpriteEffects spriteEffects)
 	{
 	}
 

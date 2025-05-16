@@ -103,12 +103,14 @@
  				if (num36 != num38 || num37 != num39)
  					flag9 = true;
  			}
-@@ -743,7 +_,12 @@
+@@ -743,7 +_,15 @@
  					if (op.Type == 114 && j == 1)
  						num12 += 2;
  
--					sb.Draw(sourceRectangle: new Rectangle(x, num8, coordinateWidth, num12), texture: value, position: new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5), color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
-+					Rectangle? frame = new Rectangle(x, num8, coordinateWidth, num12);
++					/*
+ 					sb.Draw(sourceRectangle: new Rectangle(x, num8, coordinateWidth, num12), texture: value, position: new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5), color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
++					*/
++					var frame = new Rectangle(x, num8, coordinateWidth, num12);
 +					var drawPosition = new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5);
 +					if (TileLoader.PreDrawPreview(op.Type, sb, ref frame, ref drawPosition, ref color, ref spriteEffects))
 +						sb.Draw(sourceRectangle: frame, texture: value, position: drawPosition, color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);

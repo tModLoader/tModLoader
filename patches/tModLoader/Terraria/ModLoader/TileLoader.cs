@@ -82,9 +82,9 @@ public static class TileLoader
 	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookEmitParticles;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
-	private delegate bool DelegatePreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle? frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects);
+	private delegate bool DelegatePreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects);
 	private static DelegatePreDrawPreview[] HookPreDrawPreview;
-	private static Action<int, SpriteBatch, Rectangle?, Vector2, Color, SpriteEffects>[] HookPostDrawPreview;
+	private static Action<int, SpriteBatch, Rectangle, Vector2, Color, SpriteEffects>[] HookPostDrawPreview;
 	private static Action<int, int, int>[] HookRandomUpdate;
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
@@ -915,7 +915,7 @@ public static class TileLoader
 		}
 	}
 
-	public static bool PreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle? frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects)
+	public static bool PreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects)
 	{
 		foreach (var hook in HookPreDrawPreview) {
 			if (!hook(type, spriteBatch, ref frame, ref position, ref color, ref spriteEffects)) {
@@ -925,7 +925,7 @@ public static class TileLoader
 		return GetTile(type)?.PreDrawPreview(spriteBatch, ref frame, ref position, ref color, ref spriteEffects) ?? true;
 	}
 
-	public static void PostDrawPreview(int type, SpriteBatch spriteBatch, Rectangle? frame, Vector2 position, Color color, SpriteEffects spriteEffects)
+	public static void PostDrawPreview(int type, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, SpriteEffects spriteEffects)
 	{
 		GetTile(type)?.PostDrawPreview(spriteBatch, frame, position, color, spriteEffects);
 
