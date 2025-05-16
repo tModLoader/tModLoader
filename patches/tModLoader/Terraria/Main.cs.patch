@@ -2850,6 +2850,17 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -15866,6 +_,10 @@
+ 					text2 = PasteTextIn(allowMultiLine, text2);
+ 			}
+ 
++			// `WinImm32Ime` sends escape as an input character, but `FnaIme` does not, so we need to do this for escape to work on platforms other that Windows.
++			if (inputText.IsKeyDown(Keys.Escape) && !oldInputText.IsKeyDown(Keys.Escape))
++				inputTextEscape = true;
++
+ 			for (int i = 0; i < keyCount; i++) {
+ 				int num = keyInt[i];
+ 				string text3 = keyString[i];
 @@ -15938,11 +_,16 @@
  		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride: true);
  	}
