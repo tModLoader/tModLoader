@@ -419,7 +419,7 @@
  
 +	/// <summary>
 +	/// Defines how many tile placement styles (Number of styles times <see cref="StyleMultiplier"/>) will fit into a line (row if <see cref="StyleHorizontal"/> is true, column if StyleHorizontal is false) of the spritesheet before wrapping to the next line. This is used for organizational purposes and to keep spritesheets easy to work with.
-+	/// <para/> Defaults to 0, which will be interpreted as 1.
++	/// <para/> Defaults to 0, which means no wrapping.
 +	/// </summary>
  	public int StyleWrapLimit {
  		get {
