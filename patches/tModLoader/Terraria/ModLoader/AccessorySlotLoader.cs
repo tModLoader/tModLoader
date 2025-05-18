@@ -13,7 +13,7 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Terraria.ModLoader;
 
-//TODO: further documentation
+// TODO: further documentation
 /// <summary>
 /// This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures.
 /// </summary>
@@ -392,7 +392,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				// TODO: We could also show the name of an UnloadedAccessorySlot in the tooltip.
 
 				// Debug Code: 
-				// Main.hoverItemName += " - Slot #" + slot;
+				//Main.hoverItemName += " - Slot #" + slot;
 			}
 		}
 		DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc), isHovered);
@@ -546,7 +546,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		}
 	}
 
-	//TODO: Look into if this should have an actual hook later, and which class to associate to (item or player). Not a priority to the Accessory Slot ModType PR
+	// TODO: Look into if this should have an actual hook later, and which class to associate to (item or player). Not a priority to the Accessory Slot ModType PR
 	/// <summary>
 	/// Mirrors Player.GetPreferredGolfBallToUse.
 	/// Provides the golf ball projectile from an accessory slot.

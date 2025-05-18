@@ -135,7 +135,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			return;
 
 		foreach (var items in extraItems) {
-			if(!items.Accessory.IsAir)
+			if (!items.Accessory.IsAir)
 				Player.QuickSpawnItem(null, items.Accessory);
 			if (!items.VanityItem.IsAir)
 				Player.QuickSpawnItem(null, items.VanityItem);
@@ -318,7 +318,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		exLoadouts[loadoutIndex].Swap(this);
 
 		if (Player.whoAmI == Main.myPlayer) {
-			if(Main.netMode != NetmodeID.SinglePlayer) {
+			if (Main.netMode != NetmodeID.SinglePlayer) {
 				CopyClientState(Main.clientPlayer.GetModPlayer<ModAccessorySlotPlayer>());
 
 				for (int i = 0; i < LoadedSlotCount; i++) {
@@ -487,7 +487,8 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			}
 		}
 
-		internal void Swap(ModAccessorySlotPlayer modAccessorySlotPlayer) {
+		internal void Swap(ModAccessorySlotPlayer modAccessorySlotPlayer)
+		{
 			Item[] armor = modAccessorySlotPlayer.exAccessorySlot;
 			for (int i = 0; i < armor.Length; i++) {
 				if (modAccessorySlotPlayer.IsSharedSlot(i))
