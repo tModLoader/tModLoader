@@ -428,24 +428,25 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots)
 		{
 			List<SlotInfo> result = [];
-			IList<Item> items;
-			IList<Item> dyes;
-			IList<bool> visible;
 
 			this.ResetAndSizeAccessoryArrays(slots.Count);
 
+			// Saves from before this feature.
+			if (!tag.ContainsKey(identifier))
+				return result;
+
 			tag = tag.GetCompound(identifier);
-			items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
-			dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
-			visible = tag.GetList<bool>("hidden").ToList();
+			var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
+			var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
+			var visible = tag.GetList<bool>("hidden").ToList();
 
 			for (int i = 0; i < order.Count; i++) {
 				(int type, bool hasLoadoutSupport) = slots[order[i]];
 
-				Item dye = dyes.ElementAtOrDefault(i) ?? new Item();
-				Item accessory = items.ElementAtOrDefault(i) ?? new Item();
-				Item vanityItem = items.ElementAtOrDefault(i + order.Count) ?? new Item();
-				bool isHidden = visible.ElementAtOrDefault(i);
+				Item dye = dyes[i];
+				Item accessory = items[i];
+				Item vanityItem = items[i + order.Count];
+				bool isHidden = visible[i];
 
 				// If this slot has any acc/van/dye item, but doesn't have loadout support, the items shouldn't be in the loadout at all.
 				// We can try to move them to the inventory or try to put them in empty acc slots, but it might get complicated with slots and restrictions. Also the user might not want it there. They will be returned to the player OnEnterWorld.
