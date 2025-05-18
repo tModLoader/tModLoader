@@ -29,7 +29,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	private ExEquipmentLoadout[] exLoadouts;
 
 	/// <summary> Holds items from a saved <see cref="ModAccessorySlot"/> that changed to not <see cref="ModAccessorySlot.HasEquipmentLoadoutSupport"/> ("shared") and would otherwise be lost. Will be returned to the player when entering a world. </summary>
-	private List<SlotInfo> extraItems = new();
+	private List<Item> extraItems = new();
 
 	// Setting toggle for stack or scroll accessories/npcHousing
 	internal bool scrollSlots;
@@ -134,13 +134,8 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		if (extraItems.Count == 0)
 			return;
 
-		foreach (var items in extraItems) {
-			if (!items.Accessory.IsAir)
-				Player.QuickSpawnItem(null, items.Accessory);
-			if (!items.VanityItem.IsAir)
-				Player.QuickSpawnItem(null, items.VanityItem);
-			if (!items.Dye.IsAir)
-				Player.QuickSpawnItem(null, items.Dye);
+		foreach (var item in extraItems) {
+			Player.QuickSpawnItem(null, item);
 		}
 		Main.NewText(Language.GetTextValue("tModLoader.ModAccessorySlotNoLongerSharedItemsRemoved"));
 		extraItems.Clear();
@@ -412,28 +407,24 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		/// <summary>
 		/// Loads data for this loadout and updates this instance accordingly.
-		/// Returns a collection of <see cref="SlotInfo"/> objects for slots, which are not added to the loadout,
+		/// Returns a collection of <see cref="Item"/>s, which were not added to the loadout,
 		/// because <see cref="ModAccessorySlot.HasEquipmentLoadoutSupport"/> changed since the last save.
 		/// </summary>
 		/// <param name="tag">The <see cref="TagCompound"/> from which to load the data</param>
 		/// <param name="order">Saved slot names in order.</param>
 		/// <param name="slots">Slot name to slot info mapping.</param>
-		/// <returns>
-		/// A collection of <see cref="SlotInfo"/> objects for slots, which are not added to the loadout,
-		/// because <see cref="ModAccessorySlot.HasEquipmentLoadoutSupport"/> changed since the last save.
-		/// </returns>
-		public IReadOnlyList<SlotInfo> LoadData(
+		public IReadOnlyList<Item> LoadData(
 			TagCompound tag,
 			List<string> order,
 			Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots)
 		{
-			List<SlotInfo> result = [];
+			List<Item> itemsToDrop = [];
 
 			this.ResetAndSizeAccessoryArrays(slots.Count);
 
 			// Saves from before this feature.
 			if (!tag.ContainsKey(identifier))
-				return result;
+				return itemsToDrop;
 
 			tag = tag.GetCompound(identifier);
 			var items = tag.GetList<TagCompound>("items").Select(ItemIO.Load).ToList();
@@ -453,13 +444,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				bool hasLoadoutSupportSettingForSlotChanged = !hasLoadoutSupport && (!dye.IsAir || !accessory.IsAir || !vanityItem.IsAir);
 
 				if (hasLoadoutSupportSettingForSlotChanged) {
-					result.Add(new SlotInfo {
-						Slot = type,
-						Dye = dye,
-						VanityItem = vanityItem,
-						Accessory = accessory,
-						HideAccessory = isHidden,
-					});
+					if (!accessory.IsAir)
+						itemsToDrop.Add(accessory);
+					if (!vanityItem.IsAir)
+						itemsToDrop.Add(vanityItem);
+					if (!dye.IsAir)
+						itemsToDrop.Add(dye);
 					continue;
 				}
 
@@ -469,7 +459,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				ExHideAccessory[type] = isHidden;
 			}
 
-			return result;
+			return itemsToDrop;
 		}
 
 		private void ResetAndSizeAccessoryArrays(int size)
@@ -510,19 +500,6 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				Utils.Swap(ref hideVisibleAccessory[k], ref ExHideAccessory[k]);
 			}
 		}
-	}
-
-	internal sealed record SlotInfo
-	{
-		public required int Slot { get; init; }
-
-		public required Item Dye { get; init; }
-
-		public required Item VanityItem { get; init; }
-
-		public required Item Accessory { get; init; }
-
-		public required bool HideAccessory { get; init; }
 	}
 
 	internal static class NetHandler
