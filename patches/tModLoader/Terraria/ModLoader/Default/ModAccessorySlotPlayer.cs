@@ -22,9 +22,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	/// <summary> <see cref="ModAccessorySlot"/> corollary to <see cref="Player.hideVisibleAccessory"/>. </summary>
 	internal bool[] exHideAccessory;
 	/// <summary> All slots that can potentially show for this user. First the loaded ModAccessorySlots, followed by any unloaded slots. </summary>
-	private readonly Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots = [];
+	private readonly Dictionary<string, int> slots = [];
 	/// <summary> Which slots are shared, indexed by ModAccessorySlot.Type </summary>
-	private readonly HashSet<int> sharedLoadoutSlotTypes = [];
+	private bool[] sharedLoadoutSlotTypes;
 	/// <inheritdoc cref="ExEquipmentLoadout"/>
 	private ExEquipmentLoadout[] exLoadouts;
 
@@ -49,11 +49,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	public ModAccessorySlotPlayer()
 	{
 		foreach (var slot in Loader.list) {
-			slots.Add(slot.FullName, (slot.Type, slot.HasEquipmentLoadoutSupport));
-
-			if (!slot.HasEquipmentLoadoutSupport) {
-				sharedLoadoutSlotTypes.Add(slot.Type);
-			}
+			slots.Add(slot.FullName, slot.Type);
 		}
 
 		ResetAndSizeAccessoryArrays();
@@ -65,6 +61,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		exAccessorySlot = new Item[2 * size];
 		exDyesAccessory = new Item[size];
 		exHideAccessory = new bool[size];
+		sharedLoadoutSlotTypes = new bool[size];
 
 		for (int i = 0; i < size; i++) {
 			exDyesAccessory[i] = new Item();
@@ -72,6 +69,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 			exAccessorySlot[i * 2] = new Item();
 			exAccessorySlot[i * 2 + 1] = new Item();
+		}
+
+		foreach (var slot in Loader.list) {
+			if (!slot.HasEquipmentLoadoutSupport) {
+				sharedLoadoutSlotTypes[slot.Type] = true;
+			}
 		}
 	}
 
@@ -101,7 +104,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var order = tag.GetList<string>("order").ToList();
 		foreach (var name in order) {
 			if (!slots.ContainsKey(name))
-				slots.Add(name, (slots.Count, true)); // unloaded slots default to supporting loadouts.
+				slots.Add(name, slots.Count);
 		}
 
 		ResetAndSizeAccessoryArrays();
@@ -111,12 +114,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var visible = tag.GetList<bool>("visible").ToList();
 
 		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
-			var extraItemsFromLoadout = equipmentLoadout.LoadData(tag, order, slots);
+			var extraItemsFromLoadout = equipmentLoadout.LoadData(tag, order, slots, sharedLoadoutSlotTypes);
 			extraItems.AddRange(extraItemsFromLoadout);
 		}
 
 		for (int i = 0; i < order.Count; i++) {
-			int type = slots[order[i]].SlotType;
+			int type = slots[order[i]];
 
 			// Place loaded items in to the correct slot
 			exDyesAccessory[type] = dyes[i];
@@ -345,7 +348,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	// If we allow HasEquipmentLoadoutSupport to differ per-client, this might not be suitable without extra changes.
 	internal bool IsSharedSlot(int slotType)
 	{
-		return sharedLoadoutSlotTypes.Contains(slotType % SlotCount);
+		return sharedLoadoutSlotTypes[slotType % SlotCount];
 	}
 
 	internal bool SharedSlotHasLoadoutConflict(int slotType, bool vanitySlot)
@@ -413,10 +416,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		/// <param name="tag">The <see cref="TagCompound"/> from which to load the data</param>
 		/// <param name="order">Saved slot names in order.</param>
 		/// <param name="slots">Slot name to slot info mapping.</param>
+		/// <param name="sharedLoadoutSlotTypes">Slots that don't have loadout support</param>
 		public IReadOnlyList<Item> LoadData(
 			TagCompound tag,
 			List<string> order,
-			Dictionary<string, (int SlotType, bool HasLoadoutSupport)> slots)
+			Dictionary<string, int> slots,
+			bool[] sharedLoadoutSlotTypes)
 		{
 			List<Item> itemsToDrop = [];
 
@@ -432,18 +437,15 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			var visible = tag.GetList<bool>("hidden").ToList();
 
 			for (int i = 0; i < order.Count; i++) {
-				(int type, bool hasLoadoutSupport) = slots[order[i]];
+				int type = slots[order[i]];
 
 				Item dye = dyes[i];
 				Item accessory = items[i];
 				Item vanityItem = items[i + order.Count];
 				bool isHidden = visible[i];
 
-				// If this slot has any acc/van/dye item, but doesn't have loadout support, the items shouldn't be in the loadout at all.
-				// We can try to move them to the inventory or try to put them in empty acc slots, but it might get complicated with slots and restrictions. Also the user might not want it there. They will be returned to the player OnEnterWorld.
-				bool hasLoadoutSupportSettingForSlotChanged = !hasLoadoutSupport && (!dye.IsAir || !accessory.IsAir || !vanityItem.IsAir);
-
-				if (hasLoadoutSupportSettingForSlotChanged) {
+				// If this slot doesn't have loadout support, the items shouldn't exist in any loadout at all (they will be on the player from the start). They will be returned to the player in OnEnterWorld, allowing the player to choose the correct solution to this conflict.
+				if (sharedLoadoutSlotTypes[type]) {
 					if (!accessory.IsAir)
 						itemsToDrop.Add(accessory);
 					if (!vanityItem.IsAir)
