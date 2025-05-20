@@ -496,9 +496,9 @@
 +	/// </summary>
  	public static bool[] wallLight = new bool[WallID.Count];
 +	/// <summary>
-+	/// Set to a wall type to "blend" with that wall. By default, a faint black line is drawn between walls of different types to transition between them. Walls that blend will not have this line drawn. 
-+	/// <br/><br/> This is most commonly used to blend safe and unsafe wall variants, although there are some exceptions. All variants that should blend together should set this to a common shared base variant. The base variant does not need to set this. For example, <see cref="WallID.GreenDungeonUnsafe"/>, <see cref="WallID.GreenDungeonTileUnsafe"/>, and <see cref="WallID.GreenDungeonSlabUnsafe"/> all set this to <see cref="WallID.GreenDungeon"/> allowing all 4 to blend together.
-+	/// <br/><br/> Defaults to it's own wall type, meaning it does not blend with any other wall.
++	/// Set to a wall type to "blend" with that wall. All walls sharing the same value are considered to be the same wall type when blending. By default, a faint black line is drawn between walls of different types to transition between them. Walls that blend will not have this line drawn. 
++	/// <br/><br/> This is most commonly used to blend safe and unsafe wall variants, although there are some exceptions. All variants that should blend together should set this to a common shared base variant. The base variant does not need to set this. For example, <see cref="WallID.GreenDungeonUnsafe"/>, <see cref="WallID.GreenDungeonTileUnsafe"/>, and <see cref="WallID.GreenDungeonSlabUnsafe"/> all set this to <see cref="WallID.GreenDungeon"/> allowing all 4 wall types to be considered to be <see cref="WallID.GreenDungeon"/> and blend together.
++	/// <br/><br/> Defaults to it's own wall type, meaning it does not blend with any other wall (unless another wall is set to this wall's type.
 +	/// </summary>
  	public static int[] wallBlend = new int[WallID.Count];
  	public static bool[] tileStone = new bool[TileID.Count];
