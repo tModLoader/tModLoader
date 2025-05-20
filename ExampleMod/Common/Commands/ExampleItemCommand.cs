@@ -1,8 +1,8 @@
-﻿using Terraria;
+﻿using System.Linq;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using System.Linq;
 
 namespace ExampleMod.Common.Commands
 {

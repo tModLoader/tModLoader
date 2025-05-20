@@ -46,8 +46,12 @@ namespace ExampleMod.Content.NPCs
 			{
 				// Here we despawn the NPC and send a message stating that the NPC has despawned
 				// LegacyMisc.35 is {0) has departed!
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("LegacyMisc.35", NPC.FullName), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", NPC.GetFullNetName()), new Color(50, 125, 255));
+				if (Main.netMode == NetmodeID.SinglePlayer) {
+					Main.NewText(Language.GetTextValue("LegacyMisc.35", NPC.FullName), 50, 125, 255);
+				}
+				else {
+					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", NPC.GetFullNetName()), new Color(50, 125, 255));
+				}
 				NPC.active = false;
 				NPC.netSkip = -1;
 				NPC.life = 0;
@@ -135,8 +139,12 @@ namespace ExampleMod.Content.NPCs
 				spawnTime = double.MaxValue;
 
 				// Announce that the traveler has spawned in!
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
+				if (Main.netMode == NetmodeID.SinglePlayer) {
+					Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
+				}
+				else {
+					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
+				}
 			}
 		}
 
@@ -221,14 +229,14 @@ namespace ExampleMod.Content.NPCs
 
 		public override void OnSpawn(IEntitySource source) {
 			shopItems.Clear();
-   			shopItems.AddRange(Shop.GenerateNewInventoryList());
+			shopItems.AddRange(Shop.GenerateNewInventoryList());
 
 			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
 			if (Main.netMode == NetmodeID.Server) {
 				// We recommend modders avoid sending WorldData too often, or filling it with too much data, lest too much bandwidth be consumed sending redundant data repeatedly
 				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronise
 				NetMessage.SendData(MessageID.WorldData);
-   			}
+			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -253,7 +261,8 @@ namespace ExampleMod.Content.NPCs
 					hatGore = Mod.Find<ModGore>($"{Name}_Gore_Hat").Type;
 				}
 				string variant = "";
-				if (NPC.IsShimmerVariant) variant += "_Shimmer";
+				if (NPC.IsShimmerVariant)
+					variant += "_Shimmer";
 				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
 				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
 				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
@@ -329,7 +338,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void AI() { 
+		public override void AI() {
 			NPC.homeless = true; // Make sure it stays homeless
 		}
 

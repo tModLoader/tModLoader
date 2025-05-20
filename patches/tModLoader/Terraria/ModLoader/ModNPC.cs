@@ -34,6 +34,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <summary>
+	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC.
+	/// <para/> If substitutions are not provided by using <see cref="LocalizedText.WithFormatArgs"/>, the NPC name will be substituted into the "{0}" placeholder.
+	/// <para/> This won't have any effect if the given NPC isn't a town NPC or a boss.
+	/// <para/> Returns null by default, with the text being "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <see cref="NPCID.Sets.IsTownChild"/> or <see cref="NPCID.Sets.IsTownPet"/> are set to <see langword="true"/>) for town NPCs.
+	/// <para/> The keys "Announcement.HasBeenDefeated_Plural" and "Announcement.HasBeenDefeated_Single" will be useful if creating a generic boss defeat message with a custom boss name. For example:
+	/// <br/> <c>Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(Language.GetText("Mods.MyMod.NPCs.MyBoss.TheTriplets"))</c>. Make sure to use GetText instead of GetTextValue when using WithFormatArgs so the message will properly sync.
+	/// </summary>
+	public virtual LocalizedText DeathMessage => null;
+
+	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space.<br/>
 	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Npc"/> indexed by <see cref="Type"/> if needed. <br/>
 	/// You can use a vanilla texture by returning <c>$"Terraria/Images/NPC_{NPCID.NPCNameHere}"</c> <br/>
@@ -136,6 +146,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 		AutoStaticDefaults();
 		SetStaticDefaults();
 		NPCID.Search.Add(FullName, Type);
+		_ = DeathMessage;
 	}
 
 	/// <summary>
@@ -417,13 +428,16 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	{
 	}
 
+	[Obsolete("Use BossLoot(ref int potionType) instead. The name can be changed by modifying DeathMessage")]
+	public virtual void BossLoot(ref string name, ref int potionType)
+	{
+	}
+
 	/// <summary>
-	/// Allows you to customize what happens when this boss dies, such as which name is displayed in the defeat message and what type of potion it drops.
+	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
-	/// <param name="name"></param>
-	/// <param name="potionType"></param>
-	public virtual void BossLoot(ref string name, ref int potionType)
+	public virtual void BossLoot(ref int potionType)
 	{
 	}
 
@@ -851,6 +865,17 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
 	public virtual void OnGoToStatue(bool toKingStatue)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the death message of a town NPC or boss (potentially derived from <see cref="DeathMessage"/>). This also affects what the dropped tombstone will say in the case of a town NPC. The text color can also be modified.
+	/// <para/> When modifying the death message, use <see cref="NPC.GetFullNetName"/> to retrieve the NPC name to use in substitutions.
+	/// <para/> This is intended for more advanced use cases, you should be modifying only <see cref="DeathMessage"/> for basic usages.
+	/// <para/> Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default.
+	/// </summary>
+	public virtual bool ModifyDeathMessage(ref NetworkText customText, ref Color color)
+	{
+		return true;
 	}
 
 	/// <summary>

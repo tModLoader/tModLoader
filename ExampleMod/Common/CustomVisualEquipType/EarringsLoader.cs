@@ -12,7 +12,8 @@ namespace ExampleMod.Common.CustomVisualEquipType
 	/// <summary>
 	/// EarringsLoader manages loading earring equipment textures for each item using this custom EquipType. 
 	/// </summary>
-	public class EarringsLoader : ModSystem {
+	public class EarringsLoader : ModSystem
+	{
 		/// <summary> Maps an item type to it's corresponding earring equipment texture. </summary>
 		internal static readonly Dictionary<int, Asset<Texture2D>> earringItemToTexture = new();
 

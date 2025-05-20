@@ -1,7 +1,7 @@
-using Terraria.DataStructures;
-using Terraria;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common.CustomVisualEquipType
 {

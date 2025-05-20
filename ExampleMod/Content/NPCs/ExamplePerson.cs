@@ -44,6 +44,11 @@ namespace ExampleMod.Content.NPCs
 
 		public static LocalizedText UpgradedText { get; private set; }
 
+		// Sets a unique message when the NPC dies.
+		// See also NPCID.Sets.IsTownChild if you just want the message used by Angler and Princess.
+		// See ModifyDeathMessage() way below for more details
+		public override LocalizedText DeathMessage => this.GetLocalization("DeathMessage");
+
 		public override void Load() {
 			// Adds our Shimmer Head to the NPCHeadLoader.
 			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
@@ -157,8 +162,10 @@ namespace ExampleMod.Content.NPCs
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
 				// Retrieve the gore types. This NPC has shimmer and party variants for head, arm, and leg gore. (12 total gores)
 				string variant = "";
-				if (NPC.IsShimmerVariant) variant += "_Shimmer";
-				if (NPC.altTexture == 1) variant += "_Party";
+				if (NPC.IsShimmerVariant)
+					variant += "_Shimmer";
+				if (NPC.altTexture == 1)
+					variant += "_Party";
 				int hatGore = NPC.GetPartyHatGore();
 				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
 				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
@@ -177,7 +184,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnSpawn(IEntitySource source) {
-			if(source is EntitySource_SpawnNPC) {
+			if (source is EntitySource_SpawnNPC) {
 				// A TownNPC is "unlocked" once it successfully spawns into the world.
 				TownNPCRespawnSystem.unlockedExamplePersonSpawn = true;
 			}
@@ -260,7 +267,7 @@ namespace ExampleMod.Content.NPCs
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10) {
-				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+				// This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
 				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
 			}
 
@@ -385,6 +392,15 @@ namespace ExampleMod.Content.NPCs
 
 				Dust.NewDustPerfect(NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
+		}
+
+		public override bool ModifyDeathMessage(ref NetworkText customText, ref Color color) {
+			// This example shows how you would further customize the message, in this case just for the shimmer variant.
+			if (NPC.IsShimmerVariant) {
+				customText = NetworkText.FromKey(this.GetLocalizationKey("DeathMessageAlt"), NPC.GetFullNetName());
+				color = Color.Yellow;
+			}
+			return true;
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {

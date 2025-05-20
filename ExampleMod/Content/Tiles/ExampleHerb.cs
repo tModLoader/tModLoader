@@ -22,11 +22,11 @@ namespace ExampleMod.Content.Tiles
 
 	// A plant with 3 stages, planted, growing and grown
 	// Sadly, modded plants are unable to be grown by the flower boots
-	//TODO smart cursor support for herbs, see SmartCursorHelper.Step_AlchemySeeds
-	//TODO Staff of Regrowth:
-	//- Player.PlaceThing_Tiles_BlockPlacementForAssortedThings: check where type == 84 (grown herb)
-	//- Player.ItemCheck_GetTileCutIgnoreList: maybe generalize?
-	//TODO vanilla seeds to replace fully grown herb
+	// TODO smart cursor support for herbs, see SmartCursorHelper.Step_AlchemySeeds
+	// TODO Staff of Regrowth:
+	// - Player.PlaceThing_Tiles_BlockPlacementForAssortedThings: check where type == 84 (grown herb)
+	// - Player.ItemCheck_GetTileCutIgnoreList: maybe generalize?
+	// TODO vanilla seeds to replace fully grown herb
 	public class ExampleHerb : ModTile
 	{
 		private const int FrameWidth = 18; // A constant for readability and to kick out those magic numbers

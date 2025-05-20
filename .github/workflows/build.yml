@@ -593,7 +593,8 @@ jobs:
           branch: ${{github.ref}}
       
       # Publish new version of tModLoader to Steam
-      # If this step is failing for preview builds (Failed to commit build), we forgot to add a new branch for this month on Steam. 
+      # If this step is failing for preview builds (Failed to commit build), we forgot to add a new branch for this month on Steam. (exit code 6)
+      # If this step is failing with "Logging in user '***' to Steam Public...ERROR (License expired)", STEAM_CONFIG_VDF needs to be refreshed. (exit code 5)
       - name: Attempt run_app_build_http 
         shell: bash
         run: |

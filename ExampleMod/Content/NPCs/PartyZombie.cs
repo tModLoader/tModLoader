@@ -117,7 +117,7 @@ namespace ExampleMod.Content.NPCs
 			int buffType = ModContent.BuffType<AnimatedBuff>();
 			// Alternatively, you can use a vanilla buff: int buffType = BuffID.Slow;
 
-			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
+			int timeToAdd = 5 * 60; // This makes it 5 seconds, one second is 60 ticks
 			target.AddBuff(buffType, timeToAdd);
 		}
 

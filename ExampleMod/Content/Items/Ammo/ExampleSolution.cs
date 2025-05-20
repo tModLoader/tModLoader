@@ -48,7 +48,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 		public override void AI() {
 
-			if (Projectile.timeLeft > 133) 
+			if (Projectile.timeLeft > 133)
 				Projectile.timeLeft = 133;
 
 			if (Projectile.owner == Main.myPlayer) {
@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 				if (Progress == spawnDustTreshold + 1)
 					dustScale = 0.2f;
-				else if (Progress ==spawnDustTreshold + 2)
+				else if (Progress == spawnDustTreshold + 2)
 					dustScale = 0.4f;
 				else if (Progress == spawnDustTreshold + 3)
 					dustScale = 0.6f;
@@ -117,8 +117,8 @@ namespace ExampleMod.Content.Items.Ammo
 					WallID.Sets.Conversion.Sandstone[i] ||
 					WallID.Sets.Conversion.HardenedSand[i] ||
 					WallID.Sets.Conversion.Ice[i] ||
-					WallID.Sets.Conversion.NewWall1[i] || //NewWalls are the underground wall variants 
-					WallID.Sets.Conversion.NewWall2[i] || 
+					WallID.Sets.Conversion.NewWall1[i] || // NewWalls are the underground wall variants 
+					WallID.Sets.Conversion.NewWall2[i] ||
 					WallID.Sets.Conversion.NewWall3[i] ||
 					WallID.Sets.Conversion.NewWall4[i])
 					WallLoader.RegisterConversion(i, Type, ConvertWalls);

@@ -31,51 +31,51 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override bool RightClick(int x, int y) {
-			string text = Language.GetTextValue("GameUI.TimeAtMorning");
-			// Get current weird time
+			string morningOrEvening = Language.GetTextValue("GameUI.TimeAtMorning");
+			// Get current time expressed as ticks since the start of day or night.
 			double time = Main.time;
 			if (!Main.dayTime) {
-				// if it's night add this number
+				// If it's night, we add 15 hours since day lasts that long
 				time += 54000.0;
 			}
 
 			// Divide by seconds in a day * 24
 			time = (time / 86400.0) * 24.0;
-			// Dunno why we're taking 19.5. Something about hour formatting
+			// Subtract 19.5 to convert from time since morning start to midnight.
 			time = time - 7.5 - 12.0;
-			// Format in readable time
+			// And finally add 24 if that subtracting put time negative
 			if (time < 0.0) {
 				time += 24.0;
 			}
 
 			if (time >= 12.0) {
-				text = Language.GetTextValue("GameUI.TimePastMorning");
+				morningOrEvening = Language.GetTextValue("GameUI.TimePastMorning");
 			}
 
-			int intTime = (int)time;
+			int hours = (int)time;
 			// Get the decimal points of time.
-			double deltaTime = time - intTime;
-			// multiply them by 60. Minutes, probably
-			deltaTime = (int)(deltaTime * 60.0);
-			// This could easily be replaced by deltaTime.ToString()
-			string text2 = string.Concat(deltaTime);
-			if (deltaTime < 10.0) {
-				// if deltaTime is eg "1" (which would cause time to display as HH:M instead of HH:MM)
-				text2 = "0" + text2;
+			double timeRemainder = time - hours;
+			// multiply it by 60 to convert it to minutes
+			timeRemainder = (int)(timeRemainder * 60.0);
+			// This could easily be replaced by timeRemainder.ToString()
+			string minutes = string.Concat(timeRemainder);
+			if (timeRemainder < 10.0) {
+				// if timeRemainder is a single digit, which would cause time to display as HH:M instead of HH:MM, add a leading "0" 
+				minutes = "0" + minutes;
 			}
 
-			if (intTime > 12) {
+			if (hours > 12) {
 				// This is for AM/PM time rather than 24hour time
-				intTime -= 12;
+				hours -= 12;
 			}
 
-			if (intTime == 0) {
+			if (hours == 0) {
 				// 0AM = 12AM
-				intTime = 12;
+				hours = 12;
 			}
 
-			// Whack it all together to get a HH:MM format
-			Main.NewText(Language.GetTextValue("CLI.Time", $"{intTime}:{text2} {text}"), 255, 240, 20);
+			// Combine it all together to get a HH:MM output
+			Main.NewText(Language.GetTextValue("CLI.Time", $"{hours}:{minutes} {morningOrEvening}"), 255, 240, 20);
 			return true;
 		}
 

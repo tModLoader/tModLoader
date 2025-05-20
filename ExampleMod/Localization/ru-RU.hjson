@@ -94,6 +94,8 @@ Mods: {
 				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
 				// Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
 				// Upgraded: I upgraded your {$ItemName.HiveBackpack} to a {$Mods.ExampleMod.Items.WaspNest.DisplayName}
+				// DeathMessage: "{0} is gone..."
+				// DeathMessageAlt: "{0} faded out of existence..."
 			}
 
 			// ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
@@ -106,6 +108,7 @@ Mods: {
 				// DisplayName: Minion Boss
 				# This is part of ModIntegrationsSystem.cs: Information for the player so he knows how to encounter the boss
 				// BossChecklistIntegration.SpawnInfo: Use a [i:ExampleMod/MinionBossSummonItem]
+				// BossFightName: The Minion Boss and his minions
 			}
 
 			// MinionBossMinion.DisplayName: Minion Boss Minion

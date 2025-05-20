@@ -565,6 +565,7 @@ public static class NPCLoader
 	public static void BossLoot(NPC npc, ref string name, ref int potionType)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
+		npc.ModNPC?.BossLoot(ref potionType);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
@@ -1323,6 +1324,20 @@ public static class NPCLoader
 			g.BuffTownNPC(ref damageMult, ref defense);
 		}
 	}
+
+	private delegate bool DelegateModifyDeathMessage(NPC npc, ref NetworkText custom, ref Color color);
+	private static HookList HookModifyDeathMessage = AddHook<DelegateModifyDeathMessage>(g => g.ModifyDeathMessage);
+
+	public static bool ModifyDeathMessage(NPC npc, ref NetworkText customText, ref Color color)
+	{
+		foreach (var g in HookModifyDeathMessage.Enumerate()) {
+			if (!g.ModifyDeathMessage(npc, ref customText, ref color))
+				return true;
+		}
+
+		return !npc.ModNPC?.ModifyDeathMessage(ref customText, ref color) ?? false;
+	}
+
 	//attack type 0 = throwing
 	//  num405 = type, num406 = damage, knockBack, scaleFactor7 = speed multiplier, num407 = attack delay
 	//  num408 = unknown, maxValue3 = unknown, num409 = gravity correction factor, num411 = random speed offset

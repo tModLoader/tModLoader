@@ -12,7 +12,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
-	//Very similar to ExampleChair, but has special HitWire code and potentially additional AdjTiles
+	// Very similar to ExampleChair, but has special HitWire code and potentially additional AdjTiles
 	public class ExampleToilet : ModTile
 	{
 		public const int NextStyleHeight = 40; // Calculated by adding all CoordinateHeights + CoordinatePaddingFix.Y applied to all of them + 2

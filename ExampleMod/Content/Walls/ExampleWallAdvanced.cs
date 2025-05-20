@@ -11,6 +11,7 @@ namespace ExampleMod.Content.Walls
 	{
 		public override void SetStaticDefaults() {
 			Main.wallHouse[Type] = true;
+			Main.wallBlend[Type] = WallID.CogWall; // Prevent black line being drawn between this and CogWall
 
 			DustType = DustID.Stone;
 

@@ -1,11 +1,11 @@
 using ExampleMod.Content.Items;
+using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using ExampleMod.Content.Tiles;
 
 namespace ExampleMod.Content.Walls
 {
@@ -18,22 +18,22 @@ namespace ExampleMod.Content.Walls
 			DustType = DustID.Pearlsand;
 			AddMapEntry(new Color(157, 76, 152));
 
-			//We need to register a conversion from the vanilla desert fossil wall into our modded variants, so our custom code can be called when the game attempts to convert the vanilla wall
-			//Note: WallID.DesertFossil is unused, WallID.DesertFossilEcho is the only fossil wall that can be placed ingame
+			// We need to register a conversion from the vanilla desert fossil wall into our modded variants, so our custom code can be called when the game attempts to convert the vanilla wall
+			// Note: WallID.DesertFossil is unused, WallID.DesertFossilEcho is the only fossil wall that can be placed ingame
 			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Hallow, ConvertToHallow);
 		}
 
 		public bool ConvertToHallow(int i, int j, int type, int conversionType) {
 
-			//This method is called whenever hallow biome conversion happens on a desert fossil wall, as per the RegisterConversion we called in SetStaticDefaults
-			//We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or walls
+			// This method is called whenever hallow biome conversion happens on a desert fossil wall, as per the RegisterConversion we called in SetStaticDefaults
+			// We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or walls
 
-			//We can use the ConvertWall utility method to change the fossil wall into our hallowed fossil wall, and it'll automatically handle wall frame updates and network syncing!
+			// We can use the ConvertWall utility method to change the fossil wall into our hallowed fossil wall, and it'll automatically handle wall frame updates and network syncing!
 			WorldGen.ConvertWall(i, j, Type);
 			return false;
 		}
 
-		//This code is called when the game attempts to convert our hallowed wall into a new biome
+		// This code is called when the game attempts to convert our hallowed wall into a new biome
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
 				case BiomeConversionID.Purity:

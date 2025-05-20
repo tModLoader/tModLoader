@@ -1,7 +1,7 @@
-﻿using System;
-using Terraria.Graphics.CameraModifiers;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
-using Microsoft.Xna.Framework;
+using Terraria.Graphics.CameraModifiers;
 
 namespace ExampleMod.Common
 {

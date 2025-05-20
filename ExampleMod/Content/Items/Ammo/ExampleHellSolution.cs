@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 		public override void AI() {
 
-			if (Projectile.timeLeft > 133) 
+			if (Projectile.timeLeft > 133)
 				Projectile.timeLeft = 133;
 
 			if (Projectile.owner == Main.myPlayer) {
@@ -63,7 +63,7 @@ namespace ExampleMod.Content.Items.Ammo
 
 				if (Progress == spawnDustTreshold + 1)
 					dustScale = 0.2f;
-				else if (Progress ==spawnDustTreshold + 2)
+				else if (Progress == spawnDustTreshold + 2)
 					dustScale = 0.4f;
 				else if (Progress == spawnDustTreshold + 3)
 					dustScale = 0.6f;

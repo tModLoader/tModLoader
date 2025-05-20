@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Clouds
 			CloudLoader.AddCloudFromTexture(mod, "ExampleMod/Content/Clouds/ExampleCloud", spawnChance: 0.1f, rareCloud: false);
 		}
 
-		public void Unload() { 
+		public void Unload() {
 		}
 	}
 }

@@ -91,6 +91,9 @@ public static class WallLoader
 		Array.Resize(ref Main.wallDungeon, nextWall);
 		Array.Resize(ref Main.wallLight, nextWall);
 		Array.Resize(ref Main.wallBlend, nextWall);
+		for (int k = WallID.Count; k < nextWall; k++) {
+			Main.wallBlend[k] = k;
+		}
 		Array.Resize(ref Main.wallLargeFrames, nextWall);
 		Array.Resize(ref Main.wallFrame, nextWall);
 		Array.Resize(ref Main.wallFrameCounter, nextWall);

@@ -23,8 +23,8 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
-			// This check will destroy this tile if the tile below has become slopped such that it doesn't have a solid top side.
-			// This is necessary in this case because Bar tiles can be placed ontop of each other but can also be hammered to be half bricks despite being tileSolidTop.
+			// This check will destroy this tile if the tile below has become sloped such that it doesn't have a solid top side.
+			// This is necessary in this case because Bar tiles can be placed on top of each other but can also be hammered to be half bricks despite being tileSolidTop.
 			if (!WorldGen.SolidTileAllowBottomSlope(i, j + 1)) {
 				WorldGen.KillTile(i, j);
 			}

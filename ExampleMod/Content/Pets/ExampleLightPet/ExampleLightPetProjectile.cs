@@ -105,7 +105,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		}
 
 		private void UpdateFading(Player player) {
-			//TODO: Comment and clean this up more.
+			// TODO: Comment and clean this up more.
 
 			var playerCenter = player.Center; // Cache the player's center vector to avoid recalculations.
 

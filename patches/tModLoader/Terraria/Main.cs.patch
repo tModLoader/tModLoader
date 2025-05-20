@@ -456,7 +456,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,44 +_,129 @@
+@@ -829,44 +_,147 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -491,7 +491,15 @@
 +	/// </summary>
  	public static bool[] wallHouse = new bool[WallID.Count];
  	public static bool[] wallDungeon = new bool[WallID.Count];
++	/// <summary>
++	/// If true, light flows in from the background, such as fences and glass.
++	/// </summary>
  	public static bool[] wallLight = new bool[WallID.Count];
++	/// <summary>
++	/// Set to a wall type to "blend" with that wall. All walls sharing the same value are considered to be the same wall type when blending. By default, a faint black line is drawn between walls of different types to transition between them. Walls that blend will not have this line drawn. 
++	/// <br/><br/> This is most commonly used to blend safe and unsafe wall variants, although there are some exceptions. All variants that should blend together should set this to a common shared base variant. The base variant does not need to set this. For example, <see cref="WallID.GreenDungeonUnsafe"/>, <see cref="WallID.GreenDungeonTileUnsafe"/>, and <see cref="WallID.GreenDungeonSlabUnsafe"/> all set this to <see cref="WallID.GreenDungeon"/> allowing all 4 wall types to be considered to be <see cref="WallID.GreenDungeon"/> and blend together.
++	/// <br/><br/> Defaults to it's own wall type, meaning it does not blend with any other wall (unless another wall is set to this wall's type.
++	/// </summary>
  	public static int[] wallBlend = new int[WallID.Count];
  	public static bool[] tileStone = new bool[TileID.Count];
 +	/// <summary>
@@ -553,6 +561,16 @@
 +	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#custom-tile-variation">Basic Tile wiki guide</see> has diagrams of these options.
 +	/// </summary>
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
++	/// <summary>
++	/// When set to 1 or 2, this wall will use a tiled pattern for the wall variation rather than the random <see cref="Tile.WallFrameNumber"/> choice (The info below counts from 1 rather than 0 for illustrative purposes). Defaults to 0.
++	/// <para/> A value of 1 ("Phlebas") results in a 3x4 pattern used by Copper Plating Wall (<see cref="WallID.CopperPlating"/>) and others: <code>2 4 2
++	/// 1 3 1
++	/// 2 2 4
++	/// 1 1 3 </code>
++	/// <para/> A value of 2 ("Lazure") results in a 2x2 pattern used by Lunar Brick Wall (<see cref="WallID.LunarBrickWall"/>) and others:<code>1 2
++	/// 3 4 </code>
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Wall#texture">Wall wiki guide</see> has diagrams of these options.
++	/// </summary>
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
  	public static bool[] tileRope = new bool[TileID.Count];
  	public static bool[] tileBrick = new bool[TileID.Count];

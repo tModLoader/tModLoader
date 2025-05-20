@@ -45,7 +45,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			if (colors == null) //colors may be null if spawned from other mods which don't call OnCreate
+			if (colors == null) // colors may be null if spawned from other mods which don't call OnCreate
 				return;
 
 			for (int i = 0; i < colors.Length; i++) {

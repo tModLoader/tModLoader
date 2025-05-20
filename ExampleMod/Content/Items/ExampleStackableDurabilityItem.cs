@@ -76,7 +76,7 @@ namespace ExampleMod.Content.Items
 			durability = WeightedAverage(durability, Item.stack, incomingDurability, numToTransfer);
 		}
 
-		//SplitStack:  This example does not need to use SplitStack because durability will be the intended value from being cloned.
+		// SplitStack:  This example does not need to use SplitStack because durability will be the intended value from being cloned.
 
 		public override void OnCreated(ItemCreationContext context) {
 			if (context is RecipeItemCreationContext) {

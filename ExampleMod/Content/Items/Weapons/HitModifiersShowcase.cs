@@ -2,11 +2,11 @@
 using ExampleMod.Content.Buffs;
 using Microsoft.Xna.Framework;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using System.Linq;
 
 namespace ExampleMod.Content.Items.Weapons
 {

@@ -14,7 +14,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
-	//The ExampleZombieThief is essentially the same as a regular Zombie, but it steals ExampleItems and keep them until it is killed, being saved with the world if it has enough of them.
+	// The ExampleZombieThief is essentially the same as a regular Zombie, but it steals ExampleItems and keep them until it is killed, being saved with the world if it has enough of them.
 	public class ExampleZombieThief : ModNPC
 	{
 		public int StolenItems = 0;
@@ -66,8 +66,8 @@ namespace ExampleMod.Content.NPCs
 
 			Rectangle hitbox = NPC.Hitbox;
 			foreach (Item item in Main.item) {
-				//Pickup the items only if the NPC touches them and they aren't already being grabbed by a player
-				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() &&	hitbox.Intersects(item.Hitbox)) {
+				// Pickup the items only if the NPC touches them and they aren't already being grabbed by a player
+				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() && hitbox.Intersects(item.Hitbox)) {
 					item.active = false;
 					StolenItems += item.stack;
 

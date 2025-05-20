@@ -15,6 +15,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.NPCs.MinionBoss
@@ -91,6 +92,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			return count;
 		}
+
+		// This will result in "The Minion Boss and his minions have been defeated!" instead of just "Minion Boss has been defeated!" being shown in chat when this boss is defeated.
+		public override LocalizedText DeathMessage => Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(this.GetLocalization("BossFightName"));
 
 		public override void Load() {
 			// We want to give it a second boss head icon, so we register one
@@ -175,7 +179,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// 1. Trophy
 			// 2. Classic Mode ("not expert")
 			// 3. Expert Mode (usually just the treasure bag)
-			// 4. Master Mode (relic first, pet last, everything else inbetween)
+			// 4. Master Mode (relic first, pet last, everything else in between)
 
 			// Trophies are spawned with 1/10 chance
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
@@ -235,7 +239,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			*/
 		}
 
-		public override void BossLoot(ref string name, ref int potionType) {
+		public override void BossLoot(ref int potionType) {
 			// Here you'd want to change the potion type that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
 			// (Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
 		}
@@ -449,7 +453,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				// "Why is this not in the same code that sets FirstStageDestination?" Because in multiplayer it's ran by the server.
 				// The client has to know when the destination changes a different way. Keeping track of the previous ticks' destination is one way
 				if (Main.netMode != NetmodeID.Server) {
-					// For visuals regarding NPC position, netOffset has to be concidered to make visuals align properly
+					// For visuals regarding NPC position, netOffset has to be considered to make visuals align properly
 					NPC.position += NPC.netOffset;
 
 					// Draw a line between the NPC and its destination, represented as dusts every 20 pixels

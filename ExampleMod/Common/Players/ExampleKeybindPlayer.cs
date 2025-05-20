@@ -32,7 +32,7 @@ namespace ExampleMod.Common.Players
 			}
 
 			// These examples show other potential behaviors of keybinds, such as a double tap and being held down.
-			
+
 			// We can use Current and a timer to run code after the keybind has been held for some time
 			if (KeybindSystem.LearningExampleKeybind.Current) {
 				LearningExampleKeybindHeldTimer++;

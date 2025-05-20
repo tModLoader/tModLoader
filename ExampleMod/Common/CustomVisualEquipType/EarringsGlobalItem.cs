@@ -27,7 +27,7 @@ namespace ExampleMod.Common.CustomVisualEquipType
 				return;
 			}
 
-			if (EarringsLoader.earringItemToTexture.ContainsKey(item.type)) { 
+			if (EarringsLoader.earringItemToTexture.ContainsKey(item.type)) {
 				player.GetModPlayer<EarringsPlayer>().earringShader = dye;
 			}
 		}

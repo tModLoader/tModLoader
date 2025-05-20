@@ -44,24 +44,24 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
 			NPCID.Sets.ShimmerTownTransform[NPC.type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
 
-			//This sets entry is the most important part of this NPC. Since it is true, it tells the game that we want this NPC to act like a town NPC without ACTUALLY being one.
-			//What that means is: the NPC will have the AI of a town NPC, will attack like a town NPC, and have a shop (or any other additional functionality if you wish) like a town NPC.
-			//However, the NPC will not have their head displayed on the map, will de-spawn when no players are nearby or the world is closed, and will spawn like any other NPC.
+			// This sets entry is the most important part of this NPC. Since it is true, it tells the game that we want this NPC to act like a town NPC without ACTUALLY being one.
+			// What that means is: the NPC will have the AI of a town NPC, will attack like a town NPC, and have a shop (or any other additional functionality if you wish) like a town NPC.
+			// However, the NPC will not have their head displayed on the map, will de-spawn when no players are nearby or the world is closed, and will spawn like any other NPC.
 			NPCID.Sets.ActsLikeTownNPC[Type] = true;
 
 			// This prevents the happiness button
 			NPCID.Sets.NoTownNPCHappiness[Type] = true;
 
-			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
-			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
+			// To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
+			// In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;
 
 			// Connects this NPC with a custom emote.
 			// This makes it when the NPC is in the world, other NPCs will "talk about him".
 			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExampleBoneMerchantEmote>();
 
-			//The vanilla Bone Merchant cannot interact with doors (open or close them, specifically), but if you want your NPC to be able to interact with them despite this,
-			//uncomment this line below.
+			// The vanilla Bone Merchant cannot interact with doors (open or close them, specifically), but if you want your NPC to be able to interact with them despite this,
+			// uncomment this line below.
 			//NPCID.Sets.AllowDoorInteraction[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
@@ -93,7 +93,7 @@ namespace ExampleMod.Content.NPCs
 			AnimationType = NPCID.Guide;
 		}
 
-		//Make sure to allow your NPC to chat, since being "like a town NPC" doesn't automatically allow for chatting.
+		// Make sure to allow your NPC to chat, since being "like a town NPC" doesn't automatically allow for chatting.
 		public override bool CanChat() {
 			return true;
 		}
@@ -125,7 +125,8 @@ namespace ExampleMod.Content.NPCs
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
 				// Retrieve the gore types. This NPC only has shimmer variants. (6 total gores)
 				string variant = "";
-				if (NPC.IsShimmerVariant) variant += "_Shimmer";
+				if (NPC.IsShimmerVariant)
+					variant += "_Shimmer";
 				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
 				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
 				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
@@ -153,12 +154,12 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
+			// If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
 			if (spawnInfo.Player.ZoneDirtLayerHeight && spawnInfo.Player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>())) {
 				return 0.34f;
 			}
 
-			//Else, the example bone merchant will not spawn if the above conditions are not met.
+			// Else, the example bone merchant will not spawn if the above conditions are not met.
 			return 0f;
 		}
 
@@ -173,7 +174,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
-			button = Language.GetTextValue("LegacyInterface.28"); //This is the key to the word "Shop"
+			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop) {

@@ -1,5 +1,5 @@
-using Terraria.Enums;
 using Terraria;
+using Terraria.Enums;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.CustomVisualEquipType

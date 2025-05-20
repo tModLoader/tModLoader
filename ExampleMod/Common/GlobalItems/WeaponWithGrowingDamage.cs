@@ -10,7 +10,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-//Related to GlobalProjectile: ProjectileWithGrowingDamage
+// Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
 {
 	public class WeaponWithGrowingDamage : GlobalItem
@@ -30,7 +30,7 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-			//Apply to weapons
+			// Apply to weapons
 			return lateInstantiation && entity.damage > 0;
 		}
 
@@ -41,11 +41,11 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;
-			GainExperience(item, tag.Get<int>("experience"));//Load experience tag
+			GainExperience(item, tag.Get<int>("experience")); // Load experience tag
 		}
 
 		public override void SaveData(Item item, TagCompound tag) {
-			tag["experience"] = experience;//Save experience tag
+			tag["experience"] = experience; // Save experience tag
 		}
 
 		public override void NetSend(Item item, BinaryWriter writer) {
@@ -62,7 +62,7 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public void OnHitNPCGeneral(Player player, NPC target, NPC.HitInfo hit, Item item = null, Projectile projectile = null) {
-			//The weapon gains experience when hitting an npc.
+			// The weapon gains experience when hitting an npc.
 			int xp = hit.Damage;
 			if (projectile != null) {
 				xp /= 2;
@@ -99,7 +99,7 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
-			//Gain 1% multiplicative damage for every level on the weapon.
+			// Gain 1% multiplicative damage for every level on the weapon.
 			damage *= 1f + (float)level / 100f;
 		}
 
@@ -119,7 +119,7 @@ namespace ExampleMod.Common.GlobalItems
 			if (context is RecipeItemCreationContext rContext) {
 				foreach (Item ingredient in rContext.ConsumedItems) {
 					if (ingredient.TryGetGlobalItem(out WeaponWithGrowingDamage ingredientGlobal)) {
-						//Transfer all experience from consumed items to the crafted item.
+						// Transfer all experience from consumed items to the crafted item.
 						GainExperience(item, ingredientGlobal.experience);
 					}
 				}
@@ -139,19 +139,19 @@ namespace ExampleMod.Common.GlobalItems
 				return;
 			}
 
-			//Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
+			// Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
 			experience = 0;
 
 			TransferExperience(destination, source, weapon2, numToTransfer);
 		}
 
 		private void TransferExperience(Item destination, Item source, WeaponWithGrowingDamage weapon2, int numToTransfer) {
-			//Transfer experience and value to increase.
+			// Transfer experience and value to increase.
 			experience += weapon2.experience;
 			UpdateValue(destination, numToTransfer);
 
 			if (source.stack > numToTransfer) {
-				//Prevent duplicating the experience by clearing it on decrease if decrease will still exist.
+				// Prevent duplicating the experience by clearing it on decrease if decrease will still exist.
 				weapon2.experience = 0;
 				weapon2.UpdateValue(source, -numToTransfer);
 			}

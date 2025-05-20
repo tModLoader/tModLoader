@@ -24,24 +24,24 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.HallowSandstone][Type] = true;
 
-			//We need to register a conversion from the vanilla desert fossil into our modded variants, so our custom code can be called when the game attempts to convert the vanilla tile
+			// We need to register a conversion from the vanilla desert fossil into our modded variants, so our custom code can be called when the game attempts to convert the vanilla tile
 			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Hallow, ConvertToHallow);
 		}
 
 		public bool ConvertToHallow(int i, int j, int type, int conversionType) {
 
-			//This method is called whenever hallow biome conversion happens on a desert fossil tile, as per the RegisterConversion we called in SetStaticDefaults
-			//We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or tiles
+			// This method is called whenever hallow biome conversion happens on a desert fossil tile, as per the RegisterConversion we called in SetStaticDefaults
+			// We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or tiles
 
-			//We can use the ConvertTile utility method to change the fossil tile into our hallowed fossil tile, and it'll automatically handle tile frame updates and network syncing!
+			// We can use the ConvertTile utility method to change the fossil tile into our hallowed fossil tile, and it'll automatically handle tile frame updates and network syncing!
 			WorldGen.ConvertTile(i, j, Type);
 			return false;
 		}
 
-		//This code is called when the game attempts to convert our hallowed tile into a new biome
+		// This code is called when the game attempts to convert our hallowed tile into a new biome
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
-				// Purification powder doesn't convert hallow tiles back into purity, so we don't check for BiomeCoversionID.PurificationPowder
+				// Purification powder doesn't convert hallow tiles back into purity, so we don't check for BiomeConversionID.PurificationPowder
 				// And Chlorophyte conversion is usually the same as purity, except it tries to create jungle tiles and destroy plants. In this case, neither is needed to it's gonna have the exact same behavior as purity
 				case BiomeConversionID.Chlorophyte:
 				case BiomeConversionID.Purity:
@@ -64,13 +64,13 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void RandomUpdate(int i, int j) {
-			//We use this helper method to mimic vanilla behavior for spreading tiles, letting our hallowed fossil infect convert nearby tiles into hallowed versions of themselves
+			// We use this helper method to mimic vanilla behavior for spreading tiles, letting our hallowed fossil infect convert nearby tiles into hallowed versions of themselves
 			WorldGen.SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Hallow);
 		}
 
 		public override void ModifyFrameMerge(int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight) {
-			//We use this method to set the merge values of the adjacent tiles to -2 if the tile nearby is a pearlsandstone block
-			//-2 is what terraria uses to designate the tiles that will merge with ours using the custom frames
+			// We use this method to set the merge values of the adjacent tiles to -2 if the tile nearby is a pearlsandstone block
+			// -2 is what terraria uses to designate the tiles that will merge with ours using the custom frames
 			WorldGen.TileMergeAttempt(-2, TileID.HallowSandstone, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 		}
 	}

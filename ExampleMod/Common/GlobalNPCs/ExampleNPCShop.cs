@@ -1,6 +1,6 @@
 ﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Ammo;
+using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Mounts;
 using ExampleMod.Content.NPCs;
 using Terraria;

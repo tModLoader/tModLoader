@@ -29,7 +29,7 @@ namespace ExampleMod
 		}
 
 		// Override this method to handle network packets sent for this mod.
-		//TODO: Introduce OOP packets into tML, to avoid this god-class level hardcode.
+		// TODO: Introduce OOP packets into tML, to avoid this god-class level hardcode.
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {
 			MessageType msgType = (MessageType)reader.ReadByte();
 
