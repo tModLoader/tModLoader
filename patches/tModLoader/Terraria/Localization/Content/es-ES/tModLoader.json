@@ -621,6 +621,9 @@
 		"slotStack": "Apilar",
 		"slotScroll": "Deslizar",
 		"PressXToClose": "Toca {0} para cerrar",
+		// "SharedAccessorySlotConflictMessage": "One or more shared accessory conflicts with the accessories in this loadout, they have been disabled.",
+		// "SharedAccessorySlotConflictTooltip": "This shared accessory slot is disabled since it conflicts with other accessories in this loadout",
+		// "ModAccessorySlotNoLongerSharedItemsRemoved": "Some items have been moved from accessory slots to inventory due to HasEquipmentLoadoutSupport changing to true.",
 
 		// Misc
 		"OK": "OK",

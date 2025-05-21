@@ -39,13 +39,13 @@ public abstract class ModAccessorySlot : ModType
 	/// <summary>
 	/// Gets or sets a value indicating whether this slot supports equipment loadouts. If <see langword="false"/>,
 	/// the slot's item is shared between all loadouts.
-	/// <br/><br/> Defaults to <see langword="false"/>.
+	/// <br/><br/> Defaults to <see langword="true"/>.
 	/// <br/><br/> Changing this value requires a reload. This value is not allowed to be different between multiplayer clients or issues will occur.
 	/// <br/><br/> Changing the value from <see langword="true"/> to <see langword="false"/> will cause the extra items to be spawned on the player when they enter the world.
 	/// <br/> Changing the value from <see langword="false"/> to <see langword="true"/> will result in the currently selected loadout holding the items.
 	/// <br/><br/> Slots that don't support loadouts will appear with the default green background texture, as if they were an accessory in loadout #1 or from before loadout support was added to the game.
 	/// </summary>
-	public virtual bool HasEquipmentLoadoutSupport => false;
+	public virtual bool HasEquipmentLoadoutSupport => true;
 
 	// Get/Set Properties for fetching slot information
 	public Item FunctionalItem {
