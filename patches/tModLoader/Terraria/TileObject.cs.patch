@@ -112,10 +112,11 @@
 +					*/
 +					var frame = new Rectangle(x, num8, coordinateWidth, num12);
 +					var drawPosition = new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5);
-+					if (TileLoader.PreDrawPreview(op.Type, sb, ref frame, ref drawPosition, ref color, ref spriteEffects))
++					bool validPlacement = num11 == 1;
++					if (TileLoader.PreDrawPlacementPreview(num9, num10, op.Type, sb, ref frame, ref drawPosition, ref color, validPlacement, ref spriteEffects))
 +						sb.Draw(sourceRectangle: frame, texture: value, position: drawPosition, color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
 +
-+					TileLoader.PostDrawPreview(op.Type, sb, frame, position, color, spriteEffects);
++					TileLoader.PostDrawPlacementPreview(num9, num10, op.Type, sb, frame, drawPosition, color, validPlacement, spriteEffects);
  					num8 += num12 + tileData.CoordinatePadding;
  				}
  			}

@@ -174,29 +174,37 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <summary>
 	/// Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile.
-	/// <para>Return false to stop this section from drawing normally. Returns true by default.</para>
+	/// <br/><br/> Make sure to use <paramref name="frame"/> for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.
+	/// <br/><br/> Return false to stop this section from drawing normally. Returns true by default.
 	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The Tile type of the preview that will be drawn.</param>
 	/// <param name="spriteBatch"></param>
 	/// <param name="frame">The source rectangle that this section will use for rendering.</param>
 	/// <param name="position">The position at which this section will be drawn.</param>
 	/// <param name="color">The color with which this section will be drawn. This is red when overlapping with another tile.</param>
+	/// <param name="validPlacement">Indicates if the tile can occupy this location.</param>
 	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that will be used to draw this section.</param>
-	public virtual bool PreDrawPreview(int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, ref SpriteEffects spriteEffects)
+	public virtual bool PreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects)
 	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile.
+	/// <br/><br/> Make sure to use <paramref name="frame"/> for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.
 	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The Tile type of the preview that was drawn.</param>
 	/// <param name="spriteBatch"></param>
 	/// <param name="frame">The source rectangle that was used for rendering this section.</param>
 	/// <param name="position">The position at which this section was drawn.</param>
 	/// <param name="color">The color with which this section was drawn.</param>
+	/// <param name="validPlacement">Indicates if the tile can occupy this location.</param>
 	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that were used to draw this section.</param>
-	public virtual void PostDrawPreview(int type, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, SpriteEffects spriteEffects)
+	public virtual void PostDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, bool validPlacement, SpriteEffects spriteEffects)
 	{
 	}
 
