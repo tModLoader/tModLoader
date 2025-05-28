@@ -17,7 +17,7 @@
 		//No Longer In Use. "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
 		// "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
 		// "MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
-		"WelcomeMessagePreview": "ПРЕДУПРЕЖДЕНИЕ: Игроки, внимание!!\nЭто ежемесячная предварительная сборка с кардинальными изменениями, которые могут нарушить работу модов.\n[c/ff1919:ПРОСИМ НЕ ОБРАЩАТЬСЯ к авторам с просьбой адаптировать их мод под эту предварительную сборку.]\nЭта ветка предварительной версии даёт возможность авторам обновлять свои моды в соответствии с их собственным графиком.\n\nНажмите на «Подробнее», чтобы узнать о постоянном цикле релизов.\n\nПрисоединитесь к Discord серверу tModLoader, чтобы узнать об изменениях этого месяца и ознакомиться с заметками по переносу модов на новую версию.",
+		"WelcomeMessagePreview": "ПРЕДУПРЕЖДЕНИЕ: Игроки, внимание!!\nЭто ежемесячная предварительная сборка с кардинальными изменениями, которые могут нарушить работу модов.\n[c/ff1919:ПРОСИМ НЕ ОБРАЩАТЬСЯ к авторам с просьбой адаптировать их мод под эту предварительную сборку.]\nЭта ветка предварительной версии даёт возможность авторам обновлять свои моды в соответствии с их собственным графиком.\n\nНажмите на «Подробнее», чтобы узнать о постоянном цикле релизов.\n\nПрисоединитесь к Discord-серверу tModLoader, чтобы узнать об изменениях этого месяца и ознакомиться с заметками по переносу модов на новую версию.",
 		"FirstLaunchWelcomeMessage": "Добро пожаловать в tModLoader.\n\nВы успешно установили tModLoader. Используйте меню «Мастерская» для доступа к функционалу модов tModLoader.\n\nЕсли до этого вы играли в версию 1.3, вы можете вернуться обратно на эту версию, переключившись на ветку 1.3-legacy в свойствах tModLoader в Steam. Если вы не можете найти моды, с которыми собирались играть, возможно, они пока доступны только в версии 1.3.",
 		"WhatsNewMessage": "Далее идёт список изменений, произошедших с момента вашего последнего запуска tModLoader Preview. Не исключено, что моды, которые имеют отношение к этим изменениям, должны быть пересобраны их автором для их правильной работы. Более подробную информацию вы можете найти на GitHub.\n",
 		"ShowNewUpdatedModsInfoMessage": "С прошлого запуска были добавлены или обновлены следующие моды из Мастерской (вы можете отключить это сообщение в настройках):\n",
@@ -508,7 +508,7 @@
 		"WikiLink": "tModLoader Wiki",
 		"ExampleModLink": "Примеры в Example Mod",
 		"DocumentationLink": "Просмотр документации",
-		"DiscordLink": "Помощь на Discord сервере",
+		"DiscordLink": "Помощь на Discord-сервере",
 		"MSPortToLatest": "Запустить tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Добро пожаловать в меню разработки модов. Здесь вы найдете функционал создания проектов для модов, и их внутриигровой компиляции.\n\nЕсли вы новичок в разработке модификаций - нажмите кнопку \"Просмотреть на GitHub\" ниже, чтобы посетить нашу Вики, где вы можете найти секцию \"I am new to modding\" (\"Я новичок в моддинге\").",
 		"MSNoModSourcesLinkToBasicModdingGuide": "Исходники модов пока не найдены.\n\nЕсли вы новичок в моддинге, нажмите здесь, чтобы ознакомиться с \"Basic tModLoader Modding Guide\" (\"Основами создания модов в tModLoader\") и создать свой первый мод.",
@@ -621,9 +621,9 @@
 		"slotStack": "Стак",
 		"slotScroll": "Прокрутка",
 		"PressXToClose": "Нажмите {0}, чтобы закрыть",
-		// "SharedAccessorySlotConflictMessage": "One or more shared accessory conflicts with the accessories in this loadout, they have been disabled.",
-		// "SharedAccessorySlotConflictTooltip": "This shared accessory slot is disabled since it conflicts with other accessories in this loadout",
-		// "ModAccessorySlotNoLongerSharedItemsRemoved": "Some items have been moved from accessory slots to inventory due to HasEquipmentLoadoutSupport changing to true.",
+		"SharedAccessorySlotConflictMessage": "Один или несколько общих аксессуаров конфликтуют с аксессуарами в этом наборе экипировки, поэтому они были отключены.",
+		"SharedAccessorySlotConflictTooltip": "Этот общий слот аксессуара отключён из-за конфликта с другими аксессуарами из этого набора экипировки.",
+		"ModAccessorySlotNoLongerSharedItemsRemoved": "Некоторые предметы были перемещены из слотов аксессуаров в инвентарь, так как параметр HasEquipmentLoadoutSupport был изменён на значение true.",
 
 		// Misc
 		"OK": "ОК",
@@ -632,7 +632,7 @@
 		"PatreonSetTooltip": "Спасибо за вашу поддержку!",
 		"WorldGenError": "Во время создания мира возникла ошибка",
 		"WorldIODataException": "В игре возникла ошибка с данными мода этого мира.",
-		"ServerCrash": "Сбой сервера: {0}\n{1}\n\nПожалуйста, проверьте файл server.log, чтобы выяснить, виноват ли в этом какой-либо мод. Или же напишите в текстовом канале #support в Discord сервере tModLoader, и не забудьте приложить этот самый файл.",
+		"ServerCrash": "Сбой сервера: {0}\n{1}\n\nПожалуйста, проверьте файл server.log, чтобы выяснить, виноват ли в этом какой-либо мод. Или же напишите в текстовом канале #support в Discord-сервере tModLoader, и не забудьте приложить этот самый файл.",
 		"WatchLocalizationFileMessage": "Следующие файлы локализации были изменены и перезагружены: {0}",
 
 		// MessageBox
