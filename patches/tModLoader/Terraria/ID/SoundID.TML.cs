@@ -112,7 +112,7 @@ partial class SoundID
 	public static readonly SoundStyle Clown = new($"{Prefix}Zombie_", 121, 3) { Volume = 0.45f, PitchVariance = 0.15f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Cockatiel = new($"{Prefix}Zombie_", 118, 3) { Volume = 0.3f, PitchVariance = 0.05f };
 	public static readonly SoundStyle Macaw = new($"{Prefix}Zombie_", 126, 3) { Volume = 0.22f, PitchVariance = 0.05f };
-	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 3) { Volume = 0.2f, PitchVariance = 0.05f };
+	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 2) { Volume = 0.2f, PitchVariance = 0.05f };
 	// End of replaced IDs.
 
 	public static readonly SoundStyle NPCHit1 = NPCHitSound(1);
