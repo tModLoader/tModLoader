@@ -1,7 +1,7 @@
 using System.IO;
-using Terraria.ModLoader.IO;
-using Terraria.ModLoader;
 using Terraria;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Common.Systems
 {
@@ -29,14 +29,11 @@ namespace ExampleMod.Common.Systems
 		}
 
 		public override void NetSend(BinaryWriter writer) {
-			BitsByte flags = new BitsByte();
-			flags[0] = boughtExampleTownPet;
-			writer.Write(flags);
+			writer.WriteFlags(boughtExampleTownPet);
 		}
 
 		public override void NetReceive(BinaryReader reader) {
-			BitsByte flags = reader.ReadByte();
-			boughtExampleTownPet = flags[0];
+			reader.ReadFlags(out boughtExampleTownPet);
 		}
 	}
 }

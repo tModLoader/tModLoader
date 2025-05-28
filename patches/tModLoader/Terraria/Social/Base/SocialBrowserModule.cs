@@ -160,5 +160,6 @@ public struct QueryParameters
 public enum QueryType
 {
 	SearchAll,
-	SearchDirect
+	SearchDirect,
+	SearchUserPublishedOnly
 }

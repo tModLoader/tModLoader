@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/UI/UIEvent.cs
++++ src/tModLoader/Terraria/UI/UIEvent.cs
+@@ -2,6 +_,9 @@
+ 
+ public class UIEvent
+ {
++	/// <summary>
++	/// The element targeted by the mouse event. This is usually the element lowest in the UI hierarchy overlapping with mouse position unless <see cref="UIElement.IgnoresMouseInteraction"/> is true.
++	/// </summary>
+ 	public readonly UIElement Target;
+ 
+ 	public UIEvent(UIElement target)

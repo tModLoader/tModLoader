@@ -35,6 +35,7 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 		public PrioritizedPair surfaceBackground;
 		public PrioritizedPair music;
 		public string mapBackground;
+		public ModSceneEffect mapBackgroundSceneEffect;
 		public CaptureBiome.TileColorStyle tileColorStyle;
 		public PrioritizedPair biomeTorchItemType;
 		public PrioritizedPair biomeCampfireItemType;
@@ -138,6 +139,7 @@ public class SceneEffectLoader : Loader<ModSceneEffect>
 
 			if (result.mapBackground == null && sceneEffect.MapBackground != null) {
 				result.mapBackground = sceneEffect.MapBackground;
+				result.mapBackgroundSceneEffect = sceneEffect;
 				sceneEffectFields++;
 			}
 		}

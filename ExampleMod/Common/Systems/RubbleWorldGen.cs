@@ -27,7 +27,7 @@ namespace ExampleMod.Common.Systems
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 			progress.Message = "Example Mod Piles";
 
-			int[] tileTypes = new int[] { ModContent.TileType<Example1x1RubbleNatural>(), ModContent.TileType<Example2x1RubbleNatural>(), ModContent.TileType<Example3x2RubbleNatural>() };
+			int[] tileTypes = [ModContent.TileType<Example1x1RubbleNatural>(), ModContent.TileType<Example2x1RubbleNatural>(), ModContent.TileType<Example3x2RubbleNatural>()];
 
 			// To not be annoying, we'll only spawn 15 Example Rubble near the spawn point.
 			// This example uses the Try Until Success approach: https://github.com/tModLoader/tModLoader/wiki/World-Generation#try-until-success

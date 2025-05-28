@@ -133,7 +133,7 @@ partial class SoundID
 	public static readonly SoundStyle Clown = new($"{Prefix}Zombie_", 121, 3) { Identifier = "Terraria/Clown", Volume = 0.45f, PitchVariance = 0.15f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Cockatiel = new($"{Prefix}Zombie_", 118, 3) { Identifier = "Terraria/Cockatiel", Volume = 0.3f, PitchVariance = 0.05f };
 	public static readonly SoundStyle Macaw = new($"{Prefix}Zombie_", 126, 3) { Identifier = "Terraria/Macaw", Volume = 0.22f, PitchVariance = 0.05f };
-	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 3) { Identifier = "Terraria/Toucan", Volume = 0.2f, PitchVariance = 0.05f };
+	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 2) { Identifier = "Terraria/Toucan", Volume = 0.2f, PitchVariance = 0.05f };
 	// End of replaced IDs.
 
 	public static readonly SoundStyle NPCHit1 = NPCHitSound(1);
@@ -193,7 +193,6 @@ partial class SoundID
 	public static readonly SoundStyle NPCHit55 = NPCHitSound(55) with { Volume = 0.5f };
 	public static readonly SoundStyle NPCHit56 = NPCHitSound(56) with { Volume = 0.5f };
 	public static readonly SoundStyle NPCHit57 = NPCHitSound(57) with { Volume = 0.6f, SoundLimitBehavior = IgnoreNew };
-	public static int NPCHitCount = 58; // Added by tML
 	public static readonly SoundStyle NPCDeath1 = NPCDeathSound(1);
 	public static readonly SoundStyle NPCDeath2 = NPCDeathSound(2);
 	public static readonly SoundStyle NPCDeath3 = NPCDeathSound(3);
@@ -260,7 +259,6 @@ partial class SoundID
 	public static readonly SoundStyle NPCDeath64 = NPCDeathSound(64);
 	public static readonly SoundStyle NPCDeath65 = NPCDeathSound(65);
 	public static readonly SoundStyle NPCDeath66 = NPCDeathSound(66);
-	public static int NPCDeathCount = 66; // TML: Changed from short to int.
 	public static readonly SoundStyle Item1 = ItemSound(stackalloc int[] { 1, 18, 19 });
 	public static readonly SoundStyle Item2 = ItemSound(2);
 	public static readonly SoundStyle Item3 = ItemSound(3);
@@ -572,6 +570,7 @@ partial class SoundID
 	public static readonly SoundStyle Zombie128 = ZombieSound(128);
 	public static readonly SoundStyle Zombie129 = ZombieSound(129);
 	public static readonly SoundStyle Zombie130 = ZombieSound(130);
+	public static readonly int ZombieSoundCount = LegacySoundPlayer.ZombieSoundCount; // Added by TML just like ZombieX.
 
 	// Mapping
 
@@ -611,10 +610,10 @@ partial class SoundID
 			}
 		}
 
-		AddNumberedStyles(LegacySoundIDs.Item, nameof(LegacySoundIDs.Item), 0, 172);
-		AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 65);
-		AddNumberedStyles(LegacySoundIDs.NPCKilled, "NPCDeath", 0, 57);
-		AddNumberedStyles(LegacySoundIDs.Zombie, nameof(LegacySoundIDs.Zombie), 0, 118);
+		AddNumberedStyles(LegacySoundIDs.Item, nameof(LegacySoundIDs.Item), 0, ItemSoundCount);
+		AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, NPCHitCount);
+		AddNumberedStyles(LegacySoundIDs.NPCKilled, "NPCDeath", 0, NPCDeathCount);
+		AddNumberedStyles(LegacySoundIDs.Zombie, nameof(LegacySoundIDs.Zombie), 0, ZombieSoundCount);
 		AddNumberedStyles(LegacySoundIDs.Bird, nameof(LegacySoundIDs.Bird), 14, 6);
 	}
 
@@ -740,6 +739,10 @@ partial class SoundID
 		LegacySoundIDs.Research => Research,
 		LegacySoundIDs.ResearchComplete => ResearchComplete,
 		LegacySoundIDs.QueenSlime => QueenSlime,
+		LegacySoundIDs.Clown => Clown,
+		LegacySoundIDs.Cockatiel => Cockatiel,
+		LegacySoundIDs.Macaw => Macaw,
+		LegacySoundIDs.Toucan => Toucan,
 		_ => null,
 	};
 }

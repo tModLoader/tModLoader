@@ -177,21 +177,19 @@ public partial class Main
 
 	public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay)
 	{
+		// Note that these are not indexes exactly, but count drawn elements (meaning active if inventory is open)
 		startingDisplay = 0;
 		endingDisplay = InfoDisplayLoader.InfoDisplayCount;
 
-		if (playerInventory && InfoDisplayLoader.ActiveDisplays() > 12) {
+		if (!playerInventory)
+			return;
+
+		int activeDisplays = InfoDisplayLoader.ActiveDisplays();
+		InfoDisplayLoader.InfoDisplayPage = Utils.Clamp(InfoDisplayLoader.InfoDisplayPage, 0, (activeDisplays - 1) / 12);
+
+		if (activeDisplays > 12) {
 			startingDisplay = 12 * InfoDisplayLoader.InfoDisplayPage;
-
-			if (InfoDisplayLoader.ActiveDisplays() - startingDisplay <= 12)
-				endingDisplay = InfoDisplayLoader.ActiveDisplays();
-			else
-				endingDisplay = startingDisplay + 12;
-
-			if (startingDisplay >= 8)
-				startingDisplay += 1;
-
-			endingDisplay += 1;
+			endingDisplay = Utils.Clamp(startingDisplay + 12, startingDisplay, activeDisplays);
 
 			Texture2D buttonTexture = UICommon.InfoDisplayPageArrowTexture.Value;
 			bool hovering = false;
@@ -580,7 +578,7 @@ public partial class Main
 				newsChecked = true;
 				// Download latest news, save to config.json.
 				// https://partner.steamgames.com/doc/webapi/ISteamNews
-				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1&feeds=steam_community_announcements").ContinueWith(response => {
 					if (!response.IsCompletedSuccessfully || response.Exception != null) {
 						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
 						return;

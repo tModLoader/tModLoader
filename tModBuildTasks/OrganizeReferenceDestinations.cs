@@ -28,6 +28,8 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 
 	private void ProcessItems(ITaskItem[] items)
 	{
+		char sep = Path.DirectorySeparatorChar;
+
 		foreach (var item in items) {
 			string fileExtension = item.GetMetadata("Extension");
 			string nugetPackageId = item.GetMetadata("NuGetPackageId");
@@ -37,13 +39,17 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			string pathInPackage = item.GetMetadata("PathInPackage");
 			//string fileName = item.GetMetadata("Filename");
 			//string runtimeIdentifier = item.GetMetadata("RuntimeIdentifier");
+			string? dllDirectoryInPackage = null;
 
 			// PDBs & XMLs lack some metadata, attempt to get it from the paired .dll.
 			if (string.IsNullOrEmpty(fusionName) && !".dll".Equals(fileExtension, StringComparison.OrdinalIgnoreCase)) {
-				string dllSpec = Path.ChangeExtension(item.ItemSpec, ".dll");
+				string libSpec = ReplaceLast(item.ItemSpec, $"{sep}{nugetPackageVersion}{sep}ref{sep}", $"{sep}{nugetPackageVersion}{sep}lib{sep}");
+				string dllSpec = Path.ChangeExtension(libSpec, ".dll");
 
 				if (items.FirstOrDefault(i => dllSpec.Equals(i.ItemSpec, StringComparison.OrdinalIgnoreCase)) is ITaskItem dllItem) {
 					fusionName = dllItem.GetMetadata("FusionName");
+					string dllPathInPackage = dllItem.GetMetadata("PathInPackage");
+					dllDirectoryInPackage = !string.IsNullOrEmpty(dllPathInPackage) ? Path.GetDirectoryName(dllPathInPackage) : string.Empty;
 				}
 			}
 
@@ -65,6 +71,10 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			// NuGet Packages - This is used for all NuGet libraries, whether native or managed, whether rid-specific or agnostic.
 			else if (!string.IsNullOrEmpty(nugetPackageId)) {
 				string? directoryInPackage = !string.IsNullOrEmpty(pathInPackage) ? Path.GetDirectoryName(pathInPackage) : string.Empty;
+
+				if (string.IsNullOrEmpty(directoryInPackage) && !string.IsNullOrEmpty(dllDirectoryInPackage)) {
+					directoryInPackage = dllDirectoryInPackage;
+				}
 
 				// NuGet package IDs are lowercased in folder repositories.
 				string? nugetPackageIdLower = nugetPackageId.ToLower();
@@ -93,4 +103,7 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 			item.SetMetadata("DestinationSubDirectory", destinationSubDirectory);
 		}
 	}
+
+	private static string ReplaceLast(string str, string match, string replacement)
+		=> str.LastIndexOf(match) is int index and not -1 ? str.Remove(index, match.Length).Insert(index, replacement) : str;
 }

@@ -69,6 +69,9 @@ partial class Mod
 		if (GoreAutoloadingEnabled)
 			GoreLoader.AutoloadGores(this);
 
+		if (CloudAutoloadingEnabled)
+			CloudLoader.AutoloadClouds(this);
+
 		if (MusicAutoloadingEnabled)
 			MusicLoader.AutoloadMusic(this);
 

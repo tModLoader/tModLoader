@@ -185,6 +185,23 @@ internal class UIModConfigList : UIState
 
 				modList.Add(modPanel);
 			}
+			else {
+				if (mod.Name == "ModLoader")
+					continue;
+
+				var modPanel = new UIButton<string>(mod.DisplayName) {
+					MaxWidth = { Percent = 0.95f },
+					HAlign = 0.5f,
+					ScalePanel = true,
+					BackgroundColor = Color.Gray,
+					HoverPanelColor = Color.Gray,
+					HoverBorderColor = Color.Black,
+					TooltipText = true,
+					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
+				};
+
+				modList.Add(modPanel);
+			}
 		}
 	}
 

@@ -19,9 +19,7 @@ namespace ExampleMod.Content.Buffs
 
 		public override void Update(Player player, ref int buffIndex) {
 			player.GetModPlayer<ExampleWeaponEnchantmentPlayer>().exampleWeaponImbue = true;
-
-			// We set this to a value not used by existing imbues simply to indicate to other mods that a weapon imbue is active. The real flag is exampleWeaponImbue above.
-			player.meleeEnchant = 255;
+			player.MeleeEnchantActive = true; // MeleeEnchantActive indicates to other mods that a weapon imbue is active.
 		}
 	}
 }

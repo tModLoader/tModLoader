@@ -37,6 +37,7 @@ public static class ModLoader
 	public static bool ShowFirstLaunchWelcomeMessage;
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
+	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
 	public static int LatestNewsTimestamp; 
 
@@ -64,6 +65,7 @@ public static class ModLoader
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
 	internal static bool notifyNewMainMenuThemes = true;
 	internal static bool showNewUpdatedModsInfo = true;
+	internal static bool showConfirmationWindowWhenEnableDisableAllMods = true;
 	internal static bool skipLoad;
 	internal static Action OnSuccessfulLoad;
 
@@ -74,7 +76,8 @@ public static class ModLoader
 	internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 	internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
+	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found so it should only be used for mods known to be enabled, such as a strong mod dependency.
+	/// <para/> Use <see cref="TryGetMod(string, out Mod)"/> instead if the mod might not be enabled. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	public static Mod GetMod(string name) => modsByName[name];
 
@@ -359,6 +362,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
 		Main.Configuration.Put("ShowNewUpdatedModsInfo", showNewUpdatedModsInfo);
+		Main.Configuration.Put("ShowConfirmationWindowWhenEnableDisableAllMods", showConfirmationWindowWhenEnableDisableAllMods);
 		Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 		Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 		Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
@@ -370,6 +374,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
+		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
 	}
 
 	internal static void LoadConfiguration()
@@ -384,6 +389,7 @@ public static class ModLoader
 		Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 		Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 		Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+		Main.Configuration.Get("ShowConfirmationWindowWhenEnableDisableAllMods", ref showConfirmationWindowWhenEnableDisableAllMods);
 		Main.Configuration.Get("ShowNewUpdatedModsInfo", ref showNewUpdatedModsInfo);
 		Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 		Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
@@ -396,6 +402,7 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
+		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
 	}
 
 	internal static void MigrateSettings()

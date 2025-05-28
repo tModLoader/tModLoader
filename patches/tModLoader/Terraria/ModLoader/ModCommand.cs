@@ -49,6 +49,8 @@ public abstract class ModCommand : ModType
 	public virtual string Usage => "/" + Command;
 	/// <summary>A short description of this command.</summary>
 	public virtual string Description => "";
+	///<summary>If false (default), the arguments to <see cref="Action"/> will be provided as lowercase.</summary>
+	public virtual bool IsCaseSensitive => false;
 
 	protected override sealed void Register()
 	{

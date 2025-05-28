@@ -72,7 +72,8 @@ namespace ExampleMod.Content.Items.Accessories
 
 	// Some movement effects are not suitable to be modified in ModItem.UpdateAccessory due to how the math is done.
 	// ModPlayer.PostUpdateRunSpeeds is suitable for these modifications.
-	public class ExampleStatBonusAccessoryPlayer : ModPlayer {
+	public class ExampleStatBonusAccessoryPlayer : ModPlayer
+	{
 		public bool exampleStatBonusAccessory = false;
 
 		public override void ResetEffects() {
