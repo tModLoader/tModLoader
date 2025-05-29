@@ -37,7 +37,7 @@ partial class SoundID
 	public static readonly SoundStyle MenuClose = new($"{Prefix}Menu_Close");
 	public static readonly SoundStyle MenuTick = new($"{Prefix}Menu_Tick") { PlayOnlyIfFocused = true };
 	public static readonly SoundStyle Shatter = new($"{Prefix}Shatter");
-	public static readonly SoundStyle ZombieMoan = new($"{Prefix}Zombie_", 0, 3) { Identifier = "Terraria/ZombieMoan", Volume = 0.4f };
+	public static readonly SoundStyle ZombieMoan = new($"{Prefix}Zombie_", 0, 3) { Identifier = "Terraria/ZombieMoan", Volume = 0.4f, MaxInstances = 0 };
 	public static readonly SoundStyle SandShark = new($"{Prefix}Zombie_7") { Volume = 0.4f }; // New field
 	public static readonly SoundStyle BloodZombie = new($"{Prefix}Zombie_", 21, 3) { Identifier = "Terraria/BloodZombie", Volume = 0.4f }; // New field
 	public static readonly SoundStyle Roar = new($"{Prefix}Roar_0") { Identifier = "Terraria/Roar", SoundLimitBehavior = IgnoreNew };
@@ -133,7 +133,7 @@ partial class SoundID
 	public static readonly SoundStyle Clown = new($"{Prefix}Zombie_", 121, 3) { Identifier = "Terraria/Clown", Volume = 0.45f, PitchVariance = 0.15f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Cockatiel = new($"{Prefix}Zombie_", 118, 3) { Identifier = "Terraria/Cockatiel", Volume = 0.3f, PitchVariance = 0.05f };
 	public static readonly SoundStyle Macaw = new($"{Prefix}Zombie_", 126, 3) { Identifier = "Terraria/Macaw", Volume = 0.22f, PitchVariance = 0.05f };
-	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 2) { Identifier = "Terraria/Toucan", Volume = 0.2f, PitchVariance = 0.05f };
+	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 2) { Identifier = "Terraria/Toucan", Volume = 0.2f, PitchVariance = 0.05f, SoundLimitBehavior = IgnoreNew, VariantsAreIndependent = true };
 	// End of replaced IDs.
 
 	public static readonly SoundStyle NPCHit1 = NPCHitSound(1);

@@ -35,6 +35,7 @@ public record struct SoundStyle
 	private float pitchVariance = 0f;
 	private Asset<SoundEffect>? effectCache = null;
 	private Asset<SoundEffect>?[]? variantsEffectCache = null;
+	private int random = -1;
 
 	/// <summary> The sound effect to play. </summary>
 	public string SoundPath { get; set; }
@@ -56,6 +57,11 @@ public record struct SoundStyle
 
 	/// <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
 	public SoundLimitBehavior SoundLimitBehavior { get; set; } = SoundLimitBehavior.ReplaceOldest;
+
+	/// <summary>
+	/// If true, then variants are treated as different sounds for the purposes of <see cref="SoundLimitBehavior"/> and <see cref="MaxInstances"/>. Defaults to false, meaning that all variants share the same sound instance limitations.
+	/// </summary>
+	public bool VariantsAreIndependent { get; set; } = false; // true might be a better default? Need to check.
 
 	/// <summary> If true, this sound won't play if the game's window isn't selected. </summary>
 	public bool PlayOnlyIfFocused { get; set; } = false;
@@ -111,6 +117,11 @@ public record struct SoundStyle
 			variantsWeights = value.ToArray();
 			totalVariantWeight = null;
 		}
+	}
+
+	public int RandomChoice {
+		get => random;
+		set => random = value;
 	}
 
 	/// <summary> The volume multiplier to play sounds with. </summary>
@@ -211,8 +222,11 @@ public record struct SoundStyle
 	// To be optimized, improved.
 	public bool IsTheSameAs(SoundStyle style)
 	{
-		if (Identifier != null && Identifier == style.Identifier)
-			return true;
+		if (VariantsAreIndependent && RandomChoice != -1 && RandomChoice != style.RandomChoice)
+			return false;
+
+		if (Identifier != null || style.Identifier != null)
+			return Identifier == style.Identifier;
 
 		if (SoundPath == style.SoundPath)
 			return true;
@@ -254,8 +268,20 @@ public record struct SoundStyle
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };
 
+	public SoundStyle WithChosenRandom(int random = -1)
+	{
+		if (variants == null || variants.Length == 0)
+			return this;
+		return this with { RandomChoice = random == -1 ? GetRandomVariantIndex() : random };
+	}
+
 	private int GetRandomVariantIndex()
 	{
+		if (this.random != -1) {
+			// Use existing random decision if already made.
+			return this.random;
+		}
+
 		if (variantsWeights == null) {
 			// Simple random.
 			return Random.Next(variants!.Length);
