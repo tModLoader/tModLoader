@@ -623,9 +623,9 @@
 		"slotStack": "平铺式",
 		"slotScroll": "滚动式",
 		"PressXToClose": "按 {0} 关闭",
-		// "SharedAccessorySlotConflictMessage": "One or more shared accessory conflicts with the accessories in this loadout, they have been disabled.",
-		// "SharedAccessorySlotConflictTooltip": "This shared accessory slot is disabled since it conflicts with other accessories in this loadout",
-		// "ModAccessorySlotNoLongerSharedItemsRemoved": "Some items have been moved from accessory slots to inventory due to HasEquipmentLoadoutSupport changing to true.",
+		"SharedAccessorySlotConflictMessage": "一个或多个共享配饰栏与此配装中的配饰冲突，因此已被暂时禁用。",
+		"SharedAccessorySlotConflictTooltip": "该共享配饰栏已被禁用，因为它与此配装中的其他配饰冲突。",
+		"ModAccessorySlotNoLongerSharedItemsRemoved": "由于HasEquipmentLoadoutSupport已更改为true，某些配饰已从配饰槽转移到物品栏中。",
 
 		// Misc
 		"OK": "好的",
