@@ -35,6 +35,7 @@ var class_global_n_p_c =
     [ "LoadData", "class_global_n_p_c.html#a6a6afd0e33d59496e457502dd36899d5", null ],
     [ "ModifyActiveShop", "class_global_n_p_c.html#ace4ad57e4a8634252d4772b4a14e9987", null ],
     [ "ModifyCollisionData", "class_global_n_p_c.html#a841136ffed6b0a17595b4ea11200407e", null ],
+    [ "ModifyDeathMessage", "class_global_n_p_c.html#ab574f5c0c62ba51505dd36ee54ac8d43", null ],
     [ "ModifyGlobalLoot", "class_global_n_p_c.html#a909fdc092c79b35d98e516c97223f63a", null ],
     [ "ModifyHitByItem", "class_global_n_p_c.html#ae6c7c7852422c471a042c4549fa0949b", null ],
     [ "ModifyHitByProjectile", "class_global_n_p_c.html#ac4638c3d897a12fcb8aee1db2dfe7ee9", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -177,10 +177,22 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <tr class="memitem:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memItemLeft" align="right" valign="top"><a id="a1173ef4323d9e01a36b5c909f1d348fd" name="a1173ef4323d9e01a36b5c909f1d348fd"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NearbyEffects</b> (int i, int j, int type, bool closer)</td></tr>
 <tr class="separator:a1173ef4323d9e01a36b5c909f1d348fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e481dc835faca10224d7dd31d64d695"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a3e481dc835faca10224d7dd31d64d695">PostDrawPlacementPreview</a> (int i, int j, int type, SpriteBatch spriteBatch, Rectangle <a class="el" href="class_chest.html#ae76d638726f49cd5ace0826598ece9d9">frame</a>, Vector2 position, Color color, bool validPlacement, <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a> spriteEffects)</td></tr>
+<tr class="memdesc:a3e481dc835faca10224d7dd31d64d695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.  <a href="class_global_tile.html#a3e481dc835faca10224d7dd31d64d695">More...</a><br /></td></tr>
+<tr class="separator:a3e481dc835faca10224d7dd31d64d695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c20aceb0500f1518da17f0a9c29294b"><td class="memItemLeft" align="right" valign="top"><a id="a7c20aceb0500f1518da17f0a9c29294b" name="a7c20aceb0500f1518da17f0a9c29294b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTileMerge</b> ()</td></tr>
 <tr class="memdesc:a7c20aceb0500f1518da17f0a9c29294b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to adjust tile merge related things that are not possible to do in <a class="el" href="class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3" title="Allows you to modify the properties after initial loading has completed.">ModBlockType.SetStaticDefaults</a> due to timing. <br /></td></tr>
 <tr class="separator:a7c20aceb0500f1518da17f0a9c29294b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3dfc2fbc0928e042d5aa82d5c765e31"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#aa3dfc2fbc0928e042d5aa82d5c765e31">PreDrawPlacementPreview</a> (int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle <a class="el" href="class_chest.html#ae76d638726f49cd5ace0826598ece9d9">frame</a>, ref Vector2 position, ref Color color, bool validPlacement, ref <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a> spriteEffects)</td></tr>
+<tr class="memdesc:aa3dfc2fbc0928e042d5aa82d5c765e31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet. <br  />
+<br  />
+ Return false to stop this section from drawing normally. Returns true by default.  <a href="class_global_tile.html#aa3dfc2fbc0928e042d5aa82d5c765e31">More...</a><br /></td></tr>
+<tr class="separator:aa3dfc2fbc0928e042d5aa82d5c765e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e1dd0f415df215847048a005719966c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">PreHitWire</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a9e1dd0f415df215847048a005719966c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the vanilla HitWire code and the HitWire hook is allowed to run. Useful for overriding vanilla behavior by returning false. Returns true by default.  <a href="class_global_tile.html#a9e1dd0f415df215847048a005719966c">More...</a><br /></td></tr>
 <tr class="separator:a9e1dd0f415df215847048a005719966c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1215,6 +1227,200 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3e481dc835faca10224d7dd31d64d695" name="a3e481dc835faca10224d7dd31d64d695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e481dc835faca10224d7dd31d64d695">&#9670;&nbsp;</a></span>PostDrawPlacementPreview()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void GlobalTile.PostDrawPlacementPreview </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>validPlacement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a>&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> type of the preview that was drawn.</td></tr>
+    <tr><td class="paramname">spriteBatch</td><td></td></tr>
+    <tr><td class="paramname">frame</td><td>The source rectangle that was used for rendering this section.</td></tr>
+    <tr><td class="paramname">position</td><td>The position at which this section was drawn.</td></tr>
+    <tr><td class="paramname">color</td><td>The color with which this section was drawn.</td></tr>
+    <tr><td class="paramname">validPlacement</td><td>Indicates if the tile can occupy this location.</td></tr>
+    <tr><td class="paramname">spriteEffects</td><td>The <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e" title="The spriteEffects">SpriteEffects</a> that were used to draw this section.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa3dfc2fbc0928e042d5aa82d5c765e31" name="aa3dfc2fbc0928e042d5aa82d5c765e31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3dfc2fbc0928e042d5aa82d5c765e31">&#9670;&nbsp;</a></span>PreDrawPlacementPreview()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool GlobalTile.PreDrawPlacementPreview </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Rectangle&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>validPlacement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a>&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet. <br  />
+<br  />
+ Return false to stop this section from drawing normally. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> type of the preview that will be drawn.</td></tr>
+    <tr><td class="paramname">spriteBatch</td><td></td></tr>
+    <tr><td class="paramname">frame</td><td>The source rectangle that this section will use for rendering.</td></tr>
+    <tr><td class="paramname">position</td><td>The position at which this section will be drawn.</td></tr>
+    <tr><td class="paramname">color</td><td>The color with which this section will be drawn. This is red when overlapping with another tile.</td></tr>
+    <tr><td class="paramname">validPlacement</td><td>Indicates if the tile can occupy this location.</td></tr>
+    <tr><td class="paramname">spriteEffects</td><td>The <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e" title="The spriteEffects">SpriteEffects</a> that will be used to draw this section.</td></tr>
   </table>
   </dd>
 </dl>

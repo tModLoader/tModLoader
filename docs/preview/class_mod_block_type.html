@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -239,7 +239,13 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get
 <tr class="separator:a648adabb5df38e5fe4db10fc18694df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1263f5a6ef3d7c7e477465c4acaa7674"><td class="memItemLeft" align="right" valign="top"><a id="a1263f5a6ef3d7c7e477465c4acaa7674" name="a1263f5a6ef3d7c7e477465c4acaa7674"></a>
 ushort&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaFallbackOnModDeletion</b> = 0<code> [get, set]</code></td></tr>
-<tr class="memdesc:a1263f5a6ef3d7c7e477465c4acaa7674"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. <br /></td></tr>
+<tr class="memdesc:a1263f5a6ef3d7c7e477465c4acaa7674"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. <br  />
+<br  />
+ <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a> tiles attempting to fallback to a vanilla <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a> tile need to match the layout (FrameX and FrameY values) of the fallback tile so that the resulting tiles aren't broken. <br  />
+<br  />
+ Also note that tiles with <a class="el" href="class_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> won't be able to fallback to a working vanilla Tile+TileEntity. The user will have to mine and replace the tile to spawn the correct <a class="el" href="class_tile_entity.html">TileEntity</a>. <br  />
+<br  />
+ Defaults to TileID.Dirt (0). <br /></td></tr>
 <tr class="separator:a1263f5a6ef3d7c7e477465c4acaa7674"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_mod_textured_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_textured_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_textured_type.html">ModTexturedType</a></td></tr>
 <tr class="memitem:a8c707d7097758dddb1e1dec4c3d74ad1 inherit properties_class_mod_textured_type"><td class="memItemLeft" align="right" valign="top"><a id="a8c707d7097758dddb1e1dec4c3d74ad1" name="a8c707d7097758dddb1e1dec4c3d74ad1"></a>

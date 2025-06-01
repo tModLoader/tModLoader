@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -311,6 +311,11 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ImmuneToRegu
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsPetSmallForPetting</b> = Factory.CreateBoolSet(TownCat, TownBunny, TownSlimeBlue, TownSlimeGreen, TownSlimeOld, TownSlimePurple, TownSlimeRainbow, TownSlimeYellow, TownSlimeRed, TownSlimeCopper)</td></tr>
 <tr class="memdesc:a6fafc000a731dac1bbe07ef8684984da"><td class="mdescLeft">&#160;</td><td class="mdescRight">While petting, the player's arm will be angled up by default. If the <a class="el" href="class_n_p_c.html">NPC</a> is in this set, the player's armor will be angled down instead. Defaults to false. <br /></td></tr>
 <tr class="separator:a6fafc000a731dac1bbe07ef8684984da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75eecf88eb7c8f46b00dbe2e04295361"><td class="memItemLeft" align="right" valign="top"><a id="a75eecf88eb7c8f46b00dbe2e04295361" name="a75eecf88eb7c8f46b00dbe2e04295361"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsTownChild</b> = Factory.CreateBoolSet(Angler, Princess)</td></tr>
+<tr class="memdesc:a75eecf88eb7c8f46b00dbe2e04295361"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the given Town <a class="el" href="class_n_p_c.html">NPC</a> won't drop a tombstone on death in hardcore mode and will have the "NPC has left!" death message unless specified otherwise by <a class="el" href="class_mod_n_p_c.html#aaf5ec6ee34c19f25b6a5f500d652bc4c" title="Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tomb...">ModNPC.DeathMessage</a>. <br  />
+ This does NOT affect the gore spawned when the <a class="el" href="class_n_p_c.html">NPC</a> dies. Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a75eecf88eb7c8f46b00dbe2e04295361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04ebfeaf9e6bee36b7175079dd1246bf"><td class="memItemLeft" align="right" valign="top"><a id="a04ebfeaf9e6bee36b7175079dd1246bf" name="a04ebfeaf9e6bee36b7175079dd1246bf"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsTownPet</b> = Factory.CreateBoolSet(637, 638, 656, 670, 678, 679, 680, 681, 682, 683, 684)</td></tr>
 <tr class="memdesc:a04ebfeaf9e6bee36b7175079dd1246bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>), then that <a class="el" href="class_n_p_c.html">NPC</a> is categorized as a town pet. <br  />

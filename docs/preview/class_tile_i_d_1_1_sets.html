@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -182,6 +182,9 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Boulders</b>
 <tr class="separator:ac6d785eec57ad0f613b3c7f5e71abd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc7a29dd61d264f7e51ed25c4e8e48e5"><td class="memItemLeft" align="right" valign="top"><a id="adc7a29dd61d264f7e51ed25c4e8e48e5" name="adc7a29dd61d264f7e51ed25c4e8e48e5"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>BreakableWhenPlacing</b> = Factory.CreateBoolSet(324, 186, 187, 185, 165, 530, 233, 227, 485, 81, 624)</td></tr>
+<tr class="memdesc:adc7a29dd61d264f7e51ed25c4e8e48e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this tile will be broken when placing another tile at its location. To also break by weapons and projectiles, use <a class="el" href="class_main.html#a7e567c0a497197b2f49f009f2ba01f05" title="If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles....">Main.tileCut</a> instead. Contains various ambient object tiles such as rock piles, larger plants, coral, and stalactites. Does not include the "fake" tiles placeable by the rubblemaker. <br  />
+<br  />
+ Defaults to false. <br /></td></tr>
 <tr class="separator:adc7a29dd61d264f7e51ed25c4e8e48e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c292c5ff5257752e0ef0be8314fee77"><td class="memItemLeft" align="right" valign="top"><a id="a6c292c5ff5257752e0ef0be8314fee77" name="a6c292c5ff5257752e0ef0be8314fee77"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Campfire</b> = Factory.CreateBoolSet(TileID.Campfire)</td></tr>
@@ -585,9 +588,11 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>RemixJungleBi
 <tr class="separator:a7e77217ab7a90c1c966380a2e2383a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329c25710a05426509ffaf5756128b32"><td class="memItemLeft" align="right" valign="top"><a id="a329c25710a05426509ffaf5756128b32" name="a329c25710a05426509ffaf5756128b32"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ReplaceTileBreakDown</b> = Factory.CreateBoolSet(205, 115, 62, 52, 382, 444, 528, 638, 636)</td></tr>
+<tr class="memdesc:a329c25710a05426509ffaf5756128b32"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this tile is below a tile being replaced via the block swap feature, it will be destroyed. Contains various vine tiles. <br /></td></tr>
 <tr class="separator:a329c25710a05426509ffaf5756128b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfd1290291a8398e8466da648a54b03a"><td class="memItemLeft" align="right" valign="top"><a id="abfd1290291a8398e8466da648a54b03a" name="abfd1290291a8398e8466da648a54b03a"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ReplaceTileBreakUp</b> = Factory.CreateBoolSet(27, 20, 227, 24, 201, 110, 113, 61, 74, 71, 3, 73, 186, 187, 185, 233, 530, 236, 238, 254, 484, 485, 84, 82, 83, 529, 549, 590, 595, 615, 624, 637)</td></tr>
+<tr class="memdesc:abfd1290291a8398e8466da648a54b03a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this tile is above a tile being replaced via the block swap feature, it will be destroyed. Contains various plant tiles. <br /></td></tr>
 <tr class="separator:abfd1290291a8398e8466da648a54b03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75d8d7ee32ab4d3b30bc5508ad43ee7f"><td class="memItemLeft" align="right" valign="top"><a id="a75d8d7ee32ab4d3b30bc5508ad43ee7f" name="a75d8d7ee32ab4d3b30bc5508ad43ee7f"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ResetsHalfBrickPlacementAttempt</b> = Factory.CreateBoolSet(true, 2, 23, 661, 60, 70, 199, 662, 109, 477, 492, 179, 512, 180, 513, 181, 514, 182, 515, 183, 516, 381, 517, 534, 535, 536, 537, 539, 540, 625, 626, 627, 628, 633)</td></tr>

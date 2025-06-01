@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -281,6 +281,7 @@ Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (Color 
 <tr class="separator:a383c7eccc9e8b1000d20190de124b917"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafc6d3101ac34a8727dbe50f28b88cb2"><td class="memItemLeft" align="right" valign="top"><a id="aafc6d3101ac34a8727dbe50f28b88cb2" name="aafc6d3101ac34a8727dbe50f28b88cb2"></a>
 <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFullNetName</b> ()</td></tr>
+<tr class="memdesc:aafc6d3101ac34a8727dbe50f28b88cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_n_p_c.html#a2cbce6b8c41331e677323bf6e945a7c5" title="The FULL name of this NPC.  If the NPC doesn&#39;t have a given name, this will just return the type name...">FullName</a>, but results in a <a class="el" href="class_network_text.html" title="Represents text that will be sent over the network in multiplayer and displayed to the receiving user...">NetworkText</a> instead of a string, making it suitable for network messages allowing the text to be localized on each client using the clients selected language. <br /></td></tr>
 <tr class="separator:aafc6d3101ac34a8727dbe50f28b88cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a093ffc370878b4c3b5dc7dc90b3a08a8"><td class="memItemLeft" align="right" valign="top"><a id="a093ffc370878b4c3b5dc7dc90b3a08a8" name="a093ffc370878b4c3b5dc7dc90b3a08a8"></a>
 <a class="el" href="class_network_text.html">NetworkText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetGivenNetName</b> ()</td></tr>
@@ -652,7 +653,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>FairyEffects</
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindCattailTop</b> (int landX, int landY, out int cattailX, out int cattailY)</td></tr>
 <tr class="separator:aa457e958c04776538756b3917746216d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5272dd7834b4c553bcb08fea42c2630c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">FindFirstNPC</a> (int Type)</td></tr>
-<tr class="memdesc:a5272dd7834b4c553bcb08fea42c2630c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index within <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">More...</a><br /></td></tr>
+<tr class="memdesc:a5272dd7834b4c553bcb08fea42c2630c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index within <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> of the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>).  <a href="class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c">More...</a><br /></td></tr>
 <tr class="separator:a5272dd7834b4c553bcb08fea42c2630c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac48691e54026c0363369b329d7a44a25"><td class="memItemLeft" align="right" valign="top"><a id="ac48691e54026c0363369b329d7a44a25" name="ac48691e54026c0363369b329d7a44a25"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindTreeBranch</b> (int landX, int landY, out int treeBranchX, out int treeBranchY)</td></tr>
@@ -1922,7 +1923,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FullName</b><code> 
  If the <a class="el" href="class_n_p_c.html">NPC</a> does have a given name, this will return the <a class="el" href="class_n_p_c.html">NPC</a>'s full name; given name first, then type name.<br  />
  Full name with a given name is given in the format of "X the Y", where X is their given name and Y is their type name.<br  />
  For example, a Stylist might return "Scarlett the Stylist" here; with Scarlett being her given name, and Stylist being her type name.<br  />
- <br /></td></tr>
+ For network code, use <a class="el" href="class_n_p_c.html#aafc6d3101ac34a8727dbe50f28b88cb2" title="Similar to FullName, but results in a NetworkText instead of a string, making it suitable for network...">GetFullNetName</a> instead to allow the localization to happen for each client in their selected language. <br /></td></tr>
 <tr class="separator:a2cbce6b8c41331e677323bf6e945a7c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab799155f738475d1824fa09315455a35"><td class="memItemLeft" align="right" valign="top"><a id="ab799155f738475d1824fa09315455a35" name="ab799155f738475d1824fa09315455a35"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>GivenName</b><code> [get, set]</code></td></tr>
@@ -2507,7 +2508,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 </table>
 </div><div class="memdoc">
 
-<p>Returns the index within <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> of the the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
+<p>Returns the index within <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> of the first active <a class="el" href="class_n_p_c.html">NPC</a> in the world of the given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Type</td><td></td></tr>

@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"class_conditions_1_1_dont_starve_is_not_up.html#ab2ad78777306df99930e05d63529e4ad":[3,0,193,6,1],
+"class_conditions_1_1_dont_starve_is_up.html":[3,0,193,7],
+"class_conditions_1_1_dont_starve_is_up.html#a7e554d9445faa8bb140f7eda1786f2c5":[3,0,193,7,1],
 "class_conditions_1_1_dont_starve_is_up.html#ace306818f2fb15a7f81b1c44918f1636":[3,0,193,7,0],
 "class_conditions_1_1_downed_all_mech_bosses.html":[3,0,193,8],
 "class_conditions_1_1_downed_all_mech_bosses.html#a50615d4e365598d2335409416cc69f72":[3,0,193,8,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "class_creative_powers_1_1_a_per_player_slider_power.html":[3,0,213,0],
 "class_creative_powers_1_1_a_per_player_toggle_power.html":[3,0,213,1],
 "class_creative_powers_1_1_a_shared_button_power.html":[3,0,213,2],
-"class_creative_powers_1_1_a_shared_slider_power.html":[3,0,213,3],
-"class_creative_powers_1_1_a_shared_toggle_power.html":[3,0,213,4],
-"class_creative_powers_1_1_difficulty_slider_power.html":[3,0,213,5],
-"class_creative_powers_1_1_far_placement_range_power.html":[3,0,213,6]
+"class_creative_powers_1_1_a_shared_slider_power.html":[3,0,213,3]
 };

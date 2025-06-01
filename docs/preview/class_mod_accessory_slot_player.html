@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -97,6 +97,9 @@ $(document).ready(function(){initNavTree('class_mod_accessory_slot_player.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>ExEquipmentLoadout</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ExEquipmentLoadout holds loadout items for loadouts not in use. <a class="el" href="class_mod_accessory_slot.html" title="A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the...">ModAccessorySlot</a> corollary to <a class="el" href="class_equipment_loadout.html">EquipmentLoadout</a>. Note that when a loadout is selected, the items in ExEquipmentLoadout are swapped into exAccessorySlot, etc. and the loadout is left with empty <a class="el" href="class_item.html">Item</a> instances. The active loadout items are stored on the player and the ExEquipmentLoadout is left empty, this is the same approach used for vanilla loadouts as well (Player.Loadouts). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>NetHandler</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -114,9 +117,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae6ad475737b0d242486131769c7ce696"><td class="memItemLeft" align="right" valign="top"><a id="ae6ad475737b0d242486131769c7ce696" name="ae6ad475737b0d242486131769c7ce696"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DropItems</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> itemSource)</td></tr>
 <tr class="separator:ae6ad475737b0d242486131769c7ce696"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9325fd5f4c464ba8f2a8de3c60bee83a"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_accessory_slot_player.html#a9325fd5f4c464ba8f2a8de3c60bee83a">Initialize</a> ()</td></tr>
+<tr class="memdesc:a9325fd5f4c464ba8f2a8de3c60bee83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.  <a href="class_mod_accessory_slot_player.html#a9325fd5f4c464ba8f2a8de3c60bee83a">More...</a><br /></td></tr>
+<tr class="separator:a9325fd5f4c464ba8f2a8de3c60bee83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0b12810101f656a43295b3d5b1d3088"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_accessory_slot_player.html#aa0b12810101f656a43295b3d5b1d3088">LoadData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:aa0b12810101f656a43295b3d5b1d3088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for this player. <b>Try to write defensive loading code that won't crash if something's missing.</b>  <a href="class_mod_accessory_slot_player.html#aa0b12810101f656a43295b3d5b1d3088">More...</a><br /></td></tr>
 <tr class="separator:aa0b12810101f656a43295b3d5b1d3088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e908461bf681f7dd05150ed5b939ed0"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_accessory_slot_player.html#a2e908461bf681f7dd05150ed5b939ed0">OnEnterWorld</a> ()</td></tr>
+<tr class="memdesc:a2e908461bf681f7dd05150ed5b939ed0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the player enters the world. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a>. Can also be used for informational messages. Called on the local client only.  <a href="class_mod_accessory_slot_player.html#a2e908461bf681f7dd05150ed5b939ed0">More...</a><br /></td></tr>
+<tr class="separator:a2e908461bf681f7dd05150ed5b939ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b64dd9674cd7fc42ae3d5f4d5b8974"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_accessory_slot_player.html#aa2b64dd9674cd7fc42ae3d5f4d5b8974">OnEquipmentLoadoutSwitched</a> (int oldLoadoutIndex, int loadoutIndex)</td></tr>
+<tr class="memdesc:aa2b64dd9674cd7fc42ae3d5f4d5b8974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to execute some code if the equipment loadout was switched. <br  />
+<br  />
+ Called on the server and on all clients.  <a href="class_mod_accessory_slot_player.html#aa2b64dd9674cd7fc42ae3d5f4d5b8974">More...</a><br /></td></tr>
+<tr class="separator:aa2b64dd9674cd7fc42ae3d5f4d5b8974"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad067f3e96e0d90dfc5627cb615e55ebb"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_accessory_slot_player.html#ad067f3e96e0d90dfc5627cb615e55ebb">SaveData</a> (<a class="el" href="class_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:ad067f3e96e0d90dfc5627cb615e55ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this player. <b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_mod_accessory_slot_player.html#ad067f3e96e0d90dfc5627cb615e55ebb">More...</a><br /></td></tr>
 <tr class="separator:ad067f3e96e0d90dfc5627cb615e55ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,7 +280,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>FrameEffects<
 <tr class="memdesc:ac203467fd37be0e5e373f91a542bc0d3 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a <a class="el" href="class_item.html#af9fe3594a76ad5d1f32ff3f4ca22832a" title="The amount of mana this item restores on use.   Use ModItem.GetHealMana(Player, bool,...">Item.healMana</a> value. Called on local, server, and remote clients.  <a href="class_mod_player.html#ac203467fd37be0e5e373f91a542bc0d3">More...</a><br /></td></tr>
 <tr class="separator:ac203467fd37be0e5e373f91a542bc0d3 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a770a4ba46aae89ce2282c820415f6273 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a770a4ba46aae89ce2282c820415f6273">HideDrawLayers</a> (<a class="el" href="struct_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
-<tr class="memdesc:a770a4ba46aae89ce2282c820415f6273 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the visibility of layers about to be drawn. Layers can be accessed via PlayerDrawLayerLoader.Layers Called on local and remote clients.  <a href="class_mod_player.html#a770a4ba46aae89ce2282c820415f6273">More...</a><br /></td></tr>
+<tr class="memdesc:a770a4ba46aae89ce2282c820415f6273 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the visibility of layers about to be drawn. All layers can be accessed via PlayerDrawLayerLoader.Layers. Individual layers can be accessed by the <a class="el" href="class_player_draw_layers.html">PlayerDrawLayers</a> fields for vanilla layers or <a class="el" href="class_mod_content.html#acdff87a801fa92c1ea46907113eb6839" title="Returns the template instance of the provided content type (not the clone/new instance which gets add...">ModContent.GetInstance&lt;T&gt;</a> for modded layers. The PlayerDrawLayer.Hide method is how a layer can be hidden. <br  />
+<br  />
+ For example:  <a href="class_mod_player.html#a770a4ba46aae89ce2282c820415f6273">More...</a><br /></td></tr>
 <tr class="separator:a770a4ba46aae89ce2282c820415f6273 inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d9f891f665434805a4e6e3b8fabd4f0 inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a5d9f891f665434805a4e6e3b8fabd4f0">HoverSlot</a> (<a class="el" href="class_item.html">Item</a>[] inventory, int context, int slot)</td></tr>
 <tr class="memdesc:a5d9f891f665434805a4e6e3b8fabd4f0 inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player hovers over an item slot. This can be used to override Main.cursorOverride Called on the local client only. See ID.CursorOverrideID for cursor override style IDs  <a href="class_mod_player.html#a5d9f891f665434805a4e6e3b8fabd4f0">More...</a><br /></td></tr>
@@ -385,6 +401,11 @@ override <a class="el" href="class_mod_player.html">ModPlayer</a>&#160;</td><td 
 <tr class="memitem:a7caed04d4b7c2d8579b7d61abea21a2d inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a7caed04d4b7c2d8579b7d61abea21a2d">OnEnterWorld</a> ()</td></tr>
 <tr class="memdesc:a7caed04d4b7c2d8579b7d61abea21a2d inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the player enters the world. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a>. Can also be used for informational messages. Called on the local client only.  <a href="class_mod_player.html#a7caed04d4b7c2d8579b7d61abea21a2d">More...</a><br /></td></tr>
 <tr class="separator:a7caed04d4b7c2d8579b7d61abea21a2d inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae651a57dae0c185371b110db04691dee inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#ae651a57dae0c185371b110db04691dee">OnEquipmentLoadoutSwitched</a> (int oldLoadoutIndex, int loadoutIndex)</td></tr>
+<tr class="memdesc:ae651a57dae0c185371b110db04691dee inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to execute some code if the equipment loadout was switched. <br  />
+<br  />
+ Called on the server and on all clients.  <a href="class_mod_player.html#ae651a57dae0c185371b110db04691dee">More...</a><br /></td></tr>
+<tr class="separator:ae651a57dae0c185371b110db04691dee inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad70d6f1b6e58141aabc106734e5530fd inherit pub_methods_class_mod_player"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#ad70d6f1b6e58141aabc106734e5530fd">OnExtraJumpCleared</a> (<a class="el" href="class_extra_jump.html">ExtraJump</a> jump)</td></tr>
 <tr class="memdesc:ad70d6f1b6e58141aabc106734e5530fd inherit pub_methods_class_mod_player"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook runs before the <a class="el" href="struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71" title="true if the extra jump has not been consumed. Will be set to false when the extra jump starts....">ExtraJumpState.Available</a> flag for an extra jump is set to <code>false</code> in Player.Update(int) due to the jump being unavailable or when calling <a class="el" href="class_player.html#a52ea38bbdc0320b5aca184252442a471" title="Sets the ExtraJumpState.Available flag for all extra jumps to false.  If you want to disable an extra...">Player.ConsumeAllExtraJumps</a> (vanilla calls it when a mount that blocks jumps is active)  <a href="class_mod_player.html#ad70d6f1b6e58141aabc106734e5530fd">More...</a><br /></td></tr>
 <tr class="separator:ad70d6f1b6e58141aabc106734e5530fd inherit pub_methods_class_mod_player"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -626,9 +647,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetStaticDefa
 Properties</h2></td></tr>
 <tr class="memitem:a632bfffce236b2e0e7d8659db4c7ded1"><td class="memItemLeft" align="right" valign="top"><a id="a632bfffce236b2e0e7d8659db4c7ded1" name="a632bfffce236b2e0e7d8659db4c7ded1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>LoadedSlotCount</b><code> [get]</code></td></tr>
+<tr class="memdesc:a632bfffce236b2e0e7d8659db4c7ded1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total loaded modded slots. This does not include <a class="el" href="class_unloaded_accessory_slot.html">UnloadedAccessorySlot</a> entries. This value is used for network syncing since this will be consistent between clients. <br /></td></tr>
 <tr class="separator:a632bfffce236b2e0e7d8659db4c7ded1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb3e3aaadc53b15c12e92f30eac0c4eb"><td class="memItemLeft" align="right" valign="top"><a id="aeb3e3aaadc53b15c12e92f30eac0c4eb" name="aeb3e3aaadc53b15c12e92f30eac0c4eb"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>SlotCount</b><code> [get]</code></td></tr>
+<tr class="memdesc:aeb3e3aaadc53b15c12e92f30eac0c4eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total modded slots to show, including <a class="el" href="class_unloaded_accessory_slot.html">UnloadedAccessorySlot</a> at the end. On the local instance of a <a class="el" href="class_mod_accessory_slot_player.html">ModAccessorySlotPlayer</a>, this might have extra entries not present on remote clients. <br /></td></tr>
 <tr class="separator:aeb3e3aaadc53b15c12e92f30eac0c4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_mod_player"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_player')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_player.html">ModPlayer</a></td></tr>
 <tr class="memitem:a2bea26ea2604583db8f09c5bfde04348 inherit properties_class_mod_player"><td class="memItemLeft" align="right" valign="top">ushort&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a2bea26ea2604583db8f09c5bfde04348">Index</a><code> [get, set]</code></td></tr>
@@ -747,6 +770,35 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 
 </div>
 </div>
+<a id="a9325fd5f4c464ba8f2a8de3c60bee83a" name="a9325fd5f4c464ba8f2a8de3c60bee83a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9325fd5f4c464ba8f2a8de3c60bee83a">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void ModAccessorySlotPlayer.Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc. </p>
+
+<p>Reimplemented from <a class="el" href="class_mod_player.html#a68a5502a00c3e3c8f8f79c316637bcd4">ModPlayer</a>.</p>
+
+</div>
+</div>
 <a id="aa0b12810101f656a43295b3d5b1d3088" name="aa0b12810101f656a43295b3d5b1d3088"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa0b12810101f656a43295b3d5b1d3088">&#9670;&nbsp;</a></span>LoadData()</h2>
 
@@ -780,6 +832,84 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplate
 </dl>
 
 <p>Reimplemented from <a class="el" href="class_mod_player.html#af5ed4f9aec0aafb9197fc93b62737264">ModPlayer</a>.</p>
+
+</div>
+</div>
+<a id="a2e908461bf681f7dd05150ed5b939ed0" name="a2e908461bf681f7dd05150ed5b939ed0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e908461bf681f7dd05150ed5b939ed0">&#9670;&nbsp;</a></span>OnEnterWorld()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void ModAccessorySlotPlayer.OnEnterWorld </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called when the player enters the world. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the <a class="el" href="class_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance.   To use it, simply create a new c...">ModPlayer</a>. Can also be used for informational messages. Called on the local client only. </p>
+
+<p>Reimplemented from <a class="el" href="class_mod_player.html#a7caed04d4b7c2d8579b7d61abea21a2d">ModPlayer</a>.</p>
+
+</div>
+</div>
+<a id="aa2b64dd9674cd7fc42ae3d5f4d5b8974" name="aa2b64dd9674cd7fc42ae3d5f4d5b8974"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2b64dd9674cd7fc42ae3d5f4d5b8974">&#9670;&nbsp;</a></span>OnEquipmentLoadoutSwitched()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void ModAccessorySlotPlayer.OnEquipmentLoadoutSwitched </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>oldLoadoutIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>loadoutIndex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows to execute some code if the equipment loadout was switched. <br  />
+<br  />
+ Called on the server and on all clients. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oldLoadoutIndex</td><td>The old loadout index.</td></tr>
+    <tr><td class="paramname">loadoutIndex</td><td>The new loadout index.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_mod_player.html#ae651a57dae0c185371b110db04691dee">ModPlayer</a>.</p>
 
 </div>
 </div>

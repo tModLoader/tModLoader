@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -176,7 +176,10 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultKillsFor
 <tr class="memitem:a386900e682737ef0afe553c09f470333"><td class="memItemLeft" align="right" valign="top"><a id="a386900e682737ef0afe553c09f470333" name="a386900e682737ef0afe553c09f470333"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Deprecated</b> = Factory.CreateBoolSet(2783, 2785, 2782, 2773, 2775, 2772, 2778, 2780, 2777, 3463, 3465, 3462, 2881, 3847, 3848, 3849, 3850, 3851, 3850, 3861, 3862, 4010, 4058, 5013, 4722, 3978)</td></tr>
 <tr class="memdesc:a386900e682737ef0afe553c09f470333"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item cannot exist normally: It will be destroyed at the end of Item.SetDefaults(int). <br  />
- Defaults to <code>false</code>. <br /></td></tr>
+<br  />
+ Defaults to <code>false</code>. <br  />
+<br  />
+ Modifying this set is not recommended. Currently deprecating existing items will potentially break the crafting functionality (See the corresponding issuefor more information). <br /></td></tr>
 <tr class="separator:a386900e682737ef0afe553c09f470333"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ead921d2646f54442ddc30dc4d320a0"><td class="memItemLeft" align="right" valign="top"><a id="a6ead921d2646f54442ddc30dc4d320a0" name="a6ead921d2646f54442ddc30dc4d320a0"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>DisableAutomaticPlaceableDrop</b> = Factory.CreateBoolSet(false)</td></tr>

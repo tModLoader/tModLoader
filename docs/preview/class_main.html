@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -3615,7 +3615,9 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileCracked<
 <tr class="separator:ad1e23b904ae1a46d736a897834c69647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e567c0a497197b2f49f009f2ba01f05"><td class="memItemLeft" align="right" valign="top"><a id="a7e567c0a497197b2f49f009f2ba01f05" name="a7e567c0a497197b2f49f009f2ba01f05"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileCut</b> = new bool[TileID.Count]</td></tr>
-<tr class="memdesc:a7e567c0a497197b2f49f009f2ba01f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, Tiles of the indexed <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> Type will be destroyed by weapons and projectiles. <a class="el" href="class_mod_projectile.html#a226e2bb6f33f637e6a9882bcc53d1a10" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">ModProjectile.CanCutTiles</a> can be used to customize if a projectile should destroy tiles with this property. <br /></td></tr>
+<tr class="memdesc:a7e567c0a497197b2f49f009f2ba01f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, Tiles of the indexed <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> Type will be destroyed by weapons and projectiles. These tiles will also be destroyed when placing a tile at it's location, see also <a class="el" href="class_tile_i_d_1_1_sets.html#adc7a29dd61d264f7e51ed25c4e8e48e5" title="If true, this tile will be broken when placing another tile at its location. To also break by weapons...">TileID.Sets.BreakableWhenPlacing</a>, which is limited to breaking this tile only by tile placement. <a class="el" href="class_mod_projectile.html#a226e2bb6f33f637e6a9882bcc53d1a10" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">ModProjectile.CanCutTiles</a> can be used to customize if a projectile should destroy tiles with this property. <br  />
+<br  />
+ Defaults to false. <br /></td></tr>
 <tr class="separator:a7e567c0a497197b2f49f009f2ba01f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28f5cc4735664e5e5eb8ce37684e31db"><td class="memItemLeft" align="right" valign="top"><a id="a28f5cc4735664e5e5eb8ce37684e31db" name="a28f5cc4735664e5e5eb8ce37684e31db"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>tileDungeon</b> = new bool[TileID.Count]</td></tr>
@@ -3895,6 +3897,11 @@ static <a class="el" href="class_ref.html">Ref</a>&lt; Effect &gt;&#160;</td><td
 <tr class="separator:a14da249028337ea336f00290339fe066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d7d22c44514a5d33b1808cffc3c0199"><td class="memItemLeft" align="right" valign="top"><a id="a4d7d22c44514a5d33b1808cffc3c0199" name="a4d7d22c44514a5d33b1808cffc3c0199"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>wallBlend</b> = new int[WallID.Count]</td></tr>
+<tr class="memdesc:a4d7d22c44514a5d33b1808cffc3c0199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to a wall type to "blend" with that wall. All walls sharing the same value are considered to be the same wall type when blending. By default, a faint black line is drawn between walls of different types to transition between them. Walls that blend will not have this line drawn. <br  />
+<br  />
+ This is most commonly used to blend safe and unsafe wall variants, although there are some exceptions. All variants that should blend together should set this to a common shared base variant. The base variant does not need to set this. For example, WallID.GreenDungeonUnsafe, WallID.GreenDungeonTileUnsafe, and WallID.GreenDungeonSlabUnsafe all set this to WallID.GreenDungeon allowing all 4 wall types to be considered to be WallID.GreenDungeon and blend together. <br  />
+<br  />
+ Defaults to it's own wall type, meaning it does not blend with any other wall (unless another wall is set to this wall's type. <br /></td></tr>
 <tr class="separator:a4d7d22c44514a5d33b1808cffc3c0199"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29758b75ff1997702f1f017d595f8f60"><td class="memItemLeft" align="right" valign="top"><a id="a29758b75ff1997702f1f017d595f8f60" name="a29758b75ff1997702f1f017d595f8f60"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>wallDungeon</b> = new bool[WallID.Count]</td></tr>
@@ -3909,11 +3916,12 @@ static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>wallFrameCou
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>wallHouse</b> = new bool[WallID.Count]</td></tr>
 <tr class="memdesc:a8684a726071126bdac018dd16b555759"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the wall is considered "safe" for enemy spawning purposes. <br /></td></tr>
 <tr class="separator:a8684a726071126bdac018dd16b555759"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46684e84f758574e229fc24f073f43c6"><td class="memItemLeft" align="right" valign="top"><a id="a46684e84f758574e229fc24f073f43c6" name="a46684e84f758574e229fc24f073f43c6"></a>
-static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>wallLargeFrames</b> = new byte[WallID.Count]</td></tr>
+<tr class="memitem:a46684e84f758574e229fc24f073f43c6"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_main.html#a46684e84f758574e229fc24f073f43c6">wallLargeFrames</a> = new byte[WallID.Count]</td></tr>
+<tr class="memdesc:a46684e84f758574e229fc24f073f43c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">When set to 1 or 2, this wall will use a tiled pattern for the wall variation rather than the random <a class="el" href="struct_tile.html#a2e965328d1b4089dc34f6aa0fe4bb860" title="The random style number the wall at this position has, which is a random number between 0 and 2 (incl...">Tile.WallFrameNumber</a> choice (The info below counts from 1 rather than 0 for illustrative purposes). Defaults to 0. A value of 1 ("Phlebas") results in a 3x4 pattern used by Copper Plating Wall (WallID.CopperPlating) and others:  <a href="class_main.html#a46684e84f758574e229fc24f073f43c6">More...</a><br /></td></tr>
 <tr class="separator:a46684e84f758574e229fc24f073f43c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e07b118d4c826d8c9ea268e5e41118b"><td class="memItemLeft" align="right" valign="top"><a id="a3e07b118d4c826d8c9ea268e5e41118b" name="a3e07b118d4c826d8c9ea268e5e41118b"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>wallLight</b> = new bool[WallID.Count]</td></tr>
+<tr class="memdesc:a3e07b118d4c826d8c9ea268e5e41118b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, light flows in from the background, such as fences and glass. <br /></td></tr>
 <tr class="separator:a3e07b118d4c826d8c9ea268e5e41118b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af39b49a3533c0ee2c18f2bd64fda68af"><td class="memItemLeft" align="right" valign="top"><a id="af39b49a3533c0ee2c18f2bd64fda68af" name="af39b49a3533c0ee2c18f2bd64fda68af"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>waterStriderCageFrame</b> = new int[cageFrames]</td></tr>
@@ -5670,6 +5678,33 @@ EventHandler&lt; EventArgs &gt;&#160;</td><td class="memItemRight" valign="botto
  Increased by <a class="el" href="class_main.html#a0933e4f6c2546c1278824d94721cd30d" title="The rate at which time updates per tick.   Can be modified using ModSystem.ModifyTimeRate(ref double,...">dayRate</a> every tick. <br  />
  If it is <a class="el" href="class_main.html#aa5b5ad648e5affabcd4429c7d67f9791" title="True during the day hours (4:30 AM to 7:30 PM), false during night hours (7:30 PM to 4:30 AM)....">dayTime</a>, this caps at dayLength. Otherwise, this caps at nightLength. </p>
 <p >If you need 24-hour time, use <a class="el" href="class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723" title="Returns the current world time in a 24 hour clock representation. This value is derived from Main....">Utils.GetDayTimeAs24FloatStartingFromMidnight</a>. </p>
+
+</div>
+</div>
+<a id="a46684e84f758574e229fc24f073f43c6" name="a46684e84f758574e229fc24f073f43c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46684e84f758574e229fc24f073f43c6">&#9670;&nbsp;</a></span>wallLargeFrames</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte [] Main.wallLargeFrames = new byte[WallID.Count]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>When set to 1 or 2, this wall will use a tiled pattern for the wall variation rather than the random <a class="el" href="struct_tile.html#a2e965328d1b4089dc34f6aa0fe4bb860" title="The random style number the wall at this position has, which is a random number between 0 and 2 (incl...">Tile.WallFrameNumber</a> choice (The info below counts from 1 rather than 0 for illustrative purposes). Defaults to 0. A value of 1 ("Phlebas") results in a 3x4 pattern used by Copper Plating Wall (WallID.CopperPlating) and others: </p>
+<p ><code>2 4 2 1 3 1 2 2 4 1 1 3 </code> </p>
+<p >A value of 2 ("Lazure") results in a 2x2 pattern used by Lunar Brick Wall (WallID.LunarBrickWall) and others:<code>1 2 3 4 </code> The Wall wiki guide</p>
+<p >has diagrams of these options. </p>
 
 </div>
 </div>

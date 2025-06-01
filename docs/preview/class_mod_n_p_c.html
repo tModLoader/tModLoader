@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -131,8 +131,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AutoStaticDef
 <tr class="memitem:a36c6b4be1fe85b2f7190e0c07889cd97"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a36c6b4be1fe85b2f7190e0c07889cd97">BossHeadSpriteEffects</a> (ref SpriteEffects spriteEffects)</td></tr>
 <tr class="memdesc:a36c6b4be1fe85b2f7190e0c07889cd97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to flip this <a class="el" href="class_n_p_c.html">NPC</a>'s boss head icon on the map. Called on all clients.  <a href="class_mod_n_p_c.html#a36c6b4be1fe85b2f7190e0c07889cd97">More...</a><br /></td></tr>
 <tr class="separator:a36c6b4be1fe85b2f7190e0c07889cd97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a527fc50bcfa60dc62d776c34bae8d04e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a527fc50bcfa60dc62d776c34bae8d04e">BossLoot</a> (ref string name, ref int potionType)</td></tr>
-<tr class="memdesc:a527fc50bcfa60dc62d776c34bae8d04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize what happens when this boss dies, such as which name is displayed in the defeat message and what type of potion it drops. Called in single player or on the server only.  <a href="class_mod_n_p_c.html#a527fc50bcfa60dc62d776c34bae8d04e">More...</a><br /></td></tr>
+<tr class="memitem:aaa0da44924bdc2076cc416da38097d59"><td class="memItemLeft" align="right" valign="top"><a id="aaa0da44924bdc2076cc416da38097d59" name="aaa0da44924bdc2076cc416da38097d59"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>BossLoot</b> (ref int potionType)</td></tr>
+<tr class="memdesc:aaa0da44924bdc2076cc416da38097d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops. Called in single player or on the server only. <br /></td></tr>
+<tr class="separator:aaa0da44924bdc2076cc416da38097d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a527fc50bcfa60dc62d776c34bae8d04e"><td class="memItemLeft" align="right" valign="top"><a id="a527fc50bcfa60dc62d776c34bae8d04e" name="a527fc50bcfa60dc62d776c34bae8d04e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>BossLoot</b> (ref string name, ref int potionType)</td></tr>
 <tr class="separator:a527fc50bcfa60dc62d776c34bae8d04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a793385bf4916047912f89eb1c7fba755"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a793385bf4916047912f89eb1c7fba755">CanBeCaughtBy</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a793385bf4916047912f89eb1c7fba755"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the given item can catch this <a class="el" href="class_n_p_c.html">NPC</a>. Return true or false to say this <a class="el" href="class_n_p_c.html">NPC</a> can or cannot be caught, respectively, regardless of vanilla rules. Returns null by default, which allows vanilla's <a class="el" href="class_n_p_c.html">NPC</a> catching rules to decide the target's fate. If this returns false, CombinedHooks.OnCatchNPC is never called. NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use the "CatchingTool" set in <a class="el" href="class_item_i_d_1_1_sets.html">ItemID.Sets</a>. Called on the local client only.  <a href="class_mod_n_p_c.html#a793385bf4916047912f89eb1c7fba755">More...</a><br /></td></tr>
@@ -225,6 +229,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 <tr class="memdesc:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the <a class="el" href="class_n_p_c.html">NPC</a>'s </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_immunity_cooldown_i_d.html" title="Enumerates the different immunity cooldown options for damage affecting a player. Most damage uses Ge...">ImmunityCooldownID</a></dd></dl>
 <p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default. Called on the server and clients.  <a href="class_mod_n_p_c.html#a095f3b4ae89e2e981da4d9fe9b62afde">More...</a><br /></td></tr>
 <tr class="separator:a095f3b4ae89e2e981da4d9fe9b62afde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a209d0ec296dca11cbc8e4bbab7f91f5c"><td class="memItemLeft" align="right" valign="top"><a id="a209d0ec296dca11cbc8e4bbab7f91f5c" name="a209d0ec296dca11cbc8e4bbab7f91f5c"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDeathMessage</b> (ref <a class="el" href="class_network_text.html">NetworkText</a> customText, ref Color color)</td></tr>
+<tr class="memdesc:a209d0ec296dca11cbc8e4bbab7f91f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the death message of a town <a class="el" href="class_n_p_c.html">NPC</a> or boss (potentially derived from <a class="el" href="class_mod_n_p_c.html#aaf5ec6ee34c19f25b6a5f500d652bc4c" title="Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tomb...">DeathMessage</a>). This also affects what the dropped tombstone will say in the case of a town <a class="el" href="class_n_p_c.html">NPC</a>. The text color can also be modified. When modifying the death message, use <a class="el" href="class_n_p_c.html#aafc6d3101ac34a8727dbe50f28b88cb2" title="Similar to FullName, but results in a NetworkText instead of a string, making it suitable for network...">NPC.GetFullNetName</a> to retrieve the <a class="el" href="class_n_p_c.html">NPC</a> name to use in substitutions. This is intended for more advanced use cases, you should be modifying only <a class="el" href="class_mod_n_p_c.html#aaf5ec6ee34c19f25b6a5f500d652bc4c" title="Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tomb...">DeathMessage</a> for basic usages. Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default. <br /></td></tr>
+<tr class="separator:a209d0ec296dca11cbc8e4bbab7f91f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8fbc2330dc5ccf91b253860794ae804"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804">ModifyHitByItem</a> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
 <tr class="memdesc:ae8fbc2330dc5ccf91b253860794ae804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> takes from a melee weapon. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. The final hit values such as the final damage can only be retrieved from the HitInfo in the <a class="el" href="class_mod_n_p_c.html#aefdef952cf25966e70860e2282964293" title="Allows you to create special effects when this NPC is hit by a melee weapon. Changes to the hit such ...">OnHitByItem(Player, Item, NPC.HitInfo, int)</a> hook. Called on the local client only.  <a href="class_mod_n_p_c.html#ae8fbc2330dc5ccf91b253860794ae804">More...</a><br /></td></tr>
 <tr class="separator:ae8fbc2330dc5ccf91b253860794ae804"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -471,6 +479,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>BannerItem</b><code> [
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>BossHeadTexture</b><code> [get]</code></td></tr>
 <tr class="memdesc:af2700325531a60ac9e61e01970a0c3b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This file name of this <a class="el" href="class_n_p_c.html">NPC</a>'s boss head texture file, to be used in autoloading. <br /></td></tr>
 <tr class="separator:af2700325531a60ac9e61e01970a0c3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf5ec6ee34c19f25b6a5f500d652bc4c"><td class="memItemLeft" align="right" valign="top"><a id="aaf5ec6ee34c19f25b6a5f500d652bc4c" name="aaf5ec6ee34c19f25b6a5f500d652bc4c"></a>
+virtual <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DeathMessage</b><code> [get]</code></td></tr>
+<tr class="memdesc:aaf5ec6ee34c19f25b6a5f500d652bc4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the death message of a town <a class="el" href="class_n_p_c.html">NPC</a> or boss. This also affects what the dropped tombstone will say in the case of a town <a class="el" href="class_n_p_c.html">NPC</a>. If substitutions are not provided by using <a class="el" href="class_localized_text.html#a04e42d4ecba4a9f205cb72d26f23dd06" title="Creates a new LocalizedText with the supplied arguments formatted into the value (via string....">LocalizedText.WithFormatArgs</a>, the <a class="el" href="class_n_p_c.html">NPC</a> name will be substituted into the "{0}" placeholder. This won't have any effect if the given <a class="el" href="class_n_p_c.html">NPC</a> isn't a town <a class="el" href="class_n_p_c.html">NPC</a> or a boss. Returns null by default, with the text being "NPC has been defeated!" for bosses and "NPC was slain..." (or "NPC has left!" if <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a75eecf88eb7c8f46b00dbe2e04295361" title="If true, the given Town NPC won&#39;t drop a tombstone on death in hardcore mode and will have the &quot;NPC h...">NPCID.Sets.IsTownChild</a> or <a class="el" href="class_n_p_c_i_d_1_1_sets.html#a04ebfeaf9e6bee36b7175079dd1246bf" title="If true for a given NPC type (NPC.type), then that NPC is categorized as a town pet....">NPCID.Sets.IsTownPet</a> are set to <code>true</code>) for town NPCs. The keys "Announcement.HasBeenDefeated_Plural" and "Announcement.HasBeenDefeated_Single" will be useful if creating a generic boss defeat message with a custom boss name. For example: <br  />
+ <code><a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc" title="Retrieves a LocalizedText object for a specified localization key. The actual text value can be retri...">Language.GetText</a>("Announcement.HasBeenDefeated_Plural").WithFormatArgs(<a class="el" href="class_language.html#ae3cd200b00ed005379aa712464e298fc" title="Retrieves a LocalizedText object for a specified localization key. The actual text value can be retri...">Language.GetText</a>("Mods.MyMod.NPCs.MyBoss.TheTriplets"))</code>. Make sure to use GetText instead of GetTextValue when using WithFormatArgs so the message will properly sync. <br /></td></tr>
+<tr class="separator:aaf5ec6ee34c19f25b6a5f500d652bc4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e58015c1877da49930f0de7d4dbbf68"><td class="memItemLeft" align="right" valign="top"><a id="a6e58015c1877da49930f0de7d4dbbf68" name="a6e58015c1877da49930f0de7d4dbbf68"></a>
 virtual <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayName</b><code> [get]</code></td></tr>
 <tr class="memdesc:a6e58015c1877da49930f0de7d4dbbf68"><td class="mdescLeft">&#160;</td><td class="mdescRight">The translations for the display name of this <a class="el" href="class_n_p_c.html">NPC</a>. <br /></td></tr>
@@ -712,51 +725,6 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spriteEffects</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a527fc50bcfa60dc62d776c34bae8d04e" name="a527fc50bcfa60dc62d776c34bae8d04e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a527fc50bcfa60dc62d776c34bae8d04e">&#9670;&nbsp;</a></span>BossLoot()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void ModNPC.BossLoot </td>
-          <td>(</td>
-          <td class="paramtype">ref string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>potionType</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to customize what happens when this boss dies, such as which name is displayed in the defeat message and what type of potion it drops. Called in single player or on the server only. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td></td></tr>
-    <tr><td class="paramname">potionType</td><td></td></tr>
   </table>
   </dd>
 </dl>

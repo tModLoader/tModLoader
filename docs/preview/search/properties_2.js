@@ -29,11 +29,12 @@ var searchData=
   ['coordinateheights_26',['CoordinateHeights',['../class_tile_object_data.html#a442581483804dffb7eba2e197e80748f',1,'TileObjectData']]],
   ['coordinatepadding_27',['CoordinatePadding',['../class_tile_object_data.html#a339be2b96927244cb36b2cb1ec8ef3b9',1,'TileObjectData']]],
   ['coordinatepaddingfix_28',['CoordinatePaddingFix',['../class_tile_object_data.html#a3f02716ecec6b24fdefad2cb4f1760d7',1,'TileObjectData']]],
-  ['coordinatewidth_29',['CoordinateWidth',['../class_tile_object_data.html#a0d082f2f221b9660698a50e9f32d5a4a',1,'TileObjectData']]],
-  ['countsastreetype_30',['CountsAsTreeType',['../class_mod_tree.html#a4818542047c5ac5de8d3d5dd3bb65120',1,'ModTree.CountsAsTreeType()'],['../class_mod_palm_tree.html#a065b51f1c5e0961763f86ede00558a1c',1,'ModPalmTree.CountsAsTreeType()']]],
-  ['critchance_31',['CritChance',['../class_projectile.html#a56758a1e35c234345b4507b36c0e8088',1,'Projectile']]],
-  ['current_32',['Current',['../class_mod_keybind.html#a2157486299d4dfcfdd1dec9ed8c6bb34',1,'ModKeybind']]],
-  ['currentplayer_33',['CurrentPlayer',['../class_main.html#ab60656fb0e91b1cbec3a13882f999cae',1,'Main']]],
-  ['currentsceneeffect_34',['CurrentSceneEffect',['../class_player.html#a9bd3daa67441cd8f838e1420ecabb1d1',1,'Player']]],
-  ['currentstate_35',['CurrentState',['../class_builder_toggle.html#a8ad61d82fb8961718d4ed9cbd05d3929',1,'BuilderToggle']]]
+  ['coordinates_29',['Coordinates',['../class_tile_object_preview_data.html#a1d7129ffbb4cd8ad3ed2587506c5321b',1,'TileObjectPreviewData']]],
+  ['coordinatewidth_30',['CoordinateWidth',['../class_tile_object_data.html#a0d082f2f221b9660698a50e9f32d5a4a',1,'TileObjectData']]],
+  ['countsastreetype_31',['CountsAsTreeType',['../class_mod_tree.html#a4818542047c5ac5de8d3d5dd3bb65120',1,'ModTree.CountsAsTreeType()'],['../class_mod_palm_tree.html#a065b51f1c5e0961763f86ede00558a1c',1,'ModPalmTree.CountsAsTreeType()']]],
+  ['critchance_32',['CritChance',['../class_projectile.html#a56758a1e35c234345b4507b36c0e8088',1,'Projectile']]],
+  ['current_33',['Current',['../class_mod_keybind.html#a2157486299d4dfcfdd1dec9ed8c6bb34',1,'ModKeybind']]],
+  ['currentplayer_34',['CurrentPlayer',['../class_main.html#ab60656fb0e91b1cbec3a13882f999cae',1,'Main']]],
+  ['currentsceneeffect_35',['CurrentSceneEffect',['../class_player.html#a9bd3daa67441cd8f838e1420ecabb1d1',1,'Player']]],
+  ['currentstate_36',['CurrentState',['../class_builder_toggle.html#a8ad61d82fb8961718d4ed9cbd05d3929',1,'BuilderToggle']]]
 ];

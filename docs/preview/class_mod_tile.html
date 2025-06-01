@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -124,7 +124,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddMapEntry</b> (Colo
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddToArray</b> (ref int[] array)</td></tr>
 <tr class="memdesc:ada23c1985c02771b9ff865785b48b330"><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenient method for adding this tile's Type to the given array. This can be used with the arrays in <a class="el" href="class_tile_i_d_1_1_sets_1_1_room_needs.html">TileID.Sets.RoomNeeds</a>. <br /></td></tr>
 <tr class="separator:ada23c1985c02771b9ff865785b48b330"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a605bcde998088d57db116c2a4514befe"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a605bcde998088d57db116c2a4514befe">AdjustMultiTileVineParameters</a> (int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref <a class="el" href="class_mod_dust.html#adedf94f8add8ccfd5388f99babe01140">Texture2D</a> glowTexture, ref Color glowColor)</td></tr>
+<tr class="memitem:a605bcde998088d57db116c2a4514befe"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a605bcde998088d57db116c2a4514befe">AdjustMultiTileVineParameters</a> (int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor)</td></tr>
 <tr class="memdesc:a605bcde998088d57db116c2a4514befe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Customizes a tile drawn using GameContent.Drawing.TileDrawing.AddSpecialPoint with GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine, specifically how the tile reacts to wind and player interactions. The parameters are as follows: <br  />
  <b><em>overrideWindCycle</em> :</b>  <br  />
  <b><em>windPushPowerX</em> :</b>  <br  />
@@ -170,7 +170,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddToArray</b> (ref i
 <tr class="memdesc:a9f0e8a447a5448628b3cfc7ef76a4d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.  <a href="class_mod_tile.html#a9f0e8a447a5448628b3cfc7ef76a4d76">More...</a><br /></td></tr>
 <tr class="separator:a9f0e8a447a5448628b3cfc7ef76a4d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0181d707b2e0487757ccb0b7b06b921d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a0181d707b2e0487757ccb0b7b06b921d">EmitParticles</a> (int i, int j, <a class="el" href="struct_tile.html">Tile</a> tile, short <a class="el" href="class_tile_draw_info.html#a54143aaaa4b09d555c9e6656669fb704">tileFrameX</a>, short <a class="el" href="class_tile_draw_info.html#a2f9f82164727933578d0528c31eba859">tileFrameY</a>, Color tileLight, bool visible)</td></tr>
-<tr class="memdesc:a0181d707b2e0487757ccb0b7b06b921d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to spawn <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> or <a class="el" href="class_gore.html">Gore</a> particle effects. Note that this is called even if the tile is invisible due to echo coating, so check <em>visible</em>  if dust should only be spawned if the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock. The <em>tileFrameX</em>  and <em>tileFrameY</em>  values differ from the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> frame values in that they incorporate the changes from <a class="el" href="class_mod_banner_tile.html#ae3934c0d24e534aa78c301bd11cfd8f1" title="Allows you to customize the position in which this tile is drawn. Width refers to the width of one fr...">SetDrawPositions</a> and should normally be used instead of <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameX</a> and Y directly. This method is only called under the conditions where particle effects are intended to spawn, that being the game is active, not paused, and at the intended frequency determined by the lighting mode. There is no need to check for these conditions in this method.  <a href="class_mod_tile.html#a0181d707b2e0487757ccb0b7b06b921d">More...</a><br /></td></tr>
+<tr class="memdesc:a0181d707b2e0487757ccb0b7b06b921d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to spawn <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> or <a class="el" href="class_gore.html">Gore</a> particle effects. Note that this is called even if the tile is invisible due to echo coating, so check <em>visible</em>  if dust should only be spawned if the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock. The <em>tileFrameX</em>  and <em>tileFrameY</em>  values differ from the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> frame values in that they incorporate the changes from <a class="el" href="class_unloaded_chest.html#a6d783d0fc1e826978dee845ae90cd86f" title="Allows you to customize the position in which this tile is drawn. Width refers to the width of one fr...">SetDrawPositions</a> and should normally be used instead of <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameX</a> and Y directly. This method is only called under the conditions where particle effects are intended to spawn, that being the game is active, not paused, and at the intended frequency determined by the lighting mode. There is no need to check for these conditions in this method.  <a href="class_mod_tile.html#a0181d707b2e0487757ccb0b7b06b921d">More...</a><br /></td></tr>
 <tr class="separator:a0181d707b2e0487757ccb0b7b06b921d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92eb77e2f88bc81c3fb481412828727a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a92eb77e2f88bc81c3fb481412828727a">FloorVisuals</a> (<a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a92eb77e2f88bc81c3fb481412828727a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a player stands on this type of tile. For example, you can make the player slide as if on ice.  <a href="class_mod_tile.html#a92eb77e2f88bc81c3fb481412828727a">More...</a><br /></td></tr>
@@ -260,6 +260,11 @@ Example usage: Beds/Dressers which have separate interactions based on where to 
 <tr class="memitem:a5d51258e65d17bdb13cfe225fd44aea9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a5d51258e65d17bdb13cfe225fd44aea9">NearbyEffects</a> (int i, int j, bool closer)</td></tr>
 <tr class="memdesc:a5d51258e65d17bdb13cfe225fd44aea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this tile is within a certain range of the player, such as how banners, campfire, and monoliths work. This method will be called on tiles within 2 specific ranges, once for calculating visual effects and another time for calculating gameplay effects: When calculating <b>visual effects</b>, the <em>closer</em>  parameter will be <code>true</code>. The visual effect range depend on the game window resolution, zoom level, and lighting mode, so it will not be reliable for gameplay effects but rather it adjusts to the players view of the game world. This is suitable for monoliths, water fountains, and music boxes. When calculating <b>gameplay effects</b>, the <em>closer</em>  parameter will be <code>false</code>. The gameplay effect range will always be a 169x124 tile rectangle centered on the player. This is suitable for tiles that give buffs like the sunflower, banners, heart lantern, and campfire. Make sure to check <em>closer</em>  when using this method to ensure the effects of this tile are applying to the intended range.  <a href="class_mod_tile.html#a5d51258e65d17bdb13cfe225fd44aea9">More...</a><br /></td></tr>
 <tr class="separator:a5d51258e65d17bdb13cfe225fd44aea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa2a64dc375af68dead00ce40cd4a0a2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#aaa2a64dc375af68dead00ce40cd4a0a2">PostDrawPlacementPreview</a> (int i, int j, SpriteBatch spriteBatch, Rectangle <a class="el" href="class_chest.html#ae76d638726f49cd5ace0826598ece9d9">frame</a>, Vector2 position, Color color, bool validPlacement, <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a> spriteEffects)</td></tr>
+<tr class="memdesc:aaa2a64dc375af68dead00ce40cd4a0a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.  <a href="class_mod_tile.html#aaa2a64dc375af68dead00ce40cd4a0a2">More...</a><br /></td></tr>
+<tr class="separator:aaa2a64dc375af68dead00ce40cd4a0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a225cb3ba315b70347fd305b049ffa497"><td class="memItemLeft" align="right" valign="top"><a id="a225cb3ba315b70347fd305b049ffa497" name="a225cb3ba315b70347fd305b049ffa497"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetDefaults</b> ()</td></tr>
 <tr class="memdesc:a225cb3ba315b70347fd305b049ffa497"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to override some default properties of this tile, such as Main.tileNoSunLight and <a class="el" href="class_main.html#ac8f3eeb77b730712be9268d5d8ca9cf5" title="If true for the given tile type, tiles of the type will be destroyed if obsidian would generate at it...">Main.tileObsidianKill</a>. <br /></td></tr>
@@ -272,6 +277,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTile
 <tr class="memdesc:a1cf66f688e357b054302f1ad5f90bce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the frame of a tile after the vanilla framing code has set <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameX</a> and <a class="el" href="struct_tile.html#aca28d176561b94bde3604b673a9712b0" title="The Y coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameY</a>. Useful for offsetting the final frame position without entirely overriding the vanilla framing logic <br  />
  Only called if <a class="el" href="class_mod_pylon.html#a21ac57eaf3c34f1819ca53f1aaa2a9ea" title="Called whenever this tile updates due to being placed or being next to a tile that is changed....">TileFrame(int, int, ref bool, ref bool)</a> returns true  <a href="class_mod_tile.html#a1cf66f688e357b054302f1ad5f90bce0">More...</a><br /></td></tr>
 <tr class="separator:a1cf66f688e357b054302f1ad5f90bce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae47bbe447c6d93ec2d2837e84440279a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#ae47bbe447c6d93ec2d2837e84440279a">PreDrawPlacementPreview</a> (int i, int j, SpriteBatch spriteBatch, ref Rectangle <a class="el" href="class_chest.html#ae76d638726f49cd5ace0826598ece9d9">frame</a>, ref Vector2 position, ref Color color, bool validPlacement, ref <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a> spriteEffects)</td></tr>
+<tr class="memdesc:ae47bbe447c6d93ec2d2837e84440279a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet. <br  />
+<br  />
+ Return false to stop this section from drawing normally. Returns true by default.  <a href="class_mod_tile.html#ae47bbe447c6d93ec2d2837e84440279a">More...</a><br /></td></tr>
+<tr class="separator:ae47bbe447c6d93ec2d2837e84440279a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a676bf9d5fe506c3f1e9934c1df7e47a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a676bf9d5fe506c3f1e9934c1df7e47a0">RegisterItemDrop</a> (int itemType, params int[] tileStyles)</td></tr>
 <tr class="memdesc:a676bf9d5fe506c3f1e9934c1df7e47a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually registers an item to drop for the provided tile styles. Use this for tile styles that don't have an item that places them. For example, open door tiles don't have any item that places them, but they should drop an item when destroyed. A tile style with no registered drop and no fallback drop will not drop anything when destroyed.<br  />
 <br  />
@@ -517,7 +529,13 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get
 <tr class="separator:a648adabb5df38e5fe4db10fc18694df7 inherit properties_class_mod_block_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1263f5a6ef3d7c7e477465c4acaa7674 inherit properties_class_mod_block_type"><td class="memItemLeft" align="right" valign="top"><a id="a1263f5a6ef3d7c7e477465c4acaa7674" name="a1263f5a6ef3d7c7e477465c4acaa7674"></a>
 ushort&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaFallbackOnModDeletion</b> = 0<code> [get, set]</code></td></tr>
-<tr class="memdesc:a1263f5a6ef3d7c7e477465c4acaa7674 inherit properties_class_mod_block_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. <br /></td></tr>
+<tr class="memdesc:a1263f5a6ef3d7c7e477465c4acaa7674 inherit properties_class_mod_block_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. <br  />
+<br  />
+ <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a> tiles attempting to fallback to a vanilla <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a> tile need to match the layout (FrameX and FrameY values) of the fallback tile so that the resulting tiles aren't broken. <br  />
+<br  />
+ Also note that tiles with <a class="el" href="class_mod_tile_entity.html" title="Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit c...">ModTileEntity</a> won't be able to fallback to a working vanilla Tile+TileEntity. The user will have to mine and replace the tile to spawn the correct <a class="el" href="class_tile_entity.html">TileEntity</a>. <br  />
+<br  />
+ Defaults to TileID.Dirt (0). <br /></td></tr>
 <tr class="separator:a1263f5a6ef3d7c7e477465c4acaa7674 inherit properties_class_mod_block_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_mod_textured_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_mod_textured_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_mod_textured_type.html">ModTexturedType</a></td></tr>
 <tr class="memitem:a8c707d7097758dddb1e1dec4c3d74ad1 inherit properties_class_mod_textured_type"><td class="memItemLeft" align="right" valign="top"><a id="a8c707d7097758dddb1e1dec4c3d74ad1" name="a8c707d7097758dddb1e1dec4c3d74ad1"></a>
@@ -642,7 +660,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref <a class="el" href="class_mod_dust.html#adedf94f8add8ccfd5388f99babe01140">Texture2D</a>&#160;</td>
+          <td class="paramtype">ref Texture2D&#160;</td>
           <td class="paramname"><em>glowTexture</em>, </td>
         </tr>
         <tr>
@@ -1267,7 +1285,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </table>
 </div><div class="memdoc">
 
-<p>Used to spawn <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> or <a class="el" href="class_gore.html">Gore</a> particle effects. Note that this is called even if the tile is invisible due to echo coating, so check <em>visible</em>  if dust should only be spawned if the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock. The <em>tileFrameX</em>  and <em>tileFrameY</em>  values differ from the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> frame values in that they incorporate the changes from <a class="el" href="class_mod_banner_tile.html#ae3934c0d24e534aa78c301bd11cfd8f1" title="Allows you to customize the position in which this tile is drawn. Width refers to the width of one fr...">SetDrawPositions</a> and should normally be used instead of <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameX</a> and Y directly. This method is only called under the conditions where particle effects are intended to spawn, that being the game is active, not paused, and at the intended frequency determined by the lighting mode. There is no need to check for these conditions in this method. </p>
+<p>Used to spawn <a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a> or <a class="el" href="class_gore.html">Gore</a> particle effects. Note that this is called even if the tile is invisible due to echo coating, so check <em>visible</em>  if dust should only be spawned if the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock. The <em>tileFrameX</em>  and <em>tileFrameY</em>  values differ from the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> frame values in that they incorporate the changes from <a class="el" href="class_unloaded_chest.html#a6d783d0fc1e826978dee845ae90cd86f" title="Allows you to customize the position in which this tile is drawn. Width refers to the width of one fr...">SetDrawPositions</a> and should normally be used instead of <a class="el" href="struct_tile.html#a22fa4402bfdbb4c9eaec14ff130ae882" title="The X coordinate of the top left corner of the area in the spritesheet for the TileType to be used to...">Tile.TileFrameX</a> and Y directly. This method is only called under the conditions where particle effects are intended to spawn, that being the game is active, not paused, and at the intended frequency determined by the lighting mode. There is no need to check for these conditions in this method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
@@ -2378,6 +2396,95 @@ Example usage: Beds/Dressers which have separate interactions based on where to 
 
 </div>
 </div>
+<a id="aaa2a64dc375af68dead00ce40cd4a0a2" name="aaa2a64dc375af68dead00ce40cd4a0a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2a64dc375af68dead00ce40cd4a0a2">&#9670;&nbsp;</a></span>PostDrawPlacementPreview()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModTile.PostDrawPlacementPreview </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>validPlacement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a>&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">spriteBatch</td><td></td></tr>
+    <tr><td class="paramname">frame</td><td>The source rectangle that was used for rendering this section.</td></tr>
+    <tr><td class="paramname">position</td><td>The position at which this section was drawn.</td></tr>
+    <tr><td class="paramname">color</td><td>The color with which this section was drawn.</td></tr>
+    <tr><td class="paramname">validPlacement</td><td>Indicates if the tile can occupy this location.</td></tr>
+    <tr><td class="paramname">spriteEffects</td><td>The <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e" title="The spriteEffects">SpriteEffects</a> that were used to draw this section.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a1cf66f688e357b054302f1ad5f90bce0" name="a1cf66f688e357b054302f1ad5f90bce0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1cf66f688e357b054302f1ad5f90bce0">&#9670;&nbsp;</a></span>PostTileFrame()</h2>
 
@@ -2474,6 +2581,97 @@ Example usage: Beds/Dressers which have separate interactions based on where to 
     <tr><td class="paramname">upRight</td><td>The merge type of the tile on the top right. Unitializaed if the tile is <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a>.</td></tr>
     <tr><td class="paramname">downLeft</td><td>The merge type of the tile on the bottom left. Unitializaed if the tile is <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a>.</td></tr>
     <tr><td class="paramname">downRight</td><td>The merge type of the tile on the bottom right. Unitializaed if the tile is <a class="el" href="class_main.html#ae49a753c6a45feca9bacc58d520efc1a" title="Set to true if this is not a typical Terrain tile. Terrain tiles are 1x1 tiles that automatically adj...">Main.tileFrameImportant</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae47bbe447c6d93ec2d2837e84440279a" name="ae47bbe447c6d93ec2d2837e84440279a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae47bbe447c6d93ec2d2837e84440279a">&#9670;&nbsp;</a></span>PreDrawPlacementPreview()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ModTile.PreDrawPlacementPreview </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Rectangle&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>validPlacement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e">SpriteEffects</a>&#160;</td>
+          <td class="paramname"><em>spriteEffects</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile. <br  />
+<br  />
+ Make sure to use <em>frame</em>  for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet. <br  />
+<br  />
+ Return false to stop this section from drawing normally. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">spriteBatch</td><td></td></tr>
+    <tr><td class="paramname">frame</td><td>The source rectangle that this section will use for rendering.</td></tr>
+    <tr><td class="paramname">position</td><td>The position at which this section will be drawn.</td></tr>
+    <tr><td class="paramname">color</td><td>The color with which this section will be drawn. This is red when overlapping with another tile.</td></tr>
+    <tr><td class="paramname">validPlacement</td><td>Indicates if the tile can occupy this location.</td></tr>
+    <tr><td class="paramname">spriteEffects</td><td>The <a class="el" href="struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e" title="The spriteEffects">SpriteEffects</a> that will be used to draw this section.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2683,7 +2881,7 @@ Example usage: Beds/Dressers which have separate interactions based on where to 
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_mod_banner_tile.html#ae3934c0d24e534aa78c301bd11cfd8f1">ModBannerTile</a>.</p>
+<p>Reimplemented in <a class="el" href="class_unloaded_chest.html#a6d783d0fc1e826978dee845ae90cd86f">UnloadedChest</a>, and <a class="el" href="class_mod_banner_tile.html#ae3934c0d24e534aa78c301bd11cfd8f1">ModBannerTile</a>.</p>
 
 </div>
 </div>

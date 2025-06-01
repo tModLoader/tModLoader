@@ -25,6 +25,7 @@ var class_world_gen =
     [ "PlaceSmallPile", "class_world_gen.html#abed43f0e89493aa24da0ee4fc954a873", null ],
     [ "PlaceTile", "class_world_gen.html#a6d89efc164bd01b5920d1f761df42565", null ],
     [ "RandomWorldPoint", "class_world_gen.html#a89f0e44198e319e4f3429bb6fd00f291", null ],
+    [ "SolidTileAllowBottomSlope", "class_world_gen.html#a30572dc338dbf9dd2fcaa709772fcef9", null ],
     [ "SpreadInfectionToNearbyTile", "class_world_gen.html#a8c7927f8924d2179b021defe4bced4d7", null ],
     [ "TileRunner", "class_world_gen.html#a05e507c099b90c1b023918b42e032909", null ],
     [ "crimson", "class_world_gen.html#a8abf0ca117f4635fa2b505c6981197d8", null ],

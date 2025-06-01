@@ -15,6 +15,7 @@ var class_n_p_c =
     [ "FindFirstNPC", "class_n_p_c.html#a5272dd7834b4c553bcb08fea42c2630c", null ],
     [ "GetFirstNPCNameOrNull", "class_n_p_c.html#a95a4782b11f8b4df2a5f538259e68808", null ],
     [ "GetFullnameByID", "class_n_p_c.html#ae0c0fec13f68fb0ec581f938f7d68708", null ],
+    [ "GetFullNetName", "class_n_p_c.html#aafc6d3101ac34a8727dbe50f28b88cb2", null ],
     [ "GetGlobalNPC< T >", "class_n_p_c.html#af1195fe993cfaabb9904add0ac83a9e2", null ],
     [ "GetGlobalNPC< T >", "class_n_p_c.html#ae160f9e9e481a06229d679a7ef5374f1", null ],
     [ "GetIncomingStrikeModifiers", "class_n_p_c.html#a821efa5e5bebb9fffc6fe365eea23e8e", null ],
