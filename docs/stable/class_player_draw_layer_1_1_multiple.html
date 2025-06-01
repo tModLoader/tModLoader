@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,10 +92,16 @@ $(document).ready(function(){initNavTree('class_player_draw_layer_1_1_multiple.h
 </div><!--header-->
 <div class="contents">
 
+<p>Places this layer into multiple <a class="el" href="class_player_draw_layer_1_1_position.html" title="A PlayerDrawLayer&#39;s position in the player rendering draw order. When a player is drawn,...">Position</a>s. Use this as a helper for layers that need to move around in the draw order rather than making multiple <a class="el" href="class_player_draw_layer.html" title="This class represents a DrawLayer for the player. Drawing should be done by adding Terraria....">PlayerDrawLayer</a> 'slots' manually. An example of this can be seen in PlayerDrawLayers.tML.cs. Note how the conditions for <code>FrontAccFront</code> and <code>HeldItem</code> are mutually exclusive, ensuring that the layer will only be drawn once for a given player.  
+ <a href="class_player_draw_layer_1_1_multiple.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_player_draw_layer_1_1_position.html">PlayerDrawLayer.Position</a>, and <a class="el" href="class_i_enumerable.html">IEnumerable</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a454b961ef50ac4983e51b5ad1ba35d72"><td class="memItemLeft" align="right" valign="top"><a id="a454b961ef50ac4983e51b5ad1ba35d72" name="a454b961ef50ac4983e51b5ad1ba35d72"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Multiple</b> ()</td></tr>
+<tr class="separator:a454b961ef50ac4983e51b5ad1ba35d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad13777eae1f5c282a83d32bd0cf3c505"><td class="memItemLeft" align="right" valign="top"><a id="ad13777eae1f5c282a83d32bd0cf3c505" name="ad13777eae1f5c282a83d32bd0cf3c505"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (<a class="el" href="class_player_draw_layer_1_1_between.html">Between</a> position, Condition condition)</td></tr>
 <tr class="separator:ad13777eae1f5c282a83d32bd0cf3c505"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,7 +118,11 @@ Properties</h2></td></tr>
 IList&lt;(<a class="el" href="class_player_draw_layer_1_1_between.html">Between</a>, Condition)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Positions</b> = new <a class="el" href="class_list.html">List</a>&lt;(<a class="el" href="class_player_draw_layer_1_1_between.html">Between</a>, Condition)&gt;()<code> [get]</code></td></tr>
 <tr class="separator:afb1458b95d268e059298e4dd0448cd49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Places this layer into multiple <a class="el" href="class_player_draw_layer_1_1_position.html" title="A PlayerDrawLayer&#39;s position in the player rendering draw order. When a player is drawn,...">Position</a>s. Use this as a helper for layers that need to move around in the draw order rather than making multiple <a class="el" href="class_player_draw_layer.html" title="This class represents a DrawLayer for the player. Drawing should be done by adding Terraria....">PlayerDrawLayer</a> 'slots' manually. </p>
+<p >An example of this can be seen in PlayerDrawLayers.tML.cs</p>
+<p >. Note how the conditions for <code>FrontAccFront</code> and <code>HeldItem</code> are mutually exclusive, ensuring that the layer will only be drawn once for a given player. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

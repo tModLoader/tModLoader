@@ -1,5 +1,13 @@
 var NAVTREEINDEX15 =
 {
+"class_n_p_c.html#a0d67337f912be10c47f0c2b7f1e7ac37":[3,0,898,25],
+"class_n_p_c.html#a0dbea798e3d697759cce02619c47275e":[3,0,898,77],
+"class_n_p_c.html#a107eea2ccf9aa77e2ebc83b18892e8ec":[3,0,898,133],
+"class_n_p_c.html#a11f38df335d64fa48937b5fb7b2df48a":[3,0,898,47],
+"class_n_p_c.html#a17789b5f468fa0d79b787e3285c297a9":[3,0,898,81],
+"class_n_p_c.html#a18f67f03259864860afd737f2cc7236d":[3,0,898,36],
+"class_n_p_c.html#a19671fea508f786929fb6b46b35d94cc":[3,0,898,100],
+"class_n_p_c.html#a19da99bc7becda9172cb9002eacdd3d0":[3,0,898,125],
 "class_n_p_c.html#a1da4ee190169363d9e6aeecf9dbf6c7c":[3,0,898,46],
 "class_n_p_c.html#a2058fe9156b2db462ef8773ec787273f":[3,0,898,62],
 "class_n_p_c.html#a2292855a6c7c224ef4d0c6f2e1bf9038":[3,0,898,130],
@@ -241,13 +249,5 @@ var NAVTREEINDEX15 =
 "class_n_p_c_a_i_style_i_d.html#ae9a25cf3a3615e83875278232f45bfd5":[3,0,900,112],
 "class_n_p_c_a_i_style_i_d.html#aed416394b90812be02a66c71b53af301":[3,0,900,55],
 "class_n_p_c_a_i_style_i_d.html#aef37bd8326c5757280e0d2e00d755a79":[3,0,900,90],
-"class_n_p_c_a_i_style_i_d.html#af20acb130fa24f1d8b4d07e115af8c9b":[3,0,900,80],
-"class_n_p_c_a_i_style_i_d.html#af5571de8aecb1bd659605fc86677c8cc":[3,0,900,104],
-"class_n_p_c_a_i_style_i_d.html#af916858aa55bee56ef9bf5ba8390c59b":[3,0,900,81],
-"class_n_p_c_a_i_style_i_d.html#af9aa2e3059265435e4358374b51fb83c":[3,0,900,108],
-"class_n_p_c_a_i_style_i_d.html#afa692a0b5dd6e23680dc2363dd43d58b":[3,0,900,24],
-"class_n_p_c_a_i_style_i_d.html#afaf5f07937dedf82dade38b819d53a87":[3,0,900,114],
-"class_n_p_c_a_i_style_i_d.html#afd2aafa78fcbcc210da31aa7a2156263":[3,0,900,84],
-"class_n_p_c_a_i_style_i_d.html#afef3ba136cbfd2c0f82a20d9039841ac":[3,0,900,32],
-"class_n_p_c_debuff_immunity_data.html":[3,0,901]
+"class_n_p_c_a_i_style_i_d.html#af20acb130fa24f1d8b4d07e115af8c9b":[3,0,900,80]
 };

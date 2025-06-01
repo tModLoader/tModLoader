@@ -48,5 +48,7 @@ var class_player_draw_layers =
     [ "TorsoGroup", "class_player_draw_layers.html#a7fee4a353f8e97d30b8d674ae564b12d", null ],
     [ "WaistAcc", "class_player_draw_layers.html#a263eb6a1afa791c88d3851df8ff919fe", null ],
     [ "WebbedDebuffBack", "class_player_draw_layers.html#a903c76bf53fba32453a10de39d01be95", null ],
-    [ "Wings", "class_player_draw_layers.html#a12b633d110851bcb0363f327fb57a861", null ]
+    [ "Wings", "class_player_draw_layers.html#a12b633d110851bcb0363f327fb57a861", null ],
+    [ "AfterLastVanillaLayer", "class_player_draw_layers.html#a24c55e8f3c763b1f7d5ed24bce935065", null ],
+    [ "BeforeFirstVanillaLayer", "class_player_draw_layers.html#aac7defcc6c077cf341077db57ff78fdc", null ]
 ];

@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"class_global_item.html#ac36b6279fdb6326fc6e4109fddf2f88d":[3,0,459,21],
+"class_global_item.html#ac41b0f0836de47ddd80f0fd1cbf1b5a0":[3,0,459,49],
 "class_global_item.html#ac5b6b102d554b37880ab60cbb5dd6974":[3,0,459,86],
 "class_global_item.html#ac63529c4635a3e9c624138421b34a6bd":[3,0,459,12],
 "class_global_item.html#ac64c4da124b7424d68a2529df568ebba":[3,0,459,96],
@@ -9,7 +11,7 @@ var NAVTREEINDEX6 =
 "class_global_item.html#acb62236f2d00dfefc651eb5bc00df252":[3,0,459,42],
 "class_global_item.html#acb730ad14ccef95a764577579b88ccd7":[3,0,459,47],
 "class_global_item.html#acb88ba12f8befe863f93bc2e15324b8e":[3,0,459,15],
-"class_global_item.html#ad1420ea0491b79f097b4916d032a453d":[3,0,459,104],
+"class_global_item.html#ad1420ea0491b79f097b4916d032a453d":[3,0,459,106],
 "class_global_item.html#ad1cc4da8630d50e48c451ab708a3699a":[3,0,459,39],
 "class_global_item.html#ad1f983f0812edc3344dd1414e29fa763":[3,0,459,71],
 "class_global_item.html#ad2b18f62232732eae106b48de1904eb3":[3,0,459,28],
@@ -215,11 +217,12 @@ var NAVTREEINDEX6 =
 "class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5":[3,0,468,1],
 "class_global_type_lookups.html":[3,0,469],
 "class_global_wall.html":[3,0,470],
-"class_global_wall.html#a166ab34cbb7ce20f162f7c9a7c457e75":[3,0,470,1],
-"class_global_wall.html#a2bca1fa0af94dec20cc1e38162a84d8c":[3,0,470,2],
-"class_global_wall.html#a4c68c359fda675d590609b2de070af91":[3,0,470,0],
-"class_global_wall.html#a8b0f1f27c46817ad562a125c6530bd64":[3,0,470,3],
-"class_global_wall.html#ab947daf993a3db20c249889a85b31496":[3,0,470,4],
+"class_global_wall.html#a166ab34cbb7ce20f162f7c9a7c457e75":[3,0,470,2],
+"class_global_wall.html#a2bca1fa0af94dec20cc1e38162a84d8c":[3,0,470,3],
+"class_global_wall.html#a4c68c359fda675d590609b2de070af91":[3,0,470,1],
+"class_global_wall.html#a781a65ceb3650cf8c4d6155714405fc2":[3,0,470,0],
+"class_global_wall.html#a8b0f1f27c46817ad562a125c6530bd64":[3,0,470,4],
+"class_global_wall.html#ab947daf993a3db20c249889a85b31496":[3,0,470,5],
 "class_glow_mask_i_d.html":[3,0,471],
 "class_glyph_tag_handler.html":[3,0,472],
 "class_goat_mount_jump.html":[3,0,473],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "class_gore_i_d_1_1_sets.html#a6a46814572bb797343e30f27bf8852ac":[3,0,482,0,0],
 "class_gore_i_d_1_1_sets.html#a83ad7f1713ff91ab6c9e0c976fdc7389":[3,0,482,0,1],
 "class_gore_i_d_1_1_sets.html#aeac5c82e6adf955634ef8015353a66e0":[3,0,482,0,4],
-"class_gore_loader.html":[3,0,483],
-"class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71":[3,0,483,0],
-"class_granite_biome.html":[3,0,484],
-"class_granite_house_builder.html":[3,0,485]
+"class_gore_loader.html":[3,0,483]
 };

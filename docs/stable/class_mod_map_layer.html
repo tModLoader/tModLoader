@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5e2e4a953b09a8e1e2b6ae5348f82fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6263bdd2b922abc53e90b5e7d492ce56"><td class="memItemLeft" align="right" valign="top"><a id="a6263bdd2b922abc53e90b5e7d492ce56" name="a6263bdd2b922abc53e90b5e7d492ce56"></a>
 virtual <a class="el" href="class_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetDefaultPosition</b> ()</td></tr>
-<tr class="memdesc:a6263bdd2b922abc53e90b5e7d492ce56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the map layer's default position in regard to vanilla's map layer ordering. Make use of e.g. <a class="el" href="class_mod_map_layer_1_1_before.html">Before</a>/<a class="el" href="class_mod_map_layer_1_1_after.html">After</a>, and provide a map layer. You can also use BeforeFirstVanillaLayer or AfterLastVanillaLayer to put your layer at the start/end of the vanilla layer order.<br  />
+<tr class="memdesc:a6263bdd2b922abc53e90b5e7d492ce56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the map layer's default position in regard to vanilla's map layer ordering. Make use of e.g. <a class="el" href="class_mod_map_layer_1_1_before.html">Before</a>/<a class="el" href="class_mod_map_layer_1_1_after.html">After</a>, and provide a map layer. You can also use <a class="el" href="class_player_draw_layers.html#aac7defcc6c077cf341077db57ff78fdc" title="Use to order this layer before the first vanilla layer. This layer will draw behind all vanilla layer...">BeforeFirstVanillaLayer</a> or <a class="el" href="class_player_draw_layers.html#a24c55e8f3c763b1f7d5ed24bce935065" title="Use to order this layer after the last vanilla layer. This layer will draw after all vanilla layers.">AfterLastVanillaLayer</a> to put your layer at the start/end of the vanilla layer order.<br  />
 <br  />
  <b>NOTE:</b> The position must specify a vanilla <a class="el" href="interface_i_map_layer.html">IMapLayer</a> otherwise an exception will be thrown. Use <a class="el" href="class_extra_jump.html#a2eb467696fc892b30b212a3eeeceb2cf" title="Modded jumps are placed between vanilla jumps via GetDefaultPosition and, by default,...">GetModdedConstraints</a> to order modded layers.<br  />
 <br  />

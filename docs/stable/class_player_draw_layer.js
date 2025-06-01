@@ -1,9 +1,9 @@
 var class_player_draw_layer =
 [
-    [ "AfterParent", "class_player_draw_layer_1_1_after_parent.html", null ],
-    [ "BeforeParent", "class_player_draw_layer_1_1_before_parent.html", null ],
-    [ "Between", "class_player_draw_layer_1_1_between.html", null ],
-    [ "Multiple", "class_player_draw_layer_1_1_multiple.html", null ],
+    [ "AfterParent", "class_player_draw_layer_1_1_after_parent.html", "class_player_draw_layer_1_1_after_parent" ],
+    [ "BeforeParent", "class_player_draw_layer_1_1_before_parent.html", "class_player_draw_layer_1_1_before_parent" ],
+    [ "Between", "class_player_draw_layer_1_1_between.html", "class_player_draw_layer_1_1_between" ],
+    [ "Multiple", "class_player_draw_layer_1_1_multiple.html", "class_player_draw_layer_1_1_multiple" ],
     [ "Position", "class_player_draw_layer_1_1_position.html", null ],
     [ "Transformation", "class_player_draw_layer_1_1_transformation.html", "class_player_draw_layer_1_1_transformation" ],
     [ "Draw", "class_player_draw_layer.html#aa1621b2c94333b9f9f928bcad59c7af5", null ],

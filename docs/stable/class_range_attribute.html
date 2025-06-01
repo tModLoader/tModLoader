@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,7 +92,11 @@ $(document).ready(function(){initNavTree('class_range_attribute.html',''); initR
 </div><!--header-->
 <div class="contents">
 
-<p>Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255  
+<p>Specifies a range for primitive data values. Without this, default min and max are as follows: <br  />
+<b>float:</b> 0, 1 <br  />
+<b>int/uint:</b> 0, 100 <br  />
+<b>byte:</b> 0, 255 <br  />
+<b>long/ulong:</b> Unchanged from the full range of the type When using this, you might need to cast the arguments to the desired numeric type to call the correct overload.  
  <a href="class_range_attribute.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_attribute.html">Attribute</a>.</p>
@@ -108,9 +112,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afe0f5e9320ecec6d5b440239fb0d6aa0"><td class="memItemLeft" align="right" valign="top"><a id="afe0f5e9320ecec6d5b440239fb0d6aa0" name="afe0f5e9320ecec6d5b440239fb0d6aa0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>RangeAttribute</b> (int min, int max)</td></tr>
 <tr class="separator:afe0f5e9320ecec6d5b440239fb0d6aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bf84ce41d1a8716a11b7397b97f6296"><td class="memItemLeft" align="right" valign="top"><a id="a5bf84ce41d1a8716a11b7397b97f6296" name="a5bf84ce41d1a8716a11b7397b97f6296"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RangeAttribute</b> (long min, long max)</td></tr>
+<tr class="separator:a5bf84ce41d1a8716a11b7397b97f6296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addfb474eb82fc158033ad4bb42580f01"><td class="memItemLeft" align="right" valign="top"><a id="addfb474eb82fc158033ad4bb42580f01" name="addfb474eb82fc158033ad4bb42580f01"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>RangeAttribute</b> (uint min, uint max)</td></tr>
 <tr class="separator:addfb474eb82fc158033ad4bb42580f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e3a60be19ccec83c983f5001cd1fcbb"><td class="memItemLeft" align="right" valign="top"><a id="a1e3a60be19ccec83c983f5001cd1fcbb" name="a1e3a60be19ccec83c983f5001cd1fcbb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RangeAttribute</b> (ulong min, ulong max)</td></tr>
+<tr class="separator:a1e3a60be19ccec83c983f5001cd1fcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -122,7 +132,12 @@ object&#160;</td><td class="memItemRight" valign="bottom"><b>Min</b><code> [get]
 <tr class="separator:af30c4b34510691c02534e8c3e4e317ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255 </p>
+<div class="textblock"><p >Specifies a range for primitive data values. Without this, default min and max are as follows: <br  />
+<b>float:</b> 0, 1 <br  />
+<b>int/uint:</b> 0, 100 <br  />
+<b>byte:</b> 0, 255 <br  />
+<b>long/ulong:</b> Unchanged from the full range of the type </p>
+<p >When using this, you might need to cast the arguments to the desired numeric type to call the correct overload. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -114,6 +114,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CanBeQuickusedOnGamepad&#160;:&#160;<a class="el" href="class_item_i_d_1_1_sets.html#a8f17d58510fd73ca1d4bc86df3a388ec">ItemID.Sets</a></li>
 <li>CanBeRemovedByNetMessage&#160;:&#160;<a class="el" href="class_buff_i_d_1_1_sets.html#a350949b499fcca7db0c86d9aac40517d">BuffID.Sets</a></li>
 <li>CanBeSloped&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#a1358ffd200656f7e6cc8f472ac4f2409">TileID.Sets</a></li>
+<li>CanBeTeleportedTo()&#160;:&#160;<a class="el" href="class_global_wall.html#a781a65ceb3650cf8c4d6155714405fc2">GlobalWall</a>, <a class="el" href="class_mod_player.html#a82a3f9cdb4e9e39963899b55e9057f94">ModPlayer</a>, <a class="el" href="class_mod_wall.html#ae8e6dc7cb6f50eb81241c78a6a88d77d">ModWall</a></li>
 <li>CanBuyItem()&#160;:&#160;<a class="el" href="class_mod_player.html#a616c7e69196c1295fc3632eda9ae4068">ModPlayer</a></li>
 <li>CanCatchNPC()&#160;:&#160;<a class="el" href="class_global_item.html#a6938af5fc30233235e27f3ce79d3d35a">GlobalItem</a>, <a class="el" href="class_item_loader.html#ade8c29ecd84a65cc23eb523c64073429">ItemLoader</a>, <a class="el" href="class_mod_item.html#addd2c8679ac324012436f07efc7dfd91">ModItem</a>, <a class="el" href="class_mod_player.html#a3c9624ec6c3b57029b7bae77ddfed535">ModPlayer</a></li>
 <li>Cancel()&#160;:&#160;<a class="el" href="struct_player_1_1_hurt_modifiers.html#add7409a737d4956980fd698ac185cb71">Player.HurtModifiers</a></li>
@@ -243,6 +244,7 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>cLegs&#160;:&#160;<a class="el" href="class_player.html#a23aee08e58866223d9dd28a1fc4ebdc8">Player</a></li>
 <li>clientPlayer&#160;:&#160;<a class="el" href="class_main.html#af88d54d9bdedfd2f95be86cfa6f03902">Main</a></li>
 <li>cLight&#160;:&#160;<a class="el" href="class_player.html#a52834ce9682c09d204e64fd58e91b3f4">Player</a></li>
+<li>ClippingRectangle&#160;:&#160;<a class="el" href="struct_map_overlay_draw_context.html#aa0c048d330c43e98fcf436dcc77fd174">MapOverlayDrawContext</a></li>
 <li>Clock&#160;:&#160;<a class="el" href="class_tile_i_d_1_1_sets.html#a4caff834296122a8aadb0b343003a793">TileID.Sets</a></li>
 <li>Clone()&#160;:&#160;<a class="el" href="class_global_type.html#afc54b91085b8ef8769f3b309087c8fb5">GlobalType&lt; TEntity, TGlobal &gt;</a>, <a class="el" href="class_mod_config.html#a824c575ccb1bf93d6d3f143164e1b19a">ModConfig</a>, <a class="el" href="class_mod_type.html#a1f09f8efa3cca58e0fd122c14eaf666e">ModType&lt; TEntity, TModType &gt;</a>, <a class="el" href="class_recipe.html#a19108cd242ac564fae40dfb601d1b968">Recipe</a></li>
 <li>CloneDefaults()&#160;:&#160;<a class="el" href="class_item.html#adb93f144a74dca503475c213525bbc68">Item</a></li>
@@ -350,13 +352,13 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 <li>CreateBoolSet()&#160;:&#160;<a class="el" href="class_set_factory.html#a4952be28f1304056a6bb61eba71be7cc">SetFactory</a></li>
 <li>CreateChest()&#160;:&#160;<a class="el" href="class_chest.html#a44ce32eb9d46ee93f81fd89a04a1faed">Chest</a></li>
 <li>CreateCustomSet&lt; T &gt;()&#160;:&#160;<a class="el" href="class_set_factory.html#a10997d501d01843fd6b8d7f8fa2eaddb">SetFactory</a></li>
-<li>CreateDialogFilter()&#160;:&#160;<a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774">Lang</a></li>
+<li>CreateDialogFilter()&#160;:&#160;<a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f">Lang</a></li>
 <li>CreateDust()&#160;:&#160;<a class="el" href="class_global_block_type.html#afab11f7944789897545cbc7b622b5017">GlobalBlockType</a>, <a class="el" href="class_mod_block_type.html#a963e7583cc1daae4829e39645f073a36">ModBlockType</a>, <a class="el" href="class_mod_palm_tree.html#a29a7c39ce27ac4ef0cbabda1fa1654cb">ModPalmTree</a>, <a class="el" href="class_mod_tree.html#ab4a4a3ac6b6f566b8995c8521c1a1fc6">ModTree</a></li>
 <li>CreateFloatSet()&#160;:&#160;<a class="el" href="class_set_factory.html#a864dd95cb4a87b9b9d7b253944fd5627">SetFactory</a></li>
 <li>CreateIntSet()&#160;:&#160;<a class="el" href="class_set_factory.html#a09b894e452a474bdaa6522901ad15708">SetFactory</a></li>
 <li>CreateMapEntryName()&#160;:&#160;<a class="el" href="class_mod_block_type.html#ab3684805ba8ad1a6e53abca3b296bcf2">ModBlockType</a></li>
 <li>CreateMetalBarWithFurnace&#160;:&#160;<a class="el" href="class_game_tip_i_d.html#ab928a61cd9061c9c7c571881c29e2867">GameTipID</a></li>
-<li>CreateNamedSet()&#160;:&#160;<a class="el" href="class_set_factory.html#a94269fe9fd84c093917befcf22ccbeaa">SetFactory</a></li>
+<li>CreateNamedSet()&#160;:&#160;<a class="el" href="class_set_factory.html#afe2d312996ab87b6089d3abbf2096d41">SetFactory</a></li>
 <li>CreateRecipe()&#160;:&#160;<a class="el" href="class_mod_item.html#a3a3d8f6c6fca12c0b4666edca0297d6c">ModItem</a></li>
 <li>createTile&#160;:&#160;<a class="el" href="class_item.html#ae29d9481e1255f3585af41383841396c">Item</a></li>
 <li>CreateUshortSet()&#160;:&#160;<a class="el" href="class_set_factory.html#ac89f3c7bd47965770494e20b4d16e3cf">SetFactory</a></li>
