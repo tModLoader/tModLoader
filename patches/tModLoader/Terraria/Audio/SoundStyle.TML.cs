@@ -160,7 +160,7 @@ public record struct SoundStyle
 	/// </summary>
 	public (float minPitch, float maxPitch) PitchRange {
 		get {
-			float halfVariance = PitchVariance;
+			float halfVariance = PitchVariance / 2;
 			float minPitch = Pitch - halfVariance;
 			float maxPitch = Pitch + halfVariance;
 
