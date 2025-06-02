@@ -22,7 +22,7 @@
  	}
  
  	public static void Load(IServiceProvider services)
-@@ -29,6 +_,15 @@
+@@ -29,12 +_,22 @@
  
  	public static void Update()
  	{
@@ -38,6 +38,13 @@
  		if (IsAudioSupported) {
  			if (Main.audioSystem != null)
  				Main.audioSystem.UpdateAudioEngine();
+ 
+ 			SoundInstanceGarbageCollector.Update();
+ 			bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
++			// TODO: Issue #3091, pause cuts off all sounds. Vanilla seems to only pause tracked sounds originally
+ 			if (!AreSoundsPaused && flag)
+ 				SoundPlayer.PauseAll();
+ 			else if (AreSoundsPaused && !flag)
 @@ -56,6 +_,8 @@
  		}
  	}
