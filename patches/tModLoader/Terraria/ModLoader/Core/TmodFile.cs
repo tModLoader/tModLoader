@@ -98,15 +98,15 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		if (entry.cachedBytes != null) {
 			stream = entry.cachedBytes.ToMemoryStream();
 		}
-		else if (fileStream == null) {
-			throw new IOException($"File not open: {path}");
-		}
-		else if (newFileStream) {
+  		else if (newFileStream) {
 			var ers = new EntryReadStream(this, entry, File.OpenRead(path), false);
 			lock (independentEntryReadStreams) { // todo, make this a set? maybe?
 				independentEntryReadStreams.Add(ers);
 			}
 			stream = ers;
+		}
+		else if (fileStream == null) {
+			throw new IOException($"File not open: {path}");
 		}
 		else if (sharedEntryReadStream != null) {
 			throw new IOException($"Previous entry read stream not closed: {sharedEntryReadStream.Name}");
