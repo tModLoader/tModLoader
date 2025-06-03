@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -2,24 +_,86 @@
+@@ -2,24 +_,84 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  
@@ -48,7 +48,7 @@
 +	// The part that HAS to run on the main thread.
 +	private SlotId Play_Inner(in SoundStyle style, Vector2? position, SoundUpdateCallback? updateCallback)
 +	{
-+		SoundStyle chosenStyle = style.WithChosenRandom();
++		SoundStyle chosenStyle = style.WithSelectedVariant();
 +
 +		// Handle the MaxInstances & RestartIfPlaying properties
 +		int maxInstances = chosenStyle.MaxInstances;
@@ -73,15 +73,13 @@
 +			}
 +		}
 +
-+		SoundStyle styleCopy = chosenStyle;
-+
 +		// Handle 'UsesMusicPitch'.. This property is a weird solution for keeping vanilla's old instruments' behavior alive, and is currently internal.
 +		if (chosenStyle.UsesMusicPitch) {
-+			styleCopy.Pitch += Main.musicPitch;
++			chosenStyle.Pitch += Main.musicPitch;
 +		}
  
 -		ActiveSound value = new ActiveSound(style, position);
-+		ActiveSound value = new ActiveSound(styleCopy, position, updateCallback);
++		ActiveSound value = new ActiveSound(chosenStyle, position, updateCallback);
  		return _trackedSounds.Add(value);
  	}
  

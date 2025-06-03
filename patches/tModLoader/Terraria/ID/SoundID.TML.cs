@@ -23,8 +23,8 @@ partial class SoundID
 	private const string PrefixCustom = "Terraria/Sounds/Custom/";
 
 	// Start of IDs that used to be 'int' typed.
-	public static readonly SoundStyle Dig = new($"{Prefix}Dig_", 0, 3) { PitchVariance = 0.2f, VariantsAreIndependent = true };
-	public static readonly SoundStyle PlayerHit = new($"{Prefix}Player_Hit_", 0, 3) { VariantsAreIndependent = true };
+	public static readonly SoundStyle Dig = new($"{Prefix}Dig_", 0, 3) { PitchVariance = 0.2f, LimitsArePerVariant = true };
+	public static readonly SoundStyle PlayerHit = new($"{Prefix}Player_Hit_", 0, 3) { LimitsArePerVariant = true };
 	public static readonly SoundStyle Item = new($"{Prefix}Item_");
 	//public static readonly SoundStyle NPCHit = new($"{Prefix}NPC_Hit");
 	//public static readonly SoundStyle NPCKilled = new($"{Prefix}NPC_Killed");
@@ -54,8 +54,8 @@ partial class SoundID
 	public static readonly SoundStyle Shimmer2 = new($"{Prefix}Splash_3") { Volume = 0.75f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle ShimmerWeak1 = new($"{Prefix}Splash_4") { Identifier = "Terraria/ShimmerWeak", Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle ShimmerWeak2 = new($"{Prefix}Splash_5") { Identifier = "Terraria/ShimmerWeak", Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
-	public static readonly SoundStyle FemaleHit = new($"{Prefix}Female_Hit_", 0, 3) { VariantsAreIndependent = true };
-	public static readonly SoundStyle Tink = new($"{Prefix}Tink_", 0, 3) { VariantsAreIndependent = true };
+	public static readonly SoundStyle FemaleHit = new($"{Prefix}Female_Hit_", 0, 3) { LimitsArePerVariant = true };
+	public static readonly SoundStyle Tink = new($"{Prefix}Tink_", 0, 3) { LimitsArePerVariant = true };
 	public static readonly SoundStyle Unlock = new($"{Prefix}Unlock");
 	public static readonly SoundStyle Drown = new($"{Prefix}Drown");
 	public static readonly SoundStyle Chat = new($"{Prefix}Chat") { MaxInstances = 0 };
@@ -78,7 +78,7 @@ partial class SoundID
 		MaxInstances = 0
 	}; // Not yet handled: PitchRange should be (-0.4, 0.2) for variant 12 and should also be IgnoreNew.
 	public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13", SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f), MaxInstances = 0 };
-	public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", [14, 16, 17, 18, 19], SoundType.Ambient) { Identifier = "Terraria/Bird", Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew, VariantsAreIndependent = true };
+	public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", [14, 16, 17, 18, 19], SoundType.Ambient) { Identifier = "Terraria/Bird", Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true };
 	public static readonly SoundStyle Bird14 = Bird with { Variants = [14] };
 	public static readonly SoundStyle Bird16 = Bird with { Variants = [16] };
 	public static readonly SoundStyle Bird17 = Bird with { Variants = [17] };
@@ -128,13 +128,13 @@ partial class SoundID
 	public static readonly SoundStyle DrumKick = new($"{Prefix}Item_146") { Volume = 0.7f, Identifier = "Terraria/Drums" };
 	public static readonly SoundStyle DrumTamaSnare = new($"{Prefix}Item_147") { Volume = 0.7f, Identifier = "Terraria/Drums" };
 	public static readonly SoundStyle DrumFloorTom = new($"{Prefix}Item_148") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-	public static readonly SoundStyle Research = new($"{Prefix}Research_", 1, 3) { VariantsAreIndependent = true };
+	public static readonly SoundStyle Research = new($"{Prefix}Research_", 1, 3) { LimitsArePerVariant = true };
 	public static readonly SoundStyle ResearchComplete = new($"{Prefix}Research_0");
 	public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Identifier = "Terraria/QueenSlime", Volume = 0.5f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Clown = new($"{Prefix}Zombie_", 121, 3) { Identifier = "Terraria/Clown", Volume = 0.45f, PitchVariance = 0.3f, SoundLimitBehavior = IgnoreNew };
-	public static readonly SoundStyle Cockatiel = new($"{Prefix}Zombie_", 118, 3, SoundType.Ambient) { Identifier = "Terraria/Cockatiel", Volume = 0.3f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, VariantsAreIndependent = true };
-	public static readonly SoundStyle Macaw = new($"{Prefix}Zombie_", 126, 3, SoundType.Ambient) { Identifier = "Terraria/Macaw", Volume = 0.22f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, VariantsAreIndependent = true };
-	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 2, SoundType.Ambient) { Identifier = "Terraria/Toucan", Volume = 0.2f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, VariantsAreIndependent = true };
+	public static readonly SoundStyle Cockatiel = new($"{Prefix}Zombie_", 118, 3, SoundType.Ambient) { Identifier = "Terraria/Cockatiel", Volume = 0.3f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true };
+	public static readonly SoundStyle Macaw = new($"{Prefix}Zombie_", 126, 3, SoundType.Ambient) { Identifier = "Terraria/Macaw", Volume = 0.22f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true };
+	public static readonly SoundStyle Toucan = new($"{Prefix}Zombie_", 129, 2, SoundType.Ambient) { Identifier = "Terraria/Toucan", Volume = 0.2f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true };
 	// End of replaced IDs.
 
 	public static readonly SoundStyle NPCHit1 = NPCHitSound(1);

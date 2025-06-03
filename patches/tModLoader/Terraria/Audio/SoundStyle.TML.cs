@@ -51,7 +51,8 @@ public record struct SoundStyle
 
 	/// <summary>
 	/// The max amount of sound instances that this style will allow creating, before stopping a playing sound or refusing to play a new one.
-	/// <br/> Set to 0 for no limits.
+	/// <br/><br/> If using variants, use <see cref="LimitsArePerVariant"/> to allow <see cref="MaxInstances"/> to apply to each variant individually rather than to all variants as a group.
+	/// <br/><br/> Set to 0 for no limits.
 	/// </summary>
 	public int MaxInstances { get; set; } = 1;
 
@@ -61,7 +62,7 @@ public record struct SoundStyle
 	/// <summary>
 	/// If true, then variants are treated as different sounds for the purposes of <see cref="SoundLimitBehavior"/> and <see cref="MaxInstances"/>. Defaults to false, meaning that all variants share the same sound instance limitations.
 	/// </summary>
-	public bool VariantsAreIndependent { get; set; } = false; // true might be a better default? Need to check.
+	public bool LimitsArePerVariant { get; set; } = false;
 
 	/// <summary> If true, this sound won't play if the game's window isn't selected. </summary>
 	public bool PlayOnlyIfFocused { get; set; } = false;
@@ -119,7 +120,7 @@ public record struct SoundStyle
 		}
 	}
 
-	public int RandomChoice {
+	internal int RandomChoice {
 		get => random;
 		set => random = value;
 	}
@@ -220,11 +221,28 @@ public record struct SoundStyle
 	}
 
 	// To be optimized, improved.
+	/// <summary>
+	/// Checks if this SoundStyle is the same as another SoundStyle. This method takes into account differences in chosen variants if <see cref="LimitsArePerVariant"/> is true.
+	/// </summary>
 	public bool IsTheSameAs(SoundStyle style)
 	{
-		if (VariantsAreIndependent && RandomChoice != -1 && RandomChoice != style.RandomChoice)
+		if (LimitsArePerVariant && RandomChoice != style.RandomChoice)
 			return false;
 
+		if (Identifier != null || style.Identifier != null)
+			return Identifier == style.Identifier;
+
+		if (SoundPath == style.SoundPath)
+			return true;
+
+		return false;
+	}
+
+	/// <summary>
+	/// Same as <see cref="IsTheSameAs(SoundStyle)"/> except it doesn't take into account differences in chosen variants.
+	/// </summary>
+	public bool IsVariantOf(SoundStyle style)
+	{
 		if (Identifier != null || style.Identifier != null)
 			return Identifier == style.Identifier;
 
@@ -268,7 +286,7 @@ public record struct SoundStyle
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };
 
-	public SoundStyle WithChosenRandom(int random = -1)
+	internal SoundStyle WithSelectedVariant(int random = -1)
 	{
 		if (variants == null || variants.Length == 0)
 			return this;
