@@ -61,7 +61,7 @@ partial class SoundID
 	public static readonly SoundStyle Chat = new($"{Prefix}Chat") { MaxInstances = 0 };
 	public static readonly SoundStyle MaxMana = new($"{Prefix}MaxMana") { MaxInstances = 0 };
 	public static readonly SoundStyle Mummy = new($"{Prefix}Zombie_", 3, 2) { Identifier = "Terraria/Mummy", Volume = 0.9f, PitchVariance = 0.2f, MaxInstances = 0 };
-	public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }; // Not yet handled: should adjust pitch/pan/volume of playing instance rather than just IgnoreNew.
+	public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }; // Not yet handled: should adjust pitch/pan/volume of playing instance rather than just IgnoreNew, but even that will sound bad with multiple sources playing the sound so no need to fix yet.
 	public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 
 	//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
@@ -94,7 +94,7 @@ partial class SoundID
 	public static readonly SoundStyle Drip = new($"{Prefix}Drip_", 0, 2, SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f, MaxInstances = 0 };
 	public static readonly SoundStyle DripSplash = new($"{Prefix}Drip_2", SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f, MaxInstances = 0 };
 	public static readonly SoundStyle Camera = new($"{Prefix}Camera");
-	//TODO: Might need special distance falloff rules.
+	// Note: Vanilla logic has special distance falloff rules, but this sound is unused.
 	public static readonly SoundStyle MoonLord = new($"{Prefix}NPC_Killed_10") { PitchVariance = 0.2f, MaxInstances = 0 };
 	public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { MaxInstances = 7, PitchVariance = 0.2f, };
 	public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3, SoundType.Ambient) { Identifier = "Terraria/Seagull", Volume = 0.2f, PitchRange = (-0.7f, 0f), MaxInstances = 0 };
