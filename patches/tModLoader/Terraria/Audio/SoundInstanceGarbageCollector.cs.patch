@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/Audio/SoundInstanceGarbageCollector.cs
++++ src/tModLoader/Terraria/Audio/SoundInstanceGarbageCollector.cs
+@@ -15,6 +_,7 @@
+ 
+ 	public static void Update()
+ 	{
++		// Potential memory leak: _activeSounds keeps filling up with Paused sounds.
+ 		for (int i = 0; i < _activeSounds.Count; i++) {
+ 			if (_activeSounds[i] == null) {
+ 				_activeSounds.RemoveAt(i);

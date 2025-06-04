@@ -75,6 +75,12 @@ public record struct SoundStyle
 	/// <summary> If true, this sound won't play if the game's window isn't selected. </summary>
 	public bool PlayOnlyIfFocused { get; set; } = false;
 
+	/// <summary>
+	/// If true, this sound will pause when the game is paused or unfocused.
+	/// <br/><br/> Currently these sounds will not resume when the game un-pauses, this might be a bug.
+	/// </summary>
+	public bool PauseWhenGamePausedOrUnFocused { get; set; } = false;
+
 	/// <summary> Whether or not to loop played sounds. </summary>
 	public bool IsLooped { get; set; } = false;
 
