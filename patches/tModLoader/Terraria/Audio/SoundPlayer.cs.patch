@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -2,24 +_,84 @@
+@@ -2,24 +_,97 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  
@@ -41,7 +41,7 @@
 +			var styleCopy = style;
 +			return Main.RunOnMainThread(() => Play_Inner(styleCopy, position, updateCallback)).GetAwaiter().GetResult();
 +		}
-+		
++
 +		return Play_Inner(in style, position, updateCallback);
 +	}
 +
@@ -54,22 +54,35 @@
 +		int maxInstances = chosenStyle.MaxInstances;
 +
 +		if (maxInstances > 0) {
-+			int instanceCount = 0;
++			int rerollAttempts = chosenStyle.LimitsArePerVariant ? chosenStyle.RerollAttempts : 1;
++			for (int attempt = 0; attempt < rerollAttempts; attempt++) {
++				bool tryAgain = false;
++				int instanceCount = 0;
 +
-+			foreach (var pair in _trackedSounds) {
-+				var activeSound = pair.Value;
++				foreach (var pair in _trackedSounds) {
++					var activeSound = pair.Value;
 +
-+				if (!activeSound.IsPlaying || !chosenStyle.IsTheSameAs(activeSound.Style) || ++instanceCount < maxInstances) {
-+					continue;
-+				}
++					if (!activeSound.IsPlaying || !chosenStyle.IsTheSameAs(activeSound.Style) || ++instanceCount < maxInstances) {
++						continue;
++					}
 +
-+				switch (chosenStyle.SoundLimitBehavior) {
-+					case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
-+						activeSound.Sound?.Stop(true);
++					if (attempt + 1 < rerollAttempts) {
++						tryAgain = true;
++						chosenStyle = style.WithSelectedVariant();
 +						break;
-+					default:
-+						return SlotId.Invalid;
++					}
++
++					switch (chosenStyle.SoundLimitBehavior) {
++						case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
++							activeSound.Sound?.Stop(true);
++							break;
++						default:
++							return SlotId.Invalid;
++					}
 +				}
++
++				if (!tryAgain)
++					break;
 +			}
 +		}
 +

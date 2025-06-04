@@ -35,6 +35,7 @@ public record struct SoundStyle
 	private float pitchVariance = 0f;
 	private Asset<SoundEffect>? effectCache = null;
 	private Asset<SoundEffect>?[]? variantsEffectCache = null;
+	private int rerollAttempts = 1;
 
 	/// <summary> The sound effect to play. </summary>
 	public string SoundPath { get; set; }
@@ -57,6 +58,14 @@ public record struct SoundStyle
 
 	/// <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
 	public SoundLimitBehavior SoundLimitBehavior { get; set; } = SoundLimitBehavior.ReplaceOldest;
+
+	/// <summary>
+	/// How many times to attempt to find a variant that is not currently playing before applying the SoundLimitBehavior. Only has effect if LimitsArePerVariant is true. Defaults to 1.
+	/// </summary>
+	public int RerollAttempts {
+		get => rerollAttempts;
+		set => rerollAttempts = Math.Max(1, value);
+	}
 
 	/// <summary>
 	/// If true, then variants are treated as different sounds for the purposes of <see cref="SoundLimitBehavior"/> and <see cref="MaxInstances"/>. Defaults to false, meaning that all variants share the same sound instance limitations.
@@ -119,7 +128,7 @@ public record struct SoundStyle
 		}
 	}
 
-	internal int? SelectedVariant { get; set; };
+	internal int? SelectedVariant { get; set; }
 
 	/// <summary> The volume multiplier to play sounds with. </summary>
 	public float Volume {
