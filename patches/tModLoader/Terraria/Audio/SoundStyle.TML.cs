@@ -50,12 +50,18 @@ public record struct SoundStyle
 
 	/// <summary>
 	/// The max amount of sound instances that this style will allow creating, before stopping a playing sound or refusing to play a new one.
-	/// <br/> Set to 0 for no limits.
+	/// <br/><br/> If using variants, use <see cref="LimitsArePerVariant"/> to allow <see cref="MaxInstances"/> to apply to each variant individually rather than to all variants as a group.
+	/// <br/><br/> Set to 0 for no limits.
 	/// </summary>
 	public int MaxInstances { get; set; } = 1;
 
 	/// <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
 	public SoundLimitBehavior SoundLimitBehavior { get; set; } = SoundLimitBehavior.ReplaceOldest;
+
+	/// <summary>
+	/// If true, then variants are treated as different sounds for the purposes of <see cref="SoundLimitBehavior"/> and <see cref="MaxInstances"/>. Defaults to false, meaning that all variants share the same sound instance limitations.
+	/// </summary>
+	public bool LimitsArePerVariant { get; set; } = false;
 
 	/// <summary> If true, this sound won't play if the game's window isn't selected. </summary>
 	public bool PlayOnlyIfFocused { get; set; } = false;
@@ -113,6 +119,8 @@ public record struct SoundStyle
 		}
 	}
 
+	internal int? SelectedVariant { get; set; };
+
 	/// <summary> The volume multiplier to play sounds with. </summary>
 	public float Volume {
 		get => volume;
@@ -149,7 +157,7 @@ public record struct SoundStyle
 	/// </summary>
 	public (float minPitch, float maxPitch) PitchRange {
 		get {
-			float halfVariance = PitchVariance;
+			float halfVariance = PitchVariance / 2;
 			float minPitch = Pitch - halfVariance;
 			float maxPitch = Pitch + halfVariance;
 
@@ -209,10 +217,16 @@ public record struct SoundStyle
 	}
 
 	// To be optimized, improved.
+	/// <summary>
+	/// Checks if this SoundStyle is the same as another SoundStyle. This method takes into account differences in chosen variants if <see cref="LimitsArePerVariant"/> is true.
+	/// </summary>
 	public bool IsTheSameAs(SoundStyle style)
 	{
-		if (Identifier != null && Identifier == style.Identifier)
-			return true;
+		if (LimitsArePerVariant && SelectedVariant != style.SelectedVariant)
+			return false;
+
+		if (Identifier != null || style.Identifier != null)
+			return Identifier == style.Identifier;
 
 		if (SoundPath == style.SoundPath)
 			return true;
@@ -220,7 +234,24 @@ public record struct SoundStyle
 		return false;
 	}
 
-	public SoundEffect GetRandomSound()
+	/// <summary>
+	/// Same as <see cref="IsTheSameAs(SoundStyle)"/> except it doesn't take into account differences in chosen variants.
+	/// </summary>
+	public bool IsVariantOf(SoundStyle style)
+	{
+		if (Identifier != null || style.Identifier != null)
+			return Identifier == style.Identifier;
+
+		if (SoundPath == style.SoundPath)
+			return true;
+
+		return false;
+	}
+
+	[Obsolete("Renamed to GetSoundEffect")]
+	public SoundEffect GetRandomSound() => GetSoundEffect();
+
+	public SoundEffect GetSoundEffect()
 	{
 		Asset<SoundEffect> asset;
 
@@ -228,7 +259,7 @@ public record struct SoundStyle
 			asset = effectCache ??= ModContent.Request<SoundEffect>(SoundPath, AssetRequestMode.ImmediateLoad);
 		}
 		else {
-			int variantIndex = GetRandomVariantIndex();
+			int variantIndex = SelectedVariant ?? GetRandomVariantIndex();
 			int variant = variants[variantIndex];
 
 			Array.Resize(ref variantsEffectCache, variants.Length);
@@ -253,6 +284,13 @@ public record struct SoundStyle
 
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };
+
+	internal SoundStyle WithSelectedVariant(int? random = null)
+	{
+		if (variants == null || variants.Length == 0)
+			return this;
+		return this with { SelectedVariant = random ?? GetRandomVariantIndex() };
+	}
 
 	private int GetRandomVariantIndex()
 	{

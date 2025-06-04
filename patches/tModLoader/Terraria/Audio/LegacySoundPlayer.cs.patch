@@ -60,6 +60,14 @@
  	}
  
  	private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset)
+@@ -470,6 +_,7 @@
+ 							case 103:
+ 							case 156:
+ 							case 162:
++								// The preceding ItemX SoundStyle all need MaxInstances = 0 in SoundID.TML.cs
+ 								break;
+ 						}
+ 						SoundInstanceItem[num] = SoundItem[num].Value.CreateInstance();
 @@ -855,6 +_,7 @@
  						break;
  					default:
