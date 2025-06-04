@@ -35,7 +35,6 @@ public record struct SoundStyle
 	private float pitchVariance = 0f;
 	private Asset<SoundEffect>? effectCache = null;
 	private Asset<SoundEffect>?[]? variantsEffectCache = null;
-	private int random = -1;
 
 	/// <summary> The sound effect to play. </summary>
 	public string SoundPath { get; set; }
@@ -120,10 +119,7 @@ public record struct SoundStyle
 		}
 	}
 
-	internal int RandomChoice {
-		get => random;
-		set => random = value;
-	}
+	internal int? SelectedVariant { get; set; };
 
 	/// <summary> The volume multiplier to play sounds with. </summary>
 	public float Volume {
@@ -226,7 +222,7 @@ public record struct SoundStyle
 	/// </summary>
 	public bool IsTheSameAs(SoundStyle style)
 	{
-		if (LimitsArePerVariant && RandomChoice != style.RandomChoice)
+		if (LimitsArePerVariant && SelectedVariant != style.SelectedVariant)
 			return false;
 
 		if (Identifier != null || style.Identifier != null)
@@ -260,7 +256,7 @@ public record struct SoundStyle
 			asset = effectCache ??= ModContent.Request<SoundEffect>(SoundPath, AssetRequestMode.ImmediateLoad);
 		}
 		else {
-			int variantIndex = GetRandomVariantIndex();
+			int variantIndex = SelectedVariant ?? GetRandomVariantIndex();
 			int variant = variants[variantIndex];
 
 			Array.Resize(ref variantsEffectCache, variants.Length);
@@ -286,20 +282,15 @@ public record struct SoundStyle
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };
 
-	internal SoundStyle WithSelectedVariant(int random = -1)
+	internal SoundStyle WithSelectedVariant(int? random = null)
 	{
 		if (variants == null || variants.Length == 0)
 			return this;
-		return this with { RandomChoice = random == -1 ? GetRandomVariantIndex() : random };
+		return this with { SelectedVariant = random ?? GetRandomVariantIndex() };
 	}
 
 	private int GetRandomVariantIndex()
 	{
-		if (this.random != -1) {
-			// Use existing random decision if already made.
-			return this.random;
-		}
-
 		if (variantsWeights == null) {
 			// Simple random.
 			return Random.Next(variants!.Length);

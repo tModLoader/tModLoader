@@ -52,8 +52,9 @@
  		Volume = 1f;
  		Pitch = style.PitchVariance;
 -		IsGlobal = false;
+-		Style = style;
 +		//IsGlobal = false;
- 		Style = style;
++		Style = style.WithSelectedVariant(style.SelectedVariant); // Select a variant if for some reason not set at this point.
 +		Callback = updateCallback;
 +		
  		Play();

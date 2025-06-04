@@ -38,7 +38,7 @@ partial class SoundPlayer
 	/// </summary>
 	public void StopAll(in SoundStyle style, int variant)
 	{
-		var checkStyle = style with { RandomChoice = variant };
+		var checkStyle = style with { SelectedVariant = variant };
 
 		List<SlotVector<ActiveSound>.ItemPair> stopped = new();
 
