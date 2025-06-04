@@ -248,7 +248,10 @@ public record struct SoundStyle
 		return false;
 	}
 
-	public SoundEffect GetRandomSound()
+	[Obsolete("Renamed to GetSoundEffect")]
+	public SoundEffect GetRandomSound() => GetSoundEffect();
+
+	public SoundEffect GetSoundEffect()
 	{
 		Asset<SoundEffect> asset;
 

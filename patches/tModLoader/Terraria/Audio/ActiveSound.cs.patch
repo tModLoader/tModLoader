@@ -78,7 +78,8 @@
 +			return;
 +		}
 +
- 		SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
+-		SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
++		SoundEffectInstance soundEffectInstance = Style.GetSoundEffect().CreateInstance();
  		soundEffectInstance.Pitch += Style.GetRandomPitch();
  		Pitch = soundEffectInstance.Pitch;
 +		soundEffectInstance.IsLooped = Style.IsLooped;
