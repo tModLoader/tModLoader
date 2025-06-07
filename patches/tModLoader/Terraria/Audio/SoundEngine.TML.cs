@@ -87,10 +87,10 @@ partial class SoundEngine
 	}
 
 	internal static SlotId PlayTrackedSound(in SoundStyle style, Vector2? position = null)
-		=> PlaySound(style with { StopWhenGamePaused = true }, position);
+		=> PlaySound(style with { PauseBehavior = PauseBehavior.StopWhenGamePaused }, position);
 
 	internal static SlotId PlayTrackedLoopedSound(in SoundStyle style, Vector2 position, Func<bool>? loopingCondition = null)
-		=> PlaySound(style with { StopWhenGamePaused = true }, (Vector2?)position, (SoundUpdateCallback)(_ => loopingCondition()));
+		=> PlaySound(style with { PauseBehavior = PauseBehavior.StopWhenGamePaused }, (Vector2?)position, (SoundUpdateCallback)(_ => loopingCondition()));
 
 	internal static ActiveSound? GetActiveSound(SlotId slotId)
 		=> TryGetActiveSound(slotId, out var result) ? result : null;

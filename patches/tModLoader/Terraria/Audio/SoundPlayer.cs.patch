@@ -143,17 +143,23 @@
  
  	public void PauseAll()
  	{
-@@ -61,6 +_,16 @@
+@@ -61,6 +_,22 @@
  		}
  	}
  
 +	public void PauseOrStopAll()
 +	{
 +		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
-+			if (item.Value.Style.StopWhenGamePaused)
-+				item.Value.Stop();
-+			else if (item.Value.Style.PauseWithGame)
-+				item.Value.Pause();
++			switch (item.Value.Style.PauseBehavior) {
++				case PauseBehavior.KeepPlaying:
++					break;
++				case PauseBehavior.PauseWithGame:
++					item.Value.Pause();
++					break;
++				case PauseBehavior.StopWhenGamePaused:
++					item.Value.Stop();
++					break;
++			}
 +		}
 +	}
 +

@@ -13,10 +13,24 @@ using static Terraria.Audio.ActiveSound;
 
 namespace Terraria.Audio;
 
+/// <inheritdoc cref="SoundStyle.SoundLimitBehavior"/>
 public enum SoundLimitBehavior
 {
+	/// <summary> When the sound limit is reached, no sound instance will be started. </summary>
 	IgnoreNew,
+	/// <summary> When the sound limit is reached, a currently playing sound will be stopped and a new sound instance will be started. </summary>
 	ReplaceOldest,
+}
+
+/// <inheritdoc cref="SoundStyle.PauseBehavior"/>
+public enum PauseBehavior
+{
+	/// <summary> This sound will keep playing even when the game is paused. </summary>
+	KeepPlaying,
+	/// <summary> This sound will pause when the game is paused or unfocused and resume once the game is resumed. </summary>
+	PauseWithGame,
+	/// <summary> This sound will stop when the game is paused or unfocused. </summary>
+	StopWhenGamePaused,
 }
 
 /// <summary>
@@ -56,7 +70,10 @@ public record struct SoundStyle
 	/// </summary>
 	public int MaxInstances { get; set; } = 1;
 
-	/// <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
+	/// <summary>
+	/// Determines what the action taken when the max amount of sound instances is reached.
+	/// <br/><br/> Defaults to <see cref="SoundLimitBehavior.ReplaceOldest"/>, which means a currently playing sound will be stopped and a new sound instance will be started.
+	/// </summary>
 	public SoundLimitBehavior SoundLimitBehavior { get; set; } = SoundLimitBehavior.ReplaceOldest;
 
 	/// <summary>
@@ -76,16 +93,10 @@ public record struct SoundStyle
 	public bool PlayOnlyIfFocused { get; set; } = false;
 
 	/// <summary>
-	/// If true, this sound will stop when the game is paused or unfocused. This may be useful for longer sounds that would seem strange to keep playing as the game is paused.
-	/// <br/><br/> The default behavior is for sounds to continue playing while the game is paused. <see cref="PauseWithGame"/> is another option.
+	/// Determines how the sound will be affected when the game is paused (or unfocused) and subsequently resumed. Long-running sounds might benefit from changing this value.
+	/// <br/><br/> Defaults to <see cref="PauseBehavior.KeepPlaying"/>, which means the sound will continue playing while the game is paused.
 	/// </summary>
-	public bool StopWhenGamePaused { get; set; } = false;
-
-	/// <summary>
-	/// If true, this sound will pause when the game is paused or unfocused and resume once the game is resumed. This may be useful for longer sounds that would seem strange to keep playing as the game is paused.
-	/// <br/><br/> The default behavior is for sounds to continue playing while the game is paused. <see cref="StopWhenGamePaused"/> is another option.
-	/// </summary>
-	public bool PauseWithGame { get; set; } = false;
+	public PauseBehavior PauseBehavior { get; set; } = PauseBehavior.KeepPlaying;
 
 	/// <summary> Whether or not to loop played sounds. </summary>
 	public bool IsLooped { get; set; } = false;
