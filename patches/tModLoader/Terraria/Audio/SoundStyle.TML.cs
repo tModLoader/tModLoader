@@ -76,10 +76,16 @@ public record struct SoundStyle
 	public bool PlayOnlyIfFocused { get; set; } = false;
 
 	/// <summary>
-	/// If true, this sound will pause when the game is paused or unfocused.
-	/// <br/><br/> Currently these sounds will not resume when the game un-pauses, this might be a bug.
+	/// If true, this sound will stop when the game is paused or unfocused. This may be useful for longer sounds that would seem strange to keep playing as the game is paused.
+	/// <br/><br/> The default behavior is for sounds to continue playing while the game is paused. <see cref="PauseWithGame"/> is another option.
 	/// </summary>
-	public bool PauseWhenGamePausedOrUnFocused { get; set; } = false;
+	public bool StopWhenGamePaused { get; set; } = false;
+
+	/// <summary>
+	/// If true, this sound will pause when the game is paused or unfocused and resume once the game is resumed. This may be useful for longer sounds that would seem strange to keep playing as the game is paused.
+	/// <br/><br/> The default behavior is for sounds to continue playing while the game is paused. <see cref="StopWhenGamePaused"/> is another option.
+	/// </summary>
+	public bool PauseWithGame { get; set; } = false;
 
 	/// <summary> Whether or not to loop played sounds. </summary>
 	public bool IsLooped { get; set; } = false;

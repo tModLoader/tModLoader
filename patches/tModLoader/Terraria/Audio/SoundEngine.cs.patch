@@ -43,7 +43,7 @@
  			bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
  			if (!AreSoundsPaused && flag)
 -				SoundPlayer.PauseAll();
-+				SoundPlayer.PauseAllThatPauseWithGame(); // Changed from PauseAll since in vanilla only tracked sounds are paused by this method, but now all sounds are unified here.
++				SoundPlayer.PauseOrStopAll(); // Changed from PauseAll since vanilla effectively stops all because they are never actually resumed.
  			else if (AreSoundsPaused && !flag)
  				SoundPlayer.ResumeAll();
  

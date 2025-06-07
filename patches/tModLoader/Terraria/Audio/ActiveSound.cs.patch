@@ -46,7 +46,7 @@
 -	public ActiveSound(SoundStyle style, Vector2 position)
 +	public bool IsPlaying => Sound?.IsDisposed == false && Sound.State == SoundState.Playing; //TML: Made error-safe
 +
-+	// TODO: public bool IsPlayingOrPaused => Sound?.IsDisposed == false && Sound.State != SoundState.Stopped;
++	public bool IsPlayingOrPaused => Sound?.IsDisposed == false && Sound.State != SoundState.Stopped;
 +
 +	//TML: Position parameter made nullable, SoundUpdateCallback added with changed type.
 +	public ActiveSound(SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
