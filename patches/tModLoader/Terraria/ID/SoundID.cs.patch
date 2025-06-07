@@ -119,7 +119,7 @@
 +		/*
  		return new LegacySoundStyle(42, count, variations, type);
 +		*/
-+		return new LegacySoundStyle($"{PrefixCustom}{name}{(variations > 1 ? "_" : null)}", 0, variations, type) with { MaxInstances = 0 };
++		return new LegacySoundStyle($"{PrefixCustom}{name}{(variations > 1 ? "_" : null)}", 0, variations, type) { MaxInstances = 0 };
  	}
  
  	public static void FillAccessMap()

@@ -96,7 +96,7 @@ partial class SoundID
 	public static readonly SoundStyle Camera = new($"{Prefix}Camera");
 	// Note: Vanilla logic has special distance falloff rules, but this sound is unused.
 	public static readonly SoundStyle MoonLord = new($"{Prefix}NPC_Killed_10") { PitchVariance = 0.2f, MaxInstances = 0 };
-	public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { PitchVariance = 0.2f, RerollAttempts = 7, LimitsArePerVariant = true };
+	public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { PitchVariance = 0.2f, RerollAttempts = 6, LimitsArePerVariant = true };
 	public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3, SoundType.Ambient) { Identifier = "Terraria/Seagull", Volume = 0.2f, PitchRange = (-0.7f, 0f), MaxInstances = 0 };
 	public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109", SoundType.Ambient) { Volume = 0.3f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 	// There is a 1 in 300 chance for an owl to play one of 3 easter egg sound variants.
