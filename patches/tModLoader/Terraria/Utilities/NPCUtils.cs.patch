@@ -1,0 +1,38 @@
+--- src/TerrariaNetCore/Terraria/Utilities/NPCUtils.cs
++++ src/tModLoader/Terraria/Utilities/NPCUtils.cs
+@@ -273,4 +_,35 @@
+ 				searcher.FaceTarget();
+ 		}
+ 	}
++
++	public static void GetBossHealth(NPC boss, out int currentHealth, out int maxHealth)
++	{
++		currentHealth = 0;
++		maxHealth = 0;
++
++		// Only proceed if the NPC is active and is a boss or a boss segment
++		if (!boss.active || (!boss.boss && boss.realLife == -1)) {
++			return;
++		}
++
++		int rootBossID = boss.realLife != -1 ? boss.realLife : boss.whoAmI;
++
++		for (int i = 0; i < Main.maxNPCs; i++) {
++			NPC npc = Main.npc[i];
++			if (!npc.active)
++				continue;
++
++			// Sum health for the boss and all its segments
++			if (npc.whoAmI == rootBossID || npc.realLife == rootBossID) {
++				currentHealth += npc.life;
++				maxHealth += npc.lifeMax;
++			}
++		}
++
++		// Fallback if nothing was counted
++		if (maxHealth == 0 && boss.active) {
++			currentHealth = boss.life;
++			maxHealth = boss.lifeMax;
++		}
++	}
+ }
