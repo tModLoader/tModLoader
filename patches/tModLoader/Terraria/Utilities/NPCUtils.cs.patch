@@ -1,38 +1,82 @@
 --- src/TerrariaNetCore/Terraria/Utilities/NPCUtils.cs
 +++ src/tModLoader/Terraria/Utilities/NPCUtils.cs
-@@ -273,4 +_,35 @@
+@@ -1,5 +_,6 @@
+ using System;
+ using Microsoft.Xna.Framework;
++using Terraria.ID;
+ 
+ namespace Terraria.Utilities;
+ 
+@@ -271,6 +_,72 @@
+ 			searcher.targetRect = searchResults.NearestTargetHitbox;
+ 			if (searcher.ShouldFaceTarget(ref searchResults, value) && faceTarget)
  				searcher.FaceTarget();
- 		}
- 	}
++		}
++	}
 +
 +	public static void GetBossHealth(NPC boss, out int currentHealth, out int maxHealth)
 +	{
 +		currentHealth = 0;
 +		maxHealth = 0;
 +
-+		// Only proceed if the NPC is active and is a boss or a boss segment
-+		if (!boss.active || (!boss.boss && boss.realLife == -1)) {
++		// worm boss with realLife root
++		if (boss.realLife != -1) {
++			int wormRoot = boss.realLife;
++			for (int i = 0; i < Main.maxNPCs; i++) {
++				NPC npc = Main.npc[i];
++				if (!npc.active)
++					continue;
++				if (npc.realLife == wormRoot) {
++					currentHealth += npc.life;
++					maxHealth += npc.lifeMax;
++				}
++			}
 +			return;
 +		}
 +
-+		int rootBossID = boss.realLife != -1 ? boss.realLife : boss.whoAmI;
-+
-+		for (int i = 0; i < Main.maxNPCs; i++) {
-+			NPC npc = Main.npc[i];
-+			if (!npc.active)
-+				continue;
-+
-+			// Sum health for the boss and all its segments
-+			if (npc.whoAmI == rootBossID || npc.realLife == rootBossID) {
-+				currentHealth += npc.life;
-+				maxHealth += npc.lifeMax;
++		// fallback for worms with broken realLife
++		if (!boss.boss && boss.lifeMax > 1) {
++			int aiStyle = boss.aiStyle;
++			for (int i = 0; i < Main.maxNPCs; i++) {
++				NPC npc = Main.npc[i];
++				if (!npc.active)
++					continue;
++				// guess based on aiStyle and exclusions
++				if (npc.aiStyle == aiStyle && npc.lifeMax > 1 && !npc.townNPC && !npc.friendly && npc.type != NPCID.TargetDummy) {
++					currentHealth += npc.life;
++					maxHealth += npc.lifeMax;
++				}
 +			}
++			return;
 +		}
 +
-+		// Fallback if nothing was counted
++		// moon lord parts summed together
++		if (boss.type == NPCID.MoonLordHead || boss.type == NPCID.MoonLordHand || boss.type == NPCID.MoonLordCore) {
++			currentHealth = 0;
++			maxHealth = 0;
++			for (int i = 0; i < Main.maxNPCs; i++) {
++				NPC npc = Main.npc[i];
++				if (!npc.active)
++					continue;
++				if (npc.type == NPCID.MoonLordHead || npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordCore) {
++					currentHealth += npc.life;
++					maxHealth += npc.lifeMax;
++				}
++			}
++			return;
++		}
++
++		// regular single entity boss
++		if (boss.boss && boss.lifeMax > 1 && boss.type != NPCID.TargetDummy) {
++			currentHealth = boss.life;
++			maxHealth = boss.lifeMax;
++			return;
++		}
++
++		// fallback to this npc only
 +		if (maxHealth == 0 && boss.active) {
 +			currentHealth = boss.life;
 +			maxHealth = boss.lifeMax;
-+		}
-+	}
+ 		}
+ 	}
  }
