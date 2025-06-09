@@ -146,6 +146,9 @@ public class NPCDefinition : EntityDefinition
 {
 	public static readonly Func<TagCompound, NPCDefinition> DESERIALIZER = Load;
 
+	public override bool IsUnloaded
+		=> !(Mod == "Terraria" && Name == "None" || Mod == "" && Name == "") && !(NPCID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id));
+
 	// TODO: doesn't handle negative I think?
 	public override int Type => NPCID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
 

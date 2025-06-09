@@ -21,7 +21,7 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 		OptionScale = 0.8f;
 		var options = new List<DefinitionOptionElement<NPCDefinition>>();
 
-		for (int i = 0; i < NPCLoader.NPCCount; i++) {
+		for (int i = NPCID.NegativeIDCount + 1; i < NPCLoader.NPCCount; i++) {
 			var optionElement = new NPCDefinitionOptionElement(new NPCDefinition(i), OptionScale);
 			optionElement.OnLeftClick += (a, b) => {
 				Value = optionElement.Definition;
@@ -72,7 +72,7 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 		spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
 		if (Definition != null) {
-			int type = Unloaded ? 0 : Type;
+			int type = Unloaded ? 0 : NPCID.FromNetId(Type);
 			if (TextureAssets.Npc[type].State == AssetState.NotLoaded)
 				Main.Assets.Request<Texture2D>(TextureAssets.Npc[type].Name, AssetRequestMode.AsyncLoad);
 			Texture2D npcTexture = TextureAssets.Npc[type].Value;
