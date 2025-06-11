@@ -6213,11 +6213,16 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
-@@ -30778,15 +_,15 @@
+@@ -30777,21 +_,24 @@
+ 				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
  
- 			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
+-			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
 -			ushort num3 = (ushort)HeldItem.createTile;
++			var topLeft = new Point(tileTargetX, tileTargetY);
++			WorldGen.MoveReplaceTileAnchor(ref topLeft.X, ref topLeft.Y, (ushort)HeldItem.createTile, Main.tile[tileTargetX, tileTargetY]);
++			
++			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(HeldItem.createTile, HeldItem.placeStyle), topLeft);
 +			int num3 = HeldItem.createTile;
  			int num4 = HeldItem.placeStyle;
  			if (UsingBiomeTorches && num3 == 4)
@@ -6233,6 +6238,12 @@
  				canUse = false;
  				NetMessage.SendData(17, -1, -1, null, 21, tileTargetX, tileTargetY, (int)num3, num4);
  				ApplyItemTime(HeldItem);
+ 				SetItemAnimation(HeldItem.useAnimation);
+-				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, num3);
++				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, num3, topLeft);
+ 			}
+ 		}
+ 
 @@ -30803,10 +_,10 @@
  		int createTile = HeldItem.createTile;
  		int num = HeldItem.placeStyle;
@@ -6266,6 +6277,17 @@
  
  		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
  			if (tile.frameX / 36 == num)
+@@ -30927,7 +_,9 @@
+ 		if (!newObjectType)
+ 			num = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(num);
+ 
+-		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
++		var topLeft = data.type == 0 ? new Point(tileTargetX, tileTargetY) : new Point(data.xCoord, data.yCoord);
++		
++		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(data.type, data.style, data.alternate), topLeft);
+ 		bool forced = false;
+ 		bool flag;
+ 		if (newObjectType) {
 @@ -30938,7 +_,7 @@
  		}
  		else {
@@ -6275,7 +6297,8 @@
  
  			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
  		}
-@@ -30964,8 +_,12 @@
+@@ -30963,9 +_,13 @@
+ 			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
  			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
 -			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate);
@@ -6344,7 +6367,7 @@
  		return style;
  	}
  
-@@ -31110,6 +_,10 @@
+@@ -31110,18 +_,33 @@
  		else if (ZoneDesert && Main.remixWorld)
  			itemType = 4689;
  
@@ -6354,6 +6377,61 @@
 +
  		return itemType;
  	}
+ 
+-	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache()
++	// TML: Changed to return an exact 2d array of the tiles that will need painting/actuating
++	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData data, Point topLeft)
+ 	{
+ 		int[,] array = null;
+ 		if (autoPaint || autoActuator) {
++			/*
+ 			array = new int[11, 11];
+ 			for (int i = 0; i < 11; i++) {
+ 				for (int j = 0; j < 11; j++) {
+ 					int num = tileTargetX - 5 + i;
+ 					int num2 = tileTargetY - 5 + j;
++			*/
++			int width = data == null ? 1 : data.Width;
++			int height = data == null ? 1 : data.Height;
++
++			array = new int[width, height];
++			for (int i = 0; i < width; i++) {
++				for (int j = 0; j < height; j++) {
++					int num = topLeft.X + i;
++					int num2 = topLeft.Y + j;
+ 					if (Main.tile[num, num2].active())
+ 						array[i, j] = Main.tile[num, num2].type;
+ 					else
+@@ -31213,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(int[,] typeCaches, int tileToCreate)
++	private void PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(int[,] typeCaches, int tileToCreate, Point topLeft)
+ 	{
+ 		if (!autoPaint && !autoActuator)
+ 			return;
+@@ -31229,10 +_,21 @@
+ 			num3 = (num4 = 6);
+ 		}
+ 
++		// Added by TML
++		num = 0;
++		num2 = 0;
++		num3 = typeCaches.GetLength(0);
++		num4 = typeCaches.GetLength(1);
++
+ 		for (int i = num; i < num3; i++) {
+ 			for (int j = num2; j < num4; j++) {
++				/*
+ 				int num5 = tileTargetX - 5 + i;
+ 				int num6 = tileTargetY - 5 + j;
++				*/
++
++				int num5 = topLeft.X + i;
++				int num6 = topLeft.Y + j;
+ 				if ((!Main.tile[num5, num6].active() && typeCaches[i, j] == -1) || (Main.tile[num5, num6].active() && !flag2 && (typeCaches[i, j] == Main.tile[num5, num6].type || Main.tile[num5, num6].type != tileToCreate)))
+ 					continue;
  
 @@ -31253,7 +_,9 @@
  				int num7 = FindItem(849);
