@@ -1,0 +1,54 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/Chains.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/Chains.cs
+@@ -64,6 +_,7 @@
+ 		{
+ 			if (!hideLootReport)
+ 				RuleToChain.ReportDroprates(drops, ratesInfo.With(personalDropRate));
++			// TODO: Technically this should just be ratesInfo, since this doesn't care about the drop rates of the parent, but it doesn't really make sense to list this unless the conditions are also listed in the bestiary somewhere anyway.
+ 		}
+ 	}
+ 
+@@ -74,18 +_,43 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Chains a rule to this rule. The chained rule will be evaluated if this rule meets all conditions but fails a random chance.
++	/// <para/> See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#chaining-rules">Chaining Rules section of the Basic NPC Drops and Loot Guide</see> for more information and examples.
++	/// </summary>
++	/// <param name="rule"></param>
++	/// <param name="ruleToChain"></param>
++	/// <param name="hideLootReport"></param>
++	/// <returns></returns>
+ 	public static IItemDropRule OnFailedRoll(this IItemDropRule rule, IItemDropRule ruleToChain, bool hideLootReport = false)
+ 	{
+ 		rule.ChainedRules.Add(new TryIfFailedRandomRoll(ruleToChain, hideLootReport));
+ 		return ruleToChain;
+ 	}
+ 
++	/// <summary>
++	/// Chains a rule to this rule. The chained rule will be evaluated if this rule succeeds, meaning it met all conditions and passed a random chance, if any.
++	/// <para/> See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#chaining-rules">Chaining Rules section of the Basic NPC Drops and Loot Guide</see> for more information and examples.
++	/// </summary>
++	/// <param name="rule"></param>
++	/// <param name="ruleToChain"></param>
++	/// <param name="hideLootReport"></param>
++	/// <returns></returns>
+ 	public static IItemDropRule OnSuccess(this IItemDropRule rule, IItemDropRule ruleToChain, bool hideLootReport = false)
+ 	{
+ 		rule.ChainedRules.Add(new TryIfSucceeded(ruleToChain, hideLootReport));
+ 		return ruleToChain;
+ 	}
+ 
++	/// <summary>
++	/// Chains a rule to this rule. The chained rule will be evaluated if this rule doesn't meets all conditions.
++	/// <para/> See the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#chaining-rules">Chaining Rules section of the Basic NPC Drops and Loot Guide</see> for more information and examples.
++	/// <para/> Note that this rule will appear in the bestiary according to the display conditions, if any, of the rule it is chained to. Either set <paramref name="hideLootReport"/> to hide this rule or and use a different drop rule that handles both cases of a condition directly like <see cref="DropBasedOnExpertMode"/> instead if it is important to hide this rule when conditions are not met.  
++	/// </summary>
++	/// <param name="rule"></param>
++	/// <param name="ruleToChain"></param>
++	/// <param name="hideLootReport"></param>
++	/// <returns></returns>
+ 	public static IItemDropRule OnFailedConditions(this IItemDropRule rule, IItemDropRule ruleToChain, bool hideLootReport = false)
+ 	{
+ 		rule.ChainedRules.Add(new TryIfDoesntFillConditions(ruleToChain, hideLootReport));

@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Biomes/GraniteBiome.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/GraniteBiome.cs
+@@ -64,7 +_,7 @@
+ 		PlaceGranite(origin, effectedMapArea);
+ 		CleanupTiles(origin, effectedMapArea);
+ 		PlaceDecorations(origin, effectedMapArea);
+-		structures.AddStructure(effectedMapArea, 8);
++		structures.AddStructure(effectedMapArea.Modified(origin.X, origin.Y, 0, 0), 8);
+ 		return true;
+ 	}
+ 

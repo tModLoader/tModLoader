@@ -1,0 +1,40 @@
+--- src/TerrariaNetCore/Terraria/PopupTextContext.cs
++++ src/tModLoader/Terraria/PopupTextContext.cs
+@@ -1,11 +_,37 @@
+ namespace Terraria;
+ 
++/// <summary>
++/// A context for a generated <see cref="PopupText"/>.
++/// </summary>
+ public enum PopupTextContext
+ {
++	/// <summary>
++	/// Used when a player picks up an <see cref="Item"/> and it goes into their inventory.
++	/// </summary>
+ 	RegularItemPickup,
++
++	/// <summary>
++	/// Used when a player picks up an <see cref="Item"/> and it goes into their Void Bag.
++	/// </summary>
+ 	ItemPickupToVoidContainer,
++
++	/// <summary>
++	/// Used for fishing alerts for Sonar Potions.
++	/// </summary>
+ 	SonarAlert,
++
++	/// <summary>
++	/// Used when a player reforges an <see cref="Item"/>.
++	/// </summary>
+ 	ItemReforge,
++
++	/// <summary>
++	/// Used when a player crafts an <see cref="Item"/>.
++	/// </summary>
+ 	ItemCraft,
++
++	/// <summary>
++	/// Used for all other <see cref="PopupText"/>s.
++	/// </summary>
+ 	Advanced
+ }

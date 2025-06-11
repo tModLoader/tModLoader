@@ -14,10 +14,15 @@ internal partial class LegacyUnloadedTilesSystem : ModSystem
 	private static readonly List<TileInfo> infos = new List<TileInfo>();
 	private static readonly Dictionary<int, ushort> converted = new Dictionary<int, ushort>();
 
-	public override void OnWorldLoad()
+	public override void ClearWorld()
 	{
 		infos.Clear();
 		converted.Clear();
+	}
+
+	public override void SaveWorldData(TagCompound tag)
+	{
+		// Nothing to do, system is legacy
 	}
 
 	public override void LoadWorldData(TagCompound tag)

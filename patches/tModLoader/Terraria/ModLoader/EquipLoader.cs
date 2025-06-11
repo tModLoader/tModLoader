@@ -1,10 +1,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Reflection;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Initializers;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
@@ -23,7 +25,7 @@ public static class EquipLoader
 	internal static readonly Dictionary<int, Dictionary<EquipType, int>> idToSlot = new();
 
 	//holds mappings of slot id -> item id for head/body/legs
-	//used to populate Item.(head/body/leg)Type for Manequinns
+	//used to populate Item.(head/body/leg)Type for Mannequins
 	internal static readonly Dictionary<EquipType, Dictionary<int, int>> slotToId = new();
 
 	public static readonly EquipType[] EquipTypes = (EquipType[])Enum.GetValues(typeof(EquipType));
@@ -79,7 +81,7 @@ public static class EquipLoader
 		Array.Resize(ref TextureAssets.AccBalloon, nextEquip[EquipType.Balloon]);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(ArmorIDs), true);
+		LoaderUtils.ResetStaticMembers(typeof(ArmorIDs));
 		WingStatsInitializer.Load();
 
 		foreach (EquipType type in EquipTypes) {
@@ -102,7 +104,8 @@ public static class EquipLoader
 			}
 		}
 
-		static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray) {
+		static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray)
+		{
 			Array.Resize(ref typeArray, nextEquip[equipType]);
 
 			foreach (var entry in slotToId[equipType]) {
@@ -146,6 +149,26 @@ public static class EquipLoader
 			EquipType.Beard => ArmorIDs.Beard.Count,
 			EquipType.Balloon => ArmorIDs.Balloon.Count,
 			_ => 0,
+		};
+
+	internal static IdDictionary GetSearch(EquipType type)
+		=> type switch {
+			EquipType.Head => ArmorIDs.Head.Search,
+			EquipType.Body => ArmorIDs.Body.Search,
+			EquipType.Legs => ArmorIDs.Legs.Search,
+			EquipType.HandsOn => ArmorIDs.HandOn.Search,
+			EquipType.HandsOff => ArmorIDs.HandOff.Search,
+			EquipType.Back => ArmorIDs.Back.Search,
+			EquipType.Front => ArmorIDs.Front.Search,
+			EquipType.Shoes => ArmorIDs.Shoe.Search,
+			EquipType.Waist => ArmorIDs.Waist.Search,
+			EquipType.Wings => ArmorIDs.Wing.Search,
+			EquipType.Shield => ArmorIDs.Shield.Search,
+			EquipType.Neck => ArmorIDs.Neck.Search,
+			EquipType.Face => ArmorIDs.Face.Search,
+			EquipType.Beard => ArmorIDs.Beard.Search,
+			EquipType.Balloon => ArmorIDs.Balloon.Search,
+			_ => throw new ArgumentOutOfRangeException(nameof(type)),
 		};
 
 	internal static Asset<Texture2D>[] GetTextureArray(EquipType type)
@@ -253,7 +276,7 @@ public static class EquipLoader
 	/// If you need to override EquipmentTexture's hooks, you can specify the class of the equipment texture class.
 	/// </summary>
 	/// <remarks>
-	/// If both an internal name and associated item are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
+	/// If both an internal name and associated item are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionary.<br/>
 	/// Additionally, if multiple EquipTextures of the same type are registered for the same item, the first one to be added will be the one automatically displayed on the player and mannequins.
 	/// </remarks>
 	/// <param name="mod">The mod the equipment texture is from.</param>
@@ -266,24 +289,25 @@ public static class EquipLoader
 	public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null, EquipTexture equipTexture = null)
 	{
 		if (!mod.loading)
-			throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		if (name == null && item == null)
-			throw new Exception("AddEquipTexture requires either an item or a name be provided");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorEquipTextureMissingParameters"));
 
 		if (equipTexture == null)
 			equipTexture = new EquipTexture();
 
 		ModContent.Request<Texture2D>(texture); //ensure texture exists
-		 
+
 		equipTexture.Texture = texture;
 		equipTexture.Name = name ?? item.Name;
 		equipTexture.Type = type;
 		equipTexture.Item = item;
 		int slot = equipTexture.Slot = ReserveEquipID(type);
+		GetSearch(type).Add($"{mod.Name}/{equipTexture.Name}", slot);
 
 		equipTextures[type][slot] = equipTexture;
-		mod.equipTextures[Tuple.Create(name ?? item.Name, type)] = equipTexture;
+		mod.equipTextures[Tuple.Create(equipTexture.Name, type)] = equipTexture;
 
 		if (item != null) {
 			if (!idToSlot.TryGetValue(item.Type, out var slots))

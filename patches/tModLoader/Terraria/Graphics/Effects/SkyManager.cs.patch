@@ -5,20 +5,7 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
-@@ -9,6 +_,7 @@
- 	public static SkyManager Instance = new SkyManager();
- 	private float _lastDepth;
- 	private LinkedList<CustomSky> _activeSkies = new LinkedList<CustomSky>();
-+	private double _timePass; // Added by TML; used to account for more precise time rates.
- 
- 	public void Reset()
- 	{
-@@ -17,15 +_,20 @@
- 		}
- 
- 		_activeSkies.Clear();
-+		_timePass = 0;
- 	}
+@@ -21,11 +_,13 @@
  
  	public void Update(GameTime gameTime)
  	{
@@ -27,23 +14,12 @@
  		if (num < 1)
  			num = 1;
 +		*/
-+
-+		_timePass += Main.desiredWorldEventsUpdateRate;
  
 -		for (int i = 0; i < num; i++) {
-+		for (int i = 1; i <= (int)_timePass; i++) {
++		for (int i = 0; i < Main.worldEventUpdates; i++) {
  			LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
  			while (linkedListNode != null) {
  				CustomSky value = linkedListNode.Value;
-@@ -37,6 +_,8 @@
- 				linkedListNode = next;
- 			}
- 		}
-+
-+		_timePass %= 1.0;
- 	}
- 
- 	public void Draw(SpriteBatch spriteBatch)
 @@ -98,5 +_,14 @@
  		}
  

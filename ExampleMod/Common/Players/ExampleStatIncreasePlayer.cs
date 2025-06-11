@@ -36,16 +36,18 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
-			ExampleStatIncreasePlayer clone = targetCopy as ExampleStatIncreasePlayer;
+			ExampleStatIncreasePlayer clone = (ExampleStatIncreasePlayer)targetCopy;
 			clone.exampleLifeFruits = exampleLifeFruits;
 			clone.exampleManaCrystals = exampleManaCrystals;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			ExampleStatIncreasePlayer clone = clientPlayer as ExampleStatIncreasePlayer;
+			ExampleStatIncreasePlayer clone = (ExampleStatIncreasePlayer)clientPlayer;
 
-			if (exampleLifeFruits != clone.exampleLifeFruits || exampleManaCrystals != clone.exampleManaCrystals)
+			if (exampleLifeFruits != clone.exampleLifeFruits || exampleManaCrystals != clone.exampleManaCrystals) {
+				// This example calls SyncPlayer to send all the data for this ModPlayer when any change is detected, but if you are dealing with a large amount of data you should try to be more efficient and use custom packets to selectively send only specific data that has changed.
 				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+			}
 		}
 
 		// NOTE: The tag instance provided here is always empty by default.

@@ -6,6 +6,7 @@ using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -24,7 +25,7 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage initializeButton;
 	private UIModConfigHoverImage deleteButton;
 	private UIModConfigHoverImage expandButton;
-	private UIPanel separatePagePanel;
+	internal UIPanel separatePagePanel;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
 
 	// Label:
@@ -42,7 +43,11 @@ internal class ObjectElement : ConfigElement<object>
 		if (List != null) {
 			// TODO: only do this if ToString is overriden.
 
-			var listType = MemberInfo.Type.GetGenericArguments()[0];
+			Type listType;
+			if (MemberInfo.Type.IsArray)
+				listType = MemberInfo.Type.GetElementType();
+			else
+				listType = MemberInfo.Type.GetGenericArguments()[0];
 
 			System.Reflection.MethodInfo methodInfo = listType.GetMethod("ToString", Array.Empty<Type>());
 			bool hasToString = methodInfo != null && methodInfo.DeclaringType != typeof(object);
@@ -59,23 +64,23 @@ internal class ObjectElement : ConfigElement<object>
 			bool hasToString = MemberInfo.Type.GetMethod("ToString", Array.Empty<Type>()).DeclaringType != typeof(object);
 
 			if (hasToString) {
-				TextDisplayFunction = () => (LabelAttribute == null ? MemberInfo.Name : LabelAttribute.Label) + (Value == null ? "" : ": " + Value.ToString());
+				TextDisplayFunction = () => Label + (Value == null ? "" : ": " + Value.ToString());
 				AbridgedTextDisplayFunction = () => Value?.ToString() ?? "";
 			}
 		}
 
-		// Null values without AllowNullAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
+		// Null values without NullAllowedAttribute aren't allowed, but could happen with modder mistakes, so not automatically populating will hint to modder the issue.
 		if (Value == null && List != null) {
 			// This should never actually happen, but I guess a bad Json file could.
-			object data = Activator.CreateInstance(MemberInfo.Type, true);
+			/*object data = Activator.CreateInstance(MemberInfo.Type, true);
 			string json = JsonDefaultValueAttribute?.Json ?? "{}";
 
 			JsonConvert.PopulateObject(json, data, ConfigManager.serializerSettings);
 
-			Value = data;
+			Value = data;*/
 		}
 
-		separatePage = ConfigManager.GetCustomAttribute<SeparatePageAttribute>(MemberInfo, Item, List) != null;
+		separatePage = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SeparatePageAttribute>(MemberInfo, Item, List) != null;
 
 		//separatePage = separatePage && !ignoreSeparatePage;
 		//separatePage = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute)) != null;
@@ -112,13 +117,17 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (List == null) {
 			// Member > Class
-			var expandAttribute = ConfigManager.GetCustomAttribute<ExpandAttribute>(MemberInfo, Item, List);
+			var expandAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ExpandAttribute>(MemberInfo, Item, List);
 			if (expandAttribute != null)
 				expanded = expandAttribute.Expand;
 		}
 		else {
 			// ListMember's ExpandListElements > Class
-			var listType = MemberInfo.Type.GetGenericArguments()[0];
+			Type listType;
+			if (MemberInfo.Type.IsArray)
+				listType = MemberInfo.Type.GetElementType();
+			else
+				listType = MemberInfo.Type.GetGenericArguments()[0];
 			var expandAttribute = (ExpandAttribute)Attribute.GetCustomAttribute(listType, typeof(ExpandAttribute), true);
 			if (expandAttribute != null)
 				expanded = expandAttribute.Expand;
@@ -145,7 +154,7 @@ internal class ObjectElement : ConfigElement<object>
 			// drawLabel = false; TODO uncomment
 		}
 
-		initializeButton = new UIModConfigHoverImage(PlayTexture, "Initialize");
+		initializeButton = new UIModConfigHoverImage(PlayTexture, Language.GetTextValue("tModLoader.ModConfigInitialize"));
 		initializeButton.Top.Pixels += 4;
 		initializeButton.Left.Pixels -= 3;
 		initializeButton.HAlign = 1f;
@@ -171,7 +180,7 @@ internal class ObjectElement : ConfigElement<object>
 			Interface.modConfig.SetPendingChanges();
 		};
 
-		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? "Collapse" : "Expand");
+		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
 		expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 		expandButton.Left.Set(-52, 1f);
 		expandButton.OnLeftClick += (a, b) => {
@@ -179,7 +188,7 @@ internal class ObjectElement : ConfigElement<object>
 			pendingChanges = true;
 		};
 
-		deleteButton = new UIModConfigHoverImage(DeleteTexture, "Clear");
+		deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigClear"));
 		deleteButton.Top.Set(4, 0f);
 		deleteButton.Left.Set(-25, 1f);
 		deleteButton.OnLeftClick += (a, b) => {
@@ -233,12 +242,12 @@ internal class ObjectElement : ConfigElement<object>
 					Append(expandButton);
 				if (expanded) {
 					Append(dataList);
-					expandButton.HoverText = "Collapse";
+					expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigCollapse");
 					expandButton.SetImage(ExpandedTexture);
 				}
 				else {
 					RemoveChild(dataList);
-					expandButton.HoverText = "Expand";
+					expandButton.HoverText = Language.GetTextValue("tModLoader.ModConfigExpand");
 					expandButton.SetImage(CollapsedTexture);
 				}
 			}
@@ -261,16 +270,12 @@ internal class ObjectElement : ConfigElement<object>
 			else {
 				int order = 0;
 				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
-					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)))
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 						continue;
 
 					int top = 0;
-					var header = ConfigManager.GetCustomAttribute<HeaderAttribute>(variable, null, null);
 
-					if (header != null) {
-						var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-						UIModConfig.WrapIt(dataList, ref top, wrapper, header, order++);
-					}
+					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
 
 					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
 

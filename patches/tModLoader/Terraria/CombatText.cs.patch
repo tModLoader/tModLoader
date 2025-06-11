@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/CombatText.cs
++++ src/tModLoader/Terraria/CombatText.cs
+@@ -3,6 +_,13 @@
+ 
+ namespace Terraria;
+ 
++/// <summary>
++/// Represents floating text in the game world most typically used for damage numbers and healing numbers. <br/>
++/// For non-overlapping in-game text, such as reforge messages, use <see cref="PopupText"/> instead.
++/// Use the <see cref="NewText(Rectangle, Color, int, bool, bool)"/> or <see cref="NewText(Rectangle, Color, string, bool, bool)"/> methods to create a new instance. <br/>
++/// In multiplayer, <see cref="ID.MessageID.CombatTextInt"/> and <see cref="ID.MessageID.CombatTextString"/> network messages can be used to sync a combat text if manually spawned. <br/>
++/// <include file = 'CommonDocs.xml' path='Common/VariousTextOptionsSummary' />
++/// </summary>
+ public class CombatText
+ {
+ 	public static readonly Color DamagedFriendly = new Color(255, 80, 90, 255);

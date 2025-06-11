@@ -15,4 +15,25 @@ public class ModTranslationTest : Mod
 		LocalizationLoader.CreateTranslation("A.B.C");
 		LocalizationLoader.GetOrCreateTranslation(mod, "suffix");
 	}
+
+	void SetDefaultRemoval(ModTranslation t)
+	{
+		t.SetDefault("String");
+		t.SetDefault("Line 1" +
+			"Line 2");
+		t.SetDefault("""
+Line 1
+Line 2
+""");
+		t.SetDefault(@"Line 1
+Line 2");
+	}
+
+	ModTranslation t2;
+	void ExpressionBodyTest() => t2.SetDefault("Test");
+
+	void NonExpressionBodyTest()
+	{
+		t2.SetDefault("Test");
+	}
 }

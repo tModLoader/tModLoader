@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 
@@ -50,24 +51,26 @@ public static class ItemIO
 			tag.Set("name", item.ModItem.Name);
 
 			var saveData = new TagCompound();
-
 			item.ModItem.SaveData(saveData);
 
-			if (saveData.Count > 0) {
+			if (saveData.Count > 0)
 				tag.Set("data", saveData);
-			}
 		}
 
-		if (item.prefix != 0 && item.prefix < PrefixID.Count)
-			tag.Set("prefix", (byte)item.prefix);
 
-		if (item.prefix >= PrefixID.Count) {
-			ModPrefix modPrefix = PrefixLoader.GetPrefix(item.prefix);
-
-			if (modPrefix != null) {
+		if (PrefixLoader.GetPrefix(item.prefix) is ModPrefix modPrefix) {
+			if (modPrefix is UnloadedPrefix) {
+				UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
+				tag.Set("modPrefixMod", unloadedGlobalItem.ModPrefixMod);
+				tag.Set("modPrefixName", unloadedGlobalItem.ModPrefixName);
+			}
+			else {
 				tag.Set("modPrefixMod", modPrefix.Mod.Name);
 				tag.Set("modPrefixName", modPrefix.Name);
 			}
+		}
+		else if (item.prefix != 0 && item.prefix < PrefixID.Count) {
+			tag.Set("prefix", (byte)item.prefix);
 		}
 
 		if (item.stack > 1)
@@ -103,18 +106,33 @@ public static class ItemIO
 			}
 		}
 
-		if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
-			item.Prefix(ModContent.TryFind(tag.GetString("modPrefixMod"), tag.GetString("modPrefixName"), out ModPrefix prefix) ? prefix.Type : 0);
-		}
-		else if (tag.ContainsKey("prefix")) {
-			item.Prefix(tag.GetByte("prefix"));
-		}
+		LoadModdedPrefix(item, tag);
 
 		item.stack = tag.Get<int?>("stack") ?? 1;
 		item.favorited = tag.GetBool("fav");
 
-		if (!(item.ModItem is UnloadedItem))
+		if (item.ModItem is not UnloadedItem)
 			LoadGlobals(item, tag.GetList<TagCompound>("globalData"));
+	}
+
+	internal static void LoadModdedPrefix(Item item, TagCompound tag)
+	{
+		if (tag.ContainsKey("modPrefixMod") && tag.ContainsKey("modPrefixName")) {
+			string modPrefixMod = tag.GetString("modPrefixMod");
+			string modPrefixName = tag.GetString("modPrefixName");
+			if (ModContent.TryFind(modPrefixMod, modPrefixName, out ModPrefix prefix)) {
+				item.Prefix(prefix.Type);
+			}
+			else {
+				item.Prefix(ModContent.PrefixType<UnloadedPrefix>());
+				UnloadedGlobalItem unloadedGlobalItem = item.GetGlobalItem<UnloadedGlobalItem>();
+				unloadedGlobalItem.ModPrefixMod = modPrefixMod;
+				unloadedGlobalItem.ModPrefixName = modPrefixName;
+			}
+		}
+		else if (tag.ContainsKey("prefix")) {
+			item.Prefix(tag.GetByte("prefix"));
+		}
 	}
 
 	public static Item Load(TagCompound tag)
@@ -133,17 +151,19 @@ public static class ItemIO
 
 		var saveData = new TagCompound();
 
-		foreach (var globalItem in ItemLoader.globalItems) {
-			var globalItemInstance = globalItem.Instance(item);
+		foreach (var g in ItemLoader.HookSaveData.Enumerate(item)) {
+			if (g is UnloadedGlobalItem unloadedGlobalItem) {
+				list.AddRange(unloadedGlobalItem.data);
+				continue;
+			}
 
-			globalItemInstance?.SaveData(item, saveData);
-
+			g.SaveData(item, saveData);
 			if (saveData.Count == 0)
 				continue;
 
 			list.Add(new TagCompound {
-				["mod"] = globalItemInstance.Mod.Name,
-				["name"] = globalItemInstance.Name,
+				["mod"] = g.Mod.Name,
+				["name"] = g.Name,
 				["data"] = saveData
 			});
 			saveData = new TagCompound();
@@ -164,7 +184,7 @@ public static class ItemIO
 				}
 			}
 			else {
-				//Unloaded GlobalItems and GlobalItems that are no longer valid on an item (e.g. through AppliesToEntity)
+				// Unloaded or no longer valid on an item (e.g. through AppliesToEntity)
 				item.GetGlobalItem<UnloadedGlobalItem>().data.Add(tag);
 			}
 		}
@@ -187,7 +207,7 @@ public static class ItemIO
 	public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false)
 	{
 		item.netDefaults(reader.Read7BitEncodedInt());
-		item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.Read7BitEncodedInt());
+		item.Prefix(reader.Read7BitEncodedInt());
 
 		if (readStack)
 			item.stack = reader.Read7BitEncodedInt();
@@ -214,9 +234,8 @@ public static class ItemIO
 
 		writer.SafeWrite(w => item.ModItem?.NetSend(w));
 
-		foreach (var netGlobal in ItemLoader.NetGlobals) {
-			if (item.TryGetGlobalItem(netGlobal, out var globalItem))
-				writer.SafeWrite(w => globalItem.NetSend(item, w));
+		foreach (var g in ItemLoader.HookNetSend.Enumerate(item)) {
+			writer.SafeWrite(w => g.NetSend(item, w));
 		}
 	}
 
@@ -233,16 +252,13 @@ public static class ItemIO
 			Logging.tML.Error($"Above IOException error caused by {item.ModItem.Name} from the {item.ModItem.Mod.Name} mod.");
 		}
 
-		foreach (var netGlobal in ItemLoader.NetGlobals) {
-			if (!item.TryGetGlobalItem(netGlobal, out var globalItem))
-				continue;
-
+		foreach (var g in ItemLoader.HookNetReceive.Enumerate(item)) {
 			try {
-				reader.SafeRead(r => globalItem.NetReceive(item, r));
+				reader.SafeRead(r => g.NetReceive(item, r));
 			}
 			catch (IOException e) {
 				Logging.tML.Error(e.ToString());
-				Logging.tML.Error($"Above IOException error caused by {netGlobal.Name} from the {netGlobal.Mod.Name} mod while reading {item.Name}.");
+				Logging.tML.Error($"Above IOException error caused by {g.Name} from the {g.Mod.Name} mod while reading {item.Name}.");
 			}
 		}
 	}
@@ -275,13 +291,12 @@ public static class ItemIO
 	public static string ToBase64(Item item)
 	{
 		MemoryStream ms = new MemoryStream();
-		TagIO.ToStream(ItemIO.Save(item), ms, true);
+		TagIO.ToStream(Save(item), ms, true);
 		return Convert.ToBase64String(ms.ToArray());
 	}
 
 	public static Item FromBase64(string base64)
 	{
-		MemoryStream ms = new MemoryStream(Convert.FromBase64String(base64));
-		return ItemIO.Load(TagIO.FromStream(ms, true));
+		return Load(TagIO.FromStream(Convert.FromBase64String(base64).ToMemoryStream(), true));
 	}
 }

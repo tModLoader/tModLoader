@@ -1,4 +1,6 @@
-﻿using ExampleMod.Common.Systems;
+﻿using ExampleMod.Backgrounds;
+using ExampleMod.Common.Systems;
+using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -11,12 +13,15 @@ namespace ExampleMod.Content.Biomes
 	public class ExampleSurfaceBiome : ModBiome
 	{
 		// Select all the scenery
-		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("ExampleMod/ExampleWaterStyle"); // Sets a water style for when inside this biome
-		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("ExampleMod/ExampleSurfaceBackgroundStyle");
+		public override ModWaterStyle WaterStyle => ModContent.GetInstance<ExampleWaterStyle>(); // Sets a water style for when inside this biome
+		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.GetInstance<ExampleSurfaceBackgroundStyle>();
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
 
 		// Select Music
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
+
+		public override int BiomeTorchItemType => ModContent.ItemType<ExampleTorch>();
+		public override int BiomeCampfireItemType => ModContent.ItemType<ExampleCampfire>();
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;
@@ -36,5 +41,8 @@ namespace ExampleMod.Content.Biomes
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
 			return b1 && b2 && b3;
 		}
+
+		// Declare biome priority. The default is BiomeLow so this is only necessary if it needs a higher priority.
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 	}
 }

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.GameContent;
-using System;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
@@ -109,7 +109,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Let's add some dust for special effect. In this case, it runs every other tick (30 ticks per second).
 			if (Projectile.timeLeft % 2 == 0) {
-				Dust.NewDustPerfect(new Vector2(Projectile.Center.X - (Projectile.width * Projectile.direction), Projectile.Center.Y), ModContent.DustType<Dusts.Sparkle>(), null, 0, default, 0.5f); //Here we spawn the dust at the back of the projectile with half scale.
+				Dust.NewDustPerfect(new Vector2(Projectile.Center.X - (Projectile.width * Projectile.direction), Projectile.Center.Y), ModContent.DustType<Dusts.Sparkle>(), null, 0, default, 0.5f); // Here we spawn the dust at the back of the projectile with half scale.
 			}
 		}
 
@@ -136,7 +136,7 @@ namespace ExampleMod.Content.Projectiles
 			return false;
 		}
 
-		public override void Kill(int timeLeft) {
+		public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(SoundID.Item10, Projectile.position); // Play a sound when the projectile dies. In this case, that is when it hits a block or a liquid.
 
 			if (Projectile.owner == Main.myPlayer && !Projectile.noDropItem) {
@@ -153,6 +153,14 @@ namespace ExampleMod.Content.Projectiles
 			// Let's add some dust for special effect.
 			for (int i = 0; i < 10; i++) {
 				Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, ModContent.DustType<Dusts.Sparkle>());
+			}
+		}
+
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			if (target.type == NPCID.GraniteGolem) {
+				// Paper beats Rock!
+				// Use FinalDamage since the projectile isn't conceptually stronger, the target is weaker to this weapon.
+				modifiers.FinalDamage *= 20f; // 20x damage...isn't much since defense is high and damage is low.
 			}
 		}
 	}

@@ -19,17 +19,25 @@
  	private struct SHFILEOPSTRUCT
  	{
  		public IntPtr hwnd;
-@@ -121,8 +_,13 @@
+@@ -115,11 +_,21 @@
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
- 	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+ 	public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  
 +#if NETCORE
-+	[DllImport("user32.dll")]
-+	public static extern IntPtr GetDC(IntPtr hWnd);
++	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
++	public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 +#else
- 	[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
- 	public static extern bool TranslateMessage(ref Message message);
+ 	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
+ 	public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 +#endif
  
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
- 	public static extern IntPtr GetForegroundWindow();
+ 	public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
++
++#if NETCORE
++	[DllImport("user32.dll")]
++	public static extern IntPtr GetDC(IntPtr hWnd);
++#endif
+ 
+ 	[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+ 	public static extern bool TranslateMessage(ref Message message);

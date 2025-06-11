@@ -6,15 +6,11 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Pets.MinionBossPet
 {
-	// You can find a simple pet example in ExampleMod\Content\Pets\ExamplePet
+	// You can find a simple pet example in the ExampleMod\Content\Pets\ExamplePet\ folder
 	public class MinionBossPetItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
-			Item.DefaultToVanitypet(ModContent.ProjectileType<MinionBossPetProjectile>(), ModContent.BuffType<MinionBossPetBuff>()); // Vanilla has many useful methods like these, use them! It sets rarity and value aswell, so we have to overwrite those after
+			Item.DefaultToVanitypet(ModContent.ProjectileType<MinionBossPetProjectile>(), ModContent.BuffType<MinionBossPetBuff>()); // Vanilla has many useful methods like these, use them! It sets rarity and value as well, so we have to overwrite those after
 
 			Item.width = 28;
 			Item.height = 20;

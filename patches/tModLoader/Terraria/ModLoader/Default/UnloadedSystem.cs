@@ -13,7 +13,7 @@ public class UnloadedSystem : ModSystem
 	internal IList<TagCompound> unloadedBestiarySights;
 	internal IList<TagCompound> unloadedBestiaryChats;
 
-	public override void OnWorldLoad()
+	public override void ClearWorld()
 	{
 		data = new List<TagCompound>();
 		unloadedNPCs = new List<TagCompound>();
@@ -21,6 +21,13 @@ public class UnloadedSystem : ModSystem
 		unloadedBestiaryKills = new List<TagCompound>();
 		unloadedBestiarySights = new List<TagCompound>();
 		unloadedBestiaryChats = new List<TagCompound>();
+
+		TileIO.ClearWorld();
+	}
+
+	public override void Unload()
+	{
+		TileIO.ResetUnloadedTypes();
 	}
 
 	public override void SaveWorldData(TagCompound tag)

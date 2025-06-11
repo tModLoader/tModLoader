@@ -1,7 +1,7 @@
-﻿using System;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Rarities;
 using ExampleMod.Content.Tiles.Furniture;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,12 +11,10 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleYoyo : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1; // The amount of this item that needs to be researched to unlock it in the journey mode duplication menu.
-
 			// These are all related to gamepad controls and don't seem to affect anything else
-			ItemID.Sets.Yoyo[Item.type] = true;
-			ItemID.Sets.GamepadExtraRange[Item.type] = 15;
-			ItemID.Sets.GamepadSmartQuickReach[Item.type] = true;
+			ItemID.Sets.Yoyo[Item.type] = true; // Used to increase the gamepad range when using Strings.
+			ItemID.Sets.GamepadExtraRange[Item.type] = 15; // Increases the gamepad range. Some vanilla values: 4 (Wood), 10 (Valor), 13 (Yelets), 18 (The Eye of Cthulhu), 21 (Terrarian).
+			ItemID.Sets.GamepadSmartQuickReach[Item.type] = true; // Unused, but weapons that require aiming on the screen are in this set.
 		}
 
 		public override void SetDefaults() {
@@ -45,7 +43,7 @@ namespace ExampleMod.Content.Items.Weapons
 		// Here is an example of blacklisting certain modifiers. Remove this section for standard vanilla behavior.
 		// In this example, we are blacklisting the ones that reduce damage of a melee weapon.
 		// Make sure that your item can even receive these prefixes (check the vanilla wiki on prefixes).
-		private static readonly int[] unwantedPrefixes = new int[] { PrefixID.Terrible, PrefixID.Dull, PrefixID.Shameful, PrefixID.Annoying, PrefixID.Broken, PrefixID.Damaged, PrefixID.Shoddy };
+		private static readonly int[] unwantedPrefixes = [PrefixID.Terrible, PrefixID.Dull, PrefixID.Shameful, PrefixID.Annoying, PrefixID.Broken, PrefixID.Damaged, PrefixID.Shoddy];
 
 		public override bool AllowPrefix(int pre) {
 			// return false to make the game reroll the prefix.

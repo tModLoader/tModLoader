@@ -5,6 +5,7 @@ root_dir="$(dirname "$(pwd -P)")"
 
 # Read uname into a variable used in various places
 _uname=$(uname)
+_arch=$(uname -m)
 
 # Sourced from dotnet-install.sh
 # Check if a program is present or not

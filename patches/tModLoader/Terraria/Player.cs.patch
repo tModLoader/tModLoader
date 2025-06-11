@@ -76,17 +76,26 @@
  	public OverheadMessage chatOverhead;
  	public SelectionRadial DpadRadial = new SelectionRadial();
  	public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -484,7 +_,7 @@
+@@ -484,8 +_,8 @@
  	public int HotbarOffset;
  	public bool GoingDownWithGrapple;
  	public byte spelunkerTimer;
 -	public bool[] hideInfo = new bool[13];
 +	public bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
- 	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
+-	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
++	public int[] builderAccStatus = new int[BuilderToggleLoader.BuilderToggleCount];
  	public long lostCoins;
  	public string lostCoinString = "";
-@@ -498,8 +_,11 @@
+ 	public int soulDrain;
+@@ -496,10 +_,18 @@
+ 	private static float _blizzardSoundVolume;
+ 	private static SlotId _strongBlizzardSound = SlotId.Invalid;
  	private static SlotId _insideBlizzardSound = SlotId.Invalid;
++
++	/// <summary>
++	/// This player's displayed name.
++	/// <br/> Usually capped at 20 characters.
++	/// </summary>
  	public string name = "";
  	public int taxMoney;
 +
@@ -99,7 +108,15 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
-@@ -589,10 +_,40 @@
+@@ -567,6 +_,7 @@
+ 	public bool manaSick;
+ 	public int afkCounter;
+ 	public bool stairFall;
++	/// <summary> 0: Success <br/> 1: Future version <br/> 2: Read error </summary>;
+ 	public int loadStatus;
+ 	public Vector2[] itemFlamePos = new Vector2[7];
+ 	public int itemFlameCount;
+@@ -589,20 +_,81 @@
  	public int ropeCount;
  	public int manaRegenBonus;
  	public float manaRegenDelayBonus;
@@ -134,13 +151,21 @@
 +
 +	/// <summary>
 +	/// The amount of time that has to pass, in ticks, before a new dash input will be registered.<br/>
-+	/// For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br/>
++	/// For the first frame of any given dash, this is set to -1. After that frame has passed, it is set to 20 ticks, or 1/3 of a second.<br/>
 +	/// For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br/>
 +	/// </summary>
  	public int dashDelay;
  	public int eocDash;
  	public int eocHit;
-@@ -601,6 +_,24 @@
++	/// <summary>
++	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running.
++	/// <para/> Defaults to 3f. Accessories set this to specific values, resulting in the last equipped accessories to dictate the final value. Vanilla shoe accessories set this to <c>6f</c> (<see cref="ItemID.HermesBoots"/>) or <c>6.75</c> (<see cref="ItemID.LightningBoots"/>). This assignment should happen in <see cref="ModItem.UpdateEquip(Player)"/>.
++	/// <para/> This value is later multiplied by other effects in the same manner as <see cref="maxRunSpeed"/>. They are usually modified in tandem, but not always depending on the desired result. For example, asphalt triples maxRunSpeed but does not affect accRunSpeed, whereas Shadow Armor affects both equally.
++	/// <para/> These multiplicative adjustments should only be done in <see cref="ModPlayer.PostUpdateRunSpeeds"/> or <see cref="ModItem.HorizontalWingSpeeds"/> to correctly function.
++	/// <para/> When on a mount, all other modifiers are ignored and it is set to <see cref="Mount.DashSpeed"/>
++	/// </summary>
+ 	public float accRunSpeed;
+ 	public bool cordage;
  	public int gem = -1;
  	public int gemCount;
  	public BitsByte ownedLargeGems;
@@ -163,10 +188,21 @@
 +	// Concrete use cases exist. Just gotta find a way to make a system for them intuitive.
 +	// - Thomas
  	public byte meleeEnchant;
++	/// <summary>
++	/// While attached to a rope or similar tile (<see cref="pulley"/>), this value represents the how close to the rope the player is. A value of 1 means the player is centered on the rope, while a value of 2 represents that the player has nudged away from the rope but is still attached. <see cref="Entity.direction"/> is used still for the players direction.
++	/// </summary>
  	public byte pulleyDir;
++	/// <summary>
++	/// If true, the player is attached to a rope or similar tile.
++	/// </summary>
  	public bool pulley;
-@@ -612,6 +_,13 @@
+ 	public int pulleyFrame;
+ 	public float pulleyFrameCounter;
+@@ -610,24 +_,44 @@
+ 	public bool sliding;
+ 	public int slideDir;
  	public int snowBallLauncherInteractionCooldown;
++	/// <summary> Grant the player improved speed on ice and not breaking thin ice when falling onto it </summary>
  	public bool iceSkate;
  	public bool carpet;
 +
@@ -179,8 +215,44 @@
  	public int spikedBoots;
  	public int carpetFrame = -1;
  	public float carpetFrameCounter;
-@@ -637,7 +_,9 @@
+ 	public bool canCarpet;
+ 	public int carpetTime;
++	/// <summary>
++	/// Counts updates from 0 up to 299 and then resets back to 0. Can be used to drive visuals and other player effects. The <see href="https://github.com/tModLoader/tModLoader/wiki/Time-and-Timers#modulo-timer">Modulo Timer section of the Time and Timers wiki page</see> has more details about how to use a counter like this.
++	/// </summary>
+ 	public int miscCounter;
+ 	public int infernoCounter;
+ 	public int insanityShadowCooldown;
+ 	public int starCloakCooldown;
+-	public bool sandStorm;
++	// Field added to make sandStorm rely on isPerformingJump_Sandstorm while still keeping vanilla behavior
++	private bool _sandStormLogicEnabled;
++	public bool sandStorm {
++		get => _sandStormLogicEnabled && GetJumpState<SandstormInABottleJump>().Active;
++		set => _sandStormLogicEnabled = value;
++	}
+ 	public bool crimsonRegen;
+ 	public bool ghostHeal;
+ 	public bool ghostHurt;
++	/// <summary> Player is on <see cref="TileID.HoneyBlock"/>. Affects movement parameters. </summary>
+ 	public bool sticky;
++	/// <summary> Player is on a <see cref="TileID.Sets.IceSkateSlippery"/> tile. Affects movement parameters. </summary>
+ 	public bool slippy;
++	/// <summary> Player is on <see cref="TileID.FrozenSlimeBlock"/>. Affects movement parameters. </summary>
+ 	public bool slippy2;
++	/// <summary> Player is on <see cref="TileID.Asphalt"/>. Affects movement parameters. </summary>
+ 	public bool powerrun;
+ 	public bool runningOnSand;
+ 	public bool flapSound;
+@@ -635,11 +_,22 @@
+ 	public bool dangerSense;
+ 	public byte luckPotion;
  	public byte oldLuckPotion;
++
++	/// <summary>
++	/// The percent of damage this player should resist.
++	/// <br/> Has a soft cap of <c>1f</c>. Cannot reduce taken damage below <c>1</c>.
++	/// </summary>
  	public float endurance;
  	public float whipRangeMultiplier;
 +	/*
@@ -188,8 +260,115 @@
 +	*/
  	public bool loveStruck;
  	public bool stinky;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player will take 30% less damage from any NPC with <see cref="NPC.coldDamage"/> set and any projectile with <see cref="Projectile.coldDamage"/> set.
++	/// </summary>
  	public bool resistCold;
-@@ -781,7 +_,13 @@
+ 	public bool electrified;
+ 	public bool dryadWard;
+@@ -664,12 +_,28 @@
+ 	public int fishingSkill;
+ 	public bool cratePotion;
+ 	public bool sonarPotion;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player's fishing line will never break.
++	/// </summary>
+ 	public bool accFishingLine;
+ 	public bool accFishingBobber;
+ 	public bool accTackleBox;
+ 	public bool accLavaFishing;
++
++	/// <summary>
++	/// The maximum value of minions this player can have summoned at once.
++	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
++	/// </summary>
+ 	public int maxMinions = 1;
++	/// <summary>
++	/// The current number of minions this player has summoned. Note that <see cref="slotsMinions"/> is how the minion limit is tracked, not this.
++	/// </summary>
+ 	public int numMinions;
++	/// <summary>
++	/// The current total value of minions this player has summoned. Used to limit active minions to <see cref="maxMinions"/>
++	/// <br/> A minion's value is stored as <see cref="Projectile.minionSlots"/>.
++	/// </summary>
+ 	public float slotsMinions;
+ 	public bool pygmy;
+ 	public bool raven;
+@@ -726,11 +_,24 @@
+ 	public bool dontHurtCritters;
+ 	public bool hasLucyTheAxe;
+ 	public bool dontHurtNature;
++	/// <summary>
++	/// Used to count time between repeated directional movement key presses. When a directional key is pressed it is set to a value of 15. The value will count down each update until it reaches 0. If the key is pressed again before it reaches 0 it will trigger <see cref="Player.KeyDoubleTap"/>, which will call <see cref="ModPlayer.ArmorSetBonusActivated"/> if the armor set bonus direction key has been pressed. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] doubleTapCardinalTimer = new int[4];
++	/// <summary>
++	/// Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] holdDownCardinalTimer = new int[4];
+ 	public bool defendedByPaladin;
+ 	public bool hasPaladinShield;
+ 	public float[] speedSlice = new float[60];
++
++	/// <summary>
++	/// The sum of the <see cref="NPC.npcSlots"/> of all town NPCs near this player.
++	/// <br/> If <c><see cref="townNPCs"/> &gt; 2f</c>, then this player is in a town.
++	/// </summary>
+ 	public float townNPCs;
+ 	public double headFrameCounter;
+ 	public double bodyFrameCounter;
+@@ -750,14 +_,26 @@
+ 	public float maxRegenDelay;
+ 	public int sign = -1;
+ 	public bool editedChestName;
++	/// <summary>
++	/// How long the player will be unable to use any item after the currently active item usage completes. Derived from <see cref="Item.reuseDelay"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int reuseDelay;
+ 	public int aggro;
++	/// <summary>
++	/// The sum of the <see cref="NPC.npcSlots"/> values of NPC within the active range of this Player. Used to set NPC spawn rates.
++	/// </summary>
+ 	public float nearbyActiveNPCs;
+ 	public bool creativeInterface;
++	/// <summary>
++	/// If true, the mouse is currently overlapping with a user interface so any mouse interaction should be not be interpreted as gameplay input, such as using items.
++	/// <para/> UIElements that should block user interaction typically check <c>ContainsPoint(Main.MouseScreen)</c> in the Update method to determine if mouseInterface should be set to true.
++	/// </summary>
+ 	public bool mouseInterface;
+ 	public bool lastMouseInterface;
+ 	public int noThrow;
+ 	public int changeItem = -1;
++	/// <summary> The index of the <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. To access the <see cref="Item"/> directly use <see cref="HeldItem"/> instead. </summary>
+ 	public int selectedItem;
+ 	public const int SupportedSlotsArmor = 3;
+ 	public const int SupportedSlotsAccs = 7;
+@@ -769,9 +_,19 @@
+ 	public const int miscSlotMount = 3;
+ 	public const int miscSlotHook = 4;
+ 	public const int SupportedMiscSlotCount = 5;
++	/// <summary>
++	/// The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br/><br/>
++	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Old/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
++	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
++	/// </summary>
+ 	public Item[] armor = new Item[20];
++	/// <summary> The dye items corresponding to the <see cref="armor"/> items. </summary>
+ 	public Item[] dye = new Item[10];
++	/// <summary>
++	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
++	/// </summary>
+ 	public Item[] miscEquips = new Item[5];
++	/// <summary> The dye items corresponding to the <see cref="miscEquips"/> items. </summary>
+ 	public Item[] miscDyes = new Item[5];
+ 	public Item trashItem = new Item();
+ 	public float itemRotation;
+@@ -781,16 +_,51 @@
  	public bool poundRelease;
  	public float ghostFade;
  	public float ghostDir = 1f;
@@ -200,9 +379,93 @@
 +	internal static int maxBuffs => 44 + BuffLoader.extraPlayerBuffCount;
 +	public static int MaxBuffs => maxBuffs;
 +
++	/// <summary>
++	/// The <see cref="BuffID"/>s of all buffs this player has active.
++	/// <br/> A value of <c>0</c> means that buff slot is empty.
++	/// <br/> Buff times are stored with the same index in <see cref="buffTime"/>.
++	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// </summary>
  	public int[] buffType = new int[maxBuffs];
++
++	/// <summary>
++	/// The remaining durations in ticks of all buffs this player has active.
++	/// <br/> A value of <c>0</c> means that buff slot is empty.
++	/// <br/> Buff types are stored with the same index in <see cref="buffType"/>.
++	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// </summary>
  	public int[] buffTime = new int[maxBuffs];
++
++	/// <summary>
++	/// Indexed by <see cref="BuffID"/>. If <see langword="true"/> for a given <see cref="BuffID"/>, then this player cannot be inflicted with that buff.
++	/// <br/> Additionally, if the player is inflicted with that buff and becomes immune to it, the buff will be cleared.
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool[] buffImmune = new bool[BuffID.Count];
++	/// <summary>
++	/// The index of the projectile (<see cref="Entity.whoAmI"/>) currently being "held" by the player as if it were an item. Set during projectile AI. Held projectiles will be drawn during player rendering over the player's arms.
++	/// <para/> When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and adjust <see cref="Player.RotatedRelativePoint"/>, <see cref="Player.gfxOffY"/> or <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> accordingly if the draw location is incorrect.
++	/// <para/> Defaults to -1.
++	/// </summary>
+ 	public int heldProj = -1;
++	/// <summary> A countdown timer for <see cref="breath"/>. Ticks up every frame the player is holding their breath underwater. Once it reaches <see cref="breathCDMax"/>, resets back to 0 and breath is reduced by 1. </summary>
+ 	public int breathCD;
++	/// <summary> The max value of <see cref="breath"/>. Defaults to 200. The total ticks before starting to drown is <c>breathMax * breathCDMax</c>. <para/> Effects like Breathing Reed and Diving Gear affect <see cref="breathEffectiveness"/> rather than edit this value. </summary>
+ 	public int breathMax = 200;
++	/// <summary> The current amount of breath the player has (<see href="https://terraria.wiki.gg/wiki/Breath_meter">Breath info on the wiki</see>). <see cref="breathCD"/> controls how often the value decreases. Once 0, the player will start to take drowning damage. When out of liquid increases by 3 each tick. </summary>
+ 	public int breath = 200;
+ 	public int lavaCD;
++	/// <summary> The max amount of lava immunity time (in ticks) the player can have. <see cref="ItemID.LavaCharm"/> and many other accessories add 420 do this, or 7 seconds. </summary>
+ 	public int lavaMax;
++	/// <summary> The remaining amount of lava immunity time (in ticks) the player has. </summary>
+ 	public int lavaTime;
+ 	public bool ignoreWater;
+ 	public bool armorEffectDrawShadow;
+@@ -813,13 +_,26 @@
+ 	public bool isHatRackDoll;
+ 	public bool isFirstFractalAfterImage;
+ 	public float firstFractalAfterImageOpacity;
++
++	/// <summary>
++	/// The text that is shown on armor (<see cref="Item.wornArmor"/>) with an active set bonus.
++	/// </summary>
+ 	public string setBonus = "";
++	/// <summary>
++	/// The player's normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventory, 50-53 are coin slots, 54-57 are ammo slots. Index 58 is used to store the mouse item in some situations.<br/>
++	/// Additional inventories are found in <see cref="bank"/> (Piggy Bank), <see cref="bank2"/> (Safe), <see cref="bank3"/> (Defender's Forge), and <see cref="bank4"/> (Void Vault).
++	/// For armor and accessories, see <see cref="armor"/> and <see cref="dye"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/>
++	/// </summary>
+ 	public Item[] inventory = new Item[59];
+ 	public bool[] inventoryChestStack = new bool[59];
+ 	public Item lastVisualizedSelectedItem;
++	/// <summary> Piggy Bank items </summary>
+ 	public Chest bank = new Chest(bank: true);
++	/// <summary> Safe items </summary>
+ 	public Chest bank2 = new Chest(bank: true);
++	/// <summary> Defender's Forge items </summary>
+ 	public Chest bank3 = new Chest(bank: true);
++	/// <summary> Void Vault items </summary>
+ 	public Chest bank4 = new Chest(bank: true);
+ 	public BitsByte voidVaultInfo;
+ 	public float headRotation;
+@@ -836,10 +_,18 @@
+ 	public int fartKartCloudDelay;
+ 	public const int fartKartCloudDelayMax = 20;
+ 	public int nonTorch = -1;
++	/// <summary>
++	/// An offset from the actual position of the player that will be added to the draw position. Used to fake the effect of the player smoothly traveling up single block obstacles.
++	/// </summary>
+ 	public float gfxOffY;
++	/// <summary>
++	/// Has nothing to do with the speed that this player travels, that is dictated by <see cref="moveSpeed"/> and related fields. This affects how quickly <see cref="gfxOffY"/> is adjusted.
++	/// </summary>
+ 	public float stepSpeed = 1f;
+ 	public static bool deadForGood = false;
++	/// <summary> Indicates if this player is dead </summary>
+ 	public bool dead;
++	/// <summary> The amount of time in ticks before this player respawns after death. Most suitably modified in <see cref="ModPlayer.Kill(double, int, bool, PlayerDeathReason)"/> </summary>
+ 	public int respawnTimer;
+ 	public const int respawnTimerMax = 3600;
+ 	public long lastTimePlayerWasSaved;
 @@ -853,6 +_,7 @@
  	public int head = -1;
  	public int body = -1;
@@ -211,7 +474,7 @@
  	public sbyte handon = -1;
  	public sbyte handoff = -1;
  	public sbyte back = -1;
-@@ -869,6 +_,23 @@
+@@ -869,6 +_,26 @@
  	public sbyte faceFlower = -1;
  	public sbyte balloonFront = -1;
  	public sbyte beard = -1;
@@ -232,23 +495,207 @@
 +	public int faceFlower = -1;
 +	public int balloonFront = -1;
 +	public int beard = -1;
++	/// <summary>
++	/// Indicates if the corresponding <see cref="armor"/> accessory is set to be hidden or not. 
++	/// </summary>
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
-@@ -961,7 +_,12 @@
+@@ -881,6 +_,7 @@
+ 	public bool controlUp;
+ 	public bool controlDown;
+ 	public bool controlJump;
++	/// <summary> Player is attempting to use an item, set mainly by pressing the "Use Item" keybind (Typically left mouse button). </summary>
+ 	public bool controlUseItem;
+ 	public bool controlUseTile;
+ 	public bool controlThrow;
+@@ -910,6 +_,7 @@
+ 	public bool releaseCreativeMenu;
+ 	public bool tileInteractionHappened;
+ 	public bool tileInteractAttempted;
++	/// <summary> True when the player has been holding <see cref="controlDown"/> for at least 45 ticks. Used by <see cref="ItemID.ShimmerCloak"/>. See also <see cref="holdDownCardinalTimer"/>. </summary>
+ 	public bool controlDownHold;
+ 	public bool isOperatingAnotherEntity;
+ 	public bool autoReuseAllWeapons;
+@@ -943,7 +_,13 @@
+ 	public Vector2[] shadowOrigin = new Vector2[3];
+ 	public int[] shadowDirection = new int[3];
+ 	public int shadowCount;
++
++	/// <summary>
++	/// The percent of mana actually used when mana is consumed.
++	/// <br/> Cannot reduce an item's mana cost below <c>0</c>.
++	/// </summary>
+ 	public float manaCost = 1f;
++	/// <summary> Grants the player immunity from <see cref="TileID.Sets.TouchDamageHot"/> applying the <see cref="BuffID.Burning"/> buff. Given by <see cref="ItemID.ObsidianSkull"/> and many other items. </summary>
+ 	public bool fireWalk;
+ 	public bool channel;
+ 	public int step = -1;
+@@ -961,38 +_,124 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
 +
 +	/*
  	public int armorPenetration;
+-	public int statDefense;
 +	*/
 +	internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
 +
- 	public int statDefense;
++	/// <summary>
++	/// The defense value of this player.<br/>
++	/// The <see href="https://terraria.wiki.gg/wiki/Defense#Players">Defense wiki page</see> teaches how player defense affects incoming damage alongside <see cref="DefenseEffectiveness"/>.<br/>
++	/// The value resets to 0 during <see cref="Player.ResetEffects"/> and is manipulated throughout <see cref="Player.Update(int)"/>.<br/>
++	/// If the final value is needed, <see cref="ModPlayer.PostUpdate"/> or anytime later is the best place. As such it is not recommended to manipulate the value during PostUpdate or at any time later for compatibility. Failure to follow this guideline will result in inconsistent behavior.<br/>
++	/// Due to this field being a <see cref="DefenseStat"/>, modders can freely add, subtract, multiply, and divide the value. The final result will properly account for all modifications applied.<br/>
++	/// </summary>
++	public DefenseStat statDefense; // changed from int
++	/// <summary>
++	/// Determines how effective the player's <see cref="statDefense"/> is at reducing incoming damage.<br/>
++	/// The <see href="https://terraria.wiki.gg/wiki/Defense#Players">Defense wiki page</see> explains the effect, shown in the wiki as "factor".<br/>
++	/// </summary>
++	public MultipliableFloat DefenseEffectiveness; // added by TML
++
++	/// <summary>
++	/// The maximum health this player can have without adjustment.
++	/// <br/> You should <strong>not</strong> modify this value. If you need to increase max health for equipment, modify <see cref="statLifeMax2"/>. If you need to increase max health for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
++	/// </summary>
  	public int statLifeMax = 100;
++
++	/// <summary>
++	/// The maximum health this player can have, adjusted by buffs and equipment.
++	/// </summary>
  	public int statLifeMax2 = 100;
-@@ -1194,21 +_,59 @@
++
++	/// <summary>
++	/// The current health of this player. Capped at <see cref="statLifeMax2"/>.
++	/// <br/> If you increase this value, be sure to respect the cap.
++	/// </summary>
++	/// <remarks>
++	/// If you want to heal the player with the green text effect, use <see cref="Player.Heal(int)"/>.
++	/// <br/> If you want to hurt the player, use <see cref="Hurt(PlayerDeathReason, int, int, bool, bool, int, bool, float, float, float)"/>.
++	/// </remarks>
+ 	public int statLife = 100;
++
++	/// <summary>
++	/// The current mana of this player. Capped at <see cref="statManaMax2"/>.
++	/// <br/> If you increase this value, be sure to respect the cap.
++	/// </summary>
++	/// <remarks>
++	/// If you want to use mana, use <see cref="Player.CheckMana(Item, int, bool, bool)"/> or its overload.
++	/// </remarks>
+ 	public int statMana;
++
++	/// <summary>
++	/// The maximum mana this player can have without adjustment.
++	/// <br/> You should <strong>not</strong> modify this value. If you need to increase max mana for equipment, modify <see cref="statManaMax2"/>. If you need to increase max mana for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
++	/// </summary>
+ 	public int statManaMax;
++
++	/// <summary>
++	/// The maximum mana this player can have, adjusted by buffs and equipment.
++	/// </summary>
+ 	public int statManaMax2;
++
++	/// <summary>
++	/// The rate of this player's life regeneration in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs and life regeneration accessories such as <see cref="ItemID.BandofRegeneration"/>.
++	/// <br/> For example, adding <c>10</c> to this value regenerates <c>10 / 120</c> = <c>1/6</c> health per tick, or 5 health per second.
++	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
++	/// <br/> This value should be subtracted from in <see cref="ModPlayer.UpdateBadLifeRegen"/> and added to in <see cref="ModPlayer.UpdateLifeRegen"/>.
++	/// </summary>
+ 	public int lifeRegen;
++
++	/// <summary>
++	/// This player's accumulated life regeneration.
++	/// <br/> If this value reaches or exceeds <c>120</c>, the player gains <c><see cref="lifeRegenCount"/> / 120</c> health and this value decreases until it no longer exceeds <c>120</c>.
++	/// <br/> If this value reaches or exceeds <c>-120</c>, the player loses health in the same way.
++	/// <br/> In either case, text will appear above the player indicating the life regeneration or life loss.
++	/// </summary>
+ 	public int lifeRegenCount;
++
++	/// <summary>
++	/// How effective this player's natural life regeneration should be. Resets whenever the player is hurt, increases over time.
++	/// <br/> Certain effects increase this value to increase
++	/// </summary>
++	/// <remarks>
++	/// Use <see cref="ModPlayer.NaturalLifeRegen(ref float)"/> to directly modify natural life regeneration.
++	/// </remarks>
+ 	public float lifeRegenTime;
+ 	public int manaRegen;
+ 	public int manaRegenCount;
+ 	public float manaRegenDelay;
+ 	public bool manaRegenBuff;
+ 	public bool noKnockback;
+-	private bool shimmerImmune;
++	public bool shimmerImmune;
+ 	public bool spaceGun;
++	/// <summary> The players gravity direction. <b>1</b> if normal, <b>-1</b> if reversed. <para/> Defaults to <b>1</b>.</summary>
+ 	public float gravDir = 1f;
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to Chlorophyte Helmet. <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool chloroAmmoCost80;
++	/// <summary> Applies the "10% chance to save ammo" effect (10% ammo conservation). <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool huntressAmmoCost90;
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation). <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool ammoCost80;
++	/// <summary> Applies the "25% chance to save ammo" effect (25% ammo conservation). <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool ammoCost75;
+ 	public int stickyBreak;
+ 	public bool magicQuiver;
+ 	public bool magmaStone;
++	/// <summary> Reduces damage from touching lava and halves the duration of lava inflicted <see cref="BuffID.OnFire"/>, such as given by <see cref="ItemID.ObsidianRose"/> and many other items. </summary>
+ 	public bool lavaRose;
+ 	public bool hasMoltenQuiver;
+ 	public int phantasmTime;
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to <see cref="BuffID.AmmoBox"/>. Does not apply to consumables. <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool ammoBox;
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to <see cref="BuffID.AmmoReservation"/>. Does not apply to consumables. <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool ammoPotion;
+ 	public bool chaosState;
++
++	/// <summary>
++	/// If <see langword="true"/>, then the bees created by <see cref="honeyCombItem"/> have a chance to be stronger.
++	/// </summary>
+ 	public bool strongBees;
+ 	public bool sporeSac;
+ 	public bool shinyStone;
+@@ -1019,7 +_,15 @@
+ 	public int overrideFishingBobber = -1;
+ 	public bool unlockedBiomeTorches;
+ 	public bool ateArtisanBread;
++
++	/// <summary>
++	/// If <see langword="true"/>, then this player has permanently buffed their minecarts. See <see cref="UsingSuperCart"/> for more info.
++	/// </summary>
+ 	public bool unlockedSuperCart;
++
++	/// <summary>
++	/// If <see langword="true"/>, then this player has the effects of the Super Cart enabled. See <see cref="UsingSuperCart"/> for more info.
++	/// </summary>
+ 	public bool enabledSuperCart = true;
+ 	public bool suspiciouslookingTentacle;
+ 	public bool crimsonHeart;
+@@ -1053,6 +_,12 @@
+ 	public bool cartFlip;
+ 	public float trackBoost;
+ 	public Vector2 lastBoost = Vector2.Zero;
++
++	/// <summary>
++	/// This player's <see cref="Mount"/>.
++	/// <br/> <strong>Do not overwrite this value.</strong> Instead, call <see cref="Mount.SetMount(int, Player, bool)"/> or <see cref="Mount.Dismount(Player)"/> on it.
++	/// <para/> Check <see cref="Mount.Active"/> (via <c>Player.mount.Active</c>) to determine if the player is currently using a mount.
++	/// </summary>
+ 	public Mount mount;
+ 	public bool blackCat;
+ 	public bool spider;
+@@ -1111,6 +_,7 @@
+ 	public bool coldDash;
+ 	public bool sailDash;
+ 	public bool desertDash;
++	/// <summary> Grants the player increased movement speed while running on sand </summary>
+ 	public bool desertBoots;
+ 	public bool eyeSpring;
+ 	public bool snowman;
+@@ -1194,28 +_,86 @@
  	public bool parryDamageBuff;
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
@@ -286,7 +733,7 @@
 +	*/
 +	public StatModifier arrowDamage = StatModifier.Default;
 +	public StatModifier bulletDamage = StatModifier.Default;
-+	public StatModifier rocketDamage = StatModifier.Default;
++	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage, Shroomite Helmet changed to use this.
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
 +	/*
@@ -305,17 +752,103 @@
 +	*/
 +	internal ref float summonerWeaponSpeedBonus => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
 +
++	// TML: Should these be StatModifiers?
++	/// <summary>
++	/// The multiplier on this player's <see cref="maxRunSpeed"/> and <see cref="runAcceleration"/>. This affects how quickly the player reaches max speed as well as the max speed itself.
++	/// This is typically modified in <see cref="ModBuff.Update(Player, ref int)"/>, <see cref="ModItem.UpdateEquip(Player)"/>, <see cref="ModItem.UpdateAccessory(Player, bool)"/>, or <see cref="ModPlayer.PostUpdateMiscEffects"/>. <see cref="ModPlayer.PostUpdateRunSpeeds"/> is too late to have any effect.
++	/// <para/> Defaults to 1f. Effects typically add to or subtract from this, typically expressed as "X% increased movement speed" in tooltips. Some examples:
++	/// <para/> Swiftness potion (<see cref="BuffID.Swiftness"/>): <c>+= 0.25f</c>
++	/// <br/> Webbed buff (<see cref="BuffID.Webbed"/>): <c>= 0f</c>
++	/// <br/> Titanium Leggings: <c>+= 0.06f</c>
++	/// <br/> Frostspark Boots: <c>+= 0.08f</c>
++	/// <para/> Some effects apply multiplicatively, these must be applied later on in the update process to work correctly, <see cref="ModPlayer.PostUpdateMiscEffects"/> or <see cref="ModPlayer.UpdateBadLifeRegen"/> are suitable places for this. Some examples:
++	/// <para/> Oozed buff (<see cref="slowOgreSpit"/>): <c>*= 1/3f</c>
++	/// <br/> Slow buff (<see cref="slow"/>): <c>*= 0.5f</c>
++	/// <br/> Chilled buff (<see cref="chilled"/>): <c>*= 0.75f</c>
++	/// </summary>
  	public float moveSpeed = 1f;
  	public float pickSpeed = 1f;
  	public float wallSpeed = 1f;
-@@ -1243,12 +_,33 @@
+ 	public float tileSpeed = 1f;
+ 	public bool autoPaint;
+ 	public bool autoActuator;
++	/// <summary>
++	/// The x tile coordinate of the bed spawn location for this player in this world. When -1 <see cref="Main.spawnTileX"/> is used instead.
++	/// </summary>
+ 	public int SpawnX = -1;
++	/// <summary>
++	/// The y tile coordinate of the bed spawn location for this player in this world. When -1 <see cref="Main.spawnTileY"/> is used instead.
++	/// </summary>
+ 	public int SpawnY = -1;
+ 	public Vector2? PotionOfReturnOriginalUsePosition;
+ 	public Vector2? PotionOfReturnHomePosition;
+@@ -1227,28 +_,92 @@
+ 	public static int tileRangeY = 4;
+ 	public int lastTileRangeX;
+ 	public int lastTileRangeY;
++	/// <summary>
++	/// The tile coordinates of the tile location currently being targeted by the local players cursor for left click purposes. Since this takes into account the smart cursor feature, it isn't necessarily the tile directly under the cursor. For right clicks, see <see cref="Main.SmartInteractX"/>
++	/// </summary>
+ 	public static int tileTargetX;
++	/// <inheritdoc cref="tileTargetX"/>
+ 	public static int tileTargetY;
+ 	public static float defaultGravity = 0.4f;
+ 	public static int jumpHeight = 15;
++
++	/// <summary>
++	/// The speed, in pixels/tick, that this players jumps at.
++	/// </summary>
+ 	public static float jumpSpeed = 5.01f;
+ 	public float gravity = defaultGravity;
+ 	public float maxFallSpeed = 10f;
++
++	/// <summary>
++	/// The maximum speed, in pixels/tick, that this player can reach by just running. The acceleration to that speed is a separate stat (<see cref="runAcceleration"/>).
++	/// <para/> This should only be modified in <see cref="ModPlayer.PostUpdateRunSpeeds"/>, <see cref="ModItem.HorizontalWingSpeeds"/>, or <see cref="ExtraJump.UpdateHorizontalSpeeds(Player)"/> to correctly function. <see cref="accRunSpeed"/> is commonly adjusted in tandem if suitable.
++	/// <para/> Defaults to 3f, which is then multiplied by <see cref="moveSpeed"/>. Effects typically multiply this by some factor. Some examples:
++	/// <para/> On ice with Ice Skates: <c>*= 1.25f</c>
++	/// <br/> On honey block (<see cref="sticky"/>): <c>*= 0.25f</c>
++	/// <br/> On asphalt block (<see cref="powerrun"/>): <c>*= 3.5f</c>
++	/// <br/> Shadow Armor (<see cref="shadowArmor"/>): <c>*= 1.15f</c>
++	/// <br/> Extra jumps: Typically <c>*= 1.5f</c>, see <see cref="ExtraJump.UpdateHorizontalSpeeds"/>
++	/// <para/> When on a mount, all other modifiers are ignored and it is set to <see cref="Mount.RunSpeed"/>
++	/// </summary>
++	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
+ 	public float maxRunSpeed = 3f;
++
++	/// <summary>
++	/// The acceleration, in pixels/ticks^2, that this player experiences while running. This affects how quickly the player reaches max speed, not the max speed (<see cref="maxRunSpeed"/>) itself.
++	/// <para/> This should only be modified in <see cref="ModPlayer.PostUpdateRunSpeeds"/>, <see cref="ModItem.HorizontalWingSpeeds"/>, or <see cref="ExtraJump.UpdateHorizontalSpeeds(Player)"/> to correctly function.
++	/// <para/> Defaults to 0.08f, which is then multiplied by <see cref="moveSpeed"/>. Effects typically multiply this by some factor. Some examples:
++	/// <para/> On ice (<see cref="slippy"/>): <c>*= 0.7f</c> (or <c>*= 2.1f</c> if wearing Ice Skates)
++	/// <br/> On honey block (<see cref="sticky"/>): <c>*= 0.25f</c>
++	/// <br/> Shadow Armor (<see cref="shadowArmor"/>): <c>*= 1.75f</c>
++	/// <br/> Wings: <c>*= <see cref="WingStats.AccRunAccelerationMult"/></c>
++	/// <br/> Extra jumps: Typically <c>*= 3f</c>, see <see cref="ExtraJump.UpdateHorizontalSpeeds"/>
++	/// <para/> When on a mount, all other modifiers are ignored and it is set to <see cref="Mount.Acceleration"/>
++	/// </summary>
++	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
+ 	public float runAcceleration = 0.08f;
+ 	public float runSlowdown = 0.2f;
++	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterSource"/> tile. (adjWater stands for adjacent to water) </summary>
+ 	public bool adjWater;
++	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneySource"/> tile. (adjHoney stands for adjacent to honey) </summary>
+ 	public bool adjHoney;
++	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerSource"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
++	public bool adjShimmer;
++	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaSource"/> tile. (adjLava stands for adjacent to lava) </summary>
+ 	public bool adjLava;
  	public bool oldAdjWater;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
++	public bool oldAdjShimmer;
 +
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
++	/// <summary>
++	/// An array indexed by tile type (<see cref="Tile.TileType"/>, <see cref="TileID"/>) indicating if the player is within crafting range of each tile type. Used to determine if a player satisfies crafting station requirements for recipes. Note that this includes tiles acting like other tiles (<see cref="ModTile.AdjTiles"/>, <see cref="Player.AdjTiles"/>), so the player might not actually be near specific tiles. For example a player near a <see cref="TileID.MythrilAnvil"/> tile will count as being near <see cref="TileID.Anvils"/>.
++	/// </summary>
 +	public bool[] adjTile {
 +		get {
 +			if (_adjTile.Length != TileLoader.TileCount)
@@ -345,6 +878,215 @@
  	public Color hairDyeColor = Color.Transparent;
  	public float hairDyeVar;
  	public int skinDyePacked;
+@@ -1260,6 +_,7 @@
+ 	public Color pantsColor = new Color(255, 230, 175);
+ 	public Color shoeColor = new Color(160, 105, 60);
+ 	public int hair;
++	/// <summary> If true, the player has PvP enabled </summary>
+ 	public bool hostile;
+ 	public SoundPlaySet hermesStepSound = new SoundPlaySet();
+ 	public Vector2 instantMovementAccumulatedThisFrame;
+@@ -1270,6 +_,9 @@
+ 	public bool accWeatherRadio;
+ 	public bool accJarOfSouls;
+ 	public bool accCalendar;
++	/// <summary>
++	/// The BannerID of the last npc damaged by this player. Used by the <see cref="ItemID.TallyCounter"/> to display the name of the last attacked enemy. When attacking an enemy without an assigned banner, the value will be 0 and "Kill count unavailable" will be shown.
++	/// </summary>
+ 	public int lastCreatureHit = -1;
+ 	public bool accThirdEye;
+ 	public byte accThirdEyeCounter;
+@@ -1297,9 +_,24 @@
+ 	public Item boneGloveItem;
+ 	public bool goldRing;
+ 	public bool accDivingHelm;
+-	public bool accFlipper;
++	//public bool accFlipper;
++	public bool accFlipper {
++		get {
++			return GetJumpState<FlipperJump>().Enabled;
++		}
++		set {
++			ref ExtraJumpState state = ref GetJumpState<FlipperJump>();
++			if (value) {
++				state.Enable();
++				// Allow equipping flippers while "midair" to still let the player use them
++				state.Available = true;
++			} else
++				state.Disable();
++		}
++	}
+ 	public bool hasLuck_LuckyCoin;
+ 	public bool hasLuck_LuckyHorseshoe;
++	/*
+ 	public bool hasJumpOption_Cloud;
+ 	public bool canJumpAgain_Cloud;
+ 	public bool isPerformingJump_Cloud;
+@@ -1327,10 +_,32 @@
+ 	public bool hasJumpOption_Basilisk;
+ 	public bool canJumpAgain_Basilisk;
+ 	public bool isPerformingJump_Basilisk;
++	*/
++	internal bool hasJumpOption_Cloud { set { if (value) GetJumpState<CloudInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sandstorm { set { if (value) GetJumpState<SandstormInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Blizzard { set { if (value) GetJumpState<BlizzardInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Fart { set { if (value) GetJumpState<FartInAJarJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Sail { set { if (value) GetJumpState<TsunamiInABottleJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Unicorn { set { if (value) GetJumpState<UnicornMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Santank { set { if (value) GetJumpState<SantankMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_WallOfFleshGoat { set { if (value) GetJumpState<GoatMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++	internal bool hasJumpOption_Basilisk { set { if (value) GetJumpState<BasiliskMountJump>().Enable(); else throw new ArgumentException("Forgot to comment out a hasJumpOption_X = false statement"); } }
++
+ 	public bool isPerformingPogostickTricks;
+ 	public bool autoJump;
+ 	public bool justJumped;
++
++	/// <summary>
++	/// How much to directly increase <see cref="jumpSpeed"/>, in pixels/tick.
++	/// </summary>
+ 	public float jumpSpeedBoost;
++
++	/// <summary>
++	/// The number of extra tiles this player can fall before they start taking fall damage. For example <see cref="ItemID.FrogLeg"/> adds 10 to extraFall.
++	/// </summary>
++	/// <remarks>
++	/// If you want to prevent fall damage entirely, use <see cref="noFallDmg"/>.
++	/// </remarks>
+ 	public int extraFall;
+ 	public bool canFloatInWater;
+ 	public bool hasFloatingTube;
+@@ -1347,10 +_,17 @@
+ 	public int rocketSoundDelay;
+ 	public bool rocketRelease;
+ 	public bool rocketFrame;
++	/// <summary> If greater than 0, the player can briefly fly using rocket boots. Is usually set to the same value as <see cref="vanityRocketBoots"/> </summary>
+ 	public int rocketBoots;
++	/// <summary> Controls which rocket boots visuals and sounds will be used: <para/> 1: Rocket Boots <br/> 2: Fairy Boots (plus <see cref="fairyBoots"/>), Spectre Boots, Lightning Boots <br/> 3: Frostspark Boots <br/> 4: Terraspark Boots <br/> 5: Hellfire Treads </summary>
+ 	public int vanityRocketBoots;
+ 	public bool canRocket;
+ 	public bool jumpBoost;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player will take no fall damage, such as the effect given by <see cref="ItemID.LuckyHorseshoe"/>.
++	/// <para/> If you want to increase the fall height required for fall damage, use <see cref="extraFall"/> instead.
++	/// </summary>
+ 	public bool noFallDmg;
+ 	public int swimTime;
+ 	public bool killGuide;
+@@ -1358,6 +_,7 @@
+ 	public float equipmentBasedLuckBonus;
+ 	public float lastEquipmentBasedLuckBonus;
+ 	public bool hasCreditsSceneMusicBox;
++	/// <summary> Complete lava immunity, such as given by <see cref="ItemID.ObsidianSkinPotion"/>. </summary>
+ 	public bool lavaImmune;
+ 	public bool gills;
+ 	public bool slowFall;
+@@ -1392,16 +_,27 @@
+ 	public int maxTurrets = 1;
+ 	public int maxTurretsOld = 1;
+ 	public bool vortexStealthActive;
++	/// <summary> Allows the player to walk on water, honey, and shimmer, such as given by <see cref="ItemID.WaterWalkingBoots"/>. </summary>
+ 	public bool waterWalk;
++	/// <summary> Allows the player to walk on water, honey, lava, and shimmer, such as given by <see cref="ItemID.LavaWaders"/>. </summary>
+ 	public bool waterWalk2;
+ 	public int forcedGravity;
+ 	public bool gravControl;
+ 	public bool gravControl2;
++
++	/// <summary>
++	/// If not <see langword="null"/>, this player will create damaging bee projectiles when taking damage.
++	/// </summary>
+ 	public Item honeyCombItem;
+ 	public int wireOperationsCooldown;
+ 	public int lastChest;
+ 	public TrackedProjectileReference piggyBankProjTracker;
+ 	public TrackedProjectileReference voidLensChest;
++	/// <summary>
++	/// Represents the chest the player currently has open. If -1, the player has no chest open.<br/>
++	/// Positive values indicate the index of the chest in <see cref="Main.chest"/> the player currently has open.<br/>
++	/// Negative values are used to indicate additional inventories: Piggy Bank (-2), Safe (-3), Defender's Forge (-4), Void Vault (-5)
++	/// </summary>
+ 	public int chest = -1;
+ 	public int chestX;
+ 	public int chestY;
+@@ -1423,8 +_,11 @@
+ 	public PlayerInteractionAnchor tileEntityAnchor;
+ 	public DoorOpeningHelper doorHelper;
+ 	public ShoppingSettings currentShoppingSettings = ShoppingSettings.NotInShop;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Head"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cHead;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Body"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cBody;
++	/// <summary>The armor shader ID applied to the <see cref="EquipType.Legs"/> equip texture by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLegs;
+ 	public int cHandOn;
+ 	public int cHandOff;
+@@ -1445,10 +_,15 @@
+ 	public int cBackpack;
+ 	public int cTail;
+ 	public int cShieldFallback;
++	/// <summary>The armor shader ID applied to the Hook equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cGrapple;
++	/// <summary>The armor shader ID applied to the Mount equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMount;
++	/// <summary>The armor shader ID applied to the Minecart equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cMinecart;
++	/// <summary>The armor shader ID applied to the Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cPet;
++	/// <summary>The armor shader ID applied to the Light Pet equipment slot by a dye item (<see cref="Item.dye"/>) in the dye slot.</summary>
+ 	public int cLight;
+ 	public int cYorai;
+ 	public int cPortableStool;
+@@ -1458,7 +_,16 @@
+ 	public int cMinion;
+ 	public int cLeinShampoo;
+ 	public int cFlameWaker;
++	/// <summary>
++	/// Provides efficient access to the number of projectiles of the specified type owned by this player currently active in the game world.<br/>
++	/// Can be used to prevent spawning additional projectiles when a limit is reached.<br/>
++	/// Updated each game update right before Player.UpdateBuffs.<br/>
++	/// For example, <c>return player.ownedProjectileCounts[Item.shoot] &lt; 1;</c> in <see cref="ModItem.CanUseItem"/> could prevent a player using the item if the projectile the item spawns is already in the game world for the player.
++	/// </summary>
+ 	public int[] ownedProjectileCounts = new int[ProjectileID.Count];
++	/// <summary>
++	/// Sets the specified NPC types as friendly to this player. Used by <see cref="ItemID.RoyalGel"/>. Friendly NPC won't target or deal contact damage to the player.
++	/// </summary>
+ 	public bool[] npcTypeNoAggro = new bool[NPCID.Count];
+ 	public int lastPortalColorIndex;
+ 	public int _portalPhysicsTime;
+@@ -1468,9 +_,32 @@
+ 	public Vector2 MinionRestTargetPoint = Vector2.Zero;
+ 	public int MinionAttackTargetNPC = -1;
+ 	public List<Point> TouchedTiles = new List<Point>();
++	/// <summary>
++	/// The remaining number of frames the current item animation will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemAnimationMax"/> are set to a value derived from the item's <see cref="Item.useAnimation"/> and the applicable use animation multipliers, then this counts down towards 0 each game update.
++	/// <br/><br/> Note that the item animation (<see cref="itemAnimation"/>) doesn't necessarily match or sync with the item use time. An item being animated does not necessarily mean the item is being "used".
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemAnimation;
++	/// <summary>
++	/// The total number of frames the current item animation will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemAnimation"/> are set to a value derived from the item's <see cref="Item.useTime"/> and the applicable use animation multipliers, then <see cref="itemTime"/> counts down towards 0 each game update.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemAnimationMax;
++	/// <summary>
++	/// The remaining number of frames the current item usage will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemTimeMax"/> are set to a value derived from the item's <see cref="Item.useTime"/> and the applicable use time multipliers, then this counts down towards 0 each game update.
++	/// <br/><br/> Note that the item animation (<see cref="itemAnimation"/>) doesn't necessarily match or sync with the item use time. An item being animated does not necessarily mean the item is being "used".
++	/// <br/><br/> <see cref="ItemTimeIsZero"/> is a helper property to check if this value is 0.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemTime;
++	/// <summary>
++	/// The total number of frames the current item usage will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemTime"/> are set to a value derived from the item's <see cref="Item.useTime"/> and the applicable use time multipliers, then <see cref="itemTime"/> counts down towards 0 each game update.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemTimeMax;
+ 	public int toolTime;
+ 	public static int BlockInteractionWithProjectiles = 3;
 @@ -1507,7 +_,7 @@
  	private int[] unlitTorchY = new int[maxTorchAttacks];
  	private static int[] _torchAttackPosX = new int[400];
@@ -363,6 +1105,113 @@
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
  	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
+@@ -1640,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjunction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// </summary>
+ 	public Vector2 MountedCenter {
+ 		get {
+ 			return new Vector2(position.X + (float)(width / 2), position.Y + 21f + HeightOffsetHitboxCenter);
+@@ -1653,6 +_,9 @@
+ 
+ 	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
+ 
++	/// <summary>
++	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// </summary>
+ 	public bool CCed {
+ 		get {
+ 			if (!frozen && !webbed)
+@@ -1823,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is the top 35% of the world.
++	/// <br/> <strong>NOTE:</strong> Vanilla uses a lot of different conditions for what counts as space. This flag is never used in vanilla, but the logic behind it is used for NPC shops and enemy spawns.
++	/// </summary>
+ 	public bool ZoneSkyHeight {
+ 		get {
+ 			return zone3[0];
+@@ -1832,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is above ground (<see cref="Main.worldSurface"/>) but not in space (<see cref="ZoneSkyHeight"/>).
++	/// </summary>
+ 	public bool ZoneOverworldHeight {
+ 		get {
+ 			return zone3[1];
+@@ -1841,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is underground (<see cref="Main.worldSurface"/>) but above the Caverns layer (<see cref="Main.rockLayer"/>).
++	/// </summary>
+ 	public bool ZoneDirtLayerHeight {
+ 		get {
+ 			return zone3[2];
+@@ -1850,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is in the Caverns layer (<see cref="Main.rockLayer"/>) but not in the Underworld (<see cref="Main.UnderworldLayer"/>).
++	/// </summary>
+ 	public bool ZoneRockLayerHeight {
+ 		get {
+ 			return zone3[3];
+@@ -1859,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then this player is in the Underworld (<see cref="Main.UnderworldLayer"/>).
++	/// </summary>
+ 	public bool ZoneUnderworldHeight {
+ 		get {
+ 			return zone3[4];
+@@ -1998,18 +_,20 @@
+ 
+ 	public Vector2 Directions => new Vector2(direction, gravDir);
+ 
++	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
+ 	public Item HeldItem => inventory[selectedItem];
+ 
++	/// <summary> How long it takes for <see cref="breathCD"/> to cause <see cref="breath"/> to decrease by 1. Defaults to 7 before <see cref="breathEffectiveness"/> is applied. </summary>
+ 	public int breathCDMax {
+ 		get {
+-			int num = 7;
++			var calculated = breathEffectiveness;
+ 			if (inventory[selectedItem].type == 186 && itemAnimation == 0)
+-				num *= 2;
++				calculated += 1;
+ 
+ 			if (accDivingHelm)
+-				num *= 6;
++				calculated *= 6;
+ 
+-			return num;
++			return (int)(calculated.ApplyTo(7));
+ 		}
+ 	}
+ 
+@@ -2085,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If <see langword="true"/>, then any minecart (<see cref="MountID.Sets.Cart"/>) this player rides in will be significantly faster and fire lasers.
++	/// <br/> Cannot be <see langword="true"/> if <see cref="unlockedSuperCart"/> is <see langword="false"/>.
++	/// </summary>
+ 	public bool UsingSuperCart {
+ 		get {
+ 			if (!unlockedSuperCart)
 @@ -2097,11 +_,13 @@
  		}
  	}
@@ -377,8 +1226,26 @@
  
  	public bool ShouldNotDraw {
  		get {
-@@ -2155,7 +_,10 @@
+@@ -2118,6 +_,11 @@
  
+ 	public int talkNPC { get; private set; }
+ 
++	/// <summary>
++	/// The NPC instance the player is talking to, or null if <see cref="talkNPC"/> is -1
++	/// </summary>
++	public NPC TalkNPC => talkNPC >= 0 ? Main.npc[talkNPC] : null;
++
+ 	public bool isLockedToATile {
+ 		get {
+ 			if (!sitting.isSitting)
+@@ -2153,9 +_,16 @@
+ 
+ 	public bool HasMinionAttackTargetNPC => MinionAttackTargetNPC != -1;
+ 
++	/// <summary>
++	/// Evaluates to <see langword="true"/> if the item usage is in it's first frame. Equivalent to <c>itemTime == 0</c>. Note that this particular property is only valid to be used in <see cref="ModItem.UseItem(Player)"/> and <see cref="ModItem.UseAnimation(Player)"/> hooks.
++	/// <br/><br/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Tools/ExamplePickaxe.cs">ExamplePickaxe</see> uses this to run code once per swing.
++	/// </summary>
  	public bool ItemTimeIsZero => itemTime == 0;
  
 -	public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax - 1;
@@ -389,6 +1256,20 @@
  
  	public float NormalizedLuck {
  		get {
+@@ -2228,6 +_,13 @@
+ 		return pos + vector;
+ 	}
+ 
++	/// <summary>
++	/// Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. <br/>
++	/// </summary>
++	/// <param name="pos"></param>
++	/// <param name="reverseRotation"></param>
++	/// <param name="addGfxOffY"></param>
++	/// <returns></returns>
+ 	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true)
+ 	{
+ 		float num = (reverseRotation ? (0f - fullRotation) : fullRotation);
 @@ -2328,6 +_,7 @@
  	{
  		talkNPC = npcIndex;
@@ -405,13 +1286,18 @@
  	public void ApplyItemTime(Item sItem)
  	{
  		SetItemTime(sItem.useTime);
-@@ -2354,6 +_,17 @@
+@@ -2354,7 +_,28 @@
  	{
  		SetItemTime((int)((float)sItem.useTime * multiplier));
  	}
 +	*/
-+
+ 
 +	//TML: Full remake of the above methods.
++	/// <summary>
++	/// Handles the internal logic of starting an individual item usage. Can be used to manually start an item usage outside of the normal logic.
++	/// <br/><br/> The provided <paramref name="multiplier"/>, if provided, is combined with the player's use time multipliers to scale the Item's <see cref="Item.useTime"/>. The resulting value will be used to set <see cref="Player.itemTime"/>, starting an item usage.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
 +	public void ApplyItemTime(Item sItem, float multiplier = 1, bool? callUseItem = null)
 +	{
 +		if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
@@ -420,9 +1306,15 @@
 +		SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
 +		ItemUsesThisAnimation++;
 +	}
- 
++
++	/// <summary>
++	/// Sets <see cref="itemTime"/> and <see cref="itemAnimation"/> to the provided <paramref name="frames"/> value. Also sets <see cref="itemTimeMax"/> to that value plus one.
++	/// <br/><br/> Commonly used by held projectiles to put the player in a state of using an item. This is usually done each time AI executes to lock the player in that state until the player releases the "Use Item" keybind.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
  	public void SetDummyItemTime(int frames)
  	{
+ 		itemAnimation = frames;
 @@ -2362,14 +_,15 @@
  		itemTimeMax = frames + 1;
  	}
@@ -468,13 +1360,36 @@
  	}
  
  	public void MatchItemTimeToItemAnimation()
+@@ -2407,6 +_,10 @@
+ 
+ 	public bool TeamChangeAllowed() => true;
+ 
++	/// <summary>
++	/// Spawns a <see cref="CombatText"/> indicating the player healed <paramref name="healAmount"/> life and syncs it if <paramref name="broadcast"/> is true. <br/>
++	/// Note that this doesn't actually heal the player, it only spawns the floating text. The <see cref="Heal(int)"/> method heals the player and calls this method and is more commonly used.
++	/// </summary>
+ 	public void HealEffect(int healAmount, bool broadcast = true)
+ 	{
+ 		CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.HealLife, healAmount);
+@@ -2421,6 +_,10 @@
+ 			NetMessage.SendData(43, -1, -1, null, whoAmI, manaAmount);
+ 	}
+ 
++	/// <summary>
++	/// If the tile location currently being targetted by the players mouse (<see cref="tileTargetX"/>) has a tile of the specified tile type, then item usage will be blocked until the player releases the use button (left mouse button) and clicks again.
++	/// <para/> What this typically means in practice is that an auto-swinging pickaxe will not attempt to swing again until the player deliberately releases the mouse button and clicks again. This is usually used by tile entities that drop their contained item when mined to prevent the player from accidentally mining the tile itself when attempting to "mine" the item from the tile entity.
++	/// </summary>
+ 	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
+ 	{
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
  			if (item.stack > 0) {
 +				//TODO: Replace with Item.DropItem?
- 				int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
-+				Main.item[num] = item.Clone(); // Added by TML.
+-				int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
++				// int num = //Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
++				int num = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item, noGrabDelay: true);
  				Main.item[num].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num, 1f);
@@ -483,8 +1398,9 @@
  			Item item2 = GetItem(whoAmI, Main.reforgeItem, getItemInDropItemCheck);
  			if (item2.stack > 0) {
 +				//TODO: Replace with Item.DropItem?
- 				int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
-+				Main.item[num2] = item2.Clone(); // Added by TML.
+-				int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
++				// int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
++				int num2 = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item2, noGrabDelay: true);
  				Main.item[num2].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num2, 1f);
@@ -493,17 +1409,29 @@
  			Item item3 = GetItem(whoAmI, Main.mouseItem, getItemInDropItemCheck);
  			if (item3.stack > 0) {
 +				//TODO: Replace with Item.DropItem?
- 				int num3 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
+-				int num3 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
++				int num3 = Item.NewItem(new EntitySource_OverfullInventory(this), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
 +				Main.item[num3] = item3.Clone(); // Added by TML.
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num3, 1f);
-@@ -2923,6 +_,13 @@
+@@ -2852,7 +_,8 @@
+ 			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
+ 				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
+ 
+-			int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			// int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			int num = Item.NewItem(GetItemSource_Misc(4), position, width, height, theItemWeDrop);
+ 			theItemWeDrop.position = Main.item[num].position;
+ 			Main.item[num] = theItemWeDrop;
+ 			theItemWeDrop = new Item();
+@@ -2923,6 +_,14 @@
  		return -1;
  	}
  
 +	/// <summary>
-+	/// Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.
++	/// Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.
++	/// <br/> If applying a buff to a player other than the local player in pvp, quiet should be false and the buff must be true in <see cref="Main.pvpBuff"/> to properly sync.
 +	/// </summary>
 +	/// <param name="type">The buff type</param>
 +	/// <param name="timeToAdd">The desired buff time in ticks. 60 ticks is 1 second</param>
@@ -531,6 +1459,17 @@
  			float debuffTimeMultiplier = Main.GameModeInfo.DebuffTimeMultiplier;
  			if (Main.GameModeInfo.IsJourneyMode) {
  				if (Main.masterMode)
+@@ -3054,6 +_,10 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Removes the buff at the provided index in <see cref="buffType"/> and <see cref="buffTime"/> and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.ClearBuff(int)"/> if you only know the <see cref="BuffID"/>.
++	/// </summary>
++	/// <param name="b">The index in <see cref="buffType"/> of the buff to remove.</param>
+ 	public void DelBuff(int b)
+ 	{
+ 		buffTime[b] = 0;
 @@ -3073,8 +_,16 @@
  		}
  	}
@@ -548,6 +1487,14 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type)
  				DelBuff(i);
+@@ -3105,6 +_,7 @@
+ 		if (item.potion)
+ 			ApplyPotionDelay(item);
+ 
++		ItemLoader.UseItem(item, this);
+ 		ApplyLifeAndOrMana(item);
+ 		if (item.type == 5)
+ 			TryToResetHungerToNeutral();
 @@ -3117,6 +_,7 @@
  			AddBuff(item.buffType, num);
  		}
@@ -570,15 +1517,50 @@
  			if (item.type == 227 && num4 < 0) {
  				num4 += 30;
  				if (num4 > 0)
-@@ -3175,6 +_,8 @@
+@@ -3174,7 +_,10 @@
+ 			if (item.potion)
  				ApplyPotionDelay(item);
  
++			ItemLoader.UseItem(item, this);
  			ApplyLifeAndOrMana(item);
 +
 +			if (item.consumable && ItemLoader.ConsumeItem(item, this))
  			item.stack--;
  			if (item.stack <= 0)
  				item.TurnToAir();
+@@ -3186,13 +_,13 @@
+ 	public Item QuickMana_GetItemToUse()
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+-			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion))
++			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && CombinedHooks.CanUseItem(this, inventory[i]))
+ 				return inventory[i];
+ 		}
+ 
+ 		if (useVoidBag()) {
+ 			for (int j = 0; j < 40; j++) {
+-				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, inventory[j]))
+ 					return bank4.item[j];
+ 			}
+ 		}
+@@ -3204,6 +_,7 @@
+ 	{
+ 		bool flag = itemTime > 0 || itemAnimation > 0;
+ 		if ((whoAmI != Main.myPlayer || (!flag && !CCed && !dead)) && loadoutIndex != CurrentLoadoutIndex && loadoutIndex >= 0 && loadoutIndex < Loadouts.Length) {
++			int oldLoadoutIndex = CurrentLoadoutIndex;
+ 			Loadouts[CurrentLoadoutIndex].Swap(this);
+ 			Loadouts[loadoutIndex].Swap(this);
+ 			CurrentLoadoutIndex = loadoutIndex;
+@@ -3218,6 +_,8 @@
+ 					UniqueInfoPiece = loadoutIndex
+ 				}, whoAmI);
+ 			}
++
++			PlayerLoader.OnEquipmentLoadoutSwitched(this, oldLoadoutIndex, loadoutIndex);
+ 		}
+ 	}
+ 
 @@ -3226,7 +_,7 @@
  		if (cursed || CCed || dead)
  			return;
@@ -685,31 +1667,33 @@
  		if (item.shoot == 73) {
  			int num2 = 0;
  			for (int i = 0; i < 1000; i++) {
-@@ -3630,11 +_,24 @@
+@@ -3630,11 +_,13 @@
  		float shootSpeed = item.shootSpeed;
  		int damage = item.damage;
  		float knockBack = item.knockBack;
+-		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
 +
-+		bool vanillaSingleHook = false;
- 		if (num7 == 13 || num7 == 32 || num7 == 315 || (num7 >= 230 && num7 <= 235) || num7 == 331 || num7 == 753 || num7 == 865 || num7 == 935) {
-+			vanillaSingleHook = true;
-+		}
-+
-+		if (ProjectileLoader.SingleGrappleHook(num7, this) ?? vanillaSingleHook) {
++		if (ProjectileID.Sets.SingleGrappleHook[num7]) {
  			grappling[0] = -1;
  			grapCount = 0;
  			for (int num8 = 0; num8 < 1000; num8++) {
  				if (Main.projectile[num8].active && Main.projectile[num8].owner == whoAmI) {
-+					if (ProjectileLoader.SingleGrappleHook(Main.projectile[num8].type, this) is bool modSingleHook2) {
-+						if (modSingleHook2)
-+							Main.projectile[num8].Kill();
-+
-+						continue;
-+					}
-+
++					/*
  					switch (Main.projectile[num8].type) {
  						case 13:
  						case 230:
+@@ -3651,6 +_,11 @@
+ 							Main.projectile[num8].Kill();
+ 							break;
+ 					}
++					*/
++					if (!ProjectileID.Sets.SingleGrappleHook[Main.projectile[num8].type])
++						continue;
++
++					Main.projectile[num8].Kill();
+ 				}
+ 			}
+ 		}
 @@ -3721,11 +_,14 @@
  					break;
  				case -1:
@@ -797,7 +1781,7 @@
  	{
 +		DropFromItem(type);
 +
-+		if ((!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++		if (!ItemID.Sets.PreHardmodeLikeBossBag[type]) {
 +			TryGettingDevArmor(GetItemSource_OpenItem(type));
 +		}
 +
@@ -837,7 +1821,7 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
  		bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  		switch (crateItemID) {
-@@ -6465,10 +_,12 @@
+@@ -6465,12 +_,22 @@
  					break;
  			}
  
@@ -849,7 +1833,34 @@
 +		*/
  	}
  
++	/// <summary>
++	/// Counts the total stack of the specified item type in this players <see cref="inventory"/>. <br/>
++	/// Does not check Void Bag. <br/>
++	/// Use <see cref="Player.HasItem(int)"/> to check if the player has the item at all. <br/>
++	/// </summary>
++	/// <param name="type">The item type to count</param>
++	/// <param name="stopCountingAt">When to stop counting, useful to avoid unnecessary calculations</param>
++	/// <returns>The total amount counted</returns>
  	public int CountItem(int type, int stopCountingAt = 0)
+ 	{
+ 		int num = 0;
+@@ -6485,6 +_,16 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Use to consume a single item. The item does not have to be <see cref="Item.consumable"/>. <br/>
++	/// Attempts to reduce the <see cref="Item.stack"/> of the first <see cref="Item"/> found in the <see cref="inventory"/> by 1. <br/>
++	/// Respects <see cref="ItemLoader.ConsumeItem(Item, Player)"/>, so the item won't necessarily be consumed. <br/>
++	/// To consume multiple of the item, first check <see cref="Player.CountItem"/> to ensure that there are enough of the item, then use a for loop to call this method many times. <br/>
++	/// </summary>
++	/// <param name="type">The item type to consume</param>
++	/// <param name="reverseOrder">If true, the search for the item will start at the end of the player inventory</param>
++	/// <param name="includeVoidBag">If true, the void bag, if open, will also be considered for finding an item to consume</param>
++	/// <returns>True if the item was found and attempted to be consumed</returns>
+ 	public bool ConsumeItem(int type, bool reverseOrder = false, bool includeVoidBag = false)
+ 	{
+ 		int num = 0;
 @@ -6498,7 +_,9 @@
  
  		for (int i = num; i != num2; i += num3) {
@@ -987,11 +1998,15 @@
  	}
  
  	public void UpdateDyes()
-@@ -7002,12 +_,15 @@
+@@ -7002,12 +_,19 @@
  				int num = i % 10;
  				UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
  			}
-+			// Extra patch context.
++			// Needs to update modded slots between vanilla slots for proper ordering of dyes, so ModAccessorySlotPlayer doesn't override UpdateDyes and is manually called. Fixes #3061
++			if (i == 9)
++				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(socialSlots: false);
++			if (i == 19)
++				AccessorySlotLoader.ModSlotPlayer(this).UpdateDyes(socialSlots: true);
  		}
 +
 +		PlayerLoader.UpdateDyes(this);
@@ -1004,7 +2019,12 @@
  	{
  		if (armorItem.IsAir)
  			return;
-@@ -7020,13 +_,13 @@
+@@ -7017,16 +_,18 @@
+ 		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count && (cShieldFallback == -1 || !flag))
+ 			cShieldFallback = dyeItem.dye;
+ 
++		ItemLoader.UpdateItemDye(armorItem, this, dyeItem.dye, flag); // Call early to support hideVisuals bypassing
++
  		if (!num && flag)
  			return;
  
@@ -1075,23 +2095,32 @@
  			cWings = dyeItem.dye;
  
  		if (armorItem.type == 934)
-@@ -7112,6 +_,8 @@
+@@ -7112,12 +_,17 @@
  		}
+ 	}
+ 
++	public IEntitySource GetSource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
++
++	// made internal, public rename ^
+-	public IEntitySource GetProjectileSource_Buff(int buffIndex)
++	internal IEntitySource GetProjectileSource_Buff(int buffIndex)
+ 	{
+ 		int buffId = buffType[buffIndex];
+ 		return new EntitySource_Buff(this, buffId, buffIndex);
  	}
  
 +	// Original vanilla methods:
 +	/*
- 	public IEntitySource GetProjectileSource_Buff(int buffIndex)
- 	{
- 		int buffId = buffType[buffIndex];
-@@ -7132,9 +_,36 @@
+ 	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+ 	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
+ 	public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
+@@ -7132,9 +_,35 @@
  	public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
 +	*/
 +
 +	// Internal redirects:
-+	internal IEntitySource GetProjectileSource_Buff(int buffIndex) => GetSource_Buff(buffIndex);
 +	internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
 +	internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +	internal IEntitySource GetItemSource_Death() => GetSource_Death();
@@ -1186,7 +2215,36 @@
  			}
  			else if (buffType[j] == 116) {
  				inferno = true;
-@@ -7397,10 +_,13 @@
+@@ -7363,7 +_,7 @@
+ 				bool flag = infernoCounter % 60 == 0;
+ 				int damage = 20;
+ 				if (whoAmI != Main.myPlayer)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int k = 0; k < 200; k++) {
+ 					NPC nPC = Main.npc[k];
+@@ -7377,7 +_,7 @@
+ 				}
+ 
+ 				if (!hostile)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				for (int l = 0; l < 255; l++) {
+ 					Player player = Main.player[l];
+@@ -7388,19 +_,22 @@
+ 						player.AddBuff(num2, 120);
+ 
+ 					if (flag) {
++						PlayerDeathReason reason = PlayerDeathReason.ByOther(16, whoAmI);
+-						player.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0, pvp: true);
++						player.Hurt(reason, damage, 0, pvp: true);
+ 						if (Main.netMode != 0) {
+-							PlayerDeathReason reason = PlayerDeathReason.ByOther(16);
+ 							NetMessage.SendPlayerHurt(l, reason, damage, 0, critical: false, pvp: true, -1);
+ 						}
+ 					}
  				}
  			}
  			else if (buffType[j] == 117) {
@@ -1228,6 +2286,43 @@
  			}
  			else if (buffType[j] == 41) {
  				buffTime[j] = 18000;
+@@ -8598,18 +_,19 @@
+ 				frozen = true;
+ 				fallStart = (int)(position.Y / 16f);
+ 				if (Main.myPlayer != whoAmI)
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 
+ 				if (position.Y / 16f > (float)Main.UnderworldLayer) {
+-					if (Main.myPlayer == whoAmI)
++					if (Main.myPlayer == whoAmI) {
+ 						DelBuff(j);
+-
+-					continue;
++						j--;
++					}
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				if (shimmerWet) {
+ 					buffTime[j] = 60;
+-					continue;
++					goto UpdateBuffsLoopEnd; //continue;
+ 				}
+ 
+ 				bool flag32 = false;
+@@ -8622,8 +_,10 @@
+ 
+ 				if (flag32)
+ 					buffTime[j] = 6;
+-				else
++				else {
+ 					DelBuff(j);
++					j--;
++				}
+ 			}
+ 			else if (buffType[j] == 163) {
+ 				headcovered = true;
 @@ -8708,14 +_,20 @@
  			else if (buffType[j] == 26) {
  				wellFed = true;
@@ -1332,37 +2427,110 @@
  				minionKB -= 1f;
  				pickSpeed += 0.15f;
  			}
-@@ -8805,6 +_,9 @@
+@@ -8805,6 +_,10 @@
  			else if (buffType[j] == 79) {
  				meleeEnchant = 8;
  			}
 +
++			UpdateBuffsLoopEnd:
 +			if (j == originalIndex)
 +				BuffLoader.Update(buffType[j], this, ref j);
  		}
  
  		UpdateHungerBuffs();
-@@ -9431,6 +_,9 @@
+@@ -8925,6 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// A helper method that handles code common to pet buffs. Can be used during the buff update code.<br/>
++	/// Sets the buff time to the value and spawns the corresponding pet projectile for the player if not yet spawned.<br/>
++	/// </summary>
++	/// <param name="buffIndex"></param>
++	/// <param name="petBool"></param>
++	/// <param name="petProjID"></param>
++	/// <param name="buffTimeToGive"></param>
+ 	public void BuffHandle_SpawnPetIfNeededAndSetTime(int buffIndex, ref bool petBool, int petProjID, int buffTimeToGive = 18000)
+ 	{
+ 		buffTime[buffIndex] = buffTimeToGive;
+@@ -9226,23 +_,26 @@
+ 		accStopwatch = false;
+ 		accOreFinder = false;
+ 		accDreamCatcher = false;
++
++		PlayerLoader.ResetInfoAccessories(this);
++
+ 		for (int i = 0; i < 58; i++) {
+ 			int type = inventory[i].type;
+-			RefreshInfoAccsFromItemType(type);
++			RefreshInfoAccsFromItemType(inventory[i]);
+ 			if (type == 4131)
+ 				flag = true;
+ 		}
+ 
+ 		for (int j = 0; j < 10; j++) {
+ 			int type2 = armor[j].type;
+-			RefreshInfoAccsFromItemType(type2);
++			RefreshInfoAccsFromItemType(armor[j]);
+ 		}
+ 
+ 		if (flag) {
+ 			for (int k = 0; k < 40; k++) {
+ 				int type3 = bank4.item[k].type;
+-				if (type3 < 0 || type3 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type3])
+-					RefreshInfoAccsFromItemType(type3);
++				if (type3 < 0 || ItemID.Sets.WorksInVoidBag[type3])
++					RefreshInfoAccsFromItemType(bank4.item[k]);
+ 			}
+ 		}
+ 
+@@ -9301,11 +_,20 @@
+ 
+ 				if (Main.player[i].hasLuck_LuckyCoin)
+ 					hasLuck_LuckyCoin = true;
++
++				PlayerLoader.RefreshInfoAccessoriesFromTeamPlayers(this, Main.player[i]);
+ 			}
+ 		}
+ 	}
+ 
++	// Added by tML.
++	public void RefreshInfoAccsFromItemType(Item item)
++	{
++		RefreshInfoAccsFromItemType(item.type);
++		ItemLoader.UpdateInfoAccessory(item, this);
++	}
++
+-	public void RefreshInfoAccsFromItemType(int accType)
++	private void RefreshInfoAccsFromItemType(int accType)
+ 	{
+ 		if ((accType == 15 || accType == 707) && accWatch < 1)
+ 			accWatch = 1;
+@@ -9431,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
  			int type = inventory[j].type;
+-			RefreshInfoAccsFromItemType(type);
 +
 +			ItemLoader.UpdateInventory(inventory[j], this);
 +
- 			RefreshInfoAccsFromItemType(type);
++			RefreshInfoAccsFromItemType(inventory[j]);
  			RefreshMechanicalAccsFromItemType(type);
  			if (type == 4743)
-@@ -9456,7 +_,9 @@
+ 				hasFootball = true;
+@@ -9456,8 +_,10 @@
  		if (flag) {
  			for (int l = 0; l < 40; l++) {
  				int type2 = bank4.item[l].type;
 -				if (type2 < 0 || type2 > ItemID.Count || ItemID.Sets.WorksInVoidBag[type2]) {
+-					RefreshInfoAccsFromItemType(type2);
 +				if (ItemID.Sets.WorksInVoidBag[type2]) {
 +					ItemLoader.UpdateInventory(bank4.item[l], this);
 +
- 					RefreshInfoAccsFromItemType(type2);
++					RefreshInfoAccsFromItemType(bank4.item[l]);
  					RefreshMechanicalAccsFromItemType(type2);
  				}
+ 			}
 @@ -9471,8 +_,14 @@
  
  		for (int m = 3; m < 10; m++) {
@@ -1417,7 +2585,7 @@
  
  		for (int num = 13; num < 20; num++) {
  			if (IsItemSlotUnlockedAndUsable(num))
-@@ -9562,7 +_,7 @@
+@@ -9562,10 +_,10 @@
  		}
  	}
  
@@ -1425,7 +2593,11 @@
 +	public void GrantArmorBenefits(Item armorPiece)
  	{
  		int type = armorPiece.type;
- 		RefreshInfoAccsFromItemType(type);
+-		RefreshInfoAccsFromItemType(type);
++		RefreshInfoAccsFromItemType(armorPiece);
+ 		RefreshMechanicalAccsFromItemType(type);
+ 		if (armorPiece.type == 3017 || armorPiece.type == 3993) {
+ 			flowerBoots = true;
 @@ -9737,6 +_,9 @@
  			armorPenetration += 5;
  
@@ -1457,11 +2629,29 @@
  		}
  
  		if (armorPiece.type == 3374)
-@@ -9811,10 +_,13 @@
+@@ -9799,22 +_,31 @@
+ 		}
+ 
+ 		if (armorPiece.type == 100 || armorPiece.type == 101 || armorPiece.type == 102) {
++			allCrit += 5;
++			/*
+ 			magicCrit += 5;
+ 			meleeCrit += 5;
+ 			rangedCrit += 5;
++			*/
+ 		}
+ 
+ 		if (armorPiece.type == 956 || armorPiece.type == 957 || armorPiece.type == 958) {
++			allCrit += 5;
++			/*
+ 			magicCrit += 5;
+ 			meleeCrit += 5;
+ 			rangedCrit += 5;
++			*/
  		}
  
  		if (armorPiece.type == 792 || armorPiece.type == 793 || armorPiece.type == 794) {
-+			allDamage += 0.02f;
++			allDamage += 0.03f;
 +			/*
  			meleeDamage += 0.03f;
  			rangedDamage += 0.03f;
@@ -1572,7 +2762,7 @@
  		}
  
  		if (armorPiece.type == 1210) {
-@@ -9970,9 +_,12 @@
+@@ -9970,17 +_,23 @@
  		}
  
  		if (armorPiece.type == 1213) {
@@ -1585,6 +2775,17 @@
  		}
  
  		if (armorPiece.type == 1214) {
+ 			moveSpeed += 0.11f;
++			allDamage += 0.08f;
++			/*
+ 			meleeDamage += 0.08f;
+ 			rangedDamage += 0.08f;
+ 			magicDamage += 0.08f;
+ 			minionDamage += 0.08f;
++			*/
+ 		}
+ 
+ 		if (armorPiece.type == 1215) {
 @@ -10001,6 +_,9 @@
  		}
  
@@ -1688,7 +2889,16 @@
  			moveSpeed += 0.05f;
  		}
  
-@@ -10365,14 +_,17 @@
+@@ -10139,7 +_,7 @@
+ 
+ 		if (armorPiece.type == 1548) {
+ 			rangedCrit += 5;
+-			rocketDamage *= 1.15f;
++			specialistDamage *= 1.15f; // rocketDamage renamed.
+ 		}
+ 
+ 		if (armorPiece.type == 1549) {
+@@ -10365,14 +_,21 @@
  			minionDamage += 0.11f;
  		}
  
@@ -1698,6 +2908,10 @@
  			maxMinions++;
  			minionDamage += 0.11f;
  		}
++
++		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
++			hasGemRobe = true;
 +
 +		ItemLoader.UpdateEquip(armorPiece, this);
  	}
@@ -1774,7 +2988,7 @@
  		if (item.prefix == 80)
  			meleeSpeed += 0.04f;
 +
-+		// TODO: PrefixLoader.GrantPrefixBenefits(item)
++		PrefixLoader.ApplyAccessoryEffects(this, item);
  	}
  
  	private void SpawnHallucination(Item item)
@@ -2025,7 +3239,7 @@
 +		fullHair = head >= 0 && ArmorIDs.Head.Sets.DrawFullHair[head];
 +		hatHair = head >= 0 && ArmorIDs.Head.Sets.DrawHatHair[head];
 +		hideHair = (face >= 0 && ArmorIDs.Face.Sets.PreventHairDraw[face]) || (faceHead >= 0 && head != 0);
-+		backHairDraw = hair >= 0 && ArmorIDs.Head.Sets.DrawBackHair[hair];
++		backHairDraw = hair >= 0 && HairID.Sets.DrawBackHair[hair];
 +		drawsBackHairWithoutHeadgear = head >= 0 && ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[head];
 +
 +		/*
@@ -2040,11 +3254,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13287,6 +_,7 @@
+@@ -13287,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		selectItemOnNextUse = false; // Added by TML
  		ResetVisibleAccessories();
  		poisoned = false;
  		venom = false;
@@ -2058,17 +3273,24 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
-@@ -13538,6 +_,16 @@
+@@ -13522,6 +_,10 @@
+ 
+ 	public void SmartSelectLookup()
+ 	{
++		// Added by TML to preserve mouse item with moved call location
++		if (selectedItem == 58)
++			return;
++
+ 		if (mouseInterface)
+ 			controlTorch = false;
+ 
+@@ -13538,6 +_,12 @@
  					toolStrategy = 5;
  			}
  
 +			int modSelect = TileLoader.AutoSelect(tX, tY, this);
-+
 +			if (modSelect >= 0) {
-+				if (nonTorch == -1)
-+					nonTorch = selectedItem;
-+
-+				selectedItem = modSelect;
++				SmartSelect_SelectItem(modSelect);
 +				return;
 +			}
 +
@@ -2141,13 +3363,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  					}
-@@ -13858,6 +_,13 @@
+@@ -13858,6 +_,16 @@
  				if (tile == null)
  					return;
  
-+				if (tile.type > TileID.Count) {
-+					if (tile.active() && TileID.Sets.Torch[tile.type])
++				if (tile.type >= TileID.Count) {
++					if (tile.active() && TileID.Sets.Torch[tile.type]) {
 +						NearbyModTorch.Add(tile.type);
++						if (tile.frameX < 66)
++							nearbyTorches++;
++					}
 +
 +					continue;
 +				}
@@ -2155,24 +3380,50 @@
  				if (!tile.active() || tile.type != 4 || tile.frameX < 0 || tile.frameY < 0)
  					continue;
  
+@@ -13887,7 +_,8 @@
+ 		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
+ 			int num = unlitTorchX[i];
+ 			int num2 = unlitTorchY[i];
++			
+-			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
++			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
+ 				Main.tile[num, num2].frameX -= 66;
+ 				NetMessage.SendTileSquare(-1, num, num2);
+ 			}
+@@ -13923,7 +_,7 @@
+ 		for (int i = num3; i <= value2; i++) {
+ 			for (int j = value3; j <= value4; j++) {
+ 				Tile tile = Main.tile[i, j];
+-				if (tile != null && (tile.active() & (tile.type == 4)) && tile.frameX < 66) {
++				if (tile != null && (tile.active() & (TileID.Sets.Torch[tile.type])) && tile.frameX < 66) {
+ 					_torchAttackPosX[num] = i;
+ 					_torchAttackPosY[num] = j;
+ 					num++;
 @@ -13943,7 +_,7 @@
  				NetMessage.SendData(4, -1, -1, null, whoAmI);
  
  			if (numberOfTorchAttacksMade >= 95) {
 -				int number = Item.NewItem(new EntitySource_ByItemSourceId(this, 6), (int)position.X, (int)position.Y, width, height, 5043);
-+				int number = Item.NewItem(new EntitySource_TorchGod(this, Context: "TorchGod_FavorLoot"), (int)position.X, (int)position.Y, width, height, 5043);
++				int number = Item.NewItem(GetItemSource_Misc(6), (int)position.X, (int)position.Y, width, height, 5043);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-@@ -13973,7 +_,7 @@
- 				float num10 = vector2.Length();
- 				vector2.Normalize();
- 				vector2 *= num7;
--				int num11 = Projectile.NewProjectile(GetProjectileSource_Misc(10), vector, vector2, 949, num8, 1f, whoAmI, num9, num10);
-+				int num11 = Projectile.NewProjectile(new EntitySource_TorchGod(this, Context: "TorchGod_Projectile"), vector, vector2, 949, num8, 1f, whoAmI, num9, num10);
- 				Main.projectile[num11].ai[0] = num9;
- 				Main.projectile[num11].ai[1] = num10;
- 				Main.projectile[num11].netUpdate = true;
+@@ -13955,13 +_,14 @@
+ 			int num4 = Main.rand.Next(num);
+ 			int num5 = _torchAttackPosX[num4];
+ 			int num6 = _torchAttackPosY[num4];
+-			if (Main.tile[num5, num6].type == 4 && Main.tile[num5, num6].frameX < 66) {
++			if (TileID.Sets.Torch[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
+ 				float num7 = 8f;
+ 				int num8 = 20;
+ 				if (num8 < 10)
+ 					num8 = 10;
+ 
+ 				int num9 = (int)MathHelper.Clamp(Main.tile[num5, num6].frameY / 22, 0f, TorchID.Count - 1);
++				// TODO: Full Torch god support for modded torches would require TorchID.Dust support, but this is fine for now.
+ 				num9 = TorchID.Dust[num9];
+ 				Main.tile[num5, num6].frameX += 66;
+ 				unlitTorchX[numberOfTorchAttacksMade] = num5;
 @@ -13991,6 +_,9 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;
@@ -2204,7 +3455,7 @@
  		if (torchLuck < 0f)
  			torchLuck = 0f;
  
-@@ -14214,7 +_,9 @@
+@@ -14214,10 +_,16 @@
  		arcticDivingGear = false;
  		noBuilding = false;
  		strongBees = false;
@@ -2213,7 +3464,14 @@
 +		*/
  		ashWoodBonus = false;
  		shroomiteStealth = false;
++		/*
  		statDefense = 0;
++		*/
++		statDefense = DefenseStat.Default;
++		DefenseEffectiveness = MultipliableFloat.One * VanillaBaseDefenseEffectiveness();
+ 		accWatch = 0;
+ 		accCompass = 0;
+ 		accDepthMeter = 0;
 @@ -14225,6 +_,9 @@
  		canFloatInWater = false;
  		lifeRegen = 0;
@@ -2233,6 +3491,15 @@
  		hasFootball = false;
  		drawingFootball = false;
  		minionKB = 0f;
+@@ -14250,7 +_,7 @@
+ 		frogLegJumpBoost = false;
+ 		skyStoneEffects = false;
+ 		noFallDmg = false;
+-		accFlipper = false;
++		//accFlipper = false;
+ 		spawnMax = false;
+ 		spaceGun = false;
+ 		killGuide = false;
 @@ -14275,18 +_,33 @@
  
  		honeyCombItem = null;
@@ -2262,7 +3529,7 @@
 +		*/
 +		arrowDamage = StatModifier.Default;
 +		bulletDamage = StatModifier.Default;
-+		rocketDamage = StatModifier.Default;
++		specialistDamage = StatModifier.Default;
 +
  		coolWhipBuff = false;
  		yoraiz0rEye = 0;
@@ -2277,15 +3544,45 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
-@@ -14540,6 +_,7 @@
+@@ -14505,6 +_,8 @@
+ 		dashType = 0;
+ 		spikedBoots = 0;
+ 		blackBelt = false;
++		breathMax = 200; // Added by TML.
++		breathEffectiveness = StatModifier.Default;
+ 		lavaMax = 0;
+ 		archery = false;
+ 		poisoned = false;
+@@ -14538,8 +_,10 @@
+ 		witheredWeapon = false;
+ 		parryDamageBuff = false;
  		slowOgreSpit = false;
++		hasGemRobe = false; // Added by TML.
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML.
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
-@@ -14652,18 +_,22 @@
+@@ -14597,6 +_,9 @@
+ 		boneGloveItem = null;
+ 		hasLuck_LuckyCoin = false;
+ 		hasLuck_LuckyHorseshoe = false;
++		blockExtraJumps = false;
++		ExtraJumpLoader.ResetEnableFlags(this);
++		/*
+ 		hasJumpOption_Cloud = false;
+ 		hasJumpOption_Sail = false;
+ 		hasJumpOption_Sandstorm = false;
+@@ -14606,6 +_,7 @@
+ 		hasJumpOption_Santank = false;
+ 		hasJumpOption_WallOfFleshGoat = false;
+ 		hasJumpOption_Basilisk = false;
++		*/
+ 		defendedByPaladin = false;
+ 		hasPaladinShield = false;
+ 		hasLucyTheAxe = false;
+@@ -14652,18 +_,23 @@
  			}
  		}
  
@@ -2294,6 +3591,7 @@
  		mount.CheckMountBuff(this);
 +
 +		PlayerLoader.ResetEffects(this);
++		PlayerLoader.ResetInfoAccessories(this);
  	}
  
  	private void UpdateLadyBugLuckTime()
@@ -2348,7 +3646,7 @@
  		}
  		else {
  			if (jumpBoost) {
-@@ -15582,7 +_,7 @@
+@@ -15582,14 +_,14 @@
  			if (flag4)
  				num5 = 30;
  
@@ -2357,7 +3655,15 @@
  			float knockback = 10f;
  			if (flag4)
  				knockback = 7f;
-@@ -15599,7 +_,7 @@
+ 
+ 			int nPCImmuneTime = 30;
+ 			int playerImmuneTime = 6;
+-			CollideWithNPCs(rect, damage, knockback, nPCImmuneTime, playerImmuneTime);
++			CollideWithNPCs(rect, damage, knockback, nPCImmuneTime, playerImmuneTime, DamageClass.Summon);
+ 		}
+ 
+ 		if (mount.Active && mount.Type == 44 && Math.Abs(velocity.X) > mount.DashSpeed - mount.RunSpeed / 4f) {
+@@ -15599,11 +_,11 @@
  
  			rect2.Width = 2;
  			rect2.Inflate(6, 12);
@@ -2366,7 +3672,12 @@
  			float knockback2 = 12f;
  			int nPCImmuneTime2 = 30;
  			int playerImmuneTime2 = 6;
-@@ -15613,7 +_,7 @@
+-			CollideWithNPCs(rect2, damage2, knockback2, nPCImmuneTime2, playerImmuneTime2);
++			CollideWithNPCs(rect2, damage2, knockback2, nPCImmuneTime2, playerImmuneTime2, DamageClass.Summon);
+ 		}
+ 
+ 		if (mount.Active && mount.Type == 45 && Math.Abs(velocity.X) > mount.DashSpeed * 0.9f) {
+@@ -15613,11 +_,11 @@
  
  			rect3.Width = 2;
  			rect3.Inflate(6, 12);
@@ -2375,7 +3686,12 @@
  			float knockback3 = 12f;
  			int nPCImmuneTime3 = 30;
  			int playerImmuneTime3 = 6;
-@@ -15627,7 +_,7 @@
+-			CollideWithNPCs(rect3, damage3, knockback3, nPCImmuneTime3, playerImmuneTime3);
++			CollideWithNPCs(rect3, damage3, knockback3, nPCImmuneTime3, playerImmuneTime3, DamageClass.Summon);
+ 		}
+ 
+ 		if (mount.Active && mount.Type == 14 && Math.Abs(velocity.X) > mount.RunSpeed / 2f) {
+@@ -15627,11 +_,11 @@
  
  			rect4.Width = 2;
  			rect4.Inflate(6, 12);
@@ -2384,7 +3700,12 @@
  			float knockback4 = 10f;
  			int nPCImmuneTime4 = 30;
  			int playerImmuneTime4 = 6;
-@@ -15641,7 +_,7 @@
+-			CollideWithNPCs(rect4, damage4, knockback4, nPCImmuneTime4, playerImmuneTime4);
++			CollideWithNPCs(rect4, damage4, knockback4, nPCImmuneTime4, playerImmuneTime4, DamageClass.Summon);
+ 		}
+ 
+ 		if (mount.Active && mount.Type == 17 && Math.Abs(velocity.X) > mount.RunSpeed / 2f) {
+@@ -15641,11 +_,11 @@
  
  			rect5.Width = 2;
  			rect5.Inflate(6, 12);
@@ -2393,6 +3714,11 @@
  			float knockback5 = 10f;
  			int nPCImmuneTime5 = 30;
  			int playerImmuneTime5 = 12;
+-			CollideWithNPCs(rect5, damage5, knockback5, nPCImmuneTime5, playerImmuneTime5);
++			CollideWithNPCs(rect5, damage5, knockback5, nPCImmuneTime5, playerImmuneTime5, DamageClass.Summon);
+ 		}
+ 
+ 		TryUsingDiggerCart();
 @@ -15680,7 +_,10 @@
  			num -= height;
  
@@ -2413,17 +3739,119 @@
  			for (int i = 0; i < num2; i++) {
  				WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
  			}
-@@ -15870,7 +_,9 @@
- 			damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
+@@ -15833,7 +_,7 @@
+ 		}
+ 	}
  
- 		OnHit(npc.Center.X, npc.Center.Y, npc);
+-	public int CollideWithNPCs(Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime)
++	public int CollideWithNPCs(Rectangle myRect, float Damage, float Knockback, int NPCImmuneTime, int PlayerImmuneTime, DamageClass? damageType = null)
+ 	{
+ 		int num = 0;
+ 		for (int i = 0; i < 200; i++) {
+@@ -15851,7 +_,7 @@
+ 					num2 = 1;
+ 
+ 				if (whoAmI == Main.myPlayer)
+-					ApplyDamageToNPC(nPC, (int)Damage, Knockback, num2, crit: false);
++					ApplyDamageToNPC(nPC, (int)Damage, Knockback, num2, crit: false, damageType: damageType);
+ 
+ 				nPC.immune[whoAmI] = NPCImmuneTime;
+ 				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
+@@ -15863,21 +_,91 @@
+ 		return num;
+ 	}
+ 
++	// Added by TML
++	public void ApplyBannerOffenseBuff(NPC npc, ref NPC.HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
 +
-+		//TODO: Should armorPenetration be passed in to this function? Class specific armor penetration bonuses are currently ignored.
--		damage += npc.checkArmorPenetration(armorPenetration, 0f);
-+		damage += npc.checkArmorPenetration((int)armorPenetration, 0);
++	// Added by TML
++	public void ApplyBannerOffenseBuff(int bannerId, ref NPC.HitModifiers modifiers)
++	{
++		if (!HasNPCBannerBuff(bannerId))
++			return;
++
++		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
++		modifiers.TargetDamageMultiplier *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
++	}
++
++	// Added by TML
++	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers) => ApplyBannerDefenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
++
++	// Added by TML
++	public void ApplyBannerDefenseBuff(int bannerId, ref Player.HurtModifiers modifiers)
++	{
++		if (!HasNPCBannerBuff(bannerId))
++			return;
++
++		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
++		modifiers.IncomingDamageMultiplier *= Main.expertMode ? effect.ExpertDamageReceived : effect.NormalDamageReceived;
++	}
++
++	/// <summary>
++	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
++	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
++	/// Will not apply damage class modifiers/knockback. Use <see cref="GetTotalDamage{T}"/> to adjust the damage before calling if necessary. <br/>
++	/// Will apply damage class based armor penetration. <br/>
++	/// Will exit early with no effect if <see cref="PlayerLoader.CanHitNPC"/> returns false.
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="knockback">The amount of knockback to apply</param>
++	/// <param name="direction">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Whether or not the strike is a crit</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
+-	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
++	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
+ 	{
++		if (!PlayerLoader.CanHitNPC(this, npc))
++			return;
++
++		/*
+ 		int num = Item.NPCtoBanner(npc.BannerID());
+ 		if (num > 0 && HasNPCBannerBuff(num))
+ 			damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
++		*/
++		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default, direction);
++		PlayerLoader.ModifyHitNPC(this, npc, ref modifiers);
+ 
++		ApplyBannerOffenseBuff(npc, ref modifiers);
++
++		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
++		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
++
++		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck));
++	}
++
++	/// <summary>
++	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool)"/>. <br/>
++	/// Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="hit">The hit to apply</param>
++	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
++	{
+ 		OnHit(npc.Center.X, npc.Center.Y, npc);
++		/*
+ 		damage += npc.checkArmorPenetration(armorPenetration, 0f);
++		*/
  		NPCKillAttempt attempt = new NPCKillAttempt(npc);
- 		int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit);
- 		if (accDreamCatcher)
+-		int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit);
+-		if (accDreamCatcher)
++		int dmg = npc.StrikeNPC(hit);
++		PlayerLoader.OnHitNPC(this, npc, hit, dmg);
++
++		if (accDreamCatcher && !npc.HideStrikeDamage)
+ 			addDPS(dmg);
+ 
+ 		if (Main.netMode != 0)
++			/*
+ 			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, damage, knockback, direction, crit.ToInt());
++			*/
++			NetMessage.SendStrikeNPC(npc, hit);
+ 
+ 		int num2 = Item.NPCtoBanner(npc.BannerID());
+ 		if (num2 >= 0)
 @@ -15931,7 +_,7 @@
  
  				Rectangle rect2 = nPC.getRect();
@@ -2433,6 +3861,73 @@
  					float knockback = 5f;
  					int num2 = direction;
  					if (velocity.X < 0f)
+@@ -15941,7 +_,7 @@
+ 						num2 = 1;
+ 
+ 					if (whoAmI == Main.myPlayer)
+-						ApplyDamageToNPC(nPC, (int)num, knockback, num2, crit: false);
++						ApplyDamageToNPC(nPC, (int)num, knockback, num2, crit: false, DamageClass.Summon);
+ 
+ 					nPC.immune[whoAmI] = 10;
+ 					velocity.Y = -10f;
+@@ -15987,8 +_,10 @@
+ 				autoJump = false;
+ 
+ 			bool flag = false;
++			/*
+ 			bool flag2 = wet && accFlipper;
+ 			bool flag3 = !mount.Active || !mount.Cart;
++			*/
+ 			if (mount.Active && mount.IsConsideredASlimeMount && wetSlime > 0) {
+ 				wetSlime = 0;
+ 				flag = true;
+@@ -16012,7 +_,7 @@
+ 					}
+ 				}
+ 			}
+-			else if ((sliding || velocity.Y == 0f || flag || canJumpAgain_Cloud || canJumpAgain_Sandstorm || canJumpAgain_Blizzard || canJumpAgain_Fart || canJumpAgain_Sail || canJumpAgain_Unicorn || canJumpAgain_Santank || canJumpAgain_WallOfFleshGoat || canJumpAgain_Basilisk || (flag2 && flag3)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
++			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpUsable()) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
+ 				if (mount.Active && MountID.Sets.Cart[mount.Type])
+ 					position.Y -= 0.001f;
+ 
+@@ -16020,6 +_,7 @@
+ 					justJumped = true;
+ 
+ 				bool flag4 = false;
++				/*
+ 				if (wet && accFlipper) {
+ 					if (swimTime == 0)
+ 						swimTime = 30;
+@@ -16073,6 +_,10 @@
+ 						canJumpAgain_Cloud = false;
+ 					}
+ 				}
++				*/
++
++				// Patch context: flag
++				bool attemptDoubleJumps = !flag;
+ 
+ 				canRocket = false;
+ 				rocketRelease = false;
+@@ -16093,6 +_,10 @@
+ 					if (sliding)
+ 						velocity.X = 3 * -slideDir;
+ 				}
++				else if (attemptDoubleJumps && !blockExtraJumps) {
++					ExtraJumpLoader.ProcessJumps(this);
++				}
++				/*
+ 				else if (flag5) {
+ 					isPerformingJump_Sandstorm = true;
+ 					_ = height;
+@@ -16303,6 +_,7 @@
+ 					Main.gore[num25].velocity.X = Main.gore[num25].velocity.X * 0.1f - velocity.X * 0.1f;
+ 					Main.gore[num25].velocity.Y = Main.gore[num25].velocity.Y * 0.1f - velocity.Y * 0.05f;
+ 				}
++				*/
+ 			}
+ 
+ 			releaseJump = false;
 @@ -16334,16 +_,24 @@
  
  					Rectangle rect = nPC.getRect();
@@ -2459,6 +3954,15 @@
  							crit = true;
  
  						int num3 = direction;
+@@ -16354,7 +_,7 @@
+ 							num3 = 1;
+ 
+ 						if (whoAmI == Main.myPlayer)
+-							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit);
++							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, DamageClass.Melee);
+ 
+ 						eocDash = 10;
+ 						dashDelay = 30;
 @@ -16384,16 +_,25 @@
  						ConsumeSolarFlare();
  					}
@@ -2486,6 +3990,15 @@
  						crit2 = true;
  
  					int num6 = direction;
+@@ -16404,7 +_,7 @@
+ 						num6 = 1;
+ 
+ 					if (whoAmI == Main.myPlayer) {
+-						ApplyDamageToNPC(nPC2, (int)num4, num5, num6, crit2);
++						ApplyDamageToNPC(nPC2, (int)num4, num5, num6, crit2, DamageClass.Melee);
+ 						int num7 = Projectile.NewProjectile(GetProjectileSource_OnHit(nPC2, 2), base.Center.X, base.Center.Y, 0f, 0f, 608, (int)num4, 15f, Main.myPlayer);
+ 						Main.projectile[num7].Kill();
+ 					}
 @@ -16631,6 +_,14 @@
  		solarDashConsumedFlare = false;
  	}
@@ -2501,6 +4014,32 @@
  	private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
  	{
  		dir = 0;
+@@ -16745,7 +_,7 @@
+ 	public void CarpetMovement()
+ 	{
+ 		bool flag = false;
+-		if (grappling[0] == -1 && carpet && !canJumpAgain_Cloud && !canJumpAgain_Sandstorm && !canJumpAgain_Blizzard && !canJumpAgain_Fart && !canJumpAgain_Sail && !canJumpAgain_Unicorn && !canJumpAgain_Santank && !canJumpAgain_WallOfFleshGoat && !canJumpAgain_Basilisk && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
++		if (grappling[0] == -1 && carpet && !AnyExtraJumpUsable() && jump == 0 && velocity.Y != 0f && rocketTime == 0 && wingTime == 0f && !mount.Active) {
+ 			if (controlJump && canCarpet) {
+ 				canCarpet = false;
+ 				carpetTime = 300;
+@@ -16783,6 +_,8 @@
+ 
+ 	public void DoubleJumpVisuals()
+ 	{
++		ExtraJumpLoader.JumpVisuals(this);
++		/*
+ 		if (isPerformingJump_Cloud && hasJumpOption_Cloud && !canJumpAgain_Cloud && (canJumpAgain_Sandstorm || !hasJumpOption_Sandstorm) && ((gravDir == 1f && velocity.Y < 0f) || (gravDir == -1f && velocity.Y > 0f))) {
+ 			int num = height;
+ 			if (gravDir == -1f)
+@@ -16894,6 +_,7 @@
+ 			Main.dust[num15].noGravity = true;
+ 			Main.dust[num15].noLight = true;
+ 		}
++		*/
+ 	}
+ 
+ 	public void WingMovement()
 @@ -16930,6 +_,7 @@
  			if (wingsLogic == 26) {
  				num2 = 0.75f;
@@ -2569,6 +4108,43 @@
  	{
  		wingTime = wingTimeMax;
  		rocketTime = rocketTimeMax;
+@@ -17491,6 +_,7 @@
+ 
+ 	private void RefreshDoubleJumps()
+ 	{
++		/*
+ 		if (hasJumpOption_Cloud)
+ 			canJumpAgain_Cloud = true;
+ 
+@@ -17517,6 +_,28 @@
+ 
+ 		if (hasJumpOption_Basilisk)
+ 			canJumpAgain_Basilisk = true;
++		*/
++		RefreshExtraJumps();
++	}
++
++	/// <summary>
++	/// For each extra jump that is <see cref="ExtraJumpState.Enabled"/>, its <see cref="ExtraJumpState.Available"/> property set to <see langword="true"/>, allowing the extra jump to be used again.<br/>
++	/// Vanilla calls this method when the player is grounded and when jumping off of a grappling hook.
++	/// </summary>
++	public void RefreshExtraJumps()
++	{
++		ExtraJumpLoader.RefreshJumps(this);
++	}
++
++	/// <summary>
++	/// Sets the <see cref="ExtraJumpState.Available"/> flag for all extra jumps to <see langword="false"/>.<br/>
++	/// If you want to disable an extra jump, use <see cref="ExtraJumpState.Disable"/> instead.<br/>
++	/// If you want to disable <b>all</b> extra jumps, but not prevent them once the disabling factor is removed, use <see cref="blockExtraJumps"/> instead.
++	/// </summary>
++	public void ConsumeAllExtraJumps()
++	{
++		// Included to make consuming all extra jumps easier to write
++		ExtraJumpLoader.ConsumeAllJumps(this);
+ 	}
+ 
+ 	public void StickyMovement()
 @@ -18269,10 +_,10 @@
  		if (gravDir == -1f)
  			num2 = (int)(position.Y - 0.1f) / 16;
@@ -2598,11 +4174,14 @@
  	}
  
  	public void ResetFloorFlags()
-@@ -18303,9 +_,10 @@
+@@ -18303,9 +_,13 @@
  		runningOnSand = false;
  	}
  
 +	//TML: Made return value nullable.
++	/// <summary>
++	/// Gets a solid, unactuated tile at the tile coordinates provided. Will fallback to the tile to the left or right if necessary. Returns null if no suitable tile is found. Typically used to retrieve the tile a player is standing on by passing in the tile coordinates directly below the player.
++	/// </summary>
 -	public static Tile GetFloorTile(int x, int y)
 +	public static Tile? GetFloorTile(int x, int y)
  	{
@@ -2684,6 +4263,20 @@
  				if (controlInv) {
  					if (releaseInventory)
  						ToggleInv();
+@@ -19323,8 +_,12 @@
+ 							DpadRadial.ChangeSelection(-1);
+ 							CircularRadial.ChangeSelection(-1);
+ 						}
+-
++						/*
+ 						if (controlTorch && flag7) {
++						*/
++						// TML: minor tweak, smart select item is held with controlUse even when item cannot be used right now.
++						// In any case where nonTorch has a value, we should be setting nonTorch instead of selectedItem
++						if (nonTorch != -1 && flag7) {
+ 							if (selectedItem != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
 @@ -19357,6 +_,7 @@
  						CaptureManager.Instance.Scrolling();
  					}
@@ -2692,7 +4285,7 @@
  						if (!Main.playerInventory) {
  							HandleHotbar();
  						}
-@@ -19397,10 +_,13 @@
+@@ -19397,62 +_,66 @@
  								if (Main.focusRecipe > Main.numAvailableRecipes - 1)
  									Main.focusRecipe = Main.numAvailableRecipes - 1;
  
@@ -2706,7 +4299,98 @@
  					}
  				}
  				else {
-@@ -19566,11 +_,14 @@
+ 					bool flag10 = false;
+ 					if (!Main.drawingPlayerChat && selectedItem != 58 && !Main.editSign && !Main.editChest) {
+ 						int num15 = -1;
+-						if (Main.keyState.IsKeyDown(Keys.D1)) {
++						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
++						if (PlayerInput.Triggers.Current.Hotbar1) { 
+ 							num15 = 0;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D2)) {
++						if (PlayerInput.Triggers.Current.Hotbar2) {
+ 							num15 = 1;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D3)) {
++						if (PlayerInput.Triggers.Current.Hotbar3) {
+ 							num15 = 2;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D4)) {
++						if (PlayerInput.Triggers.Current.Hotbar4) {
+ 							num15 = 3;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D5)) {
++						if (PlayerInput.Triggers.Current.Hotbar5) {
+ 							num15 = 4;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D6)) {
++						if (PlayerInput.Triggers.Current.Hotbar6) {
+ 							num15 = 5;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D7)) {
++						if (PlayerInput.Triggers.Current.Hotbar7) {
+ 							num15 = 6;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D8)) {
++						if (PlayerInput.Triggers.Current.Hotbar8) {
+ 							num15 = 7;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D9)) {
++						if (PlayerInput.Triggers.Current.Hotbar9) {
+ 							num15 = 8;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D0)) {
++						if (PlayerInput.Triggers.Current.Hotbar10) {
+ 							num15 = 9;
+ 							flag10 = true;
+ 						}
+@@ -19461,14 +_,17 @@
+ 							if (num15 != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
++							selectItemOnNextUse = true; // Added by TML
+ 							nonTorch = num15;
+ 						}
+ 					}
+ 				}
+ 			}
+ 
++			/* Moved into ItemCheck
+ 			if (selectedItem != 58)
+ 				SmartSelectLookup();
++			*/
+ 
+ 			if (stoned != lastStoned) {
+ 				if (whoAmI == Main.myPlayer && stoned) {
+@@ -19559,18 +_,24 @@
+ 						num21 = (int)((position.Y - 1f) / 16f);
+ 
+ 					for (int num22 = num19; num22 <= num20; num22++) {
++						/*
+ 						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && (Main.tile[num22, num21].type == 189 || Main.tile[num22, num21].type == 196 || Main.tile[num22, num21].type == 460 || Main.tile[num22, num21].type == 666)) {
++						*/
++						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && TileID.Sets.NegatesFallDamage[Main.tile[num22, num21].type]) {
+ 							num18 = 0;
+ 							break;
+ 						}
  					}
  				}
  
@@ -2823,7 +4507,7 @@
  		if (tileSpeed > 3f)
  			tileSpeed = 3f;
  
-@@ -20007,9 +_,12 @@
+@@ -20007,11 +_,18 @@
  			wallSpeed = 3f;
  
  		wallSpeed = 1f / wallSpeed;
@@ -2832,11 +4516,16 @@
 +		/*
  		if (statManaMax2 > 400)
  			statManaMax2 = 400;
--
 +		*/
+ 
++		// positive value capping built-in to DefenseStat
++		/*
  		if (statDefense < 0)
  			statDefense = 0;
++		*/
  
+ 		if (slowOgreSpit) {
+ 			moveSpeed /= 3f;
 @@ -20046,6 +_,9 @@
  			pickSpeed = 0.3f;
  
@@ -2862,6 +4551,56 @@
  		}
  
  		lastTileRangeX = tileRangeX;
+@@ -20085,6 +_,8 @@
+ 			movementAbilitiesCache.PasteInto(this);
+ 
+ 		if (mount.Active && mount.BlockExtraJumps) {
++			ConsumeAllExtraJumps();
++			/*
+ 			canJumpAgain_Cloud = false;
+ 			canJumpAgain_Sandstorm = false;
+ 			canJumpAgain_Blizzard = false;
+@@ -20094,11 +_,14 @@
+ 			canJumpAgain_Santank = false;
+ 			canJumpAgain_WallOfFleshGoat = false;
+ 			canJumpAgain_Basilisk = false;
++			*/
+ 		}
+ 		else if (velocity.Y == 0f || sliding) {
+ 			RefreshDoubleJumps();
+ 		}
+ 		else {
++			ExtraJumpLoader.ConsumeAndStopUnavailableJumps(this);
++			/*
+ 			if (!hasJumpOption_Cloud)
+ 				canJumpAgain_Cloud = false;
+ 
+@@ -20125,6 +_,7 @@
+ 
+ 			if (!hasJumpOption_Basilisk)
+ 				canJumpAgain_Basilisk = false;
++			*/
+ 		}
+ 
+ 		if (!carpet) {
+@@ -20511,6 +_,7 @@
+ 				}
+ 			}
+ 
++			/*
+ 			if (sandStorm) {
+ 				runAcceleration *= 1.5f;
+ 				maxRunSpeed *= 2f;
+@@ -20550,6 +_,9 @@
+ 				runAcceleration *= 1.5f;
+ 				maxRunSpeed *= 1.25f;
+ 			}
++			*/
++
++			ExtraJumpLoader.UpdateHorizontalSpeeds(this);
+ 
+ 			if (carpetFrame != -1) {
+ 				runAcceleration *= 1.25f;
 @@ -20594,6 +_,8 @@
  					mount.UpdateDrill(this, controlUp, controlDown);
  			}
@@ -2894,6 +4633,15 @@
  				if (flag21 && wings != 4 && wings != 22 && wings != 0 && wings != 24 && wings != 28 && wings != 30 && wings != 33 && wings != 45) {
  					bool flag22 = wingFrame == 3;
  					if (wings == 43 || wings == 44)
+@@ -20722,7 +_,7 @@
+ 				if (empressBrooch)
+ 					rocketTime = rocketTimeMax;
+ 
+-				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !canJumpAgain_Cloud) {
++				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpUsable()) {
+ 					if (rocketTime > 0) {
+ 						rocketTime--;
+ 						rocketDelay = 10;
 @@ -20916,6 +_,7 @@
  								Main.dust[num59].shader = GameShaders.Armor.GetSecondaryShader(cWings, this);
  							}
@@ -2928,11 +4676,12 @@
  		if (tongued) {
  			position += velocity;
  			flag30 = false;
-@@ -21810,11 +_,13 @@
- 
+@@ -21811,10 +_,15 @@
  		if (statMana > statManaMax2)
  			statMana = statManaMax2;
--
+ 
++		if (breath > breathMax)
++			breath = breathMax;
 +		// More patch context.
  		grappling[0] = -1;
  		grapCount = 0;
@@ -3023,41 +4772,34 @@
  			if ((specialHitSetter == -1 && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
  				continue;
  
-@@ -23587,10 +_,14 @@
+@@ -23583,10 +_,15 @@
+ 					num3 = 1;
+ 
+ 				int num4 = Main.DamageVar((float)Main.npc[i].damage * damageMultiplier, 0f - luck);
++
++				// Moved to CombinedHooks.ModifyHitByNPC
++				/*
+ 				int num5 = Item.NPCtoBanner(Main.npc[i].BannerID());
  				if (num5 > 0 && HasNPCBannerBuff(num5))
  					num4 = ((!Main.expertMode) ? ((int)((float)num4 * ItemID.Sets.BannerStrength[Item.BannerToItem(num5)].NormalDamageReceived)) : ((int)((float)num4 * ItemID.Sets.BannerStrength[Item.BannerToItem(num5)].ExpertDamageReceived)));
++				*/
  
 +				// Extra patch context.
  				bool flag3 = !immune;
  				if (specialHitSetter >= 0)
  					flag3 = hurtCooldowns[specialHitSetter] == 0;
+@@ -23609,8 +_,11 @@
+ 					ApplyDamageToNPC(Main.npc[i], damage, knockback, -num3, crit: false);
+ 				}
  
-+				bool crit = false;
-+				CombinedHooks.ModifyNPCHitPlayer(Main.npc[i], this, ref num4, ref crit);
-+
- 				if (whoAmI == Main.myPlayer && num2 > 0f && flag3 && !Main.npc[i].dontTakeDamage) {
- 					int num6 = (int)((float)num4 * num2);
- 					if (num6 > 1000)
-@@ -23612,8 +_,19 @@
++				// Moved to CombinedHooks.ModifyHitByNPC
++				/*
  				if (resistCold && Main.npc[i].coldDamage)
  					num4 = (int)((float)num4 * 0.7f);
- 
-+				/*
- 				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
 +				*/
-+				if (flag) {
-+					int realDamage = (int)Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter);
-+					if (realDamage <= 0 || dead || flag2)
-+						goto SkipStatus;
-+
- 					StatusFromNPC(Main.npc[i]);
-+					SkipStatus:
-+
-+					CombinedHooks.OnNPCHitPlayer(Main.npc[i], this, realDamage, crit);
-+				}
  
- 				if (num) {
- 					GiveImmuneTimeForCollisionAttack(longInvince ? 60 : 30);
+ 				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
+ 					StatusFromNPC(Main.npc[i]);
 @@ -23694,6 +_,9 @@
  
  	public void ItemCheck_ManageRightClickFeatures()
@@ -3247,6 +4989,24 @@
  	{
  		short frameX = Main.tile[myX, myY].frameX;
  		bool flag = frameX / 72 == 1;
+@@ -25243,6 +_,9 @@
+ 	{
+ 		NPC nPC = Main.npc[animalNpcIndex];
+ 		targetDirection = ((nPC.Center.X > base.Center.X) ? 1 : (-1));
++		int num = NPCID.Sets.PlayerDistanceWhilePetting[nPC.type];
++		isPetSmall = NPCID.Sets.IsPetSmallForPetting[nPC.type];
++		/*
+ 		int num = 36;
+ 		isPetSmall = false;
+ 		switch (nPC.type) {
+@@ -25272,6 +_,7 @@
+ 				num = 20;
+ 				break;
+ 		}
++		*/
+ 
+ 		playerPositionWhenPetting = nPC.Bottom + new Vector2(-targetDirection * num, 0f);
+ 	}
 @@ -25345,7 +_,14 @@
  			StopPettingAnimal();
  	}
@@ -3274,15 +5034,15 @@
  			noThrow = 2;
  			cursorItemIconEnabled = true;
  			cursorItemIconID = inventory[selectedItem].type;
-@@ -26828,6 +_,8 @@
+@@ -26824,6 +_,8 @@
+ 			noThrow = 2;
+ 		}
+ 
++		TileLoader.MouseOver(myX, myY);
++
+ 		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
- 		}
-+
-+		TileLoader.MouseOver(myX, myY);
- 	}
- 
- 	public Color ChatColor()
 @@ -26967,11 +_,23 @@
  			if (!item.active || item.shimmerTime != 0f || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item) || (item.shimmered && !((double)item.velocity.Length() < 0.2)))
  				continue;
@@ -3295,7 +5055,7 @@
  			if (base.Hitbox.Intersects(hitbox)) {
 -				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
 +				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					if (!ItemLoader.OnPickup(Main.item[j], this)) {
++					if (!CombinedHooks.OnPickup(Main.item[j], this)) {
 +						Main.item[j] = new Item();
 +						if (Main.netMode == 1)
 +							NetMessage.SendData(21, -1, -1, null, j);
@@ -3352,6 +5112,86 @@
  		return num;
  	}
  
+@@ -27286,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="Item.Refresh(bool)"/> on all player-owned storage (inventory, banks, equipment). Also refreshes recipe and shop entries.
++	/// <para/> This is called when entering a world and serves to ensure that items with <see cref="ItemVariants"/> have the correct stats.
++	/// </summary>
+ 	public void RefreshItems(bool onlyIfVariantChanged = true)
+ 	{
+ 		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
+@@ -27301,6 +_,15 @@
+ 		RefreshItems(bank3.item, onlyIfVariantChanged);
+ 		RefreshItems(bank4.item, onlyIfVariantChanged);
+ 		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
++
++		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
++			// Don't adjust custom prices, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
++			var originalCustomPrice = item.shopCustomPrice;
++			var originalSpecialCurrency = item.shopSpecialCurrency;
++			item.Refresh(onlyIfVariantChanged);
++			item.shopCustomPrice = originalCustomPrice;
++			item.shopSpecialCurrency = originalSpecialCurrency;
++		}
+ 	}
+ 
+ 	private void RefreshItems(Item[] array, bool onlyIfVariantChanged)
+@@ -27344,11 +_,29 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to "purchase" something that costs the given <paramref name="price"/>.<br/>
++	/// Items will be taken from all of the player inventories and banks combined.<br/>
++	/// If <paramref name="customCurrency"/> is provided, the price will be in terms of the custom currency instead of coins.<br/>
++	/// If the player has enough currency, the currency will be taken from the inventories.<br/>
++	/// </summary>
++	/// <param name="price"></param>
++	/// <param name="customCurrency"></param>
++	/// <returns>true if the player had enough currency to pay the price.</returns>
+ 	public bool BuyItem(long price, int customCurrency = -1)
+ 	{
+-		if (customCurrency != -1)
+-			return CustomCurrencyManager.BuyItem(this, price, customCurrency);
++		if (CanAfford(price, customCurrency))
++			return PayCurrency(price, customCurrency);
++		return false;
++	}
+ 
++	/// <summary>
++	/// Checks if the player has the provided amount of money or custom currency (if <paramref name="customCurrency"/> is set) in their inventory and banks combined. Use <see cref="BuyItem(long, int)"/> if the player does have enough money to take that money from the player.
++	/// </summary>
++	public bool CanAfford(long price, int customCurrency = -1)
++	{
++		if (customCurrency != -1)
++			return CustomCurrencyManager.CanAfford(this, price, customCurrency);
+ 		bool overFlowing;
+ 		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
+ 		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
+@@ -27357,7 +_,20 @@
+ 		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
+ 		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
+ 			return false;
++		return true;
++	}
+ 
++	/// <summary>
++	/// Attempts to "purchase" something that costs the given <paramref name="price"/>.<br/>
++	/// Items will be taken from all of the player inventories and banks combined.<br/>
++	/// If <paramref name="customCurrency"/> is provided, the price will be in terms of the custom currency instead of coins.<br/>
++	/// The currency will be taken from the inventories.
++	/// <para/> This method does not check if the player has enough currency (use <see cref="CanAfford(long, int)"/> to check that), the <b>game will crash if called on a player without enough currency</b>. Use <see cref="BuyItem(long, int)"/> instead for the more typical usage.
++	/// </summary>
++	public bool PayCurrency(long price, int customCurrency = -1)
++	{
++		if (customCurrency != -1)
++			return CustomCurrencyManager.PayCurrency(this, price, customCurrency);
+ 		List<Item[]> list = new List<Item[]>();
+ 		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
+ 		List<Point> list2 = new List<Point>();
 @@ -27569,7 +_,7 @@
  			num2 += 4;
  		}
@@ -3361,7 +5201,16 @@
  			oldAdjTile[i] = adjTile[i];
  			adjTile[i] = false;
  		}
-@@ -27610,15 +_,17 @@
+@@ -27580,6 +_,8 @@
+ 		adjHoney = false;
+ 		oldAdjLava = adjLava;
+ 		adjLava = false;
++		oldAdjShimmer = adjShimmer;
++		adjShimmer = false;
+ 		alchemyTable = false;
+ 		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
+ 		int num4 = (int)((position.Y + (float)height) / 16f);
+@@ -27610,16 +_,21 @@
  							alchemyTable = true;
  							break;
  					}
@@ -3380,8 +5229,12 @@
 -				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
 +				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
  					adjLava = true;
++
++				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
++					adjShimmer = true;
  			}
  		}
+ 
 @@ -27627,7 +_,7 @@
  			return;
  
@@ -3391,6 +5244,16 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -27643,6 +_,9 @@
+ 		if (adjLava != oldAdjLava)
+ 			flag = true;
+ 
++		if (adjShimmer != oldAdjShimmer)
++			flag = true;
++
+ 		if (flag)
+ 			Recipe.FindRecipes();
+ 	}
 @@ -27759,7 +_,7 @@
  			waist = 0;
  
@@ -3409,6 +5272,15 @@
  			if (b2 != -1 && front == -1) {
  				front = b2;
  				cFront = cBody;
+@@ -27785,7 +_,7 @@
+ 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
+ 				front = includeCapeFrontAndBackInfo.frontCape;
+ 				cFront = cBody;
+-				sbyte backCape = includeCapeFrontAndBackInfo.backCape;
++				int backCape = includeCapeFrontAndBackInfo.backCape;
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[backCape]) {
+ 					backpack = backCape;
+ 					cBackpack = cBody;
 @@ -27848,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
@@ -3465,10 +5337,13 @@
  		if (!isDisplayDollOrInanimate) {
  			if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  				int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
-@@ -28029,6 +_,9 @@
+@@ -28028,7 +_,11 @@
+ 
  		Item.GetDrawHitbox(HeldItem.type, this);
  		bool flag3 = CanVisuallyHoldItem(HeldItem);
- 		bool flag4 = HeldItem.type != 4952;
+-		bool flag4 = HeldItem.type != 4952;
++		// bool flag4 = HeldItem.type != 4952;
++		bool flag4 = HeldItem.useStyle != ItemUseStyleID.RaiseLamp; // TML: #RaiseLampAnimationFix
 +
 +		ItemLoader.UpdateVanitySet(this);
 +
@@ -3484,6 +5359,15 @@
  		}
  		else if (pulley) {
  			if (pulleyDir == 2)
+@@ -28252,7 +_,7 @@
+ 			else
+ 				bodyFrame.Y = bodyFrame.Height * 2;
+ 		}
+-		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
++		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(inventory[selectedItem].type)]/*Allow biome torches underwater.*/) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
+ 			bodyFrame.Y = bodyFrame.Height * 3;
+ 		}
+ 		else if (flag3 && inventory[selectedItem].holdStyle == 2 && (!wet || !inventory[selectedItem].noWet)) {
 @@ -28381,6 +_,10 @@
  			reference9.Y = 0;
  		}
@@ -3495,6 +5379,27 @@
  		if (legs == 140) {
  			legFrameCounter = 0.0;
  			legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
+@@ -28403,6 +_,8 @@
+ 
+ 	private void CancelAllJumpVisualEffects()
+ 	{
++		ExtraJumpLoader.StopActiveJump(this, out _);
++		/*
+ 		isPerformingJump_Cloud = false;
+ 		isPerformingJump_Sandstorm = false;
+ 		isPerformingJump_Blizzard = false;
+@@ -28410,9 +_,10 @@
+ 		isPerformingJump_Sail = false;
+ 		isPerformingJump_Unicorn = false;
+ 		isPerformingJump_Santank = false;
++		*/
+ 	}
+ 
+-	private void CancelAllBootRunVisualEffects()
++	public void CancelAllBootRunVisualEffects()
+ 	{
+ 		sailDash = false;
+ 		coldDash = false;
 @@ -28501,6 +_,7 @@
  
  	private void UpdateVisibleAccessories()
@@ -3512,7 +5417,7 @@
 +			if (!IsItemSlotUnlockedAndUsable(i))
 +				continue;
 +
-+			// Commented code above moved into UpdateVisibileAccessories
++			// Commented code above moved into UpdateVisibleAccessories
 +			UpdateVisibleAccessories(armor[i], hideVisibleAccessory[i], i);
 +		}
 +
@@ -3574,6 +5479,15 @@
  		if (item.type == 3581)
  			yoraiz0rDarkness = true;
  
+@@ -28662,6 +_,8 @@
+ 
+ 		if (item.type == 5075)
+ 			hasRainbowCursor = true;
++
++		ItemLoader.UpdateVisibleAccessory(item, this, false);
+ 	}
+ 
+ 	public void SetArmorEffectVisuals(Player drawPlayer)
 @@ -28799,6 +_,9 @@
  		if (drawPlayer.head == 267)
  			yoraiz0rDarkness = true;
@@ -3608,31 +5522,136 @@
  			dead = false;
  			immuneTime = 0;
  		}
-@@ -29547,6 +_,13 @@
- 				}
- 			}
+@@ -29505,14 +_,44 @@
+ 			frostArmor = true;
+ 	}
  
-+			bool customDamage = false;
-+			bool playSound = true;
-+			bool genGore = true;
++	// Added to replace Main.CalculateDamagePlayersTake[InPvP]
++	private static float VanillaBaseDefenseEffectiveness()
++	{
++		if (Main.masterMode)
++			return 1;
++		if (Main.expertMode)
++			return 0.75f;
 +
-+			if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter))
++		return 0.5f;
++	}
++
++	// made internal because public version has Crit param removed, added armorPenetration arg for smaller Projectile patches
+-	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp = false, bool quiet = false, bool Crit = false, int cooldownCounter = -1, bool dodgeable = true)
++	internal double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp, bool quiet, bool Crit, int cooldownCounter, bool dodgeable = true, float armorPenetration = 0)
+ 	{
++		return Hurt(damageSource, Damage, hitDirection, pvp, quiet, cooldownCounter, dodgeable, armorPenetration);
++	}
++
++	// extra parameters (armorPenetration, scalingArmorPenetration, knockback) added. Crit param removed
++	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
++	{
++		return Hurt(damageSource, Damage, hitDirection, out _,
++			pvp, quiet, cooldownCounter, dodgeable, armorPenetration, scalingArmorPenetration, knockback);
++	}
++
++	// out param and extras from above added
++	public double Hurt(PlayerDeathReason damageSource, int Damage, int hitDirection, out HurtInfo info, bool pvp = false, bool quiet = false, int cooldownCounter = -1, bool dodgeable = true, float armorPenetration = 0, float scalingArmorPenetration = 0, float knockback = 4.5f)
++	{
++		info = default;
++
+ 		if (shimmering && AllowShimmerDodge(damageSource, cooldownCounter, dodgeable))
+ 			return 0.0;
+ 
+ 		if (creativeGodMode)
+ 			return 0.0;
+ 
++		if (PlayerLoader.ImmuneTo(this, damageSource, cooldownCounter, dodgeable))
++			return 0.0;
++
+ 		bool flag = !immune;
+ 		bool flag2 = false;
+ 		int hitContext = cooldownCounter;
+@@ -29530,7 +_,36 @@
+ 		}
+ 
+ 		if (flag) {
++			HurtModifiers modifiers = new() {
++				DamageSource = damageSource,
++				PvP = pvp,
++				CooldownCounter = cooldownCounter,
++				Dodgeable = dodgeable,
++				HitDirection = hitDirection
++			};
++			PlayerLoader.ModifyHurt(this, ref modifiers);
++
++			// intentionally add parameter modifiers after, to reduce the temptation to read their values in Modify hooks
++			modifiers.ArmorPenetration += armorPenetration;
++			modifiers.ScalingArmorPenetration += scalingArmorPenetration;
++
++			// ogre knockback re-implemented from below
+-			if (dodgeable) {
++			if (flag2) {
++				// this gives the right values for X knockback.
++				// Y knockback will be slightly different, but mostly accurate
++				modifiers.Knockback.Base += 6f;
++				modifiers.KnockbackImmunityEffectiveness *= 0.8f; // still launch the player a little
++			}
++
++			ApplyVanillaHurtEffectModifiers(ref modifiers);
++			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
++			if (info.Cancelled)
 +				return 0.0;
 +
++			if (info.Dodgeable) {
++				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, info))
++					return 0.0;
++
+ 				if (whoAmI == Main.myPlayer && blackBelt && Main.rand.Next(10) == 0) {
+ 					NinjaDodge();
+ 					return 0.0;
+@@ -29545,24 +_,44 @@
+ 					ShadowDodge();
+ 					return 0.0;
+ 				}
++
++				if (whoAmI == Main.myPlayer && PlayerLoader.ConsumableDodge(this, info))
++					return 0.0;
+ 			}
+ 
++			Hurt(info, quiet);
++			return info.Damage;
++		}
++
++		return 0.0;
++	}
++
++	private void OnHurt_Part1(HurtInfo info)
++	{
++		int hitDirection = info.HitDirection;
++		{
  			if (whoAmI == Main.myPlayer && panic)
  				AddBuff(63, 480);
  
-@@ -29558,7 +_,8 @@
+ 			if (whoAmI == Main.myPlayer && setSquireT2)
+ 				AddBuff(205, 300);
+ 
++			// Note for future, potential optimization, no need to reset stealth every hit
+ 			stealth = 1f;
+ 			if (Main.netMode == 1)
  				NetMessage.SendData(84, -1, -1, null, whoAmI);
  
++			// Note, vanilla condition can never fail, num2 (damage to take) is always at least 1
++			// num is commented out, as it was only used to lie about pvp
++			/*
  			int num = Damage;
--			double num2 = Main.CalculateDamagePlayersTake(num, statDefense);
-+			// Patch note: num2 - calculated damage, used below in Hurt hook.
-+			double num2 = customDamage ? num : Main.CalculateDamagePlayersTake(num, statDefense);
+ 			double num2 = Main.CalculateDamagePlayersTake(num, statDefense);
  			if (Crit)
  				num *= 2;
  
-@@ -29584,6 +_,16 @@
+ 			if (num2 >= 1.0) {
++			*/
++			{
+ 				if (whoAmI == Main.myPlayer) {
+ 					Main.NotifyOfEvent(GameNotificationType.Damage);
+ 					if (hasFootball) {
+@@ -29584,22 +_,60 @@
  					}
  				}
  
@@ -3649,7 +5668,51 @@
  				if (invis) {
  					for (int k = 0; k < maxBuffs; k++) {
  						if (buffType[k] == 10)
-@@ -29607,7 +_,7 @@
+ 							DelBuff(k);
+ 					}
+ 				}
++			}
++		}
++	}
+ 
++	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
++	{
++		{
++			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
++			if (setSolar && solarShields > 0)
++				modifiers.FinalDamage *= 0.8f;
++
++			if (beetleDefense && beetleOrbs > 0)
++				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
++
++			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
++				modifiers.FinalDamage *= 0.75f;
++		}
++	}
++
++	private void OnHurt_Part2(HurtInfo info)
++	{
++		// Implementations for solar flare, beetle defense and paladin's shield have been split into ApplyVanillaHurtEffectModifiers (above)
++		var damageSource = info.DamageSource;
++		{
++			{
++				/*
+ 				num2 = (int)((double)(1f - endurance) * num2);
+ 				if (num2 < 1.0)
+ 					num2 = 1.0;
++				*/
+ 
+ 				if (ConsumeSolarFlare()) {
++					/*
+ 					float num3 = 0.2f;
+ 					num2 = (int)((double)(1f - num3) * num2);
+ 					if (num2 < 1.0)
+ 						num2 = 1.0;
++						*/
+ 
+ 					if (whoAmI == Main.myPlayer) {
+ 						IEntitySource spawnSource = GetProjectileSource_SetBonus(1);
+@@ -29607,15 +_,17 @@
  						if (damageSource.TryGetCausingEntity(out entity))
  							spawnSource = GetProjectileSource_OnHurt(entity, 1);
  
@@ -3658,46 +5721,209 @@
  						Main.projectile[num4].netUpdate = true;
  						Main.projectile[num4].Kill();
  					}
-@@ -29709,6 +_,9 @@
- 					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
  				}
  
-+				// Patch note: num2 (calculated damage) is at start of the method.
-+				PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
+ 				if (beetleDefense && beetleOrbs > 0) {
++					/*
+ 					float num5 = 0.15f * (float)beetleOrbs;
+ 					num2 = (int)((double)(1f - num5) * num2);
++					*/
+ 					beetleOrbs--;
+ 					for (int l = 0; l < maxBuffs; l++) {
+ 						if (buffType[l] >= 95 && buffType[l] <= 97)
+@@ -29626,12 +_,14 @@
+ 						AddBuff(95 + beetleOrbs - 1, 5, quiet: false);
+ 
+ 					beetleCounter = 0f;
++					/*
+ 					if (num2 < 1.0)
+ 						num2 = 1.0;
++					*/
+ 				}
+ 
+ 				if (magicCuffs) {
+-					int num6 = num;
++					int num6 = info.SourceDamage; //num;
+ 					statMana += num6;
+ 					if (statMana > statManaMax2)
+ 						statMana = statManaMax2;
+@@ -29659,14 +_,30 @@
+ 								}
+ 
+ 								if (flag3) {
++									/*
+ 									int damage = (int)(num2 * 0.25);
+ 									num2 = (int)(num2 * 0.75);
++									*/
++									int damage = info.Damage / 3; // Damage has already been reduced by 1/4 when applying to target player, so dividing by 3 gives us the correct value
+ 									player.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
+ 								}
+ 							}
+ 						}
+ 					}
++					/*
+ 					else {
++					*/
++				}
++			}
++		}
++	}
 +
++	private bool TeammateHasPalidinShieldAndCanTakeDamage()
++	{
++		{
++			{
++				{
++					{
+ 						bool flag4 = false;
+ 						for (int n = 0; n < 255; n++) {
+ 							if (n != Main.myPlayer && Main.player[n].active && !Main.player[n].dead && !Main.player[n].immune && Main.player[n].hasPaladinShield && Main.player[n].team == team && (float)Main.player[n].statLife > (float)Main.player[n].statLifeMax2 * 0.25f) {
+@@ -29675,11 +_,22 @@
+ 							}
+ 						}
+ 
++						/*
+ 						if (flag4)
+ 							num2 = (int)(num2 * 0.75);
++						*/
++						return flag4;
+ 					}
+ 				}
++			}
++		}
++	}
+ 
++	private void OnHurt_Part3(HurtInfo info)
++	{
++		double num2 = info.Damage;
++		{
++			{
+ 				if (brainOfConfusionItem != null && !brainOfConfusionItem.IsAir && Main.myPlayer == whoAmI) {
+ 					for (int num9 = 0; num9 < 200; num9++) {
+ 						if (!Main.npc[num9].active || Main.npc[num9].friendly)
+@@ -29706,16 +_,39 @@
+ 						}
+ 					}
+ 
+-					Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
++					Projectile.NewProjectile(GetSource_Accessory_OnHurt(brainOfConfusionItem, info.DamageSource), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
+ 				}
++			}
++		}
++	}
+ 
++	public void Hurt(HurtInfo info, bool quiet = false)
++	{
++		var damageSource = info.DamageSource;
++		int hitDirection = info.HitDirection;
++		int cooldownCounter = info.CooldownCounter;
++		bool pvp = info.PvP;
++		double num2 = info.Damage;
++		bool Crit = false; // Crit has been removed, since it didn't work anyway
++		bool flag2 = cooldownCounter == ImmunityCooldownID.DD2OgreKnockback;
++
++		{
++			{
  				if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
++					/*
  					if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
++					*/
++					if (info.Knockback != 0 && hitDirection != 0 && (!mount.Active || !mount.Cart))
  						NetMessage.SendData(13, -1, -1, null, whoAmI);
-@@ -29841,6 +_,7 @@
+ 
+ 					NetMessage.SendData(16, -1, -1, null, whoAmI);
+-					NetMessage.SendPlayerHurt(whoAmI, damageSource, Damage, hitDirection, Crit, pvp, hitContext);
++					NetMessage.SendPlayerHurt(whoAmI, info);
+ 				}
++
++				PlayerLoader.OnHurt(this, info);
++				OnHurt_Part1(info);
++				OnHurt_Part2(info);
++				OnHurt_Part3(info);
+ 
+ 				Color color = (Crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
+ 				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num2, Crit);
+@@ -29785,7 +_,7 @@
+ 							else if (Main.expertMode)
+ 								num19 *= 2;
+ 
+-							Projectile.NewProjectile(GetProjectileSource_Accessory(item), x, y, num16, num17, type, num19, 5f, whoAmI, 0f, position.Y);
++							Projectile.NewProjectile(GetSource_Accessory_OnHurt(item, info.DamageSource), x, y, num16, num17, type, num19, 5f, whoAmI, 0f, position.Y);
+ 						}
+ 					}
+ 
+@@ -29809,7 +_,7 @@
+ 						else if (Main.expertMode)
+ 							num21 *= 1.5f;
+ 
+-						IEntitySource projectileSource_Accessory = GetProjectileSource_Accessory(honeyCombItem);
++						IEntitySource projectileSource_Accessory = GetSource_Accessory_OnHurt(honeyCombItem, info.DamageSource);
+ 						for (int num22 = 0; num22 < num20; num22++) {
+ 							float speedX = (float)Main.rand.Next(-35, 36) * 0.02f;
+ 							float speedY = (float)Main.rand.Next(-35, 36) * 0.02f;
+@@ -29821,6 +_,7 @@
+ 				}
+ 
+ 				StopVanityActions();
++				/*
+ 				if (flag2 && hitDirection != 0) {
+ 					if (!mount.Active || !mount.Cart) {
+ 						float num23 = 10.5f;
+@@ -29838,9 +_,16 @@
+ 				else if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart)) {
+ 					velocity.X = 4.5f * (float)hitDirection;
+ 					velocity.Y = -3.5f;
++				}
++				*/
++
++				if (info.Knockback != 0 && hitDirection != 0 && (!mount.Active || !mount.Cart)) {
++					velocity.X = info.Knockback * hitDirection;
++					velocity.Y = info.Knockback * -7 / 9;
  					fallStart = (int)(position.Y / 16f);
  				}
  
-+				if (!playSound) { } else
++				if (info.SoundDisabled) { } else
  				if (stoned)
  					SoundEngine.PlaySound(0, (int)position.X, (int)position.Y);
  				else if (mount.Active && mount.Type == 52)
-@@ -29858,6 +_,10 @@
+@@ -29858,6 +_,9 @@
  
  				eyeHelper.BlinkBecausePlayerGotHurt();
  				if (statLife > 0) {
-+					if (!genGore)
-+						goto PostGore;
++					if (info.DustDisabled)
++						goto PostDust;
 +
-+					// Patch note: num2 (calculated damage), is used below and is confirmed at the top of the method.
  					double num24 = num2 / (double)statLifeMax2 * 100.0;
  					float num25 = 2 * hitDirection;
  					float num26 = 0f;
-@@ -29882,6 +_,10 @@
+@@ -29882,6 +_,9 @@
  							Dust.NewDust(position, width, height, 5, num25 + (float)hitDirection * num26 * Main.rand.NextFloat(), -2f);
  						}
  					}
 +
-+					PostGore:
-+
-+					PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
++					PostDust:
++					PlayerLoader.PostHurt(this, info);
  				}
  				else {
  					statLife = 0;
+@@ -29890,13 +_,17 @@
+ 				}
+ 			}
+ 
++			/*
+ 			if (pvp)
+ 				num2 = Main.CalculateDamagePlayersTakeInPVP(num, statDefense);
+ 
+ 			return num2;
++			*/
+ 		}
+ 
++		/*
+ 		return 0.0;
++		*/
+ 	}
+ 
+ 	private static bool AllowShimmerDodge(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
 @@ -29931,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -3726,6 +5952,21 @@
  		if (pvp)
  			pvpDeath = true;
  
+@@ -30004,10 +_,14 @@
+ 			}
+ 		}
+ 
++		if (!playSound)
++			goto postSound;
++
+ 		if (Main.dontStarveWorld || Main.tenthAnniversaryWorld)
+ 			SoundEngine.PlaySound(Male ? SoundID.DSTMaleHurt : SoundID.DSTFemaleHurt, position);
+ 		else
+ 			SoundEngine.PlaySound(5, (int)position.X, (int)position.Y);
++		postSound:
+ 
+ 		if (Main.tenthAnniversaryWorld) {
+ 			for (int j = 0; j < 85; j++) {
 @@ -30041,12 +_,15 @@
  		headVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
  		bodyVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
@@ -3768,6 +6009,15 @@
  		int num = 50;
  		if (newItem.IsACoin)
  			num = 54;
+@@ -30208,7 +_,7 @@
+ 		}
+ 
+ 		for (int k = 54; k < 58; k++) {
+-			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]))
++			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]) && ItemLoader.CanStack(inventory[k], newItem))
+ 				return new ItemSpaceStatus(CanTakeItem: true);
+ 		}
+ 
 @@ -30240,7 +_,11 @@
  		if (theSlot.type == 0)
  			return true;
@@ -3813,6 +6063,23 @@
  		}
  
  		if (newItem.CanFillEmptyAmmoSlot()) {
+@@ -30325,6 +_,16 @@
+ 		return newItem;
+ 	}
+ 
++	/// <summary>
++	/// Places the <paramref name="newItem"/> directly into this player's inventory. The <paramref name="settings"/> dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <see cref="GetItemSettings"/> for this parameter to match vanilla behavior. The <paramref name="plr"/> parameter should always be set to the whoAmI of this player.
++	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
++	/// <para/> The return value is an Item instance containing the overflow. If the full stack of <paramref name="newItem"/> is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <paramref name="newItem"/> fit in the inventory, the return value will be the Item that didn't fit. If the returned <see cref="Item"/> isn't <see cref="Item.IsAir"/>, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <paramref name="newItem"/> came from.
++	/// <para/> Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.
++	/// </summary>
++	/// <param name="plr"></param>
++	/// <param name="newItem"></param>
++	/// <param name="settings"></param>
++	/// <returns></returns>
+ 	public Item GetItem(int plr, Item newItem, GetItemSettings settings)
+ 	{
+ 		bool isACoin = newItem.IsACoin;
 @@ -30416,11 +_,16 @@
  	private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
@@ -3915,7 +6182,7 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
-@@ -30673,6 +_,7 @@
+@@ -30673,9 +_,13 @@
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
@@ -3923,10 +6190,19 @@
  			if (overrideCanPlace.HasValue) {
  				canPlace = overrideCanPlace.Value;
  			}
-@@ -30757,9 +_,12 @@
++			else if (!TileLoader.CanPlace(tileTargetX, tileTargetY, tileToCreate)) {
++				canPlace = false;
++			}
+ 			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
+ 				newObjectType = true;
+ 				canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, previewPlaceStyle, direction, out objectData, onlyCheck: false, forcedRandom);
+@@ -30757,9 +_,15 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
  
++			if (!TileLoader.CanReplace(tileTargetX, tileTargetY, tile.type, HeldItem.createTile))
++				return false;
++
 +			if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile))
 +				return false;
 +
@@ -3937,40 +6213,69 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
-@@ -30777,7 +_,10 @@
- 				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
+@@ -30778,15 +_,15 @@
  			}
  
--			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
-+			var topLeft = new Point(tileTargetX, tileTargetY);
-+			WorldGen.MoveReplaceTileAnchor(ref topLeft.X, ref topLeft.Y, (ushort)HeldItem.createTile, Main.tile[tileTargetX, tileTargetY]);
-+
-+			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(HeldItem.createTile, HeldItem.placeStyle), topLeft);
- 			ushort num3 = (ushort)HeldItem.createTile;
+ 			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
+-			ushort num3 = (ushort)HeldItem.createTile;
++			int num3 = HeldItem.createTile;
  			int num4 = HeldItem.placeStyle;
  			if (UsingBiomeTorches && num3 == 4)
-@@ -30791,7 +_,7 @@
+-				num4 = BiomeTorchPlaceStyle(num4);
++				BiomeTorchPlaceStyle(ref num3, ref num4);
+ 
+ 			if (UsingBiomeTorches && num3 == 215)
+-				num4 = BiomeCampfirePlaceStyle(num4);
++				BiomeCampfirePlaceStyle(ref num3, ref num4);
+ 
+-			if (WorldGen.ReplaceTile(tileTargetX, tileTargetY, num3, num4)) {
++			if (WorldGen.ReplaceTile(tileTargetX, tileTargetY, (ushort)num3, num4)) {
+ 				canUse = false;
  				NetMessage.SendData(17, -1, -1, null, 21, tileTargetX, tileTargetY, (int)num3, num4);
  				ApplyItemTime(HeldItem);
- 				SetItemAnimation(HeldItem.useAnimation);
--				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, num3);
-+				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, num3, topLeft);
- 			}
+@@ -30803,10 +_,10 @@
+ 		int createTile = HeldItem.createTile;
+ 		int num = HeldItem.placeStyle;
+ 		if (UsingBiomeTorches && createTile == 4)
+-			num = BiomeTorchPlaceStyle(num);
++			BiomeTorchPlaceStyle(ref createTile, ref num);
+ 
+ 		if (UsingBiomeTorches && createTile == 215)
+-			num = BiomeCampfirePlaceStyle(num);
++			BiomeCampfirePlaceStyle(ref createTile, ref num);
+ 
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
+ 		if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
+@@ -30833,11 +_,19 @@
+ 		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
+ 			return tile.frameY != num * 18;
+ 
++		/*
+ 		if (tile.type == 4 && tile.type == createTile)
+ 			return tile.frameY != num * 22;
++		*/
++		if (TileID.Sets.Torch[tile.type] && TileID.Sets.Torch[createTile])
++			return tile.type != createTile || tile.frameY != num * 22;
+ 
++		/*
+ 		if (tile.type == 215 && tile.type == createTile)
+ 			return tile.frameX / 54 != num;
++		*/
++		if (TileID.Sets.Campfire[tile.type] && TileID.Sets.Campfire[createTile])
++			return tile.type != createTile || tile.frameX / 54 != num;
+ 
+ 		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
+ 			if (tile.frameX / 36 == num)
+@@ -30938,7 +_,7 @@
  		}
+ 		else {
+ 			if (UsingBiomeTorches && tileToCreate == 4 && num == 0)
+-				num = BiomeTorchPlaceStyle(num);
++				BiomeTorchPlaceStyle(ref tileToCreate, ref num);
  
-@@ -30927,7 +_,9 @@
- 		if (!newObjectType)
- 			num = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(num);
- 
--		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
-+		var topLeft = data.type == 0 ? new Point(tileTargetX, tileTargetY) : new Point(data.xCoord, data.yCoord);
-+
-+		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(data.type, data.style, data.alternate), topLeft);
- 		bool forced = false;
- 		bool flag;
- 		if (newObjectType) {
-@@ -30963,9 +_,13 @@
- 			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
+ 			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
+ 		}
+@@ -30964,8 +_,12 @@
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
  			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
 -			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate);
@@ -3984,65 +6289,71 @@
  		}
  
  		return data;
-@@ -31113,15 +_,26 @@
+@@ -30981,7 +_,10 @@
+ 		}
+ 	}
+ 
++	/* Added type to support modded tiletypes. Changed to ref, but kept int return to keep patches small.
+ 	public int BiomeTorchPlaceStyle(int style)
++	*/
++	public int BiomeTorchPlaceStyle(ref int type, ref int style)
+ 	{
+ 		if (!UsingBiomeTorches || style != 0)
+ 			return style;
+@@ -31011,6 +_,12 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 16;
+ 
++		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeTorchItemType.value];
++			type = item.createTile;
++			style = item.placeStyle;
++		}
++
+ 		return style;
+ 	}
+ 
+@@ -31044,10 +_,17 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 4383;
+ 
++		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++			style = CurrentSceneEffect.biomeTorchItemType.value;
++		}
++
+ 		return style;
+ 	}
+ 
++	/* Added type to support modded tiletypes. Changed to ref, but kept int return to keep patches small.
+ 	public int BiomeCampfirePlaceStyle(int style)
++	*/
++	public int BiomeCampfirePlaceStyle(ref int type, ref int style)
+ 	{
+ 		if (!UsingBiomeTorches || style != 0)
+ 			return style;
+@@ -31077,6 +_,12 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			style = 8;
+ 
++		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeCampfireItemType.value];
++			type = item.createTile;
++			style = item.placeStyle;
++		}
++
+ 		return style;
+ 	}
+ 
+@@ -31110,6 +_,10 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			itemType = 4689;
+ 
++		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++			itemType = CurrentSceneEffect.biomeCampfireItemType.value;
++		}
++
  		return itemType;
  	}
- 
--	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache()
-+	// TML: Changed to return an exact 2d array of the tiles that will need painting/actuating
-+	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData data, Point topLeft)
- 	{
- 		int[,] array = null;
- 		if (autoPaint || autoActuator) {
-+			/*
- 			array = new int[11, 11];
- 			for (int i = 0; i < 11; i++) {
- 				for (int j = 0; j < 11; j++) {
- 					int num = tileTargetX - 5 + i;
- 					int num2 = tileTargetY - 5 + j;
-+			*/
-+			int width = data == null ? 1 : data.Width;
-+			int height = data == null ? 1 : data.Height;
-+
-+			array = new int[width, height];
-+			for (int i = 0; i < width; i++) {
-+				for (int j = 0; j < height; j++) {
-+					int num = topLeft.X + i;
-+					int num2 = topLeft.Y + j;
- 					if (Main.tile[num, num2].active())
- 						array[i, j] = Main.tile[num, num2].type;
- 					else
-@@ -31213,7 +_,8 @@
- 		}
- 	}
- 
-+	// TML: Added topLeft to be the the reference point instead of tileTargetX and tileTargetY
--	private void PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(int[,] typeCaches, int tileToCreate)
-+	private void PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(int[,] typeCaches, int tileToCreate, Point topLeft)
- 	{
- 		if (!autoPaint && !autoActuator)
- 			return;
-@@ -31229,10 +_,21 @@
- 			num3 = (num4 = 6);
- 		}
- 
-+		// Added by TML
-+		num = 0;
-+		num2 = 0;
-+		num3 = typeCaches.GetLength(0);
-+		num4 = typeCaches.GetLength(1);
-+
- 		for (int i = num; i < num3; i++) {
- 			for (int j = num2; j < num4; j++) {
-+				/*
- 				int num5 = tileTargetX - 5 + i;
- 				int num6 = tileTargetY - 5 + j;
-+				*/
-+
-+				int num5 = topLeft.X + i;
-+				int num6 = topLeft.Y + j;
- 				if ((!Main.tile[num5, num6].active() && typeCaches[i, j] == -1) || (Main.tile[num5, num6].active() && !flag2 && (typeCaches[i, j] == Main.tile[num5, num6].type || Main.tile[num5, num6].type != tileToCreate)))
- 					continue;
  
 @@ -31253,7 +_,9 @@
  				int num7 = FindItem(849);
@@ -4064,6 +6375,17 @@
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
  			}
+@@ -31729,7 +_,10 @@
+ 		else if (inventory[selectedItem].createTile == 275 || inventory[selectedItem].createTile == 276 || inventory[selectedItem].createTile == 277) {
+ 			canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 51 || inventory[selectedItem].createTile == 330 || inventory[selectedItem].createTile == 331 || inventory[selectedItem].createTile == 332 || inventory[selectedItem].createTile == 333 || inventory[selectedItem].createTile == 336 || inventory[selectedItem].createTile == 340 || inventory[selectedItem].createTile == 342 || inventory[selectedItem].createTile == 341 || inventory[selectedItem].createTile == 343 || inventory[selectedItem].createTile == 344 || inventory[selectedItem].createTile == 379 || inventory[selectedItem].createTile == 351) {
++		*/
++		else if (TileID.Sets.CanPlaceNextToNonSolidTile[inventory[selectedItem].createTile]) {
+ 			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
+ 				canPlace = true;
+ 		}
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {
@@ -4126,6 +6448,41 @@
  		if (num8 > 0)
  			DropItemFromExtractinator(num8, num9);
  	}
+@@ -32782,8 +_,16 @@
+ 			NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 	}
+ 
++	/// <summary>
++	/// Changes the player's direction (<see cref="Entity.direction"/>) while adjusting arm and item rotations to be consistent. Will also account for <see cref="pulley"/> and <see cref="pulleyDir"/>. The player direction change will be prevented if the player is on a rope but there isn't space for the player to face the new direction.
++	/// </summary>
++	/// <param name="dir"></param>
+ 	public void ChangeDir(int dir)
+ 	{
++		// added by TML, forward port from 1.4.5
++		if (dir == direction)
++			return;
++
+ 		if (!pulley || pulleyDir != 2) {
+ 			direction = dir;
+ 		}
+@@ -32800,7 +_,17 @@
+ 				position.X = num;
+ 				direction = dir;
+ 			}
++			// added by TML, forward port from 1.4.5
++			else {
++				return;
++			}
+ 		}
++
++		// Added by TML, forward port from 1.4.5
++		compositeBackArm.rotation *= -1;
++		compositeFrontArm.rotation *= -1;
++		itemRotation *= -1;
++		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
+ 	}
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
 @@ -32875,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
@@ -4140,7 +6497,14 @@
  		if (result.BaitItemType == 2673)
  			return result;
  
-@@ -32894,12 +_,15 @@
+@@ -32890,16 +_,22 @@
+ 		if (canFloatInWater && wet)
+ 			num += 5;
+ 
++		/*
+ 		if (sitting.TryGetSittingBlock(this, out var tile) && ((tile.type == 15 && tile.frameY / 40 == 1) || tile.type == 497))
++		*/
++		if (sitting.TryGetSittingBlock(this, out var _) && sitting.details.IsAToilet) // Make modded toilets give the fishing boost as well
  			num += 5;
  
  		int num2 = result.BaitPower + result.PolePower + fishingSkill + num;
@@ -4290,12 +6654,12 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -33268,6 +_,54 @@
+@@ -33268,6 +_,70 @@
  			}
  		}
  
 +		// #2351
-+		// TML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behaviour.
++		// TML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behavior.
 +		// The flow of this method has changed as follows...
 +		//
 +		// VANILLA:
@@ -4323,7 +6687,7 @@
 +		//   TML:     itemAnimation goes from itemAnimationMax to 1, before it can restart
 +		//
 +		//   VANILLA: If the item has autoReuse, then it can restart at itemAnimation = 1, making the actual animation one frame shorter than expected.
-+		//            If a reusuable item has equal itemAnimation and itemTime, the animation will be faster, and they will start to fire at different times
++		//            If a reusable item has equal itemAnimation and itemTime, the animation will be faster, and they will start to fire at different times
 +		//
 +		//   TML:     ItemCheck_HandleMPItemAnimation unnecessary. Animation times for modded items as written. See Item.ApplyItemAnimationCompensations
 +		//
@@ -4342,6 +6706,22 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
++
++		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
++		if (itemAnimation == 0 && reuseDelay == 0 && (!controlUseItem || selectItemOnNextUse)) {
++			selectItemOnNextUse = false;
++
++			int oldSelect = selectedItem;
++			SmartSelectLookup();
++			if (selectedItem != oldSelect) {
++				item = inventory[selectedItem];
++				// TML feature, allow the item to be instantly used
++				releaseUseItem = true;
++				// prevent remaining item time carrying over to new weapon (for items like starfury with less than one shot per use)
++				itemTime = itemTimeMax = 0;
++			}
++		}
++
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
  		ItemCheck_HandleMPItemAnimation(item);
@@ -4354,17 +6734,19 @@
  				FreeUpPetsAndMinions(item);
  
  			if (flag3)
-@@ -33323,6 +_,9 @@
- 		if (!flag4)
- 			channel = false;
- 
+@@ -33339,13 +_,25 @@
+ 				itemHeight = drawHitbox.Height;
+ 				itemWidth = drawHitbox.Width;
+ 			}
++		// The itemAnimation > 0 block has been split in 2 parts (above and below) to allow for the insertion of labels
++		}
 +		goto ReleaseUseItem;
-+
+ 
 +		DecrementItemAnimation:
- 		Item item2 = ((itemAnimation > 0) ? lastVisualizedSelectedItem : item);
- 		Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
- 		compositeFrontArm.enabled = false;
-@@ -33345,7 +_,13 @@
++
++		if (itemAnimation > 0) {
+ 			itemAnimation--;
+ 			if (itemAnimation == 0 && whoAmI == Main.myPlayer)
  				PlayerInput.TryEndingFastUse();
  		}
  
@@ -4480,6 +6862,22 @@
  							if (inventory[num15].stack <= 0)
  								inventory[num15] = new Item();
  
+@@ -33732,6 +_,15 @@
+ 							flag6 = false;
+ 					}
+ 
++					// Copied as-is from 1.3
++					if (item.CountsAsClass(DamageClass.Throwing)) {
++						if (ThrownCost50 && Main.rand.Next(100) < 50)
++							flag6 = false;
++
++						if (ThrownCost33 && Main.rand.Next(100) < 33)
++							flag6 = false;
++					}
++
+ 					if (item.IsACoin)
+ 						flag6 = true;
+ 
 @@ -33739,7 +_,7 @@
  					if (flag7.HasValue)
  						flag6 = flag7.Value;
@@ -4498,6 +6896,15 @@
  			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
  				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
  		}
+@@ -33782,7 +_,7 @@
+ 		overrideCanPlace = null;
+ 		forcedRandom = null;
+ 		if (UsingBiomeTorches && tileToCreate == 215 && previewPlaceStyle == 0)
+-			previewPlaceStyle = BiomeCampfirePlaceStyle(previewPlaceStyle);
++			BiomeCampfirePlaceStyle(ref tileToCreate, ref previewPlaceStyle);
+ 
+ 		if (targetTile != null && targetTile.active()) {
+ 			ushort type = targetTile.type;
 @@ -33820,13 +_,18 @@
  			_spawnMuramasaCut = true;
  
@@ -4544,6 +6951,15 @@
  		ItemCheck_UseWiringTools(sItem);
  		ItemCheck_UseLawnMower(sItem);
  		ItemCheck_PlayInstruments(sItem);
+@@ -33858,7 +_,7 @@
+ 		else {
+ 			toolTime--;
+ 			if (toolTime < 0)
+-				toolTime = sItem.useTime;
++				toolTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem); //sItem.useTime;
+ 		}
+ 
+ 		ItemCheck_TryDestroyingDrones(sItem);
 @@ -33898,7 +_,10 @@
  			Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
  		}
@@ -4586,7 +7002,20 @@
  
  			bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  			ItemCheck_CutTiles(sItem, itemRectangle, shouldIgnore2);
-@@ -34216,11 +_,17 @@
+@@ -34195,8 +_,12 @@
+ 			NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, sItem.makeNPC, sItem.placeStyle, whoAmI);
+ 		}
+ 		else if (position.X / 16f - (float)tileRangeX - (float)sItem.tileBoost <= (float)tileTargetX && (position.X + (float)width) / 16f + (float)tileRangeX + (float)sItem.tileBoost - 1f >= (float)tileTargetX && position.Y / 16f - (float)tileRangeY - (float)sItem.tileBoost <= (float)tileTargetY && (position.Y + (float)height) / 16f + (float)tileRangeY + (float)sItem.tileBoost - 2f >= (float)tileTargetY) {
++			/*
+ 			int num = Main.mouseX + (int)Main.screenPosition.X;
+ 			int num2 = Main.mouseY + (int)Main.screenPosition.Y;
++			*/
++			int num = (int)Main.MouseWorld.X;
++			int num2 = (int)Main.MouseWorld.Y;
+ 			int i = num / 16;
+ 			int j = num2 / 16;
+ 			if (!WorldGen.SolidTile(i, j)) {
+@@ -34216,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;
  
@@ -4594,17 +7023,23 @@
 +				continue;
 +
  			bool flag = false;
++			/*
  			if (Main.rand.Next(1, 101) <= 10)
  				flag = true;
++			*/
  
  			int num = Main.DamageVar(damage, luck);
 +
-+			CombinedHooks.ModifyHitPvp(this, sItem, player, ref num, ref flag);
-+
  			StatusToPlayerPvP(sItem.type, i);
  			OnHit(player.Center.X, player.Center.Y, player);
- 			PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(whoAmI);
-@@ -34260,12 +_,16 @@
+-			PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayer(whoAmI);
++			PlayerDeathReason playerDeathReason = PlayerDeathReason.ByPlayerItem(whoAmI, sItem);
+-			int num2 = (int)player.Hurt(playerDeathReason, num, direction, pvp: true, quiet: false, flag);
++			int num2 = (int)player.Hurt(playerDeathReason, num, direction, pvp: true, quiet: false, flag, -1);
+ 			if (inventory[selectedItem].type == 3211) {
+ 				Vector2 vector = new Vector2(direction * 100 + Main.rand.Next(-25, 26), Main.rand.Next(-75, 76));
+ 				vector.Normalize();
+@@ -34260,6 +_,8 @@
  				}
  			}
  
@@ -4613,15 +7048,7 @@
  			if (inventory[selectedItem].type == 3106) {
  				stealth = 1f;
  				if (Main.netMode == 1)
- 					NetMessage.SendData(84, -1, -1, null, whoAmI);
- 			}
- 
-+			CombinedHooks.OnHitPvp(this, sItem, player, num2, flag);
-+
- 			if (Main.netMode != 0)
- 				NetMessage.SendPlayerHurt(i, playerDeathReason, num, direction, flag, pvp: true, -1);
- 
-@@ -34375,6 +_,15 @@
+@@ -34375,9 +_,20 @@
  				TakeDamageFromJellyfish(npcIndex);
  		}
  		else {
@@ -4637,35 +7064,114 @@
  			if (nPC.friendly && (nPC.type != 22 || !killGuide) && (nPC.type != 54 || !killClothier) && (!nPC.isLikeATownNPC || sItem.type != 5129))
  				return;
  
-@@ -34391,6 +_,8 @@
++			skipVanillaHitChecks:
++
+ 			Rectangle rectangle = new Rectangle((int)nPC.position.X, (int)nPC.position.Y, nPC.width, nPC.height);
+ 			bool flag = itemRectangle.Intersects(rectangle);
+ 			int type = sItem.type;
+@@ -34388,21 +_,39 @@
+ 				flag = ((!_spawnVolcanoExplosion) ? (flag || flag2) : flag2);
+ 			}
+ 
++			bool? modCanCollide = CombinedHooks.CanPlayerMeleeAttackCollideWithNPC(this, sItem, itemRectangle, nPC);
++			if (modCanCollide == false)
++				return;
++			if (modCanCollide == true)
++				flag = true;
++
  			if (!flag || (!nPC.noTileCollide && !CanHit(nPC)))
  				return;
  
-+			skipVanillaHitChecks:
-+
++			var modifiers = nPC.GetIncomingStrikeModifiers(sItem.DamageType, direction);
++			/*
  			int num = originalDamage;
++			*/
++			float num = 1000f; // to reduce patches, set to 1000, and then turn it into a multiplier later
  			bool flag3 = false;
++			if (!sItem.DamageType.UseStandardCritCalcs)
++				goto skipStandardCritCalcs;
++
  			int weaponCrit = GetWeaponCrit(sItem);
-@@ -34466,13 +_,18 @@
- 				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.FlyMeal, settings3, whoAmI);
+ 			if (Main.rand.Next(1, 101) <= weaponCrit)
+ 				flag3 = true;
++			
++			skipStandardCritCalcs:
+ 
++			/*
+ 			int num2 = Item.NPCtoBanner(nPC.BannerID());
+ 			if (num2 > 0 && HasNPCBannerBuff(num2))
+ 				num = ((!Main.expertMode) ? ((int)((float)num * ItemID.Sets.BannerStrength[Item.BannerToItem(num2)].NormalDamageDealt)) : ((int)((float)num * ItemID.Sets.BannerStrength[Item.BannerToItem(num2)].ExpertDamageDealt)));
++			*/
++			ApplyBannerOffenseBuff(nPC, ref modifiers);
+ 
+ 			if (parryDamageBuff && sItem.melee) {
+-				num *= 5;
++				modifiers.ScalingBonusDamage += 4f; //num *= 5;
+ 				parryDamageBuff = false;
+ 				ClearBuff(198);
+ 			}
+@@ -34437,12 +_,15 @@
+ 				}, whoAmI);
  			}
  
-+			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref num6, ref knockBack, ref flag3);
-+
- 			StatusToNPC(sItem.type, npcIndex);
++			/*
+ 			int num6 = Main.DamageVar(num, luck);
++			*/
++			modifiers.SourceDamage *= num / 1000f;
+ 			float armorPenetrationPercent = 0f;
+ 			if (sItem.type == 5129 && nPC.isLikeATownNPC) {
+ 				armorPenetrationPercent = 1f;
+ 				if (nPC.type == 18)
+-					num6 *= 2;
++					modifiers.TargetDamageMultiplier *= 2; //num6 *= 2;
+ 			}
+ 
+ 			if (sItem.type == 3258) {
+@@ -34470,23 +_,41 @@
  			if (nPC.life > 5)
  				OnHit(nPC.Center.X, nPC.Center.Y, nPC);
  
--			num6 += nPC.checkArmorPenetration(armorPenetration, armorPenetrationPercent);
-+			num6 += nPC.checkArmorPenetration(GetWeaponArmorPenetration(sItem), armorPenetrationPercent);
++			/*
+ 			num6 += nPC.checkArmorPenetration(armorPenetration, armorPenetrationPercent);
++			*/
++			modifiers.ArmorPenetration += GetWeaponArmorPenetration(sItem);
++			modifiers.ScalingArmorPenetration += armorPenetrationPercent;
++			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref modifiers);
++			var strike = modifiers.ToHitInfo(originalDamage, flag3, knockBack, damageVariation: true, luck);
++
  			NPCKillAttempt attempt = new NPCKillAttempt(nPC);
- 			int dmgDone = (int)nPC.StrikeNPC(num6, knockBack, direction, flag3);
+-			int dmgDone = (int)nPC.StrikeNPC(num6, knockBack, direction, flag3);
++			int dmgDone = nPC.StrikeNPC(strike);
 +
-+			CombinedHooks.OnPlayerHitNPCWithItem(this, sItem, nPC, dmgDone, knockBack, flag3);
-+
++			CombinedHooks.OnPlayerHitNPCWithItem(this, sItem, nPC, strike, dmgDone);
++			/*
  			ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, npcIndex, num6, dmgDone);
++			*/
++			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
++			// num6 is post-variation and armor pen, only used by bees and muramasa.
++			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
++			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, dmgDone);
  			int num7 = Item.NPCtoBanner(nPC.BannerID());
  			if (num7 >= 0)
+ 				lastCreatureHit = num7;
+ 
+ 			if (Main.netMode != 0) {
++				/*
+ 				if (flag3)
+ 					NetMessage.SendData(28, -1, -1, null, npcIndex, num6, knockBack, direction, 1);
+ 				else
+ 					NetMessage.SendData(28, -1, -1, null, npcIndex, num6, knockBack, direction);
++				*/
++				NetMessage.SendStrikeNPC(nPC, strike);
+ 			}
+ 
+-			if (accDreamCatcher)
+-				addDPS(num6);
++			if (accDreamCatcher && !nPC.HideStrikeDamage)
++				addDPS(dmgDone); // Intentionally changed from num6 (strike damage)
+ 
+ 			SetMeleeHitCooldown(npcIndex, itemAnimation);
+ 			if (attempt.DidNPCDie())
 @@ -34746,11 +_,17 @@
  
  	private Rectangle ItemCheck_CatchCritters(Item sItem, Rectangle itemRectangle)
@@ -4808,6 +7314,27 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35442,6 +_,9 @@
+ 		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
+ 			return;
+ 
++		if (!CombinedHooks.CanBeTeleportedTo(this, pointPoisition, num, num2, "TeleportRod"))
++			return;
++
+ 		Teleport(pointPoisition, 1);
+ 		NetMessage.SendData(65, -1, -1, null, 0, whoAmI, pointPoisition.X, pointPoisition.Y, 1);
+ 		if (sItem.type != 1326)
+@@ -35479,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		itemTime = (int)((float)item.useTime * pickSpeed);
++		*/
++		ApplyItemTime(item, pickSpeed);
+ 	}
+ 
+ 	private void DamageTileWithShovel(Player user, Item item, int x, int y)
 @@ -35516,7 +_,10 @@
  
  		if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -4861,6 +7388,19 @@
  				}
  				else {
  					WorldGen.KillTile(x, y, fail: true);
+@@ -35649,8 +_,12 @@
+ 			PickTile(x, y, sItem.pick);
+ 		}
+ 
++
+ 		if (sItem.pick > 0)
++		/*
+ 			itemTime = (int)((float)sItem.useTime * pickSpeed);
++		*/
++			ApplyItemTime(sItem, pickSpeed);
+ 
+ 		ItemCheck_UseMiningTools_TryPoundingTile(sItem, num, ref canHitWalls, x, y);
+ 	}
 @@ -35673,10 +_,13 @@
  		return true;
  	}
@@ -4991,6 +7531,26 @@
  		KnockBack = GetWeaponKnockback(sItem, KnockBack);
  		IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  		if (projToShoot == 228)
+@@ -36695,6 +_,9 @@
+ 		if (sItem.type == 2796)
+ 			projToShoot = 442;
+ 
++		if (sItem.type == ItemID.FireworksLauncher)
++			projToShoot = ProjectileID.RocketFireworkRed; // Make sure Celebration has correct projectile set for logic.
++
+ 		if (sItem.type == 2223)
+ 			projToShoot = 357;
+ 
+@@ -36708,7 +_,8 @@
+ 		Vector2 pointPoisition = RotatedRelativePoint(MountedCenter);
+ 		bool flag = true;
+ 		int type = sItem.type;
+-		if (type == 723 || type == 3611)
++		//if (type == 723 || type == 3611)
++		if (!sItem.ChangePlayerDirectionOnShoot)
+ 			flag = false;
+ 
+ 		Vector2 value = Vector2.UnitX.RotatedBy(fullRotation);
 @@ -36824,6 +_,16 @@
  			num3 = vector5.Y;
  		}
@@ -5031,6 +7591,28 @@
  		if (projToShoot == 76) {
  			projToShoot += Main.rand.Next(3);
  			float num7 = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
+@@ -36895,7 +_,9 @@
+ 		}
+ 		else if (sItem.type == 3029) {
+ 			int num11 = 3;
+-			if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41) {
++			//if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41)
++			if (ProjectileID.Sets.FiresFewerFromDaedalusStormbow[projToShoot])
++			{
+ 				if (Main.rand.Next(3) == 0)
+ 					num11--;
+ 			}
+@@ -36987,8 +_,9 @@
+ 		}
+ 		else if (sItem.type == 3053) {
+ 			bool flag3 = false;
+-			if (itemAnimation <= sItem.useTime + 1)
++			if (itemAnimation <= itemTimeMax) { // TML: Change from sItem.useTime + 1 to more correctly account for use speed hook adjustments.
+ 				flag3 = true;
++			}
+ 
+ 			Vector2 vector10 = new Vector2(num2, num3);
+ 			vector10.Normalize();
 @@ -38410,10 +_,14 @@
  		projType = 721;
  		Item item = inventory[selectedItem];
@@ -5070,6 +7652,33 @@
  		for (int i = 0; i < 1000; i++) {
  			Projectile projectile = Main.projectile[i];
  			if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
+@@ -38469,12 +_,17 @@
+ 	private void ItemCheck_EmitHeldItemLight(Item sItem)
+ 	{
+ 		Vector2? handPosition = HandPosition;
+-		if (((ItemID.Sets.Torches[sItem.type] && !wet) || ItemID.Sets.WaterTorches[sItem.type]) && !pulley && !happyFunTorchTime) {
++		if (((ItemID.Sets.Torches[sItem.type] && !wet) || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(sItem.type)]) && !pulley && !happyFunTorchTime) {
+ 			float R = 1f;
+ 			float G = 0.95f;
+ 			float B = 0.8f;
+ 			int num = 0;
+ 			int num2 = BiomeTorchHoldStyle(sItem.type);
++			if (num2 >= ItemID.Count) {
++				// This could be a different hook, but then modders would have to move code. TorchID could be used, but it would be a lot of work managing another modded ID and would limit torch lighting and dust behavior to the vanilla pattern.
++				ItemLoader.GetItem(num2).HoldItem(this);
++				goto PostVanillaTorchLight;
++			}
+ 			if (num2 == 523)
+ 				num = 8;
+ 			else if (num2 == 974)
+@@ -38552,6 +_,7 @@
+ 				Lighting.AddLight(RotatedRelativePoint(new Vector2(itemLocation.X + 12f + velocity.X, itemLocation.Y - 14f + velocity.Y)), R, G, B);
+ 			}
+ 		}
++		PostVanillaTorchLight:
+ 
+ 		if ((sItem.type == 105 || sItem.type == 713) && !wet && !pulley) {
+ 			int maxValue2 = 20;
 @@ -38777,6 +_,12 @@
  
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)
@@ -5083,6 +7692,33 @@
  		if (isPettingAnimal) {
  			int num = miscCounter % 14 / 7;
  			CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
+@@ -38798,7 +_,7 @@
+ 				itemLocation.X = position.X + (float)width * 0.5f + 20f * (float)direction;
+ 			}
+ 			else if (sItem.type == 930) {
+-				itemLocation.X = position.X + (float)(width / 2) * 0.5f - 12f - (float)(2 * direction);
++				itemLocation.X = position.X + width * 0.5f - 2 * direction; // forward port from 1.4.5
+ 				float x = position.X + (float)(width / 2) + (float)(38 * direction);
+ 				if (direction == 1)
+ 					x -= 10f;
+@@ -38865,7 +_,7 @@
+ 					if (Main.tile[num5, num6] == null)
+ 						Main.tile[num5, num6] = new Tile();
+ 
+-					if (Main.tile[num5, num6].active() && Main.tile[num5, num6].type == 215 && Main.tile[num5, num6].frameY < 54) {
++					if (Main.tile[num5, num6].active() && TileID.Sets.Campfire[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameY < 54) {
+ 						miscTimer++;
+ 						if (Main.rand.Next(5) == 0)
+ 							miscTimer++;
+@@ -38982,7 +_,7 @@
+ 		}
+ 		else if (sItem.holdStyle == 3 && !pulley) {
+ 			if (!Main.dedServ) {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 				itemRotation = 0f;
+ 			}
 @@ -39041,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
@@ -5107,6 +7743,44 @@
  		if (Main.dedServ)
  			return;
  
+@@ -39456,7 +_,7 @@
+ 			}
+ 			else if (sItem.type == 4262) {
+ 				itemRotation = 0f;
+-				itemLocation.X = base.Center.X + (float)(-heldItemFrame.Width) * 0.5f + (float)(direction * -6);
++				itemLocation.X = base.Center.X + (float)(direction * -6); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - 6f;
+ 				if (Main.rand.Next(20) == 0) {
+ 					int num21 = Main.rand.Next(570, 573);
+@@ -39482,7 +_,7 @@
+ 				itemLocation += (itemRotation.ToRotationVector2() * num22 * direction).Floor();
+ 			}
+ 			else {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 			}
+ 
+@@ -39713,7 +_,7 @@
+ 		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
+ 			toolTime = 1;
+ 
+-		if (grappling[0] > -1) {
++		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
+ 			pulley = false;
+ 			pulleyDir = 1;
+ 			if (controlRight)
+@@ -39780,7 +_,10 @@
+ 			}
+ 
+ 			for (int l = 0; l < list.Count; l++) {
++				/*
+ 				if (!(num - num3 > (float)maxMinions - num2))
++				*/
++				if (!(num - num3 > (float)maxMinions - num2 + 0.00001f)) // existing - killedSoFar > maxMinions - needed. Even if a modder does 1/3f for Projectile.minionSlots, the floating point math won't work out without an "epsilon".
+ 					break;
+ 
+ 				int type2 = Main.projectile[list[l]].type;
 @@ -39862,8 +_,12 @@
  
  	private void ApplyLifeAndOrMana(Item item)
@@ -5115,8 +7789,8 @@
  		int num = item.healLife;
  		int healMana = item.healMana;
 +		*/
-+		int num = GetHealLife(item, true);
-+		int healMana = GetHealMana(item, true);
++		int num = item.healLife > 0 ? GetHealLife(item, true) : 0;
++		int healMana = item.healMana > 0 ? GetHealMana(item, true) : 0;
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
@@ -5146,7 +7820,7 @@
 +		if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay:!flag2))
 +			canUse = false;
 +
-+		return canUse; //TODO: Explain this in a comment.
++		return canUse; // TML: The below code was moved to CheckMana and GetManaCost in Player.TML.
 +
  		if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  			if (statMana >= num) {
@@ -5217,6 +7891,17 @@
  		if (whoAmI == Main.myPlayer && gravDir == -1f) {
  			mount.Dismount(this);
  		}
+@@ -40626,6 +_,10 @@
+ 		worldY = i * 16;
+ 	}
+ 
++	/// <summary>
++	/// Kills <see cref="Projectile.sentry"/> projectiles exceeding the players current <see cref="maxTurrets"/>. The oldest projectiles, determined by <see cref="Projectile.timeLeft"/>, are killed. <br/>
++	/// Call this method immediately after spawning a <see cref="Projectile.sentry"/> projectile.<br/>
++	/// </summary>
+ 	public void UpdateMaxTurrets()
+ 	{
+ 		if (Main.myPlayer != whoAmI)
 @@ -40853,8 +_,14 @@
  		}
  	}
@@ -5283,8 +7968,8 @@
 +		if (AmmoID.Sets.IsBullet[sItem.useAmmo])
 +			modifier = modifier.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[sItem.useAmmo])
-+			modifier = modifier.CombineWith(rocketDamage);
++		if (AmmoID.Sets.IsSpecialist[sItem.useAmmo] || ItemID.Sets.IsRangedSpecialistWeapon[sItem.type])
++			modifier = modifier.CombineWith(specialistDamage);
 +
 +		CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
 +
@@ -5323,7 +8008,17 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -40945,15 +_,68 @@
+@@ -40942,18 +_,78 @@
+ 		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
+ 			return true;
+ 
++		// Added fallback functionality for mod compatibility
++		launcher = AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[launcher];
++		if (launcher != -1) {
++			if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var fallbackValue) && fallbackValue.TryGetValue(ammo, out pickedProjectileId))
++				return true;
++		}
++
  		return false;
  	}
  
@@ -5415,7 +8110,7 @@
  					item = inventory[k];
  					canShoot = true;
  					break;
-@@ -40981,10 +_,43 @@
+@@ -40981,17 +_,52 @@
  			}
  		}
  
@@ -5448,8 +8143,8 @@
 +		if (AmmoID.Sets.IsBullet[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(bulletDamage);
 +
-+		if (AmmoID.Sets.IsRocket[item.ammo])
-+			ammoDamage = ammoDamage.CombineWith(rocketDamage);
++		if (AmmoID.Sets.IsSpecialist[item.ammo])
++			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
 +		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
 +		ammoDamage.Base = 0;
@@ -5459,6 +8154,36 @@
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
++		/* These 2 are unused and will never be right for modded rocket ammo. Following check is kept in to preserve existing behavior if being relied on.
+ 		else if (sItem.type == 1946)
+ 			projToShoot = 338 + item.type - 771;
+ 		else if (sItem.type == 3930)
+ 			projToShoot = 715 + item.type - AmmoID.Rocket;
++		*/
+ 		else if (sItem.useAmmo == AmmoID.Rocket)
+ 			projToShoot += item.shoot;
+ 		else if (sItem.useAmmo == AmmoID.Solution)
+@@ -41015,6 +_,7 @@
+ 			projToShoot = 117;
+ 
+ 		if (projToShoot == 42) {
++			/*
+ 			if (item.type == 370) {
+ 				projToShoot = 65;
+ 				Damage += 5;
+@@ -41027,6 +_,12 @@
+ 				projToShoot = 354;
+ 				Damage += 5;
+ 			}
++			*/
++
++			if (ItemID.Sets.SandgunAmmoProjectileData[item.type] is ItemID.Sets.SandgunAmmoInfo data) {
++				projToShoot = data.ProjectileType;
++				Damage += data.BonusDamage;
++			}
+ 		}
+ 
+ 		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
 @@ -41043,6 +_,9 @@
  			speed *= 1.1f;
  		}
@@ -5883,64 +8608,79 @@
  			throw;
  		}
  	}
-@@ -41979,21 +_,52 @@
+@@ -41979,11 +_,33 @@
  		if (string.IsNullOrEmpty(path))
  			return;
  
++		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Moved to the bottom
++		// Moved to SavePlayerFile_Write
 +		/*
  		if (FileUtilities.Exists(path, isCloudSave))
  			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +		*/
++
++		PlayerLoader.PreSavePlayer(player);
++		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
++		PlayerLoader.PostSavePlayer(player);
++
++		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
++		TagCompound tplrData = PlayerIO.SaveData(player);
++
++		SavePlayerFile_Write(playerFile, plrData, tplrData);
++	}
++
++	public static byte[] SavePlayerFile_Vanilla(PlayerFileData playerFile)
++	{
++		var player = playerFile.Player;
  
  		RijndaelManaged rijndaelManaged = new RijndaelManaged();
-+
 +		/*
  		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
 +		*/
 +		using Stream stream = new MemoryStream(2000);
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
-+
-+		PlayerLoader.PreSavePlayer(player);
-+
  		binaryWriter.Write(279);
- 		playerFile.Metadata.Write(binaryWriter);
- 		Serialize(playerFile, player, binaryWriter);
+@@ -41992,8 +_,31 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
 +
 +		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Replaced with FileUtilities.WriteAllBytes at the bottom
++		// Replaced with FileUtilities.WriteAllBytes in SavePlayerFile_Write
 +		/*
  		if (isCloudSave && SocialAPI.Cloud != null)
  			SocialAPI.Cloud.Write(playerFile.Path, ((MemoryStream)stream).ToArray());
 +		*/
 +
-+		byte[] bytes = ((MemoryStream)stream).ToArray();
++		return ((MemoryStream)stream).ToArray();
++	}
 +
-+		PlayerLoader.PostSavePlayer(player); // For native data only
++	private static void SavePlayerFile_Write(PlayerFileData playerFile, byte[] plrData, TagCompound tplrData)
++	{
++		string path = playerFile.Path;
++		bool isCloudSave = playerFile.IsCloudSave;
++		if (string.IsNullOrEmpty(path))
++			return;
 +
-+		//TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		var tag = PlayerIO.SaveData(player);
-+
++		Main.statusText = Language.GetTextValue("tModLoader.BackingUpPlayerFile");
 +		BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 +
-+		FileUtilities.WriteAllBytes(path, bytes, isCloudSave);
-+
-+		PlayerIO.Save(tag, path, isCloudSave);
++		FileUtilities.WriteAllBytes(path, plrData, isCloudSave);
++		PlayerIO.Save(tplrData, path, isCloudSave);
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
-@@ -42002,7 +_,7 @@
+@@ -42001,8 +_,8 @@
+ 		fileIO.Write(newPlayer.name);
  		fileIO.Write(newPlayer.difficulty);
  		fileIO.Write(playerFile.GetPlayTime().Ticks);
- 		fileIO.Write(newPlayer.hair);
+-		fileIO.Write(newPlayer.hair);
 -		fileIO.Write(newPlayer.hairDye);
++		PlayerIO.WriteVanillaHair(newPlayer.hair, fileIO);
 +		PlayerIO.WriteByteVanillaHairDye(newPlayer.hairDye, fileIO);
  		BitsByte bitsByte = (byte)0;
  		for (int i = 0; i < 8; i++) {
@@ -6032,9 +8772,10 @@
  		}
  
  		fileIO.Write(newPlayer.voidVaultInfo);
- 		for (int num5 = 0; num5 < maxBuffs; num5++) {
-+			//TML: Don't save buffs to vanilla player
+-		for (int num5 = 0; num5 < maxBuffs; num5++) {
 -			if (Main.buffNoSave[newPlayer.buffType[num5]]) {
++		for (int num5 = 0; num5 < 44; num5++) {
++			//TML: Don't save buffs to vanilla player
 +			if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {
  				fileIO.Write(0);
  				fileIO.Write(0);
@@ -6048,35 +8789,28 @@
  			fileIO.Write(newPlayer.hideInfo[num7]);
  		}
  
-@@ -42216,22 +_,22 @@
- 	{
- 		Item mouseItem = new Item();
- 		if (_temporaryItemSlots[0] != null)
--			mouseItem = _temporaryItemSlots[0].Clone();
-+			_temporaryItemSlots[0].CopyNetStateTo(mouseItem);
+@@ -42139,7 +_,7 @@
+ 			fileIO.Write(newPlayer.DpadRadial.Bindings[num8]);
+ 		}
  
- 		Main.mouseItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[1] != null)
--			mouseItem = _temporaryItemSlots[1].Clone();
-+			_temporaryItemSlots[1].CopyNetStateTo(mouseItem);
+-		for (int num9 = 0; num9 < newPlayer.builderAccStatus.Length; num9++) {
++		for (int num9 = 0; num9 < BuilderToggleLoader.DefaultDisplayCount; num9++) {
+ 			fileIO.Write(newPlayer.builderAccStatus[num9]);
+ 		}
  
- 		Main.CreativeMenu.SetItembyIndex(mouseItem, 0);
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[2] != null)
--			mouseItem = _temporaryItemSlots[2].Clone();
-+			_temporaryItemSlots[2].CopyNetStateTo(mouseItem);
+@@ -42270,12 +_,28 @@
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
- 		Main.guideItem = mouseItem;
- 		mouseItem = new Item();
- 		if (_temporaryItemSlots[3] != null)
--			mouseItem = _temporaryItemSlots[3].Clone();
-+			_temporaryItemSlots[3].CopyNetStateTo(mouseItem);
- 
- 		Main.reforgeItem = mouseItem;
- 		CreativePowerManager.Instance.ApplyLoadedDataToPlayer(this);
-@@ -42272,6 +_,10 @@
- 
++		var plrData = FileUtilities.ReadAllBytes(playerPath, cloudSave);
++		var tplrData = PlayerIO.ReadDataBytes(playerPath, cloudSave);
++		return LoadPlayerFromStream(playerFileData, plrData, tplrData);
++	}
++
++	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData)
++	{
++		string playerPath = playerFileData.Path;
++
  		Player player = new Player();
  		bool gotToReadName = false;
 +
@@ -6086,6 +8820,22 @@
  		try {
  			RijndaelManaged rijndaelManaged = new RijndaelManaged();
  			rijndaelManaged.Padding = PaddingMode.None;
++			/*
+ 			using (MemoryStream stream = new MemoryStream(FileUtilities.ReadAllBytes(playerPath, cloudSave))) {
++			*/
++			using (MemoryStream stream = new MemoryStream(plrData)) {
+ 				using CryptoStream input = new CryptoStream(stream, rijndaelManaged.CreateDecryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Read);
+ 				using BinaryReader binaryReader = new BinaryReader(input);
+ 				int num = binaryReader.ReadInt32();
+@@ -42291,7 +_,7 @@
+ 					return playerFileData;
+ 				}
+ 
+-				Deserialize(playerFileData, player, binaryReader, num, out gotToReadName);
++				Deserialize(playerFileData, player, binaryReader, tplrData, num, out gotToReadName); // Added tplrData argument
+ 			}
+ 
+ 			player.PlayerFrame();
 @@ -42299,6 +_,9 @@
  			playerFileData.Player = player;
  			return playerFileData;
@@ -6096,28 +8846,41 @@
  		catch {
  		}
  
-@@ -42322,12 +_,20 @@
+@@ -42322,8 +_,33 @@
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
  		Serialize(_visualCloneDummyData, this, _visualCloneWriter);
  		_visualCloneStream.Seek(0L, SeekOrigin.Begin);
 -		Deserialize(_visualCloneDummyData, player, _visualCloneReader, 279, out var _);
-+		Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		try {
++			Deserialize(_visualCloneDummyData, player, _visualCloneReader, PlayerIO.SaveData(this), Main.curRelease, out var _); // Added PlayerIO.SaveData argument
++		}
++		catch (CustomModDataException) {
++			// Same exception should already be caught in LoadPlayerFromStream
++		}
  		return player;
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, tplrData);
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
++	}
++
++	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, byte[] tplrData, int release, out bool gotToReadName)
++	{
++		Deserialize(data, newPlayer, fileIO, release, out gotToReadName);
++
++		if (tplrData != null)
++			PlayerIO.Load(newPlayer, TagIO.FromStream(tplrData.ToMemoryStream()));
++
++		LoadPlayer_LastMinuteFixes(newPlayer);
  	}
  
  	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, int release, out bool gotToReadName)
- 	{
-+		if (!PlayerIO.TryLoadData(data.Path, data.IsCloudSave, out var tag))
-+			tag = null;
-+
-+		Deserialize(data, newPlayer, fileIO, tag, release, out gotToReadName);
-+	}
-+
-+	private static void Deserialize(PlayerFileData data, Player newPlayer, BinaryReader fileIO, TagCompound modData, int release, out bool gotToReadName)
-+	{
- 		gotToReadName = false;
- 		newPlayer.name = fileIO.ReadString();
- 		gotToReadName = true;
 @@ -42394,8 +_,16 @@
  		if (newPlayer.statManaMax > 200)
  			newPlayer.statManaMax = 200;
@@ -6135,16 +8898,26 @@
  
  		if (release >= 125)
  			newPlayer.extraAccessory = fileIO.ReadBoolean();
-@@ -42795,6 +_,9 @@
+@@ -42795,7 +_,10 @@
  			}
  		}
  
-+		if (modData != null)
-+			PlayerIO.Load(newPlayer, modData);
-+
++		// Moved to the tplr variants of Deserialize, after modded data is read
++		/*
  		LoadPlayer_LastMinuteFixes(newPlayer);
++		*/
  	}
  
+ 	private static void AdjustRespawnTimerForWorldJoining(Player newPlayer)
+@@ -42834,7 +_,7 @@
+ 	{
+ 		for (int i = 3; i < 10; i++) {
+ 			Item item = armorArray[i];
+-			if (item.IsAir)
++			if (item.IsAir || item._globals.Length > 0)
+ 				continue;
+ 
+ 			for (int j = i + 1; j < 10; j++) {
 @@ -42856,7 +_,29 @@
  	private static void LoadPlayer_LastMinuteFixes(Player newPlayer)
  	{
@@ -6223,6 +8996,40 @@
  			}
  
  			return playerFileData;
+@@ -42907,6 +_,13 @@
+ 		return GameShaders.Hair.GetColor(hairDye, this, useLighting ? color : Color.White);
+ 	}
+ 
++	/// <summary>
++	/// Checks if the player has the specified item in their <see cref="inventory"/>. <br/>
++	/// Does not check Void Bag. <br/>
++	/// Use <see cref="Player.CountItem(int, int)"/> instead to count the total amount if needed. <br/>
++	/// </summary>
++	/// <param name="type">The item type to count</param>
++	/// <returns>True if the player has the item</returns>
+ 	public bool HasItem(int type)
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+@@ -42917,6 +_,9 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="HasItem(int)"/>, but checks the provided Item[] <paramref name="collection"/> for items instead. Useful for checking other Item arrays, such as <see cref="Player.armor"/> or <see cref="Player.bank"/>.
++	/// </summary>
+ 	public bool HasItem(int type, Item[] collection)
+ 	{
+ 		for (int i = 0; i < collection.Length; i++) {
+@@ -42927,6 +_,9 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Similar to <see cref="HasItem(int)"/>, but also checks the Void Bag.
++	/// </summary>
+ 	public bool HasItemInInventoryOrOpenVoidBag(int type)
+ 	{
+ 		if (!HasItem(type)) {
 @@ -43028,6 +_,17 @@
  
  	public Player()
@@ -6253,6 +9060,16 @@
  			adjTile[n] = false;
  			oldAdjTile[n] = false;
  		}
+@@ -43304,6 +_,9 @@
+ 			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
+ 				continue;
+ 
++			if (!CombinedHooks.CanBeTeleportedTo(this, vector, i, j, "CheckForGoodTeleportationSpot"))
++				continue;
++
+ 			Vector2 vector2 = Vector2.UnitX * 16f;
+ 			if (Collision.TileCollision(vector - vector2, vector2, width, height, fallThrough: false, fall2: false, (int)gravDir) != vector2)
+ 				continue;
 @@ -43332,11 +_,29 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);
@@ -6458,6 +9275,15 @@
  		item.stack = 6;
  		item.position = base.Center;
  		Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
+@@ -43921,6 +_,8 @@
+ 		if (keyDir != num)
+ 			return;
+ 
++		PlayerLoader.ArmorSetBonusActivated(this);
++
+ 		if (setVortex && !mount.Active)
+ 			vortexStealthActive = !vortexStealthActive;
+ 
 @@ -44020,7 +_,10 @@
  			}
  		}
@@ -6469,3 +9295,12 @@
  		IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  		_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  	}
+@@ -44032,6 +_,8 @@
+ 			num = 1;
+ 
+ 		if (keyDir == num) {
++			PlayerLoader.ArmorSetBonusHeld(this, holdTime);
++
+ 			if (setStardust && holdTime >= 60)
+ 				MinionRestTargetPoint = Vector2.Zero;
+ 

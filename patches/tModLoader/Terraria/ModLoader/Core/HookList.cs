@@ -1,96 +1,33 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader.Core;
 
 public class HookList<T> where T : class
 {
-	// Don't change a single line without performance testing and checking the disassembly. As of NET 6.0.0, this implementation is on par with hand-coding C#
-	// Disassembly checked using Relyze Desktop 3.3.0
-	public ref struct InstanceEnumerator
-	{
-		// These have to be arrays rather than ReadOnlySpan as the JIT won't unpack/promote 'struct in struct' (or span in struct either)
-		// Revisit with .NET 6 https://github.com/dotnet/runtime/issues/37924
-		private readonly Instanced<T>[] instances;
-		private readonly int[] hookIndices;
-
-		// ideally this would be Instanced<T> and drop the need for the ii variable in the MoveNext function
-		// but again, struct in struct promotion (and also increasing the 'field count'
-		private T current;
-		// i and j are combined into a 64bit variable beacuse JIT currently won't unpack/promote structs with > 4 fields into registers
-		// See https://github.com/dotnet/runtime/issues/6534
-		private ulong ij;
-		//private int i;
-		//private int j;
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public InstanceEnumerator(Instanced<T>[] instances, int[] hookIndices)
-		{
-			this.instances = instances;
-			this.hookIndices = hookIndices;
-			current = default;
-			ij = 0;
-			//i = 0;
-			//j = 0;
-		}
-
-		public T Current => current;
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool MoveNext()
-		{
-			int ii = -1;
-
-			while ((int)(ij >> 32) < hookIndices.Length) {
-				int hookIndex = hookIndices[(int)(ij >> 32)];
-
-				ij += 1L << 32;
-
-				while (ii < hookIndex) {
-					if ((int)ij == instances.Length)
-						return false;
-
-					var inst = instances[(int)(ij++)];
-					ii = inst.Index;
-					current = inst.Instance;
-				}
-
-				if (ii == hookIndex) {
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		public InstanceEnumerator GetEnumerator() => this;
-	}
-
-	public readonly MethodInfo method;
+	public LoaderUtils.MethodOverrideQuery<T> HookOverrideQuery { get; }
+	public MethodInfo Method => HookOverrideQuery.Method;
 
 	private int[] indices = Array.Empty<int>();
+	private T[] defaultInstances = Array.Empty<T>();
 
-	public HookList(MethodInfo method)
+	public HookList(LoaderUtils.MethodOverrideQuery<T> hook)
 	{
-		this.method = method;
+		HookOverrideQuery = hook;
 	}
-	
-	public InstanceEnumerator Enumerate(Instanced<T>[] instances)
-		=> new(instances, indices);
+
+	[Obsolete("Use HookList.Create instead", error: true)]
+	public HookList(MethodInfo method) : this(method.ToBindingExpression<T>().ToOverrideQuery()) { }
 
 	public FilteredArrayEnumerator<T> Enumerate(T[] instances)
 		=> new(instances, indices);
 
 	public FilteredSpanEnumerator<T> Enumerate(ReadOnlySpan<T> instances)
 		=> new(instances, indices);
-
-	public FilteredSpanEnumerator<T> Enumerate(List<T> instances)
-		=> Enumerate(CollectionsMarshal.AsSpan(instances));
+	public FilteredSpanEnumerator<T> Enumerate(IEntityWithInstances<T> entity)
+		=> Enumerate(entity.Instances);
 
 	public IEnumerable<T> EnumerateSlow(IReadOnlyList<T> instances)
 	{
@@ -98,20 +35,46 @@ public class HookList<T> where T : class
 			yield return instances[i];
 	}
 
-	public void Update<U>(IList<U> instances) where U : IIndexed
+	// Sadly, returning ReadOnlySpan<T>.Enumerator from a GetEnumerator() method doesn't bring the same performance
+	public ReadOnlySpan<T> Enumerate() => defaultInstances;
+
+	public void Update(IReadOnlyList<T> allDefaultInstances)
 	{
-		indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
+		if (allDefaultInstances is IReadOnlyList<IIndexed> indexed && !Validate(indexed))
+			throw new ArgumentException($"{nameof(allDefaultInstances)} elements have missing or duplicate {nameof(IIndexed)}.{nameof(IIndexed.Index)}");
+
+		var list = new List<T>(allDefaultInstances.Count);
+		var inds = new List<int>();
+		for (int i = 0; i < allDefaultInstances.Count; i++) {
+			var inst = allDefaultInstances[i];
+			if (HookOverrideQuery.HasOverride(inst)) {
+				list.Add(inst);
+				inds.Add(i);
+			}
+		}
+
+		defaultInstances = list.ToArray();
+		indices = inds.ToArray();
 	}
 
-	public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
-		=> new(expr.ToMethodInfo());
-}
+	private static bool Validate(IReadOnlyList<IIndexed> list)
+	{
+		for (int i = 0; i < list.Count; i++) {
+			if (list[i].Index != i)
+				return false;
+		}
 
-public static class HookList
-{
-	public static HookList<U>.InstanceEnumerator Enumerate<U>(this HookList<U> hookList, IEntityWithGlobals<U> entity) where U : GlobalType
-		=> hookList.Enumerate(entity.Globals.array);
-	
-	public static FilteredSpanEnumerator<T> Enumerate<T>(this HookList<T> hookList, IEntityWithInstances<T> entity) where T : class, IIndexed
-		=> hookList.Enumerate(entity.Instances);
+		return true;
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="LoaderUtils.ToOverrideQuery"/>
+	/// </summary>
+	public static HookList<T> Create(Expression<Func<T, Delegate>> expr) => Create<Delegate>(expr);
+
+	/// <summary>
+	/// <inheritdoc cref="LoaderUtils.ToOverrideQuery"/>
+	/// </summary>
+	public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
+		=> new(expr.ToOverrideQuery());
 }

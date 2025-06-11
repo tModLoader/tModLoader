@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -14,7 +11,9 @@ namespace ExampleMod.Common.GlobalItems
 	{
 		public override void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 			// In addition to this code, we also do similar code in Common/GlobalNPCs/ExampleNPCLoot.cs to edit the boss loot for non-expert drops. Remember to do both if your edits should affect non-expert drops as well.
-			if(item.type == ItemID.QueenBeeBossBag) {
+			if (item.type == ItemID.QueenBeeBossBag) {
+				// The following code is attempting to retrieve the ItemDropRule found in the ItemDropDatabase.RegisterBossBags method:
+				// RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BeeGun, ItemID.BeeKeeper, ItemID.BeesKnees));
 				foreach (var rule in itemLoot.Get()) {
 					if (rule is OneFromOptionsNotScaledWithLuckDropRule oneFromOptionsDrop && oneFromOptionsDrop.dropIds.Contains(ItemID.BeeGun)) {
 						var original = oneFromOptionsDrop.dropIds.ToList();

@@ -40,7 +40,7 @@ public abstract class ModBossBar : ModTexturedType, IBigProgressBar
 	public virtual Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame) => null;
 
 	/// <summary>
-	/// Allows you to handle the logic for when and how this ModBossBar should work. You want to override this if you have a multisegment NPC. Returns null by default. Failing to return false otherwise will lead to your bar being displayed at wrong times.
+	/// Allows you to handle the logic for when and how this ModBossBar should work. You want to override this if you have a multi-segment NPC. Returns null by default. Failing to return false otherwise will lead to your bar being displayed at wrong times.
 	/// <para>Return null to let the basic logic run after this hook is called (index validity check and assigning lifePercent to match the health of the NPC) and then allowing it to be drawn.</para>
 	/// <para>Return true to allow this ModBossBar to be drawn.</para>
 	/// <para>Return false to prevent this ModBossBar from being drawn so that the game will try to pick a different one.</para>

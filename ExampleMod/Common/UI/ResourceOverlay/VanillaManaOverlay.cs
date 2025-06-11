@@ -5,7 +5,6 @@ using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.GameContent.UI.ResourceSets;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.UI.ResourceOverlay
@@ -32,16 +31,20 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			if (asset == TextureAssets.Mana) {
 				// Draw over the Classic stars
 				DrawClassicFancyOverlay(context);
-			} else if (CompareAssets(asset, fancyFolder + "Star_Fill")) {
+			}
+			else if (CompareAssets(asset, fancyFolder + "Star_Fill")) {
 				// Draw over the Fancy stars
 				DrawClassicFancyOverlay(context);
-			} else if (CompareAssets(asset, barsFolder + "MP_Fill")) {
+			}
+			else if (CompareAssets(asset, barsFolder + "MP_Fill")) {
 				// Draw over the Bars mana bars
 				DrawBarsOverlay(context);
-			} else if (CompareAssets(asset, fancyFolder + "Star_A") || CompareAssets(asset, fancyFolder + "Star_B") || CompareAssets(asset, fancyFolder + "Star_C") || CompareAssets(asset, fancyFolder + "Star_Single")) {
+			}
+			else if (CompareAssets(asset, fancyFolder + "Star_A") || CompareAssets(asset, fancyFolder + "Star_B") || CompareAssets(asset, fancyFolder + "Star_C") || CompareAssets(asset, fancyFolder + "Star_Single")) {
 				// Draw over the Fancy star panels
 				DrawFancyPanelOverlay(context);
-			} else if (CompareAssets(asset, barsFolder + "MP_Panel_Middle")) {
+			}
+			else if (CompareAssets(asset, barsFolder + "MP_Panel_Middle")) {
 				// Draw over the Bars middle mana panels
 				DrawBarsPanelOverlay(context);
 			}
@@ -74,20 +77,23 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			// the position should be modified to compensate for the sprite size difference
 			Vector2 positionOffset;
 
-			if (context.resourceNumber == context.snapshot.AmountOfManaStars) {
+			if (context.resourceNumber == context.snapshot.AmountOfManaStars - 1) {
 				// Final panel in the column.  Determine whether it has panels above it
 				if (CompareAssets(context.texture, fancyFolder + "Star_Single")) {
 					// First and only panel
 					positionOffset = new Vector2(4, 4);
-				} else {
+				}
+				else {
 					// Other panels existed above this panel
 					// Vanilla texture is "Star_C"
 					positionOffset = new Vector2(4, 0);
 				}
-			} else if (CompareAssets(context.texture, fancyFolder + "Star_A")) {
+			}
+			else if (CompareAssets(context.texture, fancyFolder + "Star_A")) {
 				// First panel in the column
 				positionOffset = new Vector2(4, 4);
-			} else {
+			}
+			else {
 				// Any panel that has a panel above AND below it
 				// Vanilla texture is "Star_B"
 				positionOffset = new Vector2(4, 0);

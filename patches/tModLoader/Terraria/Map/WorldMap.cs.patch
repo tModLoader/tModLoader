@@ -8,7 +8,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  
-@@ -86,6 +_,7 @@
+@@ -86,11 +_,12 @@
  		}
  
  		if (!FileUtilities.Exists(text, isCloudSave)) {
@@ -16,12 +16,35 @@
  			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
  			return;
  		}
-@@ -99,6 +_,8 @@
- 					MapHelper.LoadMapVersion1(binaryReader, num);
+ 
+-		using MemoryStream input = new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));
++		using MemoryStream input = FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();
+ 		using BinaryReader binaryReader = new BinaryReader(input);
+ 		try {
+ 			int num = binaryReader.ReadInt32();
+@@ -100,12 +_,17 @@
  				else
  					MapHelper.LoadMapVersion2(binaryReader, num);
-+
-+				MapIO.ReadModFile(text, isCloudSave);
  
++				MapIO.ReadModFile(text, isCloudSave);
++
  				ClearEdges();
  				Main.clearMap = true;
+ 				Main.loadMap = true;
+ 				Main.loadMapLock = true;
+ 				Main.refreshMap = false;
+ 			}
++			else {
++				throw new Exception($"Map release version too high ({num}), the map file \'{text}\' is either corrupted or from a future version of Terraria."); // TML fix. Fix map saving if loading corrupted map file with higher release version number.
++			}
+ 		}
+ 		catch (Exception value) {
+ 			using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
+@@ -118,6 +_,7 @@
+ 				File.Copy(text, text + ".bad", overwrite: true);
+ 
+ 			Clear();
++			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map); // TML fix. Fix map saving if loading corrupted map file.
+ 		}
+ 	}
+ 

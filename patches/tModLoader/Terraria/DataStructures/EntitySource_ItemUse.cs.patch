@@ -1,22 +1,48 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_ItemUse.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_ItemUse.cs
-@@ -1,3 +_,5 @@
+@@ -1,13 +_,38 @@
 +#nullable enable
 +
  namespace Terraria.DataStructures;
  
- public class EntitySource_ItemUse : IEntitySource
-@@ -5,9 +_,12 @@
- 	public readonly Entity Entity;
- 	public readonly Item Item;
- 
+-public class EntitySource_ItemUse : IEntitySource
+-{
+-	public readonly Entity Entity;
+-	public readonly Item Item;
+-
 -	public EntitySource_ItemUse(Entity entity, Item item)
-+	public string? Context { get; }
++/// <summary>
++/// Used along with <see cref="EntitySource_Parent"/> to indicate that stats from the item should be transferred to spawned entities. <br/>
++/// When used to spawn projectiles, a snapshot of the Player and Item stats will be stored on the projectile. See <see cref="Projectile.ApplyStatsFromSource"/> for implementation
++/// </summary>
++public interface IEntitySource_WithStatsFromItem
++{
++	/// <summary>
++	/// The Player using the Item. Equal to <see cref="EntitySource_Parent.Entity"/>
++	/// </summary>
++	public Player Player { get; }
 +
-+	public EntitySource_ItemUse(Entity entity, Item item, string? context = null)
++	/// <summary>
++	/// The item being used
++	/// </summary>
++	public Item Item { get; }
++}
++
++
++/// <summary>
++/// Use the interface, <see cref="IEntitySource_WithStatsFromItem"/> instead when checking entity sources in <c>OnSpawn</c> <br/><br/>
++/// 
++/// Used when a player uses an item or an accessory.
++/// </summary>
++public class EntitySource_ItemUse : EntitySource_Parent, IEntitySource_WithStatsFromItem
++{
++	public Player Player => (Player)Entity;
++
++	public Item Item { get; }
++
++	public EntitySource_ItemUse(Player player, Item item, string? context = null) : base(player, context)
  	{
- 		Entity = entity;
+-		Entity = entity;
  		Item = item;
-+		Context = context;
  	}
  }

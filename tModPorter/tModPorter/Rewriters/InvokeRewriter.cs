@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
@@ -247,6 +247,8 @@ public partial class InvokeRewriter : BaseRewriter
 		// So instead, we just chuck some line comment trivia in front of this and hope no-one else gets too confused
 		if (invoke.Parent is StatementSyntax stmt)
 			rw.RegisterAction(stmt, CommentOutNode);
+		else if (invoke.Parent is ArrowExpressionClauseSyntax arrowExpr)
+			rw.RegisterAction(arrowExpr.Parent, CommentOutNode); // whole method is now redundant
 
 		return invoke;
 	};
@@ -257,7 +259,7 @@ public partial class InvokeRewriter : BaseRewriter
 		if (t.LastOrDefault().Kind() is SyntaxKind.SingleLineCommentTrivia or SyntaxKind.MultiLineCommentTrivia)
 			return node; // prevents infinite recursion
 
-		bool multiline = node.WithoutTrivia().DescendantTrivia().Any(t => t.IsKind(SyntaxKind.EndOfLineTrivia));
+		bool multiline = node.ToString().Contains('\n');
 		if (multiline) {
 			return node
 				.WithLeadingTrivia(t.Add(Comment("/* ")))

@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,24 @@ namespace Terraria.ModLoader.Core;
 /// </summary>
 internal static class ModOrganizer
 {
+
+	// Used in Mod Browser for tracking changes
+	internal delegate void LocalModsChangedDelegate(HashSet<string> modSlugs, bool isDeletion);
+	internal static event LocalModsChangedDelegate OnLocalModsChanged;
+	internal static event LocalModsChangedDelegate PostLocalModsChanged;
+	internal static void LocalModsChanged(HashSet<string> modSlugs, bool isDeletion)
+	{
+		// On is intended to be used to update Caches of Installed Items. Such as Workshop LocalMod caches etc.
+		OnLocalModsChanged?.Invoke(modSlugs, isDeletion);
+		// Post is intended to be used to update anything that depends on caches of installed items. Such as UI in Mod Browser
+		PostLocalModsChanged?.Invoke(modSlugs, isDeletion);
+	}
+
 	internal static string modPath = Path.Combine(Main.SavePath, "Mods");
 	internal static string commandLineModPack;
 
 	private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
-	private static List<string> readFailures = new List<string>(); //TODO: Reflect these skipped Mods in the UI somehow.
+	private static HashSet<string> readFailures = new(); //TODO: Reflect these skipped Mods in the UI somehow.
 
 	internal static string lastLaunchedModsFilePath = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 	internal static List<(string ModName, Version previousVersion)> modsThatUpdatedSinceLastLaunch = new List<(string ModName, Version previousVersion)>();
@@ -36,101 +50,140 @@ internal static class ModOrganizer
 	internal static string ModPackActive = null;
 
 	/// <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
-	internal static IReadOnlyList<LocalMod> FindWorkshopMods() => _FindMods(ignoreModsFolder: true);
-
-	/// <summary>Mods in dev folder, not in workshop or modpacks</summary>
-	internal static IReadOnlyList<LocalMod> FindDevFolderMods() => _FindMods(ignoreWorkshop: true);
+	internal static IReadOnlyList<LocalMod> FindWorkshopMods() => SelectVersionsToLoad(FindAllMods().Where(m => m.location == ModLocation.Workshop), quiet: true).ToArray();
 
 	/// <summary>Mods from any location, using the default internal priority logic</summary>
-	internal static LocalMod[] FindMods(bool logDuplicates = false) => _FindMods(logDuplicates: logDuplicates);
+	internal static LocalMod[] FindMods(bool logDuplicates = false) => SelectVersionsToLoad(FindAllMods(), quiet: !logDuplicates).ToArray();
 
-	internal static LocalMod[] _FindMods(bool ignoreModsFolder = false, bool ignoreWorkshop = false, bool logDuplicates = false)
+	internal static IEnumerable<LocalMod> RecheckVersionsToLoad() => SelectVersionsToLoad(AllFoundMods, quiet: true);
+
+	internal static Dictionary<string, LocalMod> LoadableModVersions { get; private set; }
+	internal static LocalMod[] AllFoundMods { get; private set; }
+
+	internal static LocalMod[] FindAllMods()
 	{
-		Directory.CreateDirectory(ModLoader.ModPath);
-		var mods = new List<LocalMod>();
-		var names = new HashSet<string>();
+		Logging.tML.Info("Finding Mods...");
 
+		Directory.CreateDirectory(ModLoader.ModPath);
 		DeleteTemporaryFiles();
 
-		WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
+		var mods = new List<LocalMod>();
 
-		// load all mods from an active ModPack
-		if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
+		// Active Modpack
+		if (!string.IsNullOrEmpty(ModPackActive)) {
 			if (Directory.Exists(ModPackActive)) {
-				Logging.tML.Info($"Loaded Mods from Active Mod Pack: {ModPackActive}");
-				foreach (string mod in Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories))
-					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, devLocation: true);
+				Logging.tML.Info($"Loading Mods from active modpack: {ModPackActive}");
+				mods.AddRange(ReadModFiles(ModLocation.Modpack, Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories)));
 			}
-			else
+			else {
+				Logging.tML.Warn($"Active modpack missing, deactivating: {ModPackActive}");
 				ModPackActive = null;
-		}
-
-		// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
-		if (!ignoreModsFolder) {
-			foreach (string mod in Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly))
-				AttemptLoadMod(mod, ref mods, ref names, logDuplicates, devLocation: true);
-		}
-
-		// Load Mods from Workshop downloads
-		if (!ignoreWorkshop) {
-			foreach (string repo in WorkshopFileFinder.ModPaths) {
-				var fileName = GetActiveTmodInRepo(repo);
-				if (fileName == null)
-					continue;
-
-				AttemptLoadMod(fileName, ref mods, ref names, logDuplicates, false);
 			}
 		}
 
-		return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
+		// Local/development folder
+		mods.AddRange(ReadModFiles(ModLocation.Local, Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly)));
+
+		// Workshop folders
+		WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
+		foreach (string repo in WorkshopFileFinder.ModPaths) {
+			mods.AddRange(ReadModFiles(ModLocation.Workshop, Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories)));
+		}
+
+		return AllFoundMods = mods.ToArray();
 	}
 
-	private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names, bool logDuplicates, bool devLocation)
+	private static IEnumerable<LocalMod> SelectVersionsToLoad(IEnumerable<LocalMod> mods, bool quiet = false) => mods.GroupBy(m => m.Name).OrderBy(g => g.Key).Select(m => SelectVersionToLoad(m, quiet)).Where(m => m != null);
+
+	private static LocalMod SelectVersionToLoad(IEnumerable<LocalMod> versions, bool quiet = false)
+	{
+		var list = versions.ToList();
+		void FilterOut(Func<LocalMod, bool> condition, string reason)
+		{
+			// Hopefully temporary
+			if (list.All(condition)) {
+				if (!quiet)
+					Logging.tML.Warn($"All remaining versions of {list.First().Name} would be ignored, continuing anyway so that at least one can be shown. Reason: {reason}");
+
+				return;
+			}
+
+			for (int i = list.Count - 1; i >= 0; i--) {
+				var m = list[i];
+				if (condition(m)) {
+					if (!quiet)
+						Logging.tML.Debug($"Skipped {m.DetailedInfo}. Reason: {reason}.");
+
+					list.RemoveAt(i);
+				}
+			}
+		}
+
+		void OrderByDescending<T>(Func<LocalMod, T> prop, string msg) where T : IComparable<T>
+		{
+			var top = list.Select(prop).Max(); // note Max returns null on empty
+			FilterOut(m => prop(m).CompareTo(top) != 0, msg);
+		}
+
+		// FilterOut currently does not _enforce_ the condition, because we must currently leave at least one mod version. Thus the order of these calls matters :(
+		FilterOut(ModNet.ServerRequiresDifferentVersion, "connecting to a server which requires a different version");
+		FilterOut(m => SocialBrowserModule.GetBrowserVersionNumber(m.tModLoaderVersion) != SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion), "mod is for a different Terraria version/LTS release stream");
+		FilterOut(m => SocialBrowserModule.GetBrowserVersionNumber(m.tModLoaderVersion).Contains("Transitive"), "The tML version is transitional with no distribution or mod browser support");
+		FilterOut(SkipModForPreviewNotPlayable, "preview early-access disabled");
+		FilterOut(m => BuildInfo.tMLVersion < m.tModLoaderVersion.MajorMinor(), "mod is for a newer tML monthly release"); // condition ignored if it applies to all versions of the mod. Ordering logic below will choose the newest version of the mod. This may be misleading, showing the maximum supported tML version rather than the minimum.
+		OrderByDescending(m => m.location == ModLocation.Modpack, "a frozen copy is present in the active modpack"); // the condition above means that we may ignore items in the local modpack if they are for a newer tML version, preferring a loadable version in the local or workshop directories
+		OrderByDescending(m => m.Version, "a newer version exists");
+		OrderByDescending(m => m.tModLoaderVersion, "a matching version for a newer tModLoader exists");
+		FilterOut(m => m.location != ModLocation.Workshop && list.Any(m2 => m2.location == ModLocation.Workshop && m2.modFile.Hash == m.modFile.Hash), "an identical copy exists in the workshop folder");
+		OrderByDescending(m => m.location == ModLocation.Local, "a local copy with the same version (but different hash) exists");
+		OrderByDescending(m => Path.GetFileNameWithoutExtension(m.modFile.path) == m.Name, "this .tmod has been renamed");
+
+		var selected = list.FirstOrDefault();
+
+		// should never be called, but could help diagnose a logic error in the future. Better than calling SingleOrDefault and throwing.
+		FilterOut(v => v != selected, "Logic Error, multiple versions remain. One was randomly selected");
+
+		if (!quiet)
+			Logging.tML.Debug($"Selected {selected.DetailedInfo}.");
+
+		return selected;
+	}
+
+	private static IEnumerable<LocalMod> ReadModFiles(ModLocation location, IEnumerable<string> fileNames)
+	{
+		foreach (var fileName in fileNames)
+			if (TryReadLocalMod(location, fileName, out var mod))
+				yield return mod;
+	}
+
+	private static bool TryReadLocalMod(ModLocation location, string fileName, out LocalMod mod)
 	{
 		var lastModified = File.GetLastWriteTime(fileName);
+		if (modsDirCache.TryGetValue(fileName, out mod) && mod.lastModified == lastModified)
+			return true;
 
-		if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
-			try {
-				var modFile = new TmodFile(fileName);
-
-				using (modFile.Open()) {
-					mod = new LocalMod(modFile) {
-						lastModified = lastModified
-					};
-				}
-
-				if (SkipModForPreviewNotPlayable(mod)) {
-					Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. Preview Mod not available on Preview");
-					return false;
-				}
+		try {
+			var modFile = new TmodFile(fileName);
+			using (modFile.Open()) {
+				mod = new LocalMod(location, modFile) {
+					lastModified = lastModified
+				};
 			}
-			catch (Exception e) {
-				if (!readFailures.Contains(fileName)) {
-					Logging.tML.Warn("Failed to read " + fileName, e);
-				}
-				else {
-					readFailures.Add(fileName);
-				}
+		}
+		catch (Exception e) {
+			if (readFailures.Add(fileName))
+				Logging.tML.Warn("Failed to read " + fileName, e);
 
-				return false;
-			}
-
-			modsDirCache[fileName] = mod;
+			return false;
 		}
 
-		// Ignore it from Workshop if it appeared in Mods folder/already exists.
-		if (names.Add(mod.Name)) {
-			mods.Add(mod);
-		}
-		else if (logDuplicates) {
-			Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
-		}
+		modsDirCache[fileName] = mod;
 		return true;
 	}
 
 	internal static bool ApplyPreviewChecks(LocalMod mod)
 	{
-		return BuildInfo.IsPreview && IsModFromSteam(mod.modFile.path);
+		return BuildInfo.IsPreview && mod.location == ModLocation.Workshop;
 	}
 
 	// Used to Warn Players that the mod was built on Stable or earlier, and may not work on Preview.
@@ -151,65 +204,38 @@ internal static class ModOrganizer
 		return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
 	}
 
-	internal static IEnumerable<ulong> IdentifyWorkshopDependencies()
+	internal static HashSet<string> IdentifyMissingWorkshopDependencies()
 	{
-		HashSet<ulong> dependencies = new HashSet<ulong>();
+		var mods = FindWorkshopMods();
+		var installedSlugs = mods.Select(s => s.Name).ToArray();
 
-		foreach (LocalMod mod in FindWorkshopMods()) {
-			// Skip if the mod has no dependencies according to the build information.
-			if (mod.properties.modReferences.Length == 0)
-				continue;
+		HashSet<string> missingModSlugs = new HashSet<string>();
 
-			// This shouldn't really ever fail, but better safe than sorry.
-			if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
-				continue;
+		// This won't look recursively for missing deps. Because any recursive missing deps implies a missing dep elsewhere
+		foreach (var mod in mods.Where(m => m.properties.modReferences.Length > 0)) {
+			var missingDeps = mod.properties.modReferences.Select(dep => dep.mod).Where(slug => !installedSlugs.Contains(slug));
 
-			try {
-				WorkshopHelper.QueryHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
-			}
-			catch (OverflowException e) {
-				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopIrregularDependenciesFailure", mod.DisplayName, e.Message, mod.DisplayName), Interface.loadModsID);
-				Logging.tML.Warn($"Failed to fetch missing dependencies for local mod: {mod.DisplayName}. Irregular dependencies count detected! {e.Message}. Please report this issue to {mod.DisplayName}'s developers!", e);
-			}
-			catch (Exception e) {
-				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorkshopFetchDependenciesFailure", mod.DisplayName), Interface.loadModsID);
-				Logging.tML.Warn($"Failed to fetch missing dependencies for local mod: {mod.DisplayName}. Check your internet connection or download manually from Steam Workshop!!", e);
-			}
+			missingModSlugs.UnionWith(missingDeps);
 		}
 
-		// Cull out any dependencies that are already installed.
-		return dependencies.Where(x => !SteamedWraps.IsWorkshopItemInstalled(new Steamworks.PublishedFileId_t(x))).ToList();
-	}
-
-	internal static string ListDependenciesToDownload(List<ulong> deps)
-	{
-		if (deps.Count == 0) return null;
-
-		var message = new StringBuilder();
-
-		message.Append(Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods"));
-		foreach (ulong dep in deps) {
-			// TODO: No way to really show the internal name, just display name. How to fix? Does it *need* fixing?
-			var details = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(dep);
-			message.Append($"\n  {details.m_rgchTitle}");
-		}
-
-		return message.ToString();
+		return missingModSlugs;
 	}
 
 	/// <summary>
 	/// Returns changes based on last time <see cref="SaveLastLaunchedMods"/> was called. Can be null if no changes.
 	/// </summary>
-	internal static string DetectModChangesForInfoMessage()
+	internal static string DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)
 	{
 		// Only display if enabled and file exists
 		if (!ModLoader.showNewUpdatedModsInfo || !File.Exists(lastLaunchedModsFilePath)) {
+			removedMods = [];
 			return null;
 		}
 
 		// For convenience, convert to dict
 		var currMods = FindWorkshopMods().ToDictionary(mod => mod.Name, mod => mod);
 
+		Logging.tML.Info("3 most recently changed workshop mods: " + string.Join(", ", currMods.OrderByDescending(x => x.Value.lastModified).Take(3).Select(x => $"{x.Value.Name} v{x.Value.Version} {x.Value.lastModified:d}")));
 
 		// trycatch the read in case users manually modify the file
 		try {
@@ -232,10 +258,11 @@ internal static class ModOrganizer
 			var newMods = new List<string>();
 			var updatedMods = new List<string>();
 			var messages = new StringBuilder();
+			removedMods = lastMods.Keys.Where(name => !currMods.ContainsKey(name));
 			foreach (var item in currMods) {
 				string name = item.Key;
 				var localMod = item.Value;
-				Version version = localMod.properties.version;
+				Version version = localMod.Version;
 
 				if (!lastMods.ContainsKey(name)) {
 					newMods.Add(name);
@@ -244,6 +271,16 @@ internal static class ModOrganizer
 				else if (lastMods.TryGetValue(name, out var lastVersion) && lastVersion < version) {
 					updatedMods.Add(name);
 					modsThatUpdatedSinceLastLaunch.Add((name, lastVersion));
+				}
+			}
+
+			//TODO: This code was added hastily in response to a popular mod being transferred ownership by reuploading it.
+			// Revisit this code at a later date, as its not optimized for UX
+			if (removedMods.Count() > 0) {
+				messages.Append(Language.GetTextValue("tModLoader.ShowRemovedModsInfoMessageUpdatedMods"));
+				foreach (var removedMod in removedMods) {
+					string name = removedMod;
+					messages.Append($"\n  {name} was removed.");
 				}
 			}
 
@@ -269,6 +306,7 @@ internal static class ModOrganizer
 			return messages.Length > 0 ? messages.ToString() : null;
 		}
 		catch {
+			removedMods = [];
 			return null;
 		}
 	}
@@ -287,7 +325,7 @@ internal static class ModOrganizer
 		var currMods = FindWorkshopMods();
 		var fileText = new StringBuilder();
 		foreach (var mod in currMods) {
-			fileText.Append($"{mod.Name} {mod.properties.version}\n");
+			fileText.Append($"{mod.Name} {mod.Version}\n");
 		}
 		File.WriteAllText(lastLaunchedModsFilePath, fileText.ToString());
 	}
@@ -313,9 +351,9 @@ internal static class ModOrganizer
 
 	internal static bool LoadSide(ModSide side) => side != (Main.dedServ ? ModSide.Client : ModSide.Server);
 
-	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> mods, CancellationToken token)
+	internal static List<LocalMod> SelectAndSortMods(IEnumerable<LocalMod> availableMods, CancellationToken token)
 	{
-		var missing = ModLoader.EnabledMods.Except(mods.Select(mod => mod.Name)).ToList();
+		var missing = ModLoader.EnabledMods.Except(availableMods.Select(mod => mod.Name)).ToList();
 		if (missing.Any()) {
 			Logging.tML.Info("Missing previously enabled mods: " + string.Join(", ", missing));
 			foreach (var name in missing)
@@ -327,11 +365,11 @@ internal static class ModOrganizer
 		// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
 		if (Main.instance.IsActive && Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {
 			ModLoader.skipLoad = false;
-			Interface.loadMods.SetLoadStage("Cancelling loading...");
+			Interface.loadMods.SetLoadStage("tModLoader.CancellingLoading");
 			return new();
 		}
 
-		CommandLineModPackOverride(mods);
+		CommandLineModPackOverride(availableMods);
 
 		// Alternate fix for updating enabled mods
 		//foreach (string fileName in Directory.GetFiles(modPath, "*.tmod.update", SearchOption.TopDirectoryOnly)) {
@@ -339,13 +377,18 @@ internal static class ModOrganizer
 		//	File.Delete(fileName);
 		//}
 		Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
-		var modsToLoad = mods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
 
-		VerifyNames(modsToLoad);
+		foreach (var mod in GetModsToLoad(availableMods)) {
+			EnableWithDeps(mod, availableMods);
+		}
+		SaveEnabledMods();
 
+		var modsToLoad = GetModsToLoad(availableMods);
 		try {
+			EnsureRecentlyBuildModsAreLoading(modsToLoad);
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
+			EnsureHashesAreValid(modsToLoad);
 			return Sort(modsToLoad);
 		}
 		catch (ModSortingException e) {
@@ -353,6 +396,13 @@ internal static class ModOrganizer
 			e.Data["hideStackTrace"] = true;
 			throw;
 		}
+	}
+
+	private static List<LocalMod> GetModsToLoad(IEnumerable<LocalMod> availableMods)
+	{
+		var modsToLoad = availableMods.Where(mod => mod.Enabled && LoadSide(mod.properties.side)).ToList();
+		VerifyNames(modsToLoad);
+		return modsToLoad;
 	}
 
 	private static void CommandLineModPackOverride(IEnumerable<LocalMod> mods)
@@ -382,6 +432,17 @@ internal static class ModOrganizer
 		}
 	}
 
+	//TODO: This duplicates some of the logic in UIModItem
+	internal static void EnableWithDeps(LocalMod mod, IEnumerable<LocalMod> availableMods)
+	{
+		mod.Enabled = true;
+
+		foreach (var depName in mod.properties.RefNames(includeWeak: false)) {
+			if (availableMods.SingleOrDefault(m => m.Name == depName) is LocalMod { Enabled: false } dep)
+				EnableWithDeps(dep, availableMods);
+		}
+	}
+
 	private static void VerifyNames(List<LocalMod> mods)
 	{
 		var names = new HashSet<string>();
@@ -406,6 +467,30 @@ internal static class ModOrganizer
 			var e = new Exception(string.Join("\n", errors));
 			e.Data["mods"] = erroredMods.Select(m => m.Name).ToArray();
 			throw e;
+		}
+	}
+
+	
+	private static void EnsureRecentlyBuildModsAreLoading(List<LocalMod> mods)
+	{
+		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. We throw an error because this is definitely not desired.
+		foreach (var mod in mods) {
+			var localMod = AllFoundMods.SingleOrDefault(x => x.Name == mod.Name && x.location == ModLocation.Local && Path.GetFileNameWithoutExtension(x.modFile.path) == mod.Name);
+
+			// If Local mod is newer than selected Workshop/Modpack mod...
+			if (localMod == null || localMod == mod || localMod.lastModified.CompareTo(mod.lastModified) <= 0) {
+				continue;
+			}
+
+			// and is newer than directly before game launch and last time a mod was synced, it is assumed to be a mod built by this modder.
+			if (localMod.lastModified.CompareTo(ModCompile.recentlyBuiltModCheckTimeCutoff) > 0) {
+				var e = new Exception(Language.GetTextValue("tModLoader.LoadErrorRecentlyBuiltLocalModWithLowerVersion" + mod.location.ToString(), localMod.Name, localMod.Version, mod.Version));
+				e.Data["mod"] = mod.Name;
+				e.Data["hideStackTrace"] = true;
+				throw e;
+			}
+
+			continue;
 		}
 	}
 
@@ -437,16 +522,30 @@ internal static class ModOrganizer
 				if (dep.target == null || !nameMap.TryGetValue(dep.mod, out var inst))
 					continue;
 
-				if (inst.properties.version < dep.target) {
+				if (inst.Version < dep.target) {
 					errored.Add(mod);
-					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.properties.version));
+					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.Version));
 				}
-				else if (inst.properties.version.Major != dep.target.Major) {
+				else if (inst.Version.Major != dep.target.Major) {
 					errored.Add(mod);
-					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.properties.version));
+					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.Version));
 				}
 			}
 
+		if (errored.Count > 0)
+			throw new ModSortingException(errored, errorLog.ToString());
+	}
+
+	internal static void EnsureHashesAreValid(ICollection<LocalMod> mods)
+	{
+		var errored = new HashSet<LocalMod>();
+		var errorLog = new StringBuilder();
+		foreach (var mod in mods) {
+			if (!mod.modFile.VerifyHash()) {
+				errored.Add(mod);
+				errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorruptedWithModName", mod));
+			}
+		}
 		if (errored.Count > 0)
 			throw new ModSortingException(errored, errorLog.ToString());
 	}
@@ -550,38 +649,29 @@ internal static class ModOrganizer
 
 	internal static string GetActiveTmodInRepo(string repo)
 	{
-		Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-		if (tmods.Length == 1)
-			return tmods[0];
-
-		string val = null;
-		Version currVersion = null;
-		foreach (string fileName in tmods) {
-			var match = PublishFolderMetadata.Match(fileName);
-
-			if (match.Success) {
-				Version testVers = new Version(match.Groups[1].Value);
-				if (testVers > tmodVersion) {
-					continue;
-				}
-				else if (testVers == currVersion) {
-					val = fileName;
-					break;
-				}
-				else if (testVers > currVersion) {
-					currVersion = testVers;
-					val = fileName;
-				}
-			}
-			else if (val == null) {
-				val = fileName;
-				currVersion = new Version(0, 12);
-			}
+		var information = AnalyzeWorkshopTmods(repo).Where(t => 
+			// Ignore Transitive versions of tModLoader, such as 1.4.4-transitive. See 'GetBrowserVersionNumber' for why
+			!SocialBrowserModule.GetBrowserVersionNumber(t.tModVersion).Contains("Transitive")
+		);
+		if (information == null || information.Count() == 0) {
+			Logging.tML.Warn($"Unexpectedly missing .tMods in Workshop Folder {repo}");
+			return null;
 		}
-		return val;
+
+		var recommendedTmod = information.Where(t => t.tModVersion <= BuildInfo.tMLVersion).OrderByDescending(t => t.tModVersion).FirstOrDefault();
+		if (recommendedTmod == default) {
+			Logging.tML.Warn($"No .tMods found for this version in Workshop Folder {repo}. Defaulting to show newest");
+			return information.OrderByDescending(t => t.tModVersion).First().file;
+		}
+
+		return recommendedTmod.file;
 	}
 
+	/// <summary>
+	/// Must Be called AFTER the new files are added to the publishing repo.
+	/// Assumes one .tmod per YYYY.XX folder in the publishing repo
+	/// </summary>
+	/// <param name="repo"></param>
 	internal static void CleanupOldPublish(string repo)
 	{
 		if (BuildInfo.IsPreview)
@@ -591,36 +681,53 @@ internal static class ModOrganizer
 		if (tmods.Length <= 3)
 			return;
 
-		// Solxan: We want to keep 3 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
-		// we need to rollback to the last stable due to a signficant bug.
-		// We thus check for what the previous Stable was and compare for anything less than that.
+		// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+		// we need to rollback to the last stable due to a significant bug.
+		// We also keep a 1.4.3 version from version 2022.9 prior
 
-		string deleteFolder = null;
-		var lowestVersion = BuildInfo.stableVersion.MajorMinor();
+		var information = AnalyzeWorkshopTmods(repo);
+		if (information == null || information.Count() <= 3)
+			return;
 
-		for (int i = 0; i < tmods.Length; i++) {
-			var filename = tmods[i];
+		(string browserVersion, int keepCount)[] keepRequirements =
+			{ ("1.4.3", 1), ("1.4.4", 3), ("1.3", 1), ("1.4.4-Transitive", 0) };
 
-			// Legacy, non-folder .tmods
-			if (filename.EndsWith(".tmod") && tmods.Length > 3) {
-				File.Delete(filename);
-				return;
-			}
+		foreach (var requirement in keepRequirements) {
+			var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);
 
-			var match = PublishFolderMetadata.Match(filename);
-			if (match.Success) {
-				var checkVersion = new Version(match.Groups[1].Value);
-
-				// If the mod copy is from a legacy version
-				if (checkVersion < lowestVersion) {
-					lowestVersion = checkVersion;
-					deleteFolder = filename;
-				}
+			foreach (var item in mods) {
+				if (item.isInFolder)
+					Directory.Delete(Path.GetDirectoryName(item.file), recursive: true);
+				else
+					File.Delete(item.file);
 			}
 		}
+	}
 
-		if (deleteFolder != null)
-			Directory.Delete(deleteFolder, true);
+	internal static IOrderedEnumerable<(string file, Version tModVersion, bool isInFolder)>
+			GetOrderedTmodWorkshopInfoForVersion(List<(string file, Version tModVersion, bool isInFolder)> information, string tmlVersion)
+	{
+		return information.Where(t => SocialBrowserModule.GetBrowserVersionNumber(t.tModVersion) == tmlVersion).OrderByDescending(t => t.tModVersion);
+	}
+
+	internal static List<(string file, Version tModVersion, bool isInFolder)> AnalyzeWorkshopTmods(string repo)
+	{
+		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+
+		// Get the list of all tMod files on Workshop
+		List<(string file, Version tModVersion, bool isInFolder)> information = new();
+		foreach (var filename in tmods) {
+			var match = PublishFolderMetadata.Match(filename);
+			if (match.Success) {
+				information.Add((filename, new Version(match.Groups[1].Value), isInFolder: true));
+			}
+			else {
+				// Version 0.12 was the pre-Alpha 1.4 builds where .tMod was placed directly in the Workshop.
+				// Was prior to the preview system introduced, but also just above the 0.11.9.X for 1.3 tML
+				information.Add((filename, new Version(0, 12), isInFolder: false));
+			}
+		}
+		return information;
 	}
 
 	// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6
@@ -638,23 +745,37 @@ internal static class ModOrganizer
 			var checkVersion = new Version(match.Groups[1].Value);
 
 			if (checkVersion > BuildInfo.stableVersion && checkVersion < BuildInfo.tMLVersion.MajorMinor())
-				Directory.Delete(filename, true);
+				Directory.Delete(Path.GetDirectoryName(filename), true);
 		}
+	}
+
+	internal static bool CanDeleteFrom(ModLocation location)
+	{
+		return location == ModLocation.Local || location == ModLocation.Workshop;
 	}
 
 	internal static void DeleteMod(LocalMod tmod)
 	{
-		string tmodPath = tmod.modFile.path;
-		string parentDir = GetParentDir(tmodPath);
-
-		if (TryReadManifest(parentDir, out var info)) {
-			// Is a mod on Steam Workshop
-			SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId), parentDir);
+		if (tmod.location == ModLocation.Local) {
+			File.Delete(tmod.modFile.path);
+		}
+		else if (tmod.location == ModLocation.Workshop) {
+			string parentDir = GetParentDir(tmod.modFile.path);
+			if (TryReadManifest(parentDir, out var info)) {
+				// Is a mod on Steam Workshop
+				SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId), parentDir);
+			}
+			else {
+				Logging.tML.Error($"Failed to read manifest for workshop mod {tmod.Name} @ {parentDir}");
+				return;
+			}
 		}
 		else {
-			// Is a Mod in Mods Folder
-			File.Delete(tmodPath);
+			throw new InvalidOperationException("Cannot delete mod from " + tmod.location);
 		}
+
+		// TODO, notify the mod workshop module directly instead. Only for workshop mods.
+		LocalModsChanged(new HashSet<string> { tmod.Name }, isDeletion: true);
 	}
 
 	internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info)
@@ -679,5 +800,15 @@ internal static class ModOrganizer
 			parentDir = Directory.GetParent(parentDir).ToString();
 
 		return parentDir;
+	}
+
+	// NOTE: This does not search the workshop, only checks locally available mods
+	internal static string GetDisplayNameCleanFromLocalModsOrDefaultToModName(string modname)
+	{
+		var localMods = AllFoundMods.Where(m => string.Equals(modname, m.Name));
+		if (!localMods.Any())
+			return modname;
+
+		return localMods.FirstOrDefault().DisplayNameClean;
 	}
 }

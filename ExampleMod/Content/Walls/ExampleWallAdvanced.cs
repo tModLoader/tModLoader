@@ -1,9 +1,8 @@
-using ExampleMod.Content.Dusts;
+using ExampleMod.Common.Systems;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace ExampleMod.Content.Walls
 {
@@ -12,9 +11,9 @@ namespace ExampleMod.Content.Walls
 	{
 		public override void SetStaticDefaults() {
 			Main.wallHouse[Type] = true;
+			Main.wallBlend[Type] = WallID.CogWall; // Prevent black line being drawn between this and CogWall
 
 			DustType = DustID.Stone;
-			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleWallAdvanced>();
 
 			AddMapEntry(new Color(68, 68, 68));
 		}
@@ -54,6 +53,11 @@ namespace ExampleMod.Content.Walls
 				}
 			}
 			return base.WallFrame(i, j, randomizeFrame, ref style, ref frameNumber);
+		}
+
+		public override bool CanBeTeleportedTo(int i, int j, Player player, string context) {
+			// Limit teleportation similar to how teleporting to a location with Dungeon walls or Lihzahrd walls is limited by defeating some bosses.
+			return DownedBossSystem.downedMinionBoss;
 		}
 	}
 }

@@ -1,5 +1,15 @@
 --- src/TerrariaNetCore/Terraria/ID/RecipeGroupID.cs
 +++ src/tModLoader/Terraria/ID/RecipeGroupID.cs
+@@ -1,5 +_,9 @@
+ namespace Terraria.ID;
+ 
++/// <summary>
++/// Contains recipe group ids suitable for use in <see cref="Recipe.AddRecipeGroup(int, int)"/>.
++/// <br/> Note that FishForDinner and GoldenCritter are actually unused and won't work. Also note that the ID values shown are incorrect.
++/// </summary>
+ public class RecipeGroupID
+ {
+ 	public static int Birds = 0;
 @@ -10,7 +_,9 @@
  	public static int Butterflies = 5;
  	public static int Fireflies = 6;

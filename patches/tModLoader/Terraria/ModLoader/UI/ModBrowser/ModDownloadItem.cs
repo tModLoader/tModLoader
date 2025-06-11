@@ -4,93 +4,104 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
-using Terraria.Social.Steam;
+using Terraria.Social.Base;
 using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
-internal class ModDownloadItem
+public class ModDownloadItem
 {
 	public readonly string ModName;
 	public readonly string DisplayName;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
-	public readonly string PublishId;
-	public readonly bool HasUpdate;
-	public readonly bool UpdateIsDowngrade;
+	public readonly ModPubId_t PublishId;
+	public readonly string OwnerId;
+	public readonly Version Version;
 
-	internal bool NeedsGameRestart;
-	public LocalMod Installed { get; internal set; }
-	public readonly string Version;
+	public readonly string Author;
+	public readonly string ModIconUrl;
+	public readonly DateTime TimeStamp;
 
-	internal readonly string Author;
-	internal readonly string ModIconUrl;
-	internal ModIconStatus ModIconStatus = ModIconStatus.UNKNOWN;
-	internal readonly DateTime TimeStamp;
-	internal readonly string ModReferences;
-	internal readonly ModSide ModSide;
-	internal readonly int Downloads;
-	internal readonly int Hot;
-	internal readonly string Homepage;
-	internal readonly string ModloaderVersion;
+	public readonly string ModReferencesBySlug;
+	public readonly ModPubId_t[] ModReferenceByModId;
 
-	private bool IsInstalled => Installed != null;
+	public readonly ModSide ModSide;
+	public readonly int Downloads;
+	public readonly int Hot;
+	public readonly string Homepage;
+	public readonly Version ModloaderVersion;
 
-	public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, bool needsRestart)
+	internal LocalMod Installed;
+	public bool NeedUpdate { get; private set; }
+	public bool AppNeedRestartToReinstall { get; private set; }
+
+	public bool IsInstalled => Installed != null;
+
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById)
 	{
 		ModName = name;
 		DisplayName = displayName;
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
-		PublishId = publishId;
+		DisplayNameClean = Utils.CleanChatTags(displayName);
+		PublishId = new ModPubId_t { m_ModPubId = publishId };
+		OwnerId = ownerId;
 
 		Author = author;
-		ModReferences = modReferences;
+		ModReferencesBySlug = modReferences;
+		ModReferenceByModId = Array.ConvertAll(referencesById, x => new ModPubId_t() { m_ModPubId = x});
 		ModSide = modSide;
 		ModIconUrl = modIconUrl;
 		Downloads = downloads;
 		Hot = hot;
 		Homepage = homepage;
 		TimeStamp = timeStamp;
-		HasUpdate = hasUpdate;
-		UpdateIsDowngrade = updateIsDowngrade;
-		NeedsGameRestart = needsRestart;
-		Installed = installed;
 		Version = version;
 		ModloaderVersion = modloaderversion;
 	}
 
-	internal ModDownloadItem(string displayName, string publishId, LocalMod installed)
+	internal void UpdateInstallState()
 	{
-		DisplayName = displayName;
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
-		PublishId = publishId;
-		Installed = installed;
+		// Remember this method is blocking, it does network stuff... - DarioDaf
+
+		// Check against installed mods for updates.
+		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
+		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
+
+		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
+		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
+		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
+		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);
 	}
 
-	internal Task InnerDownloadWithDeps()
+	public override bool Equals(object obj) => Equals(obj as ModDownloadItem);
+
+	// Custom Equality for Mod Browser efficiency
+	private (string, string, Version) GetComparable()
 	{
-		var downloads = new HashSet<ModDownloadItem>() { this };
-		downloads.Add(this);
-		GetDependenciesRecursive(this, ref downloads);
-		return WorkshopHelper.SetupDownload(downloads.ToList(), Interface.modBrowserID);
+		return (ModName, PublishId.m_ModPubId, Version);
 	}
 
-	private IEnumerable<ModDownloadItem> GetDependencies()
+	// Explicit Equals was required due to a bizarre issue where two ModDownloadItems with equal properties 
+	//	were not found equal in CachedInstalledModDownloadItems.Contains(item). - Solxan 2023-07-29
+	public bool Equals(ModDownloadItem item)
 	{
-		return ModReferences.Split(',')
-			.Select(WorkshopHelper.QueryHelper.FindModDownloadItem)
-			.Where(item => item != null && (!item.IsInstalled || (item.HasUpdate && !item.UpdateIsDowngrade)));
+		if (item is null)
+			return false;
+		return GetComparable() == item.GetComparable();
 	}
 
-	private void GetDependenciesRecursive(ModDownloadItem item, ref HashSet<ModDownloadItem> set)
+	public override int GetHashCode()
 	{
-		var deps = item.GetDependencies();
-		set.UnionWith(deps);
+		return GetComparable().GetHashCode();
+	}
 
-		// Cyclic dependency should never happen, as it's not allowed
-		//TODO: What if the same mod is a dependency twice, but different versions?
+	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)
+	{
+		return downloads.Where(item => {
+			if (item == null)
+				return false;
 
-		foreach (var dep in deps) {
-			GetDependenciesRecursive(dep, ref set);
-		}
+			item.UpdateInstallState();
+			return !item.IsInstalled || item.NeedUpdate;
+		});
 	}
 }

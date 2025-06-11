@@ -1,12 +1,9 @@
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.States;
@@ -22,19 +19,21 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
-using Terraria.Initializers;
-using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
 using Terraria.GameContent;
 using System.Reflection;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using Terraria.GameContent.Prefixes;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// Manages content added by mods.
-/// Liasons between mod content and Terraria's arrays and oversees the Loader classes.
+/// Liaisons between mod content and Terraria's arrays and oversees the Loader classes.
 /// </summary>
 public static class ModContent
 {
@@ -47,7 +46,7 @@ public static class ModContent
 	/// <br/>This only includes the 'template' instance for each piece of content, not all the clones/new instances which get added to Items/Players/NPCs etc. as the game is played
 	/// </summary>
 	public static IEnumerable<T> GetContent<T>() where T : ILoadable
-		=> ModLoader.Mods.SelectMany(m => m.GetContent<T>());
+		=> ContentCache.GetContentForAllMods<T>();
 
 	/// <summary> Attempts to find the template instance with the specified full name (not the clone/new instance which gets added to Items/Players/NPCs etc. as the game is played). Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 	/// <exception cref="KeyNotFoundException"/>
@@ -66,30 +65,31 @@ public static class ModContent
 	private static readonly char[] nameSplitters = new char[] { '/', ' ', ':' };
 	public static void SplitName(string name, out string domain, out string subName)
 	{
-		int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatability, just in case
+		int slash = name.IndexOfAny(nameSplitters); // slash is the canonical splitter, but we'll accept space and colon for backwards compatibility, just in case
 		if (slash < 0)
-			throw new MissingResourceException("Missing mod qualifier: " + name);
+			throw new MissingResourceException(Language.GetTextValue("tModLoader.LoadErrorMissingModQualifier", name));
 
 		domain = name.Substring(0, slash);
 		subName = name.Substring(slash + 1);
 	}
 
 	/// <summary>
-	/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
+	/// Retrieves the contents of a file packaged within the .tmod file as a byte array. Should be used mainly for non-<see cref="Asset{T}"/> files. The <paramref name="name"/> should be in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the mod does not exist. Returns null if the file does not exist.
+	/// <para/> A typical usage of this might be to load a text file containing structured data included within your mod. Make sure the txt file is UTF8 encoded and use the following to retrieve file's text contents: <c>string pointsFileContents = Encoding.UTF8.GetString(ModContent.GetFileBytes("MyMod/data/points.txt"));</c>
 	/// </summary>
-	/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
+	/// <exception cref="MissingResourceException"></exception>
 	public static byte[] GetFileBytes(string name)
 	{
 		SplitName(name, out string modName, out string subName);
 
 		if (!ModLoader.TryGetMod(modName, out var mod))
-			throw new MissingResourceException("Missing mod: " + name);
+			throw new MissingResourceException(Language.GetTextValue("tModLoader.LoadErrorModNotFoundDuringAsset", modName, name));
 
 		return mod.GetFileBytes(subName);
 	}
 
 	/// <summary>
-	/// Returns whether or not a file with the specified name exists.
+	/// Returns whether or not a file with the specified name exists. Note that this includes file extension, the folder path, and must start with the mod name at the start of the path: "ModFolder/OtherFolders/FileNameWithExtension"
 	/// </summary>
 	public static bool FileExists(string name)
 	{
@@ -103,6 +103,10 @@ public static class ModContent
 
 	/// <summary>
 	/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
+	/// <para/>
+	/// Modders may wish to use <c>Mod.Assets.Request</c> where the mod name prefix may be omitted for convenience.
+	/// <para/>
+	/// <inheritdoc cref="IAssetRepository.Request{T}(string, AssetRequestMode)"/>
 	/// </summary>
 	/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
 	/// <param name="mode">The desired timing for when the asset actually loads. Use ImmediateLoad if you need correct dimensions immediately, such as with UI initialization</param>
@@ -118,7 +122,7 @@ public static class ModContent
 			return Main.Assets.Request<T>(subName, mode);
 
 		if (!ModLoader.TryGetMod(modName, out var mod))
-			throw new MissingResourceException($"Missing mod: {name}");
+			throw new MissingResourceException(Language.GetTextValue("tModLoader.LoadErrorModNotFoundDuringAsset", modName, name));
 
 		return mod.Assets.Request<T>(subName, mode);
 	}
@@ -194,7 +198,7 @@ public static class ModContent
 	/// </summary>
 	public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
 
-	/// <inheritdoc cref="BackgroundTextureLoader.GetBackgroundSlot"/>
+	/// <inheritdoc cref="BackgroundTextureLoader.GetBackgroundSlot(string)"/>
 	public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
 
 	/// <summary>
@@ -211,6 +215,11 @@ public static class ModContent
 	/// Get the id (type) of a ModGore by class. Assumes one instance per class.
 	/// </summary>
 	public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
+
+	/// <summary>
+	/// Get the id (type) of a ModCloud by class. Assumes one instance per class.
+	/// </summary>
+	public static int CloudType<T>() where T : ModCloud => GetInstance<T>()?.Type ?? 0;
 
 	/// <summary>
 	/// Get the id (type) of a ModItem by class. Assumes one instance per class.
@@ -273,13 +282,26 @@ public static class ModContent
 	/// </summary>
 	public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
 
+	/// <summary>
+	/// Get the id (type) of a ModEmoteBubble by class. Assumes one instance per class.
+	/// </summary>
+	public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
+
+	private record struct ScopedCleanup(Action Dispose) : IDisposable
+	{
+		void IDisposable.Dispose() => Dispose();
+	}
+
 	internal static void Load(CancellationToken token)
 	{
+		using var parallelCts = new CancellationTokenSource();
+		using var cancelOnExit = new ScopedCleanup(parallelCts.Cancel);
+		var jitTask = JITModsAsync(parallelCts.Token);
+
 		CacheVanillaState();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
-			if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 			ContentInstance.Register(mod);
 			mod.loading = true;
 			mod.AutoloadConfig();
@@ -287,8 +309,13 @@ public static class ModContent
 			mod.Autoload();
 			mod.Load();
 			SystemLoader.OnModLoad(mod);
+			SystemLoader.EnsureResizeArraysAttributeStaticCtorsRun(mod);
 			mod.loading = false;
 		});
+
+		ContentCache.contentLoadingFinished = true;
+
+		jitTask.GetAwaiter().GetResult();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
@@ -299,12 +326,15 @@ public static class ModContent
 
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
-		LanguageManager.Instance.ReloadLanguage();
+		LanguageManager.Instance.ReloadLanguage(resetValuesToKeysFirst: false); // Don't reset values to keys in case any new translations were registered during Load. All mod translations were wiped in Unload anyway
 		LoadModContent(token, mod => {
 			mod.SetupContent();
 		});
 
 		ContentSamples.Initialize();
+		TileLoader.PostSetupContent();
+		BuffLoader.PostSetupContent();
+		BiomeConversionLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
@@ -328,16 +358,22 @@ public static class ModContent
 		PrefixLoader.FinishSetup();
 		ProjectileLoader.FinishSetup();
 		PylonLoader.FinishSetup();
+		TileLoader.FinishSetup();
+		WallLoader.FinishSetup();
+		EmoteBubbleLoader.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
 		RarityLoader.FinishSetup();
+		Config.ConfigManager.FinishSetup();
 
 		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();
+		NPCShopDatabase.Initialize();
 		SetupRecipes(token);
+		NPCShopDatabase.FinishSetup();
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
@@ -348,11 +384,50 @@ public static class ModContent
 		ModOrganizer.SaveLastLaunchedMods();
 	}
 
+	internal static void RunEarlyClassConstructors()
+	{
+		// The server (or client with Main.SkipAssemblyLoad) doesn't naturally init these, and then the constructors get run twice in ResizeArrays
+		RuntimeHelpers.RunClassConstructor(typeof(AmmoID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(DustID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(MountID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(NPCHeadID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(HairID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(PrefixID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(PrefixLegacy.ItemSets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Head.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Body.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Legs.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.HandOn.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.HandOff.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Back.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Front.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Shoe.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Waist.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Wing.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Face.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Beard.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Balloon.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(DamageClass.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(MusicID.Sets).TypeHandle);
+	}
+
+	private static async Task JITModsAsync(CancellationToken token)
+	{
+		var sw = Stopwatch.StartNew();
+		foreach (var mod in ModLoader.Mods)
+			if (mod.Code != Assembly.GetExecutingAssembly())
+				await AssemblyManager.JITModAsync(mod, token).ConfigureAwait(false);
+
+		Logging.tML.Info($"JITModsAsync completed in {sw.ElapsedMilliseconds}ms");
+	}
+
 	private static void CacheVanillaState()
 	{
 		EffectsTracker.CacheVanillaState();
 		DamageClassLoader.RegisterDefaultClasses();
+		ExtraJumpLoader.RegisterDefaultJumps();
 		InfoDisplayLoader.RegisterDefaultDisplays();
+		BuilderToggleLoader.RegisterDefaultToggles();
 	}
 
 	private static void LoadModContent(CancellationToken token, Action<Mod> loadAction)
@@ -360,9 +435,12 @@ public static class ModContent
 		MemoryTracking.Checkpoint();
 		int num = 0;
 		foreach (var mod in ModLoader.Mods) {
+			using var _2 = new ModContent.TrackCurrentlyLoadingMod(mod.Name);
 			token.ThrowIfCancellationRequested();
 			Interface.loadMods.SetCurrentMod(num++, mod);
 			try {
+				using var _ = new AssetWaitTracker(mod);
+
 				loadAction(mod);
 			}
 			catch (Exception e) {
@@ -377,7 +455,7 @@ public static class ModContent
 
 	private static void SetupBestiary()
 	{
-		//Beastiary DB
+		//Bestiary DB
 		var bestiaryDatabase = new BestiaryDatabase();
 		new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 		Main.BestiaryDB = bestiaryDatabase;
@@ -420,6 +498,7 @@ public static class ModContent
 	internal static void UnloadModContent()
 	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+		CloudLoader.Unload();
 
 		int i = 0;
 		foreach (var mod in ModLoader.Mods.Reverse()) {
@@ -440,7 +519,9 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	internal static void Unload()
 	{
+		MonoModHooks.Clear();
 		TypeCaching.Clear();
+		ContentCache.Unload();
 		ItemLoader.Unload();
 		EquipLoader.Unload();
 		PrefixLoader.Unload();
@@ -452,8 +533,6 @@ public static class ModContent
 
 		NPCLoader.Unload();
 		NPCHeadLoader.Unload();
-		if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
-			TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
 
 		BossBarLoader.Unload();
 		PlayerLoader.Unload();
@@ -462,8 +541,13 @@ public static class ModContent
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
 		InfoDisplayLoader.Unload();
+		BuilderToggleLoader.Unload();
+		ExtraJumpLoader.Unload();
 		GoreLoader.Unload();
 		PlantLoader.UnloadPlants();
+		HairLoader.Unload();
+		EmoteBubbleLoader.Unload();
+		BiomeConversionLoader.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -472,6 +556,7 @@ public static class ModContent
 
 		GlobalBackgroundStyleLoader.Unload();
 		PlayerDrawLayerLoader.Unload();
+		MapLayerLoader.Unload();
 		SystemLoader.Unload();
 		ResizeArrays(true);
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -490,7 +575,6 @@ public static class ModContent
 		Config.ConfigManager.Unload();
 		CustomCurrencyManager.Initialize();
 		EffectsTracker.RemoveModEffects();
-		Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 		Main.gameTips.Reset();
 
@@ -502,6 +586,7 @@ public static class ModContent
 		// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
 		CreativeItemSacrificesCatalog.Instance.Initialize();
+		ContentSamples.CreativeResearchItemPersistentIdOverride.Clear();
 		ContentSamples.Initialize();
 		SetupBestiary();
 
@@ -513,26 +598,33 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	private static void ResizeArrays(bool unloading = false)
 	{
+		SetFactory.ResizeArrays(unloading);
 		DamageClassLoader.ResizeArrays();
+		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
 		EquipLoader.ResizeAndFillArrays();
 		PrefixLoader.ResizeArrays();
 		DustLoader.ResizeArrays();
 		TileLoader.ResizeArrays(unloading);
 		WallLoader.ResizeArrays(unloading);
-		TileIO.ResizeArrays();
-		ProjectileLoader.ResizeArrays();
+		ProjectileLoader.ResizeArrays(unloading);
 		NPCLoader.ResizeArrays(unloading);
 		NPCHeadLoader.ResizeAndFillArrays();
 		MountLoader.ResizeArrays();
 		BuffLoader.ResizeArrays();
-		PlayerLoader.RebuildHooks();
+		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
-		SystemLoader.ResizeArrays();
+		MapLayerLoader.ResizeArrays();
+		HairLoader.ResizeArrays();
+		EmoteBubbleLoader.ResizeArrays();
+		BuilderToggleLoader.ResizeArrays();
+		BiomeConversionLoader.ResizeArrays();
+		SystemLoader.ResizeArrays(unloading);
 
 		if (!Main.dedServ) {
 			GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 			GoreLoader.ResizeAndFillArrays();
+			CloudLoader.ResizeAndFillArrays(unloading);
 		}
 
 		LoaderManager.ResizeArrays();
@@ -548,14 +640,13 @@ public static class ModContent
 	/// </summary>
 	internal static void CleanupModReferences()
 	{
-		WorldGen.clearWorld();
-
 		// Clear references to ModPlayer instances
 		for (int i = 0; i < Main.player.Length; i++) {
 			Main.player[i] = new Player();
 			// player.whoAmI is only set for active players
 		}
 
+		Main.dresserInterfaceDummy = null;
 		Main.clientPlayer = new Player();
 		Main.ActivePlayerFileData = new Terraria.IO.PlayerFileData();
 		Main._characterSelectMenu._playerList?.Clear();
@@ -579,8 +670,66 @@ public static class ModContent
 
 	internal static void TransferCompletedAssets()
 	{
-		foreach (var mod in ModLoader.Mods)
+		if (!ModLoader.isLoading) {
+			DoTransferCompletedAssets();
+			return;
+		}
+
+		// During mod loading, spin wait for assets to transfer. Note that SpinWait.SpinUntil uses a low resolution timer (~15ms on windows) so it may spin for up to that long.
+		// If any assets are queued we will continue to spend main thread time to transfer assets. We accept some frame stutter to hopefully sync up with repeated ImmediateLoad calls and get better throughput
+		var sw = Stopwatch.StartNew();
+		while (sw.ElapsedMilliseconds < 15 && SpinWait.SpinUntil(DoTransferCompletedAssets, millisecondsTimeout: 1)) { }
+	}
+
+	private static bool DoTransferCompletedAssets()
+	{
+		bool transferredAnything = false;
+		foreach (var mod in ModLoader.Mods) {
 			if (mod.Assets is AssetRepository assetRepo && !assetRepo.IsDisposed)
-				assetRepo.TransferCompletedAssets();
+				transferredAnything |= assetRepo.TransferCompletedAssets();
+		}
+
+		return false;
+	}
+
+	private class AssetWaitTracker : IDisposable
+	{
+		public static readonly TimeSpan MinReportThreshold = TimeSpan.FromMilliseconds(10);
+
+		private readonly Mod mod;
+		private TimeSpan total;
+
+		public AssetWaitTracker(Mod mod)
+		{
+			this.mod = mod;
+			AssetRepository.OnBlockingLoadCompleted += AddWaitTime;
+		}
+
+		private void AddWaitTime(TimeSpan t) => total += t;
+
+		public void Dispose()
+		{
+			AssetRepository.OnBlockingLoadCompleted -= AddWaitTime;
+			if (total > MinReportThreshold) {
+				Logging.tML.Warn(
+					$"{mod.Name} spent {(int)total.TotalMilliseconds}ms blocking on asset loading. " +
+					$"Avoid using {nameof(AssetRequestMode)}.{nameof(AssetRequestMode.ImmediateLoad)} during mod loading where possible");
+			}
+		}
+	}
+
+	[ThreadStatic]
+	private static string currentMod = null;
+	internal static string CurrentlyLoadingMod => currentMod ?? "Unknown";
+
+	public ref struct TrackCurrentlyLoadingMod
+	{
+		private string prev;
+		public TrackCurrentlyLoadingMod(string mod)
+		{
+			prev = currentMod;
+			currentMod = mod;
+		}
+		public void Dispose() => currentMod = prev;
 	}
 }

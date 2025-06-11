@@ -1,5 +1,5 @@
+using ExampleMod.Common.Players;
 using ExampleMod.Common.Systems;
-using ExampleMod.Content;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 namespace ExampleMod
 {
 	// This is a partial class, meaning some of its parts were split into other files. See ExampleMod.*.cs for other portions.
+	// The class is partial to organize similar code together to clarify what is related.
+	// This class extends from the Mod class as seen in ExampleMod.cs. Make sure to extend from the mod class, ": Mod", in your own code if using this file as a template for you mods Mod class.
 	partial class ExampleMod
 	{
 		// The following code allows other mods to "call" Example Mod data.
@@ -15,7 +17,7 @@ namespace ExampleMod
 		public override object Call(params object[] args) {
 			// Make sure the call doesn't include anything that could potentially cause exceptions.
 			if (args is null) {
-				throw new ArgumentNullException(nameof(args), "Arguments cannot be null!");
+				throw new ArgumentNullException(nameof(args));
 			}
 
 			if (args.Length == 0) {

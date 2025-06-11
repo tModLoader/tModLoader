@@ -1,0 +1,74 @@
+--- src/TerrariaNetCore/Terraria/Localization/NetworkText.cs
++++ src/tModLoader/Terraria/Localization/NetworkText.cs
+@@ -4,6 +_,12 @@
+ 
+ namespace Terraria.Localization;
+ 
++/// <summary>
++/// Represents text that will be sent over the network in multiplayer and displayed to the receiving user in their selected language. <para/>
++/// Use <see cref="FromKey(string, object[])"/> to send a localization key and optional substitutions. <see cref="LocalizedText.ToNetworkText()"/> can be used directly as well for the same effect.<para/>
++/// Use <see cref="FromFormattable(string, object[])"/> to send a string with string formatting substitutions and associated substitutions. This is typically used with language-agnostic strings that don't need a localization entry, such as "{0} - {1}".<para/>
++/// Use <see cref="FromLiteral(string)"/> to send a string directly. This should be used to send text that can't be localized.
++/// </summary>
+ public class NetworkText
+ {
+ 	private enum Mode : byte
+@@ -28,16 +_,25 @@
+ 	{
+ 		NetworkText[] array = new NetworkText[substitutions.Length];
+ 		for (int i = 0; i < substitutions.Length; i++) {
++			/*
+ 			NetworkText networkText = substitutions[i] as NetworkText;
+ 			if (networkText == null)
+ 				networkText = FromLiteral(substitutions[i].ToString());
+ 
+ 			array[i] = networkText;
++			*/
++			array[i] = From(substitutions[i]);
+ 		}
+ 
+ 		return array;
+ 	}
+ 
++	/// <summary>
++	/// Creates a NetworkText object from a string with string formatting substitutions and associated substitutions. This is typically used with language-agnostic strings that don't need a localization entry, such as "{0} - {1}".
++	/// </summary>
++	/// <param name="text"></param>
++	/// <param name="substitutions"></param>
++	/// <returns></returns>
+ 	public static NetworkText FromFormattable(string text, params object[] substitutions)
+ 	{
+ 		return new NetworkText(text, Mode.Formattable) {
+@@ -45,14 +_,32 @@
+ 		};
+ 	}
+ 
++	/// <summary>
++	/// Creates a NetworkText object from a string. Use this for text that can't be localized.
++	/// </summary>
++	/// <param name="text"></param>
++	/// <returns></returns>
+ 	public static NetworkText FromLiteral(string text) => new NetworkText(text, Mode.Literal);
+ 
++	/// <summary>
++	/// Creates a NetworkText object from a localization key and optional substitutions. The receiving client will see the resulting text in their selected language.
++	/// </summary>
++	/// <param name="key"></param>
++	/// <param name="substitutions"></param>
++	/// <returns></returns>
+ 	public static NetworkText FromKey(string key, params object[] substitutions)
+ 	{
+ 		return new NetworkText(key, Mode.LocalizationKey) {
+ 			_substitutions = ConvertSubstitutionsToNetworkText(substitutions)
+ 		};
+ 	}
++
++	// Added
++	public static NetworkText From(object o) => o switch {
++		NetworkText networkText => networkText,
++		LocalizedText localizedText => localizedText.ToNetworkText(),
++		_ => FromLiteral(o.ToString())
++	};
+ 
+ 	public int GetMaxSerializedSize()
+ 	{

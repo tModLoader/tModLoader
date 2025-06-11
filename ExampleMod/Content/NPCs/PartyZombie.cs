@@ -1,12 +1,11 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.Utilities;
-using Terraria.DataStructures;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Buffs;
+using Terraria;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -16,7 +15,9 @@ namespace ExampleMod.Content.NPCs
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.Skeleton;
+
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() { // Influences how the NPC looks in the Bestiary
 				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, value);
@@ -38,7 +39,7 @@ namespace ExampleMod.Content.NPCs
 			AnimationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code. Important to also match Main.npcFrameCount[NPC.type] in SetStaticDefaults.
 			Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
 			BannerItem = Item.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
-			SpawnModBiomes = new int[1] { ModContent.GetInstance<ExampleSurfaceBiome>().Type }; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
+			SpawnModBiomes = [ModContent.GetInstance<ExampleSurfaceBiome>().Type]; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
@@ -66,23 +67,36 @@ namespace ExampleMod.Content.NPCs
 			return SpawnCondition.OverworldNightMonster.Chance * 0.2f; // Spawn with 1/5th the chance of a regular zombie.
 		}
 
+		public override void AI() {
+			if (NPC.wet) {
+				if (NPC.honeyWet) { // Removes the effects of honey's fall rate making the NPC fall normally in honey
+					NPC.GravityMultiplier /= NPC.GravityWetMultipliers[LiquidID.Honey];
+					NPC.MaxFallSpeedMultiplier /= NPC.MaxFallSpeedWetMultipliers[LiquidID.Honey];
+				}
+				else if (!NPC.lavaWet && !NPC.shimmerWet) { // Removes water falls speed effects, then adds honey falls speed effects, making the NPC fall at the honey rate in water
+					NPC.GravityMultiplier *= NPC.GravityWetMultipliers[LiquidID.Honey] / NPC.GravityWetMultipliers[LiquidID.Water];
+					NPC.MaxFallSpeedMultiplier *= NPC.MaxFallSpeedWetMultipliers[LiquidID.Honey] / NPC.MaxFallSpeedWetMultipliers[LiquidID.Water];
+				}
+			}
+		}
+
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("This type of zombie for some reason really likes to spread confetti around. Otherwise, it behaves just like a normal zombie."),
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.PartyZombie"),
 
 				// By default the last added IBestiaryBackgroundImagePathAndColorProvider will be used to show the background image.
 				// The ExampleSurfaceBiome ModBiomeBestiaryInfoElement is automatically populated into bestiaryEntry.Info prior to this method being called
 				// so we use this line to tell the game to prioritize a specific InfoElement for sourcing the background image.
 				new BestiaryPortraitBackgroundProviderPreferenceInfoElement(ModContent.GetInstance<ExampleSurfaceBiome>().ModBiomeBestiaryInfoElement),
-			});
+			]);
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			// Spawn confetti when this zombie is hit.
 
 			for (int i = 0; i < 10; i++) {
@@ -96,15 +110,23 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit) {
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) {
 			// Here we can make things happen if this NPC hits a player via its hitbox (not projectiles it shoots, this is handled in the projectile code usually)
 			// Common use is applying buffs/debuffs:
 
 			int buffType = ModContent.BuffType<AnimatedBuff>();
 			// Alternatively, you can use a vanilla buff: int buffType = BuffID.Slow;
 
-			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
+			int timeToAdd = 5 * 60; // This makes it 5 seconds, one second is 60 ticks
 			target.AddBuff(buffType, timeToAdd);
+		}
+
+		public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
+			if (modifiers.DamageType.CountsAsClass(DamageClass.Magic)) {
+				// This example shows how PartyZombie reduces magic damage by 75%. We use FinalDamage here rather than SourceDamage since we are affecting how the npc reacts to the damage.
+				// Conceptually, the source dealing the damage isn't interpreted as weaker, but rather this NPC has a resistance to this damage source.
+				modifiers.FinalDamage *= 0.25f;
+			}
 		}
 	}
 }

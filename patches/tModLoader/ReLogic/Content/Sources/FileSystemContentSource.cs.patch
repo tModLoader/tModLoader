@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/FileSystemContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/FileSystemContentSource.cs
-@@ -4,13 +_,17 @@
+@@ -1,16 +_,21 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using System.Linq;
  
  namespace ReLogic.Content.Sources;
  
@@ -19,13 +23,18 @@
  
  	public int FileCount => _nameToAbsolutePath.Count;
  
-@@ -21,8 +_,12 @@
+@@ -21,8 +_,17 @@
  			_basePath += Path.DirectorySeparatorChar;
  
  		BuildNameToAbsolutePathDictionary();
 +
 +		// Added by TML.
 +		SetAssetNames(_nameToAbsolutePath.Keys);
++
++		// #2617 - Allow using paths with extensions in GetExtension calls, because we happen to return such paths in EnumerateAssets().
++		foreach (var pair in assetExtensions.ToArray()) {
++			assetExtensions.TryAdd(pair.Key + pair.Value, pair.Value);
++		}
  	}
  
 +	/*

@@ -1,9 +1,0 @@
-# These are the minimum required fileds to run the server with no user input. If in a container, make sure NOT to set the port.
-
-
-# The world file to load. If you already have a world, set this to the filename. Only change the last segment of the path.
-world=/home/tml/.local/share/Terraria/tModLoader/Worlds/YourWorld.wld
-# Allow the world to be created if none are found. World size is specified by 1 (small), 2 (medium), and 3 (large).
-autocreate=1
-# Sets the name of the world when using autocreate
-worldname=YourWorld

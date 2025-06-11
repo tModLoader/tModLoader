@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIHairStyleButton.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIHairStyleButton.cs
+@@ -25,6 +_,8 @@
+ 		Height = StyleDimension.FromPixels(44f);
+ 		_selectedBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight");
+ 		_hoveredBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelBorder");
++		// TML: Fix player dummies drawing under everything else.
++		UseImmediateMode = true;
+ 	}
+ 
+ 	public void SkipRenderingContent(int timeInFrames)

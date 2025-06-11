@@ -1,0 +1,98 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Shaders/MiscShaderData.cs
++++ src/tModLoader/Terraria/Graphics/Shaders/MiscShaderData.cs
+@@ -19,31 +_,37 @@
+ 	private Vector4 _shaderSpecificData = Vector4.Zero;
+ 	private SamplerState _customSamplerState;
+ 
++	[Obsolete("Removed in 1.4.5. Use Asset<Effect> version instead. Asset version works with AsyncLoad")]
+ 	public MiscShaderData(Ref<Effect> shader, string passName)
+ 		: base(shader, passName)
+ 	{
+ 	}
+ 
++	public MiscShaderData(Asset<Effect> shader, string passName)
++		: base(shader, passName)
++	{
++	}
++
+ 	public virtual void Apply(DrawData? drawData = null)
+ 	{
+-		base.Shader.Parameters["uColor"].SetValue(_uColor);
++		base.Shader.Parameters["uColor"]?.SetValue(_uColor);
+-		base.Shader.Parameters["uSaturation"].SetValue(_uSaturation);
++		base.Shader.Parameters["uSaturation"]?.SetValue(_uSaturation);
+-		base.Shader.Parameters["uSecondaryColor"].SetValue(_uSecondaryColor);
++		base.Shader.Parameters["uSecondaryColor"]?.SetValue(_uSecondaryColor);
+-		base.Shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);
++		base.Shader.Parameters["uTime"]?.SetValue(Main.GlobalTimeWrappedHourly);
+-		base.Shader.Parameters["uOpacity"].SetValue(_uOpacity);
++		base.Shader.Parameters["uOpacity"]?.SetValue(_uOpacity);
+-		base.Shader.Parameters["uShaderSpecificData"].SetValue(_shaderSpecificData);
++		base.Shader.Parameters["uShaderSpecificData"]?.SetValue(_shaderSpecificData);
+ 		if (drawData.HasValue) {
+ 			DrawData value = drawData.Value;
+ 			Vector4 value2 = Vector4.Zero;
+ 			if (drawData.Value.sourceRect.HasValue)
+ 				value2 = new Vector4(value.sourceRect.Value.X, value.sourceRect.Value.Y, value.sourceRect.Value.Width, value.sourceRect.Value.Height);
+ 
+-			base.Shader.Parameters["uSourceRect"].SetValue(value2);
++			base.Shader.Parameters["uSourceRect"]?.SetValue(value2);
+-			base.Shader.Parameters["uWorldPosition"].SetValue(Main.screenPosition + value.position);
++			base.Shader.Parameters["uWorldPosition"]?.SetValue(Main.screenPosition + value.position);
+-			base.Shader.Parameters["uImageSize0"].SetValue(new Vector2(value.texture.Width, value.texture.Height));
++			base.Shader.Parameters["uImageSize0"]?.SetValue(new Vector2(value.texture.Width, value.texture.Height));
+ 		}
+ 		else {
+-			base.Shader.Parameters["uSourceRect"].SetValue(new Vector4(0f, 0f, 4f, 4f));
++			base.Shader.Parameters["uSourceRect"]?.SetValue(new Vector4(0f, 0f, 4f, 4f));
+ 		}
+ 
+ 		SamplerState value3 = SamplerState.LinearWrap;
+@@ -53,19 +_,19 @@
+ 		if (_uImage0 != null) {
+ 			Main.graphics.GraphicsDevice.Textures[0] = _uImage0.Value;
+ 			Main.graphics.GraphicsDevice.SamplerStates[0] = value3;
+-			base.Shader.Parameters["uImageSize0"].SetValue(new Vector2(_uImage0.Width(), _uImage0.Height()));
++			base.Shader.Parameters["uImageSize0"]?.SetValue(new Vector2(_uImage0.Width(), _uImage0.Height()));
+ 		}
+ 
+ 		if (_uImage1 != null) {
+ 			Main.graphics.GraphicsDevice.Textures[1] = _uImage1.Value;
+ 			Main.graphics.GraphicsDevice.SamplerStates[1] = value3;
+-			base.Shader.Parameters["uImageSize1"].SetValue(new Vector2(_uImage1.Width(), _uImage1.Height()));
++			base.Shader.Parameters["uImageSize1"]?.SetValue(new Vector2(_uImage1.Width(), _uImage1.Height()));
+ 		}
+ 
+ 		if (_uImage2 != null) {
+ 			Main.graphics.GraphicsDevice.Textures[2] = _uImage2.Value;
+ 			Main.graphics.GraphicsDevice.SamplerStates[2] = value3;
+-			base.Shader.Parameters["uImageSize2"].SetValue(new Vector2(_uImage2.Width(), _uImage2.Height()));
++			base.Shader.Parameters["uImageSize2"]?.SetValue(new Vector2(_uImage2.Width(), _uImage2.Height()));
+ 		}
+ 
+ 		_ = _useProjectionMatrix;
+@@ -102,6 +_,24 @@
+ 	public MiscShaderData UseImage2(string path)
+ 	{
+ 		_uImage2 = Main.Assets.Request<Texture2D>(path);
++		return this;
++	}
++
++	public MiscShaderData UseImage0(Asset<Texture2D> asset)
++	{
++		_uImage0 = asset;
++		return this;
++	}
++
++	public MiscShaderData UseImage1(Asset<Texture2D> asset)
++	{
++		_uImage1 = asset;
++		return this;
++	}
++
++	public MiscShaderData UseImage2(Asset<Texture2D> asset)
++	{
++		_uImage2 = asset;
+ 		return this;
+ 	}
+ 

@@ -1,0 +1,15 @@
+{
+	"HomePage": {
+		"AreaTitle": "开发者之选",
+		"AreaDescription": "这些模组由 tModLoader 开发者们亲自挑选，为的是展示那些高质量，但也许不那么为人所知的模组。",
+	},
+	"General": {
+		"WorkshopTitle": "tModLoader 的模组",
+		// Max Length: 200
+		"WorkshopDescription": "在 Steam 创意工坊浏览并下载模组。请注意，此处的模组仅可在 tModLoader 的默认分支（无）上使用。能在 1.3-legacy 上游玩的模组需要到别处寻找。",
+	},
+	"StorePage": {
+		// Max Length: 300
+		"ShortDescription": "挖掘、战斗、建造，用 tModLoader 在玩家制作的模组世界中杀出一条血路——这个 DLC 将泰拉瑞亚模组带进现实！",
+	},
+}}

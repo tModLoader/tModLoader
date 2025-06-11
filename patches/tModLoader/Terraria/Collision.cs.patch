@@ -1,5 +1,22 @@
 --- src/TerrariaNetCore/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
+@@ -3,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Terraria.DataStructures;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria;
+ 
+@@ -1030,7 +_,7 @@
+ 		if (tile == null || !tile.active() || tile.inActive() || !Main.tileSolid[tile.type])
+ 			return false;
+ 
+-		if (treatPlatformsAsNonSolid && tile.type > 0 && tile.type <= TileID.Count && (TileID.Sets.Platforms[tile.type] || tile.type == 380))
++		if (treatPlatformsAsNonSolid && tile.type > 0 && (TileID.Sets.Platforms[tile.type] || tile.type == 380))
+ 			return false;
+ 
+ 		int num = tile.blockType();
 @@ -2614,7 +_,10 @@
  			tile = Main.tile[num2, num3];
  			tile2 = Main.tile[num2, num3 - 1];

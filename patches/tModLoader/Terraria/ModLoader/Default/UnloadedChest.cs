@@ -41,7 +41,7 @@ public class UnloadedChest : UnloadedTile
 		AddMapEntry(new Color(0, 141, 63), this.GetLocalization("MapEntry1"), MapChestName);
 	}
 
-	public override LocalizedText ContainerName(int frameX, int frameY)
+	public override LocalizedText DefaultContainerName(int frameX, int frameY)
 	{
 		return Language.GetText(this.GetLocalizationKey("MapEntry0"));
 	}
@@ -76,5 +76,10 @@ public class UnloadedChest : UnloadedTile
 		}
 
 		return name + ": " + Main.chest[chest].name;
+	}
+
+	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
+	{
+		tileFrameX %= 32;
 	}
 }

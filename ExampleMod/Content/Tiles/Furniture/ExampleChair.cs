@@ -29,14 +29,15 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
 
 			DustType = ModContent.DustType<Sparkle>();
-			AdjTiles = new int[] { TileID.Chairs };
+			AdjTiles = [TileID.Chairs];
+			VanillaFallbackOnModDeletion = TileID.Chairs;
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Chair"));
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.CoordinatePaddingFix = new Point16(0, 2);
 			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft;
 			// The following 3 lines are needed if you decide to add more styles and stack them vertically
@@ -52,10 +53,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = fail ? 1 : 3;
-		}
-
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>());
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {

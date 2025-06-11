@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using MonoMod.RuntimeDetour;
 using System;
 using System.Diagnostics;
@@ -49,23 +50,57 @@ internal static class LoggingHooks
 		}));
 	}
 
-	// On .NET, hook the StackTrace constructor
-	private delegate void ctor_StackTrace(StackTrace self, Exception e, bool fNeedFileInfo);
-	private delegate void hook_StackTrace(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo);
-	private static void HookStackTraceEx(ctor_StackTrace orig, StackTrace self, Exception e, bool fNeedFileInfo)
-	{
-		orig(self, e, fNeedFileInfo);
+	private delegate void orig_StackTrace_CaptureStackTrace(StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e);
+
+	private delegate void hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e);
+
+	private static void Hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e) {
+		// avoid including the hook frames in manually captured stack traces. Note that 3 frames are from the hook, and the System.Diagnostics frame is normally trimmed by CalculateFramesToSkip in StackTrace.CoreCLR.cs
+		// The Hook_StackTrace_CaptureStackTrace frame is only present in DEBUG
+
+		//    at Terraria.ModLoader.Engine.LoggingHooks.Hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, Int32 skipFrames, Boolean fNeedFileInfo, Exception e) in tModLoader\Terraria\ModLoader\Engine\LoggingHooks.cs:line 65
+		//    at Hook<System.Void Terraria.ModLoader.Engine.LoggingHooks::Hook_StackTrace_CaptureStackTrace(Terraria.ModLoader.Engine.LoggingHooks+orig_StackTrace_CaptureStackTrace,System.Diagnostics.StackTrace,System.Int32,System.Boolean,System.Exception)>(StackTrace , Int32 , Boolean , Exception )
+		//    at SyncProxy<System.Void System.Diagnostics.StackTrace:CaptureStackTrace(System.Int32, System.Boolean, System.Exception)>(StackTrace , Int32 , Boolean , Exception )
+		//    at System.Diagnostics.StackTrace..ctor(Int32 skipFrames, Boolean fNeedFileInfo)
+
+		if (e == null) {
+#if DEBUG
+			skipFrames += 4;
+#else
+			skipFrames += 3;
+#endif
+		}
+
+		orig(self, skipFrames, fNeedFileInfo, e);
+
 		if (fNeedFileInfo)
 			Logging.PrettifyStackTraceSources(self.GetFrames());
 	}
 
-	private static Hook stackTraceCtorHook;
-	private static void PrettifyStackTraceSources()
+	private delegate void orig_GetSourceLineInfo(object self, Assembly assembly, string assemblyPath, IntPtr loadedPeAddress, int loadedPeSize, bool isFileLayout, IntPtr inMemoryPdbAddress, int inMemoryPdbSize, int methodToken, int ilOffset, out string? sourceFile, out int sourceLine, out int sourceColumn);
+	private delegate void hook_GetSourceLineInfo(orig_GetSourceLineInfo orig, object self, Assembly assembly, string assemblyPath, IntPtr loadedPeAddress, int loadedPeSize, bool isFileLayout, IntPtr inMemoryPdbAddress, int inMemoryPdbSize, int methodToken, int ilOffset, out string? sourceFile, out int sourceLine, out int sourceColumn);
+	private static void Hook_GetSourceLineInfo(orig_GetSourceLineInfo orig, object self, Assembly assembly, string assemblyPath, IntPtr loadedPeAddress, int loadedPeSize, bool isFileLayout, IntPtr inMemoryPdbAddress, int inMemoryPdbSize, int methodToken, int ilOffset, out string? sourceFile, out int sourceLine, out int sourceColumn)
 	{
-		if (Logging.f_fileName == null)
-			return;
+		try {
+			using var _ = new Logging.QuietExceptionHandle();
+			orig(self, assembly, assemblyPath, loadedPeAddress, loadedPeSize, isFileLayout, inMemoryPdbAddress, inMemoryPdbSize, methodToken, ilOffset, out sourceFile, out sourceLine, out sourceColumn);
+		}
+		catch (BadImageFormatException) when (assembly.FullName.StartsWith("MonoMod.Utils")) {
+			sourceFile = null;
+			sourceLine = 0;
+			sourceColumn = 0;
+		}
+	}
 
-		stackTraceCtorHook = new Hook(typeof(StackTrace).GetConstructor(new[] { typeof(Exception), typeof(bool) }), new hook_StackTrace(HookStackTraceEx));
+
+	private static Hook stackTrace_CaptureStackTrace;
+	private static Hook stackTraceSymbols_GetSourceLineInfo;
+	private static void PrettifyStackTraceSources() {
+		stackTrace_CaptureStackTrace = new Hook(typeof(StackTrace).GetMethod("CaptureStackTrace", BindingFlags.NonPublic | BindingFlags.Instance)!,
+			new hook_StackTrace_CaptureStackTrace(Hook_StackTrace_CaptureStackTrace));
+
+		stackTraceSymbols_GetSourceLineInfo = new Hook(Assembly.Load("System.Diagnostics.StackTrace").GetType("System.Diagnostics.StackTraceSymbols").GetMethod("GetSourceLineInfo", BindingFlags.NonPublic | BindingFlags.Instance)!,
+			new hook_GetSourceLineInfo(Hook_GetSourceLineInfo));
 	}
 
 	private delegate ValueTask<HttpResponseMessage> orig_SendAsyncCore(object self, HttpRequestMessage request, Uri? proxyUri, bool async, bool doRequestAuth, bool isProxyConnect, CancellationToken cancellationToken);

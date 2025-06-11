@@ -1,0 +1,649 @@
+# This file contains all the translations for ModConfig elements.
+# This file shows off the feature of splitting localization files into multiple files. This file is named "{CultureCode}_Mods.ExampleMod.Configs", meaning that the "Mods.ExampleMod.Configs" prefix is assumed for all entries in this file. This can be useful for organization purposes.
+# For more info on the multiple files and prefix features, see https://github.com/tModLoader/tModLoader/wiki/Localization#multiple-files and https://github.com/tModLoader/tModLoader/wiki/Localization#prefix
+
+Common: {
+	// LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
+	// LocalizedTooltip: This tooltip is from the localization files.
+	// LocalizedHeader: Headers can help organize
+	// LocalizedLabelDynamic: Localized Label Dynamic
+	// InterpolatedLabel: Item: [i:{0}]. Number: {1} {^1:change;changes}. Text: {2}. Localized Text: {3}.
+	// InterpolatedTooltip: "[c/{1}:Use to disable the] [c/{2}:{0}] [c/{1}:feature]"
+}
+
+ExampleModConfig: {
+	// DisplayName: Example Mod Config
+
+	ExampleWingsToggle: {
+		// Label: Example Wings Toggle
+		// Tooltip: Enables or disables the ExampleWings item
+	}
+
+	WeaponWithGrowingDamageToggle: {
+		// Label: Weapon With Growing Damage Toggle
+		// Tooltip: ""
+	}
+
+	WingSlotLoadoutSupportToggle: {
+		// Label: Loadout support for ExampleModWingSlot
+		// Tooltip: Disable this to share a single Wing item between all loadouts!
+	}
+
+	Headers: {
+		// Items: Items
+		// Other: Other
+	}
+
+	AdditionalFlamingWeaponEntries: {
+		// Label: Additional Flaming Weapon Entries
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseAccessibility: {
+	// DisplayName: ModConfig Showcase F: Accessibility
+
+	Public: {
+		// Label: Public
+		// Tooltip: ""
+	}
+
+	pair: {
+		// Label: pair
+		// Tooltip: ""
+	}
+
+	Getter: {
+		// Label: Getter
+		// Tooltip: ""
+	}
+
+	AutoProperty: {
+		// Label: Auto Property
+		// Tooltip: ""
+	}
+
+	Property: {
+		// Label: Property
+		// Tooltip: ""
+	}
+
+	PresetA: {
+		// Label: Preset A
+		// Tooltip: ""
+	}
+
+	PresetB: {
+		// Label: Preset B
+		// Tooltip: ""
+	}
+
+	Data1: {
+		// Label: Data1
+		// Tooltip: ""
+	}
+
+	Data2: {
+		// Label: Data2
+		// Tooltip: ""
+	}
+
+	IgnoreWithLabelGetter: {
+		// Label: Ignore With Label Getter
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseDataTypes: {
+	// DisplayName: ModConfig Showcase A: Data Types
+
+	SomeBool: {
+		// Label: Some Bool
+		// Tooltip: ""
+	}
+
+	SomeInt: {
+		// Label: Some Int
+		// Tooltip: ""
+	}
+
+	SomeFloat: {
+		// Label: Some Float
+		// Tooltip: ""
+	}
+
+	SomeString: {
+		// Label: Some String
+		// Tooltip: ""
+	}
+
+	SomeEnum: {
+		// Label: Some Enum
+		// Tooltip: ""
+	}
+
+	SomeByte: {
+		// Label: Some Byte
+		// Tooltip: ""
+	}
+
+	SomeUInt: {
+		// Label: Some UInt
+		// Tooltip: ""
+	}
+
+	SomeLong: {
+		// Label: Some Long
+		// Tooltip: ""
+	}
+
+	SomeULong: {
+		// Label: Some ULong
+		// Tooltip: ""
+	}
+
+	SomeColor: {
+		// Label: Some Color
+		// Tooltip: ""
+	}
+
+	SomeVector2: {
+		// Label: Some Vector2
+		// Tooltip: ""
+	}
+
+	SomePoint: {
+		// Label: Some Point
+		// Tooltip: ""
+	}
+
+	SomeArray: {
+		// Label: Some Array
+		// Tooltip: ""
+	}
+
+	SomeList: {
+		// Label: Some List
+		// Tooltip: ""
+	}
+
+	SomeDictionary: {
+		// Label: Some Dictionary
+		// Tooltip: ""
+	}
+
+	SomeSet: {
+		// Label: Some Set
+		// Tooltip: ""
+	}
+
+	SomeClassA: {
+		// Label: Some Class A
+		// Tooltip: ""
+	}
+
+	itemDefinitionExample: {
+		// Label: ItemDefinition Example
+		// Tooltip: ""
+	}
+
+	npcDefinitionExample: {
+		// Label: NPCDefinition Example
+		// Tooltip: ""
+	}
+
+	projectileDefinitionExample: {
+		// Label: ProjectileDefinition Example
+		// Tooltip: ""
+	}
+
+	CustomKey: {
+		// Label: Custom Key
+		// Tooltip: ""
+	}
+
+	prefixDefinitionDictionaryExample: {
+		// Label: PrefixDefinition Dictionary Example
+		// Tooltip: ""
+	}
+
+	buffDefinitionExample: {
+		// Label: BuffDefinition Example
+		// Tooltip: ""
+	}
+
+	tileDefinitionExample: {
+		// Label: TileDefinition Example
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseDefaultValues: {
+	// DisplayName: ModConfig Showcase D: Default Values
+
+	SimpleDefaultInt: {
+		// Label: Simple Default Int
+		// Tooltip: ""
+	}
+
+	SomeColor: {
+		// Label: Some Color
+		// Tooltip: ""
+	}
+
+	SomeVector2: {
+		// Label: Some Vector2
+		// Tooltip: ""
+	}
+
+	EnumExample2: {
+		// Label: Enum Example2
+		// Tooltip: ""
+	}
+
+	ArrayOfString: {
+		// Label: Array of String
+		// Tooltip: ""
+	}
+
+	FavoritePokemon: {
+		// Label: Favorite Pokemon
+		// Tooltip: ""
+	}
+
+	ListOfInts: {
+		// Label: List of Ints
+		// Tooltip: ""
+	}
+
+	ListOfVector2: {
+		// Label: List of Vector2
+		// Tooltip: ""
+	}
+
+	ListOfItemDefinition: {
+		// Label: List of Item Definition
+		// Tooltip: ""
+	}
+
+	DictionaryDefaults: {
+		// Label: Dictionary Defaults
+		// Tooltip: ""
+	}
+
+	DictionaryDefaults2: {
+		// Label: Dictionary Defaults2
+		// Tooltip: ""
+	}
+
+	EnumExample1: {
+		// Label: Enum Example1
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseLabels: {
+	// DisplayName: ModConfig Showcase C: Labels
+
+	SomeFloat: {
+		// Label: This is a float
+		// Tooltip: This text will show when hovered
+	}
+
+	// LocalizedLabel.Label: Localized Label
+
+	pairExample: {
+		// Label: Pair Example
+		// Tooltip: ""
+	}
+
+	ListOfPair: {
+		// Label: List of Pair
+		// Tooltip: ""
+	}
+
+	TypicalHeader: {
+		// Label: Typical Header
+		// Tooltip: ""
+	}
+
+	LocalizedHeader: {
+		// Label: Localized Header
+		// Tooltip: ""
+	}
+
+	CoolHeader: {
+		// Label: Cool Header
+		// Tooltip: ""
+	}
+
+	simpleDataExample2: {
+		// Label: OverridenColor SimpleData
+		// Tooltip: ""
+	}
+
+	// LocalizedLabelDynamic.Tooltip: ""
+
+	Headers: {
+		// HeaderIdentifier: Headers Section
+		// ChatTagExample: "[i:19][c/00FF00:Green Text][i:ExampleMod/ExampleItem]"
+	}
+
+	StringFormatting: {
+		// Label: Percent: {0:p2}, Num: {1:N0}, Pad: {2,4:D4}, Percision: {3:0.000}
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseMisc: {
+	// DisplayName: ModConfig Showcase G: Misc
+
+	gradient: {
+		// Label: Custom UI Element
+		// Tooltip: This UI Element is modder defined
+	}
+
+	corner: {
+		// Label: Custom UI Element 2
+		// Tooltip: ""
+	}
+
+	hsl: {
+		// Label: hsl
+		// Tooltip: ""
+	}
+
+	tint: {
+		// Label: tint
+		// Tooltip: ""
+	}
+
+	StringPairDictionary: {
+		// Label: String Pair Dictionary
+		// Tooltip: ""
+	}
+
+	JsonItemFloatDictionary: {
+		// Label: Json Item Float Dictionary
+		// Tooltip: ""
+	}
+
+	itemSet: {
+		// Label: item Set
+		// Tooltip: ""
+	}
+
+	ListOfPair2: {
+		// Label: ListOfPair2 label
+		// Tooltip: ""
+	}
+
+	pairExample2: {
+		// Label: pair Example2
+		// Tooltip: ""
+	}
+
+	collapsedList: {
+		// Label: collapsed List
+		// Tooltip: ""
+	}
+
+	collapsedListOfCollapsedObjects: {
+		// Label: collapsed List of Collapsed Objects
+		// Tooltip: ""
+	}
+
+	simpleDataExample: {
+		// Label: simple Data Example
+		// Tooltip: ""
+	}
+
+	simpleDataExample2: {
+		// Label: simple Data Example2
+		// Tooltip: ""
+	}
+
+	complexData: {
+		// Label: Really Complex Data
+		// Tooltip: ""
+	}
+
+	ListOfInts: {
+		// Label: List of Ints
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseRanges: {
+	// DisplayName: ModConfig Showcase B: Ranges
+
+	NormalFloat: {
+		// Label: Normal Float
+		// Tooltip: ""
+	}
+
+	IncrementalRangedFloat: {
+		// Label: Incremental Ranged Float
+		// Tooltip: ""
+	}
+
+	IncrementByPoint11: {
+		// Label: Increment By Point11
+		// Tooltip: ""
+	}
+
+	RangedFloat: {
+		// Label: Ranged Float
+		// Tooltip: ""
+	}
+
+	NormalInt: {
+		// Label: Normal Int
+		// Tooltip: ""
+	}
+
+	RangedInteger: {
+		// Label: Ranged Integer
+		// Tooltip: ""
+	}
+
+	ListOfInts: {
+		// Label: List of Ints
+		// Tooltip: ""
+	}
+
+	RangedWithIncrementVector2: {
+		// Label: Ranged With Increment Vector2
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseSubpages: {
+	// DisplayName: ModConfig Showcase E: Subpages
+
+	gradient: {
+		// Label: gradient
+		// Tooltip: ""
+	}
+
+	subConfigExample: {
+		// Label: Sub Config Example - Click me
+		// Tooltip: ""
+	}
+
+	DictionaryofSubConfigExample: {
+		// Label: Dictionaryof Sub Config Example
+		// Tooltip: ""
+	}
+
+	SeparateListOfPairs: {
+		// Label: Subpage List of Pairs
+		// Tooltip: ""
+	}
+
+	pair: {
+		// Label: Special Pair
+		// Tooltip: ""
+	}
+
+	// Headers.SeparatePageExamples: SeparatePage Examples
+}
+
+Pair: {
+	// Tooltip: Pair is a simple class holding a bool and an int
+
+	enabled: {
+		// Label: enabled
+		// Tooltip: ""
+	}
+
+	boost: {
+		// Label: boost
+		// Tooltip: ""
+	}
+}
+
+SimpleData: {
+	// Tooltip: ""
+
+	Headers: {
+		// FirstHeader: Awesome
+		// SecondHeader: Enabled
+	}
+
+	boost: {
+		// Label: boost
+		// Tooltip: ""
+	}
+
+	percent: {
+		// Label: percent
+		// Tooltip: ""
+	}
+
+	enabled: {
+		// Label: enabled
+		// Tooltip: ""
+	}
+
+	FavoritePokemon: {
+		// Label: Favorite Pokemon
+		// Tooltip: ""
+	}
+}
+
+Gradient: {
+	// Tooltip: Represents a gradient from one color to another
+
+	start: {
+		// Label: start
+		// Tooltip: The color the gradient starts at
+	}
+
+	end: {
+		// Label: end
+		// Tooltip: The color the gradient ends at
+	}
+}
+
+ComplexData: {
+	// Tooltip: ""
+
+	ListOfInts: {
+		// Label: List Of Ints
+		// Tooltip: ""
+	}
+
+	nestedSimple: {
+		// Label: nested Simple
+		// Tooltip: ""
+	}
+
+	IncrementalFloat: {
+		// Label: Incremental Float
+		// Tooltip: ""
+	}
+}
+
+SubConfigExample: {
+	// Tooltip: ""
+
+	boost: {
+		// Label: boost
+		// Tooltip: ""
+	}
+
+	percent: {
+		// Label: percent
+		// Tooltip: ""
+	}
+
+	enabled: {
+		// Label: enabled
+		// Tooltip: ""
+	}
+
+	SubA: {
+		// Label: Sub A
+		// Tooltip: ""
+	}
+
+	SubB: {
+		// Label: Even More Sub
+		// Tooltip: ""
+	}
+}
+
+SubSubConfigExample: {
+	// Tooltip: ""
+
+	whoa: {
+		// Label: whoa
+		// Tooltip: ""
+	}
+}
+
+SampleEnum: {
+	// Tooltip: ""
+	// Weird.Label: Weird
+	// Odd.Label: Odd
+	// Peculiar.Label: Very Peculiar
+	// Strange.Label: Quite Strange
+}
+
+Corner: {
+	// Tooltip: Anchor Position
+	// TopLeft.Label: Top Left
+	// TopRight.Label: Top Right
+	// BottomLeft.Label: Bottom Left
+	// BottomRight.Label: Bottom Right
+}
+
+ClassUsedAsKey: {
+	// Tooltip: ""
+
+	SomeBool: {
+		// Label: Some Bool
+		// Tooltip: ""
+	}
+
+	SomeNumber: {
+		// Label: Some Number
+		// Tooltip: ""
+	}
+}
+
+ModConfigShowcaseAcceptClientChanges: {
+	// RejectChangesDaytime: OnlyChangeableDuringNight can't be changed during the day.
+	// DisplayName: ModConfig Showcase H: AcceptClientChanges
+
+	OnlyChangeableDuringNight: {
+		// Label: Only Changeable During Night
+		// Tooltip: ""
+	}
+
+	SomeNumber: {
+		// Label: Some Number
+		// Tooltip: ""
+	}
+}

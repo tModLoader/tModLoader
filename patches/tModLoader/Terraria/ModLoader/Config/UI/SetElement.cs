@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -64,7 +65,7 @@ internal class SetElement : CollectionElement
 	protected override void PrepareTypes()
 	{
 		setType = MemberInfo.Type.GetGenericArguments()[0];
-		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, setType);
+		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttributeFromCollectionMemberThenElementType<JsonDefaultListValueAttribute>(MemberInfo.MemberInfo, setType);
 	}
 
 	protected override void AddItem()
@@ -110,7 +111,7 @@ internal class SetElement : CollectionElement
 				wrapped.Item2.Width.Pixels -= 24;
 
 				// Add delete button.
-				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, "Remove");
+				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigRemove"));
 				deleteButton.VAlign = 0.5f;
 
 				// fix delete.

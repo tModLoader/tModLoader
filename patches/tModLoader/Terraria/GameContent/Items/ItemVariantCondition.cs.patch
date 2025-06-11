@@ -1,0 +1,15 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/ItemVariantCondition.cs
++++ src/tModLoader/Terraria/GameContent/Items/ItemVariantCondition.cs
+@@ -2,6 +_,7 @@
+ 
+ namespace Terraria.GameContent.Items;
+ 
++/*
+ public class ItemVariantCondition
+ {
+ 	public delegate bool Condition();
+@@ -17,3 +_,4 @@
+ 
+ 	public override string ToString() => Description.ToString();
+ }
++*/

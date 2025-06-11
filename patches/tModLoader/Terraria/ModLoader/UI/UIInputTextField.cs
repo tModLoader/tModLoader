@@ -33,10 +33,6 @@ internal class UIInputTextField : UIElement
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
-		// Note: This is a hacky solution that doesn't respect the actual KeyboardUI["Inventory"] keybind. Hopefully later Terraria updates handle allowing the inventory/back keybind to work properly in situations where text is being input
-		if (Main.keyState.IsKeyDown(Keys.Escape) && !Main.oldKeyState.IsKeyDown(Keys.Escape)) {
-			UILinksInitializer.FancyExit();
-		}
 		GameInput.PlayerInput.WritingText = true;
 		Main.instance.HandleIME();
 		string newString = Main.GetInputText(_currentString);

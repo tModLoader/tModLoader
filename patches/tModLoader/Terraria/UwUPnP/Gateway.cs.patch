@@ -8,14 +8,18 @@
  
  namespace UwUPnP;
  
-@@ -24,6 +_,11 @@
- 	// hardware that only accepts LF-seperated SSDP header lines (this
+@@ -21,9 +_,14 @@
+ 	private readonly string controlURL = null;
+ 
+ 	// Allow user to set this env var in case they have some weird
+-	// hardware that only accepts LF-seperated SSDP header lines (this
++	// hardware that only accepts LF-separated SSDP header lines (this
  	// breaks the spec, but it may well happen still).
  	private static readonly string ssdpLineSep = Environment.GetEnvironmentVariable("SSDP_HEADER_USE_LF") == "1" ? "\n" : "\r\n";
 +
 +	static Gateway()
 +	{
-+		Logging.tML.Debug($"SSDP search line seperator: {(ssdpLineSep == "\n" ? "LF" : "CRLF")}");
++		Logging.tML.Debug($"SSDP search line separator: {(ssdpLineSep == "\n" ? "LF" : "CRLF")}");
 +	}
  
  	private Gateway(IPAddress ip, string data)

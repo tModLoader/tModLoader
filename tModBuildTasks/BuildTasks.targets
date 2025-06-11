@@ -1,0 +1,24 @@
+<!--
+	Based on:
+	https://github.com/rainersigwald/build-task-in-solution-demo
+-->
+<Project>
+	<PropertyGroup>
+		<BuildTasksAssemblyName>tModLoader.BuildTasks</BuildTasksAssemblyName>
+		<BuildTasksAssemblyFile>$(MSBuildThisFileDirectory)\bin\$(BuildTasksAssemblyName).dll</BuildTasksAssemblyFile>
+		<BuildTasksProjectFile>$(MSBuildThisFileDirectory)\$(BuildTasksAssemblyName).csproj</BuildTasksProjectFile>
+
+		<!--
+		Using `TaskHostFactory` ensures that the task assembly will not be locked
+		at the end of the build. If it's omitted, that can cause build failures
+		in subsequent builds because the task assembly can't be written by the next build.
+		-->
+		<BuildTasksTaskFactory>TaskHostFactory</BuildTasksTaskFactory>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Add a ProjectReference to ensure that the task gets built before it needs to be called. -->
+		<ProjectReference Include="$(BuildTasksProjectFile)" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+</Project>

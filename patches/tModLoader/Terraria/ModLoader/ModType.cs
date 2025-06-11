@@ -7,7 +7,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// The base type for most modded things.
 /// </summary>
-public abstract class ModType : IModType
+public abstract class ModType : IModType, ILoadable
 {
 	///<summary>
 	/// The mod this belongs to.
@@ -99,7 +99,7 @@ public abstract class ModType<TEntity, TModType> : ModType<TEntity> where TModTy
 	/// Whether or not this type is cloneable. Cloning is supported if<br/>
 	/// all reference typed fields in each sub-class which doesn't override Clone are marked with [CloneByReference]
 	/// </summary>
-	public virtual bool IsCloneable => _isCloneable ??= Cloning.IsCloneable<ModType<TEntity, TModType>, Func<TEntity, TModType>>(this, m => m.Clone);
+	public virtual bool IsCloneable => _isCloneable ??= Cloning.IsCloneable(this, m => m.Clone);
 
 	/// <summary>
 	/// Whether to create new instances of this mod type via <see cref="Clone(TEntity)"/> or via the default constructor

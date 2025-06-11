@@ -8,11 +8,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 {
 	public class ExamplePetItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			// Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
-			Item.ResearchUnlockCount = 1;
-		}
-
+		// Names and descriptions of all ExamplePetX classes are defined using .hjson files in the Localization folder
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.ZephyrFish); // Copy the Defaults of the Zephyr Fish Item.
 
@@ -20,10 +16,11 @@ namespace ExampleMod.Content.Pets.ExamplePet
 			Item.buffType = ModContent.BuffType<ExamplePetBuff>(); // Apply buff upon usage of the Item.
 		}
 
-		public override void UseStyle(Player player, Rectangle heldItemFrame) {
-			if (player.whoAmI == Main.myPlayer && player.itemTime == 0) {
+		public override bool? UseItem(Player player) {
+			if (player.whoAmI == Main.myPlayer) {
 				player.AddBuff(Item.buffType, 3600);
 			}
+			return true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

@@ -16,7 +16,9 @@ public static class GoreLoader
 
 	public static int GoreCount { get; private set; } = GoreID.Count;
 
-	/// <summary> Registers a new gore with the provided texture. </summary>
+	/// <summary> Registers a new gore with the provided texture. Typically used with <see cref="SimpleModGore"/> as TGore for gore with no additional logic.
+	/// <para/> Use this for any gore textures not autoloaded by the <see cref="Mod.GoreAutoloadingEnabled"/> logic.
+	/// </summary>
 	public static bool AddGoreFromTexture<TGore>(Mod mod, string texture) where TGore : ModGore, new()
 	{
 		if (mod == null)
@@ -65,7 +67,7 @@ public static class GoreLoader
 		Array.Resize(ref TextureAssets.Gore, GoreCount);
 
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(GoreID), true);
+		LoaderUtils.ResetStaticMembers(typeof(GoreID));
 		Array.Resize(ref ChildSafety.SafeGore, GoreCount);
 
 		for (int k = GoreID.Count; k < GoreCount; k++) {

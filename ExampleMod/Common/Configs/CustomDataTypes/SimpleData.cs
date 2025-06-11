@@ -8,15 +8,15 @@ namespace ExampleMod.Common.Configs.CustomDataTypes
 	[BackgroundColor(255, 7, 7)]
 	public class SimpleData
 	{
-		[Header("Awesome")]
+		[Header("FirstHeader")]
 		public int boost;
 		public float percent;
 
-		[Header("Lame")]
+		[Header("SecondHeader")]
 		public bool enabled;
 
 		[DrawTicks]
-		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasaur", "Squirtle" })]
+		[OptionStrings(["Pikachu", "Charmander", "Bulbasaur", "Squirtle"])]
 		[DefaultValue("Bulbasaur")]
 		public string FavoritePokemon;
 

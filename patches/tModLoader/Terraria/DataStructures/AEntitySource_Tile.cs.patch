@@ -1,22 +1,30 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/AEntitySource_Tile.cs
 +++ src/tModLoader/Terraria/DataStructures/AEntitySource_Tile.cs
-@@ -1,13 +_,18 @@
+@@ -1,13 +_,23 @@
  using Microsoft.Xna.Framework;
  
 +#nullable enable
 +
  namespace Terraria.DataStructures;
  
- public abstract class AEntitySource_Tile : IEntitySource
++/// <summary>
++/// Abstract base class for entities which come from a tile. <br/><br/>
++/// 
++/// If the entity comes from a Player/NPC/Projectile, and a tile is only incidentally involved, consider making your own subclass of <see cref="EntitySource_Parent"/> instead
++/// </summary>
+-public abstract class AEntitySource_Tile : IEntitySource
++public class AEntitySource_Tile : IEntitySource
  {
- 	public readonly Point TileCoords;
- 
+-	public readonly Point TileCoords;
+-
 -	public AEntitySource_Tile(int tileCoordsX, int tileCoordsY)
++	public Point TileCoords { get; }
++
 +	public string? Context { get; }
 +
 +	public AEntitySource_Tile(int tileCoordsX, int tileCoordsY, string? context)
  	{
  		TileCoords = new Point(tileCoordsX, tileCoordsY);
-+		Context = null;
++		Context = context;
  	}
  }

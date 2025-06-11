@@ -3,9 +3,13 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using Terraria.Chat;
 using Terraria.GameContent.Events;
 using Terraria.ID;
+using Terraria.IO;
+using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 using Terraria.Social;
@@ -15,6 +19,7 @@ namespace Terraria.ModLoader.IO;
 
 internal static class WorldIO
 {
+	/// <summary> Contains modded error messages from the world load attempt. </summary>
 	public static CustomModDataException customDataFail;
 
 	//add near end of Terraria.IO.WorldFile.saveWorld before releasing locks
@@ -24,7 +29,10 @@ internal static class WorldIO
 		if (FileUtilities.Exists(path, isCloudSave))
 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
 
-		var tag = new TagCompound {
+		Main.ActiveWorldFileData.ModSaveErrors.Clear();
+		TagCompound header = SaveHeader();
+
+		var body = new TagCompound {
 			["chests"] = SaveChestInventory(),
 			["tiles"] = TileIO.SaveBasics(),
 			["containers"] = TileIO.SaveContainers(),
@@ -40,11 +48,19 @@ internal static class WorldIO
 			["alteredVanillaFields"] = SaveAlteredVanillaFields()
 		};
 
-		var stream = new MemoryStream();
-		TagIO.ToStream(tag, stream);
-		var data = stream.ToArray();
-		FileUtilities.Write(path, data, data.Length, isCloudSave);
+		TagCompound saveModDataErrors = new TagCompound();
+		foreach (var error in Main.ActiveWorldFileData.ModSaveErrors) {
+			saveModDataErrors[error.Key] = error.Value;
+		}
+		header["saveModDataErrors"] = saveModDataErrors;
+		TagCompound tag = new TagCompound { ["0header"] = header };
+		foreach (var bodyTag in body) {
+			tag[bodyTag.Key] = bodyTag.Value;
+		}
+
+		FileUtilities.WriteTagCompound(path, isCloudSave, tag);
 	}
+
 	//add near end of Terraria.IO.WorldFile.loadWorld before setting failure and success
 	internal static void Load(string path, bool isCloudSave)
 	{
@@ -57,11 +73,10 @@ internal static class WorldIO
 		byte[] buf = FileUtilities.ReadAllBytes(path, isCloudSave);
 
 		if (buf[0] != 0x1F || buf[1] != 0x8B) {
-			//LoadLegacy(buf);
-			return;
+			throw new IOException($"{Path.GetFileName(path)}:: File Corrupted during Last Save Step. Aborting... ERROR: Missing NBT Header");
 		}
 
-		var tag = TagIO.FromStream(new MemoryStream(buf));
+		var tag = TagIO.FromStream(buf.ToMemoryStream());
 		TileIO.LoadBasics(tag.GetCompound("tiles"));
 		TileIO.LoadContainers(tag.GetCompound("containers"));
 		LoadNPCs(tag.GetList<TagCompound>("npcs"));
@@ -87,6 +102,11 @@ internal static class WorldIO
 			throw;
 		}
 		LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
+
+		if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
+			string fullError = Utils.CreateSaveErrorMessage("tModLoader.WorldCustomDataSaveFail", Main.ActiveWorldFileData.ModSaveErrors).ToString();
+			Utils.LogAndConsoleInfoMessage(fullError);
+		}
 	}
 
 	internal static List<TagCompound> SaveChestInventory()
@@ -143,23 +163,22 @@ internal static class WorldIO
 
 			var globalData = new List<TagCompound>();
 
-			foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.Instance)) {
-				if (globalNPC is UnloadedGlobalNPC unloadedGlobalNPC) {
+			foreach (var g in NPCLoader.HookSaveData.Enumerate(npc)) {
+				if (g is UnloadedGlobalNPC unloadedGlobalNPC) {
 					globalData.AddRange(unloadedGlobalNPC.data);
 					continue;
 				}
 
-				globalNPC.SaveData(npc, data);
-
-				if (data.Count != 0) {
-					globalData.Add(new TagCompound {
-						["mod"] = globalNPC.Mod.Name,
-						["name"] = globalNPC.Name,
-						["data"] = data
-					});
-
-					data = new TagCompound();
-				}
+				g.SaveData(npc, data);
+				if (data.Count == 0)
+					continue;
+				
+				globalData.Add(new TagCompound {
+					["mod"] = g.Mod.Name,
+					["name"] = g.Name,
+					["data"] = data
+				});
+				data = new TagCompound();
 			}
 
 			TagCompound tag;
@@ -182,6 +201,8 @@ internal static class WorldIO
 					tag["homeless"] = npc.homeless;
 					tag["homeTileX"] = npc.homeTileX;
 					tag["homeTileY"] = npc.homeTileY;
+					tag["isShimmered"] = NPC.ShimmeredTownNPCs[npc.type];
+					tag["npcTownVariationIndex"] = npc.townNpcVariationIndex;
 				}
 			}
 			else if (globalData.Count != 0) {
@@ -219,10 +240,10 @@ internal static class WorldIO
 				nextFreeNPC++;
 			}
 
-			if ((string)tag["mod"] == "Terraria") {
-				int npcId = NPCID.Search.GetId((string)tag["name"]);
-				float x = (float)tag["x"];
-				float y = (float)tag["y"];
+			if (tag.GetString("mod") == "Terraria") {
+				int npcId = NPCID.Search.GetId(tag.GetString("name"));
+				float x = tag.GetFloat("x");
+				float y = tag.GetFloat("y");
 
 				int index;
 
@@ -230,7 +251,8 @@ internal static class WorldIO
 					npc = Main.npc[index];
 
 					if (npc.active) {
-						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y) break;
+						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y)
+							break;
 					}
 				}
 
@@ -241,7 +263,7 @@ internal static class WorldIO
 					}
 					else {
 						npc = Main.npc[nextFreeNPC];
-						npc.SetDefaults(npc.type);
+						npc.SetDefaults(npcId);
 						npc.position = new Vector2(x, y);
 					}
 				}
@@ -259,39 +281,41 @@ internal static class WorldIO
 
 				npc = Main.npc[nextFreeNPC];
 				npc.SetDefaults(modNpc.Type);
-				npc.position.X = (float)tag["x"];
-				npc.position.Y = (float)tag["y"];
+				npc.position.X = tag.GetFloat("x");
+				npc.position.Y = tag.GetFloat("y");
 
 				if (npc.townNPC) {
-					npc.GivenName = (string)tag["displayName"];
+					npc.GivenName = tag.GetString("displayName");
 					npc.homeless = tag.GetBool("homeless");
-					npc.homeTileX = (int)tag["homeTileX"];
-					npc.homeTileY = (int)tag["homeTileY"];
+					npc.homeTileX = tag.GetInt("homeTileX");
+					npc.homeTileY = tag.GetInt("homeTileY");
+
+					NPC.ShimmeredTownNPCs[modNpc.Type] = tag.GetBool("isShimmered");
+					npc.townNpcVariationIndex = tag.GetInt("npcTownVariationIndex");
 				}
 
 				if (tag.ContainsKey("data")) {
 					npc.ModNPC.LoadData((TagCompound)tag["data"]);
 				}
 			}
+			LoadGlobals(npc, tag.GetList<TagCompound>("globalData"));
+		}
+	}
 
-			IList<TagCompound> globalData = tag.GetList<TagCompound>("globalData");
-
-			foreach (TagCompound tagCompound in globalData) {
-				string modName = (string)tagCompound["mod"];
-
-				if (ModContent.TryFind(modName, (string)tagCompound["name"], out GlobalNPC globalNPC)) {
-					GlobalNPC globalNPC2 = globalNPC.Instance(npc);
-
-					try {
-						globalNPC2.LoadData(npc, (TagCompound)tagCompound["data"]);
-					}
-					catch (Exception inner) {
-						throw new CustomModDataException(ModLoader.GetMod(modName), $"Error in reading custom player data for {modName}", inner);
-					}
+	private static void LoadGlobals(NPC npc, IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalNPC globalNPCBase) && npc.TryGetGlobalNPC(globalNPCBase, out var globalNPC)) {
+				try {
+					globalNPC.LoadData(npc, tag.GetCompound("data"));
 				}
-				else {
-					npc.GetGlobalNPC<UnloadedGlobalNPC>().data.Add(tagCompound);
+				catch (Exception inner) {
+					throw new CustomModDataException(globalNPC.Mod, $"Error in reading custom player data for {tag.GetString("mod")}", inner);
 				}
+			}
+			else {
+				// Unloaded or no longer valid on an item (e.g. through AppliesToEntity)
+				npc.GetGlobalNPC<UnloadedGlobalNPC>().data.Add(tag);
 			}
 		}
 	}
@@ -487,7 +511,18 @@ internal static class WorldIO
 		var saveData = new TagCompound();
 
 		foreach (var system in SystemLoader.Systems) {
-			system.SaveWorldData(saveData);
+			try {
+				system.SaveWorldData(saveData);
+			}
+			catch (Exception e) {
+				var message = NetworkText.FromKey("tModLoader.SaveWorldDataExceptionWarning", system.Name, system.Mod.Name, "\n\n" + e.ToString());
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: true);
+
+				Main.ActiveWorldFileData.ModSaveErrors[$"{system.FullName}.SaveWorldData"] = e.ToString();
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
 
 			if (saveData.Count == 0)
 				continue;
@@ -539,13 +574,13 @@ internal static class WorldIO
 
 	public static void SendModData(BinaryWriter writer)
 	{
-		foreach (var system in SystemLoader.NetSystems)
+		foreach (var system in SystemLoader.HookNetSend.Enumerate())
 			writer.SafeWrite(w => system.NetSend(w));
 	}
 
 	public static void ReceiveModData(BinaryReader reader)
 	{
-		foreach (var system in SystemLoader.NetSystems) {
+		foreach (var system in SystemLoader.HookNetReceive.Enumerate()) {
 			try {
 				reader.SafeRead(r => system.NetReceive(r));
 			}
@@ -630,5 +665,153 @@ internal static class WorldIO
 		else if (SocialAPI.Cloud != null) {
 			SocialAPI.Cloud.Delete(path);
 		}
+	}
+
+	private static TagCompound SaveHeader()
+	{
+		return new TagCompound {
+			["modHeaders"] = SaveModHeaders(),
+			["usedMods"] = SaveUsedMods(),
+			["usedModPack"] = SaveUsedModPack(),
+			["generatedWithMods"] = SaveGeneratedWithMods(),
+		};			
+	}
+
+	private static TagCompound SaveModHeaders()
+	{
+		var modHeaders = new TagCompound();
+
+		var saveData = new TagCompound();
+		foreach (var system in SystemLoader.Systems) {
+			try {
+				system.SaveWorldHeader(saveData);
+			}
+			catch (Exception e) {
+				var message = NetworkText.FromKey("tModLoader.SaveWorldHeaderExceptionWarning", system.Name, system.Mod.Name);
+				Utils.HandleSaveErrorMessageLogging(message, broadcast: true);
+
+				Main.ActiveWorldFileData.ModSaveErrors[$"{system.FullName}.SaveWorldHeader"] = e.ToString();
+
+				saveData = new TagCompound();
+				continue; // don't want to save half-broken data, that could compound errors.
+			}
+
+			if (saveData.Count == 0)
+				continue;
+
+			modHeaders[system.FullName] = saveData;
+			saveData = new TagCompound();
+		}
+
+		// preserve data for unloaded systems
+		foreach (var entry in Main.ActiveWorldFileData.ModHeaders) {
+			if (!ModContent.TryFind<ModSystem>(entry.Key, out _))
+				modHeaders[entry.Key] = entry.Value;
+		}
+
+		return modHeaders;
+	}
+
+	internal static void ReadWorldHeader(WorldFileData data)
+	{
+		string path = Path.ChangeExtension(data.Path, ".twld");
+		bool isCloudSave = data.IsCloudSave;
+
+		if (!FileUtilities.Exists(path, isCloudSave))
+			return;
+
+		try {
+			// this code hard-traverses the NBT format to read the just the first nested tag, if preset.
+			// It relies on deterministic tag saving order for the header to be first.
+			// Because the NBT format is not seekable, there is no way to skip reading the entire tag tree in order to find a specific sub-tag at an arbitrary path.
+
+			using Stream stream = isCloudSave ? new MemoryStream(SocialAPI.Cloud.Read(path)) : new FileStream(path, FileMode.Open);
+			using BinaryReader reader = new BigEndianReader(new GZipStream(stream, CompressionMode.Decompress));
+			if (reader.ReadByte() != 10)
+				throw new IOException("Root tag not a TagCompound");
+
+			// ignore root tag name
+			_ = TagIO.ReadTagImpl(8, reader);
+			if (reader.ReadByte() != 10)
+				return; // no header tag
+
+			if ((string)TagIO.ReadTagImpl(8, reader) != "0header")
+				return;
+
+			LoadWorldHeader(data, (TagCompound)TagIO.ReadTagImpl(10, reader));
+		}
+		catch (Exception ex) {
+			Logging.tML.Warn($"Error reading .twld header from: {path} (IsCloudSave={isCloudSave})", ex);
+		}
+	}
+
+	private static void LoadWorldHeader(WorldFileData data, TagCompound tag)
+	{
+		LoadModHeaders(data, tag);
+		LoadUsedMods(data, tag.GetList<string>("usedMods"));
+		LoadUsedModPack(data, tag.GetString("usedModPack"));
+		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
+			LoadGeneratedWithMods(data, tag.GetCompound("generatedWithMods"));
+		LoadErrors(data, tag.GetCompound("saveModDataErrors"));
+	}
+
+	private static void LoadErrors(WorldFileData data, TagCompound tagCompound)
+	{
+		foreach (var entry in tagCompound) {
+			data.ModSaveErrors[entry.Key] = (string)entry.Value;
+		}
+	}
+
+	private static void LoadModHeaders(WorldFileData data, TagCompound tag)
+	{
+		data.ModHeaders = new Dictionary<string, TagCompound>();
+		foreach (var entry in tag.GetCompound("modHeaders")) {
+			string fullname = entry.Key;
+
+			if (ModContent.TryFind<ModSystem>(fullname, out var system)) // handle legacy renames
+				fullname = system.FullName;
+
+			data.ModHeaders[fullname] = (TagCompound)entry.Value;
+		}
+	}
+
+	internal static void LoadUsedMods(WorldFileData data, IList<string> usedMods)
+	{
+		data.usedMods = usedMods;
+	}
+
+	internal static List<string> SaveUsedMods()
+	{
+		return ModLoader.Mods.Select(m => m.Name).Except(new[] { "ModLoader" }).ToList();
+	}
+
+	internal static void LoadUsedModPack(WorldFileData data, string modpack)
+	{
+		data.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null was saved.
+	}
+
+	internal static string SaveUsedModPack()
+	{
+		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+	}
+
+	internal static void LoadGeneratedWithMods(WorldFileData data, TagCompound tag)
+	{
+		data.modVersionsDuringWorldGen = new Dictionary<string, Version>();
+		foreach (var item in tag) {
+			// We can't use tag.Get<Version>(item.Key); because sometimes world headers are loaded before mods and custom serializers are loaded, such as with the -world server command line parameter.
+			data.modVersionsDuringWorldGen[item.Key] = new Version((string)item.Value);
+		}
+	}
+
+	internal static TagCompound SaveGeneratedWithMods()
+	{
+		if (Main.ActiveWorldFileData.modVersionsDuringWorldGen == null)
+			return null;
+		var tag = new TagCompound();
+		foreach (var item in Main.ActiveWorldFileData.modVersionsDuringWorldGen) {
+			tag[item.Key] = item.Value;
+		}
+		return tag;
 	}
 }

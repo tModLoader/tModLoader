@@ -58,6 +58,7 @@ public abstract class TagSerializer : ModType
 		serializers.Add(serializer.Type, serializer);
 	}
 
+	[Obsolete("Cannot find types in mod dllReferences, and dictionary is unnecessarily large. Use AssemblyManager.FindSubtype/FindTypes instead")]
 	public static Type? GetType(string name)
 	{
 		if (typeNameCache.TryGetValue(name, out Type? type))
@@ -183,6 +184,16 @@ public class Point16Serializer : TagSerializer<Point16, TagCompound>
 	public override Point16 Deserialize(TagCompound tag) => new Point16(tag.GetShort("x"), tag.GetShort("y"));
 }
 
+public class PointSerializer : TagSerializer<Point, TagCompound>
+{
+	public override TagCompound Serialize(Point value) => new TagCompound {
+		["x"] = value.X,
+		["y"] = value.Y
+	};
+
+	public override Point Deserialize(TagCompound tag) => new Point(tag.GetInt("x"), tag.GetInt("y"));
+}
+
 public class RectangleSerializer : TagSerializer<Rectangle, TagCompound>
 {
 	public override TagCompound Serialize(Rectangle value) => new TagCompound {
@@ -193,4 +204,11 @@ public class RectangleSerializer : TagSerializer<Rectangle, TagCompound>
 	};
 
 	public override Rectangle Deserialize(TagCompound tag) => new Rectangle(tag.GetInt("x"), tag.GetInt("y"), tag.GetInt("width"), tag.GetInt("height"));
+}
+
+public class VersionSerializer : TagSerializer<Version, string>
+{
+	public override string Serialize(Version value) => value.ToString(); // Since 1.0 and 1.0.0 are different, it's simpler to just use ToString than implement all the branching logic.
+
+	public override Version Deserialize(string tag) => new Version(tag);
 }

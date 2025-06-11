@@ -1,21 +1,24 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
-@@ -9,10 +_,14 @@
+@@ -7,13 +_,17 @@
+ using Terraria.ID;
+ using Terraria.IO;
  using Terraria.Localization;
++using Terraria.ModLoader;
  using Terraria.Social;
  using Terraria.UI;
-+using Terraria.Utilities;
-+using Terraria.ModLoader;
-+using System.Linq;
-+using Terraria.ModLoader.UI;
  
  namespace Terraria.GameContent.UI.Elements;
  
 -public class UICharacterListItem : UIPanel
 +public partial class UICharacterListItem : UIPanel
  {
++	// Added by TML
++	public PlayerFileData Data => _data;
++
  	private PlayerFileData _data;
  	private Asset<Texture2D> _dividerTexture;
+ 	private Asset<Texture2D> _innerPanelTexture;
 @@ -43,6 +_,9 @@
  		_buttonPlayTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
  		_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
@@ -36,19 +39,6 @@
  		_buttonLabel = new UIText("");
  		_buttonLabel.VAlign = 1f;
  		_buttonLabel.Left.Set(num, 0f);
-@@ -111,7 +_,12 @@
- 		_deleteButtonLabel = new UIText("");
- 		_deleteButtonLabel.VAlign = 1f;
- 		_deleteButtonLabel.HAlign = 1f;
-+
-+		/*
- 		_deleteButtonLabel.Left.Set(-30f, 0f);
-+		*/
-+		_deleteButtonLabel.Left.Set(data.customDataFail == null ? -30f : -54f, 0f);
-+
- 		_deleteButtonLabel.Top.Set(-3f, 0f);
- 		Append(_deleteButtonLabel);
- 		uIImageButton.SetSnapPoint("Play", snapPointIndex);
 @@ -137,6 +_,9 @@
  	{
  		if (_data.IsCloudSave)

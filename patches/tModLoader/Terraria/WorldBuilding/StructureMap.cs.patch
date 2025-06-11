@@ -1,0 +1,48 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/StructureMap.cs
++++ src/tModLoader/Terraria/WorldBuilding/StructureMap.cs
+@@ -5,14 +_,27 @@
+ 
+ namespace Terraria.WorldBuilding;
+ 
++/// <summary>
++/// Used during world generation to track and check important world generation features to prevent overlap. Access this via <see cref="GenVars.structures"/>.
++/// <para/> The <see cref="AddProtectedStructure(Rectangle, int)"/> method is used to indicate an area of the world to be protected from other world generation code.
++/// <para/> The <see cref="CanPlace(Rectangle, int)"/> method will check if the designated area is free from protected structures as well as any tiles that are not <see cref="TileID.Sets.GeneralPlacementTiles"/>. This is used to find an area that is unused.
++/// <para/> It is up to modders to properly use StructureMap to both mark areas as occupied by structures and check for areas free of existing structures.
++/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#structuremap">Structure Map section of the World Generation wiki page</see> has more information and useful visualizations.
++/// </summary>
+ public class StructureMap
+ {
+ 	private readonly List<Rectangle> _structures = new List<Rectangle>(2048);
+ 	private readonly List<Rectangle> _protectedStructures = new List<Rectangle>(2048);
+ 	private readonly object _lock = new object();
+ 
++	/// <summary>
++	/// Checks if the provided tile coordinate <paramref name="area"/> padded by the <paramref name="padding"/> is free from protected structures and tiles that are not <see cref="TileID.Sets.GeneralPlacementTiles"/>. Use this to find a suitable place for placing a structure feature free from any existing structures or protected tile, then use <see cref="AddProtectedStructure(Rectangle, int)"/> after placing a structure.
++	/// </summary>
+ 	public bool CanPlace(Rectangle area, int padding = 0) => CanPlace(area, TileID.Sets.GeneralPlacementTiles, padding);
+ 
++	/// <summary>
++	/// Similar to <see cref="CanPlace(Rectangle, int)"/>, except instead of using <see cref="TileID.Sets.GeneralPlacementTiles"/> the set of valid tiles to overwrite are passed in. Typically this is used with a copy of <c>GeneralPlacementTiles</c> that is changed slightly to allow or disallow some specific tiles.
++	/// </summary>
+ 	public bool CanPlace(Rectangle area, bool[] validTiles, int padding = 0)
+ 	{
+ 		lock (_lock) {
+@@ -51,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Unused, use <see cref="AddProtectedStructure(Rectangle, int)"/> instead. </summary>
+ 	public void AddStructure(Rectangle area, int padding = 0)
+ 	{
+ 		lock (_lock) {
+@@ -59,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Adds an area of the world to the protected structures listing to be protected from other world generation code. Use this after placing a structure if you do not wish other world generation code to overlap with it.
++	/// </summary>
+ 	public void AddProtectedStructure(Rectangle area, int padding = 0)
+ 	{
+ 		lock (_lock) {

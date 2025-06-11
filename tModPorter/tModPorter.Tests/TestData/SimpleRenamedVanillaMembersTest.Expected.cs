@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
 
@@ -99,12 +100,12 @@ public class SimpleRenamedVanillaMembersTest
 		var hideshowItemIcon2 = player.cursorItemIconID;
 		var showItemIconText = player.cursorItemIconText;
 		var zoneHoly = player.ZoneHallow;
-		var doubleJumpBlizzard = player.hasJumpOption_Blizzard;
-		var doubleJumpCloud = player.hasJumpOption_Cloud;
-		var doubleJumpFart = player.hasJumpOption_Fart;
-		var doubleJumpSail = player.hasJumpOption_Sail;
-		var doubleJumpSandstorm = player.hasJumpOption_Sandstorm;
-		var doubleJumpUnicorn = player.hasJumpOption_Unicorn;
+		var doubleJumpBlizzard = player.GetJumpState(ExtraJump.BlizzardInABottle).Enabled;
+		var doubleJumpCloud = player.GetJumpState(ExtraJump.CloudInABottle).Enabled;
+		var doubleJumpFart = player.GetJumpState(ExtraJump.FartInAJar).Enabled;
+		var doubleJumpSail = player.GetJumpState(ExtraJump.TsunamiInABottle).Enabled;
+		var doubleJumpSandstorm = player.GetJumpState(ExtraJump.SandstormInABottle).Enabled;
+		var doubleJumpUnicorn = player.GetJumpState(ExtraJump.UnicornMount).Enabled;
 		// not-yet-implemented
 		var hasBanner = Main.SceneMetrics.hasBanner;
 		var bannerBuff = Main.SceneMetrics.NPCBannerBuff;
@@ -123,6 +124,7 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		player.VanillaUpdateEquip(null)/* tModPorter Note: Removed. Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots) */;
 #endif
+		player.CanAfford(100000);
 
 		// not-yet-implemented
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);

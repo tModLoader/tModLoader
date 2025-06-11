@@ -8,7 +8,7 @@ namespace Terraria.ModLoader;
 
 public static class PylonLoader
 {
-	public static readonly TeleportPylonType VanillaPylonCount =  TeleportPylonType.Count;
+	public static readonly TeleportPylonType VanillaPylonCount = TeleportPylonType.Count;
 
 	internal static readonly IList<GlobalPylon> globalPylons = new List<GlobalPylon>();
 	internal static readonly IList<ModPylon> modPylons = new List<ModPylon>();

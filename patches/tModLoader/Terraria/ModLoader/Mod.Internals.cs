@@ -16,11 +16,9 @@ partial class Mod
 {
 	internal bool loading;
 
-	private readonly Queue<Task> AsyncLoadQueue = new Queue<Task>();
-
 	//Entities
 	internal readonly IDictionary<Tuple<string, EquipType>, EquipTexture> equipTextures = new Dictionary<Tuple<string, EquipType>, EquipTexture>();
-	internal readonly IList<ILoadable> content = new List<ILoadable>();
+	internal ContentCache Content { get; private set; }
 
 	internal void SetupContent()
 	{
@@ -33,10 +31,11 @@ partial class Mod
 
 		Unload();
 
-		foreach (var loadable in content.Reverse()) {
+		foreach (var loadable in GetContent().Reverse()) {
 			loadable.Unload();
 		}
-		content.Clear();
+		Content.Clear();
+		Content = null;
 
 		equipTextures.Clear();
 
@@ -50,11 +49,7 @@ partial class Mod
 
 		LocalizationLoader.Autoload(this);
 
-		Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
-		while (AsyncLoadQueue.Count > 0)
-			AsyncLoadQueue.Dequeue().Wait();
-
-		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
+		ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName); // TODO: DisplayName is incorrect, but ModBestiaryInfoElement._displayName usage inconsistent.
 
 		if (ContentAutoloadingEnabled) {
 			var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
@@ -74,6 +69,9 @@ partial class Mod
 		if (GoreAutoloadingEnabled)
 			GoreLoader.AutoloadGores(this);
 
+		if (CloudAutoloadingEnabled)
+			CloudLoader.AutoloadClouds(this);
+
 		if (MusicAutoloadingEnabled)
 			MusicLoader.AutoloadMusic(this);
 
@@ -92,16 +90,10 @@ partial class Mod
 
 	internal void TransferAllAssets()
 	{
-		initialTransferComplete = false;
+		Interface.loadMods.SubProgressText = Language.GetTextValue("tModLoader.MSFinishingResourceLoading");
 		Assets.TransferAllAssets();
 		initialTransferComplete = true;
-		if (AssetExceptions.Count > 0) {
-			if (AssetExceptions.Count == 1)
-				throw AssetExceptions[0];
-
-			if (AssetExceptions.Count > 0)
-				throw new MultipleException(AssetExceptions);
-		}
+		LoaderUtils.RethrowAggregatedExceptions(AssetExceptions);
 	}
 
 	internal bool initialTransferComplete;
@@ -115,7 +107,7 @@ partial class Mod
 		}
 		else {
 			if (e is AssetLoadException AssetLoadException) {
-				// Fix this once ContenSources are sane with extensions
+				// Fix this once ContentSources are sane with extensions
 				ICollection<string> keys = RootContentSource.EnumerateAssets().ToList();
 				var cleanKeys = new List<string>();
 				foreach (var key in keys) {
@@ -123,9 +115,12 @@ partial class Mod
 					string extension = RootContentSource.GetExtension(keyWithoutExtension);
 					if (extension != null) {
 						cleanKeys.Add(key.Substring(0, key.LastIndexOf(extension)));
+						// Should probably check RootContentSource.Rejections.IsRejected before adding to cleanKeys, but it doesn't matter because of MissingResourceException logic.
 					}
 				}
-				var MissingResourceException = new Exceptions.MissingResourceException(assetPath.Replace("\\", "/"), cleanKeys);
+				var reasons = new List<string>();
+				RootContentSource.Rejections.TryGetRejections(reasons); // Not technically the rejection reasons for the specific asset, but there is no current way of getting that.
+				var MissingResourceException = new Exceptions.MissingResourceException(reasons, assetPath.Replace("\\", "/"), cleanKeys);
 				AssetExceptions.Add(MissingResourceException);
 			}
 			else {

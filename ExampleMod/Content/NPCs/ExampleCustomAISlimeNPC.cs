@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items.Placeable.Banners;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
@@ -40,15 +41,19 @@ namespace ExampleMod.Content.NPCs
 		public ref float AI_Timer => ref NPC.ai[1];
 		public ref float AI_FlutterTime => ref NPC.ai[2];
 
+		public static LocalizedText GotStompedText { get; private set; }
+
 		public override void SetStaticDefaults() {
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
 
-			// Specify the debuffs it is immune to
-			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned // This NPC will be immune to the Poisoned debuff.
-				}
-			});
+			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.ShimmerSlime;
+
+			// Specify the debuffs it is immune to.
+			// This NPC will be immune to the Poisoned debuff.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<Buffs.ExampleGravityDebuff>()] = true;
+
+			GotStompedText = this.GetLocalization("GotStomped");
 		}
 
 		public override void SetDefaults() {
@@ -61,6 +66,9 @@ namespace ExampleMod.Content.NPCs
 			NPC.HitSound = SoundID.NPCHit1; // The sound the NPC will make when being hit.
 			NPC.DeathSound = SoundID.NPCDeath1; // The sound the NPC will make when it dies.
 			NPC.value = 25f; // How many copper coins the NPC will drop when killed.
+
+			Banner = Type;
+			BannerItem = ModContent.ItemType<ExampleCustomAISlimeNPCBanner>();
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
@@ -199,7 +207,7 @@ namespace ExampleMod.Content.NPCs
 				NPC.velocity = new Vector2(NPC.direction * 2, -10f);
 			}
 			else if (AI_Timer > 40) {
-				// after .66 seconds, we go to the hover state. //TODO, gravity?
+				// after .66 seconds, we go to the hover state. // TODO, gravity?
 				AI_State = (float)ActionState.Hover;
 				AI_Timer = 0;
 			}
@@ -212,7 +220,7 @@ namespace ExampleMod.Content.NPCs
 			// netMode == 0 is SP, netMode == 1 is MP Client, netMode == 2 is MP Server.
 			// Typically in MP, Client and Server maintain the same state by running deterministic code individually. When we want to do something random, we must do that on the server and then inform MP Clients.
 			if (AI_Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient) {
-				// For reference: without proper syncing: https://gfycat.com/BackAnxiousFerret and with proper syncing: https://gfycat.com/TatteredKindlyDalmatian
+				// For reference: without proper syncing: https://github.com/user-attachments/assets/27b289c0-37a6-47e8-9e35-ea6f641612f0 and with proper syncing: https://github.com/user-attachments/assets/f2bdcea4-8fe6-4eba-aa0d-0d36ade9a16d
 				AI_FlutterTime = Main.rand.NextBool() ? 100 : 50;
 
 				// Informing MP Clients is done automatically by syncing the npc.ai array over the network whenever npc.netUpdate is set.
@@ -235,7 +243,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+		public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) {
 			// We can use ModifyCollisionData to customize collision damage.
 			// Here we double damage when this npc is in the falling state and the victim is almost directly below the npc
 			if (AI_State == (float)ActionState.Fall) {
@@ -246,7 +254,7 @@ namespace ExampleMod.Content.NPCs
 				Rectangle extraDamageHitbox = new Rectangle(npcHitbox.X + 12, npcHitbox.Y + 18, npcHitbox.Width - 24, npcHitbox.Height - 18);
 				if (victimHitbox.Intersects(extraDamageHitbox)) {
 					damageMultiplier *= 2f;
-					Main.NewText("You got stomped");
+					Main.NewText(GotStompedText.Value);
 				}
 			}
 			return true;

@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This is where all Recipe and GlobalRecipe hooks are gathered and called.
+/// This is where all Recipe hooks are gathered and called.
 /// </summary>
 public static class RecipeLoader
 {
@@ -113,7 +113,7 @@ public static class RecipeLoader
 
 					before.Add(r);
 					break;
-				case (var target, true): // sortBefore
+				case (var target, true): // sortAfter
 					if (!sortAfter.TryGetValue(target, out var after))
 						after = sortAfter[target] = new();
 
@@ -127,7 +127,8 @@ public static class RecipeLoader
 
 		// define sort function
 		int i = 0;
-		void Sort(Recipe r) {
+		void Sort(Recipe r)
+		{
 			if (sortBefore.TryGetValue(r, out var before))
 				foreach (var c in before)
 					Sort(c);
@@ -156,7 +157,7 @@ public static class RecipeLoader
 	/// <returns>Whether or not the conditions are met for this recipe.</returns>
 	public static bool RecipeAvailable(Recipe recipe)
 	{
-		return recipe.Conditions.All(c => c.RecipeAvailable(recipe));
+		return recipe.Conditions.All(c => c.IsMet());
 	}
 
 	/// <summary>
@@ -166,11 +167,11 @@ public static class RecipeLoader
 	/// <returns>Whether or not the conditions are met for this recipe.</returns>
 	public static bool DecraftAvailable(Recipe recipe)
 	{
-		return recipe.DecraftConditions.All(c => c.RecipeAvailable(recipe));
+		return !recipe.notDecraftable && recipe.DecraftConditions.All(c => c.IsMet());
 	}
 
 	/// <summary>
-	/// recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeCreationContext
+	/// recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeItemCreationContext
 	/// </summary>
 	/// <param name="item">The item crafted.</param>
 	/// <param name="recipe">The recipe used to craft the item.</param>
@@ -195,13 +196,26 @@ public static class RecipeLoader
 	}
 
 	/// <summary>
-	/// Allows to edit the amount of item the player uses in a recipe.
+	/// Allows to edit the amount of item the player uses in a recipe. Also used to decide the amount a shimmer transformation returns
 	/// </summary>
 	/// <param name="recipe">The recipe used for the craft.</param>
 	/// <param name="type">Type of the ingredient.</param>
 	/// <param name="amount">Modifiable amount of the item consumed.</param>
+	[Obsolete($"Replaced by {nameof(ConsumeIngredient)} due to not accounting for shimmer decrafting")]
 	public static void ConsumeItem(Recipe recipe, int type, ref int amount)
 	{
-		recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount);
+		ConsumeIngredient(recipe, type, ref amount, false);
+	}
+
+	/// <summary>
+	/// Allows to edit the amount of item the player uses in a recipe. Also used to decide the amount a shimmer transformation returns
+	/// </summary>
+	/// <param name="recipe">The recipe used for the craft.</param>
+	/// <param name="type">Type of the ingredient.</param>
+	/// <param name="amount">Modifiable amount of the item consumed.</param>
+	/// <param name="isDecrafting">If the operation takes place during shimmer decrafting.</param>
+	public static void ConsumeIngredient(Recipe recipe, int type, ref int amount, bool isDecrafting)
+	{
+		recipe.ConsumeIngredientHooks?.Invoke(recipe, type, ref amount, isDecrafting);
 	}
 }

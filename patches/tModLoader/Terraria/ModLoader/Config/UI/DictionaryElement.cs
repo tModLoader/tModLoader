@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -96,9 +97,9 @@ internal class DictionaryElement : CollectionElement
 	{
 		keyType = MemberInfo.Type.GetGenericArguments()[0];
 		valueType = MemberInfo.Type.GetGenericArguments()[1];
-		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, valueType);
-		defaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<DefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
-		jsonDefaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
+		JsonDefaultListValueAttribute = ConfigManager.GetCustomAttributeFromCollectionMemberThenElementType<JsonDefaultListValueAttribute>(MemberInfo.MemberInfo, valueType);
+		defaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<DefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
+		jsonDefaultDictionaryKeyValueAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<JsonDefaultDictionaryKeyValueAttribute>(MemberInfo, null, null);
 	}
 
 	protected override void AddItem()
@@ -223,7 +224,7 @@ internal class DictionaryElement : CollectionElement
 				wrapped.Item2.Width.Pixels -= 24;
 
 				// Add delete button.
-				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, "Remove");
+				UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, Language.GetTextValue("tModLoader.ModConfigRemove"));
 				deleteButton.VAlign = 0.5f;
 
 				// fix delete.

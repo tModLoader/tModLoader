@@ -26,8 +26,8 @@ public abstract class PrimitiveRangeElement<T> : RangeElement where T : ICompara
 			TextDisplayFunction = () => Index + 1 + ": " + TList[Index];
 		}
 
-		if (LabelAttribute != null) { // Problem with Lists using ModConfig Label.
-			TextDisplayFunction = () => LabelAttribute.Label + ": " + GetValue();
+		if (Label != null) { // Problem with Lists using ModConfig Label.
+			TextDisplayFunction = () => Label + ": " + GetValue();
 		}
 
 		if (RangeAttribute != null && RangeAttribute.Min is T && RangeAttribute.Max is T) {
@@ -73,7 +73,7 @@ public abstract class RangeElement : ConfigElement
 		base.OnBind();
 
 		DrawTicks = Attribute.IsDefined(MemberInfo.MemberInfo, typeof(DrawTicksAttribute));
-		SliderColor = ConfigManager.GetCustomAttribute<SliderColorAttribute>(MemberInfo, Item, List)?.Color ?? Color.White;
+		SliderColor = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderColorAttribute>(MemberInfo, Item, List)?.Color ?? Color.White;
 	}
 
 	public float DrawValueBar(SpriteBatch sb, float scale, float perc, int lockState = 0, Utils.ColorLerpMethod colorMethod = null)

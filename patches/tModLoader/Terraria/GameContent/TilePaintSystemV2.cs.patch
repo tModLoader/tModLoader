@@ -9,6 +9,25 @@
  
  namespace Terraria.GameContent;
  
+@@ -63,12 +_,12 @@
+ 		protected void PrepareShader(int paintColor, TreePaintingSettings settings)
+ 		{
+ 			Effect tileShader = Main.tileShader;
+-			tileShader.Parameters["leafHueTestOffset"].SetValue(settings.HueTestOffset);
++			tileShader.Parameters["leafHueTestOffset"]?.SetValue(settings.HueTestOffset);
+-			tileShader.Parameters["leafMinHue"].SetValue(settings.SpecialGroupMinimalHueValue);
++			tileShader.Parameters["leafMinHue"]?.SetValue(settings.SpecialGroupMinimalHueValue);
+-			tileShader.Parameters["leafMaxHue"].SetValue(settings.SpecialGroupMaximumHueValue);
++			tileShader.Parameters["leafMaxHue"]?.SetValue(settings.SpecialGroupMaximumHueValue);
+-			tileShader.Parameters["leafMinSat"].SetValue(settings.SpecialGroupMinimumSaturationValue);
++			tileShader.Parameters["leafMinSat"]?.SetValue(settings.SpecialGroupMinimumSaturationValue);
+-			tileShader.Parameters["leafMaxSat"].SetValue(settings.SpecialGroupMaximumSaturationValue);
++			tileShader.Parameters["leafMaxSat"]?.SetValue(settings.SpecialGroupMaximumSaturationValue);
+-			tileShader.Parameters["invertSpecialGroupResult"].SetValue(settings.InvertSpecialGroupResult);
++			tileShader.Parameters["invertSpecialGroupResult"]?.SetValue(settings.InvertSpecialGroupResult);
+ 			int index = Main.ConvertPaintIdToTileShaderIndex(paintColor, settings.UseSpecialGroups, settings.UseWallShaderHacks);
+ 			tileShader.CurrentTechnique.Passes[index].Apply();
+ 		}
 @@ -80,7 +_,38 @@
  
  		public override void Prepare()

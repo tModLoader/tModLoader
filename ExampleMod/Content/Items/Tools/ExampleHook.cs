@@ -9,15 +9,16 @@ namespace ExampleMod.Content.Items.Tools
 {
 	internal class ExampleHookItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount based on vanilla hooks' amount needed
-		}
-
 		public override void SetDefaults() {
 			// Copy values from the Amethyst Hook
 			Item.CloneDefaults(ItemID.AmethystHook);
 			Item.shootSpeed = 18f; // This defines how quickly the hook is shot.
 			Item.shoot = ModContent.ProjectileType<ExampleHookProjectile>(); // Makes the item shoot the hook's projectile when used.
+
+			// If you do not use Item.CloneDefaults(), you must set the following values for the hook to work properly:
+			// Item.useStyle = ItemUseStyleID.None;
+			// Item.useTime = 0;
+			// Item.useAnimation = 0;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -38,10 +39,12 @@ namespace ExampleMod.Content.Items.Tools
 			chainTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Items/Tools/ExampleHookChain");
 		}
 
-		public override void Unload() { // This is called once on mod reload when this piece of content is being unloaded.
-			// It's currently pretty important to unload your static fields like this, to avoid having parts of your mod remain in memory when it's been unloaded.
-			chainTexture = null;
+		/*
+		public override void SetStaticDefaults() {
+			// If you wish for your hook projectile to have ONE copy of it PER player, uncomment this section.
+			ProjectileID.Sets.SingleGrappleHook[Type] = true;
 		}
+		*/
 
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.GemHookAmethyst); // Copies the attributes of the Amethyst hook's projectile.
@@ -50,8 +53,8 @@ namespace ExampleMod.Content.Items.Tools
 		// Use this hook for hooks that can have multiple hooks mid-flight: Dual Hook, Web Slinger, Fish Hook, Static Hook, Lunar Hook.
 		public override bool? CanUseGrapple(Player player) {
 			int hooksOut = 0;
-			for (int l = 0; l < 1000; l++) {
-				if (Main.projectile[l].active && Main.projectile[l].owner == Main.myPlayer && Main.projectile[l].type == Projectile.type) {
+			foreach (var projectile in Main.ActiveProjectiles) {
+				if (projectile.owner == Main.myPlayer && projectile.type == Projectile.type) {
 					hooksOut++;
 				}
 			}
@@ -59,33 +62,22 @@ namespace ExampleMod.Content.Items.Tools
 			return hooksOut <= 2;
 		}
 
-		// Return true if it is like: Hook, CandyCaneHook, BatHook, GemHooks
-		// public override bool? SingleGrappleHook(Player player)
-		// {
-		//	return true;
-		// }
-
 		// Use this to kill oldest hook. For hooks that kill the oldest when shot, not when the newest latches on: Like SkeletronHand
 		// You can also change the projectile like: Dual Hook, Lunar Hook
-		// public override void UseGrapple(Player player, ref int type)
-		// {
+		// public override void UseGrapple(Player player, ref int type) {
 		//	int hooksOut = 0;
 		//	int oldestHookIndex = -1;
 		//	int oldestHookTimeLeft = 100000;
-		//	for (int i = 0; i < 1000; i++)
-		//	{
-		//		if (Main.projectile[i].active && Main.projectile[i].owner == projectile.whoAmI && Main.projectile[i].type == projectile.type)
-		//		{
+		//	foreach (var otherProjectile in Main.ActiveProjectiles) {
+		//		if (otherProjectile.owner == player.whoAmI && otherProjectile.type == type) {
 		//			hooksOut++;
-		//			if (Main.projectile[i].timeLeft < oldestHookTimeLeft)
-		//			{
-		//				oldestHookIndex = i;
-		//				oldestHookTimeLeft = Main.projectile[i].timeLeft;
+		//			if (otherProjectile.timeLeft < oldestHookTimeLeft) {
+		//				oldestHookIndex = otherProjectile.whoAmI;
+		//				oldestHookTimeLeft = otherProjectile.timeLeft;
 		//			}
 		//		}
 		//	}
-		//	if (hooksOut > 1)
-		//	{
+		//	if (hooksOut > 1) {
 		//		Main.projectile[oldestHookIndex].Kill();
 		//	}
 		// }
@@ -114,6 +106,23 @@ namespace ExampleMod.Content.Items.Tools
 			float hangDist = 50f;
 			grappleX += dirToPlayer.X * hangDist;
 			grappleY += dirToPlayer.Y * hangDist;
+		}
+
+		// Can customize what tiles this hook can latch onto, or force/prevent latching altogether, like Squirrel Hook also latching to trees
+		public override bool? GrappleCanLatchOnTo(Player player, int x, int y) {
+			// By default, the hook returns null to apply the vanilla conditions for the given tile position (this tile position could be air or an actuated tile!)
+			// If you want to return true here, make sure to check for Main.tile[x, y].HasUnactuatedTile (and Main.tileSolid[Main.tile[x, y].TileType] and/or Main.tile[x, y].HasTile if needed)
+
+			// We make this hook latch onto trees just like Squirrel Hook
+
+			// Tree trunks cannot be actuated so we don't need to check for that here
+			Tile tile = Main.tile[x, y];
+			if (TileID.Sets.IsATreeTrunk[tile.TileType] || tile.TileType == TileID.PalmTree) {
+				return true;
+			}
+
+			// In any other case, behave like a normal hook
+			return null;
 		}
 
 		// Draws the grappling hook's chain.

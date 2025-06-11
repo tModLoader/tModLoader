@@ -1,0 +1,77 @@
+<Common>
+    <VariousTextOptionsSummary>
+        <br/>Summary of options to display text to the user:<br/>
+        • <see cref="Terraria.Main.NewText(string, byte, byte, byte)"/> to display a message in chat. <br/>
+        • <see cref="Terraria.CombatText"/> to display floating damage numbers in-game. Used for damage and healing numbers. <br/>
+        • <see cref="Terraria.PopupText"/> to display non-overlapping floating in-game text. Used for reforge and item pickup messages. <br/>
+    </VariousTextOptionsSummary>
+	<MusicAutoloadReminder>
+		Remember that unless you manually register music via <see cref="AddMusic(Mod, string)"/>, only files found in a folder or subfolder of a folder named "Music" will be autoloaded as music.
+	</MusicAutoloadReminder>
+    <CoordinateConversionNote>
+		<para/> By convention, Tile coordinates should be represented by represented using <see cref="Point"/> or <see cref="Point16"/> and World coordinates should be represented using <see cref="Vector2"/>. This convention is not always followed, so naming variables appropriately is highly recommended.
+		<para/> Please read the <see href="https://github.com/tModLoader/tModLoader/wiki/Coordinates">Coordinates wiki page</see> for more information.
+	</CoordinateConversionNote>
+    <ToWorldCoordinates>
+		Converts from Tile coordinates to World coordinates.
+		<para/> If this overload has <c>autoAddX</c> and <c>autoAddY</c> parameters, those parameters default to 8, meaning that they can be omitted and the resulting world coordinate will be in the center of the tile. Zeros can be used to get the world coordinate of the top left corner instead.
+		<para/> If this overload has a <c>autoAddXY</c> parameter, that will be added to the resulting world coordinate. <c>new Vector2(8)</c> can be used to get thw world coordinate in the center of the tile. <c>Vector2.Zero</c> can be used to get the world coordinate of the top left corner instead.
+		<para/> <include file = 'CommonDocs.xml' path='Common/CoordinateConversionNote' /> 
+	</ToWorldCoordinates>
+    <ToTileCoordinates>
+		Converts from World coordinates to Tile coordinates.
+		<para/> The Tile coordinate returned will be the coordinate of the Tile that would contain the World Coordinate. Be sure to plan out which world coordinate to use when dealing with entities, sometimes the logic might be better suited to use the Center of the entity vs the Position.
+		<para/> <include file = 'CommonDocs.xml' path='Common/CoordinateConversionNote' /> 
+	</ToTileCoordinates>
+	<LightingGetColor>
+		<para/> Lighting is tracked at Tile Coordinate granularity (<see href="https://github.com/tModLoader/tModLoader/wiki/Coordinates">Coordinates wiki page</see>). Typically the center of an entity, converted to tile coordinates, is used to query the lighting color at the entity's location. That color is then used to draw the entity.
+		<para/> Lighting values in-between tile coordinates can be interpolated using <see cref="GetSubLight(Vector2)"/>, but usually the lighting values at the tile coordinates closest to the center of an entity are sufficient. There are many more GetColorX methods for more advanced situations, if needed. If drawing a really large sprite, one might consider splitting up the drawing to allow sections of the sprite to be drawn at different light values.
+	</LightingGetColor>
+	<BitArrayUsage>
+		<para/> Useful for sending/receiving a large number of flags/bools. If the data length is unknown to the receiver, length would need to be sent as well.
+		This example sends a bool array of length <c>ItemLoader.ItemCount</c>, which will be consistent between the sender and receiver, so length is not sent.
+		<code>
+// Field
+bool[] itemsFound = new bool[ItemLoader.ItemCount];
+		
+// NetSend
+Utils.SendBitArray(new (itemsFound), writer);
+		
+// NetReceive
+var itemsFoundData = Utils.ReceiveBitArray(ItemLoader.ItemCount, reader);
+itemFoundData.CopyTo(itemsFound, 0);
+		</code>
+	</BitArrayUsage>
+	<CardinalDirections>
+		<para/> The index values are as follows: <br/> 0: Down <br/> 1: Up <br/> 2: Right <br/> 3: Left
+	</CardinalDirections>
+	<CreateNamedXSetNotes>
+		<para/> This method creates a custom ID set as a "named ID set". This named ID set will be shared and merged with other named ID sets registered by other mods with the same final key, default state, and Type.
+		<para/> This method can be chained to the <see cref="NamedSetKey.Description(string)"/> method to register a description about this named ID set. 
+		<para/> Finally, the <c>RegisterXSet</c> method must be chained to provide the default value and initial data for this set, resulting in the final array being returned.
+		<para/> For example: <code>public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedSet("IsSpicy")
+		.Description("Food items in this set cause the On Fire debuff to be applied to the player when eaten")
+		.RegisterBoolSet(false, ItemID.PadThai, ModContent.ItemType&lt;ExampleFoodItem&gt;());</code>
+		<para/> In advanced cases this can be used to call <see cref="RegisterNamedCustomSet{T}(NamedSetKey, T, ref T[])"/> directly rather than using the <c>RegisterXSet</c> method to generate the data array.
+	<para/> More information on properly using these methods can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom and Named ID Sets pull request</see>. Named ID set keys used by other mods are listed in the <see href="https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets">Named ID Sets wiki page</see>, please read and consult this page to collaborate on named ID set key meanings.
+	</CreateNamedXSetNotes>
+	<RegisterXSetNotes>
+		<para/> This method registers the created array as a "named ID set" using a final key determined by the <c>CreateNamedSet</c> method.
+	</RegisterXSetNotes>
+	<AIMethodOrder>
+		<para/> The order of the AI related methods is: <code>
+if (PreAI()) {
+	VanillaAI()
+	AI()
+}
+PostAI()</code>
+	</AIMethodOrder>
+	<AmmoConservation>
+		<br/><br/> Ammo conservation effects stack, each is treated as an independent event (random chance decision). See the <see href="https://terraria.wiki.gg/wiki/Ammo_conservation">Ammo conservation wiki page</see> for more information.
+		<br/><br/> Using existing effect bools like <see cref="ammoCost75"/>, <see cref="ammoCost80"/>, <see cref="chloroAmmoCost80"/>, and <see cref="huntressAmmoCost90"/> can be convenient, but will not provide additional stacking benefit if the player is also using the Terraria accessory that provides that bonus already. The chances are also not customizable.
+		<br/><br/> To implement ammo conservation in an accessory, armor, or buff, override <see cref="ModPlayer.CanConsumeAmmo(Item, Item)"/> (and optionally <see cref="GlobalItem.ConsumeItem(Item, Player)"/> if you want to apply the effect to consumable weapons). For a weapon, override <see cref="ModItem.CanConsumeAmmo(Item, Player)"/>.
+	</AmmoConservation>
+	<PlayerItemUseAnimation>
+		<br/><br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Player-Item-Animation">Player Item Animation wiki page</see> goes into detail about how this and other player item use and animation fields work together and provides a useful overview on this topic.
+	</PlayerItemUseAnimation>
+</Common>

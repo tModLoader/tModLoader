@@ -1,5 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Lighting.cs
 +++ src/tModLoader/Terraria/Lighting.cs
+@@ -7,6 +_,9 @@
+ 
+ namespace Terraria;
+ 
++/// <summary>
++/// This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use GetColor methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the AddLight methods.
++/// </summary>
+ public class Lighting
+ {
+ 	private const float DEFAULT_GLOBAL_BRIGHTNESS = 1.2f;
 @@ -14,8 +_,8 @@
  	[Old]
  	public static int OffScreenTiles = 45;
@@ -11,3 +21,96 @@
  	private static ILightingEngine _activeEngine;
  
  	public static float GlobalBrightness { get; set; }
+@@ -100,6 +_,10 @@
+ 		return GlobalBrightness * (color.X + color.Y + color.Z) / 3f;
+ 	}
+ 
++	/// <summary>
++	/// Gets the lighting color at the specified World coordinate location. The value is calculated through bilinear interpolation of the nearby tile coordinates.
++	/// <include file = 'CommonDocs.xml' path='Common/LightingGetColor' />
++	/// </summary>
+ 	public static Vector3 GetSubLight(Vector2 position)
+ 	{
+ 		Vector2 vector = position / 16f - new Vector2(0.5f, 0.5f);
+@@ -115,11 +_,27 @@
+ 		return Vector3.Lerp(value, value2, vector2.Y);
+ 	}
+ 
++	/// <summary>
++	/// Adds light to the world at the specified coordinates.<para/>
++	/// This overload takes in world coordinates and a Vector3 containing float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther. A <see cref="Vector3"/> is used for this method instead of <see cref="Color"/> to allow these overflow values.
++	/// </summary>
++	/// <param name="position"></param>
++	/// <param name="rgb"></param>
+ 	public static void AddLight(Vector2 position, Vector3 rgb)
+ 	{
+ 		AddLight((int)(position.X / 16f), (int)(position.Y / 16f), rgb.X, rgb.Y, rgb.Z);
+ 	}
+ 
++	/// <summary>
++	/// <summary>
++	/// Adds light to the world at the specified coordinates.<para/>
++	/// This overload takes in world coordinates and float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther.
++	/// </summary>
++	/// </summary>
++	/// <param name="position"></param>
++	/// <param name="r"></param>
++	/// <param name="g"></param>
++	/// <param name="b"></param>
+ 	public static void AddLight(Vector2 position, float r, float g, float b)
+ 	{
+ 		AddLight((int)(position.X / 16f), (int)(position.Y / 16f), r, g, b);
+@@ -137,6 +_,15 @@
+ 		AddLight((int)position.X / 16, (int)position.Y / 16, R, G, B);
+ 	}
+ 
++	/// <summary>
++	/// Adds light to the world at the specified coordinates.<para/>
++	/// This overload takes in tile coordinates and float values typically ranging from 0 to 1. Values greater than 1 will cause the light to propagate farther.
++	/// </summary>
++	/// <param name="i"></param>
++	/// <param name="j"></param>
++	/// <param name="r"></param>
++	/// <param name="g"></param>
++	/// <param name="b"></param>
+ 	public static void AddLight(int i, int j, float r, float g, float b)
+ 	{
+ 		if (!Main.gamePaused && Main.netMode != 2)
+@@ -157,6 +_,7 @@
+ 		_activeEngine.Clear();
+ 	}
+ 
++	/// <summary> <inheritdoc cref="GetColor(int, int)"/> </summary>
+ 	public static Color GetColor(Point tileCoords)
+ 	{
+ 		if (Main.gameMenu)
+@@ -165,6 +_,10 @@
+ 		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * GlobalBrightness);
+ 	}
+ 
++	/// <summary>
++	/// Gets the lighting color at the specified Tile coordinate location, then multiplies it by the provided Color.
++	/// <include file = 'CommonDocs.xml' path='Common/LightingGetColor' />
++	/// </summary>
+ 	public static Color GetColor(Point tileCoords, Color originalColor)
+ 	{
+ 		if (Main.gameMenu)
+@@ -173,6 +_,7 @@
+ 		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * originalColor.ToVector3());
+ 	}
+ 
++	/// <summary> <inheritdoc cref="GetColor(Point, Color)"/> </summary>
+ 	public static Color GetColor(int x, int y, Color oldColor)
+ 	{
+ 		if (Main.gameMenu)
+@@ -191,6 +_,10 @@
+ 		return new Color(color * oldColor.ToVector3());
+ 	}
+ 
++	/// <summary>
++	/// Gets the lighting color at the specified Tile coordinate location.
++	/// <include file = 'CommonDocs.xml' path='Common/LightingGetColor' />
++	/// </summary>
+ 	public static Color GetColor(int x, int y)
+ 	{
+ 		if (Main.gameMenu)

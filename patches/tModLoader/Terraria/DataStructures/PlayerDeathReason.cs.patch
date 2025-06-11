@@ -1,27 +1,192 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDeathReason.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDeathReason.cs
-@@ -14,6 +_,15 @@
+@@ -1,5 +_,8 @@
++using System;
+ using System.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
+ 
+ namespace Terraria.DataStructures;
+ 
+@@ -10,10 +_,21 @@
+ 	private int _sourceProjectileLocalIndex = -1;
+ 	private int _sourceOtherIndex = -1;
+ 	private int _sourceProjectileType;
++
++	// Added
++	private Item _sourceItem;
++
++	// Changed to reference _sourceItem
++	/*
+ 	private int _sourceItemType;
  	private int _sourceItemPrefix;
++	*/
++	private int _sourceItemType => _sourceItem?.type ?? 0;
++	private int _sourceItemPrefix => _sourceItem?.prefix ?? 0;
  	private string _sourceCustomReason;
++	private NetworkText _customReason;
+ 
++	/*
+ 	public int? SourceProjectileType {
+ 		get {
+ 			if (_sourceProjectileLocalIndex == -1)
+@@ -22,7 +_,26 @@
+ 			return _sourceProjectileType;
+ 		}
+ 	}
++	*/
  
 +	// Ref fields added by TML.
 +	public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
 +	public ref int SourceNPCIndex => ref _sourceNPCIndex;
 +	public ref int SourceProjectileLocalIndex => ref _sourceProjectileLocalIndex;
 +	public ref int SourceOtherIndex => ref _sourceOtherIndex;
-+	public ref int SourceItemType => ref _sourceItemType;
-+	public ref int SourceItemPrefix => ref _sourceItemPrefix;
++	public ref int SourceProjectileType => ref _sourceProjectileType;
++	public ref Item SourceItem => ref _sourceItem;
++	[Obsolete("CustomReason should be used instead")]
 +	public ref string SourceCustomReason => ref _sourceCustomReason;
++	public ref NetworkText CustomReason => ref _customReason;
 +
- 	public int? SourceProjectileType {
- 		get {
- 			if (_sourceProjectileLocalIndex == -1)
-@@ -21,6 +_,8 @@
++	/// <summary>
++	/// Only safe for use when the local player is the one taking damage! <br/>
++	/// Projectile ids are not synchronized across clients, and NPCs may have despawned/died by the time a strike/death packet arrives. <br/>
++	/// Just because the method returns true, doesn't mean that the _correct_ NPC/Projectile is returned on remote clients.
++	/// </summary>
++	/// <param name="entity"></param>
++	/// <returns></returns>
+ 	public bool TryGetCausingEntity(out Entity entity)
+ 	{
+ 		entity = null;
+@@ -33,6 +_,11 @@
  
- 			return _sourceProjectileType;
+ 		if (Main.projectile.IndexInRange(_sourceProjectileLocalIndex)) {
+ 			entity = Main.projectile[_sourceProjectileLocalIndex];
++
++			// some extra safety for projectiles, because their ids are not sent across the network
++			if (Main.player.IndexInRange(_sourcePlayerIndex) && (_sourcePlayerIndex != Main.myPlayer || ((Projectile)entity).owner != _sourcePlayerIndex))
++				entity = Main.player[_sourcePlayerIndex];
++			
+ 			return true;
  		}
-+		// Added by TML.
-+		set => _sourceProjectileType = value ?? -1;
+ 
+@@ -65,6 +_,11 @@
+ 		};
  	}
  
- 	public bool TryGetCausingEntity(out Entity entity)
++	/// <summary>
++	/// A custom death message.
++	/// <para/> This overload does not support localization, all players will see the same text regardless of their language settings. Use <see cref="ByCustomReason(NetworkText)"/> instead for localization support.
++	/// </summary>
++	[Obsolete("Use the NetworkText version instead")]
+ 	public static PlayerDeathReason ByCustomReason(string reasonInEnglish)
+ 	{
+ 		return new PlayerDeathReason {
+@@ -72,18 +_,37 @@
+ 		};
+ 	}
+ 
++	/// <summary>
++	/// A localized custom death message. Each client will see the death message in their own language, unlike with <see cref="ByCustomReason(string)"/>.
++	/// <para/> Text substitutions can be provided by using <see cref="LocalizedText.ToNetworkText(object[])"/> or <see cref="NetworkText.FromKey(string, object[])"/>.
++	/// </summary>
++	public static PlayerDeathReason ByCustomReason(NetworkText reason)
++	{
++		return new PlayerDeathReason {
++			_customReason = reason
++		};
++	}
++
++	/*
+ 	public static PlayerDeathReason ByPlayer(int index)
++	*/
++	public static PlayerDeathReason ByPlayerItem(int index, Item item)
+ 	{
+ 		return new PlayerDeathReason {
+ 			_sourcePlayerIndex = index,
++			/*
+ 			_sourceItemType = Main.player[index].inventory[Main.player[index].selectedItem].type,
+ 			_sourceItemPrefix = Main.player[index].inventory[Main.player[index].selectedItem].prefix
++			*/
++			_sourceItem = item
+ 		};
+ 	}
+ 
+-	public static PlayerDeathReason ByOther(int type)
++	// playerIndex added
++	public static PlayerDeathReason ByOther(int type, int playerIndex = -1)
+ 	{
+ 		return new PlayerDeathReason {
++			_sourcePlayerIndex = playerIndex,
+ 			_sourceOtherIndex = type
+ 		};
+ 	}
+@@ -96,16 +_,21 @@
+ 			_sourceProjectileType = Main.projectile[projectileIndex].type
+ 		};
+ 
++		/*
+ 		if (playerIndex >= 0 && playerIndex <= 255) {
+ 			playerDeathReason._sourceItemType = Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].type;
+ 			playerDeathReason._sourceItemPrefix = Main.player[playerIndex].inventory[Main.player[playerIndex].selectedItem].prefix;
+ 		}
++		*/
+ 
+ 		return playerDeathReason;
+ 	}
+ 
+ 	public NetworkText GetDeathText(string deadPlayerName)
+ 	{
++		if (_customReason != null)
++			return _customReason;
++
+ 		if (_sourceCustomReason != null)
+ 			return NetworkText.FromLiteral(_sourceCustomReason);
+ 
+@@ -121,7 +_,10 @@
+ 		bitsByte[3] = _sourceOtherIndex != -1;
+ 		bitsByte[4] = _sourceProjectileType != 0;
+ 		bitsByte[5] = _sourceItemType != 0;
++		/*
+ 		bitsByte[6] = _sourceItemPrefix != 0;
++		*/
++		bitsByte[6] = _customReason != null;
+ 		bitsByte[7] = _sourceCustomReason != null;
+ 		writer.Write(bitsByte);
+ 		if (bitsByte[0])
+@@ -140,10 +_,16 @@
+ 			writer.Write((short)_sourceProjectileType);
+ 
+ 		if (bitsByte[5])
++			ItemIO.Send(_sourceItem, writer);
++		/*
++		if (bitsByte[5])
+ 			writer.Write((short)_sourceItemType);
+ 
+ 		if (bitsByte[6])
+ 			writer.Write((byte)_sourceItemPrefix);
++		*/
++		if (bitsByte[6])
++			_customReason.Serialize(writer);
+ 
+ 		if (bitsByte[7])
+ 			writer.Write(_sourceCustomReason);
+@@ -168,11 +_,18 @@
+ 		if (bitsByte[4])
+ 			playerDeathReason._sourceProjectileType = reader.ReadInt16();
+ 
++		/*
+ 		if (bitsByte[5])
+ 			playerDeathReason._sourceItemType = reader.ReadInt16();
+ 
+ 		if (bitsByte[6])
+ 			playerDeathReason._sourceItemPrefix = reader.ReadByte();
++		*/
++		if (bitsByte[5])
++			playerDeathReason._sourceItem = ItemIO.Receive(reader);
++
++		if (bitsByte[6])
++			playerDeathReason._customReason = NetworkText.Deserialize(reader);
+ 
+ 		if (bitsByte[7])
+ 			playerDeathReason._sourceCustomReason = reader.ReadString();

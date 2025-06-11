@@ -32,16 +32,13 @@ public static class MountLoader
 
 	internal static int ReserveMountID()
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding mounts breaks vanilla client compatibility");
-
 		return MountCount++;
 	}
 
 	internal static void ResizeArrays()
 	{
 		//Sets
-		LoaderUtils.ResetStaticMembers(typeof(MountID), true);
+		LoaderUtils.ResetStaticMembers(typeof(MountID));
 
 		//Etc
 		Array.Resize(ref Mount.mounts, MountCount);

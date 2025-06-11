@@ -151,6 +151,7 @@ public abstract class ModCactus : IPlant
 	public int[] GrowsOnTileId { get; set; }
 	public abstract void SetStaticDefaults();
 	public abstract Asset<Texture2D> GetTexture();
+	/// <summary> The fruit texture has a special layout that needs to be followed, see ExampleCactus_Fruit.png in ExampleMod for a template. </summary>
 	public abstract Asset<Texture2D> GetFruitTexture();
 }
 
@@ -177,9 +178,10 @@ public abstract class ModTree : ITree
 	public abstract Asset<Texture2D> GetTexture();
 
 	/// <summary>
-	/// Used mostly for vanilla tree shake loot tables
+	/// <br>Used mostly for vanilla tree shake loot tables</br>
+	/// <br>Defaults to <see cref="TreeTypes.Custom"/>. Set to <see cref="TreeTypes.None"/> to prevent the tree from being able to be shaken.</br>
 	/// </summary>
-	public virtual TreeTypes CountsAsTreeType => TreeTypes.Forest;
+	public virtual TreeTypes CountsAsTreeType => TreeTypes.Custom;
 
 	/// <summary>
 	/// Return the type of dust created when this tree is destroyed. Returns 7 by default.
@@ -200,7 +202,8 @@ public abstract class ModTree : ITree
 	}
 
 	/// <summary>
-	/// Executed on tree shake, return false to skip vanilla tree shake drops
+	/// Executed on tree shake, return false to skip vanilla tree shake drops.<br/>
+	/// The x and y coordinates correspond to the top of the tree, where items usually spawn.
 	/// </summary>
 	/// <returns></returns>
 	public virtual bool Shake(int x, int y, ref bool createLeaves)
@@ -272,9 +275,10 @@ public abstract class ModPalmTree : ITree
 	public abstract Asset<Texture2D> GetTexture();
 
 	/// <summary>
-	/// Used mostly for vanilla tree shake loot tables
+	/// <br>Used mostly for vanilla tree shake loot tables</br>
+	/// <br>Defaults to <see cref="TreeTypes.Custom"/>. Set to <see cref="TreeTypes.None"/> to prevent the tree from being able to be shaken.</br>
 	/// </summary>
-	public virtual TreeTypes CountsAsTreeType => TreeTypes.Palm;
+	public virtual TreeTypes CountsAsTreeType => TreeTypes.Custom;
 
 	/// <summary>
 	/// Return the type of dust created when this palm tree is destroyed. Returns 215 by default.

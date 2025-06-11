@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -5,40 +6,47 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.UI;
 using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
+/// This class allows you to modify and use hooks for all NPCs, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 {
+	protected override void ValidateType()
+	{
+		base.ValidateType();
+
+		LoaderUtils.MustOverrideTogether(this, g => g.SaveData, g => g.LoadData);
+		LoaderUtils.MustOverrideTogether(this, g => g.SendExtraAI, g => g.ReceiveExtraAI);
+	}
+
 	protected sealed override void Register()
 	{
-		NPCLoader.VerifyGlobalNPC(this);
-
-		ModTypeLookup<GlobalNPC>.Register(this);
-
-		Index = (ushort)NPCLoader.globalNPCs.Count;
-
-		NPCLoader.globalNPCs.Add(this);
+		base.Register();
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();
 
-	public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, Index);
-
 	/// <summary>
-	/// Allows you to set the properties of any and every NPC that gets created.
+	/// Called after SetDefaults for NPCs with a negative <see cref="NPC.netID"/><br/>
+	/// This hook is required because <see cref="NPC.SetDefaultsFromNetId"/> only sets <see cref="NPC.netID"/> after SetDefaults<br/>
+	/// Remember that <see cref="NPC.type"/> does not support negative numbers and AppliesToEntity cannot distinguish between NPCs with the same type but different netID<br/>
 	/// </summary>
-	public virtual void SetDefaults(NPC npc)
+	public virtual void SetDefaultsFromNetId(NPC npc)
 	{
 	}
 
 	/// <summary>
 	/// Gets called when any NPC spawns in world
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	public virtual void OnSpawn(NPC npc, IEntitySource source)
 	{
@@ -79,6 +87,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC in question.</param>
 	/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
@@ -107,6 +116,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void ResetEffects(NPC npc)
@@ -115,6 +125,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
+	/// <para/> Called on the server and clients.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
@@ -125,6 +137,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. This will only be called if PreAI returns true.
+	/// <para/> Called on the server and clients.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void AI(NPC npc)
@@ -133,6 +147,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine how any NPC behaves. This will be called regardless of what PreAI returns.
+	/// <para/> Called on the server and clients.
+	/// <include file = 'CommonDocs.xml' path='Common/AIMethodOrder' />
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void PostAI(NPC npc)
@@ -141,9 +157,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Use this judiciously to avoid straining the network.
-	/// <br/>Checks and methods such as <see cref="GlobalType{TEntity, TGlobal}.AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
-	/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
-	/// <br/>Can be called on the server.
+	/// <para/> Checks and methods such as <see cref="GlobalType{TEntity, TGlobal}.AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+	/// <para/> Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on NPC creation, on player join, or whenever NPC.netUpdate is set to true in the update loop for that tick.
+	/// <para/> Can be called on the server.
 	/// </summary>
 	/// <param name="npc">The NPC.</param>
 	/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
@@ -154,8 +170,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
-	/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
-	/// <br/>Can be called on multiplayer clients.
+	/// <para/> Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
+	/// <para/> Can be called on multiplayer clients.
 	/// </summary>
 	/// <param name="npc">The NPC.</param>
 	/// <param name="bitReader">The compressible bit reader.</param>
@@ -166,6 +182,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the frame from an NPC's texture that is drawn, which is necessary in order to animate NPCs.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="frameHeight"></param>
@@ -175,14 +192,19 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
-	/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for <c>if (npc.life &lt;= 0)</c> to do client-side death effects, such as spawning dust, gore, or death sounds. <br/>
 	/// </summary>
-	public virtual void HitEffect(NPC npc, int hitDirection, double damage)
+	public virtual void HitEffect(NPC npc, NPC.HitInfo hit)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to make the NPC either regenerate health or take damage over time by setting npc.lifeRegen. Regeneration or damage will occur at a rate of half of npc.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.
+	/// Allows you to make the NPC either regenerate health or take damage over time by setting <see cref="NPC.lifeRegen"/>. This is useful for implementing damage over time debuffs such as <see cref="BuffID.Poisoned"/> or <see cref="BuffID.OnFire"/>. Regeneration or damage will occur at a rate of half of <see cref="NPC.lifeRegen"/> per second.
+	/// <para/> Essentially, modders implementing damage over time debuffs should subtract from <see cref="NPC.lifeRegen"/> a number that is twice as large as the intended damage per second. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example of this.
+	/// <para/> The damage parameter is the number that appears above the NPC's head if it takes damage over time.
+	/// <para/> Multiple debuffs work together by following some conventions: <see cref="NPC.lifeRegen"/> should not be assigned a number, rather it should be subtracted from. <paramref name="damage"/> should only be assigned if the intended popup text is larger then its current value.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
@@ -192,6 +214,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Whether or not to run the code for checking whether an NPC will remain active. Return false to stop the NPC from being despawned and to stop the NPC from counting towards the limit for how many NPCs can exist near a player. Returns true by default.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
@@ -202,6 +225,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Whether or not an NPC should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop the NPC from being killed. Returns true by default.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
@@ -212,6 +236,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to call OnKill on your own when the NPC dies, rather then letting vanilla call it on its own. Returns false by default.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <returns>Return true to stop vanilla from calling OnKill on its own. Do this if you call OnKill yourself.</returns>
 	public virtual bool SpecialOnKill(NPC npc)
@@ -219,18 +244,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 		return false;
 	}
 
-	/// <summary>
-	/// Allows you to determine whether or not NPC from doing anything on death (besides die). Return false to stop the NPC from doing anything special. Returns true by default.
-	/// </summary>
-	/// <param name="npc"></param>
-	/// <returns></returns>
+	/// <inheritdoc cref="ModNPC.PreKill"/>
 	public virtual bool PreKill(NPC npc)
 	{
 		return true;
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect
+	/// Allows you to make things happen when an NPC dies (for example, setting ModSystem fields). For client-side effects, such as dust, gore, and sounds, see HitEffect.
+	/// <br/><br/> Boss flags are set after this, so this method is suitable to check if a boss defeated flag is false to detect if this is the victory against that boss.
+	/// <para/> Called in single player or on the server only.
+	/// <para/> Most item drops should be done via drop rules registered in <see cref="ModifyNPCLoot(NPC, NPCLoot)"/> or <see cref="ModifyGlobalLoot(GlobalLoot)"/>. Some dynamic NPC drops, such as additional hearts, are more suited for OnKill instead. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/MinionBoss/MinionBossMinion.cs#L101">MinionBossMinion.cs</see> shows an example of an NPC that drops additional hearts. See <see cref="NPC.lastInteraction"/> and <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4#player-who-killed-npc">Player who killed NPC wiki section</see> as well for determining which players attacked or killed this NPC.
 	/// </summary>
 	/// <param name="npc"></param>
 	public virtual void OnKill(NPC npc)
@@ -239,7 +263,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine how and when an NPC can fall through platforms and similar tiles.
-	/// <br/>Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
+	/// <para/> Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	public virtual bool? CanFallThroughPlatforms(NPC npc)
 	{
@@ -248,11 +273,11 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine whether the given item can catch the given NPC.<br></br>
-	/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
-	/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
-	/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
-	/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
-	/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+	/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.
+	/// <para/> Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.
+	/// <para/> If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.
+	/// <para/> NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place. To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC that can potentially be caught.</param>
 	/// <param name="item">The item with which the player is trying to catch the given NPC.</param>
@@ -265,6 +290,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to make things happen when the given item attempts to catch the given NPC.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC which the player attempted to catch.</param>
 	/// <param name="player">The player attempting to catch the given NPC.</param>
@@ -295,7 +321,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters to use (-1, 0, or 1), and defaults to -1.
+	/// Allows you to determine whether an NPC can hit the given player. Return false to block the NPC from hitting the target. Returns true by default. CooldownSlot determines which of the player's cooldown counters (<see cref="ImmunityCooldownID"/>) to use, and defaults to -1 (<see cref="ImmunityCooldownID.General"/>).
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -308,28 +335,30 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the damage, etc., that an NPC does to a player.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when an NPC hits a player (for example, inflicting debuffs).
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+	/// <param name="hurtInfo"></param>
+	public virtual void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to determine whether an NPC can hit the given friendly NPC. Return false to block the NPC from hitting the target, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
@@ -340,31 +369,43 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to determine whether a friendly NPC can be hit by an NPC. Return false to block the attacker from hitting the NPC, and return true to use the vanilla code for whether the target can be hit. Returns true by default.
+	/// <para/> Called in single player or on the server only.
+	/// </summary>
+	/// <param name="npc"></param>
+	/// <param name="attacker"></param>
+	/// <returns></returns>
+	public virtual bool CanBeHitByNPC(NPC npc, NPC attacker)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC does to a friendly NPC.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when an NPC hits a friendly NPC.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="target"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	public virtual void OnHitNPC(NPC npc, NPC target, NPC.HitInfo hit)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to determine whether an NPC can be hit by the given melee weapon when swung. Return true to allow hitting the NPC, return false to block hitting the NPC, and return null to use the vanilla code for whether the NPC can be hit. Returns null by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
@@ -376,33 +417,51 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to determine whether an NPC can be collided with the player melee weapon when swung.
+	/// <para/> Use <see cref="CanBeHitByItem(NPC, Player, Item)"/> instead for Guide Voodoo Doll-type effects.
+	/// <para/> Called on the local client only.
+	/// </summary>
+	/// <param name="npc">The NPC being collided with</param>
+	/// <param name="player">The player wielding this item.</param>
+	/// <param name="item">The weapon item the player is holding.</param>
+	/// <param name="meleeAttackHitbox">Hitbox of melee attack.</param>
+	/// <returns>
+	/// Return true to allow colliding with the melee attack, return false to block the weapon from colliding with the NPC, and return null to use the vanilla code for whether the attack can be colliding. Returns null by default.
+	/// </returns>
+	public virtual bool? CanCollideWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a melee weapon.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when an NPC is hit by a melee weapon.
+	/// <para/> Called on the client doing the damage.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to determine whether an NPC can be hit by the given projectile. Return true to allow hitting the NPC, return false to block hitting the NPC, and return null to use the vanilla code for whether the NPC can be hit. Returns null by default.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
@@ -414,46 +473,42 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the damage, knockback, etc., that an NPC takes from a projectile.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	/// <param name="hitDirection"></param>
-	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to create special effects when an NPC is hit by a projectile.
+	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projectile"></param>
-	/// <param name="damage"></param>
-	/// <param name="knockback"></param>
-	/// <param name="crit"></param>
-	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+	/// <param name="hit"></param>
+	/// <param name="damageDone"></param>
+	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. Return false to stop the game from running the vanilla damage formula; returns true by default.
+	/// Allows you to use a custom damage formula for when an NPC takes damage from any source. For example, you can change the way defense works or use a different crit multiplier.
+	/// <para/> This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead.
+	/// <para/> Can be called on the local client or server, depending on who is dealing damage.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="damage"></param>
-	/// <param name="defense"></param>
-	/// <param name="knockback"></param>
-	/// <param name="hitDirection"></param>
-	/// <param name="crit"></param>
-	/// <returns></returns>
-	public virtual bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
+	/// <param name="modifiers"></param>
+	public virtual void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
 	{
-		return true;
 	}
 
 	/// <summary>
 	/// Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to stop the texture from being displayed.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="index">The index for NPCID.Sets.BossHeadTextures</param>
@@ -463,6 +518,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to customize the rotation of an NPC's boss head icon on the map.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="rotation"></param>
@@ -472,6 +528,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to flip an NPC's boss head icon on the map.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="spriteEffects"></param>
@@ -481,6 +538,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine the color and transparency in which an NPC is drawn. Return null to use the default color (normally light and buff color). Returns null by default.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="drawColor"></param>
@@ -492,6 +550,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to add special visual effects to an NPC (such as creating dust), and modify the color in which the NPC is drawn.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="drawColor"></param>
@@ -501,6 +560,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc">The NPC that is being drawn</param>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
@@ -514,6 +574,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc">The NPC that is being drawn</param>
 	/// <param name="spriteBatch">The spritebatch to draw on</param>
@@ -525,6 +586,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="index"></param>
@@ -534,6 +596,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to control how the health bar for the given NPC is drawn. The hbPosition parameter is the same as Main.hbPosition; it determines whether the health bar gets drawn above or below the NPC by default. The scale parameter is the health bar's size. By default, it will be the normal 1f; most bosses set this to 1.5f. Return null to let the normal vanilla health-bar-drawing code to run. Return false to stop the health bar from being drawn. Return true to draw the health bar in the position specified by the position parameter (note that this is the world position, not screen position).
+	/// <para/> Called on all clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="hbPosition"></param>
@@ -547,6 +610,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the chance of NPCs spawning around the given player and the maximum number of NPCs that can spawn around the player. Lower spawnRates mean a higher chance for NPCs to spawn.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="spawnRate"></param>
@@ -557,6 +621,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the range at which NPCs can spawn around the given player. The spawnRanges determine that maximum distance NPCs can spawn from the player, and the safeRanges determine the minimum distance.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="spawnRangeX"></param>
@@ -570,6 +635,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter maps NPC types to their spawning weights (likelihood to spawn compared to other NPCs). A type of 0 in the pool represents the default vanilla NPC spawning.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="pool"></param>
 	/// <param name="spawnInfo"></param>
@@ -579,6 +645,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to customize an NPC (for example, its position or ai array) after it naturally spawns and before it is synced between servers and clients. As of right now, this only works for modded NPCs.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="tileX"></param>
@@ -589,6 +656,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine whether this NPC can talk with the player. Return true to allow talking with the player, return false to block this NPC from talking with the player, and return null to use the vanilla code for whether the NPC can talk. Returns null by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <returns></returns>
@@ -599,6 +667,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the chat message of any NPC that the player can talk to.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="chat"></param>
@@ -608,6 +677,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Return false to prevent the normal code for this button from running. Returns true by default.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="firstButton"></param>
@@ -619,6 +689,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked.
+	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="firstButton"></param>
@@ -627,17 +698,31 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to add items to an NPC's shop. The type parameter is the type of the NPC that this shop belongs to. Add an item by setting the defaults of shop.item[nextSlot] then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop.item that contains an item. If you want to remove an item, you will have to be familiar with programming.
+	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
+	/// <para/> The traveling merchant shop is handled separately in <see cref="SetupTravelShop(int[], ref int)"/>.
 	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="shop"></param>
-	/// <param name="nextSlot"></param>
-	public virtual void SetupShop(int type, Chest shop, ref int nextSlot)
+	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
+	public virtual void ModifyShop(NPCShop shop)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
+	/// If possible, use <see cref="ModifyShop(NPCShop)"/> instead, to reduce mod conflicts and improve compatibility.
+	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
+	/// <para/> Also note that unused slots in <paramref name="items"/> are null while <see cref="Item.IsAir"/> entries are entries that have a reserved slot (<see cref="NPCShop.Entry.SlotReserved"/>) but did not have their conditions met. These should not be overwritten.
+	/// <para/> Called on the local client only.
+	/// </summary>
+	/// <param name="npc">An instance of <seealso cref="NPC"/> that currently player talks to.</param>
+	/// <param name="shopName">The full name of the shop being opened. See <see cref="NPCShopDatabase.GetShopName"/> for the format. </param>
+	/// <param name="items">Items in the shop including 'air' items in empty slots.</param>
+	public virtual void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to add items to the traveling merchant's shop. Add an item by setting shop[nextSlot] to the ID of the item you are adding then incrementing nextSlot. In the end, nextSlot must have a value of 1 greater than the highest index in shop that represents an item ID. If you want to remove an item, you will have to be familiar with programming.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="shop"></param>
 	/// <param name="nextSlot"></param>
@@ -658,7 +743,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	*/
 
 	/// <summary>
-	/// Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
+	/// Whether this NPC can be teleported to a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc">The NPC</param>
 	/// <param name="toKingStatue">Whether the NPC is being teleported to a King or Queen statue.</param>
@@ -669,7 +755,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to make things happen when this NPC teleports to a King or Queen statue.
-	/// This method is only called server side.
+	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="npc">The NPC</param>
 	/// <param name="toKingStatue">Whether the NPC was teleported to a King or Queen statue.</param>
@@ -679,6 +765,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the stats of town NPCs. Useful for buffing town NPCs when certain bosses are defeated, etc.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="damageMult"></param>
 	/// <param name="defense"></param>
@@ -687,7 +774,18 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to modify the death message of a town NPC or boss. This also affects what the dropped tombstone will say in the case of a town NPC. The text color can also be modified.
+	/// <para/> When modifying the death message, use <see cref="NPC.GetFullNetName"/> to retrieve the NPC name to use in substitutions.
+	/// <para/> Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default.
+	/// </summary>
+	public virtual bool ModifyDeathMessage(NPC npc, ref NetworkText customText, ref Color color)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to determine the damage and knockback of a town NPC's attack before the damage is scaled. (More information on scaling in GlobalNPC.BuffTownNPCs.)
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="damage"></param>
@@ -698,6 +796,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine the cooldown between each of a town NPC's attack. The cooldown will be a number greater than or equal to the first parameter, and less then the sum of the two parameters.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="cooldown"></param>
@@ -708,6 +807,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine the projectile type of a town NPC's attack, and how long it takes for the projectile to actually appear. This hook is only used when the town NPC has an attack type of 0 (throwing), 1 (shooting), or 2 (magic).
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="projType"></param>
@@ -718,6 +818,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine the speed at which a town NPC throws a projectile when it attacks. Multiplier is the speed of the projectile, gravityCorrection is how much extra the projectile gets thrown upwards, and randomOffset allows you to randomize the projectile's velocity in a square centered around the original velocity. This hook is only used when the town NPC has an attack type of 0 (throwing), 1 (shooting), or 2 (magic).
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="multiplier"></param>
@@ -730,6 +831,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to tell the game that a town NPC has already created a projectile and will still create more projectiles as part of a single attack so that the game can animate the NPC's attack properly. Only used when the town NPC has an attack type of 1 (shooting).
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="inBetweenShots"></param>
@@ -739,6 +841,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to control the brightness of the light emitted by a town NPC's aura when it performs a magic attack. Only used when the town NPC has an attack type of 2 (magic)
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="auraLightMultiplier"></param>
@@ -748,6 +851,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to determine the width and height of the item a town NPC swings when it attacks, which controls the range of the NPC's swung weapon. Only used when the town NPC has an attack type of 3 (swinging).
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="itemWidth"></param>
@@ -757,30 +861,27 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is shooting (the NPC must have an attack type of 1). Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
+	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is shooting (the NPC must have an attack type of 1). <paramref name="scale"/> is a multiplier for the item's drawing size, <paramref name="item"/> is the Texture2D instance of the item to be drawn, <paramref name="itemFrame"/> is the section of the texture to draw, and <paramref name="horizontalHoldoutOffset"/> is how far away the item should be drawn from the NPC.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="scale"></param>
 	/// <param name="item"></param>
-	/// <param name="closeness"></param>
-	public virtual void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness)
+	/// <param name="itemFrame"></param>
+	/// <param name="scale"></param>
+	/// <param name="horizontalHoldoutOffset"></param>
+	public virtual void DrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
+	{
+	}
+
+
+	/// <inheritdoc cref="ModNPC.DrawTownAttackSwing" />
+	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to customize how a town NPC's weapon is drawn when the NPC is swinging it (the NPC must have an attack type of 3). Item is the Texture2D instance of the item to be drawn (use Main.itemTexture[id of item]), itemSize is the width and height of the item's hitbox (the same values for TownNPCAttackSwing), scale is the multiplier for the item's drawing size, and offset is the offset from which to draw the item from its normal position.
-	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="item"></param>
-	/// <param name="itemSize"></param>
-	/// <param name="scale"></param>
-	/// <param name="offset"></param>
-	public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to modify the npc's <seealso cref="ID.ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+	/// Allows you to modify the NPC's <seealso cref="ID.ImmunityCooldownID"/>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default.
+	/// <para/> Called on the server and clients.
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="victimHitbox"></param>
@@ -788,7 +889,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="damageMultiplier"></param>
 	/// <param name="npcHitbox"></param>
 	/// <returns></returns>
-	public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox)
+	public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
 	{
 		return true;
 	}
@@ -824,6 +925,35 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="tag"></param>
 	public virtual void LoadData(NPC npc, TagCompound tag)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to change the emote that the NPC will pick
+	/// <para/> Called in single player or on the server only.
+	/// </summary>
+	/// <param name="npc"></param>
+	/// <param name="closestPlayer">The <see cref="Player"/> closest to the NPC. You can check the biome the player is in and let the NPC pick the emote that corresponds to the biome.</param>
+	/// <param name="emoteList">A list of emote IDs from which the NPC will randomly select one</param>
+	/// <param name="otherAnchor">A <see cref="WorldUIAnchor"/> instance that indicates the target of this emote conversation. Use this to get the instance of the <see cref="NPC"/> or <see cref="Player"/> this NPC is talking to.</param>
+	/// <returns>Return null to use vanilla mechanic (pick one from the list), otherwise pick the emote by the returned ID. Returning -1 will prevent the emote from being used. Returns null by default</returns>
+	public virtual int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor)
+	{
+		return null;
+	}
+
+	/// <inheritdoc cref="ModNPC.ChatBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void ChatBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <inheritdoc cref="ModNPC.PartyHatPosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void PartyHatPosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
+	{
+	}
+
+	/// <inheritdoc cref="ModNPC.EmoteBubblePosition(ref Vector2, ref SpriteEffects)"/>
+	public virtual void EmoteBubblePosition(NPC npc, ref Vector2 position, ref SpriteEffects spriteEffects)
 	{
 	}
 }

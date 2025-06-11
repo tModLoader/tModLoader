@@ -9,10 +9,6 @@ namespace ExampleMod.Content.Items.Accessories
 	[AutoloadEquip(EquipType.Shield)] // Load the spritesheet you create as a shield for the player when it is equipped.
 	public class ExampleShield : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.width = 24;
 			Item.height = 28;
@@ -74,10 +70,10 @@ namespace ExampleMod.Content.Items.Accessories
 			else if (Player.controlUp && Player.releaseUp && Player.doubleTapCardinalTimer[DashUp] < 15) {
 				DashDir = DashUp;
 			}
-			else if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15) {
+			else if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15 && Player.doubleTapCardinalTimer[DashLeft] == 0) {
 				DashDir = DashRight;
 			}
-			else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15) {
+			else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15 && Player.doubleTapCardinalTimer[DashRight] == 0) {
 				DashDir = DashLeft;
 			}
 			else {
@@ -140,7 +136,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 		private bool CanUseDash() {
 			return DashAccessoryEquipped
-				&& Player.dashType == 0 // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
+				&& Player.dashType == DashID.None // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
 				&& !Player.setSolar // player isn't wearing solar armor
 				&& !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
 		}

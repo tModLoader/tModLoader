@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/AWorldListItem.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/AWorldListItem.cs
+@@ -9,6 +_,9 @@
+ 
+ public abstract class AWorldListItem : UIPanel
+ {
++	// Added by TML
++	public WorldFileData Data => _data;
++
+ 	protected WorldFileData _data;
+ 	protected int _glitchFrameCounter;
+ 	protected int _glitchFrame;

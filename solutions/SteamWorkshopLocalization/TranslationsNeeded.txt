@@ -1,0 +1,3 @@
+de-DE 2
+it-IT 11
+fr-FR 11

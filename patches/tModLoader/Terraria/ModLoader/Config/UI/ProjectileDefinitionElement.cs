@@ -1,10 +1,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Default;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -43,7 +45,7 @@ internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinit
 			string modname = option.Definition.Mod;
 
 			if (option.Type >= ProjectileID.Count) {
-				modname = ProjectileLoader.GetProjectile(option.Type).Mod.DisplayName; // or internal name?
+				modname = ProjectileLoader.GetProjectile(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (!modname.Contains(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase))
@@ -69,15 +71,16 @@ internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<Proje
 		spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
 		if (Definition != null) {
-			int type = Unloaded ? ProjectileID.Count : Type;
-			Main.instance.LoadProjectile(type);
+			int type = Unloaded ? ProjectileID.None : Type;
+			if (TextureAssets.Projectile[type].State == AssetState.NotLoaded)
+				Main.Assets.Request<Texture2D>(TextureAssets.Projectile[type].Name, AssetRequestMode.AsyncLoad);
 			Texture2D projectileTexture = TextureAssets.Projectile[type].Value;
 
 			int frameCounter = Interface.modConfig.UpdateCount / 4;
 			int frames = Main.projFrames[type];
 
 			if (Unloaded) {
-				projectileTexture = TextureAssets.Item[ItemID.Count].Value;
+				projectileTexture = TextureAssets.Item[ModContent.ItemType<UnloadedItem>()].Value;
 				frames = 1;
 			}
 

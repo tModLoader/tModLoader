@@ -25,14 +25,6 @@ internal class UIModStateText : UIElement
 		PaddingBottom = PaddingTop = 10f;
 	}
 
-	public override void OnInitialize()
-	{
-		OnLeftClick += (evt, el) => {
-			if (_enabled) SetDisabled();
-			else SetEnabled();
-		};
-	}
-
 	public void SetEnabled()
 	{
 		_enabled = true;

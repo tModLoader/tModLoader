@@ -16,3 +16,14 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
+@@ -185,8 +_,8 @@
+ 			Main.OnEnginePreload += StartForceLoad;
+ 			if (Main.dedServ)
+ 				main.DedServ();
+-
+-			main.Run();
++			else
++				main.Run();
+ 		}
+ 		catch (Exception e) {
+ 			DisplayException(e);

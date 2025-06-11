@@ -8,10 +8,6 @@ namespace ExampleMod.Content.Items.Tools
 {
 	public class ExampleHamaxe : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			Item.damage = 25;
 			Item.DamageType = DamageClass.Melee;
@@ -28,6 +24,7 @@ namespace ExampleMod.Content.Items.Tools
 
 			Item.axe = 30; // How much axe power the weapon has, note that the axe power displayed in-game is this value multiplied by 5
 			Item.hammer = 100; // How much hammer power the weapon has
+			Item.attackSpeedOnlyAffectsWeaponAnimation = true; // Melee speed affects how fast the tool swings for damage purposes, but not how fast it can dig
 		}
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {

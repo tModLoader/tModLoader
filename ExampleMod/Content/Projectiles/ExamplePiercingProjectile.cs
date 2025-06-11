@@ -12,15 +12,15 @@ namespace ExampleMod.Content.Projectiles
 	// NPC.immune is decremented towards 0 every update
 	// Melee items set NPC.immune to player.itemAnimation, which starts at item.useAnimation and decrements towards 0
 	// Projectiles, however, provide mechanisms for custom immunity.
-	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the npc's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
+	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the NPC's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
 	//	Ex: Wooden Arrow.
-	// 2. No code and penetrate > 1 or -1: npc.immune[owner] will be set to 10.
+	// 2. No code and penetrate > 1, penetrate == -1, or (appliesImmunityTimeOnSingleHits && penetrate == 1): npc.immune[owner] will be set to 10.
 	// 	The NPC will be hit if not immune and will become immune to all damage for 10 ticks
 	// 	Ex: Unholy Arrow
 	// 3. Override OnHitNPC: If not immune, when it hits it manually set an immune other than 10
 	// 	Ex: Arkhalis: Sets it to 5
 	// 	Ex: Sharknado Minion: Sets to 20
-	// 	Video: https://gfycat.com/DisloyalImprobableHoatzin Notice how Sharknado minion hits prevent Arhalis hits for a brief moment.
+	// 	Video: https://github.com/user-attachments/assets/48f1e9da-ec1b-4841-a66a-a9a0d77e90f1 Notice how Sharknado minion hits prevent Arkhalis hits for a brief moment.
 	// 4. Projectile.usesIDStaticNPCImmunity and Projectile.idStaticNPCHitCooldown: Specifies that a type of projectile has a shared immunity timer for each npc.
 	// 	Use this if you want other projectiles a chance to damage, but don't want the same projectile type to hit an npc rapidly.
 	// 	Ex: Ghastly Glaive is the only one who uses this.
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.width = 12; // The width of projectile hitbox
 			Projectile.height = 12; // The height of projectile hitbox
 
-			// Ccopy the ai of any given projectile using AIType, since we want
+			// Copy the ai of any given projectile using AIType, since we want
 			// the projectile to essentially behave the same way as the vanilla projectile.
 			AIType = ProjectileID.Bullet;
 
@@ -53,11 +53,11 @@ namespace ExampleMod.Content.Projectiles
 			// 2b: Projectile.penetrate = 3; // Same, but max 3 hits before dying
 			// 5: Projectile.usesLocalNPCImmunity = true;
 			// 5a: Projectile.localNPCHitCooldown = -1; // 1 hit per npc max
-			// 5b: Projectile.localNPCHitCooldown = 20; // up to 20 hits
+			// 5b: Projectile.localNPCHitCooldown = 20; // 20 ticks before the same npc can be hit again
 		}
 
 		// See comments at the beginning of the class
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			// 3a: target.immune[Projectile.owner] = 20;
 			// 3b: target.immune[Projectile.owner] = 5;
 		}
@@ -67,10 +67,6 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExamplePiercingProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.FlintlockPistol}";
-
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.FlintlockPistol);

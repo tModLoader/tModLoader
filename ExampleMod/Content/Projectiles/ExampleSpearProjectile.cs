@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Projectiles
 {
 	public class ExampleSpearProjectile : ModProjectile
 	{
-		// Define the range of the Spear Projectile. These are overrideable properties, in case you'll want to make a class inheriting from this one.
+		// Define the range of the Spear Projectile. These are overridable properties, in case you'll want to make a class inheriting from this one.
 		protected virtual float HoldoutRangeMin => 24f;
 		protected virtual float HoldoutRangeMax => 96f;
 

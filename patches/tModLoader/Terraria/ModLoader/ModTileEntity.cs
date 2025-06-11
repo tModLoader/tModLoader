@@ -1,19 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
-using Terraria.ModLoader.Core;
-using Terraria.ModLoader.IO;
+using Terraria.ID;
+using Terraria.ObjectData;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
 /// </summary>
-/// <seealso cref="Terraria.DataStructures.TileEntity" />
-public abstract class ModTileEntity : TileEntity, IModType
+/// <seealso cref="TileEntity" />
+public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 {
 	public static readonly int NumVanilla = Assembly.GetExecutingAssembly()
 		.GetTypes()
@@ -125,6 +125,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 
 	/// <summary>
 	/// A helper method that removes this kind of tile entity from the given coordinates for you.
+	/// <para/> This is typically used in <see cref="ModTile.KillMultiTile(int, int, int, int)"/>.
 	/// </summary>
 	public void Kill(int i, int j)
 	{
@@ -153,7 +154,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 	}
 
 	/// <summary>
-	/// Should never be called on ModTileEntity. Replaced by NetSend and Save.
+	/// Should never be called on ModTileEntity. Replaced by NetSend and SaveData.
 	/// Would make the base method internal if not for patch size
 	/// </summary>
 	public sealed override void WriteExtraData(BinaryWriter writer, bool networkSend)
@@ -162,7 +163,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 	}
 
 	/// <summary>
-	/// Should never be called on ModTileEntity. Replaced by NetReceive and Load
+	/// Should never be called on ModTileEntity. Replaced by NetReceive and LoadData
 	/// Would make the base method internal if not for patch size
 	/// </summary>
 	public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
@@ -170,7 +171,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 		throw new NotImplementedException();
 	}
 
-	// The base implementations of these methods call Read/WriteExtraData. Should do nothing for ModTileEntity unless overriden.
+	// The base implementations of these methods call Read/WriteExtraData. Should do nothing for ModTileEntity unless overridden.
 	public override void NetSend(BinaryWriter writer) { }
 	public override void NetReceive(BinaryReader reader) { }
 
@@ -182,7 +183,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 		Mod = mod;
 
 		if (!Mod.loading)
-			throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		Load();
 		Load_Obsolete(mod);
@@ -202,7 +203,7 @@ public abstract class ModTileEntity : TileEntity, IModType
 
 	public virtual bool IsLoadingEnabled(Mod mod) => true;
 
-	public virtual void Unload(){}
+	public virtual void Unload() { }
 
 	/// <summary>
 	/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.
@@ -210,6 +211,29 @@ public abstract class ModTileEntity : TileEntity, IModType
 	public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
 	{
 		return -1;
+	}
+
+	/// <summary>
+	/// A generic <see cref="PlacementHook"/> that should work for the <see cref="TileObjectData.HookPostPlaceMyPlayer"/> of any typical ModTileEntity. Will result in this ModTileEntity being placed in the top left corner of the multitile.
+	/// </summary>
+	public PlacementHook Generic_HookPostPlaceMyPlayer => new PlacementHook(Generic_Hook_AfterPlacement, -1, 0, true);
+
+	/// <summary>
+	/// A generic implementation of <see cref="Hook_AfterPlacement(int, int, int, int, int, int)"/> that should work for the <see cref="TileObjectData.HookPostPlaceMyPlayer"/> of any typical ModTileEntity. Will result in this ModTileEntity being placed in the top left corner of the multitile.
+	/// <para/> Use <see cref="Generic_HookPostPlaceMyPlayer"/> directly or pair this with <c>-1, 0, true</c> as the remaining parameters of <see cref="PlacementHook"/>.
+	/// </summary>
+	public int Generic_Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
+	{
+		TileObjectData tileData = TileObjectData.GetTileData(type, style, alternate);
+		Point16 topLeft = TileObjectData.TopLeft(i, j);
+
+		if (Main.netMode == NetmodeID.MultiplayerClient) {
+			NetMessage.SendTileSquare(Main.myPlayer, topLeft.X, topLeft.Y, tileData.Width, tileData.Height);
+			NetMessage.SendData(MessageID.TileEntityPlacement, number: topLeft.X, number2: topLeft.Y, number3: Type);
+			return -1;
+		}
+
+		return Place(topLeft.X, topLeft.Y);
 	}
 
 	/// <summary>
@@ -241,7 +265,12 @@ public abstract class ModTileEntity : TileEntity, IModType
 	}
 
 	/// <summary>
-	/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
+	/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and optionally the frame:
+	/// <code>
+	///	Tile tile = Main.tile[x, y];
+	///	return tile.HasTile &amp;&amp; tile.TileType == ModContent.TileType&lt;BasicTileEntityTile&gt;();
+	/// </code>
+	/// <para/> This will be called during world loading and placing the entity on the server. It will not be automatically called when the host tile is killed, so using <see cref="ModTile.KillMultiTile"/> to <see cref="Kill(int, int)"/> this entity is necessary to ensure the tile entity doesn't mistakenly persist without the host tile.
 	/// </summary>
 	public abstract override bool IsTileValidForEntity(int x, int y);
 }

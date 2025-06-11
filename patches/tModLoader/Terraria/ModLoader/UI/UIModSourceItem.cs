@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -25,14 +27,20 @@ internal class UIModSourceItem : UIPanel
 	internal readonly string modName;
 	private readonly Asset<Texture2D> _dividerTexture;
 	private readonly UIText _modName;
+	private readonly UIText _lastBuildTime;
+	private readonly UIAutoScaleTextTextPanel<string> needRebuildButton;
 	private readonly LocalMod _builtMod;
 	private bool _upgradePotentialChecked;
 	private Stopwatch uploadTimer;
 	private int contextButtonsLeft = -26;
+	private Task<string[]> langFileTask;
+	private Task<bool> sourceUpgradeTask;
+	private CancellationToken _modSourcesToken;
 
-	public UIModSourceItem(string mod, LocalMod builtMod)
+	public UIModSourceItem(string mod, LocalMod builtMod, CancellationToken modSourcesToken)
 	{
 		_mod = mod;
+		_modSourcesToken = modSourcesToken;
 
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 		_dividerTexture = UICommon.DividerTexture;
@@ -46,7 +54,27 @@ internal class UIModSourceItem : UIPanel
 			Left = { Pixels = 10 },
 			Top = { Pixels = 5 }
 		};
+
 		Append(_modName);
+
+		if (builtMod != null) {
+			string lastBuildTimeMessage = TimeHelper.HumanTimeSpanString(builtMod.lastModified, localTime: true);
+			_lastBuildTime = new UIText(lastBuildTimeMessage) {
+				HAlign = 1f,
+				Left = { Pixels = -110 }, // There are potentially 4 buttons that might appear
+				Top = { Pixels = 5 }
+			};
+			var ts = new TimeSpan(DateTime.Now.Ticks - builtMod.lastModified.Ticks);
+			double delta = Math.Abs(ts.TotalSeconds);
+			_lastBuildTime.TextColor = delta switch {
+				< 5 * 60 => Color.Green, // 5 min
+				< 60 * 60 => Color.Yellow, // 1 hour
+				< 30 * 24 * 60 * 60 => Color.Orange, // 1 month
+				_ => Color.Red,
+			};
+
+			Append(_lastBuildTime);
+		}
 
 		var buildButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuild")) {
 			Width = { Pixels = 100 },
@@ -68,7 +96,15 @@ internal class UIModSourceItem : UIPanel
 		Append(buildReloadButton);
 
 		_builtMod = builtMod;
-		if (builtMod != null) {
+		if (builtMod != null && LocalizationLoader.changedMods.Contains(modName)) {
+			needRebuildButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSRebuildRequired"));
+			needRebuildButton.CopyStyle(buildReloadButton);
+			needRebuildButton.Width.Pixels = 180;
+			needRebuildButton.Left.Pixels = 360;
+			needRebuildButton.BackgroundColor = Color.Red;
+			Append(needRebuildButton);
+		}
+		else if (builtMod != null) {
 			var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 			publishButton.CopyStyle(buildReloadButton);
 			publishButton.Width.Pixels = 100;
@@ -90,20 +126,56 @@ internal class UIModSourceItem : UIPanel
 		string modFolderName = Path.GetFileName(_mod);
 		string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 		if (File.Exists(csprojFile)) {
-			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+			var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, Language.GetTextValue("tModLoader.MSOpenCSProj")) {
+				RemoveFloatingPointsFromDrawPosition = true,
+				UseTooltipMouseText = true,
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
 				Top = { Pixels = 4 }
 			};
 			openCSProjButton.OnLeftClick += (a, b) => {
-				Process.Start(
-					new ProcessStartInfo(csprojFile) {
-						UseShellExecute = true
-					}
-				);
+				// Due to "DOTNET_ROLL_FORWARD=Disable" environment variable being set for normal game launches, launching the .csproj directly results in a prompt to install .net 6.0.0 because of the inherited environment variables. This works around that for Windows users.
+				if (Platform.IsWindows) {
+					Process.Start(
+						new ProcessStartInfo("explorer", csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				}
+				else {
+					Process.Start(
+						new ProcessStartInfo(csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				}
 			};
 			Append(openCSProjButton);
 
 			contextButtonsLeft -= 26;
+		}
+
+		if (File.Exists(csprojFile)) {
+			bool customModSourceFolder = builtMod != null && !string.IsNullOrWhiteSpace(builtMod.properties.modSource) && builtMod.properties.modSource != Path.Combine(ModCompile.ModSourcePath, modName);
+			var openFolderButton = new UIHoverImage(customModSourceFolder ? UICommon.ButtonOpenFolderCustom : UICommon.ButtonOpenFolder, customModSourceFolder ? Language.GetTextValue("tModLoader.MSOpenCustomSourceFolder", builtMod.properties.modSource) : Lang.inter[110].Value) {
+				RemoveFloatingPointsFromDrawPosition = true,
+				UseTooltipMouseText = true,
+				Left = { Pixels = contextButtonsLeft, Percent = 1f },
+				Top = { Pixels = 4 }
+			};
+			openFolderButton.OnLeftClick += (a, b) => Utils.OpenFolder(_mod);
+			Append(openFolderButton);
+			contextButtonsLeft -= 26;
+		}
+	}
+
+	protected override void DrawChildren(SpriteBatch spriteBatch)
+	{
+		base.DrawChildren(spriteBatch);
+		if (needRebuildButton?.IsMouseHovering == true) {
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.MSLocalizationFilesChangedCantPublish"));
+		}
+		if (_lastBuildTime?.IsMouseHovering == true) {
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.MSLastBuilt", TimeHelper.HumanTimeSpanString(_builtMod.lastModified, localTime: true)));
 		}
 	}
 
@@ -114,104 +186,41 @@ internal class UIModSourceItem : UIPanel
 		Vector2 drawPos = new Vector2(innerDimensions.X + 5f, innerDimensions.Y + 30f);
 		spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f) / 8f, 1f), SpriteEffects.None, 0f);
 
-		// This code here rather than ctor since the delay for dozens of mod source folders is noticable.
 		if (!_upgradePotentialChecked) {
 			_upgradePotentialChecked = true;
-			string modFolderName = Path.GetFileName(_mod);
-			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
-			bool projNeedsUpdate = false;
-			if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
-				var icon = UICommon.ButtonExclamationTexture;
-				var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
-					Left = { Pixels = contextButtonsLeft, Percent = 1f },
-					Top = { Pixels = 4 }
-				};
-				upgradeCSProjButton.OnLeftClick += (s, e) => {
-					File.WriteAllText(csprojFile, Interface.createMod.GetModCsproj(modFolderName));
-					string propertiesFolder = Path.Combine(_mod, "Properties");
-					string AssemblyInfoFile = Path.Combine(propertiesFolder, "AssemblyInfo.cs");
-					if (File.Exists(AssemblyInfoFile))
-						File.Delete(AssemblyInfoFile);
+			StartUpgradeTasks();
+		}
 
-					try {
-						string objFolder = Path.Combine(_mod, "obj"); // Old files can cause some issues.
-						if (Directory.Exists(objFolder))
-							Directory.Delete(objFolder, true);
-						string binFolder = Path.Combine(_mod, "bin");
-						if (Directory.Exists(binFolder))
-							Directory.Delete(binFolder, true);
-					}
-					catch (Exception) {
-					}
+		// Display upgrade .lang files button if any .lang files present
+		if (langFileTask is { IsCompleted: true }) {
+			string[] result = langFileTask.Result;
 
-					Directory.CreateDirectory(propertiesFolder);
-					File.WriteAllText(Path.Combine(propertiesFolder, $"launchSettings.json"), Interface.createMod.GetLaunchSettings());
-					SoundEngine.PlaySound(SoundID.MenuOpen);
-					Main.menuMode = Interface.modSourcesID;
-
-					upgradeCSProjButton.Remove();
-					_upgradePotentialChecked = false;
-				};
-				Append(upgradeCSProjButton);
-
-				contextButtonsLeft -= 26;
-				projNeedsUpdate = true;
+			if (result.Length > 0) {
+				AddLangFileUpgradeButton(result);
 			}
 
-			// Display upgrade .lang files button if any .lang files present
-			//TODO: Make this asynchronous, as this can be quite expensive
-			string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
+			langFileTask = null;
+		}
 
-			if (files.Length > 0) {
-				var icon = UICommon.ButtonExclamationTexture;
-				var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
-					Left = { Pixels = contextButtonsLeft, Percent = 1f },
-					Top = { Pixels = 4 }
-				};
+		// Display Run tModPorter when .csproj is valid
+		if (sourceUpgradeTask is { IsCompleted: true }) {
+			try {
+				bool result = sourceUpgradeTask.GetAwaiter().GetResult();
 
-				upgradeLangFilesButton.OnLeftClick += (s, e) => {
-					foreach (string file in files) {
-						LocalizationLoader.UpgradeLangFile(file, modName);
-					}
-
-					upgradeLangFilesButton.Remove();
-				};
-
-				Append(upgradeLangFilesButton);
-
-				contextButtonsLeft -= 26;
+				// Source upgrade needed.
+				if (result) {
+					AddCsProjUpgradeButton();
+				}
+				else {
+					AddModPorterButton();
+				}
 			}
-
-
-			// Display Run tModPorter for Windows when csproj is valid
-			if (Platform.IsWindows && !projNeedsUpdate) {
-				var pIcon = UICommon.ButtonExclamationTexture;
-				var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
-					Left = { Pixels = contextButtonsLeft, Percent = 1f },
-					Top = { Pixels = 4 }
-				};
-
-				portModButton.OnLeftClick += (s, e) => {
-					string modFolderName = Path.GetFileName(_mod);
-					string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
-
-					string args = $"\"{csprojFile}\"";
-					var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-					var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", "tModPorter.bat");
-
-					var porterInfo = new ProcessStartInfo() {
-						FileName = porterPath,
-						Arguments = args,
-						UseShellExecute = true
-					};
-
-					var porter = Process.Start(porterInfo);
-				};
-
-				Append(portModButton);
-
-				contextButtonsLeft -= 26;
+			catch (Exception e) {
+				AddErrorButton(e);
+			}
+			finally {
+				sourceUpgradeTask = null;
 			}
 		}
 	}
@@ -272,6 +281,7 @@ internal class UIModSourceItem : UIPanel
 				Main.menuMode = Interface.reloadModsID;
 				ModLoader.OnSuccessfulLoad += () => {
 					Main.QueueMainThreadAction(() => {
+						// Delay publishing to when the mod is completely reloaded in main thread
 						PublishMod(null, null);
 					});
 				};
@@ -285,7 +295,7 @@ internal class UIModSourceItem : UIPanel
 			WorkshopHelper.PublishMod(_builtMod, icon);
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 
@@ -307,7 +317,7 @@ internal class UIModSourceItem : UIPanel
 			pending.WaitForExit();
 		}
 		catch (WebException e) {
-			UIModBrowser.LogModBrowserException(e);
+			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 
@@ -318,11 +328,11 @@ internal class UIModSourceItem : UIPanel
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
 			var modFile = new TmodFile(modPath);
 			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
-				localMod = new LocalMod(modFile);
+				localMod = new LocalMod(ModLocation.Local, modFile);
 
-			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
+			string icon = Path.Combine(localMod.properties.modSource, "icon_workshop.png");
 			if (!File.Exists(icon))
-				icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
+				icon = Path.Combine(localMod.properties.modSource, "icon.png");
 
 			WorkshopHelper.PublishMod(localMod, icon);
 		}
@@ -335,5 +345,127 @@ internal class UIModSourceItem : UIPanel
 		Console.WriteLine("exiting ");
 		Steamworks.SteamAPI.Shutdown();
 		Environment.Exit(0);
+	}
+
+	private void StartUpgradeTasks()
+	{
+		langFileTask = Task.Run(
+			() => Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories),
+			_modSourcesToken
+		);
+
+		sourceUpgradeTask = Task.Run(
+			() => SourceManagement.SourceUpgradeNeeded(_mod),
+			_modSourcesToken
+		);
+	}
+
+	private void AddLangFileUpgradeButton(string[] result)
+	{
+		var icon = UICommon.ButtonUpgradeLang;
+		var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = contextButtonsLeft, Percent = 1f },
+			Top = { Pixels = 4 }
+		};
+
+		upgradeLangFilesButton.OnLeftClick += (s, e) => {
+			foreach (string file in result) {
+				LocalizationLoader.UpgradeLangFile(file, modName);
+			}
+
+			upgradeLangFilesButton.Remove();
+
+			SoundEngine.PlaySound(SoundID.MenuTick);
+		};
+
+		Append(upgradeLangFilesButton);
+
+		contextButtonsLeft -= 26;
+	}
+
+	private void AddCsProjUpgradeButton()
+	{
+		var icon = UICommon.ButtonUpgradeCsproj;
+		var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = contextButtonsLeft, Percent = 1f },
+			Top = { Pixels = 4 }
+		};
+
+		upgradeCSProjButton.OnLeftClick += (s, e) => {
+			SourceManagement.UpgradeSource(_mod);
+
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Main.menuMode = Interface.modSourcesID;
+
+			upgradeCSProjButton.Remove();
+
+			// When this button is pressed, the csproj no longer requires an upgrade. This means that the tModPorter button should now be added.
+			AddModPorterButton();
+		};
+
+		Append(upgradeCSProjButton);
+
+		contextButtonsLeft -= 26;
+	}
+
+	private void AddModPorterButton()
+	{
+		var pIcon = UICommon.ButtonRunTModPorter;
+		var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = contextButtonsLeft, Percent = 1f },
+			Top = { Pixels = 4 }
+		};
+
+		portModButton.OnLeftClick += (s, e) => {
+			string modFolderName = Path.GetFileName(_mod);
+			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+
+			string args = $"\"{csprojFile}\"";
+			var tMLPath = Path.GetDirectoryName(Path.GetFullPath(Assembly.GetExecutingAssembly().Location));
+			var porterPath = Path.Combine(tMLPath, "tModPorter", (Platform.IsWindows ? "tModPorter.bat" : "tModPorter.sh"));
+
+			var porterInfo = new ProcessStartInfo() {
+				FileName = porterPath,
+				Arguments = args,
+				WorkingDirectory = tMLPath,
+				UseShellExecute = true
+			};
+
+			try {
+				var porter = ModCompile.StartOnHost(porterInfo);
+			}
+			catch (Exception ex) {
+				Logging.tML.Error("Failed to start tModPorter", ex);
+			}
+		};
+
+		Append(portModButton);
+
+		contextButtonsLeft -= 26;
+	}
+
+	private void AddErrorButton(Exception e)
+	{
+		var modSaveErrorWarning = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.MSSourceIssue")) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = contextButtonsLeft, Percent = 1f },
+			Top = { Pixels = 4 }
+		};
+
+		string fullError = Language.GetTextValue("tModLoader.MSSourceIssueMessage", modName, "\n\n" + e.ToString());
+		modSaveErrorWarning.OnLeftClick += (a, b) => {
+			Interface.infoMessage.Show(fullError, 888, Interface.modSources);
+		};
+
+		Append(modSaveErrorWarning);
+
+		contextButtonsLeft -= 26;
 	}
 }

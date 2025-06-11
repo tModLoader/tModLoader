@@ -1,5 +1,5 @@
-﻿using ExampleMod.Common.Systems;
-using ExampleMod.Content.Biomes;
+﻿using ExampleMod.Common;
+using ExampleMod.Common.Systems;
 using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.TileEntities;
 using Microsoft.Xna.Framework;
@@ -45,6 +45,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 
+			VanillaFallbackOnModDeletion = TileID.TeleportationPylon;
+
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
@@ -64,18 +66,22 @@ namespace ExampleMod.Content.Tiles
 			// Adds functionality for proximity of pylons; if this is true, then being near this tile will count as being near a pylon for the teleportation process.
 			AddToArray(ref TileID.Sets.CountsAsPylon);
 
-			LocalizedText pylonName = CreateMapEntryName(); //Name is in the localization file
+			LocalizedText pylonName = CreateMapEntryName(); // Name is in the localization file
 			AddMapEntry(Color.White, pylonName);
 		}
 
-		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
-			// Let's say that our pylon is for sale no matter what for any NPC under all circumstances, granted that the NPC
-			// is in the Example Surface/Underground Biome.
-			return ModContent.GetInstance<ExampleSurfaceBiome>().IsBiomeActive(player) || ModContent.GetInstance<ExampleUndergroundBiome>().IsBiomeActive(player)
-				? ModContent.ItemType<ExamplePylonItem>()
-				: null;
-		}
+		public override NPCShop.Entry GetNPCShopEntry() {
+			// In this method we can customize the shop entry for the pylon item.
+			// The default method, base.GetNPCShopEntry(), generates a shop entry for the pylon item with the typical pylon conditions: Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, and Condition.NotInEvilBiome
+			NPCShop.Entry shopEntry = base.GetNPCShopEntry();
 
+			// We will take that shop entry and add an additional condition to check for ExampleBiome, as this is typical for biome pylons
+			// This does not affect the teleport conditions, only the sale conditions
+			shopEntry.AddCondition(ExampleConditions.InExampleBiome);
+
+			// and finally we return the shop entry
+			return shopEntry;
+		}
 
 		public override void MouseOver(int i, int j) {
 			// Show a little pylon icon on the mouse indicating we are hovering over it.
@@ -86,9 +92,6 @@ namespace ExampleMod.Content.Tiles
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			// We need to clean up after ourselves, since this is still a "unique" tile, separate from Vanilla Pylons, so we must kill the TileEntity.
 			ModContent.GetInstance<SimplePylonTileEntity>().Kill(i, j);
-
-			// Also, like other pylons, breaking it simply drops the item once again. Pretty straight-forward.
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 2, 3, ModContent.ItemType<ExamplePylonItem>());
 		}
 
 		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
@@ -122,7 +125,7 @@ namespace ExampleMod.Content.Tiles
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
 			// Just like in SpecialDraw, we want things to be handled the EXACT same way vanilla would handle it, which ModPylon also has built in methods for:
 			bool mouseOver = DefaultDrawMapIcon(ref context, mapIcon, pylonInfo.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), drawColor, deselectedScale, selectedScale);
-			DefaultMapClickHandle(mouseOver, pylonInfo, "Mods.ExampleMod.ItemName.ExamplePylonItem", ref mouseOverText);
+			DefaultMapClickHandle(mouseOver, pylonInfo, ModContent.GetInstance<ExamplePylonItem>().DisplayName.Key, ref mouseOverText);
 		}
 	}
 }

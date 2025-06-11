@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using ExampleMod.Common.Configs.CustomUI;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
-using ExampleMod.Common.Configs.CustomUI;
 
 // This file contains fake ModConfig class that showcase various attributes
 // that can be used to customize behavior config fields.
@@ -18,13 +18,10 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
 	/// </summary>
-	[Label("ModConfig Showcase G: Misc")]
 	public class ModConfigShowcaseMisc : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[Label("Custom UI Element")]
-		[Tooltip("This UI Element is modder defined")]
 		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
 
@@ -40,7 +37,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public List<Gradient> gradients = new List<Gradient>();
 		*/
 
-		[Label("Custom UI Element 2")]
 		// In this case, CustomModConfigItem is annotating the Enum instead of the Field. Either is acceptable and can be used for different situations.
 		public Corner corner;
 
@@ -58,7 +54,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		public HashSet<ItemDefinition> itemSet = new HashSet<ItemDefinition>();
 
-		[Label("ListOfPair2 label")]
 		public List<Pair> ListOfPair2 = new List<Pair>();
 		public Pair pairExample2 = new Pair();
 
@@ -78,7 +73,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[JsonDefaultValue("{\"boost\": 777}")] // With NullAllowed, you can specify a default value like this.
 		public SimpleData simpleDataExample2;
 
-		[Label("Really Complex Data")]
 		public ComplexData complexData = new ComplexData();
 
 		[JsonExtensionData]

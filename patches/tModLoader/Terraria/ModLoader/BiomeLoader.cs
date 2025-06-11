@@ -34,7 +34,7 @@ public class BiomeLoader : Loader<ModBiome>
 			if (player.modBiomeFlags[i] != other.modBiomeFlags[i])
 				return false;
 		}
-		
+
 		return true;
 	}
 

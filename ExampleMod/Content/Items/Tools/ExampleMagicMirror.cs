@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,18 +10,14 @@ namespace ExampleMod.Content.Items.Tools
 	// It may prove a useful guide for ModItems with similar behaviors.
 	internal class ExampleMagicMirror : ExampleItem
 	{
-		private static readonly Color[] itemNameCycleColors = {
+		private static readonly Color[] itemNameCycleColors = [
 			new Color(254, 105, 47),
 			new Color(190, 30, 209),
 			new Color(34, 221, 151),
 			new Color(0, 106, 185),
-		};
+		];
 
 		public override string Texture => $"Terraria/Images/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
-
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1; // Amount of this item needed to research and become available in Journey mode's duplication menu. Amount used based upon vanilla Magic Mirror's amount needed.
-		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.IceMirror); // Copies the defaults from the Ice Mirror.
@@ -48,14 +44,7 @@ namespace ExampleMod.Content.Items.Tools
 				}
 
 				// This code releases all grappling hooks and kills/despawns them.
-				player.grappling[0] = -1;
-				player.grapCount = 0;
-
-				for (int p = 0; p < 1000; p++) {
-					if (Main.projectile[p].active && Main.projectile[p].owner == player.whoAmI && Main.projectile[p].aiStyle == 7) {
-						Main.projectile[p].Kill();
-					}
-				}
+				player.RemoveAllGrapplingHooks();
 
 				// The actual method that moves the player back to bed/spawn.
 				player.Spawn(PlayerSpawnContext.RecallFromItem);
@@ -70,7 +59,7 @@ namespace ExampleMod.Content.Items.Tools
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// This code shows using Color.Lerp,  Main.GameUpdateCount, and the modulo operator (%) to do a neat effect cycling between 4 custom colors.
 			int numColors = itemNameCycleColors.Length;
-			
+
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.Mod == "Terraria" && line2.Name == "ItemName") {
 					float fade = (Main.GameUpdateCount % 60) / 60f;

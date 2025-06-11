@@ -13,7 +13,7 @@ public abstract class Loader : ILoader
 	internal int TotalCount { get; set; }
 
 	/// <summary>
-	/// Initilizes the loader based on the vanilla count of the ModType.
+	/// Initializes the loader based on the vanilla count of the ModType.
 	/// </summary>
 	internal void Initialize(int vanillaCount)
 	{
@@ -89,7 +89,7 @@ public static class LoaderManager
 
 			var autoload = AutoloadAttribute.GetValue(type);
 
-			if(autoload.NeedsAutoloading) {
+			if (autoload.NeedsAutoloading) {
 				loadersByType.Add(type, (ILoader)Activator.CreateInstance(type, true)!);
 			}
 		}

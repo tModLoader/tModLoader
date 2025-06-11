@@ -1,5 +1,5 @@
-﻿using System;
-using ExampleMod.Content.Tiles;
+﻿using ExampleMod.Content.Tiles;
+using System;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Systems

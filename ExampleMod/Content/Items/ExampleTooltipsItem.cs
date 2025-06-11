@@ -1,21 +1,26 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
 	public class ExampleTooltipsItem : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
+		public static LocalizedText RemoveMeText { get; private set; }
+		public static LocalizedText FaceText { get; private set; }
 
+		public override void SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(30, 4));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
 
 			ItemID.Sets.ItemNoGravity[Item.type] = true;
+
+			RemoveMeText = this.GetLocalization("RemoveMe");
+			FaceText = this.GetLocalization("Face");
 		}
 
 		public override void SetDefaults() {
@@ -31,10 +36,10 @@ namespace ExampleMod.Content.Items
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Here we add a tooltipline that will later be removed, showcasing how to remove tooltips from an item
-			var line = new TooltipLine(Mod, "Verbose:RemoveMe", "This tooltip won't show in-game");
+			var line = new TooltipLine(Mod, "Verbose:RemoveMe", RemoveMeText.Value);
 			tooltips.Add(line);
 
-			line = new TooltipLine(Mod, "Face", "I'm feeling just fine!") {
+			line = new TooltipLine(Mod, "Face", FaceText.Value) {
 				OverrideColor = new Color(100, 100, 255)
 			};
 			tooltips.Add(line);
@@ -46,15 +51,16 @@ namespace ExampleMod.Content.Items
 				}
 			}
 
-			// Here we will remove all tooltips whose title end with ':RemoveMe'
+			// Here we will hide all tooltips whose title end with ':RemoveMe'
 			// One like that is added at the start of this method
-			tooltips.RemoveAll(l => l.Name.EndsWith(":RemoveMe"));
+			foreach (var l in tooltips) {
+				if (l.Name.EndsWith(":RemoveMe")) {
+					l.Hide();
+				}
+			}
 
-			// Another method of removal can be done if you know the index of the tooltip:
-			// tooltips.RemoveAt(index);
-
-			// You can also remove a specific line, if you have access to that object:
-			// tooltips.Remove(tooltipLine);
+			// Another method of hiding can be done if you want to hide just one line.
+			// tooltips.FirstOrDefault(x => x.Mod == "ExampleMod" && x.Name == "Verbose:RemoveMe")?.Hide();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

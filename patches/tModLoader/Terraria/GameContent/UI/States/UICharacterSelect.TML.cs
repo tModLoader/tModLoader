@@ -19,23 +19,26 @@ public partial class UICharacterSelect : UIState
 	private static bool _currentlyMigratingFiles;
 
 	// Individual
+	private static UIExpandablePanel _migrationPanel;
+	private static ModLoader.Config.UI.NestedUIList migratePlayerList;
+	private static bool migratablePlayersLoaded = false;
 
-	private void AddIndividualPlayerMigrationButtons()
+	private void InitializeMigrationPanel()
 	{
-		UIExpandablePanel playerMigrationPanel = new UIExpandablePanel();
-		_playerList.Add(playerMigrationPanel);
+		_migrationPanel = new UIExpandablePanel();
+		_migrationPanel.OnExpanded += _migrationPanel_OnExpanded;
 
 		var playerMigrationPanelTitle = new UIText(Language.GetTextValue("tModLoader.MigrateIndividualPlayersHeader"));
 		playerMigrationPanelTitle.Top.Set(4, 0);
-		playerMigrationPanel.Append(playerMigrationPanelTitle);
+		_migrationPanel.Append(playerMigrationPanelTitle);
 
-		ModLoader.Config.UI.NestedUIList migratePlayerList = new ModLoader.Config.UI.NestedUIList();
+		migratePlayerList = new ModLoader.Config.UI.NestedUIList();
 		migratePlayerList.Width.Set(-22, 1f);
 		migratePlayerList.Left.Set(0, 0f);
 		migratePlayerList.Top.Set(30, 0);
 		migratePlayerList.MinHeight.Set(300, 0f);
 		migratePlayerList.ListPadding = 5f;
-		playerMigrationPanel.VisibleWhenExpanded.Add(migratePlayerList);
+		_migrationPanel.VisibleWhenExpanded.Add(migratePlayerList);
 
 		UIScrollbar scrollbar = new UIScrollbar();
 		scrollbar.SetView(100f, 1000f);
@@ -44,18 +47,27 @@ public partial class UICharacterSelect : UIState
 		scrollbar.Left.Pixels -= 0;
 		scrollbar.HAlign = 1f;
 		migratePlayerList.SetScrollbar(scrollbar);
-		playerMigrationPanel.VisibleWhenExpanded.Add(scrollbar);
+		_migrationPanel.VisibleWhenExpanded.Add(scrollbar);
+	}
 
-		// TODO: Do we need to do extra work for .plr files that have been renamed? Is that valid?
-		// TODO: We could probably support cloud players as well, if we tried.
-		// Vanilla and 1.3 paths are defaults, 1.4 TML paths are relative to current savepath.
-		var otherPaths = new (string path, string message, int stabilityLevel)[] {
-			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Players"), "Click to copy \"{0}\" over from Terraria", 0),
-			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", "Players"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
-			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Players"), "Click to copy \"{0}\" over from 1.4-stable", 1),
-			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, "Players"), "Click to copy \"{0}\" over from 1.4-preview", 2),
-			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Players"), "Click to copy \"{0}\" over from 1.4-dev", 3),
-		};
+	private void ActivateMigrationPanel()
+	{
+		migratePlayerList.Clear();
+		migratablePlayersLoaded = false;
+		_migrationPanel.Collapse();
+	}
+
+	private void _migrationPanel_OnExpanded()
+	{
+		if (migratablePlayersLoaded)
+			return;
+		migratablePlayersLoaded = true;
+		LoadMigratablePlayers();
+	}
+
+	private void LoadMigratablePlayers()
+	{
+		var otherPaths = FileUtilities.GetAlternateSavePathFiles("Players");
 
 		int currentStabilityLevel = BuildInfo.Purpose switch {
 			BuildInfo.BuildPurpose.Stable => 1,
@@ -94,7 +106,8 @@ public partial class UICharacterSelect : UIState
 
 				if (stabilityLevel > currentStabilityLevel) {
 					// TODO: Not necessarily newer...
-					var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This player is from a newer tModLoader, it might not work") {
+					var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.PlayerFromNewerTModMightNotWork")) {
+						UseTooltipMouseText = true,
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -107,7 +120,8 @@ public partial class UICharacterSelect : UIState
 				var playerWithSameName = Main.PlayerList.FirstOrDefault(x => x.Name == fileData.Name);
 
 				if (playerWithSameName != null) {
-					var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "A player with this name exists, it will be overwritten") {
+					var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.PlayerWithThisNameExistsWillBeOverwritten")) {
+						UseTooltipMouseText = true,
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -117,7 +131,8 @@ public partial class UICharacterSelect : UIState
 					left += warningImage.Width.Pixels + 6;
 
 					if (File.GetLastWriteTime(playerWithSameName.Path) > File.GetLastWriteTime(files[i])) {
-						warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "The existing player was last played more recently") {
+						warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.ExistingPlayerPlayedMoreRecently")) {
+							UseTooltipMouseText = true,
 							Left = { Pixels = left },
 							Top = { Pixels = 3 }
 						};

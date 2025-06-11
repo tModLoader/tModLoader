@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/IO/WorldFileData.cs
 +++ src/tModLoader/Terraria/IO/WorldFileData.cs
-@@ -5,6 +_,7 @@
+@@ -5,11 +_,12 @@
  using Terraria.Audio;
  using Terraria.GameContent;
  using Terraria.Localization;
@@ -8,6 +8,12 @@
  using Terraria.Utilities;
  
  namespace Terraria.IO;
+ 
+-public class WorldFileData : FileData
++public partial class WorldFileData : FileData
+ {
+ 	private const ulong GUID_IN_WORLD_FILE_VERSION = 777389080577uL;
+ 	public DateTime CreationTime;
 @@ -177,6 +_,8 @@
  		if (!base.IsCloudSave) {
  			string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: true);

@@ -6,7 +6,14 @@
 cd "$(dirname "$0")"
 . ./BashUtils.sh
 
-echo "You are on platform: \"$_uname\""
+echo "You are on platform: \"$_uname\" arch: \"$_arch\""
+
+# Detect arm64 launches and the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
+if [ "$_arch" = "arm64" ] && [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
+	echo "arm64 environment with Rosetta detected, restarting under arch -x86_64"
+	# Note this only changes the environment, so that dotnet install scripts download an x86 version. Launching an x86 process from an arm shell or vice versa does not require using arch, or otherwise intentionally invoking Rosetta.
+	exec arch -x86_64 ./ScriptCaller.sh "$@"
+fi
 
 LaunchLogs="$root_dir/tModLoader-Logs"
 
@@ -19,6 +26,7 @@ if [ -f "$LogFile" ]; then
 	rm "$LogFile"
 fi
 touch "$LogFile"
+echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
 
 NativeLog="$LaunchLogs/Natives.log"
 if [ -f "$NativeLog" ]; then
@@ -26,45 +34,45 @@ if [ -f "$NativeLog" ]; then
 fi
 touch "$NativeLog"
 
-if [[ "$_uname" == *"_NT"* ]]; then
-	echo "Windows Version $WINDOWS_MAJOR.$WINDOWS_MINOR" 2>&1 | tee -a "$LogFile"
-	if [[ $WINDOWS_MAJOR -ge 10 ]]; then 
-		./QuickEditDisable.exe 2>&1 | tee -a "$LogFile"
-	fi
-fi
+# Environment variable fixes & Platform Cleanups
+. ./EnvironmentFix.sh
 
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
-echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
 
+# Get Dotnet Version expecting to have installed
+source ./DotNetVersion.sh
+
+# Attempt to fix first time Crash To Desktop due to dotnet install failure
+if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
+	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+	rm -rf "$dotnet_dir"
+	mkdir "$dotnet_dir"
+fi
+
+# Dotnet binaries Fixes (Proton, AppleSilicon)
 if [[ "$_uname" == *"_NT"* ]]; then
-	run_script ./Remove13_64Bit.sh  2>&1 | tee -a "$LogFile"
+	if [[ -f "$dotnet_dir/dotnet" ]]; then
+		echo "A non-Windows dotnet executable was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	fi
+else
+	if [[ -f "$dotnet_dir/dotnet.exe" ]]; then
+		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	elif [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
+		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+		mkdir "$dotnet_dir"
+	fi
 fi
 
-. ./UnixLinkerFix.sh
+# Installing Dotnet
+run_script ./InstallDotNet.sh  2>&1 | tee -a "$LogFile"
 
-#Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
-echo "Parsing .NET version requirements from runtimeconfig.json"  2>&1 | tee -a "$LogFile"
-dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
-export dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
-#echo $version
-# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
-# echo $(hexdump -C <<< "$version")
-export dotnet_dir="$root_dir/dotnet"
-if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
-	echo "wsl detected. Setting dotnet_dir=dotnet_wsl"
-	export dotnet_dir="$root_dir/dotnet_wsl"
-fi
-export install_dir="$dotnet_dir/$dotnet_version"
-echo "Success!"  2>&1 | tee -a "$LogFile"
-
-run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
-
-# Gather CommandLine arguments from config
-customargs=$(cat "$root_dir/cli-argsConfig.txt")
-echo "Loaded Custom Arguments: $customargs"  2>&1 | tee -a "$LogFile"
-
-echo "Attempting Launch..."
+echo "Attempting Launch..."  2>&1 | tee -a "$LogFile"
 
 # Actually run tML with the passed arguments
 # Move to the root folder
@@ -86,11 +94,12 @@ else
 	fi
 fi
 
-if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
-	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
-	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+if [[ -f "$dotnet_dir/dotnet" || -f "$dotnet_dir/dotnet.exe" ]]; then
+	export DOTNET_ROLL_FORWARD=Disable
+	echo "Launched Using Local Dotnet. Launch command: \"$dotnet_dir/dotnet\" tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
+	[[ -f "$dotnet_dir/dotnet" ]] && chmod a+x "$dotnet_dir/dotnet"
+	exec "$dotnet_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
 else
-	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
-	exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
+	echo "Launched Using System Dotnet. Launch command: dotnet tModLoader.dll \"$@\"" 2>&1 | tee -a "$LogFile"
+	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"
 fi

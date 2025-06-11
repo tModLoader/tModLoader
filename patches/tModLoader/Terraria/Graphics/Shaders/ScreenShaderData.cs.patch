@@ -1,0 +1,85 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Shaders/ScreenShaderData.cs
++++ src/tModLoader/Terraria/Graphics/Shaders/ScreenShaderData.cs
+@@ -1,3 +_,4 @@
++using System;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+@@ -29,15 +_,21 @@
+ 	public float CombinedOpacity => _uOpacity * _globalOpacity;
+ 
+ 	public ScreenShaderData(string passName)
+-		: base(Main.ScreenShaderRef, passName)
++		: this(Main.ScreenShaderRef, passName)
+ 	{
+ 	}
+ 
++	[Obsolete("Removed in 1.4.5. Use Asset<Effect> version instead. Asset version works with AsyncLoad")]
+ 	public ScreenShaderData(Ref<Effect> shader, string passName)
+ 		: base(shader, passName)
+ 	{
+ 	}
+ 
++	public ScreenShaderData(Asset<Effect> shader, string passName)
++		: base(shader, passName)
++	{
++	}
++
+ 	public virtual void Update(GameTime gameTime)
+ 	{
+ 	}
+@@ -48,18 +_,18 @@
+ 		Vector2 value = new Vector2(Main.screenWidth, Main.screenHeight) / Main.GameViewMatrix.Zoom;
+ 		Vector2 vector2 = new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f;
+ 		Vector2 vector3 = Main.screenPosition + vector2 * (Vector2.One - Vector2.One / Main.GameViewMatrix.Zoom);
+-		base.Shader.Parameters["uColor"].SetValue(_uColor);
++		base.Shader.Parameters["uColor"]?.SetValue(_uColor);
+-		base.Shader.Parameters["uOpacity"].SetValue(CombinedOpacity);
++		base.Shader.Parameters["uOpacity"]?.SetValue(CombinedOpacity);
+-		base.Shader.Parameters["uSecondaryColor"].SetValue(_uSecondaryColor);
++		base.Shader.Parameters["uSecondaryColor"]?.SetValue(_uSecondaryColor);
+-		base.Shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);
++		base.Shader.Parameters["uTime"]?.SetValue(Main.GlobalTimeWrappedHourly);
+-		base.Shader.Parameters["uScreenResolution"].SetValue(value);
++		base.Shader.Parameters["uScreenResolution"]?.SetValue(value);
+-		base.Shader.Parameters["uScreenPosition"].SetValue(vector3 - vector);
++		base.Shader.Parameters["uScreenPosition"]?.SetValue(vector3 - vector);
+-		base.Shader.Parameters["uTargetPosition"].SetValue(_uTargetPosition - vector);
++		base.Shader.Parameters["uTargetPosition"]?.SetValue(_uTargetPosition - vector);
+-		base.Shader.Parameters["uImageOffset"].SetValue(_uImageOffset);
++		base.Shader.Parameters["uImageOffset"]?.SetValue(_uImageOffset);
+-		base.Shader.Parameters["uIntensity"].SetValue(_uIntensity);
++		base.Shader.Parameters["uIntensity"]?.SetValue(_uIntensity);
+-		base.Shader.Parameters["uProgress"].SetValue(_uProgress);
++		base.Shader.Parameters["uProgress"]?.SetValue(_uProgress);
+-		base.Shader.Parameters["uDirection"].SetValue(_uDirection);
++		base.Shader.Parameters["uDirection"]?.SetValue(_uDirection);
+-		base.Shader.Parameters["uZoom"].SetValue(Main.GameViewMatrix.Zoom);
++		base.Shader.Parameters["uZoom"]?.SetValue(Main.GameViewMatrix.Zoom);
+ 		for (int i = 0; i < _uAssetImages.Length; i++) {
+ 			Texture2D texture2D = _uCustomImages[i];
+ 			if (_uAssetImages[i] != null && _uAssetImages[i].IsLoaded)
+@@ -76,7 +_,7 @@
+ 				else
+ 					Main.graphics.GraphicsDevice.SamplerStates[i + 1] = SamplerState.AnisotropicClamp;
+ 
+-				base.Shader.Parameters["uImageSize" + (i + 1)].SetValue(new Vector2(width, height) * _imageScales[i]);
++				base.Shader.Parameters["uImageSize" + (i + 1)]?.SetValue(new Vector2(width, height) * _imageScales[i]);
+ 			}
+ 		}
+ 
+@@ -100,6 +_,14 @@
+ 	public ScreenShaderData UseProgress(float progress)
+ 	{
+ 		_uProgress = progress;
++		return this;
++	}
++
++	public ScreenShaderData UseImage(Asset<Texture2D> image, int index = 0, SamplerState samplerState = null)
++	{
++		_samplerStates[index] = samplerState;
++		_uAssetImages[index] = image;
++		_uCustomImages[index] = null;
+ 		return this;
+ 	}
+ 

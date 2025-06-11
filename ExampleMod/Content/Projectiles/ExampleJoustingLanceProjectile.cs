@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.penetrate = -1; // Infinite penetration. The projectile can hit an infinite number of enemies.
 			Projectile.tileCollide = false; // Don't kill the projectile if it hits a tile.
 			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing and the width of the collision.
-			Projectile.hide = true; // We are drawing the projectile ourself. See PreDraw() below.
+			Projectile.hide = true; // We are drawing the projectile ourselves. See PreDraw() below.
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Set the damage to melee damage.
 
@@ -97,7 +97,7 @@ namespace ExampleMod.Content.Projectiles
 			// What this means in this context is that the speed value will be closer to positive 1 if the player is moving in the same direction as the direction the lance was shot.
 			// Example: if the lance is shot up and to the right, the value here will be closer to 1 if the player is also moving up and to the right.
 			float movementInLanceDirection = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.UnitX * owner.direction), owner.velocity.SafeNormalize(Vector2.UnitX * owner.direction));
-			
+
 			float playerVelocity = owner.velocity.Length();
 
 			if (playerVelocity > minimumDustVelocity && movementInLanceDirection > 0.8f) {
@@ -131,16 +131,12 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
-			if (damage > 0) {
-				knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
-			}
-		}
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+			// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
+			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
 
-		// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyDamageScaling(ref float damageScale) {
-			damageScale *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
+			// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
+			modifiers.SourceDamage *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
 		}
 
 		// This is the custom collision that Jousting Lances uses. 

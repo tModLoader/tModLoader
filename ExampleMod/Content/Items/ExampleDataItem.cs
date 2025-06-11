@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -10,20 +12,23 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public int timer;
+		public static LocalizedText CountdownText { get; private set; }
 
 		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
+			CountdownText = this.GetLocalization("Countdown");
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPatato", $"You have {timer / 60f:N1} seconds left!") { OverrideColor = Color.Red };
+			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPotato", CountdownText.Format(Math.Round(timer / 60f, 1))) { OverrideColor = Color.Red };
 			tooltips.Add(tooltip);
 		}
 
 		public override void UpdateInventory(Player player) {
 			if (--timer <= 0) {
 				player.statLife += 100;
-				if (player.statLife > player.statLifeMax2) player.statLife = player.statLifeMax2;
+				if (player.statLife > player.statLifeMax2) {
+					player.statLife = player.statLifeMax2;
+				}
 				player.HealEffect(100);
 				Item.TurnToAir();
 			}
@@ -32,7 +37,7 @@ namespace ExampleMod.Content.Items
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient<ExampleItem>(100);
-			(recipe.createItem.ModItem as ExampleDataItem).timer = 300;
+			((ExampleDataItem)recipe.createItem.ModItem).timer = 300;
 			recipe.Register();
 		}
 	}

@@ -6,18 +6,14 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Items.Armor
 {
 	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Body value here will result in TML expecting X_Arms.png, X_Body.png and X_FemaleBody.png sprite-sheet files to be placed next to the item's main texture.
+	// Providing the EquipType.Body value here will result in TML expecting a X_Body.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Body)]
 	public class ExampleBreastplate : ModItem
 	{
-		public static int MaxManaIncrease = 20;
-		public static int MaxMinionIncrease = 1;
+		public static readonly int MaxManaIncrease = 20;
+		public static readonly int MaxMinionIncrease = 1;
 
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MaxManaIncrease, MaxMinionIncrease);
-
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
 
 		public override void SetDefaults() {
 			Item.width = 18; // Width of the item

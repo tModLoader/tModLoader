@@ -19,5 +19,5 @@ public enum EquipType
 	Neck,
 	Face,
 	Balloon,
- 		Beard,
+	Beard,
 }

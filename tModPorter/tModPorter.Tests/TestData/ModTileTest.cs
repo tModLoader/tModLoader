@@ -8,19 +8,22 @@ public class ModTileTest : ModTile
 {
 	void Method() {
 		drop = 1;
+		ItemDrop = 12;
 		dustType = 0;
 		soundType = 1;
 		soundStyle = 0;
 
 		dresserDrop = 0;
 		chestDrop = 0;
-		closeDoorID = 0;
-		openDoorID = 0;
+		ChestDrop = 2;
+		DresserDrop = 3;
 		minPick = 0;
 		mineResist = 0;
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
 
+		OpenDoorID = 0;
+		CloseDoorID = 0;
 		sapling = true;
 		torch = true;
 		bed = true;
@@ -32,6 +35,9 @@ public class ModTileTest : ModTile
 		SetModTree(new ExampleTree());
 		SetModCactus(new ExampleCactus());
 		SetModPalmTree(new ExamplePalmTree());
+
+		ContainerName.SetDefault("Some Container");
+		string containerName = TileLoader.ContainerName(13);
 
 		ModTranslation name = CreateMapEntryName();
 		name.SetDefault("Test");
@@ -64,4 +70,6 @@ public class ModTileTest : ModTile
 	}
 
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) { /* comment */ }
+
+	public override bool Drop(int i, int j) { /* Empty */ }
 }

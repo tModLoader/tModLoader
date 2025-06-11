@@ -134,7 +134,7 @@ internal static partial class TileIO
 	internal static void LoadContainers(TagCompound tag)
 	{
 		if (tag.ContainsKey("data"))
-			ReadContainers(new BinaryReader(new MemoryStream(tag.GetByteArray("data"))));
+			ReadContainers(new BinaryReader(tag.GetByteArray("data").ToMemoryStream()));
 
 		foreach (var frameTag in tag.GetList<TagCompound>("itemFrames")) {
 			if (TileEntity.ByID.TryGetValue(frameTag.GetInt("id"), out TileEntity tileEntity) && tileEntity is TEItemFrame itemFrame)

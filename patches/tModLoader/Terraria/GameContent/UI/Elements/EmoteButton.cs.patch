@@ -1,0 +1,87 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/EmoteButton.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/EmoteButton.cs
+@@ -3,12 +_,14 @@
+ using ReLogic.Content;
+ using Terraria.Audio;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements;
+ 
+-public class EmoteButton : UIElement
++public partial class EmoteButton : UIElement
+ {
++	private Asset<Texture2D> _bubbleTexture;
+ 	private Asset<Texture2D> _texture;
+ 	private Asset<Texture2D> _textureBorder;
+ 	private int _emoteIndex;
+@@ -17,7 +_,13 @@
+ 
+ 	public EmoteButton(int emoteIndex)
+ 	{
++		if (emoteIndex >= EmoteID.Count) {
++			_texture = ModContent.Request<Texture2D>(EmoteBubbleLoader.GetEmoteBubble(emoteIndex).Texture);
++		}
++		else {
+-		_texture = Main.Assets.Request<Texture2D>("Images/Extra_" + (short)48);
++			_texture = Main.Assets.Request<Texture2D>("Images/Extra_" + (short)48);
++		}
++		_bubbleTexture = Main.Assets.Request<Texture2D>("Images/Extra_" + (short)48);
+ 		_textureBorder = Main.Assets.Request<Texture2D>("Images/UI/EmoteBubbleBorder");
+ 		_emoteIndex = emoteIndex;
+ 		Rectangle frame = GetFrame();
+@@ -28,11 +_,19 @@
+ 	private Rectangle GetFrame()
+ 	{
+ 		int num = ((_frameCounter >= 10) ? 1 : 0);
++		if (_emoteIndex >= EmoteID.Count) {
++			var moddedFrame = EmoteBubbleLoader.GetFrameInEmoteMenu(_emoteIndex, num, _frameCounter);
++			return moddedFrame ?? _texture.Frame(2, 1, num, 0);
++		}
+ 		return _texture.Frame(8, EmoteBubble.EMOTE_SHEET_VERTICAL_FRAMES, _emoteIndex % 4 * 2 + num, _emoteIndex / 4 + 1);
+ 	}
+ 
+ 	private void UpdateFrame()
+ 	{
++		if (_emoteIndex >= EmoteID.Count && !EmoteBubbleLoader.UpdateFrameInEmoteMenu(_emoteIndex, ref _frameCounter)) {
++			return;
++		}
++
+ 		if (++_frameCounter >= 20)
+ 			_frameCounter = 0;
+ 	}
+@@ -48,19 +_,29 @@
+ 		CalculatedStyle dimensions = GetDimensions();
+ 		Vector2 vector = dimensions.Position() + new Vector2(dimensions.Width, dimensions.Height) / 2f;
+ 		Rectangle frame = GetFrame();
+-		Rectangle value = frame;
+-		value.X = _texture.Width() / 8;
+-		value.Y = 0;
++		Rectangle value = _bubbleTexture.Frame(8, 39, 1, 0);
+ 		Vector2 origin = frame.Size() / 2f;
+ 		Color white = Color.White;
+ 		Color color = Color.Black;
+ 		if (_hovered)
+ 			color = Main.OurFavoriteColor;
+ 
++		if (!EmoteBubbleLoader.PreDrawInEmoteMenu(_emoteIndex, spriteBatch, this, vector, frame, origin)) {
++			goto EndDraw;
++		}
++
+-		spriteBatch.Draw(_texture.Value, vector, value, white, 0f, origin, 1f, SpriteEffects.None, 0f);
++		spriteBatch.Draw(_bubbleTexture.Value, vector, value, white, 0f, origin, 1f, SpriteEffects.None, 0f);
+ 		spriteBatch.Draw(_texture.Value, vector, frame, white, 0f, origin, 1f, SpriteEffects.None, 0f);
+ 		spriteBatch.Draw(_textureBorder.Value, vector - Vector2.One * 2f, null, color, 0f, origin, 1f, SpriteEffects.None, 0f);
++
++		EndDraw:
++		EmoteBubbleLoader.PostDrawInEmoteMenu(_emoteIndex, spriteBatch, this, vector, frame, origin);
++
+ 		if (_hovered) {
++			if (_emoteIndex >= EmoteID.Count) {
++				Main.instance.MouseText("/" + Lang.GetEmojiName(_emoteIndex));
++				return;
++			}
+ 			string name = EmoteID.Search.GetName(_emoteIndex);
+ 			string cursorText = "/" + Language.GetTextValue("EmojiName." + name);
+ 			Main.instance.MouseText(cursorText, 0, 0);

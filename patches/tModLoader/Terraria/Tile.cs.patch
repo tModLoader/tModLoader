@@ -42,7 +42,7 @@
  	public Tile(Tile copy)
  	{
  		if (copy == null) {
-@@ -98,11 +_,15 @@
+@@ -98,11 +_,19 @@
  			frameY = copy.frameY;
  		}
  	}
@@ -50,6 +50,10 @@
  
  	public object Clone() => MemberwiseClone();
  
++	/// <summary>
++	/// Resets all of the data at this position.<br/>
++	/// To only remove the tile data, use <see cref="ClearTile"/>.
++	/// </summary>
  	public void ClearEverything()
  	{
 +		TileData.ClearSingle(TileId);
@@ -58,16 +62,31 @@
  		type = 0;
  		wall = 0;
  		liquid = 0;
-@@ -112,6 +_,7 @@
+@@ -112,8 +_,16 @@
  		bTileHeader3 = 0;
  		frameX = 0;
  		frameY = 0;
 +		*/
  	}
  
++	/// <summary>
++	/// Resets the tile data at this position.<br/>
++	/// Sets <see cref="HasTile"/> and <see cref="IsActuated"/> to <see langword="false"/> and sets the <see cref="BlockType"/> to <see cref="ID.BlockType.Solid"/>.
++	/// </summary>
++	/// <remarks>
++	/// Does not reset data related to walls, wires, or anything else. For that, use <see cref="ClearEverything"/>.
++	/// </remarks>
  	public void ClearTile()
-@@ -124,6 +_,9 @@
+ 	{
+ 		slope(0);
+@@ -122,8 +_,15 @@
+ 		inActive(inActive: false);
+ 	}
  
++	/// <summary>
++	/// Copies all data from the given position to this position.
++	/// </summary>
++	/// <param name="from">The position to copy the data from.</param>
  	public void CopyFrom(Tile from)
  	{
 +		TileData.CopySingle(from.TileId, TileId);
@@ -76,7 +95,7 @@
  		type = from.type;
  		wall = from.wall;
  		liquid = from.liquid;
-@@ -133,10 +_,32 @@
+@@ -133,10 +_,40 @@
  		bTileHeader3 = from.bTileHeader3;
  		frameX = from.frameX;
  		frameY = from.frameY;
@@ -84,6 +103,11 @@
  	}
  
 +	//TML: Made internal, rewritten. Only relevant for vanilla net/world compression. Modders should consider the data they want to compare directly
++	/// <summary>
++	/// Legacy code, consider the data you want to compare directly.
++	/// </summary>
++	/// <param name="compTile"></param>
++	/// <returns></returns>
 -	public bool isTheSameAs(Tile compTile)
 +	internal bool isTheSameAs(Tile compTile)
  	{
@@ -94,6 +118,9 @@
 +			return false;
 +
 +		if (liquid > 0 && LiquidType != compTile.LiquidType)
++			return false;
++
++		if (Get<TileWallBrightnessInvisibilityData>().Data != compTile.Get<TileWallBrightnessInvisibilityData>().Data)
 +			return false;
 +
 +		if (HasTile) {
@@ -110,7 +137,7 @@
  		if (compTile == null)
  			return false;
  
-@@ -165,13 +_,15 @@
+@@ -165,13 +_,19 @@
  			return false;
  		}
  
@@ -122,6 +149,10 @@
 +		*/
  	}
  
++	/// <summary>
++	/// Legacy code, use <see cref="BlockType"/> instead.
++	/// </summary>
++	/// <returns></returns>
 -	public int blockType()
 +	internal int blockType()
  	{
@@ -135,12 +166,16 @@
  	public void liquidType(int liquidType)
  	{
  		switch (liquidType) {
-@@ -210,9 +_,16 @@
+@@ -210,9 +_,20 @@
  
  		return false;
  	}
 +	*/
  
++	/// <summary>
++	/// Resets all of the data at this position except for the <see cref="WallType"/>, and sets <see cref="TileType"/> to <paramref name="type"/>. 
++	/// </summary>
++	/// <param name="type">The <see cref="ID.TileID"/> to set this tile to.</param>
  	public void ResetToType(ushort type)
  	{
 +		ClearMetadata();
@@ -152,7 +187,7 @@
  		liquid = 0;
  		sTileHeader = 32;
  		bTileHeader = 0;
-@@ -221,10 +_,15 @@
+@@ -221,10 +_,16 @@
  		frameX = 0;
  		frameY = 0;
  		this.type = type;
@@ -163,6 +198,7 @@
  	{
 +		Get<LiquidData>() = default;
 +		Get<TileWallWireStateData>() = default;
++		Get<TileWallBrightnessInvisibilityData>() = default;
 +
 +		/*
  		liquid = 0;
@@ -180,7 +216,7 @@
  	{
  		if (!inActive())
  			return oldColor;
-@@ -243,13 +_,13 @@
+@@ -243,13 +_,17 @@
  		return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
  	}
  
@@ -191,33 +227,49 @@
  			oldColor *= 0.4f;
  	}
  
++	/// <summary>
++	/// Legacy code, use <see cref="TopSlope"/> instead.
++	/// </summary>
++	/// <returns></returns>
 -	public bool topSlope()
 +	internal bool topSlope()
  	{
  		byte b = slope();
  		if (b != 1)
-@@ -258,7 +_,7 @@
+@@ -258,7 +_,11 @@
  		return true;
  	}
  
++	/// <summary>
++	/// Legacy code, use <see cref="BottomSlope"/> instead.
++	/// </summary>
++	/// <returns></returns>
 -	public bool bottomSlope()
 +	internal bool bottomSlope()
  	{
  		byte b = slope();
  		if (b != 3)
-@@ -267,7 +_,7 @@
+@@ -267,7 +_,11 @@
  		return true;
  	}
  
++	/// <summary>
++	/// Legacy code, use <see cref="LeftSlope"/> instead.
++	/// </summary>
++	/// <returns></returns>
 -	public bool leftSlope()
 +	internal bool leftSlope()
  	{
  		byte b = slope();
  		if (b != 2)
-@@ -276,7 +_,7 @@
+@@ -276,7 +_,11 @@
  		return true;
  	}
  
++	/// <summary>
++	/// Legacy code, use <see cref="RightSlope"/> instead.
++	/// </summary>
++	/// <returns></returns>
 -	public bool rightSlope()
 +	internal bool rightSlope()
  	{
@@ -233,11 +285,102 @@
  	public byte wallColor() => (byte)(bTileHeader & 0x1Fu);
  
  	public void wallColor(byte wallColor)
-@@ -504,6 +_,7 @@
+@@ -504,7 +_,12 @@
  		else
  			sTileHeader = (ushort)(sTileHeader & 0xFFFF7FFFu);
  	}
 +	*/
  
++	/// <summary>
++	/// Clears the specified data at this position based on the given <see cref="TileDataType"/>.
++	/// </summary>
++	/// <param name="types">The <see cref="TileDataType"/> to clear.</param>
  	public void Clear(TileDataType types)
  	{
+ 		if ((types & TileDataType.Tile) != 0) {
+@@ -550,6 +_,13 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Slopes a tile based on the tiles adjacent to it.
++	/// </summary>
++	/// <param name="x">The X coordinate of the tile.</param>
++	/// <param name="y">The Y coordinate of the tile.</param>
++	/// <param name="applyToNeighbors">Whether the adjacent tiles should be automatically smoothed.</param>
++	/// <param name="sync">Whether the changes should automatically be synced to multiplayer.</param>
+ 	public static void SmoothSlope(int x, int y, bool applyToNeighbors = true, bool sync = false)
+ 	{
+ 		if (applyToNeighbors) {
+@@ -615,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Copies the paint and coating data from the specified tile to this tile.<br/>
++	/// Does not copy wall paint and coating data.
++	/// </summary>
++	/// <param name="other">The <see cref="Tile"/> to copy the data from.</param>
+ 	public void CopyPaintAndCoating(Tile other)
+ 	{
+ 		color(other.color());
+@@ -622,6 +_,10 @@
+ 		fullbrightBlock(other.fullbrightBlock());
+ 	}
+ 
++	/// <summary>
++	/// Gets the paint and coating information from the tile at this position as a <see cref="TileColorCache"/>.
++	/// </summary>
++	/// <returns>A <see cref="TileColorCache"/> representing the paint and coatings on the tile at this position.</returns>
+ 	public TileColorCache BlockColorAndCoating()
+ 	{
+ 		TileColorCache result = default(TileColorCache);
+@@ -631,6 +_,10 @@
+ 		return result;
+ 	}
+ 
++	/// <summary>
++	/// Gets the paint and coating information from the wall at this position as a <see cref="TileColorCache"/>.
++	/// </summary>
++	/// <returns>A <see cref="TileColorCache"/> representing the paint and coatings on the wall at this position.</returns>
+ 	public TileColorCache WallColorAndCoating()
+ 	{
+ 		TileColorCache result = default(TileColorCache);
+@@ -640,16 +_,27 @@
+ 		return result;
+ 	}
+ 
++	/// <summary>
++	/// Sets the paint and coating of the tile at this position based on the given <see cref="TileColorCache"/>.
++	/// </summary>
++	/// <param name="cache">The <see cref="TileColorCache"/> to apply.</param>
+ 	public void UseBlockColors(TileColorCache cache)
+ 	{
+ 		cache.ApplyToBlock(this);
+ 	}
+ 
++	/// <summary>
++	/// Sets the paint and coating of the wall at this position based on the given <see cref="TileColorCache"/>.
++	/// </summary>
++	/// <param name="cache">The <see cref="TileColorCache"/> to apply.</param>
+ 	public void UseWallColors(TileColorCache cache)
+ 	{
+ 		cache.ApplyToWall(this);
+ 	}
+ 
++	/// <summary>
++	/// Clears any paint or coating on the tile at this position.
++	/// </summary>
+ 	public void ClearBlockPaintAndCoating()
+ 	{
+ 		color(0);
+@@ -657,6 +_,9 @@
+ 		invisibleBlock(invisibleBlock: false);
+ 	}
+ 
++	/// <summary>
++	/// Clears any paint or coating on the wall at this position.
++	/// </summary>
+ 	public void ClearWallPaintAndCoating()
+ 	{
+ 		wallColor(0);

@@ -30,10 +30,6 @@ public class ModPlayerTest : ModPlayer
 #endif
 	}
 
-	public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) => true;
-	public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) { }
-	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) { }
-
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
@@ -93,4 +89,33 @@ public class ModPlayerTest : ModPlayer
 		Item item = new Item(22);
 		Player.QuickSpawnItem(null, item);
 	}
+
+	public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
+	{
+#if COMPILE_ERROR
+		return false;
+#endif
+	}
+	public override void OnHurt(Player.HurtInfo info) { }
+	public override void PostHurt(Player.HurtInfo info) { }
+
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) { }
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) { }
+
+	public override bool? CanHitNPCWithItem(Item item, NPC target) => null;
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */ { }
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */ { }
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Projectile, consider using ModifyHitNPC instead */ { }
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */ { }
+#if COMPILE_ERROR
+	public override void ModifyHitPvp(Item item, Player target, ref int damage, ref bool crit)/* tModPorter Note: Removed. Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player */ { }
+	public override void OnHitPvp(Item item, Player target, int damage, bool crit)/* tModPorter Note: Removed. Use OnHurt on the receiving player and check info.PvP. Use info.DamageSource.SourcePlayerIndex to get the attacking player */ { }
+	public override void ModifyHitPvpWithProj(Projectile proj, Player target, ref int damage, ref bool crit)/* tModPorter Note: Removed. Use ModifyHurt on the receiving player and check modifiers.PvP. Use modifiers.DamageSource.SourcePlayerIndex to get the attacking player */ { }
+	public override void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)/* tModPorter Note: Removed. Use OnHurt on the receiving player and check info.PvP. Use info.DamageSource.SourcePlayerIndex to get the attacking player */ { }
+#endif
+
+	public override bool FreeDodge(Player.HurtInfo info) => false;
+	public override bool ConsumableDodge(Player.HurtInfo info) => false;
 }

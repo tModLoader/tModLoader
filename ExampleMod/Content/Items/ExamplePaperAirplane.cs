@@ -6,14 +6,10 @@ namespace ExampleMod.Content.Items
 {
 	public class ExamplePaperAirplane : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1; // How many items are needed in order to research duplication of this item in Journey mode. See https://terraria.wiki.gg/Journey_Mode/Research_list for a list of commonly used research amounts depending on item type.
-		}
-
 		public override void SetDefaults() {
 			Item.width = 22; // The item texture's width
 			Item.height = 16; // The item texture's height
-			
+
 			Item.value = Item.sellPrice(0, 0, 10); // The value of the item. In this case, 10 silver. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
 
 			Item.DefaultToThrownWeapon(ModContent.ProjectileType<Projectiles.ExamplePaperAirplaneProjectile>(), 17, 5f); // A special method that sets a variety of item parameters that make the item act like a throwing weapon.

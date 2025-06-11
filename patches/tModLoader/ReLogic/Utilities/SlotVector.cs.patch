@@ -10,12 +10,3 @@
  {
  	public sealed class Enumerator : IEnumerator<ItemPair>, IDisposable, IEnumerator
  	{
-@@ -167,7 +_,7 @@
- 
- 	public bool Has(int index)
- 	{
--		if (index < 0 || index >= _array.Length)
-+		if (index < 0 || index >= Count || index >= _array.Length)
- 			return false;
- 
- 		if (!_array[index].Id.IsActive)

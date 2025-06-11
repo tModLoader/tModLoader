@@ -5,20 +5,22 @@ using ExampleMod.Content.Items.Armor.Vanity;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Pets.MinionBossPet;
 using ExampleMod.Content.Projectiles;
+using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.NPCs.MinionBoss
 {
-	// The main part of the boss, usually refered to as "body"
+	// The main part of the boss, usually referred to as "body"
 	[AutoloadBossHead] // This attribute looks for a texture called "ClassName_Head_Boss" and automatically registers it as the NPC boss head icon
 	public class MinionBossBody : ModNPC
 	{
@@ -33,7 +35,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			get => NPC.ai[0] == 1f;
 			set => NPC.ai[0] = value ? 1f : 0f;
 		}
-		// If your boss has more than two stages, and since this is a boolean and can only be two things (true, false), concider using an integer or enum
+		// If your boss has more than two stages, and since this is a boolean and can only be two things (true, false), consider using an integer or enum
 
 		// More advanced usage of a property, used to wrap around to floats to act as a Vector2
 		public Vector2 FirstStageDestination {
@@ -91,6 +93,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return count;
 		}
 
+		// This will result in "The Minion Boss and his minions have been defeated!" instead of just "Minion Boss has been defeated!" being shown in chat when this boss is defeated.
+		public override LocalizedText DeathMessage => Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(this.GetLocalization("BossFightName"));
+
 		public override void Load() {
 			// We want to give it a second boss head icon, so we register one
 			string texture = BossHeadTexture + "_SecondStage"; // Our texture is called "ClassName_Head_Boss_SecondStage"
@@ -113,18 +118,13 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
-			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+			// This boss also becomes immune to OnFire and all buffs that inherit OnFire immunity during the second half of the fight. See the ApplySecondStageBuffImmunities method.
 
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				CustomTexturePath = "ExampleMod/Assets/Textures/Bestiary/MinionBoss_Preview",
 				PortraitScale = 0.6f, // Portrait refers to the full picture when clicking on the icon in the bestiary
 				PortraitPositionYOverride = 0f,
@@ -148,9 +148,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.boss = true;
 			NPC.npcSlots = 10f; // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
-			// Don't set immunities like this as of 1.4:
-			// NPC.buffImmune[BuffID.Confused] = true;
-			// immunities are handled via dictionaries through NPCID.Sets.DebuffImmunitySets
+			// Default buff immunities should be set in SetStaticDefaults through the NPCID.Sets.ImmuneTo{X} arrays.
+			// To dynamically adjust immunities of an active NPC, NPC.buffImmune[] can be changed in AI: NPC.buffImmune[BuffID.OnFire] = true;
+			// This approach, however, will not preserve buff immunities. To preserve buff immunities, use the NPC.BecomeImmuneTo and NPC.ClearImmuneToBuffs methods instead, as shown in the ApplySecondStageBuffImmunities method below.
 
 			// Custom AI, 0 is "bound town NPC" AI which slows the NPC down and changes sprite orientation towards the target
 			NPC.aiStyle = -1;
@@ -168,26 +168,23 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Sets the description of this NPC that is listed in the bestiary
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("Example Minion Boss that spawns minions on spawn, summoned with a spawn item. Showcases boss minion handling, multiplayer conciderations, and custom boss bar.")
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.MinionBossBody")
 			});
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
-			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
+			// The order in which you add loot will appear as such in the Bestiary. To mirror vanilla boss order:
+			// 1. Trophy
+			// 2. Classic Mode ("not expert")
+			// 3. Expert Mode (usually just the treasure bag)
+			// 4. Master Mode (relic first, pet last, everything else in between)
 
 			// Trophies are spawned with 1/10 chance
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
 
-			// ItemDropRule.MasterModeCommonDrop for the relic
-			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>()));
-
-			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
-			npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
-
-			// All our drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
+			// All the Classic Mode drops here are based on "not expert", meaning we use .OnSuccess() to add them into the rule, which then gets added
 			LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
 			// Notice we use notExpertRule.OnSuccess instead of npcLoot.Add so it only applies in normal mode
@@ -211,9 +208,23 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			// Finally add the leading rule
 			npcLoot.Add(notExpertRule);
+
+			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
+
+			// ItemDropRule.MasterModeCommonDrop for the relic
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.MinionBossRelic>()));
+
+			// ItemDropRule.MasterModeDropOnAllPlayers for the pet
+			npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MinionBossPetItem>(), 4));
 		}
 
 		public override void OnKill() {
+			// The first time this boss is killed, spawn ExampleOre into the world. This code is above SetEventFlagCleared because that will set downedMinionBoss to true.
+			if (!DownedBossSystem.downedMinionBoss) {
+				ModContent.GetInstance<ExampleOreSystem>().BlessWorldWithExampleOre();
+			}
+
 			// This sets downedMinionBoss to true, and if it was false before, it initiates a lantern night
 			NPC.SetEventFlagCleared(ref DownedBossSystem.downedMinionBoss, -1);
 
@@ -228,7 +239,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			*/
 		}
 
-		public override void BossLoot(ref string name, ref int potionType) {
+		public override void BossLoot(ref int potionType) {
 			// Here you'd want to change the potion type that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
 			// (Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
 		}
@@ -267,7 +278,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(NPC.HitInfo hit) {
 			// If the NPC dies, spawn gore and play a sound
 			if (Main.netMode == NetmodeID.Server) {
 				// We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
@@ -287,6 +298,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
+
+				// This adds a screen shake (screenshake) similar to Deerclops
+				PunchCameraModifier modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
+				Main.instance.CameraModifiers.Add(modifier);
 			}
 		}
 
@@ -348,9 +363,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				// This is not required usually if you simply spawn NPCs, but because the minion is tied to the body, we need to pass this information to it
 				MinionBossMinion minion = (MinionBossMinion)minionNPC.ModNPC;
 				minion.ParentIndex = NPC.whoAmI; // Let the minion know who the "parent" is
-				minion.PositionOffset = i / (float) count; // Give it a separate position offset
+				minion.PositionOffset = i / (float)count; // Give it a separate position offset
 
-				MinionMaxHealthTotal += minionNPC.lifeMax; // add the total minion life for boss bar shield texxt
+				MinionMaxHealthTotal += minionNPC.lifeMax; // add the total minion life for boss bar shield text
 
 				// Finally, syncing, only sync on server and if the NPC actually exists (Main.maxNPCs is the index of a dummy NPC, there is no point syncing it)
 				if (Main.netMode == NetmodeID.Server) {
@@ -365,15 +380,14 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		private void CheckSecondStage() {
+			MinionHealthTotal = 0;
 			if (SecondStage) {
 				// No point checking if the NPC is already in its second stage
 				return;
 			}
 
-			MinionHealthTotal = 0;
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				NPC otherNPC = Main.npc[i];
-				if (otherNPC.active && otherNPC.type == MinionType() && otherNPC.ModNPC is MinionBossMinion minion) {
+			foreach (var otherNPC in Main.ActiveNPCs) {
+				if (otherNPC.type == MinionType() && otherNPC.ModNPC is MinionBossMinion minion) {
 					if (minion.ParentIndex == NPC.whoAmI) {
 						MinionHealthTotal += otherNPC.life;
 					}
@@ -405,7 +419,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				Vector2 fromPlayer = NPC.Center - player.Center;
 
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
-					// Important multiplayer concideration: drastic change in behavior (that is also decided by randomness) like this requires
+					// Important multiplayer consideration: drastic change in behavior (that is also decided by randomness) like this requires
 					// to be executed on the server (or singleplayer) to keep the boss in sync
 
 					float angle = fromPlayer.ToRotation();
@@ -439,7 +453,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				// "Why is this not in the same code that sets FirstStageDestination?" Because in multiplayer it's ran by the server.
 				// The client has to know when the destination changes a different way. Keeping track of the previous ticks' destination is one way
 				if (Main.netMode != NetmodeID.Server) {
-					// For visuals regarding NPC position, netOffset has to be concidered to make visuals align properly
+					// For visuals regarding NPC position, netOffset has to be considered to make visuals align properly
 					NPC.position += NPC.netOffset;
 
 					// Draw a line between the NPC and its destination, represented as dusts every 20 pixels
@@ -461,6 +475,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		private void DoSecondStage(Player player) {
+			if (NPC.life < NPC.lifeMax * 0.5f) {
+				ApplySecondStageBuffImmunities();
+			}
+
 			Vector2 toPlayer = player.Center - NPC.Center;
 
 			float offsetX = 200f;
@@ -521,6 +539,40 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				var entitySource = NPC.GetSource_FromAI();
 
 				Projectile.NewProjectile(entitySource, position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+			}
+		}
+
+		private void ApplySecondStageBuffImmunities() {
+			if (NPC.buffImmune[BuffID.OnFire]) {
+				return;
+			}
+			// Halfway through stage 2, this boss becomes immune to the OnFire buff.
+			// This code will only run once because of the !NPC.buffImmune[BuffID.OnFire] check.
+			// If you make a similar check for just a life percentage in a boss, you will need to use a bool to track if the corresponding code has run yet or not.
+			NPC.BecomeImmuneTo(BuffID.OnFire);
+
+			// Finally, this boss will clear all the buffs it currently has that it is now immune to. ClearImmuneToBuffs should not be run on multiplayer clients, the server has authority over buffs.
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
+				NPC.ClearImmuneToBuffs(out bool anyBuffsCleared);
+
+				if (anyBuffsCleared) {
+					// Since we cleared some fire related buffs, spawn some smoke to communicate that the fire buffs have been extinguished.
+					// This example is commented out because it would require a ModPacket to manually sync in order to work in multiplayer.
+					/* for (int g = 0; g < 8; g++) {
+						Gore gore = Gore.NewGoreDirect(NPC.GetSource_FromThis(), NPC.Center, default, Main.rand.Next(61, 64), 1f);
+						gore.scale = 1.5f;
+						gore.velocity += new Vector2(1.5f, 0).RotatedBy(g * MathHelper.PiOver2);
+					}*/
+				}
+			}
+
+			// Spawn a ring of dust to communicate the change.
+			for (int loops = 0; loops < 2; loops++) {
+				for (int i = 0; i < 50; i++) {
+					Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+					Dust d = Dust.NewDustPerfect(NPC.Center, DustID.BlueCrystalShard, speed * 10 * (loops + 1), Scale: 1.5f);
+					d.noGravity = true;
+				}
 			}
 		}
 	}

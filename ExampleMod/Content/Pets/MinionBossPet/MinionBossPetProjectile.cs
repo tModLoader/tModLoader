@@ -21,19 +21,37 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 
 		public override void Load() {
 			// load/cache the additional texture
-			if (!Main.dedServ) {
-				EyeAsset = ModContent.Request<Texture2D>(Texture + "_Eye");
-			}
-		}
-
-		public override void Unload() {
-			// Unload the additional texture
-			EyeAsset = null;
+			EyeAsset = ModContent.Request<Texture2D>(Texture + "_Eye");
 		}
 
 		public override void SetStaticDefaults() {
 			Main.projFrames[Projectile.type] = 6;
 			Main.projPet[Projectile.type] = true;
+
+			// Basics of CharacterPreviewAnimations explained in ExamplePetProjectile
+			// Notice we define our own method to use in .WithCode() below. This technically allows us to animate the projectile manually using frameCounter and frame as well
+			ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(0, Main.projFrames[Projectile.type], 5)
+				.WithOffset(-2, -22f)
+				.WithCode(CharacterPreviewCustomization);
+		}
+
+		public static void CharacterPreviewCustomization(Projectile proj, bool walking) {
+			// Modified floating from DelegateMethods.CharacterPreview.Float, this is technically not representative of how the pet actually looks and moves ingame, but the Suspicious Grinning Eye has that too
+
+			// If you don't need to modify it, just call DelegateMethods.CharacterPreview.Float(proj, walking) directly here instead and change properties of your pet after it.
+			// You do not need this otherwise and can use the preset directly as showcased in ExamplePetProjectile
+			float half = 0.5f;
+			float timer = (float)Main.timeForVisualEffects % 60f / 60f;
+			float speed = 1f; // This is normally 2
+			proj.position.Y += 0f - half + (float)(Math.Cos(timer * MathHelper.TwoPi * speed) * half * 2f);
+
+			// We are only using this method for one specific projectile, so it's fine to cast the ModProjectile directly like this
+			MinionBossPetProjectile minion = (MinionBossPetProjectile)proj.ModProjectile;
+
+			// Need to set the alpha to 1f to hide the eyes that would normally draw and show the actual pet
+			minion.AlphaForVisuals = 1f;
+
+			// You can use Projectile.isAPreviewDummy in the draw code instead, it depends if you prefer changing the conditions leading up to the drawing, or the drawing itself
 		}
 
 		public override void SetDefaults() {
@@ -50,8 +68,13 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			// Draw surrounding eyes to mimic the boss
 			Texture2D eyeTexture = EyeAsset.Value;
 
-			Vector2 offset = new Vector2(0, Projectile.gfxOffY); // Vertical offset when the projectile is changing elevation on tiles (does not apply to this particular projectile because it is always airbone)
+			Vector2 offset = new Vector2(0, Projectile.gfxOffY); // Vertical offset when the projectile is changing elevation on tiles (does not apply to this particular projectile because it is always airborne)
 			Vector2 orbitingCenter = Projectile.Center + offset;
+
+			// Don't need to draw the eyes if the pet is fully faded in
+			if (AlphaForVisuals >= 1) {
+				return;
+			}
 
 			int eyeCount = 10;
 			for (int i = 0; i < eyeCount; i++) {
@@ -90,7 +113,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			// Handles movement, returns true if moving fast (used for animation)
 			float velDistanceChange = 2f;
 
-			// Calculates the desired resting position, aswell as some vectors used in velocity/rotation calculations
+			// Calculates the desired resting position, as well as some vectors used in velocity/rotation calculations
 			int dir = player.direction;
 			Projectile.direction = Projectile.spriteDirection = dir;
 

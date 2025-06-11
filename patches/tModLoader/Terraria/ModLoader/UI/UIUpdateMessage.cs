@@ -106,7 +106,7 @@ internal class UIUpdateMessage : UIState
 		Process.Start(_url);
 	}
 
-	// Windows GOG only. AutoUpdate will download the the latest zip, extract it, then launch a script that waits for this exe to finish
+	// Windows GOG only. AutoUpdate will download the latest zip, extract it, then launch a script that waits for this exe to finish
 	// The script then replaces this exe and then launches tModLoader again.
 	private void AutoUpdate(UIMouseEvent evt, UIElement listeningElement)
 	{

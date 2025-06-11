@@ -1,0 +1,5 @@
+This folder is intended for Localizations for the Various Steam Languages for Page Text.
+
+This may be moved later; for now, provides opportunity to start collecting them.
+
+This is NOT integrated with steam, so a tModLoader dev has to manually import these in to steamworks.

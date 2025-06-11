@@ -1,12 +1,9 @@
 using Microsoft.Xna.Framework;
 using System;
-using System.Diagnostics;
-using System.IO;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Core;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI;
@@ -23,6 +20,7 @@ internal class UIErrorMessage : UIState
 
 	private string message;
 	private int gotoMenu;
+	private UIState gotoState;
 	private string webHelpURL;
 	private bool continueIsRetry;
 	private bool showSkip;
@@ -125,10 +123,17 @@ internal class UIErrorMessage : UIState
 		retryAction = null; //release references for the GC
 	}
 
-	internal void Show(string message, int gotoMenu, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null)
+	internal void Show(string message, int gotoMenu, UIState gotoState = null, string webHelpURL = "", bool continueIsRetry = false, bool showSkip = false, Action retryAction = null)
 	{
+		if (!Program.IsMainThread) {
+			// in some cases it would be better to block on this, but in other cases that might be a deadlock. Better to assume that letting the thread continue is the right choice
+			Main.QueueMainThreadAction(() => Show(message, gotoMenu, gotoState, webHelpURL, continueIsRetry, showSkip, retryAction));
+			return;
+		}
+
 		this.message = message;
 		this.gotoMenu = gotoMenu;
+		this.gotoState = gotoState;
 		this.webHelpURL = webHelpURL;
 		this.continueIsRetry = continueIsRetry;
 		this.showSkip = showSkip;
@@ -139,11 +144,13 @@ internal class UIErrorMessage : UIState
 
 	private void ContinueClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(10);
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		if (gotoMenu < 0)
 			Main.instance.Exit();
 
 		Main.menuMode = gotoMenu;
+		if (gotoState != null)
+			Main.MenuUI.SetState(gotoState);
 	}
 
 	private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement)
@@ -166,8 +173,7 @@ internal class UIErrorMessage : UIState
 
 	private void SkipLoad(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
+		ContinueClick(evt, listeningElement);
 		ModLoader.skipLoad = true;
-		Main.menuMode = gotoMenu;
 	}
 }

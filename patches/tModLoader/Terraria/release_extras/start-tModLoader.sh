@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" ||
+{ read -n 1 -s -r -p "Can't cd to script directory. Press any button to exit..." && exit 1; }
 
 chmod a+x ./LaunchUtils/ScriptCaller.sh
-# forward our parent process id to the child in case ScriptCaller needs to kill the parent to break free of steam's process lifetime tracker (reaper)
-PPID=$PPID ./LaunchUtils/ScriptCaller.sh "$@" &
+./LaunchUtils/ScriptCaller.sh "$@" &

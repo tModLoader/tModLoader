@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items
 				);
 			}
 
-			Item.ResearchUnlockCount = 1;
+			Item.ResearchUnlockCount = 3;
 		}
 
 		public override void SetDefaults() {

@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using ExampleMod.Common.Configs;
+using ExampleMod.Content.NPCs;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Microsoft.Xna.Framework;
+using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using System.IO;
-using ExampleMod.Content.NPCs;
 
-//Related to GlobalProjectile: ProjectileWithGrowingDamage
+// Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
 {
 	public class WeaponWithGrowingDamage : GlobalItem
@@ -17,20 +19,33 @@ namespace ExampleMod.Common.GlobalItems
 		public static int experiencePerLevel = 100;
 		private int bonusValuePerItem;
 		public int level => experience / experiencePerLevel;
+		public static LocalizedText LevelText { get; private set; }
+		public static LocalizedText ExperienceText { get; private set; }
 
 		public override bool InstancePerEntity => true;
 
-		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-			//Apply to weapons
-			return entity.damage > 0;
+		public override bool IsLoadingEnabled(Mod mod) {
+			// To experiment with this example, you'll need to enable it in the config.
+			return ModContent.GetInstance<ExampleModConfig>().WeaponWithGrowingDamageToggle;
 		}
+
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+			// Apply to weapons
+			return lateInstantiation && entity.damage > 0;
+		}
+
+		public override void SetStaticDefaults() {
+			LevelText = Mod.GetLocalization($"{nameof(WeaponWithGrowingDamage)}.Level");
+			ExperienceText = Mod.GetLocalization($"{nameof(WeaponWithGrowingDamage)}.Experience");
+		}
+
 		public override void LoadData(Item item, TagCompound tag) {
 			experience = 0;
-			GainExperience(item, tag.Get<int>("experience"));//Load experience tag
+			GainExperience(item, tag.Get<int>("experience")); // Load experience tag
 		}
 
 		public override void SaveData(Item item, TagCompound tag) {
-			tag["experience"] = experience;//Save experience tag
+			tag["experience"] = experience; // Save experience tag
 		}
 
 		public override void NetSend(Item item, BinaryWriter writer) {
@@ -41,14 +56,14 @@ namespace ExampleMod.Common.GlobalItems
 			experience = 0;
 			GainExperience(item, reader.ReadInt32());
 		}
-		
-		public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
-			OnHitNPCGeneral(player, target, damage, knockBack, crit, item);
+
+		public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+			OnHitNPCGeneral(player, target, hit, item);
 		}
 
-		public void OnHitNPCGeneral(Player player, NPC target, int damage, float knockBack, bool crit, Item item = null, Projectile projectile = null) {
-			//The weapon gains experience when hitting an npc.
-			int xp = damage;
+		public void OnHitNPCGeneral(Player player, NPC target, NPC.HitInfo hit, Item item = null, Projectile projectile = null) {
+			// The weapon gains experience when hitting an npc.
+			int xp = hit.Damage;
 			if (projectile != null) {
 				xp /= 2;
 			}
@@ -84,15 +99,15 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
-			//Gain 1% multiplicative damage for every level on the weapon.
+			// Gain 1% multiplicative damage for every level on the weapon.
 			damage *= 1f + (float)level / 100f;
 		}
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (experience > 0) {
-				tooltips.Add(new TooltipLine(Mod, "level", $"Level: {level}") { OverrideColor = Color.LightGreen });
-				string levelString = $" ({(level + 1) * experiencePerLevel - experience} to next level)";
-				tooltips.Add(new TooltipLine(Mod, "experience", $"Experience: {experience}{levelString}") { OverrideColor = Color.White });
+				tooltips.Add(new TooltipLine(Mod, "level", LevelText.Format(level)) { OverrideColor = Color.LightGreen });
+				int nextLevelExperience = (level + 1) * experiencePerLevel - experience;
+				tooltips.Add(new TooltipLine(Mod, "experience", ExperienceText.Format(experience, nextLevelExperience)) { OverrideColor = Color.White });
 			}
 		}
 
@@ -104,7 +119,7 @@ namespace ExampleMod.Common.GlobalItems
 			if (context is RecipeItemCreationContext rContext) {
 				foreach (Item ingredient in rContext.ConsumedItems) {
 					if (ingredient.TryGetGlobalItem(out WeaponWithGrowingDamage ingredientGlobal)) {
-						//Transfer all experience from consumed items to the crafted item.
+						// Transfer all experience from consumed items to the crafted item.
 						GainExperience(item, ingredientGlobal.experience);
 					}
 				}
@@ -124,36 +139,42 @@ namespace ExampleMod.Common.GlobalItems
 				return;
 			}
 
-			//Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
+			// Prevent duplicating the experience on the new item, increase, which is a clone of decrease.  experience should not be cloned, so set it to 0.
 			experience = 0;
 
 			TransferExperience(destination, source, weapon2, numToTransfer);
 		}
 
 		private void TransferExperience(Item destination, Item source, WeaponWithGrowingDamage weapon2, int numToTransfer) {
-			//Transfer experience and value to increase.
+			// Transfer experience and value to increase.
 			experience += weapon2.experience;
 			UpdateValue(destination, numToTransfer);
 
 			if (source.stack > numToTransfer) {
-				//Prevent duplicating the experience by clearing it on decrease if decrease will still exist.
+				// Prevent duplicating the experience by clearing it on decrease if decrease will still exist.
 				weapon2.experience = 0;
 				weapon2.UpdateValue(source, -numToTransfer);
 			}
 		}
 	}
-	public class SnowBallShop : GlobalNPC
+
+	public class DoubleXPSnowBallInExamplePersonShop : GlobalNPC
 	{
-		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (type != ModContent.NPCType<ExamplePerson>()) {
+		public override bool IsLoadingEnabled(Mod mod) {
+			// To experiment with this example, you'll need to enable it in the config.
+			return ModContent.GetInstance<ExampleModConfig>().WeaponWithGrowingDamageToggle;
+		}
+
+		public override void ModifyShop(NPCShop shop) {
+			if (shop.NpcType != ModContent.NPCType<ExamplePerson>()) {
 				return;
 			}
 
-			Item item = shop.item[nextSlot++];
-			item.SetDefaults(ItemID.Snowball);
-			if (item.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
-				weapon.GainExperience(item, 2); // can buy snowballs with 2xp!
+			var snowball = new Item(ItemID.Snowball);
+			if (snowball.TryGetGlobalItem(out WeaponWithGrowingDamage weapon)) {
+				weapon.GainExperience(snowball, 2);
 			}
+			shop.Add(snowball);
 		}
 	}
 }

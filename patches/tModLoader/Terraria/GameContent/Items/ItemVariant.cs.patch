@@ -1,0 +1,26 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/ItemVariant.cs
++++ src/tModLoader/Terraria/GameContent/Items/ItemVariant.cs
+@@ -2,11 +_,21 @@
+ 
+ namespace Terraria.GameContent.Items;
+ 
++/// <summary>
++/// Describes a variant of an <see cref="Item"/>.
++/// </summary>
+ public class ItemVariant
+ {
++	/// <summary>
++	/// The localized description of this <see cref="ItemVariant"/>.
++	/// </summary>
+-	public readonly NetworkText Description;
++	public readonly LocalizedText Description;
+ 
++	/// <summary>
++	/// Creates a new <see cref="ItemVariant"/> with the provided localized description.
++	/// </summary>
++	/// <param name="description">The localized description to use.</param>
+-	public ItemVariant(NetworkText description)
++	public ItemVariant(LocalizedText description)
+ 	{
+ 		Description = description;
+ 	}

@@ -24,7 +24,8 @@ public class Program {
 		WriteLine();
 		WriteLine();
 		WriteLine("Press any key to exit...");
-		ReadKey();
+		if (!IsInputRedirected) // ReadKey will throw error when no console is present, such as launching on Linux
+			ReadKey();
 	}
 
 	private static string GetProjectPath(string path) {

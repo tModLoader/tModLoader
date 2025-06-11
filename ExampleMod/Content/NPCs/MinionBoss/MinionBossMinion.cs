@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -41,24 +40,18 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			// By default enemies gain health and attack if hardmode is reached. this NPC should not be affected by that
 			NPCID.Sets.DontDoHardmodeScaling[Type] = true;
-			// Enemies can pick up coins, let's prevent it for this NPC
+			// Enemies can pick up coins and be respawned automatically, let's prevent it for this NPC since we don't want this enemy to respawn outside of a boss fight.
 			NPCID.Sets.CantTakeLunchMoney[Type] = true;
 			// Automatically group with other bosses
 			NPCID.Sets.BossBestiaryPriority.Add(Type);
 
-			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Poisoned,
-
-					BuffID.Confused // Most NPCs have this
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets.Add(Type, debuffData);
+			// Specify the debuffs it is immune to. Most NPCs are immune to Confused.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
 
 			// Optional: If you don't want this NPC to show on the bestiary (if there is no reason to show a boss minion separately)
-			// Make sure to remove SetBestiary code aswell
-			// NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
+			// Make sure to remove SetBestiary code as well
+			// NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 			//	Hide = true // Hides this NPC from the bestiary
 			// };
 			// NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
@@ -88,7 +81,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement> {
 				new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
-				new FlavorTextBestiaryInfoElement("A minion protecting his boss from taking damage by sacrificing itself. If none are alive, the boss is exposed to damage.")
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.MinionBossMinion")
 			});
 		}
 
@@ -105,7 +98,16 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return true;
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void OnKill() {
+			// Boss minions typically have a chance to drop an additional heart item in addition to the default chance
+			Player closestPlayer = Main.player[Player.FindClosest(NPC.position, NPC.width, NPC.height)];
+
+			if (Main.rand.NextBool(2) && closestPlayer.statLife < closestPlayer.statLifeMax2) {
+				Item.NewItem(NPC.GetSource_Loot(), NPC.getRect(), ItemID.Heart);
+			}
+		}
+
+		public override void HitEffect(NPC.HitInfo hit) {
 			if (NPC.life <= 0) {
 				// If this NPC dies, spawn some visuals
 

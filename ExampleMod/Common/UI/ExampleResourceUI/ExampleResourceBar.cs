@@ -1,16 +1,18 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Players;
+using ExampleMod.Content.Items.Weapons;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using ExampleMod.Common.Players;
-using ExampleMod.Content.Items.Weapons;
-using Terraria.GameContent;
-using System.Collections.Generic;
 
 namespace ExampleMod.Common.UI.ExampleResourceUI
 {
+	// This custom UI will show whenever the player is holding the ExampleCustomResourceWeapon item and will display the player's custom resource amounts that are tracked in ExampleResourcePlayer
 	internal class ExampleResourceBar : UIState
 	{
 		// For this bar we'll be using a frame texture and then a gradient inside bar, as it's one of the more simpler approaches while still looking decent.
@@ -91,24 +93,28 @@ namespace ExampleMod.Common.UI.ExampleResourceUI
 
 			var modPlayer = Main.LocalPlayer.GetModPlayer<ExampleResourcePlayer>();
 			// Setting the text per tick to update and show our resource values.
-			text.SetText($"Example Resource: {modPlayer.exampleResourceCurrent} / {modPlayer.exampleResourceMax2}");
+			text.SetText(ExampleResourceUISystem.ExampleResourceText.Format(modPlayer.exampleResourceCurrent, modPlayer.exampleResourceMax2));
 			base.Update(gameTime);
 		}
 	}
 
-	class ExampleResourseUISystem : ModSystem
+	// This class will only be autoloaded/registered if we're not loading on a server
+	[Autoload(Side = ModSide.Client)]
+	internal class ExampleResourceUISystem : ModSystem
 	{
 		private UserInterface ExampleResourceBarUserInterface;
 
 		internal ExampleResourceBar ExampleResourceBar;
 
+		public static LocalizedText ExampleResourceText { get; private set; }
+
 		public override void Load() {
-			// All code below runs only if we're not loading on a server
-			if (!Main.dedServ) {
-				ExampleResourceBar = new();
-				ExampleResourceBarUserInterface = new();
-				ExampleResourceBarUserInterface.SetState(ExampleResourceBar);
-			}
+			ExampleResourceBar = new();
+			ExampleResourceBarUserInterface = new();
+			ExampleResourceBarUserInterface.SetState(ExampleResourceBar);
+
+			string category = "UI";
+			ExampleResourceText ??= Mod.GetLocalization($"{category}.ExampleResource");
 		}
 
 		public override void UpdateUI(GameTime gameTime) {

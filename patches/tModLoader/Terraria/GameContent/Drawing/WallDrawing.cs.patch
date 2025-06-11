@@ -43,7 +43,7 @@
  				}
  
  				ushort wall = tile.wall;
-+				//TML: Prior to 1.4.4, the check was just the line below. Should PreDraw be called for "invisible walls"?
++				//TML: Prior to 1.4.4, the check was just the line below. Should PreDraw be called for "invisible walls"? Tiles do call PreDraw for invisible tiles, so it would make sense, but this behavior has been here since 1.4.4.
 +				//if (wall <= 0 || FullTile(j, i))
  				if (wall <= 0 || FullTile(j, i) || (wall == 318 && !_shouldShowInvisibleWalls) || (tile.invisibleWall() && !_shouldShowInvisibleWalls))
  					continue;

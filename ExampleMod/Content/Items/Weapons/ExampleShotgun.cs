@@ -8,10 +8,6 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleShotgun : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 1;
-		}
-
 		public override void SetDefaults() {
 			// Modders can use Item.DefaultToRangedWeapon to quickly set many common properties, such as: useTime, useAnimation, useStyle, autoReuse, DamageType, shoot, shootSpeed, useAmmo, and noMelee. These are all shown individually here for teaching purposes.
 
@@ -40,7 +36,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			const int NumProjectiles = 8; // The humber of projectiles that this gun will shoot.
+			const int NumProjectiles = 8; // The number of projectiles that this gun will shoot.
 
 			for (int i = 0; i < NumProjectiles; i++) {
 				// Rotate the velocity randomly by 30 degrees at max.

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,5 +64,46 @@ public class ModNPCTest : ModNPC
 
 	public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
 	{
+	}
+
+	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
+	public override void ModifyActiveShop(string shopName, Item[] items) { }
+
+	public override void HitEffect(NPC.HitInfo hit) { }
+	public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) { }
+	public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) { }
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit) { }
+	public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers) { }
+	public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) { }
+	public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
+#if COMPILE_ERROR
+		return false;
+#endif
+	}
+	public void HitMemberRename(NPC npc) {
+		var hit = npc.CalculateHitInfo(0, 0);
+		hit.Knockback = 2;
+	}
+	public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox) => false;
+	public override void DrawTownAttackSwing(ref Texture2D item, ref Rectangle itemFrame, ref int itemSize, ref float scale, ref Vector2 offset) { }
+	public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)/* tModPorter Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type. */ {
+#if COMPILE_ERROR
+		closeness = 10;
+#endif
+	}
+
+	public override void SetStaticDefaults() {
+#if COMPILE_ERROR
+		NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(Type, new NPCDebuffImmunityData {
+			SpecificallyImmuneTo = new int[] {
+				BuffID.Poisoned
+			}
+		});
+#endif
+
+		NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Shimmer] = true;
 	}
 }

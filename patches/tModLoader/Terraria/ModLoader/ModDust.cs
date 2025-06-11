@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using ReLogic.Content;
 using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -31,8 +32,18 @@ public abstract class ModDust : ModTexturedType
 		DustLoader.dusts.Add(this);
 
 		Type = DustLoader.ReserveDustID();
+		DustID.Search.Add(FullName, Type);
 
 		Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.Request<Texture2D>(Texture) : TextureAssets.Dust;
+	}
+
+	/// <summary>
+	/// Allows drawing behind this dust, such as a trail, or modifying the way it is drawn. Return false to stop the normal dust drawing code (useful if you're manually drawing the dust itself). Returns true by default.
+	/// </summary>
+	/// <returns></returns>
+	public virtual bool PreDraw(Dust dust)
+	{
+		return true;
 	}
 
 	internal void Draw(Dust dust, Color alpha, float scale)
@@ -41,10 +52,6 @@ public abstract class ModDust : ModTexturedType
 
 		if (dust.color != default) {
 			Main.spriteBatch.Draw(Texture2D.Value, dust.position - Main.screenPosition, dust.frame, dust.GetColor(alpha), dust.rotation, new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
-		}
-
-		if (alpha == Color.Black) {
-			dust.active = false;
 		}
 	}
 

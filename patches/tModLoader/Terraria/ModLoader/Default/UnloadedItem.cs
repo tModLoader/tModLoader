@@ -19,6 +19,16 @@ public sealed class UnloadedItem : ModLoaderModItem
 		Item.width = 20;
 		Item.height = 20;
 		Item.rare = 1;
+
+		// Needs to be  > 1 for vanilla maxStack changes in 1.4.4,
+		// but also conflicts with inability to know if two unloaded items are the same - Solxan
+		Item.maxStack = int.MaxValue;
+	}
+
+	public override void SetStaticDefaults()
+	{
+		// Must not be researchable
+		Item.ResearchUnlockCount = 0;
 	}
 
 	internal void Setup(TagCompound tag)
@@ -38,6 +48,12 @@ public sealed class UnloadedItem : ModLoaderModItem
 				tooltips[k].Text = Language.GetTextValue(this.GetLocalizationKey("UnloadedItemItemNameTooltip"), ItemName);
 			}
 		}
+	}
+
+	// Assume no two items are the same
+	public override bool CanStack(Item source)
+	{
+		return false;
 	}
 
 	public override void SaveData(TagCompound tag)
@@ -62,6 +78,8 @@ public sealed class UnloadedItem : ModLoaderModItem
 		var modData = tag.GetCompound("data");
 
 		Item.SetDefaults(modItem.Type);
+
+		ItemIO.LoadModdedPrefix(Item, tag);
 
 		if (modData?.Count > 0) {
 			Item.ModItem.LoadData(modData);
