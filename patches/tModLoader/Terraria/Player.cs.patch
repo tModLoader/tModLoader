@@ -6213,7 +6213,7 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
-@@ -30777,21 +_,24 @@
+@@ -30777,21 +_,23 @@
  				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
  
@@ -6221,7 +6221,6 @@
 -			ushort num3 = (ushort)HeldItem.createTile;
 +			var topLeft = new Point(tileTargetX, tileTargetY);
 +			WorldGen.MoveReplaceTileAnchor(ref topLeft.X, ref topLeft.Y, (ushort)HeldItem.createTile, Main.tile[tileTargetX, tileTargetY]);
-+			
 +			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(HeldItem.createTile, HeldItem.placeStyle), topLeft);
 +			int num3 = HeldItem.createTile;
  			int num4 = HeldItem.placeStyle;
@@ -6277,13 +6276,12 @@
  
  		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
  			if (tile.frameX / 36 == num)
-@@ -30927,7 +_,9 @@
+@@ -30927,7 +_,8 @@
  		if (!newObjectType)
  			num = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(num);
  
 -		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
 +		var topLeft = data.type == 0 ? new Point(tileTargetX, tileTargetY) : new Point(data.xCoord, data.yCoord);
-+		
 +		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(data.type, data.style, data.alternate), topLeft);
  		bool forced = false;
  		bool flag;
@@ -6379,7 +6377,7 @@
  	}
  
 -	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache()
-+	// TML: Changed to return an exact 2d array of the tiles that will need painting/actuating
++	// #3222: Changed to return an exact 2d array of the tiles that will need painting/actuating
 +	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData data, Point topLeft)
  	{
  		int[,] array = null;
@@ -6391,8 +6389,8 @@
  					int num = tileTargetX - 5 + i;
  					int num2 = tileTargetY - 5 + j;
 +			*/
-+			int width = data == null ? 1 : data.Width;
-+			int height = data == null ? 1 : data.Height;
++			int width = data?.Width ?? 1;
++			int height = data?.Height ?? 1;
 +
 +			array = new int[width, height];
 +			for (int i = 0; i < width; i++) {
