@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,13 +_,14 @@
+@@ -11,33 +_,48 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -14,8 +14,86 @@
 -public class TileDrawing
 +public partial class TileDrawing
  {
- 	private enum TileCounterType
+-	private enum TileCounterType
++	public enum TileCounterType
  	{
+ 		Tree,
+ 		DisplayDoll,
+ 		HatRack,
++		/// <summary> Tile will sway as if anchored below (1x1 tile). Affected by wind and player interaction. Used automatically by tiles in <see cref="TileID.Sets.SwaysInWindBasic"/>. </summary>
+ 		WindyGrass,
++		/// <summary> Tile will sway as if anchored below. Affected by wind but not player interaction. Used by <see cref="TileID.PlantDetritus"/>, <see cref="TileID.Sunflower"/>. Tiles need to assign <see cref="TileID.Sets.MultiTileSway"/> and use as directed.</summary>
+ 		MultiTileGrass,
++		/// <summary> Tile will sway as if anchored above. Affected by wind and player interaction. Used by <see cref="TileID.Banners"/>, <see cref="TileID.Chandeliers"/>, <see cref="TileID.HangingLanterns"/>, <see cref="TileID.FireflyinaBottle"/>. Tiles need to assign <see cref="TileID.Sets.MultiTileSway"/> and use as directed. </summary>
+ 		MultiTileVine,
++		/// <summary> Tile chain will sway as if anchored above. Affected by wind and player interaction. Used by all varieties of <see cref="TileID.Vines"/>. Tiles need to assign <see cref="TileID.Sets.VineThreads"/> and use as directed. </summary>
+ 		Vine,
+ 		BiomeGrass,
+ 		VoidLens,
++		/// <summary> Tile chain will sway as if anchored below. Affected by wind and player interaction. Used by <see cref="TileID.Seaweed"/>, although seaweed grows below the wind limit so it isn't affected. Tiles need to assign <see cref="TileID.Sets.ReverseVineThreads"/> and use as directed. </summary>
+ 		ReverseVine,
+ 		TeleportationPylon,
+ 		MasterTrophy,
+ 		AnyDirectionalGrass,
++		/// <summary> Will cause <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> to be called.
++		/// <br/><br/> This option should be used with non-<see cref="Main.tileSolid"/> tiles or solid tiles that set <see cref="TileID.Sets.DrawTileInSolidLayer"/> to false.</summary>
++		CustomNonSolid,
++		/// <summary> Will cause <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> to be called.
++		/// <br/><br/> This option should be used with <see cref="Main.tileSolid"/> tiles or non-solid tiles that set <see cref="TileID.Sets.DrawTileInSolidLayer"/> to true.</summary>
++		CustomSolid,
+ 		Count
+ 	}
+ 
++	/// <summary>
++	/// Contains parameters for controlling how a flame overlay on a tile will be drawn. Used by <see cref="ModTile.GetTileFlameData(int, int, ref TileFlameData)"/>.
++	/// </summary>
+-	private struct TileFlameData
++	public struct TileFlameData
+ 	{
+ 		public Texture2D flameTexture;
+ 		public ulong flameSeed;
+@@ -56,8 +_,8 @@
+ 	private const float FORCE_FOR_MIN_WIND = 0.08f;
+ 	private const float FORCE_FOR_MAX_WIND = 1.2f;
+ 	private int _leafFrequency = 100000;
+-	private int[] _specialsCount = new int[13];
++	private int[] _specialsCount = new int[(int)TileCounterType.Count];
+-	private Point[][] _specialPositions = new Point[13][];
++	private Point[][] _specialPositions = new Point[(int)TileCounterType.Count][];
+ 	private Dictionary<Point, int> _displayDollTileEntityPositions = new Dictionary<Point, int>();
+ 	private Dictionary<Point, int> _hatRackTileEntityPositions = new Dictionary<Point, int>();
+ 	private Dictionary<Point, int> _trainingDummyTileEntityPositions = new Dictionary<Point, int>();
+@@ -69,10 +_,16 @@
+ 	private int[] _specialTileX = new int[1000];
+ 	private int[] _specialTileY = new int[1000];
+ 	private UnifiedRandom _rand;
++	public double _treeWindCounter;
++	public double _grassWindCounter;
++	public double _sunflowerWindCounter;
++	public double _vineWindCounter;
++	/*
+ 	private double _treeWindCounter;
+ 	private double _grassWindCounter;
+ 	private double _sunflowerWindCounter;
+ 	private double _vineWindCounter;
++	*/
+ 	private WindGrid _windGrid = new WindGrid();
+ 	private bool _shouldShowInvisibleBlocks;
+ 	private bool _shouldShowInvisibleBlocks_LastFrame;
+@@ -114,7 +_,12 @@
+ 
+ 	private Gore[] _gore => Main.gore;
+ 
++	/// <summary>
++	/// Registers a tile coordinate to use custom drawing code corresponding to the <see cref="TileCounterType"/> provided. This is mostly used to apply wind and player interaction effects to tiles.
++	/// <para/> For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <c>ModTile.PreDraw</c> (or <c>GlobalTile.PreDraw</c>) and false should be returned to prevent the default tile drawing. It can also be called in <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> as well.
++	/// <para/> When <see cref="TileCounterType.CustomNonSolid"/> or <see cref="TileCounterType.CustomSolid"/> is used, <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> will be called to allow custom rendering. Compared to using <see cref="AddSpecialLegacyPoint(int, int)"/>, SpecialDraw will be called at 60fps rather than 15fps, the sampler state will default to PointClamp instead of LinearClamp, and adjusting for <see cref="Main.offScreenRange"/> is no longer necessary because the render target is the screen rather than the tile render targets.
++	/// </summary>
+-	private void AddSpecialPoint(int x, int y, TileCounterType type)
++	public void AddSpecialPoint(int x, int y, TileCounterType type)
+ 	{
+ 		_specialPositions[(int)type][_specialsCount[(int)type]++] = new Point(x, y);
+ 	}
 @@ -151,11 +_,11 @@
  				if (tile == null)
  					continue;
@@ -70,6 +148,32 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
+@@ -321,7 +_,10 @@
+ 			_specialsCount[9] = 0;
+ 			_specialsCount[10] = 0;
+ 			_specialsCount[11] = 0;
++			_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
+ 		}
++		if(solidLayer && flag)
++			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
+ 	}
+ 
+ 	public void PostDrawTiles(bool solidLayer, bool forRenderTargets, bool intoRenderTargets)
+@@ -338,12 +_,14 @@
+ 			DrawTrees();
+ 			DrawVines();
+ 			DrawReverseVines();
++			DrawCustom(solidLayer);
+ 			Main.spriteBatch.End();
+ 		}
+ 
+ 		if (solidLayer && !intoRenderTargets) {
+ 			DrawEntities_HatRacks();
+ 			DrawEntities_DisplayDolls();
++			DrawCustom(solidLayer);
+ 		}
+ 	}
+ 
 @@ -396,8 +_,10 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
@@ -103,6 +207,30 @@
  				}
  			}
  		}
+@@ -575,7 +_,10 @@
+ 			TimeLogger.DrawTime(1, stopwatch.Elapsed.TotalMilliseconds);
+ 	}
+ 
++	/// <summary>
++	/// Finds the top of a tile chain of vine tiles and calls <see cref="AddSpecialPoint"/> using <see cref="TileCounterType.Vine"/> if not already registered for custom drawing. See <see cref="TileID.Sets.VineThreads"/>.
++	/// </summary>
+-	private void CrawlToTopOfVineAndAddSpecialPoint(int j, int i)
++	public void CrawlToTopOfVineAndAddSpecialPoint(int j, int i)
+ 	{
+ 		int y = j;
+ 		for (int num = j - 1; num > 0; num--) {
+@@ -593,7 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Finds the bottom of a tile chain of reverse vine tiles and calls <see cref="AddSpecialPoint"/> using <see cref="TileCounterType.ReverseVine"/> if not already registered for custom drawing. See <see cref="TileID.Sets.ReverseVineThreads"/>.
++	/// </summary>
+-	private void CrawlToBottomOfReverseVineAndAddSpecialPoint(int j, int i)
++	public void CrawlToBottomOfReverseVineAndAddSpecialPoint(int j, int i)
+ 	{
+ 		int y = j;
+ 		for (int k = j; k < Main.maxTilesY; k++) {
 @@ -629,7 +_,7 @@
  		if (TileID.Sets.HasOutlines[drawData.typeCache])
  			GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
@@ -130,14 +258,23 @@
  				if (drawData.tileLight.R < sightColor.R)
  					drawData.tileLight.R = sightColor.R;
  
-@@ -715,6 +_,7 @@
+@@ -715,11 +_,16 @@
  
  		Rectangle rectangle = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
  		Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + drawData.halfBrickHeight) + screenOffset;
-+		TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
++		/*
  		if (!flag)
  			return;
++		*/
  
+ 		drawData.colorTint = Color.White;
+ 		drawData.finalColor = GetFinalLight(drawData.tileCache, drawData.typeCache, drawData.tileLight, drawData.colorTint);
++		TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
++		if (!flag)
++			return;
+ 		switch (drawData.typeCache) {
+ 			case 136:
+ 				switch (drawData.tileFrameX / 18) {
 @@ -974,7 +_,13 @@
  		}
  	}
@@ -230,7 +367,15 @@
  				break;
  		}
  
-@@ -1265,6 +_,9 @@
+@@ -1181,6 +_,7 @@
+ 				value4 = normalTileRect;
+ 				value4.Y = 0;
+ 				value4.Height = 10;
++				value4.X %= num10 < 3 ? 108 : 54; // Added by TML. Accounts for tilesheets with multiple columns
+ 				Main.spriteBatch.Draw(TextureAssets.CageTop[num10].Value, position, value4, drawData.finalColor, 0f, _zero, 1f, drawData.tileSpriteEffect, 0f);
+ 			}
+ 			else {
+@@ -1265,12 +_,21 @@
  			case 662:
  				return 4;
  			default:
@@ -240,6 +385,19 @@
  				return -1;
  		}
  	}
+ 
+-	private TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
++	public TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
+ 	{
++		if (type >= TileID.Count) {
++			TileFlameData tileFlameData = default(TileFlameData);
++			TileLoader.GetTile(type)?.GetTileFlameData(tileX, tileY, ref tileFlameData);
++			return tileFlameData;
++		}
++
+ 		switch (type) {
+ 			case 270: {
+ 				TileFlameData tileFlameData = default(TileFlameData);
 @@ -2359,6 +_,9 @@
  		if (WorldGen.IsPalmOasisTree(x))
  			num += 4;
@@ -294,9 +452,12 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3179,7 +_,7 @@
+@@ -3177,9 +_,9 @@
+ 		}
+ 	}
  
- 	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
+-	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
++	public bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
  
 -	private void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)
 +	public void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)
@@ -369,7 +530,7 @@
  	{
  		int num = x - tileFrameX / 18;
  		int num2 = y - tileFrameY / 18;
-@@ -4922,18 +_,29 @@
+@@ -4922,18 +_,36 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
@@ -385,12 +546,19 @@
 +		_reverseVineRootsPositions.Clear();
  	}
  
++	/// <inheritdoc cref="AddSpecialLegacyPoint(int, int)"/>
 -	private void AddSpecialLegacyPoint(Point p)
 +	public void AddSpecialLegacyPoint(Point p)
  	{
  		AddSpecialLegacyPoint(p.X, p.Y);
  	}
  
++	/// <summary>
++	/// Registers a tile coordinate to have additional drawing code executed after all tiles are drawn. <see cref="ModTile.SpecialDraw"/> (or <see cref="GlobalTile.SpecialDraw(int, int, int, SpriteBatch)"/>) will be called with the same coordinates after all tiles have been rendered. For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> (or <see cref="GlobalTile.DrawEffects(int, int, int, SpriteBatch, ref TileDrawInfo)"/>)
++	/// <para/> This is useful for drawing additional visuals which overlap multiple tiles.
++	/// <para/> Some examples include how the <see cref="TileID.LihzahrdAltar"/> draws a sun texture hovering over the tile and how <see cref="TileID.ItemFrame"/> draws the contained item sprite over the tile.
++	/// <para/> This additional drawing will draw to the tile rendering targets, meaning it will render at 15fps and requires adjusting for <see cref="Main.offScreenRange"/>. As mentioned in <see cref="ModTile.AnimateTile(ref int, ref int)"/>, any animation done using this method should stick to animating at multiples of 4 frames to avoid jerky animation. For smoother animations <see cref="AddSpecialPoint(int, int, TileCounterType)"/> can be used with <see cref="TileCounterType.CustomSolid"/> or CustomNonSolid to render at full frame rate.
++	/// </summary>
 -	private void AddSpecialLegacyPoint(int x, int y)
 +	public void AddSpecialLegacyPoint(int x, int y)
  	{
@@ -401,6 +569,27 @@
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
+@@ -4949,7 +_,7 @@
+ 		_specialTilesCount = 0;
+ 	}
+ 
+-	private Color DrawTiles_GetLightOverride(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
++	public Color DrawTiles_GetLightOverride(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
+ 	{
+ 		if (tileCache.fullbrightBlock())
+ 			return Color.White;
+@@ -4998,9 +_,10 @@
+ 		return tileLight;
+ 	}
+ 
+-	private void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
++	public void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
+ 	{
+ 		bool num = IsVisible(tileCache);
++		TileLoader.EmitParticles(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, num);
+ 		int leafFrequency = _leafFrequency;
+ 		leafFrequency /= 4;
+ 		if (typeCache == 244 && tileFrameX == 18 && tileFrameY == 18 && _rand.Next(2) == 0) {
 @@ -5544,14 +_,28 @@
  		}
  	}
@@ -447,6 +636,17 @@
  	{
  		int num = 0;
  		if (Main.WindForVisuals > 0.2f)
+@@ -5603,7 +_,10 @@
+ 		rectangle.Y -= 100;
+ 		rectangle.Height = 400;
+ 		for (int k = 0; k < 600; k++) {
++			/*
+ 			if (_gore[k].active && ((_gore[k].type >= 706 && _gore[k].type <= 717) || _gore[k].type == 943 || _gore[k].type == 1147 || (_gore[k].type >= 1160 && _gore[k].type <= 1162))) {
++			*/
++			if (_gore[k].active && GoreID.Sets.LiquidDroplet[_gore[k].type]) {
+ 				Rectangle value = new Rectangle((int)_gore[k].position.X, (int)_gore[k].position.Y, 16, 16);
+ 				if (rectangle.Intersects(value))
+ 					return;
 @@ -5618,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)
@@ -567,9 +767,12 @@
  
  		return texture2D;
  	}
-@@ -6394,7 +_,7 @@
+@@ -6392,9 +_,9 @@
+ 		}
+ 	}
  
- 	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
+-	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
++	public void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
  	{
 -		if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
 +		if (_localPlayer.dangerSense && IsTileDangerous(i, j, _localPlayer, tileCache, typeCache)) {
@@ -633,6 +836,37 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
+@@ -6662,6 +_,15 @@
+ 						num4 = ClimbCatTail(x, num3);
+ 						num3 -= num4 - 1;
+ 						break;
++					default:
++						// TML: num4 = sizeY (height of multi-tile)
++						if (TileID.Sets.MultiTileSway[tile.TileType]) {
++							TileObjectData objectData = TileObjectData.GetTileData(tile);
++							sizeX = objectData.Width;
++							num4 = objectData.Height;
++						}
++
++						break;
+ 				}
+ 
+ 				DrawMultiTileGrassInWind(unscaledPosition, zero, x, num3, sizeX, num4);
+@@ -6738,6 +_,14 @@
+ 						sizeX = 2;
+ 						sizeY = 3;
+ 						break;
++					default:
++						if (TileID.Sets.MultiTileSway[tile.TileType]) {
++							TileObjectData tileObjectData = TileObjectData.GetTileData(tile);
++							sizeX = tileObjectData.Width;
++							sizeY = tileObjectData.Height;
++						}
++
++						break;
+ 				}
+ 
+ 				DrawMultiTileVinesInWind(unscaledPosition, zero, x, y, sizeX, sizeY);
 @@ -6903,7 +_,7 @@
  			float num6 = (float)num2 * num3 * windCycle + num4;
  			if (_localPlayer.biomeSight) {
@@ -642,3 +876,44 @@
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  
+@@ -7007,7 +_,11 @@
+ 		return num / (float)num2;
+ 	}
+ 
++	/// <summary>
++	/// Determines how much wind should affect a multitile of the given size and top left target location on the current update tick.
++	/// <para/> Similar to <see cref="GetWindGridPushComplex"/>, but for a multitile area instead of a single tile.
++	/// </summary>
+-	private float GetHighestWindGridPushComplex(int topLeftX, int topLeftY, int sizeX, int sizeY, int totalPushTime, float pushForcePerFrame, int loops, bool swapLoopDir)
++	public float GetHighestWindGridPushComplex(int topLeftX, int topLeftY, int sizeX, int sizeY, int totalPushTime, float pushForcePerFrame, int loops, bool swapLoopDir)
+ 	{
+ 		float result = 0f;
+ 		int num = int.MaxValue;
+@@ -7041,7 +_,19 @@
+ 		Vector2 vector2 = new Vector2(0f, -2f);
+ 		vector += vector2;
+ 		bool flag = false;
++		bool isBelowNonHammeredPlatform = true;
++		for (int i = 0; i < sizeX; i++) {
++			if (WorldGen.IsBelowANonHammeredPlatform(topLeftX + i, topLeftY)) {
++				continue;
++			}
++
++			isBelowNonHammeredPlatform = false;
++			break;
++		}
++		/*
+ 		if ((type != 465 && (uint)(type - 591) > 1u) ? (sizeX == 1 && WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY)) : (WorldGen.IsBelowANonHammeredPlatform(topLeftX, topLeftY) && WorldGen.IsBelowANonHammeredPlatform(topLeftX + 1, topLeftY))) {
++		*/
++		if (isBelowNonHammeredPlatform) {
+ 			vector.Y -= 8f;
+ 			vector2.Y -= 8f;
+ 		}
+@@ -7209,6 +_,7 @@
+ 				color = new Color(255, 255, 255, 0);
+ 				break;
+ 		}
++		TileLoader.GetTile(type)?.AdjustMultiTileVineParameters(topLeftX, topLeftY, ref num3, ref num4, ref num5, ref flag2, ref num2, ref texture2D, ref color);
+ 
+ 		if (flag2)
+ 			vector += new Vector2(0f, 16f);

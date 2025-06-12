@@ -1,7 +1,14 @@
+using Terraria.ModLoader;
+
 namespace Terraria.ID;
 
-public static partial class DustID
+public partial class DustID
 {
+	public static class Sets
+	{
+		public static SetFactory Factory = new SetFactory(DustLoader.DustCount, nameof(DustID), Search);
+	}
+
 	// Naming is based on the best approximation of the earliest or most popular implementation.
 	// There are a few duplicates, unlike other ID classes, since some dust are used for different purposes.
 	public const short WoodFurniture = 7;

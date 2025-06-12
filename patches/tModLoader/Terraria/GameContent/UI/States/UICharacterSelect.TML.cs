@@ -20,17 +20,19 @@ public partial class UICharacterSelect : UIState
 
 	// Individual
 	private static UIExpandablePanel _migrationPanel;
+	private static ModLoader.Config.UI.NestedUIList migratePlayerList;
+	private static bool migratablePlayersLoaded = false;
 
-	// TODO, could be async
-	private void LoadMigratablePlayers()
+	private void InitializeMigrationPanel()
 	{
 		_migrationPanel = new UIExpandablePanel();
+		_migrationPanel.OnExpanded += _migrationPanel_OnExpanded;
 
 		var playerMigrationPanelTitle = new UIText(Language.GetTextValue("tModLoader.MigrateIndividualPlayersHeader"));
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 
-		ModLoader.Config.UI.NestedUIList migratePlayerList = new ModLoader.Config.UI.NestedUIList();
+		migratePlayerList = new ModLoader.Config.UI.NestedUIList();
 		migratePlayerList.Width.Set(-22, 1f);
 		migratePlayerList.Left.Set(0, 0f);
 		migratePlayerList.Top.Set(30, 0);
@@ -46,8 +48,25 @@ public partial class UICharacterSelect : UIState
 		scrollbar.HAlign = 1f;
 		migratePlayerList.SetScrollbar(scrollbar);
 		_migrationPanel.VisibleWhenExpanded.Add(scrollbar);
+	}
 
+	private void ActivateMigrationPanel()
+	{
+		migratePlayerList.Clear();
+		migratablePlayersLoaded = false;
+		_migrationPanel.Collapse();
+	}
 
+	private void _migrationPanel_OnExpanded()
+	{
+		if (migratablePlayersLoaded)
+			return;
+		migratablePlayersLoaded = true;
+		LoadMigratablePlayers();
+	}
+
+	private void LoadMigratablePlayers()
+	{
 		var otherPaths = FileUtilities.GetAlternateSavePathFiles("Players");
 
 		int currentStabilityLevel = BuildInfo.Purpose switch {
@@ -88,6 +107,7 @@ public partial class UICharacterSelect : UIState
 				if (stabilityLevel > currentStabilityLevel) {
 					// TODO: Not necessarily newer...
 					var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.PlayerFromNewerTModMightNotWork")) {
+						UseTooltipMouseText = true,
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -101,6 +121,7 @@ public partial class UICharacterSelect : UIState
 
 				if (playerWithSameName != null) {
 					var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.PlayerWithThisNameExistsWillBeOverwritten")) {
+						UseTooltipMouseText = true,
 						Left = { Pixels = left },
 						Top = { Pixels = 3 }
 					};
@@ -111,6 +132,7 @@ public partial class UICharacterSelect : UIState
 
 					if (File.GetLastWriteTime(playerWithSameName.Path) > File.GetLastWriteTime(files[i])) {
 						warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, Language.GetTextValue("tModLoader.ExistingPlayerPlayedMoreRecently")) {
+							UseTooltipMouseText = true,
 							Left = { Pixels = left },
 							Top = { Pixels = 3 }
 						};

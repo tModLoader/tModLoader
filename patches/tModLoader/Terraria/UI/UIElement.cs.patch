@@ -1,14 +1,115 @@
 --- src/TerrariaNetCore/Terraria/UI/UIElement.cs
 +++ src/tModLoader/Terraria/UI/UIElement.cs
-@@ -8,7 +_,7 @@
+@@ -8,7 +_,11 @@
  
  namespace Terraria.UI;
  
++/// <summary>
++/// A UI element, the building blocks of a user interface. Commonly used elements include <see cref="UIPanel"/>, <see cref="UIImage"/>, <see cref="UIList"/>, <see cref="UIScrollbar"/>, <see cref="UITextPanel{T}"/>, and <see cref="UIText"/>. 
++/// <para/> UIElements are nested within each other using <see cref="Append(Terraria.UI.UIElement)"/> to build a layout. 
++/// </summary>
 -public class UIElement : IComparable
 +public partial class UIElement : IComparable
  {
  	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
  
+@@ -19,27 +_,56 @@
+ 	public delegate void UIElementAction(UIElement element);
+ 
+ 	protected readonly List<UIElement> Elements = new List<UIElement>();
++	/// <summary> How far down from the top edge of the <see cref="Parent"/> element's <see cref="GetInnerDimensions"/> that this element will be positioned. See also <see cref="HAlign"/> for another positioning option. </summary>
+ 	public StyleDimension Top;
++	/// <summary> How far right from the left edge of the <see cref="Parent"/> element's <see cref="GetInnerDimensions"/> that this element will be positioned. See also <see cref="VAlign"/> for another positioning option. </summary>
+ 	public StyleDimension Left;
++	/// <summary> How wide this element intends to be. The calculated width will be clamped between <see cref="MinWidth"/> and <see cref="MaxWidth"/> according to the <see cref="GetInnerDimensions"/> of the parent element. </summary>
+ 	public StyleDimension Width;
++	/// <summary> How tall this element intends to be. The calculated height will be clamped between <see cref="MinHeight"/> and <see cref="MaxHeight"/> according to the <see cref="GetInnerDimensions"/> of the parent element. </summary>
+ 	public StyleDimension Height;
++	/// <summary> The maximum width of this element. Defaults to the full width. </summary>
+ 	public StyleDimension MaxWidth = StyleDimension.Fill;
++	/// <summary> The maximum height of this element. Defaults to the full height. </summary>
+ 	public StyleDimension MaxHeight = StyleDimension.Fill;
++	/// <summary> The minimum width of this element. Defaults to no width. </summary>
+ 	public StyleDimension MinWidth = StyleDimension.Empty;
++	/// <summary> The maximum width of this element. Defaults to no height. </summary>
+ 	public StyleDimension MinHeight = StyleDimension.Empty;
+ 	private bool _isInitialized;
++	/// <summary>
++	/// If true, this element will be ignored for mouse interactions. This can be used to allow UIElement placed over other  UIElement to not be the target of mouse clicks. Defaults to false.
++	/// </summary>
+ 	public bool IgnoresMouseInteraction;
+ 	public bool OverflowHidden;
+ 	public SamplerState OverrideSamplerState;
++	/// <summary>
++	/// Additional spacing between this element's <see cref="GetDimensions"/> and the position of its children placed within. 
++	/// </summary>
+ 	public float PaddingTop;
++	/// <inheritdoc cref="PaddingTop"/>
+ 	public float PaddingLeft;
++	/// <inheritdoc cref="PaddingTop"/>
+ 	public float PaddingRight;
++	/// <inheritdoc cref="PaddingTop"/>
+ 	public float PaddingBottom;
++	/// <summary>
++	/// Additional spacing between this element and the <see cref="GetInnerDimensions"/> of its parent element. 
++	/// </summary>
+ 	public float MarginTop;
++	/// <inheritdoc cref="MarginTop"/>
+ 	public float MarginLeft;
++	/// <inheritdoc cref="MarginTop"/>
+ 	public float MarginRight;
++	/// <inheritdoc cref="MarginTop"/>
+ 	public float MarginBottom;
++	/// <summary>
++	/// Aligns the element horizontally within the available space. A value of 1 will place the element at the right side. A value of 0.5 will place the element centered horizontally.
++	/// </summary>
+ 	public float HAlign;
++	/// <summary>
++	/// Aligns the element vertically within the available space. A value of 1 will place the element at the bottom. A value of 0.5 will place the element centered vertically.
++	/// </summary>
+ 	public float VAlign;
+ 	private CalculatedStyle _innerDimensions;
+ 	private CalculatedStyle _dimensions;
+@@ -52,12 +_,19 @@
+ 	private SnapPoint _snapPoint;
+ 	private static int _idCounter = 0;
+ 
++	/// <summary>
++	/// The element this element is appended to.
++	/// </summary>
+ 	public UIElement Parent { get; private set; }
+ 
+ 	public int UniqueId { get; private set; }
+ 
+ 	public IEnumerable<UIElement> Children => Elements;
+ 
++	/// <summary>
++	/// True when the mouse is hovering over this UIElement. Useful for setting hover tooltips in DrawSelf or drawing hover visual indicators.
++	/// <para/> Note that this is true for all elements in the hierarchy that are hovered, not just the topmost element. For example, hovering over a button that is appended to a panel will mean that IsMouseHovering is true for the button and the panel. Use this or <c>ContainsPoint(Main.MouseScreen)</c> for behaviors that use this logic, such as setting <see cref="Player.mouseInterface"/> to true.
++	/// </summary>
+ 	public bool IsMouseHovering { get; private set; }
+ 
+ 	public event MouseEvent OnLeftMouseDown;
+@@ -68,7 +_,9 @@
+ 	public event MouseEvent OnRightMouseUp;
+ 	public event MouseEvent OnRightClick;
+ 	public event MouseEvent OnRightDoubleClick;
++	/// <summary> Called by <see cref="MouseOver(UIMouseEvent)"/>. Use this event instead of inheritance if suitable. </summary>
+ 	public event MouseEvent OnMouseOver;
++	/// <summary> Called by <see cref="MouseOut(UIMouseEvent)"/>. Use this event instead of inheritance if suitable. </summary>
+ 	public event MouseEvent OnMouseOut;
+ 	public event ScrollWheelEvent OnScrollWheel;
+ 	public event ElementEvent OnUpdate;
+@@ -117,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Adds the element as a child of this element. The UI system expects children elements to be positioned within the bounds of the parent element and will not work correctly if this restriction is not followed.
++	/// </summary>
+ 	public void Append(UIElement element)
+ 	{
+ 		element.Remove();
 @@ -167,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();
@@ -32,3 +133,76 @@
  			spriteBatch.End();
  			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
+@@ -311,8 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary> The dimensions of the area within this element suitable for placing children elements. Takes into account <see cref="PaddingLeft"/>/Right/Top/Bottom. </summary>
+ 	public CalculatedStyle GetInnerDimensions() => _innerDimensions;
++	/// <summary>
++	/// The dimensions of the area covered by this element. This is the area of this element interactible by the mouse.
++	/// <para/> The width and height are derived from the <see cref="Width"/> and <see cref="Height"/> values of this element and will be limited by <see cref="MinWidth"/>/MaxWidth/MinHeight/MaxHeight as well as the <see cref="GetInnerDimensions"/> of the parent element.
++	/// <para/> The position is derived from the <see cref="Top"/>, <see cref="Left"/>, <see cref="HAlign"/>, <see cref="VAlign"/>, and <see cref="MarginLeft"/>/Right/Top/Bottom values of this element as well as the <see cref="GetInnerDimensions"/> of the parent element.
++	/// </summary>
+ 	public CalculatedStyle GetDimensions() => _dimensions;
++	/// <summary> The dimensions of the area covered by this element plus the additional <see cref="MarginLeft"/>/Right/Top/Bottom. </summary>
+ 	public CalculatedStyle GetOuterDimensions() => _outerDimensions;
+ 
+ 	public void CopyStyle(UIElement element)
+@@ -334,6 +_,11 @@
+ 		Recalculate();
+ 	}
+ 
++	/// <summary>
++	/// Called when the UIElement under the mouse is left clicked. The default code calls the <see cref="OnLeftMouseDown"/> event and then calls <see cref="LeftMouseDown"/> on the <see cref="Parent"/> element.
++	/// <para/> Since the method is called on all parent elements in the hierarchy, check <c>if (evt.Target == this)</c> for code only interested in direct clicks to this element. Children elements overlaying this element can be ignored by setting <see cref="IgnoresMouseInteraction"/> to true on them.
++	/// </summary>
++	/// <param name="evt"></param>
+ 	public virtual void LeftMouseDown(UIMouseEvent evt)
+ 	{
+ 		if (this.OnLeftMouseDown != null)
+@@ -406,6 +_,12 @@
+ 			Parent.RightDoubleClick(evt);
+ 	}
+ 
++	/// <summary>
++	/// Called once when this UIElement becomes moused over (hovered). Default implementation sets <see cref="IsMouseHovering"/> to true, calls <see cref="OnMouseOver"/> event, then calls this same method on the <see cref="Parent"/> element.
++	/// <para/> Useful for changing visuals to indicate the element is interactable, as is the <see cref="OnMouseOver"/> event.
++	/// <para/> Any code that needs to run as long as the element is hovered should use check <see cref="IsMouseHovering"/> in <see cref="Update(GameTime)"/>.
++	/// <para/> <see cref="MouseOut(UIMouseEvent)"/> will be called when it no longer hovered.
++	/// </summary>
+ 	public virtual void MouseOver(UIMouseEvent evt)
+ 	{
+ 		IsMouseHovering = true;
+@@ -416,6 +_,11 @@
+ 			Parent.MouseOver(evt);
+ 	}
+ 
++	/// <summary>
++	/// Called once when this UIElement is no longer moused over. Default implementation sets <see cref="IsMouseHovering"/> to false, calls <see cref="OnMouseOut"/> event, then calls this same method on the <see cref="Parent"/> element.
++	/// <para/> Useful for changing visuals to indicate the element is no longer interactable, as is the <see cref="OnMouseOut"/> event.
++	/// <para/> <see cref="MouseOver(UIMouseEvent)"/> will be called when it is hovered once again.
++	/// </summary>
+ 	public virtual void MouseOut(UIMouseEvent evt)
+ 	{
+ 		IsMouseHovering = false;
+@@ -446,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Called each time this element is activated, which is usually when a <see cref="UIState"/> is activated via <see cref="UserInterface.SetState(UIState)"/>. Use this to run code to update elements whenever the UI is toggled on.
++	/// </summary>
+ 	public virtual void OnActivate()
+ 	{
+ 	}
+@@ -485,6 +_,9 @@
+ 		_isInitialized = true;
+ 	}
+ 
++	/// <summary>
++	/// Called before the first time this element is activated (see <see cref="OnActivate"/>). Use this method to create and append other UIElement to this to build a UI. 
++	/// </summary>
+ 	public virtual void OnInitialize()
+ 	{
+ 	}

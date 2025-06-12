@@ -13,9 +13,11 @@ namespace ExampleMod.Common.GlobalBuffs
 	public class ExampleGlobalBuff : GlobalBuff
 	{
 		public static LocalizedText RemainingTimeText { get; private set; }
+		public static LocalizedText CannotCancelText { get; private set; }
 
 		public override void SetStaticDefaults() {
 			RemainingTimeText = Mod.GetLocalization($"{nameof(ExampleGlobalBuff)}.RemainingTime");
+			CannotCancelText = Mod.GetLocalization($"{nameof(ExampleGlobalBuff)}.CannotCancel");
 		}
 
 		public override void Update(int type, Player player, ref int buffIndex) {
@@ -97,7 +99,7 @@ namespace ExampleMod.Common.GlobalBuffs
 		public override bool RightClick(int type, int buffIndex) {
 			// This code makes it so while the player is standing still, he cannot remove the "ExampleDefenseBuff" by right clicking the icon
 			if (type == ModContent.BuffType<ExampleDefenseBuff>() && Main.LocalPlayer.velocity == Vector2.Zero) {
-				Main.NewText("Cannot cancel this buff while stationary!");
+				Main.NewText(CannotCancelText.Value);
 				return false;
 			}
 

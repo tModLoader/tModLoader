@@ -72,6 +72,7 @@ internal static class ModOrganizer
 		// Active Modpack
 		if (!string.IsNullOrEmpty(ModPackActive)) {
 			if (Directory.Exists(ModPackActive)) {
+				Logging.tML.Info($"Loading Mods from active modpack: {ModPackActive}");
 				mods.AddRange(ReadModFiles(ModLocation.Modpack, Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories)));
 			}
 			else {
@@ -135,6 +136,7 @@ internal static class ModOrganizer
 		OrderByDescending(m => m.tModLoaderVersion, "a matching version for a newer tModLoader exists");
 		FilterOut(m => m.location != ModLocation.Workshop && list.Any(m2 => m2.location == ModLocation.Workshop && m2.modFile.Hash == m.modFile.Hash), "an identical copy exists in the workshop folder");
 		OrderByDescending(m => m.location == ModLocation.Local, "a local copy with the same version (but different hash) exists");
+		OrderByDescending(m => Path.GetFileNameWithoutExtension(m.modFile.path) == m.Name, "this .tmod has been renamed");
 
 		var selected = list.FirstOrDefault();
 
@@ -222,10 +224,11 @@ internal static class ModOrganizer
 	/// <summary>
 	/// Returns changes based on last time <see cref="SaveLastLaunchedMods"/> was called. Can be null if no changes.
 	/// </summary>
-	internal static string DetectModChangesForInfoMessage()
+	internal static string DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)
 	{
 		// Only display if enabled and file exists
 		if (!ModLoader.showNewUpdatedModsInfo || !File.Exists(lastLaunchedModsFilePath)) {
+			removedMods = [];
 			return null;
 		}
 
@@ -255,6 +258,7 @@ internal static class ModOrganizer
 			var newMods = new List<string>();
 			var updatedMods = new List<string>();
 			var messages = new StringBuilder();
+			removedMods = lastMods.Keys.Where(name => !currMods.ContainsKey(name));
 			foreach (var item in currMods) {
 				string name = item.Key;
 				var localMod = item.Value;
@@ -267,6 +271,16 @@ internal static class ModOrganizer
 				else if (lastMods.TryGetValue(name, out var lastVersion) && lastVersion < version) {
 					updatedMods.Add(name);
 					modsThatUpdatedSinceLastLaunch.Add((name, lastVersion));
+				}
+			}
+
+			//TODO: This code was added hastily in response to a popular mod being transferred ownership by reuploading it.
+			// Revisit this code at a later date, as its not optimized for UX
+			if (removedMods.Count() > 0) {
+				messages.Append(Language.GetTextValue("tModLoader.ShowRemovedModsInfoMessageUpdatedMods"));
+				foreach (var removedMod in removedMods) {
+					string name = removedMod;
+					messages.Append($"\n  {name} was removed.");
 				}
 			}
 
@@ -292,6 +306,7 @@ internal static class ModOrganizer
 			return messages.Length > 0 ? messages.ToString() : null;
 		}
 		catch {
+			removedMods = [];
 			return null;
 		}
 	}
@@ -370,8 +385,10 @@ internal static class ModOrganizer
 
 		var modsToLoad = GetModsToLoad(availableMods);
 		try {
+			EnsureRecentlyBuildModsAreLoading(modsToLoad);
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
+			EnsureHashesAreValid(modsToLoad);
 			return Sort(modsToLoad);
 		}
 		catch (ModSortingException e) {
@@ -453,6 +470,30 @@ internal static class ModOrganizer
 		}
 	}
 
+	
+	private static void EnsureRecentlyBuildModsAreLoading(List<LocalMod> mods)
+	{
+		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. We throw an error because this is definitely not desired.
+		foreach (var mod in mods) {
+			var localMod = AllFoundMods.SingleOrDefault(x => x.Name == mod.Name && x.location == ModLocation.Local && Path.GetFileNameWithoutExtension(x.modFile.path) == mod.Name);
+
+			// If Local mod is newer than selected Workshop/Modpack mod...
+			if (localMod == null || localMod == mod || localMod.lastModified.CompareTo(mod.lastModified) <= 0) {
+				continue;
+			}
+
+			// and is newer than directly before game launch and last time a mod was synced, it is assumed to be a mod built by this modder.
+			if (localMod.lastModified.CompareTo(ModCompile.recentlyBuiltModCheckTimeCutoff) > 0) {
+				var e = new Exception(Language.GetTextValue("tModLoader.LoadErrorRecentlyBuiltLocalModWithLowerVersion" + mod.location.ToString(), localMod.Name, localMod.Version, mod.Version));
+				e.Data["mod"] = mod.Name;
+				e.Data["hideStackTrace"] = true;
+				throw e;
+			}
+
+			continue;
+		}
+	}
+
 	internal static void EnsureDependenciesExist(ICollection<LocalMod> mods, bool includeWeak)
 	{
 		var nameMap = mods.ToDictionary(mod => mod.Name);
@@ -491,6 +532,20 @@ internal static class ModOrganizer
 				}
 			}
 
+		if (errored.Count > 0)
+			throw new ModSortingException(errored, errorLog.ToString());
+	}
+
+	internal static void EnsureHashesAreValid(ICollection<LocalMod> mods)
+	{
+		var errored = new HashSet<LocalMod>();
+		var errorLog = new StringBuilder();
+		foreach (var mod in mods) {
+			if (!mod.modFile.VerifyHash()) {
+				errored.Add(mod);
+				errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorruptedWithModName", mod));
+			}
+		}
 		if (errored.Count > 0)
 			throw new ModSortingException(errored, errorLog.ToString());
 	}
@@ -745,5 +800,15 @@ internal static class ModOrganizer
 			parentDir = Directory.GetParent(parentDir).ToString();
 
 		return parentDir;
+	}
+
+	// NOTE: This does not search the workshop, only checks locally available mods
+	internal static string GetDisplayNameCleanFromLocalModsOrDefaultToModName(string modname)
+	{
+		var localMods = AllFoundMods.Where(m => string.Equals(modname, m.Name));
+		if (!localMods.Any())
+			return modname;
+
+		return localMods.FirstOrDefault().DisplayNameClean;
 	}
 }

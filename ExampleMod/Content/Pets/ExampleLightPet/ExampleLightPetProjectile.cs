@@ -81,11 +81,9 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			}
 
 			// Enumerate
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				var npc = Main.npc[i];
-
-				// Ignore this npc if it's not active, or if it's friendly.
-				if (!npc.active || npc.friendly) {
+			foreach (var npc in Main.ActiveNPCs) {
+				// Ignore this npc if it's friendly.
+				if (npc.friendly) {
 					continue;
 				}
 
@@ -107,7 +105,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		}
 
 		private void UpdateFading(Player player) {
-			//TODO: Comment and clean this up more.
+			// TODO: Comment and clean this up more.
 
 			var playerCenter = player.Center; // Cache the player's center vector to avoid recalculations.
 

@@ -29,6 +29,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);
+			TileObjectData.newTile.DrawFlipHorizontal = true; // Unlike vanilla lamps, this lamp alternates direction, see SetSpriteEffects below and the TileObjectData.DrawFlipHorizontal docs for more information.
 			TileObjectData.newTile.StyleLineSkip = 2;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.WaterDeath = true;
@@ -63,7 +64,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
-			if (i % 2 == 1) {
+			if (i % 2 == 0) {
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 		}
@@ -78,16 +79,13 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
-			if (Main.gamePaused || !Main.instance.IsActive || Lighting.UpdateEveryFrame && !Main.rand.NextBool(4)) {
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+			// Don't spawn dust when echo coated
+			if (!visible) {
 				return;
 			}
 
 			Tile tile = Main.tile[i, j];
-
-			if (!TileDrawing.IsVisible(tile)) {
-				return;
-			}
 
 			short frameX = tile.TileFrameX;
 			short frameY = tile.TileFrameY;
@@ -99,6 +97,7 @@ namespace ExampleMod.Content.Tiles
 
 			int style = frameY / 54;
 
+			// Only the top tile spawns dust.
 			if (frameY / 18 % 3 == 0) {
 				int dustChoice = -1;
 
@@ -129,15 +128,11 @@ namespace ExampleMod.Content.Tiles
 
 			SpriteEffects effects = SpriteEffects.None;
 
-			if (i % 2 == 1) {
+			if (i % 2 == 0) {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 
-			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-
-			if (Main.drawToScreen) {
-				zero = Vector2.Zero;
-			}
+			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			int width = 16;
 			int offsetY = 0;

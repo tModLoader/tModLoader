@@ -31,7 +31,7 @@ namespace ExampleMod.Common.Systems
 
 		// Next, we ensure we initialize the map on world load to an empty map.
 		public override void ClearWorld() {
-			myMap = new PosData<byte>[0];
+			myMap = [];
 		}
 
 		// We save our data sets using TagCompounds.
@@ -80,10 +80,8 @@ namespace ExampleMod.Common.Systems
 			if (myMap.Length == 0) {
 				return;
 			}
-			foreach (var player in Main.player) {
-				if (player.active) {
-					UpdateFromNearestInMap(player);
-				}
+			foreach (var player in Main.ActivePlayers) {
+				UpdateFromNearestInMap(player);
 			}
 		}
 

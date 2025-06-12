@@ -57,7 +57,7 @@
  
  	public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
-+	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a <see cref="LocalizedText"/>. </summary>
++	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a <see cref="LocalizedText"/>. <para/> Note that modded item entries are not retrievable until after mod loading is complete. </summary>
  	public static LocalizedText GetItemName(int id)
  	{
 +		// Check added by TML. FromNetId was always called in vanilla.

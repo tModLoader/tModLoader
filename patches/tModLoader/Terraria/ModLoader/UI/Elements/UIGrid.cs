@@ -9,6 +9,12 @@ using Terraria.UI;
 namespace Terraria.ModLoader.UI.Elements;
 
 //TODO: wow that's a lot of redundant this.
+// TODO: This is out of date. Code needs to be copied over from UIList without breaking binary compat.
+/// <summary>
+/// Similar to <see cref="UIList"/> except the elements are arranged in a grid in normal reading order.
+/// <para/> <b>UIList docs:</b>
+/// <inheritdoc cref="UIList"/>
+/// </summary>
 public class UIGrid : UIElement
 {
 	public delegate bool ElementSearchMethod(UIElement element);
@@ -112,10 +118,11 @@ public class UIGrid : UIElement
 		this.UpdateScrollbar();
 	}
 
-	public override void MouseOver(UIMouseEvent evt)
+	public override void Update(GameTime gameTime)
 	{
-		base.MouseOver(evt);
-		PlayerInput.LockVanillaMouseScroll("ModLoader/UIGrid");
+		base.Update(gameTime);
+		if (IsMouseHovering)
+			PlayerInput.LockVanillaMouseScroll("ModLoader/UIList");
 	}
 
 	public override void ScrollWheel(UIScrollWheelEvent evt)

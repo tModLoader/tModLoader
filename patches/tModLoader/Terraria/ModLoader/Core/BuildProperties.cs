@@ -67,6 +67,7 @@ internal class BuildProperties
 	internal ModSide side;
 	internal bool playableOnPreview = true;
 	internal bool translationMod = false;
+	internal string modSource = "";
 
 	public IEnumerable<ModReference> Refs(bool includeWeak) =>
 		includeWeak ? modReferences.Concat(weakReferences) : modReferences;
@@ -109,6 +110,8 @@ internal class BuildProperties
 				continue;
 			}
 			int split = line.IndexOf('=');
+			if (split < 0)
+				continue; // lines without an '=' are ignored
 			string property = line.Substring(0, split).Trim();
 			string value = line.Substring(split + 1).Trim();
 			if (value.Length == 0) {
@@ -134,7 +137,12 @@ internal class BuildProperties
 					properties.author = value;
 					break;
 				case "version":
-					properties.version = new Version(value);
+					if (Version.TryParse(value, out Version result)) {
+						properties.version = result;
+					}
+					else {
+						Logging.tML.Error($"The version found in {propertiesFile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
+					}
 					break;
 				case "displayName":
 					properties.displayName = value;
@@ -173,6 +181,9 @@ internal class BuildProperties
 		var refs = properties.RefNames(true).ToList();
 		if (refs.Count != refs.Distinct().Count())
 			throw new Exception("Duplicate mod/weak reference");
+
+		if (properties.dllReferences.Intersect(properties.modReferences.Select(x => x.mod)).Any())
+			throw new Exception("dllReferences contains duplicate of modReferences");
 
 		//add (mod|weak)References that are not in sortBefore to sortAfter
 		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
@@ -252,6 +263,10 @@ internal class BuildProperties
 				if (side != ModSide.Both) {
 					writer.Write("side");
 					writer.Write((byte)side);
+				}
+				if (modSource.Length > 0) {
+					writer.Write("modSource");
+					writer.Write(modSource);
 				}
 
 				writer.Write("buildVersion");
@@ -333,6 +348,9 @@ internal class BuildProperties
 				}
 				if (tag == "buildVersion") {
 					properties.buildVersion = new Version(reader.ReadString());
+				}
+				if (tag == "modSource") {
+					properties.modSource = reader.ReadString();
 				}
 			}
 		}

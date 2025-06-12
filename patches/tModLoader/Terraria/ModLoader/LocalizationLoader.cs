@@ -138,6 +138,7 @@ public static class LocalizationLoader
 	#nullable disable
 	{
 		path = Path.ChangeExtension(path, null);
+		path = path.Replace("\\", "/");
 
 		culture = null;
 		prefix = null;
@@ -200,7 +201,7 @@ public static class LocalizationLoader
 
 				string modpath = Path.Combine(mod.Name, translationFile.Name).Replace('/', '\\');
 				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
-					string path = Path.Combine(ModCompile.ModSourcePath, modpath);
+					string path = Path.Combine(mod.SourceFolder, translationFile.Name);
 					if (File.Exists(path)) {
 						try {
 							translationFileContents = File.ReadAllText(path);
@@ -216,7 +217,21 @@ public static class LocalizationLoader
 					jsonString = HjsonValue.Parse(translationFileContents).ToString();
 				}
 				catch (Exception e) {
-					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load: ", e);
+					string additionalContext = "";
+					if(e is ArgumentException && Regex.Match(e.Message, "At line (\\d+),") is Match { Success: true } match && int.TryParse(match.Groups[1].Value, out int line)) {
+						string[] lines = translationFileContents.Replace("\r", "").Replace("\t", "    ").Split('\n');
+						int start = Math.Max(0, line - 4);
+						int end = Math.Min(lines.Length, line + 3);
+						var linesOutput = new StringBuilder();
+						for (int i = start; i < end; i++) {
+							if (line - 1 == i)
+								linesOutput.Append($"\n{i + 1}[c/ff0000:>" + lines[i] + "]");
+							else
+								linesOutput.Append($"\n{i + 1}:" + lines[i]);
+						}
+						additionalContext = "\nContext:" + linesOutput.ToString();
+					}
+					throw new Exception($"The localization file \"{translationFile.Name}\" is malformed and failed to load:{additionalContext} ", e);
 				}
 
 				// Parse JSON
@@ -299,6 +314,10 @@ public static class LocalizationLoader
 
 	private static void UpdateLocalizationFilesForMod(Mod mod, string outputPath = null, GameCulture specificCulture = null)
 	{
+		// ModLoaderMod does not exist on disk and is not applicable.
+		if (mod.File == null)
+			return;
+
 		var desiredCultures = new HashSet<GameCulture>();
 		if (specificCulture != null)
 			desiredCultures.Add(specificCulture);
@@ -308,7 +327,7 @@ public static class LocalizationLoader
 		};
 
 		// TODO: Maybe optimize to only recently built?
-		string sourceFolder = outputPath ?? Path.Combine(ModCompile.ModSourcePath, mod.Name);
+		string sourceFolder = outputPath ?? mod.SourceFolder;
 		if (!Directory.Exists(sourceFolder))
 			return;
 
@@ -798,7 +817,11 @@ public static class LocalizationLoader
 		// Add a watcher for each loaded mod that has a corresponding mod sources folder
 		// Don't worry about the mod being local or not, for now. The feature might be useful for even workshop tmod files
 		foreach (var mod in ModLoader.Mods) {
-			string path = Path.Combine(ModCompile.ModSourcePath, mod.Name);
+			// ModLoaderMod does not exist on disk and is not applicable.
+			if (mod.File == null)
+				continue;
+
+			string path = mod.SourceFolder;
 			if (!Directory.Exists(path))
 				continue;
 

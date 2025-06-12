@@ -21,7 +21,7 @@
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -25,9 +_,47 @@
+@@ -25,9 +_,55 @@
  				return Assembly.Load(array);
  			}
  		};
@@ -59,8 +59,16 @@
 +				return IntPtr.Zero;
 +			}
 +
++			// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario, but we still want exception info
 +			Console.WriteLine($"\tattempting load {path}");
-+			handle = NativeLibrary.Load(path);
++			try {
++				handle = NativeLibrary.Load(path);
++			}
++			catch (Exception e) {
++				Console.WriteLine($"\t\tFailed to load {name}.\n{e}");
++				return IntPtr.Zero;
++			}
++
 +			Console.WriteLine("\tsuccess");
 +			return assemblies[name] = handle;
 +		}

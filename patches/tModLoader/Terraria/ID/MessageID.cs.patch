@@ -65,7 +65,7 @@
 +	// SyncItem and ItemOwner for every active item
 +	// SyncNPC for every active npc
 +	// SyncProjectile for every active projectile with the netImportant property or listed in Main.projPet
-+	// NPCKillCountDeathTally for the first 250 NPCs (though I don't know why)
++	// NPCKillCountDeathTally for all NPCs (technically BannerIDs)
 +	// StartPlaying, TileCounts, WorldInfo, MoonlordCountdown, UpdateTowerShieldStrengths
  	public const byte SpawnTileData = 8;
 +
@@ -194,7 +194,7 @@
  	public const byte SyncChestItem = 32;
 +
 +	// ChestIndex, x, y, nameLen, name
-+	// Name is only sent if nameLen <= 20
++	// Name is only sent if nameLen <= Chest.MaxNameLength
 +	// On client, does the open and close sounds (if changed)
 +	// On server, sends ChestName and SyncPlayerChestIndex to other clients
  	public const byte SyncPlayerChest = 33;
@@ -388,9 +388,18 @@
  	public const byte ChestName = 69;
  	public const byte BugCatching = 70;
  	public const byte BugReleasing = 71;
-@@ -92,14 +_,30 @@
+@@ -91,15 +_,44 @@
+ 	public const byte InvasionProgressReport = 78;
  	public const byte PlaceObject = 79;
  	public const byte SyncPlayerChestIndex = 80;
++	/// <summary>
++	/// Sends a <see cref="CombatText"/> from the server to clients. Sends a number, use <see cref="CombatTextString"/> instead for the string version. Used automatically by <see cref="Player.HealEffect(int, bool)"/>, but custom <see cref="CombatText"/> would need to manually sync using this message.
++	/// <para/> NetMessage.SendData parameters, correlating to <see cref="CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, int, bool, bool)"/> parameters:
++	/// <br/><b>number:</b> The text color: <see cref="Microsoft.Xna.Framework.Color.PackedValue"/>
++	/// <br/><b>number2:</b> The CombatText center X coordinate
++	/// <br/><b>number3:</b> The CombatText center Y coordinate
++	/// <br/><b>number4:</b> The number shown by the CombatText
++	/// </summary>
  	public const byte CombatTextInt = 81;
 +
 +	// Used by NetModule, NetMaager and NetPacket for a more extensible packet system.
@@ -400,7 +409,7 @@
  	public const byte NetModules = 82;
 +
 +	// BannerID, killCount
-+	// Supports modded banners now that check for bannerID > 267 removed
++	// Supports modded banners now that check for bannerID > Main.MaxBannerTypes removed
 +	// Sent to all clients whenever an npc with a banner is killed
  	public const byte NPCKillCountDeathTally = 83;
  	public const byte PlayerStealth = 84;
@@ -409,6 +418,11 @@
 +	// The client Player.inventoryChestStack flag is set
 +	// The server performs the quickstack and sends a SyncEquipment packet to all players
  	public const byte QuickStackChests = 85;
++	/// <summary>
++	/// Syncs the data of a TileEntity from server to clients. Will cause TileEntities to send and receive their data to sync their values. (<see cref="ModLoader.ModTileEntity.NetSend(System.IO.BinaryWriter)"/>, <see cref="ModLoader.ModTileEntity.NetReceive(System.IO.BinaryReader)"/>)
++	/// <para/> NetMessage.SendData parameters:
++	/// <br/><b>number:</b> The <see cref="DataStructures.TileEntity.ID"/>
++	/// </summary>
  	public const byte TileEntitySharing = 86;
  	public const byte TileEntityPlacement = 87;
  	public const byte ItemTweaker = 88;
@@ -419,3 +433,18 @@
  	public const byte InstancedItem = 90;
  	public const byte SyncEmoteBubble = 91;
  	public const byte SyncExtraValue = 92;
+@@ -129,6 +_,14 @@
+ 	public const byte CrystalInvasionSendWaitTime = 116;
+ 	public const byte PlayerHurtV2 = 117;
+ 	public const byte PlayerDeathV2 = 118;
++	/// <summary>
++	/// Sends a <see cref="CombatText"/> from the server to clients. Sends a string, use <see cref="CombatTextInt"/> instead for the int version. Used automatically by <see cref="Player.HealEffect(int, bool)"/>, but custom <see cref="CombatText"/> would need to manually sync using this message.
++	/// <para/> NetMessage.SendData parameters, correlating to <see cref="CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, string, bool, bool)"/> parameters:
++	/// <br/><b>number:</b> The text color: <see cref="Microsoft.Xna.Framework.Color.PackedValue"/>
++	/// <br/><b>number2:</b> The CombatText center X coordinate
++	/// <br/><b>number3:</b> The CombatText center Y coordinate
++	/// <br/><b>text:</b> The text shown by the CombatText
++	/// </summary>
+ 	public const byte CombatTextString = 119;
+ 	public const byte Emoji = 120;
+ 	public const byte TEDisplayDollItemSync = 121;

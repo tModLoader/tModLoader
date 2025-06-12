@@ -8,7 +8,7 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -16,7 +_,33 @@
+@@ -16,7 +_,34 @@
  
  	void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
  
@@ -25,6 +25,7 @@
 +	/// <seealso cref="Texture2D"/> assets have a default <see cref="Asset{T}.Value"/> containing a transparent 1x1 texture that can be used while the asset loads.
 +	/// <para/>
 +	/// Can be safely called on the server despite the server not loading assets, so there is no need to add checks for <c>Main.dedServ</c>. Assets loaded on the server will always be returned as if loaded via <see cref="AssetRequestMode.DoNotLoad"/>.
++	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Assets">Assets guide on the wiki</see> for more information.
 +	/// </summary>
 +	/// <typeparam name="T"></typeparam>
 +	/// <param name="assetName"></param>

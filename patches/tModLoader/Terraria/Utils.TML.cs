@@ -21,21 +21,26 @@ partial class Utils
 {
 	//Conversions
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Point p, Vector2 autoAddXY)
 		=> ToWorldCoordinates(p, autoAddXY.X, autoAddXY.Y);
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Point16 p, Vector2 autoAddXY)
 		=> p.ToVector2().ToWorldCoordinates(autoAddXY);
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Vector2 v, float autoAddX = 8f, float autoAddY = 8f)
 		=> v.ToWorldCoordinates(new Vector2(autoAddX, autoAddY));
 
+	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
 	public static Vector2 ToWorldCoordinates(this Vector2 v, Vector2 autoAddXY)
 		=> v * 16f + autoAddXY;
 
 	public static Point ToPoint(this Point16 p)
 		=> new Point(p.X, p.Y);
 
+	/// <summary> Converts this Vector2 to a Point16, resulting in X and Y values rounded towards 0. If the intention is to convert to Tile coordinates from World coordinates, use <see cref="ToTileCoordinates16(Vector2)"/> instead. </summary>
 	public static Point16 ToPoint16(this Vector2 v)
 		=> new Point16((short)v.X, (short)v.Y);
 
@@ -50,7 +55,7 @@ partial class Utils
 	public static T NextEnum<T>(this T src) where T : struct
 	{
 		if(!typeof(T).IsEnum)
-			throw new ArgumentException($"Argumnent {typeof(T).FullName} is not an Enum");
+			throw new ArgumentException($"Argument {typeof(T).FullName} is not an Enum");
 
 		T[] Arr = (T[])Enum.GetValues(src.GetType());
 		int j = Array.IndexOf(Arr, src) + 1;
@@ -61,7 +66,7 @@ partial class Utils
 	public static T PreviousEnum<T>(this T src) where T : struct
 	{
 		if(!typeof(T).IsEnum)
-			throw new ArgumentException($"Argumnent {typeof(T).FullName} is not an Enum");
+			throw new ArgumentException($"Argument {typeof(T).FullName} is not an Enum");
 
 		T[] Arr = (T[])Enum.GetValues(src.GetType());
 		int j = Array.IndexOf(Arr, src) - 1;
@@ -143,7 +148,8 @@ partial class Utils
 	public static int Repeat(int value, int length) => value >= 0 ? value % length : (value % length) + length;
 
 	/// <summary>
-	/// Bit packs a BitArray in to a Byte Array and then sends the byte array
+	/// Bit packs a BitArray into a Byte Array and then sends the byte array
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static void SendBitArray(BitArray arr, BinaryWriter writer)
 	{
@@ -154,6 +160,7 @@ partial class Utils
 
 	/// <summary>
 	/// Receives the result of SendBitArray, and returns the corresponding BitArray
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static BitArray ReceiveBitArray(int BitArrLength, BinaryReader reader)
 	{
@@ -161,6 +168,8 @@ partial class Utils
 		receive = reader.ReadBytes(receive.Length);
 		return new BitArray(receive);
 	}
+
+	// TODO: Better options to SendBitArray/ReceiveBitArray that don't allocate a new bool[] or BitArray, most likely as extension methods in BinaryIO.cs
 
 	// Common Blocks
 
@@ -253,5 +262,17 @@ partial class Utils
 	{
 		string separator = doubleNewline ? "\n\n" : "\n";
 		return NetworkText.FromKey(localizationKey, separator + string.Join(separator, errors.Select(x => $"{x.Key}:\n{x.Value}")));
+	}
+
+	private static void AddArgToDictionary(string text, ref string text2, ref Dictionary<string, string> dictionary)
+	{
+		if (text == null)
+			return;
+
+		// In case someone has a cli-ArgsConfig.txt for mod development and does host&play, we should TryAdd
+		if (!dictionary.TryAdd(text.ToLower(), text2))
+			Console.WriteLine($"Unexpected Issue with Launch Arguments: Duplicate Launch Arg \"{text}\"");
+
+		text2 = "";
 	}
 }

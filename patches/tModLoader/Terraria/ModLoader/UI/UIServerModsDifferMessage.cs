@@ -6,6 +6,7 @@ using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -15,6 +16,7 @@ namespace Terraria.ModLoader.UI;
 /// <summary>
 /// <paramref name="typeOrder"/> dictates the order specific explanations are shown:
 /// <br/> 1: Download, 2: Switch Version, 3: Enable, 4: Disable, 5: Config Change
+/// <para/> <paramref name="mod"/> is internal name, <paramref name="localMod"/> might be null for mods that need to be downloaded.
 /// </summary>
 internal record ReloadRequiredExplanation(int typeOrder, string mod, LocalMod localMod, string reason);
 
@@ -129,7 +131,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			panel.Height.Set(92, 0f);
 			panel.BackgroundColor = UICommon.DefaultUIBlue;
 
-			UIText modName = new UIText(entry.mod) {
+			UIText modName = new UIText(entry.localMod?.DisplayName ?? entry.mod) {
 				Top = { Pixels = 2 },
 				Left = { Pixels = 85 }
 			};
@@ -168,6 +170,23 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 
 			modList.Add(panel);
 		}
+
+		if(Main.tServer != null) {
+			UIPanel panel = new UIPanel();
+			panel.Width.Set(0, 1f);
+			panel.Height.Set(130, 0f);
+			panel.BackgroundColor = Microsoft.Xna.Framework.Color.Orange;
+
+			message = new UIText(Language.GetTextValue("tModLoader.ReloadRequiredHostAndPlayModWasDisabledHint")) {
+				Width = { Percent = 1f },
+				Height = { Percent = 1f }
+			};
+			message.IsWrapped = true;
+			message.OnLeftClick += (a, b) => Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Debugging-Multiplayer-Usage-Issues#when-i-join-my-own-server-mods-get-disabled");
+			panel.Append(message);
+
+			modList.Add(panel);
+		}
 	}
 
 	internal void Show(string message, int gotoMenu, UIState gotoState = null, string continueButtonText = "", Action continueButtonAction = null, string backButtonText = null, Action backButtonAction = null, List<ReloadRequiredExplanation> reloadRequiredExplanationEntries = null)
@@ -188,6 +207,8 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 		this.reloadRequiredExplanationEntries = reloadRequiredExplanationEntries?.OrderBy(x => x.typeOrder).ThenBy(x => x.mod).ToList();
 		Main.menuMode = Interface.serverModsDifferMessageID;
 		Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
+		Main.alreadyGrabbingSunOrMoon = false; // Prevents cursor from being invisible in rare situations because netmode is technically 1 at this menu so it won't reset correctly.
+		Logging.tML.Info("ModsDifferMessage: " + message + "\n" + string.Join("\n", reloadRequiredExplanationEntries.Select(x => $"    {x.localMod?.DisplayNameClean ?? x.mod}: {Utils.CleanChatTags(x.reason).Replace("\n", " ")}")));
 	}
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)

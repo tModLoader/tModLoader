@@ -1,7 +1,8 @@
 {
   "profiles": {
-    "tModPorter": {
-      "commandName": "Project"
+    "tModPorter ExampleMod.csproj": {
+      "commandName": "Project",
+      "commandLineArgs": "\"$(ProjectDir)/../../ExampleMod/ExampleMod.csproj\""
     }
   }
 }
