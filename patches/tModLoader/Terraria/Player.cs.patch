@@ -6213,14 +6213,13 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
-@@ -30777,21 +_,23 @@
+@@ -30777,21 +_,22 @@
  				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
  
 -			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
 -			ushort num3 = (ushort)HeldItem.createTile;
-+			var topLeft = new Point(tileTargetX, tileTargetY);
-+			WorldGen.MoveReplaceTileAnchor(ref topLeft.X, ref topLeft.Y, (ushort)HeldItem.createTile, Main.tile[tileTargetX, tileTargetY]);
++			var topLeft = TileObjectData.TopLeft(tileTargetX, tileTargetY).ToPoint();
 +			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(HeldItem.createTile, HeldItem.placeStyle), topLeft);
 +			int num3 = HeldItem.createTile;
  			int num4 = HeldItem.placeStyle;

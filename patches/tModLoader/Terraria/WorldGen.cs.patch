@@ -2558,16 +2558,6 @@
  		SquareTileFrame(topLeftX, topLeftY);
  	}
  
-@@ -44696,7 +_,8 @@
- 		}
- 	}
- 
-+	// TML changed to internal
--	private static void MoveReplaceTileAnchor(ref int x, ref int y, ushort targetType, Tile t)
-+	internal static void MoveReplaceTileAnchor(ref int x, ref int y, ushort targetType, Tile t)
- 	{
- 		if (TileID.Sets.BasicChest[t.type]) {
- 			x -= t.frameX % 36 / 18;
 @@ -44708,7 +_,7 @@
  			y -= t.frameY % 36 / 18;
  		}
