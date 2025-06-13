@@ -9,15 +9,30 @@
  {
  	private static List<Animation> _animations;
  	private static Dictionary<Point16, Animation> _temporaryAnimations;
-@@ -86,6 +_,11 @@
- 
+@@ -87,8 +_,16 @@
  				break;
  			}
-+		}
+ 		}
 +		if (AnimationFrameDatas.TryGetValue(type, out var data)) {
 +			_frameMax = data.frames.Length;
 +			_frameCounterMax = data.frameRate;
 +			_frameData = data.frames;
++		}
+ 	}
+ 
++	/// <summary>
++	/// Starts a temporary tile animation of the given type at the given tile coordinates. <paramref name="tileType"/> should match the current <see cref="Tile.TileType"/>. This method should be called on the server in multiplayer to properly sync.
++	/// </summary>
+ 	public static void NewTemporaryAnimation(int type, ushort tileType, int x, int y)
+ 	{
+ 		Point16 coordinates = new Point16(x, y);
+@@ -162,6 +_,9 @@
  		}
  	}
  
++	/// <summary>
++	/// Gets the frame value of the temporary tile animation at the provided tile coordinates. Returns false if there is no animation.
++	/// </summary>
+ 	public static bool GetTemporaryFrame(int x, int y, out int frameData)
+ 	{
+ 		Point16 key = new Point16(x, y);

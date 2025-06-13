@@ -234,7 +234,7 @@ namespace ExampleMod.Content.NPCs
 			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
 			if (Main.netMode == NetmodeID.Server) {
 				// We recommend modders avoid sending WorldData too often, or filling it with too much data, lest too much bandwidth be consumed sending redundant data repeatedly
-				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronise
+				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronize
 				NetMessage.SendData(MessageID.WorldData);
 			}
 		}

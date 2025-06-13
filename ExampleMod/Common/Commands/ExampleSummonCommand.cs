@@ -101,7 +101,7 @@ namespace ExampleMod.Common.Commands
 
 				// Sync of NPCs on the server in MP
 				if (Main.netMode == NetmodeID.Server && slot < Main.maxNPCs) {
-					NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, slot);
+					NetMessage.SendData(MessageID.SyncNPC, number: slot);
 				}
 			}
 		}

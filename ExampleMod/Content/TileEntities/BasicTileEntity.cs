@@ -42,7 +42,7 @@ namespace ExampleMod.Content.TileEntities
 					// data the client will need access to.
 					if (Main.netMode == NetmodeID.Server) {
 						// The TileEntitySharing message will trigger NetSend, manually syncing the changed data.
-						NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
+						NetMessage.SendData(MessageID.TileEntitySharing, number: ID);
 					}
 				}
 			}

@@ -42,7 +42,7 @@ namespace ExampleMod.Content.TileEntities
 			// Granted that the check passes, we change the active state, and if this is on the server, we sync it with the server:
 			isActive = !isActive;
 			if (Main.netMode == NetmodeID.Server) {
-				NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
+				NetMessage.SendData(MessageID.TileEntitySharing, number: ID);
 			}
 		}
 	}

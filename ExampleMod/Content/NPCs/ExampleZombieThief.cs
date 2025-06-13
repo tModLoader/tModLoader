@@ -71,7 +71,7 @@ namespace ExampleMod.Content.NPCs
 					item.active = false;
 					StolenItems += item.stack;
 
-					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item.whoAmI);
+					NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
 
 					// Show emote when stealing an example item
 					EmoteBubble.NewBubble(ModContent.EmoteBubbleType<ExampleItemEmote>(), new WorldUIAnchor(NPC), 90);

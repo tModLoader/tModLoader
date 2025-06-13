@@ -19,6 +19,10 @@ public partial class Animation
 		AnimationFrameDatas.Clear();
 	}
 
+	/// <summary>
+	/// Registers a temporary tile animation are returns a unique ID. The animation will play through the provided frames and the provided frameRate. Use the ID with <see cref="NewTemporaryAnimation"/> to trigger and sync the tempory tile animation.
+	/// </summary>
+	/// <returns>A unique Id for this specific animation.</returns>
 	public static int RegisterTemporaryAnimation(int frameRate, int[] frames)
 	{
 		int animationType = AnimationCount++;

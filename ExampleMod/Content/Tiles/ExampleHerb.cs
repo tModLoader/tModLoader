@@ -87,7 +87,7 @@ namespace ExampleMod.Content.Tiles
 						if (foliageGrass || moddedFoliage || harvestableVanillaHerb) {
 							WorldGen.KillTile(i, j);
 							if (!tile.HasTile && Main.netMode == NetmodeID.MultiplayerClient) {
-								NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, i, j);
+								NetMessage.SendData(MessageID.TileManipulation, number: 0, number2: i, number3: j);
 							}
 
 							return true;
