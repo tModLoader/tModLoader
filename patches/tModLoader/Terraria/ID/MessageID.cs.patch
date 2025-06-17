@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,163 +_,646 @@
+@@ -1,163 +_,665 @@
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
@@ -420,12 +420,23 @@
 +	// Forwarded to other clients
 +	public const byte PaintWall = 64;
 +
-+	// TeleportType, index, position
-+	// First 2 bits of teleportType { Player = 0, NPC = 1, PlayerToPlayer = 2 }
-+	// Next 2 bits of teleportType = Style parameter to Teleport
 +	// If PlayerToPlayer, the nearest player in 9999 units is found, and a chat message sent "{player} has teleported to {player2}"
 +	// Index is set to whoAmI on server, so NPC teleports cannot be sent from client
 +	// Player teleports are forwarded to other clients
++	/// <summary>
++	/// Teleports the player (or an NPC) to a provided world coordinate. (Sets position, not Center)
++	/// <br/><br/> When using any of these teleport methods in multiplayer, make sure to use this instead of calling the methods directly on the client.
++	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
++	/// <br/> <b>number:</b> teleportType: 0->Player, 1->NPC, 2->PlayerToPlayer
++	/// <br/> <b>number2:</b> The player.whoAmI of the player to teleport (or NPC.whoAmI for NPC teleports)
++	/// <br/> <b>number3:</b> The destination x world coordinate
++	/// <br/> <b>number4:</b> The destination y world coordinate
++	/// <br/> <b>number5:</b> The <c>Style</c> parameter of <see cref="Player.Teleport(Microsoft.Xna.Framework.Vector2, int, int)"/>, controls the visuals and sounds of the teleport. Equivalent to <see cref="TeleportationStyleID"/> values.
++	/// <br/> <b>number6:</b> Unknown
++	/// <br/> <b>number7:</b> The <c>extraInfo</c> parameter of <see cref="Player.Teleport(Microsoft.Xna.Framework.Vector2, int, int)"/>, only relevant with pylon teleporting.
++	/// <br/><br/> Using this message for long range player teleports won't work correctly because the client might not have the destination section loaded. You might need to use a <see cref="ModPacket"/> to call <see cref="RemoteClient.CheckSection(int, Microsoft.Xna.Framework.Vector2, int)"/> on the server and then call Player.Teleport and relay this message manually.
++	/// <br/><br/> <b>Client->Server for player teleports, Server->Clients for NPC teleports.</b> The player teleport message is relayed to other clients to sync the visuals.
++	/// </summary>
  	public const byte TeleportEntity = 65;
 +
 -	public const byte Unknown66 = 66;
@@ -447,6 +458,14 @@
 +
  	public const byte TravelMerchantItems = 72;
 +
++	/// <summary>
++	/// Teleports the client to set locations using one of 4 teleport methods. Use <see cref="TeleportEntity"/> instead to teleport to arbitrary coordinates.
++	/// <br/><br/> When using any of these teleport methods in multiplayer, make sure to use this instead of calling the methods directly on the client.
++	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
++	/// <br/> <b>number: </b> The teleportation method to call:
++	/// <br/> 0-><see cref="Player.TeleportationPotion"/> (Random Location), 1-><see cref="Player.MagicConch"/> (Ocean), 2-><see cref="Player.DemonConch"/> (Underworld), 3-><see cref="Player.Shellphone_Spawn"/> (World spawn point).
++	/// <br/><br/> <b>Client->Server only</b>
++	/// </summary>
  	public const byte RequestTeleportationByServer = 73;
 +
  	public const byte AnglerQuest = 74;

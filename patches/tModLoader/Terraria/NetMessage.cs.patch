@@ -36,7 +36,7 @@
 +	/// <summary>
 +	/// Used to send a vanilla <see cref="MessageID"/> message to send data between the server and client. This is the vanilla equivalent to <see cref="ModPacket"/>.
 +	/// <br/><br/> Vanilla messages are usually automatically sent by the game, but there are cases where manually sending a vanilla message is useful. To get started with learning netcode, read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">the Basic Netcode wiki guide</see>.
-+	/// <br/><br/> To use this method, pass a <see cref="MessageID"/> value into <paramref name="msgType"/> parameter. The remaining parameters (text and number0-7) need to be populated with appropriate values according to the documentation of that <see cref="MessageID"/>. When in doubt, consult the decompiled source code.
++	/// <br/><br/> To use this method, pass a <see cref="MessageID"/> value into <paramref name="msgType"/> parameter. The remaining parameters (text and number0-7) need to be populated with appropriate values according to the documentation of that specific <see cref="MessageID"/>. When in doubt, consult the decompiled source code.
 +	/// <br/><br/> <b><paramref name="ignoreClient"/> and <paramref name="remoteClient"/>:</b> When called on a client, the data will be sent to the server and <paramref name="ignoreClient"/> and <paramref name="remoteClient"/> are ignored. When called on a server, the data will be sent to either all clients, all clients except a specific client, or just a specific client depending on the values of <paramref name="ignoreClient"/> and <paramref name="remoteClient"/>.
 +	/// <br/><br/> The <see cref="MessageBuffer.GetData(int, int, out int)"/> method is what handles these messages when received.
 +	/// </summary>
