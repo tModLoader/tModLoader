@@ -19,7 +19,7 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 	private UIElement _baseElement;
 	private UITextPanel<string> _messagePanel;
 	private UIFocusInputTextField _modName;
-	private UIFocusInputTextField _modDiplayName;
+	private UIFocusInputTextField _modDisplayName;
 	private UIFocusInputTextField _modAuthor;
 	private UIFocusInputTextField _basicSword;
 	public UIState PreviousUIState { get; set; }
@@ -74,15 +74,14 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 		buttonCreate.OnLeftClick += OKClick;
 		_baseElement.Append(buttonCreate);
 
-		// TODO localisations
 		float top = 16;
-		_modName = createAndAppendTextInputWithLabel("ModName (no spaces)", "Type here");
+		_modName = createAndAppendTextInputWithLabel(Language.GetTextValue("tModLoader.CreateModName"), Language.GetTextValue("tModLoader.ModConfigTypeHere"));
 		_modName.OnTextChange += (a, b) => { _modName.SetText(_modName.CurrentString.Replace(" ", "")); };
-		_modDiplayName = createAndAppendTextInputWithLabel("Mod DisplayName", "Type here");
-		_modAuthor = createAndAppendTextInputWithLabel("Mod Author", "Type here");
-		_basicSword = createAndAppendTextInputWithLabel("BasicSword (no spaces)", "Leave Blank to Skip");
-		_modName.OnTab += (a, b) => _modDiplayName.Focused = true;
-		_modDiplayName.OnTab += (a, b) => _modAuthor.Focused = true;
+		_modDisplayName = createAndAppendTextInputWithLabel(Language.GetTextValue("tModLoader.CreateModDisplayName"), Language.GetTextValue("tModLoader.ModConfigTypeHere"));
+		_modAuthor = createAndAppendTextInputWithLabel(Language.GetTextValue("tModLoader.CreateModAuthor"), Language.GetTextValue("tModLoader.ModConfigTypeHere"));
+		_basicSword = createAndAppendTextInputWithLabel(Language.GetTextValue("tModLoader.CreateModBasicSword"), Language.GetTextValue("tModLoader.CreateModBasicSwordHint"));
+		_modName.OnTab += (a, b) => _modDisplayName.Focused = true;
+		_modDisplayName.OnTab += (a, b) => _modAuthor.Focused = true;
 		_modAuthor.OnTab += (a, b) => _basicSword.Focused = true;
 		_basicSword.OnTab += (a, b) => _modName.Focused = true;
 
@@ -130,7 +129,7 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 		base.OnActivate();
 		_modName.SetText("");
 		_basicSword.SetText("");
-		_modDiplayName.SetText("");
+		_modDisplayName.SetText("");
 		_modAuthor.SetText("");
 		_messagePanel.SetText("");
 		_modName.Focused = true;
@@ -176,19 +175,19 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 			string basicSwordTrimmed = _basicSword.CurrentString.Trim();
 			string sourceFolder = Path.Combine(ModCompile.ModSourcePath, modNameTrimmed);
 			var provider = CodeDomProvider.CreateProvider("C#");
-
+			
 			if (Directory.Exists(sourceFolder))
-				_messagePanel.SetText("Folder already exists");
+				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModFolderAlreadyExists"));
 			else if (!provider.IsValidIdentifier(modNameTrimmed))
-				_messagePanel.SetText("ModName is invalid C# identifier. Remove spaces.");
+				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModNameInvalid"));
 			else if (modNameTrimmed.Equals("Mod", StringComparison.InvariantCultureIgnoreCase) || modNameTrimmed.Equals("ModLoader", StringComparison.InvariantCultureIgnoreCase) || modNameTrimmed.Equals("tModLoader", StringComparison.InvariantCultureIgnoreCase))
-				_messagePanel.SetText("ModName is a reserved mod name. Choose a different name.");
+				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModNameReserved"));
 			else if (!string.IsNullOrEmpty(basicSwordTrimmed) && !provider.IsValidIdentifier(basicSwordTrimmed))
-				_messagePanel.SetText("BasicSword is invalid C# identifier. Remove spaces.");
-			else if (string.IsNullOrWhiteSpace(_modDiplayName.CurrentString))
-				_messagePanel.SetText("DisplayName can't be empty");
+				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModBasicSwordInvalid"));
+			else if (string.IsNullOrWhiteSpace(_modDisplayName.CurrentString))
+				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModDisplayNameEmpty"));
 			else if (string.IsNullOrWhiteSpace(_modAuthor.CurrentString))
-				_messagePanel.SetText("Author can't be empty");
+				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModAuthorEmpty"));
 			else {
 				Directory.CreateDirectory(sourceFolder);
 
@@ -209,7 +208,7 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 	{
 		var result = new SourceManagement.TemplateParameters {
 			ModName = _modName.CurrentString.Trim(),
-			ModDisplayName = _modDiplayName.CurrentString,
+			ModDisplayName = _modDisplayName.CurrentString,
 			ModAuthor = _modAuthor.CurrentString.Trim(),
 			ModVersion = "0.1",
 			ItemName = _basicSword.CurrentString.Trim(),

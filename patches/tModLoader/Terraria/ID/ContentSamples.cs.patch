@@ -170,6 +170,18 @@
  			Item item = new Item();
  			item.SetDefaults(k);
  			ItemsByType[k] = item;
+@@ -790,7 +_,10 @@
+ 		AddItemResearchOverride(5323, 5455);
+ 	}
+ 
++	/// <summary>
++	/// Registers any number of item types (<see cref="Item.type"/>) with the item type it shares research values with.
++	/// </summary>
+-	private static void AddItemResearchOverride(int itemTypeToUnlock, params int[] itemsThatWillResearchTheItemToUnlock)
++	public static void AddItemResearchOverride(int itemTypeToUnlock, params int[] itemsThatWillResearchTheItemToUnlock)
+ 	{
+ 		for (int i = 0; i < itemsThatWillResearchTheItemToUnlock.Length; i++) {
+ 			AddItemResearchOverride_Inner(itemsThatWillResearchTheItemToUnlock[i], itemTypeToUnlock);
 @@ -955,7 +_,7 @@
  		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  		nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/Language.cs
 +++ src/tModLoader/Terraria/Localization/Language.cs
-@@ -1,23 +_,61 @@
+@@ -1,23 +_,62 @@
 +using System;
  using System.Text.RegularExpressions;
  using Terraria.Utilities;
@@ -25,6 +25,7 @@
  	public static LocalizedText GetText(string key) => LanguageManager.Instance.GetText(key);
 +	/// <summary>
 +	/// Retrieves the text value for a specified localization key. The text returned will be for the currently selected language.
++	/// <para/> Note that modded localization entries are not loaded until the <see cref="ModLoader.Mod.SetupContent"/> stage, so attempting to use GetTextValue during Load methods will not work. Consider using <see cref="GetText"/> instead.
 +	/// </summary>
 +	/// <param name="key"></param>
 +	/// <returns></returns>

@@ -9,6 +9,8 @@ using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 using Terraria.Localization;
+using System.Collections;
+using System.Text;
 
 namespace Terraria.Social.Steam;
 
@@ -16,31 +18,29 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
-	private ulong existingAuthorID = 0;
 
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
 		info = null;
 		var query = new QueryParameters() {
-			searchModSlugs = new string[] { modFile.Name },
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods)) {
+		if (!WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod)) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
 		currPublishID = 0;
 
-		if (!mods.Any() || mods[0] == null)
+		if (mod == null) {
 			return false;
+		}
 
-		currPublishID = ulong.Parse(mods[0].PublishId.m_ModPubId);
-		existingAuthorID = ulong.Parse(mods[0].OwnerId);
+		currPublishID = ulong.Parse(mod.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
-		WorkshopBrowserModule.Instance.DownloadItem(mods[0], uiProgress: null);
+		WorkshopBrowserModule.Instance.DownloadItem(mod, uiProgress: null);
 
 		// Grab the tags from workshop.json
 		ModOrganizer.WorkshopFileFinder.Refresh(new WorkshopIssueReporter()); // Force detection in case mod wasn't installed
@@ -54,8 +54,8 @@ public partial class WorkshopSocialModule
 		try {
 			return _PublishMod(modFile, buildData, settings);
 		}
-		catch {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+		catch (Exception e) {
+			IssueReporter.ReportInstantUploadProblem(e.Message);
 			return false;
 		}
 	}
@@ -66,12 +66,63 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
 			return false;
 		}
-		
+
 		if (modFile.TModLoaderVersion.MajorMinor() != BuildInfo.tMLVersion.MajorMinor()) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.WrongVersionCantPublishError");
 			return false;
 		}
 
+		// Checks if Mod is adequate
+
+		// Check mod description
+		const string DescriptionFileName = "description.txt";
+		if (!modFile.HasFile(DescriptionFileName)) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionMissing", DescriptionFileName));
+			return false;
+		}
+
+		const int MinimumDefaultDescriptionCharacters = 50;
+		using var defaultDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{DescriptionFileName}"));
+		string defaultDescription = defaultDescriptionStream.ReadToEnd();
+		string modDescription = Encoding.UTF8.GetString(modFile.GetBytes(DescriptionFileName));
+		if (modDescription == defaultDescription) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionInvalid", DescriptionFileName));
+			return false;
+		}
+
+		if (modDescription.Count(char.IsLetterOrDigit) < MinimumDefaultDescriptionCharacters) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModDescriptionLengthTooShort", DescriptionFileName));
+			return false;
+		}
+
+		// Check workshop description
+		const string WorkshopDescriptionFileName = "description_workshop.txt";
+		if (modFile.HasFile(WorkshopDescriptionFileName)) {
+			const string formattingGuidePage = "https://steamcommunity.com/comment/Guide/formattinghelp";
+			using var defaultWorkshopDescriptionStream = new StreamReader(typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{WorkshopDescriptionFileName}"));
+			string defaultWorkshopDescription = defaultWorkshopDescriptionStream.ReadToEnd();
+			string workshopDescription = Encoding.UTF8.GetString(modFile.GetBytes(WorkshopDescriptionFileName));
+
+			if (workshopDescription == defaultWorkshopDescription || workshopDescription.Contains(formattingGuidePage)) {
+				IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModWorkshopDescriptionInvalid", WorkshopDescriptionFileName, DescriptionFileName));
+				return false;
+			}
+		}
+
+		// Check mod icon
+		const string IconFileName = "icon.png";
+		using var defaultIconStream = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{IconFileName}");
+		using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+		defaultIconStream.CopyTo(defaultIconMemoryStream);
+		var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+		var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(IconFileName);
+
+		if (modIconBytes.SequenceEqual(defaultIconBytes)) {
+			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModUsesDefaultIcon", IconFileName));
+			return false;
+		}
+
+		// Check for Beta
 		if (BuildInfo.IsDev) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
@@ -83,14 +134,6 @@ public partial class WorkshopSocialModule
 		buildData["trueversion"] = buildData["version"];
 
 		if (currPublishID != 0) {
-			var currID = Steamworks.SteamUser.GetSteamID();
-
-			// Reject posting the mod if you don't 'own' the mod copy. NOTE: Steam doesn't support updating via contributor role anyways.
-			if (DateTime.Today < new DateTime(2023, 11, 21) && existingAuthorID != currID.m_SteamID) {
-				IssueReporter.ReportInstantUploadProblem("tModLoader.ModAlreadyUploaded");
-				return false;
-			}
-
 			// Publish by updating the files available on the current published version
 			workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
 
@@ -108,12 +151,7 @@ public partial class WorkshopSocialModule
 			return false;
 		}
 
-		string description = buildData["description"] + $"\n[quote=tModLoader]Developed By {buildData["author"]}[/quote]";
-		ModCompile.UpdateSubstitutedDescriptionValues(ref description, buildData["trueversion"], buildData["homepage"]);
-		if (description.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			return false;
-		}
+		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -123,7 +161,7 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
-		
+
 		string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
 		if (MakeTemporaryFolder(contentFolderPath)) {
@@ -210,7 +248,7 @@ public partial class WorkshopSocialModule
 
 		if (buildData["modreferences"].Length > 0) {
 			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
-			if (!WorkshopHelper.TryGetPublishIdByInternalName(query, out var modIds))
+			if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 				return false;
 
 			foreach (string modRef in modIds) {
@@ -243,6 +281,41 @@ public partial class WorkshopSocialModule
 		}
 	}
 
+	private static string CalculateDescriptionAndChangeNotes(bool isCi, NameValueCollection buildData, ref string changeNotes)
+	{
+		string workshopDescFile = Path.Combine(buildData["sourcesfolder"], "description_workshop.txt");
+		string workshopDesc;
+		if (!File.Exists(workshopDescFile))
+			workshopDesc = buildData["description"];
+		else
+			workshopDesc = File.ReadAllText(workshopDescFile);
+
+		// Add version metadata override to allow CI publishing
+		string descriptionFinal = "";
+		if (isCi)
+			descriptionFinal += $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]";
+
+		descriptionFinal += $"{workshopDesc}" + $"[quote=tModLoader {buildData["name"]}]\nDeveloped By {buildData["author"]}[/quote]";
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
+
+		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
+		}
+
+		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
+		if (string.IsNullOrWhiteSpace(changeNotes)) {
+			changeNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(buildData["homepage"]))
+				changeNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
+
+		return descriptionFinal;
+	}
+
 	public static void SteamCMDPublishPreparer(string modFolder)
 	{
 		if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
@@ -255,7 +328,7 @@ public partial class WorkshopSocialModule
 		Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
 
 		// folder which will be used for the upload when the artifact is downloaded in post-build action. 
-		Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder); 
+		Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder);
 
 		// The Folder where we will put all the files that should be included in the build artifact
 		string publishFolder = $"{ModOrganizer.modPath}/Workshop";
@@ -270,7 +343,8 @@ public partial class WorkshopSocialModule
 			["version"] = newMod.Version.ToString(),
 			["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.Version}",
 			["description"] = newMod.properties.description,
-			["homepage"] = newMod.properties.homepage
+			["homepage"] = newMod.properties.homepage,
+			["sourcesfolder"] = modFolder
 		};
 
 		// Needed for backwards compat from previous version metadata
@@ -298,18 +372,7 @@ public partial class WorkshopSocialModule
 		ModOrganizer.CleanupOldPublish(publishFolder);
 
 		// Assign Workshop Description
-		string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
-		string workshopDesc;
-		if (!File.Exists(workshopDescFile))
-			workshopDesc = buildData["description"];
-		else
-			workshopDesc = File.ReadAllText(workshopDescFile);
-
-		// Add version metadata override to allow CI publishing
-		string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}\nDeveloped By {buildData["author"]}[/quote]" +
-			$"{workshopDesc}";
-
-		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
+		string descriptionFinal = CalculateDescriptionAndChangeNotes(isCi: true, buildData, ref changeNotes);
 
 		// Make the publish.vdf file
 		string manifest = Path.Combine(publishedModFiles, "workshop.json");

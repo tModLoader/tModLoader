@@ -28,17 +28,17 @@ for language in languages:
         otherLinesDict = dict((k.strip(), v.strip()) for k,v in (line.strip().split(':', 1) for line in otherLines if line.find(':') != -1))
 
         for englishIndex, englishLine in enumerate(enLines):
+            # Add English Comments back in
+            if englishLine.strip().startswith('//'):
+                otherLanguage += englishLine
             # For lines with key values pairs, copy translation or add commented translation placeholder.
-            if englishLine.find(": ") != -1 and len(englishLine.split('"')) >= 4:
+            elif englishLine.find(": ") != -1 and len(englishLine.split('"')) >= 4:
                 translationKey = englishLine[:englishLine.find(": ")].strip()
                 if translationKey in otherLinesDict:
                     otherLanguage += "\t\t" + translationKey + ": " + otherLinesDict[translationKey] + '\n'
                 else:
                     otherLanguage += "\t\t// " + englishLine.strip() + '\n'
                     missing += 1
-            # Add English Comments back in
-            elif englishLine.strip().startswith('//'):
-                otherLanguage += englishLine
             # Add other json lines in. Also add in whitespace lines.
             else:
                 otherLanguage += englishLine
@@ -56,5 +56,3 @@ with open('./TranslationsNeeded.txt', 'w', encoding='utf-8') as output:
     else:
         for entry in missings: 
             output.write(str(entry[0]) + " " + str(entry[1]) + "\n")
-print("Make sure to run Diff.")
-input("Press Enter to continue...")

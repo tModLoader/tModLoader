@@ -337,6 +337,9 @@ public static partial class Program
 					Console.WriteLine("Warning: Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK appears to be running. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk"); // MessageBoxShow called below will also error when attempting to load 32 bit SDL2.
 				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 			}
+			if (Platform.Current.Type == PlatformType.OSX && Environment.OSVersion.Version < new Version(10, 15)) {
+				ErrorReporting.FatalExit("tModLoader requires macOS v10.15 (Catalina) or higher to run as of tModLoader v2024.03+. Please update macOS.\nIf updating is not possible, manually downgrading (https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#manual-installation) to tModLoader v2024.02.3.0 (https://github.com/tModLoader/tModLoader/releases/tag/v2024.02.3.0) is an option to keep playing.\nAborting...");
+			}
 
 			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
 

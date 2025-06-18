@@ -29,7 +29,7 @@ fi
 # DbgMini is a mini memory dump when dotnet crashes. 
 #	Dump diagnostics is diagnostic logging for that dumping Process
 # Enable Crash Report is a Unix based feature. Needs DbgMiniDumpName
-#export DOTNET_DbgEnableMiniDum1=1
+#export DOTNET_DbgEnableMiniDump=1
 #export DOTNET_DbgMiniDumpType=3
 #export DOTNET_DbgMiniDumpName="$LaunchLogs/CoreDump.%t"
 #export DOTNET_CreateDumpDiagnostics=1

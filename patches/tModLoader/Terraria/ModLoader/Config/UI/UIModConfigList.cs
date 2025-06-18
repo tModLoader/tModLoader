@@ -185,6 +185,23 @@ internal class UIModConfigList : UIState
 
 				modList.Add(modPanel);
 			}
+			else {
+				if (mod.Name == "ModLoader")
+					continue;
+
+				var modPanel = new UIButton<string>(mod.DisplayName) {
+					MaxWidth = { Percent = 0.95f },
+					HAlign = 0.5f,
+					ScalePanel = true,
+					BackgroundColor = Color.Gray,
+					HoverPanelColor = Color.Gray,
+					HoverBorderColor = Color.Black,
+					TooltipText = true,
+					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
+				};
+
+				modList.Add(modPanel);
+			}
 		}
 	}
 
@@ -200,7 +217,7 @@ internal class UIModConfigList : UIState
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			float indicatorOffset = 20;
+			float indicatorOffset = 24;
 
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
 				MaxWidth = { Percent = 0.95f },
@@ -222,16 +239,17 @@ internal class UIModConfigList : UIState
 			configList.Add(configPanel);
 
 			// ConfigScope indicator
-			var indicatorTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
-			var indicatorFrame = indicatorTexture.Frame(2, 1, 1, 0);
+			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
+			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0);
 			var serverColor = Colors.RarityRed;
 			var clientColor = Colors.RarityCyan;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
-				Color = config.Mode == ConfigScope.ServerSide ? serverColor : clientColor,
-				MarginRight = -indicatorOffset
+				Color = Color.White,
+				MarginRight = -indicatorOffset - 4,
+				MarginTop = -4,
 			};
 
 			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {

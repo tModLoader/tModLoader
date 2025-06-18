@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using ReLogic.Reflection;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -13,6 +15,16 @@ namespace Terraria.ModLoader;
 /// </remarks>
 public abstract class DamageClass : ModType, ILocalizedModType
 {
+	public class Sets
+	{
+		/// <summary>
+		/// Used for creating sets indexed by DamageClass type (<see cref="DamageClass.Type"/>).
+		/// <para/> <inheritdoc cref="SetFactory"/>
+		/// </summary>
+		public static SetFactory Factory = new SetFactory(DamageClassLoader.DamageClassCount, nameof(DamageClass), Search);
+	}
+	public static IdDictionary Search = IdDictionary.Create<DamageClass, int>();
+
 	/// <summary>
 	/// Default damage class for non-classed weapons and items, does not benefit from Generic bonuses
 	/// </summary>
@@ -76,11 +88,21 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <summary> 
 	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br/>
 	/// For a more in-depth explanation and demonstration, see <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>
+	/// This method is only meant to be overridden. Modders should call <see cref="CountsAsClass"/> to query effect inheritance.
 	/// </summary>
 	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
 	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit effects from.</param>
 	/// <returns><see langword="false"/> by default - which does not let any other classes' effects trigger on this <see cref="DamageClass"/>.</returns>
 	public virtual bool GetEffectInheritance(DamageClass damageClass) => false;
+
+	/// <summary> 
+	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of prefixes.<br/>
+	/// This method is only meant to be overridden. Modders should call <see cref="GetsPrefixesFor"/> to query prefix inheritance.
+	/// </summary>
+	/// <remarks>Return <see langword="true"/> for each <see cref="DamageClass"/> you want to inherit from</remarks>
+	/// <param name="damageClass">The <see cref="DamageClass"/> you want to inherit prefixes from.</param>
+	/// <returns><see cref="GetEffectInheritance"/> by default - which lets the prefixes of any class this class inherits effects from roll and remain on items of this <see cref="DamageClass"/>.</returns>
+	public virtual bool GetPrefixInheritance(DamageClass damageClass) => GetEffectInheritance(damageClass);
 
 	/// <summary> 
 	/// This lets you define default stat modifiers for all items of this class (e.g. base crit chance).
@@ -112,8 +134,8 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<DamageClass>.Register(this);
-
 		Type = DamageClassLoader.Add(this);
+		Search.Add(FullName, Type);
 	}
 
 	public sealed override void SetupContent()
@@ -133,4 +155,16 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <returns><see langword="true"/> if this damage class is inheriting effects from <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[Type, damageClass.Type];
+
+	/// <inheritdoc cref="GetsPrefixesFor"/>
+	public bool GetsPrefixesFor<T>() where T : DamageClass
+		=> GetsPrefixesFor(ModContent.GetInstance<T>());
+
+	/// <summary>
+	/// This is used to check if this <see cref="DamageClass"/> has been set to inherit prefixes from the provided <see cref="DamageClass"/>, as dictated by <see cref="GetPrefixInheritance"/>
+	/// </summary>
+	/// <param name="damageClass">The DamageClass you want to check if prefixes are inherited by this DamageClass.</param>
+	/// <returns><see langword="true"/> if this damage class inherits prefixes from <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
+	public bool GetsPrefixesFor(DamageClass damageClass)
+		=> this == damageClass || GetPrefixInheritance(damageClass);
 }

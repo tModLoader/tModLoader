@@ -40,8 +40,6 @@ public static class BuffLoader
 
 	internal static int ReserveBuffID()
 	{
-		if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
-
 		int reserveID = nextBuff;
 		nextBuff++;
 		return reserveID;
@@ -128,19 +126,23 @@ public static class BuffLoader
 			GetBuff(buff).Update(player, ref buffIndex);
 		}
 		foreach (var hook in HookUpdatePlayer) {
-			if (buffIndex != originalIndex) {
+			if (buffIndex != originalIndex)
 				break;
-			}
+
 			hook(buff, player, ref buffIndex);
 		}
 	}
 
 	public static void Update(int buff, NPC npc, ref int buffIndex)
 	{
+		int originalIndex = buffIndex;
 		if (IsModBuff(buff)) {
 			GetBuff(buff).Update(npc, ref buffIndex);
 		}
 		foreach (var hook in HookUpdateNPC) {
+			if (buffIndex != originalIndex)
+				break;
+
 			hook(buff, npc, ref buffIndex);
 		}
 	}

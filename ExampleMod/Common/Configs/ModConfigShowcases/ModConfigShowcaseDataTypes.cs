@@ -26,6 +26,8 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public EquipType SomeEnum;
 		public byte SomeByte;
 		public uint SomeUInt;
+		public long SomeLong;
+		public ulong SomeULong;
 
 		// Structs - These require special code. We've implemented Color and Vector2 so far.
 		public Color SomeColor;
@@ -33,7 +35,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public Point SomePoint; // notice the not implemented message.
 
 		// Data Structures (Reference Types)
-		public int[] SomeArray = new int[] { 25, 70, 12 }; // Arrays have a specific length and need a default value specified.
+		public int[] SomeArray = [25, 70, 12]; // Arrays have a specific length and need a default value specified.
 		public List<int> SomeList = new List<int>() { 1, 3, 5 }; // Initializers can be used to declare defaults for data structures.
 		public Dictionary<string, int> SomeDictionary = new Dictionary<string, int>();
 		public HashSet<string> SomeSet = new HashSet<string>();

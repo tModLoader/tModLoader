@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,19 +_,55 @@
+@@ -3,19 +_,64 @@
  
  namespace Terraria;
  
@@ -32,8 +32,17 @@
 +	/// The velocity of this Entity in world coordinates per tick.
 +	/// </summary>
  	public Vector2 velocity;
++	/// <summary>
++	/// The <see cref="position"/> of this Entity during the previous tick. For projectiles with <see cref="Projectile.extraUpdates"/>, this will be the position during the previous extra update, not necessarily the position during the previous tick.
++	/// </summary>
  	public Vector2 oldPosition;
++	/// <summary>
++	/// The <see cref="velocity"/> of this Entity during the previous tick. For projectiles with <see cref="Projectile.extraUpdates"/>, this will be the velocity during the previous extra update, not necessarily the velocity during the previous tick.
++	/// </summary>
  	public Vector2 oldVelocity;
++	/// <summary>
++	/// The <see cref="direction"/> of this Entity during the previous tick. For projectiles with <see cref="Projectile.extraUpdates"/>, this will be the direction during the previous extra update, not necessarily the direction during the previous tick.
++	/// </summary>
  	public int oldDirection;
 +	/// <summary>
 +	/// The direction this entity is facing. A value of 1 means the entity is facing to the right. -1 means facing to the left.

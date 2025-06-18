@@ -10,6 +10,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.
+/// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Wall">Wall Guide</see> teaches the basics of making a modded wall.
 /// </summary>
 public abstract class ModWall : ModBlockType
 {
@@ -104,6 +105,12 @@ public abstract class ModWall : ModBlockType
 	/// <param name="style">The style or orientation that will be applied</param>
 	/// <param name="frameNumber">The random style that will be applied</param>
 	public virtual bool WallFrame(int i, int j, bool randomizeFrame, ref int style, ref int frameNumber)
+	{
+		return true;
+	}
+
+	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(int, int, string)"/>
+	public virtual bool CanBeTeleportedTo(int i, int j, Player player, string context)
 	{
 		return true;
 	}

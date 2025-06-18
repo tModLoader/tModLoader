@@ -1,9 +1,17 @@
 --- src/TerrariaNetCore/Terraria/ID/PlayerVariantID.cs
 +++ src/tModLoader/Terraria/ID/PlayerVariantID.cs
-@@ -5,8 +_,21 @@
+@@ -1,12 +_,27 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+-public static class PlayerVariantID
++public class PlayerVariantID
+ {
  	public class Sets
  	{
- 		public static SetFactory Factory = new SetFactory(Count);
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(Count, nameof(PlayerVariantID), Search);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given skin variant (<see cref="Player.skinVariant"/>), then that variant is for a male (<see cref="Player.Male"/>) player.
@@ -33,3 +41,10 @@
  		public static int[] VariantOrderFemale = new int[6] {
  			4,
  			5,
+@@ -38,4 +_,6 @@
+ 	public const int MaleDisplayDoll = 10;
+ 	public const int FemaleDisplayDoll = 11;
+ 	public static readonly int Count = 12;
++
++	public static IdDictionary Search = IdDictionary.Create<PlayerVariantID, sbyte>();
+ }

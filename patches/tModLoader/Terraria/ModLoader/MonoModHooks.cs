@@ -3,6 +3,7 @@ using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using MonoMod.Utils;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -125,6 +126,17 @@ public static class MonoModHooks
 		HookEndpointManager.Clear();
 		assemblyDetours.Clear();
 		_hookCache.Clear();
+
+		// #4220 - Mitigation for bugs in reflection cache with mod reloads, and helps with assembly unloading
+		var type = typeof(ReflectionHelper);
+		FieldInfo[] caches = [
+			type.GetField("AssemblyCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("AssembliesCache", BindingFlags.NonPublic | BindingFlags.Static),
+			type.GetField("ResolveReflectionCache", BindingFlags.NonPublic | BindingFlags.Static),
+		];
+		foreach (var cache in caches) {
+			((IDictionary)cache.GetValue(null)).Clear();
+		}
 	}
 
 	#region Obsolete HookEndpointManager method replacement
@@ -201,9 +213,10 @@ public static class MonoModHooks
 	/// <param name="il"></param>
 	public static void DumpIL(Mod mod, ILContext il)
 	{
-		string methodName = il.Method.FullName.Replace(':', '_');
+		string methodName = il.Method.FullName.Replace(':', '_').Replace('<', '[').Replace('>', ']');
 		if (methodName.Contains('?')) // MonoMod IL copies are created with mangled names like DMD<Terraria.Player::beeType>?38504011::Terraria.Player::beeType(Terraria.Player)
 			methodName = methodName[(methodName.LastIndexOf('?') + 1)..];
+		methodName = string.Join("_", methodName.Split(Path.GetInvalidFileNameChars())); // Catch any other illegal characters, just in case.
 
 		string filePath = Path.Combine(Logging.LogDir, "ILDumps", mod.Name, methodName + ".txt");
 		string folderPath = Path.GetDirectoryName(filePath);

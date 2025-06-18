@@ -57,7 +57,7 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		textBoxBackgroundA.Top.Set(-6, 0);
 		textBoxBackgroundA.PaddingTop = 0;
 		textBoxBackgroundA.PaddingBottom = 0;
-		ChooserFilter = new UIFocusInputTextField("Filter by Name");
+		ChooserFilter = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterByName"));
 		ChooserFilter.OnTextChange += (a, b) => {
 			UpdateNeeded = true;
 		};
@@ -71,7 +71,7 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		UIPanel textBoxBackgroundB = new UIPanel();
 		textBoxBackgroundB.CopyStyle(textBoxBackgroundA);
 		textBoxBackgroundB.Left.Set(180, 0);
-		ChooserFilterMod = new UIFocusInputTextField("Filter by Mod");
+		ChooserFilterMod = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterByMod"));
 		ChooserFilterMod.OnTextChange += (a, b) => {
 			UpdateNeeded = true;
 		};
