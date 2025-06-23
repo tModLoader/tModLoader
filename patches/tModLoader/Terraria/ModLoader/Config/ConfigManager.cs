@@ -309,13 +309,16 @@ public static class ConfigManager
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
 			NetworkText message = NetworkText.Deserialize(reader);
+			string modname = reader.ReadString();
+			string configname = reader.ReadString();
+			ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
+			int requestor = reader.ReadByte();
 			if (success) {
-				string modname = reader.ReadString();
-				string configname = reader.ReadString();
 				string json = reader.ReadString();
-				ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
+				if(Main.myPlayer == requestor)
+					activeConfig.HandleAcceptClientChangesReply(success, message);
 
 				Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
@@ -326,13 +329,12 @@ public static class ConfigManager
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message
-
+				activeConfig.HandleAcceptClientChangesReply(success, message);
 				Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
 					//Main.InGameUI.SetState(Interface.modConfig);
 				}
-
 			}
 		}
 		else {
@@ -374,6 +376,7 @@ public static class ConfigManager
 				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
+				p.Write((byte)whoAmI);
 				p.Write(json);
 				p.Send();
 			}
@@ -382,6 +385,9 @@ public static class ConfigManager
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(false);
 				message.Serialize(p);
+				p.Write(modname);
+				p.Write(configname);
+				p.Write((byte)whoAmI);
 				p.Send(whoAmI);
 			}
 

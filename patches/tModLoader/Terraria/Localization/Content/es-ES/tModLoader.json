@@ -141,9 +141,12 @@
 		"ModConfigNotification": "Notificación: ",
 		"ModConfigModConfig": "Config. del mod",
 		"ModConfigSaveConfig": "Guardar config.",
+		// "ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "Volver",
 		"ModConfigRevertChanges": "Revertir cambios",
+		// "ModConfigChangesReverted": "Changes Reverted",
 		"ModConfigRestoreDefaults": "Restablecer valores",
+		// "ModConfigDefaultsRestored": "Defaults Restored",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando al servidor aceptar los cambios...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "No se puede guardar porque los cambios requieren recargar el mod",
 		"ModConfigServerSide": "Configuración del lado del servidor",
@@ -566,6 +569,8 @@
 		"CommandModListModlist": "Lista de mods:",
 		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
 		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		// "CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		// "CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "Construyendo: {0}",

@@ -1431,8 +1431,10 @@ Mods: {
 			ExampleFullscreenUI: {
 				// Header: Example Fullscreen UI
 				// Description: This is an example fullscreen UI, notice how other UI is hidden.
+				// RandomizeItem: Randomize Item
 				// Nothing: "{0} is set to nothing"
 				// IsSet: "{0} is set to {1}: [i:{2}]"
+				// SaveValue: "{0} is saved as {1}"
 			}
 		}
 

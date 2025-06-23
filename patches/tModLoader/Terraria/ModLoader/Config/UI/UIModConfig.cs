@@ -48,6 +48,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	private ModConfig modConfig; // This is from ConfigManager.Configs
 	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
+	private bool preserveNotificationMessage;
 	private UIFocusInputTextField filterTextField;
 	internal string scrollToOption = null;
 	internal bool centerScrolledOption = false;
@@ -252,8 +253,9 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	}
 
 	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
-	private void DoMenuModeState()
+	private void DoMenuModeState(bool preserveNotificationMessage = false)
 	{
+		this.preserveNotificationMessage = preserveNotificationMessage;
 		if (Main.gameMenu) {
 			Main.MenuUI.SetState(null);
 			Main.menuMode = Interface.modConfigID;
@@ -266,15 +268,16 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		modConfig.Save();
-		DoMenuModeState();
+		modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
+		DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		pendingRevertDefaults = true;
-		DoMenuModeState();
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
+		DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -285,7 +288,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void DiscardChanges()
 	{
-		DoMenuModeState();
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
+		DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private bool pendingChanges;
@@ -435,7 +439,9 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 		updateNeeded = false;
 
-		SetMessage("", Color.White);
+		if (!preserveNotificationMessage)
+			SetMessage("", Color.White);
+		preserveNotificationMessage = false;
 
 		string configDisplayName = modConfig.DisplayName.Value;
 

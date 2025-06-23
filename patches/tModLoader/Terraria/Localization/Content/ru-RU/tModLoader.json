@@ -141,9 +141,12 @@
 		"ModConfigNotification": "Уведомление: ",
 		"ModConfigModConfig": "Конфигурация модов",
 		"ModConfigSaveConfig": "Сохранить",
+		// "ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "Назад",
 		"ModConfigRevertChanges": "Отменить",
+		// "ModConfigChangesReverted": "Changes Reverted",
 		"ModConfigRestoreDefaults": "Сбросить по умолчанию",
+		// "ModConfigDefaultsRestored": "Defaults Restored",
 		"ModConfigAskingServerToAcceptChanges": "Запрос сервера на принятие изменений...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Не удаётся сохранить, поскольку изменения требуют перезагрузки",
 		"ModConfigServerSide": "Серверная конфигурация",
@@ -566,6 +569,8 @@
 		"CommandModListModlist": "Список модов:",
 		"CommandCustomSetsDescription": "Отображает список имён ID sets.",
 		"CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (показать значения)] [-o (открыть лог-папку)]",
+		// "CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		// "CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "Идёт сборка: {0}",

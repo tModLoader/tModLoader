@@ -10,8 +10,8 @@ partial class MessageID
 {
 	/// <summary>
 	/// Sent by Clients who wish to change ConfigScope.ServerSide ModConfigs. Clients send Modname, configname, and json string.
-	/// <br/> Server determines if ModConfig.ReloadRequired and ModConfig.ShouldAcceptClientChanges. Replies with ShouldAcceptClientChanges message if rejected.
-	/// <br/> Client receives bool success, message, if success, additionally modname, configname, json and applies them locally.
+	/// <br/><br/> Server determines if ModConfig.ReloadRequired and ModConfig.ShouldAcceptClientChanges. Replies with ShouldAcceptClientChanges message if rejected.
+	/// <br/><br/> Client receives bool success, message, modname, configname, requestor player, if success additionally json, and applies them locally.
 	/// </summary>
 	public const byte InGameChangeConfig = 249;
 

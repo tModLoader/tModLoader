@@ -68,6 +68,12 @@ public abstract class ModConfig : ILocalizedModType
 	public virtual bool AcceptClientChanges(ModConfig pendingConfig, int whoAmI, ref NetworkText message)
 		=> true;
 
+	/// <summary>
+	/// Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by any client. Can be used to update UI attempting to Save changes to a ServerSide config. This is only called on the client that sent the request.
+	/// <paramref name="success"/> indicates if the changes were accepted and <paramref name="message"/> is the corresponding message from AcceptClientChanges.
+	/// </summary>
+	public virtual void HandleAcceptClientChangesReply(bool success, NetworkText message) { }
+
 	// TODO: Can we get rid of Clone and just load from disk? Don't think so yet.
 	/// <summary>
 	/// tModLoader will call Clone on ModConfig to facilitate proper implementation of the ModConfig user interface and detecting when a reload is required. Modders need to override this method if their config contains reference types. Failure to do so will lead to bugs. See ModConfigShowcaseDataTypes.Clone for examples and explanations.
@@ -98,49 +104,86 @@ public abstract class ModConfig : ILocalizedModType
 		return false;
 	}
 
-	public bool Save(bool showMessages = true)
+	/// <summary>
+	/// Attempts to save changes made to this ModConfig. This must be called on the active ModConfig instance.
+	/// <br/><br/> If <paramref name="pendingConfig"/> is provided, it will be used as the source for the changes to apply to the active config instance. If <paramref name="status"/> is provided, it will be called with text and a color to indicate the status of the operation. If <paramref name="silent"/> is false, sounds will play indicating success or failure.
+	/// <br/><br/> <b>Mod code can run this method in-game, but there are some considerations to keep in mind: </b>
+	/// <br/><br/> Calling this method on a <see cref="ConfigScope.ServerSide"/> config from a multiplayer client will result in <see cref="ConfigSaveResult.RequestSentToServer"/> being returned and the actual save logic being performed on the server. <see cref="ModConfig.HandleAcceptClientChangesReply(bool, NetworkText)"/> will be called on this client after the server accepts or denies the changes.
+	/// <br/><br/> Attempting to save changes that would violate <see cref="NeedsReload"/> will fail and <see cref="ConfigSaveResult.NeedsReload"/> will be returned.
+	/// <br/><br/> If there is a chance that the changes won't be accepted, or if you want to provide a UI for the user to make changes without them taking effect immediately, you should use a clone of the ModConfig and pass it in as <paramref name="pendingConfig"/> instead of modifying the active ModConfig directly.
+	/// </summary>
+	public ConfigSaveResult SaveChanges(ModConfig pendingConfig = null, Action<string, Color> status = null, bool silent = true)
 	{
-		// Since this can be called on a clone, we need to get the real config to load the data into
-		var realConfig = ConfigManager.GetConfig(Mod, Name); // Used to load changes back into
-		var loadTimeConfig = ConfigManager.GetLoadTimeConfig(Mod, Name); // Used to check if a reload is required
+		if (this != ConfigManager.GetConfig(Mod, Name))
+			throw new Exception("Save must be called on the active config.");
+		var modConfig = this;
+		bool pendingIsActive = pendingConfig == this;
+		pendingConfig = pendingConfig ?? this; // The changes are present in a clone or the active config.
 
-		// Main Menu - Save, leave reload for later
-		// MP with ServerSide - Send request to server
-		// SP || (MP with ClientSide) - Apply immediately if !NeedsReload
+		// Main Menu: Save, leave reload for later
+		// MP with ServerSide: Send request to server
+		// SP or (MP with ClientSide): Apply immediately if !NeedsReload
+		if (Main.gameMenu) {
+			if (!silent)
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+			ConfigManager.Save(pendingConfig);
+			ConfigManager.Load(modConfig);
+			// modConfig.OnChanged(); delayed until ReloadRequired checked
+			// Reload will be forced by Back Button in UIMods if needed
+		}
+		else {
+			// If we are in game...
+			if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
+				// TODO: Too
+				status?.Invoke(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); // "Asking server to accept changes..."
 
-		// Client sending request to change server config
-		if (!Main.gameMenu && realConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-			if (showMessages)
-				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"),  Color.Yellow);
+				var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
+				requestChanges.Write(pendingConfig.Mod.Name);
+				requestChanges.Write(pendingConfig.Name);
+				string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
+				requestChanges.Write(json);
+				requestChanges.Send();
 
-			var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
-			requestChanges.Write(Mod.Name);
-			requestChanges.Write(Name);
-			string json = JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact);
-			requestChanges.Write(json);
-			requestChanges.Send();
+				//IngameFancyUI.Close();
 
-			return true;
+				if (pendingIsActive)
+					ConfigManager.Load(modConfig);
+
+				return ConfigSaveResult.RequestSentToServer;
+			}
+
+			// SP or MP with ClientSide
+			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
+
+			if (loadTimeConfig.NeedsReload(pendingConfig)) {
+				if (!silent)
+					SoundEngine.PlaySound(SoundID.MenuClose);
+				status?.Invoke(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red); // "Can't save because changes would require a reload."
+				if (pendingIsActive)
+					ConfigManager.Load(modConfig);
+				return ConfigSaveResult.NeedsReload;
+			}
+			else {
+				if (!silent)
+					SoundEngine.PlaySound(SoundID.MenuOpen);
+				ConfigManager.Save(pendingConfig);
+				ConfigManager.Load(modConfig);
+				modConfig.OnChanged();
+			}
 		}
 
-		// Single-player in game but NeedsReload
-		if (!Main.gameMenu && loadTimeConfig.NeedsReload(this)) {
-			if (showMessages)
-				Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);
-
-			return false;
+		/*
+		if (ConfigManager.ModNeedsReload(modConfig.mod)) {
+			Main.menuMode = Interface.reloadModsID;
 		}
+		else {
+			DoMenuModeState();
+		}
+		*/
 
-		// Menu || (single-player, no reload) || (multiplayer, client side, no reload)
-		ConfigManager.Save(this);
-		ConfigManager.Load(realConfig);
+		status?.Invoke(Language.GetTextValue("tModLoader.ModConfigConfigSaved"), Color.Green);
 
-		// ModConfig.OnChanged() delayed until ReloadRequired checked if in main menu
-		// Reload will be forced by back button in UIMods if needed
-		if (!Main.gameMenu)
-			OnChanged();
-
-		return true;
+		return ConfigSaveResult.Success;
 	}
 
 	/// <summary>
@@ -154,7 +197,7 @@ public abstract class ModConfig : ILocalizedModType
 	/// <param name="centerScrolledOption"></param>
 	/// <param name="playSound">Whether <see cref="SoundID.MenuOpen"/> will be played when the UI is opened.</param>
 	public void Open(Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true, bool playSound = true)
-	{ 
+	{
 		if (playSound)
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 
