@@ -261,6 +261,11 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			// configA (ModConfigShowcaseDataTypes) should always succeed.
 			// configB (ModConfigShowcaseAcceptClientChanges), however, is a server side config and has AcceptClientChanges logic. This will show the results of that operation and demonstrates that ModConfig.SaveChanges won't always succeed.
 
+			// This UI is only initialized when 1st viewed, so this might be null.
+			if (ConfigSaveStatusMessage == null) {
+				return;
+			}
+
 			string text = Language.GetText("tModLoader.ModConfigNotification") + message;
 			float textWidth = FontAssets.MouseText.Value.MeasureString(text).X;
 			float scale = Math.Clamp(ConfigSaveStatusMessage.GetInnerDimensions().Width / textWidth, 0.25f, 1f);

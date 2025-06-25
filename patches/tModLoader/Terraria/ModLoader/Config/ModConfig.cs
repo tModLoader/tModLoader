@@ -117,8 +117,8 @@ public abstract class ModConfig : ILocalizedModType
 		if (this != ConfigManager.GetConfig(Mod, Name))
 			throw new Exception("SaveChanges must be called on the active config.");
 		var modConfig = this;
-		bool pendingIsActive = pendingConfig == this;
-		pendingConfig = pendingConfig ?? this; // The changes are present in a clone or the active config.
+		pendingConfig = pendingConfig ?? this; // The changes are present in a clone passed in or the active config.
+		bool pendingIsActive = pendingConfig == this; // If they were made on the active config, we'll need to restore them if save not accepted.
 
 		// Main Menu: Save, leave reload for later
 		// MP with ServerSide: Send request to server
@@ -154,7 +154,7 @@ public abstract class ModConfig : ILocalizedModType
 				return ConfigSaveResult.RequestSentToServer;
 			}
 
-			// SP or MP with ClientSide
+			// SP with either, MP with ClientSide, or Server with ServerSide
 			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
 
 			if (loadTimeConfig.NeedsReload(pendingConfig)) {
@@ -171,6 +171,20 @@ public abstract class ModConfig : ILocalizedModType
 				ConfigManager.Save(pendingConfig);
 				ConfigManager.Load(modConfig);
 				modConfig.OnChanged();
+
+				if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.Server) {
+					// Send new config to all clients
+					var p = new ModPacket(MessageID.InGameChangeConfig);
+					p.Write(true);
+					NetworkText message = NetworkText.FromKey("tModLoader.ModConfigAccepted");
+					message.Serialize(p);
+					p.Write(modConfig.Mod.Name);
+					p.Write(modConfig.Name);
+					p.Write((byte)255);
+					string json = JsonConvert.SerializeObject(modConfig, ConfigManager.serializerSettingsCompact);
+					p.Write(json);
+					p.Send();
+				}
 			}
 		}
 

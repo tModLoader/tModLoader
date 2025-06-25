@@ -1526,6 +1526,17 @@ Mods: {
 			}
 
 			ShowFullscreenUICommand.Description: Show the example fullscreen UI
+
+			ModifyServerConfigValueCommand: {
+				Usage:
+					'''
+					/setSomeNumber value
+					value — A number to assign to ModConfigShowcaseAcceptClientChanges.SomeNumber
+					'''
+				Description: Sets ModConfigShowcaseAcceptClientChanges.SomeNumber. Showcases a command setting a ModConfig value and saving that config.
+				Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				Error_1: "{$Mods.ExampleMod.Commands.Common.NotInteger}"
+			}
 		}
 
 		VictoryPoses: {
