@@ -202,7 +202,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		public override void OnActivate() {
 			RefreshContents();
 
-			ConfigSaveStatusMessage.SetText(Language.GetTextValue("tModLoader.ModConfigNotification"));
+			UpdateConfigSaveStatusMessage("", Color.White);
 		}
 
 		private void RefreshContents() {

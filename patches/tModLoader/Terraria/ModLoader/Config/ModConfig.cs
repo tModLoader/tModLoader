@@ -115,7 +115,7 @@ public abstract class ModConfig : ILocalizedModType
 	public ConfigSaveResult SaveChanges(ModConfig pendingConfig = null, Action<string, Color> status = null, bool silent = true)
 	{
 		if (this != ConfigManager.GetConfig(Mod, Name))
-			throw new Exception("Save must be called on the active config.");
+			throw new Exception("SaveChanges must be called on the active config.");
 		var modConfig = this;
 		bool pendingIsActive = pendingConfig == this;
 		pendingConfig = pendingConfig ?? this; // The changes are present in a clone or the active config.
@@ -134,7 +134,9 @@ public abstract class ModConfig : ILocalizedModType
 		else {
 			// If we are in game...
 			if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-				// TODO: Too
+				//if (pendingIsActive)
+				//	throw new Exception("SaveChanges for ServerSide configs must be called on a clone of the active config for multiplayer compatibility.");
+
 				status?.Invoke(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); // "Asking server to accept changes..."
 
 				var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
