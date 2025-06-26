@@ -42,6 +42,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private UIText itemDefinitionMessage;
 		private UICycleImage onlyChangeableDuringNightToggle;
 		private UIText onlyChangeableDuringNightMessage;
+		private UIText someNumberMessage;
 		private UIText ConfigSaveStatusMessage;
 
 		private ModConfigShowcaseDataTypes configA;
@@ -143,7 +144,16 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 				Width = new(-36, 1f)
 			};
 			panel.Append(onlyChangeableDuringNightMessage);
-			top += 40;
+			top += 38;
+
+			someNumberMessage = new UIText(GetSomeNumberMessageText()) {
+				Top = new(top + 6, 0f),
+				TextOriginX = 0f,
+				IsWrapped = true,
+				Width = StyleDimension.Fill
+			};
+			panel.Append(someNumberMessage);
+			top += 32;
 
 			var openConfigBButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenConfig"), 0.7f) {
 				Top = new(top, 0f),
@@ -207,10 +217,17 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 
 		public void RefreshContents() {
 			configB_pending = (ModConfigShowcaseAcceptClientChanges)ConfigManager.GeneratePopulatedClone(configB);
+
+			// This UI is only initialized when first viewed, so this might be null.
+			if (onlyChangeableDuringNightToggle == null) {
+				return;
+			}
+
 			onlyChangeableDuringNightToggle.CurrentState = configB_pending.OnlyChangeableDuringNight.ToInt();
 			onlyChangeableDuringNightMessage.SetText(GetOnlyChangeableDuringNightMessageText());
+			someNumberMessage.SetText(GetSomeNumberMessageText());
 
-			UpdateItemDefinitionMessageText();
+			itemDefinitionMessage.SetText(GetItemDefinitionMessageText());
 		}
 
 		private void RandomizeButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -262,7 +279,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			// configA (ModConfigShowcaseDataTypes) should always succeed.
 			// configB (ModConfigShowcaseAcceptClientChanges), however, is a server side config and has AcceptClientChanges logic. This will show the results of that operation and demonstrates that ModConfig.SaveChanges won't always succeed.
 
-			// This UI is only initialized when 1st viewed, so this might be null.
+			// This UI is only initialized when first viewed, so this might be null.
 			if (ConfigSaveStatusMessage == null) {
 				return;
 			}
@@ -272,10 +289,6 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			float scale = Math.Clamp(ConfigSaveStatusMessage.GetInnerDimensions().Width / textWidth, 0.25f, 1f);
 			ConfigSaveStatusMessage.SetText(text, scale, false);
 			ConfigSaveStatusMessage.TextColor = color;
-		}
-
-		private void UpdateItemDefinitionMessageText() {
-			itemDefinitionMessage.SetText(GetItemDefinitionMessageText());
 		}
 
 		private string GetItemDefinitionMessageText() {
@@ -296,6 +309,11 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private string GetOnlyChangeableDuringNightMessageText() {
 			string configEntryLabel = Language.GetTextValue(configB.GetLocalizationKey($"{nameof(configB.OnlyChangeableDuringNight)}.Label"));
 			return SaveValueText.Format(configEntryLabel, configB.OnlyChangeableDuringNight);
+		}
+
+		private string GetSomeNumberMessageText() {
+			string configEntryLabel = Language.GetTextValue(configB.GetLocalizationKey($"{nameof(configB.SomeNumber)}.Label"));
+			return SaveValueText.Format(configEntryLabel, configB.SomeNumber);
 		}
 	}
 }
