@@ -322,18 +322,18 @@ public static class ConfigManager
 
 				Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Main.InGameUI.SetState(Interface.modConfig);
+					Main.InGameUI.SetState(null);
+					Main.InGameUI.SetState(Interface.modConfig); // Refresh with changes from server, config might have been tweaked.
 					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
 			}
 			else {
 				// rejection only sent back to requester.
-				// Update UI with message
+				// Update UI with message, but don't clear user's pending changes
 				activeConfig.HandleAcceptClientChangesReply(success, message);
 				Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
-					//Main.InGameUI.SetState(Interface.modConfig);
 				}
 			}
 		}
@@ -368,6 +368,7 @@ public static class ConfigManager
 			if (success) {
 				// Apply to Servers Config
 				ConfigManager.Save(pendingConfig);
+				json = JsonConvert.SerializeObject(pendingConfig, serializerSettingsCompact); // AcceptClientChanges can modify pendingConfig for advanced permissions filtering.
 				JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
 				config.OnChanged();
 				// Send new config to all clients

@@ -196,8 +196,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	// Note that Escape key while in-game won't call this.
 	public void HandleBackButtonUsage()
-	{ 
-		if(Main.gameMenu || !openedFromModder)
+	{
+		if (Main.gameMenu || !openedFromModder)
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
 		if (Main.gameMenu) {
@@ -268,8 +268,9 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
-		DoMenuModeState(preserveNotificationMessage: true);
+		var result = modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
+		if (result == ConfigSaveResult.Success) // Don't clear out pending changes for needs reload or sent to server
+			DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
@@ -327,7 +328,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 			// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
 			var desiredElement = mainConfigList._items.Find(x => {
-				if(x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
+				if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
 					if (configElement is ObjectElement objectElement && objectElement.separatePagePanel != null) {
 						SwitchToSubConfig(objectElement.separatePagePanel);
 						return true;
@@ -618,7 +619,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
 			e = new DictionaryElement();
 		}
-		else if(type == typeof(object)) {
+		else if (type == typeof(object)) {
 			e = new UIText($"{memberInfo.Name} can't be of the Type Object.");
 		}
 		else if (type.IsClass) {

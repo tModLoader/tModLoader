@@ -60,6 +60,7 @@ public abstract class ModConfig : ILocalizedModType
 
 	/// <summary>
 	/// Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload.
+	/// <br/><br/> In advanced situations <paramref name="pendingConfig"/> can be modified here and the changes will be applied and be synced.
 	/// </summary>
 	/// <param name="pendingConfig">An instance of the ModConfig with the attempted changes</param>
 	/// <param name="whoAmI">The client whoAmI</param>
