@@ -59,6 +59,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 			if (success) {
 				SoundEngine.PlaySound(SoundID.CoinPickup);
+				ExampleFullscreenUI.instance.RefreshContents();
 			}
 			else {
 				SoundEngine.PlaySound(SoundID.Duck);

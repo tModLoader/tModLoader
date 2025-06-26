@@ -70,7 +70,7 @@ public abstract class ModConfig : ILocalizedModType
 		=> true;
 
 	/// <summary>
-	/// Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by any client. Can be used to update UI attempting to Save changes to a ServerSide config. This is only called on the client that sent the request.
+	/// Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by that client. Can be used to update UI attempting to Save changes to a ServerSide config. This is only called on the client that sent the request.
 	/// <paramref name="success"/> indicates if the changes were accepted and <paramref name="message"/> is the corresponding message from AcceptClientChanges.
 	/// </summary>
 	public virtual void HandleAcceptClientChangesReply(bool success, NetworkText message) { }

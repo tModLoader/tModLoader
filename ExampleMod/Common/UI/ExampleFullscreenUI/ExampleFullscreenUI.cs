@@ -205,7 +205,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			UpdateConfigSaveStatusMessage("", Color.White);
 		}
 
-		private void RefreshContents() {
+		public void RefreshContents() {
 			configB_pending = (ModConfigShowcaseAcceptClientChanges)ConfigManager.GeneratePopulatedClone(configB);
 			onlyChangeableDuringNightToggle.CurrentState = configB_pending.OnlyChangeableDuringNight.ToInt();
 			onlyChangeableDuringNightMessage.SetText(GetOnlyChangeableDuringNightMessageText());
@@ -246,9 +246,10 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			// In this examples we set the silent parameter to true, letting us play custom sounds instead of the default sounds. See also ModConfigShowcaseAcceptClientChanges.HandleAcceptClientChangesReply
 			if (result == ConfigSaveResult.Success) {
 				SoundEngine.PlaySound(SoundID.CoinPickup);
-			}
 
-			RefreshContents();
+				// In multiplayer, ModConfigShowcaseAcceptClientChanges.HandleAcceptClientChangesReply will call RefreshContents to update the UI rather than here in SaveConfigBButton_OnLeftClick.
+				RefreshContents();
+			}
 		}
 
 		private void BackButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
