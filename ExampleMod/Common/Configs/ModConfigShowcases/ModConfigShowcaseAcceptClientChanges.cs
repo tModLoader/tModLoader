@@ -54,15 +54,20 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 			return true;
 		}
 
-		public override void HandleAcceptClientChangesReply(bool success, NetworkText message) {
+		public override void HandleAcceptClientChangesReply(bool success, int player, NetworkText message) {
 			ExampleFullscreenUI.instance.UpdateConfigSaveStatusMessage(message.ToString(), success ? Color.Green : Color.Red);
 
 			if (success) {
-				SoundEngine.PlaySound(SoundID.CoinPickup);
 				ExampleFullscreenUI.instance.RefreshContents();
 			}
-			else {
-				SoundEngine.PlaySound(SoundID.Duck);
+
+			if (player == Main.myPlayer) {
+				if (success) {
+					SoundEngine.PlaySound(SoundID.CoinPickup);
+				}
+				else {
+					SoundEngine.PlaySound(SoundID.Duck);
+				}
 			}
 		}
 	}

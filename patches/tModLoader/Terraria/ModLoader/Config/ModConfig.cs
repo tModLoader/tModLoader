@@ -70,10 +70,11 @@ public abstract class ModConfig : ILocalizedModType
 		=> true;
 
 	/// <summary>
-	/// Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by that client. Can be used to update UI attempting to Save changes to a ServerSide config. This is only called on the client that sent the request.
-	/// <paramref name="success"/> indicates if the changes were accepted and <paramref name="message"/> is the corresponding message from AcceptClientChanges.
+	/// Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by a client. Can be used to update UI attempting to manually save changes to a ServerSide config (using <see cref="SaveChanges(ModConfig, Action{string, Color}, bool)"/>). For rejections this is only called on the client who requested the changes. 
+	/// <br/><br/> <paramref name="player"/> indicates which player requested the changes (see <see cref="Main.myPlayer"/>). 
+	/// <br/><br/> <paramref name="success"/> indicates if the changes were accepted and <paramref name="message"/> is the corresponding message from AcceptClientChanges.
 	/// </summary>
-	public virtual void HandleAcceptClientChangesReply(bool success, NetworkText message) { }
+	public virtual void HandleAcceptClientChangesReply(bool success, int player, NetworkText message) { }
 
 	// TODO: Can we get rid of Clone and just load from disk? Don't think so yet.
 	/// <summary>
@@ -107,13 +108,13 @@ public abstract class ModConfig : ILocalizedModType
 
 	/// <summary>
 	/// Attempts to save changes made to this ModConfig. This must be called on the active ModConfig instance.
-	/// <br/><br/> If <paramref name="pendingConfig"/> is provided, it will be used as the source for the changes to apply to the active config instance. If <paramref name="status"/> is provided, it will be called with text and a color to indicate the status of the operation. If <paramref name="silent"/> is false, sounds will play indicating success or failure.
+	/// <br/><br/> If <paramref name="pendingConfig"/> is provided, it will be used as the source for the changes to apply to the active config instance. If <paramref name="status"/> is provided, it will be called with text and a color to indicate the status of the operation. If <paramref name="silent"/> is false, sounds will play indicating success or failure. If <paramref name="broadcast"/> is false, the chat message informing all players when a ServerSide config is changed saying "Shared config changed: Message: {0}, Mod: {1}, Config: {2}" will not appear on clients. 
 	/// <br/><br/> <b>Mod code can run this method in-game, but there are some considerations to keep in mind: </b>
-	/// <br/><br/> Calling this method on a <see cref="ConfigScope.ServerSide"/> config from a multiplayer client will result in <see cref="ConfigSaveResult.RequestSentToServer"/> being returned and the actual save logic being performed on the server. <see cref="ModConfig.HandleAcceptClientChangesReply(bool, NetworkText)"/> will be called on this client after the server accepts or denies the changes.
+	/// <br/><br/> Calling this method on a <see cref="ConfigScope.ServerSide"/> config from a multiplayer client will result in <see cref="ConfigSaveResult.RequestSentToServer"/> being returned and the actual save logic being performed on the server. <see cref="HandleAcceptClientChangesReply(bool, int, NetworkText)"/> will be called on all clients after the server accepts or denies the changes. Calling this method on the server for a ServerSide config is also supported.
 	/// <br/><br/> Attempting to save changes that would violate <see cref="NeedsReload"/> will fail and <see cref="ConfigSaveResult.NeedsReload"/> will be returned.
 	/// <br/><br/> If there is a chance that the changes won't be accepted, or if you want to provide a UI for the user to make changes without them taking effect immediately, you should use a clone of the ModConfig and pass it in as <paramref name="pendingConfig"/> instead of modifying the active ModConfig directly.
 	/// </summary>
-	public ConfigSaveResult SaveChanges(ModConfig pendingConfig = null, Action<string, Color> status = null, bool silent = true)
+	public ConfigSaveResult SaveChanges(ModConfig pendingConfig = null, Action<string, Color> status = null, bool silent = true, bool broadcast = true)
 	{
 		if (this != ConfigManager.GetConfig(Mod, Name))
 			throw new Exception("SaveChanges must be called on the active config.");
@@ -144,6 +145,7 @@ public abstract class ModConfig : ILocalizedModType
 				requestChanges.Write(pendingConfig.Mod.Name);
 				requestChanges.Write(pendingConfig.Name);
 				string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
+				requestChanges.Write(broadcast);
 				requestChanges.Write(json);
 				requestChanges.Send();
 
@@ -181,6 +183,7 @@ public abstract class ModConfig : ILocalizedModType
 					message.Serialize(p);
 					p.Write(modConfig.Mod.Name);
 					p.Write(modConfig.Name);
+					p.Write(broadcast);
 					p.Write((byte)255);
 					string json = JsonConvert.SerializeObject(modConfig, ConfigManager.serializerSettingsCompact);
 					p.Write(json);

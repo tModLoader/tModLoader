@@ -241,7 +241,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 
 		private void SaveConfigBButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 			// Unlike with configA, we only save changes to the config if this button is clicked.
-			var result = configB.SaveChanges(configB_pending, UpdateConfigSaveStatusMessage, silent: true);
+			var result = configB.SaveChanges(configB_pending, UpdateConfigSaveStatusMessage, silent: true, broadcast: false);
 
 			// In this examples we set the silent parameter to true, letting us play custom sounds instead of the default sounds. See also ModConfigShowcaseAcceptClientChanges.HandleAcceptClientChangesReply
 			if (result == ConfigSaveResult.Success) {

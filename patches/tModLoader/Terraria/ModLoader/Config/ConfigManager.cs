@@ -311,16 +311,17 @@ public static class ConfigManager
 			NetworkText message = NetworkText.Deserialize(reader);
 			string modname = reader.ReadString();
 			string configname = reader.ReadString();
+			bool broadcast = reader.ReadBoolean();
 			ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 			int requestor = reader.ReadByte();
 			if (success) {
 				string json = reader.ReadString();
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
-				if(Main.myPlayer == requestor)
-					activeConfig.HandleAcceptClientChangesReply(success, message);
+				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 
-				Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
+				if(broadcast)
+					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(null);
 					Main.InGameUI.SetState(Interface.modConfig); // Refresh with changes from server, config might have been tweaked.
@@ -330,8 +331,9 @@ public static class ConfigManager
 			else {
 				// rejection only sent back to requester.
 				// Update UI with message, but don't clear user's pending changes
-				activeConfig.HandleAcceptClientChangesReply(success, message);
-				Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
+				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
+				if (broadcast)
+					Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
 				}
@@ -341,6 +343,7 @@ public static class ConfigManager
 			// no bool in request.
 			string modname = reader.ReadString();
 			string configname = reader.ReadString();
+			bool broadcast = reader.ReadBoolean();
 			string json = reader.ReadString();
 
 			var mod = ModLoader.GetMod(modname);
@@ -377,6 +380,7 @@ public static class ConfigManager
 				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
+				p.Write(broadcast);
 				p.Write((byte)whoAmI);
 				p.Write(json);
 				p.Send();
@@ -388,6 +392,7 @@ public static class ConfigManager
 				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
+				p.Write(broadcast);
 				p.Write((byte)whoAmI);
 				p.Send(whoAmI);
 			}
