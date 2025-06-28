@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Bestiary/BestiaryUICollectionInfo.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/BestiaryUICollectionInfo.cs
+@@ -3,5 +_,8 @@
+ public struct BestiaryUICollectionInfo
+ {
+ 	public BestiaryEntry OwnerEntry;
++	/// <summary>
++	/// Indicates the extent to how unlocked this bestiary entry is. Use this to determine how detailed of information to provide in a <see cref="IBestiaryInfoElement"/>. The <see href="https://terraria.wiki.gg/wiki/Bestiary">Bestiary page on the wiki</see> has more information.
++	/// </summary>
+ 	public BestiaryEntryUnlockState UnlockState;
+ }

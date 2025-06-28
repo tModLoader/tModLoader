@@ -831,6 +831,15 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookEmitEnchantmentVisualsAt = AddHook<Action<Projectile, Vector2, int, int>>(p => p.EmitEnchantmentVisualsAt);
+
+	public static void EmitEnchantmentVisualsAt(Player player, Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+		foreach (var modPlayer in HookEmitEnchantmentVisualsAt.Enumerate(player)) {
+			modPlayer.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
+		}
+	}
+
 	private static HookList HookCanCatchNPC = AddHook<Func<NPC, Item, bool?>>(p => p.CanCatchNPC);
 
 	public static bool? CanCatchNPC(Player player, NPC target, Item item)
@@ -1448,5 +1457,43 @@ public static class PlayerLoader
 		}
 
 		return true;
+	}
+
+	private static HookList HookArmorSetBonusActivated = AddHook<Action>(p => p.ArmorSetBonusActivated);
+
+	public static void ArmorSetBonusActivated(Player player)
+	{
+		foreach (var modPlayer in HookArmorSetBonusActivated.Enumerate(player)) {
+			modPlayer.ArmorSetBonusActivated();
+		}
+	}
+
+	private static HookList HookArmorSetBonusHeld = AddHook<Action<int>>(p => p.ArmorSetBonusHeld);
+
+	public static void ArmorSetBonusHeld(Player player, int holdTime)
+	{
+		foreach (var modPlayer in HookArmorSetBonusHeld.Enumerate(player)) {
+			modPlayer.ArmorSetBonusHeld(holdTime);
+		}
+	}
+
+	private static HookList HookCanBeTeleportedTo = AddHook<Func<Vector2, string, bool>>(p => p.CanBeTeleportedTo);
+
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, string context)
+	{
+		foreach (var modPlayer in HookCanBeTeleportedTo.Enumerate(player)) {
+			if (!modPlayer.CanBeTeleportedTo(teleportPosition, context))
+				return false;
+		}
+		return true;
+	}
+
+	private static HookList HookOnEquipmentLoadoutSwitched = AddHook<Action<int, int>>(p => p.OnEquipmentLoadoutSwitched);
+
+	public static void OnEquipmentLoadoutSwitched(Player player, int oldLoadoutIndex, int loadoutIndex)
+	{
+		foreach (var modPlayer in HookOnEquipmentLoadoutSwitched.Enumerate(player)) {
+			modPlayer.OnEquipmentLoadoutSwitched(oldLoadoutIndex, loadoutIndex);
+		}
 	}
 }

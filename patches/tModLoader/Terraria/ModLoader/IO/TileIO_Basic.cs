@@ -7,7 +7,7 @@ namespace Terraria.ModLoader.IO;
 
 internal static partial class TileIO
 {
-	public abstract class IOImpl<TBlock, TEntry> where TBlock : ModBlockType where TEntry : ModEntry
+	public abstract class IOImpl<TBlock, TEntry> where TBlock : ModBlockType where TEntry : ModBlockEntry
 	{
 		public readonly string entriesKey;
 		public readonly string dataKey;
@@ -57,20 +57,21 @@ internal static partial class TileIO
 
 				// Check saved entries
 				foreach (var entry in savedEntryList) {
-					// If the saved entry can be found among the loaded blocks, then use the entry created for the loaded block
+					savedEntryLookup[entry.type] = entry;
+
+					// If the saved entry can be found among the loaded blocks, then use its loadedType
 					if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
-						savedEntryLookup[entry.type] = entries[block.Type];
+						entry.type = entry.loadedType = block.Type;
 					}
 					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
-						savedEntryLookup[entry.type] = entry;
 						entry.type = (ushort)entries.Count;
-						entry.loadedType = canPurgeOldData ? entry.vanillaReplacementType : ModContent.Find<TBlock>(string.IsNullOrEmpty(entry.unloadedType) ? entry.DefaultUnloadedType : entry.unloadedType).Type;
+						entry.loadedType = (ModContent.TryFind(entry.unloadedType, out TBlock unloadedBlock) ? unloadedBlock : entry.DefaultUnloadedPlaceholder).Type;
 						entries.Add(entry);
 					}
 				}
 			}
 
-			this.entries =  entries.ToArray();
+			this.entries = entries.ToArray();
 		}
 
 		protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
@@ -92,13 +93,13 @@ internal static partial class TileIO
 					}
 
 					var entry = savedEntryLookup[saveType];
+					ReadData(Main.tile[x, y], entry, reader);
 
-					// Set the type to either the existing type or the unloaded type
-					if (entry.IsUnloaded && !canPurgeOldData) {
+					if (entry.IsUnloaded) {
+						// When an entry is using an unloaded placeholder, the saved entry is copied to the end of our current entries list (after all loaded tiles)
+						// We store this 'type' (index of the copied entry) in sparse tile data storage, and use it to retrieve the correct entry at saving time (rather than saving an unloaded tile permanently)
 						builder.Add(x, y, entry.type);
 					}
-
-					ReadData(Main.tile[x, y], entry, reader);
 				}
 			}
 
@@ -255,8 +256,6 @@ internal static partial class TileIO
 		Walls.Save(tag);
 		return tag;
 	}
-
-	internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
 	internal static void ResetUnloadedTypes()
 	{

@@ -246,13 +246,13 @@ internal class UIModInfo : UIState
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = _gotoMenu;
 
 		if (_modHomepageButton.IsMouseHovering) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, _url);
+			UICommon.TooltipMouseText(_url);
 		}
 		if (_fakeDeleteButton.IsMouseHovering) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModInfoDisableModToDelete"));
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModInfoDisableModToDelete"));
 		}
 		if (fakeExtractLocalizationButton.IsMouseHovering) {
-			UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModInfoEnableModToExtractLocalizationFiles"));
+			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModInfoEnableModToExtractLocalizationFiles"));
 		}
 	}
 

@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
@@ -15,6 +17,16 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 	private int currentUseAnimationCompensation;
 
+	/// <summary>
+	/// The ModItem instance attached to this Item. All modded items will have an appropriate instance of the ModItem-inheriting class assigned to this field. Will be null for vanilla items. Can be used to check if an Item is a modded item or not.
+	/// <para/> If you need to access members of a specific ModItem class from code outside of the ModItem, you can cast to your class:
+	/// <code>
+	/// if (item.ModItem is MyItem myItem)
+	/// {
+	///     myItem.myField = 5;
+	/// }
+	/// </code>
+	/// </summary>
 	public ModItem ModItem { get; internal set; }
 
 #region Globals
@@ -294,5 +306,32 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 			else
 				attackSpeedOnlyAffectsWeaponAnimation = true;
 		}
+	}
+
+	// Added by TML.
+	/// <summary>
+	/// Determines the <see cref="PrefixCategory">prefix categories</see> of this <see cref="Item"/>.
+	/// </summary>
+	/// <returns>A <see cref="List{PrefixCategory}"/> of every category this <see cref="Item"/> matches, the <see cref="List{PrefixCategory}"/> will be empty if this <see cref="Item"/> doesn't have any categories.</returns>
+	public List<PrefixCategory> GetPrefixCategories() {
+		ref List<PrefixCategory> categories = ref PrefixLoader.itemPrefixesByType[type];
+		if (categories is not null) return categories;
+		categories = [];
+		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
+			categories.Add(PrefixCategory.Melee);
+
+		if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
+			categories.Add(PrefixCategory.Ranged);
+
+		if (PrefixLegacy.ItemSets.MagicAndSummon[type] || ItemLoader.MagicPrefix(this))
+			categories.Add(PrefixCategory.Magic);
+
+		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this) || categories.Count != 0)
+			categories.Add(PrefixCategory.AnyWeapon);
+
+		if (IsAPrefixableAccessory())
+			categories.Add(PrefixCategory.Accessory);
+
+		return categories;
 	}
 }

@@ -12,9 +12,6 @@ public static class RarityLoader
 
 	internal static int Add(ModRarity rarity)
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding rarities breaks vanilla client compatibility");
-
 		rarities.Add(rarity);
 		return RarityCount - 1;
 	}

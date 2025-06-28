@@ -6,6 +6,7 @@ using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
@@ -166,6 +167,23 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			panel.Append(modIconImage);
 			panel.Append(modName);
 			panel.Append(reason);
+
+			modList.Add(panel);
+		}
+
+		if(Main.tServer != null) {
+			UIPanel panel = new UIPanel();
+			panel.Width.Set(0, 1f);
+			panel.Height.Set(130, 0f);
+			panel.BackgroundColor = Microsoft.Xna.Framework.Color.Orange;
+
+			message = new UIText(Language.GetTextValue("tModLoader.ReloadRequiredHostAndPlayModWasDisabledHint")) {
+				Width = { Percent = 1f },
+				Height = { Percent = 1f }
+			};
+			message.IsWrapped = true;
+			message.OnLeftClick += (a, b) => Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Debugging-Multiplayer-Usage-Issues#when-i-join-my-own-server-mods-get-disabled");
+			panel.Append(message);
 
 			modList.Add(panel);
 		}

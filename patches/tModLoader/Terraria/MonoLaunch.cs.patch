@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -6,7 +_,10 @@
+@@ -6,7 +_,11 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
 +using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria;
@@ -17,7 +18,7 @@
  	{
 +		// Launch tModPorter instead if it needed.
 +		if (Array.IndexOf(args, "-tModPorter") is int i && i >= 0) {
-+			tModPorter.Program.Main(args.Skip(i + 1).ToArray()).GetAwaiter().GetResult();
++			tModPorterLaunch.Launch(args.Skip(i).ToArray());
 +			return;
 +		}
 +
@@ -64,23 +65,43 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,17 +_,17 @@
+@@ -57,25 +_,34 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  
 -			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
+-
+-			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
 +			Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
- 
- 			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
++			if (name.StartsWith("/tmp/"))
++				return IntPtr.Zero;
++
++			string[] files;
++			try {
++				files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
++			}
++			catch {
++				files = [];
++			}
++
  			if (files.FirstOrDefault() is not string path) {
 -				Console.WriteLine("\tnot found");
 +				Logging.tML.Debug("\tnot found");
  				return IntPtr.Zero;
  			}
  
+ 			// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario, but we still want exception info
 -			Console.WriteLine($"\tattempting load {path}");
 +			Logging.tML.Debug($"\tattempting load {path}");
- 			handle = NativeLibrary.Load(path);
+ 			try {
+ 				handle = NativeLibrary.Load(path);
+ 			}
+ 			catch (Exception e) {
+-				Console.WriteLine($"\t\tFailed to load {name}.\n{e}");
++				Logging.tML.Debug($"\t\tFailed to load {name}.\n{e}");
+ 				return IntPtr.Zero;
+ 			}
+ 
 -			Console.WriteLine("\tsuccess");
 +			Logging.tML.Debug("\tsuccess");
  			return assemblies[name] = handle;

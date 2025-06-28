@@ -269,7 +269,7 @@
 +	/// - <see cref="NPC.DropItemInstanced"/><br/>
 +	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
 +	/// - <see cref="MessageID.InstancedItem"/><br/>
-+	/// Defaults to false.<br/>
++	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool instanced;
  	public int ownIgnore = -1;
@@ -484,7 +484,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,245 @@
+@@ -121,49 +_,255 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
@@ -523,8 +523,11 @@
  	public int shoot;
 +
 +	/// <summary>
-+	/// The velocity in pixels the projectile fired by this item will have. Actual velocity depends on the projectile being fired. If your weapon is shooting projectiles and they are stationary, change this to something like 10f. Throwing Knife uses 10f. Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
-+	/// <br/> Defaults to 0f.
++	/// The velocity in pixels the projectile fired by this item will have. If your weapon is shooting projectiles and they are stationary, change this to something like 10f and adjust as needed. Throwing Knife uses 10f.
++	/// <para/> Actual velocity depends on the projectile being fired, most notably the <see cref="Projectile.extraUpdates"/> value of that projectile. For example, <see cref="ItemID.LaserRifle"/> has <c>shootSpeed = 17f;</c> and shoots <see cref="ProjectileID.PurpleLaser"/>, which has <c>extraUpdates = 4;</c>, meaning 5 total updates per game tick. This projectile will have an effective velocity of 85 (because <c>17 * (1 + 4) == 85</c>). The <see href="https://terraria.wiki.gg/wiki/Velocity">Shoot Speed wiki page</see> has more information and examples of how these values work together in practice.
++	/// <para/> For weapons using ammo, the weapon's shootSpeed is added to the ammo's shootSpeed, so adjust ammo and weapon shootSpeed values accordingly. Consult the <see href="https://terraria.wiki.gg/wiki/Ammunition_items">Ammunition items wiki page</see> and wiki pages for the weapons that shoot various ammo for suitable values to use.
++	/// <para/> Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
++	/// <para/> Defaults to 0f.
 +	/// </summary>
  	public float shootSpeed;
 +
@@ -551,6 +554,7 @@
 +	/// <br/> Defaults to <c>0</c>.
 +	/// </summary>
  	public int lifeRegen;
++	/// <summary> <strong>Unused.</strong> </summary>
  	public int manaIncrease;
 +	/// <summary>
 +	/// Indicates that an item in a shop can only be bought once, meaning it is an item that has been sold to the NPC shop by the player.
@@ -580,6 +584,7 @@
 +	/// <summary>
 +	/// The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <c>10462</c> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer.
 +	/// <br/> For convenience, you can also use the <see cref="Item.buyPrice(int, int, int, int)"/> method for setting values: <c>Item.value = Item.buyPrice(0, 1, 4, 62);</c> You can also use the <see cref="Item.sellPrice(int, int, int, int)"/> method if you would rather think about an item's value the other way. Both <c>Item.buyPrice(0, 0, 10, 55)</c> and <c>Item.sellPrice(0, 0, 2, 11)</c> would set the value to <c>1055</c>.
++	/// <para/> If custom purchase prices disconnected from the item value are needed, <see cref="shopCustomPrice"/> should be set for the item instance added to a shop entry.
 +	/// </summary>
  	public int value;
  	public bool buy;
@@ -645,11 +650,15 @@
 +	/// Used for assigning a non-default price to an item in shops.<br/>
 +	/// Can be used with <see cref="shopSpecialCurrency"/> to assign a price in terms of a custom currency instead of coins.<br/>
 +	/// To get the raw price of an item, use <see cref="GetStoreValue"/>.<br/>
-+	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.<br/>
-+	/// Defaults to <see langword="null"/>.<br/>
++	/// To get the price of an item after discounts, use <see cref="Player.GetItemExpectedPrice"/>.
++	/// <para/> Be careful of setting a custom price far below the normal <see cref="Item.value"/>, it could result in an infinite money exploit. For example, with maximum happiness and a discount card, a custom price 0.44 times the regular value would allow the user to sell the item for just barely more than it was bought for after leaving and reentering the world.
++	/// <para/> Defaults to <see langword="null"/>.
 +	/// </summary>
  	public int? shopCustomPrice;
  	public bool shootsEveryUse;
++	/// <summary>
++	/// If true, then the player won't swing the arm and item while attempting to use this item unless hovering over an Extractinator tile. This helps avoid misleading the player into thinking an item should do something when used. This and other properties common to extractinator-only items can be set using <see cref="Item.MakeUsableWithChlorophyteExtractinator"/>.
++	/// </summary>
  	public bool chlorophyteExtractinatorConsumable;
 +
 +	/// <summary>
@@ -723,7 +732,8 @@
 +
 +	/// <summary>
 +	/// A delay in frames added at the end of the using animation for the item, during which the player wont be able to use any items.
-+	/// <br/> Defaults to 0.
++	/// <para/> One notable example usage is the <see cref="ItemID.ClockworkAssaultRifle"/> with a value of 14, but most other usages are smaller values like 2.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int reuseDelay;
  	public bool newAndShiny;
@@ -776,7 +786,7 @@
  	public bool PaintOrCoating {
  		get {
  			if (paint <= 0)
-@@ -196,11 +_,19 @@
+@@ -196,12 +_,24 @@
  
  	public bool FitsAccessoryVanitySlot => true;
  
@@ -787,15 +797,20 @@
  
  	public int OriginalDefense => ContentSamples.ItemsByType[type].defense;
 +	*/
-+
+ 
 +	public int OriginalRarity => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.rare : 0;
 +
 +	public int OriginalDamage => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.damage : 0;
 +
 +	public int OriginalDefense => ContentSamples.ItemsByType.TryGetValue(type, out Item item) ? item.defense : 0;
- 
++
++	/// <summary>
++	/// If not null, indicates that this item has a special seed variant active.
++	/// <para/> Item variants are not supported for modded items.
++	/// </summary>
  	public ItemVariant Variant { get; private set; }
  
+ 	public bool IsACoin {
 @@ -254,12 +_,27 @@
  		}
  	}
@@ -910,15 +925,16 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -318,12 +_,18 @@
+@@ -318,12 +_,20 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
-+
-+			if (applyPrefixOverride is true) { } else
++			/*
  			if (rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
--				rolledPrefix = 0;
-+				return true; //rolledPrefix = 0;
+ 				rolledPrefix = 0;
++			*/
++			if (applyPrefixOverride is not true && rolledPrefix == -1 && unifiedRandom.Next(4) == 0)
++				return true;
  
  			if (prefixWeWant < -1)
  				rolledPrefix = -1;
@@ -1057,7 +1073,7 @@
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -750,16 +_,65 @@
+@@ -750,16 +_,66 @@
  		return null;
  	}
  
@@ -1066,6 +1082,7 @@
 +	/// Determines the <see cref="PrefixCategory"/> of this <see cref="Item"/>.
 +	/// </summary>
 +	/// <returns>The <see cref="PrefixCategory"/> of this <see cref="Item"/> or <see langword="null"/> if this <see cref="Item"/> doesn't have a category.</returns>
++	[Obsolete("Does not support items with multiple prefix categories, use GetPrefixCategories instead")]
 +	public PrefixCategory? GetPrefixCategory()
 +	{
 +		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
@@ -1194,7 +1211,7 @@
  	public static int NPCtoBanner(int i)
  	{
  		switch (i) {
-@@ -1771,15 +_,24 @@
+@@ -1771,15 +_,25 @@
  				return 286;
  			case 176:
  				return 287;
@@ -1212,7 +1229,8 @@
  	}
  
 +	/// <summary>
-+	/// Converts a banner ID into the equivalent NPC type (<see cref="NPC.type"/>).
++	/// Converts a BannerID into the equivalent NPC type (<see cref="NPC.type"/>). Used to determine a single NPC type from a BannerID for display purposes.
++	/// Note that modded BannerIDs are the same number as their NPC type, and those BannerIDs might not actually be used.
 +	/// </summary>
 +	/// <param name="i">The banner ID to convert.</param>
 +	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
@@ -1360,6 +1378,15 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -44338,6 +_,8 @@
+ 				value = sellPrice(0, 0, 50);
+ 				break;
+ 			case 5134:
++				consumeAmmoOnLastShotOnly = true; // Added by TML
++
+ 				useStyle = 5;
+ 				autoReuse = true;
+ 				useAnimation = 30;
 @@ -46345,6 +_,20 @@
  		}
  	}
@@ -1423,6 +1450,17 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
+@@ -46387,6 +_,10 @@
+ 		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="SetDefaults(int)"/> to change this item to another item type while preserving <see cref="Item.favorited"/>. Used by right click code of items that transform into other items, such as how <see cref="ItemID.Shellphone"/> cycles between different items for different destinations. Does not preserve modded data.
++	/// </summary>
++	/// <param name="to"></param>
+ 	public void ChangeItemType(int to)
+ 	{
+ 		bool flag = favorited;
 @@ -46422,7 +_,7 @@
  		return false;
  	}
@@ -1689,6 +1727,16 @@
  	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
+@@ -46959,6 +_,9 @@
+ 		consumable = true;
+ 	}
+ 
++	/// <summary>
++	/// Assigns properties common to extractinator-only items, ensuring a typical use animation when clicking on an Extractinator tile and no animation otherwise. Use this method for items that don't do anything when used but should be useable in an Extractinator. Most notably this sets <see cref="chlorophyteExtractinatorConsumable"/> to true.
++	/// </summary>
+ 	public void MakeUsableWithChlorophyteExtractinator()
+ 	{
+ 		useStyle = 1;
 @@ -46995,6 +_,27 @@
  		autoReuse = true;
  	}
@@ -1772,11 +1820,17 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47088,6 +_,22 @@
+@@ -47088,6 +_,28 @@
  		SetDefaults(Type, noMatCheck: false, null);
  	}
  
 +	// Added by TML.
++	/// <summary>
++	/// Call in <see cref="ModItem.SetDefaults"/> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired. 
++	/// <para/> When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Accessories/WaspNest.cs#L51">WaspNest.cs</see> shows how to cache and restore those values.
++	/// <para/> This will only clone the values, any additional logic such as shoot accuracy, recipes, accessory effects, use item logic, etc. will not be copied. The <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption">Vanilla Code Adaption wiki page</see> teaches how to make a complete clone of an existing item.
++	/// </summary>
++	/// <param name="TypeToClone"></param>
 +	public void CloneDefaults(int TypeToClone)
 +	{
 +		int originalType = type;
@@ -1856,7 +1910,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,32 @@
+@@ -47318,14 +_,34 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1875,7 +1929,9 @@
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
 +		ChangePlayerDirectionOnShoot = true;
++		ArmorPenetration = 0;
 +
++		_nameOverride = null; // Added by TML.
  		sentry = false;
  		hasVanityEffects = false;
  		DD2Summon = false;
@@ -1981,6 +2037,43 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
+@@ -47808,10 +_,34 @@
+ 			shimmered = true;
+ 		}
+ 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
+-			int num8 = stack;
++			int stackSize = stack;
+ 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
+-			stack = num8;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			int spawnCount = 0;
++
++			while (stackSize > 0) {
++				spawnCount++;
++
++				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
++				Item item = Main.item[newItemIndex];
++				item.stack = stackSize;
++				if (item.stack > maxStack)
++					item.stack = maxStack;
++				stackSize -= item.stack;
++				item.shimmerTime = 1f;
++				item.shimmered = true;
++				item.shimmerWet = true;
++				item.wet = true;
++				item.velocity *= 0.1f;
++				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];
@@ -1990,6 +2083,31 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47869,17 +_,22 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+-					if (num18 > 9999)
+-						num18 = 9999;
++					if (num18 > item2.maxStack)
++						num18 = item2.maxStack;
+ 
+ 					num16 -= num18;
+ 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
@@ -2082,23 +2200,23 @@
  
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/>This particular overload uses two Vector2 to determine the actual spawn position.
++	/// <br/><br/> This particular overload uses two Vector2 to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
  	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 +
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
++	/// <br/><br/> This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
  	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
  
 +	/// <summary>
 +	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
-+	/// <br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
-+	/// <br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
-+	/// <br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array. 
++	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
++	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
++	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array. 
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="X"></param>
@@ -2233,12 +2351,13 @@
  	{
  		if (netID == compareItem.netID && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
-@@ -49285,11 +_,18 @@
+@@ -49285,11 +_,19 @@
  		return true;
  	}
  
 +	/// <summary>
-+	/// Overrides the value of <see cref="Name"/>.
++	/// Overrides the value of <see cref="Name"/> for this Item instance. This is used mainly to change the name shown on the item tooltip for recipe group ingredients to "Any RecipeGroupItemNameHere".
++	/// <para/> This does not change the actual name of this item when shown elsewhere as text, for example, so it is not a suitable way to permanently change an item name. To do that a <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#overwriting-existing-terraria-keys">localization file entry</see> should be used instead.
 +	/// </summary>
 +	/// <param name="name">The new name of this <see cref="Item"/>.</param>
  	public void SetNameOverride(string name)
@@ -2284,7 +2403,15 @@
  			TurnToAir();
  	}
  
-@@ -49359,6 +_,7 @@
+@@ -49356,9 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Resets the stats of this item while preserving modded data, prefix, stack, and favorited. Used to update the stats of this item to facilitate <see cref="ItemVariants"/>. This is called on most items when a player enters a world to ensure that their stats match the variant expected for the world seed.
++	/// <para/> If <paramref name="onlyIfVariantChanged"/> is true (it usually is), then the item is only refreshed if <see cref="Item.Variant"/> and <see cref="ItemVariants.SelectVariant(int)"/> differ.
++	/// </summary>
++	/// <param name="onlyIfVariantChanged"></param>
  	public void Refresh(bool onlyIfVariantChanged = true)
  	{
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {

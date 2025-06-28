@@ -8,8 +8,7 @@ namespace ExampleMod.Common.UI.ExampleInGameNotification
 	// See ExampleJoinWorldInGameNotification.
 	public class ExampleInGameNotificationPlayer : ModPlayer
 	{
-		public override void OnEnterWorld()
-		{
+		public override void OnEnterWorld() {
 			// Show our on-join notification when we join the world.
 			// This should only display for our player.
 			if (Player.whoAmI == Main.myPlayer)

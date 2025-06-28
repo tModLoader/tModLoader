@@ -1,0 +1,68 @@
+--- src/TerrariaNetCore/Terraria/Cloud.cs
++++ src/tModLoader/Terraria/Cloud.cs
+@@ -1,11 +_,13 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using Terraria.GameContent;
++using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.Utilities;
+ 
+ namespace Terraria;
+ 
+-public class Cloud
++public partial class Cloud
+ {
+ 	public Vector2 position;
+ 	public float scale;
+@@ -87,6 +_,11 @@
+ 		if (rand.Next(3) == 0)
+ 			Main.cloud[num].position.Y -= rand.Next((int)((float)Main.screenHeight * 0.1f));
+ 
++		int? cloudChoice = CloudLoader.ChooseCloud(vanillaPool: 22, rare: false);
++		if (cloudChoice.HasValue && cloudChoice.Value != 0) {
++			Main.cloud[num].type = cloudChoice.Value;
++			goto PostCloudChoice;
++		}
+ 		Main.cloud[num].type = rand.Next(4);
+ 		if ((Main.cloudAlpha > 0f && rand.Next(4) != 0) || (Main.cloudBGActive >= 1f && rand.Next(2) == 0)) {
+ 			Main.cloud[num].type = rand.Next(18, 22);
+@@ -105,12 +_,15 @@
+ 		else if (Main.cloud[num].position.Y > (float)(-Main.screenHeight) * 0.15f && rand.Next(2) == 0 && (double)Main.numClouds > 20.0) {
+ 			Main.cloud[num].type = rand.Next(14, 18);
+ 		}
++		PostCloudChoice:
+ 
+ 		if (rand.Next((Main.dontStarveWorld || Main.tenthAnniversaryWorld) ? 25 : 150) == 0)
+ 			Main.cloud[num].type = RollRareCloud();
+ 		else if (Main.tenthAnniversaryWorld && rand.Next(3) == 0)
+ 			Main.cloud[num].type = RollRareCloud();
+ 
++		Main.cloud[num].ModCloud = CloudLoader.GetModCloud(Main.cloud[num].type);
++
+ 		if ((double)Main.cloud[num].scale > 1.2)
+ 			Main.cloud[num].position.Y += 100f;
+ 
+@@ -128,6 +_,8 @@
+ 		if (Main.cloud[num].position.X + (float)TextureAssets.Cloud[Main.cloud[num].type].Width() * Main.cloud[num].scale < -400f)
+ 			Main.cloud[num].Alpha = 1f;
+ 
++		Main.cloud[num].ModCloud?.OnSpawn(Main.cloud[num]);
++
+ 		Rectangle rectangle = new Rectangle((int)Main.cloud[num].position.X, (int)Main.cloud[num].position.Y, Main.cloud[num].width, Main.cloud[num].height);
+ 		for (int j = 0; j < 200; j++) {
+ 			if (num != j && Main.cloud[j].active) {
+@@ -143,6 +_,13 @@
+ 		int num = -1;
+ 		bool flag = false;
+ 		while (!flag) {
++			float totalVanillaWeight = ((!Main.tenthAnniversaryWorld) ? 18 : 15);
++			// The math works out so that if we represent all vanilla choices as 1 the weighting will still be correct even though some might fail a check or random chance, causing the while loop to repeat.
++			int? cloudChoice = CloudLoader.ChooseCloud(totalVanillaWeight, rare: true);
++			if (cloudChoice.HasValue && cloudChoice.Value != 0) {
++				return cloudChoice.Value;
++			}
++
+ 			num = ((!Main.tenthAnniversaryWorld) ? rand.Next(22, 41) : rand.Next(22, 37));
+ 			switch (num) {
+ 				default:

@@ -148,7 +148,8 @@ partial class Utils
 	public static int Repeat(int value, int length) => value >= 0 ? value % length : (value % length) + length;
 
 	/// <summary>
-	/// Bit packs a BitArray in to a Byte Array and then sends the byte array
+	/// Bit packs a BitArray into a Byte Array and then sends the byte array
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static void SendBitArray(BitArray arr, BinaryWriter writer)
 	{
@@ -159,6 +160,7 @@ partial class Utils
 
 	/// <summary>
 	/// Receives the result of SendBitArray, and returns the corresponding BitArray
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static BitArray ReceiveBitArray(int BitArrLength, BinaryReader reader)
 	{
@@ -166,6 +168,8 @@ partial class Utils
 		receive = reader.ReadBytes(receive.Length);
 		return new BitArray(receive);
 	}
+
+	// TODO: Better options to SendBitArray/ReceiveBitArray that don't allocate a new bool[] or BitArray, most likely as extension methods in BinaryIO.cs
 
 	// Common Blocks
 
@@ -258,5 +262,17 @@ partial class Utils
 	{
 		string separator = doubleNewline ? "\n\n" : "\n";
 		return NetworkText.FromKey(localizationKey, separator + string.Join(separator, errors.Select(x => $"{x.Key}:\n{x.Value}")));
+	}
+
+	private static void AddArgToDictionary(string text, ref string text2, ref Dictionary<string, string> dictionary)
+	{
+		if (text == null)
+			return;
+
+		// In case someone has a cli-ArgsConfig.txt for mod development and does host&play, we should TryAdd
+		if (!dictionary.TryAdd(text.ToLower(), text2))
+			Console.WriteLine($"Unexpected Issue with Launch Arguments: Duplicate Launch Arg \"{text}\"");
+
+		text2 = "";
 	}
 }

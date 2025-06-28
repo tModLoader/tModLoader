@@ -8,9 +8,17 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria;
-@@ -29,12 +_,13 @@
+@@ -27,14 +_,21 @@
+ 	public static int GraveyardTileMin = 16;
+ 	public static int GraveyardTileThreshold = 28;
  	public bool CanPlayCreditsRoll;
++	/// <summary>
++	/// Indexed by BannerIDs, indicates which enemies are currently subject to the banner damage bonus. Set to true in conjunction with <see cref="NPCBannerBuff"/>.
++	/// </summary>
  	public bool[] NPCBannerBuff = new bool[290];
++	/// <summary>
++	/// Indicates that the player is in range of a buff providing Banner tile and should receive the <see cref="BuffID.MonsterBanner"/> buff. Set to true in conjunction with <see cref="NPCBannerBuff"/>.
++	/// </summary>
  	public bool hasBanner;
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];

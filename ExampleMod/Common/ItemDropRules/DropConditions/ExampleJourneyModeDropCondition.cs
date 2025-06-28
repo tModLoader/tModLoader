@@ -18,7 +18,7 @@ namespace ExampleMod.Common.ItemDropRules.DropConditions
 		}
 
 		public bool CanShowItemDropInUI() {
-			return true;
+			return Main.GameModeInfo.IsJourneyMode; // We don't want players to see this drop listed while in normal worlds.
 		}
 
 		public string GetConditionDescription() {

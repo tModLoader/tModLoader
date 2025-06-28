@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -2,24 +_,84 @@
+@@ -2,24 +_,97 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  
@@ -41,45 +41,58 @@
 +			var styleCopy = style;
 +			return Main.RunOnMainThread(() => Play_Inner(styleCopy, position, updateCallback)).GetAwaiter().GetResult();
 +		}
-+		
++
 +		return Play_Inner(in style, position, updateCallback);
 +	}
 +
 +	// The part that HAS to run on the main thread.
 +	private SlotId Play_Inner(in SoundStyle style, Vector2? position, SoundUpdateCallback? updateCallback)
 +	{
++		SoundStyle chosenStyle = style.WithSelectedVariant();
++
 +		// Handle the MaxInstances & RestartIfPlaying properties
-+		int maxInstances = style.MaxInstances;
++		int maxInstances = chosenStyle.MaxInstances;
 +
 +		if (maxInstances > 0) {
-+			int instanceCount = 0;
++			int attempts = chosenStyle.LimitsArePerVariant ? chosenStyle.RerollAttempts + 1 : 1;
++			for (int attempt = 0; attempt < attempts; attempt++) {
++				bool tryAgain = false;
++				int instanceCount = 0;
 +
-+			foreach (var pair in _trackedSounds) {
-+				var activeSound = pair.Value;
++				foreach (var pair in _trackedSounds) {
++					var activeSound = pair.Value;
 +
-+				if (!activeSound.IsPlaying || !style.IsTheSameAs(activeSound.Style) || ++instanceCount < maxInstances) {
-+					continue;
-+				}
++					if (!activeSound.IsPlaying || !chosenStyle.IsTheSameAs(activeSound.Style) || ++instanceCount < maxInstances) {
++						continue;
++					}
 +
-+				switch (style.SoundLimitBehavior) {
-+					case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
-+						activeSound.Sound?.Stop(true);
++					if (attempt + 1 < attempts) {
++						tryAgain = true;
++						chosenStyle = style.WithSelectedVariant();
 +						break;
-+					default:
-+						return SlotId.Invalid;
++					}
++
++					switch (chosenStyle.SoundLimitBehavior) {
++						case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
++							activeSound.Sound?.Stop(true);
++							break;
++						default:
++							return SlotId.Invalid;
++					}
 +				}
++
++				if (!tryAgain)
++					break;
 +			}
 +		}
 +
-+		SoundStyle styleCopy = style;
-+
 +		// Handle 'UsesMusicPitch'.. This property is a weird solution for keeping vanilla's old instruments' behavior alive, and is currently internal.
-+		if (style.UsesMusicPitch) {
-+			styleCopy.Pitch += Main.musicPitch;
++		if (chosenStyle.UsesMusicPitch) {
++			chosenStyle.Pitch += Main.musicPitch;
 +		}
  
 -		ActiveSound value = new ActiveSound(style, position);
-+		ActiveSound value = new ActiveSound(styleCopy, position, updateCallback);
++		ActiveSound value = new ActiveSound(chosenStyle, position, updateCallback);
  		return _trackedSounds.Add(value);
  	}
  
@@ -130,6 +143,38 @@
  
  	public void PauseAll()
  	{
+@@ -61,6 +_,22 @@
+ 		}
+ 	}
+ 
++	public void PauseOrStopAll()
++	{
++		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
++			switch (item.Value.Style.PauseBehavior) {
++				case PauseBehavior.KeepPlaying:
++					break;
++				case PauseBehavior.PauseWithGame:
++					item.Value.Pause();
++					break;
++				case PauseBehavior.StopWhenGamePaused:
++					item.Value.Stop();
++					break;
++			}
++		}
++	}
++
+ 	public void ResumeAll()
+ 	{
+ 		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
+@@ -82,7 +_,7 @@
+ 		foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
+ 			try {
+ 				item.Value.Update();
+-				if (!item.Value.IsPlaying)
++				if (!item.Value.IsPlayingOrPaused) // TML: Paused sounds now properly supported
+ 					_trackedSounds.Remove(item.Id);
+ 			}
+ 			catch {
 @@ -91,7 +_,7 @@
  		}
  	}

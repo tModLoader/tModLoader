@@ -13,10 +13,24 @@ using static Terraria.Audio.ActiveSound;
 
 namespace Terraria.Audio;
 
+/// <inheritdoc cref="SoundStyle.SoundLimitBehavior"/>
 public enum SoundLimitBehavior
 {
+	/// <summary> When the sound limit is reached, no sound instance will be started. </summary>
 	IgnoreNew,
+	/// <summary> When the sound limit is reached, a currently playing sound will be stopped and a new sound instance will be started. </summary>
 	ReplaceOldest,
+}
+
+/// <inheritdoc cref="SoundStyle.PauseBehavior"/>
+public enum PauseBehavior
+{
+	/// <summary> This sound will keep playing even when the game is paused. </summary>
+	KeepPlaying,
+	/// <summary> This sound will pause when the game is paused or unfocused and resume once the game is resumed. </summary>
+	PauseWithGame,
+	/// <summary> This sound will stop when the game is paused or unfocused. </summary>
+	StopWhenGamePaused,
 }
 
 /// <summary>
@@ -25,9 +39,6 @@ public enum SoundLimitBehavior
 /// </summary>
 public record struct SoundStyle
 {
-	private const float MinPitchValue = -1f;
-	private const float MaxPitchValue = 1f;
-
 	private static readonly UnifiedRandom Random = new();
 
 	private int[]? variants;
@@ -38,6 +49,7 @@ public record struct SoundStyle
 	private float pitchVariance = 0f;
 	private Asset<SoundEffect>? effectCache = null;
 	private Asset<SoundEffect>?[]? variantsEffectCache = null;
+	private int rerollAttempts = 0;
 
 	/// <summary> The sound effect to play. </summary>
 	public string SoundPath { get; set; }
@@ -53,15 +65,38 @@ public record struct SoundStyle
 
 	/// <summary>
 	/// The max amount of sound instances that this style will allow creating, before stopping a playing sound or refusing to play a new one.
-	/// <br/> Set to 0 for no limits.
+	/// <br/><br/> If using variants, use <see cref="LimitsArePerVariant"/> to allow <see cref="MaxInstances"/> to apply to each variant individually rather than to all variants as a group.
+	/// <br/><br/> Set to 0 for no limits.
 	/// </summary>
 	public int MaxInstances { get; set; } = 1;
 
-	/// <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
+	/// <summary>
+	/// Determines what the action taken when the max amount of sound instances is reached.
+	/// <br/><br/> Defaults to <see cref="SoundLimitBehavior.ReplaceOldest"/>, which means a currently playing sound will be stopped and a new sound instance will be started.
+	/// </summary>
 	public SoundLimitBehavior SoundLimitBehavior { get; set; } = SoundLimitBehavior.ReplaceOldest;
+
+	/// <summary>
+	/// How many additional times to attempt to find a variant that is not currently playing before applying the SoundLimitBehavior. Only has effect if LimitsArePerVariant is true. Defaults to 0.
+	/// </summary>
+	public int RerollAttempts {
+		get => rerollAttempts;
+		set => rerollAttempts = Math.Max(0, value);
+	}
+
+	/// <summary>
+	/// If true, then variants are treated as different sounds for the purposes of <see cref="SoundLimitBehavior"/> and <see cref="MaxInstances"/>. Defaults to false, meaning that all variants share the same sound instance limitations.
+	/// </summary>
+	public bool LimitsArePerVariant { get; set; } = false;
 
 	/// <summary> If true, this sound won't play if the game's window isn't selected. </summary>
 	public bool PlayOnlyIfFocused { get; set; } = false;
+
+	/// <summary>
+	/// Determines how the sound will be affected when the game is paused (or unfocused) and subsequently resumed. Long-running sounds might benefit from changing this value.
+	/// <br/><br/> Defaults to <see cref="PauseBehavior.KeepPlaying"/>, which means the sound will continue playing while the game is paused.
+	/// </summary>
+	public PauseBehavior PauseBehavior { get; set; } = PauseBehavior.KeepPlaying;
 
 	/// <summary> Whether or not to loop played sounds. </summary>
 	public bool IsLooped { get; set; } = false;
@@ -116,6 +151,8 @@ public record struct SoundStyle
 		}
 	}
 
+	internal int? SelectedVariant { get; set; }
+
 	/// <summary> The volume multiplier to play sounds with. </summary>
 	public float Volume {
 		get => volume;
@@ -128,7 +165,7 @@ public record struct SoundStyle
 	/// </summary>
 	public float Pitch {
 		get => pitch;
-		set => pitch = MathHelper.Clamp(value, MinPitchValue, MaxPitchValue);
+		set => pitch = value;
 	}
 
 	/// <summary>
@@ -152,24 +189,18 @@ public record struct SoundStyle
 	/// </summary>
 	public (float minPitch, float maxPitch) PitchRange {
 		get {
-			float halfVariance = PitchVariance;
-			float minPitch = Math.Max(MinPitchValue, Pitch - halfVariance);
-			float maxPitch = Math.Min(MaxPitchValue, Pitch + halfVariance);
+			float halfVariance = PitchVariance / 2;
+			float minPitch = Pitch - halfVariance;
+			float maxPitch = Pitch + halfVariance;
 
 			return (minPitch, maxPitch);
 		}
 		set {
-			float minPitch = value.minPitch;
-			float maxPitch = value.maxPitch;
-
-			if (minPitch > maxPitch)
+			if (value.minPitch > value.maxPitch)
 				throw new ArgumentException("Min pitch cannot be greater than max pitch.", nameof(value));
 			
-			minPitch = Math.Max(MinPitchValue, minPitch);
-			maxPitch = Math.Min(MaxPitchValue, maxPitch);
-
-			Pitch = (minPitch + maxPitch) * 0.5f;
-			PitchVariance = maxPitch - minPitch;
+			Pitch = (value.minPitch + value.maxPitch) * 0.5f;
+			PitchVariance = value.maxPitch - value.minPitch;
 		}
 	}
 
@@ -218,10 +249,16 @@ public record struct SoundStyle
 	}
 
 	// To be optimized, improved.
+	/// <summary>
+	/// Checks if this SoundStyle is the same as another SoundStyle. This method takes into account differences in chosen variants if <see cref="LimitsArePerVariant"/> is true.
+	/// </summary>
 	public bool IsTheSameAs(SoundStyle style)
 	{
-		if (Identifier != null && Identifier == style.Identifier)
-			return true;
+		if (LimitsArePerVariant && SelectedVariant != style.SelectedVariant)
+			return false;
+
+		if (Identifier != null || style.Identifier != null)
+			return Identifier == style.Identifier;
 
 		if (SoundPath == style.SoundPath)
 			return true;
@@ -229,7 +266,24 @@ public record struct SoundStyle
 		return false;
 	}
 
-	public SoundEffect GetRandomSound()
+	/// <summary>
+	/// Same as <see cref="IsTheSameAs(SoundStyle)"/> except it doesn't take into account differences in chosen variants.
+	/// </summary>
+	public bool IsVariantOf(SoundStyle style)
+	{
+		if (Identifier != null || style.Identifier != null)
+			return Identifier == style.Identifier;
+
+		if (SoundPath == style.SoundPath)
+			return true;
+
+		return false;
+	}
+
+	[Obsolete("Renamed to GetSoundEffect")]
+	public SoundEffect GetRandomSound() => GetSoundEffect();
+
+	public SoundEffect GetSoundEffect()
 	{
 		Asset<SoundEffect> asset;
 
@@ -237,7 +291,7 @@ public record struct SoundStyle
 			asset = effectCache ??= ModContent.Request<SoundEffect>(SoundPath, AssetRequestMode.ImmediateLoad);
 		}
 		else {
-			int variantIndex = GetRandomVariantIndex();
+			int variantIndex = SelectedVariant ?? GetRandomVariantIndex();
 			int variant = variants[variantIndex];
 
 			Array.Resize(ref variantsEffectCache, variants.Length);
@@ -249,7 +303,7 @@ public record struct SoundStyle
 	}
 
 	public float GetRandomPitch()
-		=> MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), MinPitchValue, MaxPitchValue);
+		=> Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance);
 
 	internal SoundStyle WithVolume(float volume)
 		=> this with { Volume = volume };
@@ -262,6 +316,13 @@ public record struct SoundStyle
 
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };
+
+	internal SoundStyle WithSelectedVariant(int? random = null)
+	{
+		if (variants == null || variants.Length == 0)
+			return this;
+		return this with { SelectedVariant = random ?? GetRandomVariantIndex() };
+	}
 
 	private int GetRandomVariantIndex()
 	{

@@ -12,7 +12,7 @@ using Terraria.UI;
 
 namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
-	// ExampleUIs visibility is toggled by typing "/coin" in chat (See CoinCommand.cs)
+	// ExampleUIs visibility is toggled by typing "/coins" in chat (See CoinCommand.cs)
 	// ExampleCoinsUI is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement
 	// For more info about UI you can check https://github.com/tModLoader/tModLoader/wiki/Basic-UI-Element and https://github.com/tModLoader/tModLoader/wiki/Advanced-guide-to-custom-UI 
 	internal class ExampleCoinsUIState : UIState
@@ -36,7 +36,7 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			// Next, we create another UIElement that we will place. Since we will be calling `coinCounterPanel.Append(playButton);`, Left and Top are relative to the top left of the coinCounterPanel UIElement. 
 			// By properly nesting UIElements, we can position things relatively to each other easily.
 			Asset<Texture2D> buttonPlayTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay");
-			ExampleUIHoverImageButton playButton = new ExampleUIHoverImageButton(buttonPlayTexture, "Reset Coins Per Minute Counter");
+			ExampleUIHoverImageButton playButton = new ExampleUIHoverImageButton(buttonPlayTexture, Language.GetTextValue("Mods.ExampleMod.UI.ExampleCoinsUIState.Reset"));
 			SetRectangle(playButton, left: 110f, top: 10f, width: 22f, height: 22f);
 			// UIHoverImageButton doesn't do anything when Clicked. Here we assign a method that we'd like to be called when the button is clicked.
 			playButton.OnLeftClick += new MouseEvent(PlayButtonClicked);
@@ -99,6 +99,9 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 				Main.instance.LoadItem(74 - j);
 				coinsTextures[j] = TextureAssets.Item[74 - j].Value;
 			}
+
+			// This allows clicks to "pass-through" this element to the parent element and not be consumed by this element. This allows ExampleDraggableUIPanel to be dragged even when the user is clicking on the UIMoneyDisplay.
+			IgnoresMouseInteraction = true;
 		}
 		public void AddCoinsPerMinute(int coins) {
 			collectedCoins += coins;

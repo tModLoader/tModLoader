@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameInput;
 using Terraria.UI;
@@ -9,10 +10,11 @@ public partial class UIScrollbar : UIElement
 	public float ViewSize => _viewSize;
 	public float MaxViewSize => _maxViewSize;
 
-	public override void MouseOver(UIMouseEvent evt)
+	public override void Update(GameTime gameTime)
 	{
-		base.MouseOver(evt);
-		PlayerInput.LockVanillaMouseScroll("ModLoader/UIScrollbar");
+		base.Update(gameTime);
+		if (IsMouseHovering)
+			PlayerInput.LockVanillaMouseScroll("ModLoader/UIList");
 	}
 }
 
