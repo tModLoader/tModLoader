@@ -2894,7 +2894,7 @@
  			}
  
 +			// `WinImm32Ime` sends escape as an input character, but `FnaIme` does not, so we need to do this for escape to work on platforms other that Windows.
-+			if (inputText.IsKeyDown(Keys.Escape) && !oldInputText.IsKeyDown(Keys.Escape))
++			if (!Platform.IsWindows && inputText.IsKeyDown(Keys.Escape) && !oldInputText.IsKeyDown(Keys.Escape))
 +				inputTextEscape = true;
 +
  			for (int i = 0; i < keyCount; i++) {
