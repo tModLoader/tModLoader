@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -196,7 +196,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanRightClick
 <tr class="separator:aae6443f0157cd5c0ff4cb2798a9c88e7 inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a397d6589e63f4fba06366c311234f620 inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="a397d6589e63f4fba06366c311234f620" name="a397d6589e63f4fba06366c311234f620"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseItem</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a397d6589e63f4fba06366c311234f620 inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not any item can be used. Returns true by default. The inability to use a specific item overrides this, so use this to stop an item from being used. Called on local, server, and remote clients. <br /></td></tr>
+<tr class="memdesc:a397d6589e63f4fba06366c311234f620 inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not any item can be used. Returns true by default. The inability to use a specific item overrides this, so use this to stop an item from being used. Called on local, server, and remote clients. <br  />
+<br  />
+ The item may or not be used after this method is called, so logic in this method should have no side effects such as consuming items or resources. <br /></td></tr>
 <tr class="separator:a397d6589e63f4fba06366c311234f620 inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25c2302b95165664e3451f658a41e720 inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="a25c2302b95165664e3451f658a41e720" name="a25c2302b95165664e3451f658a41e720"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>CaughtFishStack</b> (int type, ref int stack)</td></tr>
@@ -491,7 +493,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UseAnimation<
 <tr class="separator:ad1420ea0491b79f097b4916d032a453d inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915962fe4b3f9b4835490c1e05c39874 inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="a915962fe4b3f9b4835490c1e05c39874" name="a915962fe4b3f9b4835490c1e05c39874"></a>
 virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseItem</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a915962fe4b3f9b4835490c1e05c39874 inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when an item is used. The return value controls whether or not ApplyItemTime will be called for the player. Return true if the item actually did something, to force itemTime. Return false to keep itemTime at 0. Return null for vanilla behavior. Called on local, server, and remote clients. <br /></td></tr>
+<tr class="memdesc:a915962fe4b3f9b4835490c1e05c39874 inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when an item is used. The return value controls whether or not ApplyItemTime will be called for the player. Return true if the item actually did something, to force itemTime. Return false to keep itemTime at 0. Return null for vanilla behavior. Called on local, server, and remote clients. <br  />
+<br  />
+ Note the for right-click actions, this is currently only called on the local client. <br /></td></tr>
 <tr class="separator:a915962fe4b3f9b4835490c1e05c39874 inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a050f8dc04b0b6acc4f7147453a1fc9 inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="a2a050f8dc04b0b6acc4f7147453a1fc9" name="a2a050f8dc04b0b6acc4f7147453a1fc9"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UseItemFrame</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>

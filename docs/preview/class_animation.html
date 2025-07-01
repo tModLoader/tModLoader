@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -107,15 +107,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></t
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a74241bf9fdc53516bd708ede6c12d714"><td class="memItemLeft" align="right" valign="top"><a id="a74241bf9fdc53516bd708ede6c12d714" name="a74241bf9fdc53516bd708ede6c12d714"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetTemporaryFrame</b> (int x, int y, out int frameData)</td></tr>
+<tr class="memdesc:a74241bf9fdc53516bd708ede6c12d714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the frame value of the temporary tile animation at the provided tile coordinates. Returns false if there is no animation. <br /></td></tr>
 <tr class="separator:a74241bf9fdc53516bd708ede6c12d714"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ef94e7c0c1b0f35d9e04fd5b761479c"><td class="memItemLeft" align="right" valign="top"><a id="a1ef94e7c0c1b0f35d9e04fd5b761479c" name="a1ef94e7c0c1b0f35d9e04fd5b761479c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
 <tr class="separator:a1ef94e7c0c1b0f35d9e04fd5b761479c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1862233704284355d8c73553f55e568f"><td class="memItemLeft" align="right" valign="top"><a id="a1862233704284355d8c73553f55e568f" name="a1862233704284355d8c73553f55e568f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>NewTemporaryAnimation</b> (int type, ushort tileType, int x, int y)</td></tr>
+<tr class="memdesc:a1862233704284355d8c73553f55e568f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a temporary tile animation of the given type at the given tile coordinates. <em>tileType</em>  should match the current <a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">Tile.TileType</a>. This method should be called on the server in multiplayer to properly sync. <br /></td></tr>
 <tr class="separator:a1862233704284355d8c73553f55e568f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23edf8f44b572a5ef32300b6659f485e"><td class="memItemLeft" align="right" valign="top"><a id="a23edf8f44b572a5ef32300b6659f485e" name="a23edf8f44b572a5ef32300b6659f485e"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterTemporaryAnimation</b> (int frameRate, int[] frames)</td></tr>
+<tr class="memitem:a23edf8f44b572a5ef32300b6659f485e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_animation.html#a23edf8f44b572a5ef32300b6659f485e">RegisterTemporaryAnimation</a> (int frameRate, int[] frames)</td></tr>
+<tr class="memdesc:a23edf8f44b572a5ef32300b6659f485e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a temporary tile animation are returns a unique ID. The animation will play through the provided frames and the provided frameRate. Use the ID with <a class="el" href="class_animation.html#a1862233704284355d8c73553f55e568f" title="Starts a temporary tile animation of the given type at the given tile coordinates....">NewTemporaryAnimation</a> to trigger and sync the tempory tile animation.  <a href="class_animation.html#a23edf8f44b572a5ef32300b6659f485e">More...</a><br /></td></tr>
 <tr class="separator:a23edf8f44b572a5ef32300b6659f485e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d086cf2f7efe071b5e70e64fe8a5ef9"><td class="memItemLeft" align="right" valign="top"><a id="a7d086cf2f7efe071b5e70e64fe8a5ef9" name="a7d086cf2f7efe071b5e70e64fe8a5ef9"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Unload</b> ()</td></tr>
@@ -136,6 +138,46 @@ Properties</h2></td></tr>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>AnimationCount</b> = 5<code> [get]</code></td></tr>
 <tr class="separator:ac1875b369c1f841ca9f89afda2e994d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a23edf8f44b572a5ef32300b6659f485e" name="a23edf8f44b572a5ef32300b6659f485e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23edf8f44b572a5ef32300b6659f485e">&#9670;&nbsp;</a></span>RegisterTemporaryAnimation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Animation.RegisterTemporaryAnimation </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>frameRate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int[]&#160;</td>
+          <td class="paramname"><em>frames</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a temporary tile animation are returns a unique ID. The animation will play through the provided frames and the provided frameRate. Use the ID with <a class="el" href="class_animation.html#a1862233704284355d8c73553f55e568f" title="Starts a temporary tile animation of the given type at the given tile coordinates....">NewTemporaryAnimation</a> to trigger and sync the tempory tile animation. </p>
+<dl class="section return"><dt>Returns</dt><dd>A unique Id for this specific animation.</dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

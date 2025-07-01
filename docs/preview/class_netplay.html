@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -122,6 +122,13 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnConnectedToS
 <tr class="separator:a1754af82e28f7da0551c22def5bb724d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af84ffacddc860635d741f8214463ab45"><td class="memItemLeft" align="right" valign="top"><a id="af84ffacddc860635d741f8214463ab45" name="af84ffacddc860635d741f8214463ab45"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSections</b> ()</td></tr>
+<tr class="memdesc:af84ffacddc860635d741f8214463ab45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets all world sections as unloaded for all clients. This results in all clients being sent the world sections again. <br  />
+<br  />
+ This is used at the end of Hardmode world generation to force all clients to receive the tiles from the server again. <br  />
+<br  />
+ If you are doing massive world changes in-game outside of the Hardmode transformation, this is a simple way to ensure that all clients see those tile changes without sending countless <a class="el" href="class_net_message.html#adca742c59502eba773e5db8b3f1ab6ae" title="Range: In this particular overload, tileX  and tileY  denote a single tile to sync....">NetMessage.SendTileSquare(int, int, int, TileChangeType)</a> messages. <br  />
+<br  />
+ <b>Call on Server only!</b> <br /></td></tr>
 <tr class="separator:af84ffacddc860635d741f8214463ab45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a136f400feff676e3497558e3967258f7"><td class="memItemLeft" align="right" valign="top"><a id="a136f400feff676e3497558e3967258f7" name="a136f400feff676e3497558e3967258f7"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetRemoteIP</b> (string remoteAddress)</td></tr>

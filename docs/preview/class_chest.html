@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -149,8 +149,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6e280040b65cdfe6cfc47c496793eb16"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16">FindChest</a> (int X, int Y)</td></tr>
 <tr class="memdesc:a6e280040b65cdfe6cfc47c496793eb16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to find a <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> located at (<em>X</em> , <em>Y</em> ) (tile coordinates).  <a href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16">More...</a><br /></td></tr>
 <tr class="separator:a6e280040b65cdfe6cfc47c496793eb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125cbf85ec36e84c0ed021cf32b69e27"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27">FindChestByGuessing</a> (int X, int Y)</td></tr>
-<tr class="memdesc:a125cbf85ec36e84c0ed021cf32b69e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to find the <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> associated with the tile at (<em>X</em> , <em>Y</em> ) (tile coordinates).  <a href="class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27">More...</a><br /></td></tr>
+<tr class="memitem:a125cbf85ec36e84c0ed021cf32b69e27"><td class="memItemLeft" align="right" valign="top"><a id="a125cbf85ec36e84c0ed021cf32b69e27" name="a125cbf85ec36e84c0ed021cf32b69e27"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>FindChestByGuessing</b> (int X, int Y)</td></tr>
+<tr class="memdesc:a125cbf85ec36e84c0ed021cf32b69e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16" title="Tries to find a Chest located at (X , Y ) (tile coordinates).">FindChest(int, int)</a> except it also succeeds for tile coordinates directly above or to the left of the <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> location. <br  />
+<br  />
+ <b>The logic in this method is incorrect and this method should not be used.</b> It is recommended to use <a class="el" href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16" title="Tries to find a Chest located at (X , Y ) (tile coordinates).">FindChest(int, int)</a> with <a class="el" href="class_tile_object_data.html#a45afc3af91fef05eeb35b71a861c3bd0" title="Returns the coordinates of the top left tile of the multitile at the location provided....">TileObjectData.TopLeft(int, int)</a> if you do not have the top left tile coordinate. <br /></td></tr>
 <tr class="separator:a125cbf85ec36e84c0ed021cf32b69e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1b7fd27494e9acb186fb520bcb0967a"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_chest.html#ab1b7fd27494e9acb186fb520bcb0967a">FindEmptyChest</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>, int type=21, int style=0, int direction=1, int alternate=0)</td></tr>
 <tr class="memdesc:ab1b7fd27494e9acb186fb520bcb0967a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a new chest can exist at tile coordinates (<em>x</em> , <em>y</em> ).  <a href="class_chest.html#ab1b7fd27494e9acb186fb520bcb0967a">More...</a><br /></td></tr>
@@ -707,54 +710,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameLength</b
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the chest at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
-<p >If you don't have the top-left corner of the chest tile, use <a class="el" href="class_chest.html#a125cbf85ec36e84c0ed021cf32b69e27" title="Tries to find the Chest associated with the tile at (X , Y ) (tile coordinates).">FindChestByGuessing(int, int)</a>. </p>
-
-</div>
-</div>
-<a id="a125cbf85ec36e84c0ed021cf32b69e27" name="a125cbf85ec36e84c0ed021cf32b69e27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a125cbf85ec36e84c0ed021cf32b69e27">&#9670;&nbsp;</a></span>FindChestByGuessing()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static int Chest.FindChestByGuessing </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>X</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>Y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tries to find the <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> associated with the tile at (<em>X</em> , <em>Y</em> ) (tile coordinates). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">X</td><td>The x-coordinate to check, in tile coordinates.</td></tr>
-    <tr><td class="paramname">Y</td><td>The y-coordinate to check, in tile coordinates.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The index in <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> of the chest associated with the tile at (<em>X</em> , <em>Y</em> ), or <code>-1</code> if one doesn't exist.</dd></dl>
-<p >If you have the top-left corner of the chest tile, use <a class="el" href="class_chest.html#a6e280040b65cdfe6cfc47c496793eb16" title="Tries to find a Chest located at (X , Y ) (tile coordinates).">FindChest(int, int)</a>. </p>
+<p >The <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> is stored in the top-left corner of the chest tile. If you have an arbitrary chest tile, you may need to use <a class="el" href="class_tile_object_data.html#a45afc3af91fef05eeb35b71a861c3bd0" title="Returns the coordinates of the top left tile of the multitile at the location provided....">TileObjectData.TopLeft(int, int)</a> to find the top left coordinates to use in this method. </p>
 
 </div>
 </div>

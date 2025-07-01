@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -100,7 +100,9 @@ $(document).ready(function(){initNavTree('class_mod_config.html',''); initResiza
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad0c330e9e01d768b16078b119049a325"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#ad0c330e9e01d768b16078b119049a325">AcceptClientChanges</a> (<a class="el" href="class_mod_config.html">ModConfig</a> pendingConfig, int whoAmI, ref <a class="el" href="class_network_text.html">NetworkText</a> message)</td></tr>
-<tr class="memdesc:ad0c330e9e01d768b16078b119049a325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload.  <a href="class_mod_config.html#ad0c330e9e01d768b16078b119049a325">More...</a><br /></td></tr>
+<tr class="memdesc:ad0c330e9e01d768b16078b119049a325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload. <br  />
+<br  />
+ In advanced situations <em>pendingConfig</em>  can be modified here and the changes will be applied and be synced.  <a href="class_mod_config.html#ad0c330e9e01d768b16078b119049a325">More...</a><br /></td></tr>
 <tr class="separator:ad0c330e9e01d768b16078b119049a325"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46ab3d9d5dfb2f2ec440bbb281a3c740"><td class="memItemLeft" align="right" valign="top"><a id="a46ab3d9d5dfb2f2ec440bbb281a3c740" name="a46ab3d9d5dfb2f2ec440bbb281a3c740"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptClientChanges</b> (<a class="el" href="class_mod_config.html">ModConfig</a> pendingConfig, int whoAmI, ref string message)</td></tr>
@@ -111,6 +113,14 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Autoload</b> 
 <tr class="memitem:a824c575ccb1bf93d6d3f143164e1b19a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_mod_config.html">ModConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#a824c575ccb1bf93d6d3f143164e1b19a">Clone</a> ()</td></tr>
 <tr class="memdesc:a824c575ccb1bf93d6d3f143164e1b19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">tModLoader will call Clone on <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> to facilitate proper implementation of the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> user interface and detecting when a reload is required. Modders need to override this method if their config contains reference types. Failure to do so will lead to bugs. See ModConfigShowcaseDataTypes.Clone for examples and explanations.  <a href="class_mod_config.html#a824c575ccb1bf93d6d3f143164e1b19a">More...</a><br /></td></tr>
 <tr class="separator:a824c575ccb1bf93d6d3f143164e1b19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3987b23bd9ceb60199f70dfa51369553"><td class="memItemLeft" align="right" valign="top"><a id="a3987b23bd9ceb60199f70dfa51369553" name="a3987b23bd9ceb60199f70dfa51369553"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HandleAcceptClientChangesReply</b> (bool success, int player, <a class="el" href="class_network_text.html">NetworkText</a> message)</td></tr>
+<tr class="memdesc:a3987b23bd9ceb60199f70dfa51369553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by a client. Can be used to update UI attempting to manually save changes to a ServerSide config (using <a class="el" href="class_mod_config.html#a839883b24165e8a772f53cfaffd8744c" title="Attempts to save changes made to this ModConfig. This must be called on the active ModConfig instance...">SaveChanges(ModConfig, Action&lt;string, Color&gt;, bool, bool)</a>. For rejections this is only called on the client who requested the changes. <br  />
+<br  />
+ <em>player</em>  indicates which player requested the changes (see <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a>). <br  />
+<br  />
+ <em>success</em>  indicates if the changes were accepted and <em>message</em>  is the corresponding message from AcceptClientChanges. <br /></td></tr>
+<tr class="separator:a3987b23bd9ceb60199f70dfa51369553"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeae0e7a5be69e6796665b129573b64a9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9">NeedsReload</a> (<a class="el" href="class_mod_config.html">ModConfig</a> pendingConfig)</td></tr>
 <tr class="memdesc:aeae0e7a5be69e6796665b129573b64a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a reload is required. The default implementation compares properties and fields annotated with the <a class="el" href="class_reload_required_attribute.html" title="This attribute hints that changing the value of the annotated property or field will put the config i...">ReloadRequiredAttribute</a>. Unlike the other <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> hooks, this method is called on a clone of the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> that was saved during mod loading. The pendingConfig has values that are about to take effect. Neither of these instances necessarily match the instance used in OnLoaded.  <a href="class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9">More...</a><br /></td></tr>
 <tr class="separator:aeae0e7a5be69e6796665b129573b64a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,6 +135,22 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnLoaded</b> 
 <tr class="memitem:acfe877364ca5914f2928cdcfa736f344"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_config.html#acfe877364ca5914f2928cdcfa736f344">Open</a> (Action onClose=null, string scrollToOption=null, bool centerScrolledOption=true, bool playSound=true)</td></tr>
 <tr class="memdesc:acfe877364ca5914f2928cdcfa736f344"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens this config in the config UI. Can be used to allow your own UI to access the config. <em>onClose</em>  can be used to run code after the config is closed, such as opening a modded UI or showing a message to the user. <em>scrollToOption</em>  can be used to scroll to a specific member of the config and highlight it. It can also be used to scroll to the header above a member using the format <code>"Header:{MemberNameHere}"</code>. If the member has <code>[SeparatePage]</code> then the subpage will open automatically as well. Set <em>centerScrolledOption</em>  to false if you'd like the config option to be at the top of the list when focused instead of at the center.  <a href="class_mod_config.html#acfe877364ca5914f2928cdcfa736f344">More...</a><br /></td></tr>
 <tr class="separator:acfe877364ca5914f2928cdcfa736f344"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a839883b24165e8a772f53cfaffd8744c"><td class="memItemLeft" align="right" valign="top"><a id="a839883b24165e8a772f53cfaffd8744c" name="a839883b24165e8a772f53cfaffd8744c"></a>
+ConfigSaveResult&#160;</td><td class="memItemRight" valign="bottom"><b>SaveChanges</b> (<a class="el" href="class_mod_config.html">ModConfig</a> pendingConfig=null, Action&lt; string, Color &gt; status=null, bool silent=true, bool broadcast=true)</td></tr>
+<tr class="memdesc:a839883b24165e8a772f53cfaffd8744c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to save changes made to this <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a>. This must be called on the active <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> instance. <br  />
+<br  />
+ If <em>pendingConfig</em>  is provided, it will be used as the source for the changes to apply to the active config instance. If <em>status</em>  is provided, it will be called with text and a color to indicate the status of the operation. If <em>silent</em>  is false, sounds will play indicating success or failure. If <em>broadcast</em>  is false, the chat message informing all players when a ServerSide config is changed saying "Shared config changed: Message: {0}, Mod: {1}, Config: {2}" will not appear on clients. <br  />
+<br  />
+ <b><a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> code can run this method in-game, but there are some considerations to keep in mind: </b> <br  />
+<br  />
+ Calling this method on a ConfigScope.ServerSide config from a multiplayer client will result in ConfigSaveResult.RequestSentToServer being returned and the actual save logic being performed on the server. <a class="el" href="class_mod_config.html#a3987b23bd9ceb60199f70dfa51369553" title="Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by a...">HandleAcceptClientChangesReply(bool, int, NetworkText)</a> will be called on all clients after the server accepts or denies the changes. Calling this method on the server for a ServerSide config is also supported. <br  />
+<br  />
+ Attempting to save changes that would violate <a class="el" href="class_mod_config.html#aeae0e7a5be69e6796665b129573b64a9" title="Whether or not a reload is required. The default implementation compares properties and fields annota...">NeedsReload</a> will fail and ConfigSaveResult.NeedsReload will be returned. <br  />
+<br  />
+ If there is a chance that the changes won't be accepted, or if you want to provide a UI for the user to make changes without them taking effect immediately, you should use a clone of the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> and pass it in as <em>pendingConfig</em>  instead of modifying the active <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> directly. To make a clone, call the <a class="el" href="class_config_manager.html#a0071a0428677bc79c64a2f4e8d79d30e" title="Creates a clone of the provided ModConfig. This clone can be modified independently of the active con...">ConfigManager.GeneratePopulatedClone(ModConfig)</a> method. <br  />
+<br  />
+ See ExampleFullscreenUI.csfor a complete example of using this method. <br /></td></tr>
+<tr class="separator:a839883b24165e8a772f53cfaffd8744c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -204,7 +230,9 @@ abstract ConfigScope&#160;</td><td class="memItemRight" valign="bottom"><b>Mode<
 </table>
 </div><div class="memdoc">
 
-<p>Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload. </p>
+<p>Called on the Server for ServerSide configs to determine if the changes asked for by the Client will be accepted. Useful for enforcing permissions. Called after a check for NeedsReload. <br  />
+<br  />
+ In advanced situations <em>pendingConfig</em>  can be modified here and the changes will be applied and be synced. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pendingConfig</td><td>An instance of the <a class="el" href="class_mod_config.html" title="ModConfig provides a way for mods to be configurable. ModConfigs can either be Client specific or Ser...">ModConfig</a> with the attempted changes</td></tr>

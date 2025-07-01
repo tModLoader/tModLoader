@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1768,7 +1768,9 @@ static <a class="el" href="class_drone_camera_tracker.html">DroneCameraTracker</
 <tr class="separator:a775d139e8a9bbe86c550a043def07e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12886a2c8744133c2dc01d8fdcca8c13"><td class="memItemLeft" align="right" valign="top"><a id="a12886a2c8744133c2dc01d8fdcca8c13" name="a12886a2c8744133c2dc01d8fdcca8c13"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>drunkWorld</b> = false</td></tr>
-<tr class="memdesc:a12886a2c8744133c2dc01d8fdcca8c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the world was generated with the Drunk worldsecret world seed. See also <a class="el" href="class_world_gen.html#ab2e8f72eb26ec239698178fbaa98cbd4" title="If true, the world is generating with the Drunk worldsecret world seed. See also Main....">WorldGen.drunkWorldGen</a>. <br /></td></tr>
+<tr class="memdesc:a12886a2c8744133c2dc01d8fdcca8c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the world was generated with the Drunk worldsecret world seed. See also <a class="el" href="class_world_gen.html#ab2e8f72eb26ec239698178fbaa98cbd4" title="If true, the world is generating with the Drunk worldsecret world seed. See also Main....">WorldGen.drunkWorldGen</a>. <br  />
+<br  />
+ See <a class="el" href="class_main.html#aabb7b9b289d8d5101851355ff6795bcc" title="If true, the local player has visited the Party Girl and selected the &quot;Music&quot; optionto toggle the mus...">Main.swapMusic</a> for information about the Otherworld soundtrack toggle. <br /></td></tr>
 <tr class="separator:a12886a2c8744133c2dc01d8fdcca8c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01615741b31566b407b7560bcd349a50"><td class="memItemLeft" align="right" valign="top"><a id="a01615741b31566b407b7560bcd349a50" name="a01615741b31566b407b7560bcd349a50"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>duckCageFrame</b> = new int[cageFrames]</td></tr>
@@ -3539,6 +3541,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Support4K</b> 
 <tr class="memitem:a81257be4018a34ca265d900f07c4f886"><td class="memItemLeft" align="right" valign="top"><a id="a81257be4018a34ca265d900f07c4f886" name="a81257be4018a34ca265d900f07c4f886"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Support8K</b> = true</td></tr>
 <tr class="separator:a81257be4018a34ca265d900f07c4f886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabb7b9b289d8d5101851355ff6795bcc"><td class="memItemLeft" align="right" valign="top"><a id="aabb7b9b289d8d5101851355ff6795bcc" name="aabb7b9b289d8d5101851355ff6795bcc"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>swapMusic</b> = false</td></tr>
+<tr class="memdesc:aabb7b9b289d8d5101851355ff6795bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the local player has visited the Party Girl and selected the "Music" optionto toggle the music between the normal soundtrack and the Otherworld soundtrack. <br  />
+<br  />
+ Check <code>if (!Main.swapMusic == <a class="el" href="class_main.html#a12886a2c8744133c2dc01d8fdcca8c13" title="If true, the world was generated with the Drunk worldsecret world seed. See also WorldGen....">Main.drunkWorld</a> &amp;&amp; !Main.remixWorld)</code> when setting <a class="el" href="class_mod_n_p_c.html#a549e73e1a27d710b62f18401ff26bd18" title="The ID of the music that plays when this NPC is on or near the screen. Defaults to -1,...">ModNPC.Music</a> or <a class="el" href="class_mod_biome.html#ab10e86877fe13c7e175550710a29db8a" title="Defaults to 0. If custom music is not implemented for this biome, set this to -1.">ModSceneEffect.Music</a> if you want to play alternate music when the Otherworld soundtrack is enabled. <br /></td></tr>
+<tr class="separator:aabb7b9b289d8d5101851355ff6795bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8282fe34c9b8a4366545c75f26e2ae6f"><td class="memItemLeft" align="right" valign="top"><a id="a8282fe34c9b8a4366545c75f26e2ae6f" name="a8282fe34c9b8a4366545c75f26e2ae6f"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>targetSet</b></td></tr>
 <tr class="separator:a8282fe34c9b8a4366545c75f26e2ae6f"><td class="memSeparator" colspan="2">&#160;</td></tr>

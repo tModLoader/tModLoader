@@ -48,10 +48,11 @@ var searchData=
   ['wizardsusemanaflowers_45',['WizardsUseManaFlowers',['../class_game_tip_i_d.html#ab2cea1a29bfe4a0d0de753a402b2078d',1,'GameTipID']]],
   ['workbenches_46',['Workbenches',['../class_item_i_d_1_1_sets.html#a8c6936feb9fd9cb87b28acf72fc37990',1,'ItemID::Sets']]],
   ['worksinvoidbag_47',['WorksInVoidBag',['../class_item_i_d_1_1_sets.html#a74dd41a3534152768b00a423e4b26656',1,'ItemID::Sets']]],
-  ['worldeventupdates_48',['worldEventUpdates',['../class_main.html#a2d12b04e725bec080a9b1e5158597e5d',1,'Main']]],
-  ['worldsurface_49',['worldSurface',['../class_main.html#aa44e433e53a98400dacd5260313d7b2b',1,'Main']]],
-  ['worm_50',['Worm',['../class_n_p_c_a_i_style_i_d.html#a385d648d208dda14f4a3a36fa9aeb6f1',1,'NPCAIStyleID']]],
-  ['wormpet_51',['WormPet',['../class_proj_a_i_style_i_d.html#ab5d877f15b31a8feb6401ba1437574ae',1,'ProjAIStyleID']]],
-  ['wornarmor_52',['wornArmor',['../class_item.html#adbb756f77ffaa0ff6a047213b317e120',1,'Item']]],
-  ['wrongbugnet_53',['WrongBugNet',['../class_immunity_cooldown_i_d.html#af1340bc2669d75ec90978ac7a1f9074f',1,'ImmunityCooldownID']]]
+  ['worlddata_48',['WorldData',['../class_message_i_d.html#a33925ec118e69fc85aced712e1ca0bb5',1,'MessageID']]],
+  ['worldeventupdates_49',['worldEventUpdates',['../class_main.html#a2d12b04e725bec080a9b1e5158597e5d',1,'Main']]],
+  ['worldsurface_50',['worldSurface',['../class_main.html#aa44e433e53a98400dacd5260313d7b2b',1,'Main']]],
+  ['worm_51',['Worm',['../class_n_p_c_a_i_style_i_d.html#a385d648d208dda14f4a3a36fa9aeb6f1',1,'NPCAIStyleID']]],
+  ['wormpet_52',['WormPet',['../class_proj_a_i_style_i_d.html#ab5d877f15b31a8feb6401ba1437574ae',1,'ProjAIStyleID']]],
+  ['wornarmor_53',['wornArmor',['../class_item.html#adbb756f77ffaa0ff6a047213b317e120',1,'Item']]],
+  ['wrongbugnet_54',['WrongBugNet',['../class_immunity_cooldown_i_d.html#af1340bc2669d75ec90978ac7a1f9074f',1,'ImmunityCooldownID']]]
 ];

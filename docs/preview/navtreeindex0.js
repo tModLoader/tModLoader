@@ -121,6 +121,9 @@ var NAVTREEINDEX0 =
 "class_anchor_types_module.html":[3,0,40],
 "class_anchored_entities_collection.html":[3,0,39],
 "class_animation.html":[3,0,41],
+"class_animation.html#a1862233704284355d8c73553f55e568f":[3,0,41,1],
+"class_animation.html#a23edf8f44b572a5ef32300b6659f485e":[3,0,41,2],
+"class_animation.html#a74241bf9fdc53516bd708ede6c12d714":[3,0,41,0],
 "class_animation_i_d.html":[3,0,42],
 "class_anthill_entrance.html":[3,0,44],
 "class_argument_helper.html":[3,0,46],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "class_bestiary_portrait_background_based_on_world_evil_provider_preference_info_element.html#a9a55bc8fd1ef2cd5cfbbfd5b3d9cb734":[3,0,81,0],
 "class_bestiary_portrait_background_provider_preference_info_element.html":[3,0,82],
 "class_bestiary_portrait_background_provider_preference_info_element.html#ae300d150f6b983ca2b9571d629faa514":[3,0,82,0],
-"class_bestiary_unlocks_tracker.html":[3,0,85],
-"class_big_endian_reader.html":[3,0,86],
-"class_big_endian_writer.html":[3,0,87],
-"class_big_progress_bar_helper.html":[3,0,89]
+"class_bestiary_unlocks_tracker.html":[3,0,85]
 };

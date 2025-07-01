@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -120,9 +120,17 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>GetRandomPitch</b> (
 <tr class="memitem:accf593dfb0dc88f51aa8d3f6215db7ea"><td class="memItemLeft" align="right" valign="top"><a id="accf593dfb0dc88f51aa8d3f6215db7ea" name="accf593dfb0dc88f51aa8d3f6215db7ea"></a>
 SoundEffect&#160;</td><td class="memItemRight" valign="bottom"><b>GetRandomSound</b> ()</td></tr>
 <tr class="separator:accf593dfb0dc88f51aa8d3f6215db7ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9f07e3d1b40620e6ad567cdcd91448e"><td class="memItemLeft" align="right" valign="top"><a id="ad9f07e3d1b40620e6ad567cdcd91448e" name="ad9f07e3d1b40620e6ad567cdcd91448e"></a>
+SoundEffect&#160;</td><td class="memItemRight" valign="bottom"><b>GetSoundEffect</b> ()</td></tr>
+<tr class="separator:ad9f07e3d1b40620e6ad567cdcd91448e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad916883c21e0992da8bb2aa8665dc41"><td class="memItemLeft" align="right" valign="top"><a id="aad916883c21e0992da8bb2aa8665dc41" name="aad916883c21e0992da8bb2aa8665dc41"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTheSameAs</b> (<a class="el" href="struct_sound_style.html">SoundStyle</a> style)</td></tr>
+<tr class="memdesc:aad916883c21e0992da8bb2aa8665dc41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this <a class="el" href="struct_sound_style.html" title="This data type describes in detail how a sound should be played.   Passable to the SoundEngine....">SoundStyle</a> is the same as another <a class="el" href="struct_sound_style.html" title="This data type describes in detail how a sound should be played.   Passable to the SoundEngine....">SoundStyle</a>. This method takes into account differences in chosen variants if <a class="el" href="struct_sound_style.html#a8e9e764cafb8dd350f298940f36a38f3" title="If true, then variants are treated as different sounds for the purposes of SoundLimitBehavior and Max...">LimitsArePerVariant</a> is true. <br /></td></tr>
 <tr class="separator:aad916883c21e0992da8bb2aa8665dc41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7838e6c8beb6b9f4fc24d897dfed97e7"><td class="memItemLeft" align="right" valign="top"><a id="a7838e6c8beb6b9f4fc24d897dfed97e7" name="a7838e6c8beb6b9f4fc24d897dfed97e7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsVariantOf</b> (<a class="el" href="struct_sound_style.html">SoundStyle</a> style)</td></tr>
+<tr class="memdesc:a7838e6c8beb6b9f4fc24d897dfed97e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="struct_sound_style.html#aad916883c21e0992da8bb2aa8665dc41" title="Checks if this SoundStyle is the same as another SoundStyle. This method takes into account differenc...">IsTheSameAs(SoundStyle)</a> except it doesn't take into account differences in chosen variants. <br /></td></tr>
+<tr class="separator:a7838e6c8beb6b9f4fc24d897dfed97e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d0c068c7a2c57fcdb7f1ffcc30ffa84"><td class="memItemLeft" align="right" valign="top"><a id="a0d0c068c7a2c57fcdb7f1ffcc30ffa84" name="a0d0c068c7a2c57fcdb7f1ffcc30ffa84"></a>
 <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>WithPitchOffset</b> (float offset)</td></tr>
 <tr class="separator:a0d0c068c7a2c57fcdb7f1ffcc30ffa84"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,11 +155,24 @@ string?&#160;</td><td class="memItemRight" valign="bottom"><b>Identifier</b> = n
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLooped</b> = false<code> [get, set]</code></td></tr>
 <tr class="memdesc:adc51a634f4a7cc2725f6881b0afce994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to loop played sounds. <br /></td></tr>
 <tr class="separator:adc51a634f4a7cc2725f6881b0afce994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e9e764cafb8dd350f298940f36a38f3"><td class="memItemLeft" align="right" valign="top"><a id="a8e9e764cafb8dd350f298940f36a38f3" name="a8e9e764cafb8dd350f298940f36a38f3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>LimitsArePerVariant</b> = false<code> [get, set]</code></td></tr>
+<tr class="memdesc:a8e9e764cafb8dd350f298940f36a38f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then variants are treated as different sounds for the purposes of <a class="el" href="struct_sound_style.html#a87ddc4142df801a259b3c4e510d8f40d" title="Determines what the action taken when the max amount of sound instances is reached....">SoundLimitBehavior</a> and <a class="el" href="struct_sound_style.html#a9bbc4e8110bbab57351c8100ba17ed1f" title="The max amount of sound instances that this style will allow creating, before stopping a playing soun...">MaxInstances</a>. Defaults to false, meaning that all variants share the same sound instance limitations. <br /></td></tr>
+<tr class="separator:a8e9e764cafb8dd350f298940f36a38f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bbc4e8110bbab57351c8100ba17ed1f"><td class="memItemLeft" align="right" valign="top"><a id="a9bbc4e8110bbab57351c8100ba17ed1f" name="a9bbc4e8110bbab57351c8100ba17ed1f"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxInstances</b> = 1<code> [get, set]</code></td></tr>
 <tr class="memdesc:a9bbc4e8110bbab57351c8100ba17ed1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The max amount of sound instances that this style will allow creating, before stopping a playing sound or refusing to play a new one. <br  />
+<br  />
+ If using variants, use <a class="el" href="struct_sound_style.html#a8e9e764cafb8dd350f298940f36a38f3" title="If true, then variants are treated as different sounds for the purposes of SoundLimitBehavior and Max...">LimitsArePerVariant</a> to allow <a class="el" href="struct_sound_style.html#a9bbc4e8110bbab57351c8100ba17ed1f" title="The max amount of sound instances that this style will allow creating, before stopping a playing soun...">MaxInstances</a> to apply to each variant individually rather than to all variants as a group. <br  />
+<br  />
  Set to 0 for no limits. <br /></td></tr>
 <tr class="separator:a9bbc4e8110bbab57351c8100ba17ed1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00695290754c38e2be1c008a8d3a1033"><td class="memItemLeft" align="right" valign="top"><a id="a00695290754c38e2be1c008a8d3a1033" name="a00695290754c38e2be1c008a8d3a1033"></a>
+PauseBehavior&#160;</td><td class="memItemRight" valign="bottom"><b>PauseBehavior</b> = PauseBehavior.KeepPlaying<code> [get, set]</code></td></tr>
+<tr class="memdesc:a00695290754c38e2be1c008a8d3a1033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how the sound will be affected when the game is paused (or unfocused) and subsequently resumed. Long-running sounds might benefit from changing this value. <br  />
+<br  />
+ Defaults to PauseBehavior.KeepPlaying, which means the sound will continue playing while the game is paused. <br /></td></tr>
+<tr class="separator:a00695290754c38e2be1c008a8d3a1033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80d0ec72d506be9b268f13d87dac01d2"><td class="memItemLeft" align="right" valign="top"><a id="a80d0ec72d506be9b268f13d87dac01d2" name="a80d0ec72d506be9b268f13d87dac01d2"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>Pitch</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a80d0ec72d506be9b268f13d87dac01d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pitch <b>offset</b> to play sounds with. In XNA and FNA, Pitch ranges from -1.0f (down one octave) to 1.0f (up one octave). 0.0f is unity (normal) pitch. <br /></td></tr>
@@ -168,9 +189,15 @@ With Pitch at 0.0, and PitchVariance at 1.0, used pitch will range from -0.5 to 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>PlayOnlyIfFocused</b> = false<code> [get, set]</code></td></tr>
 <tr class="memdesc:a962caebf253b04e394b5400150cb343a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this sound won't play if the game's window isn't selected. <br /></td></tr>
 <tr class="separator:a962caebf253b04e394b5400150cb343a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62ffea2235a936b55bb03ddfabc8c792"><td class="memItemLeft" align="right" valign="top"><a id="a62ffea2235a936b55bb03ddfabc8c792" name="a62ffea2235a936b55bb03ddfabc8c792"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>RerollAttempts</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a62ffea2235a936b55bb03ddfabc8c792"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many additional times to attempt to find a variant that is not currently playing before applying the SoundLimitBehavior. Only has effect if LimitsArePerVariant is true. Defaults to 0. <br /></td></tr>
+<tr class="separator:a62ffea2235a936b55bb03ddfabc8c792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87ddc4142df801a259b3c4e510d8f40d"><td class="memItemLeft" align="right" valign="top"><a id="a87ddc4142df801a259b3c4e510d8f40d" name="a87ddc4142df801a259b3c4e510d8f40d"></a>
 SoundLimitBehavior&#160;</td><td class="memItemRight" valign="bottom"><b>SoundLimitBehavior</b> = SoundLimitBehavior.ReplaceOldest<code> [get, set]</code></td></tr>
-<tr class="memdesc:a87ddc4142df801a259b3c4e510d8f40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines what the action taken when the max amount of sound instances is reached. <br /></td></tr>
+<tr class="memdesc:a87ddc4142df801a259b3c4e510d8f40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines what the action taken when the max amount of sound instances is reached. <br  />
+<br  />
+ Defaults to SoundLimitBehavior.ReplaceOldest, which means a currently playing sound will be stopped and a new sound instance will be started. <br /></td></tr>
 <tr class="separator:a87ddc4142df801a259b3c4e510d8f40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d342dfbf2d069e486c19e119bef9885"><td class="memItemLeft" align="right" valign="top"><a id="a5d342dfbf2d069e486c19e119bef9885" name="a5d342dfbf2d069e486c19e119bef9885"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>SoundPath</b><code> [get, set]</code></td></tr>

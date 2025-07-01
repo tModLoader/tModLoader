@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -215,6 +215,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyItemAnimation</b
 <tr class="separator:a0228cc5eb7e39162c1f03eb00c4788d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f9f66b393bc6e8fb03b49fa1e9c775e"><td class="memItemLeft" align="right" valign="top"><a id="a4f9f66b393bc6e8fb03b49fa1e9c775e" name="a4f9f66b393bc6e8fb03b49fa1e9c775e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyItemTime</b> (<a class="el" href="class_item.html">Item</a> sItem, float multiplier=1, bool? callUseItem=null)</td></tr>
+<tr class="memdesc:a4f9f66b393bc6e8fb03b49fa1e9c775e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the internal logic of starting an individual item usage. Can be used to manually start an item usage outside of the normal logic. <br  />
+<br  />
+ The provided <em>multiplier</em> , if provided, is combined with the player's use time multipliers to scale the <a class="el" href="class_item.html">Item</a>'s <a class="el" href="class_item.html#a0e4256dafa7294d30c9d57c1510fc9c0" title="The time span of using the item in ticks. This is independent of the time it takes for the item anima...">Item.useTime</a>. The resulting value will be used to set <a class="el" href="class_player.html#ac98ef2102199623d733fe01630dee7d1" title="The remaining number of frames the current item usage will last.    When an item is used,...">Player.itemTime</a>, starting an item usage.  <br /></td></tr>
 <tr class="separator:a4f9f66b393bc6e8fb03b49fa1e9c775e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0cded72bb61b71af68fbbd342a03001"><td class="memItemLeft" align="right" valign="top"><a id="ab0cded72bb61b71af68fbbd342a03001" name="ab0cded72bb61b71af68fbbd342a03001"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyMeleeScale</b> (ref float scale)</td></tr>
@@ -1188,6 +1191,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCompositeArmFront<
 <tr class="separator:a6d16277529e0483eb2ff3cf4e0b8c93e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd77a2da2ad41ac8c904e122ea77dfec"><td class="memItemLeft" align="right" valign="top"><a id="afd77a2da2ad41ac8c904e122ea77dfec" name="afd77a2da2ad41ac8c904e122ea77dfec"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDummyItemTime</b> (int frames)</td></tr>
+<tr class="memdesc:afd77a2da2ad41ac8c904e122ea77dfec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <a class="el" href="class_player.html#ac98ef2102199623d733fe01630dee7d1" title="The remaining number of frames the current item usage will last.    When an item is used,...">itemTime</a> and <a class="el" href="class_player.html#aaa0fbd4de012ed02271830ddf3164e22" title="The remaining number of frames the current item animation will last.    When an item is used,...">itemAnimation</a> to the provided <em>frames</em>  value. Also sets <a class="el" href="class_player.html#a682a3e7d95875be19154705a00664e8e" title="The total number of frames the current item usage will last.    When an item is used,...">itemTimeMax</a> to that value plus one. <br  />
+<br  />
+ Commonly used by held projectiles to put the player in a state of using an item. This is usually done each time AI executes to lock the player in that state until the player releases the "Use Item" keybind.  <br /></td></tr>
 <tr class="separator:afd77a2da2ad41ac8c904e122ea77dfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48750ad8f9f167922200a87b322a3b07"><td class="memItemLeft" align="right" valign="top"><a id="a48750ad8f9f167922200a87b322a3b07" name="a48750ad8f9f167922200a87b322a3b07"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetImmuneTimeForAllTypes</b> (int time)</td></tr>
@@ -1292,6 +1298,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TeamChangeAllowed</b>
 <tr class="separator:ab96b629ed37db935110a28fadb52ad6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14a7e212be7047c6793d385b4b46969"><td class="memItemLeft" align="right" valign="top"><a id="ad14a7e212be7047c6793d385b4b46969" name="ad14a7e212be7047c6793d385b4b46969"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Teleport</b> (Vector2 newPos, int Style=0, int extraInfo=0)</td></tr>
+<tr class="memdesc:ad14a7e212be7047c6793d385b4b46969"><td class="mdescLeft">&#160;</td><td class="mdescRight">Teleports the player to the provided world coordinates. In multiplayer, clients should send <a class="el" href="class_message_i_d.html#a04fa02ebd4963d1e014e41e53a23c340" title="Teleports the player (or an NPC) to a provided world coordinate. (Sets position, not Center)    When ...">MessageID.TeleportEntity</a> rather than call this method directly. <br  />
+ <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center) <br  />
+ <b>Style: </b> Controls the visuals and sounds of the teleport. Equivalent to <a class="el" href="class_teleportation_style_i_d.html">TeleportationStyleID</a> values. <br /></td></tr>
 <tr class="separator:ad14a7e212be7047c6793d385b4b46969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a344838291546dc247789811362d61815"><td class="memItemLeft" align="right" valign="top"><a id="a344838291546dc247789811362d61815" name="a344838291546dc247789811362d61815"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TeleportationPotion</b> ()</td></tr>
@@ -1752,15 +1761,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>altFunctionUse</b></td
 <tr class="separator:afce13e564aa0501c70f077ac513eed3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa8e3a564148b1ca2e8fdf1e4a80177f"><td class="memItemLeft" align="right" valign="top"><a id="aaa8e3a564148b1ca2e8fdf1e4a80177f" name="aaa8e3a564148b1ca2e8fdf1e4a80177f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ammoBox</b></td></tr>
+<tr class="memdesc:aaa8e3a564148b1ca2e8fdf1e4a80177f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to BuffID.AmmoBox. Does not apply to consumables.  <br /></td></tr>
 <tr class="separator:aaa8e3a564148b1ca2e8fdf1e4a80177f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af86df2ae7eba4830cb99795b47d1e921"><td class="memItemLeft" align="right" valign="top"><a id="af86df2ae7eba4830cb99795b47d1e921" name="af86df2ae7eba4830cb99795b47d1e921"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ammoCost75</b></td></tr>
+<tr class="memdesc:af86df2ae7eba4830cb99795b47d1e921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the "25% chance to save ammo" effect (25% ammo conservation).  <br /></td></tr>
 <tr class="separator:af86df2ae7eba4830cb99795b47d1e921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a52f0522f0bb541f544db509242697a"><td class="memItemLeft" align="right" valign="top"><a id="a4a52f0522f0bb541f544db509242697a" name="a4a52f0522f0bb541f544db509242697a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ammoCost80</b></td></tr>
+<tr class="memdesc:a4a52f0522f0bb541f544db509242697a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the "20% chance to save ammo" effect (20% ammo conservation).  <br /></td></tr>
 <tr class="separator:a4a52f0522f0bb541f544db509242697a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ef143440d518691d0fb2d2bd1e95875"><td class="memItemLeft" align="right" valign="top"><a id="a9ef143440d518691d0fb2d2bd1e95875" name="a9ef143440d518691d0fb2d2bd1e95875"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ammoPotion</b></td></tr>
+<tr class="memdesc:a9ef143440d518691d0fb2d2bd1e95875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to BuffID.AmmoReservation. Does not apply to consumables.  <br /></td></tr>
 <tr class="separator:a9ef143440d518691d0fb2d2bd1e95875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a985af7aeafb51e1ea134ce32037053c8"><td class="memItemLeft" align="right" valign="top"><a id="a985af7aeafb51e1ea134ce32037053c8" name="a985af7aeafb51e1ea134ce32037053c8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>anglerQuestsFinished</b></td></tr>
@@ -2161,6 +2174,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>chiselSpeed</b></td><
 <tr class="separator:a00cb2cd01a4cfa4cb45e2173cad79e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a981bb48bbae523b660b334ae8f50685b"><td class="memItemLeft" align="right" valign="top"><a id="a981bb48bbae523b660b334ae8f50685b" name="a981bb48bbae523b660b334ae8f50685b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>chloroAmmoCost80</b></td></tr>
+<tr class="memdesc:a981bb48bbae523b660b334ae8f50685b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to Chlorophyte Helmet.  <br /></td></tr>
 <tr class="separator:a981bb48bbae523b660b334ae8f50685b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcc9bd3b4f95ca0664225de0a484e3f4"><td class="memItemLeft" align="right" valign="top"><a id="adcc9bd3b4f95ca0664225de0a484e3f4" name="adcc9bd3b4f95ca0664225de0a484e3f4"></a>
 <a class="el" href="class_player_1_1_selection_radial.html">SelectionRadial</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CircularRadial</b> = new <a class="el" href="class_player_1_1_selection_radial.html">SelectionRadial</a>(SelectionRadial.SelectionMode.RadialCircular)</td></tr>
@@ -2259,6 +2273,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>controlUp</b></td></t
 <tr class="separator:af68bb63347ccab2dc2f065b6cf90b5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac295976258a1fe58e7de7bc5a784fc95"><td class="memItemLeft" align="right" valign="top"><a id="ac295976258a1fe58e7de7bc5a784fc95" name="ac295976258a1fe58e7de7bc5a784fc95"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>controlUseItem</b></td></tr>
+<tr class="memdesc:ac295976258a1fe58e7de7bc5a784fc95"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_player.html">Player</a> is attempting to use an item, set mainly by pressing the "Use Item" keybind (Typically left mouse button). <br /></td></tr>
 <tr class="separator:ac295976258a1fe58e7de7bc5a784fc95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56ace5445e49a1c7701e7189de0cdd56"><td class="memItemLeft" align="right" valign="top"><a id="a56ace5445e49a1c7701e7189de0cdd56" name="a56ace5445e49a1c7701e7189de0cdd56"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>controlUseTile</b></td></tr>
@@ -2424,6 +2439,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>detectCreature</b></t
 <tr class="separator:ad29faf69202a820e27eaa1a4501eb736"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a5463fe734840ce19922b361bab2319"><td class="memItemLeft" align="right" valign="top"><a id="a9a5463fe734840ce19922b361bab2319" name="a9a5463fe734840ce19922b361bab2319"></a>
 byte&#160;</td><td class="memItemRight" valign="bottom"><b>difficulty</b></td></tr>
+<tr class="memdesc:a9a5463fe734840ce19922b361bab2319"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player difficulty. Valid values are found in <a class="el" href="class_player_difficulty_i_d.html">PlayerDifficultyID</a>. <br /></td></tr>
 <tr class="separator:a9a5463fe734840ce19922b361bab2319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeee0cdbbb6d6363c2e28746977cfcfd"><td class="memItemLeft" align="right" valign="top"><a id="afeee0cdbbb6d6363c2e28746977cfcfd" name="afeee0cdbbb6d6363c2e28746977cfcfd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>dino</b></td></tr>
@@ -2906,6 +2922,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hungry</b></td></tr>
 <tr class="separator:a3bdfcdc95821708c5b4399f9622d8bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22de45aad63e51d2965c1bd651a5f81f"><td class="memItemLeft" align="right" valign="top"><a id="a22de45aad63e51d2965c1bd651a5f81f" name="a22de45aad63e51d2965c1bd651a5f81f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>huntressAmmoCost90</b></td></tr>
+<tr class="memdesc:a22de45aad63e51d2965c1bd651a5f81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the "10% chance to save ammo" effect (10% ammo conservation).  <br /></td></tr>
 <tr class="separator:a22de45aad63e51d2965c1bd651a5f81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affe2ad299f6350994223dc5b6904e5ee"><td class="memItemLeft" align="right" valign="top"><a id="affe2ad299f6350994223dc5b6904e5ee" name="affe2ad299f6350994223dc5b6904e5ee"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>hurtCooldowns</b> = new int[5]</td></tr>
@@ -3003,9 +3020,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isTheAnimalBeingPetSm
 <tr class="separator:ac61c3a2081fb48909c8203550fbebcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa0fbd4de012ed02271830ddf3164e22"><td class="memItemLeft" align="right" valign="top"><a id="aaa0fbd4de012ed02271830ddf3164e22" name="aaa0fbd4de012ed02271830ddf3164e22"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>itemAnimation</b></td></tr>
+<tr class="memdesc:aaa0fbd4de012ed02271830ddf3164e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">The remaining number of frames the current item animation will last. <br  />
+<br  />
+ When an item is used, this and <a class="el" href="class_player.html#ae34c65a5bfe1671ac738c1d0febc3767" title="The total number of frames the current item animation will last.    When an item is used,...">itemAnimationMax</a> are set to a value derived from the item's <a class="el" href="class_item.html#a07884f03e59e5fd14dd73424b07b5439" title="The time span of the using animation for the item in ticks. This is independent of the time it takes ...">Item.useAnimation</a> and the applicable use animation multipliers, then this counts down towards 0 each game update. <br  />
+<br  />
+ Note that the item animation (<a class="el" href="class_player.html#aaa0fbd4de012ed02271830ddf3164e22" title="The remaining number of frames the current item animation will last.    When an item is used,...">itemAnimation</a>) doesn't necessarily match or sync with the item use time. An item being animated does not necessarily mean the item is being "used".  <br /></td></tr>
 <tr class="separator:aaa0fbd4de012ed02271830ddf3164e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae34c65a5bfe1671ac738c1d0febc3767"><td class="memItemLeft" align="right" valign="top"><a id="ae34c65a5bfe1671ac738c1d0febc3767" name="ae34c65a5bfe1671ac738c1d0febc3767"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>itemAnimationMax</b></td></tr>
+<tr class="memdesc:ae34c65a5bfe1671ac738c1d0febc3767"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of frames the current item animation will last. <br  />
+<br  />
+ When an item is used, this and <a class="el" href="class_player.html#aaa0fbd4de012ed02271830ddf3164e22" title="The remaining number of frames the current item animation will last.    When an item is used,...">itemAnimation</a> are set to a value derived from the item's <a class="el" href="class_item.html#a0e4256dafa7294d30c9d57c1510fc9c0" title="The time span of using the item in ticks. This is independent of the time it takes for the item anima...">Item.useTime</a> and the applicable use animation multipliers, then <a class="el" href="class_player.html#ac98ef2102199623d733fe01630dee7d1" title="The remaining number of frames the current item usage will last.    When an item is used,...">itemTime</a> counts down towards 0 each game update.  <br /></td></tr>
 <tr class="separator:ae34c65a5bfe1671ac738c1d0febc3767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b54c940d7a9b8d2d9c9e1d9b8a1c071"><td class="memItemLeft" align="right" valign="top"><a id="a0b54c940d7a9b8d2d9c9e1d9b8a1c071" name="a0b54c940d7a9b8d2d9c9e1d9b8a1c071"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>itemFlameCount</b></td></tr>
@@ -3024,9 +3049,19 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>itemRotation</b></td
 <tr class="separator:a47dc5038d84cd2e2ba5f7d16435a56ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac98ef2102199623d733fe01630dee7d1"><td class="memItemLeft" align="right" valign="top"><a id="ac98ef2102199623d733fe01630dee7d1" name="ac98ef2102199623d733fe01630dee7d1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>itemTime</b></td></tr>
+<tr class="memdesc:ac98ef2102199623d733fe01630dee7d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The remaining number of frames the current item usage will last. <br  />
+<br  />
+ When an item is used, this and <a class="el" href="class_player.html#a682a3e7d95875be19154705a00664e8e" title="The total number of frames the current item usage will last.    When an item is used,...">itemTimeMax</a> are set to a value derived from the item's <a class="el" href="class_item.html#a0e4256dafa7294d30c9d57c1510fc9c0" title="The time span of using the item in ticks. This is independent of the time it takes for the item anima...">Item.useTime</a> and the applicable use time multipliers, then this counts down towards 0 each game update. <br  />
+<br  />
+ Note that the item animation (<a class="el" href="class_player.html#aaa0fbd4de012ed02271830ddf3164e22" title="The remaining number of frames the current item animation will last.    When an item is used,...">itemAnimation</a>) doesn't necessarily match or sync with the item use time. An item being animated does not necessarily mean the item is being "used". <br  />
+<br  />
+ <a class="el" href="class_player.html#a3b56352b1772c25829380a78dea7ef59" title="Evaluates to true if the item usage is in it&#39;s first frame. Equivalent to itemTime == 0....">ItemTimeIsZero</a> is a helper property to check if this value is 0.  <br /></td></tr>
 <tr class="separator:ac98ef2102199623d733fe01630dee7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a682a3e7d95875be19154705a00664e8e"><td class="memItemLeft" align="right" valign="top"><a id="a682a3e7d95875be19154705a00664e8e" name="a682a3e7d95875be19154705a00664e8e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>itemTimeMax</b></td></tr>
+<tr class="memdesc:a682a3e7d95875be19154705a00664e8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of frames the current item usage will last. <br  />
+<br  />
+ When an item is used, this and <a class="el" href="class_player.html#ac98ef2102199623d733fe01630dee7d1" title="The remaining number of frames the current item usage will last.    When an item is used,...">itemTime</a> are set to a value derived from the item's <a class="el" href="class_item.html#a0e4256dafa7294d30c9d57c1510fc9c0" title="The time span of using the item in ticks. This is independent of the time it takes for the item anima...">Item.useTime</a> and the applicable use time multipliers, then <a class="el" href="class_player.html#ac98ef2102199623d733fe01630dee7d1" title="The remaining number of frames the current item usage will last.    When an item is used,...">itemTime</a> counts down towards 0 each game update.  <br /></td></tr>
 <tr class="separator:a682a3e7d95875be19154705a00664e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78e7d7c7d9c549a8bc1e5c1d0ccc10aa"><td class="memItemLeft" align="right" valign="top"><a id="a78e7d7c7d9c549a8bc1e5c1d0ccc10aa" name="a78e7d7c7d9c549a8bc1e5c1d0ccc10aa"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>itemWidth</b></td></tr>
@@ -3457,6 +3492,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>noFallDmg</b></td></t
 <tr class="separator:a1a0e46984916ed72788c5be69a464cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb714314eee507cd3c917e6b1425320"><td class="memItemLeft" align="right" valign="top"><a id="afeb714314eee507cd3c917e6b1425320" name="afeb714314eee507cd3c917e6b1425320"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noItems</b></td></tr>
+<tr class="memdesc:afeb714314eee507cd3c917e6b1425320"><td class="mdescLeft">&#160;</td><td class="mdescRight">When true, the player is unable to use items. Also causes the player to be drawn slightly faded. Used by BuffID.Cursed and MountID.Drill. <br  />
+<br  />
+ Checked wherever items are being attempted to being used. Held projectiles should check this to interrupt their usage if needed. <br /></td></tr>
 <tr class="separator:afeb714314eee507cd3c917e6b1425320"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9cee70145f5315d0b4ab8cdcad7d9d0"><td class="memItemLeft" align="right" valign="top"><a id="ae9cee70145f5315d0b4ab8cdcad7d9d0" name="ae9cee70145f5315d0b4ab8cdcad7d9d0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noKnockback</b></td></tr>
@@ -3469,6 +3507,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>noThrow</b></td></tr>
 <tr class="separator:a3f35eda9b412e4cc4f12ef8931d96912"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a200e3f5b97738493be93e3c000308b7e"><td class="memItemLeft" align="right" valign="top"><a id="a200e3f5b97738493be93e3c000308b7e" name="a200e3f5b97738493be93e3c000308b7e"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>npcTypeNoAggro</b> = new bool[NPCID.Count]</td></tr>
+<tr class="memdesc:a200e3f5b97738493be93e3c000308b7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the specified <a class="el" href="class_n_p_c.html">NPC</a> types as friendly to this player. Used by ItemID.RoyalGel. Friendly <a class="el" href="class_n_p_c.html">NPC</a> won't target or deal contact damage to the player. <br /></td></tr>
 <tr class="separator:a200e3f5b97738493be93e3c000308b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a835a5ad856dfb7880f55d50cc0a22367"><td class="memItemLeft" align="right" valign="top"><a id="a835a5ad856dfb7880f55d50cc0a22367" name="a835a5ad856dfb7880f55d50cc0a22367"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfDeathsPVE</b></td></tr>
@@ -3869,6 +3908,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>restorationDelayTime</
 <tr class="separator:aa997bc863c20eec73c5047c018696f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17e040c5fbf6e6e88174b6d66ce250f0"><td class="memItemLeft" align="right" valign="top"><a id="a17e040c5fbf6e6e88174b6d66ce250f0" name="a17e040c5fbf6e6e88174b6d66ce250f0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>reuseDelay</b></td></tr>
+<tr class="memdesc:a17e040c5fbf6e6e88174b6d66ce250f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">How long the player will be unable to use any item after the currently active item usage completes. Derived from <a class="el" href="class_item.html#a1f63868d44588200030b9d6abca20aef" title="A delay in frames added at the end of the using animation for the item, during which the player wont ...">Item.reuseDelay</a>.  <br /></td></tr>
 <tr class="separator:a17e040c5fbf6e6e88174b6d66ce250f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28c2fadec1ea1ee31a45d72e8eb124a6"><td class="memItemLeft" align="right" valign="top"><a id="a28c2fadec1ea1ee31a45d72e8eb124a6" name="a28c2fadec1ea1ee31a45d72e8eb124a6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>rightTimer</b></td></tr>
@@ -3941,7 +3981,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>selectedItem</b></td><
 <tr class="separator:a171158f63535ae72a7fb39a529bac0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c89a5232e70d6c6cf64226ecaab515c"><td class="memItemLeft" align="right" valign="top"><a id="a3c89a5232e70d6c6cf64226ecaab515c" name="a3c89a5232e70d6c6cf64226ecaab515c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>selectItemOnNextUse</b></td></tr>
-<tr class="memdesc:a3c89a5232e70d6c6cf64226ecaab515c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Causes SmartSelectLookup to run the next time an item animation is finished, even if controlUseItem is held. <br  />
+<tr class="memdesc:a3c89a5232e70d6c6cf64226ecaab515c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Causes SmartSelectLookup to run the next time an item animation is finished, even if <a class="el" href="class_player.html#ac295976258a1fe58e7de7bc5a784fc95" title="Player is attempting to use an item, set mainly by pressing the &quot;Use Item&quot; keybind (Typically left mo...">controlUseItem</a> is held. <br  />
  Used internally by tML to when a hotbar key is pressed while using an item. <br /></td></tr>
 <tr class="separator:a3c89a5232e70d6c6cf64226ecaab515c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a03852a63dc7f81bce9b78b722e85ec"><td class="memItemLeft" align="right" valign="top"><a id="a1a03852a63dc7f81bce9b78b722e85ec" name="a1a03852a63dc7f81bce9b78b722e85ec"></a>
@@ -4961,6 +5001,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ItemAnimationJustStar
 <tr class="separator:ac479b8ca92fc8377275c5b4fcf4c025b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b56352b1772c25829380a78dea7ef59"><td class="memItemLeft" align="right" valign="top"><a id="a3b56352b1772c25829380a78dea7ef59" name="a3b56352b1772c25829380a78dea7ef59"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ItemTimeIsZero</b><code> [get]</code></td></tr>
+<tr class="memdesc:a3b56352b1772c25829380a78dea7ef59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates to <code>true</code> if the item usage is in it's first frame. Equivalent to <code>itemTime == 0</code>. Note that this particular property is only valid to be used in <a class="el" href="class_mod_item.html#ad5305a2412fc1cb117a2169e5fe86148" title="Allows you to make things happen when this item is used. The return value controls whether or not App...">ModItem.UseItem(Player)</a> and <a class="el" href="class_mod_item.html#ad7be8dd81f80906af6010da5ff2c3519" title="Allows you to make things happen when this item&#39;s use animation starts. Called on local,...">ModItem.UseAnimation(Player)</a> hooks. <br  />
+<br  />
+ ExamplePickaxeuses this to run code once per swing. <br /></td></tr>
 <tr class="separator:a3b56352b1772c25829380a78dea7ef59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a841b107297d8f66873c10b711ddecafe"><td class="memItemLeft" align="right" valign="top"><a id="a841b107297d8f66873c10b711ddecafe" name="a841b107297d8f66873c10b711ddecafe"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemUsesThisAnimation</b><code> [get]</code></td></tr>
