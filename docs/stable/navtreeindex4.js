@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"class_entity.html#aea6af1b1841c5129ac2ddce832b53075":[3,0,313,6],
+"class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1":[3,0,313,2],
+"class_entity.html#af27ddd682f234963d31f91a855a39977":[3,0,313,4],
 "class_entity_definition.html":[3,0,314],
 "class_entity_definition.html#a8544c76468d6aaa32f25f34a53afa25a":[3,0,314,0],
 "class_entity_source___boss_spawn.html":[3,0,317],
@@ -157,8 +160,8 @@ var NAVTREEINDEX4 =
 "class_fish_finder_info_display.html#a716ad3524337148ccdad4a5fa8c193ad":[3,0,395,0],
 "class_fix_exploit_man_eaters.html":[3,0,398],
 "class_fixed_u_i_scrollbar.html":[3,0,397],
-"class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e":[3,0,397,0],
 "class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e":[3,0,397,1],
+"class_fixed_u_i_scrollbar.html#a1dda3b48ade097e99263f40bb27a5f8e":[3,0,397,0],
 "class_flame_particle.html":[3,0,400],
 "class_flavor_text_bestiary_info_element.html":[3,0,401],
 "class_flavor_text_bestiary_info_element.html#ab4bd7bff677b41d1548a14dd5c5a0be6":[3,0,401,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "class_game_tip_i_d.html#a5cb85bbee89d80c60503af95e7e2df72":[3,0,433,44],
 "class_game_tip_i_d.html#a5cd444642e0fb0a9a629f3a22051da80":[3,0,433,22],
 "class_game_tip_i_d.html#a6359e4caae3a1709315294456c14507a":[3,0,433,11],
-"class_game_tip_i_d.html#a6386f291ef8bcc9f14fc6fe651b37730":[3,0,433,50],
-"class_game_tip_i_d.html#a6559bed1bdd221f8f35295506047258e":[3,0,433,122],
-"class_game_tip_i_d.html#a68ee47c5c58be47b0bf40499182be099":[3,0,433,13],
-"class_game_tip_i_d.html#a6a692443068d55187ddc067ae7ebc7c1":[3,0,433,43]
+"class_game_tip_i_d.html#a6386f291ef8bcc9f14fc6fe651b37730":[3,0,433,50]
 };

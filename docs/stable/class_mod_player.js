@@ -73,6 +73,7 @@ var class_mod_player =
     [ "OnConsumeAmmo", "class_mod_player.html#ad7e0b2773568e7b6a50391c550ae7e4d", null ],
     [ "OnConsumeMana", "class_mod_player.html#afe7ae489bd8d87d28c998a532166ee62", null ],
     [ "OnEnterWorld", "class_mod_player.html#a7caed04d4b7c2d8579b7d61abea21a2d", null ],
+    [ "OnEquipmentLoadoutSwitched", "class_mod_player.html#ae651a57dae0c185371b110db04691dee", null ],
     [ "OnExtraJumpCleared", "class_mod_player.html#ad70d6f1b6e58141aabc106734e5530fd", null ],
     [ "OnExtraJumpEnded", "class_mod_player.html#ae3940d1804a32c31713b2c25e828d092", null ],
     [ "OnExtraJumpRefreshed", "class_mod_player.html#ac6cae086c9e4d339e7b7845232231bd3", null ],

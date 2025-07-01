@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -218,6 +218,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>HitEffect</b>
 <tr class="memdesc:a841136ffed6b0a17595b4ea11200407e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the <a class="el" href="class_n_p_c.html">NPC</a>'s </p><dl class="section see"><dt>See also</dt><dd>ID.ImmunityCooldownID</dd></dl>
 <p>, damage multiplier, and hitbox. Useful for implementing dynamic damage hitboxes that change in dimensions or deal extra damage. Returns false to prevent vanilla code from running. Returns true by default. Called on the server and clients.  <a href="class_global_n_p_c.html#a841136ffed6b0a17595b4ea11200407e">More...</a><br /></td></tr>
 <tr class="separator:a841136ffed6b0a17595b4ea11200407e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab574f5c0c62ba51505dd36ee54ac8d43"><td class="memItemLeft" align="right" valign="top"><a id="ab574f5c0c62ba51505dd36ee54ac8d43" name="ab574f5c0c62ba51505dd36ee54ac8d43"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDeathMessage</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc, ref <a class="el" href="class_network_text.html">NetworkText</a> customText, ref Color color)</td></tr>
+<tr class="memdesc:ab574f5c0c62ba51505dd36ee54ac8d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the death message of a town <a class="el" href="class_n_p_c.html">NPC</a> or boss. This also affects what the dropped tombstone will say in the case of a town <a class="el" href="class_n_p_c.html">NPC</a>. The text color can also be modified. When modifying the death message, use <a class="el" href="class_n_p_c.html#aafc6d3101ac34a8727dbe50f28b88cb2" title="Similar to FullName, but results in a NetworkText instead of a string, making it suitable for network...">NPC.GetFullNetName</a> to retrieve the <a class="el" href="class_n_p_c.html">NPC</a> name to use in substitutions. Return false to skip the vanilla code for sending the message. This is useful if the death message is handled by this method or if the message should be skipped for any other reason, such as if there are multiple bosses. Returns true by default. <br /></td></tr>
+<tr class="separator:ab574f5c0c62ba51505dd36ee54ac8d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a909fdc092c79b35d98e516c97223f63a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_n_p_c.html#a909fdc092c79b35d98e516c97223f63a">ModifyGlobalLoot</a> (<a class="el" href="struct_global_loot.html">GlobalLoot</a> globalLoot)</td></tr>
 <tr class="memdesc:a909fdc092c79b35d98e516c97223f63a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.<br  />
  The Basic <a class="el" href="class_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify npc loot.  <a href="class_global_n_p_c.html#a909fdc092c79b35d98e516c97223f63a">More...</a><br /></td></tr>

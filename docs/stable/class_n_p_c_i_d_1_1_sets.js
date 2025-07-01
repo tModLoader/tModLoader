@@ -39,6 +39,7 @@ var class_n_p_c_i_d_1_1_sets =
     [ "InvasionSlotCount", "class_n_p_c_i_d_1_1_sets.html#a716a915355776a0d8cf1f2bb294237f0", null ],
     [ "IsDragonfly", "class_n_p_c_i_d_1_1_sets.html#a71f6e0f48654fbfd02617d9a3ef69d73", null ],
     [ "IsPetSmallForPetting", "class_n_p_c_i_d_1_1_sets.html#a6fafc000a731dac1bbe07ef8684984da", null ],
+    [ "IsTownChild", "class_n_p_c_i_d_1_1_sets.html#a75eecf88eb7c8f46b00dbe2e04295361", null ],
     [ "IsTownPet", "class_n_p_c_i_d_1_1_sets.html#a04ebfeaf9e6bee36b7175079dd1246bf", null ],
     [ "IsTownSlime", "class_n_p_c_i_d_1_1_sets.html#a9870bcf547a77f4f7e9b382a9060f2fe", null ],
     [ "MagicAuraColor", "class_n_p_c_i_d_1_1_sets.html#a1e27dc0cd15bcd4774ce5c69a86fd71e", null ],

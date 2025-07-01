@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -120,6 +120,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ArmorSetShadow
 <tr class="memitem:aa2529d50cdbfa427d07c9780a603a30c"><td class="memItemLeft" align="right" valign="top"><a id="aa2529d50cdbfa427d07c9780a603a30c" name="aa2529d50cdbfa427d07c9780a603a30c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAccessoryBeEquippedWith</b> (<a class="el" href="class_item.html">Item</a> equippedItem, <a class="el" href="class_item.html">Item</a> incomingItem)</td></tr>
 <tr class="separator:aa2529d50cdbfa427d07c9780a603a30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09817b6d5f61bea9ee9973c6a8a2319e"><td class="memItemLeft" align="right" valign="top"><a id="a09817b6d5f61bea9ee9973c6a8a2319e" name="a09817b6d5f61bea9ee9973c6a8a2319e"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAccessoryBeEquippedWith</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> equippedItem, <a class="el" href="class_item.html">Item</a> incomingItem)</td></tr>
+<tr class="separator:a09817b6d5f61bea9ee9973c6a8a2319e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4993e4e94273d8f6959519a07d594bb8"><td class="memItemLeft" align="right" valign="top"><a id="a4993e4e94273d8f6959519a07d594bb8" name="a4993e4e94273d8f6959519a07d594bb8"></a>
 static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAutoReuseItem</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:a4993e4e94273d8f6959519a07d594bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +152,9 @@ static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanConsumeBa
 <tr class="memitem:a8094b04c4431542c87934dfc4aba74d9"><td class="memItemLeft" align="right" valign="top"><a id="a8094b04c4431542c87934dfc4aba74d9" name="a8094b04c4431542c87934dfc4aba74d9"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanEquipAccessory</b> (<a class="el" href="class_item.html">Item</a> item, int slot, bool modded)</td></tr>
 <tr class="separator:a8094b04c4431542c87934dfc4aba74d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0a06bf38b8a7d930d6ddebfc1b7597e"><td class="memItemLeft" align="right" valign="top"><a id="af0a06bf38b8a7d930d6ddebfc1b7597e" name="af0a06bf38b8a7d930d6ddebfc1b7597e"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanEquipAccessory</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> item, int slot, bool modded)</td></tr>
+<tr class="separator:af0a06bf38b8a7d930d6ddebfc1b7597e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6341d4545828402c0fe9aa204cb2b9a2"><td class="memItemLeft" align="right" valign="top"><a id="a6341d4545828402c0fe9aa204cb2b9a2" name="a6341d4545828402c0fe9aa204cb2b9a2"></a>
 static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanHitNPC</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_n_p_c.html">NPC</a> target)</td></tr>
 <tr class="memdesc:a6341d4545828402c0fe9aa204cb2b9a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gathers the results of <a class="el" href="class_mod_item.html#a3823d2bb5f2e5dd6f747ac26c77c6865" title="Allows you to determine whether this melee weapon can hit the given NPC when swung....">ModItem.CanHitNPC</a> and all <a class="el" href="class_global_item.html#acb88ba12f8befe863f93bc2e15324b8e" title="Allows you to determine whether a melee weapon can hit the given NPC when swung. Return true to allow...">GlobalItem.CanHitNPC</a> hooks. If any of them returns false, this returns false. Otherwise, if any of them returns true then this returns true. If all of them return null, this returns null. <br /></td></tr>

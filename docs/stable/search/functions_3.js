@@ -2,7 +2,7 @@ var searchData=
 [
   ['damagevar_0',['DamageVar',['../class_main.html#a4f02e6297c668111515ccde9946f51a3',1,'Main']]],
   ['decraftavailable_1',['DecraftAvailable',['../class_recipe_loader.html#aa917a2e31a58005a7175adcf752883d0',1,'RecipeLoader']]],
-  ['defaultcontainername_2',['DefaultContainerName',['../class_mod_tile.html#a17cbd651fec01999f1512cf6c67b5c2d',1,'ModTile.DefaultContainerName()'],['../class_tile_loader.html#a0a521ef33273565fff0b6ce97f616d66',1,'TileLoader.DefaultContainerName()'],['../class_unloaded_chest.html#a4ee5c4c3a882f72d9310bf8d21ef6b51',1,'UnloadedChest.DefaultContainerName()']]],
+  ['defaultcontainername_2',['DefaultContainerName',['../class_mod_tile.html#a17cbd651fec01999f1512cf6c67b5c2d',1,'ModTile.DefaultContainerName()'],['../class_unloaded_chest.html#a4ee5c4c3a882f72d9310bf8d21ef6b51',1,'UnloadedChest.DefaultContainerName()'],['../class_tile_loader.html#a0a521ef33273565fff0b6ce97f616d66',1,'TileLoader.DefaultContainerName()']]],
   ['defaultdrawmapicon_3',['DefaultDrawMapIcon',['../class_mod_pylon.html#aaf6513d1786dcf5d3ab4d9d8eb0652c5',1,'ModPylon']]],
   ['defaultdrawpyloncrystal_4',['DefaultDrawPylonCrystal',['../class_mod_pylon.html#a1adb08e060c494706221b20f3d6e3108',1,'ModPylon']]],
   ['defaultmapclickhandle_5',['DefaultMapClickHandle',['../class_mod_pylon.html#a50382d71030761ef169af74218d3d926',1,'ModPylon']]],
@@ -12,7 +12,7 @@ var searchData=
   ['defaulttoheadgear_9',['DefaultToHeadgear',['../class_item.html#a831741d94b6d8604ca81534e414969b9',1,'Item']]],
   ['defaulttomagicweapon_10',['DefaultToMagicWeapon',['../class_item.html#a1c4234850be36ca5bba7c8901b16df52',1,'Item']]],
   ['defaulttomusicbox_11',['DefaultToMusicBox',['../class_item.html#a8f57692a4eb317af5439941c401f9485',1,'Item']]],
-  ['defaulttoplaceabletile_12',['DefaultToPlaceableTile',['../class_item.html#a1061abfdfd3ac08ab701c531ba05d923',1,'Item.DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace=0)'],['../class_item.html#a86469ef0a3430e374432380a649bbfc3',1,'Item.DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace=0)']]],
+  ['defaulttoplaceabletile_12',['DefaultToPlaceableTile',['../class_item.html#a86469ef0a3430e374432380a649bbfc3',1,'Item.DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace=0)'],['../class_item.html#a1061abfdfd3ac08ab701c531ba05d923',1,'Item.DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace=0)']]],
   ['defaulttoplaceablewall_13',['DefaultToPlaceableWall',['../class_item.html#a76ebe9683883e270f7fc9cdc57d93500',1,'Item']]],
   ['defaulttoquestfish_14',['DefaultToQuestFish',['../class_item.html#a68643788fa2b858ff6175918fd846db6',1,'Item']]],
   ['defaulttorangedweapon_15',['DefaultToRangedWeapon',['../class_item.html#abeed7c1e5eacb8797aeecc9d158d0b41',1,'Item']]],
@@ -22,7 +22,7 @@ var searchData=
   ['defaulttothrownweapon_19',['DefaultToThrownWeapon',['../class_item.html#a6d0580c12112603bee5cfa8a44126b85',1,'Item']]],
   ['defaulttotorch_20',['DefaultToTorch',['../class_item.html#abe432a57e132367a6e2226e20aceeafa',1,'Item']]],
   ['defaulttowhip_21',['DefaultToWhip',['../class_item.html#a19677680af3f6930fe59649fa96086b9',1,'Item']]],
-  ['delbuff_22',['DelBuff',['../class_player.html#a8fef443273ca334f9b1cc6b7e341824c',1,'Player.DelBuff()'],['../class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60',1,'NPC.DelBuff()']]],
+  ['delbuff_22',['DelBuff',['../class_n_p_c.html#a2fb8a84720c0274214029182e64ddd60',1,'NPC.DelBuff()'],['../class_player.html#a8fef443273ca334f9b1cc6b7e341824c',1,'Player.DelBuff()']]],
   ['description_23',['Description',['../class_set_factory_1_1_named_set_key.html#a1308d8697892a801745b103b039503cc',1,'SetFactory::NamedSetKey']]],
   ['destroychest_24',['DestroyChest',['../class_chest.html#a1963f9c91e0b0381f0b362d540f93adf',1,'Chest']]],
   ['destroychestdirect_25',['DestroyChestDirect',['../class_chest.html#ab13ea598b3604132fc4fafcf0444f8c0',1,'Chest']]],
@@ -57,10 +57,9 @@ var searchData=
   ['dropcache_54',['DropCache',['../class_item.html#ac33ddc6742cac7a20704bdccc4036778',1,'Item']]],
   ['dropcritterchance_55',['DropCritterChance',['../class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0',1,'GlobalTile.DropCritterChance()'],['../class_mod_tile.html#a9f0e8a447a5448628b3cfc7ef76a4d76',1,'ModTile.DropCritterChance()']]],
   ['dropgeodeloot_56',['DropGeodeLoot',['../class_projectile.html#aa3ca38cd7b4932cc0dab33c55a6dc820',1,'Projectile']]],
-  ['dropitem_57',['DropItem',['../class_player.html#a24fd951b633d47c5812fc58163cea6bf',1,'Player']]],
-  ['dropwood_58',['DropWood',['../class_mod_tree.html#ab357b6ae38cb22eda08e684ba462b11a',1,'ModTree.DropWood()'],['../class_mod_palm_tree.html#abb0946234ef08b202b92dca857472b56',1,'ModPalmTree.DropWood()']]],
-  ['dumpil_59',['DumpIL',['../class_mono_mod_hooks.html#a9fa5a80731da26e1f975e55528beb726',1,'MonoModHooks']]],
-  ['dumpilhooks_60',['DumpILHooks',['../class_mono_mod_hooks.html#a9feb07b175d8d9b2dd42d7b7b62bcc43',1,'MonoModHooks']]],
-  ['dumponhooks_61',['DumpOnHooks',['../class_mono_mod_hooks.html#ab47f0a82fae2c68a518596d75c3899d2',1,'MonoModHooks']]],
-  ['dusttype_3c_20t_20_3e_62',['DustType&lt; T &gt;',['../class_mod_content.html#a2e5088dea2ed1df947181a447284d950',1,'ModContent']]]
+  ['dropwood_57',['DropWood',['../class_mod_tree.html#ab357b6ae38cb22eda08e684ba462b11a',1,'ModTree.DropWood()'],['../class_mod_palm_tree.html#abb0946234ef08b202b92dca857472b56',1,'ModPalmTree.DropWood()']]],
+  ['dumpil_58',['DumpIL',['../class_mono_mod_hooks.html#a9fa5a80731da26e1f975e55528beb726',1,'MonoModHooks']]],
+  ['dumpilhooks_59',['DumpILHooks',['../class_mono_mod_hooks.html#a9feb07b175d8d9b2dd42d7b7b62bcc43',1,'MonoModHooks']]],
+  ['dumponhooks_60',['DumpOnHooks',['../class_mono_mod_hooks.html#ab47f0a82fae2c68a518596d75c3899d2',1,'MonoModHooks']]],
+  ['dusttype_3c_20t_20_3e_61',['DustType&lt; T &gt;',['../class_mod_content.html#a2e5088dea2ed1df947181a447284d950',1,'ModContent']]]
 ];

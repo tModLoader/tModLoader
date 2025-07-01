@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"class_creative_powers_1_1_a_shared_toggle_power.html":[3,0,213,4],
+"class_creative_powers_1_1_difficulty_slider_power.html":[3,0,213,5],
+"class_creative_powers_1_1_far_placement_range_power.html":[3,0,213,6],
 "class_creative_powers_1_1_freeze_rain_power.html":[3,0,213,7],
 "class_creative_powers_1_1_freeze_time.html":[3,0,213,8],
 "class_creative_powers_1_1_freeze_wind_direction_and_strength.html":[3,0,213,9],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "class_entity.html#a99144ef9b73ff3fbbc084dbb8a72c77e":[3,0,313,3],
 "class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5":[3,0,313,10],
 "class_entity.html#ad61f0c48735980e78778b90b6b4c8667":[3,0,313,0],
-"class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168":[3,0,313,7],
-"class_entity.html#aea6af1b1841c5129ac2ddce832b53075":[3,0,313,6],
-"class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1":[3,0,313,2],
-"class_entity.html#af27ddd682f234963d31f91a855a39977":[3,0,313,4]
+"class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168":[3,0,313,7]
 };

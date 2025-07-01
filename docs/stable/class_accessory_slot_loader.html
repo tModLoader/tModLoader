@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -103,6 +103,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3a5b4add80da084739bb6e8814a40ccc"><td class="memItemLeft" align="right" valign="top"><a id="a3a5b4add80da084739bb6e8814a40ccc" name="a3a5b4add80da084739bb6e8814a40ccc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAcceptItem</b> (int index, <a class="el" href="class_item.html">Item</a> checkItem, int context)</td></tr>
 <tr class="separator:a3a5b4add80da084739bb6e8814a40ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb4c152b1571bd8610e915d2060d04a9"><td class="memItemLeft" align="right" valign="top"><a id="adb4c152b1571bd8610e915d2060d04a9" name="adb4c152b1571bd8610e915d2060d04a9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPlayerAcceptItem</b> (<a class="el" href="class_player.html">Player</a> player, int index, <a class="el" href="class_item.html">Item</a> checkItem, int context)</td></tr>
+<tr class="separator:adb4c152b1571bd8610e915d2060d04a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03bfde7c7f8901b764d50970e3573f87"><td class="memItemLeft" align="right" valign="top"><a id="a03bfde7c7f8901b764d50970e3573f87" name="a03bfde7c7f8901b764d50970e3573f87"></a>
 AccessorySlotType&#160;</td><td class="memItemRight" valign="bottom"><b>ContextToEnum</b> (int context)</td></tr>
 <tr class="separator:a03bfde7c7f8901b764d50970e3573f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,6 +125,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawAccSlots</b> (int
 <tr class="memitem:a922144f33b71c9acdfbaf5d225bd02e4"><td class="memItemLeft" align="right" valign="top"><a id="a922144f33b71c9acdfbaf5d225bd02e4" name="a922144f33b71c9acdfbaf5d225bd02e4"></a>
 <a class="el" href="class_mod_accessory_slot.html">ModAccessorySlot</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Get</b> (int id, <a class="el" href="class_player.html">Player</a> player)</td></tr>
 <tr class="separator:a922144f33b71c9acdfbaf5d225bd02e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c5ef67fd67b3f800095b2243a7c83ba"><td class="memItemLeft" align="right" valign="top"><a id="a1c5ef67fd67b3f800095b2243a7c83ba" name="a1c5ef67fd67b3f800095b2243a7c83ba"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAccessoryInConflict</b> (<a class="el" href="class_player.html">Player</a> player, <a class="el" href="class_item.html">Item</a> checkItem, int slot, int context)</td></tr>
+<tr class="memdesc:a1c5ef67fd67b3f800095b2243a7c83ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="class_accessory_slot_loader.html#a3e5877f3bbc537ae83f13738439b7cfc" title="Checks if the provided item can go in to the provided slot. Includes checking if the item already exi...">ModSlotCheck(Item, int, int)</a> except it ignores the item in <em>slot</em>  since that item is being passed in as <em>checkItem</em> . <br /></td></tr>
+<tr class="separator:a1c5ef67fd67b3f800095b2243a7c83ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfebb1513174d8aad0bf6eb61e2e3c5b"><td class="memItemLeft" align="right" valign="top"><a id="acfebb1513174d8aad0bf6eb61e2e3c5b" name="acfebb1513174d8aad0bf6eb61e2e3c5b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsHidden</b> (int index)</td></tr>
 <tr class="separator:acfebb1513174d8aad0bf6eb61e2e3c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,14 +137,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModdedCanSlotBeShown<
 <tr class="separator:a34785d2bc6956fd5262d61216369d866"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02eb0afbe9c35f5dc3b9661595236b4f"><td class="memItemLeft" align="right" valign="top"><a id="a02eb0afbe9c35f5dc3b9661595236b4f" name="a02eb0afbe9c35f5dc3b9661595236b4f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModdedIsItemSlotUnlockedAndUsable</b> (int index, <a class="el" href="class_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a02eb0afbe9c35f5dc3b9661595236b4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the <a class="el" href="class_mod_accessory_slot.html" title="A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the...">ModAccessorySlot</a> at the given index is enabled. Does not account for the functional or vanity slots individually being disabled due to conflicts arising from shared accessory slots. <br /></td></tr>
 <tr class="separator:a02eb0afbe9c35f5dc3b9661595236b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28077107f13660e5d0da49322318af1c"><td class="memItemLeft" align="right" valign="top"><a id="a28077107f13660e5d0da49322318af1c" name="a28077107f13660e5d0da49322318af1c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModdedIsSpecificItemSlotUnlockedAndUsable</b> (int index, <a class="el" href="class_player.html">Player</a> player, bool vanity)</td></tr>
+<tr class="memdesc:a28077107f13660e5d0da49322318af1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="class_accessory_slot_loader.html#a02eb0afbe9c35f5dc3b9661595236b4f" title="Checks if the ModAccessorySlot at the given index is enabled. Does not account for the functional or ...">ModdedIsItemSlotUnlockedAndUsable(int, Player)</a>, except this also checks if the functional or vanity slot specifically is disabled due to conflicts arising from switching loadouts while using shared accessory slots. <br /></td></tr>
+<tr class="separator:a28077107f13660e5d0da49322318af1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4698f69afa126a264e2f1fae7e3a9920"><td class="memItemLeft" align="right" valign="top"><a id="a4698f69afa126a264e2f1fae7e3a9920" name="a4698f69afa126a264e2f1fae7e3a9920"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDefaultSwapSlot</b> (<a class="el" href="class_item.html">Item</a> item, ref int accSlotToSwapTo)</td></tr>
 <tr class="memdesc:a4698f69afa126a264e2f1fae7e3a9920"><td class="mdescLeft">&#160;</td><td class="mdescRight">After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped. DOES NOT affect vanilla behavior of swapping items like for like where existing in a slot <br /></td></tr>
 <tr class="separator:a4698f69afa126a264e2f1fae7e3a9920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e5877f3bbc537ae83f13738439b7cfc"><td class="memItemLeft" align="right" valign="top"><a id="a3e5877f3bbc537ae83f13738439b7cfc" name="a3e5877f3bbc537ae83f13738439b7cfc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModSlotCheck</b> (<a class="el" href="class_item.html">Item</a> checkItem, int slot, int context)</td></tr>
-<tr class="memdesc:a3e5877f3bbc537ae83f13738439b7cfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided item can go in to the provided slot. Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem <br /></td></tr>
+<tr class="memdesc:a3e5877f3bbc537ae83f13738439b7cfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided item can go in to the provided slot. Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem Note that this doesn't check for conflicts of shared slots with the items of other loadouts, that check is done in ModAccessorySlotPlayer.DetectConflictsWithSharedSlots to prevent a confusing user experience. The accessory slot acts like a disabled slot while in conflict, allowing the player to choose how to fix the issue. <br /></td></tr>
 <tr class="separator:a3e5877f3bbc537ae83f13738439b7cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a437baccab380fd6b6e7101953c87e60f"><td class="memItemLeft" align="right" valign="top"><a id="a437baccab380fd6b6e7101953c87e60f" name="a437baccab380fd6b6e7101953c87e60f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHover</b> (int index, int context)</td></tr>

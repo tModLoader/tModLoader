@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"class_big_progress_bar_helper.html#a848a4001dc17bba1eb3ece1ff5037bee":[3,0,89,0],
+"class_big_progress_bar_system.html":[3,0,91],
+"class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f":[3,0,91,0],
 "class_binary_i_o.html":[3,0,92],
 "class_binary_i_o.html#a431b1b8dfcb0d36266bcf461aed38bec":[3,0,92,6],
 "class_binary_i_o.html#a473a5c2b3a3d808c7d6a13bb16788877":[3,0,92,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_desert_key_condition.html#a54268ed0868bed39906f9bf781206236":[3,0,193,5,1],
 "class_conditions_1_1_desert_key_condition.html#a8ad343176c0a706ad02f69fe84dbaa6b":[3,0,193,5,0],
 "class_conditions_1_1_dont_starve_is_not_up.html":[3,0,193,6],
-"class_conditions_1_1_dont_starve_is_not_up.html#a502ea7bc847781630822eab12a561bda":[3,0,193,6,0],
-"class_conditions_1_1_dont_starve_is_not_up.html#ab2ad78777306df99930e05d63529e4ad":[3,0,193,6,1],
-"class_conditions_1_1_dont_starve_is_up.html":[3,0,193,7],
-"class_conditions_1_1_dont_starve_is_up.html#a7e554d9445faa8bb140f7eda1786f2c5":[3,0,193,7,1]
+"class_conditions_1_1_dont_starve_is_not_up.html#a502ea7bc847781630822eab12a561bda":[3,0,193,6,0]
 };

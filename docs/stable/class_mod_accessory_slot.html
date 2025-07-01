@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -106,6 +106,12 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyEquipEffects</b> ()</td></tr>
 <tr class="memdesc:a64dde784e77d72c1327a9041b4dccd99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override to replace the vanilla effect behavior of the slot with your own. By default calls: Player.VanillaUpdateEquips(FunctionalItem), Player.ApplyEquipFunctional(FunctionalItem, ShowVisuals), Player.ApplyEquipVanity(VanityItem) <br /></td></tr>
 <tr class="separator:a64dde784e77d72c1327a9041b4dccd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a532c10449c621f93e8b8e9a3867d84a6"><td class="memItemLeft" align="right" valign="top"><a id="a532c10449c621f93e8b8e9a3867d84a6" name="a532c10449c621f93e8b8e9a3867d84a6"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>BackgroundDrawColor</b> (AccessorySlotType <a class="el" href="class_popup_text.html#a8cac2161a4e515cc8febf90ffa63b8c2">context</a>, ref Color color)</td></tr>
+<tr class="memdesc:a532c10449c621f93e8b8e9a3867d84a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows customizing the background texture draw color. <br  />
+<br  />
+ For <a class="el" href="class_mod_accessory_slot.html#a9bb2d012491a3bdae1cd18a68a7c26d3" title="Gets or sets a value indicating whether this slot supports equipment loadouts. If false,...">HasEquipmentLoadoutSupport</a> slots without a custom texture, the color will already have been adjusted for the current loadout (ItemSlot.GetColorByLoadout), otherwise the color will be Main.inventoryBack, which will oscillate all values between 180 and 240. <br /></td></tr>
+<tr class="separator:a532c10449c621f93e8b8e9a3867d84a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e8f1dd77f37ee279d21169747f9f268"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_accessory_slot.html#a8e8f1dd77f37ee279d21169747f9f268">CanAcceptItem</a> (<a class="el" href="class_item.html">Item</a> checkItem, AccessorySlotType <a class="el" href="class_popup_text.html#a8cac2161a4e515cc8febf90ffa63b8c2">context</a>)</td></tr>
 <tr class="memdesc:a8e8f1dd77f37ee279d21169747f9f268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override to set conditions on what can be placed in the slot. Default is to return false only when item property FitsAccessoryVanity says can't go in to a vanity slot. Return false to prevent the item going in slot. Return true for dyes, if you want dyes. Example: only wings can go in slot. Receives data:  <a href="class_mod_accessory_slot.html#a8e8f1dd77f37ee279d21169747f9f268">More...</a><br /></td></tr>
 <tr class="separator:a8e8f1dd77f37ee279d21169747f9f268"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,6 +270,19 @@ virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>FunctionalB
 <tr class="memitem:a4589f1ccb42ae6c4c9eff17baf299aa0"><td class="memItemLeft" align="right" valign="top"><a id="a4589f1ccb42ae6c4c9eff17baf299aa0" name="a4589f1ccb42ae6c4c9eff17baf299aa0"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>FunctionalTexture</b><code> [get]</code></td></tr>
 <tr class="separator:a4589f1ccb42ae6c4c9eff17baf299aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bb2d012491a3bdae1cd18a68a7c26d3"><td class="memItemLeft" align="right" valign="top"><a id="a9bb2d012491a3bdae1cd18a68a7c26d3" name="a9bb2d012491a3bdae1cd18a68a7c26d3"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasEquipmentLoadoutSupport</b><code> [get]</code></td></tr>
+<tr class="memdesc:a9bb2d012491a3bdae1cd18a68a7c26d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a value indicating whether this slot supports equipment loadouts. If <code>false</code>, the slot's item is shared between all loadouts. <br  />
+<br  />
+ Defaults to <code>true</code>. <br  />
+<br  />
+ Changing this value requires a reload. This value is not allowed to be different between multiplayer clients or issues will occur. <br  />
+<br  />
+ Changing the value from <code>true</code> to <code>false</code> will cause the extra items to be spawned on the player when they enter the world. <br  />
+ Changing the value from <code>false</code> to <code>true</code> will result in the currently selected loadout holding the items. <br  />
+<br  />
+ Slots that don't support loadouts will appear with the default green background texture, as if they were an accessory in loadout #1 or from before loadout support was added to the game. <br /></td></tr>
+<tr class="separator:a9bb2d012491a3bdae1cd18a68a7c26d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33b494cceb7bd88b38910e5d87a53793"><td class="memItemLeft" align="right" valign="top"><a id="a33b494cceb7bd88b38910e5d87a53793" name="a33b494cceb7bd88b38910e5d87a53793"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HideVisuals</b><code> [get, set]</code></td></tr>
 <tr class="separator:a33b494cceb7bd88b38910e5d87a53793"><td class="memSeparator" colspan="2">&#160;</td></tr>
