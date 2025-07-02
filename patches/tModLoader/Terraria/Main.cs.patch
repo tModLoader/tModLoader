@@ -40,6 +40,14 @@
  #endif
  {
  	public delegate void OnPlayerSelected(PlayerFileData player);
+@@ -103,6 +_,7 @@
+ 		public static int ActivePlayersCount;
+ 		public static int SleepingPlayersCount;
+ 		public static bool AnyActiveBossNPC;
++		/// <summary> Indicates that an interactable projectile exists in the world, allowing checks for interactable projectiles to execute. </summary>
+ 		public static bool HadAnActiveInteractibleProjectile;
+ 	}
+ 
 @@ -143,20 +_,31 @@
  		private int _lastScreenHeight;
  		private InputMode _lastInputMode;
@@ -864,7 +872,7 @@
  	public static int netMode;
  	private static int _targetNetMode;
  	private static bool _hasPendingNetmodeChange;
-@@ -1897,7 +_,11 @@
+@@ -1897,9 +_,17 @@
  	public static int SmartCursorY;
  	public static bool SmartInteractShowingGenuine;
  	public static bool SmartInteractShowingFake;
@@ -875,7 +883,13 @@
 +	/// <inheritdoc cref="SmartInteractX"/>
  	public static int SmartInteractY;
  	public static int SmartInteractNPC;
++	/// <summary>
++	/// Indicates the <c>Projectile.whoAmI</c> of the projectile currently being targeted by the local player's cursor for smart cursor (right click) purposes. Will be set automatically for <see cref="ProjectileID.Sets.IsInteractable"/> projectiles.
++	/// <br/><br/> Will be -1 if a projectile isn't the target of smart cursor currently. 
++	/// </summary>
  	public static int SmartInteractProj;
+ 	public static bool SmartInteractPotionOfReturn;
+ 	public static List<Microsoft.Xna.Framework.Point> SmartInteractTileCoords = new List<Microsoft.Xna.Framework.Point>();
 @@ -1970,7 +_,7 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;

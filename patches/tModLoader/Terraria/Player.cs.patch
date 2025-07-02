@@ -525,6 +525,33 @@
  	public bool controlDownHold;
  	public bool isOperatingAnotherEntity;
  	public bool autoReuseAllWeapons;
+@@ -930,10 +_,26 @@
+ 	public bool delayUseItem;
+ 	public const int defaultWidth = 20;
+ 	public const int defaultHeight = 42;
++	/// <summary>
++	/// If true, an item will be drawn on the cursor. This is usually set along with <see cref="cursorItemIconID"/> and/or <see cref="cursorItemIconText"/>.
++	/// </summary>
+ 	public bool cursorItemIconEnabled;
++	/// <summary>
++	/// If true, the item drawn on the cursor will be flipped horizontally.
++	/// </summary>
+ 	public bool cursorItemIconReversed;
++	/// <summary>
++	/// The Item type to draw on the cursor when <see cref="cursorItemIconEnabled"/> is true.
++	/// <br/><br/> Defaults to 0. Set to -1 to prevent the selected item from being drawn on the cursor, which is the default behavior if in tool/tile placement range of the selected item.
++	/// </summary>
+ 	public int cursorItemIconID;
++	/// <summary>
++	/// When drawing an item on the cursor (<see cref="cursorItemIconEnabled"/>), the item will be offset in both the X and Y directions by this many pixels. Used by Clentaminator solutions (10) and fishing bait (6) so the icons don't overlap the cursor as much as usual.
++	/// </summary>
+ 	public int cursorItemIconPush;
++	/// <summary>
++	/// Text to be drawn on the cursor when <see cref="cursorItemIconEnabled"/> is true. 
++	/// </summary>
+ 	public string cursorItemIconText = "";
+ 	public int runSoundDelay;
+ 	public float opacityForAnimation = 1f;
 @@ -943,7 +_,13 @@
  	public Vector2[] shadowOrigin = new Vector2[3];
  	public int[] shadowDirection = new int[3];
