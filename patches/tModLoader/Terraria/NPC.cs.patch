@@ -2155,7 +2155,7 @@
  									flag13 = true;
  							}
  						}
-@@ -61258,9 +_,45 @@
+@@ -61258,9 +_,50 @@
  			}
  
  			num49 = SpawnNPC_TryFindingProperGroundTileType(num49, num, num2);
@@ -2167,11 +2167,16 @@
 +			spawnInfo.ProperGroundTileType = num49;
 +			spawnInfo.WallTileType = num50;
 +			spawnInfo.Player = Main.player[k];
++
++			spawnInfo.TooWindyForButterflies = tooWindyForButterflies;
++			spawnInfo.TooWindyForWaterStriders = flag;
++			// flag2 prevents us reaching here so isn't needed
 +			spawnInfo.Sky = flag3;
 +			spawnInfo.Lihzahrd = flag4;
 +			spawnInfo.PlayerSafe = flag5;
 +			spawnInfo.Invasion = flag6;
 +			spawnInfo.Water = flag7;
++			spawnInfo.Honey = flag8;
 +			spawnInfo.Granite = flag9;
 +			spawnInfo.Marble = flag10;
 +			spawnInfo.SpiderCave = flag11;

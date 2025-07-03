@@ -35,7 +35,7 @@ public class WeightedSpawnCondition : IConditionedTreeItem
 	}
 
 	public WeightedSpawnCondition(float weight)
-	{ Weight = weight; Conditions = new(CompareType.And, Array.Empty<ISubSpawnCondition>()); }
+	{ Weight = weight; Conditions = new(CompareType.And, []); }
 
 	public WeightedSpawnCondition(ConditionWrapper conditions, float weight = 1f) : this(weight)
 	{
@@ -99,13 +99,6 @@ public class SpawnTreeParent : ISpawnTreeItem
 		}
 	}
 
-	/// <summary> Adds the </summary>
-	/// <param name="item"> </param>
-	/// <param name="after"> </param>
-	public void InjectAfter(ISpawnTreeItem item, ISpawnTreeItem after)
-	{
-	}
-
 	public virtual void Check(NPCSpawnInfo info, ref float remainingWeight)
 	{
 		float childWeight = remainingWeight * GetWeight(info);
@@ -137,7 +130,7 @@ public class SpawnTreeParent : ISpawnTreeItem
 
 	public static SpawnTreeParent operator +(SpawnTreeParent parent, ISpawnTreeItem child)
 	{
-		return new(parent.Children.Append(child).ToArray());
+		return new([.. parent.Children, child]);
 	}
 }
 

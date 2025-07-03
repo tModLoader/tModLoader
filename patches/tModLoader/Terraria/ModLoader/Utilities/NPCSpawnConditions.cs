@@ -33,11 +33,11 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 	public SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate) : this(Predicate, false, null)
 	{ }
 	public static int PlayerHackStoredPlayer { get; private set; } = -1;
-
+	// Might remove this, being able to re-use condition might not be worth
 	private static void PlayerHackSet(NPCSpawnInfo info)
 	{
 		PlayerHackStoredPlayer = Main.myPlayer;
-		Main.myPlayer = info.Player.whoAmI;
+		Main.myPlayer = info.Player.whoAmI; // If they didn't want me setting this why is it public?
 	}
 	private static void PlayerHackReset()
 	{
@@ -404,8 +404,8 @@ public record class ConditionWrapper(CompareType CurrentCompare, IEnumerable<ISu
 	}
 
 	public static ConditionWrapper CreateConditional(ISubSpawnCondition condition, ISubSpawnCondition whenTrue, ISubSpawnCondition whenFalse)
-		=> new(CompareType.Or, new ISubSpawnCondition[] {
+		=> new(CompareType.Or, [
 			new ConditionWrapper(CompareType.And, condition + whenTrue ),
 			new ConditionWrapper(CompareType.And, condition.GetNot() + whenFalse ),
-		});
+		]);
 }
