@@ -24,12 +24,16 @@ public interface IConditionedTreeItem : ISpawnTreeItem
 	public ConditionWrapper Conditions { get; init; }
 }
 
-public struct WeightedSpawnCondition : IConditionedTreeItem
+public class WeightedSpawnCondition : IConditionedTreeItem
 {
 	public ConditionWrapper Conditions { get; init; }
 	private float Weight { get; init; }
 	public float Chance { get; set; } = 0f;
-	public WeightedSpawnCondition() : this(1f) { }
+
+	public WeightedSpawnCondition() : this(1f)
+	{
+	}
+
 	public WeightedSpawnCondition(float weight)
 	{ Weight = weight; Conditions = new(CompareType.And, Array.Empty<ISubSpawnCondition>()); }
 
@@ -49,7 +53,7 @@ public struct WeightedSpawnCondition : IConditionedTreeItem
 	}
 }
 
-public struct CalculatedSpawnCondition : IConditionedTreeItem
+public class CalculatedSpawnCondition : IConditionedTreeItem
 {
 	public ConditionWrapper Conditions { get; init; }
 	private Func<NPCSpawnInfo, float> WeightFunc { get; init; }
@@ -95,14 +99,11 @@ public class SpawnTreeParent : ISpawnTreeItem
 		}
 	}
 
-	/// <summary>
-	/// Adds the 
-	/// </summary>
-	/// <param name="item"></param>
-	/// <param name="after"></param>
+	/// <summary> Adds the </summary>
+	/// <param name="item"> </param>
+	/// <param name="after"> </param>
 	public void InjectAfter(ISpawnTreeItem item, ISpawnTreeItem after)
 	{
-
 	}
 
 	public virtual void Check(NPCSpawnInfo info, ref float remainingWeight)
@@ -160,7 +161,6 @@ public class ConditionedSpawnTreeParent : SpawnTreeParent, IConditionedTreeItem
 	}
 }
 
-// TODO: I don't like that we've ended up here again, think of something to keep it all separate
 public sealed class DualConditionedSpawnTreeParent : ConditionedSpawnTreeParent
 {
 	private Func<NPCSpawnInfo, float> WeightFunc { get; init; }
@@ -189,21 +189,18 @@ public class MultiEntrySum
 		this.items = items;
 	}
 
-	/// <summary>
-	/// For internal use with <see cref="AddAndReturn(ISpawnTreeItem)"/> only
-	/// </summary>
+	/// <summary> For internal use with <see cref="AddAndReturn(ISpawnTreeItem)"/> only </summary>
 	internal MultiEntrySum()
 	{
 		items = Array.Empty<ISpawnTreeItem>();
 	}
 
-	/// <summary>
-	/// The sum of each elements <see cref="ISpawnTreeItem.Chance"/>
-	/// </summary>
+	/// <summary> The sum of each elements <see cref="ISpawnTreeItem.Chance"/> </summary>
 	public float Chance => items.Sum((item) => item.Chance);
 
 	/// <summary>
-	/// Appends <paramref name="item"/> to the internal array and returns <paramref name="item"/>, internal since externally this should look immutable, these are just for convenience here.
+	/// Appends <paramref name="item"/> to the internal array and returns <paramref name="item"/>, internal since externally this should look
+	/// immutable, these are just for convenience here.
 	/// </summary>
 	internal ISpawnTreeItem AddAndReturn(ISpawnTreeItem item)
 	{
@@ -214,7 +211,8 @@ public class MultiEntrySum
 
 //TODO: further documentation
 /// <summary>
-/// This serves as a central class to help modders spawn their NPCs. It's basically the vanilla spawn code if-else chains condensed into objects. See ExampleMod for usages.
+/// This serves as a central class to help modders spawn their NPCs. It's basically the vanilla spawn code if-else chains condensed into objects. See
+/// ExampleMod for usages.
 /// </summary>
 public static class SpawnCondition
 {
@@ -286,8 +284,8 @@ public static class SpawnCondition
 	public static readonly WeightedSpawnCondition TownOverworldWaterBeachCritter;
 
 	/// <summary>
-	/// Currently Returns <see cref="TownDefaultWaterCritter"/>, replicating <see cref="NPCID.Goldfish"/> spawning behaviour. Use <see cref="TownDefaultWaterCritter"/>
-	/// alongside <see cref="WaterSurface(NPCSpawnInfo)"/> for original behaviour
+	/// Currently Returns <see cref="TownDefaultWaterCritter"/>, replicating <see cref="NPCID.Goldfish"/> spawning behaviour. Use
+	/// <see cref="TownDefaultWaterCritter"/> alongside <see cref="WaterSurface(NPCSpawnInfo)"/> for original behaviour
 	/// </summary>
 	[Obsolete("Does not correspond to a real vanilla NPC, to replicate the spawning of goldfish use TownDefaultWaterCritter, to replicate the spawning of pupfish use TownOverworldWaterBeachCritter.")]
 	public static WeightedSpawnCondition TownOverworldUnderwaterCritter => TownDefaultWaterCritter;
@@ -399,7 +397,8 @@ public static class SpawnCondition
 	public static readonly MultiEntrySum AllSkeletons = new(NormalSkeletons, ExpertSkeletons, HalloweenSkeletons, SporeSkeletons);
 
 	/// <summary>
-	/// The current spawn probability for the Flinx. The flinx has four spawn seperate spawning chances; <see cref="Flinx1"/>, <see cref="Flinx2"/>, <see cref="Flinx3"/>, <see cref="Flinx4"/>
+	/// The current spawn probability for the Flinx. The flinx has four spawn seperate spawning chances; <see cref="Flinx1"/>, <see cref="Flinx2"/>,
+	/// <see cref="Flinx3"/>, <see cref="Flinx4"/>
 	/// </summary>
 	public static readonly MultiEntrySum Flinx = new(Flinx1, Flinx2, Flinx3, Flinx4);
 
@@ -461,8 +460,8 @@ public static class SpawnCondition
 			})
 		});
 
-		// 15 (!flag7 && !savedAngler && !AnyNPCs(376) && (num < WorldGen.beachDistance || num > Main.maxTilesX - WorldGen.beachDistance) && Main.tileSand[num49] &&
-		// ((double)num2 < Main.worldSurface || Main.remixWorld))
+		// 15 (!flag7 && !savedAngler && !AnyNPCs(376) && (num < WorldGen.beachDistance || num > Main.maxTilesX - WorldGen.beachDistance) &&
+		// Main.tileSand[num49] && ((double)num2 < Main.worldSurface || Main.remixWorld))
 		baseCondition += BeachAngler = new(!InfoWater & !SavedAngler & SpawnCap(NPCID.SleepingAngler) & InBeachDistance & ProperGroundSand & (AboveOrWorldSurface | RemixWorld));
 
 		//Misc Water
@@ -480,8 +479,8 @@ public static class SpawnCondition
 		// 17 (!flag12 && flag7 && (double)num2 > Main.worldSurface && Main.rand.Next(3) == 0)
 		baseCondition += CaveJellyfish = new(!InfoPlayerInTown & InfoWater & !AboveOrWorldSurface, 1f / 3f);
 
-		// Water Critters 18 (flag7 && Main.rand.Next(4) == 0 && ((num > WorldGen.oceanDistance && num < Main.maxTilesX - WorldGen.oceanDistance) || (double)num2 >
-		// Main.worldSurface + 50.0))
+		// Water Critters 18 (flag7 && Main.rand.Next(4) == 0 && ((num > WorldGen.oceanDistance && num < Main.maxTilesX - WorldGen.oceanDistance) ||
+		// (double)num2 > Main.worldSurface + 50.0))
 		baseCondition += WaterCritter = new(InfoWater & (NotInOceanDistance | BelowSurfaceBy(50)), 0.25f, new ISpawnTreeItem[] {
 			CorruptWaterCritter = new(InCorrupt), //18.1
 			CrimsonWaterCritter = new(InCrimson), // 18.2
@@ -595,8 +594,8 @@ public static class SpawnCondition
 		baseCondition += JungleTemple = new((ProperGroundSpawnTile(TileID.LihzahrdBrick, TileID.WoodenSpikes) | RemixWorld) & InfoLihzahrd); // 49
 		baseCondition += HiveHornet = new(InfoWallTile(WallID.HiveUnsafe), 7f / 8f); // 50
 
-		// 51 (num49 == 60 && ((!Main.remixWorld && (double)num2 > (Main.worldSurface + Main.rockLayer) / 2.0) || (Main.remixWorld && ((double)num2 < Main.rockLayer ||
-		// Main.rand.Next(2) == 0))))
+		// 51 (num49 == 60 && ((!Main.remixWorld && (double)num2 > (Main.worldSurface + Main.rockLayer) / 2.0) || (Main.remixWorld && ((double)num2 <
+		// Main.rockLayer || Main.rand.Next(2) == 0))))
 		baseCondition += UndergroundJungle = new(SpawnTile(TileID.JungleGrass)
 			& ConditionWrapper.CreateConditional(RemixWorld, !BelowOrRockLayer, IDontKnow2), (info) => Main.remixWorld ? 0.5f : 1f);
 
@@ -732,9 +731,9 @@ public static class SpawnCondition
 	}
 
 	/// <summary>
-	/// Moves from one tile above <paramref name="info"/> to <paramref name="maxHeight"/> (vanilla default is 50) tiles above, finds the first value that has no liquid
-	/// and fails <see cref="WorldGen.SolidTile(int, int, bool)"/> for itself and two tiles above it then adds <paramref name="extraHeight"/> above this value. If it
-	/// finds no value, defaults to -1. Then caps the value at the initial height, and returns
+	/// Moves from one tile above <paramref name="info"/> to <paramref name="maxHeight"/> (vanilla default is 50) tiles above, finds the first value
+	/// that has no liquid and fails <see cref="WorldGen.SolidTile(int, int, bool)"/> for itself and two tiles above it then adds
+	/// <paramref name="extraHeight"/> above this value. If it finds no value, defaults to -1. Then caps the value at the initial height, and returns
 	/// </summary>
 	public static int GetWaterSurface(NPCSpawnInfo info, int extraHeight = 2, int maxHeight = 50, int airGapHeight = 3)
 	{
@@ -799,5 +798,6 @@ public static class SpawnCondition
 // TODO: Add names for windy day spawns,
 // TODO: Finish gem critter calculator,
 // TODO: obsolete inaccurate names, return correct
-// Unrealistic: explore viability of larger category based abstraction layer to wrap vanilla a little better (Something like ~Biome => Liquid? => Other Conditions => Gold Critter? => Spawn)
+// Unrealistic: explore viability of larger category based abstraction layer to wrap vanilla a little better (Something like ~Biome => Liquid? =>
+// Other Conditions => Gold Critter? => Spawn)
 // TODO: Poke at ModBiome for spawn blocking stuff?
