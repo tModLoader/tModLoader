@@ -27,7 +27,8 @@ internal class ErrorReporting
 			// always write to console. Ideal for headless servers
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.Out.WriteLine(title + "\n" + message);
-			SDL2.SDL.SDL_ShowSimpleMessageBox(SDL2.SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR, title, message, IntPtr.Zero);
+			if (!Main.dedServ)
+				SDL2.SDL.SDL_ShowSimpleMessageBox(SDL2.SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR, title, message, IntPtr.Zero);
 		}
 		catch { }
 	}
@@ -40,8 +41,7 @@ internal class ErrorReporting
 			Logging.tML.Fatal(message);
 
 		TerrariaSteamClient.Shutdown();
-		if (!Main.dedServ)
-		    MessageBoxShow(message, fatal: true);
+		MessageBoxShow(message, fatal: true);
 		Environment.Exit(1);
 	}
 
