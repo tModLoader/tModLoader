@@ -84,15 +84,18 @@ internal static class FNALogging
 
 		Logging.FNA.Debug("Querying linked library versions...");
 
-		SDL2.SDL.SDL_GetVersion(out var sdl_version);
-		Logging.FNA.Debug($"SDL v{sdl_version.major}.{sdl_version.minor}.{sdl_version.patch}");
+        if (!Main.dedServ)
+        {
+            SDL2.SDL.SDL_GetVersion(out var sdl_version);
+            Logging.FNA.Debug($"SDL v{sdl_version.major}.{sdl_version.minor}.{sdl_version.patch}");
 
-		uint fna3d_version = FNA3D.FNA3D_LinkedVersion();
-		Logging.FNA.Debug($"FNA3D v{fna3d_version / 10000}.{fna3d_version / 100 % 100}.{fna3d_version % 100}");
+            uint fna3d_version = FNA3D.FNA3D_LinkedVersion();
+            Logging.FNA.Debug($"FNA3D v{fna3d_version / 10000}.{fna3d_version / 100 % 100}.{fna3d_version % 100}");
 
-		uint faudio_version = FAudio.FAudioLinkedVersion();
-		Logging.FNA.Debug($"FAudio v{faudio_version / 10000}.{faudio_version / 100 % 100}.{faudio_version % 100}");
-	}
+            uint faudio_version = FAudio.FAudioLinkedVersion();
+            Logging.FNA.Debug($"FAudio v{faudio_version / 10000}.{faudio_version / 100 % 100}.{faudio_version % 100}");
+        }
+    }
 
 	public static void GraphicsInit(GraphicsDeviceManager graphics)
 	{

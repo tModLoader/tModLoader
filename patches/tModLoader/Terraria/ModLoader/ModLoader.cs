@@ -94,7 +94,8 @@ public static class ModLoader
 		FileAssociationSupport.UpdateFileAssociation();
 		FolderShortcutSupport.UpdateFolderShortcuts();
 		MonoModHooks.Initialize();
-		FNAFixes.Init();
+		if (!Main.dedServ)
+		    FNAFixes.Init();
 		LoaderManager.AutoLoad();
 	}
 
