@@ -8,6 +8,60 @@
  
  namespace Terraria;
  
+@@ -527,7 +_,7 @@
+ 					case 2: {
+ 						num9 += num7;
+ 						int num17 = (int)num9;
+-						num9 %= 1f;
++						num9 -= num17;
+ 						for (int j = 0; j < num17; j++) {
+ 							if (Main.tile[num, num2 - 1] == null)
+ 								return false;
+@@ -563,7 +_,7 @@
+ 					case 1: {
+ 						num10 += num8;
+ 						int num16 = (int)num10;
+-						num10 %= 1f;
++						num10 -= num16;
+ 						for (int i = 0; i < num16; i++) {
+ 							if (Main.tile[num - 1, num2] == null)
+ 								return false;
+@@ -664,7 +_,7 @@
+ 					case 2: {
+ 						num5 += num3;
+ 						int num13 = (int)num5;
+-						num5 %= 1f;
++						num5 -= num13;
+ 						for (int j = 0; j < num13; j++) {
+ 							if (Main.tile[value, value2 - 1] == null) {
+ 								col = new Tuple<int, int>(value, value2 - 1);
+@@ -715,7 +_,7 @@
+ 					case 1: {
+ 						num6 += num4;
+ 						int num12 = (int)num6;
+-						num6 %= 1f;
++						num6 -= num12;
+ 						for (int i = 0; i < num12; i++) {
+ 							if (Main.tile[value - 1, value2] == null) {
+ 								col = new Tuple<int, int>(value - 1, value2);
+@@ -855,7 +_,7 @@
+ 					case 2: {
+ 						num9 += num7;
+ 						int num17 = (int)num9;
+-						num9 %= 1f;
++						num9 -= num17;
+ 						for (int j = 0; j < num17; j++) {
+ 							_ = Main.tile[num, num2];
+ 							if (HitWallSubstep(num, num2))
+@@ -880,7 +_,7 @@
+ 					case 1: {
+ 						num10 += num8;
+ 						int num16 = (int)num10;
+-						num10 %= 1f;
++						num10 -= num16;
+ 						for (int i = 0; i < num16; i++) {
+ 							_ = Main.tile[num, num2];
+ 							if (HitWallSubstep(num, num2))
 @@ -1030,7 +_,7 @@
  		if (tile == null || !tile.active() || tile.inActive() || !Main.tileSolid[tile.type])
  			return false;
