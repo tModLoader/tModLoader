@@ -143,9 +143,12 @@
 		"ModConfigNotification": "通知：",
 		"ModConfigModConfig": "模组配置",
 		"ModConfigSaveConfig": "保存配置",
+		// "ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "返回",
 		"ModConfigRevertChanges": "撤销改动",
+		// "ModConfigChangesReverted": "Changes Reverted",
 		"ModConfigRestoreDefaults": "重设为默认",
+		// "ModConfigDefaultsRestored": "Defaults Restored",
 		"ModConfigAskingServerToAcceptChanges": "正在请求服务器接受改动……",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "由于需要重载模组而无法保存改动（请从主菜单进入模组列表以调整配置）",
 		"ModConfigServerSide": "服务端配置",
@@ -568,6 +571,8 @@
 		"CommandModListModlist": "模组列表：",
 		"CommandCustomSetsDescription": "显示已命名的ID集列表。",
 		"CommandCustomSetsUsage": "/customsets [模组名|设置Key|搜索词] [-v (输出值)] [-o (打开日志文件夹)]",
+		// "CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		// "CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "构建中：{0}",

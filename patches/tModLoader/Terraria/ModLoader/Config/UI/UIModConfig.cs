@@ -48,6 +48,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	private ModConfig modConfig; // This is from ConfigManager.Configs
 	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
+	private bool preserveNotificationMessage;
 	private UIFocusInputTextField filterTextField;
 	internal string scrollToOption = null;
 	internal bool centerScrolledOption = false;
@@ -195,8 +196,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	// Note that Escape key while in-game won't call this.
 	public void HandleBackButtonUsage()
-	{ 
-		if(Main.gameMenu || !openedFromModder)
+	{
+		if (Main.gameMenu || !openedFromModder)
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
 		if (Main.gameMenu) {
@@ -252,8 +253,9 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	}
 
 	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
-	private void DoMenuModeState()
+	private void DoMenuModeState(bool preserveNotificationMessage = false)
 	{
+		this.preserveNotificationMessage = preserveNotificationMessage;
 		if (Main.gameMenu) {
 			Main.MenuUI.SetState(null);
 			Main.menuMode = Interface.modConfigID;
@@ -266,67 +268,17 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		// Main Menu: Save, leave reload for later
-		// MP with ServerSide: Send request to server
-		// SP or MP with ClientSide: Apply immediately if !NeedsReload
-		if (Main.gameMenu) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			ConfigManager.Save(pendingConfig);
-			ConfigManager.Load(modConfig);
-			// modConfig.OnChanged(); delayed until ReloadRequired checked
-			// Reload will be forced by Back Button in UIMods if needed
-		}
-		else {
-			// If we are in game...
-			if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-				// TODO: Too
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); //"Asking server to accept changes..."
-
-				var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
-				requestChanges.Write(pendingConfig.Mod.Name);
-				requestChanges.Write(pendingConfig.Name);
-				string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
-				requestChanges.Write(json);
-				requestChanges.Send();
-
-				//IngameFancyUI.Close();
-
-				return;
-			}
-
-			// SP or MP with ClientSide
-			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
-
-			if (loadTimeConfig.NeedsReload(pendingConfig)) {
-				SoundEngine.PlaySound(SoundID.MenuClose);
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);//"Can't save because changes would require a reload."
-				return;
-			}
-			else {
-				SoundEngine.PlaySound(SoundID.MenuOpen);
-				ConfigManager.Save(pendingConfig);
-				ConfigManager.Load(modConfig);
-				modConfig.OnChanged();
-			}
-		}
-
-		/*
-		if (ConfigManager.ModNeedsReload(modConfig.mod)) {
-			Main.menuMode = Interface.reloadModsID;
-		}
-		else {
-			DoMenuModeState();
-		}
-		*/
-
-		DoMenuModeState();
+		var result = modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
+		if (result == ConfigSaveResult.Success) // Don't clear out pending changes for needs reload or sent to server
+			DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		pendingRevertDefaults = true;
-		DoMenuModeState();
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
+		DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -337,7 +289,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void DiscardChanges()
 	{
-		DoMenuModeState();
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
+		DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private bool pendingChanges;
@@ -375,7 +328,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 			// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
 			var desiredElement = mainConfigList._items.Find(x => {
-				if(x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
+				if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
 					if (configElement is ObjectElement objectElement && objectElement.separatePagePanel != null) {
 						SwitchToSubConfig(objectElement.separatePagePanel);
 						return true;
@@ -487,7 +440,9 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 		updateNeeded = false;
 
-		SetMessage("", Color.White);
+		if (!preserveNotificationMessage)
+			SetMessage("", Color.White);
+		preserveNotificationMessage = false;
 
 		string configDisplayName = modConfig.DisplayName.Value;
 
@@ -664,7 +619,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
 			e = new DictionaryElement();
 		}
-		else if(type == typeof(object)) {
+		else if (type == typeof(object)) {
 			e = new UIText($"{memberInfo.Name} can't be of the Type Object.");
 		}
 		else if (type.IsClass) {

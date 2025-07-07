@@ -309,36 +309,41 @@ public static class ConfigManager
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
 			bool success = reader.ReadBoolean();
 			NetworkText message = NetworkText.Deserialize(reader);
+			string modname = reader.ReadString();
+			string configname = reader.ReadString();
+			bool broadcast = reader.ReadBoolean();
+			ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
+			int requestor = reader.ReadByte();
 			if (success) {
-				string modname = reader.ReadString();
-				string configname = reader.ReadString();
 				string json = reader.ReadString();
-				ModConfig activeConfig = GetConfig(ModLoader.GetMod(modname), configname);
 				JsonConvert.PopulateObject(json, activeConfig, serializerSettingsCompact);
 				activeConfig.OnChanged();
+				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 
-				Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
+				if(broadcast)
+					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Main.InGameUI.SetState(Interface.modConfig);
+					Main.InGameUI.SetState(null);
+					Main.InGameUI.SetState(Interface.modConfig); // Refresh with changes from server, config might have been tweaked.
 					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
 			}
 			else {
 				// rejection only sent back to requester.
-				// Update UI with message
-
-				Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
+				// Update UI with message, but don't clear user's pending changes
+				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
+				if (broadcast)
+					Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
-					//Main.InGameUI.SetState(Interface.modConfig);
 				}
-
 			}
 		}
 		else {
 			// no bool in request.
 			string modname = reader.ReadString();
 			string configname = reader.ReadString();
+			bool broadcast = reader.ReadBoolean();
 			string json = reader.ReadString();
 
 			var mod = ModLoader.GetMod(modname);
@@ -366,6 +371,7 @@ public static class ConfigManager
 			if (success) {
 				// Apply to Servers Config
 				ConfigManager.Save(pendingConfig);
+				json = JsonConvert.SerializeObject(pendingConfig, serializerSettingsCompact); // AcceptClientChanges can modify pendingConfig for advanced permissions filtering.
 				JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
 				config.OnChanged();
 				// Send new config to all clients
@@ -374,6 +380,8 @@ public static class ConfigManager
 				message.Serialize(p);
 				p.Write(modname);
 				p.Write(configname);
+				p.Write(broadcast);
+				p.Write((byte)whoAmI);
 				p.Write(json);
 				p.Send();
 			}
@@ -382,6 +390,10 @@ public static class ConfigManager
 				var p = new ModPacket(MessageID.InGameChangeConfig);
 				p.Write(false);
 				message.Serialize(p);
+				p.Write(modname);
+				p.Write(configname);
+				p.Write(broadcast);
+				p.Write((byte)whoAmI);
 				p.Send(whoAmI);
 			}
 
@@ -404,6 +416,10 @@ public static class ConfigManager
 		return fields.Select(x => new PropertyFieldWrapper(x)).Concat(properties.Select(x => new PropertyFieldWrapper(x)));
 	}
 
+	/// <summary>
+	/// Creates a clone of the provided ModConfig. This clone can be modified independently of the active config.
+	/// <br/><br/> Mods can use this method to create a clone of the active config, then use it to populate a UI. The player can use the UI to make several changes then save them all at once.
+	/// </summary>
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
 		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);

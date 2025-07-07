@@ -1437,8 +1437,10 @@ Mods: {
 			ExampleFullscreenUI: {
 				// Header: Example Fullscreen UI
 				// Description: This is an example fullscreen UI, notice how other UI is hidden.
+				// RandomizeItem: Randomize Item
 				// Nothing: "{0} is set to nothing"
 				// IsSet: "{0} is set to {1}: [i:{2}]"
+				// SaveValue: "{0} is saved as {1}"
 			}
 		}
 
@@ -1530,6 +1532,17 @@ Mods: {
 			}
 
 			// ShowFullscreenUICommand.Description: Show the example fullscreen UI
+
+			ModifyServerConfigValueCommand: {
+				/* Usage:
+					'''
+					/setSomeNumber value
+					value — A number to assign to ModConfigShowcaseAcceptClientChanges.SomeNumber
+					''' */
+				// Description: Sets ModConfigShowcaseAcceptClientChanges.SomeNumber. Showcases a command setting a ModConfig value and saving that config.
+				// Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				// Error_1: "{$Mods.ExampleMod.Commands.Common.NotInteger}"
+			}
 		}
 
 		VictoryPoses: {
