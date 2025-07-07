@@ -146,7 +146,7 @@
 		"ModConfigConfigSaved": "已保存配置",
 		"ModConfigBack": "返回",
 		"ModConfigRevertChanges": "撤销改动",
-		"ModConfigChangesReverted": "撤销改动",
+		"ModConfigChangesReverted": "已撤销改动",
 		"ModConfigRestoreDefaults": "重设为默认",
 		"ModConfigDefaultsRestored": "已重设为默认",
 		"ModConfigAskingServerToAcceptChanges": "正在请求服务器接受改动……",
