@@ -101,6 +101,8 @@ namespace ExampleMod.Content.NPCs
 				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Shimmer_Party")
 			);
 
+			ContentSamples.NpcBestiaryRarityStars[Type] = 3; // We can override the default bestiary star count calculation by setting this.
+
 			UpgradedText = this.GetLocalization("Upgraded");
 		}
 

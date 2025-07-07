@@ -102,6 +102,8 @@ public static class NPCLoader
 			Main.npcFrameCount[k] = 1;
 			Lang._npcNameCache[k] = LocalizedText.Empty;
 		}
+
+		ContentSamples.NpcBestiaryRarityStars.Clear();
 	}
 
 	internal static void FinishSetup()

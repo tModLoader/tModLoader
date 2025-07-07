@@ -65,7 +65,7 @@
  				Item item = new Item();
  				item.SetDefaults(i);
  				list.Add(item);
-@@ -719,26 +_,86 @@
+@@ -719,26 +_,87 @@
  		public static int GetBestiaryStarsPriority(NPC npc) => NpcBestiaryRarityStars[npc.type];
  	}
  
@@ -125,7 +125,8 @@
 +
 +	/// <summary>
 +	/// The number of stars a given NPC type (<see cref="NPC.type"/>) shows in the Bestiary.
-+	/// <br/> Set in <see cref="ModNPC.SetBestiary(BestiaryDatabase, BestiaryEntry)"/> or <see cref="GlobalNPC.SetBestiary(NPC, BestiaryDatabase, BestiaryEntry)"/>.
++	/// <br/><br/> Defaults to the result of <see cref="GetNPCBestiaryRarityStarsCount"/>. Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Bestiary-Stars">Bestiary Stars wiki page</see> to learn more about the default calculations.
++	/// <br/><br/> Set in SetStaticDefaults to override that logic.
 +	/// </summary>
  	public static Dictionary<int, int> NpcBestiaryRarityStars = new Dictionary<int, int>();
 +
@@ -182,12 +183,15 @@
  	{
  		for (int i = 0; i < itemsThatWillResearchTheItemToUnlock.Length; i++) {
  			AddItemResearchOverride_Inner(itemsThatWillResearchTheItemToUnlock[i], itemTypeToUnlock);
-@@ -955,7 +_,7 @@
+@@ -955,7 +_,10 @@
  		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  		nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];
  		NPCSpawnParams spawnparams = nPCSpawnParams;
 -		for (int i = -65; i < NPCID.Count; i++) {
 +		for (int i = -65; i < NPCLoader.NPCCount; i++) {
++			if (NpcBestiaryRarityStars.ContainsKey(i)) // Fix #4687, let modders set stars manually in SetStaticDefaults.
++				continue;
++
  			NPC nPC = new NPC();
  			nPC.SetDefaults(i, spawnparams);
  			NpcBestiaryRarityStars[i] = GetNPCBestiaryRarityStarsCount(nPC);
