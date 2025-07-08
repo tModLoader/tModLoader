@@ -468,7 +468,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,44 +_,148 @@
+@@ -829,44 +_,149 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -487,6 +487,7 @@
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles. These tiles will also be destroyed when placing a tile at it's location, see also <see cref="TileID.Sets.BreakableWhenPlacing"/>, which is limited to breaking this tile only by tile placement. <see cref="ModProjectile.CanCutTiles"/> can be used to customize if a projectile should destroy tiles with this property.
++	/// <br/><br/> For desirable plant tiles, set <see cref="TileID.Sets.TileCutIgnore.Regrowth"/> as well to ignore them when using the <see cref="ItemID.StaffofRegrowth"/>. 
 +	/// <br/><br/> Defaults to false.
 +	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];

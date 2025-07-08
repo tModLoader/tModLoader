@@ -15,6 +15,14 @@
  	{
  		public static class Conversion
  		{
+@@ -30,6 +_,7 @@
+ 		{
+ 			public static bool[] None = Factory.CreateBoolSet(false);
+ 			public static bool[] IgnoreDontHurtNature = Factory.CreateBoolSet(true, 654, 444, 485, 231, 484, 32, 352, 655, 69, 51, 481, 482, 483);
++			/// <summary> Tiles that should be ignored by the <see cref="ItemID.StaffofRegrowth"/> hitbox despite being <see cref="Main.tileCut"/>. </summary>
+ 			public static bool[] Regrowth = Factory.CreateBoolSet(false, 3, 24, 52, 61, 62, 71, 73, 74, 82, 83, 84, 110, 113, 115, 184, 205, 201, 519, 518, 528, 529, 530, 549, 637, 638, 636);
+ 		}
+ 
 @@ -106,19 +_,79 @@
  			};
  		}
@@ -118,7 +126,7 @@
  		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
  			(ushort)11,
  			true,
-@@ -148,25 +_,72 @@
+@@ -148,25 +_,73 @@
  			(ushort)579,
  			true
  		});
@@ -132,6 +140,7 @@
 +		/// <br/> Use <see cref="ModTile.CanReplace(int, int, int)"/> or <see cref="GlobalTile.CanReplace(int, int, int, int)"/> to dynamically prevent tile replacement for situations with more complex logic.
 +		/// </summary>
  		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
++		/// <summary> Indicates that this tile is a vine tile. Used to limit vine growth in an area and facilitates converting vines when the anchor tile is changed. </summary>
  		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
  		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
  		public static bool[] Platforms = Factory.CreateBoolSet(19, 427, 435, 436, 437, 438, 439);
