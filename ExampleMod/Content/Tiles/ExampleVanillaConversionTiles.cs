@@ -26,6 +26,7 @@ namespace ExampleMod.Content.Tiles
 
 			// We need to register a conversion from the vanilla desert fossil into our modded variants, so our custom code can be called when the game attempts to convert the vanilla tile
 			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Hallow, ConvertToHallow);
+			TileID.Sets.ConversionFallback[Type] = TileID.DesertFossil;
 		}
 
 		public bool ConvertToHallow(int i, int j, int type, int conversionType) {
@@ -47,12 +48,6 @@ namespace ExampleMod.Content.Tiles
 				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand: // Yellow (desert) solution also converts evil/hallowed tiles back into purity, so don't forget that check!
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-					return;
-				case BiomeConversionID.Corruption:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
-					return;
-				case BiomeConversionID.Crimson:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
 					return;
 
 				// This example showcases how to make hallow and evil biome conversion work, but you can extend this code to work for the other vanilla solutions.
@@ -89,6 +84,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMerge[TileID.CorruptSandstone][Type] = true;
 
 			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Corruption, ConvertToCorruption);
+			TileID.Sets.ConversionFallback[Type] = TileID.DesertFossil;
 		}
 
 		public bool ConvertToCorruption(int i, int j, int type, int conversionType) {
@@ -103,12 +99,6 @@ namespace ExampleMod.Content.Tiles
 				case BiomeConversionID.Sand:
 				case BiomeConversionID.PurificationPowder:
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-					return;
-				case BiomeConversionID.Hallow:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
-					return;
-				case BiomeConversionID.Crimson:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
 					return;
 			}
 		}
@@ -136,6 +126,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMerge[TileID.CrimsonSandstone][Type] = true;
 
 			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Crimson, ConvertToCrimson);
+			TileID.Sets.ConversionFallback[Type] = TileID.DesertFossil;
 		}
 
 		public bool ConvertToCrimson(int i, int j, int type, int conversionType) {
@@ -150,12 +141,6 @@ namespace ExampleMod.Content.Tiles
 				case BiomeConversionID.Sand:
 				case BiomeConversionID.PurificationPowder:
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-					return;
-				case BiomeConversionID.Hallow:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
-					return;
-				case BiomeConversionID.Corruption:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
 					return;
 			}
 		}
