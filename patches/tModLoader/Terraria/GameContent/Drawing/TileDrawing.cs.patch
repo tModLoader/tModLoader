@@ -216,7 +216,7 @@
  				}
  			}
  		}
-@@ -575,7 +_,11 @@
+@@ -575,12 +_,16 @@
  			TimeLogger.DrawTime(1, stopwatch.Elapsed.TotalMilliseconds);
  	}
  
@@ -229,6 +229,12 @@
  	{
  		int y = j;
  		for (int num = j - 1; num > 0; num--) {
+ 			Tile tile = Main.tile[i, num];
+-			if (WorldGen.SolidTile(i, num) || !tile.active()) {
++			if (WorldGen.BottomEdgeCanBeAttachedTo(i, num) || !tile.active()) {
+ 				y = num + 1;
+ 				break;
+ 			}
 @@ -593,7 +_,11 @@
  		}
  	}
