@@ -722,11 +722,13 @@ public static class TileLoader
 	{
 		int type = Main.tile[i, j].type;
 		int currentType = type;
-		List<ConvertTile> list;
-		while (currentType != -1 && (list = tileConversionDelegates[currentType]?[conversionType]) != null) {
-			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-				if (!hook(i, j, type, conversionType)) {
-					return false;
+		while (currentType != -1) {
+			var list = tileConversionDelegates[currentType]?[conversionType];
+			if (list != null) {
+				foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+					if (!hook(i, j, type, conversionType)) {
+						return false;
+					}
 				}
 			}
 			currentType = TileID.Sets.ConversionFallback[currentType];
