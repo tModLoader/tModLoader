@@ -184,6 +184,11 @@ partial class TileID
 		/// </summary>
 		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
 
+		/// <summary>
+		/// The ID of the tile that a tile will be treated as in <see cref="TileLoader.Convert"/> if it doesn't have its own conversion
+		/// </summary>
+		public static int[] ConversionFallback = Factory.CreateIntSet(-1);
+
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)
 		{

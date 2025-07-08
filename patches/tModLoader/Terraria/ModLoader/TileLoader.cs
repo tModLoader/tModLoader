@@ -721,13 +721,15 @@ public static class TileLoader
 	public static bool Convert(int i, int j, int conversionType)
 	{
 		int type = Main.tile[i, j].type;
-		var list = tileConversionDelegates[type]?[conversionType];
-		if (list != null) {
+		int currentType = type;
+		List<ConvertTile> list;
+		while (currentType != -1 && (list = tileConversionDelegates[currentType]?[conversionType]) != null) {
 			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
 				if (!hook(i, j, type, conversionType)) {
 					return false;
 				}
 			}
+			currentType = TileID.Sets.ConversionFallback[currentType];
 		}
 
 		ModTile modTile = GetTile(type);
