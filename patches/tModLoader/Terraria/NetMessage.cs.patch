@@ -361,6 +361,15 @@
  					break;
  				}
  				case 134: {
+@@ -1411,6 +_,8 @@
+ 					Player obj = Main.player[number];
+ 					obj.piggyBankProjTracker.Write(writer);
+ 					obj.voidLensChest.Write(writer);
++					obj.safeProjTracker.Write(writer);
++					obj.defendersForgeProjTracker.Write(writer);
+ 					break;
+ 				}
+ 				case 146:
 @@ -1440,6 +_,16 @@
  				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
  

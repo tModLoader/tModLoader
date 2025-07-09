@@ -4799,6 +4799,51 @@
  		if (wings == 32)
  			num27 = 3;
  
+@@ -23250,11 +_,13 @@
+ 			if (chest != -5)
+ 				voidLensChest.Clear();
+ 
++			HandleBeingInChestRange_TMLCheckFields();
++
+ 			bool flag = false;
+ 			int projectileLocalIndex = piggyBankProjTracker.ProjectileLocalIndex;
+ 			if (projectileLocalIndex >= 0) {
+ 				flag = true;
+-				if (!Main.projectile[projectileLocalIndex].active || (Main.projectile[projectileLocalIndex].type != 525 && Main.projectile[projectileLocalIndex].type != 960)) {
++				if (!Main.projectile[projectileLocalIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex].type] != -2) {
+ 					Main.PlayInteractiveProjectileOpenCloseSound(Main.projectile[projectileLocalIndex].type, open: false);
+ 					chest = -1;
+ 					Recipe.FindRecipes();
+@@ -23278,7 +_,7 @@
+ 			int projectileLocalIndex2 = voidLensChest.ProjectileLocalIndex;
+ 			if (projectileLocalIndex2 >= 0) {
+ 				flag = true;
+-				if (!Main.projectile[projectileLocalIndex2].active || Main.projectile[projectileLocalIndex2].type != 734) {
++				if (!Main.projectile[projectileLocalIndex2].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex2].type] != -5) {
+ 					SoundEngine.PlaySound(SoundID.Item130);
+ 					chest = -1;
+ 					Recipe.FindRecipes();
+@@ -23299,6 +_,8 @@
+ 				}
+ 			}
+ 
++			HandleBeingInChestRange_TMLBankLogic(ref flag);
++
+ 			if (flag)
+ 				return;
+ 
+@@ -23316,8 +_,11 @@
+ 			}
+ 		}
+ 		else {
++			ClearPortableBankProjectileTrackers();
++			/*
+ 			piggyBankProjTracker.Clear();
+ 			voidLensChest.Clear();
++			*/
+ 		}
+ 	}
+ 
 @@ -23333,7 +_,7 @@
  		if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
  			r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);

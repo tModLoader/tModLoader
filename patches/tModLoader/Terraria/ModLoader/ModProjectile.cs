@@ -474,4 +474,11 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
 	}
+
+	/// <summary>
+	/// If this projectile is a portable bank (like the Money Trough), this is called when the storage UI is closed. It is recommended that you play a sound here, as it is not done automatically.
+	/// </summary>
+	public virtual void PlayBankCloseSound()
+	{
+	}
 }
