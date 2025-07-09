@@ -670,10 +670,10 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	private void HandleBeingInChestRange_TMLCheckFields()
 	{
-		if (chest != -3)
+		if (chest != BankID.Safe)
 			safeProjTracker.Clear();
 
-		if (chest != -4)
+		if (chest != BankID.DefendersForge)
 			defendersForgeProjTracker.Clear();
 	}
 

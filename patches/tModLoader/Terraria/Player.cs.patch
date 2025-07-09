@@ -1048,9 +1048,9 @@
  	public TrackedProjectileReference piggyBankProjTracker;
  	public TrackedProjectileReference voidLensChest;
 +	/// <summary>
-+	/// Represents the chest the player currently has open. If -1, the player has no chest open.<br/>
-+	/// Positive values indicate the index of the chest in <see cref="Main.chest"/> the player currently has open.<br/>
-+	/// Negative values are used to indicate additional inventories: Piggy Bank (-2), Safe (-3), Defender's Forge (-4), Void Vault (-5)
++	/// Represents the chest the player currently has open. If -1, the player has no chest open.
++	/// <br/><br/> Positive values indicate the index of the chest in <see cref="Main.chest"/> the player currently has open.
++	/// <br/><br/> Negative values are used to indicate additional inventories: Piggy Bank (-2), Safe (-3), Defender's Forge (-4), Void Vault (-5). These ID values are found in <see cref="BankID"/> as well.
 +	/// </summary>
  	public int chest = -1;
  	public int chestX;
@@ -4810,7 +4810,7 @@
  			if (projectileLocalIndex >= 0) {
  				flag = true;
 -				if (!Main.projectile[projectileLocalIndex].active || (Main.projectile[projectileLocalIndex].type != 525 && Main.projectile[projectileLocalIndex].type != 960)) {
-+				if (!Main.projectile[projectileLocalIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex].type] != -2) {
++				if (!Main.projectile[projectileLocalIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex].type] != BankID.PiggyBank) {
  					Main.PlayInteractiveProjectileOpenCloseSound(Main.projectile[projectileLocalIndex].type, open: false);
  					chest = -1;
  					Recipe.FindRecipes();
@@ -4819,7 +4819,7 @@
  			if (projectileLocalIndex2 >= 0) {
  				flag = true;
 -				if (!Main.projectile[projectileLocalIndex2].active || Main.projectile[projectileLocalIndex2].type != 734) {
-+				if (!Main.projectile[projectileLocalIndex2].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex2].type] != -5) {
++				if (!Main.projectile[projectileLocalIndex2].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex2].type] != BankID.VoidVault) {
  					SoundEngine.PlaySound(SoundID.Item130);
  					chest = -1;
  					Recipe.FindRecipes();
@@ -5031,6 +5031,18 @@
  				flag2 = true;
  				if (WorldGen.CloseDoor(myX, myY))
  					NetMessage.SendData(19, -1, -1, null, 1, myX, myY, direction);
+@@ -24873,8 +_,11 @@
+ 						}
+ 					}
+ 					else {
++						ClearPortableBankProjectileTrackers();
++						/*
+ 						piggyBankProjTracker.Clear();
+ 						voidLensChest.Clear();
++						*/
+ 						int num47 = Chest.FindChest(num45, num46);
+ 						if (num47 != -1) {
+ 							Main.stackSplit = 600;
 @@ -25004,7 +_,10 @@
  				if (flag12)
  					NetMessage.SendTileSquare(-1, num62, num63, 2, 2);
@@ -8671,7 +8683,12 @@
  		player.extraAccessory = extraAccessory;
  		player.MinionRestTargetPoint = MinionRestTargetPoint;
  		player.MinionAttackTargetNPC = MinionAttackTargetNPC;
-@@ -41771,34 +_,34 @@
+@@ -41767,38 +_,39 @@
+ 		player.talkNPC = talkNPC;
+ 		player.piggyBankProjTracker = piggyBankProjTracker;
+ 		player.voidLensChest = voidLensChest;
++		clientClone_TMLCloneBankProjTrackers(player);
+ 		player.hideVisibleAccessory = hideVisibleAccessory;
  		player.hideMisc = hideMisc;
  		player.shieldRaised = shieldRaised;
  		for (int i = 0; i < 59; i++) {
@@ -9234,6 +9251,18 @@
  			adjTile[n] = false;
  			oldAdjTile[n] = false;
  		}
+@@ -43084,8 +_,11 @@
+ 		hitReplace = new HitTile();
+ 		mount = new Mount();
+ 		talkNPC = -1;
++		ClearPortableBankProjectileTrackers();
++		/*
+ 		piggyBankProjTracker.Clear();
+ 		voidLensChest.Clear();
++		*/
+ 		creativeTracker = new CreativeUnlocksTracker();
+ 		builderAccStatus[0] = 1;
+ 	}
 @@ -43304,6 +_,9 @@
  			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
  				continue;

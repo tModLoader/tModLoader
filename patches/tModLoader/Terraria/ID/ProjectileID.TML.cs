@@ -86,6 +86,10 @@ partial class ProjectileID
 		/// </summary>
 		public static bool[] IsInteractable = Factory.CreateBoolSet(false, 525, 734, 960);
 
-		public static int[] CountAsBank = Factory.CreateIntSet(-1, 525, -2, 960, -2, 734, -5);
+		/// <summary>
+		/// Maps projectile types to the the <see cref="BankID"/> of the personal storage this projectile provides access to.
+		/// <br/><br/> Defaults to -1 (<see cref="BankID.None"/>.
+		/// </summary>
+		public static int[] CountAsBank = Factory.CreateIntSet(-1, FlyingPiggyBank, BankID.PiggyBank, ChesterPet, BankID.PiggyBank, VoidLens, BankID.VoidVault);
 	}
 }
