@@ -687,52 +687,29 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	private void HandleBeingInChestRange_TMLBankLogic(ref bool flag)
 	{
-		// Safe
-		int safeIndex = safeProjTracker.ProjectileLocalIndex;
-		if (safeIndex >= 0) {
-			flag = true;
-			if (!Main.projectile[safeIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[safeIndex].type] != BankID.Safe) {
-				InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
-				chest = -1;
-				Recipe.FindRecipes();
-			}
-			else {
-				int num = (int)(((double)position.X + (double)width * 0.5) / 16.0);
-				int num2 = (int)(((double)position.Y + (double)height * 0.5) / 16.0);
-				Vector2 vector = Main.projectile[safeIndex].Hitbox.ClosestPointInRect(base.Center);
-				chestX = (int)vector.X / 16;
-				chestY = (int)vector.Y / 16;
-				if (num < chestX - tileRangeX || num > chestX + tileRangeX + 1 || num2 < chestY - tileRangeY || num2 > chestY + tileRangeY + 1) {
-					if (chest != -1)
-						InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
-
+		(TrackedProjectileReference TrackedProjectileReference, int bankID)[] banks = [(safeProjTracker, BankID.Safe), (defendersForgeProjTracker, BankID.DefendersForge)];
+		foreach (var bank in banks) {
+			int index = bank.TrackedProjectileReference.ProjectileLocalIndex;
+			if (index >= 0) {
+				flag = true;
+				if (!Main.projectile[index].active || ProjectileID.Sets.CountAsBank[Main.projectile[index].type] != bank.bankID) {
+					InteractiveProjectileOpenCloseSound2(Main.projectile[index]);
 					chest = -1;
 					Recipe.FindRecipes();
 				}
-			}
-		}
+				else {
+					int num = (int)(((double)position.X + (double)width * 0.5) / 16.0);
+					int num2 = (int)(((double)position.Y + (double)height * 0.5) / 16.0);
+					Vector2 vector = Main.projectile[index].Hitbox.ClosestPointInRect(base.Center);
+					chestX = (int)vector.X / 16;
+					chestY = (int)vector.Y / 16;
+					if (num < chestX - tileRangeX || num > chestX + tileRangeX + 1 || num2 < chestY - tileRangeY || num2 > chestY + tileRangeY + 1) {
+						if (chest != -1)
+							InteractiveProjectileOpenCloseSound2(Main.projectile[index]);
 
-		// Defenders Forge
-		int defendersForgeIndex = defendersForgeProjTracker.ProjectileLocalIndex;
-		if (defendersForgeIndex >= 0) {
-			flag = true;
-			if (!Main.projectile[defendersForgeIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[defendersForgeIndex].type] != BankID.DefendersForge) {
-				InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
-				chest = -1;
-				Recipe.FindRecipes();
-			}
-			else {
-				int num = (int)(((double)position.X + (double)width * 0.5) / 16.0);
-				int num2 = (int)(((double)position.Y + (double)height * 0.5) / 16.0);
-				Vector2 vector = Main.projectile[defendersForgeIndex].Hitbox.ClosestPointInRect(base.Center);
-				chestX = (int)vector.X / 16;
-				chestY = (int)vector.Y / 16;
-				if (num < chestX - tileRangeX || num > chestX + tileRangeX + 1 || num2 < chestY - tileRangeY || num2 > chestY + tileRangeY + 1) {
-					if (chest != -1)
-						InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
-
-					chest = -1;
-					Recipe.FindRecipes();
+						chest = -1;
+						Recipe.FindRecipes();
+					}
 				}
 			}
 		}
