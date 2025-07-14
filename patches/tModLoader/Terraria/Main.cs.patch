@@ -6378,30 +6378,21 @@
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
  			try {
-@@ -47207,6 +_,43 @@
+@@ -47207,6 +_,34 @@
  			spriteBatch.End();
  			TimeLogger.DetailedDrawTime(31);
  			base.GraphicsDevice.SetRenderTarget(null);
 +
-+			// TML(liquid-slopes): Do our additional rendering and then write
-+			// to waterTarget.
++			// Do our additional rendering and then write to waterTarget.
 +
 +			var offScreen = new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange);
 +
-+			// Draw edge tiles to a render target to use as a mask in the
-+			// shader.
 +			GraphicsDevice.SetRenderTarget(LiquidMaskTarget);
 +			GraphicsDevice.Clear(Color.Transparent);
 +			spriteBatch.Begin();
-+			//tileBatch.Begin();
-+
-+			/*foreach (var point in TilesRenderer.EdgeTiles) {
-+				TilesRenderer.
-+			}*/
 +
 +			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(Main.offScreenRange), Color.White);
 +
-+			//tileBatch.End();
 +			spriteBatch.End();
 +
 +			GraphicsDevice.SetRenderTarget(waterTarget);
@@ -6488,11 +6479,12 @@
  		if (bg)
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
-@@ -47791,6 +_,9 @@
+@@ -47791,6 +_,10 @@
  					if (Main.tile[j, i] == null)
  						Main.tile[j, i] = new Tile();
  
-+					if (Main.instance.TilesRenderer.EdgeTiles.ContainsKey(new Point(j, i)))
++					// TML(liquid-slopes): Avoid drawing over liquid edges.
++					if (TilesRenderer.EdgeTiles.ContainsKey(new Point(j, i)))
 +						break;
 +
  					Tile tile = Main.tile[j, i];
@@ -6514,7 +6506,7 @@
  	protected void EnsureRenderTargetContent()
  	{
 +		// TML(liquid-slopes): Include new render targets in the check.
-+		bool tmlTargetsNeedInitializing = (WaterTargetNoCut?.IsContentLost ?? true) || (LiquidMaskTarget?.IsContentLost ?? true);
++		bool tmlTargetsNeedInitializing = WaterTargetNoCut?.IsContentLost ?? true || (LiquidMaskTarget?.IsContentLost ?? true);
 -		if (waterTarget == null || waterTarget.IsContentLost || backWaterTarget == null || backWaterTarget.IsContentLost || blackTarget == null || blackTarget.IsContentLost || tileTarget == null || tileTarget.IsContentLost || tile2Target == null || tile2Target.IsContentLost || wallTarget == null || wallTarget.IsContentLost || backgroundTarget == null || backgroundTarget.IsContentLost || screenTarget == null || screenTarget.IsContentLost || screenTargetSwap == null || screenTargetSwap.IsContentLost)
 +		if (tmlTargetsNeedInitializing || waterTarget == null || waterTarget.IsContentLost || backWaterTarget == null || backWaterTarget.IsContentLost || blackTarget == null || blackTarget.IsContentLost || tileTarget == null || tileTarget.IsContentLost || tile2Target == null || tile2Target.IsContentLost || wallTarget == null || wallTarget.IsContentLost || backgroundTarget == null || backgroundTarget.IsContentLost || screenTarget == null || screenTarget.IsContentLost || screenTargetSwap == null || screenTargetSwap.IsContentLost)
  			InitTargets();
