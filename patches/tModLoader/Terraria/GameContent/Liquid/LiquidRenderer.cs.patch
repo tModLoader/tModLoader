@@ -113,7 +113,7 @@
 +
 +						// Opacity is important for edge tiles since we want to
 +						// support clean transitions between biomes.
-+						var type = isEdge ? Main.tile[i, j].LiquidType : ptr2->Type;
++						var type = isEdge ? edgeCache.LiquidType : ptr2->Type;
 +						var opacity = isEdge ? 1f : ptr2->Opacity;
 +
 +						float num = opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[type]);
@@ -148,7 +148,7 @@
 +						}
 +						else {
 +							var tile = Main.tile[i, j];
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(i << 4, j << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidType, vertices, edgeCache.IsWaterForFading, i, j);
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(i << 4, j << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidStyle, vertices, edgeCache.IsWaterForFading, i, j, alpha: num);
 +						}
  					}
  
@@ -202,7 +202,7 @@
 +				}
 +				else {
 +					var tile = Main.tile[num3, num4];
-+					Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(num3 << 4, num4 << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidType, vertices, fadeWater: false, num3, num4);
++					Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(num3 << 4, num4 << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidStyle, vertices, fadeWater: false, num3, num4, alpha: val);
 +				}
 +
  				sourceRectangle = ptr2->SourceRectangle;

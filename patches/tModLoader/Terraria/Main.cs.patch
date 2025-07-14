@@ -6385,13 +6385,13 @@
 +
 +			// Do our additional rendering and then write to waterTarget.
 +
-+			var offScreen = new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange);
++			var offScreen = new Vector2(drawToScreen ? 0 : offScreenRange);
 +
 +			GraphicsDevice.SetRenderTarget(LiquidMaskTarget);
 +			GraphicsDevice.Clear(Color.Transparent);
 +			spriteBatch.Begin();
 +
-+			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(Main.offScreenRange), Color.White);
++			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(offScreenRange), Color.White);
 +
 +			spriteBatch.End();
 +

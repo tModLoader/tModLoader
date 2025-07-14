@@ -11,6 +11,7 @@ public partial class TileDrawing
 	public struct LiquidEdgeCache
 	{
 		public int LiquidType;
+		public int LiquidStyle;
 		public Vector2 LiquidOffset;
 		public Rectangle LiquidFrame;
 		public VertexColors LiquidColors;
