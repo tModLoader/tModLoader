@@ -6488,14 +6488,16 @@
  		if (bg)
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
-@@ -47728,6 +_,7 @@
+@@ -47791,6 +_,9 @@
+ 					if (Main.tile[j, i] == null)
+ 						Main.tile[j, i] = new Tile();
  
- 	protected void DrawBlack(bool force = false)
- 	{
-+		return;
- 		if (shimmerAlpha == 1f)
- 			return;
- 
++					if (Main.instance.TilesRenderer.EdgeTiles.ContainsKey(new Point(j, i)))
++						break;
++
+ 					Tile tile = Main.tile[j, i];
+ 					float num8 = Lighting.Brightness(j, i);
+ 					num8 = (float)Math.Floor(num8 * 255f) / 255f;
 @@ -47906,6 +_,10 @@
  				if (backgroundTarget != null)
  					backgroundTarget.Dispose();
