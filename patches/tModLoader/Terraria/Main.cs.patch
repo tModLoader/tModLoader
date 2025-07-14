@@ -6306,7 +6306,7 @@
 +		maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidMaskTarget);
 +		maskShader.CurrentTechnique.Passes[0].Apply();
 +
-+		spriteBatch.Draw(WaterTargetNoCut, Vector2.Zero, Color.White);
++		spriteBatch.Draw(BackWaterTargetNoCut, Vector2.Zero, Color.White);
 +
 +		spriteBatch.End();
 +		GraphicsDevice.SetRenderTarget(null);
