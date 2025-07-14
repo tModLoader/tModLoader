@@ -6399,7 +6399,7 @@
 +				TilesRenderer.
 +			}*/
 +
-+			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition, Color.White);
++			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(Main.offScreenRange), Color.White);
 +
 +			//tileBatch.End();
 +			spriteBatch.End();
@@ -6409,10 +6409,10 @@
 +			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 +
 +			// TODO: cache
-+			/*var maskShader = ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Shaders.ImageMask", AssetRequestMode.ImmediateLoad).Value;
++			var maskShader = ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Shaders.ImageMask", AssetRequestMode.ImmediateLoad).Value;
 +			maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidMaskTarget);
 +			maskShader.Parameters["invert"]?.SetValue(true);
-+			maskShader.CurrentTechnique.Passes[0].Apply();*/
++			maskShader.CurrentTechnique.Passes[0].Apply();
 +
 +			spriteBatch.Draw(WaterTargetNoCut, Vector2.Zero, Color.White);
 +
