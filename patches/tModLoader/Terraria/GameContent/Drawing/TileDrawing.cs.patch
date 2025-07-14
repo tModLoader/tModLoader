@@ -508,6 +508,15 @@
  		if ((!flag3 || !(flag || flag2)) && !(flag4 && flag3)) {
  			if (flag3) {
  				liquidSize = new Rectangle(0, 4, 16, 4);
+@@ -2814,7 +_,7 @@
+ 					liquidSize = new Rectangle(0, 4, 16, 12);
+ 			}
+ 			else if (flag4 && !flag && !flag2) {
+-				vector = new Vector2(tileX * 16, tileY * 16 + 12);
++				vector = new Vector2(tileX * 16, tileY * 16 + (liquidOffset.Y = 12));
+ 				liquidSize = new Rectangle(0, 4, 16, 4);
+ 			}
+ 			else {
 @@ -2837,9 +_,11 @@
  					liquidSize = new Rectangle(0, y, 4, 16 - num6);
  				}

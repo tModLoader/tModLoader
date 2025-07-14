@@ -202,7 +202,7 @@
 +				}
 +				else {
 +					var tile = Main.tile[num3, num4];
-+					Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(num3 << 4, num4 << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidStyle, vertices, fadeWater: false, num3, num4, alpha: val);
++					//Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(num3 << 4, num4 << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidStyle, vertices, fadeWater: false, num3, num4, alpha: val);
 +				}
 +
  				sourceRectangle = ptr2->SourceRectangle;

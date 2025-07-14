@@ -11,12 +11,11 @@ sampler2D maskTexture = sampler_state
     AddressV = wrap;
 };
 
-bool invert;
-
 float4 main(float4 drawColor : COLOR0, float2 uv : TEXCOORD0) : COLOR0
 {
     float alpha = tex2D(maskTexture, uv).a;
-    return tex2D(uImage0, uv) * drawColor * (invert ? 1 - alpha : alpha);
+    alpha = alpha > 0. ? 1. : alpha;
+    return tex2D(uImage0, uv) * drawColor * (1 - alpha);
 }
 
 technique Technique1

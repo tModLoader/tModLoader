@@ -6378,7 +6378,7 @@
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
  			try {
-@@ -47207,6 +_,34 @@
+@@ -47207,6 +_,33 @@
  			spriteBatch.End();
  			TimeLogger.DetailedDrawTime(31);
  			base.GraphicsDevice.SetRenderTarget(null);
@@ -6402,7 +6402,6 @@
 +			// TODO: cache
 +			var maskShader = ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Shaders.ImageMask", AssetRequestMode.ImmediateLoad).Value;
 +			maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidMaskTarget);
-+			maskShader.Parameters["invert"]?.SetValue(true);
 +			maskShader.CurrentTechnique.Passes[0].Apply();
 +
 +			spriteBatch.Draw(WaterTargetNoCut, Vector2.Zero, Color.White);
