@@ -43,6 +43,12 @@ public partial class Main
 	public static bool showServerConsole;
 	public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
+
+	// TML(liquid-slopes): Additional render targets for handling improved
+	// liquid slope rendering.
+	public static RenderTarget2D WaterTargetNoCut;
+	public static RenderTarget2D LiquidMaskTarget;
+
 	/// <summary>
 	/// Representation that dictates the actual amount of "world event updates" that happen in a given GAME tick. This number increases/decreases in direct tandem with
 	/// <seealso cref="desiredWorldEventsUpdateRate"/>.

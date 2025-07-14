@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using System.Collections.Generic;
 using Terraria.ModLoader;
 
 namespace Terraria.GameContent.Drawing;
@@ -11,6 +11,10 @@ public partial class TileDrawing
 	/// The wind grid used to exert wind effects on tiles.
 	/// </summary>
 	public WindGrid Wind => _windGrid;
+
+	// TML(liquid-slopes): Tiles which mask rendered liquid (tiles on the edge
+	// of bodies of liquid).
+	public HashSet<Point> EdgeTiles { get; } = [];
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff.

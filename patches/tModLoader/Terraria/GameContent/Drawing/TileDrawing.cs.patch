@@ -159,7 +159,7 @@
  	}
  
  	public void PostDrawTiles(bool solidLayer, bool forRenderTargets, bool intoRenderTargets)
-@@ -338,12 +_,14 @@
+@@ -338,28 +_,36 @@
  			DrawTrees();
  			DrawVines();
  			DrawReverseVines();
@@ -174,6 +174,30 @@
  		}
  	}
  
+-	public void DrawLiquidBehindTiles(int waterStyleOverride = -1)
++	// TML(liquid-slopes): Added alpha and bg arguments.
++	public void DrawLiquidBehindTiles(int waterStyleOverride = -1, float alpha = 1f, bool bg = false)
+ 	{
+ 		Vector2 unscaledPosition = Main.Camera.UnscaledPosition;
+ 		Vector2 vector = new Vector2(Main.offScreenRange, Main.offScreenRange);
+ 		if (Main.drawToScreen)
+ 			vector = Vector2.Zero;
+ 
++		// TML(liquid-slopes): Clear edge tiles before they get calculated again below.
++		if (bg)
++			EdgeTiles.Clear();
++
+ 		GetScreenDrawArea(unscaledPosition, vector + (Main.Camera.UnscaledPosition - Main.Camera.ScaledPosition), out var firstTileX, out var lastTileX, out var firstTileY, out var lastTileY);
+ 		for (int i = firstTileY; i < lastTileY + 4; i++) {
+ 			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++				// TML(liquid-slopes): Passed bg into solidLayer and added an alpha parameter.
+ 				Tile tile = Main.tile[j, i];
+ 				if (tile != null)
+-					DrawTile_LiquidBehindTile(solidLayer: false, inFrontOfPlayers: false, waterStyleOverride, unscaledPosition, vector, j, i, tile);
++					DrawTile_LiquidBehindTile(solidLayer: !bg, inFrontOfPlayers: false, waterStyleOverride, unscaledPosition, vector, j, i, tile);
+ 			}
+ 		}
+ 	}
 @@ -396,8 +_,10 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
@@ -187,6 +211,18 @@
  				Tile tile = Main.tile[j, i];
  				if (tile == null) {
  					tile = new Tile();
+@@ -408,8 +_,11 @@
+ 					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer)
+ 						continue;
+ 
++					// TML(liquid-slopes): Behind-tile liquid rendering is handled elsewhere.
++					/*
+ 					if (solidLayer)
+ 						DrawTile_LiquidBehindTile(solidLayer, inFrontOfPlayers: false, waterStyleOverride, unscaledPosition, vector, j, i, tile);
++					*/
+ 
+ 					ushort type = tile.type;
+ 					short frameX = tile.frameX;
 @@ -417,6 +_,9 @@
  					if (!TextureAssets.Tile[type].IsLoaded)
  						Main.instance.LoadTiles(type);
@@ -417,7 +453,28 @@
  		return num;
  	}
  
-@@ -2877,7 +_,8 @@
+@@ -2623,7 +_,8 @@
+ 			Main.spriteBatch.Draw(drawData.drawTexture, new Vector2(tileX * 16 - (int)screenPosition.X, (tileY - 1) * 16 - (int)screenPosition.Y) + screenOffset, Minecart.GetSourceRect(38), drawData.tileLight, 0f, default(Vector2), 1f, drawData.tileSpriteEffect, 0f);
+ 	}
+ 
++	// TML(liquid-slopes): Added alpha parameter.
+-	private void DrawTile_LiquidBehindTile(bool solidLayer, bool inFrontOfPlayers, int waterStyleOverride, Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, Tile tileCache)
++	private void DrawTile_LiquidBehindTile(bool solidLayer, bool inFrontOfPlayers, int waterStyleOverride, Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, Tile tileCache, float alpha)
+ 	{
+ 		Tile tile = Main.tile[tileX + 1, tileY];
+ 		Tile tile2 = Main.tile[tileX - 1, tileY];
+@@ -2871,13 +_,19 @@
+ 		if (num3 == 3 && tile.liquid == 0 && !WorldGen.SolidTile(tileX + 1, tileY))
+ 			num7 = 0f;
+ 
++		// TML(liquid-slopes): Keep track of known edge tiles.
++		EdgeTiles.Add(new Point(tileX, tileY));
++
++		num7 *= alpha;
++
+ 		vertices.BottomLeftColor *= num7;
+ 		vertices.BottomRightColor *= num7;
+ 		vertices.TopLeftColor *= num7;
  		vertices.TopRightColor *= num7;
  		bool flag7 = false;
  		if (flag6) {
