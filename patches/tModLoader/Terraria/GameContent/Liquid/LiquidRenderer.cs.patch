@@ -1,5 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
+@@ -1,4 +_,5 @@
+ using System;
++using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
 @@ -10,7 +_,7 @@
  
  public class LiquidRenderer
@@ -27,14 +33,13 @@
  	{
  		public int X;
  		public int Y;
-@@ -61,16 +_,24 @@
+@@ -61,16 +_,23 @@
  		public bool HasWall;
  	}
  
 +	// TML(liquid-slopes): Introduce new cache for tiles bordering liquids.
 +	public struct LiquidEdgeCache
 +	{
-+		public bool IsVisible;
 +		public bool IsHalfBrick;
 +		public SlopeType SlopeType;
 +	}
@@ -63,7 +68,7 @@
  	private LiquidCache[] _cache = new LiquidCache[1];
  	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
  	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
-+	private LiquidEdgeCache[] _cacheForEdges = new LiquidEdgeCache[1];
++	private Dictionary<Point, LiquidEdgeCache> _cacheForEdges = [];
  	private int _animationFrame;
  	private Rectangle _drawArea = new Rectangle(0, 0, 1, 1);
  	private readonly UnifiedRandom _random = new UnifiedRandom();
@@ -76,16 +81,32 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -128,17 +_,20 @@
+@@ -128,17 +_,36 @@
  		if (_drawCacheForShimmer.Length < drawArea.Width * drawArea.Height + 1)
  			_drawCacheForShimmer = new SpecialLiquidDrawCache[drawArea.Width * drawArea.Height + 1];
  
-+		if (_cacheForEdges.Length < drawArea.Width * drawArea.Height + 1)
-+			_cacheForEdges = new LiquidEdgeCache[drawArea.Width * drawArea.Height + 1];
++		// TML(liquid-slopes): Initialize new cache.
++		_cacheForEdges.Clear();
 +
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
++		// TML(liquid-slopes): Populate cache for drawing.
++		for (int i = 0; i < drawArea.Height + 1; i++) {
++			for (int j = 0; j < drawArea.Width; j++) {
++				var coords = new Point(j + drawArea.X, i + drawArea.Y);
++
++				if (!Main.instance.TilesRenderer.EdgeTiles.Contains(coords)) {
++					continue;
++				}
++
++				_cacheForEdges[coords] = new LiquidEdgeCache {
++					IsHalfBrick = Main.tile[coords.X, coords.Y].IsHalfBlock,
++					SlopeType = Main.tile[coords.X, coords.Y].Slope
++				};
++			}
++		}
++
 -		Tile tile = null;
 +		Tile tile = default;
  		fixed (LiquidCache* ptr = &_cache[1]) {
