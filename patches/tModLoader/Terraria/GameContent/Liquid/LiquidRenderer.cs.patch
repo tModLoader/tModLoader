@@ -121,7 +121,7 @@
  						switch (num2) {
  							case 0:
  								num2 = waterStyle;
-@@ -544,14 +_,36 @@
+@@ -544,14 +_,26 @@
  								break;
  						}
  
@@ -136,23 +136,15 @@
  						vertices.TopRightColor *= num;
 +
 +						// Explicitly handle IsVisible vs IsEdge rendering here.
-+						/*
- 						Main.DrawTileInWater(drawOffset, i, j);
- 						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
-+						*/
 +						if (!isEdge) {
+-						Main.DrawTileInWater(drawOffset, i, j);
 +							Main.DrawTileInWater(drawOffset, i, j);
+-						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +							Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +						}
 +						else {
 +							var tile = Main.tile[i, j];
-+							// Main.tileBatch.Draw(TextureAssets.Liquid[0].Value, new Vector2(i << 4, j << 4) + drawOffset, new Rectangle(0, 0, 16, 16), new VertexColors(Color.Red), default(Vector2), 1f, SpriteEffects.None);
 +							var pos = new Vector2(i << 4, j << 4) + drawOffset + edgeCache.LiquidOffset;
-+							//vertices = new VertexColors(Color.White);
-+							//edgeCache.LiquidColors.BottomLeftColor *= num;
-+							//edgeCache.LiquidColors.BottomRightColor *= num;
-+							//edgeCache.LiquidColors.TopLeftColor *= num;
-+							//edgeCache.LiquidColors.TopRightColor *= num;
 +							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, ref pos, ref edgeCache.LiquidFrame, edgeCache.LiquidType, ref vertices);
 +						}
  					}
