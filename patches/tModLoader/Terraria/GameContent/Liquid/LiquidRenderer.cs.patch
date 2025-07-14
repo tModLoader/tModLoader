@@ -1,5 +1,48 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
+@@ -10,7 +_,7 @@
+ 
+ public class LiquidRenderer
+ {
+-	private struct LiquidCache
++	public struct LiquidCache
+ 	{
+ 		public float LiquidLevel;
+ 		public float VisibleLiquidLevel;
+@@ -37,7 +_,7 @@
+ 		public byte VisibleType;
+ 	}
+ 
+-	private struct LiquidDrawCache
++	public struct LiquidDrawCache
+ 	{
+ 		public Rectangle SourceRectangle;
+ 		public Vector2 LiquidOffset;
+@@ -48,7 +_,7 @@
+ 		public bool HasWall;
+ 	}
+ 
+-	private struct SpecialLiquidDrawCache
++	public struct SpecialLiquidDrawCache
+ 	{
+ 		public int X;
+ 		public int Y;
+@@ -64,13 +_,13 @@
+ 	private const int ANIMATION_FRAME_COUNT = 16;
+ 	private const int CACHE_PADDING = 2;
+ 	private const int CACHE_PADDING_2 = 4;
+-	private static readonly int[] WATERFALL_LENGTH = new int[4] {
++	public static readonly int[] WATERFALL_LENGTH = new int[4] {
+ 		10,
+ 		3,
+ 		2,
+ 		10
+ 	};
+-	private static readonly float[] DEFAULT_OPACITY = new float[4] {
++	public static readonly float[] DEFAULT_OPACITY = new float[4] {
+ 		0.6f,
+ 		0.95f,
+ 		0.95f,
 @@ -86,7 +_,7 @@
  	};
  	public const float MIN_LIQUID_SIZE = 0.25f;
