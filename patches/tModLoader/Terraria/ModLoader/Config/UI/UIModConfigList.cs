@@ -183,7 +183,7 @@ internal class UIModConfigList : UIState
 				if (icon != null) {
 					icon.Left = new StyleDimension(-FontAssets.MouseText.Value.MeasureString(modPanel.Text).X / 2 - 18, 0);
 					modPanel.PaddingLeft = 40;
-					modPanel.TextOriginX = 0.775f;
+					modPanel.TextOriginX = 0.79f;
 					modPanel.Append(icon);
 				}
 
@@ -212,7 +212,7 @@ internal class UIModConfigList : UIState
 				if (icon != null) {
 					icon.Left = new StyleDimension(-FontAssets.MouseText.Value.MeasureString(modPanel.Text).X/2 - 18, 0);
 					modPanel.PaddingLeft = 40;
-					modPanel.TextOriginX = 0.775f;
+					modPanel.TextOriginX = 0.79f;
 					modPanel.Append(icon);
 				}
 
@@ -286,7 +286,7 @@ internal class UIModConfigList : UIState
 			asset = mod.Assets.Request<Texture2D>("icon_small");
 			if (asset.Size() == new Vector2(30)) {
 				return new UIImage(asset) {
-					Top = new StyleDimension(0, -0.4f),
+					Top = new StyleDimension(-0.5f, -0.4f),
 					HAlign = 0.5f,
 					VAlign = 0.5f
 				};
