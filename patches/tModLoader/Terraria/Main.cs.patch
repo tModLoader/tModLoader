@@ -6480,26 +6480,13 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
-@@ -47324,8 +_,10 @@
+@@ -47324,6 +_,7 @@
  		Stopwatch stopwatch = new Stopwatch();
  		stopwatch.Start();
  		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
--		if (bg)
--			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
 +
-+		// TML(liquid-slopes): Added alpha and bg parameters, always call the
-+		// function instead of only when bg is true.
-+		TilesRenderer.DrawLiquidBehindTiles(waterStyle, Alpha, bg);
- 
- 		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
- 		if (drawSinglePassLiquids)
-@@ -47728,6 +_,7 @@
- 
- 	protected void DrawBlack(bool force = false)
- 	{
-+		return;
- 		if (shimmerAlpha == 1f)
- 			return;
+ 		if (bg)
+ 			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
 @@ -47906,6 +_,10 @@
  				if (backgroundTarget != null)
@@ -6834,15 +6821,6 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, UIScaleMatrix);
  		if (gameMenu || netMode == 2) {
  			spriteBatch.End();
-@@ -51230,7 +_,7 @@
- 			DrawWaters(isBackground: true);
- 		}
- 		else {
--			spriteBatch.Draw(backWaterTarget, sceneBackgroundPos - screenPosition, Microsoft.Xna.Framework.Color.White);
-+			//spriteBatch.Draw(backWaterTarget, sceneBackgroundPos - screenPosition, Microsoft.Xna.Framework.Color.White);
- 			TimeLogger.DetailedDrawTime(11);
- 		}
- 
 @@ -51282,6 +_,9 @@
  
  		TimeLogger.DetailedDrawReset();
