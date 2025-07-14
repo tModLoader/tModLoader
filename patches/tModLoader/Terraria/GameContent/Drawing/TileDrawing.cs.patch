@@ -528,7 +528,7 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3148,7 +_,38 @@
+@@ -3148,7 +_,36 @@
  		}
  	}
  
@@ -536,7 +536,7 @@
 +	// vanilla logic into new _Inner method.  Makes the actual method handle
 +	// water style fading.  Also added a parameter for whether to fade water
 +	// in transitions and made parameters no longer ref.
-+	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, Vector2 position, Rectangle liquidSize, int liquidType, VertexColors colors, bool fadeWater)
++	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, Vector2 position, Rectangle liquidSize, int liquidType, VertexColors colors, bool fadeWater, int x, int y)
 +	{
 +		bool foundWaterToFade = false;
 +		if (fadeWater) {
@@ -555,10 +555,8 @@
 +		colors.BottomRightColor *= num8;
 +		colors.TopLeftColor *= num8;
 +		colors.TopRightColor *= num8;
-+		/*
-+		if (num2 == 14)
-+			LiquidRenderer.SetShimmerVertexColors(ref colors, solidLayer ? 0.75f : 1f, tileX, tileY);
-+		*/
++		if (liquidType == 14)
++			LiquidRenderer.SetShimmerVertexColors(ref colors, behindBlocks ? 0.75f : 1f, x, y);
 +
 +		DrawPartialLiquid_Inner(behindBlocks, tileCache, position, liquidSize, liquidType, colors);
 +	}

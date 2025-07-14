@@ -130,13 +130,17 @@
 +						// rendering.
  						num = Math.Min(1f, num);
  						Lighting.GetCornerColors(i, j, out var vertices);
- 						vertices.BottomLeftColor *= num;
- 						vertices.BottomRightColor *= num;
- 						vertices.TopLeftColor *= num;
- 						vertices.TopRightColor *= num;
 +
 +						// Explicitly handle IsVisible vs IsEdge rendering here.
 +						if (!isEdge) {
+-						vertices.BottomLeftColor *= num;
++							vertices.BottomLeftColor *= num;
+-						vertices.BottomRightColor *= num;
++							vertices.BottomRightColor *= num;
+-						vertices.TopLeftColor *= num;
++							vertices.TopLeftColor *= num;
+-						vertices.TopRightColor *= num;
++							vertices.TopRightColor *= num;
 -						Main.DrawTileInWater(drawOffset, i, j);
 +							Main.DrawTileInWater(drawOffset, i, j);
 -						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
@@ -144,7 +148,7 @@
 +						}
 +						else {
 +							var tile = Main.tile[i, j];
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(i << 4, j << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidType, vertices, edgeCache.IsWaterForFading);
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(i << 4, j << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidType, vertices, edgeCache.IsWaterForFading, i, j);
 +						}
  					}
  
@@ -187,9 +191,10 @@
 -				int num3 = ptr2->X + drawArea.X - 2;
 -				int num4 = ptr2->Y + drawArea.Y - 2;
  				Lighting.GetCornerColors(num3, num4, out var vertices);
- 				SetShimmerVertexColors(ref vertices, val, num3, num4);
 +
 +				if (!isEdge) {
+-				SetShimmerVertexColors(ref vertices, val, num3, num4);
++					SetShimmerVertexColors(ref vertices, val, num3, num4);
 -				Main.DrawTileInWater(drawOffset, num3, num4);
 +					Main.DrawTileInWater(drawOffset, num3, num4);
 -				Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(num3 << 4, num4 << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
@@ -197,7 +202,7 @@
 +				}
 +				else {
 +					var tile = Main.tile[num3, num4];
-+					Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(num3 << 4, num4 << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidType, vertices, fadeWater: false);
++					Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(num3 << 4, num4 << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidType, vertices, fadeWater: false, num3, num4);
 +				}
 +
  				sourceRectangle = ptr2->SourceRectangle;
