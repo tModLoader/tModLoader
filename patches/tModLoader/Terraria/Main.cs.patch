@@ -6269,6 +6269,52 @@
  								}
  								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
  									Lighting.GetColor9Slice(num24, num25, ref slices);
+@@ -45292,7 +_,9 @@
+ 		if (drawToScreen)
+ 			return;
+ 
+-		base.GraphicsDevice.SetRenderTarget(backWaterTarget);
++		// TML(liquid-slopes): Copy DrawWaters to a different intermediary
++		// target.  backWaterTarget is still the end result after our changes.
++		base.GraphicsDevice.SetRenderTarget(/*backWaterTarget*/ BackWaterTargetNoCut);
+ 		base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
+ 		spriteBatch.Begin();
+ 		tileBatch.Begin();
+@@ -45305,6 +_,34 @@
+ 		tileBatch.End();
+ 		spriteBatch.End();
+ 		base.GraphicsDevice.SetRenderTarget(null);
++
++		// Do our additional rendering and then write to backWaterTarget.
++
++		var offScreen = new Vector2(drawToScreen ? 0 : offScreenRange);
++
++		GraphicsDevice.SetRenderTarget(LiquidMaskTarget);
++		GraphicsDevice.Clear(Color.Transparent);
++		spriteBatch.Begin();
++
++		spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(offScreenRange), Color.White);
++
++		spriteBatch.End();
++
++		GraphicsDevice.SetRenderTarget(backWaterTarget);
++		GraphicsDevice.Clear(Color.Transparent);
++		spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
++
++		// TODO: cache
++		var maskShader = ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Shaders.ImageMask", AssetRequestMode.ImmediateLoad).Value;
++		maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidMaskTarget);
++		maskShader.CurrentTechnique.Passes[0].Apply();
++
++		spriteBatch.Draw(WaterTargetNoCut, Vector2.Zero, Color.White);
++
++		spriteBatch.End();
++		GraphicsDevice.SetRenderTarget(null);
++		GraphicsDevice.Clear(Color.Transparent);
++
+ 		base.GraphicsDevice.SetRenderTarget(backgroundTarget);
+ 		base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
+ 		spriteBatch.Begin();
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
@@ -6489,12 +6535,13 @@
  					Tile tile = Main.tile[j, i];
  					float num8 = Lighting.Brightness(j, i);
  					num8 = (float)Math.Floor(num8 * 255f) / 255f;
-@@ -47906,6 +_,10 @@
+@@ -47906,6 +_,11 @@
  				if (backgroundTarget != null)
  					backgroundTarget.Dispose();
  
 +				// TML(liquid-slopes): Release new targets for slopes.
 +				WaterTargetNoCut?.Dispose();
++				BackWaterTargetNoCut?.Dispose();
 +				LiquidMaskTarget?.Dispose();
 +
  				if (Main.OnRenderTargetsReleased != null)
@@ -6505,19 +6552,20 @@
  	protected void EnsureRenderTargetContent()
  	{
 +		// TML(liquid-slopes): Include new render targets in the check.
-+		bool tmlTargetsNeedInitializing = WaterTargetNoCut?.IsContentLost ?? true || (LiquidMaskTarget?.IsContentLost ?? true);
++		bool tmlTargetsNeedInitializing = (WaterTargetNoCut?.IsContentLost ?? true) || (BackWaterTargetNoCut?.IsContentLost ?? true) || (LiquidMaskTarget?.IsContentLost ?? true);
 -		if (waterTarget == null || waterTarget.IsContentLost || backWaterTarget == null || backWaterTarget.IsContentLost || blackTarget == null || blackTarget.IsContentLost || tileTarget == null || tileTarget.IsContentLost || tile2Target == null || tile2Target.IsContentLost || wallTarget == null || wallTarget.IsContentLost || backgroundTarget == null || backgroundTarget.IsContentLost || screenTarget == null || screenTarget.IsContentLost || screenTargetSwap == null || screenTargetSwap.IsContentLost)
 +		if (tmlTargetsNeedInitializing || waterTarget == null || waterTarget.IsContentLost || backWaterTarget == null || backWaterTarget.IsContentLost || blackTarget == null || blackTarget.IsContentLost || tileTarget == null || tileTarget.IsContentLost || tile2Target == null || tile2Target.IsContentLost || wallTarget == null || wallTarget.IsContentLost || backgroundTarget == null || backgroundTarget.IsContentLost || screenTarget == null || screenTarget.IsContentLost || screenTargetSwap == null || screenTargetSwap.IsContentLost)
  			InitTargets();
  	}
  
-@@ -48019,6 +_,11 @@
+@@ -48019,6 +_,12 @@
  				backgroundTarget = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
  				screenTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
  				screenTargetSwap = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
 +
 +				// TML(liquid-slopes): Initialize new targets for slopes.
 +				WaterTargetNoCut = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
++				BackWaterTargetNoCut = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
 +				LiquidMaskTarget = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
 +
  				if (Main.OnRenderTargetsInitialized != null)
