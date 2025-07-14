@@ -7,6 +7,13 @@ namespace Terraria.GameContent.Drawing;
 
 public partial class TileDrawing
 {
+	public struct LiquidEdgeCache
+	{
+		public int LiquidType;
+		public Vector2 LiquidPosition;
+		public Rectangle LiquidFrame;
+	}
+
 	/// <summary>
 	/// The wind grid used to exert wind effects on tiles.
 	/// </summary>
@@ -14,7 +21,7 @@ public partial class TileDrawing
 
 	// TML(liquid-slopes): Tiles which mask rendered liquid (tiles on the edge
 	// of bodies of liquid).
-	public HashSet<Point> EdgeTiles { get; } = [];
+	public Dictionary<Point, LiquidEdgeCache> EdgeTiles { get; } = [];
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff.

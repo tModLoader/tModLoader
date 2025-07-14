@@ -33,17 +33,7 @@
  	{
  		public int X;
  		public int Y;
-@@ -61,16 +_,23 @@
- 		public bool HasWall;
- 	}
- 
-+	// TML(liquid-slopes): Introduce new cache for tiles bordering liquids.
-+	public struct LiquidEdgeCache
-+	{
-+		public bool IsHalfBrick;
-+		public SlopeType SlopeType;
-+	}
-+
+@@ -64,13 +_,13 @@
  	private const int ANIMATION_FRAME_COUNT = 16;
  	private const int CACHE_PADDING = 2;
  	private const int CACHE_PADDING_2 = 4;
@@ -95,3 +85,62 @@
  					if (tile == null)
  						tile = new Tile();
  
+@@ -524,7 +_,17 @@
+ 			LiquidDrawCache* ptr2 = ptr;
+ 			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
+ 				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
+-					if (ptr2->IsVisible) {
++					// TML(liquid-slopes): Also attempt to draw if the
++					// coordinate is on the edge of a tile.
++					bool isEdge = Main.instance.TilesRenderer.EdgeTiles.TryGetValue(new Point(i, j), out var edgeCache);
++
++					if (ptr2->IsVisible || isEdge) {
++						// IsEdge is unique because it means there isn't
++						// actually a liquid present in the tile, so a lot of
++						// data isn't present.
++						// The below data is mostly irrelevant for edge tiles,
++						// so it's fine for this data to be missing.
++
+ 						Rectangle sourceRectangle = ptr2->SourceRectangle;
+ 						if (ptr2->IsSurfaceLiquid)
+ 							sourceRectangle.Y = 1280;
+@@ -532,6 +_,9 @@
+ 							sourceRectangle.Y += _animationFrame * 80;
+ 
+ 						Vector2 liquidOffset = ptr2->LiquidOffset;
++
++						// Opacity is important for edge tiles since we want to
++						// support clean transitions between biomes.
+ 						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
+ 						int num2 = ptr2->Type;
+ 						switch (num2) {
+@@ -544,14 +_,29 @@
+ 								break;
+ 						}
+ 
++						// Colors are important for edge tiles, especially in
++						// case mods make edits to them for custom liquid
++						// rendering.
+ 						num = Math.Min(1f, num);
+ 						Lighting.GetCornerColors(i, j, out var vertices);
+ 						vertices.BottomLeftColor *= num;
+ 						vertices.BottomRightColor *= num;
+ 						vertices.TopLeftColor *= num;
+ 						vertices.TopRightColor *= num;
++
++						// Explicitly handle IsVisible vs IsEdge rendering here.
++						/*
+ 						Main.DrawTileInWater(drawOffset, i, j);
+ 						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
++						*/
++						if (!isEdge) {
++							Main.DrawTileInWater(drawOffset, i, j);
++							Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
++						}
++						else {
++							var tile = Main.tile[i, j];
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, ref edgeCache.LiquidPosition, ref edgeCache.LiquidFrame, edgeCache.LiquidType, ref vertices);
++						}
+ 					}
+ 
+ 					ptr2++;

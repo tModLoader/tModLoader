@@ -440,12 +440,18 @@
  		return num;
  	}
  
-@@ -2871,13 +_,17 @@
+@@ -2871,13 +_,23 @@
  		if (num3 == 3 && tile.liquid == 0 && !WorldGen.SolidTile(tileX + 1, tileY))
  			num7 = 0f;
  
 +		// TML(liquid-slopes): Keep track of known edge tiles.
-+		EdgeTiles.Add(new Point(tileX, tileY));
++		var edgeCache = new LiquidEdgeCache {
++			LiquidType = num2,
++			LiquidPosition = position,
++			LiquidFrame = liquidSize,
++		};
++		EdgeTiles.Add(new Point(tileX, tileY), edgeCache);
++		return;
 +
  		vertices.BottomLeftColor *= num7;
  		vertices.BottomRightColor *= num7;
@@ -493,6 +499,15 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
+@@ -3148,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
++	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
+ 	{
+ 		int num = tileCache.slope();
+ 		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
 @@ -3177,9 +_,9 @@
  		}
  	}

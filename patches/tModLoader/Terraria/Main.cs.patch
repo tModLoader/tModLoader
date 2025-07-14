@@ -6488,6 +6488,14 @@
  		if (bg)
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
+@@ -47728,6 +_,7 @@
+ 
+ 	protected void DrawBlack(bool force = false)
+ 	{
++		return;
+ 		if (shimmerAlpha == 1f)
+ 			return;
+ 
 @@ -47906,6 +_,10 @@
  				if (backgroundTarget != null)
  					backgroundTarget.Dispose();
