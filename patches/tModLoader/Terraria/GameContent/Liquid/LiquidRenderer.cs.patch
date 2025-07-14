@@ -104,17 +104,24 @@
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
-@@ -532,6 +_,9 @@
+@@ -532,8 +_,14 @@
  							sourceRectangle.Y += _animationFrame * 80;
  
  						Vector2 liquidOffset = ptr2->LiquidOffset;
+-						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
+-						int num2 = ptr2->Type;
++
++						var type = isEdge ? Main.tile[i, j].LiquidType : ptr2->Type;
++						var opacity = isEdge ? 1f : ptr2->Opacity;
 +
 +						// Opacity is important for edge tiles since we want to
 +						// support clean transitions between biomes.
- 						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
- 						int num2 = ptr2->Type;
++						float num = opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[type]);
++						int num2 = type;
  						switch (num2) {
-@@ -544,14 +_,29 @@
+ 							case 0:
+ 								num2 = waterStyle;
+@@ -544,14 +_,36 @@
  								break;
  						}
  
@@ -139,7 +146,14 @@
 +						}
 +						else {
 +							var tile = Main.tile[i, j];
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, ref edgeCache.LiquidPosition, ref edgeCache.LiquidFrame, edgeCache.LiquidType, ref vertices);
++							// Main.tileBatch.Draw(TextureAssets.Liquid[0].Value, new Vector2(i << 4, j << 4) + drawOffset, new Rectangle(0, 0, 16, 16), new VertexColors(Color.Red), default(Vector2), 1f, SpriteEffects.None);
++							var pos = new Vector2(i << 4, j << 4) + drawOffset + edgeCache.LiquidOffset;
++							//vertices = new VertexColors(Color.White);
++							//edgeCache.LiquidColors.BottomLeftColor *= num;
++							//edgeCache.LiquidColors.BottomRightColor *= num;
++							//edgeCache.LiquidColors.TopLeftColor *= num;
++							//edgeCache.LiquidColors.TopRightColor *= num;
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, ref pos, ref edgeCache.LiquidFrame, edgeCache.LiquidType, ref vertices);
 +						}
  					}
  

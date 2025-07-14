@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Terraria.Graphics;
 using Terraria.ModLoader;
 
 namespace Terraria.GameContent.Drawing;
@@ -10,8 +11,9 @@ public partial class TileDrawing
 	public struct LiquidEdgeCache
 	{
 		public int LiquidType;
-		public Vector2 LiquidPosition;
+		public Vector2 LiquidOffset;
 		public Rectangle LiquidFrame;
+		public VertexColors LiquidColors;
 	}
 
 	/// <summary>

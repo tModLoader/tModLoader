@@ -440,23 +440,42 @@
  		return num;
  	}
  
-@@ -2871,13 +_,23 @@
- 		if (num3 == 3 && tile.liquid == 0 && !WorldGen.SolidTile(tileX + 1, tileY))
- 			num7 = 0f;
+@@ -2807,6 +_,7 @@
+ 		if (tileCache.active() && (Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type]))
+ 			return;
  
++		Vector2 liquidOffset = Vector2.Zero;
+ 		if ((!flag3 || !(flag || flag2)) && !(flag4 && flag3)) {
+ 			if (flag3) {
+ 				liquidSize = new Rectangle(0, 4, 16, 4);
+@@ -2837,9 +_,11 @@
+ 					liquidSize = new Rectangle(0, y, 4, 16 - num6);
+ 				}
+ 				else {
+-					vector = new Vector2(tileX * 16 + 12, tileY * 16 + num6);
++					vector = new Vector2(tileX * 16 + (liquidOffset.X = 12), tileY * 16 + num6);
+ 					liquidSize = new Rectangle(0, y, 4, 16 - num6);
+ 				}
++
++				liquidOffset.Y = num6;
+ 			}
+ 		}
+ 
+@@ -2875,9 +_,21 @@
+ 		vertices.BottomRightColor *= num7;
+ 		vertices.TopLeftColor *= num7;
+ 		vertices.TopRightColor *= num7;
++
 +		// TML(liquid-slopes): Keep track of known edge tiles.
 +		var edgeCache = new LiquidEdgeCache {
 +			LiquidType = num2,
-+			LiquidPosition = position,
++			LiquidOffset = liquidOffset,
 +			LiquidFrame = liquidSize,
++			LiquidColors = vertices
 +		};
 +		EdgeTiles.Add(new Point(tileX, tileY), edgeCache);
 +		return;
 +
- 		vertices.BottomLeftColor *= num7;
- 		vertices.BottomRightColor *= num7;
- 		vertices.TopLeftColor *= num7;
- 		vertices.TopRightColor *= num7;
  		bool flag7 = false;
  		if (flag6) {
 +			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
