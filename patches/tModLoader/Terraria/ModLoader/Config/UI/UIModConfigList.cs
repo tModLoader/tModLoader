@@ -179,9 +179,10 @@ internal class UIModConfigList : UIState
 					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
+				float width = FontAssets.MouseText.Value.MeasureString(modPanel.Text).X;
 				UIElement icon = GetSmallIcon(mod);
-				if (icon != null) {
-					icon.Left = new StyleDimension(-FontAssets.MouseText.Value.MeasureString(modPanel.Text).X / 2 - 18, 0);
+				if (icon != null && width < uIElement.MaxWidth.Pixels * 0.35f) {
+					icon.Left = new StyleDimension(-width/2- 18, 0);
 					modPanel.PaddingLeft = 40;
 					modPanel.TextOriginX = 0.85f;
 					modPanel.Append(icon);
@@ -208,9 +209,10 @@ internal class UIModConfigList : UIState
 					TooltipText = true,
 					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
 				};
+				float width = FontAssets.MouseText.Value.MeasureString(modPanel.Text).X;
 				UIElement icon = GetSmallIcon(mod);
-				if (icon != null) {
-					icon.Left = new StyleDimension(-FontAssets.MouseText.Value.MeasureString(modPanel.Text).X/2 - 18, 0);
+				if (icon != null && width < uIElement.MaxWidth.Pixels*0.35f) {
+					icon.Left = new StyleDimension(-width/2 - 18, 0);
 					modPanel.PaddingLeft = 40;
 					modPanel.TextOriginX = 0.85f;
 					modPanel.Append(icon);
