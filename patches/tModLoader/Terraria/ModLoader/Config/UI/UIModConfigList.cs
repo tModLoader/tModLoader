@@ -183,7 +183,7 @@ internal class UIModConfigList : UIState
 				if (icon != null) {
 					icon.Left = new StyleDimension(-FontAssets.MouseText.Value.MeasureString(modPanel.Text).X / 2 - 18, 0);
 					modPanel.PaddingLeft = 40;
-					modPanel.TextOriginX = 0.79f;
+					modPanel.TextOriginX = 0.85f;
 					modPanel.Append(icon);
 				}
 
@@ -212,7 +212,7 @@ internal class UIModConfigList : UIState
 				if (icon != null) {
 					icon.Left = new StyleDimension(-FontAssets.MouseText.Value.MeasureString(modPanel.Text).X/2 - 18, 0);
 					modPanel.PaddingLeft = 40;
-					modPanel.TextOriginX = 0.79f;
+					modPanel.TextOriginX = 0.85f;
 					modPanel.Append(icon);
 				}
 
