@@ -461,7 +461,7 @@
  			}
  		}
  
-@@ -2875,9 +_,21 @@
+@@ -2875,9 +_,23 @@
  		vertices.BottomRightColor *= num7;
  		vertices.TopLeftColor *= num7;
  		vertices.TopRightColor *= num7;
@@ -471,11 +471,13 @@
 +			LiquidType = num2,
 +			LiquidOffset = liquidOffset,
 +			LiquidFrame = liquidSize,
-+			LiquidColors = vertices
++			LiquidColors = vertices,
++			IsWaterForFading = flag6
 +		};
 +		EdgeTiles.Add(new Point(tileX, tileY), edgeCache);
 +		return;
 +
++		/*
  		bool flag7 = false;
  		if (flag6) {
 +			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
@@ -484,6 +486,14 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
+@@ -2896,6 +_,7 @@
+ 			LiquidRenderer.SetShimmerVertexColors(ref colors, solidLayer ? 0.75f : 1f, tileX, tileY);
+ 
+ 		DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, num2, ref colors);
++		*/
+ 	}
+ 
+ 	private void CacheSpecialDraws_Part1(int tileX, int tileY, int tileType, int drawDataTileFrameX, int drawDataTileFrameY, bool skipDraw)
 @@ -3112,7 +_,8 @@
  		}
  	}
@@ -518,12 +528,43 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3148,7 +_,7 @@
+@@ -3148,7 +_,38 @@
  		}
  	}
  
++	// TML(liquid-slopes): Make DrawPartialLiquid private->internal, split up
++	// vanilla logic into new _Inner method.  Makes the actual method handle
++	// water style fading.  Also added a parameter for whether to fade water
++	// in transitions and made parameters no longer ref.
++	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, Vector2 position, Rectangle liquidSize, int liquidType, VertexColors colors, bool fadeWater)
++	{
++		bool foundWaterToFade = false;
++		if (fadeWater) {
++			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
++			for (int i = 0; i < totalCount; i++) {
++				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != liquidType) {
++					DrawPartialLiquid_Inner(behindBlocks, tileCache, position, liquidSize, i, colors);
++					foundWaterToFade = true;
++					break;
++				}
++			}
++		}
++
++		float num8 = (foundWaterToFade ? Main.liquidAlpha[liquidType] : 1f);
++		colors.BottomLeftColor *= num8;
++		colors.BottomRightColor *= num8;
++		colors.TopLeftColor *= num8;
++		colors.TopRightColor *= num8;
++		/*
++		if (num2 == 14)
++			LiquidRenderer.SetShimmerVertexColors(ref colors, solidLayer ? 0.75f : 1f, tileX, tileY);
++		*/
++
++		DrawPartialLiquid_Inner(behindBlocks, tileCache, position, liquidSize, liquidType, colors);
++	}
++
 -	private void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
-+	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
++	private void DrawPartialLiquid_Inner(bool behindBlocks, Tile tileCache, Vector2 position, Rectangle liquidSize, int liquidType, VertexColors colors)
  	{
  		int num = tileCache.slope();
  		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];

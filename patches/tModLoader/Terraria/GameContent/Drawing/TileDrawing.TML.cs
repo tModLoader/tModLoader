@@ -14,6 +14,7 @@ public partial class TileDrawing
 		public Vector2 LiquidOffset;
 		public Rectangle LiquidFrame;
 		public VertexColors LiquidColors;
+		public bool IsWaterForFading;
 	}
 
 	/// <summary>
