@@ -62,6 +62,8 @@ public abstract class ModMenu : ModType
 
 	public bool IsSelected => MenuLoader.CurrentMenu == this;
 
+	public virtual float GetCloudAlpha() => 1f;
+
 	/// <summary>
 	/// Called when this ModMenu is selected. Set the state of the UserInterface to a given UIState to make that UIState appear on the main menu.
 	/// </summary>
@@ -92,6 +94,36 @@ public abstract class ModMenu : ModType
 	/// Called just after the logo is drawn, and gives the values of some of the parameters of the logo draw code.
 	/// </summary>
 	public virtual void PostDrawLogo(SpriteBatch spriteBatch, Vector2 logoDrawCenter, float logoRotation, float logoScale, Color drawColor)
+	{
+	}
+
+	/// <summary>
+	/// Called just before the sky is drawn. Return false to prevent the usual sky from drawing.
+	/// </summary>
+	public virtual bool PreDrawSky(SpriteBatch spriteBatch, ref bool drawStars, ref bool drawSunAndMoon)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Called just after the sky is drawn, regardless of what <see cref="PreDrawSky(SpriteBatch, ref bool, ref bool)"/> returns.
+	/// </summary>
+	public virtual void PostDrawSky(SpriteBatch spriteBatch)
+	{
+	}
+
+	/// <summary>
+	/// Called just before the background is drawn. Return false to prevent the usual background from drawing.
+	/// </summary>
+	public virtual bool PreDrawBackground(SpriteBatch spriteBatch)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Called just after the background is drawn, regardless of what <see cref="PreDrawBackground(SpriteBatch)"/> returns.
+	/// </summary>
+	public virtual void PostDrawBackground(SpriteBatch spriteBatch)
 	{
 	}
 }

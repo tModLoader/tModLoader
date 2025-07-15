@@ -6468,6 +6468,15 @@
  	public void LoadTiles(int i)
  	{
  		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
+@@ -48940,7 +_,7 @@
+ 		num4 = (0f - num3 + screenOff / 2f) / (num2 * 16f);
+ 		float num5 = 2f;
+ 		int num6 = 0;
+-		float num7 = SkyManager.Instance.ProcessCloudAlpha() * atmo;
++		float num7 = SkyManager.Instance.ProcessCloudAlpha() * atmo * (gameMenu ? MenuLoader.CurrentMenu.GetCloudAlpha() : 1f);
+ 		if (flag && (double)screenPosition.Y < worldSurface * 16.0 + 16.0) {
+ 			for (int i = 0; i < 200; i++) {
+ 				if (cloud[i].active && cloud[i].scale < 1f) {
 @@ -48951,7 +_,10 @@
  					color.G = (byte)((float)(int)color.G * num9);
  					float num10 = cloud[i].position.Y * ((float)screenHeight / 600f);
@@ -6701,6 +6710,57 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
+@@ -51113,7 +_,11 @@
+ 		sceneArea.totalWidth = screenWidth;
+ 		sceneArea.SceneLocalScreenPositionOffset = Vector2.Zero;
+ 		SceneArea sceneArea2 = sceneArea;
++		bool drawStars = true;
++		bool drawSunAndMoon = true;
++		bool drawSky = gameMenu ? MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, ref drawStars, ref drawSunAndMoon) : true;
+ 		if (!mapFullscreen) {
++			if (drawSky) {
+ 			unityMouseOver = false;
+ 			if ((double)screenPosition.Y < worldSurface * 16.0 + 16.0) {
+ 				Asset<Texture2D> asset = TextureAssets.Background[background];
+@@ -51138,19 +_,22 @@
+ 
+ 				TimeLogger.DetailedDrawTime(6);
+ 			}
+-
++			}
+ 			spriteBatch.End();
+ 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, BackgroundViewMatrix.EffectMatrix);
+-			if (shimmerAlpha != 1f)
++			if (shimmerAlpha != 1f && drawStars)
+ 				DrawStarsInBackground(sceneArea2, artificial: false);
+ 
+-			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0)
++			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0 && drawSunAndMoon)
+ 				DrawSunAndMoon(sceneArea2, moonColor, sunColor, num6);
+ 
+ 			TimeLogger.DetailedDrawTime(7);
+ 		}
+ 
++		if (drawSky)
+-		Overlays.Scene.Draw(spriteBatch, RenderLayers.Sky);
++			Overlays.Scene.Draw(spriteBatch, RenderLayers.Sky);
++		if (gameMenu)
++			MenuLoader.CurrentMenu.PostDrawSky(spriteBatch);
+ 		spriteBatch.End();
+ 		Vector2 vector = screenPosition;
+ 		int num8 = screenWidth;
+@@ -51162,7 +_,10 @@
+ 		transformationMatrix.Translation -= BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, transformationMatrix);
+ 		CurrentFrameFlags.Hacks.CurrentBackgroundMatrixForCreditsRoll = transformationMatrix;
++		if (gameMenu ? MenuLoader.CurrentMenu.PreDrawBackground(spriteBatch) : true)
+-		DrawBG();
++			DrawBG();
++		if (gameMenu)
++			MenuLoader.CurrentMenu.PostDrawBackground(spriteBatch);
+ 		screenWidth = num8;
+ 		screenHeight = num9;
+ 		screenPosition = vector;
 @@ -51170,7 +_,7 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  		DrawBackgroundBlackFill();
