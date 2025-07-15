@@ -6722,12 +6722,12 @@
  			unityMouseOver = false;
  			if ((double)screenPosition.Y < worldSurface * 16.0 + 16.0) {
  				Asset<Texture2D> asset = TextureAssets.Background[background];
-@@ -51138,19 +_,22 @@
+@@ -51138,19 +_,23 @@
  
  				TimeLogger.DetailedDrawTime(6);
  			}
--
 +			}
+ 
  			spriteBatch.End();
  			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, BackgroundViewMatrix.EffectMatrix);
 -			if (shimmerAlpha != 1f)
