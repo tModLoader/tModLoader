@@ -6524,17 +6524,18 @@
  		if (bg)
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
-@@ -47791,6 +_,10 @@
- 					if (Main.tile[j, i] == null)
- 						Main.tile[j, i] = new Tile();
- 
-+					// TML(liquid-slopes): Avoid drawing over liquid edges.
-+					if (TilesRenderer.EdgeTiles.ContainsKey(new Point(j, i)))
-+						break;
-+
+@@ -47794,6 +_,11 @@
  					Tile tile = Main.tile[j, i];
  					float num8 = Lighting.Brightness(j, i);
  					num8 = (float)Math.Floor(num8 * 255f) / 255f;
++
++					// TML(liquid-slopes): Avoid drawing over liquid edges.
++					if (TilesRenderer.EdgeTiles.ContainsKey(new Point(j, i)) && (tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (1f / 255f))
++						break;
++
+ 					byte b = tile.liquid;
+ 					bool num9 = num8 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
+ 					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
 @@ -47906,6 +_,11 @@
  				if (backgroundTarget != null)
  					backgroundTarget.Dispose();
