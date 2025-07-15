@@ -98,7 +98,8 @@ public abstract class ModMenu : ModType
 	}
 
 	/// <summary>
-	/// Called just before the sky is drawn. Return false to prevent the usual sky from drawing.
+	/// Called just before the sky is drawn, and allows you to modify some of the parameters of the sky draw code.
+	/// <br>Return false to prevent the usual sky from drawing.</br>
 	/// </summary>
 	public virtual bool PreDrawSky(SpriteBatch spriteBatch, ref bool drawStars, ref bool drawSunAndMoon)
 	{
@@ -113,7 +114,8 @@ public abstract class ModMenu : ModType
 	}
 
 	/// <summary>
-	/// Called just before the background is drawn. Return false to prevent the usual background from drawing.
+	/// Called just before the background is drawn. 
+	/// <br>Return false to prevent the usual background from drawing.</br>
 	/// </summary>
 	public virtual bool PreDrawBackground(SpriteBatch spriteBatch)
 	{
