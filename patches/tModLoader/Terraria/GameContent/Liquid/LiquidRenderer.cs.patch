@@ -68,7 +68,7 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -131,14 +_,14 @@
+@@ -131,19 +_,20 @@
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
@@ -85,6 +85,22 @@
  					if (tile == null)
  						tile = new Tile();
  
++					// TML(liquid-slopes): Never render halfbricks.
+ 					ptr2->LiquidLevel = (float)(int)tile.liquid / 255f;
+-					ptr2->IsHalfBrick = tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type];
++					ptr2->IsHalfBrick = false /*tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type]*/;
+ 					ptr2->IsSolid = WorldGen.SolidOrSlopedTile(tile);
+ 					ptr2->HasLiquid = tile.liquid != 0;
+ 					ptr2->VisibleLiquidLevel = 0f;
+@@ -516,7 +_,7 @@
+ 			this.WaveFilters(_waveMask, GetCachedDrawArea());
+ 	}
+ 
+-	public unsafe void DrawNormalLiquids(SpriteBatch spriteBatch, Vector2 drawOffset, int waterStyle, float globalAlpha, bool isBackgroundDraw)
++	public unsafe void DrawNormalLiquids(SpriteBatch spriteBatch, Vector2 drawOffset, int waterStyle, float globalAlpha, bool isBackgroundDraw, bool drawSinglePassLiquids)
+ 	{
+ 		Rectangle drawArea = _drawArea;
+ 		Main.tileBatch.Begin();
 @@ -524,7 +_,17 @@
  			LiquidDrawCache* ptr2 = ptr;
  			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
@@ -92,7 +108,7 @@
 -					if (ptr2->IsVisible) {
 +					// TML(liquid-slopes): Also attempt to draw if the
 +					// coordinate is on the edge of a tile.
-+					bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(i, j), out var edgeCache);
++					bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(i, j), out var edgeCache) && drawSinglePassLiquids;
 +
 +					if (ptr2->IsVisible || isEdge) {
 +						// IsEdge is unique because it means there isn't
@@ -148,7 +164,7 @@
 +						}
 +						else {
 +							var tile = Main.tile[i, j];
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, new Vector2(i << 4, j << 4) + drawOffset + edgeCache.LiquidOffset, edgeCache.LiquidFrame, edgeCache.LiquidStyle, vertices, edgeCache.IsWaterForFading, i, j, alpha: num);
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, vertices, alpha: num, edgeCache);
 +						}
  					}
  

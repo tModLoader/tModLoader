@@ -6516,13 +6516,18 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
-@@ -47324,6 +_,7 @@
+@@ -47324,10 +_,11 @@
  		Stopwatch stopwatch = new Stopwatch();
  		stopwatch.Start();
  		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
 +
  		if (bg)
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
+ 
+-		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
++		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, drawSinglePassLiquids);
+ 		if (drawSinglePassLiquids)
+ 			LiquidRenderer.Instance.DrawShimmer(spriteBatch, drawOffset, bg);
  
 @@ -47794,6 +_,13 @@
  					Tile tile = Main.tile[j, i];

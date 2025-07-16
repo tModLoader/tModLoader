@@ -1,20 +1,53 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using Terraria.Graphics;
 using Terraria.ModLoader;
 
 namespace Terraria.GameContent.Drawing;
 
 public partial class TileDrawing
 {
+	// TML(liquid-slopes)
+	/// <summary>
+	/// Cached data for rendering liquids on solid tiles at the edge of liquid
+	/// pools.
+	/// </summary>
 	public struct LiquidEdgeCache
 	{
+		/// <summary>
+		/// The X coordinate of the tile.
+		/// </summary>
+		public int TileX;
+
+		/// <summary>
+		/// The Y coordinate of the tile.
+		/// </summary>
+		public int TileY;
+
+		/// <summary>
+		/// The actual liquid type to be rendered.
+		/// </summary>
 		public int LiquidType;
+
+		/// <summary>
+		/// The cosmetic style to be rendered (such as water styles).
+		/// </summary>
 		public int LiquidStyle;
-		public Vector2 LiquidOffset;
+
+		/// <summary>
+		/// The additional offset to apply based which edge is being drawn.
+		/// </summary>
+		public Vector2 LiquidPosition;
+
+		/// <summary>
+		/// The framing of the liquid slope.
+		/// </summary>
 		public Rectangle LiquidFrame;
-		public VertexColors LiquidColors;
+
+		/// <summary>
+		/// Whether this expects the liquid to be rendered with water biome
+		/// fading.
+		/// </summary>
 		public bool IsWaterForFading;
 	}
 
@@ -23,8 +56,11 @@ public partial class TileDrawing
 	/// </summary>
 	public WindGrid Wind => _windGrid;
 
-	// TML(liquid-slopes): Tiles which mask rendered liquid (tiles on the edge
-	// of bodies of liquid).
+	// TML(liquid-slopes)
+	/// <summary>
+	/// Tiles which mask rendered liquid (tiles on the edge of bodies of
+	/// liquid).
+	/// </summary>
 	public Dictionary<Point, LiquidEdgeCache> LiquidEdges { get; } = [];
 
 	/// <summary>
