@@ -153,53 +153,11 @@
  					}
  
  					ptr2++;
-@@ -570,28 +_,44 @@
- 			SpecialLiquidDrawCache* ptr2 = ptr;
- 			int num = _drawCacheForShimmer.Length;
- 			for (int i = 0; i < num; i++) {
--				if (!ptr2->IsVisible)
-+				int num3 = ptr2->X + drawArea.X - 2;
-+				int num4 = ptr2->Y + drawArea.Y - 2;
-+
-+				// TML(liquid-slopes): Also attempt to draw if the
-+				// coordinate is on the edge of a tile.
-+				bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(num3, num4), out var edgeCache);
-+
-+				if (!ptr2->IsVisible && !isEdge)
- 					break;
- 
-+				// IsEdge is unique because it means there isn't actually a
-+				// liquid present in the tile, so a lot of data isn't present.
-+				// The below data is mostly irrelevant for edge tiles, so it's
-+				// fine for this data to be missing.
-+
- 				Rectangle sourceRectangle = ptr2->SourceRectangle;
- 				if (ptr2->IsSurfaceLiquid)
- 					sourceRectangle.Y = 1280;
- 				else
- 					sourceRectangle.Y += _animationFrame * 80;
- 
-+				// Opacity is important for edge tiles since we want to
-+				// support clean transitions between biomes.
-+				var opacity = isEdge ? 1f : ptr2->Opacity;
-+
- 				Vector2 liquidOffset = ptr2->LiquidOffset;
--				float val = ptr2->Opacity * (isBackgroundDraw ? 1f : 0.75f);
-+				float val = opacity * (isBackgroundDraw ? 1f : 0.75f);
- 				int num2 = 14;
- 				val = Math.Min(1f, val);
--				int num3 = ptr2->X + drawArea.X - 2;
--				int num4 = ptr2->Y + drawArea.Y - 2;
- 				Lighting.GetCornerColors(num3, num4, out var vertices);
-+
+@@ -589,6 +_,7 @@
  				SetShimmerVertexColors(ref vertices, val, num3, num4);
  				Main.DrawTileInWater(drawOffset, num3, num4);
  				Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(num3 << 4, num4 << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +
  				sourceRectangle = ptr2->SourceRectangle;
  				bool flag = sourceRectangle.X != 16 || sourceRectangle.Y % 80 != 48;
--				if (flag || (num3 + num4) % 2 == 0) {
-+				if (flag || (num3 + num4) % 2 == 0 && !isEdge) {
- 					sourceRectangle.X += 48;
- 					sourceRectangle.Y += 80 * GetShimmerFrame(flag, num3, num4);
- 					SetShimmerVertexColors_Sparkle(ref vertices, ptr2->Opacity, num3, num4, flag);
+ 				if (flag || (num3 + num4) % 2 == 0) {
