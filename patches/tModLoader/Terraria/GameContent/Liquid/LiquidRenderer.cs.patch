@@ -120,7 +120,7 @@
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
-@@ -532,8 +_,14 @@
+@@ -532,8 +_,15 @@
  							sourceRectangle.Y += _animationFrame * 80;
  
  						Vector2 liquidOffset = ptr2->LiquidOffset;
@@ -133,6 +133,7 @@
 +						var opacity = isEdge ? 1f : ptr2->Opacity;
 +
 +						float num = opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[type]);
++						float alphaWithoutGlobal = num;
 +						int num2 = type;
  						switch (num2) {
  							case 0:
@@ -164,7 +165,7 @@
 +						}
 +						else {
 +							var tile = Main.tile[i, j];
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, vertices, alpha: num, edgeCache);
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, vertices, alpha: alphaWithoutGlobal, edgeCache);
 +						}
  					}
  
