@@ -599,7 +599,7 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3148,7 +_,42 @@
+@@ -3148,7 +_,45 @@
  		}
  	}
  
@@ -610,7 +610,7 @@
 +	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, Vector2 position, VertexColors colors, float alpha, LiquidEdgeCache edgeCache)
 +	{
 +		bool foundWaterToFade = false;
-+		if (edgeCache.IsWaterForFading) {
++		if (!behindBlocks && edgeCache.IsWaterForFading) {
 +			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
 +			for (int i = 0; i < totalCount; i++) {
 +				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != edgeCache.LiquidStyle) {
@@ -628,6 +628,9 @@
 +		}
 +
 +		float num8 = (foundWaterToFade ? Main.liquidAlpha[edgeCache.LiquidStyle] * alpha : alpha);
++		if (behindBlocks)
++			num8 = 1f;
++
 +		colors.BottomLeftColor *= num8;
 +		colors.BottomRightColor *= num8;
 +		colors.TopLeftColor *= num8;
