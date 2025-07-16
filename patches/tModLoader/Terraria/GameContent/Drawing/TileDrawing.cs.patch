@@ -179,7 +179,7 @@
  			vector = Vector2.Zero;
  
 +		// TML(liquid-slopes): Clear edge tiles before they get calculated again below.
-+		EdgeTiles.Clear();
++		LiquidEdges.Clear();
 +
  		GetScreenDrawArea(unscaledPosition, vector + (Main.Camera.UnscaledPosition - Main.Camera.ScaledPosition), out var firstTileX, out var lastTileX, out var firstTileY, out var lastTileY);
  		for (int i = firstTileY; i < lastTileY + 4; i++) {
@@ -544,7 +544,7 @@
 +			LiquidColors = vertices,
 +			IsWaterForFading = flag6
 +		};
-+		EdgeTiles.Add(new Point(tileX, tileY), edgeCache);
++		LiquidEdges.Add(new Point(tileX, tileY), edgeCache);
 +		return;
 +
 +		/*

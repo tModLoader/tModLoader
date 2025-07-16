@@ -25,7 +25,7 @@ public partial class TileDrawing
 
 	// TML(liquid-slopes): Tiles which mask rendered liquid (tiles on the edge
 	// of bodies of liquid).
-	public Dictionary<Point, LiquidEdgeCache> EdgeTiles { get; } = [];
+	public Dictionary<Point, LiquidEdgeCache> LiquidEdges { get; } = [];
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff.

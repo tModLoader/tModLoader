@@ -92,7 +92,7 @@
 -					if (ptr2->IsVisible) {
 +					// TML(liquid-slopes): Also attempt to draw if the
 +					// coordinate is on the edge of a tile.
-+					bool isEdge = Main.instance.TilesRenderer.EdgeTiles.TryGetValue(new Point(i, j), out var edgeCache);
++					bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(i, j), out var edgeCache);
 +
 +					if (ptr2->IsVisible || isEdge) {
 +						// IsEdge is unique because it means there isn't
@@ -163,7 +163,7 @@
 +
 +				// TML(liquid-slopes): Also attempt to draw if the
 +				// coordinate is on the edge of a tile.
-+				bool isEdge = Main.instance.TilesRenderer.EdgeTiles.TryGetValue(new Point(num3, num4), out var edgeCache);
++				bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(num3, num4), out var edgeCache);
 +
 +				if (!ptr2->IsVisible && !isEdge)
  					break;
