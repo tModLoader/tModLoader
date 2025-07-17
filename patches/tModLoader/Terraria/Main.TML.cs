@@ -46,8 +46,7 @@ public partial class Main
 
 	// TML(liquid-slopes): Additional render targets for handling improved
 	// liquid slope rendering.
-	public static RenderTarget2D WaterTargetNoCut;
-	public static RenderTarget2D BackWaterTargetNoCut;
+	public static RenderTarget2D BackLiquidMaskTarget;
 	public static RenderTarget2D LiquidMaskTarget;
 
 	/// <summary>
