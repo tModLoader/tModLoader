@@ -4,9 +4,9 @@ texture uMaskTexture;
 sampler2D maskTexture = sampler_state
 {
     texture = <uMaskTexture>;
-    magfilter = LINEAR;
-    minfilter = LINEAR;
-    mipfilter = LINEAR;
+    magfilter = POINT;
+    minfilter = POINT;
+    mipfilter = POINT;
     AddressU = wrap;
     AddressV = wrap;
 };
