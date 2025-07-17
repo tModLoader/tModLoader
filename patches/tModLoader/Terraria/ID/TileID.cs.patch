@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,12 @@
+@@ -1,15 +_,16 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
@@ -15,6 +15,11 @@
  	{
  		public static class Conversion
  		{
+-			public static bool[] MergesWithDirtInASpecialWay = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492);
++			public static bool[] MergesWithDirtInASpecialWay = Factory.CreateBoolSet(2, 23, 109, 199, 477, SnowFallBlock);
+ 			public static bool[] JungleGrass = Factory.CreateBoolSet(60, 661, 662);
+ 			public static bool[] MushroomGrass = Factory.CreateBoolSet(70);
+ 			public static bool[] Grass = Factory.CreateBoolSet(2, 23, 199, 109, 477, 492);
 @@ -106,19 +_,79 @@
  			};
  		}

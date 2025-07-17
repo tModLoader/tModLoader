@@ -68,7 +68,7 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -131,19 +_,20 @@
+@@ -131,19 +_,21 @@
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
@@ -85,7 +85,8 @@
  					if (tile == null)
  						tile = new Tile();
  
-+					// TML(liquid-slopes): Never render halfbricks.
++					// TML(liquid-slopes): Half-brick rendering is now entirely
++					// handled as a slope/partial liquid, so disable it here.
  					ptr2->LiquidLevel = (float)(int)tile.liquid / 255f;
 -					ptr2->IsHalfBrick = tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type];
 +					ptr2->IsHalfBrick = false /*tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type]*/;
@@ -120,7 +121,7 @@
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
-@@ -532,33 +_,62 @@
+@@ -532,33 +_,67 @@
  							sourceRectangle.Y += _animationFrame * 80;
  
  						Vector2 liquidOffset = ptr2->LiquidOffset;
@@ -161,10 +162,12 @@
  						vertices.TopRightColor *= num;
 +
 +						// Explicitly handle IsVisible vs IsEdge rendering here.
++						/*
+ 						Main.DrawTileInWater(drawOffset, i, j);
+ 						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
++						*/
 +						if (!isEdge) {
--						Main.DrawTileInWater(drawOffset, i, j);
 +							Main.DrawTileInWater(drawOffset, i, j);
--						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +							Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +						}
 +						else {
@@ -173,10 +176,11 @@
 +							if (num2 == 14) {
 +								if (!drawSinglePassLiquids)
 +									break;
-+								LiquidRenderer.SetShimmerVertexColors(ref vertices, num, edgeCache.TileX, edgeCache.TileY);
++
++								SetShimmerVertexColors(ref vertices, num, edgeCache.TileX, edgeCache.TileY);
 +							}
 +
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, vertices, alpha: num, waterStyle: num2, edgeCache);
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, edgeCache.LiquidFrame, num2, vertices);
 +						}
  					}
  

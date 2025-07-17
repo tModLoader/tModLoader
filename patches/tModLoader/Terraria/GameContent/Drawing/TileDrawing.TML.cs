@@ -30,11 +30,6 @@ public partial class TileDrawing
 		public int LiquidType;
 
 		/// <summary>
-		/// The cosmetic style to be rendered (such as water styles).
-		/// </summary>
-		public int LiquidStyle;
-
-		/// <summary>
 		/// The additional offset to apply based which edge is being drawn.
 		/// </summary>
 		public Vector2 LiquidPosition;
@@ -43,12 +38,6 @@ public partial class TileDrawing
 		/// The framing of the liquid slope.
 		/// </summary>
 		public Rectangle LiquidFrame;
-
-		/// <summary>
-		/// Whether this expects the liquid to be rendered with water biome
-		/// fading.
-		/// </summary>
-		public bool IsWaterForFading;
 	}
 
 	/// <summary>

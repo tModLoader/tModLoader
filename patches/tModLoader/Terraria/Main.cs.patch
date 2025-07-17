@@ -6278,11 +6278,10 @@
  		base.GraphicsDevice.SetRenderTarget(backWaterTarget);
  		base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  		spriteBatch.Begin();
-@@ -45304,7 +_,15 @@
- 
+@@ -45305,6 +_,15 @@
  		tileBatch.End();
  		spriteBatch.End();
--		base.GraphicsDevice.SetRenderTarget(null);
+ 		base.GraphicsDevice.SetRenderTarget(null);
 +
 +		GraphicsDevice.SetRenderTarget(BackLiquidMaskTarget);
 +		GraphicsDevice.Clear(Color.Transparent);
@@ -6452,11 +6451,13 @@
  		}
  
  		if (!drawToScreen && !isBackground) {
-@@ -47303,8 +_,12 @@
+@@ -47303,8 +_,14 @@
  			LiquidRenderer.Instance.PrepareDraw(drawArea);
  		}
  
-+		// TML(liquid-slopes): Cache edges once
++		// TML(liquid-slopes): Now DrawLiquidBehindTiles caches edge tiles to
++		// render instead of rendering them immediately.  We only need to run
++		// this once per draw cycle, so we cache it.
 +		if (isBackground)
 +			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
 +
@@ -6475,17 +6476,17 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
-@@ -47324,10 +_,13 @@
+@@ -47324,10 +_,15 @@
  		Stopwatch stopwatch = new Stopwatch();
  		stopwatch.Start();
  		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
 +
 +		// TML(liquid-slopes): Move this to DrawWaters because
 +		// it does not actually render anything.
--		if (bg)
-+		//if (bg)
--			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
-+		//	TilesRenderer.DrawLiquidBehindTiles(waterStyle);
++		/*
+ 		if (bg)
+ 			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
++		*/
  
 -		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
 +		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, drawSinglePassLiquids);
