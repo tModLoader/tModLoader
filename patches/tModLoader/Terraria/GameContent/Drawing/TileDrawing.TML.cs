@@ -1,56 +1,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria.ModLoader;
 
 namespace Terraria.GameContent.Drawing;
 
 public partial class TileDrawing
 {
-	// TML(liquid-slopes)
-	/// <summary>
-	/// Cached data for rendering liquids on solid tiles at the edge of liquid
-	/// pools.
-	/// </summary>
-	public struct LiquidEdgeCache
-	{
-		/// <summary>
-		/// The X coordinate of the tile.
-		/// </summary>
-		public int TileX;
-
-		/// <summary>
-		/// The Y coordinate of the tile.
-		/// </summary>
-		public int TileY;
-
-		/// <summary>
-		/// The actual liquid type to be rendered.
-		/// </summary>
-		public int LiquidType;
-
-		/// <summary>
-		/// The additional offset to apply based which edge is being drawn.
-		/// </summary>
-		public Vector2 LiquidPosition;
-
-		/// <summary>
-		/// The framing of the liquid slope.
-		/// </summary>
-		public Rectangle LiquidFrame;
-	}
-
 	/// <summary>
 	/// The wind grid used to exert wind effects on tiles.
 	/// </summary>
 	public WindGrid Wind => _windGrid;
-
-	// TML(liquid-slopes)
-	/// <summary>
-	/// Tiles which mask rendered liquid (tiles on the edge of bodies of
-	/// liquid).
-	/// </summary>
-	public Dictionary<Point, LiquidEdgeCache> LiquidEdges { get; } = [];
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff.

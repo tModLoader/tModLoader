@@ -89,7 +89,7 @@
 +					// handled as a slope/partial liquid, so disable it here.
  					ptr2->LiquidLevel = (float)(int)tile.liquid / 255f;
 -					ptr2->IsHalfBrick = tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type];
-+					ptr2->IsHalfBrick = false /*tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type]*/;
++					ptr2->IsHalfBrick = LiquidEdgeRenderer.Active ? false : (tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type]);
  					ptr2->IsSolid = WorldGen.SolidOrSlopedTile(tile);
  					ptr2->HasLiquid = tile.liquid != 0;
  					ptr2->VisibleLiquidLevel = 0f;
@@ -109,7 +109,7 @@
 -					if (ptr2->IsVisible) {
 +					// TML(liquid-slopes): Also attempt to draw if the
 +					// coordinate is on the edge of a tile.
-+					bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(i, j), out var edgeCache);
++					bool isEdge = LiquidEdgeRenderer.Edges.TryGetValue(new Point(i, j), out var edgeCache) && LiquidEdgeRenderer.Active;
 +
 +					if (ptr2->IsVisible || isEdge) {
 +						// IsEdge is unique because it means there isn't
