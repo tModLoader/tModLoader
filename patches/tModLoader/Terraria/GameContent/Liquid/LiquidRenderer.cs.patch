@@ -140,13 +140,13 @@
  								num2 = waterStyle;
  								num *= globalAlpha;
  								break;
-+							case 1:
-+								num2 = 1;
++							case LiquidID.Lava:
++								num2 = WaterStyleID.Lava;
 +								break;
  							case 2:
  								num2 = 11;
  								break;
-+							case 3:
++							case LiquidID.Shimmer:
 +								num2 = 14;
 +								break;
  						}
