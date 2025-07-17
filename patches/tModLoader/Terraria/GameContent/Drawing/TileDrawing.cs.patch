@@ -440,6 +440,15 @@
  		return num;
  	}
  
+@@ -2649,7 +_,7 @@
+ 			Main.tile[tileX, tileY + 1] = tile4;
+ 		}
+ 
+-		if (!tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
++		if (!tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && !tileCache.halfBrick() && tileCache.slope() == 0))
+ 			return;
+ 
+ 		int num = 0;
 @@ -2662,12 +_,13 @@
  		bool flag6 = false;
  		int num3 = tileCache.slope();
@@ -509,7 +518,7 @@
  		Vector2 vector = new Vector2(tileX * 16, tileY * 16);
  		Rectangle liquidSize = new Rectangle(0, 4, 16, 16);
  		if (flag4 && (flag || flag2)) {
-@@ -2807,26 +_,28 @@
+@@ -2807,29 +_,35 @@
  		if (tileCache.active() && (Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type]))
  			return;
  
@@ -543,6 +552,13 @@
  				}
  				else if ((flag && flag2) || tileCache.halfBrick()) {
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
++
++					if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type])
++						num6 = 8;
++
+ 					liquidSize = new Rectangle(0, y, 16, 16 - num6);
+ 				}
+ 				else if (flag) {
 @@ -2837,9 +_,11 @@
  					liquidSize = new Rectangle(0, y, 4, 16 - num6);
  				}
