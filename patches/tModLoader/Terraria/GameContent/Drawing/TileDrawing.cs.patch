@@ -521,7 +521,7 @@
  		Vector2 vector = new Vector2(tileX * 16, tileY * 16);
  		Rectangle liquidSize = new Rectangle(0, 4, 16, 16);
  		if (flag4 && (flag || flag2)) {
-@@ -2809,27 +_,45 @@
+@@ -2809,28 +_,50 @@
  
  		if ((!flag3 || !(flag || flag2)) && !(flag4 && flag3)) {
  			if (flag3) {
@@ -566,12 +566,18 @@
 +					// TML(liquid-slopes): Force half-brick rendering for
 +					// half-brick tiles that don't normally render liquid
 +					// behind them.
-+					if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type])
-+						num6 = 8;
++					if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type]) {
++						liquidSize = new Rectangle(0, y, 16, 8 - num6);
++					}
++					else {
+-					liquidSize = new Rectangle(0, y, 16, 16 - num6);
++						liquidSize = new Rectangle(0, y, 16, 16 - num6);
++					}
 +
- 					liquidSize = new Rectangle(0, y, 16, 16 - num6);
++					// liquidSize = new Rectangle(0, y, 16, 16 - num6);
  				}
  				else if (flag) {
+ 					vector = new Vector2(tileX * 16, tileY * 16 + num6);
 @@ -2871,13 +_,29 @@
  		if (num3 == 3 && tile.liquid == 0 && !WorldGen.SolidTile(tileX + 1, tileY))
  			num7 = 0f;
