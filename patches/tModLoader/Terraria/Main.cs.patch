@@ -6280,7 +6280,7 @@
  		base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  		spriteBatch.Begin();
  		tileBatch.Begin();
-@@ -45305,6 +_,34 @@
+@@ -45305,6 +_,35 @@
  		tileBatch.End();
  		spriteBatch.End();
  		base.GraphicsDevice.SetRenderTarget(null);
@@ -6304,6 +6304,7 @@
 +		// TODO: cache
 +		var maskShader = ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Shaders.ImageMask", AssetRequestMode.ImmediateLoad).Value;
 +		maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidMaskTarget);
++		maskShader.Parameters["usePartialAlpha"]?.SetValue(true);
 +		maskShader.CurrentTechnique.Passes[0].Apply();
 +
 +		spriteBatch.Draw(BackWaterTargetNoCut, Vector2.Zero, Color.White);
@@ -6424,7 +6425,7 @@
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
  			spriteBatch.Begin();
  			try {
-@@ -47207,6 +_,33 @@
+@@ -47207,6 +_,34 @@
  			spriteBatch.End();
  			TimeLogger.DetailedDrawTime(31);
  			base.GraphicsDevice.SetRenderTarget(null);
@@ -6448,6 +6449,7 @@
 +			// TODO: cache
 +			var maskShader = ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Shaders.ImageMask", AssetRequestMode.ImmediateLoad).Value;
 +			maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidMaskTarget);
++			maskShader.Parameters["usePartialAlpha"]?.SetValue(false);
 +			maskShader.CurrentTechnique.Passes[0].Apply();
 +
 +			spriteBatch.Draw(WaterTargetNoCut, Vector2.Zero, Color.White);
@@ -6498,9 +6500,14 @@
  		}
  
  		if (!drawToScreen && !isBackground) {
-@@ -47304,7 +_,7 @@
+@@ -47303,8 +_,12 @@
+ 			LiquidRenderer.Instance.PrepareDraw(drawArea);
  		}
  
++		// TML(liquid-slopes): Cache edges once
++		if (isBackground)
++			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
++
  		bool flag = false;
 -		for (int j = 0; j < 15; j++) {
 +		for (int j = 0; j < LoaderManager.Get<WaterStylesLoader>().TotalCount; j++) {
@@ -6516,29 +6523,32 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
-@@ -47324,10 +_,11 @@
+@@ -47324,10 +_,13 @@
  		Stopwatch stopwatch = new Stopwatch();
  		stopwatch.Start();
  		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
 +
- 		if (bg)
- 			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
++		// TML(liquid-slopes): Move this to DrawWaters because
++		// it does not actually render anything.
+-		if (bg)
++		//if (bg)
+-			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
++		//	TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
 -		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
 +		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, drawSinglePassLiquids);
  		if (drawSinglePassLiquids)
  			LiquidRenderer.Instance.DrawShimmer(spriteBatch, drawOffset, bg);
  
-@@ -47794,6 +_,13 @@
+@@ -47794,6 +_,12 @@
  					Tile tile = Main.tile[j, i];
  					float num8 = Lighting.Brightness(j, i);
  					num8 = (float)Math.Floor(num8 * 255f) / 255f;
 +
-+					/*
++
 +					// TML(liquid-slopes): Avoid drawing over liquid edges.
-+					if (TilesRenderer.LiquidEdges.ContainsKey(new Point(j, i)) && (tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (1f / 255f))
++					if (TilesRenderer.LiquidEdges.ContainsKey(new Point(j, i)) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
 +						break;
-+					*/
 +
  					byte b = tile.liquid;
  					bool num9 = num8 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));

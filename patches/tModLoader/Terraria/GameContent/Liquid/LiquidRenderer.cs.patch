@@ -108,7 +108,7 @@
 -					if (ptr2->IsVisible) {
 +					// TML(liquid-slopes): Also attempt to draw if the
 +					// coordinate is on the edge of a tile.
-+					bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(i, j), out var edgeCache) && drawSinglePassLiquids;
++					bool isEdge = Main.instance.TilesRenderer.LiquidEdges.TryGetValue(new Point(i, j), out var edgeCache);
 +
 +					if (ptr2->IsVisible || isEdge) {
 +						// IsEdge is unique because it means there isn't
@@ -120,7 +120,7 @@
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
-@@ -532,8 +_,15 @@
+@@ -532,33 +_,62 @@
  							sourceRectangle.Y += _animationFrame * 80;
  
  						Vector2 liquidOffset = ptr2->LiquidOffset;
@@ -133,13 +133,21 @@
 +						var opacity = isEdge ? 1f : ptr2->Opacity;
 +
 +						float num = opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[type]);
-+						float alphaWithoutGlobal = num;
 +						int num2 = type;
  						switch (num2) {
  							case 0:
  								num2 = waterStyle;
-@@ -544,14 +_,25 @@
+ 								num *= globalAlpha;
  								break;
++							case 1:
++								num2 = 1;
++								break;
+ 							case 2:
+ 								num2 = 11;
+ 								break;
++							case 3:
++								num2 = 14;
++								break;
  						}
  
 +						// Colors are important for edge tiles, especially in
@@ -147,17 +155,13 @@
 +						// rendering.
  						num = Math.Min(1f, num);
  						Lighting.GetCornerColors(i, j, out var vertices);
+ 						vertices.BottomLeftColor *= num;
+ 						vertices.BottomRightColor *= num;
+ 						vertices.TopLeftColor *= num;
+ 						vertices.TopRightColor *= num;
 +
 +						// Explicitly handle IsVisible vs IsEdge rendering here.
 +						if (!isEdge) {
--						vertices.BottomLeftColor *= num;
-+							vertices.BottomLeftColor *= num;
--						vertices.BottomRightColor *= num;
-+							vertices.BottomRightColor *= num;
--						vertices.TopLeftColor *= num;
-+							vertices.TopLeftColor *= num;
--						vertices.TopRightColor *= num;
-+							vertices.TopRightColor *= num;
 -						Main.DrawTileInWater(drawOffset, i, j);
 +							Main.DrawTileInWater(drawOffset, i, j);
 -						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
@@ -165,11 +169,25 @@
 +						}
 +						else {
 +							var tile = Main.tile[i, j];
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, vertices, alpha: alphaWithoutGlobal, edgeCache);
++
++							if (num2 == 14) {
++								if (!drawSinglePassLiquids)
++									break;
++								LiquidRenderer.SetShimmerVertexColors(ref vertices, num, edgeCache.TileX, edgeCache.TileY);
++							}
++
++							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, vertices, alpha: num, waterStyle: num2, edgeCache);
 +						}
  					}
  
  					ptr2++;
+ 				}
+ 			}
+ 		}
+-
+ 		Main.tileBatch.End();
+ 	}
+ 
 @@ -589,6 +_,7 @@
  				SetShimmerVertexColors(ref vertices, val, num3, num4);
  				Main.DrawTileInWater(drawOffset, num3, num4);

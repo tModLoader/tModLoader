@@ -10,12 +10,22 @@ sampler2D maskTexture = sampler_state
     AddressU = wrap;
     AddressV = wrap;
 };
+bool usePartialAlpha;
 
 float4 main(float4 drawColor : COLOR0, float2 uv : TEXCOORD0) : COLOR0
 {
     float alpha = tex2D(maskTexture, uv).a;
-    alpha = alpha > 0. ? 1. : alpha;
-    return tex2D(uImage0, uv) * drawColor * (1 - alpha);
+    float4 image = tex2D(uImage0, uv) * drawColor;
+    if (usePartialAlpha)
+    {
+        alpha = alpha > 0. && alpha < 1. ? 1. : 0;
+    }
+    else
+    {
+        alpha = alpha > 0. ? 1. : alpha;
+    }
+    
+    return image * (1 - alpha);
 }
 
 technique Technique1

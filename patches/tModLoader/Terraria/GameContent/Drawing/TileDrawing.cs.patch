@@ -500,23 +500,49 @@
  					case 0:
  						flag6 = true;
  						break;
-@@ -2807,6 +_,7 @@
+@@ -2796,7 +_,7 @@
+ 		if (num2 == 0)
+ 			num2 = Main.waterStyle;
+ 
+-		Lighting.GetCornerColors(tileX, tileY, out var vertices);
++		// Lighting.GetCornerColors(tileX, tileY, out var vertices);
+ 		Vector2 vector = new Vector2(tileX * 16, tileY * 16);
+ 		Rectangle liquidSize = new Rectangle(0, 4, 16, 16);
+ 		if (flag4 && (flag || flag2)) {
+@@ -2807,26 +_,28 @@
  		if (tileCache.active() && (Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type]))
  			return;
  
++		// TML(liquid-slopes): Change liquid sizes to cover gaps more reliably.
 +		Vector2 liquidOffset = Vector2.Zero;
  		if ((!flag3 || !(flag || flag2)) && !(flag4 && flag3)) {
  			if (flag3) {
- 				liquidSize = new Rectangle(0, 4, 16, 4);
-@@ -2814,7 +_,7 @@
+-				liquidSize = new Rectangle(0, 4, 16, 4);
++				liquidSize = new Rectangle(0, 4, 16, 10);
+ 				if (tileCache.halfBrick() || tileCache.slope() != 0)
  					liquidSize = new Rectangle(0, 4, 16, 12);
  			}
  			else if (flag4 && !flag && !flag2) {
 -				vector = new Vector2(tileX * 16, tileY * 16 + 12);
-+				vector = new Vector2(tileX * 16, tileY * 16 + (liquidOffset.Y = 12));
- 				liquidSize = new Rectangle(0, 4, 16, 4);
++				vector = new Vector2(tileX * 16, tileY * 16 + (liquidOffset.Y = 8));
+-				liquidSize = new Rectangle(0, 4, 16, 4);
++				liquidSize = new Rectangle(0, 4, 16, 8);
  			}
  			else {
+ 				float num5 = (float)(256 - num) / 32f;
+ 				int y = 4;
+-				if (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)))
++				if (tile3.liquid == 0 && tile.liquid < 200 && tile2.liquid < 200) /* && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)))*/
+ 					y = 0;
+ 
+ 				int num6 = (int)num5 * 2;
+ 				if (tileCache.slope() != 0) {
+ 					vector = new Vector2(tileX * 16, tileY * 16 + num6);
+-					liquidSize = new Rectangle(0, num6, 16, 16 - num6);
++					liquidSize = new Rectangle(0, 4, 16, 16 - num6);
+ 				}
+ 				else if ((flag && flag2) || tileCache.halfBrick()) {
+ 					vector = new Vector2(tileX * 16, tileY * 16 + num6);
 @@ -2837,9 +_,11 @@
  					liquidSize = new Rectangle(0, y, 4, 16 - num6);
  				}
@@ -530,10 +556,16 @@
  			}
  		}
  
-@@ -2875,9 +_,25 @@
+@@ -2871,13 +_,29 @@
+ 		if (num3 == 3 && tile.liquid == 0 && !WorldGen.SolidTile(tileX + 1, tileY))
+ 			num7 = 0f;
+ 
+-		vertices.BottomLeftColor *= num7;
++		/*vertices.BottomLeftColor *= num7;
  		vertices.BottomRightColor *= num7;
  		vertices.TopLeftColor *= num7;
- 		vertices.TopRightColor *= num7;
+-		vertices.TopRightColor *= num7;
++		vertices.TopRightColor *= num7;*/
 +
 +		// TML(liquid-slopes): Keep track of known edge tiles.
 +		var edgeCache = new LiquidEdgeCache {
@@ -606,16 +638,16 @@
 +	// TML(liquid-slopes): Make DrawPartialLiquid private->internal, split up
 +	// vanilla logic into new _Inner method.  Makes the actual method handle
 +	// water style fading.  New parameter set takes LiquidEdgeCache with more
-+	// data.
-+	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, Vector2 position, VertexColors colors, float alpha, LiquidEdgeCache edgeCache)
++	// data. Also take in water style.
++	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, Vector2 position, VertexColors colors, float alpha, int waterStyle, LiquidEdgeCache edgeCache)
 +	{
-+		bool foundWaterToFade = false;
++		/* bool foundWaterToFade = false;
 +		if (!behindBlocks && edgeCache.IsWaterForFading) {
 +			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
 +			for (int i = 0; i < totalCount; i++) {
 +				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != edgeCache.LiquidStyle) {
 +					var fadeColors = colors;
-+					float fadeAlpha = Main.liquidAlpha[i] * alpha;
++					float fadeAlpha = alpha;
 +					fadeColors.BottomLeftColor *= fadeAlpha;
 +					fadeColors.BottomRightColor *= fadeAlpha;
 +					fadeColors.TopLeftColor *= fadeAlpha;
@@ -627,7 +659,7 @@
 +			}
 +		}
 +
-+		float num8 = (foundWaterToFade ? Main.liquidAlpha[edgeCache.LiquidStyle] * alpha : alpha);
++		float num8 = alpha;//(foundWaterToFade ? Main.liquidAlpha[edgeCache.LiquidStyle] * alpha : alpha);
 +		if (behindBlocks)
 +			num8 = 1f;
 +
@@ -636,9 +668,9 @@
 +		colors.TopLeftColor *= num8;
 +		colors.TopRightColor *= num8;
 +		if (edgeCache.LiquidStyle == 14)
-+			LiquidRenderer.SetShimmerVertexColors(ref colors, alpha, edgeCache.TileX, edgeCache.TileY);
++			LiquidRenderer.SetShimmerVertexColors(ref colors, alpha, edgeCache.TileX, edgeCache.TileY); */
 +
-+		DrawPartialLiquid_Inner(behindBlocks, tileCache, position, edgeCache.LiquidFrame, edgeCache.LiquidStyle, colors);
++		DrawPartialLiquid_Inner(behindBlocks, tileCache, position, edgeCache.LiquidFrame, waterStyle, colors);
 +	}
 +
 -	private void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
