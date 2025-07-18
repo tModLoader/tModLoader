@@ -68,7 +68,7 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -131,19 +_,21 @@
+@@ -131,19 +_,23 @@
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
@@ -88,8 +88,9 @@
 +					// TML(liquid-slopes): Half-brick rendering is now entirely
 +					// handled as a slope/partial liquid, so disable it here.
  					ptr2->LiquidLevel = (float)(int)tile.liquid / 255f;
--					ptr2->IsHalfBrick = tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type];
-+					ptr2->IsHalfBrick = LiquidEdgeRenderer.Active ? false : (tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type]);
+ 					ptr2->IsHalfBrick = tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type];
++					if (LiquidEdgeRenderer.Active)
++						ptr2->IsHalfBrick = false;
  					ptr2->IsSolid = WorldGen.SolidOrSlopedTile(tile);
  					ptr2->HasLiquid = tile.liquid != 0;
  					ptr2->VisibleLiquidLevel = 0f;
@@ -126,7 +127,7 @@
  						Main.DrawTileInWater(drawOffset, i, j);
  						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
  					}
-@@ -558,7 +_,46 @@
+@@ -558,7 +_,48 @@
  				}
  			}
  		}
@@ -167,7 +168,9 @@
 +					SetShimmerVertexColors(ref vertices, opacity, edgeCache.TileX, edgeCache.TileY);
 +				}
 +
-+				Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, edgeCache.LiquidFrame, liquidType, vertices);
++				var position = edgeCache.LiquidPosition + drawOffset;
++				var rectangle = edgeCache.LiquidFrame;
++				Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, ref position, ref rectangle, liquidType, ref vertices);
 +			}
 +		}
  		Main.tileBatch.End();

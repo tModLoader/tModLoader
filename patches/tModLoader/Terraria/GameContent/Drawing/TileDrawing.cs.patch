@@ -515,7 +515,7 @@
 +		VertexColors vertices = default;
 +		if (!LiquidEdgeRenderer.Active)
 -		Lighting.GetCornerColors(tileX, tileY, out var vertices);
-+			Lighting.GetCornerColors(tileX, tileY, out vertices);
++		Lighting.GetCornerColors(tileX, tileY, out vertices);
 +
  		Vector2 vector = new Vector2(tileX * 16, tileY * 16);
  		Rectangle liquidSize = new Rectangle(0, 4, 16, 16);
@@ -576,7 +576,7 @@
  				}
  				else if (flag) {
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
-@@ -2875,11 +_,26 @@
+@@ -2875,9 +_,24 @@
  		vertices.BottomRightColor *= num7;
  		vertices.TopLeftColor *= num7;
  		vertices.TopRightColor *= num7;
@@ -600,20 +600,8 @@
 -			for (int i = 0; i < 15; i++) {
 +			for (int i = 0; i < totalCount; i++) {
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
--					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
-+					DrawPartialLiquid(!solidLayer, tileCache, position, liquidSize, i, vertices);
+ 					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
- 					break;
- 				}
-@@ -2895,7 +_,7 @@
- 		if (num2 == 14)
- 			LiquidRenderer.SetShimmerVertexColors(ref colors, solidLayer ? 0.75f : 1f, tileX, tileY);
- 
--		DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, num2, ref colors);
-+		DrawPartialLiquid(!solidLayer, tileCache, position, liquidSize, num2, colors);
- 	}
- 
- 	private void CacheSpecialDraws_Part1(int tileX, int tileY, int tileType, int drawDataTileFrameX, int drawDataTileFrameY, bool skipDraw)
 @@ -3112,7 +_,8 @@
  		}
  	}
@@ -654,7 +642,7 @@
  
 +	// TML(liquid-slopes): private->internal
 -	private void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
-+	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, Vector2 position, Rectangle liquidSize, int liquidType, VertexColors colors)
++	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
  	{
  		int num = tileCache.slope();
  		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
