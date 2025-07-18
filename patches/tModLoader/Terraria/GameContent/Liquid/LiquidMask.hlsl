@@ -11,10 +11,12 @@ sampler2D maskTexture = sampler_state
     AddressV = wrap;
 };
 bool usePartialAlpha;
+float2 uMaskOffset;
+float2 uMaskSize;
 
 float4 main(float4 drawColor : COLOR0, float2 uv : TEXCOORD0) : COLOR0
 {
-    float alpha = tex2D(maskTexture, uv).a;
+    float alpha = tex2D(maskTexture, uv - uMaskOffset / uMaskSize).a;
     float4 image = tex2D(uImage0, uv) * drawColor;
     if (usePartialAlpha)
     {

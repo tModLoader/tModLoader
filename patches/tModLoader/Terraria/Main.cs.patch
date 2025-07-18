@@ -6269,20 +6269,11 @@
  								}
  								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
  									Lighting.GetColor9Slice(num24, num25, ref slices);
-@@ -45305,6 +_,17 @@
+@@ -45304,7 +_,7 @@
+ 
  		tileBatch.End();
  		spriteBatch.End();
- 		base.GraphicsDevice.SetRenderTarget(null);
-+
-+		if (LiquidEdgeRenderer.Active) {
-+			GraphicsDevice.SetRenderTarget(LiquidEdgeRenderer.BackMaskTarget);
-+			GraphicsDevice.Clear(Color.Transparent);
-+			spriteBatch.Begin();
-+
-+			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(offScreenRange), Color.White);
-+
-+			spriteBatch.End();
-+		}
+-		base.GraphicsDevice.SetRenderTarget(null);
 +
  		base.GraphicsDevice.SetRenderTarget(backgroundTarget);
  		base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
@@ -6385,27 +6376,6 @@
  		Asset<Texture2D> asset = TextureAssets.MapBGs[0];
  		int num = -1;
  		Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
-@@ -47207,6 +_,20 @@
- 			spriteBatch.End();
- 			TimeLogger.DetailedDrawTime(31);
- 			base.GraphicsDevice.SetRenderTarget(null);
-+
-+			if (LiquidEdgeRenderer.Active) {
-+				var offScreen = new Vector2(drawToScreen ? 0 : offScreenRange);
-+
-+				GraphicsDevice.SetRenderTarget(LiquidEdgeRenderer.FrontMaskTarget);
-+				GraphicsDevice.Clear(Color.Transparent);
-+				spriteBatch.Begin();
-+
-+				spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(offScreenRange), Color.White);
-+
-+				spriteBatch.End();
-+				GraphicsDevice.SetRenderTarget(null);
-+				GraphicsDevice.Clear(Color.Transparent);
-+			}
- 		}
- 	}
- 
 @@ -47244,6 +_,12 @@
  			case 4:
  				return 13;
@@ -6508,30 +6478,10 @@
  					byte b = tile.liquid;
  					bool num9 = num8 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
  					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
-@@ -47906,6 +_,8 @@
- 				if (backgroundTarget != null)
- 					backgroundTarget.Dispose();
- 
-+				LiquidEdgeRenderer.DisposeOfTargets();
-+
- 				if (Main.OnRenderTargetsReleased != null)
- 					Main.OnRenderTargetsReleased();
- 			}
-@@ -47996,6 +_,8 @@
- 	{
- 		if (waterTarget == null || waterTarget.IsContentLost || backWaterTarget == null || backWaterTarget.IsContentLost || blackTarget == null || blackTarget.IsContentLost || tileTarget == null || tileTarget.IsContentLost || tile2Target == null || tile2Target.IsContentLost || wallTarget == null || wallTarget.IsContentLost || backgroundTarget == null || backgroundTarget.IsContentLost || screenTarget == null || screenTarget.IsContentLost || screenTargetSwap == null || screenTargetSwap.IsContentLost)
- 			InitTargets();
-+		else if (LiquidEdgeRenderer.NeedsToInitializeTargets)
-+			InitTargets();
- 	}
- 
- 	protected void InitTargets(int width, int height)
-@@ -48019,6 +_,9 @@
+@@ -48019,6 +_,7 @@
  				backgroundTarget = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
  				screenTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
  				screenTargetSwap = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
-+
-+				LiquidEdgeRenderer.InitTargets(base.GraphicsDevice, width, height, GraphicsDevice.PresentationParameters.BackBufferFormat);
 +
  				if (Main.OnRenderTargetsInitialized != null)
  					Main.OnRenderTargetsInitialized(base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight);
@@ -6835,7 +6785,7 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, UIScaleMatrix);
  		if (gameMenu || netMode == 2) {
  			spriteBatch.End();
-@@ -51230,8 +_,25 @@
+@@ -51230,8 +_,27 @@
  			DrawWaters(isBackground: true);
  		}
  		else {
@@ -6844,7 +6794,9 @@
 +				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, Transform);
 +
 +				var maskShader = LiquidEdgeRenderer.MaskShader;
-+				maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidEdgeRenderer.BackMaskTarget);
++				maskShader.Parameters["uMaskTexture"]?.SetValue(tileTarget);
++				maskShader.Parameters["uMaskOffset"]?.SetValue(sceneTilePos - sceneBackgroundPos);
++				maskShader.Parameters["uMaskSize"]?.SetValue(tileTarget.Size());
 +				maskShader.Parameters["usePartialAlpha"]?.SetValue(true);
 +				maskShader.CurrentTechnique.Passes[0].Apply();
 +			}
@@ -6871,7 +6823,7 @@
  		TimeLogger.DetailedDrawTime(35);
  		HasInteractibleObjectThatIsNotATile = false;
  		SortDrawCacheWorms();
-@@ -51338,7 +_,23 @@
+@@ -51338,7 +_,25 @@
  				DrawWires();
  		}
  		else {
@@ -6880,7 +6832,9 @@
 +				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, Transform);
 +
 +				var maskShader = LiquidEdgeRenderer.MaskShader;
-+				maskShader.Parameters["uMaskTexture"]?.SetValue(LiquidEdgeRenderer.FrontMaskTarget);
++				maskShader.Parameters["uMaskTexture"]?.SetValue(tileTarget);
++				maskShader.Parameters["uMaskOffset"]?.SetValue(sceneTilePos - sceneWaterPos);
++				maskShader.Parameters["uMaskSize"]?.SetValue(tileTarget.Size());
 +				maskShader.Parameters["usePartialAlpha"]?.SetValue(false);
 +				maskShader.CurrentTechnique.Passes[0].Apply();
 +			}
