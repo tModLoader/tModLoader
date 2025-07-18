@@ -6487,6 +6487,14 @@
  		if (drawSinglePassLiquids)
  			LiquidRenderer.Instance.DrawShimmer(spriteBatch, drawOffset, bg);
  
+@@ -47776,6 +_,7 @@
+ 			}
+ 		}
+ 
++		bool slopesActive = LiquidEdgeRenderer.Active;
+ 		bool flag = ShouldShowInvisibleWalls();
+ 		for (int i = num5; i < num6; i++) {
+ 			bool flag2 = i >= UnderworldLayer;
 @@ -47794,6 +_,12 @@
  					Tile tile = Main.tile[j, i];
  					float num8 = Lighting.Brightness(j, i);
@@ -6494,7 +6502,7 @@
 +
 +
 +					// TML(liquid-slopes): Avoid drawing over liquid edges.
-+					if (LiquidEdgeRenderer.Active && LiquidEdgeRenderer.Edges.ContainsKey(new Point(j, i)) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
++					if (slopesActive && LiquidEdgeRenderer.Edges.ContainsKey(new Point(j, i)) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
 +						break;
 +
  					byte b = tile.liquid;

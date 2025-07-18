@@ -23,7 +23,7 @@ public static class LiquidEdgeRenderer
 	/// Even if it's enabled, it will only apply if <see cref="Active"/>
 	/// is <see langword="true"/>.
 	/// </summary>
-	public static bool Enabled { get; set; } = true;
+	public static bool Enabled = true;
 
 	/// <summary>
 	/// Whether the new rendering is actually active for this frame.

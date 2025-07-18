@@ -19,6 +19,7 @@ using ReLogic.Content;
 using System.Runtime.CompilerServices;
 using Terraria.Social.Steam;
 using Terraria.ModLoader.Exceptions;
+using Terraria.GameContent.Liquid;
 
 namespace Terraria.ModLoader;
 
@@ -375,6 +376,8 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
+
+		Main.Configuration.Put("LiquidSlopeFix", LiquidEdgeRenderer.Enabled);
 	}
 
 	internal static void LoadConfiguration()
@@ -403,6 +406,7 @@ public static class ModLoader
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
 		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
+		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
 	}
 
 	internal static void MigrateSettings()
