@@ -529,11 +529,18 @@
  		Vector2 vector = new Vector2(tileX * 16, tileY * 16);
  		Rectangle liquidSize = new Rectangle(0, 4, 16, 16);
  		if (flag4 && (flag || flag2)) {
-@@ -2809,28 +_,49 @@
+@@ -2804,33 +_,58 @@
+ 			flag2 = true;
+ 		}
+ 
+-		if (tileCache.active() && (Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type]))
++		if (tileCache.active() && (Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type]) && (liquidSlopeFix ? !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] : true))
+ 			return;
  
  		if ((!flag3 || !(flag || flag2)) && !(flag4 && flag3)) {
  			if (flag3) {
 -				liquidSize = new Rectangle(0, 4, 16, 4);
++
 +				// TML(liquid-slopes): Adjust liquid sizes to fill more gaps.
 +				liquidSize = liquidSlopeFix ? new Rectangle(0, 4, 16, 10) : new Rectangle(0, 4, 16, 4);
  				if (tileCache.halfBrick() || tileCache.slope() != 0)
@@ -542,6 +549,7 @@
  			else if (flag4 && !flag && !flag2) {
 -				vector = new Vector2(tileX * 16, tileY * 16 + 12);
 -				liquidSize = new Rectangle(0, 4, 16, 4);
++
 +				vector = new Vector2(tileX * 16, tileY * 16 + 8);
 +				// TML(liquid-slopes): Adjust liquid sizes to fill more gaps.
 +				liquidSize = liquidSlopeFix ? new Rectangle(0, 4, 16, 8) : new Rectangle(0, 4, 16, 4);
@@ -562,6 +570,7 @@
  
  				int num6 = (int)num5 * 2;
  				if (tileCache.slope() != 0) {
++
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
 -					liquidSize = new Rectangle(0, num6, 16, 16 - num6);
 +					// TML(liquid-slopes): Adjust liquid sizes to fill more gaps.
@@ -573,6 +582,7 @@
 +					// TML(liquid-slopes): Force half-brick rendering for
 +					// half-brick tiles that don't normally render liquid
 +					// behind them.
++
 +					if (liquidSlopeFix && TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type]) {
 +						liquidSize = new Rectangle(0, y, 16, 8 - num6);
 +					}
@@ -585,6 +595,16 @@
  				}
  				else if (flag) {
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
+@@ -2842,6 +_,9 @@
+ 				}
+ 			}
+ 		}
++		else if (liquidSlopeFix && tileCache.halfBrick() && TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.TileType]) {
++			liquidSize.Height -= 8;
++		}
+ 
+ 		Vector2 position = vector - screenPosition + screenOffset;
+ 		float num7 = 0.5f;
 @@ -2875,9 +_,24 @@
  		vertices.BottomRightColor *= num7;
  		vertices.TopLeftColor *= num7;
