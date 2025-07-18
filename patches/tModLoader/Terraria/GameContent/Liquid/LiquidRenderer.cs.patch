@@ -68,10 +68,11 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -131,19 +_,23 @@
+@@ -131,19 +_,24 @@
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
 -		Tile tile = null;
 +		Tile tile = default;
  		fixed (LiquidCache* ptr = &_cache[1]) {
@@ -89,7 +90,7 @@
 +					// handled as a slope/partial liquid, so disable it here.
  					ptr2->LiquidLevel = (float)(int)tile.liquid / 255f;
  					ptr2->IsHalfBrick = tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type];
-+					if (LiquidEdgeRenderer.Active)
++					if (liquidSlopeFix)
 +						ptr2->IsHalfBrick = false;
  					ptr2->IsSolid = WorldGen.SolidOrSlopedTile(tile);
  					ptr2->HasLiquid = tile.liquid != 0;

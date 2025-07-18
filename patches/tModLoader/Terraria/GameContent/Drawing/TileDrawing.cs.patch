@@ -184,7 +184,7 @@
  		GetScreenDrawArea(unscaledPosition, vector + (Main.Camera.UnscaledPosition - Main.Camera.ScaledPosition), out var firstTileX, out var lastTileX, out var firstTileY, out var lastTileY);
  		for (int i = firstTileY; i < lastTileY + 4; i++) {
  			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
-@@ -396,8 +_,10 @@
+@@ -396,8 +_,11 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
  		TileDrawInfo value = _currentTileDrawInfo.Value;
@@ -192,6 +192,7 @@
 -			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
 +
 +		//TML: Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
 +		for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
 +			for (int i = firstTileY; i < lastTileY + 4; i++) {
  				Tile tile = Main.tile[j, i];
@@ -204,7 +205,7 @@
 -					if (solidLayer)
 +					// TML(liquid-slopes): Behind-tile liquid rendering is now
 +					// handled as part of actual liquid rendering.
-+					if (solidLayer && !LiquidEdgeRenderer.Active)
++					if (solidLayer && !liquidSlopeFix)
  						DrawTile_LiquidBehindTile(solidLayer, inFrontOfPlayers: false, waterStyleOverride, unscaledPosition, vector, j, i, tile);
  
  					ushort type = tile.type;
@@ -438,12 +439,20 @@
  		return num;
  	}
  
+@@ -2625,6 +_,7 @@
+ 
+ 	private void DrawTile_LiquidBehindTile(bool solidLayer, bool inFrontOfPlayers, int waterStyleOverride, Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, Tile tileCache)
+ 	{
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
+ 		Tile tile = Main.tile[tileX + 1, tileY];
+ 		Tile tile2 = Main.tile[tileX - 1, tileY];
+ 		Tile tile3 = Main.tile[tileX, tileY - 1];
 @@ -2649,8 +_,12 @@
  			Main.tile[tileX, tileY + 1] = tile4;
  		}
  
 -		if (!tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
-+		if (!tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0 && (!tileCache.halfBrick() || !LiquidEdgeRenderer.Active)))
++		if (!tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0 && (!tileCache.halfBrick() || !liquidSlopeFix)))
  			return;
 +
 +		// TML(liquid-slopes): We need to track what liquid type is actually
@@ -513,7 +522,7 @@
 +		// TML(liquid-slopes): Lighting is calculated with the rest of liquid
 +		// rendering instead of here.
 +		VertexColors vertices = default;
-+		if (!LiquidEdgeRenderer.Active)
++		if (!liquidSlopeFix)
 -		Lighting.GetCornerColors(tileX, tileY, out var vertices);
 +		Lighting.GetCornerColors(tileX, tileY, out vertices);
 +
@@ -526,7 +535,7 @@
  			if (flag3) {
 -				liquidSize = new Rectangle(0, 4, 16, 4);
 +				// TML(liquid-slopes): Adjust liquid sizes to fill more gaps.
-+				liquidSize = LiquidEdgeRenderer.Active ? new Rectangle(0, 4, 16, 10) : new Rectangle(0, 4, 16, 4);
++				liquidSize = liquidSlopeFix ? new Rectangle(0, 4, 16, 10) : new Rectangle(0, 4, 16, 4);
  				if (tileCache.halfBrick() || tileCache.slope() != 0)
  					liquidSize = new Rectangle(0, 4, 16, 12);
  			}
@@ -535,7 +544,7 @@
 -				liquidSize = new Rectangle(0, 4, 16, 4);
 +				vector = new Vector2(tileX * 16, tileY * 16 + 8);
 +				// TML(liquid-slopes): Adjust liquid sizes to fill more gaps.
-+				liquidSize = LiquidEdgeRenderer.Active ? new Rectangle(0, 4, 16, 8) : new Rectangle(0, 4, 16, 4);
++				liquidSize = liquidSlopeFix ? new Rectangle(0, 4, 16, 8) : new Rectangle(0, 4, 16, 4);
  			}
  			else {
  				float num5 = (float)(256 - num) / 32f;
@@ -544,7 +553,7 @@
 +				// TML(liquid-slopes): Make sure liquid surfaces only show
 +				// when they're the actual surface (before this, some sides
 +				// would show surfaces erroneously).
-+				bool setFromTop = LiquidEdgeRenderer.Active
++				bool setFromTop = liquidSlopeFix
 +					? (tile3.liquid == 0 && tile.liquid < 200 && tile2.liquid < 200)
 -				if (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)))
 +					: (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)));
@@ -556,7 +565,7 @@
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
 -					liquidSize = new Rectangle(0, num6, 16, 16 - num6);
 +					// TML(liquid-slopes): Adjust liquid sizes to fill more gaps.
-+					liquidSize = LiquidEdgeRenderer.Active ? new Rectangle(0, 4, 16, 16 - num6) : new Rectangle(0, num6, 16, 16 - num6);
++					liquidSize = liquidSlopeFix ? new Rectangle(0, 4, 16, 16 - num6) : new Rectangle(0, num6, 16, 16 - num6);
  				}
  				else if ((flag && flag2) || tileCache.halfBrick()) {
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
@@ -564,7 +573,7 @@
 +					// TML(liquid-slopes): Force half-brick rendering for
 +					// half-brick tiles that don't normally render liquid
 +					// behind them.
-+					if (LiquidEdgeRenderer.Active && TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type]) {
++					if (liquidSlopeFix && TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type]) {
 +						liquidSize = new Rectangle(0, y, 16, 8 - num6);
 +					}
 +					else {
@@ -582,7 +591,7 @@
  		vertices.TopRightColor *= num7;
 +
 +		// TML(liquid-slopes): Keep track of known edge tiles.
-+		if (LiquidEdgeRenderer.Active) {
++		if (liquidSlopeFix) {
 +			var edgeCache = new LiquidEdgeCache {
 +				TileX = tileX,
 +				TileY = tileY,
