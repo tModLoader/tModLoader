@@ -102,41 +102,7 @@
  	{
  		Rectangle drawArea = _drawArea;
  		Main.tileBatch.Begin();
-@@ -524,7 +_,17 @@
- 			LiquidDrawCache* ptr2 = ptr;
- 			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
- 				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
--					if (ptr2->IsVisible) {
-+					// TML(liquid-slopes): Also attempt to draw if the
-+					// coordinate is on the edge of a tile.
-+					bool isEdge = LiquidEdgeRenderer.Edges.TryGetValue(new Point(i, j), out var edgeCache) && LiquidEdgeRenderer.Active;
-+
-+					if (ptr2->IsVisible || isEdge) {
-+						// IsEdge is unique because it means there isn't
-+						// actually a liquid present in the tile, so a lot of
-+						// data isn't present.
-+						// The below data is mostly irrelevant for edge tiles,
-+						// so it's fine for this data to be missing.
-+
- 						Rectangle sourceRectangle = ptr2->SourceRectangle;
- 						if (ptr2->IsSurfaceLiquid)
- 							sourceRectangle.Y = 1280;
-@@ -532,33 +_,67 @@
- 							sourceRectangle.Y += _animationFrame * 80;
- 
- 						Vector2 liquidOffset = ptr2->LiquidOffset;
--						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
--						int num2 = ptr2->Type;
-+
-+						// Opacity is important for edge tiles since we want to
-+						// support clean transitions between biomes.
-+						var type = isEdge ? edgeCache.LiquidType : ptr2->Type;
-+						var opacity = isEdge ? 1f : ptr2->Opacity;
-+
-+						float num = opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[type]);
-+						int num2 = type;
- 						switch (num2) {
- 							case 0:
+@@ -539,9 +_,15 @@
  								num2 = waterStyle;
  								num *= globalAlpha;
  								break;
@@ -151,44 +117,59 @@
 +								break;
  						}
  
-+						// Colors are important for edge tiles, especially in
-+						// case mods make edits to them for custom liquid
-+						// rendering.
  						num = Math.Min(1f, num);
- 						Lighting.GetCornerColors(i, j, out var vertices);
- 						vertices.BottomLeftColor *= num;
+@@ -550,6 +_,7 @@
  						vertices.BottomRightColor *= num;
  						vertices.TopLeftColor *= num;
  						vertices.TopRightColor *= num;
 +
-+						// Explicitly handle IsVisible vs IsEdge rendering here.
-+						/*
  						Main.DrawTileInWater(drawOffset, i, j);
  						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
-+						*/
-+						if (!isEdge) {
-+							Main.DrawTileInWater(drawOffset, i, j);
-+							Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
-+						}
-+						else {
-+							var tile = Main.tile[i, j];
-+
-+							if (num2 == 14) {
-+								if (!drawSinglePassLiquids)
-+									break;
-+
-+								SetShimmerVertexColors(ref vertices, num, edgeCache.TileX, edgeCache.TileY);
-+							}
-+
-+							Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, edgeCache.LiquidFrame, num2, vertices);
-+						}
  					}
- 
- 					ptr2++;
+@@ -558,7 +_,46 @@
  				}
  			}
  		}
--
++		if (LiquidEdgeRenderer.Active) {
++			foreach (var edgeCache in LiquidEdgeRenderer.Edges.Values) {
++				var tile = Main.tile[edgeCache.TileX, edgeCache.TileY];
+ 
++				float opacity = isBackgroundDraw ? 1f : DEFAULT_OPACITY[edgeCache.LiquidType];
++				int liquidType = edgeCache.LiquidType;
++				switch (liquidType) {
++					case LiquidID.Water:
++						liquidType = waterStyle;
++						opacity *= globalAlpha;
++						break;
++					case LiquidID.Lava:
++						liquidType = WaterStyleID.Lava;
++						break;
++					case LiquidID.Honey:
++						liquidType = WaterStyleID.Honey;
++						;
++						break;
++					case LiquidID.Shimmer:
++						liquidType = 14;
++						break;
++				}
++
++				opacity = Math.Min(1f, opacity);
++				Lighting.GetCornerColors(edgeCache.TileX, edgeCache.TileY, out var vertices);
++				vertices.BottomLeftColor *= opacity;
++				vertices.BottomRightColor *= opacity;
++				vertices.TopLeftColor *= opacity;
++				vertices.TopRightColor *= opacity;
++
++				if (liquidType == 14) {
++					if (!drawSinglePassLiquids)
++						break;
++
++					SetShimmerVertexColors(ref vertices, opacity, edgeCache.TileX, edgeCache.TileY);
++				}
++
++				Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, edgeCache.LiquidPosition + drawOffset, edgeCache.LiquidFrame, liquidType, vertices);
++			}
++		}
  		Main.tileBatch.End();
  	}
  
