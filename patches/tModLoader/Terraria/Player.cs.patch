@@ -5190,6 +5190,20 @@
  	}
  
 +	/// <summary>
++	/// Get the total amount of money the player has.
++	/// </summary>
++	public long GetAllMoney()
++	{
++		bool overFlowing;
++		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
++		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
++		long num3 = Utils.CoinsCount(out overFlowing, bank2.item);
++		long num4 = Utils.CoinsCount(out overFlowing, bank3.item);
++		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
++		return Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5);
++	}
++
++	/// <summary>
 +	/// Attempts to "purchase" something that costs the given <paramref name="price"/>.<br/>
 +	/// Items will be taken from all of the player inventories and banks combined.<br/>
 +	/// If <paramref name="customCurrency"/> is provided, the price will be in terms of the custom currency instead of coins.<br/>
@@ -5214,12 +5228,7 @@
 +	{
 +		if (customCurrency != -1)
 +			return CustomCurrencyManager.CanAfford(this, price, customCurrency);
- 		bool overFlowing;
- 		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
- 		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
-@@ -27357,7 +_,20 @@
- 		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
- 		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
++		if (GetAllMoney() < price)
  			return false;
 +		return true;
 +	}
