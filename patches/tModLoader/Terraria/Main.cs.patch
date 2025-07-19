@@ -6269,11 +6269,10 @@
  								}
  								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
  									Lighting.GetColor9Slice(num24, num25, ref slices);
-@@ -45304,7 +_,7 @@
- 
+@@ -45305,6 +_,7 @@
  		tileBatch.End();
  		spriteBatch.End();
--		base.GraphicsDevice.SetRenderTarget(null);
+ 		base.GraphicsDevice.SetRenderTarget(null);
 +
  		base.GraphicsDevice.SetRenderTarget(backgroundTarget);
  		base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
