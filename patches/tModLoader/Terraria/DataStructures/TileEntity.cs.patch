@@ -124,3 +124,74 @@
  	}
  
  	public virtual void WriteExtraData(BinaryWriter writer, bool networkSend)
+@@ -101,10 +_,21 @@
+ 	{
+ 	}
+ 
++	/// <summary>
++	/// Called during <see cref="Player.Update"/> while interacting with this tile entity (see <see cref="Player.tileEntityAnchor"/>).
++	/// <br/><br/> Commonly used to check if the player is still in range of the tile entity and to clear <see cref="Player.tileEntityAnchor"/> if not. 
++	/// </summary>
++	/// <param name="player"></param>
+ 	public virtual void OnPlayerUpdate(Player player)
+ 	{
+ 	}
+ 
++	/// <summary>
++	/// Checks if the specified Tile Entity (by the <see cref="ID"/>) is being interacted with and by which player. Used internally by <see cref="BasicOpenCloseInteraction"/> to ensure only a single player can interact with a tile entity.
++	/// </summary>
++	/// <param name="id"></param>
++	/// <param name="interactingPlayer"></param>
++	/// <returns></returns>
+ 	public static bool IsOccupied(int id, out int interactingPlayer)
+ 	{
+ 		interactingPlayer = -1;
+@@ -119,6 +_,12 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Called during <see cref="Main.DrawInventory"/> while interacting with this tile entity (see <see cref="Player.tileEntityAnchor"/>).
++	/// <br/><br/> Commonly used draw a chest UI specific to this tile entity. 
++	/// </summary>
++	/// <param name="player"></param>
++	/// <param name="spriteBatch"></param>
+ 	public virtual void OnInventoryDraw(Player player, SpriteBatch spriteBatch)
+ 	{
+ 	}
+@@ -131,9 +_,35 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Called during <see cref="UI.ItemSlot.OverrideHover(Item[], int, int)"/> while interacting with this tile entity (see <see cref="Player.tileEntityAnchor"/>) and hovering over any item slot while holding down shift.
++	/// <br/><br/> Used to set <see cref="Main.cursorOverride"/> to change the mouse cursor to indicate if shift left clicking on the item slot will successfully transfer the item from the player inventory to the tile entity storage or from the tile entity storage to the player inventory, depending on <paramref name="context"/> (see <see cref="UI.ItemSlot.Context"/>).
++	/// <br/><br/> Return true to indicate that the item slot hover behavior is being overridden, preventing the normal logic from running. 
++	/// </summary>
++	/// <param name="inv"></param>
++	/// <param name="context"></param>
++	/// <param name="slot"></param>
++	/// <returns></returns>
+ 	public virtual bool OverrideItemSlotHover(Item[] inv, int context = 0, int slot = 0) => false;
++
++	/// <summary>
++	/// Called during <see cref="UI.ItemSlot.OverrideLeftClick(Item[], int, int)"/> while interacting with this tile entity (see <see cref="Player.tileEntityAnchor"/>) and left clicking on any item slot.
++	/// <br/><br/> Used to handle item movement for the item slot. Can be used to handle quick transfers using shift clicks as well as regular clicks. This method is responsible for ensuring that only acceptable items are placed in these item slots. Syncing the changed items within the tile entity storage is likely also necessary.
++	/// <br/><br/> Return true to indicate that the item slot left click behavior is being overridden, preventing the normal logic from running. 
++	/// </summary>
++	/// <param name="inv"></param>
++	/// <param name="context"></param>
++	/// <param name="slot"></param>
++	/// <returns></returns>
+ 	public virtual bool OverrideItemSlotLeftClick(Item[] inv, int context = 0, int slot = 0) => false;
+ 
++	/// <summary>
++	/// Attempts to interact with the tile entity at the coordinates with the given id. In multiplayer the game ensures that only 1 user is interacting with a specific tile entity at a time. This design greatly simplifies desync complications. If successfully interacted with, <see cref="Player.tileEntityAnchor"/> will be set accordingly.
++	/// </summary>
++	/// <param name="player"></param>
++	/// <param name="x"></param>
++	/// <param name="y"></param>
++	/// <param name="id"></param>
+ 	public static void BasicOpenCloseInteraction(Player player, int x, int y, int id)
+ 	{
+ 		player.CloseSign();

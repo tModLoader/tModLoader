@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/PlayerInteractionAnchor.cs
++++ src/tModLoader/Terraria/DataStructures/PlayerInteractionAnchor.cs
+@@ -15,6 +_,9 @@
+ 		Y = y;
+ 	}
+ 
++	/// <summary>
++	/// Synced automatically, no need to send <see cref="ID.MessageID.RequestTileEntityInteraction"/>
++	/// </summary>
+ 	public void Clear()
+ 	{
+ 		interactEntityID = -1;

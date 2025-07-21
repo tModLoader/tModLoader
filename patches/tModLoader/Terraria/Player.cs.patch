@@ -1055,7 +1055,14 @@
  	public int chest = -1;
  	public int chestX;
  	public int chestY;
-@@ -1423,8 +_,11 @@
+@@ -1420,11 +_,18 @@
+ 	public PlayerSittingHelper sitting;
+ 	public PlayerSleepingHelper sleeping;
+ 	public PlayerEyeHelper eyeHelper;
++	/// <summary>
++	/// The tile entity this player is currently interacting with. If <see cref="PlayerInteractionAnchor.InUse"/>, the player is interacting with the tile entity detailed within.
++	/// <br/><br/> When interacting with a tile entity, methods such as <see cref="TileEntity.OverrideItemSlotHover(Item[], int, int)"/>, <see cref="TileEntity.OverrideItemSlotLeftClick(Item[], int, int)"/>, <see cref="TileEntity.OnInventoryDraw(Player, Microsoft.Xna.Framework.Graphics.SpriteBatch)"/>, <see cref="TileEntity.OnPlayerUpdate(Player)"/>, and <see cref="TileEntity.TryGetItemGamepadOverrideInstructions"/> will be called. These methods can be used to implement logic and UI while interacting with the tile entity.
++	/// </summary>
  	public PlayerInteractionAnchor tileEntityAnchor;
  	public DoorOpeningHelper doorHelper;
  	public ShoppingSettings currentShoppingSettings = ShoppingSettings.NotInShop;

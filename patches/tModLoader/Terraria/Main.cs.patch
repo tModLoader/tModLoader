@@ -890,6 +890,17 @@
  	public static int SmartInteractProj;
  	public static bool SmartInteractPotionOfReturn;
  	public static List<Microsoft.Xna.Framework.Point> SmartInteractTileCoords = new List<Microsoft.Xna.Framework.Point>();
+@@ -1908,6 +_,10 @@
+ 	public static int TileInteractionLY = -1;
+ 	public static int TileInteractionHX = -1;
+ 	public static int TileInteractionHY = -1;
++	/// <summary>
++	/// Controls which cursor texture will be drawn (<see cref="TextureAssets.Cursors"/>).
++	/// <br/><br/> Suitable values can be found in <see cref="CursorOverrideID"/>
++	/// </summary>
+ 	public static int cursorOverride = -1;
+ 	public static int signHover = -1;
+ 	public static string cMapZoomIn = "Add";
 @@ -1970,7 +_,7 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;
