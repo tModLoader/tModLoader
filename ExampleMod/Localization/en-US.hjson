@@ -157,6 +157,8 @@ Mods: {
 				MapEntry: Basic Tile Entity Tile
 				StatusText: Filled: {0}%
 			}
+
+			DisplayCaseTile.StatusText: Mods.ExampleMod.Tiles.DisplayCaseTile.StatusText
 		}
 
 		Items: {
@@ -1179,6 +1181,11 @@ Mods: {
 
 			ExampleInteractableProjectileItem: {
 				DisplayName: Example Interactable Projectile Item
+				Tooltip: ""
+			}
+
+			DisplayCaseItem: {
+				DisplayName: Display Case Item
 				Tooltip: ""
 			}
 		}
