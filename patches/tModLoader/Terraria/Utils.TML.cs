@@ -275,4 +275,10 @@ partial class Utils
 
 		text2 = "";
 	}
+
+	public static void Deconstruct(this Point point, out int x, out int y)
+	{
+		x = point.X;
+		y = point.Y;
+	}
 }

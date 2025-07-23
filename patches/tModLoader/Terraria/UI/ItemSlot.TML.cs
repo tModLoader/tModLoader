@@ -1,5 +1,6 @@
 using System;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Terraria.UI;
@@ -165,5 +166,22 @@ public partial class ItemSlot
 		}
 
 		return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
+	}
+
+	public static int ContextCount { get; private set; } = Context.Count;
+
+	public static void Unload()
+	{
+		ContextCount = Context.Count;
+	}
+
+	public static int RegisterItemSlotContext(bool canFavoriteAt = false, bool canShareAt = true)
+	{
+		int contextSlot = ContextCount++;
+		Array.Resize(ref ItemSlot.canFavoriteAt, ContextCount);
+		Array.Resize(ref ItemSlot.canShareAt, ContextCount);
+		ItemSlot.canFavoriteAt[contextSlot] = canFavoriteAt;
+		ItemSlot.canShareAt[contextSlot] = canShareAt;
+		return contextSlot;
 	}
 }

@@ -26,6 +26,7 @@ namespace ExampleMod
 			ExampleResourceEffect,
 			StartVictoryPose,
 			CancelVictoryPose,
+			DisplayCaseItemSync,
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -63,6 +64,9 @@ namespace ExampleMod
 					break;
 				case MessageType.StartVictoryPose:
 					VictoryPosePlayer.HandleStartVictoryPoseMessage(reader, whoAmI);
+					break;
+				case MessageType.DisplayCaseItemSync:
+					DisplayCaseTileEntity.HandleDisplayCaseItemSyncMessage(reader, whoAmI);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);

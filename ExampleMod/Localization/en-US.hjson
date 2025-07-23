@@ -158,7 +158,7 @@ Mods: {
 				StatusText: Filled: {0}%
 			}
 
-			DisplayCaseTile.StatusText: Mods.ExampleMod.Tiles.DisplayCaseTile.StatusText
+			DisplayCaseTile.MapEntry: Display Case
 		}
 
 		Items: {

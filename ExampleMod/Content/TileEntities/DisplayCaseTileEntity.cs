@@ -9,7 +9,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
-using Terraria.GameContent.Tile_Entities;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -20,20 +19,25 @@ using Terraria.UI;
 
 namespace ExampleMod.Content.TileEntities
 {
-	// This example shows a few advanced Tile Entity features that are commonly asked about. This example is basically a copy of the Hat Rack tile except it holds potions instead of hat items. Players can place potions on this tile to display them. 
-	// The first concept is item storage. This tile entity stores 6 items and shows the player a chest like interface when interacted with. Shift click an....
+	// This example shows a few advanced Tile Entity concepts that are commonly asked about. This example is basically a copy of the Hat Rack tile except it holds potions instead of hat items. Players can place potions on this tile to display them. 
+	// The first concept is item storage. This tile entity stores 6 items and shows the player a chest like interface when interacted with. All the usual click operations, such as shift-clicking to quickly move to and from inventory, are demonstrated. Also demonstrated is properly syncing changes to individual items.
+	// The second concept is the player's tile entity interaction anchor (player.tileEntityAnchor). This field facilitates exclusive access to tile entities (usually only those that have a UI), preventing other players from accessing the same tile entity in multiplayer and preventing a player from seeing UI from multiple tile entities after interacting with one tile entity and then another (from a different mod, for example). Proper usage of player.tileEntityAnchor will allow players to reliably interact with tile entities and their corresponding UI.
 	public class DisplayCaseTileEntity : ModTileEntity
 	{
 		private const int Capacity = 6;
 		internal Item[] items;
-
-		private static int hatTargetSlot;
+		private static int targetSlot; // Handles cycling destination slots when quick swapping an Item and items is full
 
 		public DisplayCaseTileEntity() {
 			items = new Item[Capacity];
 			for (int i = 0; i < Capacity; i++) {
 				items[i] = new Item();
 			}
+		}
+
+		public override bool IsTileValidForEntity(int x, int y) {
+			Tile tile = Main.tile[x, y];
+			return tile.HasTile && tile.TileType == ModContent.TileType<DisplayCaseTile>();
 		}
 
 		public override void SaveData(TagCompound tag) {
@@ -54,17 +58,45 @@ namespace ExampleMod.Content.TileEntities
 			for (int i = 0; i < Capacity; i++) {
 				items[i] = ItemIO.Receive(reader, readStack: true);
 			}
-
-			// Debugging messages can help verify that the data is properly syncing to clients.
-
-			string data = $"NetReceive called, Position: ({Position.X}, {Position.Y}), items: {string.Join(",", items.Select(x => x.HoverName))}";
-			Main.NewText(data);
-			Console.WriteLine(data);
 		}
 
-		public override bool IsTileValidForEntity(int x, int y) {
-			Tile tile = Main.tile[x, y];
-			return tile.HasTile && tile.TileType == ModContent.TileType<DisplayCaseTile>();
+		// When an item is changed, we send the DisplayCaseItemSync message to sync the changes.
+		public void SendDisplayCaseItemSyncMessage(int itemIndex, int ignoreClient = -1) {
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)ExampleMod.MessageType.DisplayCaseItemSync);
+			packet.Write((byte)Main.myPlayer);
+			packet.Write(ID);
+			packet.Write((byte)itemIndex);
+			ItemIO.Send(items[itemIndex], packet, writeStack: true);
+			packet.Send(ignoreClient: ignoreClient);
+		}
+
+		public static void HandleDisplayCaseItemSyncMessage(BinaryReader reader, int whoAmI) {
+			int player = reader.ReadByte();
+			if (Main.netMode == NetmodeID.Server) {
+				player = whoAmI;
+			}
+
+			int tileEntityID = reader.ReadInt32();
+			int itemIndex = reader.ReadByte();
+			Item item = ItemIO.Receive(reader, readStack: true);
+
+			if (itemIndex >= 6) {
+				return; // Out of range
+			}
+
+			if (!ByID.TryGetValue(tileEntityID, out var tileEntity)) {
+				return;
+			}
+
+			if (tileEntity is DisplayCaseTileEntity displayCaseTileEntity) {
+				displayCaseTileEntity.items[itemIndex] = item;
+
+				if (Main.netMode == NetmodeID.Server) {
+					// Relay the changes to all other connected clients
+					displayCaseTileEntity.SendDisplayCaseItemSyncMessage(itemIndex, ignoreClient: player);
+				}
+			}
 		}
 
 		public override void OnPlayerUpdate(Player player) {
@@ -79,6 +111,7 @@ namespace ExampleMod.Content.TileEntities
 			}
 		}
 
+		// We use OnInventoryDraw to draw a chest-like interface
 		public override void OnInventoryDraw(Player player, SpriteBatch spriteBatch) {
 			Tile tile = Main.tile[player.tileEntityAnchor.X, player.tileEntityAnchor.Y];
 			if (tile.TileType != ModContent.TileType<DisplayCaseTile>()) {
@@ -87,15 +120,15 @@ namespace ExampleMod.Content.TileEntities
 			}
 			else {
 				int style = TileObjectData.GetTileStyle(tile);
-				DrawInventory(player, spriteBatch, style);
+				DrawInterface(player, spriteBatch, style);
 			}
 		}
 
-		private void DrawInventory(Player player, SpriteBatch spriteBatch, int style) {
+		private void DrawInterface(Player player, SpriteBatch spriteBatch, int style) {
 			// This UI code is an example of what is referred to as "immediate mode" UI. This means the UI rendering and interaction is done directly in the code. This is in contrast to what is referred to as "retained mode" UI, where a UI is constructed from objects (UIElement) and persist in memory.
 			// See https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics) and https://en.wikipedia.org/wiki/Retained_mode for more information.
 			// Both approaches have merit, and both are used in Terraria. Most of the gameplay UI in Terraria is "immediate mode", while most of the menus are "retained mode".
-			// This UI could certainly be done with UIState and UIElements instead, but this example shows the "immediate mode" approach to keep things simple and matching vanilla code as much as possible.
+			// This UI could certainly be done with UIState and UIElements instead, but this example uses the "immediate mode" approach to keep things simple and matching vanilla code as much as possible.
 
 			Main.inventoryScale = 0.72f;
 			// Draw a inventory background panel and a custom background for the tile style
@@ -106,27 +139,24 @@ namespace ExampleMod.Content.TileEntities
 			var inventoryBackgroundDimensions = new Rectangle((int)inventoryBackgroundPosition.X, (int)inventoryBackgroundPosition.Y, (int)(backgroundTextureFrame.Width * backgroundTextureScale.X), (int)(backgroundTextureFrame.Height * backgroundTextureScale.Y));
 			inventoryBackgroundDimensions.Inflate(20, 20);
 			Utils.DrawInvBG(spriteBatch, inventoryBackgroundDimensions);
-			spriteBatch.Draw(DisplayCaseTile.inventoryBackgroundTexture.Value, inventoryBackgroundPosition, backgroundTextureFrame, Color.White * 0.6f, 0,Vector2.Zero, backgroundTextureScale, SpriteEffects.None, 0);
+			spriteBatch.Draw(DisplayCaseTile.inventoryBackgroundTexture.Value, inventoryBackgroundPosition, backgroundTextureFrame, Color.White * 0.6f, 0, Vector2.Zero, backgroundTextureScale, SpriteEffects.None, 0);
 
-			// Then draw each item slot
-			DrawSlots(player, spriteBatch, 6, 0, style, inventoryBackgroundPosition, backgroundTextureScale, ItemSlot.Context.ChestItem /*26*/);
+			// Then draw the item slots
+			DrawSlots(player, spriteBatch, Capacity, style, inventoryBackgroundPosition, backgroundTextureScale, DisplayCaseTile.DisplayCaseContext);
 		}
 
-		private void DrawSlots(Player player, SpriteBatch spriteBatch, int slotsToShowLine, int slotsArrayOffset, int tileStyle, Vector2 inventoryBackgroundPosition, Vector2 backgroundTextureScale, int itemSlotContext) {
-
+		private void DrawSlots(Player player, SpriteBatch spriteBatch, int slotsToDraw, int tileStyle, Vector2 inventoryBackgroundPosition, Vector2 backgroundTextureScale, int itemSlotContext) {
 			var InventoryBack = TextureAssets.InventoryBack;
 			float itemSlotWidth = InventoryBack.Width() * Main.inventoryScale;
 			float itemSlotHeight = InventoryBack.Height() * Main.inventoryScale;
 
-			Item[] items = this.items;
-
-			for (int i = 0; i < slotsToShowLine; i++) {
+			for (int i = 0; i < slotsToDraw; i++) {
 				// Draw each item slot mirroring the placement of the items on our display. For a more typical approach, just set x and y based on some math derived from i and how many items per row you want.
 				DisplayCaseTile.Placement placement = DisplayCaseTile.placements[tileStyle][i];
 				int x = (int)(inventoryBackgroundPosition.X + placement.offset.X * backgroundTextureScale.X);
 				int y = (int)(inventoryBackgroundPosition.Y + placement.offset.Y * backgroundTextureScale.Y);
 
-				// Adjust ItemSlot position based off of PlacementAlignment
+				// Adjust ItemSlot position based off of PlacementAlignment to match the relative positions of the items as displayed in-world
 				Rectangle frame = new Rectangle(0, 0, (int)itemSlotWidth, (int)itemSlotHeight);
 				Vector2 drawOrigin = placement.alignment switch {
 					DisplayCaseTile.PlacementAlignment.Centered => frame.Center(),
@@ -140,66 +170,106 @@ namespace ExampleMod.Content.TileEntities
 				// ItemSlot.Handle and ItemSlot.Draw handle drawing and updating the slot and the item contained in the slot.
 				if (Utils.FloatIntersect(Main.mouseX, Main.mouseY, 0f, 0f, x, y, itemSlotWidth, itemSlotHeight) && !PlayerInput.IgnoreMouseInterface) {
 					player.mouseInterface = true;
+					var currentItem = items[i];
+					var currentItemStack = items[i].stack;
+
 					// Handles clicks and hover. OverrideItemSlotHover and OverrideItemSlotLeftClick will be called if this slot is hovered or clicked. They will also be called for inventory slots in a similar manner.
-					ItemSlot.Handle(items, itemSlotContext, i + slotsArrayOffset);
+					ItemSlot.Handle(items, itemSlotContext, i);
+
+					// Since there is no suitable way to hook into right click stacking, we use this logic to detect when the item stack has been changed to sync the changes.
+					if (Main.netMode == NetmodeID.MultiplayerClient && currentItem == items[i] && currentItemStack != items[i].stack) {
+						SendDisplayCaseItemSyncMessage(i);
+					}
 				}
 
-				ItemSlot.Draw(spriteBatch, items, itemSlotContext, i + slotsArrayOffset, new Vector2(x, y));
+				ItemSlot.Draw(spriteBatch, items, itemSlotContext, i, new Vector2(x, y));
 			}
 		}
 
-		// While the player is interacting with this Tile Entity, this method will be called for any ItemSlot that is hovered while the shift key is held down.
+		// While the player is interacting with this Tile Entity, this method will be called for any ItemSlot that is hovered while the shift key is held down, including the new slots we draw in DrawSlots above.
 		public override bool OverrideItemSlotHover(Item[] inv, int context = 0, int slot = 0) {
 			Item item = inv[slot];
 
 			// Check if an inventory item slot with a non-favorited item is being hovered. If it is and our tile accepts the item in that slot, we set Main.cursorOverride accordingly and return true to bypass the vanilla logic and checks.
 			// Note that we don't check for empty space in the tile entity item array in this example because we swap with existing item slots if there is no room remaining. This mirrors the behavior of Hat Rack and Mannequin. If making a more typical chest, you'll want to check for item space here as well.
-			if (!item.IsAir && !inv[slot].favorited && context == ItemSlot.Context.InventoryItem && FitsDisplayCase(item)) {
+			if (!item.IsAir && !item.favorited && context == ItemSlot.Context.InventoryItem && FitsDisplayCase(item)) {
 				Main.cursorOverride = CursorOverrideID.InventoryToChest;
 				return true;
 			}
 
-			// How would it be HatRackHat?
-			if (!item.IsAir && (context == ItemSlot.Context.HatRackHat || context == ItemSlot.Context.HatRackDye) && Main.player[Main.myPlayer].ItemSpace(inv[slot]).CanTakeItemToPersonalInventory) {
+			// For transferring from this Tile Entity to the player inventory, we check ItemSpace and set the cursor if there is space.
+			if (!item.IsAir && context == DisplayCaseTile.DisplayCaseContext && Main.LocalPlayer.ItemSpace(item).CanTakeItemToPersonalInventory) {
 				Main.cursorOverride = CursorOverrideID.ChestToInventory;
 				return true;
 			}
 
-			// Return false to allow vanilla item slot logic to run.
-			// Importantly, this includes setting Main.cursorOverride to CursorOverrideID.ChestToInventory if the slot context is ChestItem (which it is for our slots) and there is space in the player's inventory for the item. 
+			// Return false to allow vanilla item slot logic to run for all other situations
 			return false;
 		}
 
 		// While the player is interacting with this Tile Entity, this method will be called for any ItemSlot that is clicked.
+		// Main.cursorOverride will contain a value indicating intended item movement from code in OverrideItemSlotHover.
 		public override bool OverrideItemSlotLeftClick(Item[] inv, int context = 0, int slot = 0) {
-			// TODO: This is all a bit weird, I wonder if we can't use ChestItem or if we need to handle the item stacking outselves (mouse to displaycase slot stack combine).
-			// TODO: Right click stack split will also do this I think...darn.
-			// Maybe we need a custom context. We need update to check for item changes and sync too, or after ItemSlot.Handle check for item changes.
-
-			if (!ItemSlot.ShiftInUse) {
-				if (context == ItemSlot.Context.ChestItem && inv == items) {
-					// TODO: I don't think this is syncing changes when true.
-					return !(Main.mouseItem.IsAir || FitsDisplayCase(Main.mouseItem));
+			if (ItemSlot.ShiftInUse) {
+				// Shift-clicking an inventory item will attempt to move it to this tile entity.
+				if (Main.cursorOverride == CursorOverrideID.InventoryToChest && context == ItemSlot.Context.InventoryItem) {
+					Item item = inv[slot];
+					if (!item.IsAir && !item.favorited && FitsDisplayCase(item)) {
+						TryFitting(inv, context, slot);
+					}
+					return true;
 				}
-				return false;
-				return context == ItemSlot.Context.ChestItem && inv == items && !FitsDisplayCase(Main.mouseItem);
+
+				// Shift-clicking an item from this tile entity will move it to the player inventory.
+				if (Main.cursorOverride == CursorOverrideID.ChestToInventory && context == DisplayCaseTile.DisplayCaseContext) {
+					inv[slot] = Main.LocalPlayer.GetItem(Main.myPlayer, inv[slot], GetItemSettings.InventoryEntityToPlayerInventorySettings);
+					if (Main.netMode == NetmodeID.MultiplayerClient) {
+						SendDisplayCaseItemSyncMessage(slot);
+					}
+					return true;
+				}
+			}
+
+			// If cursorOverride is set for the chat sharing feature, return false to allow that to happen.
+			if (Main.cursorOverride == CursorOverrideID.Magnifiers) {
 				return false;
 			}
 
-			if (Main.cursorOverride == CursorOverrideID.InventoryToChest && context == ItemSlot.Context.InventoryItem) {
-				Item item = inv[slot];
-				if (Main.cursorOverride == CursorOverrideID.InventoryToChest && !item.IsAir && !item.favorited && context == 0 && FitsDisplayCase(item))
-					return TryFitting(inv, context, slot);
-			}
+			// Handle regular clicks on the item slots for this tile entity:
+			if (context == DisplayCaseTile.DisplayCaseContext && inv == items) {
+				// We check that the mouse is empty or that the mouse item can be placed in our tile entity storage
+				if (Main.mouseItem.IsAir || FitsDisplayCase(Main.mouseItem)) {
+					ref Item item = ref inv[slot]; // It is important that this is a ref variable.
 
-			if ((Main.cursorOverride == CursorOverrideID.ChestToInventory && context == ItemSlot.Context.DisplayDollArmor) || context == ItemSlot.Context.HatRackHat || context == ItemSlot.Context.HatRackDye) {
-				inv[slot] = Main.player[Main.myPlayer].GetItem(Main.myPlayer, inv[slot], GetItemSettings.InventoryEntityToPlayerInventorySettings);
-				if (Main.netMode == NetmodeID.MultiplayerClient)
-					NetMessage.SendData(MessageID.TEHatRackItemSync, -1, -1, null, Main.myPlayer, ID, slot);
+					// All of this logic handles swapping or stacking the mouse and inventory items correctly.
+					if (Main.mouseItem.maxStack <= 1 || item.type != Main.mouseItem.type || item.stack == item.maxStack || Main.mouseItem.stack == Main.mouseItem.maxStack) {
+						Utils.Swap(ref item, ref Main.mouseItem);
+					}
+					if (item.IsAir) {
+						item = new Item();
+					}
+					if (Main.mouseItem.type == item.type) {
+						if (item.stack != item.maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack) {
+							ItemLoader.TryStackItems(item, Main.mouseItem, out int _);
+						}
+					}
+					if (Main.mouseItem.IsAir) {
+						Main.mouseItem = new Item();
+					}
+					if (!Main.mouseItem.IsAir || !item.IsAir) {
+						Recipe.FindRecipes();
+						SoundEngine.PlaySound(SoundID.Grab);
+					}
+					item.favorited = false;
 
+					if (Main.netMode == NetmodeID.MultiplayerClient) {
+						SendDisplayCaseItemSyncMessage(slot);
+					}
+				}
 				return true;
 			}
 
+			// Return false to allow vanilla item slot logic to run for all other situations
 			return false;
 		}
 
@@ -212,51 +282,49 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public static bool FitsDisplayCase(Item item) {
-			return true;
+			// Check if the item is a potion by checking if it uses the typical potion UseSound
 			return item.UseSound?.IsTheSameAs(SoundID.Item3) == true;
-
-			//if (item.maxStack > 1)
-			//	return false;
-
-			//return item.headSlot > 0;
 		}
 
-		private bool TryFitting(Item[] inv, int context = 0, int slot = 0, bool justCheck = false) {
-			if (!FitsDisplayCase(inv[slot]))
+		// This method handles the actual placement of a new item into the tile entity slots
+		private bool TryFitting(Item[] sourceInv, int context = 0, int sourceSlot = 0, bool justCheck = false) {
+			if (!FitsDisplayCase(sourceInv[sourceSlot])) {
 				return false;
+			}
 
-			if (justCheck)
+			if (justCheck) {
 				return true;
+			}
 
-			int num = hatTargetSlot;
-			hatTargetSlot++;
+			int destinationSlot = targetSlot;
+			targetSlot++;
 			for (int i = 0; i < Capacity; i++) {
 				if (items[i].IsAir) {
-					num = i;
-					hatTargetSlot = i + 1;
+					destinationSlot = i;
+					targetSlot = i + 1;
 					break;
 				}
 			}
 
 			for (int j = 0; j < Capacity; j++) {
-				if (inv[slot].type == items[j].type)
-					num = j;
+				if (sourceInv[sourceSlot].type == items[j].type)
+					destinationSlot = j;
 			}
 
-			if (hatTargetSlot >= Capacity)
-				hatTargetSlot = 0;
+			if (targetSlot >= Capacity) {
+				targetSlot = 0;
+			}
 
 			SoundEngine.PlaySound(SoundID.Grab);
-			Utils.Swap(ref items[num], ref inv[slot]);
+			Utils.Swap(ref items[destinationSlot], ref sourceInv[sourceSlot]);
+
 			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				NetMessage.SendData(MessageID.TEHatRackItemSync, number: Main.myPlayer, number2: ID, number3: num);
+				SendDisplayCaseItemSyncMessage(destinationSlot);
 			}
 
 			return true;
 		}
 	}
-
-
 
 	public class DisplayCaseTile : ModTile
 	{
@@ -265,7 +333,6 @@ namespace ExampleMod.Content.TileEntities
 		{
 			public Vector2 offset;
 			public PlacementAlignment alignment;
-			// TODO: available space.
 			public Placement(Vector2 offset, PlacementAlignment align) {
 				this.offset = offset;
 				this.alignment = align;
@@ -279,9 +346,9 @@ namespace ExampleMod.Content.TileEntities
 			Hanging,
 		}
 
-		static int[] capacity = [6, 6];
+		// Custom placement data for each item slot for each tile style
 		internal static Placement[][] placements = [
-			[
+			[ // Style 0:
 				new (new(10, 24), PlacementAlignment.Sitting),
 				new (new Vector2(24, 24), PlacementAlignment.Sitting),
 				new (new Vector2(38, 24), PlacementAlignment.Sitting),
@@ -289,7 +356,7 @@ namespace ExampleMod.Content.TileEntities
 				new (new Vector2(24, 44), PlacementAlignment.Sitting),
 				new (new Vector2(36, 44), PlacementAlignment.Sitting),
 			],
-			[
+			[ // Style 1:
 				new (new Vector2(8, 7), PlacementAlignment.Centered),
 				new (new Vector2(35, 9), PlacementAlignment.Sitting),
 				new (new Vector2(6, 26), PlacementAlignment.Centered),
@@ -299,12 +366,14 @@ namespace ExampleMod.Content.TileEntities
 			],
 		];
 
-		public static LocalizedText StatusText { get; private set; }
-
 		internal static Asset<Texture2D> inventoryBackgroundTexture;
+		internal static int DisplayCaseContext;
 
 		public override void Load() {
 			inventoryBackgroundTexture = ModContent.Request<Texture2D>(Texture + "_InventoryBackground");
+
+			// Vanilla ItemSlot.Context values are not suitable to use for our custom inventory slots, so we request a unique context number.
+			DisplayCaseContext = ItemSlot.RegisterItemSlotContext();
 		}
 
 		public override void SetStaticDefaults() {
@@ -317,12 +386,17 @@ namespace ExampleMod.Content.TileEntities
 
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.AvoidedByMeteorLanding[Type] = true;
+			TileID.Sets.PreventsTileRemovalIfOnTopOfIt[Type] = true;
+			TileID.Sets.PreventsTileHammeringIfOnTopOfIt[Type] = true;
+			TileID.Sets.PreventsSandfall[Type] = true;
+			TileID.Sets.DrawTileInSolidLayer[Type] = true;
+			TileID.Sets.InteractibleByNPCs[Type] = true;
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
 
 			// Tell the tile to place the Tile Entity on the tile after placing it.
-			//TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<DisplayCaseTileEntity>().Hook_AfterPlacement, -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = ModContent.GetInstance<DisplayCaseTileEntity>().Generic_HookPostPlaceMyPlayer;
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.RandomStyleRange = 2;
@@ -331,9 +405,10 @@ namespace ExampleMod.Content.TileEntities
 			RegisterItemDrop(ModContent.ItemType<DisplayCaseItem>(), 1);
 
 			// Etc
-			//AddMapEntry(new Color(200, 200, 200), CreateMapEntryName(), MapHoverText);
+			AddMapEntry(new Color(191, 142, 111), CreateMapEntryName());
 
-			StatusText = this.GetLocalization(nameof(StatusText));
+			//DustType
+			DustType = DustID.Dirt;
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
@@ -346,53 +421,22 @@ namespace ExampleMod.Content.TileEntities
 		}
 
 		public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
-			//if (TryGetBasicTileEntity(i, j, out DisplayCaseTileEntity tileEntity) && tileEntity.WaterFillPercentage == 100) {
-			//	fail = true;
-
-			//	if (Main.netMode != NetmodeID.MultiplayerClient) {
-			//		//Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_TileInteraction(i, j), ItemID.WaterBucket);
-			//		Item.NewItem(new EntitySource_TileBreak(i, j), tileEntity.Position.X * 16, tileEntity.Position.Y * 16, 32, 32, ItemID.WaterBucket);
-			//		tileEntity.WaterFillLevel = 0;
-			//	}
-
-			//	if (Main.netMode != NetmodeID.Server) {
-			//		Main.LocalPlayer.InterruptItemUsageIfOverTile(Type);
-			//	}
-
-			//	SoundEngine.PlaySound(SoundID.Drown);
-			//}
+			if (!TileEntity.TryGet(i, j, out DisplayCaseTileEntity tileEntity)) {
+				return;
+			}
+			// If there are any items, we prevent this tile from being killed.
+			// This is the typical expected behavior for tiles with inventory items, but you could choose to instead allow the tile to be killed and just drop all the contained items with it if you prefer. 
+			if (tileEntity.items.Any(x => !x.IsAir)) {
+				fail = true;
+			}
 		}
 
-		// The following hooks all show accessing the Tile Entity and using it to adjust the behavior and look of this Tile.
-
-		/*public static string MapHoverText(string name, int i, int j) {
-			if (TryGetBasicTileEntity(i, j, out DisplayCaseTileEntity tileEntity)) {
-				return StatusText.Format(tileEntity.WaterFillPercentage);
+		public override void NumDust(int i, int j, bool fail, ref int num) {
+			if (fail) {
+				// If this tile can't be destroyed currently (has items), don't spawn any dust when hit.
+				num = 0;
 			}
-			else {
-				// Note that it is possible for a map entry to be queried for a tile location that doesn't have a TileEntity anymore.
-				// This can happen in multiplayer when a world section hasn't been synced yet or when a players map hasn't been updated to match changes to the world.
-				// This code shows detecting those situations, but the basic lesson is don't assume a TileEntity will always be present.
-				Point16 topLeft = TileObjectData.TopLeft(i, j);
-				if (!Main.sectionManager.TileLoaded(topLeft.X, topLeft.Y)) {
-					return $"{name}: World section not loaded yet";
-				}
-				return $"{name}: No TileEntity found at coordinate";
-			}
-		}*/
-
-		//public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-		//	if (TryGetBasicTileEntity(i, j, out DisplayCaseTileEntity tileEntity)) {
-		//		tileFrameY = (short)(tileFrameY + (tileEntity.WaterFillStage * 38));
-
-		//		// We can uncomment this code to spawn dust at the tile entity position for debugging purposes. Some developer mods also have tools to visualize tile entities.
-		//		/*
-		//		if (TileObjectData.IsTopLeft(i, j)) {
-		//			Dust.QuickDust(tileEntity.Position.X, tileEntity.Position.Y, Color.Green);
-		//		}
-		//		*/
-		//	}
-		//}
+		}
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
@@ -414,7 +458,6 @@ namespace ExampleMod.Content.TileEntities
 
 			return true;
 		}
-
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			if (TileObjectData.IsTopLeft(i, j)) {
@@ -468,11 +511,11 @@ namespace ExampleMod.Content.TileEntities
 				drawScale *= item.scale;
 				SpriteEffects effects = SpriteEffects.None;
 				Color lightingColor = Lighting.GetColor(i, j);
-				Color color20 = lightingColor;
+				Color itemColor = lightingColor;
 				float scale = 1f;
-				ItemSlot.GetItemLight(ref color20, ref scale, item, false);
+				ItemSlot.GetItemLight(ref itemColor, ref scale, item, false);
 				drawScale *= scale;
-				Main.spriteBatch.Draw(itemTexture, offset + new Vector2((i * 16 - (int)Main.screenPosition.X), (j * 16 - (int)Main.screenPosition.Y)) + zero, itemFrame, color20, 0f, drawOrigin, drawScale, effects, 0f);
+				Main.spriteBatch.Draw(itemTexture, offset + new Vector2((i * 16 - (int)Main.screenPosition.X), (j * 16 - (int)Main.screenPosition.Y)) + zero, itemFrame, itemColor, 0f, drawOrigin, drawScale, effects, 0f);
 				if (item.color != default) {
 					Main.spriteBatch.Draw(itemTexture, offset + new Vector2(i * 16 - (int)Main.screenPosition.X + 16, j * 16 - (int)Main.screenPosition.Y + 16) + zero, itemFrame, item.GetColor(lightingColor), 0f, new Vector2(itemWidth / 2, itemHeight / 2), drawScale, effects, 0f);
 				}

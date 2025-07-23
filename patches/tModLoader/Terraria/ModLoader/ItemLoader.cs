@@ -155,6 +155,7 @@ public static class ItemLoader
 		GlobalList<GlobalItem>.Reset();
 		modHooks.Clear();
 		UpdateHookLists();
+		ItemSlot.Unload();
 	}
 
 	internal static bool IsModItem(int index)
