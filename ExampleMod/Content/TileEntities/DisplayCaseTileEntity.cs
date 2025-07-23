@@ -182,7 +182,8 @@ namespace ExampleMod.Content.TileEntities
 					}
 				}
 
-				ItemSlot.Draw(spriteBatch, items, itemSlotContext, i, new Vector2(x, y));
+				// We use ItemSlot.Context.ChestItem instead of DisplayCaseTile.DisplayCaseContext for drawing so that the item slot is drawn with a red background, like chests.
+				ItemSlot.Draw(spriteBatch, items, ItemSlot.Context.ChestItem, i, new Vector2(x, y));
 			}
 		}
 
