@@ -41,7 +41,10 @@ public abstract class ModTile : ModBlockType
 
 	public override string LocalizationCategory => "Tiles";
 
-	/// <summary> The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture. </summary>
+	/// <summary>
+	/// The highlight texture used when this tile is selected by smart interact. Defaults to adding "_Highlight" onto the main texture.
+	/// <br/><br/> <see cref="TileID.Sets.HasOutlines"/> must be set to true for this to texture to be used.
+	/// </summary>
 	public virtual string HighlightTexture => Texture + "_Highlight";
 
 	public bool IsDoor => TileID.Sets.OpenDoorID[Type] != -1 || TileID.Sets.CloseDoorID[Type] != -1;

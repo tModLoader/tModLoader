@@ -2051,7 +2051,19 @@
  							WorldGen.KillWall(k, l);
  							if (Main.tile[k, l].wall == 0 && Main.netMode != 0)
  								NetMessage.SendData(17, -1, -1, null, 2, k, l);
-@@ -56860,6 +_,9 @@
+@@ -56851,15 +_,21 @@
+ 
+ 	public bool IsInteractible()
+ 	{
++		return ProjectileID.Sets.IsInteractable[type];
++		/*
+ 		int num = type;
+ 		if (num == 525 || num == 734 || num == 960)
+ 			return true;
+ 
+ 		return false;
++		*/
+ 	}
  
  	public Color GetAlpha(Color newColor)
  	{

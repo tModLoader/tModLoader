@@ -78,5 +78,12 @@ partial class ProjectileID
 			MiniNukeRocketI, MiniNukeGrenadeI, MiniNukeMineI, MiniNukeRocketII, MiniNukeGrenadeII, MiniNukeMineII, DryRocket, DryGrenade, DryMine, ClusterSnowmanRocketI,
 			ClusterSnowmanRocketII, WetSnowmanRocket, LavaSnowmanRocket, HoneySnowmanRocket, MiniNukeSnowmanRocketI, MiniNukeSnowmanRocketII, DrySnowmanRocket,
 			ClusterSnowmanFragmentsI, ClusterSnowmanFragmentsII, WetBomb, LavaBomb, HoneyBomb, DryBomb, DirtBomb, DirtStickyBomb, SantankMountRocket, TNTBarrel);
+
+		/// <summary>
+		/// This projectile is a candidate for player interaction. The projectile will be able to be targeted with smart cursor. Projectile that can be right clicked should set this to true.
+		/// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/tree/1.4.4/ExampleMod/Content/Projectiles/ExampleInteractableProjectile.cs">ExampleInteractableProjectile.cs</see> example demonstrates properly implementing an interactable projectile. 
+		/// <br/><br/> Defaults to false. Vanilla entries include <see cref="FlyingPiggyBank"/>, <see cref="VoidLens"/>, and <see cref="ChesterPet"/>.
+		/// </summary>
+		public static bool[] IsInteractable = Factory.CreateBoolSet(false, 525, 734, 960);
 	}
 }

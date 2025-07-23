@@ -1176,6 +1176,11 @@ Mods: {
 				DisplayName: Sapphire Earrings
 				Tooltip: ""
 			}
+
+			ExampleInteractableProjectileItem: {
+				DisplayName: Example Interactable Projectile Item
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1223,6 +1228,7 @@ Mods: {
 			ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
 			ExampleArrowProjectile.DisplayName: Example Arrow Projectile
 			ExampleHellSolutionProjectile.DisplayName: Example Hell Solution Projectile
+			ExampleInteractableProjectile.DisplayName: Example Interactable Projectile
 		}
 
 		Buffs: {
