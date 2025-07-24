@@ -1181,6 +1181,11 @@ Mods: {
 				DisplayName: Example Interactable Projectile Item
 				Tooltip: ""
 			}
+
+			ExampleCustomUseStyleWeapon: {
+				DisplayName: Example Custom UseStyle Weapon
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
