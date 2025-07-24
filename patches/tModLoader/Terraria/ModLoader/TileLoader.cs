@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -721,21 +722,26 @@ public static class TileLoader
 	public static bool Convert(int i, int j, int conversionType)
 	{
 		int type = Main.tile[i, j].type;
-		int currentType = type;
-		while (currentType != -1) {
-			var list = tileConversionDelegates[currentType]?[conversionType];
-			if (list != null) {
-				foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-					if (!hook(i, j, type, conversionType)) {
-						return false;
-					}
+		var list = tileConversionDelegates[type]?[conversionType];
+		if (list != null) {
+			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
+				if (!hook(i, j, type, conversionType)) {
+					return false;
 				}
 			}
-			currentType = TileID.Sets.ConversionFallback[currentType];
 		}
 
 		ModTile modTile = GetTile(type);
 		modTile?.Convert(i, j, conversionType);
+		if (Main.tile[i, j].type == type) {
+			int fallback = TileID.Sets.ConversionFallback[type];
+			if (fallback != -1) {
+				Main.tile[i, j].type = (ushort)fallback;
+				WorldGen.Convert(i, j, conversionType, 0, walls: false);
+				if (Main.tile[i, j].type == fallback)
+					Main.tile[i, j].type = (ushort)type;
+			}
+		}
 		return true;
 	}
 
