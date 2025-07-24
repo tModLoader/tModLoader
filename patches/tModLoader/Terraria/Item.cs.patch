@@ -298,7 +298,7 @@
  	public int holdStyle;
 +
 +	/// <summary>
-+	/// Assign to an <see cref="ItemUseStyleID"/> value to give this item a specific animation while in use. Leave as 0 and use <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
++	/// Assign to an <see cref="ItemUseStyleID"/> value to give this item a specific animation while in use. Set to any number over 30 and use <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
 +	/// <br/> Defaults to <see cref="ItemUseStyleID.None"/>.
 +	/// </summary>
  	public int useStyle;
