@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria.GameContent.Drawing;
 using Terraria.ModLoader;
 
@@ -187,7 +188,27 @@ partial class TileID
 		/// <summary>
 		/// The ID of the tile that a tile will be treated as in <see cref="TileLoader.Convert"/> if it doesn't have its own conversion
 		/// </summary>
-		public static int[] ConversionFallback = Factory.CreateIntSet(-1);
+		public static int[] ConversionFallback = Factory.CreateIntSet(-1, [
+			..CreateConversionFallbacks(TileID.Stone, Ebonstone, Crimstone, Pearlstone),
+			..CreateConversionFallbacks(TileID.Grass, CorruptGrass, CrimsonGrass, HallowedGrass),
+			..CreateConversionFallbacks(GolfGrass, GolfGrassHallowed),
+			..CreateConversionFallbacks(TileID.Grass, GolfGrass),
+			// removed to preserve vanilla oversight requiring 2 solutions to convert between evil and mushroom
+			// please let me fix this
+			//..CreateConversionFallbacks(JungleGrass, CorruptJungleGrass, CrimsonJungleGrass, MushroomGrass),
+			..CreateConversionFallbacks(IceBlock, CorruptIce, FleshIce, FleshIce),
+			..CreateConversionFallbacks(Sand, Ebonsand, Crimsand, Pearlsand),
+			..CreateConversionFallbacks(HardenedSand, CorruptHardenedSand, CrimsonHardenedSand, HallowHardenedSand),
+			..CreateConversionFallbacks(Sandstone, CorruptSandstone, CrimsonSandstone, HallowSandstone),
+			]
+		);
+		static IEnumerable<int> CreateConversionFallbacks(int baseTile, params int[] children)
+		{
+			for (int i = 0; i < children.Length; i++) {
+				yield return children[i];
+				yield return baseTile;
+			}
+		}
 
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)
