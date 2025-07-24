@@ -1222,8 +1222,11 @@
  	public bool ZoneUnderworldHeight {
  		get {
  			return zone3[4];
-@@ -1998,18 +_,20 @@
+@@ -1996,20 +_,23 @@
+ 		}
+ 	}
  
++	/// <summary> A Vector2 comprised of <see cref="Entity.direction"/> (X) and <see cref="gravDir"/> (Y). </summary>
  	public Vector2 Directions => new Vector2(direction, gravDir);
  
 +	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
