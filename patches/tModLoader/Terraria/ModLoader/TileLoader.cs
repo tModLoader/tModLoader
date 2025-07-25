@@ -47,6 +47,7 @@ public static class TileLoader
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
 	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
 	internal static List<ConvertTile>[][] tileConversionDelegates = null;
+	private static ushort? conversionOriginalType;
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -723,9 +724,12 @@ public static class TileLoader
 	{
 		int type = Main.tile[i, j].type;
 		var list = tileConversionDelegates[type]?[conversionType];
+		if (conversionOriginalType.HasValue)
+			Main.tile[i, j].type = conversionOriginalType.Value;
 		if (list != null) {
 			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-				if (!hook(i, j, type, conversionType)) {
+				if (!hook(i, j, (conversionOriginalType ?? type), conversionType)) {
+					conversionOriginalType = null;
 					return false;
 				}
 			}
@@ -733,13 +737,19 @@ public static class TileLoader
 
 		ModTile modTile = GetTile(type);
 		modTile?.Convert(i, j, conversionType);
-		if (Main.tile[i, j].type == type) {
+		if (Main.tile[i, j].type == (conversionOriginalType ?? type)) {
 			int fallback = TileID.Sets.ConversionFallback[type];
 			if (fallback != -1) {
+				if (!conversionOriginalType.HasValue)
+					conversionOriginalType = (ushort)type;
+
 				Main.tile[i, j].type = (ushort)fallback;
 				WorldGen.Convert(i, j, conversionType, 0, walls: false);
 				if (Main.tile[i, j].type == fallback)
 					Main.tile[i, j].type = (ushort)type;
+
+				if (conversionOriginalType == type)
+					conversionOriginalType = null;
 			}
 		}
 		return true;
