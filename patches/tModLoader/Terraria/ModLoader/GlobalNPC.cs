@@ -87,7 +87,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
-	/// <br/><br/> This hook is only called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="true">.
+	/// <br/><br/> This hook is only called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="true"/>.
 	/// <br/><br/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC in question.</param>
@@ -98,7 +98,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Called when the the NPC is selected via smart interact, or when the mouse is hovering over it.
-	/// <br/>Only works on NPCs where <see cref="NPC.ShowNameOnHover"/> returns <see langword="true">
+	/// <br/><br/> Only works on NPCs where <see cref="NPC.ShowNameOnHover"/> returns <see langword="true"/>.
 	/// </summary>
 	/// <param name="npc">The NPC in question.</param>
 	/// <param name="mouseIntersects">Whether or not mouse is actually hovering over the NPC's bounding box.</param>
