@@ -312,6 +312,22 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		var relPath = resource.Substring(mod.path.Length + 1);
 		using (var src = File.OpenRead(resource))
 		using (var dst = new MemoryStream()) {
+			// Skip icon_small if it is unchanged since it is optional
+			if (relPath == "icon_small.png") {
+				using var defaultIconStream = typeof(ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/icon_small.png");
+				using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+				defaultIconStream.CopyTo(defaultIconMemoryStream);
+				var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+
+				using var modIconMemoryStream = new MemoryStream();
+				src.CopyTo(modIconMemoryStream);
+				var modIconBytes = (ReadOnlySpan<byte>)modIconMemoryStream.GetBuffer();
+
+				if (modIconBytes.SequenceEqual(defaultIconBytes)) {
+					return;
+				}
+			}
+
 			if (!ContentConverters.Convert(ref relPath, src, dst))
 				src.CopyTo(dst);
 

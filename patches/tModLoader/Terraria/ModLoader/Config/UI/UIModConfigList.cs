@@ -282,6 +282,7 @@ internal class UIModConfigList : UIState
 			configPanel.Append(sideIndicator);
 		}
 	}
+
 	private UIElement GetSmallIcon(Mod mod)
 	{
 		Asset<Texture2D> asset;
@@ -298,6 +299,7 @@ internal class UIModConfigList : UIState
 		}
 		return null;
 	}
+
 	public override void Draw(SpriteBatch spriteBatch)
 	{
 		base.Draw(spriteBatch);
