@@ -180,14 +180,7 @@ internal class UIModConfigList : UIState
 					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
-				float width = ChatManager.GetStringSize(FontAssets.MouseText.Value, modPanel.Text, new Vector2(modPanel.TextScaleMax)).X;
-				UIElement icon = GetSmallIcon(mod);
-				if (icon != null && width < uIElement.MaxWidth.Pixels * 0.35f) {
-					icon.Left = new StyleDimension(-width / 2 - 18, 0);
-					modPanel.PaddingLeft = 40;
-					modPanel.TextOriginX = 0.85f;
-					modPanel.Append(icon);
-				}
+				AddSmallIcon(mod, modPanel);
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					selectedMod = mod;
@@ -210,16 +203,21 @@ internal class UIModConfigList : UIState
 					TooltipText = true,
 					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
 				};
-				float width = ChatManager.GetStringSize(FontAssets.MouseText.Value, modPanel.Text, new Vector2(modPanel.TextScaleMax)).X;
-				UIElement icon = GetSmallIcon(mod);
-				if (icon != null && width < uIElement.MaxWidth.Pixels * 0.35f) {
-					icon.Left = new StyleDimension(-width / 2 - 18, 0);
-					modPanel.PaddingLeft = 40;
-					modPanel.TextOriginX = 0.85f;
-					modPanel.Append(icon);
-				}
+				AddSmallIcon(mod, modPanel);
 
 				modList.Add(modPanel);
+			}
+		}
+
+		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
+		{
+			float width = ChatManager.GetStringSize(FontAssets.MouseText.Value, modPanel.Text, new Vector2(modPanel.TextScaleMax)).X;
+			UIElement icon = GetSmallIcon(mod);
+			if (icon != null && width < uIElement.MaxWidth.Pixels * 0.35f) {
+				icon.Left = new StyleDimension(-width / 2 - 18, 0);
+				modPanel.PaddingLeft = 40;
+				modPanel.TextOriginX = 0.85f;
+				modPanel.Append(icon);
 			}
 		}
 	}
