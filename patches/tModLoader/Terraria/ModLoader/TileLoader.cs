@@ -47,7 +47,7 @@ public static class TileLoader
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
 	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
 	internal static List<ConvertTile>[][] tileConversionDelegates = null;
-	private static ushort? conversionOriginalType;
+	internal static ushort? conversionOriginalType;
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -745,11 +745,15 @@ public static class TileLoader
 
 				Main.tile[i, j].type = (ushort)fallback;
 				WorldGen.Convert(i, j, conversionType, 0, walls: false);
-				if (Main.tile[i, j].type == fallback)
-					Main.tile[i, j].type = (ushort)type;
-
 				if (conversionOriginalType == type)
 					conversionOriginalType = null;
+
+				if (Main.tile[i, j].type == fallback) {
+					Main.tile[i, j].type = (ushort)type;
+				}
+				else if (!conversionOriginalType.HasValue) {
+					WorldGen.SquareTileFrame(i, j);
+				}
 			}
 		}
 		return true;
