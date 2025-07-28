@@ -151,16 +151,13 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
-	/// <summary>
-	/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
-	/// SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type">The Tile type of the tile being drawn</param>
-	/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
-	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
+	/// <inheritdoc cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/>
 	public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
+	}
+
+	/// <inheritdoc cref="ModTile.EmitParticles(int, int, Tile, short, short, Color, bool)"/>
+	public virtual void EmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
 	}
 
@@ -172,6 +169,42 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type">The Tile type of the tile being drawn</param>
 	/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
 	public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile.
+	/// <br/><br/> Make sure to use <paramref name="frame"/> for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.
+	/// <br/><br/> Return false to stop this section from drawing normally. Returns true by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The Tile type of the preview that will be drawn.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="frame">The source rectangle that this section will use for rendering.</param>
+	/// <param name="position">The position at which this section will be drawn.</param>
+	/// <param name="color">The color with which this section will be drawn. This is red when overlapping with another tile.</param>
+	/// <param name="validPlacement">Indicates if the tile can occupy this location.</param>
+	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that will be used to draw this section.</param>
+	public virtual bool PreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile.
+	/// <br/><br/> Make sure to use <paramref name="frame"/> for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The Tile type of the preview that was drawn.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="frame">The source rectangle that was used for rendering this section.</param>
+	/// <param name="position">The position at which this section was drawn.</param>
+	/// <param name="color">The color with which this section was drawn.</param>
+	/// <param name="validPlacement">Indicates if the tile can occupy this location.</param>
+	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that were used to draw this section.</param>
+	public virtual void PostDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, bool validPlacement, SpriteEffects spriteEffects)
 	{
 	}
 

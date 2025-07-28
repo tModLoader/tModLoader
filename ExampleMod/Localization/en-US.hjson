@@ -23,6 +23,34 @@ Mods: {
 
 		Currencies.ExampleCustomCurrency: example items
 		DamageClasses.ExampleDamageClass.DisplayName: example damage
+		ExampleFishingPlayer.Wrong: Something's wrong...
+
+		InfoDisplays: {
+			ExampleInfoDisplay: {
+				DisplayName: Minion Count
+				CurrentMinions: "{0} minions"
+				NoMinions: No minions
+			}
+		}
+
+		WeaponWithGrowingDamage: {
+			Level: Level: {0}
+			Experience: Experience: {0} ({1} to next level)
+		}
+
+		ExampleModWingSlot: {
+			Wings: Wings
+			WingsDye: Wings Dye
+		}
+
+		GelGlobalItem.SpecialShiftClick: Shift-click on this item from your inventory to get a random color and rarity!
+		ExampleProjectileModifications.HitMessage: This NPC has been hit with a modified projectile {0} times.
+
+		ExampleKeybindPlayer: {
+			RandomBuff: ExampleMod's ModKeybind was just pressed. The {0} buff was given to the player.
+			LearningExampleHeld: LearningExampleKeybind held for half a second
+			LearningExampleDoubleTap: LearningExampleKeybind double tapped within a quarter of a second
+		}
 
 		Keybinds: {
 			RandomBuff.DisplayName: Random Buff
@@ -30,7 +58,11 @@ Mods: {
 		}
 
 		NPCs: {
-			ExampleCustomAISlimeNPC.DisplayName: Flutter Slime
+			ExampleCustomAISlimeNPC: {
+				DisplayName: Flutter Slime
+				GotStomped: You got stomped
+			}
+
 			# Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
 			ExampleTravellingMerchant.DisplayName: Example Traveler
 			ExampleBoneMerchant.DisplayName: Example Bone Merchant
@@ -61,6 +93,9 @@ Mods: {
 
 				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
 				Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
+				Upgraded: I upgraded your {$ItemName.HiveBackpack} to a {$Mods.ExampleMod.Items.WaspNest.DisplayName}
+				DeathMessage: "{0} is gone..."
+				DeathMessageAlt: "{0} faded out of existence..."
 			}
 
 			ExampleTravelingMerchant.DisplayName: Example Traveling Merchant
@@ -73,6 +108,7 @@ Mods: {
 				DisplayName: Minion Boss
 				# This is part of ModIntegrationsSystem.cs: Information for the player so he knows how to encounter the boss
 				BossChecklistIntegration.SpawnInfo: Use a [i:ExampleMod/MinionBossSummonItem]
+				BossFightName: The Minion Boss and his minions
 			}
 
 			MinionBossMinion.DisplayName: Minion Boss Minion
@@ -107,6 +143,7 @@ Mods: {
 			ExampleChest: {
 				MapEntry0: Example Chest
 				MapEntry1: Locked Example Chest
+				Locked: The chest stubbornly refuses to open in the light of the day. Try again at night.
 			}
 
 			ExampleDresser.MapEntry: Example Dresser
@@ -114,6 +151,11 @@ Mods: {
 			ExampleSign: {
 				DefaultSignText: Right-click me!
 				MapEntry: Example Sign
+			}
+
+			BasicTileEntityTile: {
+				MapEntry: Basic Tile Entity Tile
+				StatusText: Filled: {0}%
 			}
 		}
 
@@ -243,8 +285,8 @@ Mods: {
 				Tooltip: Chases enemies through walls
 			}
 
-			ExampleSolutionItem: {
-				DisplayName: Monochromatic Solution
+			ExampleSolution: {
+				DisplayName: Example Solution
 				Tooltip:
 					'''
 					Used by the Clentaminator
@@ -321,6 +363,9 @@ Mods: {
 				DisplayName: Example CanStack Item: Gift Bag
 				# References a language key that says "Right Click To Open" in the language of the game
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				CraftedPlayerNameCannotOpen: You crafted this bag and cannot open it!
+				CraftedPlayerNameOther: This is a bag from {0}, open it to receive a gift!
+				CraftedPlayerNameEmpty: This bag was not crafted, it will do nothing
 			}
 
 			ExampleCratePotion: {
@@ -398,6 +443,7 @@ Mods: {
 			ExampleDataItem: {
 				DisplayName: Hot Potato
 				Tooltip: Something magical happens when the timer runs out...
+				Countdown: You have {0} seconds left!
 			}
 
 			ExampleDye: {
@@ -418,6 +464,7 @@ Mods: {
 			ExampleInstancedItem: {
 				DisplayName: Example Instanced Item
 				Tooltip: ""
+				EM: Example {0}
 			}
 
 			ExampleItem: {
@@ -444,11 +491,16 @@ Mods: {
 			ExampleQuestFish: {
 				DisplayName: Upside-down Fish
 				Tooltip: ""
+				Description: I've heard stories of a fish that swims upside-down. Supposedly you have the stand upside-down yourself to even find one. One of those would go great on my ceiling. Go fetch!
+				CatchLocation: Caught anywhere while standing upside-down.
 			}
 
 			ExampleResearchPresent: {
 				DisplayName: Example Present
 				Tooltip: Contains a random accessory! Try researching it for infinite of it!
+				NoAccessory: No new accessory...
+				NewAccessory: Learned {0} new accessor{^0:y;ies}!
+				AllAccessory: You got all accessories!
 			}
 
 			ExampleSoul: {
@@ -459,6 +511,7 @@ Mods: {
 			ExampleStackableDurabilityItem: {
 				DisplayName: Example Stackable Durability Item
 				Tooltip: ""
+				Durability: Durability: {0}%
 			}
 
 			ExampleTooltipsItem: {
@@ -469,6 +522,8 @@ Mods: {
 					How are you feeling today?
 					[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:5236][i:5230][i/s123:1508]
 					'''
+				RemoveMe: This tooltip won't show in-game
+				Face: I'm feeling just fine!
 			}
 
 			ExampleBar: {
@@ -640,6 +695,8 @@ Mods: {
 					This item showcases each UseStyle.
 					<right> to cycle through UseStyles.
 					'''
+				Switching: Switching to ItemUseStyleID #{0}
+				ThisIs: This is ItemUseStyleID #{0}
 			}
 
 			ExampleAdvancedFlail: {
@@ -800,6 +857,8 @@ Mods: {
 					This item showcases each HoldStyle.
 					<right> to cycle through HoldStyles.
 					'''
+				Switching: Switching to ItemHoldStyleID #{0}
+				ThisIs: This is ItemHoldStyleID #{0}
 			}
 
 			ShimmerShowcaseCrimsonCorruption: {
@@ -844,6 +903,16 @@ Mods: {
 			HitModifiersShowcase: {
 				DisplayName: Hit Modifiers Showcase
 				Tooltip: ""
+				Switching: Switching to mode #{0}: {1}
+				CurrentMode: Mode #{0}: {1}
+				Mode_0: Normal damage behavior
+				Mode_1: Damage variation disabled
+				Mode_2: "{0}% extra knockback"
+				Mode_3: "{0}% extra critical hit damage"
+				Mode_4: "{0} extra armor penetration. Test against high defense enemy"
+				Mode_5: "{0}% extra armor penetration. Ignores {0}% of enemy defense"
+				Mode_6: Will apply ExampleDefenseDebuff, reducing defense by {0}%
+				Mode_7: On hit, gives player ExampleDodgeBuff to dodge the next hit
 			}
 
 			AbsorbTeamDamageAccessory: {
@@ -1017,6 +1086,12 @@ Mods: {
 			CustomItemDrawingShowcase: {
 				DisplayName: Custom Item Drawing Showcase
 				Tooltip: ""
+				RightClick: Switching to drawMode #{0}: {1}
+				DrawMode_0: Draw an overlay/glowmask
+				DrawMode_1: Scale drawing to make a pulse effect similar to Soul items
+				DrawMode_2: Draw a texture behind the item
+				DrawMode_3: Draw a highlight border similar to the Boss Bag visual effect
+				DrawMode_4: Draws the item rocking left and right
 			}
 
 			ExampleSandRod: {
@@ -1036,6 +1111,75 @@ Mods: {
 			ExampleWormHeadBanner: {
 				DisplayName: "{$NPCs.ExampleWormHead.DisplayName} Banner"
 				Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
+			}
+
+			ExampleChandelier: {
+				DisplayName: Example Chandelier
+				Tooltip: ""
+			}
+
+			BasicTileEntityItem: {
+				DisplayName: Basic Tile Entity Item
+				Tooltip: Collects rain water. Right Click when full to claim a water bucket.
+			}
+
+			CorruptFossilTileItem: {
+				DisplayName: Corrupt Fossil Tile Item
+				Tooltip: ""
+			}
+
+			CrimsonFossilTileItem: {
+				DisplayName: Crimson Fossil Tile Item
+				Tooltip: ""
+			}
+
+			HallowedFossilTileItem: {
+				DisplayName: Hallowed Fossil Tile Item
+				Tooltip: ""
+			}
+
+			CorruptFossilWallItem: {
+				DisplayName: Corrupt Fossil Wall Item
+				Tooltip: ""
+			}
+
+			CrimsonFossilWallItem: {
+				DisplayName: Crimson Fossil Wall Item
+				Tooltip: ""
+			}
+
+			HallowedFossilWallItem: {
+				DisplayName: Hallowed Fossil Wall Item
+				Tooltip: ""
+			}
+
+			ExampleHellSolution: {
+				DisplayName: Example Hell Solution
+				Tooltip:
+					'''
+					Used by the Clentaminator
+					Spreads the underworld
+					'''
+			}
+
+			CameraModifierShowcase: {
+				DisplayName: Camera Modifier Showcase
+				Tooltip: ""
+			}
+
+			RubyEarrings: {
+				DisplayName: Ruby Earrings
+				Tooltip: ""
+			}
+
+			SapphireEarrings: {
+				DisplayName: Sapphire Earrings
+				Tooltip: ""
+			}
+
+			ExampleInteractableProjectileItem: {
+				DisplayName: Example Interactable Projectile Item
+				Tooltip: ""
 			}
 		}
 
@@ -1083,6 +1227,8 @@ Mods: {
 			ExampleRocketProjectile.DisplayName: Example Rocket Projectile
 			ExampleSnowmanRocketProjectile.DisplayName: Example Snowman Rocket Projectile
 			ExampleArrowProjectile.DisplayName: Example Arrow Projectile
+			ExampleHellSolutionProjectile.DisplayName: Example Hell Solution Projectile
+			ExampleInteractableProjectile.DisplayName: Example Interactable Projectile
 		}
 
 		Buffs: {
@@ -1182,9 +1328,17 @@ Mods: {
 
 		Bestiary: {
 			ImportantFlavorText: Important Flavor Text!
-			ExamplePerson: Built of blocks with arms of steel. Pumps iron day and night.
-			ExampleBoneMerchant: Built with bone blocks and arms of steel. Throws bones day and night.
+			ExamplePerson_1: Hailing from a mysterious greyscale cube world, the Example Person is here to help you understand everything about tModLoader.
+			ExamplePerson_2: Built of blocks with arms of steel. Pumps iron day and night.
+			ExampleBoneMerchant_1: Hailing from a mysterious greyscale cube world, the Example Bone Merchant will show you how to make a mysterious merchant underground with tModLoader.
+			ExampleBoneMerchant_2: Built with bone blocks and arms of steel. Throws bones day and night.
 			ExampleTownPet: A blocky Town Pet to bring extra cuteness to the town.
+			PartyZombie: This type of zombie for some reason really likes to spread confetti around. Otherwise, it behaves just like a normal zombie.
+			MinionBossBody: Example Minion Boss that spawns minions on spawn, summoned with a spawn item. Showcases boss minion handling, multiplayer considerations, and custom boss bar.
+			ExampleCritterNPC: The most adorable goodest spicy child. Do not dare be mean to him!
+			ExampleZombieThief: This type of zombie really like Example Items. They steal them as soon as they find some.
+			MinionBossMinion: A minion protecting his boss from taking damage by sacrificing itself. If none are alive, the boss is exposed to damage.
+			ExampleWormHead: Looks like a Digger fell into some aqua-colored paint. Oh well.
 		}
 
 		Biomes: {
@@ -1245,6 +1399,8 @@ Mods: {
 				StandardDialogue3: I'm a traveling merchant, and I sell things.
 				HiveBackpackDialogue: Hey, if you find a [i:HiveBackpack], my cousin can upgrade it for you.
 			}
+
+			ExampleTownPet.StandardDialogue: *Example Town Pet noises*
 		}
 
 		GameTips: {
@@ -1254,8 +1410,10 @@ Mods: {
 			DisabledExampleTip: This tip will be added but then disabled by Example Mod.
 		}
 
-		InfoDisplays.ExampleInfoDisplay.DisplayName: Minion Count
-		ExampleGlobalBuff.RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
+		ExampleGlobalBuff: {
+			RemainingTime: "[ExampleGlobalBuff] Remaining time: {0}"
+			CannotCancel: Cannot cancel this buff while stationary!
+		}
 
 		Conditions: {
 			LowHealth: When the player is below half HP
@@ -1274,10 +1432,15 @@ Mods: {
 		UI: {
 			ExampleResource: Example Resource: {0} / {1}
 			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+			ExampleCoinsUIState.Reset: Reset Coins Per Minute Counter
 
 			ExampleFullscreenUI: {
 				Header: Example Fullscreen UI
 				Description: This is an example fullscreen UI, notice how other UI is hidden.
+				RandomizeItem: Randomize Item
+				Nothing: "{0} is set to nothing"
+				IsSet: "{0} is set to {1}: [i:{2}]"
+				SaveValue: "{0} is saved as {1}"
 			}
 		}
 
@@ -1290,6 +1453,14 @@ Mods: {
 			ExampleBuilderToggleDimmedLight: {
 				OnText: Example On
 				OffText: Example Off
+			}
+
+			ExampleBuilderToggle: {
+				CurrentColor: Color: {0}
+				Color_0: Red
+				Color_1: Blue
+				Color_2: Green
+				Color_3: Yellow
 			}
 
 			FreeBaitBuilderToggle.NameText: Free Bait: {0}
@@ -1309,7 +1480,77 @@ Mods: {
 		}
 
 		NotPresentDuringWorldGenMessage: ExampleMod was not used to generate this world, your experience with the content of ExampleMod will be degraded
-		Commands.ShowFullscreenUICommand.Description: Show the example fullscreen UI
+
+		Commands: {
+			Common: {
+				NoParameters: At least one argument was expected.
+				NotInteger: "{0} is not a correct integer value."
+			}
+
+			ExampleCoinsCommand.Description: Show the coin rate UI
+
+			ExampleItemCommand: {
+				Usage:
+					'''
+					/item <type|name> [stack]
+					type — ItemID of item.
+					name — name of Item in current localization.
+					Replace spaces in item name with underscores.
+					'''
+				Description: Spawn an item by name or by typeId
+				Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				Error_1: Unknown item — Must be valid name or 0 < type < {0}
+				Error_2: Stack value must be integer, but met: {0}
+			}
+
+			ExampleSummonCommand: {
+				Usage:
+					'''
+					/summon type [[~]x] [[~]y] [number]
+					type - NPCID of NPC.
+					x and y - position of spawn.
+					~ - to use position relative to player.
+					number - number of NPC's to spawn.
+					'''
+				Description: Spawn a NPC by NPCID
+				Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				Error_1: "{$Mods.ExampleMod.Commands.Common.NotInteger}"
+				Error_2: "{0} is not a correct X position (must be valid integer value)."
+				Error_3: "{0} is not a correct Y position (must be valid integer value)."
+				Error_4: "{0} is not a correct number (must be valid integer value)."
+			}
+
+			ExampleTimeCommand: {
+				Usage:
+					'''
+					/addTime numTicks
+					numTicks — positive or negative number in ticks (1 second = 60 ticks).
+					'''
+				Description: Adds numTicks to fast forward or rewind world time
+				Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				Error_1: "{$Mods.ExampleMod.Commands.Common.NotInteger}"
+			}
+
+			ShowFullscreenUICommand.Description: Show the example fullscreen UI
+
+			ModifyServerConfigValueCommand: {
+				Usage:
+					'''
+					/setSomeNumber value
+					value — A number to assign to ModConfigShowcaseAcceptClientChanges.SomeNumber
+					'''
+				Description: Sets ModConfigShowcaseAcceptClientChanges.SomeNumber. Showcases a command setting a ModConfig value and saving that config.
+				Error_0: "{$Mods.ExampleMod.Commands.Common.NoParameters}"
+				Error_1: "{$Mods.ExampleMod.Commands.Common.NotInteger}"
+			}
+		}
+
+		VictoryPoses: {
+			HandsUpVictoryPose.VictoryCheer: Wooo! Yeah!
+			HandsUpWithFireworksVictoryPose.VictoryCheer: I'm on fire today!
+			ShortPose.VictoryCheer: Yay!
+			LongPose.VictoryCheer: We did it!
+		}
 	}
 }
 

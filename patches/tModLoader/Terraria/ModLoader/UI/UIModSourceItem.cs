@@ -155,7 +155,8 @@ internal class UIModSourceItem : UIPanel
 		}
 
 		if (File.Exists(csprojFile)) {
-			var openFolderButton = new UIHoverImage(UICommon.ButtonOpenFolder, Lang.inter[110].Value) {
+			bool customModSourceFolder = builtMod != null && !string.IsNullOrWhiteSpace(builtMod.properties.modSource) && builtMod.properties.modSource != Path.Combine(ModCompile.ModSourcePath, modName);
+			var openFolderButton = new UIHoverImage(customModSourceFolder ? UICommon.ButtonOpenFolderCustom : UICommon.ButtonOpenFolder, customModSourceFolder ? Language.GetTextValue("tModLoader.MSOpenCustomSourceFolder", builtMod.properties.modSource) : Lang.inter[110].Value) {
 				RemoveFloatingPointsFromDrawPosition = true,
 				UseTooltipMouseText = true,
 				Left = { Pixels = contextButtonsLeft, Percent = 1f },
@@ -204,17 +205,23 @@ internal class UIModSourceItem : UIPanel
 
 		// Display Run tModPorter when .csproj is valid
 		if (sourceUpgradeTask is { IsCompleted: true }) {
-			bool result = sourceUpgradeTask.Result;
+			try {
+				bool result = sourceUpgradeTask.GetAwaiter().GetResult();
 
-			// Source upgrade needed.
-			if (result) {
-				AddCsProjUpgradeButton();
+				// Source upgrade needed.
+				if (result) {
+					AddCsProjUpgradeButton();
+				}
+				else {
+					AddModPorterButton();
+				}
 			}
-			else {
-				AddModPorterButton();
+			catch (Exception e) {
+				AddErrorButton(e);
 			}
-
-			sourceUpgradeTask = null;
+			finally {
+				sourceUpgradeTask = null;
+			}
 		}
 	}
 
@@ -323,9 +330,9 @@ internal class UIModSourceItem : UIPanel
 			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 				localMod = new LocalMod(ModLocation.Local, modFile);
 
-			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
+			string icon = Path.Combine(localMod.properties.modSource, "icon_workshop.png");
 			if (!File.Exists(icon))
-				icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
+				icon = Path.Combine(localMod.properties.modSource, "icon.png");
 
 			WorkshopHelper.PublishMod(localMod, icon);
 		}
@@ -439,6 +446,25 @@ internal class UIModSourceItem : UIPanel
 		};
 
 		Append(portModButton);
+
+		contextButtonsLeft -= 26;
+	}
+
+	private void AddErrorButton(Exception e)
+	{
+		var modSaveErrorWarning = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.MSSourceIssue")) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = contextButtonsLeft, Percent = 1f },
+			Top = { Pixels = 4 }
+		};
+
+		string fullError = Language.GetTextValue("tModLoader.MSSourceIssueMessage", modName, "\n\n" + e.ToString());
+		modSaveErrorWarning.OnLeftClick += (a, b) => {
+			Interface.infoMessage.Show(fullError, 888, Interface.modSources);
+		};
+
+		Append(modSaveErrorWarning);
 
 		contextButtonsLeft -= 26;
 	}

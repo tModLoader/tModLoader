@@ -1,13 +1,13 @@
-﻿using Terraria.DataStructures;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Chat;
+using Terraria.DataStructures;
+using Terraria.Enums;
+using Terraria.GameContent.ObjectInteractions;
+using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Terraria.Enums;
-using Terraria.Localization;
-using Terraria.ID;
-using Terraria.GameContent.ObjectInteractions;
-using Terraria.Chat;
 
 namespace ExampleMod.Content.Tiles
 {
@@ -25,6 +25,8 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.AvoidedByNPCs[Type] = true;
 			TileID.Sets.TileInteractRead[Type] = true;
 			TileID.Sets.InteractibleByNPCs[Type] = true;
+
+			VanillaFallbackOnModDeletion = TileID.Signs;
 
 			// TileObjectData assignment
 			// The TileID.Signs TileObjectData doesn't set StyleMultiplier to 5, so we will not be copying from it in this case

@@ -4,6 +4,7 @@ using System.Linq;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.Utilities;
@@ -37,8 +38,8 @@ partial class UICharacterListItem
 
 		if (data.Player.usedMods != null) {
 			string[] currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
-			var missingMods = data.Player.usedMods.Except(currentModNames).ToList();
-			var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.Player.usedMods).ToList();
+			var missingMods = data.Player.usedMods.Except(currentModNames).Select(ModOrganizer.GetDisplayNameCleanFromLocalModsOrDefaultToModName).ToList();
+			var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.Player.usedMods).Select(ModOrganizer.GetDisplayNameCleanFromLocalModsOrDefaultToModName).ToList();
 			bool checkModPack = System.IO.Path.GetFileNameWithoutExtension(ModLoader.Core.ModOrganizer.ModPackActive) != data.Player.modPack;
 
 			if (checkModPack || missingMods.Count > 0 || newMods.Count > 0) {

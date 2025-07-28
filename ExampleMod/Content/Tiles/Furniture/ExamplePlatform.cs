@@ -26,6 +26,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = [TileID.Platforms];
+			VanillaFallbackOnModDeletion = TileID.Platforms;
 
 			// Placement
 			TileObjectData.newTile.CoordinateHeights = [16];

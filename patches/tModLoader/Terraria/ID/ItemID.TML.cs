@@ -145,7 +145,9 @@ partial class ItemID
 			ObsidianSwordfish,
 			Gungnir,
 			MushroomSpear,
+			MonkStaffT1,
 			MonkStaffT2,
+			MonkStaffT3,
 			ChlorophytePartisan,
 			NorthPole
 		);

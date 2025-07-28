@@ -23,6 +23,7 @@
 		"ShowNewUpdatedModsInfoMessage": "Los siguientes mods se han añadido o actualizado desde el último inicio (puedes desactivar este mensaje en la configuración):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nMods nuevos:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nMods actualizados:",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
 		"DependenciesNeededForOtherMods": "\nFaltan algunas dependencias:",
 		"InstallDependencies": "Instalar dependencias",
 		"ContinueAnyway": "Continuar de todas formas",
@@ -140,9 +141,12 @@
 		"ModConfigNotification": "Notificación: ",
 		"ModConfigModConfig": "Config. del mod",
 		"ModConfigSaveConfig": "Guardar config.",
+		// "ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "Volver",
 		"ModConfigRevertChanges": "Revertir cambios",
+		// "ModConfigChangesReverted": "Changes Reverted",
 		"ModConfigRestoreDefaults": "Restablecer valores",
+		// "ModConfigDefaultsRestored": "Defaults Restored",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando al servidor aceptar los cambios...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "No se puede guardar porque los cambios requieren recargar el mod",
 		"ModConfigServerSide": "Configuración del lado del servidor",
@@ -232,6 +236,8 @@
 		"LoadErrorEffectFailedToLoad": "El archivo de efectos en {0} falló al cargarse",
 		"LoadErrorUnknownXNBFileHint": "Archivo XNB desconocido: {0}. Tal vez debería estar en /Fonts o /Effects",
 		"LoadErrorCannotLoadCompressedEffects": "No se pueden cargar los efectos comprimidos.",
+		// "LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
+		// "LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
 		"LoadErrorNotLoading": "Solo puede llamarse a Mod.AddContent durante la carga",
 		"LoadErrorDuplicateName": "No se pueden sumar dos {0} con el mismo nombre: {1}. Tal vez 2 clases compartan un nombre de clase, pero en diferentes espacios de nombres mientras se cargan automáticamente, o quizá has llamado a AddContent con 2 {0} del mismo nombre.",
@@ -500,6 +506,7 @@
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSLastBuilt": "Última compilación: {0}",
 		"MSCreateMod": "Crear mod",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "Haz clic para más info. sobre la migración de mods",
 		"WikiLink": "Explora la Wiki",
 		"ExampleModLink": "Echa un vistazo al Mod de Ejemplo",
@@ -511,6 +518,8 @@
 		"MSNetSDKNotFound": "Para crear mods para tModLoader en Visual Studio, ahora es necesario instalar el SDK .NET {0}, lo cual se puede hacer instalando Visual Studio 2022. La guía de migración en GitHub te mostrará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también te enseñará a utilizar tModPorter para migrar una gran parte del mod automáticamente.",
 		"DownloadNetSDK": "Descargar el SDK de .NET",
 		"DevModsInSandbox": "tModLoader no puede desarrollar mods cuando se ejecuta en un entorno aislado (como Flatpak). Asegúrate de instalar Steam directamente en tu sistema.",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		// "CreateModName": "ModName (no spaces)",
@@ -558,6 +567,10 @@
 		"CommandModListSyncedMods": "Mods sincronizados:",
 		"CommandModListClientMods": "Mods de cliente:",
 		"CommandModListModlist": "Lista de mods:",
+		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		// "CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		// "CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "Construyendo: {0}",
@@ -613,6 +626,9 @@
 		"slotStack": "Apilar",
 		"slotScroll": "Deslizar",
 		"PressXToClose": "Toca {0} para cerrar",
+		// "SharedAccessorySlotConflictMessage": "One or more shared accessory conflicts with the accessories in this loadout, they have been disabled.",
+		// "SharedAccessorySlotConflictTooltip": "This shared accessory slot is disabled since it conflicts with other accessories in this loadout",
+		// "ModAccessorySlotNoLongerSharedItemsRemoved": "Some items have been moved from accessory slots to inventory due to HasEquipmentLoadoutSupport changing to true.",
 
 		// Misc
 		"OK": "OK",

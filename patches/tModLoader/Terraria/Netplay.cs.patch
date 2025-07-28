@@ -12,6 +12,19 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
+@@ -78,6 +_,12 @@
+ 		Main.ActiveNetDiagnosticsUI.Reset();
+ 	}
+ 
++	/// <summary>
++	/// Sets all world sections as unloaded for all clients. This results in all clients being sent the world sections again.
++	/// <br/><br/> This is used at the end of Hardmode world generation to force all clients to receive the tiles from the server again.
++	/// <br/><br/> If you are doing massive world changes in-game outside of the Hardmode transformation, this is a simple way to ensure that all clients see those tile changes without sending countless <see cref="NetMessage.SendTileSquare(int, int, int, TileChangeType)"/> messages.
++	/// <br/><br/> <b>Call on Server only!</b>
++	/// </summary>
+ 	public static void ResetSections()
+ 	{
+ 		for (int i = 0; i < 256; i++) {
 @@ -165,6 +_,8 @@
  
  	private static void OnConnectionAccepted(ISocket client)

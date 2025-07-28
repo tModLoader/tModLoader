@@ -67,6 +67,7 @@ internal class BuildProperties
 	internal ModSide side;
 	internal bool playableOnPreview = true;
 	internal bool translationMod = false;
+	internal string modSource = "";
 
 	public IEnumerable<ModReference> Refs(bool includeWeak) =>
 		includeWeak ? modReferences.Concat(weakReferences) : modReferences;
@@ -263,6 +264,10 @@ internal class BuildProperties
 					writer.Write("side");
 					writer.Write((byte)side);
 				}
+				if (modSource.Length > 0) {
+					writer.Write("modSource");
+					writer.Write(modSource);
+				}
 
 				writer.Write("buildVersion");
 				writer.Write(buildVersion.ToString());
@@ -343,6 +348,9 @@ internal class BuildProperties
 				}
 				if (tag == "buildVersion") {
 					properties.buildVersion = new Version(reader.ReadString());
+				}
+				if (tag == "modSource") {
+					properties.modSource = reader.ReadString();
 				}
 			}
 		}

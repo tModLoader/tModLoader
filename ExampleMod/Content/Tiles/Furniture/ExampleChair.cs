@@ -30,6 +30,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = [TileID.Chairs];
+			VanillaFallbackOnModDeletion = TileID.Chairs;
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Chair"));

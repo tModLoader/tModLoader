@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Biomes
 		}
 
 		public override int GetSplashDust() {
-			return ModContent.DustType<ExampleSolution>();
+			return ModContent.DustType<ExampleSolutionDust>();
 		}
 
 		public override int GetDropletGore() {

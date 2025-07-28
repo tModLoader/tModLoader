@@ -16,7 +16,7 @@
  using Terraria.Social;
  
  namespace Terraria;
-@@ -54,7 +_,7 @@
+@@ -54,10 +_,11 @@
  	private static short[] _compressChestList = new short[8000];
  	private static short[] _compressSignList = new short[1000];
  	private static short[] _compressEntities = new short[1000];
@@ -25,6 +25,24 @@
  	private static NetSoundInfo _currentNetSoundInfo;
  	private static CoinLossRevengeSystem.RevengeMarker _currentRevengeMarker;
  
++	/// <inheritdoc cref="SendData(int, int, int, NetworkText, int, float, float, float, int, int, int)"/>
+ 	public static bool TrySendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
+ 	{
+ 		try {
+@@ -70,6 +_,13 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Used to send a vanilla <see cref="MessageID"/> message to send data between the server and client. This is the vanilla equivalent to <see cref="ModPacket"/>.
++	/// <br/><br/> Vanilla messages are usually automatically sent by the game, but there are cases where manually sending a vanilla message is useful. To get started with learning netcode, read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">the Basic Netcode wiki guide</see>.
++	/// <br/><br/> To use this method, pass a <see cref="MessageID"/> value into <paramref name="msgType"/> parameter. The remaining parameters (text and number0-7) need to be populated with appropriate values according to the documentation of that specific <see cref="MessageID"/>. When in doubt, consult the decompiled source code.
++	/// <br/><br/> <b><paramref name="ignoreClient"/> and <paramref name="remoteClient"/>:</b> When called on a client, the data will be sent to the server and <paramref name="ignoreClient"/> and <paramref name="remoteClient"/> are ignored. When called on a server, the data will be sent to either all clients, all clients except a specific client, or just a specific client depending on the values of <paramref name="ignoreClient"/> and <paramref name="remoteClient"/>.
++	/// <br/><br/> The <see cref="MessageBuffer.GetData(int, int, out int)"/> method is what handles these messages when received.
++	/// </summary>
+ 	public static void SendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
+ 	{
+ 		if (Main.netMode == 0)
 @@ -85,6 +_,9 @@
  		if (Main.netMode == 2 && remoteClient >= 0)
  			num = remoteClient;
@@ -610,7 +628,7 @@
  
 +	/// <summary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
-+	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>.
++	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>, while even values will result in the square being 1 tile longer to the right of and below of the coordinates.
 +	/// <para/> The <see cref="SendTileSquare(int, int, int, int, int, TileChangeType)"/> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly. 
 +	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, TileChangeType changeType = TileChangeType.None)

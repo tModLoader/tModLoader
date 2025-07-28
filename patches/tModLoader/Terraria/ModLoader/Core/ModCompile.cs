@@ -56,18 +56,30 @@ internal class ModCompile
 
 	internal static string[] FindModSources()
 	{
-		Directory.CreateDirectory(ModSourcePath);
-		return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
-			var directory = new DirectoryInfo(dir);
-			return directory.Name[0] != '.' && directory.Name != "ModAssemblies" && directory.Name != "Mod Libraries";
-		}).ToArray();
+		var modSources = new List<string>();
+
+		// Find any mod sources defined in the ModSources directory.
+		if (Directory.Exists(ModSourcePath)) {
+			modSources.AddRange(Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
+				var directory = new DirectoryInfo(dir);
+				return directory.Name[0] != '.' && directory.Name != "ModAssemblies" && directory.Name != "Mod Libraries";
+			}));
+		}
+
+		// Find mod sources defined by built .tmod files.
+		// It's possible for AllFoundMods to not be populated in low-init scenarios
+		// such as mod building, so we can populate it ourselves.
+		var foundMods = ModOrganizer.AllFoundMods ?? ModOrganizer.FindAllMods();
+		modSources.AddRange(ModOrganizer.AllFoundMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => !string.IsNullOrEmpty(s)));
+
+		return modSources.Distinct().Where(Directory.Exists).ToArray();
 	}
 
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
 	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
-	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
+	public static bool DeveloperMode => Debugger.IsAttached || FindModSources().Length > 0;
 
 	private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
@@ -348,6 +360,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		string dllName = mod.Name + ".dll";
 		string dllPath = null;
 		string pdbPath() => Path.ChangeExtension(dllPath, "pdb");
+
+		mod.properties.modSource = mod.path;
 
 		// look for pre-compiled paths
 		if (mod.properties.noCompile) {

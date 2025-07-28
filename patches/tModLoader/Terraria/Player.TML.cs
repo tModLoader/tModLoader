@@ -85,6 +85,13 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public const int ManaCrystalMax = 9;
 
+	/// <summary>
+	/// How effectively the player can hold their breath underwater. Controls how long it takes for <see cref="breath"/> to decrease. Breathing Reed adds 1 (100%) to this value and Diving Gear multiplies it by 6.
+	/// <para/> Modded effects should add to this instead of multiplying to avoid values getting unreasonable large. Adding 1.5f for example will increase breath time by 150%.
+	/// <para/> Applied in the calculation of <see cref="breathCDMax"/>.
+	/// </summary>
+	public StatModifier breathEffectiveness = StatModifier.Default;
+
 	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
 	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;
@@ -487,28 +494,12 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		if (!invisible)
 			UpdateVisibleAccessory(slot, item, modded);
+		else
+			ItemLoader.UpdateVisibleAccessory(item, this, true);
 	}
 
-	/// <summary>
-	/// Drops the ref'd item from the player at the position, and than turns the ref'd Item to air.
-	/// </summary>
-	public void DropItem(IEntitySource source, Vector2 position, ref Item item)
-	{
-		if (item.stack > 0) {
-			int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item);
-			var itemDrop = Main.item[itemDropId];
-
-			itemDrop.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
-			itemDrop.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
-			itemDrop.noGrabDelay = 100;
-			itemDrop.newAndShiny = false;
-
-			if (Main.netMode == 1)
-				NetMessage.SendData(21, -1, -1, null, itemDropId);
-		}
-
-		item.TurnToAir();
-	}
+	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")] 
+	public void DropItem(IEntitySource source, Vector2 position, ref Item item) => TryDroppingSingleItem(source, item);
 
 	public int GetHealLife(Item item, bool quickHeal = false)
 	{

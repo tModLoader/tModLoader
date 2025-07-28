@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleFishingCrate>());
-			Item.width = 12; //The hitbox dimensions are intentionally smaller so that it looks nicer when fished up on a bobber
+			Item.width = 12; // The hitbox dimensions are intentionally smaller so that it looks nicer when fished up on a bobber
 			Item.height = 12;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.sellPrice(0, 2);

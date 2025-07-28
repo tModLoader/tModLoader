@@ -45,4 +45,33 @@ itemFoundData.CopyTo(itemsFound, 0);
 	<CardinalDirections>
 		<para/> The index values are as follows: <br/> 0: Down <br/> 1: Up <br/> 2: Right <br/> 3: Left
 	</CardinalDirections>
+	<CreateNamedXSetNotes>
+		<para/> This method creates a custom ID set as a "named ID set". This named ID set will be shared and merged with other named ID sets registered by other mods with the same final key, default state, and Type.
+		<para/> This method can be chained to the <see cref="NamedSetKey.Description(string)"/> method to register a description about this named ID set. 
+		<para/> Finally, the <c>RegisterXSet</c> method must be chained to provide the default value and initial data for this set, resulting in the final array being returned.
+		<para/> For example: <code>public static bool[] FlamingWeapon = ItemID.Sets.Factory.CreateNamedSet("IsSpicy")
+		.Description("Food items in this set cause the On Fire debuff to be applied to the player when eaten")
+		.RegisterBoolSet(false, ItemID.PadThai, ModContent.ItemType&lt;ExampleFoodItem&gt;());</code>
+		<para/> In advanced cases this can be used to call <see cref="RegisterNamedCustomSet{T}(NamedSetKey, T, ref T[])"/> directly rather than using the <c>RegisterXSet</c> method to generate the data array.
+	<para/> More information on properly using these methods can be found in the <see href="https://github.com/tModLoader/tModLoader/pull/4381">Custom and Named ID Sets pull request</see>. Named ID set keys used by other mods are listed in the <see href="https://github.com/tModLoader/tModLoader/wiki/Named-ID-Sets">Named ID Sets wiki page</see>, please read and consult this page to collaborate on named ID set key meanings.
+	</CreateNamedXSetNotes>
+	<RegisterXSetNotes>
+		<para/> This method registers the created array as a "named ID set" using a final key determined by the <c>CreateNamedSet</c> method.
+	</RegisterXSetNotes>
+	<AIMethodOrder>
+		<para/> The order of the AI related methods is: <code>
+if (PreAI()) {
+	VanillaAI()
+	AI()
+}
+PostAI()</code>
+	</AIMethodOrder>
+	<AmmoConservation>
+		<br/><br/> Ammo conservation effects stack, each is treated as an independent event (random chance decision). See the <see href="https://terraria.wiki.gg/wiki/Ammo_conservation">Ammo conservation wiki page</see> for more information.
+		<br/><br/> Using existing effect bools like <see cref="ammoCost75"/>, <see cref="ammoCost80"/>, <see cref="chloroAmmoCost80"/>, and <see cref="huntressAmmoCost90"/> can be convenient, but will not provide additional stacking benefit if the player is also using the Terraria accessory that provides that bonus already. The chances are also not customizable.
+		<br/><br/> To implement ammo conservation in an accessory, armor, or buff, override <see cref="ModPlayer.CanConsumeAmmo(Item, Item)"/> (and optionally <see cref="GlobalItem.ConsumeItem(Item, Player)"/> if you want to apply the effect to consumable weapons). For a weapon, override <see cref="ModItem.CanConsumeAmmo(Item, Player)"/>.
+	</AmmoConservation>
+	<PlayerItemUseAnimation>
+		<br/><br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Player-Item-Animation">Player Item Animation wiki page</see> goes into detail about how this and other player item use and animation fields work together and provides a useful overview on this topic.
+	</PlayerItemUseAnimation>
 </Common>

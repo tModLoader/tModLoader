@@ -83,7 +83,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 					Main.npcChatText = string.Empty;
 				}
 				if (player.editedChestName) {
-					NetMessage.SendData(MessageID.SyncPlayerChest, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f);
+					NetMessage.SendData(MessageID.SyncPlayerChest, text: NetworkText.FromLiteral(Main.chest[player.chest].name), number: player.chest, number2: 1f);
 					player.editedChestName = false;
 				}
 				if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -93,7 +93,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 						SoundEngine.PlaySound(SoundID.MenuClose);
 					}
 					else {
-						NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, top);
+						NetMessage.SendData(MessageID.RequestChestOpen, number: left, number2: top);
 						Main.stackSplit = 600;
 					}
 				}

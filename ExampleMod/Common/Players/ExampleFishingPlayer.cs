@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -12,7 +13,12 @@ namespace ExampleMod.Common.Players
 	// This class showcases things you can do with fishing
 	public class ExampleFishingPlayer : ModPlayer
 	{
+		public static LocalizedText WrongText { get; private set; }
 		public bool hasExampleCrateBuff;
+
+		public override void SetStaticDefaults() {
+			WrongText = Mod.GetLocalization($"{nameof(ExampleFishingPlayer)}.Wrong");
+		}
 
 		public override void ResetEffects() {
 			hasExampleCrateBuff = false;
@@ -42,7 +48,7 @@ namespace ExampleMod.Common.Players
 					itemDrop = -1;
 
 					// Also, to make it cooler, we will make a special sonar message for when it shows up
-					sonar.Text = "Something's wrong...";
+					sonar.Text = WrongText.Value;
 					sonar.Color = Color.LimeGreen;
 					sonar.Velocity = Vector2.Zero;
 					sonar.DurationInFrames = 300;

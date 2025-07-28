@@ -7,6 +7,9 @@ namespace Terraria;
 
 public partial class Player
 {
+	/// <summary>
+	/// Represents a damage calculation in the process of being calculated for damage to be applied to a Player. The final damage calculation will be present in the resulting <see cref="HurtInfo"/> provided to various hooks.
+	/// </summary>
 	public struct HurtModifiers
 	{
 		/// <summary>
@@ -181,6 +184,9 @@ public partial class Player
 		}
 	}
 
+	/// <summary>
+	/// Represents a finalized damage calculation for damage about to be applied to a Player. This is the result of all modifications done previously in a <see cref="HurtModifiers"/> provided to various hooks.
+	/// </summary>
 	public struct HurtInfo
 	{
 		/// <summary>

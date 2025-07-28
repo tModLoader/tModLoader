@@ -7,6 +7,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Used to send data between the server and client. Syncing data is essential for keeping clients up to date with changes to the game state. ModPacket is used to sync arbitrary data, most commonly data corresponding to this mod. The <see href="https://github.com/tModLoader/tModLoader/wiki/intermediate-netcode">Intermediate netcode wiki page</see> explains more about this concept.
+/// <para/> Initialize a ModPacket using the <see cref="Mod.GetPacket(int)"/> method.
 /// <para/> This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a <see cref="Send(int, int)"/> method that's used to actually send everything you've written between client and server.
 /// <para/> ModPacket has all the same methods as BinaryWriter, and some additional ones.
 /// </summary>

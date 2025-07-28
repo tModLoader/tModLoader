@@ -29,7 +29,7 @@
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount);
++		public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount, nameof(BuffID), Search);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is some variation of <see cref="WellFed"/>.

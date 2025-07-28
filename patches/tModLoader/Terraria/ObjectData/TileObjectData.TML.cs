@@ -112,4 +112,36 @@ public partial class TileObjectData
 		int partFrameY = tile.TileFrameY % tileData.CoordinateFullHeight;
 		return partFrameX == 0 && partFrameY == 0;
 	}
+
+	/// <summary>
+	/// Returns the coordinates of the top left tile of the multitile at the location provided. Returns <see cref="Point16.NegativeOne"/> if no tile exists at the coordinates. If the tile does not have a TileObjectData, such as if it were a normal terrain tile, the provided coordinates will be returned.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <returns></returns>
+	public static Point16 TopLeft(int i, int j)
+	{
+		Tile tile = Main.tile[i, j];
+
+		if (!tile.HasTile) {
+			return Point16.NegativeOne;
+		}
+		var tileData = GetTileData(tile);
+		if (tileData == null) {
+			return new Point16(i, j);
+		}
+		int partFrameX = tile.TileFrameX % tileData.CoordinateFullWidth;
+		int partFrameY = tile.TileFrameY % tileData.CoordinateFullHeight;
+		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
+		int partY = 0;
+		for (int remainingFrameY = partFrameY; partY + 1 < tileData.Height && remainingFrameY - tileData.CoordinateHeights[partY] - tileData.CoordinatePadding >= 0; partY++) {
+			remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
+		}
+		i -= partX;
+		j -= partY;
+		return new Point16(i, j);
+	}
+
+	/// <inheritdoc cref="TopLeft(int, int)"/>
+	public static Point16 TopLeft(Point16 point) => TopLeft(point.X, point.Y);
 }

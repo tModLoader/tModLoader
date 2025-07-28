@@ -413,24 +413,19 @@
 +	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
 +	/// <returns>The index in <see cref="Main.chest"/> of the chest at (<paramref name="X"/>, <paramref name="Y"/>), or <c>-1</c> if one doesn't exist.</returns>
 +	/// <remarks>
-+	/// If you don't have the top-left corner of the chest tile, use <see cref="FindChestByGuessing(int, int)"/>.
++	/// The Chest is stored in the top-left corner of the chest tile. If you have an arbitrary chest tile, you may need to use <see cref="TileObjectData.TopLeft(int, int)"/> to find the top left coordinates to use in this method.
 +	/// </remarks>
  	public static int FindChest(int X, int Y)
  	{
  		for (int i = 0; i < 8000; i++) {
-@@ -480,6 +_,15 @@
+@@ -480,6 +_,10 @@
  		return -1;
  	}
  
 +	/// <summary>
-+	/// Tries to find the <see cref="Chest"/> associated with the tile at (<paramref name="X"/>, <paramref name="Y"/>) (tile coordinates).
++	/// Similar to <see cref="FindChest(int, int)"/> except it also succeeds for tile coordinates directly above or to the left of the Chest location.
++	/// <br/><br/> <b>The logic in this method is incorrect and this method should not be used.</b> It is recommended to use <see cref="FindChest(int, int)"/> with <see cref="TileObjectData.TopLeft(int, int)"/> if you do not have the top left tile coordinate.
 +	/// </summary>
-+	/// <param name="X">The x-coordinate to check, in tile coordinates.</param>
-+	/// <param name="Y">The y-coordinate to check, in tile coordinates.</param>
-+	/// <returns>The index in <see cref="Main.chest"/> of the chest associated with the tile at (<paramref name="X"/>, <paramref name="Y"/>), or <c>-1</c> if one doesn't exist.</returns>
-+	/// <remarks>
-+	/// If you have the top-left corner of the chest tile, use <see cref="FindChest(int, int)"/>.
-+	/// </remarks>
  	public static int FindChestByGuessing(int X, int Y)
  	{
  		for (int i = 0; i < 8000; i++) {

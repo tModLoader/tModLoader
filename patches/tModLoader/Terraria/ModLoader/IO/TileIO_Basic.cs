@@ -63,9 +63,6 @@ internal static partial class TileIO
 					if (ModContent.TryFind(entry.modName, entry.name, out TBlock block)) {
 						entry.type = entry.loadedType = block.Type;
 					}
-					else if (canPurgeOldData) {
-						entry.type = entry.loadedType = entry.vanillaReplacementType;
-					}
 					else { // If it can't be found, then add entry to the end of the entries list and set the loadedType to the unloaded placeholder
 						entry.type = (ushort)entries.Count;
 						entry.loadedType = (ModContent.TryFind(entry.unloadedType, out TBlock unloadedBlock) ? unloadedBlock : entry.DefaultUnloadedPlaceholder).Type;
@@ -74,7 +71,7 @@ internal static partial class TileIO
 				}
 			}
 
-			this.entries =  entries.ToArray();
+			this.entries = entries.ToArray();
 		}
 
 		protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
@@ -259,8 +256,6 @@ internal static partial class TileIO
 		Walls.Save(tag);
 		return tag;
 	}
-
-	internal static bool canPurgeOldData => false; //for deleting unloaded mod data in a save; should point to UI flag; temp false
 
 	internal static void ResetUnloadedTypes()
 	{
