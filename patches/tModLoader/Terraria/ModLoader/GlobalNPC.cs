@@ -97,8 +97,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Called when the the NPC is selected via smart interact, or when the mouse is hovering over it.
-	/// <br/><br/> Only works on NPCs where <see cref="NPC.ShowNameOnHover"/> returns <see langword="true"/>.
+	/// Called when the NPC is selected via smart interact, or when the mouse is hovering over it.
+	/// <br/><br/> This hook is only called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="true"/>.
 	/// </summary>
 	/// <param name="npc">The NPC in question.</param>
 	/// <param name="mouseIntersects">Whether or not mouse is actually hovering over the NPC's bounding box.</param>
