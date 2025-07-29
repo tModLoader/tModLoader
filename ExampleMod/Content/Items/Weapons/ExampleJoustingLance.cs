@@ -1,6 +1,5 @@
 using Terraria;
 using Terraria.Enums;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons

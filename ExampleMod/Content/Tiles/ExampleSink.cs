@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -11,7 +10,7 @@ namespace ExampleMod.Content.Tiles
 	public class ExampleSink : ModTile
 	{
 		public override void SetStaticDefaults() {
-			// Hielo! As you may have noticed, this is a sink --- and as such, it ought to be a water source, right?
+			// Hello! As you may have noticed, this is a sink --- and as such, it ought to be a water source, right?
 			// Well, let's do it one better, shall we?
 			TileID.Sets.CountsAsWaterSource[Type] = true;
 			TileID.Sets.CountsAsHoneySource[Type] = true;
@@ -26,13 +25,12 @@ namespace ExampleMod.Content.Tiles
 			Main.tileFrameImportant[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.addTile(Type);
 
 			AddMapEntry(new Color(100, 100, 100), Language.GetText("MapObject.Sink"));
 
 			DustType = 84;
-			AdjTiles = new int[] { Type };
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {

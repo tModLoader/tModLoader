@@ -1,6 +1,5 @@
 ﻿using System;
 using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
@@ -10,7 +9,7 @@ namespace ExampleMod.Content.Buffs
 		public int Counter;
 		public override void Update(NPC npc, ref int buffIndex) {
 			Counter++;
-			npc.GravityMultiplier *= MathF.Cos(Counter/100);
+			npc.GravityMultiplier *= MathF.Cos(Counter / 100);
 		}
 	}
 }

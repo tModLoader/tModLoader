@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -11,22 +_,45 @@
+@@ -11,22 +_,46 @@
  using Terraria.GameContent;
  using Terraria.ID;
  using Terraria.IO;
@@ -24,6 +24,7 @@
 +
 +		// TML readers
 +		assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
++		assetReaderCollection.RegisterReader(new FxcReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".fxc");
 +		assetReaderCollection.RegisterReader(new WavReader(), ".wav");
 +		assetReaderCollection.RegisterReader(new MP3Reader(), ".mp3");
 +		assetReaderCollection.RegisterReader(new OggReader(), ".ogg");

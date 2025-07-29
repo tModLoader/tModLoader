@@ -1,9 +1,9 @@
+using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Items.Placeable;
-using ExampleMod.Content.Dusts;
 
 namespace ExampleMod.Content.Tiles
 {

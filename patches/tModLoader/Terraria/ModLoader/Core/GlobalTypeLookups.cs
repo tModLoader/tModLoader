@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,8 +89,9 @@ public static class GlobalTypeLookups<TGlobal> where TGlobal : GlobalType<TGloba
 
 		var lookup = new TGlobal[EntityTypeCount][];
 		for (int type = 0; type < lookup.Length; type++) {
-			if (!dict.TryGetValue(GetGlobalsForType(type), out var v))
-				v = CachedFilter(arr, g => AppliesToType(g, type));
+			var typeProfile = GetGlobalsForType(type);
+			if (!dict.TryGetValue(typeProfile, out var v))
+				dict[typeProfile] = v = CachedFilter(arr, g => AppliesToType(g, type));
 
 			lookup[type] = v;
 		}

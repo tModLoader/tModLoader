@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/UI/IInGameNotification.cs
++++ src/tModLoader/Terraria/UI/IInGameNotification.cs
+@@ -5,8 +_,6 @@
+ 
+ public interface IInGameNotification
+ {
+-	object CreationObject { get; }
+-
+ 	bool ShouldBeRemoved { get; }
+ 
+ 	void Update();
+@@ -14,6 +_,4 @@
+ 	void DrawInGame(SpriteBatch spriteBatch, Vector2 bottomAnchorPosition);
+ 
+ 	void PushAnchor(ref Vector2 positionAnchorBottom);
+-
+-	void DrawInNotificationsArea(SpriteBatch spriteBatch, Rectangle area, ref int gamepadPointLocalIndexTouse);
+ }

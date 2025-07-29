@@ -35,16 +35,20 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 			if (asset == TextureAssets.Heart || asset == TextureAssets.Heart2) {
 				// Draw over the Classic hearts
 				DrawClassicFancyOverlay(context);
-			} else if (CompareAssets(asset, fancyFolder + "Heart_Fill") || CompareAssets(asset, fancyFolder + "Heart_Fill_B")) {
+			}
+			else if (CompareAssets(asset, fancyFolder + "Heart_Fill") || CompareAssets(asset, fancyFolder + "Heart_Fill_B")) {
 				// Draw over the Fancy hearts
 				DrawClassicFancyOverlay(context);
-			} else if (CompareAssets(asset, barsFolder + "HP_Fill") || CompareAssets(asset, barsFolder + "HP_Fill_Honey")) {
+			}
+			else if (CompareAssets(asset, barsFolder + "HP_Fill") || CompareAssets(asset, barsFolder + "HP_Fill_Honey")) {
 				// Draw over the Bars life bars
 				DrawBarsOverlay(context);
-			} else if (CompareAssets(asset, fancyFolder + "Heart_Left") || CompareAssets(asset, fancyFolder + "Heart_Middle") || CompareAssets(asset, fancyFolder + "Heart_Right") || CompareAssets(asset, fancyFolder + "Heart_Right_Fancy") || CompareAssets(asset, fancyFolder + "Heart_Single_Fancy")) {
+			}
+			else if (CompareAssets(asset, fancyFolder + "Heart_Left") || CompareAssets(asset, fancyFolder + "Heart_Middle") || CompareAssets(asset, fancyFolder + "Heart_Right") || CompareAssets(asset, fancyFolder + "Heart_Right_Fancy") || CompareAssets(asset, fancyFolder + "Heart_Single_Fancy")) {
 				// Draw over the Fancy heart panels
 				DrawFancyPanelOverlay(context);
-			} else if (drawingBarsPanels) {
+			}
+			else if (drawingBarsPanels) {
 				// Draw over the Bars middle life panels
 				DrawBarsPanelOverlay(context);
 			}
@@ -82,18 +86,22 @@ namespace ExampleMod.Common.UI.ResourceOverlay
 				if (CompareAssets(context.texture, fancyFolder + "Heart_Single_Fancy")) {
 					// First and only panel in this panel's row
 					positionOffset = new Vector2(8, 8);
-				} else {
+				}
+				else {
 					// Other panels existed in this panel's row
 					// Vanilla texture is "Heart_Right_Fancy"
 					positionOffset = new Vector2(8, 8);
 				}
-			} else if (CompareAssets(context.texture, fancyFolder + "Heart_Left")) {
+			}
+			else if (CompareAssets(context.texture, fancyFolder + "Heart_Left")) {
 				// First panel in this row
 				positionOffset = new Vector2(4, 4);
-			} else if (CompareAssets(context.texture, fancyFolder + "Heart_Middle")) {
+			}
+			else if (CompareAssets(context.texture, fancyFolder + "Heart_Middle")) {
 				// Any panel that has a panel to its left AND right
 				positionOffset = new Vector2(0, 4);
-			} else {
+			}
+			else {
 				// Final panel in the first row
 				// Vanilla texture is "Heart_Right"
 				positionOffset = new Vector2(0, 4);

@@ -6,7 +6,7 @@
  namespace Terraria.DataStructures;
  
 +/// <summary>
-+/// Used when items/bomb projectiles/npcs fall out of trees being cut down
++/// Used when items/bomb projectiles/NPCs fall out of trees being cut down
 +/// </summary>
  public class EntitySource_ShakeTree : AEntitySource_Tile
  {

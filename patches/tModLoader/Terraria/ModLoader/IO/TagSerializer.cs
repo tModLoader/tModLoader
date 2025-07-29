@@ -58,6 +58,7 @@ public abstract class TagSerializer : ModType
 		serializers.Add(serializer.Type, serializer);
 	}
 
+	[Obsolete("Cannot find types in mod dllReferences, and dictionary is unnecessarily large. Use AssemblyManager.FindSubtype/FindTypes instead")]
 	public static Type? GetType(string name)
 	{
 		if (typeNameCache.TryGetValue(name, out Type? type))
@@ -181,6 +182,16 @@ public class Point16Serializer : TagSerializer<Point16, TagCompound>
 	};
 
 	public override Point16 Deserialize(TagCompound tag) => new Point16(tag.GetShort("x"), tag.GetShort("y"));
+}
+
+public class PointSerializer : TagSerializer<Point, TagCompound>
+{
+	public override TagCompound Serialize(Point value) => new TagCompound {
+		["x"] = value.X,
+		["y"] = value.Y
+	};
+
+	public override Point Deserialize(TagCompound tag) => new Point(tag.GetInt("x"), tag.GetInt("y"));
 }
 
 public class RectangleSerializer : TagSerializer<Rectangle, TagCompound>

@@ -93,7 +93,7 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 	/// Whether or not this type is cloneable. Cloning is supported if<br/>
 	/// all reference typed fields in each sub-class which doesn't override Clone are marked with [CloneByReference]
 	/// </summary>
-	public virtual bool IsCloneable => _isCloneable ??= Cloning.IsCloneable(this, m => (Func<TEntity, TEntity, TGlobal>)m.Clone);
+	public virtual bool IsCloneable => _isCloneable ??= Cloning.IsCloneable(this, m => m.Clone);
 
 	/// <summary>
 	/// Whether to create new instances of this mod type via <see cref="Clone"/> or via the default constructor
@@ -108,13 +108,13 @@ public abstract class GlobalType<TEntity, TGlobal> : GlobalType<TGlobal> where T
 	/// </summary>
 	public sealed override bool ConditionallyAppliesToEntities {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => _conditionallyAppliesToEntities ??= LoaderUtils.HasOverride(this, m => (Func<TEntity, bool, bool>)m.AppliesToEntity);
+		get => _conditionallyAppliesToEntities ??= LoaderUtils.HasOverride(this, m => m.AppliesToEntity);
 	}
 
 	/// <summary>
 	/// Use this to control whether or not this global should be run on the provided entity instance. <br/>
 	/// </summary>
-	/// <param name="entity"> The entity for which the global instantion is being checked. </param>
+	/// <param name="entity"> The entity for which the global instantiation is being checked. </param>
 	/// <param name="lateInstantiation">
 	/// Whether this check occurs before or after the ModX.SetDefaults call.
 	/// <br/> If you're relying on entity values that can be changed by that call, you should likely prefix your return value with the following:

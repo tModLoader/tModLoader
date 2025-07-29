@@ -1,0 +1,9 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Bestiary/BestiaryEntryUnlockState.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/BestiaryEntryUnlockState.cs
+@@ -1,5 +_,6 @@
+ namespace Terraria.GameContent.Bestiary;
+ 
++/// <inheritdoc cref="BestiaryUICollectionInfo.UnlockState"/>
+ public enum BestiaryEntryUnlockState
+ {
+ 	NotKnownAtAll_0,

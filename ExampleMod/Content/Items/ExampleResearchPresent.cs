@@ -1,12 +1,17 @@
 ﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
 	public class ExampleResearchPresent : ModItem
 	{
+		public static LocalizedText NoAccessoryText { get; private set; }
+		public static LocalizedText NewAccessoryText { get; private set; }
+		public static LocalizedText AllAccessoryText { get; private set; }
+
 		public override void SetStaticDefaults() {
 			// Must be researched as many times as there are items in the game.
 			// If fully researched, and a new mod is added, it will become un-researched and require that much more
@@ -15,6 +20,10 @@ namespace ExampleMod.Content.Items
 
 			// Use a MonoMod hook to allow our presents to run through the Sacrifice system.
 			On_CreativeUI.SacrificeItem_refItem_refInt32_bool += OnSacrificeItem;
+
+			NoAccessoryText = this.GetLocalization("NoAccessory");
+			NewAccessoryText = this.GetLocalization("NewAccessory");
+			AllAccessoryText = this.GetLocalization("AllAccessory");
 		}
 
 		public override void SetDefaults() {
@@ -45,11 +54,11 @@ namespace ExampleMod.Content.Items
 				// This is the amount the sacrifice counter goes up by. We didn't actually change the total number of sacrifices, so this is 0
 				amountWeSacrificed = 0;
 
-				// Return SacrifiedAndDone, so the animation and effects happen
+				// Return SacrificedAndDone, so the animation and effects happen
 				return CreativeUI.ItemSacrificeResult.SacrificedAndDone;
 			}
 
-			// Otherwise, call the original method to run the default behaviour
+			// Otherwise, call the original method to run the default behavior
 			return orig(ref item, out amountWeSacrificed, returnRemainderToPlayer);
 		}
 
@@ -66,10 +75,10 @@ namespace ExampleMod.Content.Items
 					}
 				}
 				if (count == 0) {
-					Main.NewText("No new accessory...");
+					Main.NewText(NoAccessoryText);
 				}
 				else {
-					Main.NewText("Learned " + count + " new accessor" + (count == 1 ? "y" : "ies") + " !");
+					Main.NewText(NewAccessoryText.Format(count));
 				}
 			}
 		}
@@ -94,7 +103,7 @@ namespace ExampleMod.Content.Items
 				}
 			}
 
-			Main.NewText("You got all accessories!");
+			Main.NewText(AllAccessoryText);
 		}
 	}
 }

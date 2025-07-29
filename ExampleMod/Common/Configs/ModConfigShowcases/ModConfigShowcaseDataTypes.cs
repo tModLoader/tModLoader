@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using ExampleMod.Content.Prefixes;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
-using ExampleMod.Content.Prefixes;
 
 // This file contains fake ModConfig class that showcase creating config section
 // by using fields with various data types.
@@ -26,6 +26,8 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public EquipType SomeEnum;
 		public byte SomeByte;
 		public uint SomeUInt;
+		public long SomeLong;
+		public ulong SomeULong;
 
 		// Structs - These require special code. We've implemented Color and Vector2 so far.
 		public Color SomeColor;
@@ -33,7 +35,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public Point SomePoint; // notice the not implemented message.
 
 		// Data Structures (Reference Types)
-		public int[] SomeArray = new int[] { 25, 70, 12 }; // Arrays have a specific length and need a default value specified.
+		public int[] SomeArray = [25, 70, 12]; // Arrays have a specific length and need a default value specified.
 		public List<int> SomeList = new List<int>() { 1, 3, 5 }; // Initializers can be used to declare defaults for data structures.
 		public Dictionary<string, int> SomeDictionary = new Dictionary<string, int>();
 		public HashSet<string> SomeSet = new HashSet<string>();
@@ -47,6 +49,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public NPCDefinition npcDefinitionExample = new NPCDefinition(NPCID.Bunny);
 		public ProjectileDefinition projectileDefinitionExample = new ProjectileDefinition("ExampleMod", nameof(Content.Projectiles.ExampleHomingProjectile));
 		public BuffDefinition buffDefinitionExample = new BuffDefinition("ExampleMod", nameof(Content.Buffs.ExampleDefenseBuff));
+		public TileDefinition tileDefinitionExample = new TileDefinition("ExampleMod", nameof(Content.Tiles.ExampleBlock));
 
 		// Data Structures of reference types
 		public Dictionary<PrefixDefinition, float> prefixDefinitionDictionaryExample = new Dictionary<PrefixDefinition, float>() {

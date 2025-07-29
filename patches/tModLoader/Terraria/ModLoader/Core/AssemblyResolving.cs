@@ -13,21 +13,6 @@ internal static class AssemblyResolving
 			return;
 		init = true;
 
-		// allow mods which reference embedded assemblies to reference a different version and be safely upgraded
-		AssemblyResolveEarly((_, args) => {
-			var name = new AssemblyName(args.Name);
-			if (Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), s => s.EndsWith(name.Name + ".dll")) == null)
-				return null;
-
-			var existing = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(a => a.GetName().Name == name.Name);
-			if (existing != null) {
-				Logging.tML.Warn($"Upgraded Reference {name.Name} -> Version={name.Version} -> {existing.GetName().Version}");
-				return existing;
-			}
-
-			return null;
-		});
-
 		// log all assembly resolutions
 		AssemblyResolveEarly((_, args) => {
 			Logging.tML.DebugFormat("Assembly Resolve: {0} -> {1}", args.RequestingAssembly, args.Name);

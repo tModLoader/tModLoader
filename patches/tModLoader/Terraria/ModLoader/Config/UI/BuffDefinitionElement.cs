@@ -46,7 +46,7 @@ internal class BuffDefinitionElement : DefinitionElement<BuffDefinition>
 			string modname = "Terraria";
 
 			if (option.Type >= BuffID.Count) {
-				modname = BuffLoader.GetBuff(option.Type).Mod.DisplayName; // or internal name?
+				modname = BuffLoader.GetBuff(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)

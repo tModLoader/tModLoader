@@ -4,6 +4,7 @@ namespace Terraria.ModLoader.UI.ModBrowser;
 public enum ModBrowserSortMode
 {
 	DownloadsDescending,
+	RecentlyPublished,
 	RecentlyUpdated,
 	Hot,
 	//DisplayNameAtoZ, // Not currently doable in Steam Workshop - Solxan 2023-05

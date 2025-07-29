@@ -1,9 +1,9 @@
 using ExampleMod.Content.Projectiles;
-using Terraria;
+using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Tiles.Furniture;
 
 namespace ExampleMod.Content.Items.Weapons
 {

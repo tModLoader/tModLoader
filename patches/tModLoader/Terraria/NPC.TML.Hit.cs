@@ -6,7 +6,7 @@ namespace Terraria;
 public partial class NPC
 {
 	/// <summary>
-	/// Represents a damage calculation in the process of being calculated for damage to be applied to an NPC. The final damage calculation will be present in the resulting <see cref="HitInfo"/>.
+	/// Represents a damage calculation in the process of being calculated for damage to be applied to an NPC. The final damage calculation will be present in the resulting <see cref="HitInfo"/> provided to the OnHit hooks.
 	/// </summary>
 	public struct HitModifiers
 	{
@@ -148,6 +148,13 @@ public partial class NPC
 		/// </summary>
 		public void SetCrit() => _critOverride ??= true;
 
+		private bool _knockbackDisabled = false;
+
+		/// <summary>
+		/// Sets the hit to have no knockback, regardless of <see cref="Knockback"/> values. Set automatically for NPC with <see cref="NPC.knockBackResist"/> values of 0 for consistency.
+		/// </summary>
+		public void DisableKnockback() => _knockbackDisabled = true;
+
 		/// <summary>
 		/// Used by <see cref="NPC.onFire2"/> buff (additive) and <see cref="NPC.knockBackResist"/> (multiplicative) <br/>
 		/// <br/>
@@ -223,7 +230,7 @@ public partial class NPC
 			return Math.Clamp((int)FinalDamage.ApplyTo(damage), 1, _damageLimit);
 		}
 
-		public readonly float GetKnockback(float baseKnockback) => Math.Max(Knockback.ApplyTo(baseKnockback), 0);
+		public readonly float GetKnockback(float baseKnockback) => _knockbackDisabled ? 0 : Math.Max(Knockback.ApplyTo(baseKnockback), 0);
 
 		public HitInfo ToHitInfo(float baseDamage, bool crit, float baseKnockback, bool damageVariation = false, float luck = 0f)
 		{
@@ -246,7 +253,7 @@ public partial class NPC
 	}
 
 	/// <summary>
-	/// Represents a finalized damage calculation for damage about to be applied to an NPC. This is the result of the all modifications done previously in a <see cref="HitModifiers"/>.
+	/// Represents a finalized damage calculation for damage about to be applied to an NPC. This is the result of all modifications done previously in a <see cref="HitModifiers"/> provided to the ModifyHit hooks.
 	/// </summary>
 	public struct HitInfo
 	{

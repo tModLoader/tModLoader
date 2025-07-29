@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
-using ExampleMod.Common.Configs.CustomDataTypes;
 
 // This file contains fake ModConfig class that showcase defining default values for config fields.
 
@@ -15,7 +15,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	[BackgroundColor(164, 153, 190)]
 	public class ModConfigShowcaseDefaultValues : ModConfig
 	{
-		// There are 2 approaches to default values. One is applicable only to value types (int, bool, float, string, structs, etc) and the other to reference types (classes).
+		// There are 2 approaches to default values. One is applicable only to value types (int, bool, float, string, structs, etc) and the other to reference types (classes, collections/data structures).
 		// For value types, annotate the field with the DefaultValue attribute. Some structs, like Color and Vector2, accept a string that will be converted to a default value.
 		// For reference types (classes), simply assign the value in the field initializer or constructor as you would typically do.
 
@@ -39,16 +39,15 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[JsonConverter(typeof(StringEnumConverter))]
 		public SampleEnum EnumExample1 { get; set; }
 
-		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
-		// TODO: Not working. Won't restore defaults
-		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
-		[DefaultValue(new string[] { "Give Up", "Give Up" })]
-		public string[] ArrayOfString;
-
 		[DrawTicks]
-		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasaur", "Squirtle" })]
+		[OptionStrings(["Pikachu", "Charmander", "Bulbasaur", "Squirtle"])]
 		[DefaultValue("Bulbasaur")]
+		// Note that the enum approach above is recommended for options. This is just included for the sake of completeness.
 		public string FavoritePokemon;
+
+		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
+		[OptionStrings(["Win", "Lose", "Give Up"])]
+		public string[] ArrayOfString = ["Give Up", "Give Up"];
 
 		// DefaultListValue provides the default value to be added when the user clicks add in the UI.
 		[DefaultListValue(123)]

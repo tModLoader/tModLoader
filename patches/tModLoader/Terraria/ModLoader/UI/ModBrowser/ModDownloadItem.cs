@@ -41,7 +41,7 @@ public class ModDownloadItem
 	{
 		ModName = name;
 		DisplayName = displayName;
-		DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
+		DisplayNameClean = Utils.CleanChatTags(displayName);
 		PublishId = new ModPubId_t { m_ModPubId = publishId };
 		OwnerId = ownerId;
 

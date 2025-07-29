@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,64 +_,149 @@
+@@ -1,64 +_,152 @@
  using System;
 +using System.Collections.Concurrent;
  using System.Collections.Generic;
++using System.Diagnostics;
 +using System.IO;
  using System.Linq;
 +using System.Runtime.CompilerServices;
@@ -84,6 +85,8 @@
 +		_assetTransferQueue.Enqueue(() => { action(); evt.Set(); });
 +		evt.WaitOne();
 +	}
++
++	public static event Action<TimeSpan> OnBlockingLoadCompleted;
 +
 +	protected readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 +	protected IContentSource[] _sources { get; private set; }
@@ -185,7 +188,7 @@
  			if (_assets.TryGetValue(assetName, out var value))
  				asset = value as Asset<T>;
  
-@@ -66,20 +_,39 @@
+@@ -66,21 +_,45 @@
  				asset = new Asset<T>(assetName);
  				_assets[assetName] = asset;
  			}
@@ -220,18 +223,24 @@
 +		}
 +	}
 +
-+	public void TransferCompletedAssets() // todo, allow partial transfers
++	public bool TransferCompletedAssets() // todo, allow partial transfers
  	{
  		ThrowIfDisposed();
 +		ThrowIfNotMainThread();
 +
++		bool transferredAnything = false;
  		lock (_requestLock) {
 -			_asyncLoader.TransferCompleted();
-+			while (_assetTransferQueue.TryDequeue(out var action))
++			while (_assetTransferQueue.TryDequeue(out var action)) {
 +				action();
++				transferredAnything = true;
++			}
  		}
++
++		return transferredAnything;
  	}
  
+ 	private void ReloadAssetsIfSourceChanged(AssetRequestMode mode)
 @@ -90,7 +_,7 @@
  			if (contentSource == null)
  				ForceReloadAsset(item, AssetRequestMode.DoNotLoad);
@@ -241,7 +250,7 @@
  		}
  	}
  
-@@ -99,81 +_,145 @@
+@@ -99,81 +_,148 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
  
@@ -390,6 +399,8 @@
 +		if (asset.State == AssetState.Loaded)
 +			return;
 +
++		var sw = Stopwatch.StartNew();
++		
 +		// Asset has been loaded asynchronously, and we need the result now.
 +		// This specific mix of async and synchronous loading, combined with the requirement to load some assets on the main thread is rife with deadlock potential
 +		// A careful understanding of the exact threading model and requirements is required, and there's no clean or best practice way to solve it
@@ -399,9 +410,8 @@
 +			// rather than running the whole transfer queue, and potentially inducing stuttering, we run the continuation directly from the asset
 +
 +			// wait for a continuation to be scheduled (all async loads will schedule one)
-+			while (asset.Continuation == null) {
-+				Thread.Yield();
-+			}
++			if (asset.Continuation == null)
++				SpinWait.SpinUntil(() => asset.Continuation != null);
 +
 +			// running continuations requires the main thread (MainThreadAwaitable)
 +			if (tracked) {
@@ -421,6 +431,8 @@
 +		loadTask.GetAwaiter().GetResult(); // throw any exceptions (and wait for completion if this is not the worker thread)
 +		if (asset.State != AssetState.Loaded)
 +			throw new Exception("How did you get here?");
++
++		OnBlockingLoadCompleted?.Invoke(sw.Elapsed);
 +	}
 +
 +	public Asset<T> CreateUntracked<T>(Stream stream, string name, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class

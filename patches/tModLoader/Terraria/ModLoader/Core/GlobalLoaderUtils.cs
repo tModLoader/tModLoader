@@ -113,7 +113,7 @@ public static class GlobalLoaderUtils<TGlobal, TEntity> where TGlobal : GlobalTy
 	public static void BuildTypeLookups(Action<int> setDefaults)
 	{
 		try {
-			var hookSetDefaults = Globals.WhereMethodIsOverridden(g => (Action<TEntity>)g.SetDefaults).ToArray();
+			var hookSetDefaults = Globals.WhereMethodIsOverridden(g => g.SetDefaults).ToArray();
 
 			int typeCount = GlobalList<TGlobal>.EntityTypeCount;
 			Array.Fill(HookSetDefaultsEarly = new TGlobal[typeCount][], Array.Empty<TGlobal>());

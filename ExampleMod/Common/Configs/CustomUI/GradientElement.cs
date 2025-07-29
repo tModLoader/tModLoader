@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Common.Configs.CustomDataTypes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System;
 using Terraria.GameContent;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using ExampleMod.Common.Configs.CustomDataTypes;
 
 // ATTENTION: Below this point is custom config UI element.
 // Be aware that mods using custom config elements will break with the next few tModLoader updates until their design is finalized.
@@ -29,7 +29,7 @@ namespace ExampleMod.Common.Configs.CustomUI
 				MemberInfo.SetValue(Item, subitem);
 			}
 
-			// item is the owner object instance, memberinfo is the Info about this field in item
+			// Item is the owner object instance, MemberInfo is the info about this field in Item
 
 			int height = 30;
 			int order = 0;

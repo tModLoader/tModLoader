@@ -19,7 +19,7 @@ namespace ExampleMod.Common.Players
 		// These 3 fields relate to the Example Dodge. Example Dodge is modeled after the dodge ability of the Hallowed armor set bonus.
 		// exampleDodge indicates if the player actively has the ability to dodge the next attack. This is set by ExampleDodgeBuff, which in this example is applied by the HitModifiersShowcase weapon. The buff is only applied if exampleDodgeCooldown is 0 and will be cleared automatically if an attack is dodged or if the player is no longer holding HitModifiersShowcase.
 		public bool exampleDodge; // TODO: Example of custom player render
-		// Used to add a delay between Example Dodge being consumed and the next time the dodge buff can be aquired.
+		// Used to add a delay between Example Dodge being consumed and the next time the dodge buff can be acquired.
 		public int exampleDodgeCooldown;
 		// Controls the intensity of the visual effect of the dodge.
 		public int exampleDodgeVisualCounter;
@@ -61,7 +61,7 @@ namespace ExampleMod.Common.Players
 			if (exampleDodge && Player.HeldItem.type != ModContent.ItemType<HitModifiersShowcase>()) {
 				Player.ClearBuff(ModContent.BuffType<ExampleDodgeBuff>());
 			}
-			
+
 			// exampleDodgeVisualCounter should be updated here, not in DrawEffects, to work properly
 			exampleDodgeVisualCounter = Math.Clamp(exampleDodgeVisualCounter + (exampleDodge ? 1 : -1), 0, 30);
 		}
@@ -162,9 +162,8 @@ namespace ExampleMod.Common.Players
 		}
 
 		private bool TeammateCanAbsorbDamage() {
-			for (int i = 0; i < Main.maxPlayers; i++) {
-				Player otherPlayer = Main.player[i];
-				if (i != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, Player.team)) {
+			foreach (var otherPlayer in Main.ActivePlayers) {
+				if (otherPlayer.whoAmI != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, Player.team)) {
 					return true;
 				}
 			}
@@ -191,11 +190,10 @@ namespace ExampleMod.Common.Players
 				return false; // player we're out of range, so can't take the hit
 			}
 
-			for (int i = 0; i < Main.maxPlayers; i++) {
-				Player otherPlayer = Main.player[i];
-				if (i != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, team)) {
+			foreach (var otherPlayer in Main.ActivePlayers) {
+				if (otherPlayer.whoAmI != Main.myPlayer && IsAbleToAbsorbDamageForTeammate(otherPlayer, team)) {
 					float otherPlayerDistance = otherPlayer.Distance(target);
-					if (distance > otherPlayerDistance || (distance == otherPlayerDistance && i < Main.myPlayer)) {
+					if (distance > otherPlayerDistance || (distance == otherPlayerDistance && otherPlayer.whoAmI < Main.myPlayer)) {
 						return false;
 					}
 				}

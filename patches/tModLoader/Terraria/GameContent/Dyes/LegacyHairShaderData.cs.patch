@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Dyes/LegacyHairShaderData.cs
++++ src/tModLoader/Terraria/GameContent/Dyes/LegacyHairShaderData.cs
+@@ -1,4 +_,6 @@
+ using Microsoft.Xna.Framework;
++using Microsoft.Xna.Framework.Graphics;
++using ReLogic.Content;
+ using Terraria.Graphics.Shaders;
+ 
+ namespace Terraria.GameContent.Dyes;
+@@ -10,7 +_,7 @@
+ 	private ColorProcessingMethod _colorProcessor;
+ 
+ 	public LegacyHairShaderData()
+-		: base(null, null)
++		: base((Asset<Effect>)null, null)
+ 	{
+ 		_shaderDisabled = true;
+ 	}

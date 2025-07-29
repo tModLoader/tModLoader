@@ -77,7 +77,7 @@ public interface SocialBrowserModule
 
 	internal LocalMod IsItemInstalled(string slug)
 	{
-		return GetInstalledMods().Where(t => t.Name == slug).FirstOrDefault();
+		return GetInstalledMods().Where(t => string.Equals(t.Name, slug, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 	}
 
 	/////// Management of Downloads ///////////////////////////////////////////
@@ -148,6 +148,7 @@ public struct QueryParameters
 	public string[] searchModSlugs;
 	public string searchGeneric;
 	public string searchAuthor;
+	public uint days;
 
 	public ModBrowserSortMode sortingParamater;
 	public UpdateFilter updateStatusFilter;
@@ -159,5 +160,6 @@ public struct QueryParameters
 public enum QueryType
 {
 	SearchAll,
-	SearchDirect
+	SearchDirect,
+	SearchUserPublishedOnly
 }

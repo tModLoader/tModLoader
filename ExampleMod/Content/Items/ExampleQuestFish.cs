@@ -1,14 +1,21 @@
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
 	public class ExampleQuestFish : ModItem
 	{
+		public static LocalizedText DescriptionText { get; private set; }
+		public static LocalizedText CatchLocationText { get; private set; }
+
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 2;
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true; // All vanilla fish can be placed in a weapon rack.
+
+			DescriptionText = this.GetLocalization("Description");
+			CatchLocationText = this.GetLocalization("CatchLocation");
 		}
 
 		public override void SetDefaults() {
@@ -24,9 +31,9 @@ namespace ExampleMod.Content.Items
 
 		public override void AnglerQuestChat(ref string description, ref string catchLocation) {
 			// How the angler describes the fish to the player.
-			description = "I've heard stories of a fish that swims upside-down. Supposedly you have the stand upside-down yourself to even find one. One of those would go great on my ceiling. Go fetch!";
+			description = DescriptionText.Value;
 			// What it says on the bottom of the angler's text box of how to catch the fish.
-			catchLocation = "Caught anywhere while standing upside-down.";
+			catchLocation = CatchLocationText.Value;
 		}
 	}
 }

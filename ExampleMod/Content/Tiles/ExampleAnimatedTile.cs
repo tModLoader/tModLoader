@@ -1,9 +1,10 @@
 ﻿using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -13,6 +14,11 @@ namespace ExampleMod.Content.Tiles
 {
 	internal class ExampleAnimatedTile : ModTile
 	{
+		private Asset<Texture2D> flameTexture;
+		public override void Load() {
+			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
+		}
+
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
 		public override void SetStaticDefaults() {
@@ -24,6 +30,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileFrameImportant[Type] = true;
 			// Set to True if you'd like your tile to die if hit by lava
 			Main.tileLavaDeath[Type] = true;
+			// This allows the tile to sway in the wind and from player interaction when used together with the code in PreDraw below.
+			TileID.Sets.MultiTileSway[Type] = true;
 			// Use this to utilize an existing template
 			// The names of styles are self explanatory usually (you can see all existing templates at the link mentioned earlier)
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2Top);
@@ -67,7 +75,7 @@ namespace ExampleMod.Content.Tiles
 				uniqueAnimationFrame += 3;
 			uniqueAnimationFrame %= 6;
 
-			// frameYOffset = modTile.animationFrameHeight * Main.tileFrame [type] will already be set before this hook is called
+			// frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type] will already be set before this hook is called
 			// But we have a horizontal animated texture, so we use frameXOffset instead of frameYOffset
 			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
 		}
@@ -82,7 +90,7 @@ namespace ExampleMod.Content.Tiles
 			return base.KillSound(i, j, fail);
 		}
 
-		//TODO: It's better to have an actual class for this example, instead of comments
+		// TODO: It's better to have an actual class for this example, instead of comments
 
 		// Below is an example completely manually drawing a tile. It shows some interesting concepts that may be useful for more advanced things
 		/*public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
@@ -107,11 +115,11 @@ namespace ExampleMod.Content.Tiles
 
 
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedTileTile").Value;
+			Texture2D texture = TextureAssets.Tile[Type].Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
-			// Press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
+			// While at 100% world zoom, press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
 			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			Main.spriteBatch.Draw(
@@ -142,6 +150,29 @@ namespace ExampleMod.Content.Tiles
 
 			// Above code works, but since we are just mimicking another tile, we can just use the same value
 			frame = Main.tileFrame[TileID.FireflyinaBottle];
+		}
+
+		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
+			Tile tile = Main.tile[i, j];
+
+			if (TileObjectData.IsTopLeft(tile)) {
+				// Makes this tile sway in the wind and with player interaction when used with TileID.Sets.MultiTileSway
+				Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileDrawing.TileCounterType.MultiTileVine);
+			}
+
+			// We must return false here to prevent the normal tile drawing code from drawing the default static tile. Without this a duplicate tile will be drawn.
+			return false;
+		}
+
+		public override void AdjustMultiTileVineParameters(int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor) {
+			overrideWindCycle = 1f;
+			windPushPowerY = 0f;
+		}
+
+		public override void GetTileFlameData(int i, int j, ref TileDrawing.TileFlameData tileFlameData) {
+			tileFlameData.flameTexture = flameTexture.Value;
+			tileFlameData.flameColor = new Color(200, 200, 200, 0);
+			tileFlameData.flameCount = 1;
 		}
 	}
 

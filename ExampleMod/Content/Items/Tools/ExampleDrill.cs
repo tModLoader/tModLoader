@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items.Tools
 			Item.useAnimation = 15;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 0.5f;
-			Item.value = Item.buyPrice(gold: 12, silver:60);
+			Item.value = Item.buyPrice(gold: 12, silver: 60);
 			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.Item23;
 			Item.shoot = ModContent.ProjectileType<ExampleDrillProjectile>(); // Create the drill projectile

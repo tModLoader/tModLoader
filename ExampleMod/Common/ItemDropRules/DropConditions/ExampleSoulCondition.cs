@@ -1,7 +1,7 @@
 ﻿using ExampleMod.Content.Biomes;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace ExampleMod.Common.ItemDropRules.DropConditions

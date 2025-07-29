@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 	public class MinionBossPetItem : ModItem
 	{
 		public override void SetDefaults() {
-			Item.DefaultToVanitypet(ModContent.ProjectileType<MinionBossPetProjectile>(), ModContent.BuffType<MinionBossPetBuff>()); // Vanilla has many useful methods like these, use them! It sets rarity and value aswell, so we have to overwrite those after
+			Item.DefaultToVanitypet(ModContent.ProjectileType<MinionBossPetProjectile>(), ModContent.BuffType<MinionBossPetBuff>()); // Vanilla has many useful methods like these, use them! It sets rarity and value as well, so we have to overwrite those after
 
 			Item.width = 28;
 			Item.height = 20;

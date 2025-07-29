@@ -53,7 +53,7 @@ internal class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
 			string modname = option.Definition.Mod;
 
 			if (option.Type >= PrefixID.Count)
-				modname = PrefixLoader.GetPrefix(option.Type).Mod.DisplayName; // or internal name?
+				modname = PrefixLoader.GetPrefix(option.Type).Mod.DisplayNameClean; // or internal name?
 
 			if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 				continue;

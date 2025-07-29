@@ -2,8 +2,8 @@ using ExampleMod.Content.Dusts;
 using ExampleMod.Content.EmoteBubbles;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.UI;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Tools
@@ -15,6 +15,7 @@ namespace ExampleMod.Content.Items.Tools
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 40;
 			Item.height = 40;
+			// On the official wiki, https://terraria.wiki.gg/wiki/Pickaxes, the "Use time" column corresponds to Item.useAnimation and the "Mining speed" column corresponds to Item.useTime.
 			Item.useTime = 10;
 			Item.useAnimation = 10;
 			Item.useStyle = ItemUseStyleID.Swing;

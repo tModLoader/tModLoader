@@ -69,6 +69,11 @@ internal class UIFocusInputTextField : UIElement
 			GameInput.PlayerInput.WritingText = true;
 			Main.instance.HandleIME();
 			string newString = Main.GetInputText(CurrentString);
+			if (Main.inputTextEscape) {
+				Main.inputTextEscape = false;
+				Focused = false;
+				OnUnfocus?.Invoke(this, new EventArgs());
+			}
 			if (!newString.Equals(CurrentString)) {
 				CurrentString = newString;
 				OnTextChange?.Invoke(this, new EventArgs());

@@ -45,7 +45,7 @@ public abstract class GlobalInfoDisplay : ModType
 	public virtual void ModifyDisplayColor(InfoDisplay currentDisplay, ref Color displayColor, ref Color displayShadowColor) { }
 
 	/// <summary>
-	/// Allows modifying the display value (the text displayed next to the icon), the display name (texxt shown when hovering over the InfoDisplay in-game), and the display colors of an InfoDisplay.
+	/// Allows modifying the display value (the text displayed next to the icon), the display name (text shown when hovering over the InfoDisplay in-game), and the display colors of an InfoDisplay.
 	/// </summary>
 	/// <param name="currentDisplay">The display you're modifying the parameters for.</param>
 	/// <param name="displayValue">The display value of the current display.</param>

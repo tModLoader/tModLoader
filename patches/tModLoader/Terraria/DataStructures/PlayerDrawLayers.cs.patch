@@ -380,6 +380,24 @@
  				drawinfo.DrawDataCache.Add(item);
  				if (num == 3870) {
  					item = new DrawData(TextureAssets.GlowMask[238].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), itemDrawFrame, new Color(255, 255, 255, 127), num9, origin5, adjustedItemScale, drawinfo.itemEffect);
+@@ -2485,7 +_,7 @@
+ 
+ 			if (num == 5118) {
+ 				float rotation = drawinfo.drawPlayer.itemRotation + 1.57f * (float)drawinfo.drawPlayer.direction;
+-				Vector2 vector8 = new Vector2((float)itemDrawFrame.Width * 0.5f, (float)itemDrawFrame.Height * 0.5f);
++				Vector2 vector8 = new Vector2(0, (float)itemDrawFrame.Height * 0.5f); // forward port from 1.4.5
+ 				Vector2 origin6 = new Vector2((float)itemDrawFrame.Width * 0.5f, itemDrawFrame.Height);
+ 				Vector2 spinningpoint = new Vector2(10f, 4f) * drawinfo.drawPlayer.Directions;
+ 				spinningpoint = spinningpoint.RotatedBy(drawinfo.drawPlayer.itemRotation);
+@@ -2495,7 +_,7 @@
+ 			}
+ 
+ 			int num12 = 10;
+-			Vector2 vector9 = new Vector2(itemDrawFrame.Width / 2, itemDrawFrame.Height / 2);
++			Vector2 vector9 = new Vector2(0, itemDrawFrame.Height / 2); // forward port from 1.4.5
+ 			Vector2 vector10 = Main.DrawPlayerItemPos(drawinfo.drawPlayer.gravDir, num);
+ 			num12 = (int)vector10.X;
+ 			vector9.Y = vector10.Y;
 @@ -2603,7 +_,7 @@
  		if (drawinfo.usesCompositeTorso) {
  			DrawPlayer_28_ArmOverItemComposite(ref drawinfo);

@@ -7,7 +7,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
@@ -56,7 +55,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
 
 			// remove these 3 lines if you don't want the charging mechanic
-			if (!Charge(owner)) { 
+			if (!Charge(owner)) {
 				return; // timer doesn't update while charging, freezing the animation at the start.
 			}
 
@@ -94,11 +93,11 @@ namespace ExampleMod.Content.Projectiles
 				Dust dust = Dust.NewDustDirect(spawnArea.TopLeft(), spawnArea.Width, spawnArea.Height, dustType, 0f, 0f, 100, Color.White);
 				dust.position = points[pointIndex];
 				dust.fadeIn = 0.3f;
-				Vector2 spinningpoint = points[pointIndex] - points[pointIndex - 1];
+				Vector2 spinningPoint = points[pointIndex] - points[pointIndex - 1];
 				dust.noGravity = true;
 				dust.velocity *= 0.5f;
 				// This math causes these dust to spawn with a velocity perpendicular to the direction of the whip segments, giving the impression of the dust flying off like sparks.
-				dust.velocity += spinningpoint.RotatedBy(owner.direction * ((float)Math.PI / 2f));
+				dust.velocity += spinningPoint.RotatedBy(owner.direction * ((float)Math.PI / 2f));
 				dust.velocity *= 0.5f;
 			}
 		}
@@ -167,7 +166,6 @@ namespace ExampleMod.Content.Projectiles
 
 			SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-			Main.instance.LoadProjectile(Type);
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
 			Vector2 pos = list[0];

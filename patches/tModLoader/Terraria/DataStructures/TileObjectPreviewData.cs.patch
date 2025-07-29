@@ -1,0 +1,31 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/TileObjectPreviewData.cs
++++ src/tModLoader/Terraria/DataStructures/TileObjectPreviewData.cs
+@@ -48,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <inheritdoc cref="TileObject.alternate"/>
+ 	public int Alternate {
+ 		get {
+ 			return _alternate;
+@@ -94,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The top left tile coordinate of this preview. Not necessarily the top left of the tile itself since the dimensions of this object also include space for the anchors of the selected placement style. Add <see cref="ObjectStart"/> to get the top left tile.
++	/// <see cref="this[int, int]"/>
++	/// </summary>
+ 	public Point16 Coordinates {
+ 		get {
+ 			return _coordinates;
+@@ -112,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The placement validity data. Values of 0 are ignored, 1 means the tile or anchor at the tile coordinate offset by Coordinates is valid, and 2 means it is invalid.
++	/// </summary>
+ 	public int this[int x, int y] {
+ 		get {
+ 			if (x < 0 || y < 0 || x >= _size.X || y >= _size.Y)

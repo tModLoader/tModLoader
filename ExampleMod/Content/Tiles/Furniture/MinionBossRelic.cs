@@ -1,14 +1,14 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Enums;
-using System;
-using ReLogic.Content;
-using Terraria.Localization;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
@@ -32,15 +32,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override string Texture => "ExampleMod/Content/Tiles/Furniture/RelicPedestal";
 
 		public override void Load() {
-			if (!Main.dedServ) {
-				// Cache the extra texture displayed on the pedestal
-				RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
-			}
-		}
-
-		public override void Unload() {
-			// Unload the extra texture displayed on the pedestal
-			RelicTexture = null;
+			// Cache the extra texture displayed on the pedestal
+			RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
 		}
 
 		public override void SetStaticDefaults() {
@@ -88,21 +81,15 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Therefore we register the top-left of the tile as a "special point"
 			// This allows us to draw things in SpecialDraw
 			if (drawData.tileFrameX % FrameWidth == 0 && drawData.tileFrameY % FrameHeight == 0) {
-				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
+				Main.instance.TilesRenderer.AddSpecialPoint(i, j, Terraria.GameContent.Drawing.TileDrawing.TileCounterType.CustomNonSolid); // This tile is not Main.tileSolid, so CustomNonSolid is the correct choice here.
 			}
 		}
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-			// This is lighting-mode specific, always include this if you draw tiles manually
-			Vector2 offScreen = new Vector2(Main.offScreenRange);
-			if (Main.drawToScreen) {
-				offScreen = Vector2.Zero;
-			}
-
 			// Take the tile, check if it actually exists
 			Point p = new Point(i, j);
 			Tile tile = Main.tile[p.X, p.Y];
-			if (tile == null || !tile.HasTile) {
+			if (!tile.HasTile) {
 				return;
 			}
 
@@ -123,7 +110,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Some math magic to make it smoothly move up and down over time
 			const float TwoPi = (float)Math.PI * 2f;
 			float offset = (float)Math.Sin(Main.GlobalTimeWrappedHourly * TwoPi / 5f);
-			Vector2 drawPos = worldPos + offScreen - Main.screenPosition + new Vector2(0f, -40f) + new Vector2(0f, offset * 4f);
+			Vector2 drawPos = worldPos - Main.screenPosition + new Vector2(0f, -40f) + new Vector2(0f, offset * 4f);
 
 			// Draw the main texture
 			spriteBatch.Draw(texture, drawPos, frame, color, 0f, origin, 1f, effects, 0f);
@@ -136,6 +123,25 @@ namespace ExampleMod.Content.Tiles.Furniture
 			for (float num5 = 0f; num5 < 1f; num5 += 355f / (678f * (float)Math.PI)) {
 				spriteBatch.Draw(texture, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), frame, effectColor, 0f, origin, 1f, effects, 0f);
 			}
+		}
+
+		// One drawback of relic tiles is that the placement preview doesn't show the relic itself (only the pedestal) since the relic would normally be manually drawn. We can use PostDrawPlacementPreview to draw the relic during tile placement.
+		public override void PostDrawPlacementPreview(int i, int j, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, bool validPlacement, SpriteEffects spriteEffects) {
+			// Adjust the draw coordinates in case the preview is drawing the placement facing right.
+			bool facingRight = frame.Y / FrameHeight != 0;
+			spriteEffects = facingRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			frame.Y %= FrameHeight;
+
+			// Convert from tile coordinates with tile padding to the corresponding RelicTexture coordinates.
+			frame.X = frame.X / 18 * 16;
+			frame.Y = frame.Y / 18 * 16;
+			if (facingRight && frame.X != 16) {
+				// We also need to swap the 1st and 3rd columns to render correctly.
+				frame.X = frame.X == 0 ? 32 : 0;
+			}
+
+			// Finally, manually draw a section of the relic texture. Note that color will be White or Red so the individual sections that conflict with existing tiles will show as Red, just like the normal placement preview using the actual tile texture.
+			spriteBatch.Draw(RelicTexture.Value, position, frame, color, 0f, Vector2.Zero, 1f, spriteEffects, 0f);
 		}
 	}
 

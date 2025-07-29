@@ -8,6 +8,8 @@ using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
+using Terraria.ModLoader.UI;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader;
 
@@ -54,6 +56,7 @@ public static partial class Logging
 		"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'", // Roslyn
 	};
 	private static readonly List<string> ignoreThrowingMethods = new() {
+		"MonoMod.Utils.Interop.Unix.DlError", // MonoMod trying to find the right version of libdl and falling back on DLLNotFoundException
 		"System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException", // connection lost during socket operation
 		"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 		"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
@@ -92,6 +95,7 @@ public static partial class Logging
 		bool oom = args.Exception is OutOfMemoryException;
 		if (oom) {
 			TryFreeingMemory();
+			Logging.tML.Info($"tModLoader RAM usage during OutOfMemoryException: {UIMemoryBar.SizeSuffix(Process.GetCurrentProcess().PrivateMemorySize64)}");
 		}
 
 		try {
@@ -140,6 +144,11 @@ public static partial class Logging
 
 			if (oom) {
 				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.OutOfMemory"));
+			}
+
+			if (args.Exception.Data.Contains("dump") && args.Exception.Data["dump"] is string opt) {
+				args.Exception.Data.Remove("dump");
+				CrashDump.WriteException(opt switch { "full" => CrashDump.Options.WithFullMemory, _ => CrashDump.Options.Normal });
 			}
 		}
 		catch (Exception e) {

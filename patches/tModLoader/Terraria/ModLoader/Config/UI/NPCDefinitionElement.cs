@@ -1,10 +1,11 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -13,21 +14,25 @@ namespace Terraria.ModLoader.Config.UI;
 
 internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 {
-	protected override DefinitionOptionElement<NPCDefinition> CreateDefinitionOptionElement() => new NPCDefinitionOptionElement(Value, 0.5f);
+	protected override DefinitionOptionElement<NPCDefinition> CreateDefinitionOptionElement() => new NPCDefinitionOptionElement(0, Value, 0.5f);
 
 	protected override List<DefinitionOptionElement<NPCDefinition>> CreateDefinitionOptionElementList()
 	{
 		OptionScale = 0.8f;
 		var options = new List<DefinitionOptionElement<NPCDefinition>>();
 
-		for (int i = 0; i < NPCLoader.NPCCount; i++) {
-			var optionElement = new NPCDefinitionOptionElement(new NPCDefinition(i), OptionScale);
+		var npcIDsInSensibleOrder = Enumerable.Range(0, NPCID.Count).Concat(Enumerable.Range(NPCID.NegativeIDCount + 1, 65).Reverse()).Concat(Enumerable.Range(NPCID.Count, NPCLoader.NPCCount - NPCID.Count));
+
+		int order = 0;
+		foreach (int i in npcIDsInSensibleOrder) {
+			var optionElement = new NPCDefinitionOptionElement(order, new NPCDefinition(i), OptionScale);
 			optionElement.OnLeftClick += (a, b) => {
 				Value = optionElement.Definition;
 				UpdateNeeded = true;
 				SelectionExpanded = false;
 			};
 			options.Add(optionElement);
+			order++;
 		}
 
 		return options;
@@ -45,7 +50,7 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 			string modname = option.Definition.Mod;
 
 			if (option.Type >= NPCID.Count) {
-				modname = NPCLoader.GetNPC(option.Type).Mod.DisplayName; // or internal name?
+				modname = NPCLoader.GetNPC(option.Type).Mod.DisplayNameClean; // or internal name?
 			}
 
 			if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
@@ -60,8 +65,11 @@ internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 
 internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinition>
 {
-	public NPCDefinitionOptionElement(NPCDefinition definition, float scale = .75f) : base(definition, scale)
+	public int Order { get; set; }
+
+	public NPCDefinitionOptionElement(int order, NPCDefinition definition, float scale = .75f) : base(definition, scale)
 	{
+		this.Order = order;
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -71,8 +79,9 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 		spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
 		if (Definition != null) {
-			int type = Unloaded ? 0 : Type;
-			Main.instance.LoadNPC(type);
+			int type = Unloaded ? 0 : NPCID.FromNetId(Type);
+			if (TextureAssets.Npc[type].State == AssetState.NotLoaded)
+				Main.Assets.Request<Texture2D>(TextureAssets.Npc[type].Name, AssetRequestMode.AsyncLoad);
 			Texture2D npcTexture = TextureAssets.Npc[type].Value;
 
 			int frameCounter = Interface.modConfig.UpdateCount / 8;
@@ -107,12 +116,40 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 			Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
 			Vector2 origin = rectangle2.Size() * 0;
 
-			//Color color = (npc.color != new Color(byte.MinValue, byte.MinValue, byte.MinValue, byte.MinValue)) ? new Color(npc.color.R, npc.color.G, npc.color.B, 255f) : new Color(1f, 1f, 1f);
-
+			NPC npc = ContentSamples.NpcsByNetId[Unloaded ? 0 : Type];
 			spriteBatch.Draw(npcTexture, position2, rectangle2, Color.White, 0f, origin, drawScale, SpriteEffects.None, 0f);
+			if (npc.color != default) {
+				spriteBatch.Draw(npcTexture, position2, rectangle2, npc.GetColor(Color.White), 0f, origin, drawScale, SpriteEffects.None, 0f);
+			}
 		}
 
 		if (IsMouseHovering)
 			UIModConfig.Tooltip = Tooltip;
+	}
+
+	public override int CompareTo(object obj)
+	{
+		if (obj is NPCDefinitionOptionElement other) {
+			if (Order == 0)
+				return -1;
+			if (other.Order == 0)
+				return 1;
+
+			bool hasSort = ContentSamples.NpcBestiarySortingId.TryGetValue(Type, out int sortValue);
+			bool otherHasSort = ContentSamples.NpcBestiarySortingId.TryGetValue(other.Type, out int otherSortValue);
+
+			if (hasSort && otherHasSort)
+				return sortValue.CompareTo(otherSortValue);
+
+			if (hasSort)
+				return -1;
+
+			if (otherHasSort)
+				return 1;
+
+			return Order.CompareTo(other.Order);
+		}
+
+		return base.CompareTo(obj);
 	}
 }

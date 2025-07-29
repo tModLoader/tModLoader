@@ -1,0 +1,40 @@
+name: Preview tModLoader
+
+env:
+    AlphaBranch: feature/dotnet8
+
+# Controls when the action will run. 
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  # This workflow runs when a push to 1.4.4 branch happens so that it copies over to preview
+  #push:
+    #branches: [1.4.4]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  MergeToAlpha:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+        - name: Check out repo
+          uses: actions/checkout@v2
+          with:
+            ref: 'refs/heads/1.3'
+            persist-credentials: false
+            fetch-depth: 0
+            
+        # There is a bug with this that requires the previous step to checkout a different branch then either of two specified
+        - name: Merge
+          # If the condition is TRUE then we merge 1.4.4 into preview. If False, nothing happens 
+          uses: tModLoader/gh-action-nightly-merge@master
+          with:
+              stable_branch: '1.4.4'
+              development_branch: ${{env.AlphaBranch}}
+              allow_ff: true
+              ff_only: true
+          env:
+              GITHUB_TOKEN: ${{ secrets.TMODLOADERBOT_TOKEN }}

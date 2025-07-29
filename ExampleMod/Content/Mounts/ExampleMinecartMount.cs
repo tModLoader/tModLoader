@@ -1,16 +1,15 @@
+using ExampleMod.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Buffs;
 
 namespace ExampleMod.Content.Mounts
 {
 	public class ExampleMinecartMount : ModMount
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			MountID.Sets.Cart[Type] = true;
 			MountID.Sets.FacePlayersVelocity[Type] = true;
 
@@ -27,14 +26,16 @@ namespace ExampleMod.Content.Mounts
 			MountData.delegations.MinecartLandingSound = DelegateMethods.Minecart.LandingSoundFart;
 			MountData.delegations.MinecartBumperSound = DelegateMethods.Minecart.BumperSoundFart;
 
-			// Important to note is that runSpeed, dashSpeed, and acceleration will get overridden when the player has used the Minecart Upgrade Kit. Keep that in mind when changing the values yourself
+			// Note that runSpeed, dashSpeed, acceleration, jumpHeight, and jumpSpeed will be overridden when the player has used the Minecart Upgrade Kit.
+			// To customize the Minecart Upgrade Kit stats, assign values to the MinecartUpgradeX fields:
+			MountData.MinecartUpgradeRunSpeed = 40f;
+			MountData.MinecartUpgradeDashSpeed = 40f;
+			MountData.MinecartUpgradeAcceleration = 0.2f;
 		}
 
-		public override void UpdateEffects(Player player)
-		{
+		public override void UpdateEffects(Player player) {
 			// Visuals copied from Diamond Minecart
-			if (Main.rand.NextBool(10))
-			{
+			if (Main.rand.NextBool(10)) {
 				Vector2 randomOffset = Main.rand.NextVector2Square(-1f, 1f) * new Vector2(22f, 10f);
 				Vector2 directionOffset = new Vector2(0f, 10f) * player.Directions;
 				Vector2 position = player.Center + directionOffset + randomOffset;

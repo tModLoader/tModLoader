@@ -1,10 +1,19 @@
 --- src/TerrariaNetCore/Terraria/ID/DustID.cs
 +++ src/tModLoader/Terraria/ID/DustID.cs
-@@ -1,6 +_,6 @@
+@@ -1,6 +_,8 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
 -public static class DustID
-+public static partial class DustID
++public partial class DustID
  {
  	public const short Dirt = 0;
  	public const short Stone = 1;
+@@ -183,4 +_,6 @@
+ 	public const short GemRuby = 90;
+ 	public const short GemDiamond = 91;
+ 	public const short GemAmber = 138;
++
++	public static IdDictionary Search = IdDictionary.Create<DustID, short>();
+ }

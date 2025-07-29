@@ -1,8 +1,8 @@
-﻿using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using ExampleMod.Content.Items.Mounts;
+﻿using ExampleMod.Content.Items.Mounts;
 using ExampleMod.Content.Pets.ExampleLightPet;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Systems
 {
@@ -15,7 +15,7 @@ namespace ExampleMod.Common.Systems
 		public override void PostWorldGen() {
 			// Place some additional items in Frozen Chests:
 			// These are the 3 new items we will place.
-			int[] itemsToPlaceInFrozenChests = { ModContent.ItemType<ExampleMountItem>(), ModContent.ItemType<ExampleLightPetItem>(), ItemID.PinkJellyfishJar };
+			int[] itemsToPlaceInFrozenChests = [ModContent.ItemType<ExampleMountItem>(), ModContent.ItemType<ExampleLightPetItem>(), ItemID.PinkJellyfishJar];
 			// This variable will help cycle through the items so that different Frozen Chests get different items
 			int itemsToPlaceInFrozenChestsChoice = 0;
 			// Rather than place items in each chest, we'll place up to 6 items (2 of each). 
@@ -24,7 +24,7 @@ namespace ExampleMod.Common.Systems
 			// Loop over all the chests
 			for (int chestIndex = 0; chestIndex < Main.maxChests; chestIndex++) {
 				Chest chest = Main.chest[chestIndex];
-				if(chest == null) {
+				if (chest == null) {
 					continue;
 				}
 				Tile chestTile = Main.tile[chest.x, chest.y];
@@ -49,7 +49,7 @@ namespace ExampleMod.Common.Systems
 					}
 				}
 				// Once we've placed as many items as we wanted, break out of the loop
-				if(itemsPlaced >= maxItems) {
+				if (itemsPlaced >= maxItems) {
 					break;
 				}
 			}

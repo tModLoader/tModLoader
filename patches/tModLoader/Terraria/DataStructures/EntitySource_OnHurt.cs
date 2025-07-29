@@ -13,7 +13,7 @@ public interface IEntitySource_OnHurt
 	public Entity? Attacker { get; }
 
 	/// <summary>
-	/// The entity being attacked. Nnormally a Player, but could be an NPC if a mod decides to use this source in such a way
+	/// The entity being attacked. Normally a Player, but could be an NPC if a mod decides to use this source in such a way
 	/// </summary>
 	public Entity Victim { get; }
 }

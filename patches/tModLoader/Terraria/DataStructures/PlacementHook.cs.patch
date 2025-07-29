@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/PlacementHook.cs
++++ src/tModLoader/Terraria/DataStructures/PlacementHook.cs
+@@ -11,6 +_,13 @@
+ 	public static PlacementHook Empty = new PlacementHook(null, 0, 0, processedCoordinates: false);
+ 	public const int Response_AllInvalid = 0;
+ 
++	/// <summary>
++	/// Used by <see cref="ObjectData.TileObjectData"/> to provide custom logic to tile placement.
++	/// <para/> <paramref name="hook"/>: The method to call. The return value will be compared against <see cref="badReturn"/> if relevant. The parameters are: X tile coordinate, Y tile coordinate, tile type, tile style, direction, and alternate index. Use these parameters to execute extra logic for this tile placement. <see cref="ModLoader.ModTileEntity"/> has a few existing methods to use for various placement hooks.
++	/// <para/> <paramref name="badReturn"/>: Declares what return value from the <see cref="hook"/> should be interpreted as a failure. Typically -1.
++	/// <para/> <paramref name="badResponse"/>: Set to 0.
++	/// <para/> <paramref name="processedCoordinates"/>: If true, the top left corner coordinates of the tile will be passed into <see cref="hook"/> rather than the placement coordinate (the placement coordinate is where the mouse would be (<see cref="Player.tileTargetX"/> and <see cref="Player.tileTargetY"/>), accounting for the <see cref="ObjectData.TileObjectData.Origin"/> offset). Typically a true value will make all the logic in the <paramref name="hook"/> method much simpler.
++	/// </summary>
+ 	public PlacementHook(Func<int, int, int, int, int, int, int> hook, int badReturn, int badResponse, bool processedCoordinates)
+ 	{
+ 		this.hook = hook;

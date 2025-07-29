@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/AmmoID.cs
 +++ src/tModLoader/Terraria/ID/AmmoID.cs
-@@ -2,10 +_,14 @@
+@@ -2,10 +_,15 @@
  
  namespace Terraria.ID;
  
@@ -11,9 +11,18 @@
 +	public partial class Sets
  	{
 +		/// <summary>
-+		/// Associates a launcher's item type (<see cref="Item.type"/>) and an ammo's item type (<see cref="Item.type"/>) to the projectile type (<see cref="Projectile.type"/>) they will shoot when used together.
-+		/// <br/> For example, a <see cref="ItemID.SnowmanCannon"/> used with a <see cref="ItemID.MiniNukeI"/> will fire the <see cref="ProjectileID.MiniNukeSnowmanRocketI"/>.
++		/// Associates a weapon's item type (<see cref="Item.type"/>) and an ammo's item type (<see cref="Item.type"/>) to the projectile type (<see cref="Projectile.type"/>) they will shoot when used together. This is used in vanilla Terraria exclusively by items using rocket ammo but will work for any type of weapon that wants "variant projectiles" for specific ammo.
++		/// <para/> For example, a <see cref="ItemID.SnowmanCannon"/> used with a <see cref="ItemID.MiniNukeI"/> will fire the <see cref="ProjectileID.MiniNukeSnowmanRocketI"/>.
++		/// <para/> New weapons using this system should also set <see cref="SpecificLauncherAmmoProjectileFallback"/> to use as a fallback for any ammo item types that are unaccounted for, such as ammo added by other mods.
 +		/// </summary>
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
  			{
  				759,
+@@ -101,6 +_,7 @@
+ 	public static int Coin = 71;
+ 	public static int FallenStar = 75;
+ 	public static int Bullet = 97;
++	/// <summary> Items using this as <see cref="Item.ammo"/> can use <see cref="ItemID.Sets.SandgunAmmoProjectileData"/> to customize the projectile and bonus damage of this ammo. </summary>
+ 	public static int Sand = 169;
+ 	public static int Dart = 283;
+ 	public static int Rocket = 771;

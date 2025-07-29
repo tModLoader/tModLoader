@@ -1,12 +1,12 @@
+using ExampleMod.Content.Items.Mounts;
+using ExampleMod.Content.Mounts;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using ExampleMod.Content.Items.Mounts;
-using ExampleMod.Content.Mounts;
 
 namespace ExampleMod.Content.Buffs
 {
-	//TODO 1.4.5: review MinecartLeft/Right if it still exists
+	// TODO 1.4.5: review MinecartLeft/Right if it still exists
 	public class ExampleMinecartBuff : ModBuff
 	{
 		// Use the vanilla DisplayName ("Minecart")

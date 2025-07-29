@@ -1,6 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
-@@ -12,8 +_,11 @@
+@@ -7,13 +_,17 @@
+ using Terraria.ID;
+ using Terraria.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.UI;
  
  namespace Terraria.GameContent.UI.Elements;
  
@@ -33,19 +39,6 @@
  		_buttonLabel = new UIText("");
  		_buttonLabel.VAlign = 1f;
  		_buttonLabel.Left.Set(num, 0f);
-@@ -111,7 +_,12 @@
- 		_deleteButtonLabel = new UIText("");
- 		_deleteButtonLabel.VAlign = 1f;
- 		_deleteButtonLabel.HAlign = 1f;
-+
-+		/*
- 		_deleteButtonLabel.Left.Set(-30f, 0f);
-+		*/
-+		_deleteButtonLabel.Left.Set(data.customDataFail == null ? -30f : -54f, 0f);
-+
- 		_deleteButtonLabel.Top.Set(-3f, 0f);
- 		Append(_deleteButtonLabel);
- 		uIImageButton.SetSnapPoint("Play", snapPointIndex);
 @@ -137,6 +_,9 @@
  	{
  		if (_data.IsCloudSave)
