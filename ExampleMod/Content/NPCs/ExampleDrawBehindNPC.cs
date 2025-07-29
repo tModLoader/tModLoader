@@ -127,5 +127,14 @@ namespace ExampleMod.Content.NPCs
 
 			return false; // skip vanilla.
 		}
+
+		// We can use CanChat to force smart interact to target this NPC, even though we don't intend to actually chat with it due to PreHoverInteract bypassing the chat code.
+		public override bool CanChat() {
+			if (CurrentLayer < 3) {
+				return base.CanChat();
+			}
+
+			return true;
+		}
 	}
 }
