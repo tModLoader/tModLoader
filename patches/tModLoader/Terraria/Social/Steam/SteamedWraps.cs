@@ -688,6 +688,7 @@ public static class SteamedWraps
 		AddModTag("tModLoader.TagsContent", "New Content");
 		AddModTag("tModLoader.TagsUtility", "Utilities");
 		AddModTag("tModLoader.TagsLibrary", "Library");
+		AddModTag("tModLoader.TagsTranslation", "Translation");
 		AddModTag("tModLoader.TagsQoL", "Quality of Life");
 
 		// Tweaks
