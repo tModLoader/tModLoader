@@ -5129,7 +5129,7 @@
  			bool flag = mouseRectangle.Intersects(value);
  			bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == i);
 +			if (flag2)
-+				NPCLoader.OnHoverBoundingBox(nPC, flag);
++				flag2 = NPCLoader.PreHoverInteract(nPC, flag);
 +
  			if (flag2 && ((nPC.type != 85 && nPC.type != 341 && nPC.type != 629 && nPC.aiStyle != 87) || nPC.ai[0] != 0f) && nPC.type != 488) {
  				if (nPC.type == 685) {

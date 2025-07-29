@@ -1149,15 +1149,16 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateOnHoverBoundingBox(NPC npc, bool mouseIntersects);
-	private static HookList HookOnHoverBoundingBox = AddHook<DelegateOnHoverBoundingBox>(g => g.OnHoverBoundingBox);
-	public static void OnHoverBoundingBox(NPC npc, bool mouseIntersects)
+	private delegate bool DelegatePreHoverInteract(NPC npc, bool mouseIntersects);
+	private static HookList HookPreHoverInteract = AddHook<DelegatePreHoverInteract>(g => g.PreHoverInteract);
+	public static bool PreHoverInteract(NPC npc, bool mouseIntersects)
 	{
-		npc.ModNPC?.OnHoverBoundingBox(mouseIntersects);
-
-		foreach (var g in HookOnHoverBoundingBox.Enumerate(npc)) {
-			g.OnHoverBoundingBox(npc, mouseIntersects);
+		foreach (var g in HookPreHoverInteract.Enumerate(npc)) {
+			if (!g.PreHoverInteract(npc, mouseIntersects))
+				return false;
 		}
+
+		return npc.ModNPC?.PreHoverInteract(mouseIntersects) ?? true;
 	}
 
 	private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);

@@ -87,7 +87,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
-	/// <br/><br/> This hook is only called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="true"/>.
+	/// <br/><br/> This hook won't be called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="false"/>.
 	/// <br/><br/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc">The NPC in question.</param>
@@ -97,13 +97,16 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Called when the NPC is selected via smart interact, or when the mouse is hovering over it.
-	/// <br/><br/> This hook is only called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="true"/>.
+	/// Called when the NPC is selected via smart interact, or when the mouse is hovering over it. Right after <see cref="ModifyHoverBoundingBox(NPC, ref Rectangle)"/>.
+	/// <br/><br/> Can be used to implement custom interact or hover behavior logic. By returning <see langword="false"/>, the vanilla code for town NPC chatting, drawing the chat bubble, and drawing the NPC name and life on the mouse is skipped. For example, the Old Shaking Chest NPC uses this to take a GoldenKey from the player and transform into Elder Slime.
+	/// <br/><br/> This hook won't be called if <see cref="NPC.ShowNameOnHover"/> is set to <see langword="false"/>. 
+	/// <br/><br/> Called on the local client only. 
 	/// </summary>
 	/// <param name="npc">The NPC in question.</param>
 	/// <param name="mouseIntersects">Whether or not mouse is actually hovering over the NPC's bounding box.</param>
-	public virtual void OnHoverBoundingBox(NPC npc, bool mouseIntersects)
+	public virtual bool PreHoverInteract(NPC npc, bool mouseIntersects)
 	{
+		return true;
 	}
 
 	/// <summary>
