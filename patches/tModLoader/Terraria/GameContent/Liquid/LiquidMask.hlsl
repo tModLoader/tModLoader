@@ -1,33 +1,18 @@
 sampler uImage0 : register(s0);
 
-texture uMaskTexture;
-sampler2D maskTexture = sampler_state
-{
-    texture = <uMaskTexture>;
-    magfilter = POINT;
-    minfilter = POINT;
-    mipfilter = POINT;
-    AddressU = wrap;
-    AddressV = wrap;
-};
 bool usePartialAlpha;
-float2 uMaskOffset;
-float2 uMaskSize;
 
 float4 main(float4 drawColor : COLOR0, float2 uv : TEXCOORD0) : COLOR0
 {
-    float alpha = tex2D(maskTexture, uv - uMaskOffset / uMaskSize).a;
-    float4 image = tex2D(uImage0, uv) * drawColor;
+    float alpha = (tex2D(uImage0, uv) * drawColor).a;
     if (usePartialAlpha)
     {
-        alpha = alpha > 0. && alpha < 1. ? 1. : 0;
+        return (alpha > 0. && alpha < 1.) ? 1. : 0;
     }
     else
     {
-        alpha = alpha > 0. ? 1. : alpha;
+        return (alpha > 0.) ? 1. : alpha;
     }
-    
-    return image * (1 - alpha);
 }
 
 technique Technique1

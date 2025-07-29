@@ -34,6 +34,13 @@ public static class LiquidEdgeRenderer
 
 	private static Asset<Effect>? maskAsset;
 
+	public static readonly BlendState MaskingBlendState = new BlendState() {
+		ColorSourceBlend = Blend.Zero,
+		AlphaSourceBlend = Blend.Zero,
+		ColorDestinationBlend = Blend.InverseSourceAlpha,
+		AlphaDestinationBlend = Blend.InverseSourceAlpha
+	};
+
 	/// <summary>
 	/// Tiles which mask rendered liquid (tiles on the edge of bodies of
 	/// liquid).

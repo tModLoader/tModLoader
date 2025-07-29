@@ -6269,6 +6269,24 @@
  								}
  								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
  									Lighting.GetColor9Slice(num24, num25, ref slices);
+@@ -45298,6 +_,17 @@
+ 		tileBatch.Begin();
+ 		try {
+ 			DrawWaters(isBackground: true);
++
++			if (LiquidEdgeRenderer.Active) {
++
++				spriteBatch.End();
++				spriteBatch.Begin(SpriteSortMode.Immediate, LiquidEdgeRenderer.MaskingBlendState);
++				Effect maskShader = LiquidEdgeRenderer.MaskShader;
++				maskShader.Parameters["usePartialAlpha"].SetValue(true);
++				maskShader.CurrentTechnique.Passes[0].Apply();
++
++				spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange), Color.White);
++			}
+ 		}
+ 		catch {
+ 		}
 @@ -45305,6 +_,7 @@
  		tileBatch.End();
  		spriteBatch.End();
@@ -6375,6 +6393,23 @@
  		Asset<Texture2D> asset = TextureAssets.MapBGs[0];
  		int num = -1;
  		Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
+@@ -47199,6 +_,16 @@
+ 			spriteBatch.Begin();
+ 			try {
+ 				DrawWaters();
++
++				if (LiquidEdgeRenderer.Active) {
++					spriteBatch.End();
++					spriteBatch.Begin(SpriteSortMode.Immediate, LiquidEdgeRenderer.MaskingBlendState);
++					Effect maskShader = LiquidEdgeRenderer.MaskShader;
++					maskShader.Parameters["usePartialAlpha"].SetValue(false);
++					maskShader.CurrentTechnique.Passes[0].Apply();
++
++					spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange), Color.White);
++				}
+ 			}
+ 			catch {
+ 			}
 @@ -47244,6 +_,12 @@
  			case 4:
  				return 13;
@@ -6784,34 +6819,6 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, UIScaleMatrix);
  		if (gameMenu || netMode == 2) {
  			spriteBatch.End();
-@@ -51230,8 +_,27 @@
- 			DrawWaters(isBackground: true);
- 		}
- 		else {
-+			if (LiquidEdgeRenderer.Active) {
-+				spriteBatch.End();
-+				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, Transform);
-+
-+				var maskShader = LiquidEdgeRenderer.MaskShader;
-+				maskShader.Parameters["uMaskTexture"]?.SetValue(tileTarget);
-+				maskShader.Parameters["uMaskOffset"]?.SetValue(sceneTilePos - sceneBackgroundPos);
-+				maskShader.Parameters["uMaskSize"]?.SetValue(tileTarget.Size());
-+				maskShader.Parameters["usePartialAlpha"]?.SetValue(true);
-+				maskShader.CurrentTechnique.Passes[0].Apply();
-+			}
-+
- 			spriteBatch.Draw(backWaterTarget, sceneBackgroundPos - screenPosition, Microsoft.Xna.Framework.Color.White);
-+
-+			if (LiquidEdgeRenderer.Active)
-+				spriteBatch.End();
-+
- 			TimeLogger.DetailedDrawTime(11);
-+
-+			if (LiquidEdgeRenderer.Active)
-+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, Transform);
- 		}
- 
- 		Overlays.Scene.Draw(spriteBatch, RenderLayers.BackgroundWater);
 @@ -51282,6 +_,9 @@
  
  		TimeLogger.DetailedDrawReset();
@@ -6822,32 +6829,6 @@
  		TimeLogger.DetailedDrawTime(35);
  		HasInteractibleObjectThatIsNotATile = false;
  		SortDrawCacheWorms();
-@@ -51338,7 +_,25 @@
- 				DrawWires();
- 		}
- 		else {
-+			if (LiquidEdgeRenderer.Active) {
-+				spriteBatch.End();
-+				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, Transform);
-+
-+				var maskShader = LiquidEdgeRenderer.MaskShader;
-+				maskShader.Parameters["uMaskTexture"]?.SetValue(tileTarget);
-+				maskShader.Parameters["uMaskOffset"]?.SetValue(sceneTilePos - sceneWaterPos);
-+				maskShader.Parameters["uMaskSize"]?.SetValue(tileTarget.Size());
-+				maskShader.Parameters["usePartialAlpha"]?.SetValue(false);
-+				maskShader.CurrentTechnique.Passes[0].Apply();
-+			}
-+
- 			spriteBatch.Draw(waterTarget, sceneWaterPos - screenPosition, Microsoft.Xna.Framework.Color.White);
-+
-+			if (LiquidEdgeRenderer.Active) {
-+				spriteBatch.End();
-+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, Transform);
-+			}
-+
- 			if (WiresUI.Settings.DrawWires)
- 				DrawWires();
- 
 @@ -51363,7 +_,7 @@
  		ScreenObstruction.Draw(spriteBatch);
  		TimeLogger.DetailedDrawReset();
