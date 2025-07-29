@@ -562,7 +562,7 @@
 +				// when they're the actual surface (before this, some sides
 +				// would show surfaces erroneously).
 +				bool setFromTop = liquidSlopeFix
-+					? (tile3.liquid == 0 && tile.liquid < 200 && tile2.liquid < 200)
++					? (tile3.liquid == 0 && tile.liquid < 200 && tile2.liquid < 200) || ((flag || flag2) && !flag3)
 -				if (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)))
 +					: (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)));
 +				if (setFromTop)
