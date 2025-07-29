@@ -122,6 +122,22 @@
  	public static UserInterface InGameUI = new UserInterface();
  	private static OnPlayerSelected _pendingCharacterSelect;
  	public static bool drawBackGore;
+@@ -418,7 +_,15 @@
+ 	public static int lastMouseX;
+ 	public static int lastMouseY;
+ 	private static ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
++	/// <summary>
++	/// Indicates if the left mouse/"Use Item" control keybind is currently being pressed.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseLeftMouseLeftReleaseNote' />
++	/// </summary>
+ 	public static bool mouseLeft;
++	/// <summary>
++	/// Indicates if the right mouse/"Interact" control keybind is currently being pressed.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseRightMouseRightReleaseNote' />
++	/// </summary>
+ 	public static bool mouseRight;
+ 	public static bool isMouseLeftConsumedByUI = false;
+ 	public static float essScale = 1f;
 @@ -457,7 +_,9 @@
  	public static int jungleBackStyle;
  	public static string debugWords = "";
@@ -705,7 +721,7 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
-@@ -1001,10 +_,15 @@
+@@ -1001,10 +_,23 @@
  		0.75f,
  		0.75f
  	};
@@ -715,7 +731,15 @@
 +	/// </summary>
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
++	/// <summary>
++	/// Indicates if the left mouse/"Use Item" control keybind was not pressed last game update.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseLeftMouseLeftReleaseNote' />
++	/// </summary>
  	public static bool mouseLeftRelease;
++	/// <summary>
++	/// Indicates if the right mouse/"Interact" control keybind was not pressed last game update.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseRightMouseRightReleaseNote' />
++	/// </summary>
  	public static bool mouseRightRelease;
 +	/// <summary> Indicates if the full player inventory is currently showing. </summary>
  	public static bool playerInventory;
@@ -729,7 +753,7 @@
  	public static Item mouseItem = new Item();
  	public static Item guideItem = new Item();
  	public static Item reforgeItem = new Item();
-@@ -1021,16 +_,46 @@
+@@ -1021,17 +_,48 @@
  	public static bool recFastScroll;
  	public static bool recBigList;
  	public static int recStart;
@@ -774,8 +798,10 @@
 +	/// The y tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnY"/>) will spawn at this location and invasions will target this location.
 +	/// </summary>
  	public static int spawnTileY;
++	/// <summary> Similar to <see cref="Main.mouseRightRelease"/>, except specific to NPC chat logic. </summary>
  	public static bool npcChatRelease;
  	public static bool editSign;
+ 	public static bool editChest;
 @@ -1044,13 +_,18 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
