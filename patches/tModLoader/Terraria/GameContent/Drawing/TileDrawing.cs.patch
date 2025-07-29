@@ -557,15 +557,15 @@
  			else {
  				float num5 = (float)(256 - num) / 32f;
  				int y = 4;
+-				if (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)))
 +
 +				// TML(liquid-slopes): Make sure liquid surfaces only show
 +				// when they're the actual surface (before this, some sides
 +				// would show surfaces erroneously).
 +				bool setFromTop = liquidSlopeFix
-+					? (tile3.liquid == 0 && tile.liquid < 200 && tile2.liquid < 200) || ((flag || flag2) && !flag3)
--				if (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)))
-+					: (tile3.liquid == 0 && (num4 != 0 || !WorldGen.SolidTile(tileX, tileY - 1)));
-+				if (setFromTop)
++					? (!WorldGen.SolidOrSlopedTile(tileX, tileY - 1))
++					: (!WorldGen.SolidTile(tileX, tileY - 1));
++				if (tile3.liquid == 0 && (num4 != 0 || setFromTop))
  					y = 0;
  
  				int num6 = (int)num5 * 2;
