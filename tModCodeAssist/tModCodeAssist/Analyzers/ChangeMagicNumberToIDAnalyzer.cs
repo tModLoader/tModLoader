@@ -17,6 +17,15 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 {
 	public readonly record struct Properties(in string ShortIdType, in string FullIdType, in string Name)
 	{
+		public static Properties FromImmutable(ImmutableDictionary<string, string> properties)
+		{
+			return new Properties(
+				properties["ShortIdType"],
+				properties["FullIdType"],
+				properties["Name"]
+			);
+		}
+
 		public ImmutableDictionary<string, string> ToImmutable()
 		{
 			var properties = ImmutableDictionary.CreateBuilder<string, string>();

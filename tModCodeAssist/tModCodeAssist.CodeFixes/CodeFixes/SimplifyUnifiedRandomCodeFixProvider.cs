@@ -26,7 +26,8 @@ public sealed class SimplifyUnifiedRandomCodeFixProvider() : AbstractCodeFixProv
 			string title = Resources.SimplifyUnifiedRandomTitle;
 			const string titleKey = nameof(Resources.SimplifyUnifiedRandomTitle);
 
-			bool isLeftConstant = bool.Parse(parameters.Diagnostic.Properties["IsLeftConstant"]);
+			var properties = SimplifyUnifiedRandomAnalyzer.Properties.FromImmutable(parameters.Diagnostic.Properties);
+			properties.Deconstruct(out bool isLeftConstant);
 
 			context.RegisterCodeFix(CodeAction.Create(
 				string.Format(title),

@@ -24,5 +24,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" Version="1.1.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing" Version="1.1.2" />
   </ItemGroup>
-
+  
+  <Target Name="BuildMod">
+  </Target>
+  
 </Project>

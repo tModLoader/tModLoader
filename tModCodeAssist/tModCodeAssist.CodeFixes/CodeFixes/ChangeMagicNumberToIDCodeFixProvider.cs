@@ -27,12 +27,11 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 			string title = Resources.ChangeMagicNumberToIDTitle;
 			const string titleKey = nameof(Resources.ChangeMagicNumberToIDTitle);
 
-			var shortIdType = parameters.Diagnostic.Properties["ShortIdType"];
-			var fullIdType = parameters.Diagnostic.Properties["FullIdType"];
-			var name = parameters.Diagnostic.Properties["Name"];
+			var properties = ChangeMagicNumberToIDAnalyzer.Properties.FromImmutable(parameters.Diagnostic.Properties);
+			var (shortIdType, fullIdType, name) = properties;
 
 			context.RegisterCodeFix(CodeAction.Create(
-				string.Format(title, shortIdType),
+				string.Format(title, properties),
 				cancellationToken => ReplaceMagicNumber(context.Document, root, syntax, fullIdType, name, cancellationToken),
 				titleKey
 			), parameters.Diagnostic);
@@ -95,8 +94,8 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 				if (!literalSyntax.IsKind(SyntaxKind.NumericLiteralExpression))
 					continue;
 
-				var fullIdType = diagnostic.Properties["FullIdType"];
-				var name = diagnostic.Properties["Name"];
+				var properties = ChangeMagicNumberToIDAnalyzer.Properties.FromImmutable(diagnostic.Properties);
+				var (_, fullIdType, name) = properties;
 
 				var updated = await ReplaceMagicNumber(document, literalSyntax, fullIdType, name, fixAllContext.CancellationToken);
 				syntaxEditor.ReplaceNode(literalSyntax, updated);

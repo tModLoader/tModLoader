@@ -12,8 +12,14 @@ namespace tModCodeAssist.Analyzers;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer(Diagnostics.SimplifyUnifiedRandom)
 {
-	public readonly record struct Properties(bool IsLeftConstant)
+	public readonly record struct Properties(in bool IsLeftConstant)
 	{
+		public static Properties FromImmutable(ImmutableDictionary<string, string> properties)
+		{
+			return new Properties(
+				bool.Parse(properties["IsLeftConstant"])
+			);
+		}
 		public ImmutableDictionary<string, string> ToImmutable()
 		{
 			var properties = ImmutableDictionary.CreateBuilder<string, string>();
