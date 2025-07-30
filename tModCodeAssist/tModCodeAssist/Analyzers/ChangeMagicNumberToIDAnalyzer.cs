@@ -124,6 +124,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		bindingByMemberByOwningClass = [];
 		AddBinding("Terraria.Item", "createTile", (ctx) => new FieldBinding(ctx), nameof(TileID), typeof(TileID).FullName, TileID.Search);
 		AddBinding("Terraria.Item", "type", (ctx) => new FieldBinding(ctx), nameof(ItemID), typeof(ItemID).FullName, ItemID.Search);
+		AddBinding("Terraria.Player", "cursorItemIconID", (ctx) => new FieldBinding(ctx), nameof(ItemID), typeof(ItemID).FullName, ItemID.Search);
 		AddBinding("Terraria.Item", "shoot", (ctx) => new FieldBinding(ctx), nameof(ProjectileID), typeof(ProjectileID).FullName, ProjectileID.Search);
 		AddBinding("Terraria.Item", "useStyle", (ctx) => new FieldBinding(ctx), nameof(ItemUseStyleID), typeof(ItemUseStyleID).FullName, ItemUseStyleID.Search);
 		AddBinding("Terraria.Item", "rare", (ctx) => new FieldBinding(ctx), nameof(ItemRarityID), typeof(ItemRarityID).FullName, ItemRarityID.Search);
