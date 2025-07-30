@@ -431,7 +431,7 @@
  			}
  		}
 +		*/
-+		Main.tile.ClearEverything();
++		Main.tile.Clear();
  
  		for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
  			Main.countsAsHostForGameplay[n] = false;

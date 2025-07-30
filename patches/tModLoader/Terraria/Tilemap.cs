@@ -4,10 +4,11 @@ using Microsoft.Xna.Framework;
 
 namespace Terraria;
 
-public readonly struct Tilemap
+public readonly struct Tilemap : IDisposable
 {
 	public readonly ushort Width;
 	public readonly ushort Height;
+	public readonly uint Offset;
 
 	public Tile this[int x, int y] {
 		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -21,7 +22,7 @@ public readonly struct Tilemap
 #if TILE_X_Y
 			return new((ushort)x, (ushort)y, (uint)(y + (x * Height)));
 #else
-			return new((uint)(y + (x * Height)));
+			return new((uint)(y + (x * Height) + Offset));
 #endif
 		}
 		internal set {
@@ -33,14 +34,24 @@ public readonly struct Tilemap
 
 	public Tile this[DataStructures.Point16 pos] => this[pos.X, pos.Y];
 
-	internal Tilemap(ushort width, ushort height)
+	public Tilemap(ushort width, ushort height)
 	{
 		Width = width;
 		Height = height;
-		TileData.SetLength((uint)width * height);
+		Offset = TileData.AddTilemap(this);
 	}
 
-	public void ClearEverything() => TileData.ClearEverything();
+	public void Clear() => TileData.ClearTilemap(this);
 
-	public T[] GetData<T>() where T : unmanaged, ITileData => TileData<T>.data;
+	public void CopyTo(Tilemap other)
+	{
+		TileData.CopyTilemap(this, other);
+	}
+
+	public static Span<T> GetData<T>() where T : unmanaged, ITileData => TileData<T>.data;
+
+	public void Dispose()
+	{
+		TileData.RemoveTilemap(this);
+	}
 }
