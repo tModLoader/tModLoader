@@ -27,6 +27,8 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 			string title = Resources.ChangeMagicNumberToIDTitle;
 			const string titleKey = nameof(Resources.ChangeMagicNumberToIDTitle);
 
+			if (!parameters.Diagnostic.Properties.ContainsKey("ShortIdType"))
+				return Task.CompletedTask; // Conflict with Diagnostic registered by old tModLoader.CodeAssist
 			var properties = ChangeMagicNumberToIDAnalyzer.Properties.FromImmutable(parameters.Diagnostic.Properties);
 			var (shortIdType, fullIdType, name) = properties;
 
@@ -94,6 +96,8 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 				if (!literalSyntax.IsKind(SyntaxKind.NumericLiteralExpression))
 					continue;
 
+				if (!diagnostic.Properties.ContainsKey("ShortIdType"))
+					continue; // Conflict with Diagnostic registered by old tModLoader.CodeAssist
 				var properties = ChangeMagicNumberToIDAnalyzer.Properties.FromImmutable(diagnostic.Properties);
 				var (_, fullIdType, name) = properties;
 
