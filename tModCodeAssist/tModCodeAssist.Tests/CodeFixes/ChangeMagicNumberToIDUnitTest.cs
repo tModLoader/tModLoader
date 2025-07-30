@@ -23,6 +23,11 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.useTime = 69;
 			var player = new Player();
 			player.cursorItemIconID = [|327|];
+
+			Terraria.ModLoader.ModTile modTile = null;
+			modTile.DustType = [|1|];
+			Terraria.ModLoader.ModWall modWall = null;
+			modWall.DustType = [|2|];
 			""",
 			"""
 			using Terraria;
@@ -37,6 +42,11 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.useTime = 69;
 			var player = new Player();
 			player.cursorItemIconID = ItemID.GoldenKey;
+
+			Terraria.ModLoader.ModTile modTile = null;
+			modTile.DustType = DustID.Stone;
+			Terraria.ModLoader.ModWall modWall = null;
+			modWall.DustType = DustID.Grass;
 			""");
 	}
 
@@ -66,18 +76,26 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Terraria;
 			using Terraria.ID;
 
-			Recipe.Create([|420|]);
+			var recipe = Recipe.Create([|420|]);
+			recipe.AddTile([|412|]);
+			recipe.AddIngredient([|430|]);
 			NetMessage.SendData(number: 42, number2: 42, number5: 42, msgType: [|42|]);
 			Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), Main.LocalPlayer.Top, new Vector2(0, -Main.rand.NextFloat(2f, 4f)).RotatedByRandom(0.3f), [|60|], 0, 0, Main.myPlayer);
+			new Item().CloneDefaults([|5450|]);
+			Dust.NewDust(Vector2.Zero, 1, 2, [|3|], 4, 5, 6, Color.Red, 7);
 			""",
 			"""
 			using Microsoft.Xna.Framework;
 			using Terraria;
 			using Terraria.ID;
 			
-			Recipe.Create(ItemID.CobaltBrickWall);
+			var recipe = Recipe.Create(ItemID.CobaltBrickWall);
+			recipe.AddTile(TileID.LunarCraftingStation);
+			recipe.AddIngredient(ItemID.PurpleTorch);
 			NetMessage.SendData(number: 42, number2: 42, number5: 42, msgType: MessageID.PlayerMana);
 			Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), Main.LocalPlayer.Top, new Vector2(0, -Main.rand.NextFloat(2f, 4f)).RotatedByRandom(0.3f), ProjectileID.MythrilDrill, 0, 0, Main.myPlayer);
+			new Item().CloneDefaults(ItemID.RainbowMossBlockWall);
+			Dust.NewDust(Vector2.Zero, 1, 2, DustID.GrassBlades, 4, 5, 6, Color.Red, 7);
 			""");
 	}
 }
