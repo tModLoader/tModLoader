@@ -244,6 +244,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 	{
 		Debug.Assert(literalNode is LiteralExpressionSyntax);
 
+		if (!binding.Search.ContainsId(id)) return;
 		var literalName = binding.Search.GetName(id);
 
 		object[] args = [id, $"{binding.ShortIdType}.{literalName}"];

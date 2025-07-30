@@ -63,7 +63,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Terraria.ID;
 
 			Recipe.Create([|420|]);
-			
+			NetMessage.SendData(number: 42, number2: 42, number5: 42, msgType: [|42|]);
 			Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), Main.LocalPlayer.Top, new Vector2(0, -Main.rand.NextFloat(2f, 4f)).RotatedByRandom(0.3f), [|60|], 0, 0, Main.myPlayer);
 			""",
 			"""
@@ -72,7 +72,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Terraria.ID;
 			
 			Recipe.Create(ItemID.CobaltBrickWall);
-			
+			NetMessage.SendData(number: 42, number2: 42, number5: 42, msgType: MessageID.PlayerMana);
 			Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), Main.LocalPlayer.Top, new Vector2(0, -Main.rand.NextFloat(2f, 4f)).RotatedByRandom(0.3f), ProjectileID.MythrilDrill, 0, 0, Main.myPlayer);
 			""");
 	}
