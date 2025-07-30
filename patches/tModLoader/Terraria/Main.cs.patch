@@ -6431,7 +6431,7 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], drawSinglePassLiquids: false);
  				flag = true;
-@@ -47312,9 +_,20 @@
+@@ -47312,9 +_,27 @@
  		}
  
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
@@ -6439,12 +6439,19 @@
 +		if (LiquidEdgeRenderer.Active) {
 +
 +			spriteBatch.End();
-+			spriteBatch.Begin(SpriteSortMode.Immediate, LiquidEdgeRenderer.MaskingBlendState);
 +			Effect maskShader = LiquidEdgeRenderer.MaskShader;
-+			maskShader.Parameters["usePartialAlpha"].SetValue(isBackground);
-+			maskShader.CurrentTechnique.Passes[0].Apply();
++			maskShader.Parameters["usePartialAlpha"].SetValue(false);
++			spriteBatch.Begin(SpriteSortMode.Immediate, LiquidEdgeRenderer.MaskingBlendState, DefaultSamplerState, DepthStencilState.None, Rasterizer, maskShader);
 +
 +			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange), Color.White);
++
++			foreach (LiquidEdgeCache cache in LiquidEdgeRenderer.Edges.Values) {
++
++				int tileType = tile[cache.TileX, cache.TileY].TileType;
++				if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileType]) {
++					LiquidEdgeRenderer.DrawSingleTileMask(spriteBatch, cache.TileX, cache.TileY);
++				}
++			}
 +		}
  	}
  
