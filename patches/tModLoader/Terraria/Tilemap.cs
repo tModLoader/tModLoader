@@ -1,11 +1,14 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Transactions;
 using Microsoft.Xna.Framework;
 
 namespace Terraria;
 
-public readonly struct Tilemap : IDisposable
+public struct Tilemap : IDisposable
 {
+	private bool disposed;
+
 	public readonly ushort Width;
 	public readonly ushort Height;
 	public readonly uint Offset;
@@ -41,10 +44,19 @@ public readonly struct Tilemap : IDisposable
 		Offset = TileData.AddTilemap(this);
 	}
 
-	public void Clear() => TileData.ClearTilemap(this);
+	public void Clear()
+	{
+		if (disposed) {
+			throw new ObjectDisposedException(GetType().Name);
+		}
+		TileData.ClearTilemap(this);
+	}
 
 	public void CopyTo(Tilemap other)
 	{
+		if (disposed) {
+			throw new ObjectDisposedException(GetType().Name);
+		}
 		TileData.CopyTilemap(this, other);
 	}
 
@@ -52,6 +64,9 @@ public readonly struct Tilemap : IDisposable
 
 	public void Dispose()
 	{
-		TileData.RemoveTilemap(this);
+		if (!disposed) {
+			TileData.RemoveTilemap(this);
+			disposed = true;
+		}
 	}
 }
