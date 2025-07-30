@@ -21,6 +21,8 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.shoot = [|42|];
 			item.rare = [|4|];
 			item.useTime = 69;
+			var player = new Player();
+			player.cursorItemIconID = [|327|];
 			""",
 			"""
 			using Terraria;
@@ -33,6 +35,8 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.shoot = ProjectileID.SandBallGun;
 			item.rare = ItemRarityID.LightRed;
 			item.useTime = 69;
+			var player = new Player();
+			player.cursorItemIconID = ItemID.GoldenKey;
 			""");
 	}
 
