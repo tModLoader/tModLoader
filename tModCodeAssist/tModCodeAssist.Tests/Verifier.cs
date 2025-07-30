@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
@@ -28,6 +29,10 @@ public static  class Verifier
 					FixedCode = fixedCode.ReplaceLineEndings();
 
 					ExpectedDiagnostics.AddRange(expected);
+
+					NumberOfFixAllIterations = 1;
+					NumberOfFixAllInProjectIterations = 1;
+					NumberOfFixAllInDocumentIterations = 1;
 				}
 
 				protected override Project ApplyCompilationOptions(Project project)
