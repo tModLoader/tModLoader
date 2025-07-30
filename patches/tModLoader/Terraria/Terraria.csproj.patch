@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,95 @@
+@@ -11,59 +_,94 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -55,7 +55,6 @@
 -			<Link>Libraries/ReLogic/ReLogic.dll</Link>
 -			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -		</EmbeddedResource>
-+		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
 +		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj"
 +			PrivateAssets="all"
