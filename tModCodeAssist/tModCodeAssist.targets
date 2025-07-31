@@ -8,5 +8,10 @@
 		<Content Include="$(MSBuildThisFileDirectory)tModCodeAssist\bin\tModCodeAssist.dll" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)$(_LibraryAnalyzersOutputPath)%(Filename)%(Extension)" />
 		<Content Include="$(MSBuildThisFileDirectory)tModCodeAssist.CodeFixes\bin\tModCodeAssist.CodeFixes.dll" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)$(_LibraryAnalyzersOutputPath)%(Filename)%(Extension)" />
 	</ItemGroup>
+
+	<Target Name="BuildAnalyzers" BeforeTargets="OrganizeAllReferences">
+		<Exec Command="dotnet build $(MSBuildThisFileDirectory)\tModCodeAssist" />
+		<Exec Command="dotnet build $(MSBuildThisFileDirectory)\tModCodeAssist.CodeFixes" />
+	</Target>
 	
 </Project>
