@@ -9,8 +9,8 @@ public struct Tilemap : IDisposable
 {
 	private bool disposed;
 
-	public readonly ushort Width;
-	public readonly ushort Height;
+	public ushort Width { get; private set; }
+	public ushort Height { get; private set; }
 	public readonly uint Offset;
 
 	public Tile this[int x, int y] {
@@ -66,6 +66,8 @@ public struct Tilemap : IDisposable
 	{
 		if (!disposed) {
 			TileData.RemoveTilemap(this);
+			Width = 0;
+			Height = 0;
 			disposed = true;
 		}
 	}
