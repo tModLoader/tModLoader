@@ -1,15 +1,11 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,25 +_,85 @@
-+#if !TMLANALYZER
+@@ -1,25 +_,81 @@
  using Microsoft.Xna.Framework;
-+#endif
  using ReLogic.Reflection;
-+#if !TMLANALYZER
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  using Terraria.WorldBuilding;
-+#endif
  
  namespace Terraria.ID;
  

@@ -1,6 +1,4 @@
-#if !TMLANALYZER
 using Terraria.ModLoader;
-#endif
 
 namespace Terraria.ID;
 

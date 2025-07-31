@@ -1,10 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/WallID.cs
 +++ src/tModLoader/Terraria/ID/WallID.cs
-@@ -1,7 +_,13 @@
+@@ -1,7 +_,11 @@
 +using ReLogic.Reflection;
-+#if !TMLANALYZER
 +using Terraria.ModLoader;
-+#endif
 +
  namespace Terraria.ID;
  

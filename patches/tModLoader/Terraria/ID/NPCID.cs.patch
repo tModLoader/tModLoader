@@ -1,16 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -1,31 +_,117 @@
- using System;
- using System.Collections.Generic;
-+#if !TMLANALYZER
+@@ -3,29 +_,111 @@
  using Microsoft.Xna.Framework;
-+#endif
  using ReLogic.Reflection;
-+#if !TMLANALYZER
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
-+#endif
  
  namespace Terraria.ID;
  

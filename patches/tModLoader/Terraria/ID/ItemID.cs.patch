@@ -1,15 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -1,22 +_,63 @@
- using System.Collections.Generic;
-+#if !TMLANALYZER
+@@ -2,21 +_,58 @@
  using Microsoft.Xna.Framework;
-+#endif
  using ReLogic.Reflection;
-+#if !TMLANALYZER
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
-+#endif
  
  namespace Terraria.ID;
  

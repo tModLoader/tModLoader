@@ -1,13 +1,9 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,17 @@
-+#if !TMLANALYZER
+@@ -1,11 +_,13 @@
  using System.Collections.Generic;
-+#endif
  using ReLogic.Reflection;
-+#if !TMLANALYZER
 +using Terraria.ModLoader;
-+#endif
  
  namespace Terraria.ID;
  

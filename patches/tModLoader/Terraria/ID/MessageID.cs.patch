@@ -1,10 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,163 +_,667 @@
+@@ -1,163 +_,665 @@
  using Terraria.Utilities;
-+#if !TMLANALYZER
 +using Terraria.ModLoader;
-+#endif
  
  namespace Terraria.ID;
  
