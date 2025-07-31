@@ -97,7 +97,7 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The expression \&quot;{0}\&quot; can be simplified for readability.
+        ///   Looks up a localized string similar to The expression &quot;{0}&quot; can be simplified for readability.
         /// </summary>
         internal static string SimplifyUnifiedRandomMessageFormat {
             get {

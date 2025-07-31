@@ -130,7 +130,7 @@
     <value>Simplifies common UnifiedRandom usage patterns</value>
   </data>
   <data name="SimplifyUnifiedRandomMessageFormat" xml:space="preserve">
-    <value>The expression \"{0}\" can be simplified for readability</value>
+    <value>The expression "{0}" can be simplified for readability</value>
   </data>
   <data name="SimplifyUnifiedRandomTitle" xml:space="preserve">
     <value>Simplify common UnifiedRandom usage patterns</value>
