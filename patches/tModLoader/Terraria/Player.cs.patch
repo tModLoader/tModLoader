@@ -1586,7 +1586,7 @@
  		if (useVoidBag()) {
  			for (int j = 0; j < 40; j++) {
 -				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
-+				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, inventory[j]))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, bank4.item[j]))
  					return bank4.item[j];
  			}
  		}

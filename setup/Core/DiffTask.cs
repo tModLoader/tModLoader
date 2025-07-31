@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Setup.Core
 		public const string RemovedFileList = "removed_files.list";
 
 		private static readonly string[] Extensions = [
-			".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".targets", ".txt", ".bat", ".sh",
+			".cs", ".csproj", ".resx", "App.config", ".json", ".targets", ".txt", ".bat", ".sh",
 		];
 
 		private readonly DiffTaskParameters parameters;

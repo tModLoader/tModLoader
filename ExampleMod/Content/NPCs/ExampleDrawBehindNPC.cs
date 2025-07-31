@@ -1,4 +1,6 @@
 ﻿using Terraria;
+using Terraria.Audio;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -7,6 +9,7 @@ namespace ExampleMod.Content.NPCs
 	// This NPC is simply an exhibition of the DrawBehind method.
 	// The npc cycles between all the available "layers" that a ModNPC can be drawn at.
 	// Spawn this NPC with something like Cheat Sheet or Hero's Mod to view the effect.
+	// In addition, this NPC showcases the PreHoverInteract hook demonstrating a custom right click and hover interaction. This example is unrelated to DrawBehind exhibition.
 	public class ExampleDrawBehindNPC : ModNPC
 	{
 		public override void SetStaticDefaults() {
@@ -78,6 +81,60 @@ namespace ExampleMod.Content.NPCs
 					Main.instance.DrawCacheNPCsOverPlayers.Add(index);
 					break;
 			}
+		}
+
+		// PreHoverInteract gives this NPC a custom right click interaction and hover behavior. This example is unrelated to the DrawBehind exhibition.
+		public override bool PreHoverInteract(bool mouseIntersects) {
+			if (CurrentLayer < 3) {
+				return true;
+			}
+
+			// This code is similar to the code that lets the player right click on the Old Shaking Chest NPC to consume a GoldenKey from the player and transform into Elder Slime.
+			Player player = Main.LocalPlayer;
+			int keyItem = ModContent.ItemType<Items.Placeable.ExampleBlock>();
+			player.cursorItemIconEnabled = true;
+			player.cursorItemIconID = keyItem;
+			player.cursorItemIconText = "";
+			player.noThrow = 2;
+
+			// This code can be used if you want to enforce the normal NPC interaction range in this method.
+			/*
+			Rectangle interactionRange = new Rectangle((int)(player.Center.X - Player.tileRangeX * 16), (int)(player.Center.Y - Player.tileRangeY * 16), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
+			if (!interactionRange.Intersects(NPC.getRect())) {
+				return false;
+			}
+			*/
+
+			if (!player.dead) {
+				PlayerInput.SetZoom_MouseInWorld();
+				if (Main.mouseRight && Main.npcChatRelease) {
+					Main.npcChatRelease = false;
+					if (PlayerInput.UsingGamepad) {
+						player.releaseInventory = false;
+					}
+
+					if (player.talkNPC != NPC.whoAmI && !player.tileInteractionHappened ) {
+						if (player.HasItem(keyItem) && player.ConsumeItem(keyItem)) {
+							SoundEngine.PlaySound(SoundID.Item14); // The bomb explosion sound
+							NPC.SimpleStrikeNPC(1000, 0);
+						}
+						else {
+							SoundEngine.PlaySound(SoundID.MenuClose);
+						}
+					}
+				}
+			}
+
+			return false; // skip vanilla.
+		}
+
+		// We can use CanChat to force smart interact to target this NPC, even though we don't intend to actually chat with it due to PreHoverInteract bypassing the chat code.
+		public override bool CanChat() {
+			if (CurrentLayer < 3) {
+				return base.CanChat();
+			}
+
+			return true;
 		}
 	}
 }
