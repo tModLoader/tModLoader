@@ -11,6 +11,7 @@ internal static class TileData
 {
 	private static readonly object _regionSyncRoot = new();
 	private static readonly List<TileDataRegion> AvailableRegions = [];
+	private static int ActiveTilemaps;
 
 	internal static Action<uint> OnAddTilemap;
 	internal static Action<uint, uint> OnRemoveTilemap;
@@ -27,6 +28,8 @@ internal static class TileData
 	{
 		uint tilemapSize = (uint)(tilemap.Width * tilemap.Height);
 		lock (_regionSyncRoot) {
+			ActiveTilemaps++;
+
 			uint oldCount = Count;
 
 			if (Count <= InitialCapacity) {
@@ -54,10 +57,18 @@ internal static class TileData
 	{
 		uint tilemapSize = (uint)(tilemap.Width * tilemap.Height);
 		lock (_regionSyncRoot) {
+			ActiveTilemaps--;
 
-			AvailableRegions.Add(new TileDataRegion(
-				tilemapSize,
-				tilemap.Offset));
+			if (ActiveTilemaps == 0) {
+				// Clear freed regions since there aren't any active tilemaps
+				AvailableRegions.Clear();
+			}
+			else {
+				AvailableRegions.Add(new TileDataRegion(
+					tilemapSize,
+					tilemap.Offset));
+			}
+
 			OnRemoveTilemap?.Invoke(tilemapSize, tilemap.Offset);
 		}
 	}
