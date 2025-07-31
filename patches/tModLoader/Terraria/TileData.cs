@@ -106,8 +106,7 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 			var oldByteCount = (nuint)(sizeof(T) * _capacity);
 			var newByteCount = (nuint)(sizeof(T) * value);
 
-			T* new_data = (T*)NativeMemory.Alloc(newByteCount);
-			NativeMemory.Clear(new_data, newByteCount);
+			T* new_data = (T*)NativeMemory.AllocZeroed(newByteCount);
 
 			if (ptr != null) {
 				Buffer.MemoryCopy(ptr, new_data, oldByteCount, oldByteCount);
