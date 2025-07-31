@@ -68,6 +68,15 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
+@@ -117,6 +_,8 @@
+ 
+ 	private unsafe void InternalPrepareDraw(Rectangle drawArea)
+ 	{
++		LiquidEdgeRenderer.Edges.Clear();
++
+ 		Rectangle rectangle = new Rectangle(drawArea.X - 2, drawArea.Y - 2, drawArea.Width + 4, drawArea.Height + 4);
+ 		_drawArea = drawArea;
+ 		if (_cache.Length < rectangle.Width * rectangle.Height + 1)
 @@ -131,14 +_,14 @@
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
@@ -85,6 +94,15 @@
  					if (tile == null)
  						tile = new Tile();
  
+@@ -152,6 +_,8 @@
+ 					if (ptr2->IsHalfBrick && !ptr2->HasLiquid)
+ 						ptr2->Type = ptr2[-1].Type;
+ 
++					LiquidEdgeRenderer.CollectEdgeData(ptr2, tile, i, j);
++
+ 					ptr2++;
+ 				}
+ 			}
 @@ -550,6 +_,7 @@
  						vertices.BottomRightColor *= num;
  						vertices.TopLeftColor *= num;

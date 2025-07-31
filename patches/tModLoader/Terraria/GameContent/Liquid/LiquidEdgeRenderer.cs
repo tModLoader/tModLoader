@@ -112,4 +112,144 @@ public static class LiquidEdgeRenderer
 			spriteBatch.Draw(texture, position + new Vector2(0, fullTileHeight), new Rectangle(tileCache.TileFrameX, tileCache.TileFrameY + fullTileHeight, 16, 16 - fullTileHeight), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
 		}
 	}
+
+	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)
+	{
+		if (!Active)
+			return;
+
+		Tile tileRightCache = Main.tile[tileX + 1, tileY];
+		Tile tileLeftCache = Main.tile[tileX - 1, tileY];
+		Tile tileUpCache = Main.tile[tileX, tileY - 1];
+		Tile tileDownCache = Main.tile[tileX, tileY + 1];
+
+		if (!tileCache.HasTile || tileCache.IsActuated || Main.tileSolidTop[tileCache.type] || (tileCache.IsHalfBlock && (tileLeftCache.liquid > 160 || tileRightCache.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.Slope == SlopeType.Solid && !tileCache.IsHalfBlock))
+			return;
+
+		int liquidType = 0;
+
+		int highLiquid = 0;
+		bool left = false;
+		bool right = false;
+		bool up = false;
+		bool down = false;
+		bool self = false;
+		SlopeType slope = tileCache.Slope;
+		BlockType blockType = tileCache.BlockType;
+
+		if (tileCache.type == TileID.Grate && tileCache.LiquidAmount > 0) {
+			self = true;
+			down = true;
+			left = true;
+			right = true;
+			highLiquid = tileCache.LiquidAmount;
+			liquidType = tileCache.LiquidType;
+		}
+		else {
+			if (tileCache.LiquidAmount > 0 && blockType != BlockType.Solid && (blockType != BlockType.HalfBlock || tileCache.liquid > 160)) {
+				self = true;
+
+				if (tileCache.LiquidAmount > highLiquid) {
+					highLiquid = tileCache.LiquidAmount;
+					liquidType = tileCache.LiquidType;
+				}
+			}
+
+			if (tileLeftCache.LiquidAmount > 0 && slope != SlopeType.SlopeDownLeft && slope != SlopeType.SlopeUpLeft) {
+				left = true;
+
+				if (tileLeftCache.LiquidAmount > highLiquid) {
+					highLiquid = tileLeftCache.LiquidAmount;
+					liquidType = tileLeftCache.LiquidType;
+				}
+			}
+
+			if (tileRightCache.LiquidAmount > 0 && slope != SlopeType.SlopeDownRight && slope != SlopeType.SlopeUpRight) {
+				right = true;
+
+				if (tileRightCache.LiquidAmount > highLiquid) {
+					highLiquid = tileRightCache.LiquidAmount;
+					liquidType = tileRightCache.LiquidType;
+				}
+			}
+
+			if (tileUpCache.LiquidAmount > 0 && slope != SlopeType.SlopeUpLeft && slope != SlopeType.SlopeUpRight) {
+				up = true;
+				liquidType = tileUpCache.LiquidType;
+			}
+
+			if (tileDownCache.LiquidAmount > 0 && slope != SlopeType.SlopeDownLeft && slope != SlopeType.SlopeDownRight) {
+				if (tileDownCache.LiquidAmount > 240)
+					down = true;
+
+				liquidType = tileDownCache.LiquidType;
+			}
+		}
+
+		if (!up && !down && !left && !right && !self)
+			return;
+
+		var exempt = tileCache.active() && (Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type]);
+		if (exempt)
+			return;
+
+		/*Vector2 offset = new Vector2(0, 0);
+		Rectangle size = new Rectangle(0, 4, 16, 16);
+
+		if (down && (left || right)) {
+			left = true;
+			right = true;
+		}
+
+		if (up && (left || right)) {
+		}
+		else if (down && up) {
+		}
+		else if (up) {
+			size = new Rectangle(0, 4, 16, 10);
+
+			if (tileCache.IsHalfBlock || tileCache.Slope != SlopeType.Solid)
+				size = new Rectangle(0, 4, 16, 12);
+		}
+		else if (down && !left && !right) {
+			offset = new Vector2(0, 12);
+			size = new Rectangle(0, 4, 16, 8);
+		}
+		else {
+			float depth = 256 - highLiquid;
+			depth /= 32;
+
+			int d = 4;
+			if (tileUpCache.LiquidAmount == 0 && (blockType != BlockType.Solid || !WorldGen.SolidTile(tileX, tileY - 1))) {
+				d = 0;
+			}
+
+			var depthPush = (int)depth * 2;
+			if (tileCache.Slope != SlopeType.Solid) {
+				offset = new Vector2(0, depthPush);
+				size = new Rectangle(0, depthPush, 16, 16 - depthPush);
+			}
+			else if ((left && right) || tileCache.halfBrick()) {
+				offset = new Vector2(0, depthPush);
+				size = new Rectangle(0, d, 16, 16 - depthPush);
+			}
+			else if (left) {
+				offset = new Vector2(0, depthPush);
+				size = new Rectangle(0, d, 4, 16 - depthPush);
+			}
+			else {
+				offset = new Vector2(12, depthPush);
+				size = new Rectangle(0, d, 4, 16 - depthPush);
+			}
+		}*/
+
+		pCache->Type = (byte)liquidType;
+		pCache->LiquidLevel = highLiquid / 255f;
+		pCache->HasLiquid = highLiquid > 0;
+		pCache->VisibleLiquidLevel = 0f; // highLiquid / 255f;
+		pCache->IsSolid = false;
+
+
+		Edges.Add(new Point(tileX, tileY));
+	}
 }
