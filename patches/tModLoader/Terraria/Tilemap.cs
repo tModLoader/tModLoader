@@ -44,6 +44,10 @@ public struct Tilemap : IDisposable
 		Offset = TileData.AddTilemap(this);
 	}
 
+	/// <summary>
+	/// Clears all tile data associated with this <see cref="Tilemap"/>.
+	/// </summary>
+	/// <exception cref="ObjectDisposedException"></exception>
 	public void Clear()
 	{
 		if (disposed) {
@@ -52,16 +56,28 @@ public struct Tilemap : IDisposable
 		TileData.ClearTilemap(this);
 	}
 
+	/// <summary>
+	/// Copies tile data from this instance to <paramref name="other"/>.
+	/// </summary>
+	/// <param name="other"></param>
+	/// <exception cref="ObjectDisposedException"></exception>
+	/// <exception cref="ArgumentException"></exception>
 	public void CopyTo(Tilemap other)
 	{
 		if (disposed) {
 			throw new ObjectDisposedException(GetType().Name);
+		}
+		if (Width != other.Width || Height != other.Height) {
+			throw new ArgumentException("The provided tilemaps must have the same width and height.");
 		}
 		TileData.CopyTilemap(this, other);
 	}
 
 	public static Span<T> GetData<T>() where T : unmanaged, ITileData => TileData<T>.data;
 
+	/// <summary>
+	/// Clears all tile data and frees the memory space used by this <see cref="Tilemap"/> instance.
+	/// </summary>
 	public void Dispose()
 	{
 		if (!disposed) {
