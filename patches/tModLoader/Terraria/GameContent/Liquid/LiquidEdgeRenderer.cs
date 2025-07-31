@@ -118,6 +118,10 @@ public static class LiquidEdgeRenderer
 		if (!Active)
 			return;
 
+		var selfBlockType = tileCache.BlockType;
+		if (selfBlockType is BlockType.Solid)
+			return;
+
 		Tile tileRightCache = Main.tile[tileX + 1, tileY];
 		Tile tileLeftCache = Main.tile[tileX - 1, tileY];
 		Tile tileUpCache = Main.tile[tileX, tileY - 1];
