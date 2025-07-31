@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using System.Transactions;
 using Microsoft.Xna.Framework;
 
 namespace Terraria;
