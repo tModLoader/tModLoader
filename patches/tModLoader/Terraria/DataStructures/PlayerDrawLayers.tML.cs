@@ -162,13 +162,26 @@ public partial class PlayerDrawLayers
 		});
 
 	/// <summary> Draws the player's held item. </summary>
-	public static readonly PlayerDrawLayer HeldItem = new VanillaPlayerDrawLayer(nameof(HeldItem), DrawPlayer_27_HeldItem,
+	public static readonly PlayerDrawLayer HeldItem = new VanillaPlayerDrawLayer(nameof(HeldItem), Hack_DrawPlayer_27_HeldItem,
 		position: new Multiple() {
 			{ new Between(BalloonAcc, Skin), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm },
 			{ new Between(SolarShield, ArmOverItem), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm },
 			{ new Between(BladedGlove, ProjectileOverArm), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.OverFrontArm }
 		});
 
+	public static void Hack_DrawPlayer_27_HeldItem(ref PlayerDrawSet drawInfo) {
+		// Replacing existing draw data with an empty list to gather data for our PostDraw
+		List<DrawData> heldItemDrawData = new List<DrawData>();
+		List<DrawData> drawDataCache = drawInfo.DrawDataCache;
+
+		drawInfo.DrawDataCache = heldItemDrawData;
+		DrawPlayer_27_HeldItem(ref drawInfo);
+
+		drawInfo.DrawDataCache = drawDataCache;
+		ItemLoader.PostDrawHeldItem(drawInfo.heldItem, ref drawInfo, heldItemDrawData);
+
+		drawInfo.DrawDataCache.AddRange(heldItemDrawData);
+	}
 
 	// Compare this with the vanilla layer drawing call order to make sure it's accurate when updating
 	internal static IReadOnlyList<PlayerDrawLayer> FixedVanillaLayers => new [] {

@@ -354,15 +354,20 @@
  			return;
  
  		Vector2 zero = Vector2.Zero;
-@@ -2298,7 +_,7 @@
+@@ -2298,8 +_,12 @@
  		if (!drawinfo.drawPlayer.CanVisuallyHoldItem(heldItem))
  			flag2 = false;
  
 -		if (drawinfo.shadow != 0f || drawinfo.drawPlayer.frozen || !(flag || flag2) || num <= 0 || drawinfo.drawPlayer.dead || heldItem.noUseGraphic || (drawinfo.drawPlayer.wet && heldItem.noWet) || (drawinfo.drawPlayer.happyFunTorchTime && drawinfo.drawPlayer.inventory[drawinfo.drawPlayer.selectedItem].createTile == 4 && drawinfo.drawPlayer.itemAnimation == 0))
 +		if (drawinfo.shadow != 0f || drawinfo.drawPlayer.frozen || !(flag || flag2) || num <= 0 || drawinfo.drawPlayer.dead || heldItem.noUseGraphic || (drawinfo.drawPlayer.wet && heldItem.noWet && !ItemID.Sets.WaterTorches[num]/*Allow biome torches underwater.*/) || (drawinfo.drawPlayer.happyFunTorchTime && drawinfo.drawPlayer.inventory[drawinfo.drawPlayer.selectedItem].createTile == 4 && drawinfo.drawPlayer.itemAnimation == 0))
  			return;
++
++		if (!ItemLoader.PreDrawHeldItem(drawinfo.heldItem, ref drawinfo)) {
++			return;
++		}
  
  		_ = drawinfo.drawPlayer.name;
+ 		Color color = new Color(250, 250, 250, heldItem.alpha);
 @@ -2468,12 +_,16 @@
  						origin5 = Vector2.Zero;
  					}
