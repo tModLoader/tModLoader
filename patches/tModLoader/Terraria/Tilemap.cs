@@ -14,7 +14,7 @@ public struct Tilemap : IDisposable
 
 	public Tile this[int x, int y] {
 		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-		get {
+		readonly get {
 			if ((uint)x >= Width || (uint)y >= Height) {
 				throw new IndexOutOfRangeException();
 
@@ -32,9 +32,9 @@ public struct Tilemap : IDisposable
 		}
 	}
 	
-	public Tile this[Point pos] => this[pos.X, pos.Y];
+	public readonly Tile this[Point pos] => this[pos.X, pos.Y];
 
-	public Tile this[DataStructures.Point16 pos] => this[pos.X, pos.Y];
+	public readonly Tile this[DataStructures.Point16 pos] => this[pos.X, pos.Y];
 
 	public Tilemap(ushort width, ushort height)
 	{
@@ -47,7 +47,7 @@ public struct Tilemap : IDisposable
 	/// Clears all tile data associated with this <see cref="Tilemap"/>.
 	/// </summary>
 	/// <exception cref="ObjectDisposedException"></exception>
-	public void Clear()
+	public readonly void Clear()
 	{
 		if (disposed) {
 			throw new ObjectDisposedException(GetType().Name);
@@ -61,7 +61,7 @@ public struct Tilemap : IDisposable
 	/// <param name="other"></param>
 	/// <exception cref="ObjectDisposedException"></exception>
 	/// <exception cref="ArgumentException"></exception>
-	public void CopyTo(Tilemap other)
+	public readonly void CopyTo(Tilemap other)
 	{
 		if (disposed) {
 			throw new ObjectDisposedException(GetType().Name);
@@ -72,7 +72,7 @@ public struct Tilemap : IDisposable
 		TileData.CopyTilemap(this, other);
 	}
 
-	public Span<T> GetData<T>() where T : unmanaged, ITileData
+	public readonly Span<T> GetData<T>() where T : unmanaged, ITileData
 		=> TileData<T>.data[(int)Offset..(int)(Offset + (Width * Height))];
 
 	/// <summary>
