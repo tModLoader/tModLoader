@@ -6,7 +6,7 @@
 	
 	<ItemGroup>
 		<Content Include="$(MSBuildThisFileDirectory)tModCodeAssist\bin\**\*.dll" CopyToOutputDirectory="PreserveNewest" Link="$(_LibraryAnalyzersOutputPath)%(RecursiveDir)%(Filename)%(Extension)" />
-		<Content Include="$(MSBuildThisFileDirectory)tModCodeAssist.CodeFixes\bin\tModCodeAssist.CodeFixes.dll" CopyToOutputDirectory="PreserveNewest" Link="$(_LibraryAnalyzersOutputPath)%(RecursiveDir)%(Filename)%(Extension)" />
+		<Content Include="$(MSBuildThisFileDirectory)tModCodeAssist.CodeFixes\bin\**\*.dll" CopyToOutputDirectory="PreserveNewest" Link="$(_LibraryAnalyzersOutputPath)%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
 </Project>
