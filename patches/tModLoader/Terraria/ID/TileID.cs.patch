@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,12 @@
+@@ -1,11 +_,13 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
@@ -10,6 +10,7 @@
 -public class TileID
 +public partial class TileID
  {
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -231,7 +232,7 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 226, 237);
  		public static List<int> CorruptCountCollection = new List<int> {
  			23,
-@@ -231,29 +_,81 @@
+@@ -231,34 +_,87 @@
  		public static bool[] IsSkippedForNPCSpawningGroundTypeCheck = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 541);
  		public static bool[] BlocksStairsAbove = Factory.CreateBoolSet(386, 387);
@@ -313,6 +314,12 @@
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
  		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633);
+ 		public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 661, 109, 199, 662, 60, 70, 633);
+ 	}
++#endif
+ 
+ 	public const ushort Dirt = 0;
+ 	public const ushort Stone = 1;
 @@ -954,5 +_,6 @@
  	public const ushort VioletMossBlock = 691;
  	public const ushort RainbowMossBlock = 692;

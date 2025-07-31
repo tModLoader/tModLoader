@@ -4,10 +4,12 @@ namespace Terraria.ID;
 
 public partial class DustID
 {
+#if !TMLANALYZER
 	public static class Sets
 	{
 		public static SetFactory Factory = new SetFactory(DustLoader.DustCount, nameof(DustID), Search);
 	}
+#endif
 
 	// Naming is based on the best approximation of the earliest or most popular implementation.
 	// There are a few duplicates, unlike other ID classes, since some dust are used for different purposes.

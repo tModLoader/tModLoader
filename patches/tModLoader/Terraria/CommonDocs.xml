@@ -75,9 +75,9 @@ PostAI()</code>
 		<br/><br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Player-Item-Animation">Player Item Animation wiki page</see> goes into detail about how this and other player item use and animation fields work together and provides a useful overview on this topic.
 	</PlayerItemUseAnimation>
 	<MouseLeftMouseLeftReleaseNote>
-		<br/><br/> <see cref="mouseLeft"/> and <see cref="mouseLeftRelease"/> are usually checked together to detect the a left mouse click. For example: <c>if (Main.mouseLeft &amp;&amp; Main.mouseLeftRelease)</c>. <see cref="mouseLeftRelease"/> is usually set to false if that check passes to "consume" the click preventing a single click from affecting multiple things in the game.
+		<br/><br/> <see cref="mouseLeft"/> and <see cref="mouseLeftRelease"/> are usually checked together to detect a left mouse click. For example: <c>if (Main.mouseLeft &amp;&amp; Main.mouseLeftRelease)</c>. <see cref="mouseLeftRelease"/> is usually set to false if that check passes to "consume" the click preventing a single click from affecting multiple things in the game.
 	</MouseLeftMouseLeftReleaseNote>
 	<MouseRightMouseRightReleaseNote>
-		<br/><br/> <see cref="mouseRight"/> and <see cref="mouseRightRelease"/> are usually checked together to detect the a right mouse click. For example: <c>if (Main.mouseRight &amp;&amp; Main.mouseRightRelease)</c>. <see cref="mouseRightRelease"/> is usually set to false if that check passes to "consume" the click preventing a single click from affecting multiple things in the game.
+		<br/><br/> <see cref="mouseRight"/> and <see cref="mouseRightRelease"/> are usually checked together to detect a right mouse click. For example: <c>if (Main.mouseRight &amp;&amp; Main.mouseRightRelease)</c>. <see cref="mouseRightRelease"/> is usually set to false if that check passes to "consume" the click preventing a single click from affecting multiple things in the game.
 	</MouseRightMouseRightReleaseNote>
 </Common>

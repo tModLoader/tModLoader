@@ -34,8 +34,9 @@
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
-
-		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+		<Reference Remove="$(tMLLibraryPath)/tModCodeAssist/**" />
+		<Analyzer Include="$(tMLLibraryPath)/tModCodeAssist/1.0.0/tModCodeAssist.dll" />
+		<Analyzer Include="$(tMLLibraryPath)/tModCodeAssist/1.0.0/tModCodeAssist.CodeFixes.dll" />
 	</ItemGroup>
 
 	<Target Name="BuildMod" AfterTargets="Build">
