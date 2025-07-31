@@ -72,7 +72,8 @@ public struct Tilemap : IDisposable
 		TileData.CopyTilemap(this, other);
 	}
 
-	public static Span<T> GetData<T>() where T : unmanaged, ITileData => TileData<T>.data;
+	public Span<T> GetData<T>() where T : unmanaged, ITileData
+		=> TileData<T>.data[(int)Offset..(int)(Offset + (Width * Height))];
 
 	/// <summary>
 	/// Clears all tile data and frees the memory space used by this <see cref="Tilemap"/> instance.
