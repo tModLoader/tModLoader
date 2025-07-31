@@ -247,12 +247,42 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 				ReportDiagnostic(ctx.ReportDiagnostic, argument.Expression, binding, id);
 				break; // with the way bindings currently work, only 1 argument can be binded, thus immediately terminate loop once found.
 			}
-
 		}, SyntaxKind.InvocationExpression);
 
 		// TODO: handle constructor arguments
 
-		// TODO: handle switch cases
+		/*
+			switch (item.type) {
+				case 1:
+					break;
+			}
+
+					=>
+		
+			switch (item.type) {
+				case ItemID.IronPickaxe:
+					break;
+			}
+		 */
+		ctx.RegisterSyntaxNodeAction(ctx => {
+			var node = (CaseSwitchLabelSyntax)ctx.Node;
+
+			var operatedExpression = node.Parent;
+			Debug.Assert(operatedExpression is SwitchSectionSyntax);
+			operatedExpression = operatedExpression.Parent;
+			Debug.Assert(operatedExpression is SwitchStatementSyntax);
+			operatedExpression = ((SwitchStatementSyntax)operatedExpression).Expression;
+
+			if (ctx.SemanticModel.GetSymbolInfo(operatedExpression, ctx.CancellationToken).Symbol is not { } operatedSymbol) return;
+			if (!TryGetBinding(operatedSymbol, out var binding)) return;
+
+			if (!node.Value.IsKind(SyntaxKind.NumericLiteralExpression) || node.Value is not LiteralExpressionSyntax literalExpressionSyntax)
+				return;
+
+			int id = Convert.ToInt32(literalExpressionSyntax.Token.Value);
+
+			ReportDiagnostic(ctx.ReportDiagnostic, node.Value, binding, id);
+		}, SyntaxKind.CaseSwitchLabel);
 	}
 
 	private void ReportDiagnostic(Action<Diagnostic> report, SyntaxNode literalNode, Binding binding, int id)

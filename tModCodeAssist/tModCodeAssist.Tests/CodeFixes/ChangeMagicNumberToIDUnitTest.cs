@@ -98,4 +98,27 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			Dust.NewDust(Vector2.Zero, 1, 2, DustID.GrassBlades, 4, 5, 6, Color.Red, 7);
 			""");
 	}
+
+	[TestMethod]
+	public async Task Test_CaseSwitchLabel()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+
+			switch (new NPC().type) {
+				case [|420|]:
+					break;
+			}
+			""",
+			"""
+			using Terraria;
+			using Terraria.ID;
+			
+			switch (new NPC().type) {
+				case NPCID.NebulaBrain:
+					break;
+			}
+			""");
+	}
 }
