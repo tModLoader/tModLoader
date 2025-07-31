@@ -52,7 +52,7 @@ public static class LiquidEdgeRenderer
 	/// Tiles which mask rendered liquid (tiles on the edge of bodies of
 	/// liquid).
 	/// </summary>
-	public static Dictionary<Point, LiquidEdgeCache> Edges { get; } = [];
+	public static HashSet<Point> Edges { get; } = [];
 
 	public static void DrawSingleTileMask(SpriteBatch spriteBatch, int tileX, int tileY)
 	{

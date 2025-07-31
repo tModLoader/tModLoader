@@ -6301,14 +6301,6 @@
  								}
  								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
  									Lighting.GetColor9Slice(num24, num25, ref slices);
-@@ -45305,6 +_,7 @@
- 		tileBatch.End();
- 		spriteBatch.End();
- 		base.GraphicsDevice.SetRenderTarget(null);
-+
- 		base.GraphicsDevice.SetRenderTarget(backgroundTarget);
- 		base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
- 		spriteBatch.Begin();
 @@ -45726,6 +_,7 @@
  			num25 *= num5;
  			num = 0f - num24 + (float)(screenWidth / 2);
@@ -6447,16 +6439,9 @@
  		}
  
  		if (!drawToScreen && !isBackground) {
-@@ -47303,8 +_,14 @@
- 			LiquidRenderer.Instance.PrepareDraw(drawArea);
+@@ -47304,7 +_,7 @@
  		}
  
-+		// TML(liquid-slopes): Now DrawLiquidBehindTiles caches edge tiles to
-+		// render instead of rendering them immediately.  We only need to run
-+		// this once per draw cycle, so we cache it.
-+		if (isBackground && LiquidEdgeRenderer.Active)
-+			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
-+
  		bool flag = false;
 -		for (int j = 0; j < 15; j++) {
 +		for (int j = 0; j < LoaderManager.Get<WaterStylesLoader>().TotalCount; j++) {
@@ -6469,19 +6454,19 @@
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +
 +		if (LiquidEdgeRenderer.Active) {
-+
 +			spriteBatch.End();
++
 +			Effect maskShader = LiquidEdgeRenderer.MaskShader;
 +			maskShader.Parameters["usePartialAlpha"].SetValue(false);
++
 +			spriteBatch.Begin(SpriteSortMode.Immediate, LiquidEdgeRenderer.MaskingBlendState, DefaultSamplerState, DepthStencilState.None, Rasterizer, maskShader);
 +
 +			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange), Color.White);
 +
-+			foreach (LiquidEdgeCache cache in LiquidEdgeRenderer.Edges.Values) {
-+
-+				int tileType = tile[cache.TileX, cache.TileY].TileType;
++			foreach (Point edge in LiquidEdgeRenderer.Edges) {
++				int tileType = tile[edge.X, edge.Y].TileType;
 +				if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileType]) {
-+					LiquidEdgeRenderer.DrawSingleTileMask(spriteBatch, cache.TileX, cache.TileY);
++					LiquidEdgeRenderer.DrawSingleTileMask(spriteBatch, edge.X, edge.Y);
 +				}
 +			}
 +		}
@@ -6492,22 +6477,16 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
-@@ -47324,10 +_,13 @@
+@@ -47324,7 +_,8 @@
  		Stopwatch stopwatch = new Stopwatch();
  		stopwatch.Start();
  		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
 -		if (bg)
 +
-+		// TML(liquid-slopes): Move this to DrawWaters because
-+		// it does not actually render anything.
 +		if (bg && !LiquidEdgeRenderer.Active)
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
--		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
-+		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, drawSinglePassLiquids);
- 		if (drawSinglePassLiquids)
- 			LiquidRenderer.Instance.DrawShimmer(spriteBatch, drawOffset, bg);
- 
+ 		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
 @@ -47776,6 +_,7 @@
  			}
  		}
@@ -6523,7 +6502,7 @@
 +
 +
 +					// TML(liquid-slopes): Avoid drawing over liquid edges.
-+					if (liquidSlopeFix && LiquidEdgeRenderer.Edges.ContainsKey(new Point(j, i)) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
++					if (liquidSlopeFix && LiquidEdgeRenderer.Edges.Contains(new Point(j, i)) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
 +						break;
 +
  					byte b = tile.liquid;

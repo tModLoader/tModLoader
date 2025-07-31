@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -11,59 +_,87 @@
+@@ -11,59 +_,88 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -92,6 +92,7 @@
  	<!-- Files -->
  	<ItemGroup>
 -		<None Remove="Libraries/Mono/**" />
++		<Compile Remove="GameContent\Liquid\LiquidEdgeCache.cs" />
 +		<Compile Remove="Libraries/Common/TerrariaHooks.dll" />
  		<None Remove="Libraries/Windows/**" />
  		<None Remove="Libraries/XNA/**" />

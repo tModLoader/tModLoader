@@ -68,11 +68,10 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -131,19 +_,24 @@
+@@ -131,14 +_,14 @@
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
-+		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
 -		Tile tile = null;
 +		Tile tile = default;
  		fixed (LiquidCache* ptr = &_cache[1]) {
@@ -86,40 +85,6 @@
  					if (tile == null)
  						tile = new Tile();
  
-+					// TML(liquid-slopes): Half-brick rendering is now entirely
-+					// handled as a slope/partial liquid, so disable it here.
- 					ptr2->LiquidLevel = (float)(int)tile.liquid / 255f;
- 					ptr2->IsHalfBrick = tile.halfBrick() && ptr2[-1].HasLiquid && !TileID.Sets.Platforms[tile.type];
-+					if (liquidSlopeFix)
-+						ptr2->IsHalfBrick = false;
- 					ptr2->IsSolid = WorldGen.SolidOrSlopedTile(tile);
- 					ptr2->HasLiquid = tile.liquid != 0;
- 					ptr2->VisibleLiquidLevel = 0f;
-@@ -516,7 +_,7 @@
- 			this.WaveFilters(_waveMask, GetCachedDrawArea());
- 	}
- 
--	public unsafe void DrawNormalLiquids(SpriteBatch spriteBatch, Vector2 drawOffset, int waterStyle, float globalAlpha, bool isBackgroundDraw)
-+	public unsafe void DrawNormalLiquids(SpriteBatch spriteBatch, Vector2 drawOffset, int waterStyle, float globalAlpha, bool isBackgroundDraw, bool drawSinglePassLiquids)
- 	{
- 		Rectangle drawArea = _drawArea;
- 		Main.tileBatch.Begin();
-@@ -539,9 +_,15 @@
- 								num2 = waterStyle;
- 								num *= globalAlpha;
- 								break;
-+							case LiquidID.Lava:
-+								num2 = WaterStyleID.Lava;
-+								break;
- 							case 2:
- 								num2 = 11;
- 								break;
-+							case LiquidID.Shimmer:
-+								num2 = 14;
-+								break;
- 						}
- 
- 						num = Math.Min(1f, num);
 @@ -550,6 +_,7 @@
  						vertices.BottomRightColor *= num;
  						vertices.TopLeftColor *= num;
@@ -128,52 +93,11 @@
  						Main.DrawTileInWater(drawOffset, i, j);
  						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
  					}
-@@ -558,7 +_,48 @@
+@@ -558,7 +_,6 @@
  				}
  			}
  		}
-+		if (LiquidEdgeRenderer.Active) {
-+			foreach (var edgeCache in LiquidEdgeRenderer.Edges.Values) {
-+				var tile = Main.tile[edgeCache.TileX, edgeCache.TileY];
- 
-+				float opacity = isBackgroundDraw ? 1f : DEFAULT_OPACITY[edgeCache.LiquidType];
-+				int liquidType = edgeCache.LiquidType;
-+				switch (liquidType) {
-+					case LiquidID.Water:
-+						liquidType = waterStyle;
-+						opacity *= globalAlpha;
-+						break;
-+					case LiquidID.Lava:
-+						liquidType = WaterStyleID.Lava;
-+						break;
-+					case LiquidID.Honey:
-+						liquidType = WaterStyleID.Honey;
-+						;
-+						break;
-+					case LiquidID.Shimmer:
-+						liquidType = 14;
-+						break;
-+				}
-+
-+				opacity = Math.Min(1f, opacity);
-+				Lighting.GetCornerColors(edgeCache.TileX, edgeCache.TileY, out var vertices);
-+				vertices.BottomLeftColor *= opacity;
-+				vertices.BottomRightColor *= opacity;
-+				vertices.TopLeftColor *= opacity;
-+				vertices.TopRightColor *= opacity;
-+
-+				if (liquidType == 14) {
-+					if (!drawSinglePassLiquids)
-+						break;
-+
-+					SetShimmerVertexColors(ref vertices, opacity, edgeCache.TileX, edgeCache.TileY);
-+				}
-+
-+				var position = edgeCache.LiquidPosition + drawOffset;
-+				var rectangle = edgeCache.LiquidFrame;
-+				Main.instance.TilesRenderer.DrawPartialLiquid(isBackgroundDraw, tile, ref position, ref rectangle, liquidType, ref vertices);
-+			}
-+		}
+-
  		Main.tileBatch.End();
  	}
  
