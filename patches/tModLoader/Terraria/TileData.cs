@@ -17,7 +17,6 @@ internal static class TileData
 	internal static Action<uint, uint> OnRemoveTilemap;
 	internal static Action<uint, uint> OnClearTilemap;
 	internal static Action<uint, uint, uint> OnCopyTilemap;
-	internal static Action<uint> OnSetLength;
 	internal static Action<uint> OnClearSingle;
 	internal static Action<uint, uint> OnCopySingle;
 
