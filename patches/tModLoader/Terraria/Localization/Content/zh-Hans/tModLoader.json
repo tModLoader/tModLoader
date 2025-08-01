@@ -676,6 +676,8 @@
 		"TagsUtilityDescription": "添加了实用工具或功能",
 		"TagsLibrary": "模组类库",
 		"TagsLibraryDescription": "为模组开发者提供了额外的API或功能",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "体验优化",
 		"TagsQoLDescription": "优化游戏体验，减少无趣的游戏行为和目标",
 		"TagsGameplay": "游戏调整",

@@ -674,6 +674,8 @@
 		"TagsUtilityDescription": "Fügt nützliche Inhalte oder Funktionen hinzu",
 		"TagsLibrary": "Programmbibliothek",
 		"TagsLibraryDescription": "Stellt zusätzliche API & Funktionen bereit, die nützlich für Modder sind",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Lebensqualität",
 		"TagsQoLDescription": "Funktionen oder Änderungen die den Zeitaufwand für eher weniger spaßige Tätigkeiten reduzieren.",
 		"TagsGameplay": "Spielablaufsanpassungen",
