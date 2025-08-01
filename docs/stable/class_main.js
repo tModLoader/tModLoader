@@ -93,6 +93,7 @@ var class_main =
     [ "snowMoon", "class_main.html#a632768365eaf2436f5e1b6cf2a890649", null ],
     [ "spawnTileX", "class_main.html#aeac6d2a4742e9642d6a091205ebbc302", null ],
     [ "spawnTileY", "class_main.html#ad0219f2a3e73acb90d1a44350bf4304d", null ],
+    [ "swapMusic", "class_main.html#aabb7b9b289d8d5101851355ff6795bcc", null ],
     [ "tenthAnniversaryWorld", "class_main.html#af67ed10bda1751245851d8845c832950", null ],
     [ "tileAxe", "class_main.html#aa844b5324096225533879d1901aa9afe", null ],
     [ "tileBlockLight", "class_main.html#abe2ddd285204e43fe773b6df014ca8b7", null ],

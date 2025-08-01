@@ -30,11 +30,11 @@ var searchData=
   ['heldprojdoesnotuseplayergfxoffy_27',['HeldProjDoesNotUsePlayerGfxOffY',['../class_projectile_i_d_1_1_sets.html#a0fe48a56f4c77cb9bf1767301495ea02',1,'ProjectileID::Sets']]],
   ['heldprojectile_28',['HeldProjectile',['../class_proj_a_i_style_i_d.html#a2f67cf95f7c9eb09fce1595c6aa42d17',1,'ProjAIStyleID']]],
   ['herpling_29',['Herpling',['../class_n_p_c_a_i_style_i_d.html#ad796a59e2694566c2b2c37d99697c853',1,'NPCAIStyleID']]],
-  ['hide_30',['hide',['../class_n_p_c.html#ab559bbc9e10d0286b2e5ca809a93c60b',1,'NPC.hide()'],['../class_projectile.html#a2101c172912b39aac39b6c064ee064f0',1,'Projectile.hide()']]],
-  ['hide_31',['Hide',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#aca2018cb7d55f11b1ca6329943acbede',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
+  ['hide_30',['Hide',['../struct_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#aca2018cb7d55f11b1ca6329943acbede',1,'NPCID::Sets::NPCBestiaryDrawModifiers']]],
+  ['hide_31',['hide',['../class_n_p_c.html#ab559bbc9e10d0286b2e5ca809a93c60b',1,'NPC.hide()'],['../class_projectile.html#a2101c172912b39aac39b6c064ee064f0',1,'Projectile.hide()']]],
   ['hidecombattext_32',['HideCombatText',['../struct_n_p_c_1_1_hit_info.html#a16c23b1dcd8362b8dbbb9fc9ea6b4658',1,'NPC::HitInfo']]],
   ['hidesarms_33',['HidesArms',['../class_armor_i_ds_1_1_body_1_1_sets.html#affedc55a96647b3541649b44b3ac927a',1,'ArmorIDs::Body::Sets']]],
-  ['hidesbottomskin_34',['HidesBottomSkin',['../class_armor_i_ds_1_1_body_1_1_sets.html#a1094829fe2df36565e1a4e06509b0f42',1,'ArmorIDs.Body.Sets.HidesBottomSkin()'],['../class_armor_i_ds_1_1_legs_1_1_sets.html#a7979154ea568906b3a0beedfa9355f9b',1,'ArmorIDs.Legs.Sets.HidesBottomSkin()']]],
+  ['hidesbottomskin_34',['HidesBottomSkin',['../class_armor_i_ds_1_1_legs_1_1_sets.html#a7979154ea568906b3a0beedfa9355f9b',1,'ArmorIDs.Legs.Sets.HidesBottomSkin()'],['../class_armor_i_ds_1_1_body_1_1_sets.html#a1094829fe2df36565e1a4e06509b0f42',1,'ArmorIDs.Body.Sets.HidesBottomSkin()']]],
   ['hideshands_35',['HidesHands',['../class_armor_i_ds_1_1_body_1_1_sets.html#ac36b4708f10224a9edcccf5e101e4eda',1,'ArmorIDs::Body::Sets']]],
   ['hidestopskin_36',['HidesTopSkin',['../class_armor_i_ds_1_1_body_1_1_sets.html#a076b36fdf542fd320e453f54a59f330d',1,'ArmorIDs.Body.Sets.HidesTopSkin()'],['../class_armor_i_ds_1_1_legs_1_1_sets.html#ac293a180e3292ae9ec0e794ae5d33de3',1,'ArmorIDs.Legs.Sets.HidesTopSkin()']]],
   ['hidevisibleaccessory_37',['hideVisibleAccessory',['../class_player.html#a5138a0bca7ac73acaa5f60f6a71bba86',1,'Player']]],
@@ -60,5 +60,6 @@ var searchData=
   ['hoveringfighter_57',['HoveringFighter',['../class_n_p_c_a_i_style_i_d.html#aed416394b90812be02a66c71b53af301',1,'NPCAIStyleID']]],
   ['hoveritem_58',['HoverItem',['../class_main.html#a7164febcefe3b01d397c57c841e1f6b4',1,'Main']]],
   ['hoveritemname_59',['hoverItemName',['../class_main.html#afdcdab1d09721f9468fed4d2e562e47c',1,'Main']]],
-  ['hurtingbees_60',['HurtingBees',['../class_n_p_c_i_d_1_1_sets.html#af91b19ed47a3c0ba3b3404e8f1865890',1,'NPCID::Sets']]]
+  ['huntressammocost90_60',['huntressAmmoCost90',['../class_player.html#a22de45aad63e51d2965c1bd651a5f81f',1,'Player']]],
+  ['hurtingbees_61',['HurtingBees',['../class_n_p_c_i_d_1_1_sets.html#af91b19ed47a3c0ba3b3404e8f1865890',1,'NPCID::Sets']]]
 ];

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -125,6 +125,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></t
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a384da5bb7b448f85457d6e6604e3fc35"><td class="memItemLeft" align="right" valign="top"><a id="a384da5bb7b448f85457d6e6604e3fc35" name="a384da5bb7b448f85457d6e6604e3fc35"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckSection</b> (int playerIndex, Vector2 position, int fluff=1)</td></tr>
+<tr class="memdesc:a384da5bb7b448f85457d6e6604e3fc35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensures that the specified client (<em>playerIndex</em> ) has the world section containing the provided <em>position</em>  loaded. <em>fluff</em>  determines how many surrounding sections will be synced at the same time. <br  />
+<br  />
+ The server should call this method before teleporting the player or when the player is viewing locations detached from the player, such as with Kwad Racer Drone or golf. <br  />
+<br  />
+ <b>Call on Server only!</b> <br /></td></tr>
 <tr class="separator:a384da5bb7b448f85457d6e6604e3fc35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -191,6 +196,9 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>StatusText2</b></td
 <tr class="separator:ae14ef2052dfac17842580eed21eb7827"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d25cabc8f38e0fe4689737f20568303"><td class="memItemLeft" align="right" valign="top"><a id="a0d25cabc8f38e0fe4689737f20568303" name="a0d25cabc8f38e0fe4689737f20568303"></a>
 bool[,]&#160;</td><td class="memItemRight" valign="bottom"><b>TileSections</b> = new bool[<a class="el" href="class_main.html#ad0252224ef1ac35bbfaa6bd36bb420e8">Main.maxTilesX</a> / 200 + 1, <a class="el" href="class_main.html#afea29b8cb8ad97463b70dd828e376d50">Main.maxTilesY</a> / 150 + 1]</td></tr>
+<tr class="memdesc:a0d25cabc8f38e0fe4689737f20568303"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if specific world sections (200 x 150 tile chunks) of the world are loaded by this client. The server will sync world sections to the client as the player visits them by calling <a class="el" href="class_remote_client.html#a384da5bb7b448f85457d6e6604e3fc35" title="Ensures that the specified client (playerIndex ) has the world section containing the provided positi...">CheckSection</a>. <br  />
+<br  />
+ <b>Only accessible on Server!</b> <br /></td></tr>
 <tr class="separator:a0d25cabc8f38e0fe4689737f20568303"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab591d301a16d7bd8babddab7528d58fb"><td class="memItemLeft" align="right" valign="top"><a id="ab591d301a16d7bd8babddab7528d58fb" name="ab591d301a16d7bd8babddab7528d58fb"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>TimeOutTimer</b></td></tr>

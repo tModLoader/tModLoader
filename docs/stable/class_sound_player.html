@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -99,6 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2df96d6e095241b3a874cde4287db1b3"><td class="memItemLeft" align="right" valign="top"><a id="a2df96d6e095241b3a874cde4287db1b3" name="a2df96d6e095241b3a874cde4287db1b3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PauseAll</b> ()</td></tr>
 <tr class="separator:a2df96d6e095241b3a874cde4287db1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a329f535e564f2a3de7ea2422706d67e5"><td class="memItemLeft" align="right" valign="top"><a id="a329f535e564f2a3de7ea2422706d67e5" name="a329f535e564f2a3de7ea2422706d67e5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PauseOrStopAll</b> ()</td></tr>
+<tr class="separator:a329f535e564f2a3de7ea2422706d67e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d09b482a3ff158b27c6a5b0670c1fba"><td class="memItemLeft" align="right" valign="top"><a id="a0d09b482a3ff158b27c6a5b0670c1fba" name="a0d09b482a3ff158b27c6a5b0670c1fba"></a>
 SlotId&#160;</td><td class="memItemRight" valign="bottom"><b>Play</b> (in <a class="el" href="struct_sound_style.html">SoundStyle</a> style, Vector2? position=null, SoundUpdateCallback? updateCallback=null)</td></tr>
 <tr class="separator:a0d09b482a3ff158b27c6a5b0670c1fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,7 +116,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StopAll</b> ()</td></
 <tr class="separator:a30f4f35b9afeb90c56359a946e7d233e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea7a15779b3269b5492082b5fa5e880a"><td class="memItemLeft" align="right" valign="top"><a id="aea7a15779b3269b5492082b5fa5e880a" name="aea7a15779b3269b5492082b5fa5e880a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StopAll</b> (in <a class="el" href="struct_sound_style.html">SoundStyle</a> style)</td></tr>
+<tr class="memdesc:aea7a15779b3269b5492082b5fa5e880a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops all sounds matching the provided <a class="el" href="struct_sound_style.html" title="This data type describes in detail how a sound should be played.   Passable to the SoundEngine....">SoundStyle</a>. Use <a class="el" href="class_sound_player.html#a3c8ee4d4be45ae13b472de6eb8efa966" title="Stops all sounds matching the provided SoundStyle and variant choice. Use StopAll(in SoundStyle) inst...">StopAll(in SoundStyle, int)</a> instead if stopping just a specific variant is desired. <br /></td></tr>
 <tr class="separator:aea7a15779b3269b5492082b5fa5e880a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c8ee4d4be45ae13b472de6eb8efa966"><td class="memItemLeft" align="right" valign="top"><a id="a3c8ee4d4be45ae13b472de6eb8efa966" name="a3c8ee4d4be45ae13b472de6eb8efa966"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StopAll</b> (in <a class="el" href="struct_sound_style.html">SoundStyle</a> style, int variant)</td></tr>
+<tr class="memdesc:a3c8ee4d4be45ae13b472de6eb8efa966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops all sounds matching the provided <a class="el" href="struct_sound_style.html" title="This data type describes in detail how a sound should be played.   Passable to the SoundEngine....">SoundStyle</a> and variant choice. Use <a class="el" href="class_sound_player.html#aea7a15779b3269b5492082b5fa5e880a" title="Stops all sounds matching the provided SoundStyle. Use StopAll(in SoundStyle, int) instead if stoppin...">StopAll(in SoundStyle)</a> instead if stopping all variants is desired. <br /></td></tr>
+<tr class="separator:a3c8ee4d4be45ae13b472de6eb8efa966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cb8b65823c0d9ecc9400e2ff8c24ca1"><td class="memItemLeft" align="right" valign="top"><a id="a1cb8b65823c0d9ecc9400e2ff8c24ca1" name="a1cb8b65823c0d9ecc9400e2ff8c24ca1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetActiveSound</b> (SlotId id, [NotNullWhen(true)] out <a class="el" href="class_active_sound.html">ActiveSound</a>? result)</td></tr>
 <tr class="memdesc:a1cb8b65823c0d9ecc9400e2ff8c24ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to get a currently playing <a class="el" href="class_active_sound.html">ActiveSound</a> instance, tied to the provided SlotId. <br /></td></tr>

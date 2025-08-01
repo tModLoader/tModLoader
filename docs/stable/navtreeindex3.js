@@ -1,5 +1,9 @@
 var NAVTREEINDEX3 =
 {
+"class_creative_powers_1_1_a_per_player_slider_power.html":[3,0,213,0],
+"class_creative_powers_1_1_a_per_player_toggle_power.html":[3,0,213,1],
+"class_creative_powers_1_1_a_shared_button_power.html":[3,0,213,2],
+"class_creative_powers_1_1_a_shared_slider_power.html":[3,0,213,3],
 "class_creative_powers_1_1_a_shared_toggle_power.html":[3,0,213,4],
 "class_creative_powers_1_1_difficulty_slider_power.html":[3,0,213,5],
 "class_creative_powers_1_1_far_placement_range_power.html":[3,0,213,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX3 =
 "class_entity.html#a15845e02eda396ef77c53297c53cae9e":[3,0,313,11],
 "class_entity.html#a2e50cbf5d9dc0e20b5a152dbfa17e022":[3,0,313,8],
 "class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b":[3,0,313,1],
-"class_entity.html#a6e117c5fa3562f8b5b0f05982c0f8739":[3,0,313,5],
-"class_entity.html#a99144ef9b73ff3fbbc084dbb8a72c77e":[3,0,313,3],
-"class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5":[3,0,313,10],
-"class_entity.html#ad61f0c48735980e78778b90b6b4c8667":[3,0,313,0],
-"class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168":[3,0,313,7]
+"class_entity.html#a6e117c5fa3562f8b5b0f05982c0f8739":[3,0,313,5]
 };

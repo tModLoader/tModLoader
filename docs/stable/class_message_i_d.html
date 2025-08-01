@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -91,6 +91,9 @@ $(document).ready(function(){initNavTree('class_message_i_d.html',''); initResiz
   <div class="headertitle"><div class="title">MessageID Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Vanilla netcode messages. These are used in NetMessage.SendData(int, int, int, Terraria.Localization.NetworkText, int, float, float, float, int, int, int) to send data between the server and clients. The documentation of each <a class="el" href="class_message_i_d.html" title="Vanilla netcode messages. These are used in NetMessage.SendData(int, int, int, Terraria....">MessageID</a> value explains the the purpose of the message and most importantly the meaning of each of the SendData parameters for that message.  
+ <a href="class_message_i_d.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -141,7 +144,9 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>ClientUUID</b> 
 <tr class="separator:a7e3ca8dab64d0210c3fd3f2154c0f984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8f6712b71742c1756050ad73b4470ca"><td class="memItemLeft" align="right" valign="top"><a id="ad8f6712b71742c1756050ad73b4470ca" name="ad8f6712b71742c1756050ad73b4470ca"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>CombatTextInt</b> = 81</td></tr>
-<tr class="memdesc:ad8f6712b71742c1756050ad73b4470ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> from the server to clients. Sends a number, use <a class="el" href="class_message_i_d.html#a2076661fc313d5a07c7abe39dc8aa2c7" title="Sends a CombatText from the server to clients. Sends a string, use CombatTextInt instead for the int ...">CombatTextString</a> instead for the string version. Used automatically by <a class="el" href="class_player.html#ad5922ca66e5256559454706dcd24fbd8" title="Spawns a CombatText indicating the player healed healAmount  life and syncs it if broadcast  is true....">Player.HealEffect(int, bool)</a>, but custom <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> would need to manually sync using this message. NetMessage.SendData parameters, correlating to CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, int, bool, bool) parameters: <br  />
+<tr class="memdesc:ad8f6712b71742c1756050ad73b4470ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> from the server to clients. Sends a number, use <a class="el" href="class_message_i_d.html#a2076661fc313d5a07c7abe39dc8aa2c7" title="Sends a CombatText from the server to clients. Sends a string, use CombatTextInt instead for the int ...">CombatTextString</a> instead for the string version. Used automatically by <a class="el" href="class_player.html#ad5922ca66e5256559454706dcd24fbd8" title="Spawns a CombatText indicating the player healed healAmount  life and syncs it if broadcast  is true....">Player.HealEffect(int, bool)</a>, but custom <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> would need to manually sync using this message. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters, correlating to CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, int, bool, bool) parameters: <br  />
 <b>number:</b> The text color: Microsoft.Xna.Framework.Color.PackedValue <br  />
 <b>number2:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center X coordinate <br  />
 <b>number3:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center Y coordinate <br  />
@@ -149,7 +154,7 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>CombatTextInt</
 <tr class="separator:ad8f6712b71742c1756050ad73b4470ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2076661fc313d5a07c7abe39dc8aa2c7"><td class="memItemLeft" align="right" valign="top"><a id="a2076661fc313d5a07c7abe39dc8aa2c7" name="a2076661fc313d5a07c7abe39dc8aa2c7"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>CombatTextString</b> = 119</td></tr>
-<tr class="memdesc:a2076661fc313d5a07c7abe39dc8aa2c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> from the server to clients. Sends a string, use <a class="el" href="class_message_i_d.html#ad8f6712b71742c1756050ad73b4470ca" title="Sends a CombatText from the server to clients. Sends a number, use CombatTextString instead for the s...">CombatTextInt</a> instead for the int version. Used automatically by <a class="el" href="class_player.html#ad5922ca66e5256559454706dcd24fbd8" title="Spawns a CombatText indicating the player healed healAmount  life and syncs it if broadcast  is true....">Player.HealEffect(int, bool)</a>, but custom <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> would need to manually sync using this message. NetMessage.SendData parameters, correlating to CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, string, bool, bool) parameters: <br  />
+<tr class="memdesc:a2076661fc313d5a07c7abe39dc8aa2c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> from the server to clients. Sends a string, use <a class="el" href="class_message_i_d.html#ad8f6712b71742c1756050ad73b4470ca" title="Sends a CombatText from the server to clients. Sends a number, use CombatTextString instead for the s...">CombatTextInt</a> instead for the int version. Used automatically by <a class="el" href="class_player.html#ad5922ca66e5256559454706dcd24fbd8" title="Spawns a CombatText indicating the player healed healAmount  life and syncs it if broadcast  is true....">Player.HealEffect(int, bool)</a>, but custom <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> would need to manually sync using this message. <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters, correlating to CombatText.NewText(Microsoft.Xna.Framework.Rectangle, Microsoft.Xna.Framework.Color, string, bool, bool) parameters: <br  />
 <b>number:</b> The text color: Microsoft.Xna.Framework.Color.PackedValue <br  />
 <b>number2:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center X coordinate <br  />
 <b>number3:</b> The <a class="el" href="class_combat_text.html" title="Represents floating text in the game world most typically used for damage numbers and healing numbers...">CombatText</a> center Y coordinate <br  />
@@ -208,12 +213,22 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>HurtPlayer</b> 
 <tr class="separator:aa790cdeb9f80d1abcfcbe607069d997f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f47c434ff34c5a612f8ce936014ed50"><td class="memItemLeft" align="right" valign="top"><a id="a1f47c434ff34c5a612f8ce936014ed50" name="a1f47c434ff34c5a612f8ce936014ed50"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>InGameChangeConfig</b> = 249</td></tr>
+<tr class="memdesc:a1f47c434ff34c5a612f8ce936014ed50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent by Clients who wish to change ConfigScope.ServerSide ModConfigs. Clients send Modname, configname, broadcast, and json string. <br  />
+<br  />
+ Server determines if ModConfig.ReloadRequired and ModConfig.ShouldAcceptClientChanges. Replies with ShouldAcceptClientChanges message if rejected. <br  />
+<br  />
+ Client receives bool success, message, modname, configname, broadcast, requestor player, if success additionally json, and applies them locally. <br /></td></tr>
 <tr class="separator:a1f47c434ff34c5a612f8ce936014ed50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbd500ec18f3641e2ae805a1ddd1f833"><td class="memItemLeft" align="right" valign="top"><a id="acbd500ec18f3641e2ae805a1ddd1f833" name="acbd500ec18f3641e2ae805a1ddd1f833"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>InitialSpawn</b> = 49</td></tr>
 <tr class="separator:acbd500ec18f3641e2ae805a1ddd1f833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfc1ef65b08d602029fccfe8cde33c2e"><td class="memItemLeft" align="right" valign="top"><a id="adfc1ef65b08d602029fccfe8cde33c2e" name="adfc1ef65b08d602029fccfe8cde33c2e"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>InstancedItem</b> = 90</td></tr>
+<tr class="memdesc:adfc1ef65b08d602029fccfe8cde33c2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exactly the same as <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">SyncItem</a>, but sets the instanced flag and is only sent server -&gt; client. Used by loot that is dropped per player, like boss bags. <br  />
+<br  />
+ <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">SyncItem</a> docs: <br  />
+<br  />
+  <br /></td></tr>
 <tr class="separator:adfc1ef65b08d602029fccfe8cde33c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d485876f04b800ec8dad257630f5576"><td class="memItemLeft" align="right" valign="top"><a id="a7d485876f04b800ec8dad257630f5576" name="a7d485876f04b800ec8dad257630f5576"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>InstrumentSound</b> = 58</td></tr>
@@ -232,6 +247,7 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>ItemTweaker</b>
 <tr class="separator:af1f648a35f238d99f678af6a3966c1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb52c89d29fdd8ce27f7d4495b4df5e2"><td class="memItemLeft" align="right" valign="top"><a id="acb52c89d29fdd8ce27f7d4495b4df5e2" name="acb52c89d29fdd8ce27f7d4495b4df5e2"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>KeepAliveDuringModReload</b> = 253</td></tr>
+<tr class="memdesc:acb52c89d29fdd8ce27f7d4495b4df5e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent periodically while mods are reloading to keep connection alive. Default timeout is 2 minutes, which a large modpack might need to reload. <br /></td></tr>
 <tr class="separator:acb52c89d29fdd8ce27f7d4495b4df5e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bd007a55029c1d8086cec43fcceeb72"><td class="memItemLeft" align="right" valign="top"><a id="a7bd007a55029c1d8086cec43fcceeb72" name="a7bd007a55029c1d8086cec43fcceeb72"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>Kick</b> = 2</td></tr>
@@ -250,6 +266,17 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>LiquidUpdate</b
 <tr class="separator:a69874d4b67012c962ef8cd4f7efe2857"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7608dc700c0f645b75f5d9fe99eff563"><td class="memItemLeft" align="right" valign="top"><a id="a7608dc700c0f645b75f5d9fe99eff563" name="a7608dc700c0f645b75f5d9fe99eff563"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>LockAndUnlock</b> = 52</td></tr>
+<tr class="memdesc:a7608dc700c0f645b75f5d9fe99eff563"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlocks or locks the chest or door at the provided tile coordinates. The server will also sync the changed tiles to all clients. <br  />
+ <br  />
+<br  />
+ Modders should use this message exactly as shown in ExampleChest. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number2:</b> UnlockType. 1-&gt;<a class="el" href="class_chest.html#a1e10d44ebeadf0a05a146f8f6cf691a6" title="Unlocks a locked chest.">Chest.Unlock</a>, 2-&gt;WorldGen.UnlockDoor, 3-&gt;<a class="el" href="class_chest.html#a499c34127ff2d90fcd2c23c586c4a032" title="Locks an unlocked chest.">Chest.Lock</a> <br  />
+ <b>number3:</b> x tile coordinate of the chest (top left corner) <br  />
+ <b>number4:</b> y tile coordinate of the chest (top left corner) <br  />
+<br  />
+ <b>Forwarded to other clients</b> <br /></td></tr>
 <tr class="separator:a7608dc700c0f645b75f5d9fe99eff563"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe67741574a3ba7656e1f5c8fb6b016a"><td class="memItemLeft" align="right" valign="top"><a id="abe67741574a3ba7656e1f5c8fb6b016a" name="abe67741574a3ba7656e1f5c8fb6b016a"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>ManaEffect</b> = 43</td></tr>
@@ -269,11 +296,18 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>MinionRestTarge
 <tr class="memitem:a8ba1c8ca003442bd3b9878c364a420b7"><td class="memItemLeft" align="right" valign="top"><a id="a8ba1c8ca003442bd3b9878c364a420b7" name="a8ba1c8ca003442bd3b9878c364a420b7"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>MiscDataSync</b> = 51</td></tr>
 <tr class="separator:a8ba1c8ca003442bd3b9878c364a420b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21a0d8c9621eac2957bb691dce582481"><td class="memItemLeft" align="right" valign="top"><a id="a21a0d8c9621eac2957bb691dce582481" name="a21a0d8c9621eac2957bb691dce582481"></a>
-const byte&#160;</td><td class="memItemRight" valign="bottom"><b>ModFile</b> = 252</td></tr>
+<tr class="memitem:a21a0d8c9621eac2957bb691dce582481"><td class="memItemLeft" align="right" valign="top">const byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_message_i_d.html#a21a0d8c9621eac2957bb691dce582481">ModFile</a> = 252</td></tr>
+<tr class="memdesc:a21a0d8c9621eac2957bb691dce582481"><td class="mdescLeft">&#160;</td><td class="mdescRight">The server receives the name of one of the mods sent in SyncMods <br  />
+<br  />
+ Sends one packet containing the display name and length, then a series of packets containing up to 64k bytes containing the contents of the file <br  />
+<br  />
+ Client displays the downloading mod UI when it receives the first packet with display name and length  <a href="class_message_i_d.html#a21a0d8c9621eac2957bb691dce582481">More...</a><br /></td></tr>
 <tr class="separator:a21a0d8c9621eac2957bb691dce582481"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62a261348432f294a99a170444b98a58"><td class="memItemLeft" align="right" valign="top"><a id="a62a261348432f294a99a170444b98a58" name="a62a261348432f294a99a170444b98a58"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>ModPacket</b> = 250</td></tr>
+<tr class="memdesc:a62a261348432f294a99a170444b98a58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a netID followed by custom data sent by mods <br  />
+ Special case netID == -1, is sent by the server in response to SyncMods and contains the netIDs of every non-server only mod <br  />
+ NetIDs will be sent for no-sync mods, and packets will be ignored if the mod is not installed on the client <br /></td></tr>
 <tr class="separator:a62a261348432f294a99a170444b98a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad01b86f33f4785ac119f9299434642d2"><td class="memItemLeft" align="right" valign="top"><a id="ad01b86f33f4785ac119f9299434642d2" name="ad01b86f33f4785ac119f9299434642d2"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>MoonlordHorror</b> = 103</td></tr>
@@ -316,6 +350,12 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerBuffs</b>
 <tr class="separator:ae438bc1cbf9a0bd067a4874967f0e3b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5331ce58bde939272f6f442764b5c46"><td class="memItemLeft" align="right" valign="top"><a id="ae5331ce58bde939272f6f442764b5c46" name="ae5331ce58bde939272f6f442764b5c46"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerControls</b> = 13</td></tr>
+<tr class="memdesc:ae5331ce58bde939272f6f442764b5c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs the player's movement keystates, item actions, grapple, gravity, stealth and velocity. Primarily sent from sync with clientClone. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> The player.whoAmI of the player <br  />
+<br  />
+ <b>Forwarded to other clients</b> <br /></td></tr>
 <tr class="separator:ae5331ce58bde939272f6f442764b5c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5678403be68d8c8df6e38e60f9a662b"><td class="memItemLeft" align="right" valign="top"><a id="af5678403be68d8c8df6e38e60f9a662b" name="af5678403be68d8c8df6e38e60f9a662b"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerDeathV2</b> = 118</td></tr>
@@ -367,6 +407,17 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveRevengeMa
 <tr class="separator:aad5285a97c6a26cf7ca6542559d8f7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71a3149f8287f5281f7557e25512d227"><td class="memItemLeft" align="right" valign="top"><a id="a71a3149f8287f5281f7557e25512d227" name="a71a3149f8287f5281f7557e25512d227"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>RequestChestOpen</b> = 31</td></tr>
+<tr class="memdesc:a71a3149f8287f5281f7557e25512d227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent from a client to request access to a <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a>. Clients have to request access to chests for the server to send the current chest contents and to avoid networking bugs that could arise from network lag and multiple clients interacting with the same chest inventory. <br  />
+<br  />
+ If not in use by another client, the server will reply with <a class="el" href="class_message_i_d.html#ad340f3a27a4186d9aa058925fb251ec7" title="Syncs the item in a specific chest slot.    NetMessage.SendData parameters:   number: The index of th...">SyncChestItem</a> for each item in the chest and then <a class="el" href="class_message_i_d.html#a3e1b7a205a0b700eb24a1985377fd43c" title="Syncs basic information about a chest. Used on clients to send chest name changes to the server (the ...">SyncPlayerChest</a>. Other clients are sent the SyncPlayerChestIndex message. <br  />
+<br  />
+ Modders should use this message exactly as shown in ExampleChest. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> x tile coordinate of the chest (top left corner) <br  />
+ <b>number2:</b> y tile coordinate of the chest (top left corner) <br  />
+<br  />
+ <b>Client-&gt;Server only</b> <br /></td></tr>
 <tr class="separator:a71a3149f8287f5281f7557e25512d227"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b5c2f71ae1d7c87f6821e2f77de875a"><td class="memItemLeft" align="right" valign="top"><a id="a2b5c2f71ae1d7c87f6821e2f77de875a" name="a2b5c2f71ae1d7c87f6821e2f77de875a"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>RequestLucyPopup</b> = 141</td></tr>
@@ -385,6 +436,15 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>RequestReadSign
 <tr class="separator:a0f8994277b937aebf2cb01e4690365fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af30b47e1c52733c298cfe6ed8313973d"><td class="memItemLeft" align="right" valign="top"><a id="af30b47e1c52733c298cfe6ed8313973d" name="af30b47e1c52733c298cfe6ed8313973d"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>RequestTeleportationByServer</b> = 73</td></tr>
+<tr class="memdesc:af30b47e1c52733c298cfe6ed8313973d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Teleports the client to set locations using one of 4 teleport methods. Use <a class="el" href="class_message_i_d.html#a04fa02ebd4963d1e014e41e53a23c340" title="Teleports the player (or an NPC) to a provided world coordinate. (Sets position, not Center)    When ...">TeleportEntity</a> instead to teleport to arbitrary coordinates. <br  />
+<br  />
+ When using any of these teleport methods in multiplayer, make sure to use this instead of calling the methods directly on the client. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number: </b> The teleportation method to call: <br  />
+ 0-&gt;Player.TeleportationPotion (Random Location), 1-&gt;Player.MagicConch (Ocean), 2-&gt;Player.DemonConch (Underworld), 3-&gt;Player.Shellphone_Spawn (World spawn point). <br  />
+<br  />
+ <b>Client-&gt;Server only</b> <br /></td></tr>
 <tr class="separator:af30b47e1c52733c298cfe6ed8313973d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c3992a51cabac4d6568669a986a7aa2"><td class="memItemLeft" align="right" valign="top"><a id="a8c3992a51cabac4d6568669a986a7aa2" name="a8c3992a51cabac4d6568669a986a7aa2"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>RequestTileEntityInteraction</b> = 122</td></tr>
@@ -424,6 +484,15 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SocialHandshake
 <tr class="separator:a911e532922c78ebc80e48e9eee379830"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a912ed85fd2f2c5fb83d0a6d3c84d029c"><td class="memItemLeft" align="right" valign="top"><a id="a912ed85fd2f2c5fb83d0a6d3c84d029c" name="a912ed85fd2f2c5fb83d0a6d3c84d029c"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnBossUseLicenseStartEvent</b> = 61</td></tr>
+<tr class="memdesc:a912ed85fd2f2c5fb83d0a6d3c84d029c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to spawn an <a class="el" href="class_n_p_c.html">NPC</a> on the player, start a specific event, or use a pet license. Spawned <a class="el" href="class_n_p_c.html">NPC</a> must be in <a class="el" href="class_n_p_c_i_d_1_1_sets.html#ac732ac64d11453b98fe23f7fdae1c43a" title="If true for a given NPC type (NPC.type), then that NPC can be summoned in multiplayer using MessageID...">NPCID.Sets.MPAllowedEnemies</a>, this will not allow multiple to spawn. <br  />
+<br  />
+ Mods should use this in boss spawner items to spawn a boss. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> The player.whoAmI of the player to spawn on. <br  />
+ <b>number2:</b> If positive, this is the <a class="el" href="class_n_p_c.html">NPC</a> type to spawn. If negative, this is a special event value from one of the following: GoblinArmy: -1, FrostLegion: -2, Pirates: -3, PumpkinMoon: -4, SnowMoon: -5, Eclipse: -6, MartianInvation: -7, MoonLordTimer: -8, BloodMoon: -10, <a class="el" href="class_n_p_c.html#a84f3eec5c9220eb61180cdda33a094e0" title="Denotes whether or not Advanced Combat Techniques has been used in the current world.">NPC.combatBookWasUsed</a>: -11, Pet License: -12 through -15, MechQueen: 16, NPC.combatBookVolumeTwoWasUsed: -17, NPC.peddlersSatchelWasUsed: -18, <br  />
+<br  />
+ <b>Client-&gt;Server only</b> <br /></td></tr>
 <tr class="separator:a912ed85fd2f2c5fb83d0a6d3c84d029c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10e4d7aaa88b870e89ccb1ec37243aba"><td class="memItemLeft" align="right" valign="top"><a id="a10e4d7aaa88b870e89ccb1ec37243aba" name="a10e4d7aaa88b870e89ccb1ec37243aba"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnTileData</b> = 8</td></tr>
@@ -442,6 +511,11 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncCavernMonst
 <tr class="separator:adc669b6318cc03c6d6d6aa29141e6149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad340f3a27a4186d9aa058925fb251ec7"><td class="memItemLeft" align="right" valign="top"><a id="ad340f3a27a4186d9aa058925fb251ec7" name="ad340f3a27a4186d9aa058925fb251ec7"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncChestItem</b> = 32</td></tr>
+<tr class="memdesc:ad340f3a27a4186d9aa058925fb251ec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs the item in a specific chest slot. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> The index of the chest within the <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> array <br  />
+ <b>number2:</b> The index of the item within that chest's <a class="el" href="class_chest.html#a68292840161efcf35daf6cb246f90280" title="The items this chest contains.   maxItems elements long.">Chest.item</a> array <br /></td></tr>
 <tr class="separator:ad340f3a27a4186d9aa058925fb251ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0268259cf9723d153159892a25385e0"><td class="memItemLeft" align="right" valign="top"><a id="af0268259cf9723d153159892a25385e0" name="af0268259cf9723d153159892a25385e0"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncEmoteBubble</b> = 91</td></tr>
@@ -454,27 +528,70 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncExtraValue<
 <tr class="separator:a195120327eb1ab8af1170e4d09f10cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15c7823d64104e47045048a2545afa40"><td class="memItemLeft" align="right" valign="top"><a id="a15c7823d64104e47045048a2545afa40" name="a15c7823d64104e47045048a2545afa40"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncItem</b> = 21</td></tr>
+<tr class="memdesc:a15c7823d64104e47045048a2545afa40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs all info about an item in the world, includding modded data. <br  />
+<br  />
+ Use this whenever an item in the world is manipulated. <code><a class="el" href="class_item.html#a9f40b070cfe44218b630d09346641cf8" title="This particular overload uses two Vector2 to determine the actual spawn position.">Item.NewItem</a></code> calls this automatically on the server to sync the item with other clients, but on clients this needs to be used or <code><a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem</a></code> should be used instead. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> The index of the item within <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a> <br  />
+ <b>number2:</b> Set to 1 to ignore the delay for the spawning client to pickup the item. The <code>noGrabDelay</code> parameter of <code><a class="el" href="class_item.html#a9f40b070cfe44218b630d09346641cf8" title="This particular overload uses two Vector2 to determine the actual spawn position.">Item.NewItem</a></code> sets this. <br  />
+<br  />
+ <b>Forwarded to other clients</b> <br /></td></tr>
 <tr class="separator:a15c7823d64104e47045048a2545afa40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90a23842b51c8c45aec7ae802476c02e"><td class="memItemLeft" align="right" valign="top"><a id="a90a23842b51c8c45aec7ae802476c02e" name="a90a23842b51c8c45aec7ae802476c02e"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncItemCannotBeTakenByEnemies</b> = 148</td></tr>
+<tr class="memdesc:a90a23842b51c8c45aec7ae802476c02e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exactly the same as <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">SyncItem</a>, but also syncs Item.timeLeftInWhichTheItemCannotBeTakenByEnemies. Used by the Lucky Coin OnHit effect. <br  />
+<br  />
+ <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">SyncItem</a> docs: <br  />
+<br  />
+  <br /></td></tr>
 <tr class="separator:a90a23842b51c8c45aec7ae802476c02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1057b5479535971ed154006da2477cca"><td class="memItemLeft" align="right" valign="top"><a id="a1057b5479535971ed154006da2477cca" name="a1057b5479535971ed154006da2477cca"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncItemsWithShimmer</b> = 145</td></tr>
+<tr class="memdesc:a1057b5479535971ed154006da2477cca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exactly the same as <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">SyncItem</a>, but also syncs Item.shimmered and Item.shimmerTime. Used when an item is transformed in shimmer. <br  />
+<br  />
+ <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">SyncItem</a> docs: <br  />
+<br  />
+  <br /></td></tr>
 <tr class="separator:a1057b5479535971ed154006da2477cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac965613f7c4a89d2899dab3dabd821a9"><td class="memItemLeft" align="right" valign="top"><a id="ac965613f7c4a89d2899dab3dabd821a9" name="ac965613f7c4a89d2899dab3dabd821a9"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncLoadout</b> = 147</td></tr>
 <tr class="separator:ac965613f7c4a89d2899dab3dabd821a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaedc22651a0fd9195ccca31037f7c5ef"><td class="memItemLeft" align="right" valign="top"><a id="aaedc22651a0fd9195ccca31037f7c5ef" name="aaedc22651a0fd9195ccca31037f7c5ef"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncMods</b> = 251</td></tr>
+<tr class="memdesc:aaedc22651a0fd9195ccca31037f7c5ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sent instead of LoadPlayer for non-vanilla clients <br  />
+ - value of ModNet.AllowVanillaClients is synchronized for common net spec <br  />
+ - list of all mods loaded on the server with side == Both {name, version, hash, isBrowserSigned} <br  />
+ The client then enables/disables mods to ensure a matching mod set <br  />
+ If the client is missing a mod, or has a different hash, it sends ModFile with the name of the mod <br  />
+ If mod downloading is disabled, or only signed mods are accepted, and the given mod isn't signed, an error message is displayed <br  />
+ If there are no mods to be downloaded, a reload may be performed if necessary, and then the client returns SyncMods <br  />
+ when the server receives SyncMods, it sends <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> with the netIDs and then LoadPlayer <br /></td></tr>
 <tr class="separator:aaedc22651a0fd9195ccca31037f7c5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cb06991de082adb5316d11ec9f0b515"><td class="memItemLeft" align="right" valign="top"><a id="a8cb06991de082adb5316d11ec9f0b515" name="a8cb06991de082adb5316d11ec9f0b515"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncNPC</b> = 23</td></tr>
+<tr class="memdesc:a8cb06991de082adb5316d11ec9f0b515"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends all info about an <a class="el" href="class_n_p_c.html">NPC</a>, position, velocity, and AI. This includes modded data from ModNPC.SendExtraAI(System.IO.BinaryWriter) and GlobalNPC.SendExtraAI(NPC, ModLoader.IO.BitWriter, System.IO.BinaryWriter). <br  />
+<br  />
+ Use this when manually spawning an <a class="el" href="class_n_p_c.html">NPC</a> on the server using a <code><a class="el" href="class_n_p_c.html#a70912c867c179a198c4e0ab06e01996c" title="Spawns an NPC into the game world with the given type.   This method should not be called on multipla...">NPC.NewNPC</a></code>. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> The index of the spawned <a class="el" href="class_n_p_c.html">NPC</a> within the <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> array <br  />
+<br  />
+ <b>Server-&gt;Clients only</b> <br /></td></tr>
 <tr class="separator:a8cb06991de082adb5316d11ec9f0b515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a986e2dbe1b43feeb7130b593cef1573c"><td class="memItemLeft" align="right" valign="top"><a id="a986e2dbe1b43feeb7130b593cef1573c" name="a986e2dbe1b43feeb7130b593cef1573c"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncPlayer</b> = 4</td></tr>
 <tr class="separator:a986e2dbe1b43feeb7130b593cef1573c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e1b7a205a0b700eb24a1985377fd43c"><td class="memItemLeft" align="right" valign="top"><a id="a3e1b7a205a0b700eb24a1985377fd43c" name="a3e1b7a205a0b700eb24a1985377fd43c"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncPlayerChest</b> = 33</td></tr>
+<tr class="memdesc:a3e1b7a205a0b700eb24a1985377fd43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs basic information about a chest. Used on clients to send chest name changes to the server (the server then syncs the name change to other clients via ChestName). Used on the server to allow a specific client to open the chest the client previously requested to open via a <a class="el" href="class_message_i_d.html#a71a3149f8287f5281f7557e25512d227" title="Sent from a client to request access to a Chest. Clients have to request access to chests for the ser...">RequestChestOpen</a> message. Other clients are sent the SyncPlayerChestIndex message. <br  />
+<br  />
+ Modders should use this message exactly as shown in ExampleChest. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>text:</b> The name of the chest. <code><a class="el" href="class_network_text.html#a7d4e628b9e5f77296c00a7a39127d1b4" title="Creates a NetworkText object from a string. Use this for text that can&#39;t be localized.">NetworkText.FromLiteral</a>(<a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a>[chestIndex].name)</code> should be used. Only relevant if <code>number2</code> is set to 1. <br  />
+ <b>number:</b> The index of the chest within the <a class="el" href="class_main.html#a2bea304d8285015eddc5db9030485d91" title="Contains all the placed chests in the world. This includes dressers and chests, but not player storag...">Main.chest</a> array. This is typically <a class="el" href="class_player.html#ac20590051011862e88d28c6c96ec526d" title="Represents the chest the player currently has open. If -1, the player has no chest open....">Player.chest</a>. <br  />
+ <b>number2:</b> If 1, then the <code>text</code> parameter (chest name) is being synced. <br /></td></tr>
 <tr class="separator:a3e1b7a205a0b700eb24a1985377fd43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a214d590a29c66f8191ea8a07e41a77ae"><td class="memItemLeft" align="right" valign="top"><a id="a214d590a29c66f8191ea8a07e41a77ae" name="a214d590a29c66f8191ea8a07e41a77ae"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>SyncPlayerChestIndex</b> = 80</td></tr>
@@ -508,6 +625,22 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TEHatRackItemSy
 <tr class="separator:ade24b25bea3757047be35204b0a93d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04fa02ebd4963d1e014e41e53a23c340"><td class="memItemLeft" align="right" valign="top"><a id="a04fa02ebd4963d1e014e41e53a23c340" name="a04fa02ebd4963d1e014e41e53a23c340"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TeleportEntity</b> = 65</td></tr>
+<tr class="memdesc:a04fa02ebd4963d1e014e41e53a23c340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Teleports the player (or an <a class="el" href="class_n_p_c.html">NPC</a>) to a provided world coordinate. (Sets position, not Center) <br  />
+<br  />
+ When using any of these teleport methods in multiplayer, make sure to use this instead of calling the methods directly on the client. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> teleportType: 0-&gt;<a class="el" href="class_player.html">Player</a>, 1-&gt;<a class="el" href="class_n_p_c.html">NPC</a>, 2-&gt;PlayerToPlayer <br  />
+ <b>number2:</b> The player.whoAmI of the player to teleport (or <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">NPC.whoAmI</a> for <a class="el" href="class_n_p_c.html">NPC</a> teleports) <br  />
+ <b>number3:</b> The destination x world coordinate <br  />
+ <b>number4:</b> The destination y world coordinate <br  />
+ <b>number5:</b> The <code>Style</code> parameter of Player.Teleport(Microsoft.Xna.Framework.Vector2, int, int), controls the visuals and sounds of the teleport. Equivalent to <a class="el" href="class_teleportation_style_i_d.html">TeleportationStyleID</a> values. <br  />
+ <b>number6:</b> Unknown <br  />
+ <b>number7:</b> The <code>extraInfo</code> parameter of Player.Teleport(Microsoft.Xna.Framework.Vector2, int, int), only relevant with pylon teleporting. <br  />
+<br  />
+ Using this message for long range player teleports won't work correctly because the client might not have the destination section loaded. You might need to use a <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> to call RemoteClient.CheckSection(int, Microsoft.Xna.Framework.Vector2, int) on the server and then call <a class="el" href="class_player.html#ad14a7e212be7047c6793d385b4b46969" title="Teleports the player to the provided world coordinates. In multiplayer, clients should send MessageID...">Player.Teleport</a> and relay this message manually. <br  />
+<br  />
+ <b>Client-&gt;Server for player teleports, Server-&gt;Clients for <a class="el" href="class_n_p_c.html">NPC</a> teleports.</b> The player teleport message is relayed to other clients to sync the visuals. <br /></td></tr>
 <tr class="separator:a04fa02ebd4963d1e014e41e53a23c340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab695d464d6600787392063b2eabf618f"><td class="memItemLeft" align="right" valign="top"><a id="ab695d464d6600787392063b2eabf618f" name="ab695d464d6600787392063b2eabf618f"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TeleportNPCThroughPortal</b> = 100</td></tr>
@@ -517,29 +650,68 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TeleportPlayerT
 <tr class="separator:ad8b79b9aabe833259d9577841a0b1cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeb4e42969f0ae1582d54088133c2ff9"><td class="memItemLeft" align="right" valign="top"><a id="abeb4e42969f0ae1582d54088133c2ff9" name="abeb4e42969f0ae1582d54088133c2ff9"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TemporaryAnimation</b> = 77</td></tr>
+<tr class="memdesc:abeb4e42969f0ae1582d54088133c2ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a temporary tile animation created in <a class="el" href="class_animation.html#a1862233704284355d8c73553f55e568f" title="Starts a temporary tile animation of the given type at the given tile coordinates....">Animation.NewTemporaryAnimation</a> on the server to clients. <br  />
+<br  />
+ No need to manually use this message. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> Temporary tile animation ID (<a class="el" href="class_animation.html#a23edf8f44b572a5ef32300b6659f485e" title="Registers a temporary tile animation are returns a unique ID. The animation will play through the pro...">Animation.RegisterTemporaryAnimation(int, int[])</a>) <br  />
+ <b>number2:</b> <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> Type <br  />
+ <b>number3:</b> x tile coordinate <br  />
+ <b>number4:</b> y tile coordinate <br /></td></tr>
 <tr class="separator:abeb4e42969f0ae1582d54088133c2ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a669d87a37ad02a05dd24162ca38e44"><td class="memItemLeft" align="right" valign="top"><a id="a5a669d87a37ad02a05dd24162ca38e44" name="a5a669d87a37ad02a05dd24162ca38e44"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileCounts</b> = 57</td></tr>
 <tr class="separator:a5a669d87a37ad02a05dd24162ca38e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae95f7a894f0e6fbc81353a30ce361ae2"><td class="memItemLeft" align="right" valign="top"><a id="ae95f7a894f0e6fbc81353a30ce361ae2" name="ae95f7a894f0e6fbc81353a30ce361ae2"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileEntityPlacement</b> = 87</td></tr>
+<tr class="memdesc:ae95f7a894f0e6fbc81353a30ce361ae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs a <a class="el" href="class_tile_entity.html">TileEntity</a> placement attempt from a client to the server. Will cause the server to place the <a class="el" href="class_tile_entity.html">TileEntity</a> and then sync it using <a class="el" href="class_message_i_d.html#a08d7392c5611efffa7bb780183585018" title="Syncs the data of a TileEntity from server to clients. Will cause TileEntities to send and receive th...">TileEntitySharing</a>. <br  />
+<br  />
+ This is typically used in the method contained in the ObjectData.TileObjectData.HookPostPlaceMyPlayer of the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> placing the <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> <a class="el" href="class_entity.html">Entity</a>, but modders can use ModLoader.ModTileEntity.Generic_HookPostPlaceMyPlayer instead of writing custom netcode using this message. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+<b>number:</b> The x tile coordinate of the <a class="el" href="class_tile_entity.html">TileEntity</a>, not necessarily the top left corner of the multitile. <br  />
+<b>number2:</b> The y tile coordinate of the <a class="el" href="class_tile_entity.html">TileEntity</a>, not necessarily the top left corner of the multitile. <br  />
+<b>number3:</b> The <a class="el" href="class_tile_entity_i_d.html">TileEntityID</a> or ModLoader.ModTileEntity.Type <br  />
+<br  />
+ <b>Client-&gt;Server only</b> <br /></td></tr>
 <tr class="separator:ae95f7a894f0e6fbc81353a30ce361ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08d7392c5611efffa7bb780183585018"><td class="memItemLeft" align="right" valign="top"><a id="a08d7392c5611efffa7bb780183585018" name="a08d7392c5611efffa7bb780183585018"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileEntitySharing</b> = 86</td></tr>
-<tr class="memdesc:a08d7392c5611efffa7bb780183585018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs the data of a <a class="el" href="class_tile_entity.html">TileEntity</a> from server to clients. Will cause TileEntities to send and receive their data to sync their values. (ModLoader.ModTileEntity.NetSend(System.IO.BinaryWriter), ModLoader.ModTileEntity.NetReceive(System.IO.BinaryReader)) NetMessage.SendData parameters: <br  />
-<b>number:</b> The DataStructures.TileEntity.ID <br /></td></tr>
+<tr class="memdesc:a08d7392c5611efffa7bb780183585018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syncs the data of a <a class="el" href="class_tile_entity.html">TileEntity</a> from server to clients. Will cause TileEntities to send and receive their data to sync their values. (ModLoader.ModTileEntity.NetSend(System.IO.BinaryWriter), ModLoader.ModTileEntity.NetReceive(System.IO.BinaryReader)) <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+<b>number:</b> The DataStructures.TileEntity.ID <br  />
+<br  />
+ <b>Server-&gt;Clients only</b> <br /></td></tr>
 <tr class="separator:a08d7392c5611efffa7bb780183585018"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb91795b00e9f9da9518104524ae0f89"><td class="memItemLeft" align="right" valign="top"><a id="aeb91795b00e9f9da9518104524ae0f89" name="aeb91795b00e9f9da9518104524ae0f89"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileFrameSection</b> = 11</td></tr>
 <tr class="separator:aeb91795b00e9f9da9518104524ae0f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0350722bf7b848ea9784ca3c61028c29"><td class="memItemLeft" align="right" valign="top"><a id="a0350722bf7b848ea9784ca3c61028c29" name="a0350722bf7b848ea9784ca3c61028c29"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileManipulation</b> = 17</td></tr>
+<tr class="memdesc:a0350722bf7b848ea9784ca3c61028c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends changes made to a specific tile coordinate. <br  />
+<br  />
+ Use this whenever manipulating tiles using the <a class="el" href="class_world_gen.html">WorldGen</a> methods mentioned below. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> The change type. These correspond to methods in <a class="el" href="class_world_gen.html">WorldGen</a>: <br  />
+ 0-&gt;KillTile, 1-&gt;PlaceTile, 2-&gt;KillWall, 3-&gt;PlaceWall, 4-&gt;KillTile (No <a class="el" href="class_item.html">Item</a>), 5-&gt;PlaceWire, 6-&gt;KillWire, 7-&gt;PoundTile, 8-&gt;PlaceActuator, 9-&gt;KillActuator, 10-&gt;PlaceWire2, 11-&gt;KillWire2, 10-&gt;PlaceWire3, 13-&gt;KillWire3, 14-&gt;SlopeTile, 15-&gt;Minecart.FrameTrack, 16-&gt;PlaceWire4, 17-&gt;KillWire4, 18-&gt;Wiring.PokeLogicGate, 19-&gt;Wiring.Actuate, 20-&gt;KillTile (Determine Fail On Server), 21-&gt;ReplaceTile, 22-&gt;ReplaceWall, 23-&gt;SlopeTile+PoundTile <br  />
+ <b>number2:</b> x tile coordinate <br  />
+ <b>number3:</b> y tile coordinate <br  />
+ <b>number4:</b> Changes meaning based on change type: <br  />
+ KillTile/KillWall/KillTile (NoItem)/KillTile (Determine Fail On Server)-&gt;Fail if 1, PlaceTile-&gt;<a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> type, PlaceWall-&gt;Wall type, SlopeTile-&gt;slope value, ReplaceTile-&gt;target tile type, ReplaceWall-&gt;target wall type, SlopeTile+PoundTile-&gt;slope value, <br  />
+ <b>number5:</b> <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> style, only used with PlaceTile and ReplaceTile change types <br  />
+<br  />
+ <b>Client-&gt;Server and Server-&gt;Clients. Automatically forwarded to other clients</b> <br /></td></tr>
 <tr class="separator:a0350722bf7b848ea9784ca3c61028c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5522e1474158211aece862fc77bf473e"><td class="memItemLeft" align="right" valign="top"><a id="a5522e1474158211aece862fc77bf473e" name="a5522e1474158211aece862fc77bf473e"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileSection</b> = 10</td></tr>
 <tr class="separator:a5522e1474158211aece862fc77bf473e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd0c77e240d261cea0056e6d650e100a"><td class="memItemLeft" align="right" valign="top"><a id="abd0c77e240d261cea0056e6d650e100a" name="abd0c77e240d261cea0056e6d650e100a"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>TileSquare</b> = 20</td></tr>
+<tr class="memdesc:abd0c77e240d261cea0056e6d650e100a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a square area of tile data (with upper left x, y) and given size (minimum 1) <br  />
+ Forwarded to other clients <br  />
+<br  />
+ This is usually used through the <a class="el" href="class_net_message.html#adca742c59502eba773e5db8b3f1ab6ae" title="Range: In this particular overload, tileX  and tileY  denote a single tile to sync....">NetMessage.SendTileSquare(int, int, int, TileChangeType)</a> helper methods. <br /></td></tr>
 <tr class="separator:abd0c77e240d261cea0056e6d650e100a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a056142bf8db891a531397de0236977e1"><td class="memItemLeft" align="right" valign="top"><a id="a056142bf8db891a531397de0236977e1" name="a056142bf8db891a531397de0236977e1"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleDoorState</b> = 19</td></tr>
@@ -579,8 +751,49 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>WiredCannonShot
 <tr class="separator:a692442c9f4c77a1bb5fb8b4d3f77900c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33925ec118e69fc85aced712e1ca0bb5"><td class="memItemLeft" align="right" valign="top"><a id="a33925ec118e69fc85aced712e1ca0bb5" name="a33925ec118e69fc85aced712e1ca0bb5"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>WorldData</b> = 7</td></tr>
+<tr class="memdesc:a33925ec118e69fc85aced712e1ca0bb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends all of the world state data, such as time of day, weather, events, world size and name, biome info, killed bosses, etc from the server to the clients. This includes modded world data from ModLoader.ModSystem.NetSend(System.IO.BinaryWriter). <br  />
+<br  />
+Sent whenever any of the properties in the packet change (except time of day, which gets synced whenever other properties change anyway) <br  />
+<br  />
+ Mods should send this message when manually manipulating world state data, such as a value synced in ModLoader.ModSystem.NetSend(System.IO.BinaryWriter), to keep each client in sync with the server. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: None <br  />
+<br  />
+ <b>Server-&gt;Clients only</b> <br /></td></tr>
 <tr class="separator:a33925ec118e69fc85aced712e1ca0bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Vanilla netcode messages. These are used in NetMessage.SendData(int, int, int, Terraria.Localization.NetworkText, int, float, float, float, int, int, int) to send data between the server and clients. The documentation of each <a class="el" href="class_message_i_d.html" title="Vanilla netcode messages. These are used in NetMessage.SendData(int, int, int, Terraria....">MessageID</a> value explains the the purpose of the message and most importantly the meaning of each of the SendData parameters for that message. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a21a0d8c9621eac2957bb691dce582481" name="a21a0d8c9621eac2957bb691dce582481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21a0d8c9621eac2957bb691dce582481">&#9670;&nbsp;</a></span>ModFile</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const byte MessageID.ModFile = 252</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The server receives the name of one of the mods sent in SyncMods <br  />
+<br  />
+ Sends one packet containing the display name and length, then a series of packets containing up to 64k bytes containing the contents of the file <br  />
+<br  />
+ Client displays the downloading mod UI when it receives the first packet with display name and length </p>
+<p >Once the file is downloaded, the client either sends a request for the next file, or reloads and sends SyncMods </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,5 +1,9 @@
 var NAVTREEINDEX6 =
 {
+"class_global_item.html#ab72228117854476e7a1f03e928391515":[3,0,459,70],
+"class_global_item.html#ab8f86f28a112a0f7349ed706a6dbc59d":[3,0,459,88],
+"class_global_item.html#abfb16c554413693def92e02ce4da165c":[3,0,459,112],
+"class_global_item.html#ac08f5038807e06a1296f815d722e1b4f":[3,0,459,9],
 "class_global_item.html#ac16308d540ff27d99cf838c3f4031d42":[3,0,459,89],
 "class_global_item.html#ac1f89045d16cd837b4c680785959f3f9":[3,0,459,66],
 "class_global_item.html#ac2f04a40a4dfa775c5629fbed02a16f3":[3,0,459,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "class_golf_state.html":[3,0,480],
 "class_gore.html":[3,0,481],
 "class_gore.html#a032a72afef4e0a55d848795d43123549":[3,0,481,0],
-"class_gore.html#a25e5afd6806c7a1621d4d105125eb253":[3,0,481,2],
-"class_gore.html#ada3a876b8e6ef4e6ae38ca3697a3d7c0":[3,0,481,1],
-"class_gore_i_d.html":[3,0,482],
-"class_gore_i_d_1_1_sets.html":[3,0,482,0],
-"class_gore_i_d_1_1_sets.html#a454d906cd24814cb95860c82c81c9d96":[3,0,482,0,2]
+"class_gore.html#a25e5afd6806c7a1621d4d105125eb253":[3,0,481,2]
 };

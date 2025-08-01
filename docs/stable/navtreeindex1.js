@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"class_big_endian_reader.html":[3,0,86],
+"class_big_endian_writer.html":[3,0,87],
+"class_big_progress_bar_helper.html":[3,0,89],
 "class_big_progress_bar_helper.html#a848a4001dc17bba1eb3ece1ff5037bee":[3,0,89,0],
 "class_big_progress_bar_system.html":[3,0,91],
 "class_big_progress_bar_system.html#af88d2d3e06a19e83f551902ead8e538f":[3,0,91,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_crimson_key_condition.html#a967bf404cf4b1f307249879ddf3376ba":[3,0,193,4,1],
 "class_conditions_1_1_crimson_key_condition.html#af2fce7bb323db0b6fb291b5587ef1948":[3,0,193,4,0],
 "class_conditions_1_1_desert_key_condition.html":[3,0,193,5],
-"class_conditions_1_1_desert_key_condition.html#a54268ed0868bed39906f9bf781206236":[3,0,193,5,1],
-"class_conditions_1_1_desert_key_condition.html#a8ad343176c0a706ad02f69fe84dbaa6b":[3,0,193,5,0],
-"class_conditions_1_1_dont_starve_is_not_up.html":[3,0,193,6],
-"class_conditions_1_1_dont_starve_is_not_up.html#a502ea7bc847781630822eab12a561bda":[3,0,193,6,0]
+"class_conditions_1_1_desert_key_condition.html#a54268ed0868bed39906f9bf781206236":[3,0,193,5,1]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -89,6 +89,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html',''); initResiza
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>SafeNormalize()&#160;:&#160;<a class="el" href="class_utils.html#a4e70ac2591faca81e9cfc1a11d86bc5a">Utils</a></li>
 <li>SaplingGrowthType()&#160;:&#160;<a class="el" href="class_mod_palm_tree.html#a803112a23300fcfd58431834f4b641ea">ModPalmTree</a>, <a class="el" href="class_mod_tree.html#ab1aec4f01de33343d20e438361764c6a">ModTree</a></li>
+<li>SaveChanges()&#160;:&#160;<a class="el" href="class_mod_config.html#a839883b24165e8a772f53cfaffd8744c">ModConfig</a></li>
 <li>SaveData()&#160;:&#160;<a class="el" href="class_global_item.html#a402e74c25445fdd28a55ec7a6969c258">GlobalItem</a>, <a class="el" href="class_global_n_p_c.html#afa2ab82d9e0aad5f3aa29b868a355429">GlobalNPC</a>, <a class="el" href="class_mod_accessory_slot_player.html#ad067f3e96e0d90dfc5627cb615e55ebb">ModAccessorySlotPlayer</a>, <a class="el" href="class_mod_item.html#ab4ee7330e00ebe6ca644570989a3e4b1">ModItem</a>, <a class="el" href="class_mod_n_p_c.html#aff207f228cf852db45dd575591c4eb3b">ModNPC</a>, <a class="el" href="class_mod_player.html#aeaf390061d5840291f92c6fd929dc599">ModPlayer</a>, <a class="el" href="class_start_bag.html#aa50d755dba6004a7c0f0e3b7f4aa6359">StartBag</a>, <a class="el" href="class_t_e_display_doll.html#a955bbd94a11345ee3b6dbba5cff983c6">TEDisplayDoll</a>, <a class="el" href="class_t_e_food_platter.html#ac0abf33a9212bc6d97fdc69e7c898b3a">TEFoodPlatter</a>, <a class="el" href="class_t_e_hat_rack.html#ab24487f6356d35cc7f9071224704ff36">TEHatRack</a>, <a class="el" href="class_t_e_item_frame.html#a7efaab7670626ba141faaeb5a448c294">TEItemFrame</a>, <a class="el" href="class_t_e_weapons_rack.html#a01fba50d2e4bed688f799042cbfaedae">TEWeaponsRack</a>, <a class="el" href="class_tile_entity.html#a2799ce9901b2c8efdb060491ea78869f">TileEntity</a>, <a class="el" href="class_unloaded_global_item.html#a4924c96de0a247d8e257958023cbbd2c">UnloadedGlobalItem</a>, <a class="el" href="class_unloaded_global_n_p_c.html#a0492e4711916e5570c2e7656b9e49d60">UnloadedGlobalNPC</a>, <a class="el" href="class_unloaded_item.html#a8ecf3536a3f8ecd368746eb540e8b254">UnloadedItem</a>, <a class="el" href="class_unloaded_player.html#a0274f0c5d4b9f37fbd3c3dacc7c755de">UnloadedPlayer</a>, <a class="el" href="class_unloaded_tile_entity.html#a3a4a66c6ca0f870d04858fde801db32a">UnloadedTileEntity</a></li>
 <li>SaveWorldData()&#160;:&#160;<a class="el" href="class_mod_system.html#a926129e278ac9c460685bd2a326cd998">ModSystem</a>, <a class="el" href="class_unloaded_system.html#af4c01545e1b6f9ded8df75c6c3918119">UnloadedSystem</a></li>
 <li>SaveWorldHeader()&#160;:&#160;<a class="el" href="class_mod_system.html#aff4cf839033cb3bfe58f2994c778ebf2">ModSystem</a></li>
@@ -100,9 +101,10 @@ $(document).ready(function(){initNavTree('functions_func_s.html',''); initResiza
 <li>SendBitArray()&#160;:&#160;<a class="el" href="class_utils.html#a61052d8ca30048a078b060895ca931ae">Utils</a></li>
 <li>SendChatMessageToClient()&#160;:&#160;<a class="el" href="class_chat_helper.html#a46db2b94f0d1fc88fe05baf931ea17f5">ChatHelper</a></li>
 <li>SendClientChanges()&#160;:&#160;<a class="el" href="class_mod_accessory_slot_player.html#acd93c022be137cef2ce098c3e5b0a93f">ModAccessorySlotPlayer</a>, <a class="el" href="class_mod_player.html#a7893e4b2639c4bf7d6e8872ce346fd38">ModPlayer</a></li>
+<li>SendData()&#160;:&#160;<a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d">NetMessage</a></li>
 <li>SendExtraAI()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a69f3f922db2eee1a553abbb9f9b7b7af">GlobalNPC</a>, <a class="el" href="class_global_projectile.html#ad94e9a25154e9eaf98dfc61e4053c468">GlobalProjectile</a>, <a class="el" href="class_mod_n_p_c.html#ab97269b1204781b8cbf396c31e604154">ModNPC</a>, <a class="el" href="class_mod_projectile.html#abed0119b6752f522f1ca54f3efd656f5">ModProjectile</a></li>
 <li>SendStrikeNPC()&#160;:&#160;<a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597">NetMessage</a></li>
-<li>SendTileSquare()&#160;:&#160;<a class="el" href="class_net_message.html#adca742c59502eba773e5db8b3f1ab6ae">NetMessage</a></li>
+<li>SendTileSquare()&#160;:&#160;<a class="el" href="class_net_message.html#a31c760defd5b42afc50f6b1b4ac36d98">NetMessage</a></li>
 <li>ServerPlaceItem()&#160;:&#160;<a class="el" href="class_chest.html#ab4bb4252641967d5dffc40ff57679e02">Chest</a></li>
 <li>Set()&#160;:&#160;<a class="el" href="struct_style_dimension.html#a0c959bcdc133227ba2a5226e8cd4d4c4">StyleDimension</a>, <a class="el" href="class_tag_compound.html#a2cbe8137158c967445a08b265e3fef64">TagCompound</a></li>
 <li>SetAllBitsClearFrame()&#160;:&#160;<a class="el" href="struct_tile_wall_wire_state_data.html#ae0fdd5e3b49fce6c8fd2847921190288">TileWallWireStateData</a></li>
@@ -116,6 +118,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html',''); initResiza
 <li>SetDefaultsFromNetId()&#160;:&#160;<a class="el" href="class_global_n_p_c.html#a296ba853bd2708452d05825f3cd2e91f">GlobalNPC</a></li>
 <li>SetDefaultStats()&#160;:&#160;<a class="el" href="class_damage_class.html#ac18857b503c7bfeeaf508c8767306c22">DamageClass</a>, <a class="el" href="class_generic_damage_class.html#a80cc5db3b859ee58bdc0a731c87ce8fa">GenericDamageClass</a></li>
 <li>SetDrawPositions()&#160;:&#160;<a class="el" href="class_mod_banner_tile.html#ae3934c0d24e534aa78c301bd11cfd8f1">ModBannerTile</a>, <a class="el" href="class_mod_tile.html#acb362facee6fb168a506e9d30bfe003e">ModTile</a>, <a class="el" href="class_unloaded_chest.html#a6d783d0fc1e826978dee845ae90cd86f">UnloadedChest</a></li>
+<li>SetDummyItemTime()&#160;:&#160;<a class="el" href="class_player.html#afd77a2da2ad41ac8c904e122ea77dfec">Player</a></li>
 <li>SetInstantKill()&#160;:&#160;<a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a05bb280b449f6b6caced58296875901b">NPC.HitModifiers</a></li>
 <li>SetMatch()&#160;:&#160;<a class="el" href="class_equip_texture.html#a12e8019e43cf953da3c8453f6795b8e8">EquipTexture</a>, <a class="el" href="class_global_item.html#aa5e755b3a7baead1bd1ecff2970f9d9f">GlobalItem</a>, <a class="el" href="class_item_loader.html#acb9e30a88f570c1610e4add277b69858">ItemLoader</a>, <a class="el" href="class_mod_item.html#a271f256bc78bb050c787e1898bf7c1d1">ModItem</a></li>
 <li>SetMaxDamage()&#160;:&#160;<a class="el" href="struct_n_p_c_1_1_hit_modifiers.html#a736e6da887fc94e12343f7037139e0a6">NPC.HitModifiers</a>, <a class="el" href="struct_player_1_1_hurt_modifiers.html#aa447fefe1c6804405d6279704d2bd833">Player.HurtModifiers</a></li>
@@ -141,7 +144,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html',''); initResiza
 <li>ShowVisuals()&#160;:&#160;<a class="el" href="class_blizzard_in_a_bottle_jump.html#ad93bd5a026b91f85a8e1dfb25f45e1ba">BlizzardInABottleJump</a>, <a class="el" href="class_cloud_in_a_bottle_jump.html#a9c5e71e31a5a176895cb335734295523">CloudInABottleJump</a>, <a class="el" href="class_extra_jump.html#ac2c15bff91985565f47ac03477df4f62">ExtraJump</a>, <a class="el" href="class_fart_in_a_jar_jump.html#a78eb8dfb899be83d6e3ead4e273b593f">FartInAJarJump</a>, <a class="el" href="class_sandstorm_in_a_bottle_jump.html#a2a24f169408292e524343fd7f68e9b52">SandstormInABottleJump</a>, <a class="el" href="class_tsunami_in_a_bottle_jump.html#a85ddbdce48288e77335bdffbc585ca67">TsunamiInABottleJump</a>, <a class="el" href="class_unicorn_mount_jump.html#abe6498ea95f70746779ff6a5cd303364">UnicornMountJump</a></li>
 <li>SimpleStrikeNPC()&#160;:&#160;<a class="el" href="class_n_p_c.html#a768a784294f8cac81a855fa5fbeb9e30">NPC</a></li>
 <li>SitDown()&#160;:&#160;<a class="el" href="class_n_p_c.html#a730d6d0e9d96e451fc08814adeb807ba">NPC</a></li>
-<li>SkipWire()&#160;:&#160;<a class="el" href="class_wiring.html#a8e927d8b5fd1f4d376de9f0aa97d467a">Wiring</a></li>
+<li>SkipWire()&#160;:&#160;<a class="el" href="class_wiring.html#a36e7ef367ce2183e7f17a2203b6f1d89">Wiring</a></li>
 <li>Slope()&#160;:&#160;<a class="el" href="class_global_tile.html#aea6470973410113a596702a787037288">GlobalTile</a>, <a class="el" href="class_mod_tile.html#a113507fa8b1b232508dc73929010d707">ModTile</a></li>
 <li>SmoothSlope()&#160;:&#160;<a class="el" href="struct_tile.html#a34554623b942a20f0348481283a522a9">Tile</a></li>
 <li>SolidTileAllowBottomSlope()&#160;:&#160;<a class="el" href="class_world_gen.html#a30572dc338dbf9dd2fcaa709772fcef9">WorldGen</a></li>
@@ -160,6 +163,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html',''); initResiza
 <li>StartCachingType()&#160;:&#160;<a class="el" href="class_item.html#adea320fc6b603c2416e6049f7fc8c233">Item</a></li>
 <li>StartRain()&#160;:&#160;<a class="el" href="class_main.html#a9ff5fc055998930148540c434e6e9ad0">Main</a></li>
 <li>StartSandstorm()&#160;:&#160;<a class="el" href="class_sandstorm.html#a1ecac80afb8244aa560cef293b08a901">Sandstorm</a></li>
+<li>StopAll()&#160;:&#160;<a class="el" href="class_sound_player.html#aea7a15779b3269b5492082b5fa5e880a">SoundPlayer</a></li>
 <li>StopExtraJumpInProgress()&#160;:&#160;<a class="el" href="class_player.html#a12b29ebfe9672d1317b9534c874c6e0e">Player</a></li>
 <li>StopRain()&#160;:&#160;<a class="el" href="class_main.html#a053eafe7fd9246ae67cecbb359c4e591">Main</a></li>
 <li>StopSandstorm()&#160;:&#160;<a class="el" href="class_sandstorm.html#a53f7d43afa6b4f30f687d98080754f97">Sandstorm</a></li>

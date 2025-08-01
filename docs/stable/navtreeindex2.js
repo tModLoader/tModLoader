@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"class_conditions_1_1_desert_key_condition.html#a8ad343176c0a706ad02f69fe84dbaa6b":[3,0,193,5,0],
+"class_conditions_1_1_dont_starve_is_not_up.html":[3,0,193,6],
+"class_conditions_1_1_dont_starve_is_not_up.html#a502ea7bc847781630822eab12a561bda":[3,0,193,6,0],
 "class_conditions_1_1_dont_starve_is_not_up.html#ab2ad78777306df99930e05d63529e4ad":[3,0,193,6,1],
 "class_conditions_1_1_dont_starve_is_up.html":[3,0,193,7],
 "class_conditions_1_1_dont_starve_is_up.html#a7e554d9445faa8bb140f7eda1786f2c5":[3,0,193,7,1],
@@ -214,6 +217,7 @@ var NAVTREEINDEX2 =
 "class_config_element.html#a933b184e27c22fa41d1f592e46a1360c":[3,0,196,0],
 "class_config_key_attribute.html":[3,0,197],
 "class_config_manager.html":[3,0,198],
+"class_config_manager.html#a0071a0428677bc79c64a2f4e8d79d30e":[3,0,198,0],
 "class_content_instance.html":[3,0,200],
 "class_content_manager.html":[3,0,201],
 "class_content_rejection_from_size.html":[3,0,202],
@@ -245,9 +249,5 @@ var NAVTREEINDEX2 =
 "class_creative_item_sacrifices_catalog.html":[3,0,211],
 "class_creative_power_manager.html":[3,0,212],
 "class_creative_power_settings.html":[3,0,214],
-"class_creative_powers.html":[3,0,213],
-"class_creative_powers_1_1_a_per_player_slider_power.html":[3,0,213,0],
-"class_creative_powers_1_1_a_per_player_toggle_power.html":[3,0,213,1],
-"class_creative_powers_1_1_a_shared_button_power.html":[3,0,213,2],
-"class_creative_powers_1_1_a_shared_slider_power.html":[3,0,213,3]
+"class_creative_powers.html":[3,0,213]
 };

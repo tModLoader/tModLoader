@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -484,8 +484,11 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>MechSpawn</b> 
 <tr class="separator:ae1706b04dedde9a46cb5dee5f1f0e5d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a861d974bce4b638b0d0180a775da3e12"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a861d974bce4b638b0d0180a775da3e12">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int pfix=0, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a861d974bce4b638b0d0180a775da3e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. <br  />
+<br  />
  This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. <br  />
+<br  />
  See the <em>noBroadcast</em>  documentation if you need to customize attached <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, both vanilla and modded....">GlobalItem</a> data prior to syncing. <br  />
+<br  />
  The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a> array.  <a href="class_item.html#a861d974bce4b638b0d0180a775da3e12">More...</a><br /></td></tr>
 <tr class="separator:a861d974bce4b638b0d0180a775da3e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee93c1f1a86db882300293a86afc3e67"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#aee93c1f1a86db882300293a86afc3e67">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, <a class="el" href="class_item.html">Item</a> item, bool noBroadcast=false, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
@@ -508,7 +511,7 @@ This particular overload uses a Rectangle instead of X, Y, Width, and Height to 
 <tr class="memitem:a4a58d70dad8b5ad55610521b2b0d7924"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a4a58d70dad8b5ad55610521b2b0d7924">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 pos, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a4a58d70dad8b5ad55610521b2b0d7924"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
-This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.  <a href="class_item.html#a4a58d70dad8b5ad55610521b2b0d7924">More...</a><br /></td></tr>
+ This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.  <a href="class_item.html#a4a58d70dad8b5ad55610521b2b0d7924">More...</a><br /></td></tr>
 <tr class="separator:a4a58d70dad8b5ad55610521b2b0d7924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a312c513db4a8b6038ff78aef7a5e133f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a312c513db4a8b6038ff78aef7a5e133f">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 pos, int Width, int Height, <a class="el" href="class_item.html">Item</a> item, bool noBroadcast=false, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a312c513db4a8b6038ff78aef7a5e133f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
@@ -520,7 +523,7 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
 <tr class="memitem:a9f40b070cfe44218b630d09346641cf8"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a9f40b070cfe44218b630d09346641cf8">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 pos, Vector2 randomBox, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a9f40b070cfe44218b630d09346641cf8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
-This particular overload uses two Vector2 to determine the actual spawn position.  <a href="class_item.html#a9f40b070cfe44218b630d09346641cf8">More...</a><br /></td></tr>
+ This particular overload uses two Vector2 to determine the actual spawn position.  <a href="class_item.html#a9f40b070cfe44218b630d09346641cf8">More...</a><br /></td></tr>
 <tr class="separator:a9f40b070cfe44218b630d09346641cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d1b9304538199a3f44c158fade3e1ee"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item.html#a4d1b9304538199a3f44c158fade3e1ee">NewItem</a> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source, Vector2 pos, Vector2 randomBox, <a class="el" href="class_item.html">Item</a> item, bool noBroadcast=false, bool <a class="el" href="class_item.html#aee484a6aa92b4a9bfd5d98db7abf3dd8">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a4d1b9304538199a3f44c158fade3e1ee"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
@@ -2859,8 +2862,11 @@ UseSound = SoundID.Item5;</code><br  />
 </div><div class="memdoc">
 
 <p>Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. <br  />
+<br  />
  This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. <br  />
+<br  />
  See the <em>noBroadcast</em>  documentation if you need to customize attached <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> or <a class="el" href="class_global_item.html" title="This class allows you to modify and use hooks for all items, both vanilla and modded....">GlobalItem</a> data prior to syncing. <br  />
+<br  />
  The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_item.html">Item</a> within the <a class="el" href="class_main.html#a2acb653c4505fbd0d29230630234732a" title="Contains all the Items in the game world. Items should only be spawned via Item.NewItem(IEntitySource...">Main.item</a> array. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2871,7 +2877,7 @@ UseSound = SoundID.Item5;</code><br  />
     <tr><td class="paramname">Height</td><td></td></tr>
     <tr><td class="paramname">Type</td><td>Either an <a class="el" href="class_item_i_d.html">ItemID</a> entry or <a class="el" href="class_mod_content.html#a9b116a7709430393751b7c562bf978d0" title="Get the id (type) of a ModItem by class. Assumes one instance per class.">ModContent.ItemType&lt;T&gt;</a>, for example ItemID.IronskinPotion or ModContent.ItemType&lt;MyModItem&gt;()</td></tr>
     <tr><td class="paramname">Stack</td><td><a class="el" href="class_item.html">Item</a> stack</td></tr>
-    <tr><td class="paramname">noBroadcast</td><td>Controls whether an item spawned on a server is synced using NetMessage.SendData and MessageID.SyncItem. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with MessageID.SyncItem. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> source code for an example.</td></tr>
+    <tr><td class="paramname">noBroadcast</td><td>Controls whether an item spawned on a server is synced using <a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a> and <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">MessageID.SyncItem</a>. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with <a class="el" href="class_message_i_d.html#a15c7823d64104e47045048a2545afa40" title="Syncs all info about an item in the world, includding modded data.    Use this whenever an item in th...">MessageID.SyncItem</a>. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <a class="el" href="class_player.html#a8fa806f0bc9bc8bd3dc86726bc95d61f" title="Spawns an item into the world at this players position. This is a simpler alternative to Item....">Player.QuickSpawnItem(IEntitySource, int, int)</a> source code for an example.</td></tr>
     <tr><td class="paramname">pfix</td><td></td></tr>
     <tr><td class="paramname">noGrabDelay</td><td></td></tr>
     <tr><td class="paramname">reverseLookup</td><td></td></tr>
@@ -3193,7 +3199,7 @@ This particular overload uses a Rectangle instead of X, Y, Width, and Height to 
 
 <p><br  />
 <br  />
-This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position. </p>
+ This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
@@ -3355,7 +3361,7 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
 
 <p><br  />
 <br  />
-This particular overload uses two Vector2 to determine the actual spawn position. </p>
+ This particular overload uses two Vector2 to determine the actual spawn position. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
@@ -4000,7 +4006,7 @@ Otherwise, return <code>true</code>. </dd></dl>
 </li>
 <li>GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0<br  />
 </li>
-<li>MessageID.InstancedItem<br  />
+<li><a class="el" href="class_message_i_d.html#adfc1ef65b08d602029fccfe8cde33c2e" title="Exactly the same as SyncItem, but sets the instanced flag and is only sent server -&gt; client....">MessageID.InstancedItem</a><br  />
  Defaults to <code>false</code>.<br  />
  </li>
 </ul>

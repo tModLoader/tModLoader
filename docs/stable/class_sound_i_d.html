@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -122,8 +122,23 @@ static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bott
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>AchievementComplete</b> = CreateTrackable(&quot;achievement_complete&quot;)</td></tr>
 <tr class="separator:ae964a795b62cc9cb51eb4f1e4cb0d8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f1886fa99824229ef5774ba0994f04c"><td class="memItemLeft" align="right" valign="top"><a id="a9f1886fa99824229ef5774ba0994f04c" name="a9f1886fa99824229ef5774ba0994f04c"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Bird</b> = new($&quot;{Prefix}Zombie_&quot;, 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Bird</b> = new($&quot;{Prefix}Zombie_&quot;, [14, 16, 17, 18, 19], SoundType.Ambient) { Identifier = &quot;Terraria/Bird&quot;, Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a9f1886fa99824229ef5774ba0994f04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a661037ff91d5f9ac16fd2d5ebdcd7443"><td class="memItemLeft" align="right" valign="top"><a id="a661037ff91d5f9ac16fd2d5ebdcd7443" name="a661037ff91d5f9ac16fd2d5ebdcd7443"></a>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Bird14</b> = Bird with { Variants = [14] }</td></tr>
+<tr class="separator:a661037ff91d5f9ac16fd2d5ebdcd7443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb748dc24a35b59d8a4e1169c0fabe15"><td class="memItemLeft" align="right" valign="top"><a id="afb748dc24a35b59d8a4e1169c0fabe15" name="afb748dc24a35b59d8a4e1169c0fabe15"></a>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Bird16</b> = Bird with { Variants = [16] }</td></tr>
+<tr class="separator:afb748dc24a35b59d8a4e1169c0fabe15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdfb108a969473f598a0986f6985dd46"><td class="memItemLeft" align="right" valign="top"><a id="afdfb108a969473f598a0986f6985dd46" name="afdfb108a969473f598a0986f6985dd46"></a>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Bird17</b> = Bird with { Variants = [17] }</td></tr>
+<tr class="separator:afdfb108a969473f598a0986f6985dd46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4871706f6310be347203e1dd27ccb52c"><td class="memItemLeft" align="right" valign="top"><a id="a4871706f6310be347203e1dd27ccb52c" name="a4871706f6310be347203e1dd27ccb52c"></a>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Bird18</b> = Bird with { Variants = [18] }</td></tr>
+<tr class="separator:a4871706f6310be347203e1dd27ccb52c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe67ae996c273a7f394605f1ee1c774f"><td class="memItemLeft" align="right" valign="top"><a id="afe67ae996c273a7f394605f1ee1c774f" name="afe67ae996c273a7f394605f1ee1c774f"></a>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Bird19</b> = Bird with { Variants = [19] }</td></tr>
+<tr class="separator:afe67ae996c273a7f394605f1ee1c774f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7da05730b6499a2366ea86d45238ec6"><td class="memItemLeft" align="right" valign="top"><a id="af7da05730b6499a2366ea86d45238ec6" name="af7da05730b6499a2366ea86d45238ec6"></a>
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>BlizzardInsideBuildingLoop</b> = CreateTrackable(&quot;blizzard_inside_building_loop&quot;, SoundType.Ambient)</td></tr>
 <tr class="separator:af7da05730b6499a2366ea86d45238ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,13 +146,13 @@ static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bott
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>BlizzardStrongLoop</b> = CreateTrackable(&quot;blizzard_strong_loop&quot;, SoundType.Ambient).WithVolume(0.5f)</td></tr>
 <tr class="separator:a69e59f91dbae4e7552ca9a0b9b9d4095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e28c13326bc137ba589b418b160426"><td class="memItemLeft" align="right" valign="top"><a id="aa5e28c13326bc137ba589b418b160426" name="aa5e28c13326bc137ba589b418b160426"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BloodZombie</b> = new($&quot;{Prefix}Zombie_&quot;, 21, 3) { Volume = 0.4f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BloodZombie</b> = new($&quot;{Prefix}Zombie_&quot;, 21, 3) { Identifier = &quot;Terraria/BloodZombie&quot;, Volume = 0.4f, MaxInstances = 0 }</td></tr>
 <tr class="separator:aa5e28c13326bc137ba589b418b160426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a570346744c10cee335490ff612b0900e"><td class="memItemLeft" align="right" valign="top"><a id="a570346744c10cee335490ff612b0900e" name="a570346744c10cee335490ff612b0900e"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> = new($&quot;{Prefix}<a class="el" href="class_camera.html">Camera</a>&quot;)</td></tr>
 <tr class="separator:a570346744c10cee335490ff612b0900e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4d6b6299a97c1ae3e898d93da02be7"><td class="memItemLeft" align="right" valign="top"><a id="afc4d6b6299a97c1ae3e898d93da02be7" name="afc4d6b6299a97c1ae3e898d93da02be7"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Chat</b> = new($&quot;{Prefix}Chat&quot;)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Chat</b> = new($&quot;{Prefix}Chat&quot;) { MaxInstances = 0 }</td></tr>
 <tr class="separator:afc4d6b6299a97c1ae3e898d93da02be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacff1f2277ab9c900b2b786c71732dc2"><td class="memItemLeft" align="right" valign="top"><a id="aacff1f2277ab9c900b2b786c71732dc2" name="aacff1f2277ab9c900b2b786c71732dc2"></a>
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>ChesterClose</b> = CreateTrackable(&quot;chester_close&quot;, 2)</td></tr>
@@ -146,16 +161,16 @@ static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bott
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>ChesterOpen</b> = CreateTrackable(&quot;chester_open&quot;, 2)</td></tr>
 <tr class="separator:a3c5743d7b6f0f468aabeaefdaf270715"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56d873e25aae3caf14cfd4c23b7f0300"><td class="memItemLeft" align="right" valign="top"><a id="a56d873e25aae3caf14cfd4c23b7f0300" name="a56d873e25aae3caf14cfd4c23b7f0300"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Clown</b> = new($&quot;{Prefix}Zombie_&quot;, 121, 3) { Volume = 0.45f, PitchVariance = 0.15f, SoundLimitBehavior = IgnoreNew }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Clown</b> = new($&quot;{Prefix}Zombie_&quot;, 121, 3) { Identifier = &quot;Terraria/Clown&quot;, Volume = 0.45f, PitchVariance = 0.3f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a56d873e25aae3caf14cfd4c23b7f0300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4916a65fe2b697a2ff61c15e92dfb101"><td class="memItemLeft" align="right" valign="top"><a id="a4916a65fe2b697a2ff61c15e92dfb101" name="a4916a65fe2b697a2ff61c15e92dfb101"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Cockatiel</b> = new($&quot;{Prefix}Zombie_&quot;, 118, 3) { Volume = 0.3f, PitchVariance = 0.05f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Cockatiel</b> = new($&quot;{Prefix}Zombie_&quot;, 118, 3, SoundType.Ambient) { Identifier = &quot;Terraria/Cockatiel&quot;, Volume = 0.3f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a4916a65fe2b697a2ff61c15e92dfb101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a443d6f3e12e9c9dfd24f6b456852d068"><td class="memItemLeft" align="right" valign="top"><a id="a443d6f3e12e9c9dfd24f6b456852d068" name="a443d6f3e12e9c9dfd24f6b456852d068"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CoinPickup</b> = new($&quot;{Prefix}Coin_&quot;, 0, 5) { PitchVariance = 0.16f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CoinPickup</b> = new($&quot;{Prefix}Coin_&quot;, 0, 5) { PitchVariance = 0.16f, MaxInstances = 0 }</td></tr>
 <tr class="separator:a443d6f3e12e9c9dfd24f6b456852d068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95a2be390b062d459ec4ad3f5ef8e5bf"><td class="memItemLeft" align="right" valign="top"><a id="a95a2be390b062d459ec4ad3f5ef8e5bf" name="a95a2be390b062d459ec4ad3f5ef8e5bf"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Coins</b> = new($&quot;{Prefix}Coins&quot;)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Coins</b> = new($&quot;{Prefix}Coins&quot;) { MaxInstances = 0 }</td></tr>
 <tr class="separator:a95a2be390b062d459ec4ad3f5ef8e5bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a481f080aa80bd6c340e82bd46ec36b53"><td class="memItemLeft" align="right" valign="top"><a id="a481f080aa80bd6c340e82bd46ec36b53" name="a481f080aa80bd6c340e82bd46ec36b53"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Critter</b> = new($&quot;{Prefix}Zombie_15&quot;, SoundType.Ambient) { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), SoundLimitBehavior = IgnoreNew }</td></tr>
@@ -437,10 +452,10 @@ static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bott
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>DeerclopsStep</b> = CreateTrackable(&quot;deerclops_step&quot;).WithVolume(0.2f)</td></tr>
 <tr class="separator:a05d53babcf2641b02f51f61dda7a4bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad423989e2618f31aad92e4c96c8cf564"><td class="memItemLeft" align="right" valign="top"><a id="ad423989e2618f31aad92e4c96c8cf564" name="ad423989e2618f31aad92e4c96c8cf564"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Dig</b> = new($&quot;{Prefix}Dig_&quot;, 0, 3) { PitchVariance = 0.2f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Dig</b> = new($&quot;{Prefix}Dig_&quot;, 0, 3) { PitchVariance = 0.2f, LimitsArePerVariant = true }</td></tr>
 <tr class="separator:ad423989e2618f31aad92e4c96c8cf564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9539b81f4d680cd3c065ee4febdd6614"><td class="memItemLeft" align="right" valign="top"><a id="a9539b81f4d680cd3c065ee4febdd6614" name="a9539b81f4d680cd3c065ee4febdd6614"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Dolphin</b> = new($&quot;{Prefix}Zombie_109&quot;) { Volume = 0.3f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Dolphin</b> = new($&quot;{Prefix}Zombie_109&quot;, SoundType.Ambient) { Volume = 0.3f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a9539b81f4d680cd3c065ee4febdd6614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae651265dcdde1903222e59c08e38d6a1"><td class="memItemLeft" align="right" valign="top"><a id="ae651265dcdde1903222e59c08e38d6a1" name="ae651265dcdde1903222e59c08e38d6a1"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DoorClosed</b> = new($&quot;{Prefix}Door_Closed&quot;) { PitchVariance = 0.4f }</td></tr>
@@ -452,8 +467,11 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DoubleJump</b> = new($&quot;{Prefix}Double_Jump&quot;) { PitchVariance = 0.2f }</td></tr>
 <tr class="separator:a879ebeb40ce8ba206f1055aa36d65083"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae3096d65a71adfede0e239aaa6e1ab2"><td class="memItemLeft" align="right" valign="top"><a id="aae3096d65a71adfede0e239aaa6e1ab2" name="aae3096d65a71adfede0e239aaa6e1ab2"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Drip</b> = new($&quot;{Prefix}Drip_&quot;, 0, 3, SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Drip</b> = new($&quot;{Prefix}Drip_&quot;, 0, 2, SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f, MaxInstances = 0 }</td></tr>
 <tr class="separator:aae3096d65a71adfede0e239aaa6e1ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaabbc26d932ddb24ca650a36bb62047a"><td class="memItemLeft" align="right" valign="top"><a id="aaabbc26d932ddb24ca650a36bb62047a" name="aaabbc26d932ddb24ca650a36bb62047a"></a>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DripSplash</b> = new($&quot;{Prefix}Drip_2&quot;, SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f, MaxInstances = 0 }</td></tr>
+<tr class="separator:aaabbc26d932ddb24ca650a36bb62047a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dfe157cf15cd378f4fa9c5d6ee28bc9"><td class="memItemLeft" align="right" valign="top"><a id="a6dfe157cf15cd378f4fa9c5d6ee28bc9" name="a6dfe157cf15cd378f4fa9c5d6ee28bc9"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Drown</b> = new($&quot;{Prefix}Drown&quot;)</td></tr>
 <tr class="separator:a6dfe157cf15cd378f4fa9c5d6ee28bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -496,16 +514,16 @@ static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bott
 <tr class="memitem:ad2fdcc4a1a887141b0dde63c2a912045"><td class="memItemLeft" align="right" valign="top">static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sound_i_d.html#ad2fdcc4a1a887141b0dde63c2a912045">Duck</a></td></tr>
 <tr class="separator:ad2fdcc4a1a887141b0dde63c2a912045"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a566d8bf3133421ff4f8c416124ead829"><td class="memItemLeft" align="right" valign="top"><a id="a566d8bf3133421ff4f8c416124ead829" name="a566d8bf3133421ff4f8c416124ead829"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FemaleHit</b> = new($&quot;{Prefix}Female_Hit_&quot;, 0, 3)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FemaleHit</b> = new($&quot;{Prefix}Female_Hit_&quot;, 0, 3) { LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a566d8bf3133421ff4f8c416124ead829"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cba46fa8df3aca57c255ff39668e3da"><td class="memItemLeft" align="right" valign="top"><a id="a2cba46fa8df3aca57c255ff39668e3da" name="a2cba46fa8df3aca57c255ff39668e3da"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ForceRoar</b> = new($&quot;{Prefix}Roar_0&quot;) { Identifier = &quot;Terraria/Roar&quot; }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ForceRoar</b> = new($&quot;{Prefix}Roar_0&quot;) { Identifier = &quot;Terraria/Roar&quot;, MaxInstances = 0 }</td></tr>
 <tr class="separator:a2cba46fa8df3aca57c255ff39668e3da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cd4b3980a8649f99c405b2704832f3e"><td class="memItemLeft" align="right" valign="top"><a id="a4cd4b3980a8649f99c405b2704832f3e" name="a4cd4b3980a8649f99c405b2704832f3e"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ForceRoarPitched</b> = new($&quot;{Prefix}Roar_0&quot;) { Pitch = 0.6f, Identifier = &quot;Terraria/Roar&quot; }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ForceRoarPitched</b> = ForceRoar with { Pitch = 0.6f }</td></tr>
 <tr class="separator:a4cd4b3980a8649f99c405b2704832f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a295aba6d33e17f1e35a4e00cc0932848"><td class="memItemLeft" align="right" valign="top"><a id="a295aba6d33e17f1e35a4e00cc0932848" name="a295aba6d33e17f1e35a4e00cc0932848"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Frog</b> = new($&quot;{Prefix}Zombie_13&quot;, SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f) }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Frog</b> = new($&quot;{Prefix}Zombie_13&quot;, SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f), MaxInstances = 0 }</td></tr>
 <tr class="separator:a295aba6d33e17f1e35a4e00cc0932848"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e6bebf54f0630c07bc55b779f97fcaa"><td class="memItemLeft" align="right" valign="top"><a id="a7e6bebf54f0630c07bc55b779f97fcaa" name="a7e6bebf54f0630c07bc55b779f97fcaa"></a>
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>GlommerBounce</b> = CreateTrackable(&quot;glommer_bounce&quot;, 2).WithVolume(0.5f)</td></tr>
@@ -544,7 +562,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item1</b> = ItemSound(stackalloc int[] { 1, 18, 19 })</td></tr>
 <tr class="separator:afcbb718902438096fbc79be70c62720c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf8ea3e1a5a889a755fa24f3685044c6"><td class="memItemLeft" align="right" valign="top"><a id="acf8ea3e1a5a889a755fa24f3685044c6" name="acf8ea3e1a5a889a755fa24f3685044c6"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item10</b> = ItemSound(10)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item10</b> = ItemSound(10) with { MaxInstances = 0 }</td></tr>
 <tr class="separator:acf8ea3e1a5a889a755fa24f3685044c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e72b06dd2161a68e7563b46f4e4114e"><td class="memItemLeft" align="right" valign="top"><a id="a4e72b06dd2161a68e7563b46f4e4114e" name="a4e72b06dd2161a68e7563b46f4e4114e"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item100</b> = ItemSound(100)</td></tr>
@@ -556,7 +574,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item102</b> = ItemSound(102)</td></tr>
 <tr class="separator:a92ed8bb3bba707c2f9973f808df8178a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c078aed9fafd9988b347af43feddf60"><td class="memItemLeft" align="right" valign="top"><a id="a9c078aed9fafd9988b347af43feddf60" name="a9c078aed9fafd9988b347af43feddf60"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item103</b> = ItemSound(103)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item103</b> = ItemSound(103) with { MaxInstances = 0 }</td></tr>
 <tr class="separator:a9c078aed9fafd9988b347af43feddf60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22d5f35d2da306055895b2744021d532"><td class="memItemLeft" align="right" valign="top"><a id="a22d5f35d2da306055895b2744021d532" name="a22d5f35d2da306055895b2744021d532"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item104</b> = ItemSound(104)</td></tr>
@@ -730,7 +748,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item155</b> = ItemSound(155)</td></tr>
 <tr class="separator:ac8a4c60cfb06b12ac2c1f4625e577c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07be9c4f5e20cd5bda031a8d21e4c470"><td class="memItemLeft" align="right" valign="top"><a id="a07be9c4f5e20cd5bda031a8d21e4c470" name="a07be9c4f5e20cd5bda031a8d21e4c470"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item156</b> = ItemSound(156) with { Volume = 0.6f, PitchVariance = 0.2f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item156</b> = ItemSound(156) with { Volume = 0.6f, PitchVariance = 0.2f, MaxInstances = 0 }</td></tr>
 <tr class="separator:a07be9c4f5e20cd5bda031a8d21e4c470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d8f4cc5f711984918dbac236739bd33"><td class="memItemLeft" align="right" valign="top"><a id="a9d8f4cc5f711984918dbac236739bd33" name="a9d8f4cc5f711984918dbac236739bd33"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item157</b> = ItemSound(157) with { Volume = 0.7f }</td></tr>
@@ -751,7 +769,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item161</b> = ItemSound(161)</td></tr>
 <tr class="separator:ac12ebb07a4f66e8f232fcff351833b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5d853e465e244a3831b4d2d88897ccd"><td class="memItemLeft" align="right" valign="top"><a id="ab5d853e465e244a3831b4d2d88897ccd" name="ab5d853e465e244a3831b4d2d88897ccd"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item162</b> = ItemSound(162)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item162</b> = ItemSound(162) with { MaxInstances = 0 }</td></tr>
 <tr class="separator:ab5d853e465e244a3831b4d2d88897ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f3ba7d8d97f7b868ae49e70a87f7e21"><td class="memItemLeft" align="right" valign="top"><a id="a7f3ba7d8d97f7b868ae49e70a87f7e21" name="a7f3ba7d8d97f7b868ae49e70a87f7e21"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item163</b> = ItemSound(163)</td></tr>
@@ -796,7 +814,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item175</b> = ItemSound(175)</td></tr>
 <tr class="separator:a160d14268c849bf49d37b2d0a7ecdcda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d8d8f214d9975486b008eb92acebd10"><td class="memItemLeft" align="right" valign="top"><a id="a3d8d8f214d9975486b008eb92acebd10" name="a3d8d8f214d9975486b008eb92acebd10"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item176</b> = ItemSound(176)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item176</b> = ItemSound(176) with { Volume = 0.9f }</td></tr>
 <tr class="separator:a3d8d8f214d9975486b008eb92acebd10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed627a2575f7590d4dc54558ca387817"><td class="memItemLeft" align="right" valign="top"><a id="aed627a2575f7590d4dc54558ca387817" name="aed627a2575f7590d4dc54558ca387817"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item177</b> = ItemSound(177)</td></tr>
@@ -826,13 +844,13 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item23</b> = ItemSound(23)</td></tr>
 <tr class="separator:af576891d957647705004b297dcbf2a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea6d7a0f575213a07919708afb25276e"><td class="memItemLeft" align="right" valign="top"><a id="aea6d7a0f575213a07919708afb25276e" name="aea6d7a0f575213a07919708afb25276e"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item24</b> = ItemSound(24)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item24</b> = ItemSound(24) with { MaxInstances = 0 }</td></tr>
 <tr class="separator:aea6d7a0f575213a07919708afb25276e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5664148e5efaf2059214890f083e5ad6"><td class="memItemLeft" align="right" valign="top"><a id="a5664148e5efaf2059214890f083e5ad6" name="a5664148e5efaf2059214890f083e5ad6"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item25</b> = ItemSound(25)</td></tr>
 <tr class="separator:a5664148e5efaf2059214890f083e5ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a264d0542b5f6686af34142e1449195"><td class="memItemLeft" align="right" valign="top"><a id="a3a264d0542b5f6686af34142e1449195" name="a3a264d0542b5f6686af34142e1449195"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item26</b> = ItemSound(26) with { Volume = 0.75f, PitchVariance = 0f, UsesMusicPitch = true }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item26</b> = ItemSound(26) with { Volume = 0.75f, PitchVariance = 0f, UsesMusicPitch = true, MaxInstances = 0 }</td></tr>
 <tr class="separator:a3a264d0542b5f6686af34142e1449195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82ce911ff90a5335f183526caa907787"><td class="memItemLeft" align="right" valign="top"><a id="a82ce911ff90a5335f183526caa907787" name="a82ce911ff90a5335f183526caa907787"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item27</b> = ItemSound(27)</td></tr>
@@ -859,7 +877,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item33</b> = ItemSound(33)</td></tr>
 <tr class="separator:ab096a9559040c3bb4128837089fd2c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71169930d30b4477e80d4c3a8fd8f46f"><td class="memItemLeft" align="right" valign="top"><a id="a71169930d30b4477e80d4c3a8fd8f46f" name="a71169930d30b4477e80d4c3a8fd8f46f"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item34</b> = ItemSound(34)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item34</b> = ItemSound(34) with { MaxInstances = 0 }</td></tr>
 <tr class="separator:a71169930d30b4477e80d4c3a8fd8f46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac926218a96fda0978c20a8a718e561a"><td class="memItemLeft" align="right" valign="top"><a id="aac926218a96fda0978c20a8a718e561a" name="aac926218a96fda0978c20a8a718e561a"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item35</b> = ItemSound(35) with { Volume = 0.75f, PitchVariance = 0f, UsesMusicPitch = true }</td></tr>
@@ -889,7 +907,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item42</b> = ItemSound(42)</td></tr>
 <tr class="separator:aefb96e924569ea2f2d67279cc013a62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9579c0953cc5f72259abb85e1d9c945"><td class="memItemLeft" align="right" valign="top"><a id="ad9579c0953cc5f72259abb85e1d9c945" name="ad9579c0953cc5f72259abb85e1d9c945"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item43</b> = ItemSound(43)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item43</b> = ItemSound(43) with { MaxInstances = 0 }</td></tr>
 <tr class="separator:ad9579c0953cc5f72259abb85e1d9c945"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8ccf17e8db559527005c4fc38a97871"><td class="memItemLeft" align="right" valign="top"><a id="aa8ccf17e8db559527005c4fc38a97871" name="aa8ccf17e8db559527005c4fc38a97871"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item44</b> = ItemSound(44)</td></tr>
@@ -928,7 +946,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item54</b> = ItemSound(54)</td></tr>
 <tr class="separator:a795246725f52a2d825028908767454b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a488c165638afd3e4d02f63c669a043ba"><td class="memItemLeft" align="right" valign="top"><a id="a488c165638afd3e4d02f63c669a043ba" name="a488c165638afd3e4d02f63c669a043ba"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item55</b> = ItemSound(55) with { Volume = 0.75f * 0.75f, PitchRange = (-0.4f, -0.2f), SoundLimitBehavior = IgnoreNew }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item55</b> = ItemSound(55) with { Volume = 0.75f * 0.75f, PitchRange = (0.2f, 0.4f), SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a488c165638afd3e4d02f63c669a043ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d77b7ac721bcc57dd6729f6b0817241"><td class="memItemLeft" align="right" valign="top"><a id="a1d77b7ac721bcc57dd6729f6b0817241" name="a1d77b7ac721bcc57dd6729f6b0817241"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item56</b> = ItemSound(56)</td></tr>
@@ -1042,7 +1060,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item89</b> = ItemSound(89)</td></tr>
 <tr class="separator:a5e790b46467c65f553a0e03a387430ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10f0b5cec026293778448ce8a0264fb0"><td class="memItemLeft" align="right" valign="top"><a id="a10f0b5cec026293778448ce8a0264fb0" name="a10f0b5cec026293778448ce8a0264fb0"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item9</b> = ItemSound(9)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item9</b> = ItemSound(9) with { MaxInstances = 0 }</td></tr>
 <tr class="separator:a10f0b5cec026293778448ce8a0264fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabebbcd67d4fa16e843b7ce10bb52a39"><td class="memItemLeft" align="right" valign="top"><a id="aabebbcd67d4fa16e843b7ce10bb52a39" name="aabebbcd67d4fa16e843b7ce10bb52a39"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Item90</b> = ItemSound(90)</td></tr>
@@ -1096,10 +1114,10 @@ static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bott
 static readonly LegacySoundStyle&#160;</td><td class="memItemRight" valign="bottom"><b>LucyTheAxeTalk</b> = CreateTrackable(&quot;lucyaxe_talk&quot;, 5).WithVolume(0.4f).WithPitchVariance(0.1f)</td></tr>
 <tr class="separator:a60c9abfd570492a2908550ff8daa97e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab403340a9bd71f46b81a3b59e5acb80b"><td class="memItemLeft" align="right" valign="top"><a id="ab403340a9bd71f46b81a3b59e5acb80b" name="ab403340a9bd71f46b81a3b59e5acb80b"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Macaw</b> = new($&quot;{Prefix}Zombie_&quot;, 126, 3) { Volume = 0.22f, PitchVariance = 0.05f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Macaw</b> = new($&quot;{Prefix}Zombie_&quot;, 126, 3, SoundType.Ambient) { Identifier = &quot;Terraria/Macaw&quot;, Volume = 0.22f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true }</td></tr>
 <tr class="separator:ab403340a9bd71f46b81a3b59e5acb80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a942990cce53678eb450ddf7bac90e73b"><td class="memItemLeft" align="right" valign="top"><a id="a942990cce53678eb450ddf7bac90e73b" name="a942990cce53678eb450ddf7bac90e73b"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MaxMana</b> = new($&quot;{Prefix}MaxMana&quot;)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MaxMana</b> = new($&quot;{Prefix}MaxMana&quot;) { MaxInstances = 0 }</td></tr>
 <tr class="separator:a942990cce53678eb450ddf7bac90e73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af850ccbc8d7fecfae7284909df203e69"><td class="memItemLeft" align="right" valign="top"><a id="af850ccbc8d7fecfae7284909df203e69" name="af850ccbc8d7fecfae7284909df203e69"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Mech</b> = new($&quot;{Prefix}Mech_0&quot;) { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
@@ -1114,13 +1132,13 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MenuTick</b> = new($&quot;{Prefix}Menu_Tick&quot;) { PlayOnlyIfFocused = true }</td></tr>
 <tr class="separator:ade242e9f5343bd6a9af3da957fc4ec65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bdd140803e6dabe94c2317be8cf8abc"><td class="memItemLeft" align="right" valign="top"><a id="a2bdd140803e6dabe94c2317be8cf8abc" name="a2bdd140803e6dabe94c2317be8cf8abc"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Meowmere</b> = new($&quot;{Prefix}Item_&quot;, 57, 2) { PitchVariance = 0.8f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Meowmere</b> = new($&quot;{Prefix}Item_&quot;, 57, 2) { Identifier = &quot;Terraria/Meowmere&quot;, PitchVariance = 0.8f, MaxInstances = 0 }</td></tr>
 <tr class="separator:a2bdd140803e6dabe94c2317be8cf8abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e054d01352f160ecb36061fdea6f490"><td class="memItemLeft" align="right" valign="top"><a id="a6e054d01352f160ecb36061fdea6f490" name="a6e054d01352f160ecb36061fdea6f490"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MoonLord</b> = new($&quot;{Prefix}NPC_Killed_10&quot;) { PitchVariance = 0.2f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MoonLord</b> = new($&quot;{Prefix}NPC_Killed_10&quot;) { PitchVariance = 0.2f, MaxInstances = 0 }</td></tr>
 <tr class="separator:a6e054d01352f160ecb36061fdea6f490"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf5b27116a102274d689136aa3421c42"><td class="memItemLeft" align="right" valign="top"><a id="acf5b27116a102274d689136aa3421c42" name="acf5b27116a102274d689136aa3421c42"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Mummy</b> = new($&quot;{Prefix}Zombie_&quot;, 3, 2) { Volume = 0.9f, PitchVariance = 0.2f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Mummy</b> = new($&quot;{Prefix}Zombie_&quot;, 3, 2) { Identifier = &quot;Terraria/Mummy&quot;, Volume = 0.9f, PitchVariance = 0.2f, MaxInstances = 0 }</td></tr>
 <tr class="separator:acf5b27116a102274d689136aa3421c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe0f2a3c24e9e8d330b3346c15ba8370"><td class="memItemLeft" align="right" valign="top"><a id="abe0f2a3c24e9e8d330b3346c15ba8370" name="abe0f2a3c24e9e8d330b3346c15ba8370"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NPCDeath1</b> = NPCDeathSound(1)</td></tr>
@@ -1503,16 +1521,16 @@ static readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>NPCHit
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Pixie</b> = new($&quot;{Prefix}Pixie&quot;) { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a056c892472369cfa33559e6c15b54b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63dc7f8002060e072060a62d7f591b4a"><td class="memItemLeft" align="right" valign="top"><a id="a63dc7f8002060e072060a62d7f591b4a" name="a63dc7f8002060e072060a62d7f591b4a"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerHit</b> = new($&quot;{Prefix}Player_Hit_&quot;, 0, 3) { PitchVariance = 0.2f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerHit</b> = new($&quot;{Prefix}Player_Hit_&quot;, 0, 3) { LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a63dc7f8002060e072060a62d7f591b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6ff636a6383f914ee60584eb3c4d0ca"><td class="memItemLeft" align="right" valign="top"><a id="af6ff636a6383f914ee60584eb3c4d0ca" name="af6ff636a6383f914ee60584eb3c4d0ca"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PlayerKilled</b> = new($&quot;{Prefix}Player_Killed&quot;)</td></tr>
 <tr class="separator:af6ff636a6383f914ee60584eb3c4d0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86a84028b8e21023ffbdb3df7c93d3e4"><td class="memItemLeft" align="right" valign="top"><a id="a86a84028b8e21023ffbdb3df7c93d3e4" name="a86a84028b8e21023ffbdb3df7c93d3e4"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QueenSlime</b> = new($&quot;{Prefix}Zombie_&quot;, 115, 3) { Volume = 0.5f, SoundLimitBehavior = IgnoreNew }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QueenSlime</b> = new($&quot;{Prefix}Zombie_&quot;, 115, 3) { Identifier = &quot;Terraria/QueenSlime&quot;, Volume = 0.5f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a86a84028b8e21023ffbdb3df7c93d3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b5bec691eba1e59a45af6b15f694bde"><td class="memItemLeft" align="right" valign="top"><a id="a2b5bec691eba1e59a45af6b15f694bde" name="a2b5bec691eba1e59a45af6b15f694bde"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Research</b> = new($&quot;{Prefix}Research_&quot;, 1, 3)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Research</b> = new($&quot;{Prefix}Research_&quot;, 1, 3) { LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a2b5bec691eba1e59a45af6b15f694bde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa967c3b73c8ef216212a952b01868074"><td class="memItemLeft" align="right" valign="top"><a id="aa967c3b73c8ef216212a952b01868074" name="aa967c3b73c8ef216212a952b01868074"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ResearchComplete</b> = new($&quot;{Prefix}Research_0&quot;)</td></tr>
@@ -1524,13 +1542,13 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Run</b> = new($&quot;{Prefix}Run&quot;) { PitchVariance = 0.2f }</td></tr>
 <tr class="separator:a0a6d141e1467dee1e9286ba6227cfee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa274e7c082171901e4d6d369f840d873"><td class="memItemLeft" align="right" valign="top"><a id="aa274e7c082171901e4d6d369f840d873" name="aa274e7c082171901e4d6d369f840d873"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SandShark</b> = new($&quot;{Prefix}Zombie_7&quot;) { Volume = 0.4f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SandShark</b> = new($&quot;{Prefix}Zombie_7&quot;) { Volume = 0.4f, MaxInstances = 0 }</td></tr>
 <tr class="separator:aa274e7c082171901e4d6d369f840d873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a858d3607181ccaaba8dbb64b6f4f44"><td class="memItemLeft" align="right" valign="top"><a id="a2a858d3607181ccaaba8dbb64b6f4f44" name="a2a858d3607181ccaaba8dbb64b6f4f44"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ScaryScream</b> = new($&quot;{Prefix}Roar_2&quot;) { SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a2a858d3607181ccaaba8dbb64b6f4f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9208004d31c234d0ed8cf76ba42db7be"><td class="memItemLeft" align="right" valign="top"><a id="a9208004d31c234d0ed8cf76ba42db7be" name="a9208004d31c234d0ed8cf76ba42db7be"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Seagull</b> = new($&quot;{Prefix}Zombie_&quot;, 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Seagull</b> = new($&quot;{Prefix}Zombie_&quot;, 106, 3, SoundType.Ambient) { Identifier = &quot;Terraria/Seagull&quot;, Volume = 0.2f, PitchRange = (-0.7f, 0f), MaxInstances = 0 }</td></tr>
 <tr class="separator:a9208004d31c234d0ed8cf76ba42db7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05030ae5c18884190c0b848e1fdde0d7"><td class="memItemLeft" align="right" valign="top"><a id="a05030ae5c18884190c0b848e1fdde0d7" name="a05030ae5c18884190c0b848e1fdde0d7"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Shatter</b> = new($&quot;{Prefix}Shatter&quot;)</td></tr>
@@ -1542,10 +1560,10 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Shimmer2</b> = new($&quot;{Prefix}Splash_3&quot;) { Volume = 0.75f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a921bdf38cb4d5f60b458989d135ee4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abee8523ac769a85ee071c3ca6891d8cb"><td class="memItemLeft" align="right" valign="top"><a id="abee8523ac769a85ee071c3ca6891d8cb" name="abee8523ac769a85ee071c3ca6891d8cb"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ShimmerWeak1</b> = new($&quot;{Prefix}Splash_4&quot;) { Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ShimmerWeak1</b> = new($&quot;{Prefix}Splash_4&quot;) { Identifier = &quot;Terraria/ShimmerWeak&quot;, Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:abee8523ac769a85ee071c3ca6891d8cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29c64a064e481a08e11e3e0ab8f6a9ab"><td class="memItemLeft" align="right" valign="top"><a id="a29c64a064e481a08e11e3e0ab8f6a9ab" name="a29c64a064e481a08e11e3e0ab8f6a9ab"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ShimmerWeak2</b> = new($&quot;{Prefix}Splash_5&quot;) { Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ShimmerWeak2</b> = new($&quot;{Prefix}Splash_5&quot;) { Identifier = &quot;Terraria/ShimmerWeak&quot;, Volume = 0.75f, Pitch = -0.1f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a29c64a064e481a08e11e3e0ab8f6a9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c96139f1efd6748efb8663bed1cb581"><td class="memItemLeft" align="right" valign="top"><a id="a0c96139f1efd6748efb8663bed1cb581" name="a0c96139f1efd6748efb8663bed1cb581"></a>
 static Dictionary&lt; ushort, LegacySoundStyle &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SoundByIndex</b> = null</td></tr>
@@ -1560,13 +1578,13 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SplashWeak</b> = new($&quot;{Prefix}Splash_1&quot;) { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew }</td></tr>
 <tr class="separator:a7569acf418b20ceec5ff63b3958f942c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d4300ff8bc6f0776d8751a8b03a122a"><td class="memItemLeft" align="right" valign="top"><a id="a3d4300ff8bc6f0776d8751a8b03a122a" name="a3d4300ff8bc6f0776d8751a8b03a122a"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Thunder</b> = new($&quot;{Prefix}Thunder_&quot;, 0, 7, SoundType.Ambient) { MaxInstances = 7, PitchVariance = 0.2f, }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Thunder</b> = new($&quot;{Prefix}Thunder_&quot;, 0, 7, SoundType.Ambient) { PitchVariance = 0.2f, RerollAttempts = 6, LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a3d4300ff8bc6f0776d8751a8b03a122a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73062a8b50f1ec519156cd73c6b6b84e"><td class="memItemLeft" align="right" valign="top"><a id="a73062a8b50f1ec519156cd73c6b6b84e" name="a73062a8b50f1ec519156cd73c6b6b84e"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Tink</b> = new($&quot;{Prefix}Tink_&quot;, 0, 3)</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Tink</b> = new($&quot;{Prefix}Tink_&quot;, 0, 3) { LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a73062a8b50f1ec519156cd73c6b6b84e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d9c6c7b5a2b88f6793d8d3c2056b483"><td class="memItemLeft" align="right" valign="top"><a id="a1d9c6c7b5a2b88f6793d8d3c2056b483" name="a1d9c6c7b5a2b88f6793d8d3c2056b483"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Toucan</b> = new($&quot;{Prefix}Zombie_&quot;, 129, 2) { Volume = 0.2f, PitchVariance = 0.05f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Toucan</b> = new($&quot;{Prefix}Zombie_&quot;, 129, 2, SoundType.Ambient) { Identifier = &quot;Terraria/Toucan&quot;, Volume = 0.2f, PitchVariance = 0.1f, SoundLimitBehavior = IgnoreNew, LimitsArePerVariant = true }</td></tr>
 <tr class="separator:a1d9c6c7b5a2b88f6793d8d3c2056b483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a176b596e3217e3cfdf685125385483ea"><td class="memItemLeft" align="right" valign="top"><a id="a176b596e3217e3cfdf685125385483ea" name="a176b596e3217e3cfdf685125385483ea"></a>
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Unlock</b> = new($&quot;{Prefix}Unlock&quot;)</td></tr>
@@ -1971,7 +1989,7 @@ static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160
 static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Zombie99</b> = ZombieSound(99) with { Volume = 0.4f }</td></tr>
 <tr class="separator:ad5cda24ba194dbeb52e6957497cff209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa354a794ce8f5c4aa2a1eb1edeb7ca0"><td class="memItemLeft" align="right" valign="top"><a id="afa354a794ce8f5c4aa2a1eb1edeb7ca0" name="afa354a794ce8f5c4aa2a1eb1edeb7ca0"></a>
-static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZombieMoan</b> = new($&quot;{Prefix}Zombie_&quot;, 0, 3) { Volume = 0.4f }</td></tr>
+static readonly <a class="el" href="struct_sound_style.html">SoundStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ZombieMoan</b> = new($&quot;{Prefix}Zombie_&quot;, 0, 3) { Identifier = &quot;Terraria/ZombieMoan&quot;, Volume = 0.4f, MaxInstances = 0 }</td></tr>
 <tr class="separator:afa354a794ce8f5c4aa2a1eb1edeb7ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa33b8d64f8f4d6231b140a4ebf86ff2b"><td class="memItemLeft" align="right" valign="top"><a id="aa33b8d64f8f4d6231b140a4ebf86ff2b" name="aa33b8d64f8f4d6231b140a4ebf86ff2b"></a>
 static readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>ZombieSoundCount</b> = LegacySoundPlayer.ZombieSoundCount</td></tr>
@@ -1997,9 +2015,15 @@ static readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>Zombie
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span>($<span class="stringliteral">&quot;{Prefix}Zombie_&quot;</span>, stackalloc (<span class="keywordtype">int</span>, <span class="keywordtype">float</span>)[] { (10, 300f), (11, 300f), (12, 1f), }, SoundType.Ambient) {</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span>($<span class="stringliteral">&quot;{Prefix}Zombie_&quot;</span>, stackalloc (<span class="keywordtype">int</span>, <span class="keywordtype">float</span>)[] {</div>
+<div class="line">        (10, (299f / 300f) * (1f / 2f)),</div>
+<div class="line">        (11, (299f / 300f) * (1f / 2f)),</div>
+<div class="line">        (12, (1.0f / 300f)),</div>
+<div class="line">    }, SoundType.Ambient) {</div>
+<div class="line">        Identifier = <span class="stringliteral">&quot;Terraria/Duck&quot;</span>,</div>
 <div class="line">        Volume = 0.75f,</div>
-<div class="line">        PitchRange = (-0.7f, 0.0f)</div>
+<div class="line">        PitchRange = (-0.7f, 0.0f),</div>
+<div class="line">        MaxInstances = 0</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>
@@ -2023,8 +2047,17 @@ static readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>Zombie
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span>($<span class="stringliteral">&quot;{Prefix}Zombie_&quot;</span>, stackalloc (<span class="keywordtype">int</span>, <span class="keywordtype">float</span>)[] { (110, 300f), (111, 300f), (112, 1f), (113, 1f), (114, 1f), }) {</div>
-<div class="line">        PitchVariance = 0.2f</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span>($<span class="stringliteral">&quot;{Prefix}Zombie_&quot;</span>, stackalloc (<span class="keywordtype">int</span>, <span class="keywordtype">float</span>)[] {</div>
+<div class="line">        (110, (299f / 300f) * (1f / 2f)),</div>
+<div class="line">        (111, (299f / 300f) * (1f / 2f)),</div>
+<div class="line">        (112, (1.0f / 300f) * (1f / 3f)),</div>
+<div class="line">        (113, (1.0f / 300f) * (1f / 3f)),</div>
+<div class="line">        (114, (1.0f / 300f) * (1f / 3f)),</div>
+<div class="line">    }, SoundType.Ambient) {</div>
+<div class="line">        Identifier = <span class="stringliteral">&quot;Terraria/Owl&quot;</span>,</div>
+<div class="line">        Volume = 0.9f,</div>
+<div class="line">        PitchVariance = 0.2f,</div>
+<div class="line">        SoundLimitBehavior = IgnoreNew,</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 </div>

@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"class_item.html#adea320fc6b603c2416e6049f7fc8c233":[3,0,627,61],
+"class_item.html#ae1706b04dedde9a46cb5dee5f1f0e5d8":[3,0,627,42],
+"class_item.html#ae29d9481e1255f3585af41383841396c":[3,0,627,83],
+"class_item.html#ae34214b6739ef1f2b45f182d9b398dca":[3,0,627,127],
 "class_item.html#ae3a852d0106a490a1acb9e47be14fa73":[3,0,627,94],
 "class_item.html#ae3ded102ad76a38413d3cb8784e0d5b1":[3,0,627,164],
 "class_item.html#ae469eeb30bc2ddc4a934c25c7c64b155":[3,0,627,34],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "class_item_loader.html#af9539871994cbfd1231dcc64e9111be8":[3,0,643,23],
 "class_item_pickup_condition.html":[3,0,645],
 "class_item_rarity.html":[3,0,646],
-"class_item_rarity_i_d.html":[3,0,647],
-"class_item_rarity_i_d.html#a0512de49930d571a81d992af8b4a5aed":[3,0,647,14],
-"class_item_rarity_i_d.html#a0d9d114e1f5acf41e803bceed3977445":[3,0,647,9],
-"class_item_rarity_i_d.html#a1bbead0360bdce6f6c1a30cb44cedbaa":[3,0,647,12],
-"class_item_rarity_i_d.html#a23fe9f8df43a7b5f44c550c0f33f4bff":[3,0,647,13]
+"class_item_rarity_i_d.html":[3,0,647]
 };

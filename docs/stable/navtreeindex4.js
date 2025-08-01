@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"class_entity.html#a99144ef9b73ff3fbbc084dbb8a72c77e":[3,0,313,3],
+"class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5":[3,0,313,10],
+"class_entity.html#ad61f0c48735980e78778b90b6b4c8667":[3,0,313,0],
+"class_entity.html#adbdd2cc8ea46cd4425aeb185a1ac6168":[3,0,313,7],
 "class_entity.html#aea6af1b1841c5129ac2ddce832b53075":[3,0,313,6],
 "class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1":[3,0,313,2],
 "class_entity.html#af27ddd682f234963d31f91a855a39977":[3,0,313,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "class_game_tip_i_d.html#a5983bc96f23a55d41ef7df4733226cd3":[3,0,433,61],
 "class_game_tip_i_d.html#a5af84f9d8422bb48c8a8286264796824":[3,0,433,93],
 "class_game_tip_i_d.html#a5b62e85e8f4c231780a812d2e29d9d31":[3,0,433,112],
-"class_game_tip_i_d.html#a5c0edac36b7e8cb8f28e2a9040610b83":[3,0,433,106],
-"class_game_tip_i_d.html#a5cb85bbee89d80c60503af95e7e2df72":[3,0,433,44],
-"class_game_tip_i_d.html#a5cd444642e0fb0a9a629f3a22051da80":[3,0,433,22],
-"class_game_tip_i_d.html#a6359e4caae3a1709315294456c14507a":[3,0,433,11],
-"class_game_tip_i_d.html#a6386f291ef8bcc9f14fc6fe651b37730":[3,0,433,50]
+"class_game_tip_i_d.html#a5c0edac36b7e8cb8f28e2a9040610b83":[3,0,433,106]
 };
