@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_item.html#addaf53abeefd8999bc77746befd84d8f":[3,0,627,66],
 "class_item.html#adea320fc6b603c2416e6049f7fc8c233":[3,0,627,61],
 "class_item.html#ae1706b04dedde9a46cb5dee5f1f0e5d8":[3,0,627,42],
 "class_item.html#ae29d9481e1255f3585af41383841396c":[3,0,627,83],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_item_loader.html#af6eb664b317e04679d5120fe9e8d239d":[3,0,643,64],
 "class_item_loader.html#af9539871994cbfd1231dcc64e9111be8":[3,0,643,23],
 "class_item_pickup_condition.html":[3,0,645],
-"class_item_rarity.html":[3,0,646],
-"class_item_rarity_i_d.html":[3,0,647]
+"class_item_rarity.html":[3,0,646]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -245,6 +245,14 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsARocketTha
 <tr class="memdesc:afbaef65e8e6c93acda4f938196f87d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given projectile type (<a class="el" href="class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c" title="The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectil...">Projectile.type</a>), then that projectile will use whip collision and can have flasks applied to it. <br  />
  Defaults to <code>false</code>.  <a href="class_projectile_i_d_1_1_sets.html#afbaef65e8e6c93acda4f938196f87d5b">More...</a><br /></td></tr>
 <tr class="separator:afbaef65e8e6c93acda4f938196f87d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ec3fcaaabf56c15f7eca2071b2a3684"><td class="memItemLeft" align="right" valign="top"><a id="a2ec3fcaaabf56c15f7eca2071b2a3684" name="a2ec3fcaaabf56c15f7eca2071b2a3684"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsInteractable</b> = Factory.CreateBoolSet(false, 525, 734, 960)</td></tr>
+<tr class="memdesc:a2ec3fcaaabf56c15f7eca2071b2a3684"><td class="mdescLeft">&#160;</td><td class="mdescRight">This projectile is a candidate for player interaction. The projectile will be able to be targeted with smart cursor. <a class="el" href="class_projectile.html">Projectile</a> that can be right clicked should set this to true. <br  />
+<br  />
+ The ExampleInteractableProjectile.csexample demonstrates properly implementing an interactable projectile. <br  />
+<br  />
+ Defaults to false. Vanilla entries include FlyingPiggyBank, VoidLens, and ChesterPet. <br /></td></tr>
+<tr class="separator:a2ec3fcaaabf56c15f7eca2071b2a3684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab31733abf774f4ff20b82e655bc4590"><td class="memItemLeft" align="right" valign="top"><a id="aab31733abf774f4ff20b82e655bc4590" name="aab31733abf774f4ff20b82e655bc4590"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>LightPet</b> = Factory.CreateBoolSet(18, 500, 72, 87, 86, 211, 492, 650, 702, 891, 896, 895)</td></tr>
 <tr class="memdesc:aab31733abf774f4ff20b82e655bc4590"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given projectile type (<a class="el" href="class_projectile.html#a568b5b1fb741e559200eeb8b3ac8625c" title="The Projectile ID of this projectile. The Projectile ID is a unique number assigned to each Projectil...">Projectile.type</a>), then that projectile is a light pet. <br  />

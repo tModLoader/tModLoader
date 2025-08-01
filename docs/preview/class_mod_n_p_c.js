@@ -61,6 +61,7 @@ var class_mod_n_p_c =
     [ "PostDraw", "class_mod_n_p_c.html#a3c0a7db0e213a9db0d5ef034f71db3c5", null ],
     [ "PreAI", "class_mod_n_p_c.html#a59734d50b20bc7225a23acb167af1c23", null ],
     [ "PreDraw", "class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc", null ],
+    [ "PreHoverInteract", "class_mod_n_p_c.html#a8ca4a3fd3835e78ca688d035190c1ec9", null ],
     [ "PreKill", "class_mod_n_p_c.html#ae9109fb61ac3fc600a4bf7c6b12d16ea", null ],
     [ "ReceiveExtraAI", "class_mod_n_p_c.html#abb7c4468cbdba533146c4e35f3299a69", null ],
     [ "Register", "class_mod_n_p_c.html#a5fd9672335cedd33f1d9be52ef8852ee", null ],

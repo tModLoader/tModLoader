@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -2347,18 +2347,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>cursed</b></td></tr>
 <tr class="separator:a7ef946cbb727213b26547c5e062015b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf112a55c01e98f1c66c3a5f9c274198"><td class="memItemLeft" align="right" valign="top"><a id="acf112a55c01e98f1c66c3a5f9c274198" name="acf112a55c01e98f1c66c3a5f9c274198"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>cursorItemIconEnabled</b></td></tr>
+<tr class="memdesc:acf112a55c01e98f1c66c3a5f9c274198"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, an item will be drawn on the cursor. This is usually set along with <a class="el" href="class_player.html#a1bbf57687b599fe3aab15710f9ac2058" title="The Item type to draw on the cursor when cursorItemIconEnabled is true.    Defaults to 0....">cursorItemIconID</a> and/or <a class="el" href="class_player.html#a52fe0a45c3a8ba8369090239868436d1" title="Text to be drawn on the cursor when cursorItemIconEnabled is true.">cursorItemIconText</a>. <br /></td></tr>
 <tr class="separator:acf112a55c01e98f1c66c3a5f9c274198"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bbf57687b599fe3aab15710f9ac2058"><td class="memItemLeft" align="right" valign="top"><a id="a1bbf57687b599fe3aab15710f9ac2058" name="a1bbf57687b599fe3aab15710f9ac2058"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cursorItemIconID</b></td></tr>
+<tr class="memdesc:a1bbf57687b599fe3aab15710f9ac2058"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_item.html">Item</a> type to draw on the cursor when <a class="el" href="class_player.html#acf112a55c01e98f1c66c3a5f9c274198" title="If true, an item will be drawn on the cursor. This is usually set along with cursorItemIconID and/or ...">cursorItemIconEnabled</a> is true. <br  />
+<br  />
+ Defaults to 0. Set to -1 to prevent the selected item from being drawn on the cursor, which is the default behavior if in tool/tile placement range of the selected item. <br /></td></tr>
 <tr class="separator:a1bbf57687b599fe3aab15710f9ac2058"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88700556526562fdaed515a90aa51f8"><td class="memItemLeft" align="right" valign="top"><a id="aa88700556526562fdaed515a90aa51f8" name="aa88700556526562fdaed515a90aa51f8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cursorItemIconPush</b></td></tr>
+<tr class="memdesc:aa88700556526562fdaed515a90aa51f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">When drawing an item on the cursor (<a class="el" href="class_player.html#acf112a55c01e98f1c66c3a5f9c274198" title="If true, an item will be drawn on the cursor. This is usually set along with cursorItemIconID and/or ...">cursorItemIconEnabled</a>), the item will be offset in both the X and Y directions by this many pixels. Used by Clentaminator solutions (10) and fishing bait (6) so the icons don't overlap the cursor as much as usual. <br /></td></tr>
 <tr class="separator:aa88700556526562fdaed515a90aa51f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f03c39c82f27dc33de8bc2799402b65"><td class="memItemLeft" align="right" valign="top"><a id="a5f03c39c82f27dc33de8bc2799402b65" name="a5f03c39c82f27dc33de8bc2799402b65"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>cursorItemIconReversed</b></td></tr>
+<tr class="memdesc:a5f03c39c82f27dc33de8bc2799402b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the item drawn on the cursor will be flipped horizontally. <br /></td></tr>
 <tr class="separator:a5f03c39c82f27dc33de8bc2799402b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52fe0a45c3a8ba8369090239868436d1"><td class="memItemLeft" align="right" valign="top"><a id="a52fe0a45c3a8ba8369090239868436d1" name="a52fe0a45c3a8ba8369090239868436d1"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>cursorItemIconText</b> = &quot;&quot;</td></tr>
+<tr class="memdesc:a52fe0a45c3a8ba8369090239868436d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text to be drawn on the cursor when <a class="el" href="class_player.html#acf112a55c01e98f1c66c3a5f9c274198" title="If true, an item will be drawn on the cursor. This is usually set along with cursorItemIconID and/or ...">cursorItemIconEnabled</a> is true. <br /></td></tr>
 <tr class="separator:a52fe0a45c3a8ba8369090239868436d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c0a21f45ebe37f20b7cb398b653a4cf"><td class="memItemLeft" align="right" valign="top"><a id="a2c0a21f45ebe37f20b7cb398b653a4cf" name="a2c0a21f45ebe37f20b7cb398b653a4cf"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>cWaist</b></td></tr>

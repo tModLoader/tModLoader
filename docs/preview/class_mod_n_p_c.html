@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -246,7 +246,11 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDeathMe
 <tr class="memdesc:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this <a class="el" href="class_n_p_c.html">NPC</a> does to a player. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. The final hit values such as the final damage can only be retrieved from the HurtInfo in the <a class="el" href="class_mod_n_p_c.html#a58ae99ead1ed73f15da32317d262176b" title="Allows you to create special effects when this NPC hits a player (for example, inflicting debuffs)....">OnHitPlayer(Player, Player.HurtInfo)</a> hook. Called on the local client only.  <a href="class_mod_n_p_c.html#a70e7d66c1426ca13bbc5a70b59de4a95">More...</a><br /></td></tr>
 <tr class="separator:a70e7d66c1426ca13bbc5a70b59de4a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b4e1b38634e000d79d027008f301f91"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91">ModifyHoverBoundingBox</a> (ref Rectangle boundingBox)</td></tr>
-<tr class="memdesc:a5b4e1b38634e000d79d027008f301f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the bounding box for hovering over this <a class="el" href="class_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed). Called on the local client only.  <a href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91">More...</a><br /></td></tr>
+<tr class="memdesc:a5b4e1b38634e000d79d027008f301f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the bounding box for hovering over this <a class="el" href="class_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed). <br  />
+<br  />
+ This hook won't be called if NPC.ShowNameOnHover is set to <code>false</code>. <br  />
+<br  />
+ Called on the local client only.  <a href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91">More...</a><br /></td></tr>
 <tr class="separator:a5b4e1b38634e000d79d027008f301f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440518cbf4705dd06498ebe6ba6d1e62"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a440518cbf4705dd06498ebe6ba6d1e62">ModifyIncomingHit</a> (ref <a class="el" href="struct_n_p_c_1_1_hit_modifiers.html">NPC.HitModifiers</a> modifiers)</td></tr>
 <tr class="memdesc:a440518cbf4705dd06498ebe6ba6d1e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use a custom damage formula for when this <a class="el" href="class_n_p_c.html">NPC</a> takes damage from any source. For example, you can change the way defense works or use a different crit multiplier. This hook should be used ONLY to modify properties of the HitModifiers. Any extra side effects should occur in OnHit hooks instead. Can be called on the local client or server, depending on who is dealing damage.  <a href="class_mod_n_p_c.html#a440518cbf4705dd06498ebe6ba6d1e62">More...</a><br /></td></tr>
@@ -316,6 +320,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostAI</b> ()
 <tr class="memitem:af6b6f93e24d698d9d216fe8f1df8f7bc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc">PreDraw</a> (SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)</td></tr>
 <tr class="memdesc:af6b6f93e24d698d9d216fe8f1df8f7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this <a class="el" href="class_n_p_c.html">NPC</a>, or to modify the way this <a class="el" href="class_n_p_c.html">NPC</a> is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the <a class="el" href="class_n_p_c.html">NPC</a> (useful if you're manually drawing the <a class="el" href="class_n_p_c.html">NPC</a>). Returns true by default. Called on all clients.  <a href="class_mod_n_p_c.html#af6b6f93e24d698d9d216fe8f1df8f7bc">More...</a><br /></td></tr>
 <tr class="separator:af6b6f93e24d698d9d216fe8f1df8f7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca4a3fd3835e78ca688d035190c1ec9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#a8ca4a3fd3835e78ca688d035190c1ec9">PreHoverInteract</a> (bool mouseIntersects)</td></tr>
+<tr class="memdesc:a8ca4a3fd3835e78ca688d035190c1ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the <a class="el" href="class_n_p_c.html">NPC</a> is selected via smart interact, or when the mouse is hovering over it. Right after <a class="el" href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91" title="Allows you to modify the bounding box for hovering over this NPC (affects things like whether or not ...">ModifyHoverBoundingBox(ref Rectangle)</a>. <br  />
+<br  />
+ Can be used to implement custom interact or hover behavior logic. By returning <code>false</code>, the vanilla code for town <a class="el" href="class_n_p_c.html">NPC</a> chatting, drawing the chat bubble, and drawing the <a class="el" href="class_n_p_c.html">NPC</a> name and life on the mouse is skipped. For example, the Old Shaking <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> <a class="el" href="class_n_p_c.html">NPC</a> uses this to take a GoldenKey from the player and transform into Elder Slime. <a class="el" href="class_mod_n_p_c.html#a7dd7637bcf7c81a6c969d3351e51831c" title="Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is ...">CanChat</a> can be used to force smart interact to target this <a class="el" href="class_n_p_c.html">NPC</a> despite as well, if desired. <br  />
+<br  />
+ This hook won't be called if NPC.ShowNameOnHover is set to <code>false</code>. <br  />
+<br  />
+ Called on the local client only.  <a href="class_mod_n_p_c.html#a8ca4a3fd3835e78ca688d035190c1ec9">More...</a><br /></td></tr>
+<tr class="separator:a8ca4a3fd3835e78ca688d035190c1ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9109fb61ac3fc600a4bf7c6b12d16ea"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_n_p_c.html#ae9109fb61ac3fc600a4bf7c6b12d16ea">PreKill</a> ()</td></tr>
 <tr class="memdesc:ae9109fb61ac3fc600a4bf7c6b12d16ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not this <a class="el" href="class_n_p_c.html">NPC</a> will do anything upon death (besides dying). This method can also be used to dynamically prevent specific item loot using <a class="el" href="class_n_p_c_loader.html#ad278795f89f080ad20f4a1670593eede" title="Allows you to stop an NPC from dropping specific loot by adding item IDs to this list....">NPCLoader.blockLoot</a>, but editing the drop rules themselves is usually the better approach. Returning false will skip dropping loot, the NPCLoader.OnKill(NPC) methods, and logic setting boss flags (NPC.DoDeathEvents). Returns true by default. Called in single player or on the server only.  <a href="class_mod_n_p_c.html#ae9109fb61ac3fc600a4bf7c6b12d16ea">More...</a><br /></td></tr>
 <tr class="separator:ae9109fb61ac3fc600a4bf7c6b12d16ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2014,7 +2027,11 @@ is only used for the player for ) </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the bounding box for hovering over this <a class="el" href="class_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed). Called on the local client only. </p>
+<p>Allows you to modify the bounding box for hovering over this <a class="el" href="class_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed). <br  />
+<br  />
+ This hook won't be called if NPC.ShowNameOnHover is set to <code>false</code>. <br  />
+<br  />
+ Called on the local client only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">boundingBox</td><td>The bounding box used for determining whether or not the <a class="el" href="class_n_p_c.html">NPC</a> counts as being hovered over.</td></tr>
@@ -2659,6 +2676,46 @@ and  are already taken into account. </td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a8ca4a3fd3835e78ca688d035190c1ec9" name="a8ca4a3fd3835e78ca688d035190c1ec9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ca4a3fd3835e78ca688d035190c1ec9">&#9670;&nbsp;</a></span>PreHoverInteract()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ModNPC.PreHoverInteract </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mouseIntersects</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called when the <a class="el" href="class_n_p_c.html">NPC</a> is selected via smart interact, or when the mouse is hovering over it. Right after <a class="el" href="class_mod_n_p_c.html#a5b4e1b38634e000d79d027008f301f91" title="Allows you to modify the bounding box for hovering over this NPC (affects things like whether or not ...">ModifyHoverBoundingBox(ref Rectangle)</a>. <br  />
+<br  />
+ Can be used to implement custom interact or hover behavior logic. By returning <code>false</code>, the vanilla code for town <a class="el" href="class_n_p_c.html">NPC</a> chatting, drawing the chat bubble, and drawing the <a class="el" href="class_n_p_c.html">NPC</a> name and life on the mouse is skipped. For example, the Old Shaking <a class="el" href="class_chest.html" title="Represents a non-Player inventory, such as chests, portable storage, or NPC shops.">Chest</a> <a class="el" href="class_n_p_c.html">NPC</a> uses this to take a GoldenKey from the player and transform into Elder Slime. <a class="el" href="class_mod_n_p_c.html#a7dd7637bcf7c81a6c969d3351e51831c" title="Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is ...">CanChat</a> can be used to force smart interact to target this <a class="el" href="class_n_p_c.html">NPC</a> despite as well, if desired. <br  />
+<br  />
+ This hook won't be called if NPC.ShowNameOnHover is set to <code>false</code>. <br  />
+<br  />
+ Called on the local client only. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mouseIntersects</td><td>Whether or not mouse is actually hovering over the <a class="el" href="class_n_p_c.html">NPC</a>'s bounding box.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

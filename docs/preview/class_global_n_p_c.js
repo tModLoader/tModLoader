@@ -65,6 +65,7 @@ var class_global_n_p_c =
     [ "PreAI", "class_global_n_p_c.html#a036f7e253b3094e67e9c3a82fb1d17c6", null ],
     [ "PreChatButtonClicked", "class_global_n_p_c.html#aa246d912a444cdd003884d099503ca2c", null ],
     [ "PreDraw", "class_global_n_p_c.html#ac1579ae999fbe4d64ae94395a298219e", null ],
+    [ "PreHoverInteract", "class_global_n_p_c.html#a3bd81f119a2565677c5fecbb0b41f870", null ],
     [ "PreKill", "class_global_n_p_c.html#a3cb1b1ae07bbdc0004631534aee68f84", null ],
     [ "ReceiveExtraAI", "class_global_n_p_c.html#accb0f5c3b4545cda85cafb18342c3473", null ],
     [ "ResetEffects", "class_global_n_p_c.html#a3a2432b86947bc1b03b349f3052ece17", null ],
