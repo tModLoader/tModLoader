@@ -1,27 +1,36 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<!-- Build Defaults -->
+	<!-- Set the default value for BuildMod -->
 	<PropertyGroup>
+		<BuildMod Condition="'$(BuildMod)' == ''">true</BuildMod>
+	</PropertyGroup>
+
+	<!-- Build Defaults -->
+	<PropertyGroup Condition="'$(BuildMod)' == 'true'">
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>12.0</LangVersion>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
-		<!-- legacy property -->
+		<!-- Legacy property name for tMLSteamPath -->
 		<TerrariaSteamPath>$(MSBuildThisFileDirectory)</TerrariaSteamPath>
 		<tMLSteamPath>$(MSBuildThisFileDirectory)</tMLSteamPath>
 		<tMLLibraryPath>$(tMLSteamPath)Libraries</tMLLibraryPath>
 		<tMLName>tModLoader</tMLName>
 		<tMLPath>$(tMLName).dll</tMLPath>
 		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
-    	<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
-    	<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
-    	<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
+		<!-- The below comment gets replaced in the build script with <DefineConstant> -->
 		<!-- TML stable version define placeholder -->
 	</PropertyGroup>
-	
-	<ItemGroup>
+
+	<PropertyGroup Condition="'$(BuildMod)' == 'true'">
+		<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
+		<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
+		<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(BuildMod)' == 'true'">
 		<AdditionalFiles Include="**/*.hjson" />
 		<AdditionalFiles Include="**/*.txt" />
 		<AdditionalFiles Include="**/*.png" />
@@ -29,6 +38,9 @@
 		<!-- Remove the txt files that can be found in build folders, causing them to appear in the editor -->
 		<AdditionalFiles Remove="bin/**" />
 		<AdditionalFiles Remove="obj/**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Reference Include="$(tMLSteamPath)$(tMLPath)" />
 		<Reference Include="$(tMLLibraryPath)/**/*.dll" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
@@ -39,7 +51,7 @@
 		<Analyzer Include="$(tMLLibraryPath)/tModCodeAssist/1.0.0/tModCodeAssist.CodeFixes.dll" />
 	</ItemGroup>
 
-	<Target Name="BuildMod" AfterTargets="Build">
+	<Target Name="BuildMod" AfterTargets="Build" Condition="'$(BuildMod)' == 'true'">
 		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>
 	</Target>
 
