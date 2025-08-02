@@ -7,9 +7,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="**/*.cs" />
     <Compile Include="Common/*.cs" />
