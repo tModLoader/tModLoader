@@ -258,8 +258,6 @@ internal class UIModConfigList : UIState
 			// ConfigScope indicator
 			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0);
-			var serverColor = Colors.RarityRed;
-			var clientColor = Colors.RarityCyan;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
@@ -271,9 +269,8 @@ internal class UIModConfigList : UIState
 
 			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
 				if (sideIndicator.IsMouseHovering) {
-					string colorCode = config.Mode == ConfigScope.ServerSide ? serverColor.Hex3() : clientColor.Hex3();
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
-					Main.instance.MouseText($"[c/{colorCode}:{hoverText}]");
+					Main.instance.MouseText(hoverText);
 				}
 			};
 
