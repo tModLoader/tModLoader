@@ -261,7 +261,8 @@ jobs:
           (
             set +e;
             # For some reason tModCodeAssist dlls are not copied to bin unless built first or the Terraria project is built a 2nd time
-            dotnet build tModCodeAssist/tModCodeAssist.sln -c Release --nologo -v q;
+            dotnet build tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj -c Release --nologo -v q;
+            dotnet build tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj -c Release --nologo -v q;
             dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl;
             err=$?;
             [[ $err -ne 0 ]] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;
