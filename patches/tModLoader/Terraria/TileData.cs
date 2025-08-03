@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 
@@ -113,6 +114,8 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 
 			ptr = new_data;
 			_capacity = value;
+
+			Debug.Assert(TileData.Count <= _capacity, $"TileData<T> buffer too small to hold capacity {TileData.Count}; Current size: {_capacity}");
 		}
 	}
 
@@ -153,7 +156,7 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 
 	private static void OnAddTilemap(uint size)
 	{
-		if (TileData.Count < _capacity) {
+		if (TileData.Count <= _capacity) {
 			return;
 		}
 
