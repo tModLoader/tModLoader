@@ -234,8 +234,6 @@ internal class UIModConfigList : UIState
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			float indicatorOffset = 24;
-
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
 				MaxWidth = { Percent = 0.95f },
 				HAlign = 0.5f,
@@ -243,7 +241,6 @@ internal class UIModConfigList : UIState
 				UseInnerDimensions = true,
 				ClickSound = SoundID.MenuOpen,
 			};
-			configPanel.PaddingRight += indicatorOffset;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				Interface.modConfig.SetMod(selectedMod, config);
@@ -253,18 +250,21 @@ internal class UIModConfigList : UIState
 					Main.InGameUI.SetState(Interface.modConfig);
 			};
 
-			configList.Add(configPanel);
-
 			// ConfigScope indicator
 			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
-			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0);
+			// -2 to account for padding in texture to avoid texture atlas issues
+			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
+
+			float indicatorOffset = indicatorFrame.Width;
+			float indicatorPadding = 8;
+			configPanel.PaddingRight += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
 				Color = Color.White,
-				MarginRight = -indicatorOffset - 4,
-				MarginTop = -4,
+				MarginRight = -indicatorOffset - indicatorPadding,
+				MarginTop = -6,
 			};
 
 			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
@@ -274,6 +274,7 @@ internal class UIModConfigList : UIState
 				}
 			};
 
+			configList.Add(configPanel);
 			configPanel.Append(sideIndicator);
 		}
 	}
