@@ -9,17 +9,17 @@
 Mods: {
 	ExampleMod: {
 		Common.PaperAirplane: Бумажный самолётик
-		Achievements: {
-		    ExampleWormKilled: {
-		        Name: Example Worm Killed (Russian)
-		        Description: Congrats... you murdered a worm. I bet you feel so proud of yourself - Example Achievement
-		    }
-		    
-            ManyExampleWormsKilled: {
-                Name: MORE WORMS?? (Russian)
-                Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
-            }
-		}
+		// Achievements: {
+		//    ExampleWormKilled: {
+		//        Name: Example Worm Killed 
+		//        Description: Congrats... you murdered a worm. I bet you feel so proud of yourself - Example Achievement
+		//    }
+		//   
+        //    ManyExampleWormsKilled: {
+        //        Name: MORE WORMS?? 
+        //        Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
+        //    }
+		// }
 
 		CommonItemTooltip: {
 			// IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}

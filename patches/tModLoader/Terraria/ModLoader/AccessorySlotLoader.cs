@@ -10,7 +10,6 @@ using Terraria.GameInput;
 using Terraria.Localization;
 using Terraria.ModLoader.Default;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics.Renderers;
 
 namespace Terraria.ModLoader;
 

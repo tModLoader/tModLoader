@@ -61,14 +61,6 @@
  	public void Load()
  	{
  		Load(_savePath, _isCloudSave);
-@@ -94,6 +_,7 @@
- 				using CryptoStream stream2 = new CryptoStream(stream, new RijndaelManaged().CreateDecryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Read);
- 				using BsonReader reader = new BsonReader(stream2);
- 				dictionary = JsonSerializer.Create(_serializerSettings).Deserialize<Dictionary<string, StoredAchievement>>(reader);
-+				Logging.tML.Info(dictionary);
- 			}
- 			catch (Exception) {
- 				FileUtilities.Delete(path, cloud);
 @@ -145,6 +_,12 @@
  	{
  		_achievements.Add(achievement.Name, achievement);

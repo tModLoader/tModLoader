@@ -11,7 +11,7 @@
  using Terraria.Social;
  
  namespace Terraria.Achievements;
-@@ -13,14 +_,18 @@
+@@ -13,14 +_,16 @@
  
  	private static int _totalAchievements;
  	public readonly string Name;
@@ -25,8 +25,6 @@
  	[JsonProperty("Conditions")]
  	private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
  	private int _completedCount;
-+	public int Type;           // TML: Added for keeping track of modded achievements during loading, Native achievements don't get assigned a type as they don't need one.
-+	public bool Modded = false; // TML: Added to keep vanilla achievements working.
 +	public bool Hidden { get; set; } = false;
 +	public ModAchievement ModAchievement;
  
@@ -37,9 +35,9 @@
  	public IAchievementTracker GetTracker() => _tracker;
  
 -	public Achievement(string name)
-+	public Achievement(string name, bool modded = false)
++	public Achievement(string name, ModAchievement modAchievement = null)
  	{
-+		Modded = modded;
++		ModAchievement = modAchievement;
  		Name = name;
  		FriendlyName = Language.GetText("Achievements." + name + "_Name");
  		Description = Language.GetText("Achievements." + name + "_Description");

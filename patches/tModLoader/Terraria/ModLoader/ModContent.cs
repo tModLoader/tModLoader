@@ -166,9 +166,6 @@ public static class ModContent
 	/// <inheritdoc cref="ItemLoader.GetItem"/>
 	public static ModItem GetModItem(int type) => ItemLoader.GetItem(type);
 
-	/// <inheritdoc cref="AchievementLoader.GetAchievement"/>
-	public static ModAchievement GetModAchievement<T>() where T : ModAchievement => AchievementLoader.GetAchievement(GetInstance<T>().Type);
-
 	/// <inheritdoc cref="DustLoader.GetDust"/>
 	public static ModDust GetModDust(int type) => DustLoader.GetDust(type);
 
@@ -227,11 +224,6 @@ public static class ModContent
 	/// Get the id (type) of a ModItem by class. Assumes one instance per class.
 	/// </summary>
 	public static int ItemType<T>() where T : ModItem => GetInstance<T>()?.Type ?? 0;
-
-	/// <summary>
-	/// Get the id (type) of a ModAchievement by class. Assumes one instance per class.
-	/// </summary>
-	public static int AchievementType<T>() where T : ModAchievement => GetInstance<T>()?.Type ?? 0;
 
 	/// <summary>
 	/// Get the id (type) of a ModPrefix by class. Assumes one instance per class.

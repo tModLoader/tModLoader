@@ -16,7 +16,7 @@
  	private const int _iconsPerRow = 8;
  	private int _iconIndex;
  	private Rectangle _iconFrame;
-+	private float _offsetProgressBarX = 0;
++	private float _offsetProgressBarX;
  	private Rectangle _iconFrameUnlocked;
  	private Rectangle _iconFrameLocked;
  	private Asset<Texture2D> _innerPanelTopTexture;
@@ -25,7 +25,7 @@
  	public UIAchievementListItem(Achievement achievement, bool largeForOtherLanguages)
  	{
 +		ModAchievement modAchievement = achievement.ModAchievement;
-+		if (achievement.Modded) {
++		if (achievement.ModAchievement != null) {
 +			if (modAchievement == null) {
 +				return;
 +			}
@@ -34,15 +34,13 @@
  		_large = largeForOtherLanguages;
  		BackgroundColor = new Color(26, 40, 89) * 0.8f;
  		BorderColor = new Color(13, 20, 44) * 0.8f;
-@@ -46,9 +_,20 @@
+@@ -46,9 +_,18 @@
  		_iconFrameLocked.X += 528;
  		_iconFrame = _iconFrameLocked;
  		UpdateIconFrame();
 +
-+
-+		if (achievement.Modded) {
-+			_achievementIcon =
-+				new UIImageFramed(modAchievement.GetTexture(), new Rectangle((_achievement.IsCompleted ? 0 : 65), 0, 64, 64));
++		if (achievement.ModAchievement != null) {
++			_achievementIcon = new UIImageFramed(modAchievement?.Texture, new Rectangle((_achievement.IsCompleted ? 0 : 65), 0, 64, 64));
 +		}
 +		else
 +		{
@@ -56,66 +54,61 @@
  		Append(_achievementIcon);
  		_achievementIconBorders = new UIImage(Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders"));
  		_achievementIconBorders.Left.Set(-4f + num2, 0f);
-@@ -82,10 +_,18 @@
+@@ -68,7 +_,7 @@
+ 		base.DrawSelf(spriteBatch);
+ 		int num = _large.ToInt() * 6;
+ 		Vector2 vector = new Vector2(num, 0f);
+-		_locked = !_achievement.IsCompleted;
++		_locked = !this._achievement.IsCompleted;
+ 		UpdateIconFrame();
+ 		CalculatedStyle innerDimensions = GetInnerDimensions();
+ 		CalculatedStyle dimensions = _achievementIconBorders.GetDimensions();
+@@ -82,6 +_,13 @@
  		float num3 = innerDimensions.Width - dimensions.Width + 1f - (float)(num * 2);
  		Vector2 baseScale = new Vector2(0.85f);
  		Vector2 baseScale2 = new Vector2(0.92f);
 +
-+		string descriptionText = _achievement.Description.Value;
-+		string nameText = _achievement.FriendlyName.Value;
++		var _achievement = (this._achievement.Description, this._achievement.FriendlyName, this._achievement.Hidden, this._achievement.Category);
++
 +		if (_achievement.Hidden && _locked) {
-+			nameText = "???";
-+			descriptionText = "???";
++			_achievement.Description = _achievement.FriendlyName = new LocalizedText(null, "???");
 +		}
 +
--		string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
-+		string text = FontAssets.ItemStack.Value.CreateWrappedText(descriptionText, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
+ 		string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
  		Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale2, num3);
  		if (!_large)
--			stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, _achievement.Description.Value, baseScale2, num3);
-+			stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, descriptionText, baseScale2, num3);
- 
- 		float num4 = 38f + (float)(_large ? 20 : 0);
- 		if (stringSize.Y > num4)
-@@ -104,7 +_,11 @@
+@@ -104,7 +_,12 @@
  		spriteBatch.Draw(_categoryTexture.Value, vector3, _categoryTexture.Frame(4, 2, (int)category), base.IsMouseHovering ? Color.White : Color.Silver, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
  		vector3.X += 4f;
  		vector3.X += 17f;
++
 -		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
-+		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, nameText, vector3, value, 0f, Vector2.Zero, baseScale, num3);
-+		string ModName = _achievement.Modded ? _achievement.ModAchievement.Mod.DisplayNameClean : "Terraria";
++		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, this._achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
++		string ModName = this._achievement.ModAchievement != null ? this._achievement.ModAchievement.Mod.DisplayNameClean : "Terraria";
 +		_offsetProgressBarX = ((ModName.Length + 1) * 10);
 +		Vector2 ModNameLocation = new Vector2(vector3.X + num3 - _offsetProgressBarX, vector3.Y);
 +		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, ModName, ModNameLocation, value, 0f, Vector2.Zero, baseScale, num3);
  		vector3.X -= 17f;
  		Vector2 position = vector2 + Vector2.UnitY * 27f + vector;
  		DrawPanelBottom(spriteBatch, position, num3, color);
-@@ -126,14 +_,15 @@
- 			if (!base.IsMouseHovering)
+@@ -127,7 +_,7 @@
  				color3 = Color.Lerp(color3, Color.Black, 0.25f);
  
--			DrawProgressBar(spriteBatch, progress, vector4 - Vector2.UnitX * num5 * 0.7f, num5, color3, color2, color2.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
-+			DrawProgressBar(spriteBatch, progress, vector4 - (Vector2.UnitX * num5 * 0.7f), num5, color3, color2, color2.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
+ 			DrawProgressBar(spriteBatch, progress, vector4 - Vector2.UnitX * num5 * 0.7f, num5, color3, color2, color2.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
 -			vector4.X -= num5 * 1.4f + stringSize2.X;
 +			vector4.X -= num5 * 1.4f + stringSize2.X + _offsetProgressBarX - 4f;
  			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text2, vector4, value, 0f, new Vector2(0f, 0f), baseScale3, 90f);
  		}
  	}
- 
- 	private void UpdateIconFrame()
- 	{
-+		if (_achievement.Modded) return;
- 		if (!_locked)
- 			_iconFrame = _iconFrameUnlocked;
- 		else
-@@ -202,6 +_,7 @@
- 
+@@ -203,6 +_,8 @@
  		if (BackColor == Color.Transparent)
  			FillingColor = new Color(255, 255, 255);
-+		spot.X -= _offsetProgressBarX - 16;
  
++		spot.X -= _offsetProgressBarX - 16; // Added by TML
++
  		Texture2D value = TextureAssets.ColorBar.Value;
  		_ = TextureAssets.ColorBlip.Value;
+ 		Texture2D value2 = TextureAssets.MagicPixel.Value;
 @@ -237,3 +_,4 @@
  		return _achievement.Id.CompareTo(uIAchievementListItem._achievement.Id);
  	}

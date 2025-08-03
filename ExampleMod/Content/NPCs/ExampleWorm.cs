@@ -53,10 +53,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnKill() {
-			ModContent.GetModAchievement<ExampleWormKilled>().GetCondition("EXAMPLEMOD_KILL_BOOLEAN_CONDITION").Complete();
-			((CustomIntCondition)ModContent.GetModAchievement<ManyExampleWormsKilled>().GetCondition("EXAMPLEMOD_KILL_WORMS")).Value++;
-
-			base.OnKill();
+			ModContent.GetInstance<ExampleWormKilled>().GetCondition("EXAMPLEMOD_KILL_BOOLEAN_CONDITION").Complete();
+			((CustomIntCondition)ModContent.GetInstance<ManyExampleWormsKilled>().GetCondition("EXAMPLEMOD_KILL_WORMS")).Value++;			
 		}
 
 		public override void Init() {

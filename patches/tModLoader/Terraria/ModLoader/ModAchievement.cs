@@ -15,13 +15,8 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 {
     public Achievement Achievement => Entity;
 
-    /// <summary>
-    /// Achievement type, this is used for keeping track of modded achievements with ModContent.GetModAchievement(int type);
-    /// </summary>
-    public int Type => Achievement.Type;
-
     private string TextureName => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
-    private Asset<Texture2D> Texture;
+    public Asset<Texture2D> Texture { get; private set; }
     public string LocalizationCategory => "Achievements";
 
     public override sealed bool IsCloneable => false;
@@ -38,31 +33,24 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
     /// </summary>
     public virtual LocalizedText Description => Mod.GetLocalization($"{LocalizationCategory}.{Name}.Description");
 
-    protected override sealed void Register()
+	protected override sealed void Register()
     {
 	    ModTypeLookup<ModAchievement>.Register(this);
 
 	    if (string.IsNullOrWhiteSpace(Name))
-	    {
 		    throw new InvalidOperationException("Achievement name cannot be null or empty.");
-	    }
-
-	    if (FriendlyName == null)
-	    {
-		    throw new InvalidOperationException($"FriendlyName for achievement '{Name}' could not be found.");
-	    }
-
-	    if (Description == null)
-	    {
+	    
+	    if (FriendlyName == null)	    
+		    throw new ArgumentNullException(nameof(FriendlyName));
+	    
+	    if (Description == null)	    
 		    throw new InvalidOperationException($"Description for achievement '{Name}' could not be found.");
-	    }
 
-	    Achievement.FriendlyName = FriendlyName;
-	    Achievement.Description = Description;
-	    Achievement.ModAchievement = this;
-	    Texture = ModContent.Request<Texture2D>(TextureName);
+		Achievement.FriendlyName = FriendlyName;
+		Achievement.Description = Description;
+		Achievement.ModAchievement = this;
+		Texture = ModContent.Request<Texture2D>(TextureName);
 	    SetStaticDefaults();
-	    AchievementLoader.Register(this);
     }
 
     public override void Load()
@@ -73,8 +61,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
     {
         Main.Achievements.Unregister(Achievement);
         Achievement.OnCompleted -= OnCompleted;
-        Texture = null;
-	    AchievementLoader.Unregister(this);
         base.Unload();
     }
 
@@ -90,7 +76,12 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 
     public override sealed void SetupContent()
     {
-	    Main.Achievements.Register(Achievement);
+		if (Achievement.ModAchievement != null) {
+			if (Achievement.ModAchievement.Texture == null) {
+				throw new Exception($"{Achievement.Name}.png was not found, add it in the same directory as your source file.");
+			}
+		}
+		Main.Achievements.Register(Achievement);
     }
 
     /// <summary>
@@ -104,12 +95,8 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
         {
             throw new InvalidOperationException("Achievement name cannot be null or empty during template creation.");
         }
-        return new Achievement($"{Mod.Name.ToUpper()}_{Name.ToUpper()}", true);
-    }
 
-    public Asset<Texture2D> GetTexture()
-    {
-	    return Texture;
+		return new Achievement($"{Mod.Name.ToUpper()}_{Name.ToUpper()}", this);
     }
 }
 
