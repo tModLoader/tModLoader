@@ -9,10 +9,10 @@ public interface ITileData { }
 
 internal static class TileData
 {
-	private static readonly object _regionSyncRoot = new();
 	private static readonly List<TileDataRegion> AvailableRegions = [];
 	private static int ActiveTilemaps;
 
+	internal static readonly object _syncRoot = new();
 	internal static Action<uint> OnAddTilemap;
 	internal static Action<uint, uint> OnRemoveTilemap;
 	internal static Action<uint, uint> OnClearTilemap;
@@ -26,27 +26,25 @@ internal static class TileData
 	internal static uint AddTilemap(in Tilemap tilemap)
 	{
 		uint tilemapSize = (uint)(tilemap.Width * tilemap.Height);
-		lock (_regionSyncRoot) {
+		lock (_syncRoot) {
 			ActiveTilemaps++;
 
 			uint oldCount = Count;
-
-			if (Count <= InitialCapacity) {
-				OnAddTilemap?.Invoke(0);
-				Count += tilemapSize;
-
-				return oldCount;
-			}
+			bool shouldGrow = true;
 
 			foreach (TileDataRegion region in AvailableRegions) {
 				if (region.Size == tilemapSize) {
 					AvailableRegions.Remove(region);
+					shouldGrow = false;
 					break;
 				}
 			}
 
+			if (shouldGrow) {
+				Count += tilemapSize;
+			}
+
 			OnAddTilemap?.Invoke(tilemapSize);
-			Count += tilemapSize;
 
 			return oldCount;
 		}
@@ -55,12 +53,13 @@ internal static class TileData
 	internal static void RemoveTilemap(in Tilemap tilemap)
 	{
 		uint tilemapSize = (uint)(tilemap.Width * tilemap.Height);
-		lock (_regionSyncRoot) {
+		lock (_syncRoot) {
 			ActiveTilemaps--;
 
 			if (ActiveTilemaps == 0) {
 				// Clear freed regions since there aren't any active tilemaps
 				AvailableRegions.Clear();
+				Count = 0;
 			}
 			else {
 				AvailableRegions.Add(new TileDataRegion(
@@ -127,7 +126,10 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 		TileData.OnClearSingle += ClearSingle;
 		AssemblyLoadContext.GetLoadContext(typeof(T).Assembly).Unloading += _ => UnloadAll();
 
-		OnAddTilemap(Math.Max(TileData.InitialCapacity, TileData.Count));
+		lock (TileData._syncRoot) {
+			// Without the lock this could be called in the middle of a tilemap add/remove operation.
+			OnAddTilemap(Math.Max(TileData.InitialCapacity, TileData.Count));
+		}
 	}
 
 	private static void UnloadAll()
@@ -151,12 +153,16 @@ internal static unsafe class TileData<T> where T : unmanaged, ITileData
 
 	private static void OnAddTilemap(uint size)
 	{
-		Capacity += size;
+		if (TileData.Count < _capacity) {
+			return;
+		}
+
+		Capacity += Math.Min(size, TileData.Count - _capacity);
 	}
 
-	private static void OnRemoveTilemap(uint size, uint offset)
+	private static void OnRemoveTilemap(uint tilemapSize, uint offset)
 	{
-		ClearTilemap(size, offset);
+		ClearTilemap(tilemapSize, offset);
 	}
 
 	private static void ClearSingle(uint index)
