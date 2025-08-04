@@ -566,7 +566,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -961,38 +_,124 @@
+@@ -961,38 +_,125 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -593,18 +593,19 @@
 +
 +	/// <summary>
 +	/// The maximum health this player can have without adjustment.
-+	/// <br/> You should <strong>not</strong> modify this value. If you need to increase max health for equipment, modify <see cref="statLifeMax2"/>. If you need to increase max health for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
++	/// <br/><br/> You should <strong>not</strong> modify this value. If you need to increase max health for equipment, modify <see cref="statLifeMax2"/>. If you need to increase max health for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
 +	/// </summary>
  	public int statLifeMax = 100;
 +
 +	/// <summary>
-+	/// The maximum health this player can have, adjusted by buffs and equipment.
++	/// The maximum health this player can have, adjusted by buffs and equipment. 
++	/// <br/><br/> To avoid issues arising from code execution ordering, the most compatible place to modify this value is in <see cref="ModPlayer.ResetEffects"/>.
 +	/// </summary>
  	public int statLifeMax2 = 100;
 +
 +	/// <summary>
 +	/// The current health of this player. Capped at <see cref="statLifeMax2"/>.
-+	/// <br/> If you increase this value, be sure to respect the cap.
++	/// <br/><br/> If you increase this value, be sure to respect the cap.
 +	/// </summary>
 +	/// <remarks>
 +	/// If you want to heal the player with the green text effect, use <see cref="Player.Heal(int)"/>.
@@ -614,7 +615,7 @@
 +
 +	/// <summary>
 +	/// The current mana of this player. Capped at <see cref="statManaMax2"/>.
-+	/// <br/> If you increase this value, be sure to respect the cap.
++	/// <br/><br/> If you increase this value, be sure to respect the cap.
 +	/// </summary>
 +	/// <remarks>
 +	/// If you want to use mana, use <see cref="Player.CheckMana(Item, int, bool, bool)"/> or its overload.
@@ -623,7 +624,7 @@
 +
 +	/// <summary>
 +	/// The maximum mana this player can have without adjustment.
-+	/// <br/> You should <strong>not</strong> modify this value. If you need to increase max mana for equipment, modify <see cref="statManaMax2"/>. If you need to increase max mana for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
++	/// <br/><br/> You should <strong>not</strong> modify this value. If you need to increase max mana for equipment, modify <see cref="statManaMax2"/>. If you need to increase max mana for a permanent stat boost, use <see cref="ModPlayer.ModifyMaxStats(out StatModifier, out StatModifier)"/>.
 +	/// </summary>
  	public int statManaMax;
 +

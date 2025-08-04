@@ -301,6 +301,7 @@ Mods: {
 					This is a modded body armor.
 					Immunity to 'On Fire!'
 					{$CommonItemTooltip.IncreasesMaxManaBy}
+					{$CommonItemTooltip.IncreasesMaxLifeBy}
 					{$CommonItemTooltip.IncreasesMaxMinionsBy@1}
 					'''
 			}
