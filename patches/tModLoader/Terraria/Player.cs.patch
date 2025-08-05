@@ -6196,7 +6196,7 @@
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
  				canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, previewPlaceStyle, direction, out objectData, onlyCheck: false, forcedRandom);
-@@ -30757,14 +_,21 @@
+@@ -30757,9 +_,15 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
  
@@ -6213,12 +6213,6 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
- 
- 					WorldGen.KillTile_PlaySounds(tileTargetX, tileTargetY, fail: true, tile);
-+
- 					if (HeldItem.consumable)
- 						HeldItem.stack++;
- 
 @@ -30777,21 +_,22 @@
  				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
