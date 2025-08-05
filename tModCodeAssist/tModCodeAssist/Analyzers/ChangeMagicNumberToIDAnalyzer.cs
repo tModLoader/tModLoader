@@ -88,6 +88,9 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			if (bindingByMember.TryGetValue(fieldSymbol.MetadataName, out binding)) {
 				return true;
 			}
+			if (bindingByMember.TryGetValue("*", out binding)) {
+				return true;
+			}
 		}
 		else if (symbol is IPropertySymbol propertySymbol && bindingByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out bindingByMember)) {
 			if (bindingByMember.TryGetValue(propertySymbol.MetadataName, out binding)) {
@@ -159,6 +162,10 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		AddBinding("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3), nameof(ProjectileID), typeof(ProjectileID).FullName, ProjectileID.Search);
 		AddBinding("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, float, float, float, float, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 5), nameof(ProjectileID), typeof(ProjectileID).FullName, ProjectileID.Search);
 		AddBinding("Terraria.Projectile", "NewProjectileDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3), nameof(ProjectileID), typeof(ProjectileID).FullName, ProjectileID.Search);
+
+		AddBinding("Terraria.ID.ItemID.Sets", "*", (ctx) => new FieldBinding(ctx), nameof(ItemID), typeof(ItemID).FullName, ItemID.Search);
+		AddBinding("Terraria.ID.TileID.Sets", "*", (ctx) => new FieldBinding(ctx), nameof(TileID), typeof(TileID).FullName, TileID.Search);
+		AddBinding("Terraria.ID.TileID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx), nameof(TileID), typeof(TileID).FullName, TileID.Search);
 
 		/*
 			item.type = 1;
@@ -291,6 +298,37 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 
 			ReportDiagnostic(ctx.ReportDiagnostic, node.Value, binding, id);
 		}, SyntaxKind.CaseSwitchLabel);
+
+		/*
+			ItemID.Sets.StaffMinionSlotsRequired[1309] = 2f;
+				=>
+			ItemID.Sets.StaffMinionSlotsRequired[ItemID.SlimeStaff] = 2f;
+		*/
+		ctx.RegisterSyntaxNodeAction(ctx => {
+			var node = (ElementAccessExpressionSyntax)ctx.Node;
+
+			var leftSymbolInfo = ctx.SemanticModel.GetSymbolInfo(node.Expression, ctx.CancellationToken);
+			if (leftSymbolInfo.Symbol is not { } leftSymbol || !TryGetBinding(leftSymbol, out var binding))
+				return;
+
+			if (!node.ArgumentList.IsKind(SyntaxKind.BracketedArgumentList))
+				return;
+
+			if (node.ArgumentList.Arguments.Count != 1)
+				return;
+
+			var argumentExpression = node.ArgumentList.Arguments[0].Expression;
+			if (!argumentExpression.IsKind(SyntaxKind.NumericLiteralExpression))
+				return;
+
+			var constant = ctx.SemanticModel.GetConstantValue(argumentExpression, ctx.CancellationToken);
+			if (!constant.HasValue)
+				return;
+
+			int id = Convert.ToInt32(constant.Value);
+
+			ReportDiagnostic(ctx.ReportDiagnostic, argumentExpression, binding, id);
+		}, SyntaxKind.ElementAccessExpression);
 	}
 
 	private void ReportDiagnostic(Action<Diagnostic> report, SyntaxNode literalNode, Binding binding, int id)

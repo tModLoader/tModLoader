@@ -133,4 +133,26 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			}
 			""");
 	}
+
+	[TestMethod]
+	public async Task Test_ArrayIndexing()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+			using Terraria.ID;
+
+			ItemID.Sets.StaffMinionSlotsRequired[[|1309|]] = 2f;
+			TileID.Sets.TouchDamageHot[[|2|]] = true;
+			TileID.Sets.Conversion.Sand[[|461|]] = true;
+			""",
+			"""
+			using Terraria;
+			using Terraria.ID;
+			
+			ItemID.Sets.StaffMinionSlotsRequired[ItemID.SlimeStaff] = 2f;
+			TileID.Sets.TouchDamageHot[TileID.Grass] = true;
+			TileID.Sets.Conversion.Sand[TileID.SandDrip] = true;
+			""");
+	}
 }
