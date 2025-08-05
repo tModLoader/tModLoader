@@ -90,6 +90,7 @@ public static class TileLoader
 	private static DelegateTileFrame[] HookTileFrame;
 	private static Func<int, int, int, bool>[] HookCanPlace;
 	private static Func<int, int, int, int, bool>[] HookCanReplace;
+	private static Action<int, int, int, int, int>[] HookReplaceTile;
 	private static Func<int, int[]>[] HookAdjTiles;
 	private static Action<int, int, int>[] HookRightClick;
 	private static Action<int, int, int>[] HookMouseOver;
@@ -244,6 +245,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateTileFrame>(ref HookTileFrame, globalTiles, g => g.TileFrame);
 		ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
 		ModLoader.BuildGlobalHook(ref HookCanReplace, globalTiles, g => g.CanReplace);
+		ModLoader.BuildGlobalHook(ref HookReplaceTile, globalTiles, g => g.ReplaceTile);
 		ModLoader.BuildGlobalHook(ref HookAdjTiles, globalTiles, g => g.AdjTiles);
 		ModLoader.BuildGlobalHook(ref HookRightClick, globalTiles, g => g.RightClick);
 		ModLoader.BuildGlobalHook(ref HookMouseOver, globalTiles, g => g.MouseOver);
@@ -1004,6 +1006,14 @@ public static class TileLoader
 			}
 		}
 		return GetTile(type)?.CanReplace(i, j, tileTypeBeingPlaced) ?? true;
+	}
+
+	public static void ReplaceTile(int i, int j, int type, int targetType, int targetStyle)
+	{
+		foreach (var hook in HookReplaceTile) {
+			hook(i, j, type, targetType, targetStyle);
+		}
+		GetTile(type)?.ReplaceTile(i, j, targetType, targetStyle); // Do we want the reverse as well?
 	}
 
 	public static void AdjTiles(Player player, int type)

@@ -6196,7 +6196,7 @@
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
  				canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, previewPlaceStyle, direction, out objectData, onlyCheck: false, forcedRandom);
-@@ -30757,14 +_,23 @@
+@@ -30757,14 +_,21 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
  
@@ -6209,20 +6209,17 @@
  			if (0 == 0) {
  				if (hitReplace.AddDamage(num, pickaxeDamage) < 100) {
 -					int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile);
-+					/*int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile, tileTargetX, tileTargetY);
++					int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile, tileTargetX, tileTargetY);
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
  
--					WorldGen.KillTile_PlaySounds(tileTargetX, tileTargetY, fail: true, tile);
-+					WorldGen.KillTile_PlaySounds(tileTargetX, tileTargetY, fail: true, tile);*/
-+					
-+					WorldGen.KillTile(tileTargetX, tileTargetY, fail: true);
+ 					WorldGen.KillTile_PlaySounds(tileTargetX, tileTargetY, fail: true, tile);
 +
  					if (HeldItem.consumable)
  						HeldItem.stack++;
  
-@@ -30777,21 +_,23 @@
+@@ -30777,21 +_,22 @@
  				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
  
@@ -6232,7 +6229,6 @@
 +			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(HeldItem.createTile, HeldItem.placeStyle), topLeft);
 +			int num3 = HeldItem.createTile;
  			int num4 = HeldItem.placeStyle;
-+
  			if (UsingBiomeTorches && num3 == 4)
 -				num4 = BiomeTorchPlaceStyle(num4);
 +				BiomeTorchPlaceStyle(ref num3, ref num4);
