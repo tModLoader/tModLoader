@@ -10,5 +10,5 @@
  	public const short Honey = 2;
  	public const short Shimmer = 3;
  	public static readonly short Count = 4;
-+	public static readonly IdDictionary Search = IdDictionary.Create(typeof(PaintID), typeof(short)); // Added By TML
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(LiquidID), typeof(short)); // Added By TML
  }
