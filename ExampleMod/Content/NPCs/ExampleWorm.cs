@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Achievements;
-using ExampleMod.Content.Items.Placeable.Banners;
+﻿using ExampleMod.Content.Items.Placeable.Banners;
 using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using System.IO;
@@ -8,6 +7,7 @@ using Terraria.GameContent.Achievements;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Content.Achievements;
 
 namespace ExampleMod.Content.NPCs
 {
