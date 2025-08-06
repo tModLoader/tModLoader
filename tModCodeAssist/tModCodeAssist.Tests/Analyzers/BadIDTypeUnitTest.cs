@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AnalyzerVerifier = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.ChangeMagicNumberToIDAnalyzer>;
+using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.ChangeMagicNumberToIDAnalyzer>;
 
 namespace tModCodeAssist.Tests.Analyzers;
 
@@ -10,7 +10,7 @@ public class BadIDTypeUnitTest
 	[TestMethod]
 	public async Task Test_Assignment()
 	{
-		await AnalyzerVerifier.Run(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 			using Terraria.ID;
@@ -28,7 +28,7 @@ public class BadIDTypeUnitTest
 	[TestMethod]
 	public async Task Test_Binary()
 	{
-		await AnalyzerVerifier.Run(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 			using Terraria.ID;
@@ -41,7 +41,7 @@ public class BadIDTypeUnitTest
 	[TestMethod]
 	public async Task Test_Invocation()
 	{
-		await AnalyzerVerifier.Run(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 			using Terraria.ID;
@@ -55,7 +55,7 @@ public class BadIDTypeUnitTest
 	[TestMethod]
 	public async Task Test_CaseSwitchLabel()
 	{
-		await AnalyzerVerifier.Run(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 			using Terraria.ID;

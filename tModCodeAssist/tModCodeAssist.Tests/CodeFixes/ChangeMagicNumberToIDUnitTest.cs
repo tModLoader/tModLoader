@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CodeFixer = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModCodeAssist.CodeFixes.ChangeMagicNumberToIDCodeFixProvider>;
+using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModCodeAssist.CodeFixes.ChangeMagicNumberToIDCodeFixProvider>;
 
 namespace tModCodeAssist.Tests.CodeFixes;
 
@@ -10,7 +10,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	[TestMethod]
 	public async Task Test_Assignment()
 	{
-		await CodeFixer.Run(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 
@@ -67,7 +67,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	[TestMethod]
 	public async Task Test_Binary()
 	{
-		await CodeFixer.Run(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 
@@ -86,7 +86,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	[TestMethod]
 	public async Task Test_Invocation()
 	{
-		await CodeFixer.Run(
+		await VerifyCS.Run(
 			"""
 			using Microsoft.Xna.Framework;
 			using Terraria;
@@ -122,7 +122,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	[TestMethod]
 	public async Task Test_CaseSwitchLabel()
 	{
-		await CodeFixer.Run(
+		await VerifyCS.Run(
 			"""
 			using Terraria;
 
