@@ -9,13 +9,20 @@ namespace ExampleMod.Content.Achievements;
 
 public class ExampleWormKilled : ModAchievement
 {
+	// The AchievementCondition used for this Achievement.
+	public readonly AchievementCondition Condition = CustomFlagCondition.Create("ExampleFlagCondition");
+
 	public override void SetStaticDefaults() {
 		Achievement.Hidden = false;
 
+		// There are 4 AchievementCategorys: Slayer, Collector, Explorer, and Challenger.
+		// Slayer is the default.
+		// If you want to change the achievement's category, you can do this:
+		// Achievement.SetCategory(AchievementCategory.Collector);
+
 		// The achievement can be completed like this:
-		// ModContent.GetInstance<ExampleWormKilled>().GetCondition("EXAMPLEMOD_KILL_BOOLEAN_CONDITION").Complete();
-		Achievement.AddCondition(CustomFlagCondition.Create("EXAMPLEMOD_KILL_BOOLEAN_CONDITION"));
-		
+		// ModContent.GetInstance<ExampleWormKilled>().Condition.Complete();
+		Achievement.AddCondition(Condition);
 	}
 
 	public override void OnCompleted(Achievement achievement) {

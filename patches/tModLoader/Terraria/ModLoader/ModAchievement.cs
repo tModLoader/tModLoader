@@ -26,8 +26,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
     /// </summary>
     public virtual LocalizedText FriendlyName => Mod.GetLocalization($"{LocalizationCategory}.{Name}.Name");
 
-    public AchievementCondition GetCondition(string condition) => Achievement.GetCondition(condition);
-
     /// <summary>
     /// Gets the localized description of the achievement.
     /// </summary>
@@ -81,6 +79,7 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 				throw new Exception($"{Achievement.Name}.png was not found, add it in the same directory as your source file.");
 			}
 		}
+
 		Main.Achievements.Register(Achievement);
     }
 

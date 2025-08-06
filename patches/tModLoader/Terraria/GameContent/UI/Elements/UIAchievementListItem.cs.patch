@@ -34,19 +34,13 @@
  		_large = largeForOtherLanguages;
  		BackgroundColor = new Color(26, 40, 89) * 0.8f;
  		BorderColor = new Color(13, 20, 44) * 0.8f;
-@@ -46,9 +_,18 @@
+@@ -46,9 +_,12 @@
  		_iconFrameLocked.X += 528;
  		_iconFrame = _iconFrameLocked;
  		UpdateIconFrame();
 +
-+		if (achievement.ModAchievement != null) {
-+			_achievementIcon = new UIImageFramed(modAchievement?.Texture, new Rectangle((_achievement.IsCompleted ? 0 : 65), 0, 64, 64));
-+		}
-+		else
-+		{
 -		_achievementIcon = new UIImageFramed(Main.Assets.Request<Texture2D>("Images/UI/Achievements"), _iconFrame);
-+			_achievementIcon = new UIImageFramed(Main.Assets.Request<Texture2D>("Images/UI/Achievements"), _iconFrame);
-+		}
++		_achievementIcon = new UIImageFramed(modAchievement?.Texture ?? Main.Assets.Request<Texture2D>("Images/UI/Achievements"), _iconFrame);
 +
  		_achievementIcon.Left.Set(num2, 0f);
  		_achievementIcon.Top.Set(num3, 0f);
@@ -82,8 +76,7 @@
  		vector3.X += 4f;
  		vector3.X += 17f;
 +
--		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
-+		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, this._achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
+ 		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
 +		string ModName = this._achievement.ModAchievement != null ? this._achievement.ModAchievement.Mod.DisplayNameClean : "Terraria";
 +		_offsetProgressBarX = ((ModName.Length + 1) * 10);
 +		Vector2 ModNameLocation = new Vector2(vector3.X + num3 - _offsetProgressBarX, vector3.Y);
@@ -91,7 +84,7 @@
  		vector3.X -= 17f;
  		Vector2 position = vector2 + Vector2.UnitY * 27f + vector;
  		DrawPanelBottom(spriteBatch, position, num3, color);
-@@ -127,7 +_,7 @@
+@@ -127,20 +_,28 @@
  				color3 = Color.Lerp(color3, Color.Black, 0.25f);
  
  			DrawProgressBar(spriteBatch, progress, vector4 - Vector2.UnitX * num5 * 0.7f, num5, color3, color2, color2.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
@@ -100,6 +93,32 @@
  			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text2, vector4, value, 0f, new Vector2(0f, 0f), baseScale3, 90f);
  		}
  	}
+ 
+ 	private void UpdateIconFrame()
+ 	{
+-		if (!_locked)
++		if (!_locked) {
+ 			_iconFrame = _iconFrameUnlocked;
+-		else
++			if (_achievement.ModAchievement != null) {
++				_iconFrame = new Rectangle(0, 0, 64, 64);
++			}
++		}
++		else {
+ 			_iconFrame = _iconFrameLocked;
++			if (_achievement.ModAchievement != null) {
++				_iconFrame = new Rectangle(65, 0, 64, 64);
++			}
++		}
+-
++			
+-		if (_achievementIcon != null)
++		if (_achievementIcon != null) 
+-			_achievementIcon.SetFrame(_iconFrame);
++			_achievementIcon.SetFrame(_iconFrame);		
+ 	}
+ 
+ 	private void DrawPanelTop(SpriteBatch spriteBatch, Vector2 position, float width, Color color)
 @@ -203,6 +_,8 @@
  		if (BackColor == Color.Transparent)
  			FillingColor = new Color(255, 255, 255);

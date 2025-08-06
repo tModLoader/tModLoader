@@ -16,15 +16,15 @@
  
  		Rectangle frame = card.frame;
  		frame.X += 528;
-+		
-+		if (card.achievement.ModAchievement == null) {
 -		spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-+			spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++
++		if (card.achievement.ModAchievement != null) {
++			position = Vector2.Zero;
++			frame = new Rectangle(64, 0, 64, 64);
 +		}
-+		else {
-+			spriteBatch.Draw(card.achievement.ModAchievement.Texture.Value, Vector2.Zero, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-+		}
-+				
++		
++		spriteBatch.Draw(card.achievement.ModAchievement?.Texture.Value ?? _achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++					
  		spriteBatch.Draw(_achievementsBorderTexture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  		if (hovered)
  			spriteBatch.Draw(value, position + vector2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);

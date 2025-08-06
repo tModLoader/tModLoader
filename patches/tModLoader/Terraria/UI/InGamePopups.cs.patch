@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/UI/InGamePopups.cs
++++ src/tModLoader/Terraria/UI/InGamePopups.cs
+@@ -57,7 +_,9 @@
+ 			_title = achievement.FriendlyName.Value;
+ 			int num = (_iconIndex = Main.Achievements.GetIconIndex(achievement.Name));
+ 			_achievementIconFrame = new Rectangle(num % 8 * 66, num / 8 * 66, 64, 64);
+-			_achievementTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad);
++			if (achievement.ModAchievement != null)
++				_achievementIconFrame = new Rectangle(0, 0, 64, 64);
++			_achievementTexture = achievement.ModAchievement?.Texture ?? Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad);
+ 			_achievementBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders", AssetRequestMode.AsyncLoad);
+ 		}
+ 

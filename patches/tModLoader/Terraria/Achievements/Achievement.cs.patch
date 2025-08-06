@@ -49,3 +49,12 @@
  		foreach (KeyValuePair<string, JObject> condition in conditions) {
  			if (_conditions.TryGetValue(condition.Key, out var value)) {
  				value.Load(condition.Value);
+@@ -82,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void UseTracker(IAchievementTracker tracker)
++	public void UseTracker(IAchievementTracker tracker)
+ 	{
+ 		tracker.ReportAs("STAT_" + Name);
+ 		_tracker = tracker;

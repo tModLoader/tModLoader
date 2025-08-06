@@ -1,4 +1,3 @@
-﻿using ExampleMod.Content.Items.Placeable.Banners;
 ﻿using ExampleMod.Content.Achievements;
 using ExampleMod.Content.Items.Placeable.Banners;
 using ExampleMod.NPCs;
@@ -53,8 +52,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnKill() {
-			ModContent.GetInstance<ExampleWormKilled>().GetCondition("EXAMPLEMOD_KILL_BOOLEAN_CONDITION").Complete();
-			((CustomIntCondition)ModContent.GetInstance<ManyExampleWormsKilled>().GetCondition("EXAMPLEMOD_KILL_WORMS")).Value++;			
+			ModContent.GetInstance<ExampleWormKilled>().Condition.Complete();
+			((CustomIntCondition)ModContent.GetInstance<ManyExampleWormsKilled>().IntCondition).Value++;			
 		}
 
 		public override void Init() {
