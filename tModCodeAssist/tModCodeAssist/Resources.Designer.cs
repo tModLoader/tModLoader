@@ -61,6 +61,33 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors when incorrect ID type is used.
+        /// </summary>
+        internal static string BadIDTypeDescription {
+            get {
+                return ResourceManager.GetString("BadIDTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &quot;{0}&quot; is not type of {1}.
+        /// </summary>
+        internal static string BadIDTypeMessageFormat {
+            get {
+                return ResourceManager.GetString("BadIDTypeMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect ID type is used.
+        /// </summary>
+        internal static string BadIDTypeTitle {
+            get {
+                return ResourceManager.GetString("BadIDTypeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changes magic numbers into appropriate ID values.
         /// </summary>
         internal static string ChangeMagicNumberToIDDescription {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModCodeAssist.CodeFixes.ChangeMagicNumberToIDCodeFixProvider>;
+using CodeFixer = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.ChangeMagicNumberToIDAnalyzer>.CodeFixer<tModCodeAssist.CodeFixes.ChangeMagicNumberToIDCodeFixProvider>;
 
 namespace tModCodeAssist.Tests.CodeFixes;
 
@@ -10,7 +10,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	[TestMethod]
 	public async Task Test_Assignment()
 	{
-		await VerifyCS.Run(
+		await CodeFixer.Run(
 			"""
 			using Terraria;
 
@@ -28,9 +28,13 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			modTile.DustType = [|1|];
 			Terraria.ModLoader.ModWall modWall = null;
 			modWall.DustType = [|2|];
-
-			Main.tile[10, 20].TileType = [|490|];
-			Main.tile[20, 30].WallType = [|276|];
+			
+			var tile = Main.tile[10, 20];
+			tile.TileType = [|490|];
+			tile.WallType = [|276|];
+			tile.TileColor = [|1|];
+			tile.WallColor = [|1|];
+			tile.LiquidType = [|1|];
 			""",
 			"""
 			using Terraria;
@@ -51,15 +55,19 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			Terraria.ModLoader.ModWall modWall = null;
 			modWall.DustType = DustID.Grass;
 
-			Main.tile[10, 20].TileType = TileID.WeatherVane;
-			Main.tile[20, 30].WallType = WallID.Corruption1Echo;
+			var tile = Main.tile[10, 20];
+			tile.TileType = TileID.WeatherVane;
+			tile.WallType = WallID.Corruption1Echo;
+			tile.TileColor = PaintID.RedPaint;
+			tile.WallColor = PaintID.RedPaint;
+			tile.LiquidType = LiquidID.Lava;
 			""");
 	}
 
 	[TestMethod]
 	public async Task Test_Binary()
 	{
-		await VerifyCS.Run(
+		await CodeFixer.Run(
 			"""
 			using Terraria;
 
@@ -78,7 +86,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	[TestMethod]
 	public async Task Test_Invocation()
 	{
-		await VerifyCS.Run(
+		await CodeFixer.Run(
 			"""
 			using Microsoft.Xna.Framework;
 			using Terraria;
@@ -114,7 +122,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	[TestMethod]
 	public async Task Test_CaseSwitchLabel()
 	{
-		await VerifyCS.Run(
+		await CodeFixer.Run(
 			"""
 			using Terraria;
 

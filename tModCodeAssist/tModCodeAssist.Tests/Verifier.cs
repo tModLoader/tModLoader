@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -27,6 +28,7 @@ public static  class Verifier
 
 					FixedCode = fixedCode.ReplaceLineEndings();
 
+					MarkupOptions = MarkupOptions.UseFirstDescriptor;
 					ExpectedDiagnostics.AddRange(expected);
 
 					NumberOfFixAllIterations = 1;
@@ -76,6 +78,7 @@ public static  class Verifier
 				TestCode = testCode.ReplaceLineEndings();
 				TestState.OutputKind = OutputKind.ConsoleApplication;
 
+				MarkupOptions = MarkupOptions.UseFirstDescriptor;
 				ExpectedDiagnostics.AddRange(expected);
 			}
 
