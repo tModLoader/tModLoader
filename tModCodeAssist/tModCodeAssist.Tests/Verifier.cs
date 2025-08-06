@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -11,7 +10,7 @@ using tModCodeAssist.Tests.Verifiers;
 
 namespace tModCodeAssist.Tests;
 
-public static  class Verifier
+public static class Verifier
 {
 	public static class Analyzer<TAnalyzer> where TAnalyzer : DiagnosticAnalyzer, new()
 	{
@@ -22,7 +21,7 @@ public static  class Verifier
 				public Test(string testCode, string fixedCode, IEnumerable<DiagnosticResult> expected) : base()
 				{
 					ReferenceAssemblies = ReferenceAssemblies.Net.Net80;
-
+					
 					TestCode = testCode.ReplaceLineEndings();
 					TestState.OutputKind = OutputKind.ConsoleApplication;
 
