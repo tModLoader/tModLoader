@@ -73,9 +73,9 @@ public static class MagicNumberBindings
 			AddBinding<DustID>("Terraria.ModLoader.ModDust", "UpdateType", (ctx) => new FieldBinding(ctx));
 			AddBinding<TileID>("Terraria.Tile", "TileType", (ctx) => new FieldBinding(ctx));
 			AddBinding<WallID>("Terraria.Tile", "WallType", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(PaintID), "Terraria.Tile", "TileColor", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(PaintID), "Terraria.Tile", "WallColor", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(LiquidID), "Terraria.Tile", "LiquidType", (ctx) => new FieldBinding(ctx));
+			AddBinding(typeof(PaintID), "Terraria.Tile", "TileColor", (ctx) => new FieldBinding(ctx), typeof(byte));
+			AddBinding(typeof(PaintID), "Terraria.Tile", "WallColor", (ctx) => new FieldBinding(ctx), typeof(byte));
+			AddBinding(typeof(LiquidID), "Terraria.Tile", "LiquidType", (ctx) => new FieldBinding(ctx), typeof(short));
 
 			AddBinding<ItemID>("Terraria.Item", "CloneDefaults", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<MessageID>("Terraria.NetMessage", "SendData", (ctx) => new MethodParameterBinding(ctx, 0));
@@ -98,12 +98,20 @@ public static class MagicNumberBindings
 		AddBinding(typeof(T), owningClassName, memberName, func);
 	}
 
-	private static void AddBinding(Type idClass, string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func)
+	private static void AddBinding(Type idClass, string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func, Type idType = null)
 	{
 		if (!searchCache.TryGetValue(idClass, out var search)) {
 			var field = idClass.GetField("Search", (BindingFlags)(-1));
-			Debug.Assert(field != null);
-			searchCache[idClass] = search = (IdDictionary)field.GetValue(null);
+			if (field != null) {
+				Debug.Assert(idType == null, "This idClass has a Search IdDictionary, please remove the idType argument");
+				search = (IdDictionary)field.GetValue(null);
+			}
+			else {
+				Debug.Assert(idType != null, "idType must be provided for classes without a Search IdDictionary");
+				search = IdDictionary.Create(idClass, idType);
+			}
+			Debug.Assert(search != null);
+			searchCache[idClass] = search;
 		}
 
 		var context = new Binding.CreationContext(owningClassName, memberName, idClass.Name, idClass.FullName, search);
