@@ -151,16 +151,24 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Terraria.ID;
 
 			ItemID.Sets.StaffMinionSlotsRequired[[|1309|]] = 2f;
+			NPCID.Sets.MustAlwaysDraw[[|114|]] = true;
+			ProjectileID.Sets.TrailingMode[[|94|]] = 1;
 			TileID.Sets.TouchDamageHot[[|2|]] = true;
 			TileID.Sets.Conversion.Sand[[|461|]] = true;
+			WallID.Sets.Transparent[[|12|]] = true;
+			WallID.Sets.Conversion.Grass[[|65|]] = true;
 			""",
 			"""
 			using Terraria;
 			using Terraria.ID;
 			
 			ItemID.Sets.StaffMinionSlotsRequired[ItemID.SlimeStaff] = 2f;
+			NPCID.Sets.MustAlwaysDraw[NPCID.WallofFleshEye] = true;
+			ProjectileID.Sets.TrailingMode[ProjectileID.CrystalStorm] = 1;
 			TileID.Sets.TouchDamageHot[TileID.Grass] = true;
 			TileID.Sets.Conversion.Sand[TileID.SandDrip] = true;
+			WallID.Sets.Transparent[WallID.CopperBrick] = true;
+			WallID.Sets.Conversion.Grass[WallID.FlowerUnsafe] = true;
 			""");
 	}
 }

@@ -90,6 +90,14 @@ public static class MagicNumberBindings
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, float, float, float, float, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 5));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectileDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3));
+
+			AddBinding<ItemID>("Terraria.ID.ItemID.Sets", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<NPCID>("Terraria.ID.NPCID.Sets", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<ProjectileID>("Terraria.ID.ProjectileID.Sets", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<TileID>("Terraria.ID.TileID.Sets", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<TileID>("Terraria.ID.TileID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<WallID>("Terraria.ID.WallID.Sets", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<WallID>("Terraria.ID.WallID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
 		}
 	}
 
@@ -136,6 +144,9 @@ public static class MagicNumberBindings
 
 		if (symbol is IFieldSymbol fieldSymbol && bindingByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out Dictionary<string, Binding> bindingByMember)) {
 			if (bindingByMember.TryGetValue(fieldSymbol.MetadataName, out binding)) {
+				return true;
+			}
+			if (bindingByMember.TryGetValue("*", out binding)) {
 				return true;
 			}
 		}

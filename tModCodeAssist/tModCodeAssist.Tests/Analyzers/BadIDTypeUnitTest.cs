@@ -66,4 +66,16 @@ public class BadIDTypeUnitTest
 			}
 			""");
 	}
+
+	[TestMethod]
+	public async Task Test_ArrayIndexing()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+			using Terraria.ID;
+
+			ItemID.Sets.StaffMinionSlotsRequired[{|BadIDType:ProjectileID.Hornet|}] = 2f;
+			""");
+	}
 }
