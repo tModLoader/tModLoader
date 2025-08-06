@@ -674,6 +674,8 @@
 		"TagsUtilityDescription": "Añaden contenidos o funciones para mejorar las herramientas y utilidades del juego",
 		"TagsLibrary": "Librerías",
 		"TagsLibraryDescription": "Proporcionan APIs y funciones adicionales útiles para los modders",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Mejoras del juego",
 		"TagsQoLDescription": "Introducen características y cambios que reducen el tiempo dedicado a tareas más pesadas",
 		"TagsGameplay": "Mejoras de jugabilidad",

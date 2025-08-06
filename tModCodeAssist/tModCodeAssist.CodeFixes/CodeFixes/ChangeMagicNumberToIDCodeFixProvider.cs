@@ -13,8 +13,6 @@ using tModCodeAssist.Analyzers;
 
 namespace tModCodeAssist.CodeFixes;
 
-// TODO: handle multiple names for same id
-
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(Diagnostics.ChangeMagicNumberToID)), Shared]
 public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProvider(nameof(Diagnostics.ChangeMagicNumberToID))
 {
@@ -29,6 +27,7 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 
 			if (!parameters.Diagnostic.Properties.ContainsKey("ShortIdType"))
 				return Task.CompletedTask; // Conflict with Diagnostic registered by old tModLoader.CodeAssist
+
 			var properties = ChangeMagicNumberToIDAnalyzer.Properties.FromImmutable(parameters.Diagnostic.Properties);
 			var (shortIdType, fullIdType, name) = properties;
 

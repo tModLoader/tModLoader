@@ -694,6 +694,15 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Called when this tile at the given coordinates is being replaced via the block swap feature. For supported multi-tiles, the coordinates will be the top left corner. <paramref name="targetType"/> and <paramref name="targetStyle"/> are the tile type and style that will replace the current tile.
+	/// <br/><br/> An implementation of this method might end up duplicating some custom KillMultiTile or KillTile code, but not all. For example, for a chest or dresser tile you wouldn't want to call Chest.DestroyChest.
+	/// <br/><br/> Called on local, server, and remote clients.
+	/// </summary>
+	public virtual void ReplaceTile(int i, int j, int targetType, int targetStyle)
+	{
+	}
+
+	/// <summary>
 	/// Customizes a tile drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, specifically how the tile reacts to wind and player interactions.
 	/// <para/> The parameters are as follows:
 	/// <br/> <b><paramref name="overrideWindCycle"/>:</b> <inheritdoc cref="AdjustMultiTileVineParameters" path="/param[@name='overrideWindCycle']"/>

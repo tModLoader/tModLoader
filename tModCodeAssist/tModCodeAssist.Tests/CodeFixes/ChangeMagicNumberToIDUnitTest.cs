@@ -28,9 +28,13 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			modTile.DustType = [|1|];
 			Terraria.ModLoader.ModWall modWall = null;
 			modWall.DustType = [|2|];
-
-			Main.tile[10, 20].TileType = [|490|];
-			Main.tile[20, 30].WallType = [|276|];
+			
+			var tile = Main.tile[10, 20];
+			tile.TileType = [|490|];
+			tile.WallType = [|276|];
+			tile.TileColor = [|1|];
+			tile.WallColor = [|1|];
+			tile.LiquidType = [|1|];
 			""",
 			"""
 			using Terraria;
@@ -51,8 +55,12 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			Terraria.ModLoader.ModWall modWall = null;
 			modWall.DustType = DustID.Grass;
 
-			Main.tile[10, 20].TileType = TileID.WeatherVane;
-			Main.tile[20, 30].WallType = WallID.Corruption1Echo;
+			var tile = Main.tile[10, 20];
+			tile.TileType = TileID.WeatherVane;
+			tile.WallType = WallID.Corruption1Echo;
+			tile.TileColor = PaintID.RedPaint;
+			tile.WallColor = PaintID.RedPaint;
+			tile.LiquidType = LiquidID.Lava;
 			""");
 	}
 

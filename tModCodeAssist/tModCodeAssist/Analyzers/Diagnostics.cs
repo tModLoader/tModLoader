@@ -20,6 +20,16 @@ public static class Diagnostics
 		isEnabledByDefault: true
 	);
 
+	public static readonly DiagnosticDescriptor BadIDType = new(
+		id: nameof(BadIDType),
+		title: CreateResourceString(nameof(Resources.BadIDTypeTitle)),
+		messageFormat: CreateResourceString(nameof(Resources.BadIDTypeMessageFormat)),
+		description: CreateResourceString(nameof(Resources.BadIDTypeDescription)),
+		category: Categories.Maintenance,
+		defaultSeverity: DiagnosticSeverity.Error,
+		isEnabledByDefault: true
+	);
+
 	public static readonly DiagnosticDescriptor SimplifyUnifiedRandom = new(
 		id: nameof(SimplifyUnifiedRandom),
 		title: CreateResourceString(nameof(Resources.SimplifyUnifiedRandomTitle)),
