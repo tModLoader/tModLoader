@@ -2532,7 +2532,7 @@
  		for (int i = 0; i < num; i++) {
  			KillTile_MakeTileDust(x, y, tileSafely);
  		}
-@@ -44631,7 +_,7 @@
+@@ -44631,12 +_,13 @@
  		else if (TileID.Sets.BasicDresser[targetType]) {
  			ReplaceTile_DoActualReplacement_Area(targetType, targetStyle, topLeftX, topLeftY, 3, 2);
  		}
@@ -2541,6 +2541,12 @@
  			ReplaceTile_DoActualReplacement_Area(targetType, targetStyle, topLeftX, topLeftY, 3, 2);
  		}
  		else {
+ 			ReplaceTile_DoActualReplacement_Single(targetType, targetStyle, topLeftX, topLeftY, t);
+ 		}
++		TileLoader.ReplaceTile(topLeftX, topLeftY, t.TileType, targetType, targetStyle);
+ 	}
+ 
+ 	private static void ReplaceTile_DoActualReplacement_Single(ushort targetType, int targetStyle, int topLeftX, int topLeftY, Tile t)
 @@ -44647,7 +_,7 @@
  		if (TileID.Sets.Platforms[t.type])
  			t.frameY = (short)(targetStyle * 18);

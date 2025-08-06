@@ -216,24 +216,32 @@
  				}
  			}
  		}
-@@ -575,7 +_,10 @@
+@@ -575,12 +_,16 @@
  			TimeLogger.DrawTime(1, stopwatch.Elapsed.TotalMilliseconds);
  	}
  
 +	/// <summary>
 +	/// Finds the top of a tile chain of vine tiles and calls <see cref="AddSpecialPoint"/> using <see cref="TileCounterType.Vine"/> if not already registered for custom drawing. See <see cref="TileID.Sets.VineThreads"/>.
++	/// <br/><br/> <b>Note:</b> The tile coordinate parameters of this method are the reverse of the usual order.
 +	/// </summary>
 -	private void CrawlToTopOfVineAndAddSpecialPoint(int j, int i)
 +	public void CrawlToTopOfVineAndAddSpecialPoint(int j, int i)
  	{
  		int y = j;
  		for (int num = j - 1; num > 0; num--) {
-@@ -593,7 +_,10 @@
+ 			Tile tile = Main.tile[i, num];
+-			if (WorldGen.SolidTile(i, num) || !tile.active()) {
++			if (WorldGen.BottomEdgeCanBeAttachedTo(i, num) || !tile.active()) {
+ 				y = num + 1;
+ 				break;
+ 			}
+@@ -593,7 +_,11 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Finds the bottom of a tile chain of reverse vine tiles and calls <see cref="AddSpecialPoint"/> using <see cref="TileCounterType.ReverseVine"/> if not already registered for custom drawing. See <see cref="TileID.Sets.ReverseVineThreads"/>.
++	/// <br/><br/> <b>Note:</b> The tile coordinate parameters of this method are the reverse of the usual order.
 +	/// </summary>
 -	private void CrawlToBottomOfReverseVineAndAddSpecialPoint(int j, int i)
 +	public void CrawlToBottomOfReverseVineAndAddSpecialPoint(int j, int i)

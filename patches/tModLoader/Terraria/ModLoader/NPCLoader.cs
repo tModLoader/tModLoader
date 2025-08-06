@@ -1149,6 +1149,18 @@ public static class NPCLoader
 		}
 	}
 
+	private delegate bool DelegatePreHoverInteract(NPC npc, bool mouseIntersects);
+	private static HookList HookPreHoverInteract = AddHook<DelegatePreHoverInteract>(g => g.PreHoverInteract);
+	public static bool PreHoverInteract(NPC npc, bool mouseIntersects)
+	{
+		foreach (var g in HookPreHoverInteract.Enumerate(npc)) {
+			if (!g.PreHoverInteract(npc, mouseIntersects))
+				return false;
+		}
+
+		return npc.ModNPC?.PreHoverInteract(mouseIntersects) ?? true;
+	}
+
 	private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
 	public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList)
 	{

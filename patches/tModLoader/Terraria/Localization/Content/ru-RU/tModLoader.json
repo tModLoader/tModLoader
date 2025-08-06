@@ -674,6 +674,8 @@
 		"TagsUtilityDescription": "Добавляет ориентированный на полезность контент или функции.",
 		"TagsLibrary": "Библиотека",
 		"TagsLibraryDescription": "Предоставляет дополнительные API и функции, полезные для разработчиков модов.",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Качество жизни",
 		"TagsQoLDescription": "Добавляет различные автоматизации, упрощения и оптимизации игровых процессов на рутинные задачи.",
 		"TagsGameplay": "Геймплей",

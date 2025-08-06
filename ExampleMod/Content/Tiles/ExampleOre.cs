@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Tiles
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(152, 171, 198), name);
 
-			DustType = 84;
+			DustType = DustID.Platinum;
 			VanillaFallbackOnModDeletion = TileID.Silver;
 			HitSound = SoundID.Tink;
 			// MineResist = 4f;
