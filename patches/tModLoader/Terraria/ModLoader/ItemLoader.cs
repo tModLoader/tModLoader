@@ -26,6 +26,7 @@ namespace Terraria.ModLoader;
 public static class ItemLoader
 {
 	public static int ItemCount { get; private set; } = ItemID.Count;
+	public static int UseStyleCount { get; private set; } = ItemUseStyleID.RaiseLamp + 1;
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
 	private static readonly List<HookList> hooks = new List<HookList>();
@@ -50,6 +51,16 @@ public static class ItemLoader
 	{
 		items.Add(item);
 		return ItemCount++;
+	}
+
+	/// <summary>
+	/// Registers a new item use style (<see cref="ItemUseStyleID"/>). The return value is its unique ID suitable for <see cref="Item.useStyle"/>.
+	/// </summary>
+	public static int RegisterUseStyle(Mod mod, string useStyleName)
+	{
+		int useStyle = UseStyleCount++;
+		ItemUseStyleID.Search.Add($"{mod?.Name ?? "Terraria"}/{useStyleName}", useStyle);
+		return useStyle;
 	}
 
 	/// <summary>
@@ -150,6 +161,7 @@ public static class ItemLoader
 	internal static void Unload()
 	{
 		ItemCount = ItemID.Count;
+		UseStyleCount = ItemUseStyleID.RaiseLamp + 1;
 		items.Clear();
 		FlexibleTileWand.Reload();
 		GlobalList<GlobalItem>.Reset();
