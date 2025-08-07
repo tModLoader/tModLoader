@@ -207,6 +207,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 
 	private void ReportDiagnostic(Action<Diagnostic> report, SyntaxNode literalNode, MagicNumberBindings.Binding binding, int id)
 	{
+		if (!binding.AllowNegativeIDs && id < 0) return;
 		if (!binding.Search.ContainsId(id)) return;
 		var literalName = binding.Search.GetName(id);
 
