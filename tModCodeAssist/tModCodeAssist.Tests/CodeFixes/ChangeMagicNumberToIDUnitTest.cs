@@ -24,6 +24,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.useTime = 69;
 			var player = new Player();
 			player.cursorItemIconID = [|327|];
+			player.cursorItemIconID = -1;
 
 			Terraria.ModLoader.ModTile modTile = null;
 			modTile.DustType = [|1|];
@@ -51,6 +52,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.useTime = 69;
 			var player = new Player();
 			player.cursorItemIconID = ItemID.GoldenKey;
+			player.cursorItemIconID = -1;
 
 			Terraria.ModLoader.ModTile modTile = null;
 			modTile.DustType = DustID.Stone;
