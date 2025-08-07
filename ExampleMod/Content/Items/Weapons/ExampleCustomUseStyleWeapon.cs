@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -13,6 +12,7 @@ namespace ExampleMod.Content.Items.Weapons
 	// A separate example, ExampleCustomSwingSword, showcases an even more advanced custom swing using a held projectile instead of using custom use style code. It can be easier to implement advanced movements using a held projectile, but some may prefer the use style approach.
 
 	// ExampleCustomUseStyleGlobalItem contains the actual custom UseStyle logic. It is possible to put custom use style code directly in a ModItem, but we use a GlobalItem in this example because we use the same custom use style for the vanilla Cutlass weapon as well.
+	// ExampleCustomUseStyleItemSets stores extra data used by the custom item use style on a per-item type basis.
 	// ExampleCustomUseStylePlayer facilitates our custom use style.
 
 	public class ExampleCustomUseStyleWeapon : ModItem
@@ -35,8 +35,8 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.autoReuse = true;
 			Item.UseSound = SoundID.Item1;
 
-			// This controls how far out the weapon should be held from the hand. This weapon uses 0 (so we don't bother setting it) but the logic in ExampleCustomUseStyleGlobalItem works for other values as well.
-			//ExampleCustomUseStyleGlobalItem.HandOffsets[Type] = 0;
+			// This controls how far out the weapon should be held from the hand. This weapon uses 0 (so we don't actually need to set it) but the logic in ExampleCustomUseStyleGlobalItem works for other values as well. We can set it here or in the CreateIntSet method, both work.
+			//ExampleCustomUseStyleItemSets.HandOffsets[Type] = 0;
 		}
 
 		public override void AddRecipes() {
@@ -76,16 +76,24 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 	}
 
+	// See CustomItemSets.cs to learn more about ReinitializeDuringResizeArrays and working with custom item sets.
+	[ReinitializeDuringResizeArrays]
+	public static class ExampleCustomUseStyleItemSets
+	{
+		// Stores custom hold offsets if needed. Defaults to 0.
+		// Cutlass, for example, is held slightly closer to the player.
+		// ExampleCustomUseStyleWeapon is included here as an example even though it would default to 0 anyway.
+		public static int[] HandOffsets = ItemID.Sets.Factory.CreateIntSet(0, ItemID.Cutlass, -6, ModContent.ItemType<ExampleCustomUseStyleWeapon>(), 0);
+	}
+
 	// This class contains the actual custom UseStyle logic.
 	public class ExampleCustomUseStyleGlobalItem : GlobalItem
 	{
 		public static int ExampleCustomUseStyle;
-		public static Dictionary<int, int> HandOffsets; // Stores custom hold offsets if needed
 
 		public override void Load() {
 			// We register a custom use style ID in Load so that the value is set and ready to use in ModItem/GlobalItem.SetDefaults.
 			ExampleCustomUseStyle = ItemLoader.RegisterUseStyle(Mod, "ExampleCustomUseStyle");
-			HandOffsets = new();
 		}
 
 		// Rather than checking item.useStyle in each method, we use AppliesToEntity to have the logic in this class only run for items set to use our custom use style.
@@ -98,7 +106,7 @@ namespace ExampleMod.Content.Items.Weapons
 			// Cutlass will now use out custom use style, making it swing up instead of the normal swing.
 			if (item.type == ItemID.Cutlass) {
 				item.useStyle = ExampleCustomUseStyle;
-				HandOffsets[item.type] = -6; // Hold this weapon closer to the player
+				//ExampleCustomUseStyleItemSets.HandOffsets[item.type] = -6; // Alternate approach to setting HandOffsets
 			}
 		}
 
@@ -151,7 +159,7 @@ namespace ExampleMod.Content.Items.Weapons
 			// We could also use SetCompositeArmBack to set the drawing parameters of the other arm.
 
 			// We set itemLocation to indicate where the item should be drawn
-			player.itemLocation = player.MountedCenter + currentAngle.ToRotationVector2() * (HandOffsets.TryGetValue(item.type, out int offset) ? new Vector2(offset) : Vector2.Zero);
+			player.itemLocation = player.MountedCenter + currentAngle.ToRotationVector2() * new Vector2(ExampleCustomUseStyleItemSets.HandOffsets[item.type]);
 
 			// This FlipItemLocationAndRotationForGravity method handles adjusting itemRotation and itemLocation to account for reversed gravity.
 			player.FlipItemLocationAndRotationForGravity();
@@ -185,7 +193,7 @@ namespace ExampleMod.Content.Items.Weapons
 			float itemLength = (itemSize * player.GetAdjustedItemScale(item)).Length(); // We don't use Item.Size/width/height because those values are for the item hitbox when dropped.
 
 			// Calculate the handle and tip positions
-			Vector2 handlePosition = handDirection * (HandOffsets.TryGetValue(item.type, out int offset) ? new Vector2(offset) : Vector2.Zero) + player.MountedCenter;
+			Vector2 handlePosition = handDirection * new Vector2(ExampleCustomUseStyleItemSets.HandOffsets[item.type]) + player.MountedCenter;
 			Vector2 tipPosition = handlePosition + handDirection * itemLength;
 
 			// Now we use those values to create the item hitbox
