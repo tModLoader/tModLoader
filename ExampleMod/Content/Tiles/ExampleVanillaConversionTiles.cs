@@ -25,18 +25,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMerge[TileID.HallowSandstone][Type] = true;
 
 			// We need to register a conversion from the vanilla desert fossil into our modded variants, so our custom code can be called when the game attempts to convert the vanilla tile
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Hallow, ConvertToHallow);
-			TileID.Sets.ConversionFallback[Type] = TileID.DesertFossil;
-		}
-
-		public bool ConvertToHallow(int i, int j, int type, int conversionType) {
-
-			// This method is called whenever hallow biome conversion happens on a desert fossil tile, as per the RegisterConversion we called in SetStaticDefaults
-			// We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or tiles
-
-			// We can use the ConvertTile utility method to change the fossil tile into our hallowed fossil tile, and it'll automatically handle tile frame updates and network syncing!
-			WorldGen.ConvertTile(i, j, Type);
-			return false;
+			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Hallow, Type);
 		}
 
 		// This code is called when the game attempts to convert our hallowed tile into a new biome
@@ -83,13 +72,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.CorruptSandstone][Type] = true;
 
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Corruption, ConvertToCorruption);
-			TileID.Sets.ConversionFallback[Type] = TileID.DesertFossil;
-		}
-
-		public bool ConvertToCorruption(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertTile(i, j, Type);
-			return false;
+			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Corruption, Type);
 		}
 
 		public override void Convert(int i, int j, int conversionType) {
@@ -125,13 +108,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.CrimsonSandstone][Type] = true;
 
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Crimson, ConvertToCrimson);
-			TileID.Sets.ConversionFallback[Type] = TileID.DesertFossil;
-		}
-
-		public bool ConvertToCrimson(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertTile(i, j, Type);
-			return false;
+			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Crimson, Type);
 		}
 
 		public override void Convert(int i, int j, int conversionType) {

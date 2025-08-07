@@ -1962,7 +1962,7 @@
  	{
  		for (int k = i - size; k <= i + size; k++) {
  			for (int l = j - size; l <= j + size; l++) {
-@@ -39352,9 +_,23 @@
+@@ -39352,9 +_,18 @@
  				Tile tile = Main.tile[k, l];
  				int type = tile.type;
  				int wall = tile.wall;
@@ -1971,11 +1971,6 @@
 +				bool convertTile = tiles && tile.HasTile && TileLoader.Convert(k, l, conversionType);
 +				if (conversionType >= BiomeConversionID.Count)
 +					continue;
-+				static void SquareTileFrame(int i, int j)
-+				{
-+					if (!TileLoader.conversionOriginalType.HasValue)
-+						WorldGen.SquareTileFrame(i, j);
-+				}
 +
  				switch (conversionType) {
  					case 4:

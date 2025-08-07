@@ -47,7 +47,7 @@ public static class TileLoader
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
 	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
 	internal static List<ConvertTile>[][] tileConversionDelegates = null;
-	internal static ushort? conversionOriginalType;
+	internal static (int fallbackTile, bool[] exceptConversionIds)[] tileConversionFallbacks = null;
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -215,6 +215,8 @@ public static class TileLoader
 		}
 
 		tileConversionDelegates = new List<ConvertTile>[nextTile][];
+		tileConversionFallbacks = new (int, bool[])[nextTile];
+		InitializeConversionFallbacks();
 
 		//Hooks
 
@@ -720,18 +722,66 @@ public static class TileLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+	public static void RegisterSimpleConversion(int tileType, int conversionType, int toType)
+	{
+		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
+			WorldGen.ConvertTile(i, j, toType);
+			return false;
+		});
+		RegisterConversionFallback(toType, tileType, conversionType);
+	}
+
+	private static void InitializeConversionFallbacks()
+	{
+		Array.Fill(tileConversionFallbacks, (-1, null));
+		CreateFallbacks(TileID.Stone, (TileID.Ebonstone, [BiomeConversionID.Corruption]), (TileID.Crimstone, [BiomeConversionID.Crimson]), (TileID.Pearlstone, [BiomeConversionID.Hallow]));
+
+		CreateFallbacks(TileID.Grass, (TileID.CorruptGrass, [BiomeConversionID.Corruption]), (TileID.CrimsonGrass, [BiomeConversionID.Crimson]), (TileID.HallowedGrass, [BiomeConversionID.Hallow]));
+
+		CreateFallbacks(TileID.GolfGrass, (TileID.GolfGrassHallowed, [BiomeConversionID.Hallow]));
+
+		CreateFallbacks(TileID.Grass, (TileID.GolfGrass, [BiomeConversionID.Purity, BiomeConversionID.PurificationPowder, BiomeConversionID.Dirt]));
+		// removed to preserve vanilla oversight requiring 2 solutions to convert between evil and mushroom
+		// please let me fix this
+		//CreateConversionFallbacks(TileID.JungleGrass, (TileID.CorruptJungleGrass, [BiomeConversionID.Corruption]), (TileID.CrimsonJungleGrass, [BiomeConversionID.Crimson]), (TileID.MushroomGrass, [BiomeConversionID.GlowingMushroom]));
+
+		CreateFallbacks(TileID.IceBlock, (TileID.CorruptIce, [BiomeConversionID.Corruption]), (TileID.FleshIce, [BiomeConversionID.Crimson]), (TileID.HallowedIce, [BiomeConversionID.Hallow]));
+
+		CreateFallbacks(TileID.Sand, (TileID.Ebonsand, [BiomeConversionID.Corruption]), (TileID.Crimsand, [BiomeConversionID.Crimson]), (TileID.Pearlsand, [BiomeConversionID.Hallow]));
+
+		CreateFallbacks(TileID.HardenedSand, (TileID.CorruptHardenedSand, [BiomeConversionID.Corruption]), (TileID.CrimsonHardenedSand, [BiomeConversionID.Crimson]), (TileID.HallowHardenedSand, [BiomeConversionID.Hallow]));
+
+		CreateFallbacks(TileID.Sandstone, (TileID.CorruptSandstone, [BiomeConversionID.Corruption]), (TileID.CrimsonSandstone, [BiomeConversionID.Crimson]), (TileID.HallowSandstone, [BiomeConversionID.Hallow]));
+		static void CreateFallbacks(int baseTile, params (int tileType, int[] conversionType)[] children)
+		{
+			for (int i = 0; i < children.Length; i++) {
+				RegisterConversionFallback(children[i].tileType, baseTile, children[i].conversionType);
+			}
+		}
+	}
+	/// <summary>
+	/// TODO: documentation
+	/// </summary>
+	public static void RegisterConversionFallback(int tileType, int fallbackType, params int[] exceptForConversionTypes)
+	{
+		if (tileConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
+
+		bool[] exceptFor = new bool[BiomeConversionLoader.BiomeConversionCount];
+		for (int i = 0; i < exceptForConversionTypes.Length; i++) {
+			exceptFor[exceptForConversionTypes[i]] = true;
+		}
+		tileConversionFallbacks[tileType] = (fallbackType, exceptFor);
+	}
 
 
 	public static bool Convert(int i, int j, int conversionType)
 	{
 		int type = Main.tile[i, j].type;
 		var list = tileConversionDelegates[type]?[conversionType];
-		if (conversionOriginalType.HasValue)
-			Main.tile[i, j].type = conversionOriginalType.Value;
 		if (list != null) {
 			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-				if (!hook(i, j, (conversionOriginalType ?? type), conversionType)) {
-					conversionOriginalType = null;
+				if (!hook(i, j, type, conversionType)) {
 					return false;
 				}
 			}
@@ -739,22 +789,14 @@ public static class TileLoader
 
 		ModTile modTile = GetTile(type);
 		modTile?.Convert(i, j, conversionType);
-		if (Main.tile[i, j].type == (conversionOriginalType ?? type)) {
-			int fallback = TileID.Sets.ConversionFallback[type];
-			if (fallback != -1) {
-				if (!conversionOriginalType.HasValue)
-					conversionOriginalType = (ushort)type;
-
+		if (Main.tile[i, j].type == type) {
+			(int fallback, bool[] exceptFor) = tileConversionFallbacks[type];
+			if (fallback != -1 && exceptFor is not null && !exceptFor[conversionType]) {
 				Main.tile[i, j].type = (ushort)fallback;
 				WorldGen.Convert(i, j, conversionType, 0, walls: false);
-				if (conversionOriginalType == type)
-					conversionOriginalType = null;
 
 				if (Main.tile[i, j].type == fallback) {
 					Main.tile[i, j].type = (ushort)type;
-				}
-				else if (!conversionOriginalType.HasValue) {
-					WorldGen.SquareTileFrame(i, j);
 				}
 			}
 		}

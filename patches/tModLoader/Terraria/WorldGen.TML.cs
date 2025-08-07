@@ -52,8 +52,7 @@ public partial class WorldGen
 			TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
 
 		tile.type = (ushort)newType;
-		if (!TileLoader.conversionOriginalType.HasValue)
-			SquareTileFrame(i, j);
+		SquareTileFrame(i, j);
 		if (Main.netMode != 0)
 			NetMessage.SendTileSquare(-1, i, j);
 	}
