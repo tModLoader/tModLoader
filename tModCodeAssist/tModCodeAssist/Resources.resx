@@ -135,6 +135,15 @@
   <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
     <value>Change magic numbers into appropriate ID values</value>
   </data>
+  <data name="SimplifyLocalPlayerDescription" xml:space="preserve">
+    <value>Simplifies local (client-side) player access</value>
+  </data>
+  <data name="SimplifyLocalPlayerMessageFormat" xml:space="preserve">
+    <value>The expression "{0}" can be simplified for readability</value>
+  </data>
+  <data name="SimplifyLocalPlayerTitle" xml:space="preserve">
+    <value>Simplify local (client-side) player access</value>
+  </data>
   <data name="SimplifyUnifiedRandomDescription" xml:space="preserve">
     <value>Simplifies common UnifiedRandom usage patterns</value>
   </data>

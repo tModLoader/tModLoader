@@ -120,6 +120,9 @@
   <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
     <value>Change magic number into appropriate {0} value</value>
   </data>
+  <data name="SimplifyLocalPlayerTitle" xml:space="preserve">
+    <value>Simplify local (client-side) player access</value>
+  </data>
   <data name="SimplifyUnifiedRandomTitle" xml:space="preserve">
     <value>Simplify common UnifiedRandom usage patterns</value>
   </data>

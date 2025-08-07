@@ -115,6 +115,33 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simplifies local (client-side) player access.
+        /// </summary>
+        internal static string SimplifyLocalPlayerDescription {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &quot;{0}&quot; can be simplified for readability.
+        /// </summary>
+        internal static string SimplifyLocalPlayerMessageFormat {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simplify local (client-side) player access.
+        /// </summary>
+        internal static string SimplifyLocalPlayerTitle {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simplifies common UnifiedRandom usage patterns.
         /// </summary>
         internal static string SimplifyUnifiedRandomDescription {

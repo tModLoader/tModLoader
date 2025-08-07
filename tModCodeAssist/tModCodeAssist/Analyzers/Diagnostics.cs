@@ -40,6 +40,17 @@ public static class Diagnostics
 		isEnabledByDefault: true
 	);
 
+
+	public static readonly DiagnosticDescriptor SimplifyLocalPlayer = new(
+		id: nameof(SimplifyLocalPlayer),
+		title: CreateResourceString(nameof(Resources.SimplifyLocalPlayerTitle)),
+		messageFormat: CreateResourceString(nameof(Resources.SimplifyLocalPlayerMessageFormat)),
+		description: CreateResourceString(nameof(Resources.SimplifyLocalPlayerDescription)),
+		category: Categories.Readability,
+		defaultSeverity: DiagnosticSeverity.Info,
+		isEnabledByDefault: true
+	);
+
 	private static LocalizableResourceString CreateResourceString(string nameOfLocalizableResource)
 	{
 		return new LocalizableResourceString(nameOfLocalizableResource, Resources.ResourceManager, typeof(Resources));
