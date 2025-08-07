@@ -122,6 +122,22 @@
  	public static UserInterface InGameUI = new UserInterface();
  	private static OnPlayerSelected _pendingCharacterSelect;
  	public static bool drawBackGore;
+@@ -418,7 +_,15 @@
+ 	public static int lastMouseX;
+ 	public static int lastMouseY;
+ 	private static ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
++	/// <summary>
++	/// Indicates if the left mouse/"Use Item" control keybind is currently being pressed.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseLeftMouseLeftReleaseNote' />
++	/// </summary>
+ 	public static bool mouseLeft;
++	/// <summary>
++	/// Indicates if the right mouse/"Interact" control keybind is currently being pressed.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseRightMouseRightReleaseNote' />
++	/// </summary>
+ 	public static bool mouseRight;
+ 	public static bool isMouseLeftConsumedByUI = false;
+ 	public static float essScale = 1f;
 @@ -457,7 +_,9 @@
  	public static int jungleBackStyle;
  	public static string debugWords = "";
@@ -476,7 +492,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,44 +_,148 @@
+@@ -829,44 +_,149 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -495,6 +511,7 @@
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles. These tiles will also be destroyed when placing a tile at it's location, see also <see cref="TileID.Sets.BreakableWhenPlacing"/>, which is limited to breaking this tile only by tile placement. <see cref="ModProjectile.CanCutTiles"/> can be used to customize if a projectile should destroy tiles with this property.
++	/// <br/><br/> For desirable plant tiles, set <see cref="TileID.Sets.TileCutIgnore.Regrowth"/> as well to ignore them when using the <see cref="ItemID.StaffofRegrowth"/>. 
 +	/// <br/><br/> Defaults to false.
 +	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];
@@ -704,7 +721,7 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
-@@ -1001,10 +_,15 @@
+@@ -1001,10 +_,23 @@
  		0.75f,
  		0.75f
  	};
@@ -714,7 +731,15 @@
 +	/// </summary>
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
++	/// <summary>
++	/// Indicates if the left mouse/"Use Item" control keybind was not pressed last game update.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseLeftMouseLeftReleaseNote' />
++	/// </summary>
  	public static bool mouseLeftRelease;
++	/// <summary>
++	/// Indicates if the right mouse/"Interact" control keybind was not pressed last game update.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseRightMouseRightReleaseNote' />
++	/// </summary>
  	public static bool mouseRightRelease;
 +	/// <summary> Indicates if the full player inventory is currently showing. </summary>
  	public static bool playerInventory;
@@ -728,7 +753,7 @@
  	public static Item mouseItem = new Item();
  	public static Item guideItem = new Item();
  	public static Item reforgeItem = new Item();
-@@ -1021,16 +_,46 @@
+@@ -1021,17 +_,48 @@
  	public static bool recFastScroll;
  	public static bool recBigList;
  	public static int recStart;
@@ -773,8 +798,10 @@
 +	/// The y tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnY"/>) will spawn at this location and invasions will target this location.
 +	/// </summary>
  	public static int spawnTileY;
++	/// <summary> Similar to <see cref="Main.mouseRightRelease"/>, except specific to NPC chat logic. </summary>
  	public static bool npcChatRelease;
  	public static bool editSign;
+ 	public static bool editChest;
 @@ -1044,13 +_,18 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -5119,7 +5146,7 @@
  			if (!(nPC.active & (nPC.shimmerTransparency == 0f || nPC.CanApplyHunterPotionEffects())))
  				continue;
  
-@@ -34825,6 +_,8 @@
+@@ -34825,8 +_,13 @@
  			if (nPC.type >= 87 && nPC.type <= 92)
  				value = new Microsoft.Xna.Framework.Rectangle((int)((double)nPC.position.X + (double)nPC.width * 0.5 - 32.0), (int)((double)nPC.position.Y + (double)nPC.height * 0.5 - 32.0), 64, 64);
  
@@ -5127,7 +5154,12 @@
 +
  			bool flag = mouseRectangle.Intersects(value);
  			bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == i);
++			if (flag2)
++				flag2 = NPCLoader.PreHoverInteract(nPC, flag);
++
  			if (flag2 && ((nPC.type != 85 && nPC.type != 341 && nPC.type != 629 && nPC.aiStyle != 87) || nPC.ai[0] != 0f) && nPC.type != 488) {
+ 				if (nPC.type == 685) {
+ 					player.cursorItemIconEnabled = true;
 @@ -34849,7 +_,12 @@
  				}
  				else {

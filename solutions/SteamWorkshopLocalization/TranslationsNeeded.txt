@@ -1,3 +1,8 @@
-de-DE 2
-it-IT 11
-fr-FR 11
+de-DE 3
+it-IT 12
+fr-FR 12
+es-ES 1
+ru-RU 1
+zh-Hans 1
+pt-BR 1
+pl-PL 1

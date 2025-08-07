@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Tiles
 
 			AddMapEntry(new Color(100, 100, 100), Language.GetText("MapObject.Sink"));
 
-			DustType = 84;
+			DustType = DustID.Platinum;
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {

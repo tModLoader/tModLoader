@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,25 +_,80 @@
+@@ -1,25 +_,81 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -12,6 +12,7 @@
 -public class ProjectileID
 +public partial class ProjectileID
  {
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -316,6 +317,14 @@
  		public static SettingsForCharacterPreview SimpleLoop(int startFrame, int frameCount, int delayPerFrame = 4, bool bounceLoop = false)
  		{
  			if (frameCount < 1)
+@@ -290,6 +_,7 @@
+ 			return settingsForCharacterPreview;
+ 		}
+ 	}
++#endif
+ 
+ 	public const short None = 0;
+ 	public const short WoodenArrowFriendly = 1;
 @@ -1314,5 +_,6 @@
  	public const short JimsDrone = 1020;
  	public const short MoonBoulder = 1021;

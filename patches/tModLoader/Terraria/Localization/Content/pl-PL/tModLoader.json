@@ -674,6 +674,8 @@
 		"TagsUtilityDescription": "Dodaje rzeczy oraz funkcje zorientowane na wspomaganie gry",
 		"TagsLibrary": "Biblioteka (lib)",
 		"TagsLibraryDescription": "Dostarcza dodatkowe API oraz funkcje użyteczne dla twórców modów",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Zawartość typu QoL (Quality Of Life)",
 		"TagsQoLDescription": "Funkcje lub zmiany, które głownie wspomagają gracza przy wykonywaniu monotonnych aktywności w grze",
 		"TagsGameplay": "Zmiany w mechanikach gry",
