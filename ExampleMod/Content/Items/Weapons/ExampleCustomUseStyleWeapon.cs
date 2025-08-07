@@ -173,15 +173,6 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// We use UseItemHitbox to determine the hitbox of the item during the weapon animation
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
-			// Helper method to sort coordinates later
-			(int, int) Order(float v1, float v2) {
-				if (v1 < v2) {
-					return ((int)v1, (int)v2);
-				}
-
-				return ((int)v2, (int)v1);
-			}
-
 			// Calculate the direction of the hand
 			Vector2 handDirection = (player.compositeFrontArm.rotation + MathHelper.PiOver2).ToRotationVector2() * player.gravDir;
 
@@ -197,9 +188,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Vector2 tipPosition = handlePosition + handDirection * itemLength;
 
 			// Now we use those values to create the item hitbox
-			(int X1, int X2) = Order(handlePosition.X, tipPosition.X);
-			(int Y1, int Y2) = Order(handlePosition.Y, tipPosition.Y);
-			hitbox = new Rectangle(X1, Y1, X2 - X1, Y2 - Y1);
+			hitbox = Utils.CornerRectangle(handlePosition.ToPoint(), tipPosition.ToPoint());
 			hitbox.Inflate(1, 1); // Make the hitbox slightly bigger.
 		}
 
