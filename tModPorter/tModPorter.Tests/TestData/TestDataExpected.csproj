@@ -1,4 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <BuildMod>false</BuildMod>
+  </PropertyGroup>
+
   <Import Project="../../../src/WorkspaceInfo.targets" />
   <Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
   <PropertyGroup>
