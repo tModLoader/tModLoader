@@ -30,6 +30,16 @@ public static class Diagnostics
 		isEnabledByDefault: true
 	);
 
+	public static readonly DiagnosticDescriptor CommonCollisionNamespace = new(
+		id: nameof(CommonCollisionNamespace),
+		title: CreateResourceString(nameof(Resources.CommonCollisionNamespaceTitle)),
+		messageFormat: CreateResourceString(nameof(Resources.CommonCollisionNamespaceMessageFormat)),
+		description: CreateResourceString(nameof(Resources.CommonCollisionNamespaceDescription)),
+		category: Categories.Maintenance,
+		defaultSeverity: DiagnosticSeverity.Error,
+		isEnabledByDefault: true
+	);
+
 	public static readonly DiagnosticDescriptor SimplifyUnifiedRandom = new(
 		id: nameof(SimplifyUnifiedRandom),
 		title: CreateResourceString(nameof(Resources.SimplifyUnifiedRandomTitle)),

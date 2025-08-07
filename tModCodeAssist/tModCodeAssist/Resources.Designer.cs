@@ -115,6 +115,33 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors when namespace name collides with one of existing types.
+        /// </summary>
+        internal static string CommonCollisionNamespaceDescription {
+            get {
+                return ResourceManager.GetString("CommonCollisionNamespaceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namespace {0} collides with an existing type.
+        /// </summary>
+        internal static string CommonCollisionNamespaceMessageFormat {
+            get {
+                return ResourceManager.GetString("CommonCollisionNamespaceMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common type collision namespace.
+        /// </summary>
+        internal static string CommonCollisionNamespaceTitle {
+            get {
+                return ResourceManager.GetString("CommonCollisionNamespaceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simplifies common UnifiedRandom usage patterns.
         /// </summary>
         internal static string SimplifyUnifiedRandomDescription {

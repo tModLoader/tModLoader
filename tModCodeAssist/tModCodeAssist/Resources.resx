@@ -135,6 +135,15 @@
   <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
     <value>Change magic numbers into appropriate ID values</value>
   </data>
+  <data name="CommonCollisionNamespaceTitle" xml:space="preserve">
+    <value>Common type collision namespace</value>
+  </data>
+  <data name="CommonCollisionNamespaceMessageFormat" xml:space="preserve">
+    <value>Namespace {0} collides with an existing type</value>
+  </data>
+  <data name="CommonCollisionNamespaceDescription" xml:space="preserve">
+    <value>Errors when namespace name collides with one of existing types</value>
+  </data>
   <data name="SimplifyUnifiedRandomDescription" xml:space="preserve">
     <value>Simplifies common UnifiedRandom usage patterns</value>
   </data>
