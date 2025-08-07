@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Achievements/CustomIntCondition.cs
 +++ src/tModLoader/Terraria/GameContent/Achievements/CustomIntCondition.cs
-@@ -37,7 +_,6 @@
- 		_value = 0;
- 		base.Clear();
+@@ -25,7 +_,7 @@
+ 		}
  	}
--
- 	public override void Load(JObject state)
+ 
+-	private CustomIntCondition(string name, int maxValue)
++	public CustomIntCondition(string name, int maxValue)
+ 		: base(name)
  	{
- 		base.Load(state);
+ 		_maxValue = maxValue;

@@ -53,7 +53,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void OnKill() {
 			ModContent.GetInstance<ExampleWormKilled>().Condition.Complete();
-			((CustomIntCondition)ModContent.GetInstance<ManyExampleWormsKilled>().IntCondition).Value++;			
+			ModContent.GetInstance<ManyExampleWormsKilled>().IntCondition.Value++;			
 		}
 
 		public override void Init() {
