@@ -89,7 +89,7 @@
  		list.Add(new Point16(105, 37));
  		list.Add(new Point16(105, 2));
  		GenVars.statueList = list.ToArray();
-+		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience. 
++		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience.
  	}
  
  	public static void PlaceStatueTrap(int x, int y)
@@ -252,7 +252,7 @@
  		catch {
  		}
 +		*/
-+		
++
 +		// Properly stop waterfall/lavafall sounds.
 +		// The above wouldn't do anything in the new sound system.
 +		Main.ambientWaterfallStrength = 0f;
@@ -271,7 +271,7 @@
 +		}
 +		catch {
 +		}
-+		
++
  		CaptureInterface.ResetFocus();
  		Main.ActivePlayerFileData.StopPlayTimer();
  		Player.SavePlayer(Main.ActivePlayerFileData);
@@ -751,7 +751,7 @@
 +		bool vanillaCanGrow = true;
  		if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112)
 +			vanillaCanGrow = false;
-+		
++
 +		if (!vanillaCanGrow && !TileLoader.CanGrowModPalmTree(tile.type))
  			return false;
  
@@ -2025,7 +2025,7 @@
  						if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 117) {
  							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 117);
  							tile.type = 117;
-@@ -39536,9 +_,14 @@
+@@ -39536,19 +_,19 @@
  							SquareTileFrame(k, l);
  							NetMessage.SendTileSquare(-1, k, l);
  						}
@@ -2041,7 +2041,17 @@
  							if (WallID.Sets.Conversion.Grass[wall] && wall != 69) {
  								tile.wall = 69;
  								SquareWallFrame(k, l);
-@@ -39585,6 +_,10 @@
+ 								NetMessage.SendTileSquare(-1, k, l);
+ 							}
+-							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
+-								tile.type = 661;
+-								SquareTileFrame(k, l);
+-								NetMessage.SendTileSquare(-1, k, l);
+-							}
+ 							else if (WallID.Sets.Conversion.Stone[wall] && wall != 3) {
+ 								tile.wall = 3;
+ 								SquareWallFrame(k, l);
+@@ -39585,6 +_,16 @@
  								NetMessage.SendTileSquare(-1, k, l);
  							}
  
@@ -2049,6 +2059,12 @@
 +							if (!convertTile)
 +								goto SkipTileCorruptionConversion;
 +
++							if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
++								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 661);
++								tile.type = 661;
++								SquareTileFrame(k, l);
++								NetMessage.SendTileSquare(-1, k, l);
++							}
  							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 25) {
  								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 25);
  								tile.type = 25;
@@ -2778,7 +2794,7 @@
  						if (tile.type == 2 || tile.type == 109 || tile.type == 477 || tile.type == 492 || tile.type == 147 || tile.type == 199 || tile.type == 23 || tile.type == 633) {
 +							vanillaResult = true;
 +						}
-+						
++
 +						if (vanillaResult || TileLoader.CanDropAcorn(tile.type)) {
  							dropItem = 9;
  							secondaryItem = 27;
@@ -3561,7 +3577,7 @@
  									TileMergeAttempt(num, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
 +								TileLoader.ModifyFrameMerge(num, i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
-+								
++
  								bool flag = false;
  								TileMergeCullCache tileMergeCullCache = default(TileMergeCullCache);
  								if (!Main.ShouldShowInvisibleWalls()) {
