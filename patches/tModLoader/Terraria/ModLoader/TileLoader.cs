@@ -733,30 +733,38 @@ public static class TileLoader
 	private static void InitializeConversionFallbacks()
 	{
 		Array.Fill(tileConversionFallbacks, (-1, null));
-		CreateFallbacks(TileID.Stone, (TileID.Ebonstone, [BiomeConversionID.Corruption]), (TileID.Crimstone, [BiomeConversionID.Crimson]), (TileID.Pearlstone, [BiomeConversionID.Hallow]));
+		RegisterConversionFallback(TileID.Ebonstone, TileID.Stone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.Crimstone, TileID.Stone, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.Pearlstone, TileID.Stone, BiomeConversionID.Hallow);
 
-		CreateFallbacks(TileID.Grass, (TileID.CorruptGrass, [BiomeConversionID.Corruption]), (TileID.CrimsonGrass, [BiomeConversionID.Crimson]), (TileID.HallowedGrass, [BiomeConversionID.Hallow]));
+		RegisterConversionFallback(TileID.CorruptGrass, TileID.Grass, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.CrimsonGrass, TileID.Grass, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowedGrass, TileID.Grass, BiomeConversionID.Hallow);
 
-		CreateFallbacks(TileID.GolfGrass, (TileID.GolfGrassHallowed, [BiomeConversionID.Hallow]));
+		RegisterConversionFallback(TileID.GolfGrassHallowed, TileID.GolfGrass, BiomeConversionID.Hallow);
+		RegisterConversionFallback(TileID.GolfGrass, TileID.Grass, BiomeConversionID.Purity, BiomeConversionID.PurificationPowder, BiomeConversionID.Dirt);
 
-		CreateFallbacks(TileID.Grass, (TileID.GolfGrass, [BiomeConversionID.Purity, BiomeConversionID.PurificationPowder, BiomeConversionID.Dirt]));
 		// removed to preserve vanilla oversight requiring 2 solutions to convert between evil and mushroom
 		// please let me fix this
-		//CreateConversionFallbacks(TileID.JungleGrass, (TileID.CorruptJungleGrass, [BiomeConversionID.Corruption]), (TileID.CrimsonJungleGrass, [BiomeConversionID.Crimson]), (TileID.MushroomGrass, [BiomeConversionID.GlowingMushroom]));
+		//RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption);
+		//RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson);
+		//RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom);
+		
+		RegisterConversionFallback(TileID.CorruptIce, TileID.IceBlock, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.FleshIce, TileID.IceBlock, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowedIce, TileID.IceBlock, BiomeConversionID.Hallow);
 
-		CreateFallbacks(TileID.IceBlock, (TileID.CorruptIce, [BiomeConversionID.Corruption]), (TileID.FleshIce, [BiomeConversionID.Crimson]), (TileID.HallowedIce, [BiomeConversionID.Hallow]));
+		RegisterConversionFallback(TileID.Ebonsand, TileID.Sand, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.Crimsand, TileID.Sand, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.Pearlsand, TileID.Sand, BiomeConversionID.Hallow);
 
-		CreateFallbacks(TileID.Sand, (TileID.Ebonsand, [BiomeConversionID.Corruption]), (TileID.Crimsand, [BiomeConversionID.Crimson]), (TileID.Pearlsand, [BiomeConversionID.Hallow]));
+		RegisterConversionFallback(TileID.CorruptHardenedSand, TileID.HardenedSand, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.CrimsonHardenedSand, TileID.HardenedSand, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowHardenedSand, TileID.HardenedSand, BiomeConversionID.Hallow);
 
-		CreateFallbacks(TileID.HardenedSand, (TileID.CorruptHardenedSand, [BiomeConversionID.Corruption]), (TileID.CrimsonHardenedSand, [BiomeConversionID.Crimson]), (TileID.HallowHardenedSand, [BiomeConversionID.Hallow]));
-
-		CreateFallbacks(TileID.Sandstone, (TileID.CorruptSandstone, [BiomeConversionID.Corruption]), (TileID.CrimsonSandstone, [BiomeConversionID.Crimson]), (TileID.HallowSandstone, [BiomeConversionID.Hallow]));
-		static void CreateFallbacks(int baseTile, params (int tileType, int[] conversionType)[] children)
-		{
-			for (int i = 0; i < children.Length; i++) {
-				RegisterConversionFallback(children[i].tileType, baseTile, children[i].conversionType);
-			}
-		}
+		RegisterConversionFallback(TileID.CorruptSandstone, TileID.Sandstone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.CrimsonSandstone, TileID.Sandstone, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowSandstone, TileID.Sandstone, BiomeConversionID.Hallow);
 	}
 	/// <summary>
 	/// TODO: documentation
