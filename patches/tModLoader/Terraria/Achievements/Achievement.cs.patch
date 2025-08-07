@@ -1,11 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Achievements/Achievement.cs
 +++ src/tModLoader/Terraria/Achievements/Achievement.cs
-@@ -1,7 +_,10 @@
+@@ -1,7 +_,9 @@
++using System;
  using System.Collections.Generic;
-+using Microsoft.Xna.Framework.Graphics;
  using Newtonsoft.Json;
  using Newtonsoft.Json.Linq;
-+using ReLogic.Content;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Social;
@@ -49,6 +48,18 @@
  		foreach (KeyValuePair<string, JObject> condition in conditions) {
  			if (_conditions.TryGetValue(condition.Key, out var value)) {
  				value.Load(condition.Value);
+@@ -66,7 +_,11 @@
+ 
+ 	public void AddCondition(AchievementCondition condition)
+ 	{
++		if (_conditions.ContainsKey(condition.Name))
++			throw new Exception($"Cannot add two conditions with the same name: {condition.Name}");
++
+ 		_conditions[condition.Name] = condition;
++				
+ 		condition.OnComplete += OnConditionComplete;
+ 	}
+ 
 @@ -82,7 +_,7 @@
  		}
  	}

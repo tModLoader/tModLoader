@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Achievements;
 
 public class ManyExampleWormsKilled : ModAchievement
 {
-	public readonly CustomIntCondition IntCondition = new("ExampleIntCondition", 5);
+	public readonly CustomIntCondition IntCondition = new("Condition", 5);
 	public override void SetStaticDefaults() {
 		Achievement.Hidden = true;
 

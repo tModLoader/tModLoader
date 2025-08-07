@@ -9,8 +9,8 @@ namespace ExampleMod.Content.Achievements;
 
 public class ExampleWormKilled : ModAchievement
 {
-	// The AchievementCondition used for this Achievement.
-	public readonly AchievementCondition Condition = CustomFlagCondition.Create("ExampleFlagCondition");
+	// The CustomFlagCondition used for this Achievement.
+	public readonly CustomFlagCondition Condition = new("Condition");
 
 	public override void SetStaticDefaults() {
 		Achievement.Hidden = false;

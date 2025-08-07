@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/CustomFloatCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/CustomFloatCondition.cs
+@@ -25,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private CustomFloatCondition(string name, float maxValue)
++	public CustomFloatCondition(string name, float maxValue)
+ 		: base(name)
+ 	{
+ 		_maxValue = maxValue;

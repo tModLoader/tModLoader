@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/CustomFlagCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/CustomFlagCondition.cs
+@@ -4,7 +_,7 @@
+ 
+ public class CustomFlagCondition : AchievementCondition
+ {
+-	private CustomFlagCondition(string name)
++	public CustomFlagCondition(string name)
+ 		: base(name)
+ 	{
+ 	}
