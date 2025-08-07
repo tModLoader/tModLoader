@@ -65,19 +65,6 @@ public sealed class SimplifyLocalPlayerCodeFixProvider() : AbstractCodeFixProvid
 			var syntaxGenerator = SyntaxGenerator.GetGenerator(document);
 
 			return syntaxGenerator.MemberAccessExpression(syntaxGenerator.TypeExpression(mainTypeSymbol), "LocalPlayer");
-
-			// return syntaxGenerator.ElementAccessExpression(
-			// 	syntaxGenerator.MemberAccessExpression(
-			// 		syntaxGenerator.TypeExpression(mainTypeSymbol),
-			// 		"player"
-			// 	),
-			// 	[
-			// 		syntaxGenerator.MemberAccessExpression(
-			// 			syntaxGenerator.TypeExpression(mainTypeSymbol),
-			// 			"myPlayer"
-			// 		),
-			// 	]
-			// ).WithAdditionalAnnotations(Simplifier.Annotation);
 		}
 		else {
 			return expressionSyntax;
