@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria.GameContent.Drawing;
 using Terraria.ModLoader;
 
