@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -51,22 +53,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			var leftSymbolInfo = ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken);
 			if (leftSymbolInfo.Symbol is not { } leftSymbol || !MagicNumberBindings.TryGetBinding(leftSymbol, out var binding)) return;
 
-			if (node.Right.IsKind(SyntaxKind.NumericLiteralExpression)) {
-				var constant = ctx.SemanticModel.GetConstantValue(node.Right, ctx.CancellationToken);
-				if (!constant.HasValue)
-					return;
-
-				int id = Convert.ToInt32(constant.Value);
-
-				ReportDiagnostic(ctx.ReportDiagnostic, node.Right, binding, id);
-			}
-			else if (ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken) is { Symbol: var rightSymbol } && rightSymbol is IFieldSymbol { IsConst: true }) {
-				var displayString = rightSymbol.ContainingType.ToDisplayString();
-				if (!displayString.StartsWith("Terraria.") || binding.FullIdType.Equals(displayString, StringComparison.InvariantCulture))
-					return;
-
-				ReportBadTypeDiagnostic(ctx.ReportDiagnostic, node.Right, binding);
-			}
+			TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Right, binding, ctx.CancellationToken);
 		}, SyntaxKind.SimpleAssignmentExpression);
 
 		/*
@@ -83,65 +70,37 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 		ctx.RegisterSyntaxNodeAction(ctx => {
 			var node = (BinaryExpressionSyntax)ctx.Node;
 
-			MagicNumberBindings.Binding binding;
-			SyntaxNode literalNode;
-			Optional<object> constant;
+			if (IsNumber(node.Right)) {
+				if (ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken).Symbol as IFieldSymbol is not { } leftSymbol) return;
+				if (!MagicNumberBindings.TryGetBinding(leftSymbol, out var binding)) return;
 
-			if (node.Left.IsKind(SyntaxKind.NumericLiteralExpression)) {
-				var rightSymbolInfo = ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken);
-				if (rightSymbolInfo.Symbol is not { } rightSymbol || !MagicNumberBindings.TryGetBinding(rightSymbol, out binding))
-					return;
-
-				literalNode = node.Left;
-				constant = ctx.SemanticModel.GetConstantValue(node.Left, ctx.CancellationToken);
+				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Right, binding, ctx.CancellationToken);
 			}
-			else if (node.Right.IsKind(SyntaxKind.NumericLiteralExpression)) {
-				var leftSymbolInfo = ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken);
-				if (leftSymbolInfo.Symbol is not { } leftSymbol || !MagicNumberBindings.TryGetBinding(leftSymbol, out binding))
-					return;
+			else if (IsNumber(node.Left)) {
+				if (ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken).Symbol as IFieldSymbol is not { } rightSymbol) return;
+				if (!MagicNumberBindings.TryGetBinding(rightSymbol, out var binding)) return;
 
-				literalNode = node.Right;
-				constant = ctx.SemanticModel.GetConstantValue(node.Right, ctx.CancellationToken);
+				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Left, binding, ctx.CancellationToken);
 			}
 			else {
-				var leftSymbolInfo = ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken);
-				var rightSymbolInfo = ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken);
+				MagicNumberBindings.Binding leftBinding = null, rightBinding = null;
+				_ = ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken).Symbol as IFieldSymbol is { } leftSymbol && MagicNumberBindings.TryGetBinding(leftSymbol, out leftBinding);
+				_ = ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken).Symbol as IFieldSymbol is { } rightSymbol && MagicNumberBindings.TryGetBinding(rightSymbol, out rightBinding);
 
-				var nodeToReport = default(SyntaxNode);
-				ISymbol a = null, b = null;
-
-				if (leftSymbolInfo.Symbol is IFieldSymbol { IsConst: true }) {
-					nodeToReport = node.Left;
-					a = rightSymbolInfo.Symbol;
-					b = leftSymbolInfo.Symbol;
+				switch (leftBinding, rightBinding) {
+					case (not null, not null):
+						// TODO: report different types?
+						break;
+					case (null, not null):
+						TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Left, rightBinding, ctx.CancellationToken);
+						break;
+					case (not null, null):
+						TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Right, leftBinding, ctx.CancellationToken);
+						break;
+					case (null, null):
+						break;
 				}
-
-				if (rightSymbolInfo.Symbol is IFieldSymbol { IsConst: true }) {
-					nodeToReport = node.Right;
-					a = leftSymbolInfo.Symbol;
-					b = rightSymbolInfo.Symbol;
-				}
-
-				if (a != null && b != null) {
-					if (!MagicNumberBindings.TryGetBinding(a, out binding))
-						return;
-
-					var displayString = b.ContainingType.ToDisplayString();
-					if (!displayString.StartsWith("Terraria.") || binding.FullIdType.Equals(displayString, StringComparison.InvariantCulture))
-						return;
-
-					ReportBadTypeDiagnostic(ctx.ReportDiagnostic, nodeToReport, binding);
-				}
-
-				return;
 			}
-
-			if (!constant.HasValue)
-				return;
-
-			int id = Convert.ToInt32(constant.Value);
-
-			ReportDiagnostic(ctx.ReportDiagnostic, literalNode, binding, id);
 		}, SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression, SyntaxKind.GreaterThanExpression, SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanExpression, SyntaxKind.LessThanOrEqualExpression);
 
 		/*
@@ -155,32 +114,17 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			var node = (InvocationExpressionSyntax)ctx.Node;
 
 			if (ctx.SemanticModel.GetSymbolInfo(node, ctx.CancellationToken).Symbol as IMethodSymbol is not { } invokedMethodSymbol) return;
-
 			if (!MagicNumberBindings.TryGetBinding(invokedMethodSymbol, out _)) return;
 
 			for (int i = 0; i < node.ArgumentList.Arguments.Count; i++) {
+				ctx.CancellationToken.ThrowIfCancellationRequested();
+
 				var argument = node.ArgumentList.Arguments[i];
-				if (argument.Expression.IsKind(SyntaxKind.NumericLiteralExpression)) {
-					var argumentOperation = (IArgumentOperation)ctx.SemanticModel.GetOperation(argument, ctx.CancellationToken);
-					if (!MagicNumberBindings.TryGetBinding(argumentOperation.Parameter, out var binding))
-						continue;
+				var argumentOperation = (IArgumentOperation)ctx.SemanticModel.GetOperation(argument, ctx.CancellationToken);
+				if (!MagicNumberBindings.TryGetBinding(argumentOperation.Parameter, out var binding))
+					continue;
 
-					int id = Convert.ToInt32(argumentOperation.Value.ConstantValue.Value);
-
-					ReportDiagnostic(ctx.ReportDiagnostic, argument.Expression, binding, id);
-					break; // with the way bindings currently work, only 1 argument can be binded, thus immediately terminate loop once found.
-				}
-				else if (ctx.SemanticModel.GetSymbolInfo(argument.Expression, ctx.CancellationToken) is { Symbol: var rightSymbol } && rightSymbol is IFieldSymbol { IsConst: true }) {
-					var argumentOperation = (IArgumentOperation)ctx.SemanticModel.GetOperation(argument, ctx.CancellationToken);
-					if (!MagicNumberBindings.TryGetBinding(argumentOperation.Parameter, out var binding))
-						continue;
-
-					var displayString = rightSymbol.ContainingType.ToDisplayString();
-					if (!displayString.StartsWith("Terraria.") || binding.FullIdType.Equals(displayString, StringComparison.InvariantCulture))
-						return;
-
-					ReportBadTypeDiagnostic(ctx.ReportDiagnostic, argument.Expression, binding);
-				}
+				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, argument.Expression, binding, ctx.CancellationToken);
 			}
 		}, SyntaxKind.InvocationExpression);
 
@@ -211,19 +155,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			if (ctx.SemanticModel.GetSymbolInfo(operatedExpression, ctx.CancellationToken).Symbol is not { } operatedSymbol) return;
 			if (!MagicNumberBindings.TryGetBinding(operatedSymbol, out var binding)) return;
 
-			if (node.Value.IsKind(SyntaxKind.NumericLiteralExpression) && node.Value is LiteralExpressionSyntax literalExpressionSyntax) {
-				int id = Convert.ToInt32(literalExpressionSyntax.Token.Value);
-
-				ReportDiagnostic(ctx.ReportDiagnostic, node.Value, binding, id);
-			}
-			else if (ctx.SemanticModel.GetSymbolInfo(node.Value, ctx.CancellationToken) is { Symbol: var rightSymbol } && rightSymbol is IFieldSymbol { IsConst: true }) {
-				var displayString = rightSymbol.ContainingType.ToDisplayString();
-				if (!displayString.StartsWith("Terraria.") || binding.FullIdType.Equals(displayString, StringComparison.InvariantCulture))
-					return;
-
-				ReportBadTypeDiagnostic(ctx.ReportDiagnostic, node.Value, binding);
-			}
-
+			TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Value, binding, ctx.CancellationToken);
 		}, SyntaxKind.CaseSwitchLabel);
 
 		/*
@@ -240,33 +172,41 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 
 			if (node.ArgumentList is not {
 				RawKind: (int)SyntaxKind.BracketedArgumentList,
-				Arguments: [{ Expression: var indexExpression }] // is this doing the count check?
+				Arguments: [{ Expression: var indexExpression }]
 			})
 				return;
 
-			if (indexExpression.IsKind(SyntaxKind.NumericLiteralExpression)) {
-				var constant = ctx.SemanticModel.GetConstantValue(indexExpression, ctx.CancellationToken);
-				if (!constant.HasValue)
-					return;
-
-				int id = Convert.ToInt32(constant.Value);
-
-				ReportDiagnostic(ctx.ReportDiagnostic, indexExpression, binding, id);
-			}
-			else if (ctx.SemanticModel.GetSymbolInfo(indexExpression, ctx.CancellationToken) is { Symbol: var argumentSymbol } && argumentSymbol is IFieldSymbol { IsConst: true }) {
-				var displayString = argumentSymbol.ContainingType.ToDisplayString();
-				if (!displayString.StartsWith("Terraria.") || binding.FullIdType.Equals(displayString, StringComparison.InvariantCulture))
-					return;
-
-				ReportBadTypeDiagnostic(ctx.ReportDiagnostic, indexExpression, binding);
-			}
+			TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, indexExpression, binding, ctx.CancellationToken);
 		}, SyntaxKind.ElementAccessExpression);
+	}
+
+	private static bool IsNumber(SyntaxNode node)
+	{
+		return node is { RawKind: (int)SyntaxKind.NumericLiteralExpression } or PrefixUnaryExpressionSyntax { RawKind: (int)SyntaxKind.UnaryMinusExpression, Operand.RawKind: (int)SyntaxKind.NumericLiteralExpression };
+	}
+
+	private void TryReportVariedDiagnostics(Action<Diagnostic> report, SemanticModel semanticModel, SyntaxNode constantNode, MagicNumberBindings.Binding binding, CancellationToken cancellationToken)
+	{
+		cancellationToken.ThrowIfCancellationRequested();
+
+		if (IsNumber(constantNode)) {
+			var constant = semanticModel.GetConstantValue(constantNode, cancellationToken);
+			if (!constant.HasValue)
+				return;
+
+			ReportDiagnostic(report, constantNode, binding, Convert.ToInt32(constant.Value));
+		}
+		else if (semanticModel.GetSymbolInfo(constantNode, cancellationToken) is { Symbol: var argumentSymbol } && argumentSymbol is IFieldSymbol { IsConst: true }) {
+			var displayString = argumentSymbol.ContainingType.ToDisplayString();
+			if (!displayString.StartsWith("Terraria.") || binding.FullIdType.Equals(displayString))
+				return;
+
+			ReportBadTypeDiagnostic(report, constantNode, binding);
+		}
 	}
 
 	private void ReportDiagnostic(Action<Diagnostic> report, SyntaxNode literalNode, MagicNumberBindings.Binding binding, int id)
 	{
-		Debug.Assert(literalNode is LiteralExpressionSyntax);
-
 		if (!binding.Search.ContainsId(id)) return;
 		var literalName = binding.Search.GetName(id);
 

@@ -89,7 +89,6 @@ public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer
 				return;
 
 			int value = Convert.ToInt32(constant.Value);
-
 			Debug.Assert(invocation.IsKind(SyntaxKind.InvocationExpression));
 
 			if (invocationSymbol.Parameters.Length == 2) {
@@ -104,7 +103,7 @@ public sealed class SimplifyUnifiedRandomAnalyzer() : AbstractDiagnosticAnalyzer
 					ulong argumentConstantValue = Convert.ToUInt64(argumentConstant);
 
 					if ((ulong)value >= argumentConstantValue) {
-						// Impossible to every succeed.
+						// Impossible to ever succeed.
 						return;
 					}
 

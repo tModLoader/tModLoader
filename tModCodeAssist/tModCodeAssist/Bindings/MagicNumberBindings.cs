@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using ReLogic.Reflection;
 using Terraria.ID;
@@ -118,6 +117,7 @@ public static class MagicNumberBindings
 				Debug.Assert(idType != null, "idType must be provided for classes without a Search IdDictionary");
 				search = IdDictionary.Create(idClass, idType);
 			}
+
 			Debug.Assert(search != null);
 			searchCache[idClass] = search;
 		}
@@ -146,6 +146,7 @@ public static class MagicNumberBindings
 			if (bindingByMember.TryGetValue(fieldSymbol.MetadataName, out binding)) {
 				return true;
 			}
+
 			if (bindingByMember.TryGetValue("*", out binding)) {
 				return true;
 			}
