@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,13 @@
- using System.Collections.Generic;
+@@ -1,11 +_,12 @@
+-using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
