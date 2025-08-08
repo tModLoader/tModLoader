@@ -2043,11 +2043,13 @@
  								SquareWallFrame(k, l);
  								NetMessage.SendTileSquare(-1, k, l);
  							}
--							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
--								tile.type = 661;
--								SquareTileFrame(k, l);
--								NetMessage.SendTileSquare(-1, k, l);
--							}
++							/* Moved down below to after the SkipWallCorruptionConversion label, as this is a tile conversion, not a wall conversion.
+ 							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
+ 								tile.type = 661;
+ 								SquareTileFrame(k, l);
+ 								NetMessage.SendTileSquare(-1, k, l);
+ 							}
++							*/
  							else if (WallID.Sets.Conversion.Stone[wall] && wall != 3) {
  								tile.wall = 3;
  								SquareWallFrame(k, l);
@@ -2059,7 +2061,7 @@
 +							if (!convertTile)
 +								goto SkipTileCorruptionConversion;
 +
-+							if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
++							if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) { // Moved from above
 +								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 661);
 +								tile.type = 661;
 +								SquareTileFrame(k, l);
