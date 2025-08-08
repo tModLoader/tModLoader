@@ -744,12 +744,10 @@ public static class TileLoader
 		RegisterConversionFallback(TileID.GolfGrassHallowed, TileID.GolfGrass, BiomeConversionID.Hallow);
 		RegisterConversionFallback(TileID.GolfGrass, TileID.Grass, BiomeConversionID.Purity, BiomeConversionID.PurificationPowder, BiomeConversionID.Dirt);
 
-		// removed to preserve vanilla oversight requiring 2 solutions to convert between evil and mushroom
-		// please let me fix this
-		//RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption);
-		//RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson);
-		//RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom);
-		
+		RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption, BiomeConversionID.GlowingMushroom);
+		RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson, BiomeConversionID.GlowingMushroom);
+		RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom, BiomeConversionID.Corruption, BiomeConversionID.Crimson);
+
 		RegisterConversionFallback(TileID.CorruptIce, TileID.IceBlock, BiomeConversionID.Corruption);
 		RegisterConversionFallback(TileID.FleshIce, TileID.IceBlock, BiomeConversionID.Crimson);
 		RegisterConversionFallback(TileID.HallowedIce, TileID.IceBlock, BiomeConversionID.Hallow);
@@ -773,6 +771,9 @@ public static class TileLoader
 	{
 		if (tileConversionFallbacks == null)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
+
+		//if (tileConversionFallbacks[tileType].exceptConversionIds is not null)
+		//	throw new Exception(Language.GetTextValue("tModLoader.LoadErrorRegisteredDuplicateConversionFallback", "TileLoader.RegisterConversionFallback"));
 
 		bool[] exceptFor = new bool[BiomeConversionLoader.BiomeConversionCount];
 		for (int i = 0; i < exceptForConversionTypes.Length; i++) {
