@@ -102,9 +102,9 @@ public static class MagicNumberBindings
 		}
 	}
 
-	private static void AddBinding<T>(string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func, bool allowNegativeIDs = false)
+	private static void AddBinding<T>(string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func, Type idType = null, bool allowNegativeIDs = false)
 	{
-		AddBinding(typeof(T), owningClassName, memberName, func, allowNegativeIDs: allowNegativeIDs);
+		AddBinding(typeof(T), owningClassName, memberName, func, idType: idType, allowNegativeIDs: allowNegativeIDs);
 	}
 
 	private static void AddBinding(Type idClass, string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func, Type idType = null, bool allowNegativeIDs = false)
