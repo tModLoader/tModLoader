@@ -299,6 +299,8 @@ public static class ModContent
 
 		CacheVanillaState();
 
+		Main.Achievements.Load(); // Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
+
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
 			ContentInstance.Register(mod);

@@ -47,7 +47,7 @@
  		RemoveAllChildren();
  		_categoryButtons.Clear();
  		_achievementElements.Clear();
-@@ -50,22 +_,36 @@
+@@ -50,22 +_,42 @@
  		_achievementsList.Top.Set(50f, 0f);
  		_achievementsList.ListPadding = 5f;
  		uIPanel.Append(_achievementsList);
@@ -60,10 +60,14 @@
  		uIElement.Append(uITextPanel);
 +
  		UITextPanel<LocalizedText> uITextPanel2 = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f, large: true);
--		uITextPanel2.Width.Set(-10f, 0.5f);
++		/*
+ 		uITextPanel2.Width.Set(-10f, 0.5f);
++		*/
  		uITextPanel2.Height.Set(50f, 0f);
  		uITextPanel2.VAlign = 1f;
--		uITextPanel2.HAlign = 0.5f;
++		/*
+ 		uITextPanel2.HAlign = 0.5f;
++		*/
  		uITextPanel2.Top.Set(-45f, 0f);
  		uITextPanel2.OnMouseOver += FadedMouseOver;
  		uITextPanel2.OnMouseOut += FadedMouseOut;
@@ -86,10 +90,11 @@
  		_backpanel = uITextPanel2;
  		List<Achievement> list = Main.Achievements.CreateAchievementsList();
  		for (int i = 0; i < list.Count; i++) {
-@@ -74,6 +_,17 @@
+@@ -73,6 +_,17 @@
+ 			_achievementsList.Add(item);
  			_achievementElements.Add(item);
  		}
- 
++
 +		uISearchBar = new UIInputTextField(Language.GetOrRegister("tModLoader.AchievementSearch", () => "Search..").Value);
 +		uISearchBar.HAlign = 1;
 +		uISearchBar.Height.Set(40, 0);
@@ -100,15 +105,6 @@
 +		uISearchBar.OnRightClick += (a, b) => uISearchBar.Text = "";
 +		uISearchBar.OnTextChange += FilterSearch;
 +		uIPanel.Append(uISearchBar);
-+
+ 
  		UIScrollbar uIScrollbar = new UIScrollbar();
  		uIScrollbar.SetView(100f, 1000f);
- 		uIScrollbar.Height.Set(-50f, 1f);
-@@ -94,7 +_,6 @@
- 			_categoryButtons.Add(uIToggleImage);
- 			uIElement2.Append(uIToggleImage);
- 		}
--
- 		uIPanel.Append(uIElement2);
- 	}
- 

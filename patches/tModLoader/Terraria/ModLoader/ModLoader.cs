@@ -132,8 +132,6 @@ public static class ModLoader
 
 			ModContent.Load(token);
 
-			Main.Achievements.Load(); // Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
-
 			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
 			if (OnSuccessfulLoad != null) {

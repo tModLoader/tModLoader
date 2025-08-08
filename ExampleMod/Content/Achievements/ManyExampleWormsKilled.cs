@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Achievements;
 
 public class ManyExampleWormsKilled : ModAchievement
 {
-	public readonly CustomIntCondition IntCondition = new("Condition", 5);
+	public CustomIntCondition Condition { get; private set; }
 	public override void SetStaticDefaults() {
 		Achievement.Hidden = true;
 
@@ -19,8 +19,8 @@ public class ManyExampleWormsKilled : ModAchievement
 
 		// Int conditions will automatically complete once you've incremented it enough.
 		// ModContent.GetInstance<ManyExampleWormsKilled>().IntCondition.Value++;
-		Achievement.AddCondition(IntCondition);
-		Achievement.UseTracker(IntCondition.GetAchievementTracker());
+		Condition = AddIntCondition(5);
+		Achievement.UseTracker(Condition.GetAchievementTracker());
 	}
 
 	public override void OnCompleted(Achievement achievement) {

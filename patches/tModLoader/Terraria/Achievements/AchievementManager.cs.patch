@@ -18,7 +18,7 @@
  			_savePath = SocialAPI.Achievements.GetSavePath();
  			_isCloudSave = true;
  			_cryptoKey = SocialAPI.Achievements.GetEncryptionKey();
-@@ -59,10 +_,16 @@
+@@ -59,10 +_,19 @@
  				SocialAPI.Achievements.StoreStats();
  
  			try {
@@ -31,7 +31,9 @@
  				using MemoryStream memoryStream = new MemoryStream();
  				using CryptoStream cryptoStream = new CryptoStream(memoryStream, new RijndaelManaged().CreateEncryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Write);
  				using BsonWriter bsonWriter = new BsonWriter(cryptoStream);
--				JsonSerializer.Create(_serializerSettings).Serialize(bsonWriter, _achievements);
++				/*
+ 				JsonSerializer.Create(_serializerSettings).Serialize(bsonWriter, _achievements);
++				*/
 +				JsonSerializer.Create(_serializerSettings).Serialize(bsonWriter, existingData);
  				bsonWriter.Flush();
  				cryptoStream.FlushFinalBlock();

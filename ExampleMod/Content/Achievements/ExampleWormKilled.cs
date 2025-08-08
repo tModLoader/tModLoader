@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Achievements.Conditions;
-using ExampleMod.Content.Items.Placeable;
+﻿using ExampleMod.Content.Items.Placeable;
 using Terraria;
 using Terraria.Achievements;
 using Terraria.GameContent.Achievements;
@@ -10,7 +9,7 @@ namespace ExampleMod.Content.Achievements;
 public class ExampleWormKilled : ModAchievement
 {
 	// The CustomFlagCondition used for this Achievement.
-	public readonly CustomFlagCondition Condition = new("Condition");
+	public CustomFlagCondition Condition { get; private set; }
 
 	public override void SetStaticDefaults() {
 		Achievement.Hidden = false;
@@ -22,7 +21,7 @@ public class ExampleWormKilled : ModAchievement
 
 		// The achievement can be completed like this:
 		// ModContent.GetInstance<ExampleWormKilled>().Condition.Complete();
-		Achievement.AddCondition(Condition);
+		Condition = AddCondition();
 	}
 
 	public override void OnCompleted(Achievement achievement) {

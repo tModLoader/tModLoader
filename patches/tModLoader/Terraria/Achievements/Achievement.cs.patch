@@ -48,7 +48,7 @@
  		foreach (KeyValuePair<string, JObject> condition in conditions) {
  			if (_conditions.TryGetValue(condition.Key, out var value)) {
  				value.Load(condition.Value);
-@@ -66,7 +_,11 @@
+@@ -66,6 +_,9 @@
  
  	public void AddCondition(AchievementCondition condition)
  	{
@@ -56,10 +56,8 @@
 +			throw new Exception($"Cannot add two conditions with the same name: {condition.Name}");
 +
  		_conditions[condition.Name] = condition;
-+				
  		condition.OnComplete += OnConditionComplete;
  	}
- 
 @@ -82,7 +_,7 @@
  		}
  	}

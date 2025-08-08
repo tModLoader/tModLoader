@@ -24,17 +24,31 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
     /// <summary>
     /// Gets the localized friendly name of the achievement.
     /// </summary>
-    public virtual LocalizedText FriendlyName => Mod.GetLocalization($"{LocalizationCategory}.{Name}.Name");
+    public virtual LocalizedText FriendlyName => this.GetLocalization(nameof(FriendlyName), PrettyPrintName);
 
     /// <summary>
     /// Gets the localized description of the achievement.
     /// </summary>
-    public virtual LocalizedText Description => Mod.GetLocalization($"{LocalizationCategory}.{Name}.Description");
+    public virtual LocalizedText Description => this.GetLocalization(nameof(Description));
+
+	public CustomFlagCondition AddCondition(string key = "Condition") => AddCondition(new CustomFlagCondition(key));
+
+	public CustomIntCondition AddIntCondition(int maxValue) => AddCondition(new CustomIntCondition("Condition", maxValue));
+
+	public CustomIntCondition AddIntCondition(string key, int maxValue) => AddCondition(new CustomIntCondition(key, maxValue));
+
+	public CustomFloatCondition AddFloatCondition(float maxValue) => AddCondition(new CustomFloatCondition("Condition", maxValue));
+
+	public CustomFloatCondition AddFloatCondition(string key, float maxValue) => AddCondition(new CustomFloatCondition(key, maxValue));
+
+	public T AddCondition<T>(T condition) where T : AchievementCondition
+	{
+		Achievement.AddCondition(condition);
+		return condition;
+	}
 
 	protected override sealed void Register()
     {
-	    ModTypeLookup<ModAchievement>.Register(this);
-
 	    if (string.IsNullOrWhiteSpace(Name))
 		    throw new InvalidOperationException("Achievement name cannot be null or empty.");
 	    
@@ -43,6 +57,8 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	    
 	    if (Description == null)	    
 		    throw new InvalidOperationException($"Description for achievement '{Name}' could not be found.");
+
+		ModTypeLookup<ModAchievement>.Register(this);
 
 		Achievement.FriendlyName = FriendlyName;
 		Achievement.Description = Description;
@@ -59,7 +75,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
     {
         Main.Achievements.Unregister(Achievement);
         Achievement.OnCompleted -= OnCompleted;
-        base.Unload();
     }
 
     /// <summary>
@@ -95,7 +110,7 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
             throw new InvalidOperationException("Achievement name cannot be null or empty during template creation.");
         }
 
-		return new Achievement($"{Mod.Name.ToUpper()}_{Name.ToUpper()}", this);
+		return new Achievement($"{Mod.Name.ToUpper()}_{FullName.ToUpper()}", this);
     }
 }
 

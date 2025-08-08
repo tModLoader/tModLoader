@@ -105,7 +105,7 @@ public partial class UIAchievementsMenu : UIState
 			string friendlyName = achievementElement.GetAchievement().FriendlyName.Value.ToLowerInvariant(); // Convert to lowercase for case-insensitive comparison
 			string modName = achievementElement.GetAchievement().ModAchievement != null ? achievementElement.GetAchievement().ModAchievement.Mod.DisplayName.ToLowerInvariant() : string.Empty; // Convert to lowercase for case-insensitive comparison
 
-			if (friendlyName.Contains(searchText) || modName.Contains(searchText)) {
+			if (friendlyName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || modName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)) {
 				_achievementsList.Add(achievementElement);
 			}
 		}
