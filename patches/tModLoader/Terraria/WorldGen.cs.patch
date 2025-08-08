@@ -2025,7 +2025,7 @@
  						if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 117) {
  							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 117);
  							tile.type = 117;
-@@ -39536,19 +_,19 @@
+@@ -39536,19 +_,26 @@
  							SquareTileFrame(k, l);
  							NetMessage.SendTileSquare(-1, k, l);
  						}
