@@ -215,7 +215,7 @@
  		catch {
  		}
 +		*/
-+		
++
 +		// Properly stop waterfall/lava(fall) sounds.
 +		// The above wouldn't do anything in the new sound system.
 +		Main.ambientWaterfallStrength = 0f;
@@ -235,7 +235,7 @@
 +		}
 +		catch {
 +		}
-+
++		
  		CaptureInterface.ResetFocus();
  		Main.ActivePlayerFileData.StopPlayTimer();
  		Main.fastForwardTimeToDawn = false;
