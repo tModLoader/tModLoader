@@ -31,14 +31,25 @@ public static class LiquidEdgeRenderer
 	/// </summary>
 	public static bool Active => !Main.keyState.PressingShift() && Lighting.Mode is Graphics.Light.LightMode.Color or Graphics.Light.LightMode.White;
 
+	/// <summary>
+	/// Turns all pixels with alpha above zero white, and all others transparent.
+	/// </summary>
 	public static Effect MaskShader => (maskShaderAsset ??= ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Liquid.LiquidMask", AssetRequestMode.ImmediateLoad)).Value;
 
 	private static Asset<Effect>? maskShaderAsset;
 
+	/// <summary>
+	/// The default liquid mask tile for tiles in <see cref="TileID.Sets.BlocksWaterDrawingBehindSelf"/>.
+	/// </summary>
 	public static Texture2D MaskTile => (maskTileAsset ??= ModLoader.ModLoader.ManifestAssets.Request<Texture2D>("Terraria.GameContent.Liquid.DefaultTileLiquidMask", AssetRequestMode.ImmediateLoad)).Value;
 
 	private static Asset<Texture2D>? maskTileAsset;
 
+	/// <summary>
+	/// Contains liquid mask textures for specific block types that have funny shapes but still need to hide water.
+	/// <br />
+	/// Only shows up when the tile is part of the <see cref="TileID.Sets.BlocksWaterDrawingBehindSelf"/> set.
+	/// </summary>
 	public static Dictionary<int, Asset<Texture2D>> CustomTileMasks = new Dictionary<int, Asset<Texture2D>>();
 
 	public static readonly BlendState MaskingBlendState = new BlendState() {
@@ -115,12 +126,12 @@ public static class LiquidEdgeRenderer
 
 	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)
 	{
+		pCache->EdgeData = null;
+
 		if (!Active)
 			return;
 
 		var selfBlockType = tileCache.BlockType;
-		if (selfBlockType is BlockType.Solid)
-			return;
 
 		Tile tileRightCache = Main.tile[tileX + 1, tileY];
 		Tile tileLeftCache = Main.tile[tileX - 1, tileY];
@@ -151,7 +162,7 @@ public static class LiquidEdgeRenderer
 		}
 		else {
 			if (tileCache.LiquidAmount > 0 && blockType != BlockType.Solid && (blockType != BlockType.HalfBlock || tileCache.liquid > 160)) {
-				self = true;
+				//self = true;
 
 				if (tileCache.LiquidAmount > highLiquid) {
 					highLiquid = tileCache.LiquidAmount;
@@ -197,9 +208,12 @@ public static class LiquidEdgeRenderer
 		if (exempt)
 			return;
 
-		/*Vector2 offset = new Vector2(0, 0);
-		Rectangle size = new Rectangle(0, 4, 16, 16);
+		var newEdgeData = new LiquidRenderer.LiquidEdgeData() {
+			LiquidOffset = new Vector2(0),
+			SourceRectangle = new Rectangle(0, 0, 16, 16)
+		};
 
+		/*
 		if (down && (left || right)) {
 			left = true;
 			right = true;
@@ -247,13 +261,15 @@ public static class LiquidEdgeRenderer
 			}
 		}*/
 
+		Edges.Add(new Point(tileX, tileY));
+
 		pCache->Type = (byte)liquidType;
 		pCache->LiquidLevel = highLiquid / 255f;
 		pCache->HasLiquid = highLiquid > 0;
-		pCache->VisibleLiquidLevel = 0f; // highLiquid / 255f;
-		pCache->IsSolid = false;
-
-
-		Edges.Add(new Point(tileX, tileY));
+		pCache->HasVisibleLiquid = false;
+		pCache->VisibleLiquidLevel = 0; // highLiquid / 255f;
+		pCache->IsSolid = selfBlockType is BlockType.HalfBlock;
+		pCache->IsSolid = selfBlockType is BlockType.Solid;
+		pCache->EdgeData = newEdgeData;
 	}
 }

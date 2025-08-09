@@ -15,25 +15,48 @@
  	{
  		public float LiquidLevel;
  		public float VisibleLiquidLevel;
-@@ -37,7 +_,7 @@
+@@ -35,10 +_,13 @@
+ 		public float VisibleTopWall;
+ 		public byte Type;
  		public byte VisibleType;
++		public LiquidEdgeData? EdgeData;
  	}
  
 -	private struct LiquidDrawCache
 +	public struct LiquidDrawCache
  	{
++		public int X;
++		public int Y;
  		public Rectangle SourceRectangle;
  		public Vector2 LiquidOffset;
-@@ -48,7 +_,7 @@
+ 		public bool IsVisible;
+@@ -46,9 +_,11 @@
+ 		public byte Type;
+ 		public bool IsSurfaceLiquid;
  		public bool HasWall;
++		public LiquidEdgeData? EdgeData;
  	}
  
++	/*
 -	private struct SpecialLiquidDrawCache
 +	public struct SpecialLiquidDrawCache
  	{
  		public int X;
  		public int Y;
-@@ -64,13 +_,13 @@
+@@ -59,18 +_,26 @@
+ 		public byte Type;
+ 		public bool IsSurfaceLiquid;
+ 		public bool HasWall;
++		public LiquidEdgeData? EdgeData;
++	}
++	*/
++
++	public struct LiquidEdgeData
++	{
++		public Rectangle SourceRectangle;
++		public Vector2 LiquidOffset;
+ 	}
+ 
  	private const int ANIMATION_FRAME_COUNT = 16;
  	private const int CACHE_PADDING = 2;
  	private const int CACHE_PADDING_2 = 4;
@@ -49,7 +72,7 @@
  		0.6f,
  		0.95f,
  		0.95f,
-@@ -86,7 +_,7 @@
+@@ -86,17 +_,19 @@
  	};
  	public const float MIN_LIQUID_SIZE = 0.25f;
  	public static LiquidRenderer Instance;
@@ -57,8 +80,11 @@
 +	public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
  	private LiquidCache[] _cache = new LiquidCache[1];
  	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
- 	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
-@@ -96,7 +_,9 @@
+-	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
++	// private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
+ 	private int _animationFrame;
+ 	private Rectangle _drawArea = new Rectangle(0, 0, 1, 1);
+ 	private readonly UnifiedRandom _random = new UnifiedRandom();
  	private Color[] _waveMask = new Color[1];
  	private float _frameState;
  
@@ -77,7 +103,15 @@
  		Rectangle rectangle = new Rectangle(drawArea.X - 2, drawArea.Y - 2, drawArea.Width + 4, drawArea.Height + 4);
  		_drawArea = drawArea;
  		if (_cache.Length < rectangle.Width * rectangle.Height + 1)
-@@ -131,14 +_,14 @@
+@@ -125,20 +_,20 @@
+ 		if (_drawCache.Length < drawArea.Width * drawArea.Height + 1)
+ 			_drawCache = new LiquidDrawCache[drawArea.Width * drawArea.Height + 1];
+ 
+-		if (_drawCacheForShimmer.Length < drawArea.Width * drawArea.Height + 1)
++		/*if (_drawCacheForShimmer.Length < drawArea.Width * drawArea.Height + 1)
+-			_drawCacheForShimmer = new SpecialLiquidDrawCache[drawArea.Width * drawArea.Height + 1];
++			_drawCacheForShimmer = new SpecialLiquidDrawCache[drawArea.Width * drawArea.Height + 1];*/
+ 
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
@@ -103,22 +137,143 @@
  					ptr2++;
  				}
  			}
-@@ -550,6 +_,7 @@
- 						vertices.BottomRightColor *= num;
- 						vertices.TopLeftColor *= num;
- 						vertices.TopRightColor *= num;
-+
- 						Main.DrawTileInWater(drawOffset, i, j);
- 						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
- 					}
-@@ -558,7 +_,6 @@
+@@ -424,7 +_,9 @@
+ 								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
+ 									num23 = 0.5f;
+ 
++								ptr4->X = num18;
++								ptr4->Y = num19;
+-								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f);
++								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f) || ptr2->EdgeData.HasValue;
+ 								ptr4->SourceRectangle = new Rectangle((int)(16f - num21 * 16f) + ptr2->FrameOffset.X, (int)(16f - num23 * 16f) + ptr2->FrameOffset.Y, (int)Math.Ceiling((num21 - num20) * 16f), (int)Math.Ceiling((num23 - num22) * 16f));
+ 								ptr4->IsSurfaceLiquid = ptr2->FrameOffset.X == 16 && ptr2->FrameOffset.Y == 0 && (double)(num19 + rectangle.Y) > Main.worldSurface - 40.0;
+ 								ptr4->Opacity = ptr2->Opacity;
+@@ -483,7 +_,7 @@
  				}
  			}
+ 
+-			fixed (LiquidDrawCache* ptr8 = &_drawCache[0]) {
++			/*fixed (LiquidDrawCache* ptr8 = &_drawCache[0]) {
+ 				fixed (SpecialLiquidDrawCache* ptr10 = &_drawCacheForShimmer[0]) {
+ 					LiquidDrawCache* ptr9 = ptr8;
+ 					SpecialLiquidDrawCache* ptr11 = ptr10;
+@@ -500,6 +_,7 @@
+ 								ptr11->SourceRectangle = ptr9->SourceRectangle;
+ 								ptr11->Type = ptr9->Type;
+ 								ptr9->IsVisible = false;
++								ptr11->EdgeData = ptr9->EdgeData;
+ 								ptr11++;
+ 							}
+ 
+@@ -509,7 +_,7 @@
+ 
+ 					ptr11->IsVisible = false;
+ 				}
+-			}
++			}*/
+ 		}
+ 
+ 		if (this.WaveFilters != null)
+@@ -522,43 +_,48 @@
+ 		Main.tileBatch.Begin();
+ 		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
+ 			LiquidDrawCache* ptr2 = ptr;
+-			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
++			/*for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) { // TML: Liquid draw caches merged, screen loop is now unnecessary
+-				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
++				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {*/
++			int cacheLength = _drawCache.Length;
++			for (int i = 0; i < cacheLength; i++) {
+-					if (ptr2->IsVisible) {
++				if (ptr2->IsVisible && ptr2->Type != LiquidID.Shimmer) { // TML: Liquid draw caches merged, add shimmer type check
+-						Rectangle sourceRectangle = ptr2->SourceRectangle;
++					Rectangle sourceRectangle = ptr2->SourceRectangle;
+-						if (ptr2->IsSurfaceLiquid)
++					if (ptr2->IsSurfaceLiquid)
+-							sourceRectangle.Y = 1280;
++						sourceRectangle.Y = 1280;
+-						else
++					else
+-							sourceRectangle.Y += _animationFrame * 80;
++						sourceRectangle.Y += _animationFrame * 80;
+ 
+-						Vector2 liquidOffset = ptr2->LiquidOffset;
++					Vector2 liquidOffset = ptr2->LiquidOffset;
+-						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
++					float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
+-						int num2 = ptr2->Type;
++					int num2 = ptr2->Type;
+-						switch (num2) {
++					switch (num2) {
+-							case 0:
++						case 0:
+-								num2 = waterStyle;
++							num2 = waterStyle;
+-								num *= globalAlpha;
++							num *= globalAlpha;
+-								break;
++							break;
+-							case 2:
++						case 2:
+-								num2 = 11;
++							num2 = 11;
+-								break;
++							break;
+-						}
+-
+-						num = Math.Min(1f, num);
+-						Lighting.GetCornerColors(i, j, out var vertices);
+-						vertices.BottomLeftColor *= num;
+-						vertices.BottomRightColor *= num;
+-						vertices.TopLeftColor *= num;
+-						vertices.TopRightColor *= num;
+-						Main.DrawTileInWater(drawOffset, i, j);
+-						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 					}
++					// TML: use cached X and Y instead of loop positions
++					int posX = ptr2->X + drawArea.X - 2;
++					int posY = ptr2->Y + drawArea.Y - 2;
++					num = Math.Min(1f, num);
++					Lighting.GetCornerColors(posX, posY, out var vertices);
++					vertices.BottomLeftColor *= num;
++					vertices.BottomRightColor *= num;
++					vertices.TopLeftColor *= num;
++					vertices.TopRightColor *= num;
+ 
+-					ptr2++;
++					Main.DrawTileInWater(drawOffset, posX, posY);
++					Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(posX << 4, posY << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 				}
++
++				ptr2++;
+ 			}
++			/*}
++		}*/
  		}
 -
  		Main.tileBatch.End();
  	}
  
+@@ -566,12 +_,14 @@
+ 	{
+ 		Rectangle drawArea = _drawArea;
+ 		Main.tileBatch.Begin();
+-		fixed (SpecialLiquidDrawCache* ptr = &_drawCacheForShimmer[0]) {
++		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
+-			SpecialLiquidDrawCache* ptr2 = ptr;
++			LiquidDrawCache* ptr2 = ptr;
+-			int num = _drawCacheForShimmer.Length;
++			int num = _drawCache.Length;
+ 			for (int i = 0; i < num; i++) {
+-				if (!ptr2->IsVisible)
+-					break;
++				if (!ptr2->IsVisible || ptr2->Type != LiquidID.Shimmer) { // TML: Liquid draw caches merged, add shimmer type check
++					ptr2++;
++					continue;
++				}
+ 
+ 				Rectangle sourceRectangle = ptr2->SourceRectangle;
+ 				if (ptr2->IsSurfaceLiquid)
 @@ -589,6 +_,7 @@
  				SetShimmerVertexColors(ref vertices, val, num3, num4);
  				Main.DrawTileInWater(drawOffset, num3, num4);
