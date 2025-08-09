@@ -89,7 +89,7 @@
  		list.Add(new Point16(105, 37));
  		list.Add(new Point16(105, 2));
  		GenVars.statueList = list.ToArray();
-+		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience.
++		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience. 
  	}
  
  	public static void PlaceStatueTrap(int x, int y)
@@ -215,7 +215,7 @@
  		catch {
  		}
 +		*/
-+
++		
 +		// Properly stop waterfall/lava(fall) sounds.
 +		// The above wouldn't do anything in the new sound system.
 +		Main.ambientWaterfallStrength = 0f;
@@ -252,7 +252,7 @@
  		catch {
  		}
 +		*/
-+
++		
 +		// Properly stop waterfall/lavafall sounds.
 +		// The above wouldn't do anything in the new sound system.
 +		Main.ambientWaterfallStrength = 0f;
@@ -751,7 +751,7 @@
 +		bool vanillaCanGrow = true;
  		if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112)
 +			vanillaCanGrow = false;
-+
++		
 +		if (!vanillaCanGrow && !TileLoader.CanGrowModPalmTree(tile.type))
  			return false;
  
@@ -2796,7 +2796,7 @@
  						if (tile.type == 2 || tile.type == 109 || tile.type == 477 || tile.type == 492 || tile.type == 147 || tile.type == 199 || tile.type == 23 || tile.type == 633) {
 +							vanillaResult = true;
 +						}
-+
++						
 +						if (vanillaResult || TileLoader.CanDropAcorn(tile.type)) {
  							dropItem = 9;
  							secondaryItem = 27;
@@ -3579,7 +3579,7 @@
  									TileMergeAttempt(num, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
 +								TileLoader.ModifyFrameMerge(num, i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
-+
++								
  								bool flag = false;
  								TileMergeCullCache tileMergeCullCache = default(TileMergeCullCache);
  								if (!Main.ShouldShowInvisibleWalls()) {
