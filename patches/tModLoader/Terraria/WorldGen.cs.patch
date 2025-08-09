@@ -235,7 +235,7 @@
 +		}
 +		catch {
 +		}
-+		
++
  		CaptureInterface.ResetFocus();
  		Main.ActivePlayerFileData.StopPlayTimer();
  		Main.fastForwardTimeToDawn = false;
@@ -271,7 +271,7 @@
 +		}
 +		catch {
 +		}
-+
++		
  		CaptureInterface.ResetFocus();
  		Main.ActivePlayerFileData.StopPlayTimer();
  		Player.SavePlayer(Main.ActivePlayerFileData);
