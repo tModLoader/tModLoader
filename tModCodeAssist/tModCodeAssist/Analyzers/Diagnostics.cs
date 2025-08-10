@@ -30,11 +30,11 @@ public static class Diagnostics
 		isEnabledByDefault: true
 	);
 
-	public static readonly DiagnosticDescriptor CommonCollisionNamespace = new(
-		id: nameof(CommonCollisionNamespace),
-		title: CreateResourceString(nameof(Resources.CommonCollisionNamespaceTitle)),
-		messageFormat: CreateResourceString(nameof(Resources.CommonCollisionNamespaceMessageFormat)),
-		description: CreateResourceString(nameof(Resources.CommonCollisionNamespaceDescription)),
+	public static readonly DiagnosticDescriptor CommonCollissionName = new(
+		id: nameof(CommonCollissionName),
+		title: CreateResourceString(nameof(Resources.CommonCollisionNameTitle)),
+		messageFormat: CreateResourceString(nameof(Resources.CommonCollisionNameMessageFormat)),
+		description: CreateResourceString(nameof(Resources.CommonCollisionNameDescription)),
 		category: Categories.Maintenance,
 		defaultSeverity: DiagnosticSeverity.Error,
 		isEnabledByDefault: true

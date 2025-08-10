@@ -115,29 +115,29 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors when namespace name collides with one of existing types.
+        ///   Looks up a localized string similar to Errors when name collides with one of existing type names.
         /// </summary>
-        internal static string CommonCollisionNamespaceDescription {
+        internal static string CommonCollisionNameDescription {
             get {
-                return ResourceManager.GetString("CommonCollisionNamespaceDescription", resourceCulture);
+                return ResourceManager.GetString("CommonCollisionNameDescription", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Namespace {0} collides with an existing type.
+        ///   Looks up a localized string similar to Name {0} collides with an existing type.
         /// </summary>
-        internal static string CommonCollisionNamespaceMessageFormat {
+        internal static string CommonCollisionNameMessageFormat {
             get {
-                return ResourceManager.GetString("CommonCollisionNamespaceMessageFormat", resourceCulture);
+                return ResourceManager.GetString("CommonCollisionNameMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Common type collision namespace.
+        ///   Looks up a localized string similar to Common type collision name.
         /// </summary>
-        internal static string CommonCollisionNamespaceTitle {
+        internal static string CommonCollisionNameTitle {
             get {
-                return ResourceManager.GetString("CommonCollisionNamespaceTitle", resourceCulture);
+                return ResourceManager.GetString("CommonCollisionNameTitle", resourceCulture);
             }
         }
         

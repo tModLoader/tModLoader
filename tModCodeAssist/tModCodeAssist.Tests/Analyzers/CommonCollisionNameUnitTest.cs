@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.CommonCollisionNamespaceAnalyzer>;
+using VerifyCS = tModCodeAssist.Tests.Verifier.Analyzer<tModCodeAssist.Analyzers.CommonCollisionNameAnalyzer>;
 
 namespace tModCodeAssist.Tests.Analyzers;
 
 [TestClass]
-public class CommonCollisionNamespaceUnitTest
+public class CommonCollisionNameUnitTest
 {
 	[TestMethod]
 	public async Task Test()
@@ -13,9 +13,13 @@ public class CommonCollisionNamespaceUnitTest
 		await VerifyCS.Run(
 			"""
 			public static class Program {
+				class [|NPC|] { }
+
 				public static void Main() {
 				}
 			}
+
+			class [|NPC|] { }
 
 			namespace [|Mod|] { }
 			namespace [|Mod|] { }
