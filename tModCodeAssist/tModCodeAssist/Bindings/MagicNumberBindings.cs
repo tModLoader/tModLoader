@@ -77,6 +77,7 @@ public static class MagicNumberBindings
 			AddBinding(typeof(PaintID), "Terraria.Tile", "TileColor", (ctx) => new FieldBinding(ctx));
 			AddBinding(typeof(PaintID), "Terraria.Tile", "WallColor", (ctx) => new FieldBinding(ctx));
 			AddBinding(typeof(LiquidID), "Terraria.Tile", "LiquidType", (ctx) => new FieldBinding(ctx));
+			AddBinding<ExtrasID>("Terraria.GameContent.TextureAssets", "Extra", (ctx) => new FieldBinding(ctx), typeof(short));
 
 			AddBinding<ItemID>("Terraria.Item", "CloneDefaults", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<MessageID>("Terraria.NetMessage", "SendData", (ctx) => new MethodParameterBinding(ctx, 0));
@@ -102,9 +103,9 @@ public static class MagicNumberBindings
 		}
 	}
 
-	private static void AddBinding<T>(string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func, bool allowNegativeIDs = false)
+	private static void AddBinding<T>(string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func, Type idType = null, bool allowNegativeIDs = false)
 	{
-		AddBinding(typeof(T), owningClassName, memberName, func, allowNegativeIDs: allowNegativeIDs);
+		AddBinding(typeof(T), owningClassName, memberName, func, idType: idType, allowNegativeIDs: allowNegativeIDs);
 	}
 
 	private static void AddBinding(Type idClass, string owningClassName, string memberName, Func<Binding.CreationContext, Binding> func, Type idType = null, bool allowNegativeIDs = false)

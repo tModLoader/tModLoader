@@ -39,7 +39,8 @@ public static class Verifier
 				{
 					return base.ApplyCompilationOptions(project)
 						.AddMetadataReference(MetadataReferences.TmlReference)
-						.AddMetadataReference(MetadataReferences.FnaReference);
+						.AddMetadataReference(MetadataReferences.FnaReference)
+						.AddMetadataReference(MetadataReferences.ReLogicReference);
 				}
 
 				public Test WithAdditionalFiles(IEnumerable<(string fileName, SourceText content)> values)

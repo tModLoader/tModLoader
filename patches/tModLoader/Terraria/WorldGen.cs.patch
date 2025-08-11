@@ -2025,7 +2025,7 @@
  						if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 117) {
  							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 117);
  							tile.type = 117;
-@@ -39536,9 +_,14 @@
+@@ -39536,19 +_,26 @@
  							SquareTileFrame(k, l);
  							NetMessage.SendTileSquare(-1, k, l);
  						}
@@ -2041,7 +2041,19 @@
  							if (WallID.Sets.Conversion.Grass[wall] && wall != 69) {
  								tile.wall = 69;
  								SquareWallFrame(k, l);
-@@ -39585,6 +_,10 @@
+ 								NetMessage.SendTileSquare(-1, k, l);
+ 							}
++							/* #4744, Moved down below to after the SkipWallCorruptionConversion label, as this is a tile conversion, not a wall conversion. Fixed in vanilla.
+ 							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
+ 								tile.type = 661;
+ 								SquareTileFrame(k, l);
+ 								NetMessage.SendTileSquare(-1, k, l);
+ 							}
++							*/
+ 							else if (WallID.Sets.Conversion.Stone[wall] && wall != 3) {
+ 								tile.wall = 3;
+ 								SquareWallFrame(k, l);
+@@ -39585,12 +_,22 @@
  								NetMessage.SendTileSquare(-1, k, l);
  							}
  
@@ -2052,6 +2064,18 @@
  							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 25) {
  								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 25);
  								tile.type = 25;
+ 								SquareTileFrame(k, l);
+ 								NetMessage.SendTileSquare(-1, k, l);
+ 							}
++							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) { // #4744, Moved from above, fixed in vanilla.
++								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 661);
++								tile.type = 661;
++								SquareTileFrame(k, l);
++								NetMessage.SendTileSquare(-1, k, l);
++							}
+ 							else if (TileID.Sets.Conversion.Grass[type] && type != 23) {
+ 								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 23);
+ 								tile.type = 23;
 @@ -39625,13 +_,23 @@
  								NetMessage.SendTileSquare(-1, k, l);
  							}

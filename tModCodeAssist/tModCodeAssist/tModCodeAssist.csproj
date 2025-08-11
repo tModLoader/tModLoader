@@ -33,6 +33,7 @@
     <!-- All ID classes from original Code Assist. TODO: Expand and include all ID classes from Terraria/ID/ directory -->
     <Compile Include="$(TMLSourcePath)\Terraria\ID\DustID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\DustID.TML.cs" LinkBase="$(SourceIDsPath)" />
+    <Compile Include="$(TMLSourcePath)\Terraria\ID\ExtrasID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\ItemID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\ItemRarityID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\ItemUseStyleID.cs" LinkBase="$(SourceIDsPath)" />
