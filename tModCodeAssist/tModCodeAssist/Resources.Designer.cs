@@ -115,36 +115,20 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors when name collides with one of existing type names.
+        ///   Looks up a localized string similar to Errors when class name or namespace collides with an existing Terraria type name.
         /// </summary>
         internal static string CommonCollisionNameDescription {
             get {
                 return ResourceManager.GetString("CommonCollisionNameDescription", resourceCulture);
             }
         }
-         
-        ///   Looks up a localized string similar to Simplifies local (client-side) player access.
-        /// </summary>
-        internal static string SimplifyLocalPlayerDescription {
-            get {
-                return ResourceManager.GetString("SimplifyLocalPlayerDescription", resourceCulture);
-            }
-        }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name {0} collides with an existing type.
+        ///   Looks up a localized string similar to Class name or namespace &quot;{0}&quot; from &quot;{1}&quot; collides with an existing Terraria type.
         /// </summary>
         internal static string CommonCollisionNameMessageFormat {
             get {
                 return ResourceManager.GetString("CommonCollisionNameMessageFormat", resourceCulture);
-            }
-        }
-
-        ///   Looks up a localized string similar to The expression &quot;{0}&quot; can be simplified for readability.
-        /// </summary>
-        internal static string SimplifyLocalPlayerMessageFormat {
-            get {
-                return ResourceManager.GetString("SimplifyLocalPlayerMessageFormat", resourceCulture);
             }
         }
         
@@ -157,6 +141,25 @@ namespace tModCodeAssist {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Simplifies local (client-side) player access.
+        /// </summary>
+        internal static string SimplifyLocalPlayerDescription {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &quot;{0}&quot; can be simplified for readability.
+        /// </summary>
+        internal static string SimplifyLocalPlayerMessageFormat {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simplify local (client-side) player access.
         /// </summary>
         internal static string SimplifyLocalPlayerTitle {

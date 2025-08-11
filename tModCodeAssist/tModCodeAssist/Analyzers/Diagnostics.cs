@@ -30,8 +30,8 @@ public static class Diagnostics
 		isEnabledByDefault: true
 	);
 
-	public static readonly DiagnosticDescriptor CommonCollissionName = new(
-		id: nameof(CommonCollissionName),
+	public static readonly DiagnosticDescriptor CommonCollisionName = new(
+		id: nameof(CommonCollisionName),
 		title: CreateResourceString(nameof(Resources.CommonCollisionNameTitle)),
 		messageFormat: CreateResourceString(nameof(Resources.CommonCollisionNameMessageFormat)),
 		description: CreateResourceString(nameof(Resources.CommonCollisionNameDescription)),

@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace tModCodeAssist.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class CommonCollisionNameAnalyzer() : AbstractDiagnosticAnalyzer(Diagnostics.CommonCollissionName)
+public sealed class CommonCollisionNameAnalyzer() : AbstractDiagnosticAnalyzer(Diagnostics.CommonCollisionName)
 {
 	protected override void InitializeWorker(AnalysisContext ctx)
 	{
@@ -17,9 +17,9 @@ public sealed class CommonCollisionNameAnalyzer() : AbstractDiagnosticAnalyzer(D
 				return;
 			}
 
-			object[] args = [symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)];
+			object[] args = [symbol.MetadataName, symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)];
 			foreach (var location in symbol.Locations) {
-				ctx.ReportDiagnostic(Diagnostic.Create(Diagnostics.CommonCollissionName, location, args));
+				ctx.ReportDiagnostic(Diagnostic.Create(Diagnostics.CommonCollisionName, location, args));
 			}
 		}, SymbolKind.Namespace, SymbolKind.NamedType);
 	}

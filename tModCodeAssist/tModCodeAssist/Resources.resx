@@ -139,10 +139,10 @@
     <value>Common type collision name</value>
   </data>
   <data name="CommonCollisionNameMessageFormat" xml:space="preserve">
-    <value>Name {0} collides with an existing type</value>
+    <value>Class name or namespace "{0}" from "{1}" collides with an existing Terraria type</value>
   </data>
   <data name="CommonCollisionNameDescription" xml:space="preserve">
-    <value>Errors when name collides with one of existing type names</value>
+    <value>Errors when class name or namespace collides with an existing Terraria type name</value>
   </data>
   <data name="SimplifyLocalPlayerDescription" xml:space="preserve">
     <value>Simplifies local (client-side) player access</value>
