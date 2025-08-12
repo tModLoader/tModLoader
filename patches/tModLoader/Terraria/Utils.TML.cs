@@ -294,18 +294,26 @@ partial class Utils
 	/// <summary>
 	/// Creates a <see cref="Rectangle"/> containing all of the provided points.
 	/// </summary>
-	public static Rectangle BoundingRectangle(params Point[] points)
+	public static Rectangle BoundingRectangle(Point[] points)
 	{
 		if (points.Length == 0)
 			return new Rectangle();
 		var rectangle = new Rectangle(points[0].X, points[0].Y, 0, 0);
-		foreach (var point in points)
-			rectangle = rectangle.Including(point);
+		for (int i = 1; i < points.Length; i++)
+			rectangle = rectangle.Including(points[i]);
 		return rectangle;
 	}
 
 	/// <inheritdoc cref="BoundingRectangle(Point[])"/>
-	public static Rectangle BoundingRectangle(params Vector2[] vectors) => BoundingRectangle(vectors.Select(ToPoint).ToArray());
+	public static Rectangle BoundingRectangle(Vector2[] vectors)
+	{
+		if (vectors.Length == 0)
+			return new Rectangle();
+		var rectangle = new Rectangle((int)vectors[0].X, (int)vectors[0].Y, 0, 0);
+		for (int i = 1; i < vectors.Length; i++)
+			rectangle = rectangle.Including(vectors[i]);
+		return rectangle;
+	}
 
 	/// <summary>
 	/// Expands the provided <paramref name="rect"/> to include <paramref name="point"/> and returns the newly expanded <see cref="Rectangle"/>.
