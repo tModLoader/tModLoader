@@ -113,5 +113,3 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 		return new Achievement($"{Mod.Name.ToUpper()}_{FullName.ToUpper()}", this);
     }
 }
-
-

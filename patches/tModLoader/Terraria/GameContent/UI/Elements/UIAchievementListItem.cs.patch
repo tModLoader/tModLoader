@@ -102,17 +102,12 @@
  		if (!_locked)
  			_iconFrame = _iconFrameUnlocked;
  		else
-@@ -203,6 +_,8 @@
+@@ -202,6 +_,8 @@
+ 
  		if (BackColor == Color.Transparent)
  			FillingColor = new Color(255, 255, 255);
- 
-+		spot.X -= _offsetProgressBarX - 16; // Added by TML
 +
++		spot.X -= _offsetProgressBarX - 16; // Added by TML
+ 
  		Texture2D value = TextureAssets.ColorBar.Value;
  		_ = TextureAssets.ColorBlip.Value;
- 		Texture2D value2 = TextureAssets.MagicPixel.Value;
-@@ -237,3 +_,4 @@
- 		return _achievement.Id.CompareTo(uIAchievementListItem._achievement.Id);
- 	}
- }
-+

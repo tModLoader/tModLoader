@@ -118,5 +118,4 @@ public partial class UIAchievementsMenu : UIState
 		_filterModded = !_filterModded;
 		FilterList(evt, listeningElement);
 	}
-
 }
