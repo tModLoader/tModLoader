@@ -74,7 +74,7 @@
  		uITextPanel2.OnLeftClick += GoBackClick;
  		uIElement.Append(uITextPanel2);
 +
-+		UITextPanel<LocalizedText> resetAchievementsButton = new UITextPanel<LocalizedText>(Language.GetOrRegister("tModLoader.AchievementsReset", () => "Reset"), 0.7f, large: true);
++		UITextPanel<LocalizedText> resetAchievementsButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsReset"), 0.7f, large: true);
 +		uITextPanel2.Width.Set(-10f, 0.8f);
 +		uITextPanel2.HAlign = 0f;
 +		resetAchievementsButton.Width.Set(-10f, 1 - uITextPanel2.Width.Percent);
@@ -95,7 +95,7 @@
  			_achievementElements.Add(item);
  		}
 +
-+		uISearchBar = new UIInputTextField(Language.GetOrRegister("tModLoader.AchievementSearch", () => "Search..").Value);
++		uISearchBar = new UIInputTextField(Language.GetText("tModLoader.AchievementSearch").Value);
 +		uISearchBar.HAlign = 1;
 +		uISearchBar.Height.Set(40, 0);
 +		uISearchBar.Width.Set(0f, 0.8f);
