@@ -98,11 +98,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 		Main.Achievements.Register(Achievement);
     }
 
-    /// <summary>
-    /// Should the achievement be hidden, defaults to false.
-    /// </summary>
-    public bool AchievementHidden = false;
-
     protected override sealed Achievement CreateTemplateEntity()
     {
         if (string.IsNullOrWhiteSpace(Name))
@@ -110,6 +105,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
             throw new InvalidOperationException("Achievement name cannot be null or empty during template creation.");
         }
 
-		return new Achievement($"{Mod.Name.ToUpper()}_{FullName.ToUpper()}", this);
+		return new Achievement(FullName, this);
     }
 }
