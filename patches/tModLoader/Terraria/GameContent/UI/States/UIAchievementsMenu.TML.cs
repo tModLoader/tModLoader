@@ -15,28 +15,31 @@ using Terraria.UI;
 using Terraria.UI.Gamepad;
 namespace Terraria.GameContent.UI.States;
 
-public partial class UIAchievementsMenu : UIState
+public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 {
+	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
+
 	private void ResetAchievements(UIMouseEvent evt, UIElement listeningElement)
 	{
 		CloseAchievementConfirm(evt, listeningElement);
 		Main.Achievements.ClearAll();
 		Main.menuMode = 0;
 		IngameFancyUI.Close();
+		SoundEngine.PlaySound(SoundID.MenuClose);
 	}
 
 	private void ResetAchievementsConfirm(UIMouseEvent evt, UIElement listeningElement)
 	{
-		blockingPanel = new UIPanel(blockingBackground, blockingBorder);
-		blockingPanel.Width.Set(0, 1f);
-		blockingPanel.Height.Set(0, 1f);
-		blockingPanel.HAlign = 0.5f;
-		blockingPanel.VAlign = 0.5f;
-		blockingPanel.BackgroundColor = new Color(0, 0, 0, 125);
-		blockingPanel.BorderColor = blockingPanel.BackgroundColor;
-		blockingPanel.OnLeftClick += BlockInput;
-		blockingPanel.OnMouseOver += BlockInput;
-		Append(blockingPanel);
+		_blockInput = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = Color.Black * 0.5f,
+			ScaleToFit = true
+		};
+		_blockInput.Width = StyleDimension.Fill;
+		_blockInput.Height = StyleDimension.Fill;
+		_blockInput.OnLeftClick += CloseAchievementConfirm;
+		Append(_blockInput);
 
 		achievementResetAreYouSure = new UIPanel();
 		achievementResetAreYouSure.Width.Set(400f, 0f);
@@ -54,13 +57,13 @@ public partial class UIAchievementsMenu : UIState
 		achievementResetAreYouSure.Append(areYouSureText);
 
 		string text = FontAssets.ItemStack.Value.CreateWrappedText(Language.GetText("tModLoader.AchievementResetConfirmTooltip").Value, 310, Language.ActiveCulture.CultureInfo);
-		UITextPanel<string> areYouSureDesciption = new UITextPanel<string>(text, 1f, large: false);
-		areYouSureDesciption.HAlign = 0.5f;
-		areYouSureDesciption.Top.Set(20, 0f);
-		areYouSureDesciption.SetPadding(13f);
-		areYouSureDesciption.Width.Set(-10, 1);
-		areYouSureDesciption.Height.Set(-50, 0.9f);
-		achievementResetAreYouSure.Append(areYouSureDesciption);
+		UITextPanel<string> areYouSureDescription = new UITextPanel<string>(text, 1f, large: false);
+		areYouSureDescription.HAlign = 0.5f;
+		areYouSureDescription.Top.Set(20, 0f);
+		areYouSureDescription.SetPadding(13f);
+		areYouSureDescription.Width.Set(-10, 1);
+		areYouSureDescription.Height.Set(-50, 0.9f);
+		achievementResetAreYouSure.Append(areYouSureDescription);
 
 		// Confirm Button
 		UITextPanel<LocalizedText> yesButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsReset"), 0.7f, large: true);
@@ -82,24 +85,23 @@ public partial class UIAchievementsMenu : UIState
 		noButton.OnMouseOut += FadedMouseOut;
 		noButton.OnLeftClick += CloseAchievementConfirm;
 		achievementResetAreYouSure.Append(noButton);
+
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 	}
 
 	private void CloseAchievementConfirm(UIMouseEvent evt, UIElement listeningElement)
 	{
-		RemoveChild(blockingPanel);
+		RemoveChild(_blockInput);
 		RemoveChild(achievementResetAreYouSure);
-		blockingPanel = null;
+		_blockInput = null;
 		achievementResetAreYouSure = null;
-	}
-
-	private void BlockInput(UIMouseEvent evt, UIElement listeningElement)
-	{
+		SoundEngine.PlaySound(SoundID.MenuClose);
 	}
 
 	private void FilterSearch(object sender, EventArgs e)
 	{
 		_achievementsList.Clear();
-		string searchText = uISearchBar.Text?.ToLowerInvariant() ?? string.Empty; // Get the search text, ensuring it's lowercase
+		string searchText = filterTextBox.Text?.ToLowerInvariant() ?? string.Empty; // Get the search text, ensuring it's lowercase
 
 		foreach (UIAchievementListItem achievementElement in _achievementElements) {
 			string friendlyName = achievementElement.GetAchievement().FriendlyName.Value.ToLowerInvariant(); // Convert to lowercase for case-insensitive comparison
@@ -111,6 +113,17 @@ public partial class UIAchievementsMenu : UIState
 		}
 
 		Recalculate();
+	}
+
+	// Note that Escape key while in-game won't call this without the additional code in Draw.
+	public void HandleBackButtonUsage()
+	{
+		if (_blockInput != null && HasChild(_blockInput)) {
+			CloseAchievementConfirm(null, null);
+			return;
+		}
+		Main.menuMode = 0;
+		IngameFancyUI.Close();
 	}
 
 	private void ToggleFilterModded(UIMouseEvent evt, UIElement listeningElement)

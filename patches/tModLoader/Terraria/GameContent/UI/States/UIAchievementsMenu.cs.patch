@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIAchievementsMenu.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIAchievementsMenu.cs
-@@ -1,28 +_,45 @@
+@@ -1,25 +_,33 @@
 +using System;
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
@@ -27,26 +27,14 @@
  	private List<UIToggleImage> _categoryButtons = new List<UIToggleImage>();
  	private UIElement _backpanel;
  	private UIElement _outerContainer;
-+	private UIPanel blockingPanel;
-+
-+	private UIInputTextField uISearchBar;
-+	private UIPanel uISearchBackground;
++	private UIImage _blockInput;
++	private UIInputTextField filterTextBox;
++	private UIPanel achievementResetAreYouSure;
 +
 +	private bool _filterModded = false;
-+
-+	Asset<Texture2D> blockingBackground;
-+	Asset<Texture2D> blockingBorder;
-+
-+	private UIPanel achievementResetAreYouSure;
  
  	public void InitializePage()
  	{
-+		blockingBackground = ModLoader.ModLoader.ManifestAssets.Request<Texture2D>($"Terraria.ModLoader.UI.InnerPanelNotRounded");
-+		blockingBorder = ModLoader.ModLoader.ManifestAssets.Request<Texture2D>($"Terraria.ModLoader.UI.PanelBorderNotRounded");
-+
- 		RemoveAllChildren();
- 		_categoryButtons.Clear();
- 		_achievementElements.Clear();
 @@ -50,22 +_,42 @@
  		_achievementsList.Top.Set(50f, 0f);
  		_achievementsList.ListPadding = 5f;
@@ -90,21 +78,75 @@
  		_backpanel = uITextPanel2;
  		List<Achievement> list = Main.Achievements.CreateAchievementsList();
  		for (int i = 0; i < list.Count; i++) {
-@@ -73,6 +_,17 @@
- 			_achievementsList.Add(item);
+@@ -74,6 +_,34 @@
  			_achievementElements.Add(item);
  		}
-+
-+		uISearchBar = new UIInputTextField(Language.GetText("tModLoader.AchievementSearch").Value);
-+		uISearchBar.HAlign = 1;
-+		uISearchBar.Height.Set(40, 0);
-+		uISearchBar.Width.Set(0f, 0.8f);
-+		uISearchBar.MaxWidth.Set(275f, 0f);
-+		uISearchBar.MinWidth.Set(200f, 0f);
-+		uISearchBar.Top.Set(15, 0);
-+		uISearchBar.OnRightClick += (a, b) => uISearchBar.Text = "";
-+		uISearchBar.OnTextChange += FilterSearch;
-+		uIPanel.Append(uISearchBar);
  
++		var filterTextBoxBackground = new UIPanel {
++			Top = { Pixels = 10f },
++			Left = { Pixels = -188, Percent = 1f },
++			Width = { Pixels = 180 },
++			Height = { Pixels = 32 }
++		};
++		filterTextBoxBackground.SetPadding(0);
++		filterTextBoxBackground.OnRightClick += ClearSearchField;
++		uIPanel.Append(filterTextBoxBackground);
++
++		filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
++			Top = { Pixels = 5 },
++			Height = { Percent = 1f },
++			Width = { Percent = 1f },
++			Left = { Pixels = 5 },
++			VAlign = 0.5f,
++		};
++		filterTextBox.OnTextChange += FilterSearch;
++		filterTextBoxBackground.Append(filterTextBox);
++
++		UIImageButton clearSearchButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
++			HAlign = 1f,
++			VAlign = 0.5f,
++			Left = new StyleDimension(-2f, 0f)
++		};
++		clearSearchButton.OnLeftClick += ClearSearchField;
++		filterTextBoxBackground.Append(clearSearchButton);
++
  		UIScrollbar uIScrollbar = new UIScrollbar();
  		uIScrollbar.SetView(100f, 1000f);
+ 		uIScrollbar.Height.Set(-50f, 1f);
+@@ -82,7 +_,7 @@
+ 		uIPanel.Append(uIScrollbar);
+ 		_achievementsList.SetScrollbar(uIScrollbar);
+ 		UIElement uIElement2 = new UIElement();
+-		uIElement2.Width.Set(0f, 1f);
++		uIElement2.Width.Set(0f, 0.5f); // Adjust so it doesn't overlap search textbox hitbox
+ 		uIElement2.Height.Set(32f, 0f);
+ 		uIElement2.Top.Set(10f, 0f);
+ 		Asset<Texture2D> texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories");
+@@ -98,6 +_,8 @@
+ 		uIPanel.Append(uIElement2);
+ 	}
+ 
++	private void ClearSearchField(UIMouseEvent evt, UIElement listeningElement) => filterTextBox.Text = "";
++
+ 	public override void Draw(SpriteBatch spriteBatch)
+ 	{
+ 		base.Draw(spriteBatch);
+@@ -139,6 +_,10 @@
+ 		}
+ 
+ 		SetupGamepadPoints(spriteBatch);
++		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
++		if (Main.inputTextEscape && !Main.gameMenu) {
++			HandleBackButtonUsage(); // Need to manually handle this in-game for various reasons.
++		}
+ 	}
+ 
+ 	public void GotoAchievement(Achievement achievement)
+@@ -179,6 +_,7 @@
+ 
+ 	public override void OnActivate()
+ 	{
++		Main.clrInput();
+ 		InitializePage();
+ 		if (Main.gameMenu) {
+ 			_outerContainer.Top.Set(220f, 0f);
