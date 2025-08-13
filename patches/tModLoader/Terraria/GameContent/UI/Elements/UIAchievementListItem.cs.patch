@@ -12,14 +12,6 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -19,6 +_,7 @@
- 	private const int _iconsPerRow = 8;
- 	private int _iconIndex;
- 	private Rectangle _iconFrame;
-+	private float _offsetProgressBarX;
- 	private Rectangle _iconFrameUnlocked;
- 	private Rectangle _iconFrameLocked;
- 	private Asset<Texture2D> _innerPanelTopTexture;
 @@ -29,6 +_,8 @@
  
  	public UIAchievementListItem(Achievement achievement, bool largeForOtherLanguages)
@@ -62,30 +54,21 @@
  		string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
  		Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale2, num3);
  		if (!_large)
-@@ -105,6 +_,12 @@
+@@ -105,6 +_,13 @@
  		vector3.X += 4f;
  		vector3.X += 17f;
  		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
 +
 +		string ModName = this._achievement.ModAchievement?.Mod.DisplayNameClean ?? "Terraria";
-+		_offsetProgressBarX = ((ModName.Length + 1) * 10);
-+		Vector2 ModNameLocation = new Vector2(vector3.X + num3 - _offsetProgressBarX, vector3.Y);
++		Vector2 ModNameStringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, ModName, baseScale);
++		Vector2 ModNameLocation = new Vector2(vector2.X + num3 - ModNameStringSize.X, vector3.Y);
 +		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, ModName, ModNameLocation, value, 0f, Vector2.Zero, baseScale, num3);
++		vector3.X -= ModNameStringSize.X + 8;
 +
  		vector3.X -= 17f;
  		Vector2 position = vector2 + Vector2.UnitY * 27f + vector;
  		DrawPanelBottom(spriteBatch, position, num3, color);
-@@ -127,13 +_,21 @@
- 				color3 = Color.Lerp(color3, Color.Black, 0.25f);
- 
- 			DrawProgressBar(spriteBatch, progress, vector4 - Vector2.UnitX * num5 * 0.7f, num5, color3, color2, color2.MultiplyRGBA(new Color(new Vector4(1f, 1f, 1f, 0.5f))));
-+			/*
- 			vector4.X -= num5 * 1.4f + stringSize2.X;
-+			*/
-+			vector4.X -= num5 * 1.4f + stringSize2.X + _offsetProgressBarX - 4f;
- 			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, text2, vector4, value, 0f, new Vector2(0f, 0f), baseScale3, 90f);
- 		}
- 	}
+@@ -134,6 +_,11 @@
  
  	private void UpdateIconFrame()
  	{
@@ -97,12 +80,3 @@
  		if (!_locked)
  			_iconFrame = _iconFrameUnlocked;
  		else
-@@ -202,6 +_,8 @@
- 
- 		if (BackColor == Color.Transparent)
- 			FillingColor = new Color(255, 255, 255);
-+
-+		spot.X -= _offsetProgressBarX - 16; // Added by TML
- 
- 		Texture2D value = TextureAssets.ColorBar.Value;
- 		_ = TextureAssets.ColorBlip.Value;
