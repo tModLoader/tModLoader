@@ -60,9 +60,18 @@
 +		}
 +		return new Dictionary<string, object>();
 +	}
++
  	public void Load()
  	{
  		Load(_savePath, _isCloudSave);
+@@ -131,6 +_,7 @@
+ 			achievement.Value.ClearProgress();
+ 		}
+ 
++		// TODO: Make a backup instead of losing them permanently?
+ 		Save();
+ 	}
+ 
 @@ -145,6 +_,12 @@
  	{
  		_achievements.Add(achievement.Name, achievement);
