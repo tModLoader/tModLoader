@@ -1,13 +1,5 @@
 --- src/TerrariaNetCore/Terraria/Achievements/AchievementManager.cs
 +++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
-@@ -7,6 +_,7 @@
- using Newtonsoft.Json;
- using Newtonsoft.Json.Bson;
- using Newtonsoft.Json.Linq;
-+using Terraria.ModLoader;
- using Terraria.Social;
- using Terraria.UI;
- using Terraria.Utilities;
 @@ -33,7 +_,8 @@
  
  	public AchievementManager()
@@ -18,15 +10,17 @@
  			_savePath = SocialAPI.Achievements.GetSavePath();
  			_isCloudSave = true;
  			_cryptoKey = SocialAPI.Achievements.GetEncryptionKey();
-@@ -59,10 +_,19 @@
+@@ -59,13 +_,30 @@
  				SocialAPI.Achievements.StoreStats();
  
  			try {
++				// This allows loading achievement data from unloaded mods so that unloaded achievement progress data is not lost.
 +				Dictionary<string, object> existingData = LoadExistingAchievements(path, cloud);
 +
 +				foreach (var kvp in _achievements) {
 +					existingData[kvp.Key] = kvp.Value;
 +				}
++				// TODO: Should we clear out achievements that no longer exist in the currently loaded mods?
 +
  				using MemoryStream memoryStream = new MemoryStream();
  				using CryptoStream cryptoStream = new CryptoStream(memoryStream, new RijndaelManaged().CreateEncryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Write);
@@ -38,6 +32,15 @@
  				bsonWriter.Flush();
  				cryptoStream.FlushFinalBlock();
  				FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
++
++				if (ModLoader.Core.ModCompile.activelyModding) {
++					// Modders might want to verify the info, save a human-readable copy of achievements.dat
++					string json = JsonConvert.SerializeObject(existingData, Formatting.Indented);
++					File.WriteAllText(path + ".json", json);
++				}
+ 			}
+ 			catch (Exception exception) {
+ 				FancyErrorPrinter.ShowFileSavingFailError(exception, _savePath);
 @@ -75,6 +_,25 @@
  
  	public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
@@ -52,7 +55,7 @@
 +					new RijndaelManaged().CreateDecryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Read);
 +				using BsonReader bsonReader = new BsonReader(cryptoStream);
 +				return JsonSerializer.Create(_serializerSettings).Deserialize<Dictionary<string, object>>(bsonReader) ??
-+				       new Dictionary<string, object>();
++					new Dictionary<string, object>();
 +			}
 +		}
 +		catch (Exception) {
@@ -72,16 +75,37 @@
  		Save();
  	}
  
-@@ -145,6 +_,12 @@
- 	{
- 		_achievements.Add(achievement.Name, achievement);
+@@ -147,6 +_,12 @@
  		achievement.OnCompleted += AchievementCompleted;
-+	}
-+
+ 	}
+ 
 +	public void Unregister(Achievement achievement)
 +	{
 +		_achievements.Remove(achievement.Name);
 +		achievement.OnCompleted -= AchievementCompleted;
- 	}
- 
++	}
++
  	public void RegisterIconIndex(string achievementName, int iconIndex)
+ 	{
+ 		_achievementIconIndexes.Add(achievementName, iconIndex);
+@@ -181,5 +_,20 @@
+ 			return value;
+ 
+ 		return 0;
++	}
++
++	internal static void FinishSetup()
++	{
++		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
++		Main.Achievements.Load();
++	}
++
++	internal static void Unload()
++	{
++		var ModAchievements = Main.Achievements._achievements.Values.Where(x => x.ModAchievement != null).ToList();
++		foreach (var Achievement in ModAchievements) {
++			Main.Achievements.Unregister(Achievement);
++			Achievement.OnCompleted -= Achievement.ModAchievement.OnCompleted;
++		}
+ 	}
+ }

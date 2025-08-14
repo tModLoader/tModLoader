@@ -12,7 +12,7 @@ public class ManyExampleWormsKilled : ModAchievement
 	public override void SetStaticDefaults() {
 		Achievement.Hidden = true;
 
-		// There are 4 AchievementCategorys: Slayer, Collector, Explorer, and Challenger.
+		// There are 4 AchievementCategory options: Slayer, Collector, Explorer, and Challenger.
 		// Slayer is the default.
 		// If you want to change the achievement's category, you can do this:
 		// Achievement.SetCategory(AchievementCategory.Collector);

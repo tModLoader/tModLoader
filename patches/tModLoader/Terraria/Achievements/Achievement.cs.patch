@@ -22,10 +22,11 @@
  	private AchievementCategory _category;
  	private IAchievementTracker _tracker;
  	[JsonProperty("Conditions")]
- 	private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
+-	private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
++	internal Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
  	private int _completedCount;
 +	/// <summary> Should the achievement be hidden, defaults to false. </summary>
-+	public bool Hidden { get; set; } = false;
++	public bool Hidden { get; set; } = false; // TODO: How does a modder reliably "unhide" this?
 +	public ModAchievement ModAchievement;
  
  	public AchievementCategory Category => _category;

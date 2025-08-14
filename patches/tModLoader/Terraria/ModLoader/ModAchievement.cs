@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Achievements;
@@ -9,27 +10,31 @@ using Terraria.Localization;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// Define a custom achievement and implement how it should act upon completion
-/// </summary>
+/// Defines a custom achievement and implements how it should act upon completion. An achievement consists of several parts:
+/// <br/><br/> The ModAchievement represents a single achievement, it provides the image (<see cref="Texture"/>), display name (<see cref="FriendlyName"/>), description (<see cref="Description"/>), and category (<see cref="Achievement.SetCategory(AchievementCategory)"/>).
+/// <br/><br/> Each achievement also has one or more conditions (<see cref="AchievementCondition"/>). Conditions can be existing conditions, like crafting specific items or killing specific NPCs, or they can be completely custom. If an achievement has multiple conditions, each must use a unique identifier. Once every condition is completed, the achievement itself is completed and <see cref="OnCompleted(Achievement)"/> is called.
+/// <br/><br/> And finally, each achievement can have an optional tracker. The tracker is responsible for consolidating all of the conditions and reporting a completion progress value shown in the achievements menu. A tracker will be assigned automatically if not assigned in SetStaticDefaults and if there are multiple conditions or if the sole condition has an associated tracker.
+/// </summary> 
 public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILocalizedModType
 {
-    public Achievement Achievement => Entity;
+	public Achievement Achievement => Entity;
 
-    private string TextureName => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
-    public Asset<Texture2D> Texture { get; private set; }
-    public string LocalizationCategory => "Achievements";
+	public string TextureName => (GetType().Namespace + "." + Name).Replace('.', '/');
+	public Asset<Texture2D> Texture { get; private set; }
+	// TODO: We could support index, some modders might prefer a single png for all achievements.  public int Index => 0;
+	public string LocalizationCategory => "Achievements";
 
-    public override sealed bool IsCloneable => false;
+	public override sealed bool IsCloneable => false;
 
-    /// <summary>
-    /// Gets the localized friendly name of the achievement.
-    /// </summary>
-    public virtual LocalizedText FriendlyName => this.GetLocalization(nameof(FriendlyName), PrettyPrintName);
+	/// <summary>
+	/// Gets the localized friendly name of the achievement.
+	/// </summary>
+	public virtual LocalizedText FriendlyName => this.GetLocalization(nameof(FriendlyName), PrettyPrintName);
 
-    /// <summary>
-    /// Gets the localized description of the achievement.
-    /// </summary>
-    public virtual LocalizedText Description => this.GetLocalization(nameof(Description));
+	/// <summary>
+	/// Gets the localized description of the achievement.
+	/// </summary>
+	public virtual LocalizedText Description => this.GetLocalization(nameof(Description));
 
 	public CustomFlagCondition AddCondition(string key = "Condition") => AddCondition(new CustomFlagCondition(key));
 
@@ -48,15 +53,15 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	}
 
 	protected override sealed void Register()
-    {
-	    if (string.IsNullOrWhiteSpace(Name))
-		    throw new InvalidOperationException("Achievement name cannot be null or empty.");
-	    
-	    if (FriendlyName == null)	    
-		    throw new ArgumentNullException(nameof(FriendlyName));
-	    
-	    if (Description == null)	    
-		    throw new InvalidOperationException($"Description for achievement '{Name}' could not be found.");
+	{
+		if (string.IsNullOrWhiteSpace(Name))
+			throw new InvalidOperationException("Achievement name cannot be null or empty.");
+
+		if (FriendlyName == null)
+			throw new ArgumentNullException(nameof(FriendlyName));
+
+		if (Description == null)
+			throw new InvalidOperationException($"Description for achievement '{Name}' could not be found.");
 
 		ModTypeLookup<ModAchievement>.Register(this);
 
@@ -64,47 +69,61 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 		Achievement.Description = Description;
 		Achievement.ModAchievement = this;
 		Texture = ModContent.Request<Texture2D>(TextureName);
-	    SetStaticDefaults();
-    }
+	}
 
-    public override void Load()
-    {
-    }
+	public override void Load()
+	{
+	}
 
-    public override void Unload()
-    {
-        Main.Achievements.Unregister(Achievement);
-        Achievement.OnCompleted -= OnCompleted;
-    }
+	public override void Unload()
+	{
 
-    /// <summary>
-    /// Called when the achievement is completed.
-    /// Override this to add custom behavior when the achievement is achieved.
-    /// </summary>
-    /// <param name="achievement">The achievement that was completed.</param>
-    public virtual void OnCompleted(Achievement achievement)
-    {
-        // Override in derived classes to add custom behavior.
-    }
+	}
 
-    public override sealed void SetupContent()
-    {
-		if (Achievement.ModAchievement != null) {
-			if (Achievement.ModAchievement.Texture == null) {
-				throw new Exception($"{Achievement.Name}.png was not found, add it in the same directory as your source file.");
-			}
+	/// <summary>
+	/// Called when the achievement is completed.
+	/// Override this to add custom behavior when the achievement is achieved.
+	/// </summary>
+	/// <param name="achievement">The achievement that was completed.</param>
+	public virtual void OnCompleted(Achievement achievement)
+	{
+		// Override in derived classes to add custom behavior.
+	}
+
+	public override sealed void SetupContent()
+	{
+		SetStaticDefaults();
+		if (Achievement._conditions.Count == 0)
+			throw new Exception($"The ModAchievement '{Name}' has no conditions, achievements must have at least one condition.");
+		AutoStaticDefaults();
+		Main.Achievements.Register(Achievement);
+		Achievement.OnCompleted += OnCompleted;
+	}
+
+	protected override sealed Achievement CreateTemplateEntity()
+	{
+		if (string.IsNullOrWhiteSpace(Name)) {
+			throw new InvalidOperationException("Achievement name cannot be null or empty during template creation.");
 		}
 
-		Main.Achievements.Register(Achievement);
-    }
-
-    protected override sealed Achievement CreateTemplateEntity()
-    {
-        if (string.IsNullOrWhiteSpace(Name))
-        {
-            throw new InvalidOperationException("Achievement name cannot be null or empty during template creation.");
-        }
-
 		return new Achievement(FullName, this);
-    }
+	}
+
+	/// <summary>
+	/// Automatically assigns an <see cref="IAchievementTracker"/> if not yet assigned. Override this if you need to skip this logic.
+	/// </summary>
+	public virtual void AutoStaticDefaults()
+	{
+		if (!Achievement.HasTracker) {
+			// There are 3 trackers: ConditionsCompletedTracker, ConditionIntTracker, ConditionFloatTracker. CustomFlagCondition has no associated tracker
+			if (Achievement._conditions.Count > 1) {
+				Achievement.UseConditionsCompletedTracker();
+			}
+			else {
+				var tracker = Achievement._conditions.First().Value.GetAchievementTracker();
+				if (tracker != null)
+					Achievement.UseTracker(tracker);
+			}
+		}
+	}
 }

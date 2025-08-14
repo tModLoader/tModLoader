@@ -27,6 +27,7 @@ using Terraria.GameContent;
 using System.Reflection;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Terraria.Achievements;
 
 namespace Terraria.ModLoader;
 
@@ -299,8 +300,6 @@ public static class ModContent
 
 		CacheVanillaState();
 
-		Main.Achievements.Load(); // Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
-
 		Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
 			ContentInstance.Register(mod);
@@ -360,6 +359,7 @@ public static class ModContent
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
 		EmoteBubbleLoader.FinishSetup();
+		AchievementManager.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
@@ -518,6 +518,7 @@ public static class ModContent
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
+		AchievementManager.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
