@@ -43,7 +43,7 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 			var (shortIdType, fullIdType, name) = properties;
 
 			context.RegisterCodeFix(CodeAction.Create(
-				string.Format(title, properties),
+				string.Format(title, properties.ShortIdType),
 				cancellationToken => ReplaceMagicNumber(context.Document, root, syntax, fullIdType, name, cancellationToken),
 				titleKey
 			), parameters.Diagnostic);

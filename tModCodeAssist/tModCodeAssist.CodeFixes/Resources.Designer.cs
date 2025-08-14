@@ -70,6 +70,15 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simplify local (client-side) player access.
+        /// </summary>
+        internal static string SimplifyLocalPlayerTitle {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simplify common UnifiedRandom usage patterns.
         /// </summary>
         internal static string SimplifyUnifiedRandomTitle {

@@ -135,6 +135,24 @@
   <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
     <value>Change magic numbers into appropriate ID values</value>
   </data>
+  <data name="CommonCollisionNameTitle" xml:space="preserve">
+    <value>Common type collision name</value>
+  </data>
+  <data name="CommonCollisionNameMessageFormat" xml:space="preserve">
+    <value>Class name or namespace "{0}" from "{1}" collides with an existing Terraria type</value>
+  </data>
+  <data name="CommonCollisionNameDescription" xml:space="preserve">
+    <value>Errors when class name or namespace collides with an existing Terraria type name</value>
+  </data>
+  <data name="SimplifyLocalPlayerDescription" xml:space="preserve">
+    <value>Simplifies local (client-side) player access</value>
+  </data>
+  <data name="SimplifyLocalPlayerMessageFormat" xml:space="preserve">
+    <value>The expression "{0}" can be simplified for readability</value>
+  </data>
+  <data name="SimplifyLocalPlayerTitle" xml:space="preserve">
+    <value>Simplify local (client-side) player access</value>
+  </data>
   <data name="SimplifyUnifiedRandomDescription" xml:space="preserve">
     <value>Simplifies common UnifiedRandom usage patterns</value>
   </data>

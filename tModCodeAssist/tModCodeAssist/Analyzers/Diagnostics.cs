@@ -17,7 +17,8 @@ public static class Diagnostics
 		description: CreateResourceString(nameof(Resources.ChangeMagicNumberToIDDescription)),
 		category: Categories.Maintenance,
 		defaultSeverity: DiagnosticSeverity.Warning,
-		isEnabledByDefault: true
+		isEnabledByDefault: true,
+		helpLinkUri: "https://github.com/tModLoader/tModLoader/wiki/tModCodeAssist#changemagicnumbertoid"
 	);
 
 	public static readonly DiagnosticDescriptor BadIDType = new(
@@ -27,7 +28,19 @@ public static class Diagnostics
 		description: CreateResourceString(nameof(Resources.BadIDTypeDescription)),
 		category: Categories.Maintenance,
 		defaultSeverity: DiagnosticSeverity.Error,
-		isEnabledByDefault: true
+		isEnabledByDefault: true,
+		helpLinkUri: "https://github.com/tModLoader/tModLoader/wiki/tModCodeAssist#badidtype"
+	);
+
+	public static readonly DiagnosticDescriptor CommonCollisionName = new(
+		id: nameof(CommonCollisionName),
+		title: CreateResourceString(nameof(Resources.CommonCollisionNameTitle)),
+		messageFormat: CreateResourceString(nameof(Resources.CommonCollisionNameMessageFormat)),
+		description: CreateResourceString(nameof(Resources.CommonCollisionNameDescription)),
+		category: Categories.Maintenance,
+		defaultSeverity: DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		helpLinkUri: "https://github.com/tModLoader/tModLoader/wiki/tModCodeAssist#commoncollisionname"
 	);
 
 	public static readonly DiagnosticDescriptor SimplifyUnifiedRandom = new(
@@ -37,7 +50,20 @@ public static class Diagnostics
 		description: CreateResourceString(nameof(Resources.SimplifyUnifiedRandomDescription)),
 		category: Categories.Readability,
 		defaultSeverity: DiagnosticSeverity.Info,
-		isEnabledByDefault: true
+		isEnabledByDefault: true,
+		helpLinkUri: "https://github.com/tModLoader/tModLoader/wiki/tModCodeAssist#simplifyunifiedrandom"
+	);
+
+
+	public static readonly DiagnosticDescriptor SimplifyLocalPlayer = new(
+		id: nameof(SimplifyLocalPlayer),
+		title: CreateResourceString(nameof(Resources.SimplifyLocalPlayerTitle)),
+		messageFormat: CreateResourceString(nameof(Resources.SimplifyLocalPlayerMessageFormat)),
+		description: CreateResourceString(nameof(Resources.SimplifyLocalPlayerDescription)),
+		category: Categories.Readability,
+		defaultSeverity: DiagnosticSeverity.Info,
+		isEnabledByDefault: true,
+		helpLinkUri: "https://github.com/tModLoader/tModLoader/wiki/tModCodeAssist#simplifylocalplayer"
 	);
 
 	private static LocalizableResourceString CreateResourceString(string nameOfLocalizableResource)
