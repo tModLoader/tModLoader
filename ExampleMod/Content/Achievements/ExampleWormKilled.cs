@@ -1,30 +1,19 @@
-﻿using ExampleMod.Content.Items.Placeable;
-using Terraria;
-using Terraria.Achievements;
-using Terraria.GameContent.Achievements;
+﻿using ExampleMod.Content.NPCs;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Achievements;
 
+// ExampleWormKilled showcases an extremely simple ModAchievement.
+// It is unlocked when ExampleWormHead is defeated.
 public class ExampleWormKilled : ModAchievement
 {
-	// The CustomFlagCondition used for this Achievement.
-	public CustomFlagCondition Condition { get; private set; }
-
 	public override void SetStaticDefaults() {
-		Achievement.Hidden = false;
-
 		// There are 4 AchievementCategory options: Slayer, Collector, Explorer, and Challenger.
 		// Slayer is the default.
 		// If you want to change the achievement's category, you can do this:
 		// Achievement.SetCategory(AchievementCategory.Collector);
 
-		// The achievement can be completed like this:
-		// ModContent.GetInstance<ExampleWormKilled>().Condition.Complete();
-		Condition = AddCondition();
-	}
-
-	public override void OnCompleted(Achievement achievement) {
-		Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<ExampleBar>(), 5);
+		// This achievement has only 1 condition. When ExampleWormHead is defeated the achievement will be unlocked
+		AddNPCKilledCondition(ModContent.NPCType<ExampleWormHead>());
 	}
 }

@@ -52,7 +52,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnKill() {
-			ModContent.GetInstance<ExampleWormKilled>().Condition.Complete();
+			// ExampleWormKilled will automatically unlock because it uses AddNPCKilledCondition, but if it used AddCondition instead we would call ModContent.GetInstance<ExampleWormKilled>().Condition.Complete(); to satisfy the condition.
 			ModContent.GetInstance<ManyExampleWormsKilled>().Condition.Value++;			
 		}
 

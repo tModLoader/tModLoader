@@ -45,16 +45,67 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	/// </summary>
 	public virtual LocalizedText Description => this.GetLocalization(nameof(Description));
 
+	/// <inheritdoc cref="CustomFlagCondition"/>
 	public CustomFlagCondition AddCondition(string key = "Condition") => AddCondition(new CustomFlagCondition(key));
 
+	/// <inheritdoc cref="CustomIntCondition"/>
 	public CustomIntCondition AddIntCondition(int maxValue) => AddCondition(new CustomIntCondition("Condition", maxValue));
 
+	/// <inheritdoc cref="CustomIntCondition"/>
 	public CustomIntCondition AddIntCondition(string key, int maxValue) => AddCondition(new CustomIntCondition(key, maxValue));
 
+	/// <inheritdoc cref="CustomFloatCondition"/>
 	public CustomFloatCondition AddFloatCondition(float maxValue) => AddCondition(new CustomFloatCondition("Condition", maxValue));
 
+	/// <inheritdoc cref="CustomFloatCondition"/>
 	public CustomFloatCondition AddFloatCondition(string key, float maxValue) => AddCondition(new CustomFloatCondition(key, maxValue));
 
+	/// <inheritdoc cref="ItemCraftCondition"/>
+	public ItemCraftCondition AddItemCraftCondition(int itemId) => AddCondition(new ItemCraftCondition((short)itemId));
+
+	/// <inheritdoc cref="ItemCraftCondition"/>
+	public ItemCraftCondition AddItemCraftCondition(string key, int itemId) => AddCondition(new ItemCraftCondition((short)itemId, key));
+
+	/// <inheritdoc cref="ItemCraftCondition"/>
+	public ItemCraftCondition AddItemCraftCondition(int[] itemIds) => AddCondition(new ItemCraftCondition(itemIds.Select(x => (short)x).ToArray()));
+
+	/// <inheritdoc cref="ItemCraftCondition"/>
+	public ItemCraftCondition AddItemCraftCondition(string key, int[] itemIds) => AddCondition(new ItemCraftCondition(itemIds.Select(x => (short)x).ToArray(), key));
+
+	/// <inheritdoc cref="ItemPickupCondition"/>
+	public ItemPickupCondition AddItemPickupCondition(int itemId) => AddCondition(new ItemPickupCondition((short)itemId));
+
+	/// <inheritdoc cref="ItemPickupCondition"/>
+	public ItemPickupCondition AddItemPickupCondition(string key, int itemId) => AddCondition(new ItemPickupCondition((short)itemId, key));
+
+	/// <inheritdoc cref="ItemPickupCondition"/>
+	public ItemPickupCondition AddItemPickupCondition(int[] itemIds) => AddCondition(new ItemPickupCondition(itemIds.Select(x => (short)x).ToArray()));
+
+	/// <inheritdoc cref="ItemPickupCondition"/>
+	public ItemPickupCondition AddItemPickupCondition(string key, int[] itemIds) => AddCondition(new ItemPickupCondition(itemIds.Select(x => (short)x).ToArray(), key));
+
+	/// <inheritdoc cref="NPCKilledCondition"/>
+	public NPCKilledCondition AddNPCKilledCondition(int npcID) => AddCondition(new NPCKilledCondition((short)npcID));
+
+	/// <inheritdoc cref="NPCKilledCondition"/>
+	public NPCKilledCondition AddNPCKilledCondition(string key, int npcID) => AddCondition(new NPCKilledCondition((short)npcID, key));
+
+	/// <inheritdoc cref="NPCKilledCondition"/>
+	public NPCKilledCondition AddNPCKilledCondition(int[] npcIDs) => AddCondition(new NPCKilledCondition(npcIDs.Select(x=>(short)x).ToArray()));
+
+	/// <inheritdoc cref="NPCKilledCondition"/>
+	public NPCKilledCondition AddNPCKilledCondition(string key, int[] npcIDs) => AddCondition(new NPCKilledCondition(npcIDs.Select(x => (short)x).ToArray(), key));
+
+	// Might be confusing. This adds multiple conditions, not a single condition for any of the provided npcIDs.
+	// public void AddNPCsKilledCondition(int[] npcIDs) => Achievement.AddConditions(NPCKilledCondition.CreateMany(npcIDs.Select(x => (short)x).ToArray()));
+
+	/// <inheritdoc cref="TileDestroyedCondition"/>
+	public TileDestroyedCondition AddTileDestroyedCondition(int[] tileIds) => AddCondition(new TileDestroyedCondition(tileIds.Select(x => (ushort)x).ToArray()));
+
+	/// <inheritdoc cref="TileDestroyedCondition"/>
+	public TileDestroyedCondition AddTileDestroyedCondition(string key, int[] tileIds) => AddCondition(new TileDestroyedCondition(tileIds.Select(x => (ushort)x).ToArray(), key));
+
+	/// <summary> Used to add any custom <see cref="AchievementCondition"/>. </summary>
 	public T AddCondition<T>(T condition) where T : AchievementCondition
 	{
 		Achievement.AddCondition(condition);
@@ -81,8 +132,8 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	}
 
 	/// <summary>
-	/// Called when the achievement is completed.
-	/// Override this to add custom behavior when the achievement is achieved.
+	/// Called when the achievement is completed. Use this to add custom behavior when the achievement is achieved.
+	/// <br/><br/> Note that achievements will only be completed once per user, not per world or per player, so rewarding players with tangible rewards, like an Item, isn't recommended.
 	/// </summary>
 	/// <param name="achievement">The achievement that was completed.</param>
 	public virtual void OnCompleted(Achievement achievement)
