@@ -131,8 +131,6 @@ public static class LiquidEdgeRenderer
 		if (!Active)
 			return;
 
-		var selfBlockType = tileCache.BlockType;
-
 		Tile tileRightCache = Main.tile[tileX + 1, tileY];
 		Tile tileLeftCache = Main.tile[tileX - 1, tileY];
 		Tile tileUpCache = Main.tile[tileX, tileY - 1];
@@ -208,12 +206,9 @@ public static class LiquidEdgeRenderer
 		if (exempt)
 			return;
 
-		var newEdgeData = new LiquidRenderer.LiquidEdgeData() {
-			LiquidOffset = new Vector2(0),
-			SourceRectangle = new Rectangle(0, 0, 16, 16)
-		};
+		Rectangle size = new Rectangle(0, 0, 16, 16);
+		Vector2 offset = Vector2.Zero;
 
-		/*
 		if (down && (left || right)) {
 			left = true;
 			right = true;
@@ -259,17 +254,35 @@ public static class LiquidEdgeRenderer
 				offset = new Vector2(12, depthPush);
 				size = new Rectangle(0, d, 4, 16 - depthPush);
 			}
-		}*/
+		}
+
+		size.X += pCache->FrameOffset.X;
+		size.Y += pCache->FrameOffset.Y;
+		var newEdgeData = new LiquidRenderer.LiquidEdgeData() {
+			LiquidOffset = offset,
+			SourceRectangle = size
+		};
 
 		Edges.Add(new Point(tileX, tileY));
 
-		pCache->Type = (byte)liquidType;
-		pCache->LiquidLevel = highLiquid / 255f;
-		pCache->HasLiquid = highLiquid > 0;
-		pCache->HasVisibleLiquid = false;
-		pCache->VisibleLiquidLevel = 0; // highLiquid / 255f;
-		pCache->IsSolid = selfBlockType is BlockType.HalfBlock;
-		pCache->IsSolid = selfBlockType is BlockType.Solid;
-		pCache->EdgeData = newEdgeData;
+		if (blockType is not BlockType.Solid && highLiquid > 160) {
+			pCache->Type = (byte)liquidType;
+			pCache->LiquidLevel = highLiquid / 255f;
+			pCache->HasLiquid = true;
+			pCache->HasVisibleLiquid = false;
+			pCache->VisibleLiquidLevel = 0; // highLiquid / 255f;
+			pCache->IsHalfBrick = blockType is BlockType.HalfBlock;
+			pCache->IsSolid = false;
+			return;
+		}
+		else if (highLiquid > 0) {
+			pCache->Type = (byte)liquidType;
+			pCache->LiquidLevel = highLiquid / 255f;
+			pCache->HasLiquid = true;
+			pCache->HasVisibleLiquid = true;
+			pCache->VisibleLiquidLevel = highLiquid / 255f;
+			pCache->IsSolid = true;
+			pCache->EdgeData = newEdgeData;
+		}
 	}
 }

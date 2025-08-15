@@ -137,6 +137,15 @@
  					ptr2++;
  				}
  			}
+@@ -416,7 +_,7 @@
+ 					Color* ptr6 = ptr5;
+ 					for (int num18 = 2; num18 < rectangle.Width - 2; num18++) {
+ 						for (int num19 = 2; num19 < rectangle.Height - 2; num19++) {
+-							if (ptr2->HasVisibleLiquid) {
++							if (ptr2->HasVisibleLiquid || ptr2->EdgeData.HasValue) {
+ 								float num20 = Math.Min(0.75f, ptr2->VisibleLeftWall);
+ 								float num21 = Math.Max(0.25f, ptr2->VisibleRightWall);
+ 								float num22 = Math.Min(0.75f, ptr2->VisibleTopWall);
 @@ -424,7 +_,9 @@
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
@@ -148,10 +157,27 @@
  								ptr4->SourceRectangle = new Rectangle((int)(16f - num21 * 16f) + ptr2->FrameOffset.X, (int)(16f - num23 * 16f) + ptr2->FrameOffset.Y, (int)Math.Ceiling((num21 - num20) * 16f), (int)Math.Ceiling((num23 - num22) * 16f));
  								ptr4->IsSurfaceLiquid = ptr2->FrameOffset.X == 16 && ptr2->FrameOffset.Y == 0 && (double)(num19 + rectangle.Y) > Main.worldSurface - 40.0;
  								ptr4->Opacity = ptr2->Opacity;
-@@ -483,7 +_,7 @@
+@@ -437,8 +_,14 @@
+ 								ptr6->B = VISCOSITY_MASK[ptr2->VisibleType];
+ 								ptr6->A = b;
+ 								LiquidCache* ptr7 = ptr2 - 1;
+-								if (num19 != 2 && !ptr7->HasVisibleLiquid && !ptr7->IsSolid && !ptr7->IsHalfBrick)
++								if (num19 != 2 && !ptr7->HasVisibleLiquid && !ptr7->IsSolid && !ptr7->IsHalfBrick) {
+ 									*(ptr6 - 1) = *ptr6;
++								}
++
++								if (!ptr2->HasVisibleLiquid && ptr2->EdgeData.HasValue) {
++									ptr4->LiquidOffset = ptr2->EdgeData.Value.LiquidOffset;
++									ptr4->SourceRectangle = ptr2->EdgeData.Value.SourceRectangle;
++								}
+ 							}
+ 							else {
+ 								ptr4->IsVisible = false;
+@@ -483,7 +_,8 @@
  				}
  			}
  
++			// TML: 
 -			fixed (LiquidDrawCache* ptr8 = &_drawCache[0]) {
 +			/*fixed (LiquidDrawCache* ptr8 = &_drawCache[0]) {
  				fixed (SpecialLiquidDrawCache* ptr10 = &_drawCacheForShimmer[0]) {
@@ -179,7 +205,7 @@
  		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
  			LiquidDrawCache* ptr2 = ptr;
 -			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
-+			/*for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) { // TML: Liquid draw caches merged, screen loop is now unnecessary
++			/*for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) { // TML: Liquid draw caches merged, screen loop redundant
 -				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
 +				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {*/
 +			int cacheLength = _drawCache.Length;
