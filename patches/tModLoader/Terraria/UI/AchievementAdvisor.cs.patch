@@ -12,17 +12,22 @@
  
  namespace Terraria.UI;
  
-@@ -146,6 +_,13 @@
+@@ -146,7 +_,10 @@
  
  		Rectangle frame = card.frame;
  		frame.X += 528;
-+
+-		spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 +		if (card.achievement.ModAchievement != null) {
-+			position = Vector2.Zero;
-+			frame = new Rectangle(64, 0, 64, 64);
-+			_achievementsTexture = card.achievement.ModAchievement?.Texture;
++			frame.X = 66;
 +		}
-+		
- 		spriteBatch.Draw(_achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
++		spriteBatch.Draw(card.achievement.ModAchievement?.Texture.Value ?? _achievementsTexture.Value, position, frame, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  		spriteBatch.Draw(_achievementsBorderTexture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  		if (hovered)
+ 			spriteBatch.Draw(value, position + vector2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+@@ -207,5 +_,6 @@
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_DESTROYER"), num++));
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA"), num++));
+ 		_cards.OrderBy((AchievementAdvisorCard x) => x.order);
++		// TODO: Consider supporting modded achievements in the AchievementAdvisor subset/ordering
+ 	}
+ }

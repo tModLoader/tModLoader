@@ -21,8 +21,14 @@
  		_large = largeForOtherLanguages;
  		BackgroundColor = new Color(26, 40, 89) * 0.8f;
  		BorderColor = new Color(13, 20, 44) * 0.8f;
-@@ -46,7 +_,9 @@
+@@ -44,9 +_,15 @@
+ 		_iconFrameUnlocked = new Rectangle(num4 % 8 * 66, num4 / 8 * 66, 64, 64);
+ 		_iconFrameLocked = _iconFrameUnlocked;
  		_iconFrameLocked.X += 528;
++		if (modAchievement != null) {
++			_iconFrameUnlocked = new Rectangle(0, num4 * 66, 64, 64);
++			_iconFrameLocked = new Rectangle(66, num4 * 66, 64, 64);
++		}
  		_iconFrame = _iconFrameLocked;
  		UpdateIconFrame();
 +
@@ -68,15 +74,3 @@
  		vector3.X -= 17f;
  		Vector2 position = vector2 + Vector2.UnitY * 27f + vector;
  		DrawPanelBottom(spriteBatch, position, num3, color);
-@@ -134,6 +_,11 @@
- 
- 	private void UpdateIconFrame()
- 	{
-+		if (_achievement.ModAchievement != null) {
-+			_iconFrame = new Rectangle(_achievement.IsCompleted? 0 : 64, 0, 64, 64);
-+			return;
-+		}
-+
- 		if (!_locked)
- 			_iconFrame = _iconFrameUnlocked;
- 		else

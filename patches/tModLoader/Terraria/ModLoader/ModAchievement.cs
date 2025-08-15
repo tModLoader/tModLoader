@@ -17,11 +17,20 @@ namespace Terraria.ModLoader;
 /// </summary> 
 public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILocalizedModType
 {
+	/// <summary> The Achievement object that this ModAchievement controls. </summary>
 	public Achievement Achievement => Entity;
 
-	public string TextureName => (GetType().Namespace + "." + Name).Replace('.', '/');
+	/// <inheritdoc cref="ModTexturedType.Texture"/>
+	public virtual string TextureName => (GetType().Namespace + "." + Name).Replace('.', '/');
+
+	/// <summary> The texture loaded from <see cref="TextureName"/>. </summary>
 	public Asset<Texture2D> Texture { get; private set; }
-	// TODO: We could support index, some modders might prefer a single png for all achievements.  public int Index => 0;
+
+	/// <summary>
+	/// The index of this achievement within the texture. Additional achievements are placed below on new rows. Can be used to share a achievement texture among multiple achievements. Defaults to 0. 
+	/// </summary>
+	public virtual int Index => 0;
+
 	public string LocalizationCategory => "Achievements";
 
 	public override sealed bool IsCloneable => false;
@@ -71,15 +80,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 		Texture = ModContent.Request<Texture2D>(TextureName);
 	}
 
-	public override void Load()
-	{
-	}
-
-	public override void Unload()
-	{
-
-	}
-
 	/// <summary>
 	/// Called when the achievement is completed.
 	/// Override this to add custom behavior when the achievement is achieved.
@@ -87,7 +87,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	/// <param name="achievement">The achievement that was completed.</param>
 	public virtual void OnCompleted(Achievement achievement)
 	{
-		// Override in derived classes to add custom behavior.
 	}
 
 	public override sealed void SetupContent()
@@ -97,6 +96,7 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 			throw new Exception($"The ModAchievement '{Name}' has no conditions, achievements must have at least one condition.");
 		AutoStaticDefaults();
 		Main.Achievements.Register(Achievement);
+		Main.Achievements.RegisterIconIndex(Achievement.Name, Index);
 		Achievement.OnCompleted += OnCompleted;
 	}
 

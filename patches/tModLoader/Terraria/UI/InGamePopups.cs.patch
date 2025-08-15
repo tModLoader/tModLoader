@@ -6,7 +6,7 @@
  			_achievementTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad);
 +
 +			if (achievement.ModAchievement != null) {
-+				_achievementIconFrame = new Rectangle(0, 0, 64, 64);
++				_achievementIconFrame = new Rectangle(0, num * 66, 64, 64);
 +				_achievementTexture = achievement.ModAchievement?.Texture;
 +			}
 +
