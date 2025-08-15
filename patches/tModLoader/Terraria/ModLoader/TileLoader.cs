@@ -46,7 +46,7 @@ public static class TileLoader
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
 	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
 	internal static List<ConvertTile>[][] tileConversionDelegates = null;
-	internal static (int fallbackTile, bool[] exceptConversionIds)[] tileConversionFallbacks = null;
+	internal static int[][] tileConversionFallbacks = null;
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -214,7 +214,7 @@ public static class TileLoader
 		}
 
 		tileConversionDelegates = new List<ConvertTile>[nextTile][];
-		tileConversionFallbacks = new (int, bool[])[nextTile];
+		tileConversionFallbacks = new int[nextTile][];
 		InitializeConversionFallbacks();
 
 		//Hooks
@@ -732,7 +732,6 @@ public static class TileLoader
 
 	private static void InitializeConversionFallbacks()
 	{
-		Array.Fill(tileConversionFallbacks, (-1, null));
 		RegisterConversionFallback(TileID.Ebonstone, TileID.Stone, BiomeConversionID.Corruption);
 		RegisterConversionFallback(TileID.Crimstone, TileID.Stone, BiomeConversionID.Crimson);
 		RegisterConversionFallback(TileID.Pearlstone, TileID.Stone, BiomeConversionID.Hallow);
@@ -772,14 +771,13 @@ public static class TileLoader
 		if (tileConversionFallbacks == null)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
 
-		//if (tileConversionFallbacks[tileType].exceptConversionIds is not null)
-		//	throw new Exception(Language.GetTextValue("tModLoader.LoadErrorRegisteredDuplicateConversionFallback", "TileLoader.RegisterConversionFallback"));
-
-		bool[] exceptFor = new bool[BiomeConversionLoader.BiomeConversionCount];
-		for (int i = 0; i < exceptForConversionTypes.Length; i++) {
-			exceptFor[exceptForConversionTypes[i]] = true;
+		int[] fallbacksByConversionType = tileConversionFallbacks[tileType] ??= new int[BiomeConversionLoader.BiomeConversionCount];
+		for (int i = 0; i < fallbacksByConversionType.Length; i++) {
+			fallbacksByConversionType[i] = fallbackType;
 		}
-		tileConversionFallbacks[tileType] = (fallbackType, exceptFor);
+		for (int i = 0; i < exceptForConversionTypes.Length; i++) {
+			fallbacksByConversionType[exceptForConversionTypes[i]] = -1;
+		}
 	}
 
 
@@ -798,9 +796,10 @@ public static class TileLoader
 		ModTile modTile = GetTile(type);
 		modTile?.Convert(i, j, conversionType);
 		if (Main.tile[i, j].type == type) {
-			(int fallback, bool[] exceptFor) = tileConversionFallbacks[type];
-			if (fallback != -1 && exceptFor is not null && !exceptFor[conversionType]) {
-				Main.tile[i, j].type = (ushort)fallback;
+			int[] fallbacks = tileConversionFallbacks[type];
+			if (fallbacks is not null && fallbacks[conversionType] != -1) {
+				ushort fallback = (ushort)fallbacks[conversionType];
+				Main.tile[i, j].type = fallback;
 				WorldGen.Convert(i, j, conversionType, 0, walls: false);
 
 				if (Main.tile[i, j].type == fallback) {
