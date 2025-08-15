@@ -779,6 +779,24 @@ public static class TileLoader
 			fallbacksByConversionType[exceptForConversionTypes[i]] = -1;
 		}
 	}
+	public static void SetConversionFallback(int tileType, int fallbackType, int conversionType)
+	{
+		if (tileConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
+		if (tileConversionFallbacks[tileType] is null) {
+			tileConversionFallbacks[tileType] = new int[BiomeConversionLoader.BiomeConversionCount];
+			Array.Fill(tileConversionFallbacks[tileType], -1);
+		}
+		tileConversionFallbacks[tileType][conversionType] = fallbackType;
+	}
+	public static int GetConversionFallback(int tileType, int conversionType)
+	{
+		if (tileConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
+		if (tileConversionFallbacks[tileType] is null)
+			return -1;
+		return tileConversionFallbacks[tileType][conversionType];
+	}
 
 
 	public static bool Convert(int i, int j, int conversionType)
