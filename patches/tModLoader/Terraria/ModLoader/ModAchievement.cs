@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -72,6 +71,11 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	/// <inheritdoc cref="ItemCraftCondition"/>
 	public ItemCraftCondition AddItemCraftCondition(string key, int[] itemIds) => AddCondition(new ItemCraftCondition(itemIds.Select(x => (short)x).ToArray(), key));
 
+	/// <summary>
+	/// Adds a <see cref="ItemCraftCondition"/> for each <paramref name="itemIds"/> entry. Unlike with passing in several Item IDs to <see cref="AddItemCraftCondition(int[])"/>, this method will require that each Item be crafted rather than just any one of them.
+	/// </summary>
+	public ItemCraftCondition[] AddManyItemCraftCondition(int[] itemIds) => itemIds.Select(x => AddCondition(new ItemCraftCondition((short)x))).ToArray();
+
 	/// <inheritdoc cref="ItemPickupCondition"/>
 	public ItemPickupCondition AddItemPickupCondition(int itemId) => AddCondition(new ItemPickupCondition((short)itemId));
 
@@ -83,6 +87,11 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 
 	/// <inheritdoc cref="ItemPickupCondition"/>
 	public ItemPickupCondition AddItemPickupCondition(string key, int[] itemIds) => AddCondition(new ItemPickupCondition(itemIds.Select(x => (short)x).ToArray(), key));
+
+	/// <summary>
+	/// Adds a <see cref="ItemPickupCondition"/> for each <paramref name="itemIds"/> entry. Unlike with passing in several Item IDs to <see cref="AddItemPickupCondition(int[])"/>, this method will require that each Item be picked up rather than just any one of them.
+	/// </summary>
+	public ItemPickupCondition[] AddManyItemPickupCondition(int[] itemIds) => itemIds.Select(x => AddCondition(new ItemPickupCondition((short)x))).ToArray();
 
 	/// <inheritdoc cref="NPCKilledCondition"/>
 	public NPCKilledCondition AddNPCKilledCondition(int npcID) => AddCondition(new NPCKilledCondition((short)npcID));
@@ -96,8 +105,10 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	/// <inheritdoc cref="NPCKilledCondition"/>
 	public NPCKilledCondition AddNPCKilledCondition(string key, int[] npcIDs) => AddCondition(new NPCKilledCondition(npcIDs.Select(x => (short)x).ToArray(), key));
 
-	// Might be confusing. This adds multiple conditions, not a single condition for any of the provided npcIDs.
-	// public void AddNPCsKilledCondition(int[] npcIDs) => Achievement.AddConditions(NPCKilledCondition.CreateMany(npcIDs.Select(x => (short)x).ToArray()));
+	/// <summary>
+	/// Adds a <see cref="NPCKilledCondition"/> for each <paramref name="npcIDs"/> entry. Unlike with passing in several NPC IDs to <see cref="AddNPCKilledCondition(int[])"/>, this method will require that each NPC be killed rather than just any one of them.
+	/// </summary>
+	public NPCKilledCondition[] AddManyNPCKilledCondition(int[] npcIDs) => npcIDs.Select(x => AddCondition(new NPCKilledCondition((short)x))).ToArray();
 
 	/// <inheritdoc cref="TileDestroyedCondition"/>
 	public TileDestroyedCondition AddTileDestroyedCondition(int[] tileIds) => AddCondition(new TileDestroyedCondition(tileIds.Select(x => (ushort)x).ToArray()));

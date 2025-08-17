@@ -5,7 +5,7 @@
  namespace Terraria.GameContent.Achievements;
  
 +/// <summary>
-+/// Satisfied when any of the provided items is crafted.
++/// Satisfied when any of the provided items is crafted by the local player.
 +/// </summary>
  public class ItemCraftCondition : AchievementCondition
  {

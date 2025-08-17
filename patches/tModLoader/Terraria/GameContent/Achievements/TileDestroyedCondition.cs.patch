@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Achievements/TileDestroyedCondition.cs
 +++ src/tModLoader/Terraria/GameContent/Achievements/TileDestroyedCondition.cs
-@@ -3,6 +_,9 @@
+@@ -3,6 +_,10 @@
  
  namespace Terraria.GameContent.Achievements;
  
 +/// <summary>
 +/// Satisfied when any of the provided tiles is mined.
++/// <br/><br/> Called in <see cref="WorldGen.KillTile"/>, but will only be satisfied if <see cref="AchievementsHelper.CurrentlyMining"/> is true.
 +/// </summary>
  public class TileDestroyedCondition : AchievementCondition
  {

@@ -6,6 +6,24 @@
  namespace Terraria.GameContent.Achievements;
  
  public class AchievementsHelper
+@@ -18,6 +_,9 @@
+ 	private static bool mayhem2down;
+ 	private static bool mayhem3down;
+ 
++	/// <summary>
++	/// Tracks if the local player is actively mining to determine if <see cref="TileDestroyedCondition"/> should be satisfied or not. Modders can set to true before any custom action that should count as player controlled mining and set to false after. This prevents world updates that happen to kill tiles from satisfying <see cref="TileDestroyedCondition"/>, to avoid rewarding players for mining tiles they didn't actually mine.
++	/// </summary>
+ 	public static bool CurrentlyMining {
+ 		get {
+ 			return _isMining;
+@@ -30,6 +_,7 @@
+ 	public static event ItemPickupEvent OnItemPickup;
+ 	public static event ItemCraftEvent OnItemCraft;
+ 	public static event TileDestroyedEvent OnTileDestroyed;
++	/// <summary> Called when an NPC is killed and the local player damaged/"interacted" with the NPC (<see cref="NPC.playerInteraction"/>). Unlike <see cref="ModLoader.ModNPC.OnKill"/>, this will be called on clients in multiplayer (if they damaged the NPC), making it suitable for Achievement logic. </summary>
+ 	public static event NPCKilledEvent OnNPCKilled;
+ 	public static event ProgressionEventEvent OnProgressionEvent;
+ 
 @@ -114,10 +_,10 @@
  			}
  		}
