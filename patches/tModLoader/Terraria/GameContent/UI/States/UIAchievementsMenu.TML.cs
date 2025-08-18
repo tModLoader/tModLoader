@@ -48,7 +48,7 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		achievementResetAreYouSure.HAlign = 0.5f;
 		Append(achievementResetAreYouSure);
 
-		UITextPanel<LocalizedText> areYouSureText = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementResetConfirm"), 0.6f, large: true);
+		UITextPanel<LocalizedText> areYouSureText = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsResetConfirm"), 0.6f, large: true);
 		areYouSureText.HAlign = 0.5f;
 		areYouSureText.SetPadding(13f);
 		areYouSureText.Top.Set(-33, 0f);
@@ -56,7 +56,7 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		areYouSureText.BackgroundColor = new Color(73, 94, 171);
 		achievementResetAreYouSure.Append(areYouSureText);
 
-		string text = FontAssets.ItemStack.Value.CreateWrappedText(Language.GetText("tModLoader.AchievementResetConfirmTooltip").Value, 310, Language.ActiveCulture.CultureInfo);
+		string text = FontAssets.ItemStack.Value.CreateWrappedText(Language.GetText("tModLoader.AchievementsResetConfirmTooltip").Value, 310, Language.ActiveCulture.CultureInfo);
 		UITextPanel<string> areYouSureDescription = new UITextPanel<string>(text, 1f, large: false);
 		areYouSureDescription.HAlign = 0.5f;
 		areYouSureDescription.Top.Set(20, 0f);

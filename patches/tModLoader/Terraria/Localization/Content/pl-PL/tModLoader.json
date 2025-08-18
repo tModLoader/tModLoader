@@ -174,8 +174,8 @@
 
 		// Achievements
 		"AchievementsReset": "Resetować",
-		"AchievementResetConfirm": "Jesteś pewien?",
-		"AchievementResetConfirmTooltip": "Zresetowanie osiągnięć oznacza, że utracisz je na stałe. Czy na pewno chcesz kontynuować?",
+		"AchievementsResetConfirm": "Jesteś pewien?",
+		"AchievementsResetConfirmTooltip": "Zresetowanie osiągnięć oznacza, że utracisz je na stałe. Czy na pewno chcesz kontynuować?",
 
 		// Workshop
 		"WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",

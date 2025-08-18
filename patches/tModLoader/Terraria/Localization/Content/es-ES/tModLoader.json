@@ -174,8 +174,8 @@
 
 		// Achievements
 		// "AchievementsReset": "Reset",
-		// "AchievementResetConfirm": "Are you sure?",
-		// "AchievementResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		// "AchievementsResetConfirm": "Are you sure?",
+		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
 
 		// Workshop
 		"WorkshopDisclaimer": "Al publicar este elemento, aceptas los Términos de Servicio de tModLoader",
