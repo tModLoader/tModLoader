@@ -13,7 +13,9 @@ namespace Terraria.ModLoader;
 /// <br/><br/> The ModAchievement represents a single achievement, it provides the image (<see cref="Texture"/>), display name (<see cref="FriendlyName"/>), description (<see cref="Description"/>), and category (<see cref="Achievement.SetCategory(AchievementCategory)"/>).
 /// <br/><br/> Each achievement also has one or more conditions (<see cref="AchievementCondition"/>). Conditions can be existing conditions, like crafting specific items or killing specific NPCs, or they can be completely custom. If an achievement has multiple conditions, each must use a unique identifier. Once every condition is completed, the achievement itself is completed and <see cref="OnCompleted(Achievement)"/> is called.
 /// <br/><br/> And finally, each achievement can have an optional tracker. The tracker is responsible for consolidating all of the conditions and reporting a completion progress value shown in the achievements menu. A tracker will be assigned automatically if not assigned in SetStaticDefaults and if there are multiple conditions or if the sole condition has an associated tracker.
-/// </summary> 
+/// <br/><br/> Achievements are not loaded on the server.
+/// </summary>
+[Autoload(Side = ModSide.Client)]
 public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILocalizedModType
 {
 	/// <summary> The Achievement object that this ModAchievement controls. </summary>

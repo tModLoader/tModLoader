@@ -88,7 +88,7 @@
  	public void RegisterIconIndex(string achievementName, int iconIndex)
  	{
  		_achievementIconIndexes.Add(achievementName, iconIndex);
-@@ -181,5 +_,20 @@
+@@ -181,5 +_,26 @@
  			return value;
  
  		return 0;
@@ -96,12 +96,18 @@
 +
 +	internal static void FinishSetup()
 +	{
++		if (Main.dedServ)
++			return;
++
 +		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
 +		Main.Achievements.Load();
 +	}
 +
 +	internal static void Unload()
 +	{
++		if (Main.dedServ)
++			return;
++
 +		var ModAchievements = Main.Achievements._achievements.Values.Where(x => x.ModAchievement != null).ToList();
 +		foreach (var Achievement in ModAchievements) {
 +			Main.Achievements.Unregister(Achievement);
