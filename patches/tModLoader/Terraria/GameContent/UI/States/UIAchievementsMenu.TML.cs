@@ -103,8 +103,10 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		_achievementsList.Clear();
 		string searchText = filterTextBox.Text?.ToLowerInvariant() ?? string.Empty; // Get the search text, ensuring it's lowercase
 
+		// TODO: This doesn't take into account category selection, and category selection doesn't take into account this.
 		foreach (UIAchievementListItem achievementElement in _achievementElements) {
 			// TODO: Should .Hidden entries be searchable?
+			// TODO: Should this also search description?
 			string friendlyName = achievementElement.GetAchievement().FriendlyName.Value.ToLowerInvariant(); // Convert to lowercase for case-insensitive comparison
 			string modName = achievementElement.GetAchievement().ModAchievement != null ? achievementElement.GetAchievement().ModAchievement.Mod.DisplayName.ToLowerInvariant() : string.Empty; // Convert to lowercase for case-insensitive comparison
 

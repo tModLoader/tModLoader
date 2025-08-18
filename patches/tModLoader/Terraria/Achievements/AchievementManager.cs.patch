@@ -10,7 +10,7 @@
  			_savePath = SocialAPI.Achievements.GetSavePath();
  			_isCloudSave = true;
  			_cryptoKey = SocialAPI.Achievements.GetEncryptionKey();
-@@ -59,13 +_,30 @@
+@@ -59,13 +_,31 @@
  				SocialAPI.Achievements.StoreStats();
  
  			try {
@@ -36,6 +36,7 @@
 +				if (ModLoader.Core.ModCompile.activelyModding) {
 +					// Modders might want to verify the info, save a human-readable copy of achievements.dat
 +					string json = JsonConvert.SerializeObject(existingData, Formatting.Indented);
++					json = "// This file is to help modders debug and visualize their achievement conditions. It will not be loaded, so editing it will have no effect.\n" + json;
 +					File.WriteAllText(path + ".json", json);
 +				}
  			}
