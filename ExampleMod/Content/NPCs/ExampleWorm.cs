@@ -3,11 +3,9 @@ using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
-using Terraria.GameContent.Achievements;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Achievements;
 
 namespace ExampleMod.Content.NPCs
 {

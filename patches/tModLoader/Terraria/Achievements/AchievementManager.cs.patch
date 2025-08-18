@@ -68,11 +68,14 @@
  	public void Load()
  	{
  		Load(_savePath, _isCloudSave);
-@@ -131,6 +_,7 @@
+@@ -131,6 +_,10 @@
  			achievement.Value.ClearProgress();
  		}
  
-+		// TODO: Make a backup instead of losing them permanently?
++		if (File.Exists(_savePath)) {
++			// Just in case a user accidentally clears their achievements, they can use achievements.dat.bak to restore them by replacing achievements.dat
++			File.Copy(_savePath, _savePath + ".bak", overwrite: true);
++		}
  		Save();
  	}
  
