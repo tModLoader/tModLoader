@@ -33,7 +33,7 @@
  		uITextPanel2.OnLeftClick += GoBackClick;
  		uIElement.Append(uITextPanel2);
 +
-+		UITextPanel<LocalizedText> resetAchievementsButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsReset"), 0.7f, large: true);
++		resetAchievementsButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsReset"), 0.7f, large: true);
 +		uITextPanel2.Width.Set(-10f, 0.8f);
 +		uITextPanel2.HAlign = 0f;
 +		resetAchievementsButton.Width.Set(-10f, 1 - uITextPanel2.Width.Percent);
@@ -152,3 +152,10 @@
  		InitializePage();
  		if (Main.gameMenu) {
  			_outerContainer.Top.Set(220f, 0f);
+@@ -218,5 +_,6 @@
+ 			uILinkPoint3.Right = ((i == _categoryButtons.Count - 1) ? (-4) : (num2 + 1));
+ 			uILinkPoint3.Down = num;
+ 		}
++		SetupGamepadPoints_TML(num, num2, uILinkPoint);
+ 	}
+ }

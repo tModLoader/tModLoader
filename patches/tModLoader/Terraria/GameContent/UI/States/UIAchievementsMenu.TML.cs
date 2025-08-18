@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.GameContent.UI.States;
 
@@ -16,7 +17,10 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 
 	private UIImage blockInput;
 	private UIInputTextField filterTextBox;
+	UITextPanel<LocalizedText> resetAchievementsButton;
 	private UIPanel achievementResetAreYouSure;
+	UITextPanel<LocalizedText> yesButton;
+	UITextPanel<LocalizedText> noButton;
 	private bool moddedOnly = false;
 
 	private void ResetAchievements(UIMouseEvent evt, UIElement listeningElement)
@@ -66,7 +70,7 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		achievementResetAreYouSure.Append(areYouSureDescription);
 
 		// Confirm Button
-		UITextPanel<LocalizedText> yesButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsReset"), 0.7f, large: true);
+		yesButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsReset"), 0.7f, large: true);
 		yesButton.Width.Set(0, 0.5f);
 		yesButton.Height.Set(40f, 0f);
 		yesButton.VAlign = 1;
@@ -77,7 +81,7 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		achievementResetAreYouSure.Append(yesButton);
 
 		// Cancel Button
-		UITextPanel<LocalizedText> noButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Cancel"), 0.7f, large: true);
+		noButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Cancel"), 0.7f, large: true);
 		noButton.Width.Set(-10, 0.5f);
 		noButton.Height.Set(40f, 0f);
 		noButton.VAlign = 1;
@@ -87,6 +91,31 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		achievementResetAreYouSure.Append(noButton);
 
 		SoundEngine.PlaySound(SoundID.MenuOpen);
+		UILinkPointNavigator.ChangePoint(3009); // noButton
+	}
+
+	private void SetupGamepadPoints_TML(int startPointID, int currentPointID, UILinkPoint uILinkPoint_BackPanel)
+	{
+		currentPointID++;
+		UILinkPointNavigator.SetPosition(currentPointID, resetAchievementsButton.GetInnerDimensions().ToRectangle().Center.ToVector2());
+		UILinkPoint uILinkPoint_ResetAchievementsButton = UILinkPointNavigator.Points[currentPointID];
+		uILinkPoint_ResetAchievementsButton.Left = startPointID;
+		uILinkPoint_ResetAchievementsButton.Up = startPointID + 1;
+
+		uILinkPoint_BackPanel.Right = currentPointID;
+
+		if (blockInput != null && HasChild(blockInput)) {
+			currentPointID++;
+			UILinkPointNavigator.SetPosition(currentPointID, yesButton.GetInnerDimensions().ToRectangle().Center.ToVector2());
+			UILinkPoint uILinkPoint_YesButton = UILinkPointNavigator.Points[currentPointID];
+			uILinkPoint_YesButton.Left = currentPointID + 1;
+
+			currentPointID++;
+			UILinkPointNavigator.SetPosition(currentPointID, noButton.GetInnerDimensions().ToRectangle().Center.ToVector2());
+			UILinkPoint uILinkPoint_NoButton = UILinkPointNavigator.Points[currentPointID];
+			uILinkPoint_NoButton.Right = currentPointID - 1;
+		}
+		UILinkPointNavigator.Shortcuts.FANCYUI_HIGHEST_INDEX = currentPointID;
 	}
 
 	private void CloseAchievementConfirm(UIMouseEvent evt, UIElement listeningElement)
@@ -96,6 +125,7 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		blockInput = null;
 		achievementResetAreYouSure = null;
 		SoundEngine.PlaySound(SoundID.MenuClose);
+		UILinkPointNavigator.ChangePoint(3000); // _backpanel
 	}
 
 	private void ClearSearchField(UIMouseEvent evt, UIElement listeningElement) => filterTextBox.Text = "";
