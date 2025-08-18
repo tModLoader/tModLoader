@@ -11,9 +11,9 @@ Mods: {
 		Common.PaperAirplane: Paper Airplane
 		
 		Achievements: {
-		    ExampleWormKilled: {
-		        Name: Example Worm Killed
-		        Description: Congrats... you murdered a worm. I bet you feel so proud of yourself - Example Achievement
+		    MinionBossKilled: {
+		        Name: Minion Boss Killed
+		        Description: Defeat Minion Boss, a massive eye protected by a ring of friends.
 		    }
 		    
             ManyExampleWormsKilled: {

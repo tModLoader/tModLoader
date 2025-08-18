@@ -51,11 +51,6 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public override void OnKill() {
-			// ExampleWormKilled will automatically unlock because it uses AddNPCKilledCondition, but if it used AddCondition instead we would call ModContent.GetInstance<ExampleWormKilled>().Condition.Complete(); to satisfy the condition.
-			ModContent.GetInstance<ManyExampleWormsKilled>().Condition.Value++;			
-		}
-
 		public override void Init() {
 			// Set the segment variance
 			// If you want the segment length to be constant, set these two properties to the same value
