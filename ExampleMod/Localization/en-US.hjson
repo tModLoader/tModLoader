@@ -17,8 +17,13 @@ Mods: {
 			}
 
 			ManyExampleWormsKilled: {
-				Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
+				Description: Okay...we get it, now please stop murdering these poor worms.
 				FriendlyName: Many Example Worms Killed
+			}
+
+			AdvancedExampleAchievement: {
+				FriendlyName: Advanced Example Achievement
+				Description: This achievement has far too many conditions, but it great for learning advanced ModAchievement features. Do everything possible with Lava Frog.
 			}
 		}
 
