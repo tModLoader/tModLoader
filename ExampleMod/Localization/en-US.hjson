@@ -9,17 +9,17 @@
 Mods: {
 	ExampleMod: {
 		Common.PaperAirplane: Paper Airplane
-		
+
 		Achievements: {
-		    MinionBossKilled: {
-		        Name: Minion Boss Killed
-		        Description: Defeat Minion Boss, a massive eye protected by a ring of friends.
-		    }
-		    
-            ManyExampleWormsKilled: {
-                Name: MORE WORMS??
-                Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
-            }
+			MinionBossKilled: {
+				Description: Defeat Minion Boss, a massive eye protected by a ring of friends.
+				FriendlyName: Minion Boss Killed
+			}
+
+			ManyExampleWormsKilled: {
+				Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
+				FriendlyName: Many Example Worms Killed
+			}
 		}
 
 		CommonItemTooltip: {

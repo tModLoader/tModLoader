@@ -174,6 +174,11 @@
 		"BossBarStyle": "Boss 血条样式：{0}",
 		"BossBarStyleNoOptions": "无",
 
+		// Achievements
+		// "AchievementsReset": "Reset",
+		// "AchievementResetConfirm": "Are you sure?",
+		// "AchievementResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+
 		// Workshop
 		"WorkshopDisclaimer": "在提交之前，你需要同意tModLoader的服务条款",
 		"NonModOwnerPublishWarning": "内部名称为“{0}”已被另一个模组发布到Steam创意工坊。 如果你不是该模组的贡献者或作者，则尝试发布将失败。 如果这是你的模组，请仔细检查你是否登录到正确的Steam帐户。 每个模组都必须有一个唯一的内部名称",

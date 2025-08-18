@@ -172,6 +172,11 @@
 		"BossBarStyle": "Стиль шкалы здоровья босса: {0}",
 		"BossBarStyleNoOptions": "Нет вариантов",
 
+		// Achievements
+		// "AchievementsReset": "Reset",
+		// "AchievementResetConfirm": "Are you sure?",
+		// "AchievementResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+
 		// Workshop
 		"WorkshopDisclaimer": "Опубликовывая этот контент, вы соглашаетесь с правилами пользования tModLoader",
 		"NonModOwnerPublishWarning": "Мод с таким же названием \"{0}\" уже был опубликован в Мастерской другим автором. Если вы не являетесь соавтором этого мода, попытка его публикации не удастся. Если же это ваш мод, пожалуйста, убедитесь, что вы авторизованы в правильном аккаунте Steam. У каждого мода должно быть уникальное внутреннее название.",

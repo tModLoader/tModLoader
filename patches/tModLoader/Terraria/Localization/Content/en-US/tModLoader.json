@@ -171,8 +171,8 @@
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",
 		"BossBarStyleNoOptions": "No Options",
-		
-		//Achievements
+
+		// Achievements
 		"AchievementsReset": "Reset",
 		"AchievementResetConfirm": "Are you sure?",
 		"AchievementResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",

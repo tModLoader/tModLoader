@@ -9,17 +9,18 @@
 Mods: {
 	ExampleMod: {
 		Common.PaperAirplane: Бумажный самолётик
-		// Achievements: {
-		//    ExampleWormKilled: {
-		//        Name: Example Worm Killed 
-		//        Description: Congrats... you murdered a worm. I bet you feel so proud of yourself - Example Achievement
-		//    }
-		//   
-        //    ManyExampleWormsKilled: {
-        //        Name: MORE WORMS?? 
-        //        Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
-        //    }
-		// }
+
+		Achievements: {
+			MinionBossKilled: {
+				// Description: Defeat Minion Boss, a massive eye protected by a ring of friends.
+				// FriendlyName: Minion Boss Killed
+			}
+
+			ManyExampleWormsKilled: {
+				// Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
+				// FriendlyName: Many Example Worms Killed
+			}
+		}
 
 		CommonItemTooltip: {
 			// IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}

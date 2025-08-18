@@ -10,6 +10,18 @@ Mods: {
 	ExampleMod: {
 		// Common.PaperAirplane: Paper Airplane
 
+		Achievements: {
+			MinionBossKilled: {
+				// Description: Defeat Minion Boss, a massive eye protected by a ring of friends.
+				// FriendlyName: Minion Boss Killed
+			}
+
+			ManyExampleWormsKilled: {
+				// Description: Okay... we get it, now please stop murdering these poor worms. - Example Achievement
+				// FriendlyName: Many Example Worms Killed
+			}
+		}
+
 		CommonItemTooltip: {
 			// IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}
 			# It is recommended to make some common tooltips for custom damage classes
