@@ -101,16 +101,16 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 	private void FilterSearch(object sender, EventArgs e)
 	{
 		_achievementsList.Clear();
-		string searchText = filterTextBox.Text?.ToLowerInvariant() ?? string.Empty; // Get the search text, ensuring it's lowercase
+		string searchText = filterTextBox.Text ?? string.Empty; // Get the search text
 
 		// TODO: This doesn't take into account category selection, and category selection doesn't take into account this.
 		foreach (UIAchievementListItem achievementElement in _achievementElements) {
-			// TODO: Should .Hidden entries be searchable?
-			// TODO: Should this also search description?
-			string friendlyName = achievementElement.GetAchievement().FriendlyName.Value.ToLowerInvariant(); // Convert to lowercase for case-insensitive comparison
-			string modName = achievementElement.GetAchievement().ModAchievement != null ? achievementElement.GetAchievement().ModAchievement.Mod.DisplayName.ToLowerInvariant() : string.Empty; // Convert to lowercase for case-insensitive comparison
+			Achievement achievement = achievementElement.GetAchievement();
+			string friendlyName = !achievement.Hidden ? achievement.FriendlyName.Value : string.Empty;
+			string description = !achievement.Hidden ? achievement.Description.Value : string.Empty;
+			string modName = achievement.ModAchievement?.Mod.DisplayName ?? string.Empty;
 
-			if (friendlyName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || modName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)) {
+			if (friendlyName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || description.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || modName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)) {
 				_achievementsList.Add(achievementElement);
 			}
 		}

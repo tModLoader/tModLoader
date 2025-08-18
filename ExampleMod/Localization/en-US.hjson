@@ -23,7 +23,7 @@ Mods: {
 
 			AdvancedExampleAchievement: {
 				FriendlyName: Advanced Example Achievement
-				Description: This achievement has far too many conditions, but it great for learning advanced ModAchievement features. Do everything possible with Lava Frog.
+				Description: This achievement has far too many conditions, but it is great for learning advanced ModAchievement features. Do everything possible with Lava Frog.
 			}
 		}
 

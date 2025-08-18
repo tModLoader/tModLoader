@@ -79,13 +79,14 @@
  		Save();
  	}
  
-@@ -147,6 +_,12 @@
+@@ -147,6 +_,13 @@
  		achievement.OnCompleted += AchievementCompleted;
  	}
  
 +	public void Unregister(Achievement achievement)
 +	{
 +		_achievements.Remove(achievement.Name);
++		_achievementIconIndexes.Remove(achievement.Name);
 +		achievement.OnCompleted -= AchievementCompleted;
 +	}
 +
