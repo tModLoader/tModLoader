@@ -178,6 +178,7 @@
 		// "AchievementsReset": "Reset",
 		// "AchievementsResetConfirm": "Are you sure?",
 		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
 
 		// Workshop
 		"WorkshopDisclaimer": "在提交之前，你需要同意tModLoader的服务条款",

@@ -1,23 +1,23 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using ReLogic.OS.Windows;
 using Terraria.Achievements;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
-using Terraria.UI.Gamepad;
+
 namespace Terraria.GameContent.UI.States;
 
 public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 {
 	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
+
+	private UIImage blockInput;
+	private UIInputTextField filterTextBox;
+	private UIPanel achievementResetAreYouSure;
+	private bool moddedOnly = false;
 
 	private void ResetAchievements(UIMouseEvent evt, UIElement listeningElement)
 	{
@@ -30,16 +30,16 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 
 	private void ResetAchievementsConfirm(UIMouseEvent evt, UIElement listeningElement)
 	{
-		_blockInput = new UIImage(TextureAssets.Extra[190]) {
+		blockInput = new UIImage(TextureAssets.Extra[190]) {
 			Width = { Percent = 1 },
 			Height = { Percent = 1 },
 			Color = Color.Black * 0.5f,
 			ScaleToFit = true
 		};
-		_blockInput.Width = StyleDimension.Fill;
-		_blockInput.Height = StyleDimension.Fill;
-		_blockInput.OnLeftClick += CloseAchievementConfirm;
-		Append(_blockInput);
+		blockInput.Width = StyleDimension.Fill;
+		blockInput.Height = StyleDimension.Fill;
+		blockInput.OnLeftClick += CloseAchievementConfirm;
+		Append(blockInput);
 
 		achievementResetAreYouSure = new UIPanel();
 		achievementResetAreYouSure.Width.Set(400f, 0f);
@@ -91,37 +91,27 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 
 	private void CloseAchievementConfirm(UIMouseEvent evt, UIElement listeningElement)
 	{
-		RemoveChild(_blockInput);
+		RemoveChild(blockInput);
 		RemoveChild(achievementResetAreYouSure);
-		_blockInput = null;
+		blockInput = null;
 		achievementResetAreYouSure = null;
 		SoundEngine.PlaySound(SoundID.MenuClose);
 	}
 
-	private void FilterSearch(object sender, EventArgs e)
+	private bool PassSearchFilter(Achievement achievement)
 	{
-		_achievementsList.Clear();
 		string searchText = filterTextBox.Text ?? string.Empty; // Get the search text
+		string friendlyName = !achievement.Hidden ? achievement.FriendlyName.Value : string.Empty;
+		string description = !achievement.Hidden ? achievement.Description.Value : string.Empty;
+		string modName = achievement.ModAchievement?.Mod.DisplayName ?? string.Empty;
 
-		// TODO: This doesn't take into account category selection, and category selection doesn't take into account this.
-		foreach (UIAchievementListItem achievementElement in _achievementElements) {
-			Achievement achievement = achievementElement.GetAchievement();
-			string friendlyName = !achievement.Hidden ? achievement.FriendlyName.Value : string.Empty;
-			string description = !achievement.Hidden ? achievement.Description.Value : string.Empty;
-			string modName = achievement.ModAchievement?.Mod.DisplayName ?? string.Empty;
-
-			if (friendlyName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || description.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || modName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)) {
-				_achievementsList.Add(achievementElement);
-			}
-		}
-
-		Recalculate();
+		return friendlyName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || description.Contains(searchText, StringComparison.CurrentCultureIgnoreCase) || modName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase);
 	}
 
 	// Note that Escape key while in-game won't call this without the additional code in Draw.
 	public void HandleBackButtonUsage()
 	{
-		if (_blockInput != null && HasChild(_blockInput)) {
+		if (blockInput != null && HasChild(blockInput)) {
 			CloseAchievementConfirm(null, null);
 			return;
 		}
@@ -131,7 +121,7 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 
 	private void ToggleFilterModded(UIMouseEvent evt, UIElement listeningElement)
 	{
-		_filterModded = !_filterModded;
+		moddedOnly = !moddedOnly;
 		FilterList(evt, listeningElement);
 	}
 }

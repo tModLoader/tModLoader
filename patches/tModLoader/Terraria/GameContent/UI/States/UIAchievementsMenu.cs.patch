@@ -1,15 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIAchievementsMenu.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIAchievementsMenu.cs
-@@ -1,25 +_,33 @@
-+using System;
- using System.Collections.Generic;
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
- using ReLogic.Content;
-+using ReLogic.OS.Windows;
- using Terraria.Achievements;
- using Terraria.Audio;
- using Terraria.GameContent.UI.Elements;
+@@ -8,12 +_,13 @@
  using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
@@ -24,17 +15,6 @@
  {
  	private UIList _achievementsList;
  	private List<UIAchievementListItem> _achievementElements = new List<UIAchievementListItem>();
- 	private List<UIToggleImage> _categoryButtons = new List<UIToggleImage>();
- 	private UIElement _backpanel;
- 	private UIElement _outerContainer;
-+	private UIImage _blockInput;
-+	private UIInputTextField filterTextBox;
-+	private UIPanel achievementResetAreYouSure;
-+
-+	private bool _filterModded = false;
- 
- 	public void InitializePage()
- 	{
 @@ -50,22 +_,42 @@
  		_achievementsList.Top.Set(50f, 0f);
  		_achievementsList.ListPadding = 5f;
@@ -99,7 +79,7 @@
 +			Left = { Pixels = 5 },
 +			VAlign = 0.5f,
 +		};
-+		filterTextBox.OnTextChange += FilterSearch;
++		filterTextBox.OnTextChange += (a, b) => FilterList(null, null);
 +		filterTextBoxBackground.Append(filterTextBox);
 +
 +		UIImageButton clearSearchButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
@@ -122,7 +102,17 @@
  		uIElement2.Height.Set(32f, 0f);
  		uIElement2.Top.Set(10f, 0f);
  		Asset<Texture2D> texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories");
-@@ -98,6 +_,8 @@
+@@ -94,10 +_,18 @@
+ 			_categoryButtons.Add(uIToggleImage);
+ 			uIElement2.Append(uIToggleImage);
+ 		}
++		UIToggleImage toggleModdedOnlyImage = new UIToggleImage(UICommon.UIAchievementsMenuIconsTexture, 32, 32, new Point(0, 0), new Point(0, 34));
++		toggleModdedOnlyImage.Left.Set(4 * 36 + 8, 0f);
++		toggleModdedOnlyImage.SetState(value: moddedOnly);
++		toggleModdedOnlyImage.OnLeftClick += ToggleFilterModded;
++		_categoryButtons.Add(toggleModdedOnlyImage);
++		uIElement2.Append(toggleModdedOnlyImage);
+ 
  		uIPanel.Append(uIElement2);
  	}
  
@@ -131,6 +121,16 @@
  	public override void Draw(SpriteBatch spriteBatch)
  	{
  		base.Draw(spriteBatch);
+@@ -105,6 +_,9 @@
+ 			if (_categoryButtons[i].IsMouseHovering) {
+ 				string text = "";
+ 				switch (i) {
++					case 4:
++						text = Language.GetTextValue("tModLoader.AchievementsOnlyShowModded");
++						break;
+ 					case 3:
+ 						text = Language.GetTextValue("Achievements.ChallengerCategory");
+ 						break;
 @@ -139,6 +_,10 @@
  		}
  
@@ -142,6 +142,23 @@
  	}
  
  	public void GotoAchievement(Achievement achievement)
+@@ -167,9 +_,16 @@
+ 
+ 	private void FilterList(UIMouseEvent evt, UIElement listeningElement)
+ 	{
++		if(listeningElement is UIToggleImage)
+ 		SoundEngine.PlaySound(12);
+ 		_achievementsList.Clear();
+ 		foreach (UIAchievementListItem achievementElement in _achievementElements) {
++			if (moddedOnly && achievementElement.GetAchievement().ModAchievement == null)
++				continue;
++
++			if (!PassSearchFilter(achievementElement.GetAchievement()))
++				continue;
++
+ 			if (_categoryButtons[(int)achievementElement.GetAchievement().Category].IsOn)
+ 				_achievementsList.Add(achievementElement);
+ 		}
 @@ -179,6 +_,7 @@
  
  	public override void OnActivate()
