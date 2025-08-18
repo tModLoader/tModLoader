@@ -98,6 +98,8 @@ public partial class UIAchievementsMenu : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(SoundID.MenuClose);
 	}
 
+	private void ClearSearchField(UIMouseEvent evt, UIElement listeningElement) => filterTextBox.Text = "";
+
 	private bool PassSearchFilter(Achievement achievement)
 	{
 		string searchText = filterTextBox.Text ?? string.Empty; // Get the search text

@@ -1,17 +1,10 @@
 --- src/TerrariaNetCore/Terraria/UI/AchievementAdvisor.cs
 +++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
-@@ -1,9 +_,11 @@
+@@ -1,3 +_,4 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
  using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
- using ReLogic.Content;
- using Terraria.GameInput;
-+using Terraria.ModLoader;
- 
- namespace Terraria.UI;
- 
 @@ -146,7 +_,10 @@
  
  		Rectangle frame = card.frame;

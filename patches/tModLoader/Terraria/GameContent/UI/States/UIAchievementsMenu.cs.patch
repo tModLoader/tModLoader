@@ -15,18 +15,9 @@
  {
  	private UIList _achievementsList;
  	private List<UIAchievementListItem> _achievementElements = new List<UIAchievementListItem>();
-@@ -50,22 +_,42 @@
- 		_achievementsList.Top.Set(50f, 0f);
- 		_achievementsList.ListPadding = 5f;
- 		uIPanel.Append(_achievementsList);
-+
- 		UITextPanel<LocalizedText> uITextPanel = new UITextPanel<LocalizedText>(Language.GetText("UI.Achievements"), 1f, large: true);
- 		uITextPanel.HAlign = 0.5f;
- 		uITextPanel.Top.Set(-33f, 0f);
- 		uITextPanel.SetPadding(13f);
+@@ -57,15 +_,33 @@
  		uITextPanel.BackgroundColor = new Color(73, 94, 171);
  		uIElement.Append(uITextPanel);
-+
  		UITextPanel<LocalizedText> uITextPanel2 = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f, large: true);
 +		/*
  		uITextPanel2.Width.Set(-10f, 0.5f);
@@ -102,7 +93,7 @@
  		uIElement2.Height.Set(32f, 0f);
  		uIElement2.Top.Set(10f, 0f);
  		Asset<Texture2D> texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories");
-@@ -94,10 +_,18 @@
+@@ -94,6 +_,12 @@
  			_categoryButtons.Add(uIToggleImage);
  			uIElement2.Append(uIToggleImage);
  		}
@@ -115,12 +106,6 @@
  
  		uIPanel.Append(uIElement2);
  	}
- 
-+	private void ClearSearchField(UIMouseEvent evt, UIElement listeningElement) => filterTextBox.Text = "";
-+
- 	public override void Draw(SpriteBatch spriteBatch)
- 	{
- 		base.Draw(spriteBatch);
 @@ -105,6 +_,9 @@
  			if (_categoryButtons[i].IsMouseHovering) {
  				string text = "";
