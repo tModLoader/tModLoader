@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Achievements;
 
-// ManyExampleWormsKilled is a more complicated example than ExampleWormKilled.
+// ManyExampleWormsKilled is a more complicated example than MinionBossKilled.
 // It is unlocked when ExampleWormHead has been defeated 5 times rather than just once.
 public class ManyExampleWormsKilled : ModAchievement
 {
