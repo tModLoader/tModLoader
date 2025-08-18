@@ -26,6 +26,26 @@
  		if (sticky) {
  			if (DeactivateIfOutsideOfWorld())
  				return;
+@@ -274,15 +_,19 @@
+ 		switch (GoreID.Sets.SpecialAI[type]) {
+ 			case 4:
+ 				UpdateAmbientFloorCloud();
++				GoreLoader.TakeDownUpdateType(this);
+ 				return;
+ 			case 5:
+ 				UpdateAmbientAirborneCloud();
++				GoreLoader.TakeDownUpdateType(this);
+ 				return;
+ 			case 6:
+ 				UpdateFogMachineCloud();
++				GoreLoader.TakeDownUpdateType(this);
+ 				return;
+ 			case 7:
+ 				UpdateLightningBunnySparks();
++				GoreLoader.TakeDownUpdateType(this);
+ 				return;
+ 		}
+ 
 @@ -316,7 +_,7 @@
  			sticky = false;
  			rotation = velocity.X * 0.1f;

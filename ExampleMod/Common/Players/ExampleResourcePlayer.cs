@@ -109,7 +109,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public static void SendExampleResourceEffectMessage(int whoAmI, int healAmount) {
-			// This code is called by both the initial 
+			// This code is called by both the initial message from a client running healing code and the server relaying the changes to other clients.
 			ModPacket packet = ModContent.GetInstance<ExampleMod>().GetPacket();
 			packet.Write((byte)ExampleMod.MessageType.ExampleResourceEffect);
 			packet.Write((byte)whoAmI);

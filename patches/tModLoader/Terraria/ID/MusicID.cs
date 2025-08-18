@@ -1,9 +1,20 @@
 using System;
+using ReLogic.Reflection;
+using Terraria.ModLoader;
 
 namespace Terraria.ID;
 
-public static class MusicID
+public class MusicID
 {
+	public static partial class Sets
+	{
+		public static SetFactory Factory = new SetFactory(MusicLoader.MusicCount, nameof(MusicID), Search);
+		/// <summary>
+		/// Skips Terraria's <see cref="Terraria.Audio.ASoundEffectBasedAudioTrack.ReMapVolumeToMatchXact(float)"/> function to make music play at its intended volume.
+		/// <para/>This should be set in <see cref="ModType.SetStaticDefaults()"/>, preferably <see cref="ModSystem"/>
+		/// </summary>
+		public static bool[] SkipsVolumeRemap = Factory.CreateBoolSet(false);
+	}
 	// Names derived from the music box that plays each: https://terraria.wiki.gg/wiki/Music_Box
 	public const short OverworldDay = 1;
 	public const short Eerie = 2;
@@ -95,4 +106,6 @@ public static class MusicID
 	public const short Deerclops = 90;
 	public const short Shimmer = 91;
 	public const short Count = 92;
+
+	public static IdDictionary Search = IdDictionary.Create<MusicID, int>();
 }

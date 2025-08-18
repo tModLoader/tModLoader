@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Capture/CaptureInterface.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureInterface.cs
+@@ -955,6 +_,9 @@
+ 
+ 	private void DrawButtons(SpriteBatch sb)
+ 	{
++		sb.End();
++		sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix); // #4578 vanilla fix
++
+ 		new Vector2(Main.mouseX, Main.mouseY);
+ 		int num = 9;
+ 		for (int i = 0; i < num; i++) {
+@@ -1072,6 +_,9 @@
+ 
+ 		if (text != "")
+ 			Main.instance.MouseText(text, 0, 0);
++
++		sb.End();
++		sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Main.UIScaleMatrix); // #4578 vanilla fix
+ 	}
+ 
+ 	private static bool GetMapCoords(int PinX, int PinY, int Goal, out Point result)

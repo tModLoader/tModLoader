@@ -294,7 +294,17 @@ public static class ModNet
 				},
 				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
 				backButtonAction: () => {
+					Netplay.InvalidateAllOngoingIPSetAttempts();
 					Netplay.Disconnect = true;
+					Netplay.Connection.Socket.Close();
+					if (Main.tServer != null) {
+						try {
+							Main.tServer.Kill();
+							Main.tServer = null;
+						}
+						catch {
+						}
+					}
 				},
 				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
 			);
@@ -611,7 +621,7 @@ public static class ModNet
 			ReadUnderflowBypass = false;
 			GetMod(id)?.HandlePacket(reader, whoAmI);
 			if (!ReadUnderflowBypass && reader.BaseStream.Position - start != actualLength) {
-				throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id).Name} in HandlePacket");
+				throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id)?.Name ?? "Unknown mod"} in HandlePacket");
 			}
 		}
 		catch { }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using ReLogic.Content;
 using Terraria.GameContent;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -31,6 +32,7 @@ public abstract class ModDust : ModTexturedType
 		DustLoader.dusts.Add(this);
 
 		Type = DustLoader.ReserveDustID();
+		DustID.Search.Add(FullName, Type);
 
 		Texture2D = !string.IsNullOrEmpty(Texture) ? ModContent.Request<Texture2D>(Texture) : TextureAssets.Dust;
 	}

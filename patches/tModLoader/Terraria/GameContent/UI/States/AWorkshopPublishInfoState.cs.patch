@@ -209,7 +209,7 @@
  			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num) * (1f - groupOptionButton.HAlign * 2f));
  			groupOptionButton.Top.Set(accumulatedHeight, 0f);
-@@ -382,18 +_,41 @@
+@@ -382,22 +_,47 @@
  	{
  		List<WorkshopTagOption> tagsToShow = GetTagsToShow();
  		int num = 3;
@@ -254,6 +254,12 @@
  			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (num - 1), 1f / (float)num * num4);
  			groupOptionButton.HAlign = (float)num6 / (float)(num - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num4) * (1f - groupOptionButton.HAlign * 2f));
+ 			groupOptionButton.Top.Set(num5 * heightPerRow, 0f);
++			// If we want to enforce TagsTranslation meaning later:
++			// if(workshopTagOption.NameKey != "tModLoader.TagsTranslation")
+ 			groupOptionButton.OnLeftMouseDown += ClickTagOption;
+ 			groupOptionButton.OnMouseOver += ShowOptionDescription;
+ 			groupOptionButton.OnMouseOut += ClearOptionDescription;
 @@ -593,7 +_,8 @@
  
  	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)

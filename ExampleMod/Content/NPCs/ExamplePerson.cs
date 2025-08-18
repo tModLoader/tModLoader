@@ -42,6 +42,13 @@ namespace ExampleMod.Content.NPCs
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
 
+		public static LocalizedText UpgradedText { get; private set; }
+
+		// Sets a unique message when the NPC dies.
+		// See also NPCID.Sets.IsTownChild if you just want the message used by Angler and Princess.
+		// See ModifyDeathMessage() way below for more details
+		public override LocalizedText DeathMessage => this.GetLocalization("DeathMessage");
+
 		public override void Load() {
 			// Adds our Shimmer Head to the NPCHeadLoader.
 			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
@@ -93,6 +100,10 @@ namespace ExampleMod.Content.NPCs
 				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
 				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex, Texture + "_Shimmer_Party")
 			);
+
+			ContentSamples.NpcBestiaryRarityStars[Type] = 3; // We can override the default bestiary star count calculation by setting this.
+
+			UpgradedText = this.GetLocalization("Upgraded");
 		}
 
 		public override void SetDefaults() {
@@ -113,18 +124,17 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				// Sets the preferred biomes of this town NPC listed in the bestiary.
 				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("Hailing from a mysterious greyscale cube world, the Example Person is here to help you understand everything about tModLoader."),
+				// Sets your NPC's flavor text in the bestiary. (use localization keys)
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson_1"),
 
 				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
-			});
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson_2")
+			]);
 		}
 
 		// The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
@@ -154,8 +164,10 @@ namespace ExampleMod.Content.NPCs
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0) {
 				// Retrieve the gore types. This NPC has shimmer and party variants for head, arm, and leg gore. (12 total gores)
 				string variant = "";
-				if (NPC.IsShimmerVariant) variant += "_Shimmer";
-				if (NPC.altTexture == 1) variant += "_Party";
+				if (NPC.IsShimmerVariant)
+					variant += "_Shimmer";
+				if (NPC.altTexture == 1)
+					variant += "_Party";
 				int hatGore = NPC.GetPartyHatGore();
 				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
 				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
@@ -174,7 +186,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void OnSpawn(IEntitySource source) {
-			if(source is EntitySource_SpawnNPC) {
+			if (source is EntitySource_SpawnNPC) {
 				// A TownNPC is "unlocked" once it successfully spawns into the world.
 				TownNPCRespawnSystem.unlockedExamplePersonSpawn = true;
 			}
@@ -257,7 +269,7 @@ namespace ExampleMod.Content.NPCs
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10) {
-				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+				// This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
 				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
 			}
 
@@ -273,7 +285,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
-			button = Language.GetTextValue("LegacyInterface.28");
+			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
 			button2 = "Awesomeify";
 			if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
 				button = "Upgrade " + Lang.GetItemNameValue(ItemID.HiveBackpack);
@@ -287,7 +299,7 @@ namespace ExampleMod.Content.NPCs
 				if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
 					SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
-					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
+					Main.npcChatText = UpgradedText.Value;
 
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
 					var entitySource = NPC.GetSource_GiftOrReward();
@@ -382,6 +394,15 @@ namespace ExampleMod.Content.NPCs
 
 				Dust.NewDustPerfect(NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
+		}
+
+		public override bool ModifyDeathMessage(ref NetworkText customText, ref Color color) {
+			// This example shows how you would further customize the message, in this case just for the shimmer variant.
+			if (NPC.IsShimmerVariant) {
+				customText = NetworkText.FromKey(this.GetLocalizationKey("DeathMessageAlt"), NPC.GetFullNetName());
+				color = Color.Yellow;
+			}
+			return true;
 		}
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {

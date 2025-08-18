@@ -17,6 +17,7 @@ using Terraria.ModLoader.Utilities;
 using HookList = Terraria.ModLoader.Core.GlobalHookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.IO;
 using Terraria.GameContent.Personalities;
+using System.Diagnostics;
 
 namespace Terraria.ModLoader;
 
@@ -101,6 +102,8 @@ public static class NPCLoader
 			Main.npcFrameCount[k] = 1;
 			Lang._npcNameCache[k] = LocalizedText.Empty;
 		}
+
+		ContentSamples.NpcBestiaryRarityStars.Clear();
 	}
 
 	internal static void FinishSetup()
@@ -118,7 +121,7 @@ public static class NPCLoader
 			// Detect NPC with BannerItem set but Banner not set.
 			// Detect modded Banner values with no associated Banner item.
 			// Detect NPC with BannerItem values that don't match the BannerItem associated with the Banner.
-			if (npc.BannerItem != 0 && npc.Banner == 0 || npc.Banner != 0 && npc.Banner >= NPCID.Count && (!bannerToItem.ContainsKey(npc.Banner) || bannerToItem[npc.Banner] != npc.BannerItem)) {
+			if (npc.BannerItem != 0 && npc.Banner == 0 || npc.Banner >= NPCID.Count && (!bannerToItem.ContainsKey(npc.Banner) || npc.BannerItem != 0 && bannerToItem[npc.Banner] != npc.BannerItem)) {
 				Logging.tML.Warn(Language.GetTextValue("tModLoader.LoadWarningBannerOrBannerItemNotSet", npc.Mod.Name, npc.Name));
 			}
 		}
@@ -353,24 +356,31 @@ public static class NPCLoader
 
 	public static byte[] WriteExtraAI(NPC npc)
 	{
+		// Data is ordered as follows: GlobalProjectile BitWriter, ModProjectile Bytes, GlobalProjectile Bytes
 		using var stream = new MemoryStream();
 		using var modWriter = new BinaryWriter(stream);
 
-		npc.ModNPC?.SendExtraAI(modWriter);
-
 		using var bufferedStream = new MemoryStream();
-		using var globalWriter = new BinaryWriter(bufferedStream);
+		using var binaryWriter = new BinaryWriter(bufferedStream);
 
 		BitWriter bitWriter = new BitWriter();
 
-		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
-			g.SendExtraAI(npc, bitWriter, globalWriter);
-		}
+		npc.ModNPC?.SendExtraAI(binaryWriter);
 
+		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
+			g.SendExtraAI(npc, bitWriter, binaryWriter);
+		}
+	
 		bitWriter.Flush(modWriter);
 		modWriter.Write(bufferedStream.ToArray());
 
-		return stream.ToArray();
+		byte[] bytes = stream.ToArray();
+		// If the only byte is the bitWriter.Flush length byte, no extra data.
+		if (bytes.Length == 1) {
+			Debug.Assert(bytes[0] == 0);
+			return null;
+		}
+		return bytes;
 	}
 
 	public static byte[] ReadExtraAI(BinaryReader reader)
@@ -385,14 +395,15 @@ public static class NPCLoader
 		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
-		npc.ModNPC?.ReceiveExtraAI(modReader);
-
-		BitReader bitReader = new BitReader(modReader);
-
-		bool anyGlobals = false;
+		GlobalNPC lastGlobalNPC = null;
 		try {
+			BitReader bitReader = new BitReader(modReader);
+
+			var bitReaderEnd = stream.Position;
+			npc.ModNPC?.ReceiveExtraAI(modReader);
+
 			foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
-				anyGlobals = true;
+				lastGlobalNPC = g;
 				g.ReceiveExtraAI(npc, bitReader, modReader);
 			}
 
@@ -401,19 +412,21 @@ public static class NPCLoader
 			}
 
 			if (stream.Position < stream.Length) {
-				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
+				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length - bitReaderEnd} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (Exception e) {
+		catch (Exception) {
 			string message = $"Error in ReceiveExtraAI for NPC {npc.ModNPC?.FullName ?? npc.TypeName}";
-			if (anyGlobals) {
+			if (lastGlobalNPC != null) {
 				message += ", may be caused by one of these GlobalNPCs:";
 				foreach (var g in HookReceiveExtraAI.Enumerate(npc)) {
 					message += $"\n\t{g.FullName}";
+					if (lastGlobalNPC == g)
+						break;
 				}
 			}
 
-			Logging.tML.Error(message, e);
+			Logging.tML.Error(message);
 		}
 	}
 
@@ -554,6 +567,7 @@ public static class NPCLoader
 	public static void BossLoot(NPC npc, ref string name, ref int potionType)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
+		npc.ModNPC?.BossLoot(ref potionType);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
@@ -1135,6 +1149,18 @@ public static class NPCLoader
 		}
 	}
 
+	private delegate bool DelegatePreHoverInteract(NPC npc, bool mouseIntersects);
+	private static HookList HookPreHoverInteract = AddHook<DelegatePreHoverInteract>(g => g.PreHoverInteract);
+	public static bool PreHoverInteract(NPC npc, bool mouseIntersects)
+	{
+		foreach (var g in HookPreHoverInteract.Enumerate(npc)) {
+			if (!g.PreHoverInteract(npc, mouseIntersects))
+				return false;
+		}
+
+		return npc.ModNPC?.PreHoverInteract(mouseIntersects) ?? true;
+	}
+
 	private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
 	public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList)
 	{
@@ -1312,6 +1338,20 @@ public static class NPCLoader
 			g.BuffTownNPC(ref damageMult, ref defense);
 		}
 	}
+
+	private delegate bool DelegateModifyDeathMessage(NPC npc, ref NetworkText custom, ref Color color);
+	private static HookList HookModifyDeathMessage = AddHook<DelegateModifyDeathMessage>(g => g.ModifyDeathMessage);
+
+	public static bool ModifyDeathMessage(NPC npc, ref NetworkText customText, ref Color color)
+	{
+		foreach (var g in HookModifyDeathMessage.Enumerate()) {
+			if (!g.ModifyDeathMessage(npc, ref customText, ref color))
+				return true;
+		}
+
+		return !npc.ModNPC?.ModifyDeathMessage(ref customText, ref color) ?? false;
+	}
+
 	//attack type 0 = throwing
 	//  num405 = type, num406 = damage, knockBack, scaleFactor7 = speed multiplier, num407 = attack delay
 	//  num408 = unknown, maxValue3 = unknown, num409 = gravity correction factor, num411 = random speed offset

@@ -666,7 +666,7 @@ public static class SteamedWraps
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
 			Logging.tML.Info("Adding dependencies to Workshop Upload");
-			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+			string[] dependencies = refs.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
 			foreach (string dependency in dependencies) {
 				try {
@@ -688,6 +688,7 @@ public static class SteamedWraps
 		AddModTag("tModLoader.TagsContent", "New Content");
 		AddModTag("tModLoader.TagsUtility", "Utilities");
 		AddModTag("tModLoader.TagsLibrary", "Library");
+		AddModTag("tModLoader.TagsTranslation", "Translation");
 		AddModTag("tModLoader.TagsQoL", "Quality of Life");
 
 		// Tweaks

@@ -1,18 +1,19 @@
 --- src/TerrariaNetCore/Terraria/ID/GoreID.cs
 +++ src/tModLoader/Terraria/ID/GoreID.cs
-@@ -1,12 +_,38 @@
+@@ -1,12 +_,39 @@
++using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
  namespace Terraria.ID;
  
 -public static class GoreID
-+public static partial class GoreID
++public partial class GoreID
  {
 -	public static class Sets
 +	public static partial class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(GoreLoader.GoreCount);
++		public static SetFactory Factory = new SetFactory(GoreLoader.GoreCount, nameof(GoreID), Search);
 +
 +		/// <summary>
 +		/// If non-zero for a given gore type (<see cref="Gore.type"/>), that gore will follow special AI rules.
@@ -42,3 +43,123 @@
  		public static int[] DisappearSpeedAlpha = Factory.CreateIntSet(1, 1007, 3, 1008, 10, 1024, 7, 1025, 7, 1026, 7, 1218, 3);
  	}
  
+@@ -471,6 +_,7 @@
+ 	public const int FlyingAntlion4 = 1101;
+ 	public const int LarvaeAntlion1 = 1102;
+ 	public const int LarvaeAntlion2 = 1103;
++	/*
+ 	public const short EyeballFlyingFish1 = 1104;
+ 	public const short EyeballFlyingFish2 = 1105;
+ 	public const short ZombieMerman1 = 1106;
+@@ -480,8 +_,19 @@
+ 	public const short Golfer2 = 1110;
+ 	public const short Golfer3 = 1111;
+ 	public const short Golfer4 = 1112;
++	*/
++	public const int EyeballFlyingFish1 = 1104;
++	public const int EyeballFlyingFish2 = 1105;
++	public const int ZombieMerman1 = 1106;
++	public const int ZombieMerman2 = 1107;
++	public const int ZombieMerman3 = 1108;
++	public const int Golfer1 = 1109;
++	public const int Golfer2 = 1110;
++	public const int Golfer3 = 1111;
++	public const int Golfer4 = 1112;
+ 	public const int TreeLeaf_HallowJim = 1113;
+ 	public const int TreeLeaf_HallowLastJim = 1121;
++	/*
+ 	public const short DesertPot1 = 1122;
+ 	public const short DesertPot2 = 1123;
+ 	public const short DesertPot3 = 1124;
+@@ -507,6 +_,32 @@
+ 	public const short Balloon_Purple_2 = 1144;
+ 	public const short Balloon_Purple_3 = 1145;
+ 	public const short Balloon_String = 1146;
++	*/
++	public const int DesertPot1 = 1122;
++	public const int DesertPot2 = 1123;
++	public const int DesertPot3 = 1124;
++	public const int Balloon_White_1 = 1125;
++	public const int Balloon_White_2 = 1126;
++	public const int Balloon_White_3 = 1127;
++	public const int Balloon_Red_1 = 1128;
++	public const int Balloon_Red_2 = 1129;
++	public const int Balloon_Red_3 = 1130;
++	public const int Balloon_Orange_1 = 1131;
++	public const int Balloon_Orange_2 = 1132;
++	public const int Balloon_Orange_3 = 1133;
++	public const int Balloon_Yellow_1 = 1134;
++	public const int Balloon_Yellow_2 = 1135;
++	public const int Balloon_Yellow_3 = 1136;
++	public const int Balloon_Green_1 = 1137;
++	public const int Balloon_Green_2 = 1138;
++	public const int Balloon_Green_3 = 1139;
++	public const int Balloon_Blue_1 = 1140;
++	public const int Balloon_Blue_2 = 1141;
++	public const int Balloon_Blue_3 = 1142;
++	public const int Balloon_Purple_1 = 1143;
++	public const int Balloon_Purple_2 = 1144;
++	public const int Balloon_Purple_3 = 1145;
++	public const int Balloon_String = 1146;
+ 	public const int WaterDripDesert2 = 1147;
+ 	public const int Ladybug1 = 1148;
+ 	public const int Ladybug2 = 1149;
+@@ -526,6 +_,7 @@
+ 	public const int LittleRat1 = 1163;
+ 	public const int Owl1 = 1164;
+ 	public const int Owl2 = 1165;
++	/*
+ 	public const short Turtle1 = 1166;
+ 	public const short Turtle2 = 1167;
+ 	public const short Turtle3 = 1168;
+@@ -562,6 +_,43 @@
+ 	public const short Dolphin2 = 1199;
+ 	public const short Dolphin3 = 1200;
+ 	public const short ChumBucket = 1201;
++	*/
++	public const int Turtle1 = 1166;
++	public const int Turtle2 = 1167;
++	public const int Turtle3 = 1168;
++	public const int TurtleJungle1 = 1169;
++	public const int TurtleJungle2 = 1170;
++	public const int TurtleJungle3 = 1171;
++	public const int BloodNautilus1 = 1172;
++	public const int BloodNautilus2 = 1173;
++	public const int BloodNautilus3 = 1174;
++	public const int BloodNautilus4 = 1175;
++	public const int BloodNautilus5 = 1176;
++	public const int BloodNautilus6 = 1177;
++	public const int BloodNautilus7 = 1178;
++	public const int BloodSquid1 = 1179;
++	public const int BloodSquid2 = 1180;
++	public const int BloodSquid3 = 1181;
++	public const int BloodSquid4 = 1182;
++	public const int GoblinShark1 = 1183;
++	public const int GoblinShark2 = 1184;
++	public const int GoblinShark3 = 1185;
++	public const int GoblinShark4 = 1186;
++	public const int BloodEel1 = 1187;
++	public const int BloodEel2 = 1188;
++	public const int BloodEel3 = 1189;
++	public const int Gnome1 = 1190;
++	public const int Gnome2 = 1191;
++	public const int Gnome3 = 1192;
++	public const int Gnome4 = 1193;
++	public const int SeaTurtle1 = 1194;
++	public const int SeaTurtle2 = 1195;
++	public const int SeaTurtle3 = 1196;
++	public const int Seahorse1 = 1197;
++	public const int Dolphin1 = 1198;
++	public const int Dolphin2 = 1199;
++	public const int Dolphin3 = 1200;
++	public const int ChumBucket = 1201;
+ 	public const int FogMachineCloud1 = 1202;
+ 	public const int FogMachineCloud2 = 1203;
+ 	public const int FogMachineCloud3 = 1204;
+@@ -744,4 +_,6 @@
+ 	public const int BestiaryGirlShimmeredLeg = 1381;
+ 	public const int BestiaryGirlShimmeredTail = 1382;
+ 	public static readonly short Count = 1383;
++
++	public static IdDictionary Search = IdDictionary.Create<GoreID, int>();
+ }

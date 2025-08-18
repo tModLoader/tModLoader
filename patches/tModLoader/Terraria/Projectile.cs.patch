@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,343 @@
+@@ -63,79 +_,347 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -254,6 +254,10 @@
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int extraUpdates;
++	/// <summary>
++	/// If true, the projectile will have penetrate set to -1 and damage set to 0 when damaging an NPC and having penetrate reach 0. What this effectively does is keep the projectile from dying once it satisfies the penetrate limit while also making the projectile harmless, allowing it to despawn later in some other manner rather than immediately. 
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool stopsDealingDamageAfterPenetrateHits;
  	public int numUpdates;
 +
@@ -266,7 +270,7 @@
 +
 +	/// <summary>
 +	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
-+	/// <para/> Be default this will also influence the lighting of this projectile to match the players lighting, as if it were a held projectile. Projectiles that are not held by the player should set <see cref="ProjectileID.Sets.DontAttachHideToAlpha"/> to true in SetStaticDefaults: <c>ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;</c>
++	/// <para/> By default this will also influence the lighting of this projectile to match the players lighting, as if it were a held projectile. Projectiles that are not held by the player should set <see cref="ProjectileID.Sets.DontAttachHideToAlpha"/> to true in SetStaticDefaults: <c>ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;</c>
 +	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hide;
@@ -1495,6 +1499,24 @@
  		if (aiStyle == 1) {
  			AI_001();
  		}
+@@ -17290,6 +_,8 @@
+ 							continue;
+ 
+ 						if (type == 10) {
++							if (!TileLoader.Convert(num96, num97, BiomeConversionID.PurificationPowder))
++								goto SkipPurificationConversion;
+ 							if (Main.tile[num96, num97].type == 23 || Main.tile[num96, num97].type == 199) {
+ 								Main.tile[num96, num97].type = 2;
+ 								WorldGen.SquareTileFrame(num96, num97);
+@@ -17348,6 +_,8 @@
+ 								WorldGen.Convert(num96, num97, 4, 1);
+ 						}
+ 
++					    SkipPurificationConversion:
++
+ 						if (!flag3)
+ 							continue;
+ 
 @@ -24212,7 +_,7 @@
  					int num799 = (int)base.Center.Y / 16;
  					for (int num800 = num798 - num797; num800 <= num798 + num797; num800++) {
@@ -2029,7 +2051,19 @@
  							WorldGen.KillWall(k, l);
  							if (Main.tile[k, l].wall == 0 && Main.netMode != 0)
  								NetMessage.SendData(17, -1, -1, null, 2, k, l);
-@@ -56860,6 +_,9 @@
+@@ -56851,15 +_,21 @@
+ 
+ 	public bool IsInteractible()
+ 	{
++		return ProjectileID.Sets.IsInteractable[type];
++		/*
+ 		int num = type;
+ 		if (num == 525 || num == 734 || num == 960)
+ 			return true;
+ 
+ 		return false;
++		*/
+ 	}
  
  	public Color GetAlpha(Color newColor)
  	{

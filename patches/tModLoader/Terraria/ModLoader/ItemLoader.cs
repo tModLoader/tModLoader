@@ -1235,6 +1235,34 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateVisibleAccessory);
+
+	/// <summary>
+	/// Hook at the end of Player.UpdateVisibleAccessory that can be called to set flags related to player drawing.
+	/// </summary>
+	public static void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateVisibleAccessory(player, hideVisual);
+
+		foreach (var g in HookUpdateVisibleAccessory.Enumerate(item)) {
+			g.UpdateVisibleAccessory(item, player, hideVisual);
+		}
+	}
+
+	private static HookList HookUpdateItemDye = AddHook<Action<Item, Player, int, bool>>(g => g.UpdateItemDye);
+
+	public static void UpdateItemDye(Item item, Player player, int dye, bool hideVisual)
+	{
+		item.ModItem?.UpdateItemDye(player, dye, hideVisual);
+
+		foreach (var g in HookUpdateItemDye.Enumerate(item)) {
+			g.UpdateItemDye(item, player, dye, hideVisual);
+		}
+	}
+
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 
 	/// <summary>
@@ -2029,11 +2057,29 @@ public static class ItemLoader
 		return true;
 	}
 
+	public static bool CanEquipAccessory(Player player, Item item, int slot, bool modded)
+	{
+		if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))
+			return false;
+
+		foreach (var g in HookCanEquipAccessory.Enumerate(item)) {
+			if (!g.CanEquipAccessory(item, player, slot, modded))
+				return false;
+		}
+
+		return true;
+	}
+
 	private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
 
 	public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem)
 	{
 		Player player = Main.player[Main.myPlayer];
+		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
+	}
+
+	public static bool CanAccessoryBeEquippedWith(Player player, Item equippedItem, Item incomingItem)
+	{
 		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
 	}
 

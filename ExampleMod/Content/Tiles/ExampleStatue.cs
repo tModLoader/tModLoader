@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -19,6 +20,12 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.IsAMechanism[Type] = true; // Ensures that this tile and connected pressure plate won't be removed during the "Remove Broken Traps" worldgen step
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
+			TileObjectData.newTile.DrawYOffset = 2;
+			TileObjectData.newTile.StyleMultiplier = 2;
+			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft;
+			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
+			TileObjectData.newAlternate.Direction = TileObjectDirection.PlaceRight;
+			TileObjectData.addAlternate(1);
 			TileObjectData.addTile(Type);
 
 			DustType = DustID.Silver;
@@ -29,9 +36,8 @@ namespace ExampleMod.Content.Tiles
 		// This hook allows you to make anything happen when this statue is powered by wiring.
 		// In this example, powering the statue either spawns a random coin with a 95% chance, or, with a 5% chance - a goldfish.
 		public override void HitWire(int i, int j) {
-			// Find the coordinates of top left tile square through math
-			int y = j - Main.tile[i, j].TileFrameY / 18;
-			int x = i - Main.tile[i, j].TileFrameX / 18;
+			// Find the coordinates of top left tile square
+			(int x, int y) = TileObjectData.TopLeft(i, j);
 
 			const int TileWidth = 2;
 			const int TileHeight = 3;
@@ -43,7 +49,7 @@ namespace ExampleMod.Content.Tiles
 				}
 			}
 
-			// Calculcate the center of this tile to use as an entity spawning position.
+			// Calculate the center of this tile to use as an entity spawning position.
 			// Note that we use 0.65 for height because even though the statue takes 3 blocks, its appearance is shorter.
 			float spawnX = (x + TileWidth * 0.5f) * 16;
 			float spawnY = (y + TileHeight * 0.65f) * 16;
