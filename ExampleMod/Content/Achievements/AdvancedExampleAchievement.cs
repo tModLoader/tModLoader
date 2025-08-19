@@ -19,8 +19,6 @@ public class AdvancedExampleAchievement : ModAchievement
 	public override string TextureName => "ExampleMod/Content/Achievements/AllAchievements";
 	public override int Index => 1;
 
-	// TODO: hidden
-
 	public CustomFlagCondition IronPickaxeCondition { get; private set; }
 	public CustomIntCondition TotalDamageCondition { get; private set; }
 

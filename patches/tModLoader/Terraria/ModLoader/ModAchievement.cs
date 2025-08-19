@@ -35,6 +35,9 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 
 	public string LocalizationCategory => "Achievements";
 
+	/// <summary> Should the achievement be hidden, meaning its name and description will both appear as "???" in the achievements menu. <br/><br/> Defaults to <see langword="false"/>. </summary>
+	public virtual bool Hidden => false;
+
 	public override sealed bool IsCloneable => false;
 
 	/// <summary>

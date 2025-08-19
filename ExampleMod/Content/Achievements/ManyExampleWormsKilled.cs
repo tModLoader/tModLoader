@@ -1,6 +1,5 @@
 ﻿using ExampleMod.Content.NPCs;
 using Terraria;
-using Terraria.Achievements;
 using Terraria.GameContent.Achievements;
 using Terraria.ModLoader;
 
@@ -12,9 +11,10 @@ public class ManyExampleWormsKilled : ModAchievement
 {
 	public CustomIntCondition Condition { get; private set; }
 
-	public override void SetStaticDefaults() {
-		Achievement.Hidden = true;
+	// This achievement is "hidden", meaning its name and description will both appear as "???" in the achievements menu, until at least 1 ExampleWormHead has been killed.
+	public override bool Hidden => Condition.Value == 0;
 
+	public override void SetStaticDefaults() {
 		// There are 4 AchievementCategory options: Slayer, Collector, Explorer, and Challenger.
 		// Slayer is the default.
 		// If you want to change the achievement's category, you can do this:

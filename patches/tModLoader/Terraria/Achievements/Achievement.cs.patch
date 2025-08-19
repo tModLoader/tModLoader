@@ -10,7 +10,7 @@
  using Terraria.Social;
  
  namespace Terraria.Achievements;
-@@ -13,14 +_,19 @@
+@@ -13,14 +_,18 @@
  
  	private static int _totalAchievements;
  	public readonly string Name;
@@ -26,8 +26,7 @@
 -	private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
 +	internal Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
  	private int _completedCount;
-+	/// <summary> Should the achievement be hidden, defaults to false. </summary>
-+	public bool Hidden { get; set; } = false; // TODO: How does a modder reliably "unhide" this?
++	public bool Hidden => ModAchievement?.Hidden ?? false;
 +	public ModAchievement ModAchievement;
 +
 +	public override string ToString() => Name; // Needed for error messages
