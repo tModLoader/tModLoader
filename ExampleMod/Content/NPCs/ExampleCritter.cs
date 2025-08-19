@@ -164,7 +164,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) {
 			// OnHitByProjectile can be called on servers, so we need to check this to make sure to only access the achievement on a client to avoid null exceptions.
-			if (!Main.dedServ) {
+			if (Main.netMode != NetmodeID.Server && !projectile.trap && !projectile.npcProj) {
 				ModContent.GetInstance<AdvancedExampleAchievement>().TotalDamageCondition.Value += damageDone;
 			}
 		}
