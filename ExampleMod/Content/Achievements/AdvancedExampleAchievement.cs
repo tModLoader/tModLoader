@@ -69,6 +69,13 @@ public class AdvancedExampleAchievement : ModAchievement
 		));
 	}
 
+	// We can use GetModdedConstraints to dictate the relative ordering of ModAchievements. (Remember that GetDefaultPosition is used to position a ModAchievement in relation to vanilla achievements.
+	// Since both ManyExampleWormsKilled and AdvancedExampleAchievement do not use GetDefaultPosition, they will be at the end of the listing.
+	// By default they will be in load order relative to each other, which in this case would put AdvancedExampleAchievement before ManyExampleWormsKilled since autoload happens in alphabetical order, so we can use GetModdedConstraints like this to order AdvancedExampleAchievement after ManyExampleWormsKilled.
+	public override IEnumerable<Position> GetModdedConstraints() {
+		yield return new After(ModContent.GetInstance<ManyExampleWormsKilled>());
+	}
+
 	public override void OnCompleted(Achievement achievement) {
 		// Make some fireworks
 		int fireworkProjectile = ProjectileID.RocketFireworksBoxRed + Main.rand.Next(4);

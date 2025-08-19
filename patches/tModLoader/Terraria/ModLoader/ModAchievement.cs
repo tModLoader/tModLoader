@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -190,4 +191,77 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 			}
 		}
 	}
+
+	/// <summary>
+	/// Returns the achievement's default position in regard to vanilla's achievement ordering. Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an achievement (for example <c>new After("EYE_ON_YOU")</c>). Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up the string to use with GetAchievement. You can also use <see cref="BeforeFirstVanillaAchievement"/> or <see cref="AfterLastVanillaAchievement"/> to put your achievement at the start/end of the vanilla achievement order. 
+	/// <br/><br/> <b>NOTE:</b> The position must specify a vanilla <see cref="Achievements.Achievement"/> otherwise an exception will be thrown. Use <see cref="GetModdedConstraints"/> to order modded achievements.
+	/// <br/><br/> By default, this hook positions this achievement after all vanilla achievements.
+	/// </summary>
+	public virtual Position GetDefaultPosition() => AfterLastVanillaAchievement;
+
+	/// <summary>
+	/// Modded achievements are placed between vanilla achievements via <see cref="GetDefaultPosition"/> and, by default, are sorted in load order.<br/>
+	/// This hook allows you to sort this achievement before/after other modded achievements that were placed between the same two vanilla achievements.<br/>
+	/// Example:
+	/// <para>
+	/// <c>yield return new After(ModContent.GetInstance&lt;MinionBossKilled&gt;());</c>
+	/// </para>
+	/// By default, this hook returns <see langword="null"/>, which indicates that this achievement has no modded ordering constraints.
+	/// </summary>
+	public virtual IEnumerable<Position> GetModdedConstraints() => null;
+
+	#region Sort Positions
+
+	public abstract class Position { }
+
+	public static Position BeforeFirstVanillaAchievement => new Before(AchievementManager.FirstVanillaAchievement);
+	public static Position AfterLastVanillaAchievement => new After(AchievementManager.LastVanillaAchievement);
+
+	public sealed class Default : Position { }
+
+	public sealed class Before : Position
+	{
+		public Achievement Achievement { get; }
+
+		public Before(Achievement achievement)
+		{
+			Achievement = achievement;
+		}
+
+		public Before(ModAchievement modAchievement)
+		{
+			Achievement = modAchievement.Achievement;
+		}
+
+		/// <inheritdoc cref="After(string)"/>
+		public Before(string achievementIdentifier)
+		{
+			Achievement = Main.Achievements.GetAchievement(achievementIdentifier);
+		}
+	}
+
+	public sealed class After : Position
+	{
+		public Achievement Achievement { get; }
+
+		public After(Achievement achievement)
+		{
+			Achievement = achievement;
+		}
+
+		public After(ModAchievement modAchievement)
+		{
+			Achievement = modAchievement.Achievement;
+		}
+
+		/// <summary>
+		/// Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up vanilla achievement identifiers. Modded achievements will be in the form of "ModName/Name".
+		/// </summary>
+		public After(string achievementIdentifier)
+		{
+			Achievement = Main.Achievements.GetAchievement(achievementIdentifier);
+		}
+	}
+
+	#endregion
 }

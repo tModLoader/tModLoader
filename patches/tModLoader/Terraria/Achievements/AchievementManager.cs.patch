@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Achievements/AchievementManager.cs
 +++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
+@@ -7,6 +_,7 @@
+ using Newtonsoft.Json;
+ using Newtonsoft.Json.Bson;
+ using Newtonsoft.Json.Linq;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.UI;
+ using Terraria.Utilities;
 @@ -33,7 +_,8 @@
  
  	public AchievementManager()
@@ -93,11 +101,25 @@
  	public void RegisterIconIndex(string achievementName, int iconIndex)
  	{
  		_achievementIconIndexes.Add(achievementName, iconIndex);
-@@ -181,5 +_,26 @@
+@@ -157,6 +_,9 @@
+ 		_achievements[achievementName].SetCategory(category);
+ 	}
+ 
++	/// <summary>
++	/// Returns the achievement with the provided identifier. Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up vanilla achievement identifiers. Modded achievements will be in the form of "ModName/Name".
++	/// </summary>
+ 	public Achievement GetAchievement(string achievementName)
+ 	{
+ 		if (_achievements.TryGetValue(achievementName, out var value))
+@@ -181,5 +_,93 @@
  			return value;
  
  		return 0;
 +	}
++
++	internal static Achievement FirstVanillaAchievement => Main.Achievements.GetAchievement("TIMBER");
++	internal static Achievement LastVanillaAchievement => Main.Achievements.GetAchievement("TO_INFINITY_AND_BEYOND");
++	internal static readonly int DefaultLayerCount = 115;
 +
 +	internal static void FinishSetup()
 +	{
@@ -106,6 +128,69 @@
 +
 +		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
 +		Main.Achievements.Load();
++
++		// Sort achievements by setting Achievement.Id:
++		var AchievementsInOrder = Main.Achievements.CreateAchievementsList();
++		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultLayerCount).Select(x => x.ModAchievement);
++		AchievementsInOrder.Sort((x, y) => x.Id.CompareTo(y.Id));
++
++		var sortingSlots = new List<Achievement>[DefaultLayerCount + 1];
++		for (int i = 0; i < sortingSlots.Length; ++i)
++			sortingSlots[i] = [];
++
++		foreach (ModAchievement modAchievement in ModdedAchievements) {
++			var position = modAchievement.GetDefaultPosition();
++
++			switch (position) {
++				case ModAchievement.After after: {
++					int afterIndex = AchievementsInOrder.IndexOf(after.Achievement);
++					if (afterIndex >= DefaultLayerCount || afterIndex is -1)
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement} did not refer to a vanilla achievement in GetDefaultPosition()"));
++
++					sortingSlots[afterIndex + 1].Add(modAchievement.Achievement);
++					break;
++				}
++				case ModAchievement.Before before: {
++					int beforeIndex = AchievementsInOrder.IndexOf(before.Achievement);
++					if (beforeIndex >= DefaultLayerCount || beforeIndex is -1)
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement} did not refer to a vanilla achievement in GetDefaultPosition()"));
++
++					sortingSlots[beforeIndex].Add(modAchievement.Achievement);
++					break;
++				}
++				default: {
++					var ex = new ArgumentException($"ModMapLayer {modAchievement} has unknown Position {position}");
++					throw BlameAchievementException(ex);
++				}
++			}
++
++			Exception BlameAchievementException(Exception ex)
++			{
++				if (modAchievement is ModAchievement moddedAchievement)
++					ex.Data["mod"] = moddedAchievement.Mod.Name;
++				return ex;
++			}
++		}
++
++		List<Achievement> sortedAchievements = [];
++
++		for (int i = 0; i < DefaultLayerCount + 1; i++) {
++			var elements = sortingSlots[i];
++			var sort = new TopoSort<Achievement>(elements,
++				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.After>().Select(a => a.Achievement).Where(elements.Contains) ?? [],
++				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.Before>().Select(b => b.Achievement).Where(elements.Contains) ?? []);
++
++			foreach (Achievement layer in sort.Sort()) {
++				sortedAchievements.Add(layer);
++			}
++
++			if (i < DefaultLayerCount)
++				sortedAchievements.Add(AchievementsInOrder[i]);
++		}
++
++		for (int i = 0; i < sortedAchievements.Count; i++) {
++			sortedAchievements[i].Id = i;
++		}
 +	}
 +
 +	internal static void Unload()
