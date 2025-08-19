@@ -22,8 +22,9 @@ namespace Terraria.ModLoader.Config.UI;
 // TODO: Revert individual button.
 // TODO: Collapse All button, or default to collapsed?
 // TODO: Localization support
-internal class UIModConfig : UIState
+internal class UIModConfig : UIState, IHaveBackButtonCommand
 {
+	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
 	public int UpdateCount { get; set; }
 
 	private UIElement uIElement;
@@ -47,7 +48,13 @@ internal class UIModConfig : UIState
 	private ModConfig modConfig; // This is from ConfigManager.Configs
 	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
+	private bool preserveNotificationMessage;
 	private UIFocusInputTextField filterTextField;
+	internal string scrollToOption = null;
+	internal bool centerScrolledOption = false;
+
+	private bool openedFromModder = false;
+	private Action modderOnClose = null;
 
 	public override void OnInitialize()
 	{
@@ -183,13 +190,25 @@ internal class UIModConfig : UIState
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
+		HandleBackButtonUsage();
+		return;
+	}
 
-		if (!Main.gameMenu) {
-			Main.InGameUI.SetState(Interface.modConfigList);
+	// Note that Escape key while in-game won't call this.
+	public void HandleBackButtonUsage()
+	{
+		if (Main.gameMenu || !openedFromModder)
+			SoundEngine.PlaySound(SoundID.MenuClose);
+
+		if (Main.gameMenu) {
+			Main.menuMode = Interface.modConfigListID;
+			HandleOnCloseCallback();
 		}
 		else {
-			Main.menuMode = Interface.modConfigListID;
+			if (openedFromModder)
+				IngameFancyUI.Close();
+			else
+				Main.InGameUI.SetState(Interface.modConfigList);
 		}
 	}
 
@@ -234,8 +253,9 @@ internal class UIModConfig : UIState
 	}
 
 	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
-	private void DoMenuModeState()
+	private void DoMenuModeState(bool preserveNotificationMessage = false)
 	{
+		this.preserveNotificationMessage = preserveNotificationMessage;
 		if (Main.gameMenu) {
 			Main.MenuUI.SetState(null);
 			Main.menuMode = Interface.modConfigID;
@@ -248,67 +268,17 @@ internal class UIModConfig : UIState
 
 	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		// Main Menu: Save, leave reload for later
-		// MP with ServerSide: Send request to server
-		// SP or MP with ClientSide: Apply immediately if !NeedsReload
-		if (Main.gameMenu) {
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			ConfigManager.Save(pendingConfig);
-			ConfigManager.Load(modConfig);
-			// modConfig.OnChanged(); delayed until ReloadRequired checked
-			// Reload will be forced by Back Button in UIMods if needed
-		}
-		else {
-			// If we are in game...
-			if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-				// TODO: Too
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); //"Asking server to accept changes..."
-
-				var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
-				requestChanges.Write(pendingConfig.Mod.Name);
-				requestChanges.Write(pendingConfig.Name);
-				string json = JsonConvert.SerializeObject(pendingConfig, ConfigManager.serializerSettingsCompact);
-				requestChanges.Write(json);
-				requestChanges.Send();
-
-				//IngameFancyUI.Close();
-
-				return;
-			}
-
-			// SP or MP with ClientSide
-			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
-
-			if (loadTimeConfig.NeedsReload(pendingConfig)) {
-				SoundEngine.PlaySound(SoundID.MenuClose);
-				SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);//"Can't save because changes would require a reload."
-				return;
-			}
-			else {
-				SoundEngine.PlaySound(SoundID.MenuOpen);
-				ConfigManager.Save(pendingConfig);
-				ConfigManager.Load(modConfig);
-				modConfig.OnChanged();
-			}
-		}
-
-		/*
-		if (ConfigManager.ModNeedsReload(modConfig.mod)) {
-			Main.menuMode = Interface.reloadModsID;
-		}
-		else {
-			DoMenuModeState();
-		}
-		*/
-
-		DoMenuModeState();
+		var result = modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
+		if (result == ConfigSaveResult.Success) // Don't clear out pending changes for needs reload or sent to server
+			DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		pendingRevertDefaults = true;
-		DoMenuModeState();
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
+		DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -319,7 +289,8 @@ internal class UIModConfig : UIState
 
 	private void DiscardChanges()
 	{
-		DoMenuModeState();
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
+		DoMenuModeState(preserveNotificationMessage: true);
 	}
 
 	private bool pendingChanges;
@@ -348,6 +319,42 @@ internal class UIModConfig : UIState
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+
+		if (scrollToOption != null) {
+			bool header = false;
+			if (scrollToOption.StartsWith("Header:")) {
+				scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
+				header = true;
+			}
+			// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
+			var desiredElement = mainConfigList._items.Find(x => {
+				if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
+					if (configElement is ObjectElement objectElement && objectElement.separatePagePanel != null) {
+						SwitchToSubConfig(objectElement.separatePagePanel);
+						return true;
+					}
+					configElement.Flashing = true;
+					return true;
+				}
+				return false;
+			});
+
+			if (header) {
+				int index = mainConfigList._items.IndexOf(desiredElement);
+				for (int i = index - 1; i >= 0; i--) {
+					if (mainConfigList._items[i] is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is HeaderElement headerElement) {
+						desiredElement = sortableElement;
+						break;
+					}
+				}
+			}
+			mainConfigList.Goto(delegate (UIElement element) {
+				return element == desiredElement;
+			}, center: centerScrolledOption);
+
+			scrollToOption = null;
+			centerScrolledOption = false;
+		}
 
 		UpdateCount++;
 
@@ -392,8 +399,7 @@ internal class UIModConfig : UIState
 			UICommon.TooltipMouseText(Tooltip);
 		}
 
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
-		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modConfigListID;
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 	}
 
 	// do we need 2 copies? We can discard changes by reloading.
@@ -401,9 +407,13 @@ internal class UIModConfig : UIState
 	// when we get new server configs from server...replace, don't save?
 	// reload manually, reload fresh server config?
 	// need some CopyTo method to preserve references....hmmm
-	internal void SetMod(Mod mod, ModConfig config = null)
+	internal void SetMod(Mod mod, ModConfig config = null, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
 	{
 		this.mod = mod;
+		this.openedFromModder = openedFromModder;
+		this.modderOnClose = onClose;
+		this.scrollToOption = scrollToOption;
+		this.centerScrolledOption = centerScrolledOption;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
 			sortedModConfigs = ConfigManager.Configs[mod].OrderBy(x => x.DisplayName.Value).ToList();
 			modConfig = sortedModConfigs[0];
@@ -430,7 +440,9 @@ internal class UIModConfig : UIState
 
 		updateNeeded = false;
 
-		SetMessage("", Color.White);
+		if (!preserveNotificationMessage)
+			SetMessage("", Color.White);
+		preserveNotificationMessage = false;
 
 		string configDisplayName = modConfig.DisplayName.Value;
 
@@ -583,6 +595,12 @@ internal class UIModConfig : UIState
 			else
 				e = new StringInputElement();
 		}
+		else if (type == typeof(long)) {
+			e = new LongElement();
+		}
+		else if (type == typeof(ulong)) {
+			e = new ULongElement();
+		}
 		else if (type.IsEnum) {
 			if (list != null)
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
@@ -601,7 +619,7 @@ internal class UIModConfig : UIState
 		else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
 			e = new DictionaryElement();
 		}
-		else if(type == typeof(object)) {
+		else if (type == typeof(object)) {
 			e = new UIText($"{memberInfo.Name} can't be of the Type Object.");
 		}
 		else if (type.IsClass) {
@@ -815,4 +833,12 @@ internal class UIModConfig : UIState
 	//	base.Recalculate();
 	//	mainConfigList?.Recalculate();
 	//}
+
+	internal void HandleOnCloseCallback()
+	{
+		if (modderOnClose != null) {
+			modderOnClose.Invoke();
+			modderOnClose = null;
+		}
+	}
 }

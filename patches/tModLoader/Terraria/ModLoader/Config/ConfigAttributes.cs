@@ -388,6 +388,10 @@ public class JsonDefaultDictionaryKeyValueAttribute : Attribute
 
 /// <summary>
 /// By default, string fields will provide the user with a text input field. Use this attribute to restrict strings to a selection of options.
+/// <para/> <b>This approach is not recommended due to feature deficiencies.</b> It is recommended to use an <see langword="enum"/> instead of a <see langword="string"/> for this type of option selection. By using an <see langword="enum"/> instead of a <see langword="string"/> paired with OptionStringsAttribute, localization is possible and automatic. It is also easier to work with enum values and less prone to errors caused by typos.
+/// <para/> If you want to migrate from a string option entry to an enum in an update to a released mod, you should use the EnumMemberAttribute on the enum fields corresponding to existing string options that had spaces in them previously to support correctly loading the existing config choices of your users when they update the mod:
+/// <code>[EnumMember(Value = "Left Aligned")]
+/// LeftAligned,</code> 
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class OptionStringsAttribute : Attribute
@@ -401,12 +405,17 @@ public class OptionStringsAttribute : Attribute
 }
 
 /// <summary>
-/// Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
-/// Defaults are: float: 0.01f - byte/int/uint: 1
+/// Use this to set an increment for sliders (if using <see cref="SliderAttribute"/>) or the +/- buttons. The slider will move by the amount assigned. The +/- buttons will adjust the value by the amount as well.
+/// <para/> Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
+/// <para/> Defaults are as follows:
+/// <br/><b>float:</b> 0.01f
+/// <br/><b>byte/int/uint/long/ulong:</b> 1
+/// <para/> When using this, you might need to cast the arguments to the desired numeric type to call the correct overload.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class IncrementAttribute : Attribute
 {
+	// TODO: We could loosen the requirement for matching the exact type (overload) in the ctor with some casting helper methods if that is desired. 
 	public object Increment { get; }
 
 	public IncrementAttribute(int increment)
@@ -424,6 +433,16 @@ public class IncrementAttribute : Attribute
 		Increment = increment;
 	}
 
+	public IncrementAttribute(long increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(ulong increment)
+	{
+		Increment = increment;
+	}
+
 	public IncrementAttribute(byte increment)
 	{
 		Increment = increment;
@@ -431,7 +450,12 @@ public class IncrementAttribute : Attribute
 }
 
 /// <summary>
-/// Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255
+/// Specifies a range for primitive data values. Without this, default min and max are as follows:
+/// <br/><b>float:</b> 0, 1
+/// <br/><b>int/uint:</b> 0, 100
+/// <br/><b>byte:</b> 0, 255
+/// <br/><b>long/ulong:</b> Unchanged from the full range of the type
+/// <para/> When using this, you might need to cast the arguments to the desired numeric type to call the correct overload.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class RangeAttribute : Attribute
@@ -452,6 +476,18 @@ public class RangeAttribute : Attribute
 	}
 
 	public RangeAttribute(uint min, uint max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(long min, long max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(ulong min, ulong max)
 	{
 		Min = min;
 		Max = max;

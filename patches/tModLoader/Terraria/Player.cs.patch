@@ -158,7 +158,7 @@
  	public int eocDash;
  	public int eocHit;
 +	/// <summary>
-+	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running. 
++	/// Similar to <see cref="maxRunSpeed"/>, except this is usually set to a specific value for the active shoe accessory. If accRunSpeed ends up larger than maxRunSpeed, then sprint dust will spawn at high speeds. Basically, this exists to differentiate between sprinting ("run super fast") and running.
 +	/// <para/> Defaults to 3f. Accessories set this to specific values, resulting in the last equipped accessories to dictate the final value. Vanilla shoe accessories set this to <c>6f</c> (<see cref="ItemID.HermesBoots"/>) or <c>6.75</c> (<see cref="ItemID.LightningBoots"/>). This assignment should happen in <see cref="ModItem.UpdateEquip(Player)"/>.
 +	/// <para/> This value is later multiplied by other effects in the same manner as <see cref="maxRunSpeed"/>. They are usually modified in tandem, but not always depending on the desired result. For example, asphalt triples maxRunSpeed but does not affect accRunSpeed, whereas Shadow Armor affects both equally.
 +	/// <para/> These multiplicative adjustments should only be done in <see cref="ModPlayer.PostUpdateRunSpeeds"/> or <see cref="ModItem.HorizontalWingSpeeds"/> to correctly function.
@@ -296,7 +296,20 @@
  	public float slotsMinions;
  	public bool pygmy;
  	public bool raven;
-@@ -731,6 +_,11 @@
+@@ -726,11 +_,24 @@
+ 	public bool dontHurtCritters;
+ 	public bool hasLucyTheAxe;
+ 	public bool dontHurtNature;
++	/// <summary>
++	/// Used to count time between repeated directional movement key presses. When a directional key is pressed it is set to a value of 15. The value will count down each update until it reaches 0. If the key is pressed again before it reaches 0 it will trigger <see cref="Player.KeyDoubleTap"/>, which will call <see cref="ModPlayer.ArmorSetBonusActivated"/> if the armor set bonus direction key has been pressed. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] doubleTapCardinalTimer = new int[4];
++	/// <summary>
++	/// Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately before <see cref="ModPlayer.SetControls"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/CardinalDirections' />
++	/// </summary>
+ 	public int[] holdDownCardinalTimer = new int[4];
  	public bool defendedByPaladin;
  	public bool hasPaladinShield;
  	public float[] speedSlice = new float[60];
@@ -308,8 +321,14 @@
  	public float townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
-@@ -752,8 +_,15 @@
+@@ -750,14 +_,26 @@
+ 	public float maxRegenDelay;
+ 	public int sign = -1;
  	public bool editedChestName;
++	/// <summary>
++	/// How long the player will be unable to use any item after the currently active item usage completes. Derived from <see cref="Item.reuseDelay"/>.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
  	public int reuseDelay;
  	public int aggro;
 +	/// <summary>
@@ -324,6 +343,11 @@
  	public bool mouseInterface;
  	public bool lastMouseInterface;
  	public int noThrow;
+ 	public int changeItem = -1;
++	/// <summary> The index of the <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. To access the <see cref="Item"/> directly use <see cref="HeldItem"/> instead. </summary>
+ 	public int selectedItem;
+ 	public const int SupportedSlotsArmor = 3;
+ 	public const int SupportedSlotsAccs = 7;
 @@ -769,9 +_,19 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
@@ -344,7 +368,7 @@
  	public Item[] miscDyes = new Item[5];
  	public Item trashItem = new Item();
  	public float itemRotation;
-@@ -781,16 +_,48 @@
+@@ -781,16 +_,51 @@
  	public bool poundRelease;
  	public float ghostFade;
  	public float ghostDir = 1f;
@@ -383,8 +407,11 @@
 +	/// <para/> Defaults to -1.
 +	/// </summary>
  	public int heldProj = -1;
++	/// <summary> A countdown timer for <see cref="breath"/>. Ticks up every frame the player is holding their breath underwater. Once it reaches <see cref="breathCDMax"/>, resets back to 0 and breath is reduced by 1. </summary>
  	public int breathCD;
++	/// <summary> The max value of <see cref="breath"/>. Defaults to 200. The total ticks before starting to drown is <c>breathMax * breathCDMax</c>. <para/> Effects like Breathing Reed and Diving Gear affect <see cref="breathEffectiveness"/> rather than edit this value. </summary>
  	public int breathMax = 200;
++	/// <summary> The current amount of breath the player has (<see href="https://terraria.wiki.gg/wiki/Breath_meter">Breath info on the wiki</see>). <see cref="breathCD"/> controls how often the value decreases. Once 0, the player will start to take drowning damage. When out of liquid increases by 3 each tick. </summary>
  	public int breath = 200;
  	public int lavaCD;
 +	/// <summary> The max amount of lava immunity time (in ticks) the player can have. <see cref="ItemID.LavaCharm"/> and many other accessories add 420 do this, or 7 seconds. </summary>
@@ -420,7 +447,7 @@
  	public Chest bank4 = new Chest(bank: true);
  	public BitsByte voidVaultInfo;
  	public float headRotation;
-@@ -836,10 +_,18 @@
+@@ -836,15 +_,26 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
  	public int nonTorch = -1;
@@ -439,6 +466,14 @@
  	public int respawnTimer;
  	public const int respawnTimerMax = 3600;
  	public long lastTimePlayerWasSaved;
+ 	public int attackCD;
+ 	public int potionDelay;
++	/// <summary>
++	/// The <see href="https://terraria.wiki.gg/wiki/Difficulty">player difficulty</see>. Valid values are found in <see cref="PlayerDifficultyID"/>. 
++	/// </summary>
+ 	public byte difficulty;
+ 	public byte wetSlime;
+ 	public HitTile hitTile;
 @@ -853,6 +_,7 @@
  	public int head = -1;
  	public int body = -1;
@@ -447,7 +482,7 @@
  	public sbyte handon = -1;
  	public sbyte handoff = -1;
  	public sbyte back = -1;
-@@ -869,6 +_,23 @@
+@@ -869,6 +_,26 @@
  	public sbyte faceFlower = -1;
  	public sbyte balloonFront = -1;
  	public sbyte beard = -1;
@@ -468,9 +503,55 @@
 +	public int faceFlower = -1;
 +	public int balloonFront = -1;
 +	public int beard = -1;
++	/// <summary>
++	/// Indicates if the corresponding <see cref="armor"/> accessory is set to be hidden or not. 
++	/// </summary>
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
  	public Rectangle headFrame;
+@@ -881,6 +_,7 @@
+ 	public bool controlUp;
+ 	public bool controlDown;
+ 	public bool controlJump;
++	/// <summary> Player is attempting to use an item, set mainly by pressing the "Use Item" keybind (Typically left mouse button). </summary>
+ 	public bool controlUseItem;
+ 	public bool controlUseTile;
+ 	public bool controlThrow;
+@@ -910,6 +_,7 @@
+ 	public bool releaseCreativeMenu;
+ 	public bool tileInteractionHappened;
+ 	public bool tileInteractAttempted;
++	/// <summary> True when the player has been holding <see cref="controlDown"/> for at least 45 ticks. Used by <see cref="ItemID.ShimmerCloak"/>. See also <see cref="holdDownCardinalTimer"/>. </summary>
+ 	public bool controlDownHold;
+ 	public bool isOperatingAnotherEntity;
+ 	public bool autoReuseAllWeapons;
+@@ -930,10 +_,26 @@
+ 	public bool delayUseItem;
+ 	public const int defaultWidth = 20;
+ 	public const int defaultHeight = 42;
++	/// <summary>
++	/// If true, an item will be drawn on the cursor. This is usually set along with <see cref="cursorItemIconID"/> and/or <see cref="cursorItemIconText"/>.
++	/// </summary>
+ 	public bool cursorItemIconEnabled;
++	/// <summary>
++	/// If true, the item drawn on the cursor will be flipped horizontally.
++	/// </summary>
+ 	public bool cursorItemIconReversed;
++	/// <summary>
++	/// The Item type to draw on the cursor when <see cref="cursorItemIconEnabled"/> is true.
++	/// <br/><br/> Defaults to 0. Set to -1 to prevent the selected item from being drawn on the cursor, which is the default behavior if in tool/tile placement range of the selected item.
++	/// </summary>
+ 	public int cursorItemIconID;
++	/// <summary>
++	/// When drawing an item on the cursor (<see cref="cursorItemIconEnabled"/>), the item will be offset in both the X and Y directions by this many pixels. Used by Clentaminator solutions (10) and fishing bait (6) so the icons don't overlap the cursor as much as usual.
++	/// </summary>
+ 	public int cursorItemIconPush;
++	/// <summary>
++	/// Text to be drawn on the cursor when <see cref="cursorItemIconEnabled"/> is true. 
++	/// </summary>
+ 	public string cursorItemIconText = "";
+ 	public int runSoundDelay;
+ 	public float opacityForAnimation = 1f;
 @@ -943,7 +_,13 @@
  	public Vector2[] shadowOrigin = new Vector2[3];
  	public int[] shadowDirection = new int[3];
@@ -485,7 +566,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -961,24 +_,99 @@
+@@ -961,38 +_,124 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -585,9 +666,14 @@
  	public bool spaceGun;
 +	/// <summary> The players gravity direction. <b>1</b> if normal, <b>-1</b> if reversed. <para/> Defaults to <b>1</b>.</summary>
  	public float gravDir = 1f;
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to Chlorophyte Helmet. <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
  	public bool chloroAmmoCost80;
++	/// <summary> Applies the "10% chance to save ammo" effect (10% ammo conservation). <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
  	public bool huntressAmmoCost90;
-@@ -987,12 +_,17 @@
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation). <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool ammoCost80;
++	/// <summary> Applies the "25% chance to save ammo" effect (25% ammo conservation). <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
+ 	public bool ammoCost75;
  	public int stickyBreak;
  	public bool magicQuiver;
  	public bool magmaStone;
@@ -595,7 +681,9 @@
  	public bool lavaRose;
  	public bool hasMoltenQuiver;
  	public int phantasmTime;
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to <see cref="BuffID.AmmoBox"/>. Does not apply to consumables. <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
  	public bool ammoBox;
++	/// <summary> Applies the "20% chance to save ammo" effect (20% ammo conservation) specific to <see cref="BuffID.AmmoReservation"/>. Does not apply to consumables. <include file = 'CommonDocs.xml' path='Common/AmmoConservation' /> </summary>
  	public bool ammoPotion;
  	public bool chaosState;
 +
@@ -642,6 +730,17 @@
  	public bool desertBoots;
  	public bool eyeSpring;
  	public bool snowman;
+@@ -1148,6 +_,10 @@
+ 	public bool onFire;
+ 	public bool onFire2;
+ 	public bool onFire3;
++	/// <summary>
++	/// When true, the player is unable to use items. Also causes the player to be drawn slightly faded. Used by <see cref="BuffID.Cursed"/> and <see cref="MountID.Drill"/>.
++	/// <br/><br/> Checked wherever items are being attempted to being used. Held projectiles should check this to interrupt their usage if needed.
++	/// </summary>
+ 	public bool noItems;
+ 	public bool cursed;
+ 	public bool hungry;
 @@ -1194,28 +_,86 @@
  	public bool parryDamageBuff;
  	public bool ballistaPanic;
@@ -729,7 +828,15 @@
  	public int SpawnY = -1;
  	public Vector2? PotionOfReturnOriginalUsePosition;
  	public Vector2? PotionOfReturnHomePosition;
-@@ -1231,24 +_,84 @@
+@@ -1227,28 +_,92 @@
+ 	public static int tileRangeY = 4;
+ 	public int lastTileRangeX;
+ 	public int lastTileRangeY;
++	/// <summary>
++	/// The tile coordinates of the tile location currently being targeted by the local players cursor for left click purposes. Since this takes into account the smart cursor feature, it isn't necessarily the tile directly under the cursor. For right clicks, see <see cref="Main.SmartInteractX"/>
++	/// </summary>
+ 	public static int tileTargetX;
++	/// <inheritdoc cref="tileTargetX"/>
  	public static int tileTargetY;
  	public static float defaultGravity = 0.4f;
  	public static int jumpHeight = 15;
@@ -825,6 +932,16 @@
  	public bool hostile;
  	public SoundPlaySet hermesStepSound = new SoundPlaySet();
  	public Vector2 instantMovementAccumulatedThisFrame;
+@@ -1270,6 +_,9 @@
+ 	public bool accWeatherRadio;
+ 	public bool accJarOfSouls;
+ 	public bool accCalendar;
++	/// <summary>
++	/// The BannerID of the last npc damaged by this player. Used by the <see cref="ItemID.TallyCounter"/> to display the name of the last attacked enemy. When attacking an enemy without an assigned banner, the value will be 0 and "Kill count unavailable" will be shown.
++	/// </summary>
+ 	public int lastCreatureHit = -1;
+ 	public bool accThirdEye;
+ 	public byte accThirdEyeCounter;
 @@ -1297,9 +_,24 @@
  	public Item boneGloveItem;
  	public bool goldRing;
@@ -966,7 +1083,7 @@
  	public int cLight;
  	public int cYorai;
  	public int cPortableStool;
-@@ -1458,6 +_,12 @@
+@@ -1458,7 +_,16 @@
  	public int cMinion;
  	public int cLeinShampoo;
  	public int cFlameWaker;
@@ -977,8 +1094,45 @@
 +	/// For example, <c>return player.ownedProjectileCounts[Item.shoot] &lt; 1;</c> in <see cref="ModItem.CanUseItem"/> could prevent a player using the item if the projectile the item spawns is already in the game world for the player.
 +	/// </summary>
  	public int[] ownedProjectileCounts = new int[ProjectileID.Count];
++	/// <summary>
++	/// Sets the specified NPC types as friendly to this player. Used by <see cref="ItemID.RoyalGel"/>. Friendly NPC won't target or deal contact damage to the player.
++	/// </summary>
  	public bool[] npcTypeNoAggro = new bool[NPCID.Count];
  	public int lastPortalColorIndex;
+ 	public int _portalPhysicsTime;
+@@ -1468,9 +_,32 @@
+ 	public Vector2 MinionRestTargetPoint = Vector2.Zero;
+ 	public int MinionAttackTargetNPC = -1;
+ 	public List<Point> TouchedTiles = new List<Point>();
++	/// <summary>
++	/// The remaining number of frames the current item animation will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemAnimationMax"/> are set to a value derived from the item's <see cref="Item.useAnimation"/> and the applicable use animation multipliers, then this counts down towards 0 each game update.
++	/// <br/><br/> Note that the item animation (<see cref="itemAnimation"/>) doesn't necessarily match or sync with the item use time. An item being animated does not necessarily mean the item is being "used".
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemAnimation;
++	/// <summary>
++	/// The total number of frames the current item animation will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemAnimation"/> are set to a value derived from the item's <see cref="Item.useTime"/> and the applicable use animation multipliers, then <see cref="itemTime"/> counts down towards 0 each game update.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemAnimationMax;
++	/// <summary>
++	/// The remaining number of frames the current item usage will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemTimeMax"/> are set to a value derived from the item's <see cref="Item.useTime"/> and the applicable use time multipliers, then this counts down towards 0 each game update.
++	/// <br/><br/> Note that the item animation (<see cref="itemAnimation"/>) doesn't necessarily match or sync with the item use time. An item being animated does not necessarily mean the item is being "used".
++	/// <br/><br/> <see cref="ItemTimeIsZero"/> is a helper property to check if this value is 0.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemTime;
++	/// <summary>
++	/// The total number of frames the current item usage will last.
++	/// <br/><br/> When an item is used, this and <see cref="itemTime"/> are set to a value derived from the item's <see cref="Item.useTime"/> and the applicable use time multipliers, then <see cref="itemTime"/> counts down towards 0 each game update.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
+ 	public int itemTimeMax;
+ 	public int toolTime;
+ 	public static int BlockInteractionWithProjectiles = 3;
 @@ -1507,7 +_,7 @@
  	private int[] unlitTorchY = new int[maxTorchAttacks];
  	private static int[] _torchAttackPosX = new int[400];
@@ -1068,6 +1222,31 @@
  	public bool ZoneUnderworldHeight {
  		get {
  			return zone3[4];
+@@ -1998,18 +_,20 @@
+ 
+ 	public Vector2 Directions => new Vector2(direction, gravDir);
+ 
++	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
+ 	public Item HeldItem => inventory[selectedItem];
+ 
++	/// <summary> How long it takes for <see cref="breathCD"/> to cause <see cref="breath"/> to decrease by 1. Defaults to 7 before <see cref="breathEffectiveness"/> is applied. </summary>
+ 	public int breathCDMax {
+ 		get {
+-			int num = 7;
++			var calculated = breathEffectiveness;
+ 			if (inventory[selectedItem].type == 186 && itemAnimation == 0)
+-				num *= 2;
++				calculated += 1;
+ 
+ 			if (accDivingHelm)
+-				num *= 6;
++				calculated *= 6;
+ 
+-			return num;
++			return (int)(calculated.ApplyTo(7));
+ 		}
+ 	}
+ 
 @@ -2085,6 +_,10 @@
  		}
  	}
@@ -1105,8 +1284,14 @@
  	public bool isLockedToATile {
  		get {
  			if (!sitting.isSitting)
-@@ -2155,7 +_,10 @@
+@@ -2153,9 +_,16 @@
  
+ 	public bool HasMinionAttackTargetNPC => MinionAttackTargetNPC != -1;
+ 
++	/// <summary>
++	/// Evaluates to <see langword="true"/> if the item usage is in it's first frame. Equivalent to <c>itemTime == 0</c>. Note that this particular property is only valid to be used in <see cref="ModItem.UseItem(Player)"/> and <see cref="ModItem.UseAnimation(Player)"/> hooks.
++	/// <br/><br/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Tools/ExamplePickaxe.cs">ExamplePickaxe</see> uses this to run code once per swing.
++	/// </summary>
  	public bool ItemTimeIsZero => itemTime == 0;
  
 -	public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax - 1;
@@ -1147,13 +1332,18 @@
  	public void ApplyItemTime(Item sItem)
  	{
  		SetItemTime(sItem.useTime);
-@@ -2354,6 +_,17 @@
+@@ -2354,7 +_,28 @@
  	{
  		SetItemTime((int)((float)sItem.useTime * multiplier));
  	}
 +	*/
-+
+ 
 +	//TML: Full remake of the above methods.
++	/// <summary>
++	/// Handles the internal logic of starting an individual item usage. Can be used to manually start an item usage outside of the normal logic.
++	/// <br/><br/> The provided <paramref name="multiplier"/>, if provided, is combined with the player's use time multipliers to scale the Item's <see cref="Item.useTime"/>. The resulting value will be used to set <see cref="Player.itemTime"/>, starting an item usage.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
 +	public void ApplyItemTime(Item sItem, float multiplier = 1, bool? callUseItem = null)
 +	{
 +		if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
@@ -1162,9 +1352,15 @@
 +		SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
 +		ItemUsesThisAnimation++;
 +	}
- 
++
++	/// <summary>
++	/// Sets <see cref="itemTime"/> and <see cref="itemAnimation"/> to the provided <paramref name="frames"/> value. Also sets <see cref="itemTimeMax"/> to that value plus one.
++	/// <br/><br/> Commonly used by held projectiles to put the player in a state of using an item. This is usually done each time AI executes to lock the player in that state until the player releases the "Use Item" keybind.
++	/// <include file = 'CommonDocs.xml' path='Common/PlayerItemUseAnimation' />
++	/// </summary>
  	public void SetDummyItemTime(int frames)
  	{
+ 		itemAnimation = frames;
 @@ -2362,14 +_,15 @@
  		itemTimeMax = frames + 1;
  	}
@@ -1221,6 +1417,17 @@
  	public void HealEffect(int healAmount, bool broadcast = true)
  	{
  		CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.HealLife, healAmount);
+@@ -2421,6 +_,10 @@
+ 			NetMessage.SendData(43, -1, -1, null, whoAmI, manaAmount);
+ 	}
+ 
++	/// <summary>
++	/// If the tile location currently being targetted by the players mouse (<see cref="tileTargetX"/>) has a tile of the specified tile type, then item usage will be blocked until the player releases the use button (left mouse button) and clicks again.
++	/// <para/> What this typically means in practice is that an auto-swinging pickaxe will not attempt to swing again until the player deliberately releases the mouse button and clicks again. This is usually used by tile entities that drop their contained item when mined to prevent the player from accidentally mining the tile itself when attempting to "mine" the item from the tile entity.
++	/// </summary>
+ 	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
+ 	{
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
@@ -1379,10 +1586,27 @@
  		if (useVoidBag()) {
  			for (int j = 0; j < 40; j++) {
 -				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
-+				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, inventory[j]))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, bank4.item[j]))
  					return bank4.item[j];
  			}
  		}
+@@ -3204,6 +_,7 @@
+ 	{
+ 		bool flag = itemTime > 0 || itemAnimation > 0;
+ 		if ((whoAmI != Main.myPlayer || (!flag && !CCed && !dead)) && loadoutIndex != CurrentLoadoutIndex && loadoutIndex >= 0 && loadoutIndex < Loadouts.Length) {
++			int oldLoadoutIndex = CurrentLoadoutIndex;
+ 			Loadouts[CurrentLoadoutIndex].Swap(this);
+ 			Loadouts[loadoutIndex].Swap(this);
+ 			CurrentLoadoutIndex = loadoutIndex;
+@@ -3218,6 +_,8 @@
+ 					UniqueInfoPiece = loadoutIndex
+ 				}, whoAmI);
+ 			}
++
++			PlayerLoader.OnEquipmentLoadoutSwitched(this, oldLoadoutIndex, loadoutIndex);
+ 		}
+ 	}
+ 
 @@ -3226,7 +_,7 @@
  		if (cursed || CCed || dead)
  			return;
@@ -1841,7 +2065,12 @@
  	{
  		if (armorItem.IsAir)
  			return;
-@@ -7020,13 +_,13 @@
+@@ -7017,16 +_,18 @@
+ 		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count && (cShieldFallback == -1 || !flag))
+ 			cShieldFallback = dyeItem.dye;
+ 
++		ItemLoader.UpdateItemDye(armorItem, this, dyeItem.dye, flag); // Call early to support hideVisuals bypassing
++
  		if (!num && flag)
  			return;
  
@@ -3180,13 +3409,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  					}
-@@ -13858,6 +_,13 @@
+@@ -13858,6 +_,16 @@
  				if (tile == null)
  					return;
  
 +				if (tile.type >= TileID.Count) {
-+					if (tile.active() && TileID.Sets.Torch[tile.type])
++					if (tile.active() && TileID.Sets.Torch[tile.type]) {
 +						NearbyModTorch.Add(tile.type);
++						if (tile.frameX < 66)
++							nearbyTorches++;
++					}
 +
 +					continue;
 +				}
@@ -3194,6 +3426,25 @@
  				if (!tile.active() || tile.type != 4 || tile.frameX < 0 || tile.frameY < 0)
  					continue;
  
+@@ -13887,7 +_,8 @@
+ 		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
+ 			int num = unlitTorchX[i];
+ 			int num2 = unlitTorchY[i];
++			
+-			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
++			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
+ 				Main.tile[num, num2].frameX -= 66;
+ 				NetMessage.SendTileSquare(-1, num, num2);
+ 			}
+@@ -13923,7 +_,7 @@
+ 		for (int i = num3; i <= value2; i++) {
+ 			for (int j = value3; j <= value4; j++) {
+ 				Tile tile = Main.tile[i, j];
+-				if (tile != null && (tile.active() & (tile.type == 4)) && tile.frameX < 66) {
++				if (tile != null && (tile.active() & (TileID.Sets.Torch[tile.type])) && tile.frameX < 66) {
+ 					_torchAttackPosX[num] = i;
+ 					_torchAttackPosY[num] = j;
+ 					num++;
 @@ -13943,7 +_,7 @@
  				NetMessage.SendData(4, -1, -1, null, whoAmI);
  
@@ -3203,6 +3454,22 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
+@@ -13955,13 +_,14 @@
+ 			int num4 = Main.rand.Next(num);
+ 			int num5 = _torchAttackPosX[num4];
+ 			int num6 = _torchAttackPosY[num4];
+-			if (Main.tile[num5, num6].type == 4 && Main.tile[num5, num6].frameX < 66) {
++			if (TileID.Sets.Torch[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
+ 				float num7 = 8f;
+ 				int num8 = 20;
+ 				if (num8 < 10)
+ 					num8 = 10;
+ 
+ 				int num9 = (int)MathHelper.Clamp(Main.tile[num5, num6].frameY / 22, 0f, TorchID.Count - 1);
++				// TODO: Full Torch god support for modded torches would require TorchID.Dust support, but this is fine for now.
+ 				num9 = TorchID.Dust[num9];
+ 				Main.tile[num5, num6].frameX += 66;
+ 				unlitTorchX[numberOfTorchAttacksMade] = num5;
 @@ -13991,6 +_,9 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;
@@ -3323,6 +3590,15 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
+@@ -14505,6 +_,8 @@
+ 		dashType = 0;
+ 		spikedBoots = 0;
+ 		blackBelt = false;
++		breathMax = 200; // Added by TML.
++		breathEffectiveness = StatModifier.Default;
+ 		lavaMax = 0;
+ 		archery = false;
+ 		poisoned = false;
 @@ -14538,8 +_,10 @@
  		witheredWeapon = false;
  		parryDamageBuff = false;
@@ -4150,7 +4426,17 @@
  
  			if (stoned != lastStoned) {
  				if (whoAmI == Main.myPlayer && stoned) {
-@@ -19566,11 +_,14 @@
+@@ -19559,18 +_,24 @@
+ 						num21 = (int)((position.Y - 1f) / 16f);
+ 
+ 					for (int num22 = num19; num22 <= num20; num22++) {
++						/*
+ 						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && (Main.tile[num22, num21].type == 189 || Main.tile[num22, num21].type == 196 || Main.tile[num22, num21].type == 460 || Main.tile[num22, num21].type == 666)) {
++						*/
++						if (Main.tile[num22, num21] != null && Main.tile[num22, num21].active() && TileID.Sets.NegatesFallDamage[Main.tile[num22, num21].type]) {
+ 							num18 = 0;
+ 							break;
+ 						}
  					}
  				}
  
@@ -4436,11 +4722,12 @@
  		if (tongued) {
  			position += velocity;
  			flag30 = false;
-@@ -21810,11 +_,13 @@
- 
+@@ -21811,10 +_,15 @@
  		if (statMana > statManaMax2)
  			statMana = statManaMax2;
--
+ 
++		if (breath > breathMax)
++			breath = breathMax;
 +		// More patch context.
  		grappling[0] = -1;
  		grapCount = 0;
@@ -4871,6 +5158,33 @@
  		return num;
  	}
  
+@@ -27286,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="Item.Refresh(bool)"/> on all player-owned storage (inventory, banks, equipment). Also refreshes recipe and shop entries.
++	/// <para/> This is called when entering a world and serves to ensure that items with <see cref="ItemVariants"/> have the correct stats.
++	/// </summary>
+ 	public void RefreshItems(bool onlyIfVariantChanged = true)
+ 	{
+ 		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
+@@ -27301,6 +_,15 @@
+ 		RefreshItems(bank3.item, onlyIfVariantChanged);
+ 		RefreshItems(bank4.item, onlyIfVariantChanged);
+ 		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
++
++		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
++			// Don't adjust custom prices, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
++			var originalCustomPrice = item.shopCustomPrice;
++			var originalSpecialCurrency = item.shopSpecialCurrency;
++			item.Refresh(onlyIfVariantChanged);
++			item.shopCustomPrice = originalCustomPrice;
++			item.shopSpecialCurrency = originalSpecialCurrency;
++		}
+ 	}
+ 
+ 	private void RefreshItems(Item[] array, bool onlyIfVariantChanged)
 @@ -27344,11 +_,29 @@
  		}
  	}
@@ -5211,6 +5525,15 @@
  		if (item.type == 3581)
  			yoraiz0rDarkness = true;
  
+@@ -28662,6 +_,8 @@
+ 
+ 		if (item.type == 5075)
+ 			hasRainbowCursor = true;
++
++		ItemLoader.UpdateVisibleAccessory(item, this, false);
+ 	}
+ 
+ 	public void SetArmorEffectVisuals(Player drawPlayer)
 @@ -28799,6 +_,9 @@
  		if (drawPlayer.head == 267)
  			yoraiz0rDarkness = true;
@@ -5221,7 +5544,7 @@
  		if (drawPlayer.stoned || drawPlayer.stealth != 1f) {
  			armorEffectDrawOutlines = false;
  			armorEffectDrawShadow = false;
-@@ -28994,10 +_,12 @@
+@@ -28994,13 +_,20 @@
  				case 232:
  					if (!male)
  						num2 = 233;
@@ -5234,6 +5557,14 @@
  		return num2;
  	}
  
++	/// <summary>
++	/// Teleports the player to the provided world coordinates. In multiplayer, clients should send <see cref="MessageID.TeleportEntity"/> rather than call this method directly.
++	/// <br/> <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center) 
++	/// <br/> <b>Style: </b> Controls the visuals and sounds of the teleport. Equivalent to <see cref="TeleportationStyleID"/> values.
++	/// </summary>
+ 	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
+ 	{
+ 		try {
 @@ -29189,6 +_,10 @@
  			}
  
@@ -5291,7 +5622,7 @@
  		bool flag = !immune;
  		bool flag2 = false;
  		int hitContext = cooldownCounter;
-@@ -29530,7 +_,34 @@
+@@ -29530,7 +_,36 @@
  		}
  
  		if (flag) {
@@ -5309,6 +5640,7 @@
 +			modifiers.ScalingArmorPenetration += scalingArmorPenetration;
 +
 +			// ogre knockback re-implemented from below
+-			if (dodgeable) {
 +			if (flag2) {
 +				// this gives the right values for X knockback.
 +				// Y knockback will be slightly different, but mostly accurate
@@ -5318,8 +5650,10 @@
 +
 +			ApplyVanillaHurtEffectModifiers(ref modifiers);
 +			info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
++			if (info.Cancelled)
++				return 0.0;
 +
- 			if (dodgeable) {
++			if (info.Dodgeable) {
 +				if (whoAmI == Main.myPlayer && PlayerLoader.FreeDodge(this, info))
 +					return 0.0;
 +
@@ -5729,6 +6063,15 @@
  		int num = 50;
  		if (newItem.IsACoin)
  			num = 54;
+@@ -30208,7 +_,7 @@
+ 		}
+ 
+ 		for (int k = 54; k < 58; k++) {
+-			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]))
++			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]) && ItemLoader.CanStack(inventory[k], newItem))
+ 				return new ItemSpaceStatus(CanTakeItem: true);
+ 		}
+ 
 @@ -30240,7 +_,11 @@
  		if (theSlot.type == 0)
  			return true;
@@ -5924,11 +6267,14 @@
  					for (int i = 0; i < num2; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
-@@ -30778,15 +_,15 @@
+@@ -30777,21 +_,22 @@
+ 				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
  
- 			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
+-			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
 -			ushort num3 = (ushort)HeldItem.createTile;
++			var topLeft = TileObjectData.TopLeft(tileTargetX, tileTargetY).ToPoint();
++			int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(HeldItem.createTile, HeldItem.placeStyle), topLeft);
 +			int num3 = HeldItem.createTile;
  			int num4 = HeldItem.placeStyle;
  			if (UsingBiomeTorches && num3 == 4)
@@ -5944,6 +6290,12 @@
  				canUse = false;
  				NetMessage.SendData(17, -1, -1, null, 21, tileTargetX, tileTargetY, (int)num3, num4);
  				ApplyItemTime(HeldItem);
+ 				SetItemAnimation(HeldItem.useAnimation);
+-				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, num3);
++				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, num3, topLeft);
+ 			}
+ 		}
+ 
 @@ -30803,10 +_,10 @@
  		int createTile = HeldItem.createTile;
  		int num = HeldItem.placeStyle;
@@ -5977,6 +6329,16 @@
  
  		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
  			if (tile.frameX / 36 == num)
+@@ -30927,7 +_,8 @@
+ 		if (!newObjectType)
+ 			num = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(num);
+ 
+-		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
++		var topLeft = data.type == 0 ? new Point(tileTargetX, tileTargetY) : new Point(data.xCoord, data.yCoord);
++		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(data.type, data.style, data.alternate), topLeft);
+ 		bool forced = false;
+ 		bool flag;
+ 		if (newObjectType) {
 @@ -30938,7 +_,7 @@
  		}
  		else {
@@ -5986,10 +6348,12 @@
  
  			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
  		}
-@@ -30964,8 +_,12 @@
+@@ -30963,9 +_,13 @@
+ 			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
  			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
- 			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate);
+-			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate);
++			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate, topLeft);
 +
 +			// Extra patch context.
  			if (PlayerInput.UsingGamepad && ItemID.Sets.SingleUseInGamepad[inventory[selectedItem].type] && Main.myPlayer == whoAmI && !Main.SmartCursorIsUsed)
@@ -6054,7 +6418,7 @@
  		return style;
  	}
  
-@@ -31110,6 +_,10 @@
+@@ -31110,18 +_,33 @@
  		else if (ZoneDesert && Main.remixWorld)
  			itemType = 4689;
  
@@ -6064,6 +6428,61 @@
 +
  		return itemType;
  	}
+ 
+-	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache()
++	// #3222: Changed to return an exact 2d array of the tiles that will need painting/actuating
++	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData data, Point topLeft)
+ 	{
+ 		int[,] array = null;
+ 		if (autoPaint || autoActuator) {
++			/*
+ 			array = new int[11, 11];
+ 			for (int i = 0; i < 11; i++) {
+ 				for (int j = 0; j < 11; j++) {
+ 					int num = tileTargetX - 5 + i;
+ 					int num2 = tileTargetY - 5 + j;
++			*/
++			int width = data?.Width ?? 1;
++			int height = data?.Height ?? 1;
++
++			array = new int[width, height];
++			for (int i = 0; i < width; i++) {
++				for (int j = 0; j < height; j++) {
++					int num = topLeft.X + i;
++					int num2 = topLeft.Y + j;
+ 					if (Main.tile[num, num2].active())
+ 						array[i, j] = Main.tile[num, num2].type;
+ 					else
+@@ -31213,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(int[,] typeCaches, int tileToCreate)
++	private void PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(int[,] typeCaches, int tileToCreate, Point topLeft)
+ 	{
+ 		if (!autoPaint && !autoActuator)
+ 			return;
+@@ -31229,10 +_,21 @@
+ 			num3 = (num4 = 6);
+ 		}
+ 
++		// Added by TML
++		num = 0;
++		num2 = 0;
++		num3 = typeCaches.GetLength(0);
++		num4 = typeCaches.GetLength(1);
++
+ 		for (int i = num; i < num3; i++) {
+ 			for (int j = num2; j < num4; j++) {
++				/*
+ 				int num5 = tileTargetX - 5 + i;
+ 				int num6 = tileTargetY - 5 + j;
++				*/
++
++				int num5 = topLeft.X + i;
++				int num6 = topLeft.Y + j;
+ 				if ((!Main.tile[num5, num6].active() && typeCaches[i, j] == -1) || (Main.tile[num5, num6].active() && !flag2 && (typeCaches[i, j] == Main.tile[num5, num6].type || Main.tile[num5, num6].type != tileToCreate)))
+ 					continue;
  
 @@ -31253,7 +_,9 @@
  				int num7 = FindItem(849);
@@ -6712,6 +7131,19 @@
  
  			bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  			ItemCheck_CutTiles(sItem, itemRectangle, shouldIgnore2);
+@@ -34195,8 +_,12 @@
+ 			NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, sItem.makeNPC, sItem.placeStyle, whoAmI);
+ 		}
+ 		else if (position.X / 16f - (float)tileRangeX - (float)sItem.tileBoost <= (float)tileTargetX && (position.X + (float)width) / 16f + (float)tileRangeX + (float)sItem.tileBoost - 1f >= (float)tileTargetX && position.Y / 16f - (float)tileRangeY - (float)sItem.tileBoost <= (float)tileTargetY && (position.Y + (float)height) / 16f + (float)tileRangeY + (float)sItem.tileBoost - 2f >= (float)tileTargetY) {
++			/*
+ 			int num = Main.mouseX + (int)Main.screenPosition.X;
+ 			int num2 = Main.mouseY + (int)Main.screenPosition.Y;
++			*/
++			int num = (int)Main.MouseWorld.X;
++			int num2 = (int)Main.MouseWorld.Y;
+ 			int i = num / 16;
+ 			int j = num2 / 16;
+ 			if (!WorldGen.SolidTile(i, j)) {
 @@ -34216,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;
@@ -7011,6 +7443,16 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35442,6 +_,9 @@
+ 		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
+ 			return;
+ 
++		if (!CombinedHooks.CanBeTeleportedTo(this, pointPoisition, num, num2, "TeleportRod"))
++			return;
++
+ 		Teleport(pointPoisition, 1);
+ 		NetMessage.SendData(65, -1, -1, null, 0, whoAmI, pointPoisition.X, pointPoisition.Y, 1);
+ 		if (sItem.type != 1326)
 @@ -35479,7 +_,10 @@
  			}
  		}
@@ -7289,6 +7731,17 @@
  				if (Main.rand.Next(3) == 0)
  					num11--;
  			}
+@@ -36987,8 +_,9 @@
+ 		}
+ 		else if (sItem.type == 3053) {
+ 			bool flag3 = false;
+-			if (itemAnimation <= sItem.useTime + 1)
++			if (itemAnimation <= itemTimeMax) { // TML: Change from sItem.useTime + 1 to more correctly account for use speed hook adjustments.
+ 				flag3 = true;
++			}
+ 
+ 			Vector2 vector10 = new Vector2(num2, num3);
+ 			vector10.Normalize();
 @@ -38410,10 +_,14 @@
  		projType = 721;
  		Item item = inventory[selectedItem];
@@ -8318,7 +8771,7 @@
  		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
  		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
  		binaryWriter.Write(279);
-@@ -41992,8 +_,30 @@
+@@ -41992,8 +_,31 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
  		stream.Flush();
@@ -8340,6 +8793,7 @@
 +		if (string.IsNullOrEmpty(path))
 +			return;
 +
++		Main.statusText = Language.GetTextValue("tModLoader.BackingUpPlayerFile");
 +		BackupIO.Player.ArchivePlayer(path, isCloudSave);
 +		if (FileUtilities.Exists(path, isCloudSave))
 +			FileUtilities.Copy(path, path + ".bak", isCloudSave);
@@ -8735,6 +9189,16 @@
  			adjTile[n] = false;
  			oldAdjTile[n] = false;
  		}
+@@ -43304,6 +_,9 @@
+ 			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
+ 				continue;
+ 
++			if (!CombinedHooks.CanBeTeleportedTo(this, vector, i, j, "CheckForGoodTeleportationSpot"))
++				continue;
++
+ 			Vector2 vector2 = Vector2.UnitX * 16f;
+ 			if (Collision.TileCollision(vector - vector2, vector2, width, height, fallThrough: false, fall2: false, (int)gravDir) != vector2)
+ 				continue;
 @@ -43332,11 +_,29 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);
@@ -8940,6 +9404,15 @@
  		item.stack = 6;
  		item.position = base.Center;
  		Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
+@@ -43921,6 +_,8 @@
+ 		if (keyDir != num)
+ 			return;
+ 
++		PlayerLoader.ArmorSetBonusActivated(this);
++
+ 		if (setVortex && !mount.Active)
+ 			vortexStealthActive = !vortexStealthActive;
+ 
 @@ -44020,7 +_,10 @@
  			}
  		}
@@ -8951,3 +9424,12 @@
  		IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  		_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  	}
+@@ -44032,6 +_,8 @@
+ 			num = 1;
+ 
+ 		if (keyDir == num) {
++			PlayerLoader.ArmorSetBonusHeld(this, holdTime);
++
+ 			if (setStardust && holdTime >= 60)
+ 				MinionRestTargetPoint = Vector2.Zero;
+ 

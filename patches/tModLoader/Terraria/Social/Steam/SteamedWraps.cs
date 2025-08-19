@@ -1,15 +1,13 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Xna.Framework;
-using ReLogic.OS;
-using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ReLogic.OS;
+using Steamworks;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
@@ -73,6 +71,8 @@ public static class SteamedWraps
 
 	internal static void Initialize()
 	{
+		InitializeModTags();
+
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
 			SteamAvailable = true;
 			SteamClient = true;
@@ -682,7 +682,7 @@ public static class SteamedWraps
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
 			Logging.tML.Info("Adding dependencies to Workshop Upload");
-			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+			string[] dependencies = refs.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
 			foreach (string dependency in dependencies) {
 				try {
@@ -705,5 +705,42 @@ public static class SteamedWraps
 			throw new Exception($"Invalid Call to AddDeveloperMetadata. Developer Metadata exceeds {Constants.k_cchDeveloperMetadataMax} characters");
 
 		return SteamUGC.SetItemMetadata(uGCUpdateHandle_t, developerMetadata);
+	}
+
+	public static readonly List<WorkshopTagOption> ModTags = new List<WorkshopTagOption>();
+
+	private static void InitializeModTags()
+	{
+		// Common Mod Focuses
+		AddModTag("tModLoader.TagsContent", "New Content");
+		AddModTag("tModLoader.TagsUtility", "Utilities");
+		AddModTag("tModLoader.TagsLibrary", "Library");
+		AddModTag("tModLoader.TagsTranslation", "Translation");
+		AddModTag("tModLoader.TagsQoL", "Quality of Life");
+
+		// Tweaks
+		AddModTag("tModLoader.TagsGameplay", "Gameplay Tweaks");
+		AddModTag("tModLoader.TagsAudio", "Audio Tweaks");
+		AddModTag("tModLoader.TagsVisual", "Visual Tweaks");
+
+		// TBD Grouping
+		//AddModTag("tModLoader.TagsLang", "Localization Support");
+		AddModTag("tModLoader.TagsGen", "Custom World Gen"); // Note: Don't change internal name to "World Gen" here or on steam, it will most likely break legacy modders publishing updates. Unless we are sure the steam backend handles migrating from legacy internal names, keep the internal names consistent.
+
+		// Languages
+		AddModTag("tModLoader.TagsLanguage_English", "English");
+		AddModTag("tModLoader.TagsLanguage_German", "German");
+		AddModTag("tModLoader.TagsLanguage_Italian", "Italian");
+		AddModTag("tModLoader.TagsLanguage_French", "French");
+		AddModTag("tModLoader.TagsLanguage_Spanish", "Spanish");
+		AddModTag("tModLoader.TagsLanguage_Russian", "Russian");
+		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
+		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
+		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
+	}
+
+	private static void AddModTag(string tagNameKey, string tagInternalName)
+	{
+		ModTags.Add(new WorkshopTagOption(tagNameKey, tagInternalName));
 	}
 }

@@ -12,7 +12,6 @@ namespace ExampleMod.Content.Projectiles
 	// This is a copy of the Excalibur's projectile
 	public class ExampleSwingingEnergySwordProjectile : ModProjectile
 	{
-
 		// We could use a vanilla texture if we want instead of supplying our own.
 		// public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Excalibur;
 
@@ -243,7 +242,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// Copied from Main.DrawPrettyStarSparkle() which is private
 		private static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawPos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {
-			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
+			Texture2D sparkleTexture = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			Color bigColor = shineColor * opacity * 0.5f;
 			bigColor.A = 0;
 			Vector2 origin = sparkleTexture.Size() / 2f;

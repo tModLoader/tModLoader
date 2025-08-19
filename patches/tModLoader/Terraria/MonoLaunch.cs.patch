@@ -65,14 +65,25 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,25 +_,25 @@
+@@ -57,25 +_,34 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  
 -			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
+-
+-			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
 +			Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
- 
- 			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
++			if (name.StartsWith("/tmp/"))
++				return IntPtr.Zero;
++
++			string[] files;
++			try {
++				files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
++			}
++			catch {
++				files = [];
++			}
++
  			if (files.FirstOrDefault() is not string path) {
 -				Console.WriteLine("\tnot found");
 +				Logging.tML.Debug("\tnot found");

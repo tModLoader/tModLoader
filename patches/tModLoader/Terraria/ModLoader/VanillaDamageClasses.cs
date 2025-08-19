@@ -66,6 +66,7 @@ public class SummonDamageClass : VanillaDamageClass
 	public override bool UseStandardCritCalcs => false;
 
 	public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance" && lineName != "Speed";
+	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Magic;
 }
 
 public class SummonMeleeSpeedDamageClass : VanillaDamageClass
@@ -88,6 +89,7 @@ public class SummonMeleeSpeedDamageClass : VanillaDamageClass
 	public override bool UseStandardCritCalcs => false;
 
 	public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance";
+	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Melee;
 }
 
 public class MagicSummonHybridDamageClass : VanillaDamageClass
@@ -108,4 +110,5 @@ public class MagicSummonHybridDamageClass : VanillaDamageClass
 public class ThrowingDamageClass : VanillaDamageClass
 {
 	protected override string LangKey => "LegacyTooltip.58";
+	public override bool GetPrefixInheritance(DamageClass damageClass) => damageClass == Ranged;
 }

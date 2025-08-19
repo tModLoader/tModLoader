@@ -9,6 +9,12 @@ using Terraria.UI;
 namespace Terraria.ModLoader.UI.Elements;
 
 //TODO: wow that's a lot of redundant this.
+// TODO: This is out of date. Code needs to be copied over from UIList without breaking binary compat.
+/// <summary>
+/// Similar to <see cref="UIList"/> except the elements are arranged in a grid in normal reading order.
+/// <para/> <b>UIList docs:</b>
+/// <inheritdoc cref="UIList"/>
+/// </summary>
 public class UIGrid : UIElement
 {
 	public delegate bool ElementSearchMethod(UIElement element);

@@ -15,6 +15,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		public override void SetStaticDefaults() {
 			TileID.Sets.Ore[Type] = true;
+			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
 			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.wiki.gg/wiki/Metal_Detector
 			Main.tileShine2[Type] = true; // Modifies the draw color slightly.
@@ -26,7 +27,8 @@ namespace ExampleMod.Content.Tiles
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(152, 171, 198), name);
 
-			DustType = 84;
+			DustType = DustID.Platinum;
+			VanillaFallbackOnModDeletion = TileID.Silver;
 			HitSound = SoundID.Tink;
 			// MineResist = 4f;
 			// MinPick = 200;

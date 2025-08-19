@@ -14,9 +14,12 @@
  	private GroupOptionButton<WorkshopItemPublicSettingId>[] _publicityOptions;
 -	private List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
 +	protected List<GroupOptionButton<WorkshopTagOption>> _tagOptions;
- 	private UICharacterNameButton _previewImagePathPlate;
- 	private Texture2D _previewImageTransientTexture;
- 	private UIImage _previewImageUIElement;
+-	private UICharacterNameButton _previewImagePathPlate;
++	protected UICharacterNameButton _previewImagePathPlate;
+-	private Texture2D _previewImageTransientTexture;
++	protected Texture2D _previewImageTransientTexture;
+-	private UIImage _previewImageUIElement;
++	protected UIImage _previewImageUIElement;
 -	private string _previewImagePath;
 +	protected string _previewImagePath;
  	private Asset<Texture2D> _defaultPreviewImageTexture;
@@ -206,7 +209,7 @@
  			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num) * (1f - groupOptionButton.HAlign * 2f));
  			groupOptionButton.Top.Set(accumulatedHeight, 0f);
-@@ -382,18 +_,41 @@
+@@ -382,22 +_,47 @@
  	{
  		List<WorkshopTagOption> tagsToShow = GetTagsToShow();
  		int num = 3;
@@ -251,6 +254,12 @@
  			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (num - 1), 1f / (float)num * num4);
  			groupOptionButton.HAlign = (float)num6 / (float)(num - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num4) * (1f - groupOptionButton.HAlign * 2f));
+ 			groupOptionButton.Top.Set(num5 * heightPerRow, 0f);
++			// If we want to enforce TagsTranslation meaning later:
++			// if(workshopTagOption.NameKey != "tModLoader.TagsTranslation")
+ 			groupOptionButton.OnLeftMouseDown += ClickTagOption;
+ 			groupOptionButton.OnMouseOver += ShowOptionDescription;
+ 			groupOptionButton.OnMouseOut += ClearOptionDescription;
 @@ -593,7 +_,8 @@
  
  	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)
@@ -280,3 +289,21 @@
  		string text = FileBrowser.OpenFilePanel("Open icon", extensions);
  		if (text != null) {
  			_previewImagePath = text;
+@@ -680,14 +_,15 @@
+ 		return path;
+ 	}
+ 
+-	private void UpdateImagePreview()
++	protected virtual void UpdateImagePreview()
+ 	{
+ 		Texture2D texture2D = null;
+ 		string contents = PrettifyPath(_previewImagePath);
+ 		_previewImagePathPlate.SetContents(contents);
+ 		if (_previewImagePath != null) {
+ 			try {
++				//TML: Prefixed 'using' as a bugfix.
+-				FileStream stream = File.OpenRead(_previewImagePath);
++				using FileStream stream = File.OpenRead(_previewImagePath);
+ 				texture2D = Texture2D.FromStream(Main.graphics.GraphicsDevice, stream);
+ 			}
+ 			catch (Exception exception) {
