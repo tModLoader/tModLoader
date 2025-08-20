@@ -684,6 +684,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to determine whether the player is wearing an armor set, and return a name for this set. If there is no armor set, return the empty string. Returns the empty string by default.
+	/// <br/><br/> This return value should then be checked for in <see cref="UpdateArmorSet(Player, string)"/> to provide the actual effects of the armor set.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -694,7 +695,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to give set bonuses to your armor set with the given name.
-	/// The set name will be the same as returned by IsArmorSet.
+	/// The set name will be the same as returned by <see cref="IsArmorSet(Item, Item, Item)"/>.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -704,8 +705,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set.
-	/// This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks, and will use items in the social slots if they exist.
-	/// By default this will return the same value as the IsArmorSet hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
+	/// This hook is used for the <see cref="GlobalItem.PreUpdateVanitySet(Player, string)"/>, <see cref="GlobalItem.UpdateVanitySet(Player, string)"/>, and <see cref="GlobalItem.ArmorSetShadows(Player, string)"/> hooks, and will use items in the social slots if they exist.
+	/// By default this will return the same value as the <see cref="IsArmorSet(Item, Item, Item)"/> hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>

@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Items
 
 		// To create a named ID set for items, we use the ItemID.Sets.Factory.CreateNamedSet method and provide a string key.
 		// The key we provide using this method overload will automatically have "ModName/" added to the start, meaning that the real key for this example is "ExampleMod/FlamingWeapon".
-		// This is then optionally followed by the Decription method. The description explains how this mod uses the set. Other mods can view this description using the /customsets chat command.
+		// This is then optionally followed by the Description method. The description explains how this mod uses the set. Other mods can view this description using the /customsets chat command.
 		// Finally the RegisterXSet method is called to register the set.
 		// We can pass in any initial data to the RegisterXSet method, in this case we are indicating that FieryGreatsword and ExampleSword should be true in this set. Note that it is also possible to set these set values in SetStaticDefaults instead, which is more typical. See ExampleFlail.cs for an example.
 		// By registering the set, other mods can access it the key. The key and default value must be consistent with other mods. Remember that the Mod name is part of the key that that other mods will be using to access this set.

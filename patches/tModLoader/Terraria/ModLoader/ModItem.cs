@@ -827,19 +827,19 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Returns whether or not the head armor, body armor, and leg armor make up a set. If this returns true, then this item's UpdateArmorSet method will be called. Returns false by default.
+	/// Returns whether or not the head armor, body armor, and leg armor make up a set. If this returns true, then this item's <see cref="UpdateArmorSet(Player)"/> method will be called. Returns false by default.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
-	/// <param name="head">The head.</param>
-	/// <param name="body">The body.</param>
-	/// <param name="legs">The legs.</param>
+	/// <param name="head">The head equipment.</param>
+	/// <param name="body">The body equipment.</param>
+	/// <param name="legs">The legs equipment.</param>
 	public virtual bool IsArmorSet(Item head, Item body, Item legs)
 	{
 		return false;
 	}
 
 	/// <summary>
-	/// Allows you to give set bonuses to the armor set that this armor is in. Set player.setBonus to a string for the bonus description.
+	/// Allows you to give set bonuses to the armor set that this armor is in. Set <see cref="Player.setBonus"/> to a string for the bonus description.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
@@ -848,12 +848,12 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
+	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the <see cref="PreUpdateVanitySet(Player)"/>, <see cref="UpdateVanitySet(Player)"/>, and <see cref="ArmorSetShadows(Player)"/> hooks. By default, this will return the same value as the <see cref="IsArmorSet(Item, Item, Item)"/> hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
-	/// <param name="head">The head.</param>
-	/// <param name="body">The body.</param>
-	/// <param name="legs">The legs.</param>
+	/// <param name="head">The visible head equipment slot (<see cref="Player.head"/>).</param>
+	/// <param name="body">The visible body equipment slot (<see cref="Player.body"/>).</param>
+	/// <param name="legs">The visible legs equipment slot (<see cref="Player.legs"/>).</param>
 	public virtual bool IsVanitySet(int head, int body, int legs)
 	{
 		int headItemType = 0;
@@ -896,7 +896,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. Note that this hook is only ever called through this item's associated equipment texture. Use the player.armorEffectDraw bools to activate the desired effects.
+	/// Allows you to determine special visual effects this vanity set has on the player without having to code them yourself. Note that this hook is only ever called through this item's associated equipment texture. Use the <c>player.armorEffectDrawX</c> bools to activate the desired effects.
 	/// <para/> Called on local, server, and remote clients.
 	/// <example><code>player.armorEffectDrawShadow = true;</code></example>
 	/// </summary>
@@ -906,7 +906,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to modify the equipment that the player appears to be wearing. This is most commonly used to add legs to robes and for swapping to female variant textures if <paramref name="male"/> is false for head and leg armor. This hook will only be called for head armor, body armor, and leg armor. Note that equipSlot is not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the headSlot, bodySlot, and legSlot fields for items, and modded equipment IDs by looking at EquipLoader.
+	/// Allows you to modify the equipment that the player appears to be wearing. This is most commonly used to add legs to robes and for swapping to female variant textures if <paramref name="male"/> is false for head and leg armor. This hook will only be called for head armor, body armor, and leg armor. Note that equipSlot is not the same as the item type of the armor the player will appear to be wearing. Worn equipment has a separate set of IDs. You can find the vanilla equipment IDs by looking at the <see cref="Item.headSlot"/>, <see cref="Item.bodySlot"/>, and <see cref="Item.legSlot"/> fields for items, and modded equipment IDs by looking at EquipLoader.
 	/// <para/> If this hook is called on body armor, equipSlot allows you to modify the leg armor the player appears to be wearing. If you modify it, make sure to set robes to true. If this hook is called on leg armor, equipSlot allows you to modify the leg armor the player appears to be wearing, and the robes parameter is useless. The same is true for head armor.
 	/// <para/> Note that this hook is only ever called through this item's associated equipment texture.
 	/// <para/> Called on local, server, and remote clients.

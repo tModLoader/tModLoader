@@ -26,6 +26,7 @@ namespace Terraria.ModLoader;
 public static class ItemLoader
 {
 	public static int ItemCount { get; private set; } = ItemID.Count;
+	public static int UseStyleCount { get; private set; } = ItemUseStyleID.Count;
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
 	private static readonly List<HookList> hooks = new List<HookList>();
@@ -50,6 +51,16 @@ public static class ItemLoader
 	{
 		items.Add(item);
 		return ItemCount++;
+	}
+
+	/// <summary>
+	/// Registers a new item use style (<see cref="ItemUseStyleID"/>). The return value is its unique ID suitable for <see cref="Item.useStyle"/>.
+	/// </summary>
+	public static int RegisterUseStyle(Mod mod, string useStyleName)
+	{
+		int useStyle = UseStyleCount++;
+		ItemUseStyleID.Search.Add($"{mod?.Name ?? "Terraria"}/{useStyleName}", useStyle);
+		return useStyle;
 	}
 
 	/// <summary>
@@ -150,6 +161,7 @@ public static class ItemLoader
 	internal static void Unload()
 	{
 		ItemCount = ItemID.Count;
+		UseStyleCount = ItemUseStyleID.Count;
 		items.Clear();
 		FlexibleTileWand.Reload();
 		GlobalList<GlobalItem>.Reset();
@@ -1266,7 +1278,7 @@ public static class ItemLoader
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 
 	/// <summary>
-	/// If the head's ModItem.IsArmorSet returns true, calls the head's ModItem.UpdateArmorSet. This is then repeated for the body, then the legs. Then for each GlobalItem, if GlobalItem.IsArmorSet returns a non-empty string, calls GlobalItem.UpdateArmorSet with that string.
+	/// If the head's <see cref="ModItem.IsArmorSet(Item, Item, Item)"/> returns true, calls the head's <see cref="ModItem.UpdateArmorSet(Player)"/>. This is then repeated for the body, then the legs. Then for each GlobalItem, if <see cref="GlobalItem.IsArmorSet(Item, Item, Item)"/> returns a non-empty string, calls <see cref="GlobalItem.UpdateArmorSet(Player, string)"/> with that string.
 	/// </summary>
 	public static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
 	{
