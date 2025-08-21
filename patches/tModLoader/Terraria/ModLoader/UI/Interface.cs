@@ -210,7 +210,7 @@ internal static class Interface
 						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
 							break;
 
-						if (state != WorkshopHelper.WorkshopSearchReturnState.SearchSuccessMatchUseable) {
+						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
 							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
 							continue;
 						}
@@ -232,7 +232,7 @@ internal static class Interface
 						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
 							break;
 
-						if (state != WorkshopHelper.WorkshopSearchReturnState.SearchSuccessMatchUseable) {
+						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
 							Logging.tML.Error($"Could not find removed mod on Workshop: {slug}");
 							continue;
 						}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using Newtonsoft.Json;
 using Terraria.Localization;
@@ -29,7 +30,7 @@ public partial class WorkshopSocialModule
 
 		var state = WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod);
 
-		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed || state == WorkshopHelper.WorkshopSearchReturnState.SearchSuccessMatchUnusable) {
+		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed || state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
@@ -37,7 +38,7 @@ public partial class WorkshopSocialModule
 		currPublishID = 0;
 		hashes = new List<ModVersionHash>() { new ModVersionHash(modFile) };
 
-		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchSuccessfulNoMatch) {
+		if (state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
 			return false;
 		}
 
@@ -128,7 +129,7 @@ public partial class WorkshopSocialModule
 		}
 
 		// Check for Beta
-		if (BuildInfo.IsDev) {
+		if (BuildInfo.IsDev && modFile.Name != "ToBeDeleted") {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
@@ -411,6 +412,12 @@ public partial class WorkshopSocialModule
 			["sourcesfolder"] = modFolder
 		};
 
+		List<ModVersionHash> hashes = new List<ModVersionHash>() { new ModVersionHash(newMod.modFile) };
+		//hashes.AddRange(modDownloadItem.GetModVersionHashes());
+
+
+
+
 		// Needed for backwards compat from previous version metadata
 		//TODO: why 'trueversion'?????
 		buildData["trueversion"] = buildData["version"];
@@ -461,5 +468,34 @@ public partial class WorkshopSocialModule
 		File.WriteAllLines(vdf, lines);
 
 		Console.WriteLine("CI Files Prepared");
+	}
+
+	private class SteamCmdWebApiHelper
+	{
+		private string publisherkey;
+
+		private string GetMetadataWeb(string webKey, string publishFileId) {
+			// https://steamapi.xpaw.me/#IPublishedFileService/GetDetails
+
+			string webRequest = $"https://api.steampowered.com/IPublishedFileService/GetDetails/v1/?key={webKey}&publishedfileids%5B0%5D={publishFileId}&includetags=false&includeadditionalpreviews=false&includechildren=false&includekvtags=true&includevotes=false&short_description=true&includeforsaledata=false&includemetadata=true&return_playtime_stats=0&appid=1281930&strip_description_bbcode=false&admin_query=true";
+			/// Response Format Will Include these, if it has data for it. If no data in metadata, will not show at all.
+			/// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
+			/// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
+
+			// 
+
+			return null;
+		}
+
+		private void UpdateKvTagVersionSummary(string webkey, string publishFileId, string versionSummary)
+		{
+			//https://partner.steam-api.com/IPublishedFileService/UpdateKeyValueTags/v1/
+		}
+
+		private void SetDeveloperMetadata(string webKey, string publishFileId, string metadata)
+		{
+			// https://partner.steamgames.com/doc/webapi/IPublishedFileService#SetDeveloperMetadata
+			//string postRequest = curl -v -H "Content-Type: application/json" -X POST -d '{"publishedfileid":"2593761992","appid":"1281930","metadata":"helpme","key":"hjkhjkh"}' https://partner.steam-api.com/IPublishedFileService/SetDeveloperMetadata/v1
+		}
 	}
 }

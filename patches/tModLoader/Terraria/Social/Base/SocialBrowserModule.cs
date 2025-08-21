@@ -200,6 +200,7 @@ public struct QueryParameters
 	public ModSideFilter modSideFilter;
 
 	public QueryType queryType;
+	public bool returnDevMetadata;
 }
 
 public enum QueryType

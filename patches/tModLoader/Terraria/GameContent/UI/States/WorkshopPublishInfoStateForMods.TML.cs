@@ -199,7 +199,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 			queryType = QueryType.SearchDirect
 		};
 
-		if (WorkshopHelper.TryGetModDownloadItem(_dataObject.Name, out var mod) != WorkshopHelper.WorkshopSearchReturnState.SearchSuccessMatchUseable) {
+		if (WorkshopHelper.TryGetModDownloadItem(_dataObject.Name, out var mod) != WorkshopHelper.WorkshopSearchReturnState.Success) {
 			return;
 		}
 

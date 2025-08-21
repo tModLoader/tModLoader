@@ -36,10 +36,10 @@ public partial class WorkshopHelper
 
 	internal enum WorkshopSearchReturnState
 	{
-		SearchSuccessfulNoMatch,
+		NotFound,
 		SearchFailed,
-		SearchSuccessMatchUseable,
-		SearchSuccessMatchUnusable
+		Success,
+		RetrievalFailed
 	}
 
 	/// <summary>
@@ -80,9 +80,9 @@ public partial class WorkshopHelper
 	/////// Others ////////////////////
 	internal static WorkshopSearchReturnState TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
 	{
-		var query = new QueryHelper.AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect });
+		var query = new QueryHelper.AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect, returnDevMetadata = true });
 		var state = query.TrySearchByInternalName(modSlug, out item);
-		if (state == WorkshopSearchReturnState.SearchFailed || state == WorkshopSearchReturnState.SearchSuccessMatchUseable)
+		if (state == WorkshopSearchReturnState.SearchFailed || state == WorkshopSearchReturnState.Success)
 			return state;
 
 		// search of all mods that were published by this user - Does not work with co-published/non-owner
@@ -319,7 +319,7 @@ public partial class WorkshopHelper
 						for (int j = 0; j < _queryReturnCount; j++) {
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
 							var match = TryGenerateModDownloadItem((uint)j, out var item);
-							if (match != WorkshopSearchReturnState.SearchSuccessMatchUseable) {
+							if (match != WorkshopSearchReturnState.Success) {
 								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
 								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
 								missingMods.Add(idArray[j]);
@@ -374,7 +374,7 @@ public partial class WorkshopHelper
 				// Appx. 10 ms per page of 50 items
 				for (uint i = 0; i < _queryReturnCount; i++) {
 					var state = TryGenerateModDownloadItem(i, out var mod);
-					if (state != WorkshopSearchReturnState.SearchSuccessMatchUseable)
+					if (state != WorkshopSearchReturnState.Success)
 						continue;
 
 					yield return mod;
@@ -396,7 +396,7 @@ public partial class WorkshopHelper
 					if (state == WorkshopSearchReturnState.SearchFailed)
 						return false;
 
-					if (state == WorkshopSearchReturnState.SearchSuccessMatchUseable)
+					if (state == WorkshopSearchReturnState.Success)
 						items.Add(item);
 					else
 						items.Add(null);
@@ -418,7 +418,7 @@ public partial class WorkshopHelper
 
 					if (_queryReturnCount == 0) {
 						Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
-						return WorkshopSearchReturnState.SearchSuccessfulNoMatch;
+						return WorkshopSearchReturnState.RetrievalFailed;
 					}
 
 					return TryGenerateModDownloadItem(0, out item);
@@ -470,10 +470,10 @@ public partial class WorkshopHelper
 				item = null;
 				try {
 					item = GenerateModDownloadItemFromQuery(index);
-					return WorkshopSearchReturnState.SearchSuccessMatchUseable;
+					return WorkshopSearchReturnState.Success;
 				}
 				catch (Exception) {
-					return WorkshopSearchReturnState.SearchSuccessMatchUnusable;
+					return WorkshopSearchReturnState.RetrievalFailed;
 				}
 			}
 
