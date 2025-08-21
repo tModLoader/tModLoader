@@ -798,7 +798,7 @@ public static class TileLoader
 	public static bool TryGetConversionFallback(int tileType, int conversionType, out int fallbackType)
 	{
 		if (tileConversionFallbacks == null)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.TryGetConversionFallback"));
 
 		fallbackType = tileConversionFallbacks[tileType]?[conversionType] ?? -1;
 		return fallbackType >= 0;
