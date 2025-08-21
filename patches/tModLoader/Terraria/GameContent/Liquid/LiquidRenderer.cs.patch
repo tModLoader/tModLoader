@@ -189,41 +189,35 @@
 +			// TML: Liquid draw caches merged, screen loop redundant
 +			/*
  			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
--				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
+ 				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
 -					if (ptr2->IsVisible) {
-+				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++/ {
 +			*/
 +			{
 +				int cacheLength = _drawCache.Length;
-+				for (int i = 0; i < cacheLength; i++) {
++				for (int k = 0; k < cacheLength; k++) {
 +					// TML: Liquid draw caches merged, add shimmer type check
 +					if (ptr2->IsVisible && ptr2->Type != LiquidID.Shimmer) {
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
-@@ -543,22 +_,24 @@
- 								num2 = 11;
+@@ -544,12 +_,16 @@
  								break;
  						}
--
+ 
 +						// TML: use cached X and Y instead of loop positions
-+						int posX = ptr2->X + drawArea.X - 2;
-+						int posY = ptr2->Y + drawArea.Y - 2;
++						int i = ptr2->X + drawArea.X - 2;
++						int j = ptr2->Y + drawArea.Y - 2;
  						num = Math.Min(1f, num);
--						Lighting.GetCornerColors(i, j, out var vertices);
-+						Lighting.GetCornerColors(posX, posY, out var vertices);
+ 						Lighting.GetCornerColors(i, j, out var vertices);
  						vertices.BottomLeftColor *= num;
  						vertices.BottomRightColor *= num;
  						vertices.TopLeftColor *= num;
  						vertices.TopRightColor *= num;
 +
--						Main.DrawTileInWater(drawOffset, i, j);
-+						Main.DrawTileInWater(drawOffset, posX, posY);
--						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
-+						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(posX << 4, posY << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 						Main.DrawTileInWater(drawOffset, i, j);
+ 						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
  					}
- 
- 					ptr2++;
+@@ -558,7 +_,6 @@
  				}
  			}
  		}
