@@ -721,6 +721,13 @@ public static class TileLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+	/// <summary>
+	/// Registers a tile type as being converted to another by this specific <see cref="BiomeConversionID"/> and adds an appropriate conversion fallback. <br/>
+	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use this conversion.</param>
+	/// <param name="toType">The tile type that this conversion should convert the tile to.</param>
 	public static void RegisterSimpleConversion(int tileType, int conversionType, int toType)
 	{
 		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
@@ -779,7 +786,8 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// TODO: documentation
+	/// Sets conversion fallbacks to be used for all conversion types except those in <paramref name="exceptForConversionTypes"/> <br/>
+	/// If a tile that would be converted by <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> has no conversion for the conversion type used or is otherwise not converted, it will attempt to use the appropriate conversion from its fallback type
 	/// </summary>
 	public static void RegisterConversionFallback(int tileType, int fallbackType, params int[] exceptForConversionTypes)
 	{
@@ -790,11 +798,22 @@ public static class TileLoader
 			fallbacks[i] = backup[i];
 	}
 
+	/// <summary>
+	/// Sets an individual conversion fallback
+	/// If a tile that would be converted by <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> has no conversion for the conversion type used or is otherwise not converted, it will attempt to use the appropriate conversion from its fallback type
+	/// </summary>
 	public static void SetConversionFallback(int tileType, int conversionType, int fallbackType)
 	{
 		GetOrInitConversionFallbacks(tileType)[conversionType] = fallbackType;
 	}
 
+	/// <summary>
+	/// Tries to retrieve the fallback corresponding to the provided <paramref name="tileType"/> and <paramref name="conversionType"/>, and sets it to <paramref name="fallbackType"/>. If found, true is returned by this method, otherwise false is returned.
+	/// </summary>
+	/// <param name="tileType"></param>
+	/// <param name="conversionType"></param>
+	/// <param name="fallbackType"></param>
+	/// <returns></returns>
 	public static bool TryGetConversionFallback(int tileType, int conversionType, out int fallbackType)
 	{
 		if (tileConversionFallbacks == null)

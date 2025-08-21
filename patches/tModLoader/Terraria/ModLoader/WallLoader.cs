@@ -292,13 +292,20 @@ public static class WallLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
-	public static void RegisterSimpleConversion(int tileType, int conversionType, int toType)
+	/// <summary>
+	/// Registers a wall type as being converted to another by this specific <see cref="BiomeConversionID"/> and adds an appropriate conversion fallback.<br/>
+	/// If you need to register conversions that rely on <see cref="WallID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="wallType">The wall type that has is affected by this conversion.</param>
+	/// <param name="conversionType">The conversion type for which the wall should use this conversion.</param>
+	/// <param name="toType">The wall type that this conversion should convert the wall to.</param>
+	public static void RegisterSimpleConversion(int wallType, int conversionType, int toType)
 	{
-		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
+		RegisterConversion(wallType, conversionType, (int i, int j, int type, int conversionType) => {
 			WorldGen.ConvertWall(i, j, toType);
 			return false;
 		});
-		RegisterConversionFallback(toType, tileType, conversionType);
+		RegisterConversionFallback(toType, wallType, conversionType);
 	}
 
 	private static void InitializeConversionFallbacks()
@@ -406,7 +413,8 @@ public static class WallLoader
 	}
 
 	/// <summary>
-	/// TODO: documentation
+	/// Sets conversion fallbacks to be used for all conversion types except those in <paramref name="exceptForConversionTypes"/> <br/>
+	/// If a wall that would be converted by <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> has no conversion for the conversion type used or is otherwise not converted, it will attempt to use the appropriate conversion from its fallback type
 	/// </summary>
 	public static void RegisterConversionFallback(int wallType, int fallbackType, params int[] exceptForConversionTypes)
 	{
@@ -417,17 +425,28 @@ public static class WallLoader
 			fallbacks[i] = backup[i];
 	}
 
+	/// <summary>
+	/// Sets an individual conversion fallback
+	/// If a wall that would be converted by <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> has no conversion for the conversion type used or is otherwise not converted, it will attempt to use the appropriate conversion from its fallback type
+	/// </summary>
 	public static void SetConversionFallback(int wallType, int conversionType, int fallbackType)
 	{
 		GetOrInitConversionFallbacks(wallType)[conversionType] = fallbackType;
 	}
 
-	public static bool TryGetConversionFallback(int tileType, int conversionType, out int fallbackType)
+	/// <summary>
+	/// Tries to retrieve the fallback corresponding to the provided <paramref name="wallType"/> and <paramref name="conversionType"/>, and sets it to <paramref name="fallbackType"/>. If found, true is returned by this method, otherwise false is returned.
+	/// </summary>
+	/// <param name="wallType"></param>
+	/// <param name="conversionType"></param>
+	/// <param name="fallbackType"></param>
+	/// <returns></returns>
+	public static bool TryGetConversionFallback(int wallType, int conversionType, out int fallbackType)
 	{
 		if (wallConversionFallbacks == null)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "WallLoader.TryGetConversionFallback"));
 
-		fallbackType = wallConversionFallbacks[tileType]?[conversionType] ?? -1;
+		fallbackType = wallConversionFallbacks[wallType]?[conversionType] ?? -1;
 		return fallbackType >= 0;
 	}
 
