@@ -790,7 +790,7 @@ public static class TileLoader
 			fallbacks[i] = backup[i];
 	}
 
-	public static void SetConversionFallback(int tileType, int fallbackType, int conversionType)
+	public static void SetConversionFallback(int tileType, int conversionType, int fallbackType)
 	{
 		GetOrInitConversionFallbacks(tileType)[conversionType] = fallbackType;
 	}
