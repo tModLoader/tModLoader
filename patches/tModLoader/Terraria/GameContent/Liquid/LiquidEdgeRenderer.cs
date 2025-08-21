@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -189,12 +190,17 @@ public static class LiquidEdgeRenderer
 			if (tileUpCache.LiquidAmount > 0 && slope != SlopeType.SlopeUpLeft && slope != SlopeType.SlopeUpRight) {
 				up = true;
 				liquidType = tileUpCache.LiquidType;
+
+				// Always treat directly above as most important.
+				highLiquid = 255;
+				liquidType = tileUpCache.LiquidType;
 			}
 
 			if (tileDownCache.LiquidAmount > 0 && slope != SlopeType.SlopeDownLeft && slope != SlopeType.SlopeDownRight) {
 				if (tileDownCache.LiquidAmount > 240)
 					down = true;
 
+				// TODO: Probably don't need highLiquid but come back later.
 				liquidType = tileDownCache.LiquidType;
 			}
 		}
@@ -224,7 +230,7 @@ public static class LiquidEdgeRenderer
 			size = new Rectangle(0, 4, 16, 10);
 			if (tileCache.IsHalfBlock || tileCache.Slope != SlopeType.Solid) {
 				size = new Rectangle(0, 4, 16, 12);
-				offset = new Vector2(0, 4);
+				offset = new Vector2(0, 0);
 			}
 		}
 		else if (down && !left && !right) {
@@ -268,7 +274,55 @@ public static class LiquidEdgeRenderer
 
 		Edges.Add(new Point(tileX, tileY));
 
-		if (blockType is not BlockType.Solid && highLiquid > 160) {
+		if (blockType is BlockType.HalfBlock) {
+			// TODO: Need to draw solid part conditionally too!
+			// Dust.QuickDust(tileX, tileY, Color.Yellow);
+
+			if (!pCache->IsHalfBrick) {
+				pCache->LiquidLevel = highLiquid / 255f;
+				// pCache->IsHalfBrick = false;
+				// pCache->IsSolid = true;
+				// pCache->HasLiquid = false;
+				// pCache->VisibleLiquidLevel = 0f;
+				// pCache->HasWall = tileCache.WallType != 0;
+				pCache->Type = (byte)liquidType;
+			}
+
+			pCache->EdgeData = newEdgeData;
+			return;
+		}
+		else if (blockType is not BlockType.Solid) {
+			Debug.Assert(pCache->IsSolid);
+
+			// Slopes
+			// Dust.QuickDust(tileX, tileY, Color.Green);
+
+			pCache->LiquidLevel = highLiquid / 255f;
+			// pCache->IsHalfBrick = false;
+			// pCache->IsSolid = true;
+			// pCache->HasLiquid = false;
+			// pCache->VisibleLiquidLevel = 0f;
+			// pCache->HasWall = tileCache.WallType != 0;
+			pCache->Type = (byte)liquidType;
+			pCache->EdgeData = newEdgeData;
+		}
+		else {
+			Debug.Assert(pCache->IsSolid);
+
+			// Solid tiles
+			// Dust.QuickDust(tileX, tileY, Color.Red);
+
+			pCache->LiquidLevel = highLiquid / 255f;
+			// pCache->IsHalfBrick = false;
+			// pCache->IsSolid = true;
+			// pCache->HasLiquid = false;
+			// pCache->VisibleLiquidLevel = 0f;
+			// pCache->HasWall = tileCache.WallType != 0;
+			pCache->Type = (byte)liquidType;
+			pCache->EdgeData = newEdgeData;
+		}
+
+		/*if (blockType is not BlockType.Solid && highLiquid > 160) {
 			pCache->HasLiquid = true;
 			pCache->HasVisibleLiquid = false;
 			pCache->VisibleLiquidLevel = 0; // highLiquid / 255f;
@@ -281,6 +335,6 @@ public static class LiquidEdgeRenderer
 			pCache->VisibleLiquidLevel = highLiquid / 255f;
 			pCache->IsSolid = true;
 			pCache->EdgeData = newEdgeData;
-		}
+		}*/
 	}
 }

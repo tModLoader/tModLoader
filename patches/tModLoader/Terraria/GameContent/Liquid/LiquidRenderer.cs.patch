@@ -132,12 +132,29 @@
  
  					ptr2++;
  				}
-@@ -416,7 +_,7 @@
- 					Color* ptr6 = ptr5;
+@@ -165,7 +_,7 @@
+ 					if (ptr2->IsHalfBrick && ptr2[-1].HasLiquid) {
+ 						num2 = 1f;
+ 					}
+-					else if (!ptr2->HasLiquid) {
++					else if (!ptr2->HasLiquid && !ptr2->EdgeData.HasValue) {
+ 						LiquidCache liquidCache = ptr2[-1];
+ 						LiquidCache liquidCache2 = ptr2[1];
+ 						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
+@@ -213,7 +_,7 @@
+ 						}
+ 					}
+ 
+-					if (ptr2->IsSolid && !ptr2->IsHalfBrick) {
++					if (ptr2->IsSolid && !ptr2->IsHalfBrick && !ptr2->EdgeData.HasValue) {
+ 						ptr2->VisibleLiquidLevel = 1f;
+ 						ptr2->HasVisibleLiquid = false;
+ 					}
+@@ -417,6 +_,7 @@
  					for (int num18 = 2; num18 < rectangle.Width - 2; num18++) {
  						for (int num19 = 2; num19 < rectangle.Height - 2; num19++) {
--							if (ptr2->HasVisibleLiquid) {
-+							if (ptr2->HasVisibleLiquid || ptr2->EdgeData.HasValue) {
+ 							if (ptr2->HasVisibleLiquid) {
++								// Dust.QuickDust(num18 + drawArea.X - 2, num19 + drawArea.Y - 2, Color.Green);
  								float num20 = Math.Min(0.75f, ptr2->VisibleLeftWall);
  								float num21 = Math.Max(0.25f, ptr2->VisibleRightWall);
  								float num22 = Math.Min(0.75f, ptr2->VisibleTopWall);
@@ -152,12 +169,13 @@
  								ptr4->SourceRectangle = new Rectangle((int)(16f - num21 * 16f) + ptr2->FrameOffset.X, (int)(16f - num23 * 16f) + ptr2->FrameOffset.Y, (int)Math.Ceiling((num21 - num20) * 16f), (int)Math.Ceiling((num23 - num22) * 16f));
  								ptr4->IsSurfaceLiquid = ptr2->FrameOffset.X == 16 && ptr2->FrameOffset.Y == 0 && (double)(num19 + rectangle.Y) > Main.worldSurface - 40.0;
  								ptr4->Opacity = ptr2->Opacity;
-@@ -439,6 +_,11 @@
+@@ -439,6 +_,12 @@
  								LiquidCache* ptr7 = ptr2 - 1;
  								if (num19 != 2 && !ptr7->HasVisibleLiquid && !ptr7->IsSolid && !ptr7->IsHalfBrick)
  									*(ptr6 - 1) = *ptr6;
 +
-+								if (!ptr2->HasVisibleLiquid && ptr2->EdgeData.HasValue) {
++								if (ptr2->EdgeData.HasValue) {
++									// Dust.QuickDust(num18 + drawArea.X - 2, num19 + drawArea.Y - 2, Color.Red);
 +									ptr4->LiquidOffset = ptr2->EdgeData.Value.LiquidOffset;
 +									ptr4->SourceRectangle = ptr2->EdgeData.Value.SourceRectangle;
 +								}
