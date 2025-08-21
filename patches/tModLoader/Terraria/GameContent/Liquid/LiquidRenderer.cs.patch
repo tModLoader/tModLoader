@@ -217,7 +217,7 @@
  		fixed (SpecialLiquidDrawCache* ptr = &_drawCacheForShimmer[0]) {
  			SpecialLiquidDrawCache* ptr2 = ptr;
  			int num = _drawCacheForShimmer.Length;
-+		 */
++		*/
 +		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
 +			LiquidDrawCache* ptr2 = ptr;
 +			int num = _drawCache.Length;

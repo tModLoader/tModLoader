@@ -215,18 +215,21 @@ public static class LiquidEdgeRenderer
 		}
 
 		if (up && (left || right)) {
+			size = new Rectangle(0, 4, 16, 16);
 		}
 		else if (down && up) {
+			size = new Rectangle(0, 4, 16, 10);
 		}
 		else if (up) {
 			size = new Rectangle(0, 4, 16, 10);
-
-			if (tileCache.IsHalfBlock || tileCache.Slope != SlopeType.Solid)
+			if (tileCache.IsHalfBlock || tileCache.Slope != SlopeType.Solid) {
 				size = new Rectangle(0, 4, 16, 12);
+				offset = new Vector2(0, 4);
+			}
 		}
 		else if (down && !left && !right) {
 			offset = new Vector2(0, 12);
-			size = new Rectangle(0, 4, 16, 8);
+			size = new Rectangle(0, 4, 16, 4);
 		}
 		else {
 			float depth = 256 - highLiquid;
@@ -248,11 +251,11 @@ public static class LiquidEdgeRenderer
 			}
 			else if (left) {
 				offset = new Vector2(0, depthPush);
-				size = new Rectangle(0, d, 4, 16 - depthPush);
+				size = new Rectangle(0, d, 6, 16 - depthPush);
 			}
 			else {
-				offset = new Vector2(12, depthPush);
-				size = new Rectangle(0, d, 4, 16 - depthPush);
+				offset = new Vector2(10, depthPush);
+				size = new Rectangle(10, d, 6, 16 - depthPush);
 			}
 		}
 
@@ -266,20 +269,15 @@ public static class LiquidEdgeRenderer
 		Edges.Add(new Point(tileX, tileY));
 
 		if (blockType is not BlockType.Solid && highLiquid > 160) {
-			pCache->Type = (byte)liquidType;
-			pCache->LiquidLevel = highLiquid / 255f;
 			pCache->HasLiquid = true;
 			pCache->HasVisibleLiquid = false;
 			pCache->VisibleLiquidLevel = 0; // highLiquid / 255f;
 			pCache->IsHalfBrick = blockType is BlockType.HalfBlock;
 			pCache->IsSolid = false;
-			return;
 		}
-		else if (highLiquid > 0) {
-			pCache->Type = (byte)liquidType;
-			pCache->LiquidLevel = highLiquid / 255f;
-			pCache->HasLiquid = true;
-			pCache->HasVisibleLiquid = true;
+		else if (blockType is BlockType.Solid) {
+			pCache->HasLiquid = false;
+			pCache->HasVisibleLiquid = false;
 			pCache->VisibleLiquidLevel = highLiquid / 255f;
 			pCache->IsSolid = true;
 			pCache->EdgeData = newEdgeData;
