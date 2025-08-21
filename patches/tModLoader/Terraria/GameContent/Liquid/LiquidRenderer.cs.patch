@@ -181,15 +181,8 @@
  		}
  
  		if (this.WaveFilters != null)
-@@ -520,11 +_,24 @@
- 	{
- 		Rectangle drawArea = _drawArea;
+@@ -522,9 +_,17 @@
  		Main.tileBatch.Begin();
-+		/*
-+		fixed (SpecialLiquidDrawCache* ptr = &_drawCacheForShimmer[0]) {
-+			SpecialLiquidDrawCache* ptr2 = ptr;
-+			int num = _drawCacheForShimmer.Length;
-+		 */
  		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
  			LiquidDrawCache* ptr2 = ptr;
 +			// TML: Liquid draw caches merged, screen loop redundant
@@ -216,23 +209,23 @@
  						num = Math.Min(1f, num);
  						Lighting.GetCornerColors(i, j, out var vertices);
  						vertices.BottomLeftColor *= num;
-@@ -566,12 +_,19 @@
+@@ -566,12 +_,24 @@
  	{
  		Rectangle drawArea = _drawArea;
  		Main.tileBatch.Begin();
--		fixed (SpecialLiquidDrawCache* ptr = &_drawCacheForShimmer[0]) {
++		/*
+ 		fixed (SpecialLiquidDrawCache* ptr = &_drawCacheForShimmer[0]) {
+ 			SpecialLiquidDrawCache* ptr2 = ptr;
+ 			int num = _drawCacheForShimmer.Length;
++		 */
 +		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
--			SpecialLiquidDrawCache* ptr2 = ptr;
 +			LiquidDrawCache* ptr2 = ptr;
--			int num = _drawCacheForShimmer.Length;
 +			int num = _drawCache.Length;
  			for (int i = 0; i < num; i++) {
 +				// TML: Liquid draw caches merged, add shimmer type check
 +				/*
--				if (!ptr2->IsVisible)
-+-				if (!ptr2->IsVisible)
--					break;
-+-					break;
+ 				if (!ptr2->IsVisible)
+ 					break;
 +				*/
 +				if (!ptr2->IsVisible || ptr2->Type != LiquidID.Shimmer) {
 +					ptr2++;
