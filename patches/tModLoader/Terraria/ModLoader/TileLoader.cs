@@ -763,68 +763,69 @@ public static class TileLoader
 		RegisterConversionFallback(TileID.CrimsonSandstone, TileID.Sandstone, BiomeConversionID.Crimson);
 		RegisterConversionFallback(TileID.HallowSandstone, TileID.Sandstone, BiomeConversionID.Hallow);
 	}
+
+	private static int[] GetOrInitConversionFallbacks(int tileType)
+	{
+		if (tileConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
+
+		ref var fallbacks = ref tileConversionFallbacks[tileType];
+		if (fallbacks is null) {
+			fallbacks = new int[BiomeConversionLoader.BiomeConversionCount];
+			Array.Fill(fallbacks, -1);
+		}
+
+		return fallbacks;
+	}
+
 	/// <summary>
 	/// TODO: documentation
 	/// </summary>
 	public static void RegisterConversionFallback(int tileType, int fallbackType, params int[] exceptForConversionTypes)
 	{
-		if (tileConversionFallbacks == null)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
-
-		int[] fallbacksByConversionType = tileConversionFallbacks[tileType] ??= new int[BiomeConversionLoader.BiomeConversionCount];
-		for (int i = 0; i < fallbacksByConversionType.Length; i++) {
-			fallbacksByConversionType[i] = fallbackType;
-		}
-		for (int i = 0; i < exceptForConversionTypes.Length; i++) {
-			fallbacksByConversionType[exceptForConversionTypes[i]] = -1;
-		}
+		var fallbacks = GetOrInitConversionFallbacks(tileType);
+		var backup = (int[])fallbacks.Clone();
+		Array.Fill(fallbacks, fallbackType);
+		foreach (var i in exceptForConversionTypes)
+			fallbacks[i] = backup[i];
 	}
+
 	public static void SetConversionFallback(int tileType, int fallbackType, int conversionType)
 	{
-		if (tileConversionFallbacks == null)
-			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
-		if (tileConversionFallbacks[tileType] is null) {
-			tileConversionFallbacks[tileType] = new int[BiomeConversionLoader.BiomeConversionCount];
-			Array.Fill(tileConversionFallbacks[tileType], -1);
-		}
-		tileConversionFallbacks[tileType][conversionType] = fallbackType;
+		GetOrInitConversionFallbacks(tileType)[conversionType] = fallbackType;
 	}
-	public static int GetConversionFallback(int tileType, int conversionType)
+
+	public static bool TryGetConversionFallback(int tileType, int conversionType, out int fallbackType)
 	{
 		if (tileConversionFallbacks == null)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
-		if (tileConversionFallbacks[tileType] is null)
-			return -1;
-		return tileConversionFallbacks[tileType][conversionType];
-	}
 
+		fallbackType = tileConversionFallbacks[tileType]?[conversionType] ?? -1;
+		return fallbackType >= 0;
+	}
 
 	public static bool Convert(int i, int j, int conversionType)
 	{
-		int type = Main.tile[i, j].type;
+		var tile = Main.tile[i, j];
+		int type = tile.TileType;
 		var list = tileConversionDelegates[type]?[conversionType];
 		if (list != null) {
 			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-				if (!hook(i, j, type, conversionType)) {
+				if (!hook(i, j, type, conversionType))
 					return false;
-				}
 			}
 		}
 
-		ModTile modTile = GetTile(type);
-		modTile?.Convert(i, j, conversionType);
-		if (Main.tile[i, j].type == type) {
-			int[] fallbacks = tileConversionFallbacks[type];
-			if (fallbacks is not null && fallbacks[conversionType] != -1) {
-				ushort fallback = (ushort)fallbacks[conversionType];
-				Main.tile[i, j].type = fallback;
-				WorldGen.Convert(i, j, conversionType, 0, walls: false);
+		GetTile(type)?.Convert(i, j, conversionType);
 
-				if (Main.tile[i, j].type == fallback) {
-					Main.tile[i, j].type = (ushort)type;
-				}
-			}
+		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
+			tile.TileType = (ushort)fallback;
+			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
+
+			if (tile.TileType == fallback)
+				tile.TileType = (ushort)type;
 		}
+
 		return true;
 	}
 
