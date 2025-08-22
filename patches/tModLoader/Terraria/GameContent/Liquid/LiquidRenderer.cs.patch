@@ -141,6 +141,15 @@
  						LiquidCache liquidCache = ptr2[-1];
  						LiquidCache liquidCache2 = ptr2[1];
  						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
+@@ -197,7 +_,7 @@
+ 			ptr2 = ptr;
+ 			for (int m = 0; m < rectangle.Width; m++) {
+ 				for (int n = 0; n < rectangle.Height - 10; n++) {
+-					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick)) {
++					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick || ptr2->EdgeData.HasValue)) {
+ 						ptr2->Opacity = 1f;
+ 						ptr2->VisibleType = ptr2->Type;
+ 						float num3 = 1f / (float)(WATERFALL_LENGTH[ptr2->Type] + 1);
 @@ -213,7 +_,7 @@
  						}
  					}
