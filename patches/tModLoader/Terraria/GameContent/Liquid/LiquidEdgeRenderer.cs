@@ -265,8 +265,8 @@ public static class LiquidEdgeRenderer
 			}
 		}
 
-		size.X += pCache->FrameOffset.X;
-		size.Y += pCache->FrameOffset.Y;
+		// size.X += pCache->FrameOffset.X;
+		// size.Y += pCache->FrameOffset.Y;
 		var newEdgeData = new LiquidRenderer.LiquidEdgeData() {
 			LiquidOffset = offset,
 			SourceRectangle = size
