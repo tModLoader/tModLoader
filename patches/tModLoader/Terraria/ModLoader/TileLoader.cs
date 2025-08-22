@@ -722,7 +722,8 @@ public static class TileLoader
 		list.Add(conversionDelegate);
 	}
 	/// <summary>
-	/// Registers a tile type as being converted to another by this specific <see cref="BiomeConversionID"/> and adds an appropriate conversion fallback. <br/>
+	/// Registers a conversion that replaces <paramref name="tileType"/> with <paramref name="toType"/> when touched by <paramref name="conversionType"/> <br/>
+	/// Also registers <paramref name="tileType"/> as a fallback for <paramref name="toType"/> so that other conversions can convert <paramref name="toType"/> as if it was <paramref name="tileType"/>. <br/>
 	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
 	/// </summary>
 	/// <param name="tileType">The tile type that has is affected by this conversion.</param>
@@ -786,8 +787,11 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Sets conversion fallbacks to be used for all conversion types except those in <paramref name="exceptForConversionTypes"/> <br/>
-	/// If a tile that would be converted by <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> has no conversion for the conversion type used or is otherwise not converted, it will attempt to use the appropriate conversion from its fallback type
+	/// Sets a fallback tile type for all conversion types except those in <paramref name="exceptForConversionTypes"/> <br/>
+	/// When <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> is called on the <paramref name="tileType"/> but there is no registsred conversion, the tile will be temporarily replaced with <paramref name="fallbackType"/> and conversion will be reattempted.<br/>
+	/// If the <paramref name="fallbackType"/> also has no conversion, the tile remains unchanged. <br/>
+	/// <br/>
+	/// For example <see cref="TileID.Ebonstone"/> falls back to <see cref="TileID.Stone"/> so a modded conversion that affects Stone can convert Ebonstone without needing to register a conversion for Ebonstone directly.
 	/// </summary>
 	public static void RegisterConversionFallback(int tileType, int fallbackType, params int[] exceptForConversionTypes)
 	{
@@ -799,8 +803,7 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Sets an individual conversion fallback
-	/// If a tile that would be converted by <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> has no conversion for the conversion type used or is otherwise not converted, it will attempt to use the appropriate conversion from its fallback type
+	/// Sets an individual conversion fallback. For advanced uses only.
 	/// </summary>
 	public static void SetConversionFallback(int tileType, int conversionType, int fallbackType)
 	{
@@ -808,12 +811,10 @@ public static class TileLoader
 	}
 
 	/// <summary>
-	/// Tries to retrieve the fallback corresponding to the provided <paramref name="tileType"/> and <paramref name="conversionType"/>, and sets it to <paramref name="fallbackType"/>. If found, true is returned by this method, otherwise false is returned.
+	/// Tries to retrieve the <paramref name="fallbackType"/> corresponding to the provided <paramref name="tileType"/> and <paramref name="conversionType"/> <br/>
+	/// See also: <seealso cref="RegisterConversionFallback"/>
 	/// </summary>
-	/// <param name="tileType"></param>
-	/// <param name="conversionType"></param>
-	/// <param name="fallbackType"></param>
-	/// <returns></returns>
+	/// <returns>True if the tile has a registered fallback for the given conversion type</returns>
 	public static bool TryGetConversionFallback(int tileType, int conversionType, out int fallbackType)
 	{
 		if (tileConversionFallbacks == null)
