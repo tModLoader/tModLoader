@@ -268,7 +268,7 @@ public static class LiquidEdgeRenderer
 		// size.X += pCache->FrameOffset.X;
 		// size.Y += pCache->FrameOffset.Y;
 		bool isSolidFaceAbove = tileUpCache.HasTile && tileUpCache.BlockType is BlockType.Solid or BlockType.HalfBlock or BlockType.SlopeDownLeft or BlockType.SlopeDownRight;
-		bool isSurfaceLiquid = tileUpCache.LiquidAmount <= 0 && (highLiquid != 255 || !isSolidFaceAbove);
+		bool isSurfaceLiquid = pCache[-1].LiquidLevel <= 0f && (highLiquid != 255 || !isSolidFaceAbove);
 		size.X = 16;
 		size.Y = isSurfaceLiquid ? 0 : 64;
 		var newEdgeData = new LiquidRenderer.LiquidEdgeData() {
