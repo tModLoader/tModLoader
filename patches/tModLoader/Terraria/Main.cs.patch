@@ -6502,7 +6502,7 @@
 +
 +
 +					// TML(liquid-slopes): Avoid drawing over liquid edges.
-+					if (liquidSlopeFix && LiquidEdgeRenderer.Edges.Contains(new Point(j, i)) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
++					if (liquidSlopeFix && LiquidRenderer.Instance.HasFullWater(j, i) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
 +						break;
 +
  					byte b = tile.liquid;
