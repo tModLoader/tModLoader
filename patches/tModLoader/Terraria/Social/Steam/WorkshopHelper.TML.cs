@@ -220,43 +220,35 @@ public partial class WorkshopHelper
 					return;
 
 				Thread.Sleep(1500); // Solxan: SteamAPI requires 1 or so seconds to initialize
-
-				WorkshopTagOption[] usedTags = [];
-				var tagsToAdd = SteamedWraps.ModTags
-					.Where(x => publishTags.Contains(x.NameKey))
-					.Select(x => x.InternalNameForAPIs)
-					.Union(["Server"]);
-
+								
 				using (modFile.Open()) {
+					List<WorkshopTagOption> existingTags = new List<WorkshopTagOption>();
 					if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
-						var usedTagsList = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToList();
-
-						var tagsToRemove = SteamedWraps.ModTags
-							.Select(x => x.InternalNameForAPIs)
-							.Union(["Client", "Both", "NoSync"]);
-						usedTagsList.RemoveAll(x => tagsToRemove.Contains(x.InternalNameForAPIs));
-
-						usedTags = usedTagsList
-							.Union(tagsToAdd.Select(x => new WorkshopTagOption(x, x)))
-							.DistinctBy(x => x.InternalNameForAPIs)
-							.ToArray();
-
 						publicity = publicity ?? info.publicity;
-					}
-					else {
-						usedTags = tagsToAdd
-							.Select(x => new WorkshopTagOption(x, x))
-							.DistinctBy(x => x.InternalNameForAPIs)
-							.ToArray();
+						existingTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToList();
 					}
 
-					var publishSetttings = new WorkshopItemPublishSettings {
+					// Use existing Tags if none supplied
+					List<WorkshopTagOption> setTags;
+					if (publishTags != null)
+						setTags = SteamedWraps.ModTags
+							.Where(x => publishTags.Contains(x.NameKey))
+							.Select(x => new WorkshopTagOption(x.InternalNameForAPIs, x.InternalNameForAPIs)).ToList();
+					else
+						setTags = existingTags;
+
+					// Localization Tags
+					//var autoLang = SocialBrowserModule.GetModLocalizationProgress(mod, existingTags);
+					//setTags.Except(autoLang.Where(a => !a.setState).Select(b => b.tag));
+					//setTags.Union(autoLang.Where(a => a.setState).Select(b => b.tag));
+
+					var publishSettings = new WorkshopItemPublishSettings {
 						Publicity = publicity ?? WorkshopItemPublicSettingId.Public,
-						UsedTags = usedTags,
+						UsedTags = setTags.ToArray(),
 						PreviewImagePath = iconPath
 					};
 
-					SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
+					SocialAPI.Workshop.PublishMod(modFile, values, publishSettings);
 				}
 			}
 			finally {
