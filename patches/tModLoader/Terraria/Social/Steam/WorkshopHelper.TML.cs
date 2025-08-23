@@ -25,7 +25,8 @@ namespace Terraria.Social.Steam;
 public partial class WorkshopHelper
 {
 	internal static string[] MetadataKeys = new string[8] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences", "versionsummary" };
-	private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
+	//private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
+	private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"Version Summary: ", RegexOptions.Compiled);
 
 	public class ModPublisherInstance : UGCBased.APublisherInstance
 	{
@@ -495,7 +496,7 @@ public partial class WorkshopHelper
 				bool banned = pDetails.m_bBanned;
 
 				if (banned) {
-					throw new SocialBrowserException($"Item {id}: {displayname} is banned. Skipping...");
+					throw new SocialBrowserException($"Item {id}: '{displayname}' is banned. Skipping...");
 				}
 
 				// Item Tagged data / Player metadata
@@ -511,11 +512,11 @@ public partial class WorkshopHelper
 				string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
 
 				if (missingKeys.Length != 0) {
-					throw new SocialBrowserException($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
+					throw new SocialBrowserException($"Mod {id}: '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
 				}
 
 				if (string.IsNullOrWhiteSpace(metadata["name"])) {
-					throw new SocialBrowserException($"Mod has no internal name / slug: {id}"); // Somehow this happened before and broke mod downloads
+					throw new SocialBrowserException($"Mod has no internal name / slug: {id}: {displayname}"); // Somehow this happened before and broke mod downloads
 				}
 
 				string[] refsById = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, i, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId.ToString()).ToArray();

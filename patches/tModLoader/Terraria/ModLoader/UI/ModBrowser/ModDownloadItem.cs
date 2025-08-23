@@ -106,7 +106,7 @@ public class ModDownloadItem
 		if (devMetadata == null)
 			return new List<ModVersionHash>();
 
-		return devMetadata.hashes.Select(h => new ModVersionHash(h));
+		return devMetadata.modVersionHashes.Select(h => new ModVersionHash(h));
 	}
 
 	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)

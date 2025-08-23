@@ -58,7 +58,7 @@ public struct ModVersionHash
 
 public class DeveloperMetadata
 {
-	public List<string> hashes;
+	public List<string> modVersionHashes;
 }
 
 public class SocialBrowserException : Exception
@@ -184,6 +184,9 @@ public interface SocialBrowserModule
 
 		return "1.4.4"; // Long Term Service Version 1.4.4 (Current)
 	}
+
+	public static (string browserVersion, int keepCount)[] keepRequirements =
+			{ ("1.4.3", 1), ("1.4.4", 3), ("1.3", 1), ("1.4.4-Transitive", 0) };
 }
 
 public struct QueryParameters

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 
@@ -19,7 +20,7 @@ public partial class WorkshopSocialModule
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
 
-	private List<ModVersionHash> hashes;
+	private ModDownloadItem modDownloadItemAsFound;
 
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
@@ -28,7 +29,7 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		var state = WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod);
+		var state = WorkshopHelper.TryGetModDownloadItem(modFile.Name, out modDownloadItemAsFound);
 
 		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed || state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
@@ -36,17 +37,16 @@ public partial class WorkshopSocialModule
 		}
 
 		currPublishID = 0;
-		hashes = new List<ModVersionHash>() { new ModVersionHash(modFile) };
+		
 
 		if (state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
 			return false;
 		}
 
-		currPublishID = ulong.Parse(mod.PublishId.m_ModPubId);
-		hashes.AddRange(mod.GetModVersionHashes());
+		currPublishID = ulong.Parse(modDownloadItemAsFound.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
-		WorkshopBrowserModule.Instance.DownloadItem(mod, uiProgress: null);
+		WorkshopBrowserModule.Instance.DownloadItem(modDownloadItemAsFound, uiProgress: null);
 
 		// Grab the tags from workshop.json
 		ModOrganizer.WorkshopFileFinder.Refresh(new WorkshopIssueReporter()); // Force detection in case mod wasn't installed
@@ -145,6 +145,7 @@ public partial class WorkshopSocialModule
 
 			FixErrorsInWorkshopFolder(workshopFolderPath);
 
+			// NOTE: The check for version being increased occurs within here
 			if (!CalculateVersionsData(workshopFolderPath, ref buildData, out string failureMessage)) {
 				IssueReporter.ReportInstantUploadProblem(failureMessage);
 				return false;
@@ -158,8 +159,6 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
-
-		buildData["developermetadata"] = CalculateDeveloperMetadata(hashes);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -185,6 +184,12 @@ public partial class WorkshopSocialModule
 			// Should be called after folder created & cleaned up
 			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
+			// Developer Metadata Calculations must occur after cleanup old publish
+			var devMetadata = new DeveloperMetadata();
+			CalculateModHashes(workshopFolderPath, modDownloadItemAsFound, ref devMetadata);
+			TrimDevMetadata(ref devMetadata);
+			buildData["developermetadata"] = JsonConvert.SerializeObject(devMetadata);
+
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
 			_publisherInstances.Add(modPublisherInstance);
@@ -197,6 +202,52 @@ public partial class WorkshopSocialModule
 		return false;
 	}
 
+	// PR 4345 - We combine the hash data that is currently on workshop with the hash data from the updated publishing folder to ensure that when mods are updated it is backwards compatible
+	// It is backwards compatible while Steam spends up to an hour rolling out workshop item updates
+	private static void CalculateModHashes(string workshopPath, ModDownloadItem modDownloadItemAsFound, ref DeveloperMetadata devMetadata)
+	{
+		// Get the hashes from the existing modDownloadItem as found on the workshop
+		var prevHashes = modDownloadItemAsFound.GetModVersionHashes();
+
+		// Get the new hashes
+		var currentHashes = new List<ModVersionHash>();
+		foreach (var tModPath in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
+			currentHashes.Add(new ModVersionHash(new TmodFile(tModPath)));
+		}
+
+		List<ModVersionHash> totalHash = currentHashes.Concat(prevHashes.Except(currentHashes).ToList()).ToList();
+
+		devMetadata.modVersionHashes = totalHash.Select(h => h.ToString()).ToList();
+	}
+
+	// This methods trims contents of developer metadata based on the preferred order of discarding information.
+	// It is primarily written with the intent of 'in case' we need to store other information in this Workshop text field
+	private static void TrimDevMetadata(ref DeveloperMetadata devMetadata)
+	{
+		const int MaxMetadataLength = Steamworks.Constants.k_cchDeveloperMetadataMax;
+
+		var overflowLength = JsonConvert.SerializeObject(devMetadata).Length - MaxMetadataLength;
+		if (overflowLength <= 0)
+			return;
+
+		int charsSaved = 0;
+
+		// Check if we can reduce the number of ModHashes
+		var minNumberOfHashes = 2 * SocialBrowserModule.keepRequirements.Select(a => a.keepCount).Sum();
+		int hashesToKeep = devMetadata.modVersionHashes.Count;
+		while (hashesToKeep > minNumberOfHashes) {
+			charsSaved += devMetadata.modVersionHashes[hashesToKeep-- - 1].Length;
+
+			if (overflowLength <= charsSaved)
+				break;
+		}
+		devMetadata.modVersionHashes = devMetadata.modVersionHashes.Take(hashesToKeep).ToList();
+
+		// Throw if we can't reduce the total character count to within limits
+		if (overflowLength > charsSaved)
+			throw new Exception("Developer Metadata Exceeds maximum allowed space while meeting minimum requirements. Mod could not be uploaded");
+	}
+
 	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20:0.2.1;2022.07.10.20:0.2.2"
 	// Return False if the mod version did not increase for the particular tml version
 	// Return False if the mod version isn't less than releases on future tml version
@@ -207,7 +258,8 @@ public partial class WorkshopSocialModule
 
 		foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
 			var mod = OpenModFile(tmod);
-			// Mod must have a larger version than all releases on older (or this) tModLoader versions
+
+			// New Mod Version being published must have a larger version than all releases on older (or this) tModLoader versions
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor()) {
 				if (mod.Version >= buildVersion) {
 					failureMessage = Language.GetTextValue("tModLoader.ModVersionTooSmall", buildVersion, mod.Version);
@@ -324,63 +376,6 @@ public partial class WorkshopSocialModule
 		return descriptionFinal;
 	}
 
-	//TODO: Add a Spec for what this is supposed to be doing
-	private static string CalculateDeveloperMetadata(List<ModVersionHash> versionHashes)
-	{
-		string devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
-		while (devMetadata.Length > Steamworks.Constants.k_cchDeveloperMetadataMax) {
-			// If we had any reserved metadata space, we would process that first.
-
-			// We don't have any reserved metadata space, so we can set availableChars to DeveloperMetadataMax
-			StripOldHashes(versionHashes, Steamworks.Constants.k_cchDeveloperMetadataMax);
-		}
-
-		return devMetadata;
-	}
-
-	private static void StripOldHashes(List<ModVersionHash> versionHashes, int availableCharacters)
-	{
-		// Calculate the reserved portion of hashes for old browser versions, keeping only mature copies
-		List<ModVersionHash> reserved = new List<ModVersionHash>();
-
-		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.3", amountToKeep: 1));
-		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.4.3", amountToKeep: 1));
-		reserved.AddRange(OptimizeHashesForOldBrowserVersion(versionHashes, "1.4.4-transitive", amountToKeep: 1));
-
-		string reservedJson = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = reserved.Select(h => h.ToString()).ToList() });
-
-		// Calculate the 'right' amount of hashes to store of the remaining space
-		string devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = versionHashes.Select(h => h.ToString()).ToList() });
-		List<ModVersionHash> current = versionHashes;
-
-		int index = 100;
-		while (devMetadata.Length > availableCharacters) {
-			current = OptimizeHashesForCurrentBrowserVersion(versionHashes, index-- - reserved.Count());
-			current.AddRange(reserved);
-
-			devMetadata = JsonConvert.SerializeObject(new DeveloperMetadata() { hashes = current.Select(h => h.ToString()).ToList() });
-		}
-
-		// Assign the new version of versionHashes before exiting
-		versionHashes = current;
-	}
-
-	private static List<ModVersionHash> OptimizeHashesForOldBrowserVersion(List<ModVersionHash> versionHashes, string appliesToModBrowserVersion, int amountToKeep)
-	{
-		return versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == appliesToModBrowserVersion)
-			.GroupBy(t => t.tmlVersion.MajorMinor())
-			.Select(g => g.OrderByDescending(v => v.modVersion).First())
-			.Take(amountToKeep).ToList();
-	}
-
-	private static List<ModVersionHash> OptimizeHashesForCurrentBrowserVersion(List<ModVersionHash> versionHashes, int amountToKeep)
-	{
-		return versionHashes.Where(e => SocialBrowserModule.GetBrowserVersionNumber(e.tmlVersion) == SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion))
-			.OrderByDescending(t => t.tmlVersion.MajorMinor())
-			.ThenByDescending(v => v.modVersion)
-			.Take(amountToKeep).ToList();
-	}
-
 	public static void SteamCMDPublishPreparer(string modFolder)
 	{
 		if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
@@ -411,12 +406,6 @@ public partial class WorkshopSocialModule
 			["homepage"] = newMod.properties.homepage,
 			["sourcesfolder"] = modFolder
 		};
-
-		List<ModVersionHash> hashes = new List<ModVersionHash>() { new ModVersionHash(newMod.modFile) };
-		//hashes.AddRange(modDownloadItem.GetModVersionHashes());
-
-
-
 
 		// Needed for backwards compat from previous version metadata
 		//TODO: why 'trueversion'?????
