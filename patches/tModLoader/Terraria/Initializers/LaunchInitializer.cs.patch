@@ -98,8 +98,8 @@
  			LanguageManager.Instance.SetLanguage(s2);
  
 +		// Added by TML.
-+		if (TryParameter("-preparepublish") is string preparepublish) {
-+			ModLoader.UI.UIModSourceItem.PreparePublishModCommandLine(preparepublish);
++		if (TryParameter("-testservermodloading") is string preparepublish) {
++			ModLoader.UI.UIModSourceItem.TestServerModLoading(preparepublish);
 +		}
 +
 +		// Added by TML.

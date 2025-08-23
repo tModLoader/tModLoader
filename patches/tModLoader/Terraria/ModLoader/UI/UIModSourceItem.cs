@@ -307,7 +307,7 @@ internal class UIModSourceItem : UIPanel
 			var p = new ProcessStartInfo() {
 				UseShellExecute = true,
 				FileName = Process.GetCurrentProcess().MainModule.FileName,
-				Arguments = "tModLoader.dll -server -steam -preparepublish " + _builtMod.modFile.Name
+				Arguments = "tModLoader.dll -server -steam -testservermodloading " + _builtMod.modFile.Name
 			};
 
 			var pending = Process.Start(p);
@@ -331,7 +331,7 @@ internal class UIModSourceItem : UIPanel
 		}
 	}
 
-	internal static void PreparePublishModCommandLine(string modName)
+	internal static void TestServerModLoading(string modName)
 	{
 		try {
 			ModLoader.preparingServerSidePublish = true;
@@ -345,12 +345,6 @@ internal class UIModSourceItem : UIPanel
 			if (!File.Exists(icon))
 				icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
 
-			if (!SteamedWraps.SteamClient) {
-				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
-				return;
-			}
-
-			ModLoader.EnabledMods.Clear();
 			ModLoader.EnabledMods.Add(modName);
 		}
 		catch (Exception e) {
@@ -365,6 +359,7 @@ internal class UIModSourceItem : UIPanel
 	{
 		try {
 			var publishTags = LaunchInitializer.TryParameter("-publishtags")?.Split("&");
+
 			WorkshopItemPublicSettingId? publicity = null;
 			if (LaunchInitializer.TryParameter("-publicity") is string publicityString) 
 				if (int.TryParse(publicityString, out int publicityInt)) 
@@ -388,6 +383,7 @@ internal class UIModSourceItem : UIPanel
 			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(1);
 		}
+
 		Console.WriteLine("exiting ");
 		Steamworks.SteamAPI.Shutdown();
 		Environment.Exit(0);
