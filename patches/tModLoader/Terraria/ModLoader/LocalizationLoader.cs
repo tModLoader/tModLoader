@@ -20,7 +20,7 @@ public static class LocalizationLoader
 		var lang = LanguageManager.Instance;
 		var gameTipPrefix = $"Mods.{mod.Name}.GameTips.";
 
-		foreach (var (key, _) in LoadTranslations(mod, GameCulture.DefaultCulture)) {
+		foreach (var (key, _) in LoadTranslations(mod.File, GameCulture.DefaultCulture)) {
 			var text = lang.GetOrRegister(key); // adds the key but leaves it untranslated for now.
 
 			if (key.StartsWith(gameTipPrefix))
@@ -32,7 +32,7 @@ public static class LocalizationLoader
 	{
 		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
-			foreach (var (key, value) in LoadTranslations(mod, culture)) {
+			foreach (var (key, value) in LoadTranslations(mod.File, culture)) {
 				lang.GetText(key).SetValue(value); // can only set the value of existing keys. Cannot register new keys.
 			}
 		}
@@ -178,28 +178,28 @@ public static class LocalizationLoader
 		return false;
 	}
 
-	private static List<(string key, string value)> LoadTranslations(Mod mod, GameCulture culture)
+	private static List<(string key, string value)> LoadTranslations(TmodFile tModFile, GameCulture culture)
 	{
-		if (mod.File == null)
+		if (tModFile == null)
 			return new();
 
 		try {
 			// Flatten JSON into dot separated key and value
 			var flattened = new List<(string, string)>();
 
-			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+			foreach (var translationFile in tModFile.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 				if (!TryGetCultureAndPrefixFromPath(translationFile.Name, out var fileCulture, out string prefix))
 					continue;
 
 				if (fileCulture != culture)
 					continue;
 
-				using var stream = mod.File.GetStream(translationFile);
+				using var stream =tModFile.GetStream(translationFile);
 				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
 				string translationFileContents = streamReader.ReadToEnd();
 
-				string modpath = Path.Combine(mod.Name, translationFile.Name).Replace('/', '\\');
+				string modpath = Path.Combine(tModFile.Name, translationFile.Name).Replace('/', '\\');
 				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
 					string path = Path.Combine(ModCompile.ModSourcePath, modpath);
 					if (File.Exists(path)) {
@@ -272,7 +272,7 @@ public static class LocalizationLoader
 			return flattened;
 		}
 		catch (Exception e) {
-			e.Data["mod"] = mod.Name;
+			e.Data["mod"] = tModFile.Name;
 			throw;
 		}
 	}
@@ -772,20 +772,20 @@ public static class LocalizationLoader
 	}
 
 	private static readonly Dictionary<string, Dictionary<GameCulture, int>> localizationEntriesCounts = new();
-	internal static Dictionary<GameCulture, int> GetLocalizationCounts(Mod mod)
+	internal static Dictionary<GameCulture, int> GetLocalizationCounts(TmodFile tModFile)
 	{
-		if (localizationEntriesCounts.TryGetValue(mod.Name, out var results)) {
+		if (localizationEntriesCounts.TryGetValue(tModFile.Name, out var results)) {
 			return results;
 		}
 
 		results = new Dictionary<GameCulture, int>();
 		foreach (var culture in GameCulture.KnownCultures) {
-			var localizationEntries = LoadTranslations(mod, culture);
+			var localizationEntries = LoadTranslations(tModFile, culture);
 			// Only count only non-"" entries. Also ignore entries that are just substitutions.
 			int countNonTrivialEntries = localizationEntries.Where(x => HasTextThatNeedsLocalization(x.value)).Count();
 			results.Add(culture, countNonTrivialEntries);
 		}
-		localizationEntriesCounts[mod.Name] = results;
+		localizationEntriesCounts[tModFile.Name] = results;
 		return results;
 	}
 

@@ -146,12 +146,12 @@ public interface SocialBrowserModule
 		return "1.4.4"; // Long Term Service Version 1.4.4 (Current)
 	}
 
-	public static List<(WorkshopTagOption tag, bool setState, bool degraded)> GetModLocalizationProgress(ModLoader.Mod mod, List<WorkshopTagOption> existingActiveTagsList)
+	public static List<(WorkshopTagOption tag, bool setState, bool degraded)> GetModLocalizationProgress(TmodFile tModFile, List<WorkshopTagOption> existingActiveTagsList)
 	{
-		var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(mod);
+		var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(tModFile);
 		int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
 
-		ModLoader.Logging.tML.Info($"Determining localization progress for {mod.Name}:");
+		ModLoader.Logging.tML.Info($"Determining localization progress for {tModFile.Name}:");
 
 		List<(WorkshopTagOption tag, bool setState, bool degraded)> autoLangTags = new List<(WorkshopTagOption tag, bool setState, bool degraded)>();
 
