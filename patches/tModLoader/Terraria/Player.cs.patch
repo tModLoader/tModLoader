@@ -1137,8 +1137,14 @@
  	public bool[] npcTypeNoAggro = new bool[NPCID.Count];
  	public int lastPortalColorIndex;
  	public int _portalPhysicsTime;
-@@ -1468,17 +_,43 @@
+@@ -1466,19 +_,49 @@
+ 	public int lastTeleportPylonStyleUsed;
+ 	public float MountFishronSpecialCounter;
  	public Vector2 MinionRestTargetPoint = Vector2.Zero;
++	/// <summary>
++	/// The index of the NPC targeted by the player, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// <br/><br/> Will be -1 if there is no current target, or check <see cref="HasMinionAttackTargetNPC"/> instead.
++	/// </summary>
  	public int MinionAttackTargetNPC = -1;
  	public List<Point> TouchedTiles = new List<Point>();
 +	/// <summary>
@@ -1335,8 +1341,11 @@
  	public bool isLockedToATile {
  		get {
  			if (!sitting.isSitting)
-@@ -2153,9 +_,16 @@
+@@ -2151,11 +_,19 @@
  
+ 	public bool HasMinionRestTarget => MinionRestTargetPoint != Vector2.Zero;
+ 
++	/// <summary> True if the player currently has a minion attack target (<see cref="MinionAttackTargetNPC"/>. </summary>
  	public bool HasMinionAttackTargetNPC => MinionAttackTargetNPC != -1;
  
 +	/// <summary>

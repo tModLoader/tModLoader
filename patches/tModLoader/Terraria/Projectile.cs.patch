@@ -73,10 +73,10 @@
 +	/// </summary>
  	public int alpha;
 +	/// <summary>
-+	/// Indicates that this projectile is a sentry
-+	/// <br/> Defaults to <see langword="false"/>.
-+	/// <br/> All sentries should set <see cref="Projectile.timeLeft"/> to <see cref="Projectile.SentryLifeTime"/>.
-+	/// <br/> When a sentry is spawned, <see cref="Player.UpdateMaxTurrets"/> should be called immediately after.
++	/// Indicates that this projectile is a sentry.
++	/// <br/><br/> Defaults to <see langword="false"/>.
++	/// <br/><br/> All sentries should set <see cref="Projectile.timeLeft"/> to <see cref="Projectile.SentryLifeTime"/>.
++	/// <br/><br/> When a sentry is spawned, <see cref="Player.UpdateMaxTurrets"/> should be called immediately after.
 +	/// </summary>
  	public bool sentry;
  	public short glowMask;
@@ -405,6 +405,17 @@
  	public int MaxUpdates {
  		get {
  			return extraUpdates + 1;
+@@ -181,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The NPC targeted by the owner player of this projectile, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// <br/><br/> Will be null if there is no current target. See also <see cref="Player.MinionAttackTargetNPC"/>.
++	/// </summary>
+ 	public NPC OwnerMinionAttackTargetNPC {
+ 		get {
+ 			if (Main.player[owner].MinionAttackTargetNPC < 0)
 @@ -202,7 +_,7 @@
  
  	public static void ResetImmunity()
