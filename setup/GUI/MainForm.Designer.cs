@@ -209,8 +209,7 @@ namespace Terraria.ModLoader.Setup.GUI
             this.buttonDiffTerrariaNetCore.Size = new System.Drawing.Size(129, 23);
             this.buttonDiffTerrariaNetCore.TabIndex = 10;
             this.buttonDiffTerrariaNetCore.Text = "Diff TerrariaNetCore";
-            this.toolTipButtons.SetToolTip(this.buttonDiffTerrariaNetCore, "Recalculates the Terraria patches\r\nDiffs the src/Terraria directory\r\nUsed for fix" +
-        "ing decompilation errors\r\n");
+            this.toolTipButtons.SetToolTip(this.buttonDiffTerrariaNetCore, "Recalculates the Terraria NetCore patches\r\nDiffs the src/TerrariaNetCore directory\r\nUsed to update to newer dotnet versions\r\n");
             this.buttonDiffTerrariaNetCore.UseVisualStyleBackColor = true;
             this.buttonDiffTerrariaNetCore.Click += new System.EventHandler(this.buttonTask_Click);
             // 
@@ -223,8 +222,8 @@ namespace Terraria.ModLoader.Setup.GUI
             this.buttonPatchTerrariaNetCore.Size = new System.Drawing.Size(129, 23);
             this.buttonPatchTerrariaNetCore.TabIndex = 11;
             this.buttonPatchTerrariaNetCore.Text = "Patch TerrariaNetCore";
-            this.toolTipButtons.SetToolTip(this.buttonPatchTerrariaNetCore, "Applies patches to fix decompile errors\r\nLeaves functionality unchanged\r\nPatched " +
-        "source is located in src/Terraria");
+            this.toolTipButtons.SetToolTip(this.buttonPatchTerrariaNetCore, "Applies patches to update to modern dotnet versions\r\nLeaves functionality unchanged\r\nPatched " +
+        "source is located in src/TerrariaNetCore");
             this.buttonPatchTerrariaNetCore.UseVisualStyleBackColor = true;
             this.buttonPatchTerrariaNetCore.Click += new System.EventHandler(this.buttonTask_Click);
             // 

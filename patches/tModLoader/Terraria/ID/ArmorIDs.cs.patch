@@ -1,7 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/ArmorIDs.cs
 +++ src/tModLoader/Terraria/ID/ArmorIDs.cs
-@@ -1,18 +_,43 @@
+@@ -1,18 +_,44 @@
  using System.Collections.Generic;
++using ReLogic.Reflection;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
@@ -17,7 +18,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Head]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Head], $"{nameof(ArmorIDs)}.{nameof(Head)}", Search);
 +
 +			/// <summary>
 +			/// If <c>!= -1</c> for a given <see cref="Head"/>, then that equip will display the retrieved <see cref="Head"/> equip when equipped.
@@ -48,8 +49,12 @@
  			public static bool[] UseAltFaceHeadDraw = Factory.CreateBoolSet(false, 3, 4, 6, 7, 9, 17, 22, 27, 28, 31, 32, 37, 38, 39, 40, 42, 43, 45, 46, 47, 48, 49, 50, 57, 58, 61, 66, 69, 70, 72, 74, 75, 76, 77, 78, 82, 83, 86, 89, 93, 98, 101, 103, 104, 105, 107, 108, 109, 110, 111, 115, 118, 120, 122, 123, 124, 127, 128, 129, 131, 132, 134, 135, 136, 137, 142, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 162, 164, 165, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 185, 186, 187, 188, 189, 192, 193, 194, 200, 201, 202, 204, 207, 208, 209, 210, 211, 213, 214, 230, 236, 237, 239, 240, 241, 251, 254, 255, 258, 260, 266, 268, 269, 270, 271, 261, 8, 12, 30, 35, 36, 73, 79, 80, 84, 85, 87, 88, 90, 91, 102, 112, 141, 160, 180, 196, 205, 257, 256);
  		}
  
-@@ -301,15 +_,29 @@
+@@ -299,17 +_,33 @@
+ 		public const int DizzyHat = 280;
+ 		public const int LincolnsHood = 281;
  		public static readonly int Count = 282;
++
++		public static IdDictionary Search = IdDictionary.Create<Head, int>();
  	}
  
 -	public class Body
@@ -87,7 +92,7 @@
  			}
  
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Body]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Body], $"{nameof(ArmorIDs)}.{nameof(Body)}", Search);
 +
 +			/// <summary>
 +			/// <strong>Unused.</strong>
@@ -166,8 +171,12 @@
  			public static bool[] DisableBeltAccDraw = Factory.CreateBoolSet(83, 82);
  		}
  
-@@ -538,12 +_,21 @@
+@@ -536,14 +_,25 @@
+ 		public const int AshWoodBreastplate = 246;
+ 		public const int LincolnsHoodie = 247;
  		public static readonly int Count = 248;
++
++		public static IdDictionary Search = IdDictionary.Create<Body, int>();
  	}
  
 -	public class Legs
@@ -177,7 +186,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Legs]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Legs], $"{nameof(ArmorIDs)}.{nameof(Legs)}", Search);
 +
 +			/// <summary>
 +			/// <strong>Unused.</strong> Used for old (Womm)annequins (<see cref="TileID.Mannequin"/>).
@@ -191,8 +200,12 @@
  			public static bool[] IncompatibleWithFrogLeg = Factory.CreateBoolSet(106, 143, 217, 222, 226, 228, 138);
  		}
  
-@@ -762,12 +_,21 @@
+@@ -760,14 +_,25 @@
+ 		public const int AshWoodGreaves = 234;
+ 		public const int LincolnsPants = 235;
  		public static readonly int Count = 236;
++
++		public static IdDictionary Search = IdDictionary.Create<Legs, int>();
  	}
  
 -	public class HandOn
@@ -203,7 +216,7 @@
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
 -			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOn]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOn], $"{nameof(ArmorIDs)}.{nameof(HandOn)}", Search);
 +			// Made internal to avoid confusion.
 +			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24);
 +
@@ -217,8 +230,12 @@
  			public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
  		}
  
-@@ -800,12 +_,13 @@
+@@ -798,14 +_,17 @@
+ 		public const sbyte HandOfCreation = 23;
+ 		public const sbyte LavaCharm = 24;
  		public static readonly int Count = 25;
++
++		public static IdDictionary Search = IdDictionary.Create<HandOn, sbyte>();
  	}
  
 -	public class HandOff
@@ -229,14 +246,18 @@
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
 -			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOff]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOff], $"{nameof(ArmorIDs)}.{nameof(HandOff)}", Search);
 +			// Made internal to avoid confusion.
 +			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
  		}
  
  		public const sbyte FireGauntlet = 1;
-@@ -828,12 +_,22 @@
+@@ -826,14 +_,26 @@
+ 		public const sbyte BoneGlove = 14;
+ 		public const sbyte HandOfCreation = 15;
  		public static readonly int Count = 16;
++
++		public static IdDictionary Search = IdDictionary.Create<HandOff, sbyte>();
  	}
  
 -	public class Back
@@ -246,7 +267,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Back]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Back], $"{nameof(ArmorIDs)}.{nameof(Back)}", Search);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Back"/>, then that equip will draw in the player's backpack layer (<see cref="Player.backpack"/>, <see cref="Player.cBackpack"/>).
@@ -261,8 +282,12 @@
  			public static bool[] DrawInTailLayer = Factory.CreateBoolSet(false, 18, 19, 21, 25, 26, 27, 28);
  		}
  
-@@ -876,11 +_,19 @@
+@@ -874,13 +_,23 @@
+ 		public const sbyte HandOfCreation = 35;
+ 		public const sbyte ShimmerCloak = 36;
  		public static readonly int Count = 37;
++
++		public static IdDictionary Search = IdDictionary.Create<Back, sbyte>();
  	}
  
 -	public class Front
@@ -272,7 +297,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Front]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Front], $"{nameof(ArmorIDs)}.{nameof(Front)}", Search);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Front"/>, then that equip will draw in the player's neck layer when equipped.
@@ -284,8 +309,12 @@
  			public static bool[] DrawsInNeckLayer = Factory.CreateBoolSet(false, 6);
  		}
  
-@@ -899,11 +_,16 @@
+@@ -897,13 +_,20 @@
+ 		public const sbyte PrinceCape = 11;
+ 		public const sbyte ShimmerCloak = 12;
  		public static readonly int Count = 13;
++
++		public static IdDictionary Search = IdDictionary.Create<Front, sbyte>();
  	}
  
 -	public class Shoe
@@ -295,7 +324,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Shoes]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Shoes], $"{nameof(ArmorIDs)}.{nameof(Shoe)}", Search);
 +
 +			/// <summary>
 +			/// If <c>!= -1</c> for a given <see cref="Shoe"/>, then that equip will use the retrieved <see cref="Shoe"/> when equipped on a female (<c>!<see cref="Player.Male"/></c>) player.
@@ -304,8 +333,12 @@
  			public static int[] MaleToFemaleID = Factory.CreateIntSet(-1, 25, 26);
  		}
  
-@@ -937,12 +_,22 @@
+@@ -935,14 +_,26 @@
+ 		public const sbyte GlassSlipperMale = 25;
+ 		public const sbyte GlassSlipperFemale = 26;
  		public static readonly int Count = 27;
++
++		public static IdDictionary Search = IdDictionary.Create<Shoe, sbyte>();
  	}
  
 -	public class Waist
@@ -315,7 +348,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Waist]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Waist], $"{nameof(ArmorIDs)}.{nameof(Waist)}", Search);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Waist"/>, then that equip will draw using <see cref="Player.bodyFrame"/> instead of <see cref="Player.legFrame"/>.
@@ -330,8 +363,12 @@
  			public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  		}
  
-@@ -966,10 +_,14 @@
+@@ -964,12 +_,18 @@
+ 		public const sbyte SandstorminaBottle = 15;
+ 		public const sbyte TreasureMagnet = 16;
  		public static readonly int Count = 17;
++
++		public static IdDictionary Search = IdDictionary.Create<Waist, sbyte>();
  	}
  
 -	public class Wing
@@ -347,8 +384,30 @@
  			public static WingStats[] Stats;
  		}
  
-@@ -1053,16 +_,48 @@
+@@ -1020,6 +_,8 @@
+ 		public const sbyte LongTrailRainbowWings = 45;
+ 		public const sbyte CreativeWings = 46;
+ 		public static readonly int Count = 47;
++
++		public static IdDictionary Search = IdDictionary.Create<Wing, sbyte>();
+ 	}
+ 
+ 	public class Shield
+@@ -1034,6 +_,8 @@
+ 		public const sbyte Hero = 8;
+ 		public const sbyte BouncingShield = 9;
+ 		public static readonly int Count = 10;
++
++		public static IdDictionary Search = IdDictionary.Create<Shield, sbyte>();
+ 	}
+ 
+ 	public class Neck
+@@ -1051,18 +_,52 @@
+ 		public const sbyte Magiluminescence = 11;
+ 		public const sbyte MoltenCharm = 12;
  		public static readonly int Count = 13;
++
++		public static IdDictionary Search = IdDictionary.Create<Neck, sbyte>();
  	}
  
 -	public class Face
@@ -358,7 +417,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Face]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Face], $"{nameof(ArmorIDs)}.{nameof(Face)}", Search);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will completely hide the player's hair when equipped.
@@ -399,8 +458,12 @@
  			public static int[] AltFaceHead = Factory.CreateIntSet(-1, 12, 17, 10, 15, 13, 18, 11, 16);
  		}
  
-@@ -1090,12 +_,23 @@
+@@ -1088,14 +_,27 @@
+ 		public const sbyte ReflectiveShades = 20;
+ 		public const sbyte JimsDroneVisor = 21;
  		public static readonly sbyte Count = 22;
++
++		public static IdDictionary Search = IdDictionary.Create<Face, sbyte>();
  	}
  
 -	public class Balloon
@@ -410,7 +473,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Balloon]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Balloon], $"{nameof(ArmorIDs)}.{nameof(Balloon)}", Search);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Balloon"/>, then that equip will draw in the player's front balloon layer (<see cref="Player.balloonFront"/>, <see cref="Player.cBalloonFront"/>).
@@ -426,12 +489,21 @@
  			public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 18);
  		}
  
+@@ -1119,6 +_,8 @@
+ 		public const sbyte RoyalScepter = 18;
+ 		public const sbyte HorseshoeBundle = 19;
+ 		public static readonly int Count = 20;
++
++		public static IdDictionary Search = IdDictionary.Create<Balloon, sbyte>();
+ 	}
+ 
+ 	public class RocketBoots
 @@ -1135,7 +_,16 @@
  	{
  		public class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Beard]);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Beard], $"{nameof(ArmorIDs)}.{nameof(Beard)}", Search);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Beard"/>, then that equip will be colored in the same way the player's hair is.
@@ -444,3 +516,11 @@
  			public static bool[] UseHairColor = Factory.CreateBoolSet(false, 2, 3, 4);
  		}
  
+@@ -1144,5 +_,7 @@
+ 		public const sbyte WilsonBeardLong = 3;
+ 		public const sbyte WilsonBeardMagnificent = 4;
+ 		public static readonly sbyte Count = 5;
++
++		public static IdDictionary Search = IdDictionary.Create<Beard, sbyte>();
+ 	}
+ }

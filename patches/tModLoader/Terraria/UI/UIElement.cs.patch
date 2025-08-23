@@ -100,6 +100,21 @@
  	public event MouseEvent OnMouseOut;
  	public event ScrollWheelEvent OnScrollWheel;
  	public event ElementEvent OnUpdate;
+@@ -106,10 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Used to draw this element (not the children). Use this to give an element custom visuals. Use <see cref="GetDimensions"/> to determine the area to draw in.
++	/// </summary>
+ 	protected virtual void DrawSelf(SpriteBatch spriteBatch)
+ 	{
+ 	}
+ 
++	/// <summary> Calls <see cref="Draw(SpriteBatch)"/> on each child element in the order they were added. </summary>
+ 	protected virtual void DrawChildren(SpriteBatch spriteBatch)
+ 	{
+ 		foreach (UIElement element in Elements) {
 @@ -117,6 +_,9 @@
  		}
  	}
@@ -110,6 +125,16 @@
  	public void Append(UIElement element)
  	{
  		element.Remove();
+@@ -146,6 +_,9 @@
+ 		Elements.Clear();
+ 	}
+ 
++	/// <summary>
++	/// Handles drawing this element and all of its children over this element. Calls <see cref="DrawSelf(SpriteBatch)"/> and then <see cref="DrawChildren(SpriteBatch)"/>. Custom rendering for a UIElement is most typically done in <see cref="DrawSelf(SpriteBatch)"/>. Overriding this method can be useful if logic needs to run after children are drawn, just remember to not delete <c>base.Draw(spriteBatch);</c>.
++	/// </summary>
+ 	public virtual void Draw(SpriteBatch spriteBatch)
+ 	{
+ 		bool overflowHidden = OverflowHidden;
 @@ -167,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();
@@ -133,6 +158,24 @@
  			spriteBatch.End();
  			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
+@@ -181,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> Calls <see cref="OnUpdate"/> and then calls <see cref="Update(GameTime)"/> on each child element in the order they were added.  </summary>
+ 	public virtual void Update(GameTime gameTime)
+ 	{
+ 		if (this.OnUpdate != null)
+@@ -296,6 +_,9 @@
+ 
+ 	public virtual Rectangle GetViewCullingArea() => _dimensions.ToRectangle();
+ 
++	/// <summary>
++	/// Sets the padding (Additional spacing between this element's <see cref="GetDimensions"/> and the position of its children placed within) on all sides.
++	/// </summary>
+ 	public void SetPadding(float pixels)
+ 	{
+ 		PaddingBottom = pixels;
 @@ -311,8 +_,15 @@
  		}
  	}
@@ -196,7 +239,7 @@
  	public virtual void OnActivate()
  	{
  	}
-@@ -485,6 +_,9 @@
+@@ -485,9 +_,19 @@
  		_isInitialized = true;
  	}
  
@@ -206,3 +249,13 @@
  	public virtual void OnInitialize()
  	{
  	}
+ 
++	/// <inheritdoc cref="IComparable.CompareTo(object?)" path="//*[not(self::summary)]"/>
++	/// <summary>
++	/// <b>UIElements specific docs:</b>
++	/// <br/><br/> Used to order UIElements in <see cref="UIList"/> (and <see cref="ModLoader.UI.Elements.UIGrid"/>) when using the default sort option. Another option for sorting UIList elements is to set <see cref="UIList.ManualSortMethod"/> and have the UIList decide how elements are sorted.
++	/// <br/><br/> <b>Inherited IComparable.CompareTo docs:</b>
++	/// <br/><br/> <inheritdoc cref="IComparable.CompareTo(object?)" path="/summary/node()"/>
++	/// </summary>
+ 	public virtual int CompareTo(object obj) => 0;
+ }

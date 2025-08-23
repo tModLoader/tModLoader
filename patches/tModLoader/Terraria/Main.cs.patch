@@ -40,6 +40,14 @@
  #endif
  {
  	public delegate void OnPlayerSelected(PlayerFileData player);
+@@ -103,6 +_,7 @@
+ 		public static int ActivePlayersCount;
+ 		public static int SleepingPlayersCount;
+ 		public static bool AnyActiveBossNPC;
++		/// <summary> Indicates that an interactable projectile exists in the world, allowing checks for interactable projectiles to execute. </summary>
+ 		public static bool HadAnActiveInteractibleProjectile;
+ 	}
+ 
 @@ -143,20 +_,31 @@
  		private int _lastScreenHeight;
  		private InputMode _lastInputMode;
@@ -75,11 +83,12 @@
  			}
  		}
  	}
-@@ -248,17 +_,25 @@
+@@ -248,17 +_,26 @@
  	};
  	private static bool? _overrideForExpertMode = null;
  	private static bool? _overrideForMasterMode = null;
-+	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="WorldGen.drunkWorldGen"/>. </summary>
++	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="WorldGen.drunkWorldGen"/>.
++	/// <br/><br/> See <see cref="Main.swapMusic"/> for information about the Otherworld soundtrack toggle. </summary>
  	public static bool drunkWorld = false;
 +	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/For_the_worthy">For the worthy</see> secret world seed. See also <see cref="WorldGen.getGoodWorldGen"/>. </summary>
  	public static bool getGoodWorld = false;
@@ -113,6 +122,22 @@
  	public static UserInterface InGameUI = new UserInterface();
  	private static OnPlayerSelected _pendingCharacterSelect;
  	public static bool drawBackGore;
+@@ -418,7 +_,15 @@
+ 	public static int lastMouseX;
+ 	public static int lastMouseY;
+ 	private static ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
++	/// <summary>
++	/// Indicates if the left mouse/"Use Item" control keybind is currently being pressed.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseLeftMouseLeftReleaseNote' />
++	/// </summary>
+ 	public static bool mouseLeft;
++	/// <summary>
++	/// Indicates if the right mouse/"Interact" control keybind is currently being pressed.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseRightMouseRightReleaseNote' />
++	/// </summary>
+ 	public static bool mouseRight;
+ 	public static bool isMouseLeftConsumedByUI = false;
+ 	public static float essScale = 1f;
 @@ -457,7 +_,9 @@
  	public static int jungleBackStyle;
  	public static string debugWords = "";
@@ -232,7 +257,7 @@
  	public static RenderTarget2D screenTarget;
  	public static RenderTarget2D screenTargetSwap;
  	public static int maxMapUpdates = 250000;
-@@ -560,8 +_,8 @@
+@@ -560,14 +_,21 @@
  	public static bool clearMap;
  	public static int mapTargetX = 5;
  	public static int mapTargetY = 2;
@@ -243,6 +268,29 @@
  	public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
  	public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
  	public const int numInfoIcons = 13;
+ 	public static Microsoft.Xna.Framework.Color OurFavoriteColor = new Microsoft.Xna.Framework.Color(255, 231, 69);
+ 	public static bool mapInit;
+ 	public static bool mapEnabled = true;
++	/// <summary>
++	/// Dictates how the non-<see cref="mapFullscreen"/> map is displayed.
++	/// <para/> Can be one of the following values/modes:
++	/// <br/><b>0:</b> The minimap has been hidden.
++	/// <br/><b>1:</b> The minimap is visible.
++	/// <br/><b>2:</b> The overlay map is visible.
++	/// </summary>
+ 	public static int mapStyle = 1;
+ 	public static float grabMapX;
+ 	public static float grabMapY;
+@@ -580,6 +_,9 @@
+ 	public static float mapMinimapAlpha = 1f;
+ 	public static float mapOverlayScale = 2.5f;
+ 	public static float mapOverlayAlpha = 0.35f;
++	/// <summary>
++	/// If true, the map is currently in fullscreen mode. See also <see cref="Main.mapStyle"/>, note that the overlay map does not count as the fullscreen map.
++	/// </summary>
+ 	public static bool mapFullscreen;
+ 	public static bool resetMapFull;
+ 	public static float mapFullscreenScale = 4f;
 @@ -592,12 +_,12 @@
  	private int lastTileX;
  	private int firstTileY;
@@ -314,7 +362,18 @@
  	public static UIManageControls ManageControlsMenu = new UIManageControls();
  	public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
  	public static int maxRain = 750;
-@@ -727,6 +_,8 @@
+@@ -721,12 +_,18 @@
+ 	public static int waterStyle;
+ 	public static int WorldRollingBackupsCountToKeep = 2;
+ 	private static bool TOWMusicUnlocked = false;
++	/// <summary>
++	/// If true, the local player has visited the Party Girl and selected <see href="https://terraria.wiki.gg/wiki/Party_Girl#Music_toggle">the "Music" option</see> to toggle the music between the normal soundtrack and the Otherworld soundtrack.
++	/// <br/><br/> Check <c>if (!Main.swapMusic == Main.drunkWorld &amp;&amp; !Main.remixWorld)</c> when setting <see cref="ModNPC.Music"/> or <see cref="ModSceneEffect.Music"/> if you want to play alternate music when the Otherworld soundtrack is enabled.
++	/// </summary>
+-	private static bool swapMusic = false;
++	public static bool swapMusic = false;
+ 	public static float caveParallax = 0.88f;
+ 	public static int dungeonX;
  	public static int dungeonY;
  	public static Liquid[] liquid = new Liquid[Liquid.maxLiquid];
  	public static LiquidBuffer[] liquidBuffer = new LiquidBuffer[50000];
@@ -433,7 +492,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,44 +_,125 @@
+@@ -829,44 +_,149 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -451,7 +510,9 @@
 +	/// </summary>
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles. <see cref="ModProjectile.CanCutTiles"/> can be used to customize if a projectile should destroy tiles with this property.
++	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles. These tiles will also be destroyed when placing a tile at it's location, see also <see cref="TileID.Sets.BreakableWhenPlacing"/>, which is limited to breaking this tile only by tile placement. <see cref="ModProjectile.CanCutTiles"/> can be used to customize if a projectile should destroy tiles with this property.
++	/// <br/><br/> For desirable plant tiles, set <see cref="TileID.Sets.TileCutIgnore.Regrowth"/> as well to ignore them when using the <see cref="ItemID.StaffofRegrowth"/>. 
++	/// <br/><br/> Defaults to false.
 +	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];
  	public static bool[] tileAlch = new bool[TileID.Count];
@@ -468,7 +529,15 @@
 +	/// </summary>
  	public static bool[] wallHouse = new bool[WallID.Count];
  	public static bool[] wallDungeon = new bool[WallID.Count];
++	/// <summary>
++	/// If true, light flows in from the background, such as fences and glass.
++	/// </summary>
  	public static bool[] wallLight = new bool[WallID.Count];
++	/// <summary>
++	/// Set to a wall type to "blend" with that wall. All walls sharing the same value are considered to be the same wall type when blending. By default, a faint black line is drawn between walls of different types to transition between them. Walls that blend will not have this line drawn. 
++	/// <br/><br/> This is most commonly used to blend safe and unsafe wall variants, although there are some exceptions. All variants that should blend together should set this to a common shared base variant. The base variant does not need to set this. For example, <see cref="WallID.GreenDungeonUnsafe"/>, <see cref="WallID.GreenDungeonTileUnsafe"/>, and <see cref="WallID.GreenDungeonSlabUnsafe"/> all set this to <see cref="WallID.GreenDungeon"/> allowing all 4 wall types to be considered to be <see cref="WallID.GreenDungeon"/> and blend together.
++	/// <br/><br/> Defaults to it's own wall type, meaning it does not blend with any other wall (unless another wall is set to this wall's type.
++	/// </summary>
  	public static int[] wallBlend = new int[WallID.Count];
  	public static bool[] tileStone = new bool[TileID.Count];
 +	/// <summary>
@@ -510,6 +579,10 @@
 +	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Placement">wiki</see> refers to tiles with tileSolid set to true as "solid" tiles and those with tileSolid set to false as "background" tiles.
 +	/// </summary>
  	public static bool[] tileSolid = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile negates <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see> and causes the player to bounce when landed on. Vanilla entries include PinkSlimeBlock, SillyBalloonPink, SillyBalloonPurple, and SillyBalloonGreen. Defaults to false.
++	/// <para/> See also <see cref="TileID.Sets.NegatesFallDamage"/>.
++	/// </summary>
  	public static bool[] tileBouncy = new bool[TileID.Count];
 +	/// <summary>
 +	/// The priority of this tile in relation to the Metal Detector. The tile with the highest priority in range will show the corresponding map entry. The <see href="https://terraria.wiki.gg/wiki/Metal_Detector">Metal Detector wiki page</see> lists existing values to use as reference. <see href="https://terraria.wiki.gg/wiki/Fairies">Fairies</see> leading to treasure also take this into account.
@@ -526,6 +599,16 @@
 +	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#custom-tile-variation">Basic Tile wiki guide</see> has diagrams of these options.
 +	/// </summary>
  	public static byte[] tileLargeFrames = new byte[TileID.Count];
++	/// <summary>
++	/// When set to 1 or 2, this wall will use a tiled pattern for the wall variation rather than the random <see cref="Tile.WallFrameNumber"/> choice (The info below counts from 1 rather than 0 for illustrative purposes). Defaults to 0.
++	/// <para/> A value of 1 ("Phlebas") results in a 3x4 pattern used by Copper Plating Wall (<see cref="WallID.CopperPlating"/>) and others: <code>2 4 2
++	/// 1 3 1
++	/// 2 2 4
++	/// 1 1 3 </code>
++	/// <para/> A value of 2 ("Lazure") results in a 2x2 pattern used by Lunar Brick Wall (<see cref="WallID.LunarBrickWall"/>) and others:<code>1 2
++	/// 3 4 </code>
++	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Wall#texture">Wall wiki guide</see> has diagrams of these options.
++	/// </summary>
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
  	public static bool[] tileRope = new bool[TileID.Count];
  	public static bool[] tileBrick = new bool[TileID.Count];
@@ -638,7 +721,7 @@
  	public static Vector2 screenPosition;
  	public static Vector2 screenLastPosition;
  	public static int screenWidth = 1152;
-@@ -1001,10 +_,15 @@
+@@ -1001,10 +_,23 @@
  		0.75f,
  		0.75f
  	};
@@ -648,7 +731,15 @@
 +	/// </summary>
  	public static byte mouseTextColor;
  	public static int mouseTextColorChange = 1;
++	/// <summary>
++	/// Indicates if the left mouse/"Use Item" control keybind was not pressed last game update.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseLeftMouseLeftReleaseNote' />
++	/// </summary>
  	public static bool mouseLeftRelease;
++	/// <summary>
++	/// Indicates if the right mouse/"Interact" control keybind was not pressed last game update.
++	/// <include file = 'CommonDocs.xml' path='Common/MouseRightMouseRightReleaseNote' />
++	/// </summary>
  	public static bool mouseRightRelease;
 +	/// <summary> Indicates if the full player inventory is currently showing. </summary>
  	public static bool playerInventory;
@@ -662,7 +753,7 @@
  	public static Item mouseItem = new Item();
  	public static Item guideItem = new Item();
  	public static Item reforgeItem = new Item();
-@@ -1021,16 +_,46 @@
+@@ -1021,17 +_,48 @@
  	public static bool recFastScroll;
  	public static bool recBigList;
  	public static int recStart;
@@ -707,8 +798,10 @@
 +	/// The y tile coordinate of the default spawn location of the world. Players without a bed spawn point (<see cref="Player.SpawnY"/>) will spawn at this location and invasions will target this location.
 +	/// </summary>
  	public static int spawnTileY;
++	/// <summary> Similar to <see cref="Main.mouseRightRelease"/>, except specific to NPC chat logic. </summary>
  	public static bool npcChatRelease;
  	public static bool editSign;
+ 	public static bool editChest;
 @@ -1044,13 +_,18 @@
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
@@ -806,6 +899,24 @@
  	public static int netMode;
  	private static int _targetNetMode;
  	private static bool _hasPendingNetmodeChange;
+@@ -1897,9 +_,17 @@
+ 	public static int SmartCursorY;
+ 	public static bool SmartInteractShowingGenuine;
+ 	public static bool SmartInteractShowingFake;
++	/// <summary>
++	/// The tile coordinate of the tile location currently being targeted by the local player's cursor for interaction/right click purposes, assuming the smart cursor feature is enabled and a tile is being targeted by it. Will be -1 if a tile isn't being smart interacted with. Since this takes into account the smart cursor feature, it isn't necessarily the tile directly under the cursor. For left clicks, see <see cref="Player.tileTargetX"/>
++	/// </summary>
+ 	public static int SmartInteractX;
++	/// <inheritdoc cref="SmartInteractX"/>
+ 	public static int SmartInteractY;
+ 	public static int SmartInteractNPC;
++	/// <summary>
++	/// Indicates the <c>Projectile.whoAmI</c> of the projectile currently being targeted by the local player's cursor for smart cursor (right click) purposes. Will be set automatically for <see cref="ProjectileID.Sets.IsInteractable"/> projectiles.
++	/// <br/><br/> Will be -1 if a projectile isn't the target of smart cursor currently. 
++	/// </summary>
+ 	public static int SmartInteractProj;
+ 	public static bool SmartInteractPotionOfReturn;
+ 	public static List<Microsoft.Xna.Framework.Point> SmartInteractTileCoords = new List<Microsoft.Xna.Framework.Point>();
 @@ -1970,7 +_,7 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;
@@ -910,6 +1021,14 @@
 +	public static double ladyBugRainBoost = 0; // int -> double
  	private static bool _canShowMeteorFall;
  	private static bool _isResizingAndRemakingTargets = false;
+ 
+@@ -2160,6 +_,7 @@
+ 
+ 			_uiScaleUsed = value;
+ 			_uiScaleMatrix = Matrix.CreateScale(value, value, 1f);
++			chatMonitor.OnResolutionChange(); // TML fix: scale NewText by UIScale.
+ 		}
+ 	}
  
 @@ -2212,6 +_,7 @@
  		}
@@ -1350,7 +1469,7 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4157,17 +_,32 @@
+@@ -4157,17 +_,31 @@
  			}
  		}
  		else {
@@ -1363,7 +1482,6 @@
  		Initialize();
 +
 +		bool reloadMods;
-+
 +		do {
 +			ModLoader.ModLoader.Reload();
 +			DedServ_PostModLoad(out reloadMods);
@@ -1507,13 +1625,15 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  					Netplay.ServerPassword = ReadLineInput();
-@@ -4563,6 +_,10 @@
+@@ -4563,6 +_,12 @@
  		catch {
  		}
  
 +		// Run one tick to JIT all the game content now rather than when a player connects
-+		Logging.ServerConsoleLine("Running one update...");
-+		Update(new GameTime());
++		Logging.ServerConsoleLine("Running engine preload...");
++		Debug.Assert(!IsEnginePreloaded);
++		IsEnginePreloaded = true;
++		OnEnginePreload?.Invoke();
 +
  		if (WorldGen.loadFailed || !WorldGen.loadSuccess) {
  			WriteFancyWorldLoadErrorToConsole();
@@ -1748,11 +1868,12 @@
  		musicFade[50] = 1f;
  		if (dedServ)
  			netMode = 2;
-@@ -5095,6 +_,7 @@
+@@ -5095,6 +_,8 @@
  			if (!dedServ)
  				Lighting.Clear();
  		};
 +		WorldGen.AddGenPasses();
++		ModContent.RunEarlyClassConstructors();
  
  		DontStarveSeed.Initialize();
  		ResourceSetsManager = new PlayerResourceSetsManager();
@@ -1796,6 +1917,14 @@
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
  		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
+@@ -7387,6 +_,7 @@
+ 		debuff[147] = true;
+ 		debuff[148] = true;
+ 		debuff[149] = true;
++		debuff[BuffID.ShadowFlame] = true; // TML: Fix vanilla omission (#4668)
+ 		debuff[156] = true;
+ 		debuff[157] = true;
+ 		debuff[350] = true;
 @@ -7706,13 +_,24 @@
  		persistentBuff[77] = true;
  		persistentBuff[78] = true;
@@ -2024,10 +2153,17 @@
  		else if (flag9) {
  			newMusic = 82;
  		}
-@@ -10009,6 +_,9 @@
+@@ -10009,6 +_,16 @@
  		}
  		else if (flag13) {
  			newMusic = 82;
++		}
++		// These 2 are now Event priority.
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon) {
++			newMusic = 82;
++		}
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon) {
++			newMusic = 82;
 +		}
 +		else if (modPriority >= SceneEffectPriority.Environment) {
 +			newMusic = modMusic;
@@ -2064,6 +2200,20 @@
  		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  			if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2)) {
  				if (player[myPlayer].ZoneUndergroundDesert)
+@@ -10156,11 +_,13 @@
+ 				newMusic = 64;
+ 		}
+ 
++		/* Moved to Event priority
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon)
+ 			newMusic = 82;
+ 
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon)
+ 			newMusic = 82;
++		*/
+ 	}
+ 
+ 	private void UpdateAudio_DecideOnNewMusic()
 @@ -10199,7 +_,11 @@
  		if (lastMusicPlayed == 50)
  			musicNoCrossFade[51] = true;
@@ -2232,10 +2382,17 @@
  		else if (flag9) {
  			newMusic = 35;
  		}
-@@ -10481,6 +_,9 @@
+@@ -10481,6 +_,16 @@
  		else if (flag13) {
  			newMusic = 41;
  		}
++		// These 2 are now Event priority.
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon) {
++			newMusic = 30;
++		}
++		else if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon) {
++			newMusic = 32;
++		}
 +		else if (modPriority >= SceneEffectPriority.Environment) {
 +			newMusic = modMusic;
 +		}
@@ -2272,6 +2429,20 @@
  		else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && (remixWorld || !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16))) {
  			if (player[myPlayer].ZoneHallow) {
  				if (remixWorld && (double)player[myPlayer].position.Y >= rockLayer * 16.0 + (double)(screenHeight / 2))
+@@ -10715,11 +_,13 @@
+ 				newMusic = 3;
+ 		}
+ 
++		/* Moved to Event priority
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && pumpkinMoon)
+ 			newMusic = 30;
+ 
+ 		if (((double)(screenPosition.Y / 16f) < worldSurface + 10.0 || remixWorld) && snowMoon)
+ 			newMusic = 32;
++		*/
+ 	}
+ 
+ 	private void UpdateWindyDayState()
 @@ -10866,12 +_,15 @@
  		float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  		if (cloudBGActive > 0f) {
@@ -2759,6 +2930,17 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -15866,6 +_,10 @@
+ 					text2 = PasteTextIn(allowMultiLine, text2);
+ 			}
+ 
++			// `WinImm32Ime` sends escape as an input character, but `FnaIme` does not, so we need to do this for escape to work on platforms other that Windows.
++			if (!Platform.IsWindows && inputText.IsKeyDown(Keys.Escape) && !oldInputText.IsKeyDown(Keys.Escape))
++				inputTextEscape = true;
++
+ 			for (int i = 0; i < keyCount; i++) {
+ 				int num = keyInt[i];
+ 				string text3 = keyString[i];
 @@ -15938,11 +_,16 @@
  		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride: true);
  	}
@@ -4030,7 +4212,7 @@
 +				if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture, AssetRequestMode.ImmediateLoad)) {
 +					EntitySpriteDraw(
 +						glowTexture.Value,
-+						proj.position + screenPosition + new Vector2(num138 + num137, proj.height / 2 + proj.gfxOffY),
++						proj.position - screenPosition + new Vector2(num138 + num137, proj.height / 2 + proj.gfxOffY),
 +						new Rectangle(0, y27, TextureAssets.Projectile[proj.type].Width(), num408 - 1),
 +						new Color(250, 250, 250, proj.alpha), proj.rotation,
 +						new Vector2(num138, proj.height / 2 + num136),
@@ -4964,7 +5146,7 @@
  			if (!(nPC.active & (nPC.shimmerTransparency == 0f || nPC.CanApplyHunterPotionEffects())))
  				continue;
  
-@@ -34825,6 +_,8 @@
+@@ -34825,8 +_,13 @@
  			if (nPC.type >= 87 && nPC.type <= 92)
  				value = new Microsoft.Xna.Framework.Rectangle((int)((double)nPC.position.X + (double)nPC.width * 0.5 - 32.0), (int)((double)nPC.position.Y + (double)nPC.height * 0.5 - 32.0), 64, 64);
  
@@ -4972,7 +5154,12 @@
 +
  			bool flag = mouseRectangle.Intersects(value);
  			bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == i);
++			if (flag2)
++				flag2 = NPCLoader.PreHoverInteract(nPC, flag);
++
  			if (flag2 && ((nPC.type != 85 && nPC.type != 341 && nPC.type != 629 && nPC.aiStyle != 87) || nPC.ai[0] != 0f) && nPC.type != 488) {
+ 				if (nPC.type == 685) {
+ 					player.cursorItemIconEnabled = true;
 @@ -34849,7 +_,12 @@
  				}
  				else {
@@ -4994,6 +5181,16 @@
  		spriteBatch.End();
  		spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, GameViewMatrix.ZoomMatrix);
  		PlayerInput.SetZoom_UI();
+@@ -34983,6 +_,9 @@
+ 		DrawInterface_Resources_ClearBuffs();
+ 		if (!ingameOptionsWindow && !playerInventory && !inFancyUI)
+ 			DrawInterface_Resources_Buffs();
++
++		spriteBatch.End();
++		spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, UIScaleMatrix); // #4578 vanilla fix
+ 	}
+ 
+ 	public static void DrawInterface_Resources_ClearBuffs()
 @@ -35027,10 +_,18 @@
  			if (num5 == 147)
  				bannerMouseOver = true;
@@ -5534,6 +5731,21 @@
  		CaptureManager.Instance.Dispose();
  		audioSystem.Dispose();
  	}
+@@ -39109,6 +_,14 @@
+ 
+ 	public static Microsoft.Xna.Framework.Color hslToRgb(Vector3 hslVector) => hslToRgb(hslVector.X, hslVector.Y, hslVector.Z);
+ 
++	/// <summary>
++	/// Converts a "Hue, Saturation, and Luminance" (HSL) representation (<see href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSL Wikipedia page</see>) of a color  to a <see cref="Color"/>. Input values should range from 0f to 1f. This differs from other representations of HSL, where the hue is denoted as a degree from 0 to 360, so divide by 360f if converting from that representation. A fully saturated color can be retrieved using 1f for <paramref name="Saturation"/> and 0.5f for <paramref name="Luminosity"/>.
++	/// <para/> This is most commonly used to smoothly transition between colors by passing in hue values that are the result of interpolating between values. Doing math using an HSL representation of a Color is often easier than doing math on an RGB representation of a Color.
++	/// <para/> This example generated a random fully saturated color: <c>Color color = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.5f);</c>
++	/// <para/> This example generates a color based on the projectile rotation:
++	/// <code>float hue = Projectile.rotation / MathHelper.TwoPi;
++	/// Color color = Main.hslToRgb(hue, 1f, 0.5f);</code>
++	/// </summary>
+ 	public static Microsoft.Xna.Framework.Color hslToRgb(float Hue, float Saturation, float Luminosity, byte a = byte.MaxValue)
+ 	{
+ 		byte r;
 @@ -39408,8 +_,11 @@
  		screenLastPosition = screenPosition;
  		screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);

@@ -1,6 +1,6 @@
 namespace Terraria.ID;
 
-public static partial class GoreID
+public partial class GoreID
 {
 	public static partial class Sets
 	{

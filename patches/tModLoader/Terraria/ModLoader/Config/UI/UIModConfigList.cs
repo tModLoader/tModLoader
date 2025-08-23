@@ -1,7 +1,10 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Graphics;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -177,6 +180,7 @@ internal class UIModConfigList : UIState
 					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
+				AddSmallIcon(mod, modPanel);
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					selectedMod = mod;
@@ -199,8 +203,21 @@ internal class UIModConfigList : UIState
 					TooltipText = true,
 					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
 				};
+				AddSmallIcon(mod, modPanel);
 
 				modList.Add(modPanel);
+			}
+		}
+
+		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
+		{
+			float width = ChatManager.GetStringSize(FontAssets.MouseText.Value, modPanel.Text, new Vector2(modPanel.TextScaleMax)).X;
+			UIElement icon = GetSmallIcon(mod);
+			if (icon != null && width < uIElement.MaxWidth.Pixels * 0.35f) {
+				icon.Left = new StyleDimension(-width / 2 - 18, 0);
+				modPanel.PaddingLeft = 40;
+				modPanel.TextOriginX = 0.85f;
+				modPanel.Append(icon);
 			}
 		}
 	}
@@ -262,6 +279,23 @@ internal class UIModConfigList : UIState
 
 			configPanel.Append(sideIndicator);
 		}
+	}
+
+	private UIElement GetSmallIcon(Mod mod)
+	{
+		Asset<Texture2D> asset;
+		if (mod.HasAsset("icon_small")) {
+			asset = mod.Assets.Request<Texture2D>("icon_small");
+			if (asset.Size() == new Vector2(30)) {
+				return new UIImage(asset) {
+					Top = new StyleDimension(-0.5f, -0.4f),
+					HAlign = 0.5f,
+					VAlign = 0.5f
+				};
+			}
+			mod.Logger.Info("icon_small needs to be 30x30 pixels.");
+		}
+		return null;
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)

@@ -26,6 +26,7 @@ namespace Terraria.ModLoader;
 public static class ItemLoader
 {
 	public static int ItemCount { get; private set; } = ItemID.Count;
+	public static int UseStyleCount { get; private set; } = ItemUseStyleID.Count;
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
 	private static readonly List<HookList> hooks = new List<HookList>();
@@ -50,6 +51,16 @@ public static class ItemLoader
 	{
 		items.Add(item);
 		return ItemCount++;
+	}
+
+	/// <summary>
+	/// Registers a new item use style (<see cref="ItemUseStyleID"/>). The return value is its unique ID suitable for <see cref="Item.useStyle"/>.
+	/// </summary>
+	public static int RegisterUseStyle(Mod mod, string useStyleName)
+	{
+		int useStyle = UseStyleCount++;
+		ItemUseStyleID.Search.Add($"{mod?.Name ?? "Terraria"}/{useStyleName}", useStyle);
+		return useStyle;
 	}
 
 	/// <summary>
@@ -150,6 +161,7 @@ public static class ItemLoader
 	internal static void Unload()
 	{
 		ItemCount = ItemID.Count;
+		UseStyleCount = ItemUseStyleID.Count;
 		items.Clear();
 		FlexibleTileWand.Reload();
 		GlobalList<GlobalItem>.Reset();
@@ -1235,10 +1247,38 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateVisibleAccessory);
+
+	/// <summary>
+	/// Hook at the end of Player.UpdateVisibleAccessory that can be called to set flags related to player drawing.
+	/// </summary>
+	public static void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateVisibleAccessory(player, hideVisual);
+
+		foreach (var g in HookUpdateVisibleAccessory.Enumerate(item)) {
+			g.UpdateVisibleAccessory(item, player, hideVisual);
+		}
+	}
+
+	private static HookList HookUpdateItemDye = AddHook<Action<Item, Player, int, bool>>(g => g.UpdateItemDye);
+
+	public static void UpdateItemDye(Item item, Player player, int dye, bool hideVisual)
+	{
+		item.ModItem?.UpdateItemDye(player, dye, hideVisual);
+
+		foreach (var g in HookUpdateItemDye.Enumerate(item)) {
+			g.UpdateItemDye(item, player, dye, hideVisual);
+		}
+	}
+
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 
 	/// <summary>
-	/// If the head's ModItem.IsArmorSet returns true, calls the head's ModItem.UpdateArmorSet. This is then repeated for the body, then the legs. Then for each GlobalItem, if GlobalItem.IsArmorSet returns a non-empty string, calls GlobalItem.UpdateArmorSet with that string.
+	/// If the head's <see cref="ModItem.IsArmorSet(Item, Item, Item)"/> returns true, calls the head's <see cref="ModItem.UpdateArmorSet(Player)"/>. This is then repeated for the body, then the legs. Then for each GlobalItem, if <see cref="GlobalItem.IsArmorSet(Item, Item, Item)"/> returns a non-empty string, calls <see cref="GlobalItem.UpdateArmorSet(Player, string)"/> with that string.
 	/// </summary>
 	public static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
 	{
@@ -2029,11 +2069,29 @@ public static class ItemLoader
 		return true;
 	}
 
+	public static bool CanEquipAccessory(Player player, Item item, int slot, bool modded)
+	{
+		if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))
+			return false;
+
+		foreach (var g in HookCanEquipAccessory.Enumerate(item)) {
+			if (!g.CanEquipAccessory(item, player, slot, modded))
+				return false;
+		}
+
+		return true;
+	}
+
 	private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
 
 	public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem)
 	{
 		Player player = Main.player[Main.myPlayer];
+		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
+	}
+
+	public static bool CanAccessoryBeEquippedWith(Player player, Item equippedItem, Item incomingItem)
+	{
 		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
 	}
 

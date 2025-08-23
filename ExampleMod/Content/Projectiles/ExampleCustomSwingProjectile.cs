@@ -217,6 +217,12 @@ namespace ExampleMod.Content.Projectiles
 			Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
 			Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
 
+			// Adjust the position for reversed gravity.
+			if (Owner.gravDir == -1f) {
+				Projectile.rotation = 0f - Projectile.rotation;
+				armPosition.Y = Owner.Bottom.Y + (Owner.position.Y - armPosition.Y);
+			}
+
 			armPosition.Y += Owner.gfxOffY;
 			Projectile.Center = armPosition; // Set projectile to arm position
 			Projectile.scale = Size * 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem); // Slightly scale up the projectile and also take into account melee size modifiers

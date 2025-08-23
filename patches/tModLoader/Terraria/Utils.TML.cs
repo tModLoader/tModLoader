@@ -275,4 +275,58 @@ partial class Utils
 
 		text2 = "";
 	}
+
+	/// <summary>
+	/// Creates a <see cref="Rectangle"/> from the provided corners. They do not need to be in a specific order.
+	/// </summary>
+	public static Rectangle CornerRectangle(Point pointA, Point pointB)
+	{
+		int left = Math.Min(pointA.X, pointB.X);
+		int top = Math.Min(pointA.Y, pointB.Y);
+		int width = Math.Abs(pointA.X - pointB.X);
+		int height = Math.Abs(pointA.Y - pointB.Y);
+		return new Rectangle(left, top, width, height);
+	}
+
+	/// <inheritdoc cref="CornerRectangle(Point, Point)"/>
+	public static Rectangle CornerRectangle(Vector2 pointA, Vector2 pointB) => CornerRectangle(pointA.ToPoint(), pointB.ToPoint());
+
+	/// <summary>
+	/// Creates a <see cref="Rectangle"/> containing all of the provided points.
+	/// </summary>
+	public static Rectangle BoundingRectangle(Point[] points)
+	{
+		if (points.Length == 0)
+			return new Rectangle();
+		var rectangle = new Rectangle(points[0].X, points[0].Y, 0, 0);
+		for (int i = 1; i < points.Length; i++)
+			rectangle = rectangle.Including(points[i]);
+		return rectangle;
+	}
+
+	/// <inheritdoc cref="BoundingRectangle(Point[])"/>
+	public static Rectangle BoundingRectangle(Vector2[] vectors)
+	{
+		if (vectors.Length == 0)
+			return new Rectangle();
+		var rectangle = new Rectangle((int)vectors[0].X, (int)vectors[0].Y, 0, 0);
+		for (int i = 1; i < vectors.Length; i++)
+			rectangle = rectangle.Including(vectors[i]);
+		return rectangle;
+	}
+
+	/// <summary>
+	/// Expands the provided <paramref name="rect"/> to include <paramref name="point"/> and returns the newly expanded <see cref="Rectangle"/>.
+	/// </summary>
+	public static Rectangle Including(this Rectangle rect, Point point)
+	{
+		int l = Math.Min(rect.Left, point.X);
+		int r = Math.Max(rect.Right, point.X);
+		int t = Math.Min(rect.Top, point.Y);
+		int b = Math.Max(rect.Bottom, point.Y);
+		return new Rectangle(l, t, r - l, b - t);
+	}
+
+	/// <inheritdoc cref="Including(Rectangle, Point)"/>
+	public static Rectangle Including(this Rectangle rect, Vector2 point) => rect.Including(point.ToPoint());
 }

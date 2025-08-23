@@ -6,11 +6,12 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
-@@ -10,12 +_,13 @@
+@@ -10,12 +_,14 @@
  using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Default;
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
@@ -631,14 +632,19 @@
  		}
  	}
  
-@@ -1508,6 +_,11 @@
+@@ -1508,6 +_,16 @@
  					value = TextureAssets.InventoryBack13.Value;
  					color2 = GetColorByLoadout(slot, context);
  					break;
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot:
 +				case Context.ModdedDyeSlot:
-+					value = LoaderManager.Get<AccessorySlotLoader>().GetBackgroundTexture(slot, context);
++					AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
++					(value, bool sharedOrCustomTexture) = accessorySlotLoader.GetBackgroundTexture(slot, context);
++					if (!sharedOrCustomTexture) {
++						color2 = GetColorByLoadout(slot, Math.Abs(context));
++					}
++					accessorySlotLoader.Get(slot).BackgroundDrawColor(accessorySlotLoader.ContextToEnum(context), ref color2);
 +					break;
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;
@@ -764,6 +770,14 @@
  			}
  		}
  
+@@ -2166,6 +_,7 @@
+ 		return true;
+ 	}
+ 
++	// Vanilla usages other than for tile entities acting like players replaced with AccCheck_ForLocalPlayer to support player-specific checks and hooks.
+ 	public static bool AccCheck(Item[] itemCollection, Item item, int slot)
+ 	{
+ 		if (isEquipLocked(item.type))
 @@ -2195,6 +_,7 @@
  		return false;
  	}

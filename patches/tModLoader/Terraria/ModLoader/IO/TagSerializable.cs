@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.IO;
 
@@ -13,6 +15,7 @@ public interface TagSerializable
 internal class TagSerializableSerializer<T> : TagSerializer<T, TagCompound> where T : TagSerializable
 {
 	private Func<TagCompound, T> deserializer;
+	private Dictionary<string, TagSerializer> subtypeSerializers;
 
 	public TagSerializableSerializer()
 	{
@@ -36,15 +39,31 @@ internal class TagSerializableSerializer<T> : TagSerializer<T, TagCompound> wher
 
 	public override T Deserialize(TagCompound tag)
 	{
-		if (tag.ContainsKey("<type>") && tag.GetString("<type>") != Type.FullName) {
-			var instType = GetType(tag.GetString("<type>"));
-			if (instType != null && Type.IsAssignableFrom(instType) && TryGetSerializer(instType, out TagSerializer instSerializer))
-				return (T)instSerializer.Deserialize(tag);
+		if (tag.TryGet<string>("<type>", out var typeName) && typeName != Type.FullName && TryGetSubtypeSerializer(typeName, out var subtypeSerializer))
+			return (T)subtypeSerializer.Deserialize(tag);
+
+		if (deserializer == null) {
+			var msg = $"Missing deserializer for type '{Type.FullName}'";
+			if (typeName != null && typeName != Type.FullName)
+				msg += $", subtype '{typeName}'";
+
+			throw new ArgumentException(msg);
 		}
 
-		if (deserializer == null)
-			throw new ArgumentException($"Missing deserializer for type '{Type.FullName}'.");
-
 		return deserializer(tag);
+	}
+
+	private bool TryGetSubtypeSerializer(string typeName, out TagSerializer subtypeSerializer)
+	{
+		subtypeSerializers ??= [];
+		if (!subtypeSerializers.TryGetValue(typeName, out subtypeSerializer)) {
+			var subtype = AssemblyManager.FindSubtype(typeof(T), typeName);
+			if (subtype != null)
+				TryGetSerializer(subtype, out subtypeSerializer);
+
+			subtypeSerializers[typeName] = subtypeSerializer; // cache the serializer, even if it's null
+		}
+
+		return subtypeSerializer != null;
 	}
 }

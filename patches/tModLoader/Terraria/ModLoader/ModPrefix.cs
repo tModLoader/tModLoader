@@ -27,6 +27,9 @@ public enum PrefixCategory
 	Custom
 }
 
+/// <summary>
+/// Represents a modded prefix (or modifier). The <see href="https://terraria.wiki.gg/wiki/Modifiers">Modifiers page on the Terraria wiki</see> is a good resource for vanilla prefixes.
+/// </summary>
 public abstract class ModPrefix : ModType, ILocalizedModType
 {
 	public int Type { get; internal set; }
@@ -66,6 +69,9 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 
 	/// <summary>
 	/// Sets the stat changes for this prefix. If data is not already pre-stored, it is best to store custom data changes to some static variables.
+	/// <br/><br/> All parameters default to 1f, except <paramref name="critBonus"/> which defaults to 0.
+	/// <br/><br/> It is important to remember that a prefix will only be applied to an item if every stat it affects would be changed after multiplication and rounding to the nearest integer. If a ModPrefix is not being applied to items, a multiplier might be too insignificant. The <see href="https://terraria.wiki.gg/wiki/Modifiers#Notes">Modifiers page on the Terraria wiki</see> has more details.
+	/// <br/><br/> Use <see cref="AllStatChangesHaveEffectOn"/> to implement that same restriction for modded stats. 
 	/// </summary>
 	public virtual void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult,
 		ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus) { }

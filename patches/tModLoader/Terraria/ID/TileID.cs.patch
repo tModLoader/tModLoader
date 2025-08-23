@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,12 @@
+@@ -1,11 +_,13 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
@@ -10,17 +10,26 @@
 -public class TileID
 +public partial class TileID
  {
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
  		public static class Conversion
  		{
-@@ -106,19 +_,75 @@
+@@ -30,6 +_,7 @@
+ 		{
+ 			public static bool[] None = Factory.CreateBoolSet(false);
+ 			public static bool[] IgnoreDontHurtNature = Factory.CreateBoolSet(true, 654, 444, 485, 231, 484, 32, 352, 655, 69, 51, 481, 482, 483);
++			/// <summary> Tiles that should be ignored by the <see cref="ItemID.StaffofRegrowth"/> hitbox despite being <see cref="Main.tileCut"/>. </summary>
+ 			public static bool[] Regrowth = Factory.CreateBoolSet(false, 3, 24, 52, 61, 62, 71, 73, 74, 82, 83, 84, 110, 113, 115, 184, 205, 201, 519, 518, 528, 529, 530, 549, 637, 638, 636);
+ 		}
+ 
+@@ -106,19 +_,79 @@
  			};
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
++		public static SetFactory Factory = new SetFactory(TileLoader.TileCount, nameof(TileID), Search);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then players will slip on that tile.
@@ -61,6 +70,9 @@
 +		/// </summary>
  		public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +
++		/// <summary>
++		/// If true, tiles of this type in a slightly larger range than the normal destruction will be destroyed by a meteor. Contains tree tiles, CorruptThorns, and CrimsonThorns, suggesting that the heat from the meteor's impact burned up those tiles.
++		/// </summary>
  		public static bool[] GetsDestroyedForMeteors = Factory.CreateBoolSet(false, 5, 32, 352, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
  		public static bool[] GetsCheckedForLeaves = Factory.CreateBoolSet(false, 5, 323, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
 +		/// <summary>
@@ -68,6 +80,7 @@
 +		/// <br/> Use <see cref="ModTile.CanKillTile(int, int, ref bool)"/> or <see cref="GlobalTile.CanKillTile(int, int, int, ref bool)"/> to dynamically prevent tile removal for situations with more complex logic. Note that block swap will still work.
 +		/// <br/> To affect tile replace behavior in a similar manner, see <see cref="PreventsTileReplaceIfOnTopOfIt"/>
 +		/// <br/> Used mostly by demon altar, trees, and item display tiles (Mannequin, Hat Rack).
++		/// <para/> See also <see cref="PreventsTileHammeringIfOnTopOfIt"/>, which is frequently set in tandem with this.
 +		/// </summary>
  		public static bool[] PreventsTileRemovalIfOnTopOfIt = Factory.CreateBoolSet(false, 5, 323, 72, 488, 26, 583, 584, 585, 586, 587, 588, 589, 596, 616, 470, 475, 634);
 +		/// <summary>
@@ -114,7 +127,7 @@
  		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
  			(ushort)11,
  			true,
-@@ -148,7 +_,15 @@
+@@ -148,25 +_,73 @@
  			(ushort)579,
  			true
  		});
@@ -128,10 +141,17 @@
 +		/// <br/> Use <see cref="ModTile.CanReplace(int, int, int)"/> or <see cref="GlobalTile.CanReplace(int, int, int, int)"/> to dynamically prevent tile replacement for situations with more complex logic.
 +		/// </summary>
  		public static bool[] DoesntGetReplacedWithTileReplacement = Factory.CreateBoolSet(58, 225, 171, 127, 481, 482, 483, 423);
++		/// <summary> Indicates that this tile is a vine tile. Used to limit vine growth in an area and facilitates converting vines when the anchor tile is changed. </summary>
  		public static bool[] IsVine = Factory.CreateBoolSet(52, 382, 62, 115, 205, 528, 636, 638);
  		public static bool[] IsBeam = Factory.CreateBoolSet(124, 561, 574, 575, 576, 577, 578);
-@@ -156,17 +_,50 @@
+ 		public static bool[] Platforms = Factory.CreateBoolSet(19, 427, 435, 436, 437, 438, 439);
++		/// <summary>
++		/// If this tile is above a tile being replaced via the block swap feature, it will be destroyed. Contains various plant tiles.
++		/// </summary>
  		public static bool[] ReplaceTileBreakUp = Factory.CreateBoolSet(27, 20, 227, 24, 201, 110, 113, 61, 74, 71, 3, 73, 186, 187, 185, 233, 530, 236, 238, 254, 484, 485, 84, 82, 83, 529, 549, 590, 595, 615, 624, 637);
++		/// <summary>
++		/// If this tile is below a tile being replaced via the block swap feature, it will be destroyed. Contains various vine tiles.
++		/// </summary>
  		public static bool[] ReplaceTileBreakDown = Factory.CreateBoolSet(205, 115, 62, 52, 382, 444, 528, 638, 636);
  		public static bool[] SlowlyDiesInWater = Factory.CreateBoolSet(3, 20, 24, 27, 73, 201, 80, 110, 529, 530, 590, 595, 615, 637);
 +		/// <summary>
@@ -212,7 +232,7 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 226, 237);
  		public static List<int> CorruptCountCollection = new List<int> {
  			23,
-@@ -231,29 +_,77 @@
+@@ -231,34 +_,87 @@
  		public static bool[] IsSkippedForNPCSpawningGroundTypeCheck = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 541);
  		public static bool[] BlocksStairsAbove = Factory.CreateBoolSet(386, 387);
@@ -239,6 +259,10 @@
 +		/// </summary>
  		public static bool[] InteractibleByNPCs = Factory.CreateBoolSet(17, 77, 133, 12, 665, 639, 26, 35, 36, 55, 395, 471, 21, 467, 29, 97, 88, 99, 463, 491, 33, 372, 174, 49, 646, 100, 173, 78, 79, 94, 96, 101, 50, 103, 282, 106, 114, 125, 171, 172, 207, 215, 220, 219, 244, 228, 237, 247, 128, 269, 354, 355, 377, 287, 378, 390, 302, 405, 406, 411, 425, 209, 441, 468, 452, 454, 455, 457, 462, 470, 475, 494, 499, 505, 511, 510, 520, 543, 565, 573, 597, 598, 617, 621, 464, 642);
  		public static bool[] HousingWalls = Factory.CreateBoolSet(11, 389, 386);
++		/// <summary>
++		/// If true, this tile will be broken when placing another tile at its location. To also break by weapons and projectiles, use <see cref="Main.tileCut"/> instead. Contains various ambient object tiles such as rock piles, larger plants, coral, and stalactites. Does not include the "fake" tiles placeable by the rubblemaker.
++		/// <br/><br/> Defaults to false.
++		/// </summary>
  		public static bool[] BreakableWhenPlacing = Factory.CreateBoolSet(324, 186, 187, 185, 165, 530, 233, 227, 485, 81, 624);
  		public static bool[] TouchDamageDestroyTile = Factory.CreateBoolSet(32, 69, 352, 655);
 +		/// <summary>
@@ -290,6 +314,12 @@
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
  		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633);
+ 		public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 661, 109, 199, 662, 60, 70, 633);
+ 	}
++#endif
+ 
+ 	public const ushort Dirt = 0;
+ 	public const ushort Stone = 1;
 @@ -954,5 +_,6 @@
  	public const ushort VioletMossBlock = 691;
  	public const ushort RainbowMossBlock = 692;

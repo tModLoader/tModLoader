@@ -81,7 +81,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Therefore we register the top-left of the tile as a "special point"
 			// This allows us to draw things in SpecialDraw
 			if (drawData.tileFrameX % FrameWidth == 0 && drawData.tileFrameY % FrameHeight == 0) {
-				Main.instance.TilesRenderer.AddSpecialPoint(i, j, Terraria.GameContent.Drawing.TileDrawing.TileCounterType.CustomNonSolid);
+				Main.instance.TilesRenderer.AddSpecialPoint(i, j, Terraria.GameContent.Drawing.TileDrawing.TileCounterType.CustomNonSolid); // This tile is not Main.tileSolid, so CustomNonSolid is the correct choice here.
 			}
 		}
 
@@ -123,6 +123,25 @@ namespace ExampleMod.Content.Tiles.Furniture
 			for (float num5 = 0f; num5 < 1f; num5 += 355f / (678f * (float)Math.PI)) {
 				spriteBatch.Draw(texture, drawPos + (TwoPi * num5).ToRotationVector2() * (6f + offset * 2f), frame, effectColor, 0f, origin, 1f, effects, 0f);
 			}
+		}
+
+		// One drawback of relic tiles is that the placement preview doesn't show the relic itself (only the pedestal) since the relic would normally be manually drawn. We can use PostDrawPlacementPreview to draw the relic during tile placement.
+		public override void PostDrawPlacementPreview(int i, int j, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, bool validPlacement, SpriteEffects spriteEffects) {
+			// Adjust the draw coordinates in case the preview is drawing the placement facing right.
+			bool facingRight = frame.Y / FrameHeight != 0;
+			spriteEffects = facingRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			frame.Y %= FrameHeight;
+
+			// Convert from tile coordinates with tile padding to the corresponding RelicTexture coordinates.
+			frame.X = frame.X / 18 * 16;
+			frame.Y = frame.Y / 18 * 16;
+			if (facingRight && frame.X != 16) {
+				// We also need to swap the 1st and 3rd columns to render correctly.
+				frame.X = frame.X == 0 ? 32 : 0;
+			}
+
+			// Finally, manually draw a section of the relic texture. Note that color will be White or Red so the individual sections that conflict with existing tiles will show as Red, just like the normal placement preview using the actual tile texture.
+			spriteBatch.Draw(RelicTexture.Value, position, frame, color, 0f, Vector2.Zero, 1f, spriteEffects, 0f);
 		}
 	}
 

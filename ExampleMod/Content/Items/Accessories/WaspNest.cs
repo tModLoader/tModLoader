@@ -85,7 +85,7 @@ namespace ExampleMod.Content.Items.Accessories
 		// This is just an example of the concept of storing an Item instance for accessory effects and GetSource_Accessory or GetSource_Accessory_OnHurt,
 		// if you actually are making an accessory with the existing Honey Comb effect, just set "player.honeyCombItem = Item;" in UpdateAccessory instead
 		public override void OnHurt(Player.HurtInfo info) {
-			if(Player.whoAmI != Main.myPlayer) {
+			if (Player.whoAmI != Main.myPlayer) {
 				return;
 			}
 
@@ -93,7 +93,7 @@ namespace ExampleMod.Content.Items.Accessories
 				int baseDamage = 20;
 
 				// By storing the Item instance, we can create varying effects for different "tiers" of accessories. 
-				if(strongBeesItem.ModItem is WaspNest) {
+				if (strongBeesItem.ModItem is WaspNest) {
 					baseDamage += 10;
 				}
 

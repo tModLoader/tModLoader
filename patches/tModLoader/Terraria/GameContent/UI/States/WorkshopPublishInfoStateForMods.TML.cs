@@ -9,6 +9,7 @@ using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Social;
 using Terraria.Social.Base;
@@ -60,7 +61,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
 			// Copy the used preview image to the mod's source directory if it's not a resize and if one isn't there already.
-			string iconWorkshopPath = Path.Combine(ModCompile.ModSourcePath, _dataObject.Name, "icon_workshop.png");
+			string iconWorkshopPath = Path.Combine(_buildData["sourcesfolder"], "icon_workshop.png");
 			if (_previewImagePath != iconWorkshopPath && !resizedPreviewImage && !File.Exists(iconWorkshopPath)) {
 				try {
 					File.Copy(_previewImagePath, iconWorkshopPath, overwrite: true);
@@ -164,6 +165,9 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 				// Automatically set option slightly redder, indicating it was automatically selected. Even redder if below 75%
 				tagOption.SetColor(tagOption.IsSelected ? (!localTag.degraded ? new Color(192, 175, 235) : new Color(255, 175, 235)) : Colors.InventoryDefaultColor, 1f);
 			}
+			var translationTagOption = _tagOptions.FirstOrDefault(x => x.OptionValue.NameKey == "tModLoader.TagsTranslation");
+			translationTagOption.SetCurrentOption(mod.TranslationForMods != null ? translationTagOption.OptionValue : null);
+			translationTagOption.SetColor(translationTagOption.IsSelected ? new Color(192, 175, 235) : Colors.InventoryDefaultColor, 1f);
 		}
 	}
 

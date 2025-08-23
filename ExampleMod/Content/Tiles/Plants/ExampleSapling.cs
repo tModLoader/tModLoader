@@ -78,7 +78,7 @@ namespace ExampleMod.Content.Tiles.Plants
 			// A flag to check if a player is near the sapling
 			bool isPlayerNear = WorldGen.PlayerLOS(i, j);
 
-			//If growing the tree was a success and the player is near, show growing effects
+			// If growing the tree was a success and the player is near, show growing effects
 			if (growSuccess && isPlayerNear) {
 				WorldGen.TreeGrowFXCheck(i, j);
 			}

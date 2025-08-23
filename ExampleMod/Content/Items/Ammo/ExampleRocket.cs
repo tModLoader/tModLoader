@@ -1,7 +1,7 @@
+using ExampleMod.Content.Projectiles.Rockets;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ExampleMod.Content.Projectiles.Rockets;
 
 namespace ExampleMod.Content.Items.Ammo
 {

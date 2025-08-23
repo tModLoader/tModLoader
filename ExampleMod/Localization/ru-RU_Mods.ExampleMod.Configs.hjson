@@ -24,7 +24,20 @@ ExampleModConfig: {
 		// Tooltip: ""
 	}
 
-	// Headers.Items: Items
+	WingSlotLoadoutSupportToggle: {
+		// Label: Loadout support for ExampleModWingSlot
+		// Tooltip: Disable this to share a single Wing item between all loadouts!
+	}
+
+	Headers: {
+		// Items: Items
+		// Other: Other
+	}
+
+	AdditionalFlamingWeaponEntries: {
+		// Label: Additional Flaming Weapon Entries
+		// Tooltip: ""
+	}
 }
 
 ModConfigShowcaseAccessibility: {
@@ -116,6 +129,16 @@ ModConfigShowcaseDataTypes: {
 
 	SomeUInt: {
 		// Label: Some UInt
+		// Tooltip: ""
+	}
+
+	SomeLong: {
+		// Label: Some Long
+		// Tooltip: ""
+	}
+
+	SomeULong: {
+		// Label: Some ULong
 		// Tooltip: ""
 	}
 

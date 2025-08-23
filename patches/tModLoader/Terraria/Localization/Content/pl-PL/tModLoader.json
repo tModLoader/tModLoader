@@ -23,6 +23,7 @@
 		"ShowNewUpdatedModsInfoMessage": "Poniższe Mody zostały zaktualizowane lub dodane do Steam Workshop od czasu ostatniego uruchomienia gry (możesz wyłączyć to powiadomienie w ustawieniach):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNowe Mody:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nZaktualizowane Mody:",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Downloads Dependencies' to have option to redownload",
 		"DependenciesNeededForOtherMods": "\nBrakuje niektórych zależności:",
 		"InstallDependencies": "Zainstaluj zależności",
 		"ContinueAnyway": "Kontynuuj mimo to",
@@ -140,9 +141,12 @@
 		"ModConfigNotification": "Powiadomienie: ",
 		"ModConfigModConfig": "Konfiguracja moda",
 		"ModConfigSaveConfig": "Zapisz konfigurację",
+		// "ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "Wróć",
 		"ModConfigRevertChanges": "Przywróć zmiany",
+		// "ModConfigChangesReverted": "Changes Reverted",
 		"ModConfigRestoreDefaults": "Przywróć domyślne",
+		// "ModConfigDefaultsRestored": "Defaults Restored",
 		"ModConfigAskingServerToAcceptChanges": "Proszenie serwera o zaakceptowanie zmian...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Nie można zapisać, ponieważ zmiany wymagałyby ponownego załadowania",
 		"ModConfigServerSide": "Konfiguracja serwera",
@@ -167,6 +171,12 @@
 		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Brak Opcji",
+
+		// Achievements
+		"AchievementsReset": "Resetować",
+		"AchievementsResetConfirm": "Jesteś pewien?",
+		"AchievementsResetConfirmTooltip": "Zresetowanie osiągnięć oznacza, że utracisz je na stałe. Czy na pewno chcesz kontynuować?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
 
 		// Workshop
 		"WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",
@@ -232,6 +242,8 @@
 		"LoadErrorEffectFailedToLoad": "Plik z efektem {0}, nie mógł być załadowany.",
 		"LoadErrorUnknownXNBFileHint": "Nieznany plik xnb {0}. Być może powinien znajdować się w Fonts/ lub Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Nie można załadować skompresowanych efektów",
+		// "LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
+		// "LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
 		"LoadErrorNotLoading": "Mod.AddContent może być wywołany tylko podczas ładowania",
 		"LoadErrorDuplicateName": "Nie można dodać dwóch {0} o tej samej nazwie: {1}. Być może 2 klasy dzielą nazwę klasy, ale znajdują się w różnych przestrzeniach nazw podczas autoloadingu lub ręcznie wywołałeś AddContent z 2 {0} o tej samej nazwie.",
@@ -500,6 +512,7 @@
 		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
 		"MSLastBuilt": "Ostatnio skompilowano: {0}",
 		"MSCreateMod": "Stwórz Moda",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "LINK: Dowiedz się więcej o przygotowaniu Modów do nowej wersji tML",
 		"WikiLink": "Przeglądaj Wiki",
 		"ExampleModLink": "Sprawdź przykładowy mod",
@@ -511,6 +524,8 @@
 		"MSNetSDKNotFound": "Tworzenie modów dla tModLoadera wymaga zainstalowania .NET {0} SDK, ale nie zostało to wykryte. Kliknij poniżej przycisk \"Pobierz .NET SDK\" w celu uzyskania instrukcji instalacji. Po zainstalowaniu może być konieczne ponowne uruchomienie tModLoadera.",
 		"DownloadNetSDK": "Pobierz .NET SDK",
 		"DevModsInSandbox": "tModLoader nie może rozwijać modów podczas działania w piaskownicy (np. w przypadku Flatpak). Upewnij się, że zainstalowano Steam bezpośrednio na Twoim systemie.",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "NazwaModa (bez spacji)",
@@ -558,6 +573,10 @@
 		"CommandModListSyncedMods": "Synchronizowane Mody:",
 		"CommandModListClientMods": "Mody Klienta:",
 		"CommandModListModlist": "Lista Modów:",
+		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		// "CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		// "CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "Budowanie: {0}",
@@ -613,6 +632,9 @@
 		"slotStack": "Tabela slotów",
 		"slotScroll": "Przewijalna lista slotów",
 		"PressXToClose": "Wciśnij {0}, aby zamknąć",
+		// "SharedAccessorySlotConflictMessage": "One or more shared accessory conflicts with the accessories in this loadout, they have been disabled.",
+		// "SharedAccessorySlotConflictTooltip": "This shared accessory slot is disabled since it conflicts with other accessories in this loadout",
+		// "ModAccessorySlotNoLongerSharedItemsRemoved": "Some items have been moved from accessory slots to inventory due to HasEquipmentLoadoutSupport changing to true.",
 
 		// Misc
 		"OK": "OK",
@@ -658,6 +680,8 @@
 		"TagsUtilityDescription": "Dodaje rzeczy oraz funkcje zorientowane na wspomaganie gry",
 		"TagsLibrary": "Biblioteka (lib)",
 		"TagsLibraryDescription": "Dostarcza dodatkowe API oraz funkcje użyteczne dla twórców modów",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Zawartość typu QoL (Quality Of Life)",
 		"TagsQoLDescription": "Funkcje lub zmiany, które głownie wspomagają gracza przy wykonywaniu monotonnych aktywności w grze",
 		"TagsGameplay": "Zmiany w mechanikach gry",

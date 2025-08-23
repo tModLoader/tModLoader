@@ -496,7 +496,7 @@ public partial class Main
 		}
 
 		// Canary file for legacy Terraria branches.
-		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_112.xnb"))) {
+		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_651.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
 		}
@@ -578,7 +578,7 @@ public partial class Main
 				newsChecked = true;
 				// Download latest news, save to config.json.
 				// https://partner.steamgames.com/doc/webapi/ISteamNews
-				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1&feeds=steam_community_announcements").ContinueWith(response => {
 					if (!response.IsCompletedSuccessfully || response.Exception != null) {
 						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
 						return;

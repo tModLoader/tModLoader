@@ -1,7 +1,7 @@
 ﻿using ExampleMod.Content.Tiles.Banners;
+using Terraria;
 using Terraria.Enums;
 using Terraria.ModLoader;
-using Terraria;
 
 namespace ExampleMod.Content.Items.Placeable.Banners
 {

@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+using ExampleMod.Common.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
-using Terraria.GameContent.Bestiary;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using ExampleMod.Common.Systems;
-using System.Linq;
 
 namespace ExampleMod.Content.NPCs.TownPets
 {
@@ -133,7 +133,7 @@ namespace ExampleMod.Content.NPCs.TownPets
 				1 => NameList1, // Variant 1 will be the Shimmered variant if your NPC has a shimmer variant.
 				// The Green (2) variant shows one approach to localizing Town NPC names.
 				// One additional benefit of this approach is a separate mod can add a Mods.ExampleMod.NPCs.ExampleTownPet.Names.Green.Emerald key and it will automatically be used as an name option.
-				2 => Language.FindAll(Lang.CreateDialogFilter(this.GetLocalizationKey("Names.Green"))).Select(x => x.Value).ToList(),
+				2 => Language.FindAll(Lang.CreateDialogFilter(this.GetLocalizationKey("Names.Green."))).Select(x => x.Value).ToList(),
 				3 => NameList3,
 				4 => NameList4,
 				5 => NameList5,
@@ -145,7 +145,7 @@ namespace ExampleMod.Content.NPCs.TownPets
 		public override string GetChat() {
 			WeightedRandom<string> chat = new();
 
-			chat.Add("*Example Town Pet noises*");
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTownPet.StandardDialogue"));
 
 			return chat;
 		}

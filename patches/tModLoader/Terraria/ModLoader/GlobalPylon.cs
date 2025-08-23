@@ -57,7 +57,7 @@ public abstract class GlobalPylon : ModType
 	/// step succeed regardless. Returns null by default.
 	/// </summary>
 	/// <remarks>
-	/// Note that you may also change the the default npc count value if for some reason you wish to change the default
+	/// Note that you may also change the default npc count value if for some reason you wish to change the default
 	/// amount of NPCs required to satisfy ALL pylons (if they adhere to what value it is).
 	/// </remarks>
 	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
