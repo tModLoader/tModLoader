@@ -155,7 +155,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 		// Update Localization Tags Automatically if the mod is loaded. (Can only publish if enabled, but just in case.)
 		if (ModLoader.ModLoader.TryGetMod(_dataObject.Name, out ModLoader.Mod mod)) {
-			var autoLocalTags = SocialBrowserModule.GetModLocalizationProgress(mod.File, _tagOptions.Where(a => a.IsSelected).Select(b=>b.OptionValue).ToList());
+			var autoLocalTags = SocialBrowserModule.GetModLocalizationProgress(mod.File, _tagOptions.Where(a => a.IsSelected).Select(b=>b.OptionValue).ToList(), mod.SourceFolder);
 
 			foreach (var localTag in autoLocalTags) {
 				var tagOption = _tagOptions.Find(a => a.OptionValue == localTag.tag);

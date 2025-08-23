@@ -20,7 +20,7 @@ public static class LocalizationLoader
 		var lang = LanguageManager.Instance;
 		var gameTipPrefix = $"Mods.{mod.Name}.GameTips.";
 
-		foreach (var (key, _) in LoadTranslations(mod.File, GameCulture.DefaultCulture)) {
+		foreach (var (key, _) in LoadTranslations(mod.File, GameCulture.DefaultCulture, mod.SourceFolder)) {
 			var text = lang.GetOrRegister(key); // adds the key but leaves it untranslated for now.
 
 			if (key.StartsWith(gameTipPrefix))
@@ -32,7 +32,7 @@ public static class LocalizationLoader
 	{
 		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
-			foreach (var (key, value) in LoadTranslations(mod.File, culture)) {
+			foreach (var (key, value) in LoadTranslations(mod.File, culture, mod.SourceFolder)) {
 				lang.GetText(key).SetValue(value); // can only set the value of existing keys. Cannot register new keys.
 			}
 		}
@@ -178,7 +178,7 @@ public static class LocalizationLoader
 		return false;
 	}
 
-	private static List<(string key, string value)> LoadTranslations(TmodFile tModFile, GameCulture culture)
+	private static List<(string key, string value)> LoadTranslations(TmodFile tModFile, GameCulture culture, string sourceFolder)
 	{
 		if (tModFile == null)
 			return new();
@@ -199,9 +199,10 @@ public static class LocalizationLoader
 
 				string translationFileContents = streamReader.ReadToEnd();
 
+				// If the 
 				string modpath = Path.Combine(tModFile.Name, translationFile.Name).Replace('/', '\\');
 				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
-					string path = Path.Combine(mod.SourceFolder, translationFile.Name);
+					string path = Path.Combine(sourceFolder, translationFile.Name);
 					if (File.Exists(path)) {
 						try {
 							translationFileContents = File.ReadAllText(path);
@@ -776,7 +777,7 @@ public static class LocalizationLoader
 	}
 
 	private static readonly Dictionary<string, Dictionary<GameCulture, int>> localizationEntriesCounts = new();
-	internal static Dictionary<GameCulture, int> GetLocalizationCounts(TmodFile tModFile)
+	internal static Dictionary<GameCulture, int> GetLocalizationCounts(TmodFile tModFile, string sourceFolder)
 	{
 		if (localizationEntriesCounts.TryGetValue(tModFile.Name, out var results)) {
 			return results;
@@ -784,7 +785,7 @@ public static class LocalizationLoader
 
 		results = new Dictionary<GameCulture, int>();
 		foreach (var culture in GameCulture.KnownCultures) {
-			var localizationEntries = LoadTranslations(tModFile, culture);
+			var localizationEntries = LoadTranslations(tModFile, culture, sourceFolder);
 			// Only count only non-"" entries. Also ignore entries that are just substitutions.
 			int countNonTrivialEntries = localizationEntries.Where(x => HasTextThatNeedsLocalization(x.value)).Count();
 			results.Add(culture, countNonTrivialEntries);

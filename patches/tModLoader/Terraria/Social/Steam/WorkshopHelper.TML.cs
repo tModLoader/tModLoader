@@ -233,12 +233,12 @@ public partial class WorkshopHelper
 					if (publishTags != null)
 						setTags = SteamedWraps.ModTags
 							.Where(x => publishTags.Contains(x.NameKey))
-							.Select(x => new WorkshopTagOption(x.InternalNameForAPIs, x.InternalNameForAPIs)).ToList();
+							.Select(x => new WorkshopTagOption(x.NameKey, x.InternalNameForAPIs)).ToList();
 					else
 						setTags = existingTags;
 
 					// Localization Tags
-					var autoLang = SocialBrowserModule.GetModLocalizationProgress(modFile, existingTags);
+					var autoLang = SocialBrowserModule.GetModLocalizationProgress(modFile, existingTags, sourceFolder: "");
 					setTags.Except(autoLang.Where(a => !a.setState).Select(b => b.tag));
 					setTags.Union(autoLang.Where(a => a.setState).Select(b => b.tag));
 

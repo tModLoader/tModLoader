@@ -146,9 +146,9 @@ public interface SocialBrowserModule
 		return "1.4.4"; // Long Term Service Version 1.4.4 (Current)
 	}
 
-	public static List<(WorkshopTagOption tag, bool setState, bool degraded)> GetModLocalizationProgress(TmodFile tModFile, List<WorkshopTagOption> existingActiveTagsList)
+	public static List<(WorkshopTagOption tag, bool setState, bool degraded)> GetModLocalizationProgress(TmodFile tModFile, List<WorkshopTagOption> existingActiveTagsList, string sourceFolder)
 	{
-		var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(tModFile);
+		var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(tModFile, sourceFolder);
 		int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
 
 		ModLoader.Logging.tML.Info($"Determining localization progress for {tModFile.Name}:");
