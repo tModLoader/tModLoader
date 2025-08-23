@@ -1257,6 +1257,7 @@ Mods: {
 			ExampleHellSolutionProjectile.DisplayName: Example Hell Solution Projectile
 			ExampleInteractableProjectile.DisplayName: Example Interactable Projectile
 			ExampleSentry.DisplayName: Example Sentry
+			ExampleSentryShot.DisplayName: Example Sentry Shot
 		}
 
 		Buffs: {
