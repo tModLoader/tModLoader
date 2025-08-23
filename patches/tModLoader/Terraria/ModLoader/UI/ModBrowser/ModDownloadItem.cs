@@ -100,13 +100,13 @@ public class ModDownloadItem
 		return GetComparable().GetHashCode();
 	}
 
-	public IEnumerable<ModVersionHash> GetModVersionHashes()
+	public List<ModVersionHash> GetModVersionHashes()
 	{
 		var devMetadata = JsonConvert.DeserializeObject<DeveloperMetadata>(DevMetadata);
-		if (devMetadata == null)
+		if (devMetadata == null || devMetadata.modVersionHashes == null)
 			return new List<ModVersionHash>();
 
-		return devMetadata.modVersionHashes.Select(h => new ModVersionHash(h));
+		return devMetadata.modVersionHashes.Select(h => new ModVersionHash(h)).ToList();
 	}
 
 	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)

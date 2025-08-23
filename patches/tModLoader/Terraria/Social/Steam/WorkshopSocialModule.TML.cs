@@ -212,7 +212,9 @@ public partial class WorkshopSocialModule
 		// Get the new hashes
 		var currentHashes = new List<ModVersionHash>();
 		foreach (var tModPath in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
-			currentHashes.Add(new ModVersionHash(new TmodFile(tModPath)));
+			var tModFile = new TmodFile(tModPath);
+			tModFile.Open(); // Needed for Hash data to be populated
+			currentHashes.Add(new ModVersionHash(tModFile));
 		}
 
 		List<ModVersionHash> totalHash = currentHashes.Concat(prevHashes.Except(currentHashes).ToList()).ToList();
