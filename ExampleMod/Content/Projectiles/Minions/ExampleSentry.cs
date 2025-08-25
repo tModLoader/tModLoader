@@ -14,8 +14,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 	{
 		public ref float ShootTimer => ref Projectile.ai[0];
 
-		public ref float TargetNPCIndex => ref Projectile.ai[1];
-
 		public bool Floating => Projectile.ai[2] == 0;
 
 		public bool JustSpawned {
@@ -94,37 +92,21 @@ namespace ExampleMod.Content.Projectiles.Minions
 			}
 
 			// Find an enemy to target.
-			bool hasValidTarget = false;
 			float closestTargetDistance = TargetingRange;
-			TargetNPCIndex = -1;
+			NPC targetNPC = null;
 			// Prioritize the owner's minion attack target. (Right click or whip feature)
-			NPC ownerMinionAttackTargetNPC = Projectile.OwnerMinionAttackTargetNPC;
-			if (ownerMinionAttackTargetNPC != null && ownerMinionAttackTargetNPC.CanBeChasedBy(this)) {
-				float distanceToTargetNPC = Vector2.Distance(Projectile.Center, ownerMinionAttackTargetNPC.Center);
-				if (distanceToTargetNPC < closestTargetDistance && Collision.CanHit(Projectile.position, Projectile.width, Projectile.height, ownerMinionAttackTargetNPC.position, ownerMinionAttackTargetNPC.width, ownerMinionAttackTargetNPC.height)) {
-					closestTargetDistance = distanceToTargetNPC;
-					hasValidTarget = true;
-					TargetNPCIndex = ownerMinionAttackTargetNPC.whoAmI;
-				}
+			if (Projectile.OwnerMinionAttackTargetNPC != null) {
+				TryTargeting(Projectile.OwnerMinionAttackTargetNPC, ref closestTargetDistance, ref targetNPC);
 			}
 
-			// Otherwise check for the closest enemy.
-			if (!hasValidTarget) {
+			// If no minion attack target or if it was out of range, find the closest enemy to target.
+			if (targetNPC == null) {
 				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy(this)) {
-						float distanceToTargetNPC = Vector2.Distance(Projectile.Center, npc.Center);
-						// Is this enemy closer than others? Is it in line of sight?
-						if (distanceToTargetNPC < closestTargetDistance && Collision.CanHit(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height)) {
-							closestTargetDistance = distanceToTargetNPC; // Set a new closest distance value
-							hasValidTarget = true;
-							TargetNPCIndex = npc.whoAmI;
-						}
-					}
+					TryTargeting(npc, ref closestTargetDistance, ref targetNPC);
 				}
 			}
 
-			if (hasValidTarget) {
-				NPC target = Main.npc[(int)TargetNPCIndex];
+			if (targetNPC != null) {
 				if (ShootTimer <= 0) {
 					ShootTimer = ShootFrequency;
 
@@ -134,7 +116,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 					// Actually spawning the projectile only runs if the local player is the owner
 					if (Main.myPlayer == Projectile.owner) {
 						// The direction the projectile will fire.
-						Vector2 shootDirection = (target.Center - Projectile.Center).SafeNormalize(Vector2.UnitX);
+						Vector2 shootDirection = (targetNPC.Center - Projectile.Center).SafeNormalize(Vector2.UnitX);
 						// The final velocity vector
 						Vector2 shootVelocity = shootDirection * FireVelocity;
 
@@ -155,6 +137,18 @@ namespace ExampleMod.Content.Projectiles.Minions
 			if (++Projectile.frameCounter >= 10) {
 				Projectile.frameCounter = 0;
 				Projectile.frame = ++Projectile.frame % Main.projFrames[Type];
+			}
+		}
+
+		// Checks if npc is closer than current targetNPC. If so, adjust targetNPC and closestTargetDistance.
+		private void TryTargeting(NPC npc, ref float closestTargetDistance, ref NPC targetNPC) {
+			if (npc.CanBeChasedBy(this)) {
+				float distanceToTargetNPC = Vector2.Distance(Projectile.Center, npc.Center);
+				// Is this enemy closer than others? Is it in line of sight?
+				if (distanceToTargetNPC < closestTargetDistance && Collision.CanHit(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height)) {
+					closestTargetDistance = distanceToTargetNPC; // Set a new closest distance value
+					targetNPC = npc;
+				}
 			}
 		}
 
