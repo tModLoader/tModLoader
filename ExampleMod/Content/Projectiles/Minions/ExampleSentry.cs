@@ -133,10 +133,21 @@ namespace ExampleMod.Content.Projectiles.Minions
 			// Count down the shoot timer
 			ShootTimer--;
 
-			// Animate the projectile. Cycle through 4 frames of animation spending 10 ticks on each.
-			if (++Projectile.frameCounter >= 10) {
-				Projectile.frameCounter = 0;
-				Projectile.frame = ++Projectile.frame % Main.projFrames[Type];
+			// Some sentries use animation frames to indicate their state
+			if (ShootTimer > ShootFrequency) {
+				// Just spawned, eye mostly closed, still "waking up"
+				Projectile.frame = 0;
+			}
+			else if (targetNPC == null) {
+				// No target, eye half closed, searching for target. Cycle through 2 frames of animation spending 30 ticks on each.
+				if (++Projectile.frameCounter >= 60) {
+					Projectile.frameCounter = 0;
+				}
+				Projectile.frame = Projectile.frameCounter < 30 ? 1 : 2;
+			}
+			else {
+				// Has target, eye open.
+				Projectile.frame = 3;
 			}
 		}
 
