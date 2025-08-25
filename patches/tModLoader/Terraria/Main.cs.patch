@@ -6448,7 +6448,7 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], drawSinglePassLiquids: false);
  				flag = true;
-@@ -47312,9 +_,27 @@
+@@ -47312,9 +_,24 @@
  		}
  
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
@@ -6456,10 +6456,7 @@
 +		if (LiquidEdgeRenderer.Active) {
 +			spriteBatch.End();
 +
-+			Effect maskShader = LiquidEdgeRenderer.MaskShader;
-+			maskShader.Parameters["usePartialAlpha"].SetValue(false);
-+
-+			spriteBatch.Begin(SpriteSortMode.Immediate, LiquidEdgeRenderer.MaskingBlendState, DefaultSamplerState, DepthStencilState.None, Rasterizer, maskShader);
++			spriteBatch.Begin(SpriteSortMode.Deferred, LiquidEdgeRenderer.MaskingBlendState, DefaultSamplerState, DepthStencilState.None, Rasterizer, LiquidEdgeRenderer.MaskShader);
 +
 +			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange), Color.White);
 +

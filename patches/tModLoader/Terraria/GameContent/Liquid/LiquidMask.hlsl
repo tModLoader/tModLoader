@@ -1,18 +1,9 @@
 sampler uImage0 : register(s0);
 
-bool usePartialAlpha;
-
 float4 main(float4 drawColor : COLOR0, float2 uv : TEXCOORD0) : COLOR0
 {
     float alpha = (tex2D(uImage0, uv) * drawColor).a;
-    if (usePartialAlpha)
-    {
-        return (alpha > 0. && alpha < 1.) ? 1. : 0;
-    }
-    else
-    {
-        return (alpha > 0.) ? 1. : alpha;
-    }
+    return (alpha > 0.) ? 1. : alpha;
 }
 
 technique Technique1
