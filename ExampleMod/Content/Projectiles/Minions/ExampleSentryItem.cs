@@ -32,10 +32,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 			Item.shoot = ModContent.ProjectileType<ExampleSentry>();
 		}
 
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			position = Main.MouseWorld;
-		}
-
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool canPlaceInAir = false;
 			// This is just to let modders experiment with a sentry that places anywhere and one that snaps to the ground.
@@ -43,29 +39,38 @@ namespace ExampleMod.Content.Projectiles.Minions
 				canPlaceInAir = true;
 			}
 
-			(int i, int j) = position.ToTileCoordinates(); // position is Main.MouseWorld from ModifyShootStats
+			position = Main.MouseWorld;
+			player.LimitPointToPlayerReachableArea(ref position);
+			int projectileHeight = ContentSamples.ProjectilesByType[type].height;
 
 			if (!canPlaceInAir) {
-				// This code will "snap" the sentry to the floor. This is the Queen Spider Staff and Staff of Frost Hydra approach.
+				// This code will "snap" the sentry to the floor.
+				// FindSentryRestingSpot returns the coordinates for the sentry to be placed on solid ground below the cursor position.
+				player.FindSentryRestingSpot(type, out int worldX, out int worldY, out int pushYUp);
+				position = new Vector2(worldX, worldY - projectileHeight / 2);
+
+				// If, for some reason, you need custom placement logic (extra wide, hanging from the ceiling, etc), the following can be used as a guide for implementing that:
+				/*
 				// This loop travels down until it finds a solid tile to rest on.
+				(int i, int j) = position.ToTileCoordinates();
 				while (j < Main.maxTilesY - 10) {
+					// This code checks a 3 tile wide area, this will need to be adjusted if the sentry's with is larger than 48.
 					if (WorldGen.SolidTile2(i, j) || WorldGen.SolidTile2(i - 1, j) || WorldGen.SolidTile2(i + 1, j)) {
 						break;
 					}
 					j++;
 				}
-				j--; // Move back up to the empty space right above the found solid tile
 
-				// Spawn immediately over the tile.
-				// Depending on the height of the projectile you may need to adjust this, but it works as is for this projectile's height.
-				position = new Vector2(Main.MouseWorld.X, j * 16);
+				position = new Vector2(i * 16 + 8, j * 16 - projectileHeight / 2);
+				// Also, replace "i * 16 + 8" with "position.X" if you don't want the sentry to "snap" to the center of tiles like the newer Tavernkeep sentries do.
+				*/
 			}
 			else {
-				position.Y -= 15; // Adjust in-air spawn to spawn with bottom at cursor.
+				position.Y -= projectileHeight / 2; // Adjust in-air option to spawn with bottom at cursor.
 			}
 
 			// Spawn the sentry projectile at the calculated location.
-			Projectile sentryProjectile = Projectile.NewProjectileDirect(source, position, canPlaceInAir ? Vector2.Zero : new Vector2(0f, 15f), type, damage, knockback, Main.myPlayer, ai2: canPlaceInAir ? 0 : 1);
+			Projectile sentryProjectile = Projectile.NewProjectileDirect(source, position, Vector2.Zero, type, damage, knockback, Main.myPlayer, ai2: canPlaceInAir ? 0 : 1);
 
 			// originalDamage facilitates the Projectile.ContinuouslyUpdateDamageStats feature inherent to sentries and minions.
 			sentryProjectile.originalDamage = Item.damage;

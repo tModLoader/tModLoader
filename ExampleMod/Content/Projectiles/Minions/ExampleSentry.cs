@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			Projectile.ignoreWater = true;
 			Projectile.netImportant = true; // Sentries need this so they are synced to newly joining players
 
-			// The texture is 54 pixels wide, but we set width to 46 and DrawOffsetX to -6 so it doesn't look weird hanging off the edge of tiles (because it is oval shaped).
+			// The texture is 54 pixels wide, but we set width to 42 and DrawOffsetX to -6 so it doesn't look weird hanging off the edge of tiles (because it is oval shaped).
 			DrawOffsetX = -6;
 		}
 

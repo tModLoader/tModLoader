@@ -7503,6 +7503,17 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35396,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Clamps the provided world position to the normal gameplay range (<see cref="Main.LogicCheckScreenWidth"/>, <see cref="Main.LogicCheckScreenHeight"/>) from this player.
++	/// <br/><br/> This is used to limit the ranges of various items (teleport, minion, sentry, magic missile, etc) to prevent users with high resolution screens from having a gameplay advantage.
++	/// </summary>
+ 	public void LimitPointToPlayerReachableArea(ref Vector2 pointPoisition)
+ 	{
+ 		Vector2 center = base.Center;
 @@ -35442,6 +_,9 @@
  		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
  			return;
@@ -8080,6 +8091,17 @@
  		if (whoAmI == Main.myPlayer && gravDir == -1f) {
  			mount.Dismount(this);
  		}
+@@ -40580,6 +_,10 @@
+ 		return result;
+ 	}
+ 
++	/// <summary>
++	/// Determines a suitable spawn location for a "grounded" sentry (<paramref name="checkProj"/>). The spawn location will be centered on a tile location at the first 3 tile wide area with at least 1 solid tile, searching down from the mouse position. It will also utilize <see cref="LimitPointToPlayerReachableArea(ref Vector2)"/> to limit the mouse position to the normal gameplay range.
++	/// <br/><br/> The final spawn position after using this method will be <c>new Vector2(worldX, worldY - offset);</c>, where <c>offset</c> should most likely be half of the projectile height. <paramref name="pushYUp"/> should be ignored for modded projectiles.
++	/// </summary>
+ 	public void FindSentryRestingSpot(int checkProj, out int worldX, out int worldY, out int pushYUp)
+ 	{
+ 		bool flag = false;
 @@ -40626,6 +_,10 @@
  		worldY = i * 16;
  	}
