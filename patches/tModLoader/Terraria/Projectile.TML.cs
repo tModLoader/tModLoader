@@ -101,8 +101,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <summary>
 	/// If set <see cref="damage"/> will be recalculated based on <see cref="originalDamage"/>, <see cref="DamageType"/> and the <see cref="owner"/> player, just like minions and sentries. <br/>
 	/// Similarly for <see cref="CritChance"/> and <see cref="ArmorPenetration"/>.
-	/// 
-	/// No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
+	/// <br/><br/> No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
 	/// </summary>
 	public bool ContinuouslyUpdateDamageStats { get; set; }
 

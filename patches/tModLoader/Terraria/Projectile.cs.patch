@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,347 @@
+@@ -63,79 +_,352 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -130,6 +130,11 @@
 +	/// This will always be set in Projectile.NewProjectile based on the weapons damage and player stat modifiers. Modders should not set this in <see cref="ModProjectile.SetDefaults"/> as it will be overwritten.
 +	/// </summary>
  	public int damage;
++	/// <summary>
++	/// The damage of this projectile, without any player bonuses.
++	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="damage"/>.
++	/// <br/><br/> Automatically set to the damage passed into <see cref="NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>. If the IEntitySource of NewProjectile corresponds to a player using an item, this will be set to <see cref="Item.damage"/> instead.
++	/// </summary>
  	public int originalDamage;
  	public int spriteDirection = 1;
 +

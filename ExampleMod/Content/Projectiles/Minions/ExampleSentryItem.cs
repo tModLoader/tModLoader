@@ -70,12 +70,9 @@ namespace ExampleMod.Content.Projectiles.Minions
 			}
 
 			// Spawn the sentry projectile at the calculated location.
-			Projectile sentryProjectile = Projectile.NewProjectileDirect(source, position, Vector2.Zero, type, damage, knockback, Main.myPlayer, ai2: canPlaceInAir ? 0 : 1);
+			Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, Main.myPlayer, ai2: canPlaceInAir ? 0 : 1);
 
-			// originalDamage facilitates the Projectile.ContinuouslyUpdateDamageStats feature inherent to sentries and minions.
-			sentryProjectile.originalDamage = Item.damage;
-
-			// Kills older sentry projectiles according do player.maxTurrets
+			// Kills older sentry projectiles according to player.maxTurrets
 			player.UpdateMaxTurrets();
 
 			return false;
