@@ -84,6 +84,8 @@ public static class ItemLoader
 		LoaderUtils.ResetStaticMembers(typeof(ItemID));
 		LoaderUtils.ResetStaticMembers(typeof(AmmoID));
 		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets));
+		if (unloading)
+			LoaderUtils.ResetStaticMembers(typeof(ItemUseStyleID));
 
 		//Etc
 		Array.Resize(ref Item.cachedItemSpawnsByType, ItemCount);
