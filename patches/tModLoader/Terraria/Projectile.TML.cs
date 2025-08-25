@@ -87,14 +87,14 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	}
 
 	/// <summary>
-	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
+	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/>
+	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
 	/// </summary>
 	public int OriginalCritChance { get; set; }
 
 	/// <summary>
-	/// The armor penetration of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
+	/// The armor penetration of this projectile, without any player bonuses, similar to <see cref="originalDamage"/>
+	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
 	/// </summary>
 	public int OriginalArmorPenetration { get; set; }
 

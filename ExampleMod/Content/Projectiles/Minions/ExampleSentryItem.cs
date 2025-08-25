@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -41,13 +42,13 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 			position = Main.MouseWorld;
 			player.LimitPointToPlayerReachableArea(ref position);
-			int projectileHeight = ContentSamples.ProjectilesByType[type].height;
+			int halfProjectileHeight = (int)Math.Ceiling(ContentSamples.ProjectilesByType[type].height / 2f);
 
 			if (!canPlaceInAir) {
 				// This code will "snap" the sentry to the floor.
 				// FindSentryRestingSpot returns the coordinates for the sentry to be placed on solid ground below the cursor position.
 				player.FindSentryRestingSpot(type, out int worldX, out int worldY, out int pushYUp);
-				position = new Vector2(worldX, worldY - projectileHeight / 2);
+				position = new Vector2(worldX, worldY - halfProjectileHeight);
 
 				// If, for some reason, you need custom placement logic (extra wide, hanging from the ceiling, etc), the following can be used as a guide for implementing that:
 				/*
@@ -61,12 +62,12 @@ namespace ExampleMod.Content.Projectiles.Minions
 					j++;
 				}
 
-				position = new Vector2(i * 16 + 8, j * 16 - projectileHeight / 2);
+				position = new Vector2(i * 16 + 8, j * 16 - halfProjectileHeight);
 				// Also, replace "i * 16 + 8" with "position.X" if you don't want the sentry to "snap" to the center of tiles like the newer Tavernkeep sentries do.
 				*/
 			}
 			else {
-				position.Y -= projectileHeight / 2; // Adjust in-air option to spawn with bottom at cursor.
+				position.Y -= halfProjectileHeight; // Adjust in-air option to spawn with bottom at cursor.
 			}
 
 			// Spawn the sentry projectile at the calculated location.
