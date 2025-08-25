@@ -334,11 +334,9 @@ public static class WallLoader
 		RegisterConversionFallback(WallID.PearlstoneEcho, WallID.Stone, BiomeConversionID.Hallow);
 		RegisterConversionFallback(WallID.CrimstoneEcho, WallID.Stone, BiomeConversionID.Crimson);
 
-		RegisterConversionFallback(WallID.DirtUnsafe, WallID.Dirt, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Dirt, WallID.DirtUnsafe, BiomeConversionID.Purity);
 
 		RegisterConversionFallback(WallID.SnowWallEcho, WallID.SnowWallUnsafe, BiomeConversionID.Purity);
-
-		RegisterConversionFallback(WallID.IceEcho, WallID.IceUnsafe, BiomeConversionID.Purity);
 
 		RegisterConversionFallback(WallID.IceEcho, WallID.IceUnsafe, BiomeConversionID.Purity);
 

@@ -123,23 +123,15 @@ namespace ExampleMod.Content.Items.Ammo
 					WallID.Sets.Conversion.NewWall4[i])
 					WallLoader.RegisterConversion(i, Type, ConvertWalls);
 			}
+			WallLoader.RegisterConversionFallback(WallType, WallID.Dirt, Type);
+			WallLoader.RegisterConversionFallback(UnsafeWallType, WallID.DirtUnsafe, Type);
 
-			// Go over every tile and add a conversion to it for our conversion type if they're part of the list of usual conversion tiles
-			for (int i = 0; i < TileLoader.TileCount; i++) {
-				if (TileID.Sets.Conversion.Sand[i])
-					TileLoader.RegisterConversion(i, Type, ConvertSand);
-
-				if (TileID.Sets.Conversion.Stone[i])
-					TileLoader.RegisterConversion(i, Type, ConvertStone);
-			}
+			TileLoader.RegisterConversion(TileID.Stone, Type, ConvertStone);
+			TileLoader.RegisterConversionFallback(StoneType, TileID.Stone, Type);
+			TileLoader.RegisterSimpleConversion(TileID.Sand, SandType, Type);
 
 			TileLoader.RegisterConversion(TileID.Chairs, Type, ConvertChairs);
 			TileLoader.RegisterConversion(TileID.WorkBenches, Type, ConvertWorkbenches);
-		}
-
-		public bool ConvertSand(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertTile(i, j, SandType, true);
-			return false;
 		}
 
 		public bool ConvertStone(int i, int j, int type, int conversionType) {
