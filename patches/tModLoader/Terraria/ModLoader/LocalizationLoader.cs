@@ -194,7 +194,7 @@ public static class LocalizationLoader
 				if (fileCulture != culture)
 					continue;
 
-				using var stream =tModFile.GetStream(translationFile);
+				using var stream = tModFile.GetStream(translationFile);
 				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
 				string translationFileContents = streamReader.ReadToEnd();
