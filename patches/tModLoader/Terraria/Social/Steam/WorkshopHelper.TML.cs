@@ -217,7 +217,7 @@ public partial class WorkshopHelper
 				SocialAPI.Workshop.Initialize();
 
 				if (!SteamedWraps.SteamClient)
-					return;
+					throw new Exception(Language.GetTextValue("tModLoader.CommandLinePublishNeedsSteam"));
 
 				Thread.Sleep(1500); // Solxan: SteamAPI requires 1 or so seconds to initialize
 								
