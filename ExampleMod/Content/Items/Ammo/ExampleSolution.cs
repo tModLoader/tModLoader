@@ -110,6 +110,7 @@ namespace ExampleMod.Content.Items.Ammo
 			WorkbenchType = ModContent.TileType<ExampleWorkbench>();
 
 			// Register conversions for every natural wall
+			// Normally we'd use WallLoader.RegisterSimpleConversion here, but since we're converting safe walls differently, we need them to have their own conversions separate from anything they might fall back to
 			for (int i = 0; i < WallLoader.WallCount; i++) {
 				if (WallID.Sets.Conversion.Dirt[i] ||
 					WallID.Sets.Conversion.Grass[i] ||
