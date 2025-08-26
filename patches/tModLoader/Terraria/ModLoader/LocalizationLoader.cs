@@ -20,7 +20,7 @@ public static class LocalizationLoader
 		var lang = LanguageManager.Instance;
 		var gameTipPrefix = $"Mods.{mod.Name}.GameTips.";
 
-		foreach (var (key, _) in LoadTranslations(mod.File, GameCulture.DefaultCulture, mod.SourceFolder)) {
+		foreach (var (key, _) in LoadTranslations(mod.File, GameCulture.DefaultCulture)) {
 			var text = lang.GetOrRegister(key); // adds the key but leaves it untranslated for now.
 
 			if (key.StartsWith(gameTipPrefix))
@@ -32,7 +32,7 @@ public static class LocalizationLoader
 	{
 		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
-			foreach (var (key, value) in LoadTranslations(mod.File, culture, mod.SourceFolder)) {
+			foreach (var (key, value) in LoadTranslations(mod.File, culture)) {
 				lang.GetText(key).SetValue(value); // can only set the value of existing keys. Cannot register new keys.
 			}
 		}
@@ -178,10 +178,13 @@ public static class LocalizationLoader
 		return false;
 	}
 
-	private static List<(string key, string value)> LoadTranslations(TmodFile tModFile, GameCulture culture, string sourceFolder)
+	private static List<(string key, string value)> LoadTranslations(TmodFile tModFile, GameCulture culture)
 	{
 		if (tModFile == null)
 			return new();
+
+		var properties = BuildProperties.ReadModFile(tModFile);
+		string sourceFolder = Directory.Exists(properties.modSource) ? properties.modSource : "";
 
 		try {
 			// Flatten JSON into dot separated key and value
@@ -200,7 +203,8 @@ public static class LocalizationLoader
 				string translationFileContents = streamReader.ReadToEnd();
 
 				string modpath = Path.Combine(tModFile.Name, translationFile.Name).Replace('/', '\\');
-				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
+				if (!string.IsNullOrWhiteSpace(sourceFolder) && changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
+					// TODO: we could skip this for GetLocalizationCounts to be more accurate to the entries in the mod itself, but that is not needed since we don't allow publishing on the client if any changedFiles and the command line publish won't detect changedFiles unless hosting.
 					string path = Path.Combine(sourceFolder, translationFile.Name);
 					if (File.Exists(path)) {
 						try {
@@ -776,7 +780,7 @@ public static class LocalizationLoader
 	}
 
 	private static readonly Dictionary<string, Dictionary<GameCulture, int>> localizationEntriesCounts = new();
-	internal static Dictionary<GameCulture, int> GetLocalizationCounts(TmodFile tModFile, string sourceFolder)
+	internal static Dictionary<GameCulture, int> GetLocalizationCounts(TmodFile tModFile)
 	{
 		if (localizationEntriesCounts.TryGetValue(tModFile.Name, out var results)) {
 			return results;
@@ -784,7 +788,7 @@ public static class LocalizationLoader
 
 		results = new Dictionary<GameCulture, int>();
 		foreach (var culture in GameCulture.KnownCultures) {
-			var localizationEntries = LoadTranslations(tModFile, culture, sourceFolder);
+			var localizationEntries = LoadTranslations(tModFile, culture);
 			// Only count only non-"" entries. Also ignore entries that are just substitutions.
 			int countNonTrivialEntries = localizationEntries.Where(x => HasTextThatNeedsLocalization(x.value)).Count();
 			results.Add(culture, countNonTrivialEntries);
