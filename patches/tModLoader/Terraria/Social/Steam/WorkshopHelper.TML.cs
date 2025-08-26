@@ -168,11 +168,7 @@ public partial class WorkshopHelper
 		var bp = mod.properties;
 
 		if (bp.side != ModSide.Server && Main.dedServ)
-		{
-			// After review, will add a localization key for this error
-			// Message: "You can only publish server-side mods using the command line."
-			Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.LoadError", modFile.Name), Interface.modSourcesID);
-		}
+			throw new Exception(Language.GetTextValue("tModLoader.CommandLinePublishOnlyUsableWithServerSideMods"));
 
 		if (bp.buildVersion != modFile.TModLoaderVersion)
 			throw new WebException(Language.GetTextValue("tModLoader.OutdatedModCantPublishError"));
