@@ -199,7 +199,6 @@ public static class LocalizationLoader
 
 				string translationFileContents = streamReader.ReadToEnd();
 
-				// If the 
 				string modpath = Path.Combine(tModFile.Name, translationFile.Name).Replace('/', '\\');
 				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
 					string path = Path.Combine(sourceFolder, translationFile.Name);
@@ -219,7 +218,7 @@ public static class LocalizationLoader
 				}
 				catch (Exception e) {
 					string additionalContext = "";
-					if(e is ArgumentException && Regex.Match(e.Message, "At line (\\d+),") is Match { Success: true } match && int.TryParse(match.Groups[1].Value, out int line)) {
+					if (e is ArgumentException && Regex.Match(e.Message, "At line (\\d+),") is Match { Success: true } match && int.TryParse(match.Groups[1].Value, out int line)) {
 						string[] lines = translationFileContents.Replace("\r", "").Replace("\t", "    ").Split('\n');
 						int start = Math.Max(0, line - 4);
 						int end = Math.Min(lines.Length, line + 3);
@@ -431,7 +430,7 @@ public static class LocalizationLoader
 		// Remove duplicates. Only remove string entries. Remove from longest filename.
 		// TODO: could combine comments to remaining entry. Also consider removing empty objects somewhere.
 		var duplicates = baseLocalizationFiles.SelectMany(f => f.Entries).Where(w => w.type == JsonType.String).GroupBy(x => x.key).Where(c => c.Count() > 1).ToDictionary(g => g.Key, g => g.ToList());
-		foreach (var baseLocalizationFile in baseLocalizationFiles.OrderByDescending(x=>x.path.Length)) {
+		foreach (var baseLocalizationFile in baseLocalizationFiles.OrderByDescending(x => x.path.Length)) {
 			var toRemove = new List<LocalizationEntry>();
 			foreach (var entry in baseLocalizationFile.Entries) {
 				if (duplicates.ContainsKey(entry.key)) {
@@ -526,7 +525,7 @@ public static class LocalizationLoader
 			string translationsNeededPath = Path.Combine(sourceFolder, "Localization", "TranslationsNeeded.txt");
 			if (File.Exists(translationsNeededPath)) {
 				int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
-				string neededText = string.Join(Environment.NewLine, localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{countMaxEntries}, {(float)x.Value/countMaxEntries:0%}, missing {countMaxEntries - x.Value}")) + Environment.NewLine;
+				string neededText = string.Join(Environment.NewLine, localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{countMaxEntries}, {(float)x.Value / countMaxEntries:0%}, missing {countMaxEntries - x.Value}")) + Environment.NewLine;
 				if (File.ReadAllText(translationsNeededPath).ReplaceLineEndings() != neededText.ReplaceLineEndings()) {
 					File.WriteAllText(translationsNeededPath, neededText);
 				}
