@@ -238,9 +238,9 @@ public partial class WorkshopHelper
 						setTags = existingTags;
 
 					// Localization Tags
-					var autoLang = SocialBrowserModule.GetModLocalizationProgress(modFile, existingTags, sourceFolder: "");
-					setTags.Except(autoLang.Where(a => !a.setState).Select(b => b.tag));
-					setTags.Union(autoLang.Where(a => a.setState).Select(b => b.tag));
+					var autoLang = SocialBrowserModule.GetModLocalizationProgress(modFile, existingTags);
+					setTags = setTags.Except(autoLang.Where(a => !a.setState).Select(b => b.tag)).ToList();
+					setTags = setTags.Union(autoLang.Where(a => a.setState).Select(b => b.tag)).ToList();
 
 					var publishSettings = new WorkshopItemPublishSettings {
 						Publicity = publicity ?? WorkshopItemPublicSettingId.Public,
