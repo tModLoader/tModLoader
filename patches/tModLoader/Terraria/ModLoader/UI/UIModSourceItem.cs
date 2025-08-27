@@ -345,6 +345,9 @@ internal class UIModSourceItem : UIPanel
 
 	internal static void TestServerModLoading(string modName)
 	{
+		// Create a new console for clarity
+		Platform.Get<IWindowService>().ReleaseConsole();
+		Platform.Get<IWindowService>().CreateAndRedirectConsole();
 		Console.WriteLine("------------------------------------------------------------------");
 		Console.WriteLine(Language.GetTextValue("tModLoader.TestServerModLoadingNotification"));
 		Console.WriteLine("------------------------------------------------------------------");
