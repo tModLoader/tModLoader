@@ -1,7 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using ReLogic.OS;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,6 +5,10 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.OS;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -317,6 +317,11 @@ internal class UIModSourceItem : UIPanel
 				Arguments = "tModLoader.dll -server -steam -testservermodloading " + _builtMod.modFile.Name
 			};
 
+			if (Program.LaunchParameters.TryGetValue("-tmlsavedirectory", out var tmlsavedirectory))
+				p.Arguments += $@" -tmlsavedirectory ""{tmlsavedirectory}""";
+			else if (Program.LaunchParameters.TryGetValue("-savedirectory", out var savedirectory))
+				p.Arguments += $@" -savedirectory ""{savedirectory}""";
+
 			var pending = Process.Start(p);
 			pending.WaitForExit();
 			int result = pending.ExitCode;
@@ -340,12 +345,17 @@ internal class UIModSourceItem : UIPanel
 
 	internal static void TestServerModLoading(string modName)
 	{
+		Console.WriteLine("------------------------------------------------------------------");
+		Console.WriteLine(Language.GetTextValue("tModLoader.TestServerModLoadingNotification"));
+		Console.WriteLine("------------------------------------------------------------------");
+
 		try {
 			ModLoader.preparingServerSidePublish = true;
 			LocalMod _builtMod;
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
+			Console.WriteLine("Testing mod found at modPath: " + modPath);
 			var modFile = new TmodFile(modPath);
-			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
+			using (modFile.Open())
 				_builtMod = new LocalMod(ModLocation.Local, modFile);
 
 			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
@@ -375,7 +385,7 @@ internal class UIModSourceItem : UIPanel
 			LocalMod localMod;
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
 			var modFile = new TmodFile(modPath);
-			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
+			using (modFile.Open())
 				localMod = new LocalMod(ModLocation.Local, modFile);
 
 			string icon = Path.Combine(localMod.properties.modSource, "icon_workshop.png");
