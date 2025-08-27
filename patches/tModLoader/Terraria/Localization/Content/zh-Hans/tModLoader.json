@@ -201,6 +201,9 @@
 		"PublishNewButton": "发布新模组",
 		"DownloadProgress": "已下载完成 {0}%",
 		"DescriptionLengthExceedLimit": "此模组的（创意工坊）描述超出Steam限制，上限8000字符，已超出{0}个字符",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",

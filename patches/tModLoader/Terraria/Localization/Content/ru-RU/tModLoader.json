@@ -199,6 +199,9 @@
 		"PublishNewButton": "Опубликовать новый",
 		"DownloadProgress": "Скачано {0}%",
 		"DescriptionLengthExceedLimit": "Описание (в Мастерской) этого мода превышает ограничение Steam в {0} символов.",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
 
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",

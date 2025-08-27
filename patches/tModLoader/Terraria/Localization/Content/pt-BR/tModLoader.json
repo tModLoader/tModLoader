@@ -199,6 +199,9 @@
 		"PublishNewButton": "Publicar como Novo",
 		"DownloadProgress": "Download {0}% concluído",
 		"DescriptionLengthExceedLimit": "A descrição da oficina deste mod excede o limite imposto pela Steam de {0} caracteres",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
 
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",

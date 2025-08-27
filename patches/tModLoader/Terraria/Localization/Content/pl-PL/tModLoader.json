@@ -199,6 +199,9 @@
 		"PublishNewButton": "Opublikuj nowy",
 		"DownloadProgress": "Pobrano {0}%",
 		"DescriptionLengthExceedLimit": "Opis tego moda (Workshop) przekracza limit znaków Steam wynoszący {0}",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
 
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
