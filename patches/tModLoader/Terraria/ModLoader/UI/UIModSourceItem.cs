@@ -368,7 +368,7 @@ internal class UIModSourceItem : UIPanel
 			var publishTags = LaunchInitializer.TryParameter("-publishtags")?.Split("&");
 
 			WorkshopItemPublicSettingId? publicity = null;
-			if (LaunchInitializer.TryParameter("-publicity") is string publicityString) 
+			if (LaunchInitializer.TryParameter("-publicity") is string publicityString)
 				if (int.TryParse(publicityString, out int publicityInt) && publicityInt >= 0 && publicityInt <= 3) 
 					publicity = (WorkshopItemPublicSettingId)publicityInt;
 

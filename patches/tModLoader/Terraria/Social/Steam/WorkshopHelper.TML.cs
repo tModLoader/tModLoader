@@ -216,31 +216,43 @@ public partial class WorkshopHelper
 					throw new Exception(Language.GetTextValue("tModLoader.CommandLinePublishNeedsSteam"));
 
 				Thread.Sleep(1500); // Solxan: SteamAPI requires 1 or so seconds to initialize
-								
+
 				using (modFile.Open()) {
-					List<WorkshopTagOption> existingTags = new List<WorkshopTagOption>();
+					HashSet<string> existingTags = [];
 					if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
 						publicity = publicity ?? info.publicity;
-						existingTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToList();
+						existingTags = info.tags.ToHashSet();
+
+						// Remove all non-user selected tags (1.4.4, Server), they'll be added later.
+						existingTags.IntersectWith(SteamedWraps.ModTags.Select(x => x.InternalNameForAPIs));
 					}
 
 					// Use existing Tags if none supplied
-					List<WorkshopTagOption> setTags;
-					if (publishTags != null)
-						setTags = SteamedWraps.ModTags
-							.Where(x => publishTags.Contains(x.NameKey))
-							.Select(x => new WorkshopTagOption(x.NameKey, x.InternalNameForAPIs)).ToList();
-					else
+					HashSet<string> setTags = [];
+					if (publishTags != null) {
+						foreach (var publishTag in publishTags) {
+							// Supports key without prefix or api internal name without spaces
+							var foundTag = SteamedWraps.ModTags.FirstOrDefault(x =>
+							string.Equals(x.NameKey.Replace("tModLoader.Tags", "").Replace("Language_", ""), publishTag, StringComparison.InvariantCultureIgnoreCase) ||
+							string.Equals(x.InternalNameForAPIs.Replace(" ", ""), publishTag, StringComparison.InvariantCultureIgnoreCase));
+							if (foundTag != null)
+								setTags.Add(foundTag.InternalNameForAPIs);
+							else
+								Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.WorkshopTagNotFound", publishTag));
+						}
+					}
+					else {
 						setTags = existingTags;
+					}
 
 					// Localization Tags
-					var autoLang = SocialBrowserModule.GetModLocalizationProgress(modFile, existingTags);
-					setTags = setTags.Except(autoLang.Where(a => !a.setState).Select(b => b.tag)).ToList();
-					setTags = setTags.Union(autoLang.Where(a => a.setState).Select(b => b.tag)).ToList();
+					var autoLang = SocialBrowserModule.GetModLocalizationProgress(modFile, existingTags.Select(x => new WorkshopTagOption(x, x)).ToList());
+					setTags.ExceptWith(autoLang.Where(a => !a.setState).Select(b => b.tag.InternalNameForAPIs));
+					setTags.UnionWith(autoLang.Where(a => a.setState).Select(b => b.tag.InternalNameForAPIs));
 
 					var publishSettings = new WorkshopItemPublishSettings {
 						Publicity = publicity ?? WorkshopItemPublicSettingId.Public,
-						UsedTags = setTags.ToArray(),
+						UsedTags = setTags.Select(x => new WorkshopTagOption(x, x)).ToArray(),
 						PreviewImagePath = iconPath
 					};
 
@@ -323,7 +335,7 @@ public partial class WorkshopHelper
 				missingMods = new List<string>();
 
 				for (int i = 0; i < numPages; i++) {
-					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) ));
+					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1)));
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
 					try {
@@ -347,7 +359,7 @@ public partial class WorkshopHelper
 						ReleaseWorkshopQuery();
 					}
 				}
-				
+
 				return items;
 			}
 
@@ -461,7 +473,7 @@ public partial class WorkshopHelper
 
 					await Task.Delay(1, token);
 				}
-				
+
 				if (_primaryQueryResult != EResult.k_EResultOK) {
 					SteamedWraps.ReportCheckSteamLogs();
 					throw new Exception($"Error: Unable to access Steam Workshop. ERROR CODE: {_primaryQueryResult}");
