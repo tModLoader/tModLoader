@@ -128,7 +128,7 @@ namespace ExampleMod.Content.Items.Ammo
 			WallLoader.RegisterConversionFallback(UnsafeWallType, WallID.DirtUnsafe, Type);
 
 			// This registers a conversion from Sand to ExampleSand, as well as a fallback from ExampleSand to Sand, so other solutions can convert ExampleSand (eg to Crimsand)
-			TileLoader.RegisterSimpleConversion(TileID.Sand, SandType, Type);
+			TileLoader.RegisterSimpleConversion(TileID.Sand, Type, SandType);
 
 			// We register a conversion method and fallback separately rather than using RegisterSimpleConversion, because ConvertStone has custom logic for converting trees on the tile above
 			TileLoader.RegisterConversion(TileID.Stone, Type, ConvertStone);
