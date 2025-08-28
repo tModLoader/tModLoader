@@ -300,13 +300,25 @@ public static class WallLoader
 	/// <param name="wallType">The wall type that has is affected by this conversion.</param>
 	/// <param name="conversionType">The conversion type for which the wall should use this conversion.</param>
 	/// <param name="toType">The wall type that this conversion should convert the wall to.</param>
-	public static void RegisterSimpleConversion(int wallType, int conversionType, int toType)
+	/// <param name="purification">If true, automatically registers purification conversions from toType to wallType as well.</param>
+	public static void RegisterSimpleConversion(int wallType, int conversionType, int toType, bool purification = true)
 	{
 		RegisterConversion(wallType, conversionType, (int i, int j, int type, int conversionType) => {
 			WorldGen.ConvertWall(i, j, toType);
 			return false;
 		});
 		RegisterConversionFallback(toType, wallType, conversionType);
+
+		if (purification) {
+			bool Purify(int i, int j, int type, int conversionType)
+			{
+				WorldGen.ConvertWall(i, j, wallType);
+				return false;
+			}
+			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
+			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
+			RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
+		}
 	}
 
 	private static void InitializeConversionFallbacks()
