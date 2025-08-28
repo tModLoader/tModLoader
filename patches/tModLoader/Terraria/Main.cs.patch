@@ -6710,7 +6710,7 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
-@@ -51113,7 +_,11 @@
+@@ -51113,7 +_,12 @@
  		sceneArea.totalWidth = screenWidth;
  		sceneArea.SceneLocalScreenPositionOffset = Vector2.Zero;
  		SceneArea sceneArea2 = sceneArea;
@@ -6718,7 +6718,8 @@
 +		bool drawSunAndMoon = true;
 +		bool drawSky = gameMenu ? MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, ref drawStars, ref drawSunAndMoon) : true;
  		if (!mapFullscreen) {
-+			if (drawSky) {
++			if (!drawSky)
++				goto skipDrawSky;
  			unityMouseOver = false;
  			if ((double)screenPosition.Y < worldSurface * 16.0 + 16.0) {
  				Asset<Texture2D> asset = TextureAssets.Background[background];
@@ -6726,7 +6727,7 @@
  
  				TimeLogger.DetailedDrawTime(6);
  			}
-+			}
++			skipDrawSky:
  
  			spriteBatch.End();
  			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, BackgroundViewMatrix.EffectMatrix);
