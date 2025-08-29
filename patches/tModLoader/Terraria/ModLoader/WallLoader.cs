@@ -316,7 +316,6 @@ public static class WallLoader
 				return false;
 			}
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
-			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
 			RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
 		}
 	}
