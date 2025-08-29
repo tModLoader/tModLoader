@@ -31,7 +31,6 @@ namespace ExampleMod.Content.Tiles
 		// This code is called when the game attempts to convert our hallowed tile into a new biome
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
-				// Purification powder doesn't convert hallow tiles back into purity, so we don't check for BiomeConversionID.PurificationPowder
 				case BiomeConversionID.Sand: // Yellow (desert) solution also converts evil/hallowed tiles back into purity, so don't forget that check!
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
 					return;
