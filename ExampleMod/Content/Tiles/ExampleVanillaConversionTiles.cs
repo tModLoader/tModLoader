@@ -74,7 +74,6 @@ namespace ExampleMod.Content.Tiles
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
 				case BiomeConversionID.Sand:
-				case BiomeConversionID.PurificationPowder:
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
 					return;
 			}
@@ -108,7 +107,6 @@ namespace ExampleMod.Content.Tiles
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
 				case BiomeConversionID.Sand:
-				case BiomeConversionID.PurificationPowder:
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
 					return;
 			}
