@@ -173,10 +173,10 @@
 		"BossBarStyleNoOptions": "Нет вариантов",
 
 		// Achievements
-		// "AchievementsReset": "Reset",
-		// "AchievementsResetConfirm": "Are you sure?",
-		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
-		// "AchievementsOnlyShowModded": "Only show modded achievements",
+		"AchievementsReset": "Сбросить",
+		"AchievementsResetConfirm": "Вы уверены?",
+		"AchievementsResetConfirmTooltip": "Сброс достижений приведёт к их безвозвратной потере. Вы уверены, что хотите продолжить?",
+		"AchievementsOnlyShowModded": "Показывать только достижения из модов",
 
 		// Workshop
 		"WorkshopDisclaimer": "Опубликовывая этот контент, вы соглашаетесь с правилами пользования tModLoader",
@@ -680,8 +680,8 @@
 		"TagsUtilityDescription": "Добавляет ориентированный на полезность контент или функции.",
 		"TagsLibrary": "Библиотека",
 		"TagsLibraryDescription": "Предоставляет дополнительные API и функции, полезные для разработчиков модов.",
-		// "TagsTranslation": "Translation",
-		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
+		"TagsTranslation": "Перевод",
+		"TagsTranslationDescription": "Добавляет перевод для другого мода. (устанавливается параметром translationMod = true в файле build.txt)",
 		"TagsQoL": "Качество жизни",
 		"TagsQoLDescription": "Добавляет различные автоматизации, упрощения и оптимизации игровых процессов на рутинные задачи.",
 		"TagsGameplay": "Геймплей",
