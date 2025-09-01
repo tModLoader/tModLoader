@@ -1,6 +1,10 @@
 var class_u_i_element =
 [
     [ "Append", "class_u_i_element.html#aba285d19a4f931a415048ae87b65afb9", null ],
+    [ "CompareTo", "class_u_i_element.html#a2dece34c6f6d5616b9428a398eeb7e8d", null ],
+    [ "Draw", "class_u_i_element.html#a0e7f0b480b90da1361844567745f2db4", null ],
+    [ "DrawChildren", "class_u_i_element.html#a6d8c7dd5fe5d293e21c9fc3b295baa4c", null ],
+    [ "DrawSelf", "class_u_i_element.html#af91f50847ae5599c78803f34e21f5409", null ],
     [ "GetDimensions", "class_u_i_element.html#a1573899b8299cd5438f5be708a6a0795", null ],
     [ "GetInnerDimensions", "class_u_i_element.html#adc42b475f74d77f6fe008b8f1e77ad19", null ],
     [ "GetOuterDimensions", "class_u_i_element.html#a00cf40dac98ad4c3f0eccb486b88b19a", null ],
@@ -9,6 +13,8 @@ var class_u_i_element =
     [ "MouseOver", "class_u_i_element.html#acace109bb7f688425529040c3cefdacb", null ],
     [ "OnActivate", "class_u_i_element.html#a232530774c8530e65b675f4c86b6dfbd", null ],
     [ "OnInitialize", "class_u_i_element.html#a38a8b3ad267ccce9474b6907aa274cdf", null ],
+    [ "SetPadding", "class_u_i_element.html#a1f29861bcd6ed530a86ee95da524fdd6", null ],
+    [ "Update", "class_u_i_element.html#a7e61e1d8256aee421acb81f3e5ebe743", null ],
     [ "HAlign", "class_u_i_element.html#a5297f48a11acff0338b941f1595813ce", null ],
     [ "Height", "class_u_i_element.html#a97249ac67d3ee9621de9dddced7c2550", null ],
     [ "IgnoresMouseInteraction", "class_u_i_element.html#a9cae2bfa345e497da623a9ecf27ab525", null ],

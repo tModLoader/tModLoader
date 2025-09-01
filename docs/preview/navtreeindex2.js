@@ -1,5 +1,9 @@
 var NAVTREEINDEX2 =
 {
+"class_conditions_1_1_crimson_key_condition.html#a967bf404cf4b1f307249879ddf3376ba":[3,0,193,4,1],
+"class_conditions_1_1_crimson_key_condition.html#af2fce7bb323db0b6fb291b5587ef1948":[3,0,193,4,0],
+"class_conditions_1_1_desert_key_condition.html":[3,0,193,5],
+"class_conditions_1_1_desert_key_condition.html#a54268ed0868bed39906f9bf781206236":[3,0,193,5,1],
 "class_conditions_1_1_desert_key_condition.html#a8ad343176c0a706ad02f69fe84dbaa6b":[3,0,193,5,0],
 "class_conditions_1_1_dont_starve_is_not_up.html":[3,0,193,6],
 "class_conditions_1_1_dont_starve_is_not_up.html#a502ea7bc847781630822eab12a561bda":[3,0,193,6,0],
@@ -213,7 +217,8 @@ var NAVTREEINDEX2 =
 "class_conditions_completed_tracker.html":[3,0,194],
 "class_config_args_attribute.html":[3,0,195],
 "class_config_element.html":[3,0,196],
-"class_config_element.html#a44ae101114478f7829fadfd2faf2ad55":[3,0,196,1],
+"class_config_element.html#a1719ce5058861bd50231a6b886a0c7ee":[3,0,196,1],
+"class_config_element.html#a44ae101114478f7829fadfd2faf2ad55":[3,0,196,2],
 "class_config_element.html#a933b184e27c22fa41d1f592e46a1360c":[3,0,196,0],
 "class_config_key_attribute.html":[3,0,197],
 "class_config_manager.html":[3,0,198],
@@ -244,10 +249,5 @@ var NAVTREEINDEX2 =
 "class_corruption_biome.html":[3,0,206],
 "class_corruption_pit_biome.html":[3,0,207],
 "class_crash_dump.html":[3,0,209],
-"class_crash_dump.html#a1188ad6628fff27a4ba35c73b07b2e94":[3,0,209,0],
-"class_crash_watcher.html":[3,0,210],
-"class_creative_item_sacrifices_catalog.html":[3,0,211],
-"class_creative_power_manager.html":[3,0,212],
-"class_creative_power_settings.html":[3,0,214],
-"class_creative_powers.html":[3,0,213]
+"class_crash_dump.html#a1188ad6628fff27a4ba35c73b07b2e94":[3,0,209,0]
 };

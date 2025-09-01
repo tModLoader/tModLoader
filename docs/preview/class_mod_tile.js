@@ -43,6 +43,7 @@ var class_mod_tile =
     [ "PreDrawPlacementPreview", "class_mod_tile.html#ae47bbe447c6d93ec2d2837e84440279a", null ],
     [ "Register", "class_mod_tile.html#aa7b627fa06aaaad657067d77870cbdba", null ],
     [ "RegisterItemDrop", "class_mod_tile.html#a676bf9d5fe506c3f1e9934c1df7e47a0", null ],
+    [ "ReplaceTile", "class_mod_tile.html#a75064b3dce531abbbb0faa9286a0c887", null ],
     [ "RightClick", "class_mod_tile.html#a711f91bbf33368cbda6576a81aa6c56f", null ],
     [ "SetDrawPositions", "class_mod_tile.html#acb362facee6fb168a506e9d30bfe003e", null ],
     [ "SetSpriteEffects", "class_mod_tile.html#aa0db50521f23f10d9de703d39a9a6383", null ],

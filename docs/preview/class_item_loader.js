@@ -56,6 +56,7 @@ var class_item_loader =
     [ "PreReforge", "class_item_loader.html#acaf903811d1ac60ac4bddbc5a29d7bc1", null ],
     [ "PreUpdateVanitySet", "class_item_loader.html#a062b6adb882144cfe5404ccb55f536a1", null ],
     [ "ReforgePrice", "class_item_loader.html#ac8b18ec09a7dc4cd8d064d0e1641280c", null ],
+    [ "RegisterUseStyle", "class_item_loader.html#a292b71048f8a2518d086a23d7d55114e", null ],
     [ "RightClick", "class_item_loader.html#a2047df0baf55a797a9cade5696bead61", null ],
     [ "SetMatch", "class_item_loader.html#acb9e30a88f570c1610e4add277b69858", null ],
     [ "Shoot", "class_item_loader.html#a89e80c1a38407d62ae36654f4a49c623", null ],

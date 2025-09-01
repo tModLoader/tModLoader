@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -94,10 +94,18 @@ $(document).ready(function(){initNavTree('class_custom_float_condition.html','')
 </div><!--header-->
 <div class="contents">
 
+<p>A custom condition that tracks a float value. Must be manually adjusted by incrementing Value directly. The condition will complete automatically when the supplied max value is reached. <br  />
+<br  />
+ If multiple custom conditions are used for an achievement, a unique key should be provided.  
+ <a href="class_custom_float_condition.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_achievement_condition.html">AchievementCondition</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a800fb7b84fa48ff3c661b875e36e9835"><td class="memItemLeft" align="right" valign="top"><a id="a800fb7b84fa48ff3c661b875e36e9835" name="a800fb7b84fa48ff3c661b875e36e9835"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CustomFloatCondition</b> (string name, float maxValue)</td></tr>
+<tr class="separator:a800fb7b84fa48ff3c661b875e36e9835"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1b674ca25e1e2257eee387c32fc32e5"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_custom_float_condition.html#ad1b674ca25e1e2257eee387c32fc32e5">Clear</a> ()</td></tr>
 <tr class="separator:ad1b674ca25e1e2257eee387c32fc32e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2ab0b02bbba475a710d2d2086787710"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_custom_float_condition.html#ab2ab0b02bbba475a710d2d2086787710">Complete</a> ()</td></tr>
@@ -164,7 +172,11 @@ readonly string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b></
 AchievementUpdate&#160;</td><td class="memItemRight" valign="bottom"><b>OnComplete</b></td></tr>
 <tr class="separator:a4e537b163ebf11bdb3bd1d0d796bcd7a inherit events_class_achievement_condition"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >A custom condition that tracks a float value. Must be manually adjusted by incrementing Value directly. The condition will complete automatically when the supplied max value is reached. <br  />
+<br  />
+ If multiple custom conditions are used for an achievement, a unique key should be provided. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad1b674ca25e1e2257eee387c32fc32e5" name="ad1b674ca25e1e2257eee387c32fc32e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1b674ca25e1e2257eee387c32fc32e5">&#9670;&nbsp;</a></span>Clear()</h2>
 

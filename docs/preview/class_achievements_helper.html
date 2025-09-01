@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -164,6 +164,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>NotifyTileDest
 Properties</h2></td></tr>
 <tr class="memitem:ad7c313333a96cd5ae911f69771e2038c"><td class="memItemLeft" align="right" valign="top"><a id="ad7c313333a96cd5ae911f69771e2038c" name="ad7c313333a96cd5ae911f69771e2038c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentlyMining</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ad7c313333a96cd5ae911f69771e2038c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tracks if the local player is actively mining to determine if <a class="el" href="class_tile_destroyed_condition.html" title="Satisfied when any of the provided tiles is mined.    Called in WorldGen.KillTile,...">TileDestroyedCondition</a> should be satisfied or not. Modders can set to true before any custom action that should count as player controlled mining and set to false after. This prevents world updates that happen to kill tiles from satisfying <a class="el" href="class_tile_destroyed_condition.html" title="Satisfied when any of the provided tiles is mined.    Called in WorldGen.KillTile,...">TileDestroyedCondition</a>, to avoid rewarding players for mining tiles they didn't actually mine. <br /></td></tr>
 <tr class="separator:ad7c313333a96cd5ae911f69771e2038c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
@@ -176,6 +177,7 @@ static ItemPickupEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnI
 <tr class="separator:a811eef23ac3aaef89ae882ea324b5e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abedcfef92cc1b41746e27f5fa856b9ad"><td class="memItemLeft" align="right" valign="top"><a id="abedcfef92cc1b41746e27f5fa856b9ad" name="abedcfef92cc1b41746e27f5fa856b9ad"></a>
 static NPCKilledEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnNPCKilled</b></td></tr>
+<tr class="memdesc:abedcfef92cc1b41746e27f5fa856b9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when an <a class="el" href="class_n_p_c.html">NPC</a> is killed and the local player damaged/"interacted" with the <a class="el" href="class_n_p_c.html">NPC</a> (<a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">NPC.playerInteraction</a>). Unlike ModLoader.ModNPC.OnKill, this will be called on clients in multiplayer (if they damaged the <a class="el" href="class_n_p_c.html">NPC</a>), making it suitable for <a class="el" href="class_achievement.html">Achievement</a> logic. <br /></td></tr>
 <tr class="separator:abedcfef92cc1b41746e27f5fa856b9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4864c4d8ac8c25d53621b2cce4db22a"><td class="memItemLeft" align="right" valign="top"><a id="ad4864c4d8ac8c25d53621b2cce4db22a" name="ad4864c4d8ac8c25d53621b2cce4db22a"></a>
 static ProgressionEventEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnProgressionEvent</b></td></tr>

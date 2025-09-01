@@ -1012,6 +1012,7 @@ var hierarchy =
         [ "UIState", "class_u_i_state.html", [
           [ "AWorkshopPublishInfoState< TPublishedObjectType >", "class_a_workshop_publish_info_state.html", null ],
           [ "UIAchievementsMenu", "class_u_i_achievements_menu.html", null ],
+          [ "UIAchievementsMenu", "class_u_i_achievements_menu.html", null ],
           [ "UIBestiaryTest", "class_u_i_bestiary_test.html", null ],
           [ "UICharacterCreation", "class_u_i_character_creation.html", null ],
           [ "UICharacterSelect", "class_u_i_character_select.html", null ],
@@ -1259,6 +1260,8 @@ var hierarchy =
       [ "PlayerDrawLayer.Multiple", "class_player_draw_layer_1_1_multiple.html", null ],
       [ "TagCompound", "class_tag_compound.html", null ],
       [ "TmodFile", "class_tmod_file.html", null ],
+      [ "UIGrid", "class_u_i_grid.html", null ],
+      [ "UIGrid", "class_u_i_grid.html", null ],
       [ "UIList", "class_u_i_list.html", null ],
       [ "UIList", "class_u_i_list.html", null ],
       [ "UIList", "class_u_i_list.html", null ],
@@ -1280,6 +1283,7 @@ var hierarchy =
     ] ],
     [ "IHaveBackButtonCommand", "interface_i_have_back_button_command.html", [
       [ "AWorkshopPublishInfoState< TPublishedObjectType >", "class_a_workshop_publish_info_state.html", null ],
+      [ "UIAchievementsMenu", "class_u_i_achievements_menu.html", null ],
       [ "UICreateMod", "class_u_i_create_mod.html", null ],
       [ "UIResourcePackSelectionMenu", "class_u_i_resource_pack_selection_menu.html", null ],
       [ "UIWorkshopHub", "class_u_i_workshop_hub.html", null ],
@@ -1336,6 +1340,9 @@ var hierarchy =
       [ "LightingEngine", "class_lighting_engine.html", null ]
     ] ],
     [ "ILoadable", "interface_i_loadable.html", [
+      [ "ModType< Achievement, ModAchievement >", "class_mod_type.html", [
+        [ "ModAchievement", "class_mod_achievement.html", null ]
+      ] ],
       [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", [
         [ "ModEmoteBubble", "class_mod_emote_bubble.html", null ]
       ] ],
@@ -1580,6 +1587,7 @@ var hierarchy =
     ] ],
     [ "ImmunityCooldownID", "class_immunity_cooldown_i_d.html", null ],
     [ "IModType", "interface_i_mod_type.html", [
+      [ "ModType< Achievement, ModAchievement >", "class_mod_type.html", null ],
       [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", null ],
       [ "ModType< Item, ModItem >", "class_mod_type.html", null ],
       [ "ModType< Mount.MountData, ModMount >", "class_mod_type.html", null ],
@@ -1591,6 +1599,7 @@ var hierarchy =
         [ "BuilderToggle", "class_builder_toggle.html", null ],
         [ "DamageClass", "class_damage_class.html", null ],
         [ "InfoDisplay", "class_info_display.html", null ],
+        [ "ModAchievement", "class_mod_achievement.html", null ],
         [ "ModBiome", "class_mod_biome.html", null ],
         [ "ModBlockType", "class_mod_block_type.html", null ],
         [ "ModBuff", "class_mod_buff.html", null ],
@@ -2229,6 +2238,11 @@ var hierarchy =
     [ "ExtraJump.Position", "class_extra_jump_1_1_position.html", [
       [ "ExtraJump.After", "class_extra_jump_1_1_after.html", null ],
       [ "ExtraJump.Before", "class_extra_jump_1_1_before.html", null ]
+    ] ],
+    [ "ModAchievement.Position", "class_mod_achievement_1_1_position.html", [
+      [ "ModAchievement.After", "class_mod_achievement_1_1_after.html", null ],
+      [ "ModAchievement.Before", "class_mod_achievement_1_1_before.html", null ],
+      [ "ModAchievement.Default", "class_mod_achievement_1_1_default.html", null ]
     ] ],
     [ "PlayerDrawLayer.Position", "class_player_draw_layer_1_1_position.html", [
       [ "PlayerDrawLayer.AfterParent", "class_player_draw_layer_1_1_after_parent.html", null ],

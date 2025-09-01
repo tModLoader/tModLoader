@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -249,6 +249,9 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>GamepadSmart
 <tr class="memitem:a80bc6931916d232f4c31254af30be4d0"><td class="memItemLeft" align="right" valign="top"><a id="a80bc6931916d232f4c31254af30be4d0" name="a80bc6931916d232f4c31254af30be4d0"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>GamepadWholeScreenUseRange</b> = Factory.CreateBoolSet(1326, 5335, 1256, 1244, 3014, 113, 218, 495, 114, 496, 2796, 494, 3006, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 3611, 1299, 1254)</td></tr>
 <tr class="memdesc:a80bc6931916d232f4c31254af30be4d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then holding that item will allow the player to move the gamepad cursor anywhere on screen. <br  />
+<br  />
+ Vanilla entries include various ranged weapons (like MagicMissile and Starfury), minion and sentry staffs, and more. <br  />
+<br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:a80bc6931916d232f4c31254af30be4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3299be186ab7b34b4ec9ebd48b4bb515"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; int,(int minStack, int maxStack)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a3299be186ab7b34b4ec9ebd48b4bb515">GeodeDrops</a></td></tr>
@@ -318,7 +321,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsFishingCra
 <tr class="separator:a44187beac658aae40966a080b6ed9e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7314ec9992952e5c00a87e63c5a595b1"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1">IsFood</a> = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278)</td></tr>
 <tr class="memdesc:a7314ec9992952e5c00a87e63c5a595b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item is food. <br  />
- Food items can be placed onto TileID.FoodPlatters, have a <a class="el" href="class_item.html#ab442988b55e45d07c89dfe6296ed5590" title="Assign to an ItemHoldStyleID value to give this item a specific animation while the player is not usi...">Item.holdStyle</a> of <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a>, hide shields (Item.shieldSlot) when held, <br  />
+ Food items can be placed onto TileID.FoodPlatters, have a <a class="el" href="class_item.html#ab442988b55e45d07c89dfe6296ed5590" title="Assign to an ItemHoldStyleID value to give this item a specific animation while the player is not usi...">Item.holdStyle</a> of <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a>, hide shields (<a class="el" href="class_item.html#a09c927e926b0cfb2f1517a2394e975d8">Item.shieldSlot</a>) when held, <br  />
  Food item sprites must have 3 frames. The required framing code is automatically initialized.  <a href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1">More...</a><br /></td></tr>
 <tr class="separator:a7314ec9992952e5c00a87e63c5a595b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5f9d1811a0c2c9201e172d951571bfe"><td class="memItemLeft" align="right" valign="top"><a id="aa5f9d1811a0c2c9201e172d951571bfe" name="aa5f9d1811a0c2c9201e172d951571bfe"></a>
@@ -407,6 +410,9 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>LockOnAimAbov
 <tr class="memitem:af9965a473840e3c9a118869a19888817"><td class="memItemLeft" align="right" valign="top"><a id="af9965a473840e3c9a118869a19888817" name="af9965a473840e3c9a118869a19888817"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>LockOnIgnoresCollision</b> = Factory.CreateBoolSet(64, 3570, 1327, 3006, 1227, 788, 756, 1228, 65, 3065, 3473, 3051, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 4269, 4273, 4281, 4607, 5069, 5114, 5119, 3014, 3569, 3571)</td></tr>
 <tr class="memdesc:af9965a473840e3c9a118869a19888817"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item can lock-on through solid tiles. <br  />
+<br  />
+ Vanilla entries include various weapons that don't necessarily need line of sight (like Vilethorn, SolarEruption, and StarWrath), minion and sentry staffs, and more. <br  />
+<br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:af9965a473840e3c9a118869a19888817"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88b1bb12144f493ce09efa11361a4108"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a88b1bb12144f493ce09efa11361a4108">NebulaPickup</a> = Factory.CreateBoolSet(3453, 3454, 3455)</td></tr>
@@ -1067,7 +1073,7 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
 </div><div class="memdoc">
 
 <p>If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item is food. <br  />
- Food items can be placed onto TileID.FoodPlatters, have a <a class="el" href="class_item.html#ab442988b55e45d07c89dfe6296ed5590" title="Assign to an ItemHoldStyleID value to give this item a specific animation while the player is not usi...">Item.holdStyle</a> of <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a>, hide shields (Item.shieldSlot) when held, <br  />
+ Food items can be placed onto TileID.FoodPlatters, have a <a class="el" href="class_item.html#ab442988b55e45d07c89dfe6296ed5590" title="Assign to an ItemHoldStyleID value to give this item a specific animation while the player is not usi...">Item.holdStyle</a> of <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a>, hide shields (<a class="el" href="class_item.html#a09c927e926b0cfb2f1517a2394e975d8">Item.shieldSlot</a>) when held, <br  />
  Food item sprites must have 3 frames. The required framing code is automatically initialized. </p>
 <p >The auto-initialized animation for foods have 3 vertical frames. <br  />
  1. Inventory sprite <br  />

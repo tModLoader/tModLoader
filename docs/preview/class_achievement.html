@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -96,9 +96,9 @@ $(document).ready(function(){initNavTree('class_achievement.html',''); initResiz
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0f61ff876f8bf95f8d20d8e33301d10c"><td class="memItemLeft" align="right" valign="top"><a id="a0f61ff876f8bf95f8d20d8e33301d10c" name="a0f61ff876f8bf95f8d20d8e33301d10c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Achievement</b> (string name)</td></tr>
-<tr class="separator:a0f61ff876f8bf95f8d20d8e33301d10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70d9fce8ec9ccff2ad46b2a4c2d67f18"><td class="memItemLeft" align="right" valign="top"><a id="a70d9fce8ec9ccff2ad46b2a4c2d67f18" name="a70d9fce8ec9ccff2ad46b2a4c2d67f18"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Achievement</b> (string name, <a class="el" href="class_mod_achievement.html">ModAchievement</a> modAchievement=null)</td></tr>
+<tr class="separator:a70d9fce8ec9ccff2ad46b2a4c2d67f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5df9d62c3b7551d8abb292a901e0d26"><td class="memItemLeft" align="right" valign="top"><a id="ad5df9d62c3b7551d8abb292a901e0d26" name="ad5df9d62c3b7551d8abb292a901e0d26"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>AchievementCompleted</b> (<a class="el" href="class_achievement.html">Achievement</a> achievement)</td></tr>
 <tr class="separator:ad5df9d62c3b7551d8abb292a901e0d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,27 +126,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Load</b> (Dictionary&
 <tr class="memitem:af07c292df0f42b4467c33cf85c3f1721"><td class="memItemLeft" align="right" valign="top"><a id="af07c292df0f42b4467c33cf85c3f1721" name="af07c292df0f42b4467c33cf85c3f1721"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCategory</b> (AchievementCategory category)</td></tr>
 <tr class="separator:af07c292df0f42b4467c33cf85c3f1721"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcd616aa5fe2a3cc66abb9359fd98cd4"><td class="memItemLeft" align="right" valign="top"><a id="adcd616aa5fe2a3cc66abb9359fd98cd4" name="adcd616aa5fe2a3cc66abb9359fd98cd4"></a>
+override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> ()</td></tr>
+<tr class="separator:adcd616aa5fe2a3cc66abb9359fd98cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad06e4f95c1163ee5fe58b4732b7637f3"><td class="memItemLeft" align="right" valign="top"><a id="ad06e4f95c1163ee5fe58b4732b7637f3" name="ad06e4f95c1163ee5fe58b4732b7637f3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UseConditionsCompletedTracker</b> ()</td></tr>
 <tr class="separator:ad06e4f95c1163ee5fe58b4732b7637f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab05fd34273cd5fcb614db2438ef14eb4"><td class="memItemLeft" align="right" valign="top"><a id="ab05fd34273cd5fcb614db2438ef14eb4" name="ab05fd34273cd5fcb614db2438ef14eb4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UseConditionsCompletedTracker</b> (params string[] conditions)</td></tr>
 <tr class="separator:ab05fd34273cd5fcb614db2438ef14eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdc4e59d4073d773feb03b12010b2b84"><td class="memItemLeft" align="right" valign="top"><a id="afdc4e59d4073d773feb03b12010b2b84" name="afdc4e59d4073d773feb03b12010b2b84"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UseTracker</b> (<a class="el" href="interface_i_achievement_tracker.html">IAchievementTracker</a> tracker)</td></tr>
+<tr class="separator:afdc4e59d4073d773feb03b12010b2b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11a1426a2a3831862fc7780854f3eea"><td class="memItemLeft" align="right" valign="top"><a id="ae11a1426a2a3831862fc7780854f3eea" name="ae11a1426a2a3831862fc7780854f3eea"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UseTrackerFromCondition</b> (string conditionName)</td></tr>
 <tr class="separator:ae11a1426a2a3831862fc7780854f3eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a9024ede6755a3dd9129667e28ae232c8"><td class="memItemLeft" align="right" valign="top"><a id="a9024ede6755a3dd9129667e28ae232c8" name="a9024ede6755a3dd9129667e28ae232c8"></a>
-readonly <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Description</b></td></tr>
-<tr class="separator:a9024ede6755a3dd9129667e28ae232c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fa2f34ad3fa3c77603ceff41a302764"><td class="memItemLeft" align="right" valign="top"><a id="a4fa2f34ad3fa3c77603ceff41a302764" name="a4fa2f34ad3fa3c77603ceff41a302764"></a>
-readonly <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FriendlyName</b></td></tr>
-<tr class="separator:a4fa2f34ad3fa3c77603ceff41a302764"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7cbcc3e7406d8b200e30e38ecfc0ff6"><td class="memItemLeft" align="right" valign="top"><a id="ad7cbcc3e7406d8b200e30e38ecfc0ff6" name="ad7cbcc3e7406d8b200e30e38ecfc0ff6"></a>
-readonly int&#160;</td><td class="memItemRight" valign="bottom"><b>Id</b> = _totalAchievements++</td></tr>
-<tr class="separator:ad7cbcc3e7406d8b200e30e38ecfc0ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06d30e3237658d1510fec1ff45512376"><td class="memItemLeft" align="right" valign="top"><a id="a06d30e3237658d1510fec1ff45512376" name="a06d30e3237658d1510fec1ff45512376"></a>
+<a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Description</b></td></tr>
+<tr class="separator:a06d30e3237658d1510fec1ff45512376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62ff11e42b7d5c4e401901464a1e7fe1"><td class="memItemLeft" align="right" valign="top"><a id="a62ff11e42b7d5c4e401901464a1e7fe1" name="a62ff11e42b7d5c4e401901464a1e7fe1"></a>
+<a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FriendlyName</b></td></tr>
+<tr class="separator:a62ff11e42b7d5c4e401901464a1e7fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25e7a8980214fec8e4eb1e0c27ad5cc3"><td class="memItemLeft" align="right" valign="top"><a id="a25e7a8980214fec8e4eb1e0c27ad5cc3" name="a25e7a8980214fec8e4eb1e0c27ad5cc3"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Id</b> = _totalAchievements++</td></tr>
+<tr class="separator:a25e7a8980214fec8e4eb1e0c27ad5cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a444be24ab7775f4ec4d2f37f9eb22a54"><td class="memItemLeft" align="right" valign="top"><a id="a444be24ab7775f4ec4d2f37f9eb22a54" name="a444be24ab7775f4ec4d2f37f9eb22a54"></a>
+<a class="el" href="class_mod_achievement.html">ModAchievement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ModAchievement</b></td></tr>
+<tr class="separator:a444be24ab7775f4ec4d2f37f9eb22a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35d7ad6f4d784758c9ca28f00a0d14db"><td class="memItemLeft" align="right" valign="top"><a id="a35d7ad6f4d784758c9ca28f00a0d14db" name="a35d7ad6f4d784758c9ca28f00a0d14db"></a>
 readonly string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b></td></tr>
 <tr class="separator:a35d7ad6f4d784758c9ca28f00a0d14db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,6 +168,9 @@ AchievementCategory&#160;</td><td class="memItemRight" valign="bottom"><b>Catego
 <tr class="memitem:aa1a9be88055dfb92fddbd5d1a425b63a"><td class="memItemLeft" align="right" valign="top"><a id="aa1a9be88055dfb92fddbd5d1a425b63a" name="aa1a9be88055dfb92fddbd5d1a425b63a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasTracker</b><code> [get]</code></td></tr>
 <tr class="separator:aa1a9be88055dfb92fddbd5d1a425b63a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8642142fe2837f73a39a9697c91846ed"><td class="memItemLeft" align="right" valign="top"><a id="a8642142fe2837f73a39a9697c91846ed" name="a8642142fe2837f73a39a9697c91846ed"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>Hidden</b><code> [get]</code></td></tr>
+<tr class="separator:a8642142fe2837f73a39a9697c91846ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b7d37805f65a7ba2aaa0cc4342623a8"><td class="memItemLeft" align="right" valign="top"><a id="a9b7d37805f65a7ba2aaa0cc4342623a8" name="a9b7d37805f65a7ba2aaa0cc4342623a8"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCompleted</b><code> [get]</code></td></tr>
 <tr class="separator:a9b7d37805f65a7ba2aaa0cc4342623a8"><td class="memSeparator" colspan="2">&#160;</td></tr>

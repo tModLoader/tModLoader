@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -519,6 +519,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>FindPulley</b> ()</td
 <tr class="separator:a7b7fb05fd34231fbf0a82466dd20acb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82e49334f906942a5f46eae13ac27773"><td class="memItemLeft" align="right" valign="top"><a id="a82e49334f906942a5f46eae13ac27773" name="a82e49334f906942a5f46eae13ac27773"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FindSentryRestingSpot</b> (int checkProj, out int worldX, out int worldY, out int pushYUp)</td></tr>
+<tr class="memdesc:a82e49334f906942a5f46eae13ac27773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines a suitable spawn location for a "grounded" sentry (<em>checkProj</em> ). The spawn location will be centered on a tile location at the first 3 tile wide area with at least 1 solid tile, searching down from the mouse position. It will also utilize <a class="el" href="class_player.html#afb407a42a130fc83205583f7700e6758" title="Clamps the provided world position to the normal gameplay range (Main.LogicCheckScreenWidth,...">LimitPointToPlayerReachableArea(ref Vector2)</a> to limit the mouse position to the normal gameplay range. <br  />
+<br  />
+ The final spawn position after using this method will be <code>new Vector2(worldX, worldY - offset);</code>, where <code>offset</code> should most likely be half of the projectile height. <em>pushYUp</em>  should be ignored for modded projectiles. <br /></td></tr>
 <tr class="separator:a82e49334f906942a5f46eae13ac27773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac26332248b1826fc78036194b982bc96"><td class="memItemLeft" align="right" valign="top"><a id="ac26332248b1826fc78036194b982bc96" name="ac26332248b1826fc78036194b982bc96"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FindSpawn</b> ()</td></tr>
@@ -942,6 +945,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>KillMeForGood</b> ()<
 <tr class="separator:a4d6fce204c44c6ee1690944e6d6b4a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb407a42a130fc83205583f7700e6758"><td class="memItemLeft" align="right" valign="top"><a id="afb407a42a130fc83205583f7700e6758" name="afb407a42a130fc83205583f7700e6758"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LimitPointToPlayerReachableArea</b> (ref Vector2 pointPoisition)</td></tr>
+<tr class="memdesc:afb407a42a130fc83205583f7700e6758"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamps the provided world position to the normal gameplay range (Main.LogicCheckScreenWidth, Main.LogicCheckScreenHeight) from this player. <br  />
+<br  />
+ This is used to limit the ranges of various items (teleport, minion, sentry, magic missile, etc) to prevent users with high resolution screens from having a gameplay advantage. <br /></td></tr>
 <tr class="separator:afb407a42a130fc83205583f7700e6758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a661c924781bfe2ae84e000c31dd91af2"><td class="memItemLeft" align="right" valign="top"><a id="a661c924781bfe2ae84e000c31dd91af2" name="a661c924781bfe2ae84e000c31dd91af2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LockGamepadTileInteractions</b> ()</td></tr>
@@ -1424,8 +1430,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateManaRegen</b> (
 <tr class="separator:a8305c829ce1cdf0700da4a3895cad5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83ba32773f0666859d0405c09ee788f1"><td class="memItemLeft" align="right" valign="top"><a id="a83ba32773f0666859d0405c09ee788f1" name="a83ba32773f0666859d0405c09ee788f1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateMaxTurrets</b> ()</td></tr>
-<tr class="memdesc:a83ba32773f0666859d0405c09ee788f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kills <a class="el" href="class_projectile.html#aefcc822f644ea2ff3758de8263c93c20" title="Indicates that this projectile is a sentry   Defaults to false.   All sentries should set Projectile....">Projectile.sentry</a> projectiles exceeding the players current maxTurrets. The oldest projectiles, determined by <a class="el" href="class_projectile.html#ac8b4d04688f594237d173222401fc3b1" title="Time in ticks before this projectile will naturally despawn.   Each update timeLeft is decreased by 1...">Projectile.timeLeft</a>, are killed. <br  />
- Call this method immediately after spawning a <a class="el" href="class_projectile.html#aefcc822f644ea2ff3758de8263c93c20" title="Indicates that this projectile is a sentry   Defaults to false.   All sentries should set Projectile....">Projectile.sentry</a> projectile.<br  />
+<tr class="memdesc:a83ba32773f0666859d0405c09ee788f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kills <a class="el" href="class_projectile.html#aefcc822f644ea2ff3758de8263c93c20" title="Indicates that this projectile is a sentry.    Defaults to false.    All sentries should set Projecti...">Projectile.sentry</a> projectiles exceeding the players current maxTurrets. The oldest projectiles, determined by <a class="el" href="class_projectile.html#ac8b4d04688f594237d173222401fc3b1" title="Time in ticks before this projectile will naturally despawn.   Each update timeLeft is decreased by 1...">Projectile.timeLeft</a>, are killed. <br  />
+ Call this method immediately after spawning a <a class="el" href="class_projectile.html#aefcc822f644ea2ff3758de8263c93c20" title="Indicates that this projectile is a sentry.    Defaults to false.    All sentries should set Projecti...">Projectile.sentry</a> projectile.<br  />
  <br /></td></tr>
 <tr class="separator:a83ba32773f0666859d0405c09ee788f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae913b1886fb932dd29d1602e3473007e"><td class="memItemLeft" align="right" valign="top"><a id="ae913b1886fb932dd29d1602e3473007e" name="ae913b1886fb932dd29d1602e3473007e"></a>
@@ -1958,6 +1964,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>blockExtraJumps</b></
 <tr class="separator:a17723372fe66f95973d2f455b0981cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45ab1ed13540e05bebeb237a9916b58f"><td class="memItemLeft" align="right" valign="top"><a id="a45ab1ed13540e05bebeb237a9916b58f" name="a45ab1ed13540e05bebeb237a9916b58f"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>blockRange</b></td></tr>
+<tr class="memdesc:a45ab1ed13540e05bebeb237a9916b58f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extra block placement range. Toolbelt and Builder Potion both increase this by 1. This will be combined with <a class="el" href="class_player.html#aa940b6a4d72abab20dc4e8ae7a6829dc" title="The block placement and tool range. Controls how many tiles away from the player the player can place...">Player.tileRangeX</a>/Y and <a class="el" href="class_item.html#ae5e54c66b05f165b6072e90b31eb2fb8" title="Additional tile range provided by this tool or tile. Copper Pickaxe has a value of -1,...">Item.tileBoost</a> to determine the total block placement range for the held item. <br  />
+<br  />
+ Defaults to 0. <br /></td></tr>
 <tr class="separator:a45ab1ed13540e05bebeb237a9916b58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a050387483672fd6adbd219d1f65446cd"><td class="memItemLeft" align="right" valign="top"><a id="a050387483672fd6adbd219d1f65446cd" name="a050387483672fd6adbd219d1f65446cd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>bloodMoonMonolithShader</b></td></tr>
@@ -1967,6 +1976,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>blueFairy</b></td></t
 <tr class="separator:a4e1a901fdc49ba7f3c2be2b61d2e1b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fa33b3cbc16ad78dc6d2fc49d04ad69"><td class="memItemLeft" align="right" valign="top"><a id="a4fa33b3cbc16ad78dc6d2fc49d04ad69" name="a4fa33b3cbc16ad78dc6d2fc49d04ad69"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>body</b> = -1</td></tr>
+<tr class="memdesc:a4fa33b3cbc16ad78dc6d2fc49d04ad69"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible body equipment slot. Usually corresponds to the <a class="el" href="class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9" title="The body equipment slot for this item. When this item is equipped, Player.body will be set to this va...">Item.bodySlot</a> of the visible body ("shirt") armor or vanity item. <br  />
+<br  />
+ Defaults to -1. <br /></td></tr>
 <tr class="separator:a4fa33b3cbc16ad78dc6d2fc49d04ad69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fe5767978cc89c3e5662eee5fdf20ba"><td class="memItemLeft" align="right" valign="top"><a id="a2fe5767978cc89c3e5662eee5fdf20ba" name="a2fe5767978cc89c3e5662eee5fdf20ba"></a>
 Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>bodyFrame</b></td></tr>
@@ -2566,12 +2578,15 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>equipmentBasedLuckBo
 <tr class="separator:a448d74d6578307ddce3c65fd0123bc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a912788c3a655b79cfd7fcd9c6505eb26"><td class="memItemLeft" align="right" valign="top"><a id="a912788c3a655b79cfd7fcd9c6505eb26" name="a912788c3a655b79cfd7fcd9c6505eb26"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>equippedAnyTileRangeAcc</b></td></tr>
+<tr class="memdesc:a912788c3a655b79cfd7fcd9c6505eb26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increases <a class="el" href="class_player.html#aa940b6a4d72abab20dc4e8ae7a6829dc" title="The block placement and tool range. Controls how many tiles away from the player the player can place...">tileRangeX</a>/Y by 3. Used by Extendo Grip, Architect Gizmo Pack, and Hand Of Creation to increase range without stacking their effects. <br /></td></tr>
 <tr class="separator:a912788c3a655b79cfd7fcd9c6505eb26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1ce1b86d5f5361ce8b3ee2d2bd824e1"><td class="memItemLeft" align="right" valign="top"><a id="ae1ce1b86d5f5361ce8b3ee2d2bd824e1" name="ae1ce1b86d5f5361ce8b3ee2d2bd824e1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>equippedAnyTileSpeedAcc</b></td></tr>
+<tr class="memdesc:ae1ce1b86d5f5361ce8b3ee2d2bd824e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increases <a class="el" href="class_player.html#a0ce49ee196bdd717f6e8f6f4dd190408" title="The multiplier on this player&#39;s tile placement speed. For example the Builder Potion increases this b...">tileSpeed</a>/Y by 0.5f (50%). Used by Brick Layer, Architect Gizmo Pack, and Hand Of Creation to increase tile placement speed without stacking their effects. <br /></td></tr>
 <tr class="separator:ae1ce1b86d5f5361ce8b3ee2d2bd824e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74fc42862885f4ca1de6c3466ee454b0"><td class="memItemLeft" align="right" valign="top"><a id="a74fc42862885f4ca1de6c3466ee454b0" name="a74fc42862885f4ca1de6c3466ee454b0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>equippedAnyWallSpeedAcc</b></td></tr>
+<tr class="memdesc:a74fc42862885f4ca1de6c3466ee454b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increases <a class="el" href="class_player.html#a1ecfcba0c9cefb16a8c21b896ff219cb" title="The multiplier on this player&#39;s wall placement speed. For example the Builder Potion increases this b...">wallSpeed</a>/Y by 0.5f (50%). Used by Portable Cement Mixer, Architect Gizmo Pack, and Hand Of Creation to increase wall placement speed without stacking their effects. <br /></td></tr>
 <tr class="separator:a74fc42862885f4ca1de6c3466ee454b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d539f965c8a3bd655ea98c0449494fd"><td class="memItemLeft" align="right" valign="top"><a id="a5d539f965c8a3bd655ea98c0449494fd" name="a5d539f965c8a3bd655ea98c0449494fd"></a>
 <a class="el" href="class_item.html">Item</a>&#160;</td><td class="memItemRight" valign="bottom"><b>equippedWings</b> = null</td></tr>
@@ -2840,6 +2855,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hbLocked</b></td></tr
 <tr class="separator:a64fe5fbfaaa6e029e0effc63db9e097d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7895ba7bc430f5da5385022da7289551"><td class="memItemLeft" align="right" valign="top"><a id="a7895ba7bc430f5da5385022da7289551" name="a7895ba7bc430f5da5385022da7289551"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>head</b> = -1</td></tr>
+<tr class="memdesc:a7895ba7bc430f5da5385022da7289551"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible head equipment slot. Usually corresponds to the <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item. When this item is equipped, Player.legs will be set to this va...">Item.legSlot</a> of the visible head ("helmet") armor or vanity item. <br  />
+<br  />
+ Defaults to -1. <br /></td></tr>
 <tr class="separator:a7895ba7bc430f5da5385022da7289551"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a308610b5a0fcd35b5396e3e684f1aad0"><td class="memItemLeft" align="right" valign="top"><a id="a308610b5a0fcd35b5396e3e684f1aad0" name="a308610b5a0fcd35b5396e3e684f1aad0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>headcovered</b></td></tr>
@@ -3183,6 +3201,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>legRotation</b></td>
 <tr class="separator:ae4405c48fa1bc58f47fab8e4ba235bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd8cd21ad0a9e253c48b419daa541ec9"><td class="memItemLeft" align="right" valign="top"><a id="acd8cd21ad0a9e253c48b419daa541ec9" name="acd8cd21ad0a9e253c48b419daa541ec9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>legs</b> = -1</td></tr>
+<tr class="memdesc:acd8cd21ad0a9e253c48b419daa541ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible legs equipment slot. Usually corresponds to the <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item. When this item is equipped, Player.legs will be set to this va...">Item.legSlot</a> of the visible legs ("pants") armor or vanity item. <br  />
+<br  />
+ Defaults to -1. <br /></td></tr>
 <tr class="separator:acd8cd21ad0a9e253c48b419daa541ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc66104f78295c0aa6ebc6ddc46388c6"><td class="memItemLeft" align="right" valign="top"><a id="abc66104f78295c0aa6ebc6ddc46388c6" name="abc66104f78295c0aa6ebc6ddc46388c6"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>legVelocity</b></td></tr>
@@ -3381,6 +3402,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>miniMinotaur</b></td>
 <tr class="separator:afe7a66c2289ac7362d848e3ef8335053"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7f2037a49ed860124fd18bc464f86c6"><td class="memItemLeft" align="right" valign="top"><a id="ae7f2037a49ed860124fd18bc464f86c6" name="ae7f2037a49ed860124fd18bc464f86c6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>MinionAttackTargetNPC</b> = -1</td></tr>
+<tr class="memdesc:ae7f2037a49ed860124fd18bc464f86c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of the <a class="el" href="class_n_p_c.html">NPC</a> targeted by the player, either by right clicking with a summon item (<a class="el" href="class_projectile_i_d_1_1_sets.html#a7387ac144a71f66d6a0d89b520de4b10" title="If true for a given projectile type (Projectile.type), then any item that shoots that projectile can ...">ProjectileID.Sets.MinionTargettingFeature</a>) or by hitting the <a class="el" href="class_n_p_c.html">NPC</a> with a whip. <br  />
+<br  />
+ Will be -1 if there is no current target, or check <a class="el" href="class_player.html#a5f7f764562b359dfbed27c46013c0e09" title="True if the player currently has a minion attack target (MinionAttackTargetNPC.">HasMinionAttackTargetNPC</a> instead. <br /></td></tr>
 <tr class="separator:ae7f2037a49ed860124fd18bc464f86c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1372a0d996978441e3fc7d0957c05dd8"><td class="memItemLeft" align="right" valign="top"><a id="a1372a0d996978441e3fc7d0957c05dd8" name="a1372a0d996978441e3fc7d0957c05dd8"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MinionRestTargetPoint</b> = Vector2.Zero</td></tr>
@@ -3769,6 +3793,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>phantomPhoneixCounter<
 <tr class="separator:a5d431cddf8c90fc7450343db875e6a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad59a1aaa40e27177b0851635ea057234"><td class="memItemLeft" align="right" valign="top"><a id="ad59a1aaa40e27177b0851635ea057234" name="ad59a1aaa40e27177b0851635ea057234"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>pickSpeed</b> = 1f</td></tr>
+<tr class="memdesc:ad59a1aaa40e27177b0851635ea057234"><td class="mdescLeft">&#160;</td><td class="mdescRight">The multiplier on this player's mining speed. For this multiplier smaller values means faster. For example the Mining Potion decreases this by .25f (25%). <br /></td></tr>
 <tr class="separator:ad59a1aaa40e27177b0851635ea057234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15a0b76e95b64c3746250e9ec7a83c76"><td class="memItemLeft" align="right" valign="top"><a id="a15a0b76e95b64c3746250e9ec7a83c76" name="a15a0b76e95b64c3746250e9ec7a83c76"></a>
 <a class="el" href="struct_tracked_projectile_reference.html">TrackedProjectileReference</a>&#160;</td><td class="memItemRight" valign="bottom"><b>piggyBankProjTracker</b></td></tr>
@@ -4441,6 +4466,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>tileInteractionHappen
 <tr class="separator:a48c3b05cefb84e8f8970da6660972c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ce49ee196bdd717f6e8f6f4dd190408"><td class="memItemLeft" align="right" valign="top"><a id="a0ce49ee196bdd717f6e8f6f4dd190408" name="a0ce49ee196bdd717f6e8f6f4dd190408"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>tileSpeed</b> = 1f</td></tr>
+<tr class="memdesc:a0ce49ee196bdd717f6e8f6f4dd190408"><td class="mdescLeft">&#160;</td><td class="mdescRight">The multiplier on this player's tile placement speed. For example the Builder Potion increases this by .25f (25%). <br /></td></tr>
 <tr class="separator:a0ce49ee196bdd717f6e8f6f4dd190408"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3a6a470b627f541555f5104d4432bce"><td class="memItemLeft" align="right" valign="top"><a id="af3a6a470b627f541555f5104d4432bce" name="af3a6a470b627f541555f5104d4432bce"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>timeShimmering</b></td></tr>
@@ -4579,6 +4605,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>waist</b> = -1</td></t
 <tr class="separator:a130c1be5f77b8e3128f3f28686d900f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ecfcba0c9cefb16a8c21b896ff219cb"><td class="memItemLeft" align="right" valign="top"><a id="a1ecfcba0c9cefb16a8c21b896ff219cb" name="a1ecfcba0c9cefb16a8c21b896ff219cb"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>wallSpeed</b> = 1f</td></tr>
+<tr class="memdesc:a1ecfcba0c9cefb16a8c21b896ff219cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The multiplier on this player's wall placement speed. For example the Builder Potion increases this by .25f (25%). <br /></td></tr>
 <tr class="separator:a1ecfcba0c9cefb16a8c21b896ff219cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba06eb50e0081d0173176b938ed04c3b"><td class="memItemLeft" align="right" valign="top"><a id="aba06eb50e0081d0173176b938ed04c3b" name="aba06eb50e0081d0173176b938ed04c3b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>waterWalk</b></td></tr>
@@ -4887,6 +4914,13 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>taxRate</b> 
 <tr class="separator:ad4d30673589b6b5a76176b0ecf4d4602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa940b6a4d72abab20dc4e8ae7a6829dc"><td class="memItemLeft" align="right" valign="top"><a id="aa940b6a4d72abab20dc4e8ae7a6829dc" name="aa940b6a4d72abab20dc4e8ae7a6829dc"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>tileRangeX</b> = 5</td></tr>
+<tr class="memdesc:aa940b6a4d72abab20dc4e8ae7a6829dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block placement and tool range. Controls how many tiles away from the player the player can place tiles/walls or target with tools. Use <a class="el" href="class_player.html#a45ab1ed13540e05bebeb237a9916b58f" title="The extra block placement range. Toolbelt and Builder Potion both increase this by 1....">blockRange</a> for placement-specific boosts and <a class="el" href="class_item.html#ae5e54c66b05f165b6072e90b31eb2fb8" title="Additional tile range provided by this tool or tile. Copper Pickaxe has a value of -1,...">Item.tileBoost</a> for item-specific boosts. <br  />
+<br  />
+ Note that this field is static, so any adjustments to this field need to first check that the effect is for the local player to avoid bugs in multiplayer! (<code>player.whoAmI == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a></code>) <br  />
+<br  />
+ The Toolbox accessory increases this by 1 directly, but the Extendo Grip, Architect Gizmo Pack, and Hand Of Creation all use <a class="el" href="class_player.html#a912788c3a655b79cfd7fcd9c6505eb26" title="Increases tileRangeX/Y by 3. Used by Extendo Grip, Architect Gizmo Pack, and Hand Of Creation to incr...">equippedAnyTileRangeAcc</a> to increate range by 3 without stacking their effects. <br  />
+<br  />
+ tileRangeX defaults to 5 and tileRangeY defaults to 4. <br /></td></tr>
 <tr class="separator:aa940b6a4d72abab20dc4e8ae7a6829dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf1e37218130cdb0486210959f2817a2"><td class="memItemLeft" align="right" valign="top"><a id="adf1e37218130cdb0486210959f2817a2" name="adf1e37218130cdb0486210959f2817a2"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>tileRangeY</b> = 4</td></tr>
@@ -4950,6 +4984,7 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultSize</b><co
 <tr class="separator:a3f086641b98d9b5b2af0105edf483b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76c20d10171633a097c8ab53770098ef"><td class="memItemLeft" align="right" valign="top"><a id="a76c20d10171633a097c8ab53770098ef" name="a76c20d10171633a097c8ab53770098ef"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Directions</b><code> [get]</code></td></tr>
+<tr class="memdesc:a76c20d10171633a097c8ab53770098ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Vector2 comprised of <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a> (X) and <a class="el" href="class_player.html#a51fc417963886ca80af4eaf5005b76d9" title="The players gravity direction. 1 if normal, -1 if reversed. Defaults to 1.">gravDir</a> (Y). <br /></td></tr>
 <tr class="separator:a76c20d10171633a097c8ab53770098ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f8054c6d080eae3d844ee86d9a131df"><td class="memItemLeft" align="right" valign="top"><a id="a4f8054c6d080eae3d844ee86d9a131df" name="a4f8054c6d080eae3d844ee86d9a131df"></a>
 Span&lt; <a class="el" href="struct_extra_jump_state.html">ExtraJumpState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraJumps</b><code> [get]</code></td></tr>
@@ -4959,6 +4994,7 @@ Vector2?&#160;</td><td class="memItemRight" valign="bottom"><b>HandPosition</b><
 <tr class="separator:aee535dace4c62e5793a953f066e02037"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f7f764562b359dfbed27c46013c0e09"><td class="memItemLeft" align="right" valign="top"><a id="a5f7f764562b359dfbed27c46013c0e09" name="a5f7f764562b359dfbed27c46013c0e09"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasMinionAttackTargetNPC</b><code> [get]</code></td></tr>
+<tr class="memdesc:a5f7f764562b359dfbed27c46013c0e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the player currently has a minion attack target (<a class="el" href="class_player.html#ae7f2037a49ed860124fd18bc464f86c6" title="The index of the NPC targeted by the player, either by right clicking with a summon item (ProjectileI...">MinionAttackTargetNPC</a>. <br /></td></tr>
 <tr class="separator:a5f7f764562b359dfbed27c46013c0e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad557652b0d7167e8a59200b730e1f37e"><td class="memItemLeft" align="right" valign="top"><a id="ad557652b0d7167e8a59200b730e1f37e" name="ad557652b0d7167e8a59200b730e1f37e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasMinionRestTarget</b><code> [get]</code></td></tr>

@@ -1,12 +1,18 @@
 var class_utils =
 [
     [ "ChaseResults", "struct_utils_1_1_chase_results.html", null ],
+    [ "BoundingRectangle", "class_utils.html#a612008862191bdf197980579e09c9ecb", null ],
+    [ "BoundingRectangle", "class_utils.html#aeab9db726c5c90a8e876120eec9c5e7f", null ],
     [ "ClosestPointOnLine", "class_utils.html#a1aa7dde73333fb2204b3b115a6fc829a", null ],
     [ "CoinsSplit", "class_utils.html#ac0d31b79da89281e90fb6589afd5e319", null ],
+    [ "CornerRectangle", "class_utils.html#a7500aaaa8df5769ac61643bfe8a9a303", null ],
+    [ "CornerRectangle", "class_utils.html#abfc36006cb9beec1c30cb7cb059f5c1c", null ],
     [ "Frame", "class_utils.html#ada68951072cd4fdc7e20a5d57d7b1873", null ],
     [ "Frame", "class_utils.html#af8ae312e8da4a79a51b2fada5851cbf9", null ],
     [ "GetDayTimeAs24FloatStartingFromMidnight", "class_utils.html#aefd0d5afdd25e0b39dcc8161ca805723", null ],
     [ "GetTrueIndexes", "class_utils.html#ae99d584536fc77db47630fc66c03dc72", null ],
+    [ "Including", "class_utils.html#a8da61f9b40bc38150c9b410ebab4124e", null ],
+    [ "Including", "class_utils.html#a11fc8afdde6704eaf9c59a238d1e1128", null ],
     [ "MultiLerp", "class_utils.html#a54b07febc0e0b2f0703a75feb2287a5b", null ],
     [ "Next< T >", "class_utils.html#a89069d24f25560e0c9d565dd55e2187f", null ],
     [ "Next< T >", "class_utils.html#a20b08c978c09a4c4046fd34c2510df05", null ],

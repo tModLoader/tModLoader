@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -294,6 +294,14 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTile
  If more control over tile item drops is required, such as conditional drops, custom data on dropped items, or multiple item drops, use <a class="el" href="class_mod_tile.html#afcc3bd178d7d93e906f8c65e4112699b" title="Allows customization of the items the tile at the given coordinates drops.   The default item drop is...">GetItemDrops(int, int)</a>.<br  />
   <a href="class_mod_tile.html#a676bf9d5fe506c3f1e9934c1df7e47a0">More...</a><br /></td></tr>
 <tr class="separator:a676bf9d5fe506c3f1e9934c1df7e47a0 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75064b3dce531abbbb0faa9286a0c887 inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top"><a id="a75064b3dce531abbbb0faa9286a0c887" name="a75064b3dce531abbbb0faa9286a0c887"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ReplaceTile</b> (int i, int j, int targetType, int targetStyle)</td></tr>
+<tr class="memdesc:a75064b3dce531abbbb0faa9286a0c887 inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when this tile at the given coordinates is being replaced via the block swap feature. For supported multi-tiles, the coordinates will be the top left corner. <em>targetType</em>  and <em>targetStyle</em>  are the tile type and style that will replace the current tile. <br  />
+<br  />
+ An implementation of this method might end up duplicating some custom KillMultiTile or KillTile code, but not all. For example, for a chest or dresser tile you wouldn't want to call <a class="el" href="class_chest.html#a1963f9c91e0b0381f0b362d540f93adf" title="Attempts to destroy the chest at (X , Y ).">Chest.DestroyChest</a>. <br  />
+<br  />
+ Called on local, server, and remote clients. <br /></td></tr>
+<tr class="separator:a75064b3dce531abbbb0faa9286a0c887 inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a711f91bbf33368cbda6576a81aa6c56f inherit pub_methods_class_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tile.html#a711f91bbf33368cbda6576a81aa6c56f">RightClick</a> (int i, int j)</td></tr>
 <tr class="memdesc:a711f91bbf33368cbda6576a81aa6c56f inherit pub_methods_class_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targeting from happening. Returns false by default.  <a href="class_mod_tile.html#a711f91bbf33368cbda6576a81aa6c56f">More...</a><br /></td></tr>
 <tr class="separator:a711f91bbf33368cbda6576a81aa6c56f inherit pub_methods_class_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>

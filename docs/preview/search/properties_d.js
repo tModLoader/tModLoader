@@ -9,5 +9,6 @@ var searchData=
   ['originalcritchance_6',['OriginalCritChance',['../class_projectile.html#aa4f752f854e89325b991e7db7a316562',1,'Projectile']]],
   ['originalx_7',['OriginalX',['../class_drawable_tooltip_line.html#a78d21286a43ff7dfe6c4f368483c3ea6',1,'DrawableTooltipLine']]],
   ['originaly_8',['OriginalY',['../class_drawable_tooltip_line.html#ad81b74384023f8fc2cdb708601bc8ef0',1,'DrawableTooltipLine']]],
-  ['overridecolor_9',['OverrideColor',['../class_drawable_tooltip_line.html#ad55bbf4963496c540797b14a8205646b',1,'DrawableTooltipLine']]]
+  ['overridecolor_9',['OverrideColor',['../class_drawable_tooltip_line.html#ad55bbf4963496c540797b14a8205646b',1,'DrawableTooltipLine']]],
+  ['ownerminionattacktargetnpc_10',['OwnerMinionAttackTargetNPC',['../class_projectile.html#ad328a29da8e27df99d82fb057fc87546',1,'Projectile']]]
 ];
