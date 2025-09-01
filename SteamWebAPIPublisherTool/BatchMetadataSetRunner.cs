@@ -3,30 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ModLoaderSimple;
 
 namespace SteamWebAPIPublisherTool;
 internal class BatchMetadataSetRunner
 {
-	internal const string SteamCMDPath = "placeholder";
+	private string workingDirectory;
 
-	private string[] publishedFileIds;
-	private int pageId;
-
-	internal BatchMetadataSetRunner(string[] publishedFileIds, int currentPage)
+	internal BatchMetadataSetRunner(string workingDirectory)
 	{
-		this.publishedFileIds = publishedFileIds;
-		this.pageId = currentPage;
+		this.workingDirectory = workingDirectory;
 	}
 
-	internal string WorkingDirectory => $"{Directory.GetCurrentDirectory()}/page{pageId}"; 
-
-	internal async void RunForceDevMetadataUpdate()
+	internal static string CreateWorkingDirectoryForPage(string[] publishedFileIds, int currentPage)
 	{
-		// Prepare the Directory
-		Directory.CreateDirectory(WorkingDirectory);
-		File.WriteAllLines($"{WorkingDirectory}/install.txt", publishedFileIds);
+		string workingDirectory = GetWorkingDirectory(currentPage);
+		Directory.CreateDirectory(workingDirectory);
+		File.WriteAllLines($"{workingDirectory}/install.txt", publishedFileIds);
 
+		return workingDirectory;
+	}
+
+	private static string GetWorkingDirectory(int pageId) => $"{Directory.GetCurrentDirectory()}/page{pageId}";
+
+	internal void RunForceDevMetadataUpdate()
+	{
 		// Download the Items
 		var actualWorkshopItemsFolder = DownloadItemsToFolder();
 
@@ -38,8 +42,8 @@ internal class BatchMetadataSetRunner
 	{
 		var downloader = new SteamCMD.SteamCmdDownloaderInstance(
 			steamCmdExePath: SteamCMDPath,
-			modInstallTxtPath: $"{WorkingDirectory}/install.txt",
-			modDownloadFolderPath: WorkingDirectory
+			modInstallTxtPath: $"{workingDirectory}/install.txt",
+			modDownloadFolderPath: workingDirectory
 		);
 
 		return downloader.DownloadItems();
@@ -64,16 +68,11 @@ internal class BatchMetadataSetRunner
 			var publishId = Path.GetFileNameWithoutExtension(workshopItem);
 
 			// Read the tmod files in directory & Get metadata
-			string devMetadata = CalculateDevMetadata(workshopItem);
+			string devMetadata = SocialBrowserModule.CalculateDevMetadata(workshopItem);
 
 			devMetadataKvp.Add((publishId, devMetadata));
 		}
 
 		return devMetadataKvp;
-	}
-
-	private string CalculateDevMetadata(string workshopItemFolder)
-	{
-		return "Placeholder";
 	}
 }

@@ -47,6 +47,7 @@ internal static class SteamWebWrapper
 		public int Language { get; set; }
 	}
 
+	//TODO: Replace with internal Set; Get;
 	internal static void SetPublisherKey(string publisherKey)
 	{
 		PublisherKey = publisherKey;
@@ -98,6 +99,8 @@ internal static class SteamWebWrapper
 		return PostHttpsAsync(ApiEndpoint, arguments).Result;
 	}
 
+	private const float NumberResultsPerPage = 100f;
+
 	private static string QueryForPublisherIdsInnerCursor(string cursor)
 	{
 		const string ApiEndpoint = "IPublishedFileService/QueryFiles/v1";
@@ -105,11 +108,11 @@ internal static class SteamWebWrapper
 		List<KeyValuePair<string, string>> arguments = new List<KeyValuePair<string, string>>() {
 			GetKeyValuePair("query_type", "1"), // ordered by publication date, newest first
 			GetKeyValuePair("page", "0"), // required
-			GetKeyValuePair("numperpage", "100"), // up to 100 items per returned response
+			GetKeyValuePair("numperpage", $"{NumberResultsPerPage}"), // up to 100 items per returned response
 			GetKeyValuePair("creator_appid", "1281930"), // tmodloader
 			GetKeyValuePair("appid", "1281930"), // tmodloader
 			GetKeyValuePair("filetype", "0"), // workshop items
-			GetKeyValuePair("admin_query", "true"), // show 'hidden' items
+			GetKeyValuePair("admin_query", "false"), // don't show 'hidden' items; this is setup to use anon login
 			GetKeyValuePair("ids_only", "true"), // only return the published ID for speed
 			GetKeyValuePair("key", PublisherKey), // the web api authentication key
 			GetKeyValuePair("cursor", cursor) // the cursor used for deep pagination
@@ -135,7 +138,7 @@ internal static class SteamWebWrapper
 			cursor = root.Response.NextCursor;
 			publisherIdPages.Add(root.Response.PublishedFileDetails.Select(pid => pid.PublishedFileId).ToArray());
 		}
-		while (cursor != "*" && ++pageTracker < Math.Floor(totalBallparkEntries / 100f) + 1);
+		while (cursor != "*" && ++pageTracker < Math.Floor(totalBallparkEntries / NumberResultsPerPage) + 1);
 
 		return publisherIdPages;
 	}
