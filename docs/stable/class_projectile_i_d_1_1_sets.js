@@ -27,6 +27,7 @@ var class_projectile_i_d_1_1_sets =
     [ "IsAnNPCAttachedExplosive", "class_projectile_i_d_1_1_sets.html#a59775f465d4a23eb22c94b9978a6d39c", null ],
     [ "IsARocketThatDealsDoubleDamageToPrimaryEnemy", "class_projectile_i_d_1_1_sets.html#a920c94eec033dd963675c0a5079a7a96", null ],
     [ "IsAWhip", "class_projectile_i_d_1_1_sets.html#afbaef65e8e6c93acda4f938196f87d5b", null ],
+    [ "IsInteractable", "class_projectile_i_d_1_1_sets.html#a2ec3fcaaabf56c15f7eca2071b2a3684", null ],
     [ "LightPet", "class_projectile_i_d_1_1_sets.html#aab31733abf774f4ff20b82e655bc4590", null ],
     [ "MinionSacrificable", "class_projectile_i_d_1_1_sets.html#a6476098c135953f1f8a6c5542caeb037", null ],
     [ "MinionShot", "class_projectile_i_d_1_1_sets.html#ab1318e63cf6daff849f28039375d50e9", null ],

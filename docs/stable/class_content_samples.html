@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -155,7 +155,10 @@ static Dictionary&lt; int, string &gt;&#160;</td><td class="memItemRight" valign
 <tr class="memitem:a13377377fd758f4b74973c4c1a4ef1c0"><td class="memItemLeft" align="right" valign="top"><a id="a13377377fd758f4b74973c4c1a4ef1c0" name="a13377377fd758f4b74973c4c1a4ef1c0"></a>
 static Dictionary&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcBestiaryRarityStars</b> = new Dictionary&lt;int, int&gt;()</td></tr>
 <tr class="memdesc:a13377377fd758f4b74973c4c1a4ef1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of stars a given <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) shows in the Bestiary. <br  />
- Set in <a class="el" href="class_mod_n_p_c.html#aef1c1d0e88ce5d8532b64723dc2acbfd" title="Allows you to set an NPC&#39;s information in the Bestiary.">ModNPC.SetBestiary(BestiaryDatabase, BestiaryEntry)</a> or <a class="el" href="class_global_n_p_c.html#aa4320fe846bd9bf341ee89f0a42f5bc4" title="Allows you to set an NPC&#39;s information in the Bestiary.">GlobalNPC.SetBestiary(NPC, BestiaryDatabase, BestiaryEntry)</a>. <br /></td></tr>
+<br  />
+ Defaults to the result of GetNPCBestiaryRarityStarsCount. Read the Bestiary Stars wiki pageto learn more about the default calculations. <br  />
+<br  />
+ Set in SetStaticDefaults to override that logic. <br /></td></tr>
 <tr class="separator:a13377377fd758f4b74973c4c1a4ef1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44014f952ed912dc44add4f3ad41d49e"><td class="memItemLeft" align="right" valign="top"><a id="a44014f952ed912dc44add4f3ad41d49e" name="a44014f952ed912dc44add4f3ad41d49e"></a>
 static Dictionary&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NpcBestiarySortingId</b> = new Dictionary&lt;int, int&gt;()</td></tr>
