@@ -14,7 +14,7 @@ internal class SteamCmdDownloaderInstance
 	private string modInstallTxtPath;
 	private string modDownloadFolderPath;
 
-	internal SteamCmdDownloaderInstance(string steamCmdExePath, string modInstallTxtPath, string modDownloadFolderPath)
+	internal SteamCmdDownloaderInstance(string modInstallTxtPath, string modDownloadFolderPath)
 	{
 		this.modInstallTxtPath = modInstallTxtPath;
 		this.modDownloadFolderPath = modDownloadFolderPath;
@@ -51,8 +51,12 @@ internal class SteamCmdDownloaderInstance
 			FileName = SteamCMDPath
 		};
 
+		Console.WriteLine($"Starting SteamCmd Workshop Download Items...");
+
 		var downloader = Process.Start(steamCmdStartInfo);
 		downloader.WaitForExit();
+
+		Console.WriteLine($"SteamCmd Workshop Download Items completed.");
 
 		return GetActualModDownloadsWorkshopFolder();
 	}

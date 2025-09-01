@@ -24,6 +24,7 @@ internal class BatchMetadataSetRunner
 		Directory.CreateDirectory(workingDirectory);
 		File.WriteAllLines($"{workingDirectory}/install.txt", publishedFileIds);
 
+		Console.WriteLine($"Workshop directory for Page #{currentPage} created");
 		return workingDirectory;
 	}
 
@@ -41,7 +42,6 @@ internal class BatchMetadataSetRunner
 	private string DownloadItemsToFolder()
 	{
 		var downloader = new SteamCMD.SteamCmdDownloaderInstance(
-			steamCmdExePath: SteamCMDPath,
 			modInstallTxtPath: $"{workingDirectory}/install.txt",
 			modDownloadFolderPath: workingDirectory
 		);
@@ -55,7 +55,11 @@ internal class BatchMetadataSetRunner
 
 		foreach (var item in devMetadataKvp) {
 			SteamWebApi.SteamWebWrapper.SetDeveloperMetadata(item.publishedId, item.metadata);
+			Console.WriteLine($"Metadata for Workshop Item {item.publishedId} has been updated");
 		}
+
+		// Free up disk drive space by cleaning out workshop items folder
+		Directory.Delete(workingDirectory, true);
 	}
 
 	private List<(string publishedId, string metadata)> IterateWorkshopFilesForDevMetadata(string actualWorkshopItemsFolder)

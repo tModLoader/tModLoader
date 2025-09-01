@@ -56,9 +56,6 @@ internal static class SteamWebWrapper
 	private static KeyValuePair<string, string> GetKeyValuePair(string key, string value) => new KeyValuePair<string, string>(key, value);
 
 	internal static async Task<string> PostHttpsAsync(string apiEndpoint, List<KeyValuePair<string, string>> arguments) {
-		if (PublisherKey is null)
-			throw new Exception("Publisher Key Must Be Initialized Before Use");
-
 		using HttpResponseMessage response = await _httpClient.PostAsync(
 			requestUri: apiEndpoint,
 			new FormUrlEncodedContent(arguments)
@@ -71,9 +68,6 @@ internal static class SteamWebWrapper
 
 	internal static async Task<string> GetHttpsAsync(string apiEndpoint, List<KeyValuePair<string, string>> arguments)
 	{
-		if (PublisherKey is null)
-			throw new Exception("Publisher Key Must Be Initialized Before Use");
-
 		var argumentsEncoded = new FormUrlEncodedContent(arguments).ReadAsStringAsync().Result;
 
 		using HttpResponseMessage response = await _httpClient.GetAsync(
@@ -87,6 +81,9 @@ internal static class SteamWebWrapper
 
 	internal static string SetDeveloperMetadata(string publishedFileId, string metadata)
 	{
+		if (PublisherKey is null)
+			throw new Exception("Publisher Key Must Be Initialized Before Use");
+
 		const string ApiEndpoint = "IPublishedFileService/SetDeveloperMetadata/v1";
 
 		List<KeyValuePair<string, string>> arguments = new List<KeyValuePair<string, string>>() {
@@ -103,6 +100,9 @@ internal static class SteamWebWrapper
 
 	private static string QueryForPublisherIdsInnerCursor(string cursor)
 	{
+		if (PublisherKey is null)
+			throw new Exception("Publisher Key Must Be Initialized Before Use");
+
 		const string ApiEndpoint = "IPublishedFileService/QueryFiles/v1";
 
 		List<KeyValuePair<string, string>> arguments = new List<KeyValuePair<string, string>>() {
@@ -129,6 +129,7 @@ internal static class SteamWebWrapper
 		List<string[]> publisherIdPages = new List<string[]>();
 
 		do {
+			Console.WriteLine($"Querying Page {pageTracker} of {totalBallparkEntries / NumberResultsPerPage}");
 			var encodedResponse = QueryForPublisherIdsInnerCursor(cursor);
 
 			var root = JsonSerializer.Deserialize<PublishedIdQueryOuterResponse>(encodedResponse);
@@ -139,6 +140,8 @@ internal static class SteamWebWrapper
 			publisherIdPages.Add(root.Response.PublishedFileDetails.Select(pid => pid.PublishedFileId).ToArray());
 		}
 		while (cursor != "*" && ++pageTracker < Math.Floor(totalBallparkEntries / NumberResultsPerPage) + 1);
+
+		Console.WriteLine($"Querying for PublishedFileIds complete");
 
 		return publisherIdPages;
 	}
