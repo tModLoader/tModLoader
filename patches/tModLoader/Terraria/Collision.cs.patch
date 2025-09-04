@@ -17,6 +17,25 @@
  			return false;
  
  		int num = tile.blockType();
+@@ -2253,7 +_,10 @@
+ 					continue;
+ 
+ 				int type = Main.tile[i, j].type;
++				/*
+ 				if (!Main.tile[i, j].active() || (type != 135 && type != 210 && type != 443 && type != 442))
++				*/
++				if (!Main.tile[i, j].active() || (TileID.Sets.PressurePlate[type] == -1 && type != 210 && type != 443 && type != 442))
+ 					continue;
+ 
+ 				vector.X = i * 16;
+@@ -2322,6 +_,7 @@
+ 					}
+ 
+ 					int num5 = Main.tile[i, j].frameY / 18;
++					if (TileID.Sets.PressurePlate[type] < 0) num5 = TileID.Sets.PressurePlate[type];
+ 					bool flag2 = true;
+ 					if ((num5 == 4 || num5 == 2 || num5 == 3 || num5 == 6 || num5 == 7) && objType != 1)
+ 						flag2 = false;
 @@ -2614,7 +_,10 @@
  			tile = Main.tile[num2, num3];
  			tile2 = Main.tile[num2, num3 - 1];

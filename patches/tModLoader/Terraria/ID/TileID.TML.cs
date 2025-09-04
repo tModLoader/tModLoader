@@ -184,6 +184,13 @@ partial class TileID
 		/// </summary>
 		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
 
+		/// <summary>
+		/// If not -1, the tile will act as a pressure plate
+		/// Positive values and 0 work as the type of pressure plate at that frame number
+		/// Negative values use the tile's y frame
+		/// </summary>
+		public static int[] PressurePlate = Factory.CreateIntSet(-1, TileID.PressurePlates, -2);
+
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)
 		{
