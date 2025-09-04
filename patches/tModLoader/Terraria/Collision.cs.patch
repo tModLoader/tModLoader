@@ -32,7 +32,7 @@
  					}
  
  					int num5 = Main.tile[i, j].frameY / 18;
-+					if (TileID.Sets.PressurePlate[type] < 0) num5 = TileID.Sets.PressurePlate[type];
++					if (TileID.Sets.PressurePlate[type] >= 0) num5 = TileID.Sets.PressurePlate[type];
  					bool flag2 = true;
  					if ((num5 == 4 || num5 == 2 || num5 == 3 || num5 == 6 || num5 == 7) && objType != 1)
  						flag2 = false;
