@@ -1930,7 +1930,7 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,7 +_,30 @@
+@@ -39342,8 +_,34 @@
  		return true;
  	}
  
@@ -1939,6 +1939,8 @@
 +	/// <inheritdoc cref="Convert(int, int, int, int, bool, bool)"/>
 +	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
 +
++	[ThreadStatic]
++	static int conversionRecursionDepth = 0;
 +	/// <summary>
 +	/// Converts biome variant tiles and walls to a target biome.<br/>
 +	/// Converts a 9x9 square by default, but can be adjusted with the <paramref name="size"/> parameter.
@@ -1960,8 +1962,10 @@
 +	/// <param name="walls">If the conversion should affect walls</param>
 +	public static void Convert(int i, int j, int conversionType, int size = 4, bool tiles = true, bool walls = true)
  	{
++		conversionRecursionDepth++;
  		for (int k = i - size; k <= i + size; k++) {
  			for (int l = j - size; l <= j + size; l++) {
+ 				if (!InWorld(k, l, 1) || Math.Abs(k - i) + Math.Abs(l - j) >= 6)
 @@ -39352,9 +_,18 @@
  				Tile tile = Main.tile[k, l];
  				int type = tile.type;
@@ -1970,7 +1974,7 @@
 +				bool convertWall = walls && wall > 0 && WallLoader.Convert(k, l, conversionType);
 +				bool convertTile = tiles && tile.HasTile && TileLoader.Convert(k, l, conversionType);
 +				if (conversionType >= BiomeConversionID.Count)
-+					continue;
++					goto SkipTilePurityConversion;
 +
  				switch (conversionType) {
  					case 4:
@@ -2215,16 +2219,23 @@
  				if (tile.type == 492) {
  					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 477);
  					tile.type = 477;
-@@ -39914,6 +_,9 @@
+@@ -39914,8 +_,16 @@
  					if (Main.netMode == 1)
  						NetMessage.SendData(17, -1, -1, null, 0, k, l);
  				}
 +
 +				SkipTilePurityConversion:
 +				;
++
++				if (conversionRecursionDepth == 1 && type != tile.type) {
++					TileLoader.OnTileConverted(k, l, type, tile.type);
++				}
  			}
  		}
++		conversionRecursionDepth--;
  	}
+ 
+ 	public static void CactusFrame(int i, int j)
 @@ -40114,7 +_,7 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;

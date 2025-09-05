@@ -736,4 +736,8 @@ public abstract class ModTile : ModBlockType
 	public virtual void GetTileFlameData(int i, int j, ref GameContent.Drawing.TileDrawing.TileFlameData tileFlameData)
 	{
 	}
+
+	public virtual void OnTileConverted(int i, int j, int fromType, int toType)
+	{
+	}
 }

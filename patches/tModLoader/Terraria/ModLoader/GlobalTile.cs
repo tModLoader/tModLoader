@@ -381,4 +381,8 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 		return false;
 	}
+
+	public virtual void OnTileConverted(int i, int j, int fromType, int toType)
+	{
+	}
 }
