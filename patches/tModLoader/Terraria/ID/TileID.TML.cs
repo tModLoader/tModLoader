@@ -184,6 +184,11 @@ partial class TileID
 		/// </summary>
 		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
 
+		/// <summary>
+		/// If true, the tile will be destroyed after the world is loaded, before it is entered. Can be used to get rid of temporary tiles such as the block created by <see href="https://terraria.wiki.gg/wiki/Ice_Rod">Ice Rod</see>
+		/// </summary>
+		public static bool[] ClearedOnWorldLoad = Factory.CreateBoolSet(127, 504);
+
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)
 		{
