@@ -74,6 +74,16 @@
  	public static void SkipWire(Point16 point)
  	{
  		_wireSkip[point] = true;
+@@ -198,6 +_,9 @@
+ 		if (!WorldGen.InWorld(i, j) || Main.tile[i, j] == null)
+ 			return;
+ 
++		if (!TileLoader.HitSwitch(i, j, Main.tile[i, j].TileType))
++			return;
++
+ 		if (Main.tile[i, j].type == 135 || Main.tile[i, j].type == 314 || Main.tile[i, j].type == 423 || Main.tile[i, j].type == 428 || Main.tile[i, j].type == 442 || Main.tile[i, j].type == 476) {
+ 			SoundEngine.PlaySound(28, i * 16, j * 16, 0);
+ 			TripWire(i, j, 1, 1);
 @@ -349,7 +_,14 @@
  		}
  	}

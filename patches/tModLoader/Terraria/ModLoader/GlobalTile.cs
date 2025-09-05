@@ -381,4 +381,13 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 		return false;
 	}
+
+	/// <summary>
+	/// Allows you to determine whether this tile triggers wires.
+	/// <br/>Return false to prevent it. Returns true by default.
+	/// </summary>
+	public virtual bool HitSwitch(int i, int j, int type)
+	{
+		return true;
+	}
 }
