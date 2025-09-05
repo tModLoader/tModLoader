@@ -167,7 +167,7 @@ public static partial class SystemLoader
 
 	public static void PostWorldLoad()
 	{
-		foreach (var system in HookOnWorldLoad.Enumerate()) {
+		foreach (var system in HookPostWorldLoad.Enumerate()) {
 			try {
 				system.PostWorldLoad();
 			}
