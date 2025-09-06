@@ -583,13 +583,11 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Called when <see cref="Wiring.HitSwitch"/> is called on the tile.
 	/// <br/> Ordinarily this only happens for modded tiles if they have set a value in <see cref="TileID.Sets.PressurePlate"/>, but mods may call it to trigger switches
-	/// <br/> Calls <see cref="Wiring.TripWire"/> by default
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	public virtual void HitSwitch(int i, int j)
 	{
-		Wiring.TripWire(i, j, 1, 1);
 	}
 
 	/// <summary>
