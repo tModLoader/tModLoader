@@ -21,6 +21,9 @@ public class BadIDTypeUnitTest
 			item.type = a;
 			const int b = 420;
 			item.type = b;
+
+			Terraria.ModLoader.ModNPC modProjectile = null;
+			modProjectile.AIType = {|BadIDType:NPCAIStyleID.DemonEye|};
 			"""
 			);
 	}

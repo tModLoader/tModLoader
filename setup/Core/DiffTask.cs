@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Setup.Core
 
 				if (!File.Exists(Path.Combine(parameters.BaseDir, relPath)))
 					items.Add(new WorkItem("Copying: " + relPath, () => Copy(file, Path.Combine(parameters.PatchDir, relPath))));
-				else if (IsDiffable(relPath))
+				else
 					items.Add(new WorkItem("Diffing: " + relPath, () => Diff(relPath)));
 			}
 
@@ -70,18 +70,39 @@ namespace Terraria.ModLoader.Setup.Core
 
 		private void Diff(string relPath)
 		{
-			var patchFile = Differ.DiffFiles(new LineMatchedDiffer(),
-				PathUtils.UnixJoin(parameters.BaseDir, relPath),
-				PathUtils.UnixJoin(parameters.PatchedDir, relPath));
+			var basePath = PathUtils.UnixJoin(parameters.BaseDir, relPath);
+			var patchedPath = PathUtils.UnixJoin(parameters.PatchedDir, relPath);
+			var patchPath = PathUtils.UnixJoin(parameters.PatchDir, relPath);
+			if (IsDiffable(relPath))
+				TextDiff(basePath, patchedPath, patchPath);
+			else
+				BinaryDiff(basePath, patchedPath, patchPath);
+		}
 
-			string patchPath = Path.Combine(parameters.PatchDir, relPath + ".patch");
-			if (!patchFile.IsEmpty) {
-				CreateParentDirectory(patchPath);
-				File.WriteAllText(patchPath, patchFile.ToString(true));
-			}
-			else {
+		private void TextDiff(string basePath, string patchedPath, string patchPath)
+		{
+			patchPath += ".patch";
+
+			var patchFile = Differ.DiffFiles(new LineMatchedDiffer(), basePath, patchedPath);
+			if (patchFile.IsEmpty) {
 				DeleteFile(patchPath);
+				return;
 			}
+			
+			CreateParentDirectory(patchPath);
+			File.WriteAllText(patchPath, patchFile.ToString(true));
+		}
+
+		private void BinaryDiff(string basePath, string patchedPath, string patchPath)
+		{
+			var a = File.ReadAllBytes(basePath);
+			var b = File.ReadAllBytes(patchedPath);
+			if (a.Length == b.Length && a.AsSpan().SequenceEqual(b.AsSpan())) {
+				DeleteFile(patchPath);
+				return;
+			}
+
+			Copy(basePath, patchPath);
 		}
 	}
 }

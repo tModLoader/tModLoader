@@ -172,6 +172,12 @@
 		"BossBarStyle": "Estilo da Barra de Chefe: {0}",
 		"BossBarStyleNoOptions": "Nenhuma Opção",
 
+		// Achievements
+		// "AchievementsReset": "Reset",
+		// "AchievementsResetConfirm": "Are you sure?",
+		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
+
 		// Workshop
 		"WorkshopDisclaimer": "Ao enviar este item, você concorda com os Termos de Serviço do tModLoader.",
 		"NonModOwnerPublishWarning": "Um mod com o nome \"{0}\" já foi publicado à oficina por outro criador de mods. Se você não é um contribuidor desse mod, não é possível publicá-lo. Se este mod é seu, verifique se está logado na conta correta do Steam. Cada mod deve possuir um nome interno único.",
