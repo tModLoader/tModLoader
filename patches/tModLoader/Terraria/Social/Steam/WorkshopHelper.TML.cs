@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.Xna.Framework;
 using Steamworks;
 using System;
@@ -40,7 +41,8 @@ public partial class WorkshopHelper
 		NotFound,
 		SearchFailed,
 		Success,
-		RetrievalFailed
+		RetrievalFailed,
+		Banned
 	}
 
 	/// <summary>
@@ -321,6 +323,10 @@ public partial class WorkshopHelper
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
 							var match = TryGenerateModDownloadItem((uint)j, out var item);
 							if (match != WorkshopSearchReturnState.Success) {
+								if (match == WorkshopSearchReturnState.Banned) {
+									throw new BannedModException($"The mod {item.DisplayName} with ID {item.PublishId} is Banned!", item.DisplayName, item.PublishId.ToString());
+								}
+
 								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
 								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
 								missingMods.Add(idArray[j]);
@@ -422,7 +428,13 @@ public partial class WorkshopHelper
 						return WorkshopSearchReturnState.RetrievalFailed;
 					}
 
-					return TryGenerateModDownloadItem(0, out item);
+					var match = TryGenerateModDownloadItem(0, out item);
+
+					if (match == WorkshopSearchReturnState.Banned) {
+						throw new BannedModException($"The mod {item.DisplayName} with ID {item.PublishId} is Banned!", item.DisplayName, item.PublishId.ToString());
+					}
+
+					return match;
 				}
 				catch {
 					// If Query Fails, we can't publish
@@ -473,6 +485,10 @@ public partial class WorkshopHelper
 					item = GenerateModDownloadItemFromQuery(index);
 					return WorkshopSearchReturnState.Success;
 				}
+				catch (BannedModException e) {
+					item = new ModDownloadItem(e.displayName, e.modPubId, banned: true);
+					return WorkshopSearchReturnState.Banned;
+				}
 				catch (Exception) {
 					return WorkshopSearchReturnState.RetrievalFailed;
 				}
@@ -496,7 +512,7 @@ public partial class WorkshopHelper
 				bool banned = pDetails.m_bBanned;
 
 				if (banned) {
-					throw new SocialBrowserException($"Item {id}: '{displayname}' is banned. Skipping...");
+					throw new BannedModException($"Item {id}: '{displayname}' is banned. Skipping...", displayname, id.ToString());
 				}
 
 				// Item Tagged data / Player metadata

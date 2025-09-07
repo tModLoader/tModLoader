@@ -64,6 +64,13 @@ public class ModDownloadItem
 		DevMetadata = devMetadata;
 	}
 
+	internal ModDownloadItem(string displayName, string publishId, bool banned = true)
+	{
+		DisplayName = displayName;
+		PublishId = new ModPubId_t { m_ModPubId = publishId };
+		Banned = banned;
+	}
+
 	internal void UpdateInstallState()
 	{
 		// Remember this method is blocking, it does network stuff... - DarioDaf
