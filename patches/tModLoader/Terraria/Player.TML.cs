@@ -98,6 +98,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
+	public TrackedProjectileReference safeProjTracker;
+	public TrackedProjectileReference defendersForgeProjTracker;
+
 	// Get
 
 	/// <summary> Gets the instance of the specified ModPlayer type. This will throw exceptions on failure. </summary>
@@ -663,5 +666,70 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		if (anyJumpCancelled)
 			jump = 0;
+	}
+
+	private void HandleBeingInChestRange_TMLCheckFields()
+	{
+		if (chest != BankID.Safe)
+			safeProjTracker.Clear();
+
+		if (chest != BankID.DefendersForge)
+			defendersForgeProjTracker.Clear();
+	}
+
+	private void InteractiveProjectileOpenCloseSound2(Projectile projectile)
+	{
+		if (projectile.type < ProjectileID.Count) // For vanilla projectiles
+			Main.PlayInteractiveProjectileOpenCloseSound(projectile.type, open: false);
+		else if (projectile.ModProjectile != null) // For modded projectiles
+			projectile.ModProjectile.PlayBankCloseSound();
+	}
+
+	private void HandleBeingInChestRange_TMLBankLogic(ref bool flag)
+	{
+		(TrackedProjectileReference TrackedProjectileReference, int bankID)[] banks = [(safeProjTracker, BankID.Safe), (defendersForgeProjTracker, BankID.DefendersForge)];
+		foreach (var bank in banks) {
+			int index = bank.TrackedProjectileReference.ProjectileLocalIndex;
+			if (index >= 0) {
+				flag = true;
+				if (!Main.projectile[index].active || ProjectileID.Sets.CountAsBank[Main.projectile[index].type] != bank.bankID) {
+					InteractiveProjectileOpenCloseSound2(Main.projectile[index]);
+					chest = -1;
+					Recipe.FindRecipes();
+				}
+				else {
+					int num = (int)(((double)position.X + (double)width * 0.5) / 16.0);
+					int num2 = (int)(((double)position.Y + (double)height * 0.5) / 16.0);
+					Vector2 vector = Main.projectile[index].Hitbox.ClosestPointInRect(base.Center);
+					chestX = (int)vector.X / 16;
+					chestY = (int)vector.Y / 16;
+					if (num < chestX - tileRangeX || num > chestX + tileRangeX + 1 || num2 < chestY - tileRangeY || num2 > chestY + tileRangeY + 1) {
+						if (chest != -1)
+							InteractiveProjectileOpenCloseSound2(Main.projectile[index]);
+
+						chest = -1;
+						Recipe.FindRecipes();
+					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Clears all the portable storage projectile trackers
+	/// (<see cref="Player.piggyBankProjTracker"/>, <see cref="Player.safeProjTracker"/>, <see cref="Player.defendersForgeProjTracker"/>, <see cref="Player.voidLensChest"/>)
+	/// </summary>
+	public void ClearPortableBankProjectileTrackers()
+	{
+		piggyBankProjTracker.Clear();
+		voidLensChest.Clear();
+		safeProjTracker.Clear();
+		defendersForgeProjTracker.Clear();
+	}
+
+	private void clientClone_TMLCloneBankProjTrackers(Player player)
+	{
+		player.safeProjTracker = safeProjTracker;
+		player.defendersForgeProjTracker = defendersForgeProjTracker;
 	}
 }

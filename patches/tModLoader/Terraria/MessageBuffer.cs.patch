@@ -814,6 +814,15 @@
  				float torchLuck = reader.ReadSingle();
  				byte luckPotion = reader.ReadByte();
  				bool hasGardenGnomeNearby = reader.ReadBoolean();
+@@ -3543,6 +_,8 @@
+ 				Player obj = Main.player[num18];
+ 				obj.piggyBankProjTracker.TryReading(reader);
+ 				obj.voidLensChest.TryReading(reader);
++				obj.safeProjTracker.TryReading(reader);
++				obj.defendersForgeProjTracker.TryReading(reader);
+ 				if (Main.netMode == 2)
+ 					NetMessage.TrySendData(142, -1, whoAmI, null, num18);
+ 
 @@ -3587,6 +_,35 @@
  
  				break;

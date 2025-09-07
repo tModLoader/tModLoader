@@ -666,4 +666,9 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+
+	private static bool TrySyncingMyPlayer_TMLSyncBankFields(Player player)
+	{
+		return Main.player[myPlayer].safeProjTracker != player.safeProjTracker || Main.player[myPlayer].defendersForgeProjTracker != player.defendersForgeProjTracker;
+	}
 }

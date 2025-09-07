@@ -2718,6 +2718,15 @@
  			syncedAnyInventoryContents = true;
  			NetMessage.SendData(5, -1, -1, null, myPlayer, PlayerItemSlotID.TrashItem, (int)Main.player[myPlayer].trashItem.prefix);
  		}
+@@ -14055,7 +_,7 @@
+ 		if (Main.player[myPlayer].talkNPC != player.talkNPC)
+ 			NetMessage.SendData(40, -1, -1, null, myPlayer);
+ 
+-		if (false | (Main.player[myPlayer].voidLensChest != player.voidLensChest) | (Main.player[myPlayer].piggyBankProjTracker != player.piggyBankProjTracker))
++		if (Main.player[myPlayer].voidLensChest != player.voidLensChest || Main.player[myPlayer].piggyBankProjTracker != player.piggyBankProjTracker || TrySyncingMyPlayer_TMLSyncBankFields(player))
+ 			NetMessage.SendData(142, -1, -1, null, myPlayer);
+ 
+ 		if (LocalPlayer.tileEntityAnchor.interactEntityID != player.tileEntityAnchor.interactEntityID && LocalPlayer.tileEntityAnchor.interactEntityID < 0)
 @@ -14077,6 +_,9 @@
  		if ((byte)Main.player[myPlayer].zone5 != (byte)player.zone5)
  			flag = true;
