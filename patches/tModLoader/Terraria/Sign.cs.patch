@@ -1,0 +1,35 @@
+--- src/TerrariaNetCore/Terraria/Sign.cs
++++ src/tModLoader/Terraria/Sign.cs
+@@ -7,6 +_,11 @@
+ 	public int y;
+ 	public string text;
+ 
++	/// <summary>
++	/// Kills the <see cref="Sign"/> at the provided coordinates. Call this in <see cref="ModLoader.ModTile.KillMultiTile(int, int, int, int)"/> to clean up the Sign instance corresponding to a <see cref="Main.tileSign"/> tile.
++	/// </summary>
++	/// <param name="x"></param>
++	/// <param name="y"></param>
+ 	public static void KillSign(int x, int y)
+ 	{
+ 		for (int i = 0; i < 1000; i++) {
+@@ -15,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Retrieves the index of the <see cref="Sign"/> within the <see cref="Main.sign"/> array that exists at the coordinates provided. Any tile of the 2x2 sign can be passed in. The actual Sign instance is located at the top left corner of the multi-tile. If <paramref name="CreateIfMissing"/> is true the sign will be initialized at the coordinates if it does not exist.
++	/// <para/> Returns -1 if there is no <see cref="Main.tileSign"/> tile at the provided coordinate, if <paramref name="CreateIfMissing"/> is false and no sign is initialized at the location, or if the sign limit for the world has been reached.
++	/// </summary>
+ 	public static int ReadSign(int i, int j, bool CreateIfMissing = true)
+ 	{
+ 		int num = Main.tile[i, j].frameX / 18;
+@@ -51,6 +_,9 @@
+ 		return num5;
+ 	}
+ 
++	/// <summary>
++	/// Sets the text of the sign corresponding to the given index. Use <see cref="ReadSign(int, int, bool)"/> to retrieve the index. Behaves similar to <c>Main.sign[i].text = text;</c> except it also handles nulling the sign if it is no longer valid for some reason.
++	/// </summary>
+ 	public static void TextSign(int i, string text)
+ 	{
+ 		if (Main.tile[Main.sign[i].x, Main.sign[i].y] == null || !Main.tile[Main.sign[i].x, Main.sign[i].y].active() || !Main.tileSign[Main.tile[Main.sign[i].x, Main.sign[i].y].type])

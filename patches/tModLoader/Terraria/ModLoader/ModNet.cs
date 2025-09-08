@@ -95,8 +95,6 @@ public static class ModNet
 	{
 		kickMsg = null;
 		isModded = clientVersion.StartsWith("tModLoader");
-		if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
-			return true;
 
 		if (clientVersion == NetVersionString)
 			return true;
@@ -127,15 +125,12 @@ public static class ModNet
 	internal static void Unload()
 	{
 		netMods = null;
-		if (!Main.dedServ && Main.netMode != 1) //disable vanilla client compatibility restrictions when reloading on a client
-			AllowVanillaClients = false;
 		ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
 	}
 
 	internal static void SyncMods(int clientIndex)
 	{
 		var p = new ModPacket(MessageID.SyncMods);
-		p.Write(AllowVanillaClients);
 
 		var syncMods = ModLoader.Mods.Where(mod => mod.Side == ModSide.Both).ToList();
 		AddNoSyncDeps(syncMods);
@@ -196,9 +191,6 @@ public static class ModNet
 	// This method is split so that the local variables aren't held by the GC when reloading
 	internal static bool SyncClientMods(BinaryReader reader, out bool needsReload)
 	{
-		AllowVanillaClients = reader.ReadBoolean();
-		Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
-
 		Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 		Mod[] clientMods = ModLoader.Mods;
 		LocalMod[] modFiles = ModOrganizer.FindAllMods();
@@ -247,6 +239,9 @@ public static class ModNet
 		Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
 		if (pendingConfigs.Any())
 			Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
+		var clientSideMods = clientMods.Where(x => x.Side == ModSide.Client);
+		if (clientSideMods.Any())
+			Logging.tML.Debug($"Client Side mods: " + string.Join(", ", clientSideMods.Select(x => $"{x.Name} ({x.DisplayNameClean})")));
 
 		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
 		foreach (var name in toDisable) {
@@ -299,7 +294,17 @@ public static class ModNet
 				},
 				backButtonText: Language.GetTextValue("tModLoader.ModConfigBack"),
 				backButtonAction: () => {
+					Netplay.InvalidateAllOngoingIPSetAttempts();
 					Netplay.Disconnect = true;
+					Netplay.Connection.Socket.Close();
+					if (Main.tServer != null) {
+						try {
+							Main.tServer.Kill();
+							Main.tServer = null;
+						}
+						catch {
+						}
+					}
 				},
 				reloadRequiredExplanationEntries: reloadRequiredExplanationEntries
 			);
@@ -465,6 +470,8 @@ public static class ModNet
 			if (downloadingFile.Position == downloadingLength) {
 				downloadingFile.Close();
 
+				ModCompile.recentlyBuiltModCheckTimeCutoff = DateTime.Now + TimeSpan.FromSeconds(10);
+
 				var mod = new TmodFile(downloadingMod.path);
 
 				using (mod.Open()) { }
@@ -614,7 +621,7 @@ public static class ModNet
 			ReadUnderflowBypass = false;
 			GetMod(id)?.HandlePacket(reader, whoAmI);
 			if (!ReadUnderflowBypass && reader.BaseStream.Position - start != actualLength) {
-				throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id).Name} in HandlePacket");
+				throw new IOException($"Read underflow {reader.BaseStream.Position - start} of {actualLength} bytes caused by {GetMod(id)?.Name ?? "Unknown mod"} in HandlePacket");
 			}
 		}
 		catch { }

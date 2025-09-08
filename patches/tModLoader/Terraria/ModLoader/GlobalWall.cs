@@ -1,7 +1,10 @@
+using Microsoft.Xna.Framework;
+
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify the behavior of any wall in the game (although admittedly walls don't have much behavior). Create an instance of an overriding class then call Mod.AddGlobalWall to use this.
+/// This class allows you to modify the behavior of any wall in the game (although admittedly walls don't have much behavior).
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalWall : GlobalBlockType
 {
@@ -39,6 +42,12 @@ public abstract class GlobalWall : GlobalBlockType
 	/// <param name="frameNumber">The random style that will be applied</param>
 	/// <returns></returns>
 	public virtual bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber)
+	{
+		return true;
+	}
+
+	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(Vector2, string)"/>
+	public virtual bool CanBeTeleportedTo(int i, int j, int type, Player player, string context)
 	{
 		return true;
 	}

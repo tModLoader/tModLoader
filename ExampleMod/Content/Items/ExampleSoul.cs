@@ -31,6 +31,10 @@ namespace ExampleMod.Content.Items
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
 		}
 
+		public override Color? GetAlpha(Color lightColor) {
+			return new Color(255, 255, 255, 50); // Makes this item render at full brightness.
+		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()

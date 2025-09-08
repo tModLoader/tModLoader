@@ -44,6 +44,12 @@ partial class Utils
 	public static Point16 ToPoint16(this Vector2 v)
 		=> new Point16((short)v.X, (short)v.Y);
 
+	public static void Deconstruct(this Point point, out int x, out int y)
+	{
+		x = point.X;
+		y = point.Y;
+	}
+
 	public static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
 	{
 		// Unix timestamp is seconds past epoch
@@ -148,7 +154,8 @@ partial class Utils
 	public static int Repeat(int value, int length) => value >= 0 ? value % length : (value % length) + length;
 
 	/// <summary>
-	/// Bit packs a BitArray in to a Byte Array and then sends the byte array
+	/// Bit packs a BitArray into a Byte Array and then sends the byte array
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static void SendBitArray(BitArray arr, BinaryWriter writer)
 	{
@@ -159,6 +166,7 @@ partial class Utils
 
 	/// <summary>
 	/// Receives the result of SendBitArray, and returns the corresponding BitArray
+	/// <include file = 'CommonDocs.xml' path='Common/BitArrayUsage' />
 	/// </summary>
 	public static BitArray ReceiveBitArray(int BitArrLength, BinaryReader reader)
 	{
@@ -166,6 +174,8 @@ partial class Utils
 		receive = reader.ReadBytes(receive.Length);
 		return new BitArray(receive);
 	}
+
+	// TODO: Better options to SendBitArray/ReceiveBitArray that don't allocate a new bool[] or BitArray, most likely as extension methods in BinaryIO.cs
 
 	// Common Blocks
 
@@ -259,4 +269,70 @@ partial class Utils
 		string separator = doubleNewline ? "\n\n" : "\n";
 		return NetworkText.FromKey(localizationKey, separator + string.Join(separator, errors.Select(x => $"{x.Key}:\n{x.Value}")));
 	}
+
+	private static void AddArgToDictionary(string text, ref string text2, ref Dictionary<string, string> dictionary)
+	{
+		if (text == null)
+			return;
+
+		// In case someone has a cli-ArgsConfig.txt for mod development and does host&play, we should TryAdd
+		if (!dictionary.TryAdd(text.ToLower(), text2))
+			Console.WriteLine($"Unexpected Issue with Launch Arguments: Duplicate Launch Arg \"{text}\"");
+
+		text2 = "";
+	}
+
+	/// <summary>
+	/// Creates a <see cref="Rectangle"/> from the provided corners. They do not need to be in a specific order.
+	/// </summary>
+	public static Rectangle CornerRectangle(Point pointA, Point pointB)
+	{
+		int left = Math.Min(pointA.X, pointB.X);
+		int top = Math.Min(pointA.Y, pointB.Y);
+		int width = Math.Abs(pointA.X - pointB.X);
+		int height = Math.Abs(pointA.Y - pointB.Y);
+		return new Rectangle(left, top, width, height);
+	}
+
+	/// <inheritdoc cref="CornerRectangle(Point, Point)"/>
+	public static Rectangle CornerRectangle(Vector2 pointA, Vector2 pointB) => CornerRectangle(pointA.ToPoint(), pointB.ToPoint());
+
+	/// <summary>
+	/// Creates a <see cref="Rectangle"/> containing all of the provided points.
+	/// </summary>
+	public static Rectangle BoundingRectangle(Point[] points)
+	{
+		if (points.Length == 0)
+			return new Rectangle();
+		var rectangle = new Rectangle(points[0].X, points[0].Y, 0, 0);
+		for (int i = 1; i < points.Length; i++)
+			rectangle = rectangle.Including(points[i]);
+		return rectangle;
+	}
+
+	/// <inheritdoc cref="BoundingRectangle(Point[])"/>
+	public static Rectangle BoundingRectangle(Vector2[] vectors)
+	{
+		if (vectors.Length == 0)
+			return new Rectangle();
+		var rectangle = new Rectangle((int)vectors[0].X, (int)vectors[0].Y, 0, 0);
+		for (int i = 1; i < vectors.Length; i++)
+			rectangle = rectangle.Including(vectors[i]);
+		return rectangle;
+	}
+
+	/// <summary>
+	/// Expands the provided <paramref name="rect"/> to include <paramref name="point"/> and returns the newly expanded <see cref="Rectangle"/>.
+	/// </summary>
+	public static Rectangle Including(this Rectangle rect, Point point)
+	{
+		int l = Math.Min(rect.Left, point.X);
+		int r = Math.Max(rect.Right, point.X);
+		int t = Math.Min(rect.Top, point.Y);
+		int b = Math.Max(rect.Bottom, point.Y);
+		return new Rectangle(l, t, r - l, b - t);
+	}
+
+	/// <inheritdoc cref="Including(Rectangle, Point)"/>
+	public static Rectangle Including(this Rectangle rect, Vector2 point) => rect.Including(point.ToPoint());
 }

@@ -19,7 +19,6 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
-using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
@@ -27,6 +26,9 @@ using Terraria.GameContent;
 using System.Reflection;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using Terraria.GameContent.Prefixes;
+using Terraria.Achievements;
 
 namespace Terraria.ModLoader;
 
@@ -197,7 +199,7 @@ public static class ModContent
 	/// </summary>
 	public static ModWaterfallStyle GetModWaterfallStyle(int style) => LoaderManager.Get<WaterFallStylesLoader>().Get(style);
 
-	/// <inheritdoc cref="BackgroundTextureLoader.GetBackgroundSlot"/>
+	/// <inheritdoc cref="BackgroundTextureLoader.GetBackgroundSlot(string)"/>
 	public static int GetModBackgroundSlot(string texture) => BackgroundTextureLoader.GetBackgroundSlot(texture);
 
 	/// <summary>
@@ -214,6 +216,11 @@ public static class ModContent
 	/// Get the id (type) of a ModGore by class. Assumes one instance per class.
 	/// </summary>
 	public static int GoreType<T>() where T : ModGore => GetInstance<T>()?.Type ?? 0;
+
+	/// <summary>
+	/// Get the id (type) of a ModCloud by class. Assumes one instance per class.
+	/// </summary>
+	public static int CloudType<T>() where T : ModCloud => GetInstance<T>()?.Type ?? 0;
 
 	/// <summary>
 	/// Get the id (type) of a ModItem by class. Assumes one instance per class.
@@ -303,6 +310,7 @@ public static class ModContent
 			mod.Autoload();
 			mod.Load();
 			SystemLoader.OnModLoad(mod);
+			SystemLoader.EnsureResizeArraysAttributeStaticCtorsRun(mod);
 			mod.loading = false;
 		});
 
@@ -327,6 +335,7 @@ public static class ModContent
 		ContentSamples.Initialize();
 		TileLoader.PostSetupContent();
 		BuffLoader.PostSetupContent();
+		BiomeConversionLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
@@ -353,6 +362,7 @@ public static class ModContent
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
 		EmoteBubbleLoader.FinishSetup();
+		AchievementManager.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
@@ -374,6 +384,33 @@ public static class ModContent
 		BossBarLoader.GotoSavedStyle();
 
 		ModOrganizer.SaveLastLaunchedMods();
+	}
+
+	internal static void RunEarlyClassConstructors()
+	{
+		// The server (or client with Main.SkipAssemblyLoad) doesn't naturally init these, and then the constructors get run twice in ResizeArrays
+		RuntimeHelpers.RunClassConstructor(typeof(AmmoID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(DustID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(MountID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(NPCHeadID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(HairID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(PrefixID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(PrefixLegacy.ItemSets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Head.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Body.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Legs.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.HandOn.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.HandOff.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Back.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Front.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Shoe.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Waist.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Wing.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Face.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Beard.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Balloon.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(DamageClass.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(MusicID.Sets).TypeHandle);
 	}
 
 	private static async Task JITModsAsync(CancellationToken token)
@@ -400,6 +437,7 @@ public static class ModContent
 		MemoryTracking.Checkpoint();
 		int num = 0;
 		foreach (var mod in ModLoader.Mods) {
+			using var _2 = new ModContent.TrackCurrentlyLoadingMod(mod.Name);
 			token.ThrowIfCancellationRequested();
 			Interface.loadMods.SetCurrentMod(num++, mod);
 			try {
@@ -462,6 +500,7 @@ public static class ModContent
 	internal static void UnloadModContent()
 	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+		CloudLoader.Unload();
 
 		int i = 0;
 		foreach (var mod in ModLoader.Mods.Reverse()) {
@@ -510,6 +549,8 @@ public static class ModContent
 		PlantLoader.UnloadPlants();
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
+		BiomeConversionLoader.Unload();
+		AchievementManager.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
@@ -518,6 +559,7 @@ public static class ModContent
 
 		GlobalBackgroundStyleLoader.Unload();
 		PlayerDrawLayerLoader.Unload();
+		MapLayerLoader.Unload();
 		SystemLoader.Unload();
 		ResizeArrays(true);
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
@@ -536,7 +578,6 @@ public static class ModContent
 		Config.ConfigManager.Unload();
 		CustomCurrencyManager.Initialize();
 		EffectsTracker.RemoveModEffects();
-		Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
 		Main.gameTips.Reset();
 
@@ -548,6 +589,7 @@ public static class ModContent
 		// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
 		CreativeItemSacrificesCatalog.Instance.Initialize();
+		ContentSamples.CreativeResearchItemPersistentIdOverride.Clear();
 		ContentSamples.Initialize();
 		SetupBestiary();
 
@@ -559,6 +601,7 @@ public static class ModContent
 	//TODO: Unhardcode ALL of this.
 	private static void ResizeArrays(bool unloading = false)
 	{
+		SetFactory.ResizeArrays(unloading);
 		DamageClassLoader.ResizeArrays();
 		ExtraJumpLoader.ResizeArrays();
 		ItemLoader.ResizeArrays(unloading);
@@ -574,14 +617,17 @@ public static class ModContent
 		BuffLoader.ResizeArrays();
 		PlayerLoader.ResizeArrays();
 		PlayerDrawLayerLoader.ResizeArrays();
+		MapLayerLoader.ResizeArrays();
 		HairLoader.ResizeArrays();
 		EmoteBubbleLoader.ResizeArrays();
 		BuilderToggleLoader.ResizeArrays();
-		SystemLoader.ResizeArrays();
+		BiomeConversionLoader.ResizeArrays();
+		SystemLoader.ResizeArrays(unloading);
 
 		if (!Main.dedServ) {
 			GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 			GoreLoader.ResizeAndFillArrays();
+			CloudLoader.ResizeAndFillArrays(unloading);
 		}
 
 		LoaderManager.ResizeArrays();
@@ -673,5 +719,20 @@ public static class ModContent
 					$"Avoid using {nameof(AssetRequestMode)}.{nameof(AssetRequestMode.ImmediateLoad)} during mod loading where possible");
 			}
 		}
+	}
+
+	[ThreadStatic]
+	private static string currentMod = null;
+	internal static string CurrentlyLoadingMod => currentMod ?? "Unknown";
+
+	public ref struct TrackCurrentlyLoadingMod
+	{
+		private string prev;
+		public TrackCurrentlyLoadingMod(string mod)
+		{
+			prev = currentMod;
+			currentMod = mod;
+		}
+		public void Dispose() => currentMod = prev;
 	}
 }

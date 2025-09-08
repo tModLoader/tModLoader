@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
 {
-	//TODO 1.4.5: review MinecartLeft/Right if it still exists
+	// TODO 1.4.5: review MinecartLeft/Right if it still exists
 	public class ExampleMinecartBuff : ModBuff
 	{
 		// Use the vanilla DisplayName ("Minecart")

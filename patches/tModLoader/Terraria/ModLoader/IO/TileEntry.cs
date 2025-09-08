@@ -5,7 +5,7 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO;
 
-public class TileEntry : ModEntry
+internal class TileEntry : ModBlockEntry
 {
 	public static Func<TagCompound, TileEntry> DESERIALIZER = tag => new TileEntry(tag);
 
@@ -21,7 +21,7 @@ public class TileEntry : ModEntry
 		frameImportant = tag.GetBool("framed");
 	}
 
-	public override string DefaultUnloadedType => ModContent.GetInstance<UnloadedSolidTile>().FullName;
+	public override ModBlockType DefaultUnloadedPlaceholder => ModContent.GetInstance<UnloadedSolidTile>();
 
 	public override TagCompound SerializeData()
 	{
@@ -30,27 +30,27 @@ public class TileEntry : ModEntry
 		return tag;
 	}
 
-	protected override string GetUnloadedType(ushort type)
+	protected override ModBlockType GetUnloadedPlaceholder(ushort type)
 	{
 		if (TileID.Sets.BasicChest[type])
-			return ModContent.GetInstance<UnloadedChest>().FullName;
+			return ModContent.GetInstance<UnloadedChest>();
 
 		if (TileID.Sets.BasicDresser[type])
-			return ModContent.GetInstance<UnloadedDresser>().FullName;
+			return ModContent.GetInstance<UnloadedDresser>();
 
 		if (TileID.Sets.RoomNeeds.CountsAsChair.Contains(type) ||
 			TileID.Sets.RoomNeeds.CountsAsDoor.Contains(type) ||
 			TileID.Sets.RoomNeeds.CountsAsTable.Contains(type) ||
 			TileID.Sets.RoomNeeds.CountsAsTorch.Contains(type)) {
-			return ModContent.GetInstance<UnloadedSupremeFurniture>().FullName;
+			return ModContent.GetInstance<UnloadedSupremeFurniture>();
 		}
 
 		if (Main.tileSolidTop[type])
-			return ModContent.GetInstance<UnloadedSemiSolidTile>().FullName;
+			return ModContent.GetInstance<UnloadedSemiSolidTile>();
 
 		if (!Main.tileSolid[type])
-			return ModContent.GetInstance<UnloadedNonSolidTile>().FullName;
+			return ModContent.GetInstance<UnloadedNonSolidTile>();
 
-		return DefaultUnloadedType;
+		return DefaultUnloadedPlaceholder;
 	}
 }

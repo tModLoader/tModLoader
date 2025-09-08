@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.TileEntities
 {
@@ -20,21 +21,15 @@ namespace ExampleMod.Content.TileEntities
 		// This is the main crux of this TileEntity; its pylon functionality will only work when this boolean is true.
 		public bool isActive;
 
-		public override void OnNetPlace() {
-			// This hook is only ever called on the server; its purpose is to give more freedom in terms of syncing FROM the server to clients, which we take advantage of
-			// by making sure to sync whenever this hook is called:
-			NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
-		}
-
 		public override void NetSend(BinaryWriter writer) {
 			// We want to make sure that our data is synced properly across clients and server.
 			// NetSend is called whenever a TileEntitySharing message is sent, so the game will handle this automatically for us,
 			// granted that we send a message when we need to.
-			writer.Write(isActive);
+			writer.WriteFlags(isActive);
 		}
 
 		public override void NetReceive(BinaryReader reader) {
-			isActive = reader.ReadBoolean();
+			reader.ReadFlags(out isActive);
 		}
 
 		public override void Update() {
@@ -47,7 +42,7 @@ namespace ExampleMod.Content.TileEntities
 			// Granted that the check passes, we change the active state, and if this is on the server, we sync it with the server:
 			isActive = !isActive;
 			if (Main.netMode == NetmodeID.Server) {
-				NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
+				NetMessage.SendData(MessageID.TileEntitySharing, number: ID);
 			}
 		}
 	}

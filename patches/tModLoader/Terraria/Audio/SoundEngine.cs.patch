@@ -38,6 +38,15 @@
  		if (IsAudioSupported) {
  			if (Main.audioSystem != null)
  				Main.audioSystem.UpdateAudioEngine();
+@@ -36,7 +_,7 @@
+ 			SoundInstanceGarbageCollector.Update();
+ 			bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
+ 			if (!AreSoundsPaused && flag)
+-				SoundPlayer.PauseAll();
++				SoundPlayer.PauseOrStopAll(); // Changed from PauseAll since vanilla effectively stops all because they are never actually resumed.
+ 			else if (AreSoundsPaused && !flag)
+ 				SoundPlayer.ResumeAll();
+ 
 @@ -56,6 +_,8 @@
  		}
  	}

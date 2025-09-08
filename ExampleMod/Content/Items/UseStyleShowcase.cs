@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
@@ -10,7 +11,15 @@ namespace ExampleMod.Content.Items
 	/// </summary>
 	public class UseStyleShowcase : ModItem
 	{
+		public static LocalizedText SwitchingText { get; private set; }
+		public static LocalizedText ThisIsText { get; private set; }
+
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleSword";
+
+		public override void SetStaticDefaults() {
+			SwitchingText = this.GetLocalization("Switching");
+			ThisIsText = this.GetLocalization("ThisIs");
+		}
 
 		public override void SetDefaults() {
 			Item.width = 40;
@@ -46,12 +55,12 @@ namespace ExampleMod.Content.Items
 				if (Item.useStyle > ItemUseStyleID.RaiseLamp) {
 					Item.useStyle = ItemUseStyleID.Swing;
 				}
-				Main.NewText($"Switching to ItemUseStyleID #{Item.useStyle}");
+				Main.NewText(SwitchingText.Format(Item.useStyle));
 				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync. 
 				Item.NetStateChanged();
 			}
 			else {
-				Main.NewText($"This is ItemUseStyleID #{Item.useStyle}");
+				Main.NewText(ThisIsText.Format(Item.useStyle));
 			}
 			return true;
 		}

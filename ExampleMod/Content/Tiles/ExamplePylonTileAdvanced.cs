@@ -110,7 +110,7 @@ namespace ExampleMod.Content.Tiles
 			// 1) The Tile Entity at the given position is an AdvancedPylonTileEntity (AKA not null or something else)
 			// 2) The Tile Entity's isActive value is false
 			if (TileEntity.ByPosition[destinationPylonInfo.PositionInTiles] is AdvancedPylonTileEntity { isActive: false }) {
-				//Given that both of these things are true, set the error key to our own special message (check the localization file), and make the destination value invalid (false)
+				// Given that both of these things are true, set the error key to our own special message (check the localization file), and make the destination value invalid (false)
 				destinationPylonValid = false;
 				errorKey = "Mods.ExampleMod.MessageInfo.UnstablePylonIsOff";
 			}

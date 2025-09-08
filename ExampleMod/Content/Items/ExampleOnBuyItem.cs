@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Items
 
 			// This is only ever called on the local client, so the local player will do.
 			Player player = Main.LocalPlayer;
-			player.KillMe(PlayerDeathReason.ByCustomReason(DeathMessage.Format(player.name)), 9999, 0);
+			player.KillMe(PlayerDeathReason.ByCustomReason(DeathMessage.ToNetworkText(player.name)), 9999, 0);
 		}
 	}
 }

@@ -68,7 +68,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// This progression matches vanilla tiles, you don't have to follow it if you don't want. Some vanilla traps don't have 6 states, only 4. This can be implemented with different logic in Slope. Making 8 directions is also easily done in a similar manner.
-		private static int[] frameXCycle = { 2, 3, 4, 5, 1, 0 };
+		private static int[] frameXCycle = [2, 3, 4, 5, 1, 0];
 		// We can use the Slope method to override what happens when this tile is hammered.
 		public override bool Slope(int i, int j) {
 			Tile tile = Main.tile[i, j];

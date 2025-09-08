@@ -125,6 +125,15 @@ public static class CombinedHooks
 		PlayerLoader.MeleeEffects(player, sItem, itemRectangle);
 	}
 
+	public static void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+		ProjectileLoader.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
+
+		if (projectile.TryGetOwner(out var realPlayer)) {
+			PlayerLoader.EmitEnchantmentVisualsAt(realPlayer, projectile, boxPosition, boxWidth, boxHeight);
+		}
+	}
+
 	public static bool? CanHitNPCWithProj(Projectile proj, NPC npc)
 	{
 		bool? ret = null;
@@ -312,5 +321,10 @@ public static class CombinedHooks
 	public static bool OnPickup(Item item, Player player)
 	{
 		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
+	}
+
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, int i, int j, string context)
+	{
+		return PlayerLoader.CanBeTeleportedTo(player, teleportPosition, context) && WallLoader.CanBeTeleportedTo(i, j, Main.tile[i, j].WallType, player, context);
 	}
 }

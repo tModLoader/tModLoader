@@ -23,6 +23,43 @@
  	private float _innerListHeight;
  	public float ListPadding = 5f;
  	public Action<List<UIElement>> ManualSortMethod;
+@@ -50,6 +_,7 @@
+ 
+ 	public float GetTotalHeight() => _innerListHeight;
+ 
++	/// <inheritdoc cref="Goto(ElementSearchMethod, bool)"/>
+ 	public void Goto(ElementSearchMethod searchMethod)
+ 	{
+ 		for (int i = 0; i < _items.Count; i++) {
+@@ -60,6 +_,28 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Scrolls to view to the first element satisfying <paramref name="searchMethod"/>. The <see cref="ViewPosition"/> will be set to place the element at the top of the view. If <paramref name="center"/> is true, the element will be centered in the view instead.
++	/// </summary>
++	public void Goto(ElementSearchMethod searchMethod, bool center = false)
++	{
++		var innerDimensionHeight = GetInnerDimensions().Height;
++		for (int i = 0; i < _items.Count; i++) {
++			var item = _items[i];
++			if (searchMethod(item)) {
++				_scrollbar.ViewPosition = item.Top.Pixels;
++				if (center) {
++					_scrollbar.ViewPosition = item.Top.Pixels - innerDimensionHeight / 2 + item.GetOuterDimensions().Height / 2;
++				}
++				return;
++			}
++		}
++	}
++
++	/// <summary>
++	/// Adds the element to this list. Note that this will sort and recalculate the list each time it is called, which can be quite slow, so use <see cref="AddRange(IEnumerable{UIElement})"/> instead if adding multiple elements to this list.
++	/// <br/><br/> Also see the <see cref="UIList"/> documentation for notes about how elements are sorted, they are not sorted in the order they are added by default.
++	/// </summary>
+ 	public virtual void Add(UIElement item)
+ 	{
+ 		_items.Add(item);
 @@ -71,6 +_,7 @@
  	public virtual bool Remove(UIElement item)
  	{

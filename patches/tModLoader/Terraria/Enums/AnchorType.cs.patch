@@ -1,0 +1,29 @@
+--- src/TerrariaNetCore/Terraria/Enums/AnchorType.cs
++++ src/tModLoader/Terraria/Enums/AnchorType.cs
+@@ -6,15 +_,26 @@
+ public enum AnchorType
+ {
+ 	None = 0,
++	/// <summary> Solid tiles: <see cref="Main.tileSolid"/> but not <see cref="Main.tileSolidTop"/>, <see cref="Main.tileNoAttach"/>, or sloped (unless <see cref="ObjectData.TileObjectData.FlattenAnchors"/> is true).
++	/// <br/><br/> Sloped solid tiles that are not sloped on the side being anchored to are covered by <see cref="SolidSide"/>. </summary>
+ 	SolidTile = 1,
++	/// <summary> Platforms with a top surface and tiles that are <see cref="Main.tileSolid"/> and <see cref="Main.tileSolidTop"/> (such as <see cref="ID.TileID.PlanterBox"/> and <see cref="ID.TileID.MetalBars"/>) </summary>
+ 	SolidWithTop = 2,
++	/// <summary> Table tiles: <see cref="Main.tileTable"/> but not <see cref="ID.TileID.Sets.Platforms"/>. Also includes <see cref="SolidWithTop"/> tiles. </summary>
+ 	Table = 4,
++	/// <summary> Solid tiles with full side facing the tile: <see cref="Main.tileSolid"/> but not <see cref="Main.tileSolidTop"/>. The tile can be sloped as long as the side being anchored to isn't sloped. </summary>
+ 	SolidSide = 8,
+ 	Tree = 0x10,
++	/// <summary> The tile is contained in <see cref="ObjectData.TileObjectData.AnchorAlternateTiles"/> </summary>
+ 	AlternateTile = 0x20,
++	/// <summary> Either no tile exists or the tile is actuated </summary>
+ 	EmptyTile = 0x40,
++	/// <summary> Solid tiles with full bottom side: <see cref="Main.tileSolid"/> but not <see cref="Main.tileSolidTop"/>. The tile can be sloped as long as the bottom isn't sloped. Also <see cref="ID.TileID.Sets.Platforms"/> hammered to the "bottom" state (<see cref="Platform"/> handles all other hammered states). </summary>
+ 	SolidBottom = 0x80,
++	/// <summary> Any <see cref="ID.TileID.Sets.Platforms"/> tile. Banner tiles usually use this in an alternate placement and <see cref="SolidBottom"/> in the normal placement to support using <see cref="ObjectData.TileObjectData.DrawYOffset"/> to draw the anchored tile at different heights. For tiles wider than 1 tile, use <see cref="PlatformNonHammered"/> instead. </summary>
+ 	Platform = 0x100,
++	/// <summary> <see cref="ID.TileID.PlanterBox"/> only. </summary>
+ 	PlanterBox = 0x200,
++	/// <summary> Similar to <see cref="Platform"/> (Any <see cref="ID.TileID.Sets.Platforms"/> tile), except it doesn't allow for hammered platforms. This rules out situations where a hammered platform tile is next to an un-hammered platform tile. This should be used for banners wider than 1 tile. </summary>
+ 	PlatformNonHammered = 0x400
+ }

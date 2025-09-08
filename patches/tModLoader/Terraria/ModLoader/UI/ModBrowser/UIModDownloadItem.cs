@@ -58,7 +58,7 @@ internal class UIModDownloadItem : UIPanel
 		BorderColor = new Color(89, 116, 213) * 0.7f;
 		_dividerTexture = UICommon.DividerTexture;
 		_innerPanelTexture = UICommon.InnerPanelTexture;
-		Height.Pixels = 90;
+		Height.Pixels = 92;
 		Width.Percent = 1f;
 		SetPadding(6f);
 
@@ -71,6 +71,7 @@ internal class UIModDownloadItem : UIPanel
 		Append(_modName);
 
 		_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
+			RemoveFloatingPointsFromDrawPosition = true,
 			Width = { Pixels = 36 },
 			Height = { Pixels = 36 },
 			Left = { Pixels = leftOffset },
@@ -80,11 +81,11 @@ internal class UIModDownloadItem : UIPanel
 		Append(_moreInfoButton);
 
 		var modBuildVersion = ModDownload.ModloaderVersion;
-		tMLNeedUpdate = !BuildInfo.IsDev && BuildInfo.tMLVersion < modBuildVersion;
+		tMLNeedUpdate = !BuildInfo.IsDev && BuildInfo.tMLVersion.MajorMinorBuild() < modBuildVersion.MajorMinorBuild();
 		if (tMLNeedUpdate) {
 			string updateVersion = $"v{modBuildVersion}";
-			bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
-			if (BuildInfo.IsStable && new Version(modBuildVersion.Major, modBuildVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), BuildInfo.tMLVersion.Minor + (lastMonth ? 0 : 1)))
+
+			if (modBuildVersion.Build == 2)
 				updateVersion = $"Preview {updateVersion}";
 
 			tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
@@ -111,6 +112,7 @@ internal class UIModDownloadItem : UIPanel
 		if (ModDownload.ModReferencesBySlug?.Length > 0) {
 			var icon = UICommon.ButtonDepsTexture;
 			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim())))) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				UseTooltipMouseText = true,
 				Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
 			};
@@ -145,6 +147,7 @@ internal class UIModDownloadItem : UIPanel
 		Interface.modBrowser.SpecialModPackFilter = modListItem.ModDownload.ModReferenceByModId.ToList();
 		Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterDependencies"); // Toolong of \n" + modListItem.modName.Text;
 		Interface.modBrowser.FilterTextBox.Text = "";
+		Interface.modBrowser.ResetTagFilters();
 		Interface.modBrowser.UpdateNeeded = true; // Is done by updating the above but not in case of modpacks
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 	}

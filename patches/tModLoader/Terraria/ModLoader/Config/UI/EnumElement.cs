@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -79,6 +80,9 @@ internal class EnumElement : RangeElement
 
 	private string DefaultGetStringValue()
 	{
-		return valueStrings[_getIndex()];
+		int index = _getIndex();
+		if (index < 0) // User manually entered invalid enum number into json or loading future Enum value saved as int.
+			return Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
+		return valueStrings[index];
 	}
 }

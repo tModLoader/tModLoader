@@ -8,6 +8,14 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
+@@ -11,6 +_,7 @@
+ {
+ 	private static SocialMode _mode;
+ 	public static Terraria.Social.Base.FriendsSocialModule Friends;
++	/// <summary> Unused in tModLoader. Will always be null. Achievements for tModLoader are only stored locally. </summary>
+ 	public static Terraria.Social.Base.AchievementsSocialModule Achievements;
+ 	public static Terraria.Social.Base.CloudSocialModule Cloud;
+ 	public static Terraria.Social.Base.NetSocialModule Network;
 @@ -24,8 +_,11 @@
  
  	public static void Initialize(SocialMode? mode = null)

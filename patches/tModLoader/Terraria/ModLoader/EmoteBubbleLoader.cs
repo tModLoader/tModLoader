@@ -21,9 +21,6 @@ public static class EmoteBubbleLoader
 
 	internal static int Add(ModEmoteBubble emoteBubble)
 	{
-		if (ModNet.AllowVanillaClients)
-			throw new Exception("Adding emote bubbles breaks vanilla client compatibility");
-
 		emoteBubbles.Add(emoteBubble);
 		return EmoteBubbleCount - 1;
 	}

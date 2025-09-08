@@ -31,6 +31,9 @@ public class MissingResourceException : Exception
 	{
 		if(reasons.Count > 0) {
 			reasons.Insert(0, $"Failed to load asset: \"{assetPath}\"");
+			if (reasons.Any(x => x.Contains("Texture2D creation failed! Error Code: The parameter is incorrect."))) {
+				reasons.Insert(1, "The most common reason for this \"Texture2D creation failed!\" error is a malformed .png file. Make sure you are saving textures in the .png format and are not just renaming the file extension of your texture files to .png, that does not work.");
+			}
 			return string.Join(Environment.NewLine, reasons);
 		}
 

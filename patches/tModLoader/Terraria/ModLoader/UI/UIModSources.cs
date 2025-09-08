@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -178,7 +179,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		link.OnMouseOut += delegate (UIMouseEvent evt, UIElement listeningElement) {
 			link.TextColor = Color.White;
 		};
-		link.OnLeftClick += delegate(UIMouseEvent evt, UIElement listeningElement) {
+		link.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Utils.OpenToURL(url);
 		};
@@ -295,7 +296,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private static IEnumerable<string> GetPossibleSystemDotnetPaths()
 	{
 		if (GetCommandToFindPathOfExecutable() is string cmd) {
-			yield return Process.Start(new ProcessStartInfo {
+			yield return ModCompile.StartOnHost(new ProcessStartInfo {
 				FileName = cmd,
 				Arguments = "dotnet",
 				UseShellExecute = false,
@@ -328,12 +329,12 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private static string GetSystemDotnetPath()
 	{
 		try {
-			if (GetPossibleSystemDotnetPaths().FirstOrDefault(File.Exists) is string path) {
+			if (GetPossibleSystemDotnetPaths().FirstOrDefault(DoesDotnetWork) is string path) {
 				Logging.tML.Debug($"System dotnet install located at: {path}");
 				return path;
 			}
 		}
-		catch (Exception) {}
+		catch (Exception) { }
 
 		Logging.tML.Debug("Finding dotnet on PATH failed");
 		return null;
@@ -346,15 +347,15 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 
 		try {
 			string dotnetFilename = GetSystemDotnetPath() ?? "dotnet";
-			string output = Process.Start(new ProcessStartInfo {
+			string output = ModCompile.StartOnHost(new ProcessStartInfo {
 				FileName = dotnetFilename,
 				Arguments = "--list-sdks",
 				UseShellExecute = false,
 				RedirectStandardOutput = true
-			}).StandardOutput.ReadToEnd();
-			Logging.tML.Info("\n" + output);
+			}).StandardOutput.ReadToEnd().Trim();
+			Logging.tML.Info("Found list of sdks:" + '\n' + output);
 
-			if(dotnetFilename.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86))) {
+			if (Platform.IsWindows && dotnetFilename.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86))) {
 				Logging.tML.Warn("Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK was found on the PATH. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. This will prevent you from debugging or building mods in Visual Studio or any other IDE. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk");
 			}
 
@@ -383,16 +384,51 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		return false;
 	}
 
+	private static bool DoesDotnetWork(string path)
+	{
+		if (string.IsNullOrWhiteSpace(path))
+			return false;
+
+		try {
+			// Try and execute each possible dotnet installation path,
+			// we can't simply check if the file exists as we may be inside a steam-runtime container environment
+			// and the path may point to a file on the host.
+			var proc = ModCompile.StartOnHost(new ProcessStartInfo {
+				FileName = path,
+				Arguments = "--version"
+			});
+			if (proc == null) return false;
+
+			proc.WaitForExit();
+			if (proc.ExitCode == 0) {
+				return true;
+			}
+			else {
+				Logging.tML.Debug("Process ended with exit code: " + proc.ExitCode);
+			}
+		}
+		catch (Exception e)
+		{
+			Logging.tML.Debug("Caught Exception during dotnet check:" + e);
+		}
+
+		return false;
+	}
+
 	internal void Populate()
 	{
 		Task.Run(() => {
+			// It's important to call FindAllMods here first to ensure AllFoundMods is
+			// properly initialized and populated when it's referenced in FindModSources.
+			var modFiles = ModOrganizer.FindAllMods();
 			var modSources = ModCompile.FindModSources();
 
-			var modFiles = ModOrganizer.FindAllMods();
 			foreach (string sourcePath in modSources) {
 				var modName = Path.GetFileName(sourcePath);
 				var builtMod = modFiles.Where(m => m.Name == modName).Where(m => m.location == ModLocation.Local).OrderByDescending(m => m.Version).FirstOrDefault();
-				_items.Add(new UIModSourceItem(sourcePath, builtMod));
+				if (builtMod != null && !string.IsNullOrWhiteSpace(builtMod.properties.modSource) && builtMod.properties.modSource != sourcePath)
+					builtMod = null;
+				_items.Add(new UIModSourceItem(sourcePath, builtMod, _cts.Token));
 			}
 			_updateNeeded = true;
 		});
@@ -401,6 +437,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		ModBrowser.UIModBrowser.PageUpDownSupport(_modList);
 		if (!_updateNeeded)
 			return;
 		_updateNeeded = false;
@@ -408,6 +445,24 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		_modList.Clear();
 		string filter = filterTextBox.Text;
 		_modList.AddRange(_items.Where(item => filter.Length > 0 ? item.modName.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1 : true));
+		if (_items.Count == 0) {
+			var firstModGuidePanel = new UIPanel() {
+				Width = new(0, 1f),
+				Height = new(180, 0f),
+			};
+			firstModGuidePanel.OnLeftClick += (a, b) => {
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide");
+			};
+			var firstModGuideText = new UIText(Language.GetTextValue("tModLoader.MSNoModSourcesLinkToBasicModdingGuide")) {
+				IsWrapped = true,
+				WrappedTextBottomPadding = 0f,
+				Width = StyleDimension.Fill,
+				TextOriginX = 0f,
+				VAlign = 0.5f
+			};
+			firstModGuidePanel.Append(firstModGuideText);
+			_modList.Add(firstModGuidePanel);
+		}
 		Recalculate();
 		_modList.ViewPosition = modListViewPosition;
 	}

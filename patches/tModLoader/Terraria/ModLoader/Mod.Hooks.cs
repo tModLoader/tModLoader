@@ -36,7 +36,7 @@ partial class Mod
 	}
 
 	/// <summary>
-	/// The amount of extra buff slots this mod desires for Players. This value is checked after Mod.Load but before Mod.PostSetupContent. The actual number of buffs the player can use will be 22 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs.
+	/// The amount of extra buff slots this mod desires for Players. This value is checked after Mod.Load but before Mod.PostSetupContent. The actual number of buffs the player can use will be 44 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs.
 	/// </summary>
 	public virtual uint ExtraPlayerBuffSlots { get; }
 

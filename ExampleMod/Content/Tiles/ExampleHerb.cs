@@ -22,11 +22,11 @@ namespace ExampleMod.Content.Tiles
 
 	// A plant with 3 stages, planted, growing and grown
 	// Sadly, modded plants are unable to be grown by the flower boots
-	//TODO smart cursor support for herbs, see SmartCursorHelper.Step_AlchemySeeds
-	//TODO Staff of Regrowth:
-	//- Player.PlaceThing_Tiles_BlockPlacementForAssortedThings: check where type == 84 (grown herb)
-	//- Player.ItemCheck_GetTileCutIgnoreList: maybe generalize?
-	//TODO vanilla seeds to replace fully grown herb
+	// TODO smart cursor support for herbs, see SmartCursorHelper.Step_AlchemySeeds
+	// TODO Staff of Regrowth:
+	// - Player.PlaceThing_Tiles_BlockPlacementForAssortedThings: check where type == 84 (grown herb)
+	// - Player.ItemCheck_GetTileCutIgnoreList: maybe generalize?
+	// TODO vanilla seeds to replace fully grown herb
 	public class ExampleHerb : ModTile
 	{
 		private const int FrameWidth = 18; // A constant for readability and to kick out those magic numbers
@@ -51,15 +51,15 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(128, 128, 128), name);
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);
-			TileObjectData.newTile.AnchorValidTiles = new int[] {
+			TileObjectData.newTile.AnchorValidTiles = [
 				TileID.Grass,
 				TileID.HallowedGrass,
 				ModContent.TileType<ExampleBlock>()
-			};
-			TileObjectData.newTile.AnchorAlternateTiles = new int[] {
+			];
+			TileObjectData.newTile.AnchorAlternateTiles = [
 				TileID.ClayPot,
 				TileID.PlanterBox
-			};
+			];
 			TileObjectData.addTile(Type);
 
 			HitSound = SoundID.Grass;
@@ -87,7 +87,7 @@ namespace ExampleMod.Content.Tiles
 						if (foliageGrass || moddedFoliage || harvestableVanillaHerb) {
 							WorldGen.KillTile(i, j);
 							if (!tile.HasTile && Main.netMode == NetmodeID.MultiplayerClient) {
-								NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, i, j);
+								NetMessage.SendData(MessageID.TileManipulation, number: 0, number2: i, number3: j);
 							}
 
 							return true;

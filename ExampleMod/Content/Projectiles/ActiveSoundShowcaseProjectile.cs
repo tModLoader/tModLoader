@@ -40,10 +40,13 @@ namespace ExampleMod.Content.Projectiles
 		SlotId soundSlot;
 		bool played = false;
 
-		SoundStyle soundStyleTwister = new SoundStyle("Terraria/Sounds/Custom/dd2_book_staff_twister_loop");
+		SoundStyle soundStyleTwister = new SoundStyle("Terraria/Sounds/Custom/dd2_book_staff_twister_loop") {
+			PauseBehavior = PauseBehavior.PauseWithGame, // Rather than keep playing, this sound pauses when the game is paused.
+		};
 
 		SoundStyle soundStyleIgniteLoop = new SoundStyle("Terraria/Sounds/Custom/dd2_kobold_ignite_loop") {
 			IsLooped = true,
+			PauseBehavior = PauseBehavior.StopWhenGamePaused, // Note that the code examples using this SoundStyle automatically start this sound once more when the game is un-paused.
 			SoundLimitBehavior = SoundLimitBehavior.ReplaceOldest
 			// Note that MaxInstances defaults to 1.
 		};
@@ -66,7 +69,8 @@ namespace ExampleMod.Content.Projectiles
 		public override void AI() {
 			Projectile.frame = (int)Style;
 
-			// Sounds are paused when the game loses focus (Player switches to another program). In some situations the modder might want to restart a sound when the game is focused again, in other situations that might not be desired. Some of these examples use a bool, "played", to track if the sound has been played since the projectile spawned, while others do not and will attempt to restart the sound if it is not currently playing.
+			// By default (in single player) sounds continue playing when the game is paused or loses focus (player switches to another program). In some situations the modder might want to pause and resume a sound when the game pauses and resumes, in other situations the modder might just want to stop the sound when the game pauses. These behaviors can be implemented by setting SoundStyle.PauseBehavior to PauseBehavior.PauseWithGame or PauseBehavior.StopWhenGamePaused. The 2 SoundStyles in this example use each of these options because the sound clips are quite long.
+			// In some situations the modder might want to restart a sound when the game is focused again, in other situations that might not be desired. Some of these examples use a bool, "played", to track if the sound has been played since the projectile spawned, while others do not and will attempt to restart the sound if it is not currently playing.
 
 			// Also note that in this example the SoundStyle all have "MaxInstances = 1" and "SoundLimitBehavior = SoundLimitBehavior.ReplaceOldest" by default, so if 2 projectiles attempt to play the same sound, they'll constantly interrupt each other every AI update, making a horrible sound.
 			// In a real mod, the modder should design the SoundStyle properties and PlaySound logic to meet their needs. For example, the modder might decide that 3 overlapping sounds is too chaotic and adjust MaxInstances accordingly. The modder might also decide that the sound should not restart when the game is re-focused and use logic to only attempt to play the sound once.

@@ -37,8 +37,6 @@ internal class UIModItem : UIPanel
 	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
 	private UIAutoScaleTextTextPanel<string> _dialogNoButton;
 	private UIText _dialogText;
-	private UIImage _blockInput;
-	private UIPanel _deleteModDialog;
 	private readonly LocalMod _mod;
 	private bool modFromLocalModFolder;
 
@@ -74,7 +72,7 @@ internal class UIModItem : UIPanel
 	{
 		_mod = mod;
 		BorderColor = new Color(89, 116, 213) * 0.7f;
-		Height.Pixels = 90;
+		Height.Pixels = 92;
 		Width.Percent = 1f;
 		SetPadding(6f);
 		DisplayNameClean = _mod.DisplayNameClean;
@@ -130,11 +128,11 @@ internal class UIModItem : UIPanel
 		string updateURL = "https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches";
 		Color updateColor = Color.Orange;
 
-		// Detect if it's for a preview version ahead of our time
+		// Detect if it's for a preview or stable version ahead of our time
 		if (BuildInfo.tMLVersion.MajorMinorBuild() < _mod.tModLoaderVersion.MajorMinorBuild()) {
 			updateVersion = $"v{_mod.tModLoaderVersion}";
 
-			if (_mod.tModLoaderVersion.MajorMinor() > BuildInfo.stableVersion)
+			if (_mod.tModLoaderVersion.Build == 2)
 				updateVersion = $"Preview {updateVersion}";
 		}
 
@@ -162,6 +160,7 @@ internal class UIModItem : UIPanel
 
 		int bottomRightRowOffset = -36;
 		_moreInfoButton = new UIImage(UICommon.ButtonModInfoTexture) {
+			RemoveFloatingPointsFromDrawPosition = true,
 			Width = { Pixels = 36 },
 			Height = { Pixels = 36 },
 			Left = { Pixels = bottomRightRowOffset, Precent = 1 },
@@ -173,6 +172,7 @@ internal class UIModItem : UIPanel
 		if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
 			bottomRightRowOffset -= 36;
 			_configButton = new UIImage(UICommon.ButtonModConfigTexture) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36f },
 				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1f },
@@ -233,6 +233,7 @@ internal class UIModItem : UIPanel
 		if (!string.IsNullOrWhiteSpace(_modRequiresTooltip)) {
 			var icon = UICommon.ButtonDepsTexture;
 			_modReferenceIcon = new UIImage(icon) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
 				Top = { Pixels = 42.5f }
 			};
@@ -245,6 +246,7 @@ internal class UIModItem : UIPanel
 		if (_mod.properties.RefNames(true).Any() && _mod.properties.translationMod) {
 			var icon = UICommon.ButtonTranslationModTexture;
 			_translationModIcon = new UIImage(icon) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = new StyleDimension(_uiModStateText.Left.Pixels + _uiModStateText.Width.Pixels + PADDING + left2ndLine, 0f),
 				Top = { Pixels = 42.5f }
 			};
@@ -255,6 +257,7 @@ internal class UIModItem : UIPanel
 		// TODO: Keep this feature locked to Dev for now until we are sure modders are at fault for this warning.
 		if (BuildInfo.IsDev && ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 			_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Left = { Pixels = _modIconAdjust + PADDING },
 				Top = { Pixels = 3 }
 			};
@@ -275,18 +278,18 @@ internal class UIModItem : UIPanel
 			Append(_keyImage);
 		}
 
-		if (_mod.location == ModLocation.Workshop) {
-			var steamIcon = new UIImage(TextureAssets.Extra[243]) {
-				Left = { Pixels = -22, Percent = 1f }
-			};
-			Append(steamIcon);
-		}
-		else if (_mod.location == ModLocation.Modpack) {
-			var modpackIcon = new UIImage(UICommon.ModLocationModPackIcon) {
-				Left = { Pixels = -22, Percent = 1f }
-			};
-			Append(modpackIcon);
-		}
+		var modLocationIconTexture = _mod.location switch {
+			ModLocation.Workshop => TextureAssets.Extra[243],
+			ModLocation.Modpack => UICommon.ModLocationModPackIcon,
+			ModLocation.Local => UICommon.ModLocationLocalIcon,
+			_ => throw new NotImplementedException(),
+		};
+		var modLocationIcon = new UIHoverImage(modLocationIconTexture, Language.GetTextValue("tModLoader.ModFrom" + _mod.location)) {
+			RemoveFloatingPointsFromDrawPosition = true,
+			UseTooltipMouseText = true,
+			Left = { Pixels = -22, Percent = 1f }
+		};
+		Append(modLocationIcon);
 
 		if (loadedMod != null) {
 			_loaded = true;
@@ -298,6 +301,7 @@ internal class UIModItem : UIPanel
 			for (int i = 0; i < values.Length; i++) {
 				if (values[i] > 0) {
 					_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.InfoIcon[i].Name), Language.GetTextValue($"tModLoader.{localizationKeys[i]}", values[i])) {
+						RemoveFloatingPointsFromDrawPosition = true,
 						Left = { Pixels = xOffset, Percent = 1f }
 					};
 
@@ -318,6 +322,7 @@ internal class UIModItem : UIPanel
 		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
 			bottomRightRowOffset -= 36;
 			_deleteModButton = new UIImage(TextureAssets.Trash) {
+				RemoveFloatingPointsFromDrawPosition = true,
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
@@ -616,16 +621,7 @@ internal class UIModItem : UIPanel
 
 		if (!shiftPressed) {
 			SoundEngine.PlaySound(10, -1, -1, 1);
-			_blockInput = new UIImage(TextureAssets.Extra[190]) {
-				Width = { Percent = 1 },
-				Height = { Percent = 1 },
-				Color = new Color(0, 0, 0, 0),
-				ScaleToFit = true
-			};
-			_blockInput.OnLeftMouseDown += CloseDialog;
-			Interface.modsMenu.Append(_blockInput);
-
-			_deleteModDialog = new UIPanel() {
+			var _deleteModDialog = new UIPanel() {
 				Width = { Percent = .30f },
 				Height = { Percent = .30f },
 				HAlign = .5f,
@@ -634,7 +630,7 @@ internal class UIModItem : UIPanel
 				BorderColor = Color.Black
 			};
 			_deleteModDialog.SetPadding(6f);
-			Interface.modsMenu.Append(_deleteModDialog);
+			Interface.modsMenu.ShowConfirmDialog(_deleteModDialog);
 
 			_dialogYesButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.104")) {
 				TextColor = Color.White,
@@ -653,7 +649,7 @@ internal class UIModItem : UIPanel
 				VAlign = .85f,
 				HAlign = .85f
 			}.WithFadedMouseOver();
-			_dialogNoButton.OnLeftClick += CloseDialog;
+			_dialogNoButton.OnLeftClick += Interface.modsMenu.CloseConfirmDialog;
 			_deleteModDialog.Append(_dialogNoButton);
 
 			_dialogText = new UIText(Language.GetTextValue("tModLoader.DeleteModConfirm")) {
@@ -671,18 +667,12 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	private void CloseDialog(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		_blockInput?.Remove();
-		_deleteModDialog?.Remove();
-	}
-
 	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)
 	{
 		ModOrganizer.DeleteMod(_mod);
 
-		CloseDialog(evt, listeningElement);
+		Interface.modsMenu.CloseConfirmDialog(evt, listeningElement);
+		Interface.modsMenu.StoreCurrentScrollPosition();
 		Interface.modsMenu.Activate();
 	}
 

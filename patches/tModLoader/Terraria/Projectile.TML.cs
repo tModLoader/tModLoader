@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.GameContent.Achievements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
@@ -86,22 +87,21 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	}
 
 	/// <summary>
-	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
+	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/>
+	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
 	/// </summary>
 	public int OriginalCritChance { get; set; }
 
 	/// <summary>
-	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
+	/// The armor penetration of this projectile, without any player bonuses, similar to <see cref="originalDamage"/>
+	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
 	/// </summary>
 	public int OriginalArmorPenetration { get; set; }
 
 	/// <summary>
 	/// If set <see cref="damage"/> will be recalculated based on <see cref="originalDamage"/>, <see cref="DamageType"/> and the <see cref="owner"/> player, just like minions and sentries. <br/>
 	/// Similarly for <see cref="CritChance"/> and <see cref="ArmorPenetration"/>.
-	/// 
-	/// No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
+	/// <br/><br/> No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
 	/// </summary>
 	public bool ContinuouslyUpdateDamageStats { get; set; }
 
@@ -160,6 +160,12 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		}
 	}
 
+	/// <summary>
+	/// Attempts to get the owner player of this projectile. Returns null for projectiles spawned by TownNPC (<see cref="npcProj"/>) and trap projectiles (<see cref="trap"/>). Returns <c>Main.player[owner]</c> otherwise.
+	/// <para/> Note that this logic assumes that projectiles have the correct fields set, which might not always be true. Also note that in single player enemy projectiles are also "owned" by the player, so this alone isn't sufficient to know which projectiles were spawned by the player. Additional <see cref="friendly"/> checks would be needed for that.
+	/// </summary>
+	/// <param name="player"></param>
+	/// <returns></returns>
 	public bool TryGetOwner([NotNullWhen(true)] out Player? player)
 	{
 		player = null;
@@ -201,7 +207,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// This is used to check if the projectile is considered to be a member of a specified <see cref="DamageClass"/>.
 	/// </summary>
 	/// <param name="damageClass">The DamageClass to compare with the one assigned to this projectile.</param>
-	/// <returns><see langword="true"/> if this projectiles's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
+	/// <returns><see langword="true"/> if this projectile's <see cref="DamageClass"/> matches <paramref name="damageClass"/>, <see langword="false"/> otherwise</returns>
 	/// <seealso cref="CountsAsClass{T}"/>
 	public bool CountsAsClass(DamageClass damageClass)
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
@@ -210,4 +216,39 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// Checks if the projectile is a minion, sentry, minion shot, or sentry shot. <br/>
 	/// </summary>
 	public bool IsMinionOrSentryRelated => minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type];
+
+	// Simplified version of Projectile.BombsHurtPlayers
+	/// <summary>
+	/// Hurts the local player if the player intersects the specified hitbox.
+	/// </summary>
+	/// <param name="hitbox">Typically the <see cref="Entity.Hitbox"/>, but any other Rectangle can be passed.</param>
+	public void HurtPlayer(Rectangle hitbox)
+	{
+		Player targetPlayer = Main.LocalPlayer;
+		// Check that the player should receive damage in the first place. If not, return.
+		if (!targetPlayer.active || targetPlayer.dead || targetPlayer.immune) {
+			return;
+		}
+
+		// Check that the hitbox radius intersects the player's hitbox. If not, return.
+		if (!hitbox.Intersects(targetPlayer.Hitbox)) {
+			return;
+		}
+
+		// Set the direction of the projectile so the knockback is always in the correct direction.
+		direction = (targetPlayer.Center.X > Center.X).ToDirectionInt();
+
+		int damageVariation = Main.DamageVar(damage, 0f - targetPlayer.luck); // Get the damage variation (affected by luck).
+		PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(owner, whoAmI); // Get the death message.
+
+		// Apply damage to the player.
+		if (targetPlayer.Hurt(damageSource, damageVariation, direction, pvp: true, quiet: false, Crit: false, -1, dodgeable: IsDamageDodgable(), armorPenetration: ArmorPenetration) > 0.0 && !targetPlayer.dead)
+			StatusPlayer(targetPlayer.whoAmI);
+
+		if (trap) {
+			targetPlayer.trapDebuffSource = true;
+			if (targetPlayer.dead)
+				AchievementsHelper.HandleSpecialEvent(targetPlayer, 4);
+		}
+	}
 }

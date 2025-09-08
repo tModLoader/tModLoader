@@ -11,7 +11,7 @@
  	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(PrefixLoader.PrefixCount);
++		public static SetFactory Factory = new SetFactory(PrefixLoader.PrefixCount, nameof(PrefixID), Search);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given prefix type (<see cref="Item.prefix"/>), then that prefix has a 66% to not be applied when randomly rolled (using <c>-1</c>) when calling <see cref="Item.Prefix(int)"/>.
