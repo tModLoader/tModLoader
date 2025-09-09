@@ -666,16 +666,16 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	}
 
 	/// <summary>
-	/// Checks if the player has any item in their <see cref="inventory"/> that appears in the provided ID <paramref name="set"/>.
+	/// Checks if the player has any item in their <see cref="inventory"/> that appears in the provided Item ID set (<paramref name="itemSet"/>).
 	/// <br/><br/> For example <c>if (player.HasItem(ItemID.Sets.Glowsticks))</c> would return true if the player has any glowstick item.
 	/// <br/><br/> Does not check Void Bag.
 	/// </summary>
-	/// <param name="set">A set of length <see cref="ItemLoader.ItemCount"/> to check against</param>
+	/// <param name="itemSet">A set of length <see cref="ItemLoader.ItemCount"/> to check against</param>
 	/// <returns>True if the player has such an item</returns>
-	public bool HasItem(bool[] set)
+	public bool HasItem(bool[] itemSet)
 	{
 		for (int i = 0; i < 58; i++) {
-			if (set[inventory[i].type] && inventory[i].stack > 0)
+			if (itemSet[inventory[i].type] && inventory[i].stack > 0)
 				return true;
 		}
 
