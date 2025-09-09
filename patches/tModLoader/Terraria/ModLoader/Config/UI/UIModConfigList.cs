@@ -175,6 +175,7 @@ internal class UIModConfigList : UIState
 					MaxWidth = { Percent = 0.95f },
 					HAlign = 0.5f,
 					ScalePanel = true,
+					UseInnerDimensions = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
 					UseAltColors = () => selectedMod != mod,
@@ -197,6 +198,7 @@ internal class UIModConfigList : UIState
 					MaxWidth = { Percent = 0.95f },
 					HAlign = 0.5f,
 					ScalePanel = true,
+					UseInnerDimensions = true,
 					BackgroundColor = Color.Gray,
 					HoverPanelColor = Color.Gray,
 					HoverBorderColor = Color.Black,
@@ -211,14 +213,25 @@ internal class UIModConfigList : UIState
 
 		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
 		{
-			float width = ChatManager.GetStringSize(FontAssets.MouseText.Value, modPanel.Text, new Vector2(modPanel.TextScaleMax)).X;
-			UIElement icon = GetSmallIcon(mod);
-			if (icon != null && width < uIElement.MaxWidth.Pixels * 0.35f) {
-				icon.Left = new StyleDimension(-width / 2 - 18, 0);
-				modPanel.PaddingLeft = 40;
-				modPanel.TextOriginX = 0.85f;
-				modPanel.Append(icon);
+			var iconTexture = GetSmallIcon(mod);
+			if (iconTexture == null) {
+				return;
 			}
+
+			// TODO: adjust iconPadding + MarginTop to make it even and look nice
+			float iconOffset = iconTexture.Width();
+			float iconPadding = 8;
+			modPanel.PaddingLeft += iconOffset + iconPadding;
+
+			var sideIndicator = new UIImage(iconTexture) {
+				VAlign = 0.5f,
+				HAlign = 0f,
+				Color = Color.White,
+				MarginLeft = -iconOffset - iconPadding,
+				MarginTop = -13,
+			};
+
+			modPanel.Append(sideIndicator);
 		}
 	}
 
@@ -279,17 +292,12 @@ internal class UIModConfigList : UIState
 		}
 	}
 
-	private UIElement GetSmallIcon(Mod mod)
+	private Asset<Texture2D> GetSmallIcon(Mod mod)
 	{
-		Asset<Texture2D> asset;
 		if (mod.HasAsset("icon_small")) {
-			asset = mod.Assets.Request<Texture2D>("icon_small");
+			var asset = mod.Assets.Request<Texture2D>("icon_small");
 			if (asset.Size() == new Vector2(30)) {
-				return new UIImage(asset) {
-					Top = new StyleDimension(-0.5f, -0.4f),
-					HAlign = 0.5f,
-					VAlign = 0.5f
-				};
+				return asset;
 			}
 			mod.Logger.Info("icon_small needs to be 30x30 pixels.");
 		}
