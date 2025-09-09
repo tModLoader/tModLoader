@@ -1488,6 +1488,16 @@
  	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
  	{
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
+@@ -2569,6 +_,9 @@
+ 		golferScoreAccumulated += num;
+ 	}
+ 
++	/// <summary>
++	/// Finds and returns the index of the closest player to the center of a rectangle defined by the provided arguments. The arguments are usually <see cref="Entity.position"/>, <see cref="Entity.width"/>, and <see cref="Entity.height"/>.
++	/// </summary>
+ 	public static byte FindClosest(Vector2 Position, int Width, int Height)
+ 	{
+ 		byte result = 0;
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
