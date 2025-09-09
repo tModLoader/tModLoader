@@ -37,6 +37,7 @@ public class BadIDTypeUnitTest
 			using Terraria.ID;
 
 			_ = new Item().type == {|BadIDType:TileID.Dirt|};
+			_ = Main.tile[10, 20].TileType == {|BadIDType:ItemID.GoldOre|}; // ref property
 			"""
 			);
 	}

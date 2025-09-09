@@ -71,21 +71,21 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			var node = (BinaryExpressionSyntax)ctx.Node;
 
 			if (IsNumber(node.Right)) {
-				if (ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken).Symbol as IFieldSymbol is not { } leftSymbol) return;
+				if (ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken).Symbol is not { } leftSymbol) return;
 				if (!MagicNumberBindings.TryGetBinding(leftSymbol, out var binding)) return;
 
 				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Right, binding, ctx.CancellationToken);
 			}
 			else if (IsNumber(node.Left)) {
-				if (ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken).Symbol as IFieldSymbol is not { } rightSymbol) return;
+				if (ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken).Symbol is not { } rightSymbol) return;
 				if (!MagicNumberBindings.TryGetBinding(rightSymbol, out var binding)) return;
 
 				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, node.Left, binding, ctx.CancellationToken);
 			}
 			else {
 				MagicNumberBindings.Binding leftBinding = null, rightBinding = null;
-				_ = ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken).Symbol as IFieldSymbol is { } leftSymbol && MagicNumberBindings.TryGetBinding(leftSymbol, out leftBinding);
-				_ = ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken).Symbol as IFieldSymbol is { } rightSymbol && MagicNumberBindings.TryGetBinding(rightSymbol, out rightBinding);
+				_ = ctx.SemanticModel.GetSymbolInfo(node.Left, ctx.CancellationToken).Symbol is { } leftSymbol && MagicNumberBindings.TryGetBinding(leftSymbol, out leftBinding);
+				_ = ctx.SemanticModel.GetSymbolInfo(node.Right, ctx.CancellationToken).Symbol is { } rightSymbol && MagicNumberBindings.TryGetBinding(rightSymbol, out rightBinding);
 
 				switch (leftBinding, rightBinding) {
 					case (not null, not null):
