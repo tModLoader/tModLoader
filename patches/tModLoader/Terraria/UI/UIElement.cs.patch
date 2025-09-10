@@ -90,7 +90,7 @@
  	public bool IsMouseHovering { get; private set; }
  
  	public event MouseEvent OnLeftMouseDown;
-@@ -68,10 +_,13 @@
+@@ -68,10 +_,15 @@
  	public event MouseEvent OnRightMouseUp;
  	public event MouseEvent OnRightClick;
  	public event MouseEvent OnRightDoubleClick;
@@ -99,7 +99,9 @@
 +	/// <summary> Called by <see cref="MouseOut(UIMouseEvent)"/>. Use this event instead of inheritance if suitable. </summary>
  	public event MouseEvent OnMouseOut;
  	public event ScrollWheelEvent OnScrollWheel;
++	/// <summary> Called at the start of <see cref="Update(GameTime)"/>. Use this event instead of inheritance if suitable. </summary>
  	public event ElementEvent OnUpdate;
++	/// <summary> Called at the start of <see cref="Draw(SpriteBatch)"/>. Use this event instead of inheritance if suitable. </summary>
 +	public event ElementEvent OnDraw;
  
  	public UIElement()
