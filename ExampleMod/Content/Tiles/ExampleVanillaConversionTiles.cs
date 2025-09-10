@@ -26,6 +26,7 @@ namespace ExampleMod.Content.Tiles
 
 			// We need to register a conversion from the vanilla desert fossil into our modded variants, so our custom code can be called when the game attempts to convert the vanilla tile
 			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Hallow, Type);
+			TileID.Sets.Infectable[TileID.DesertFossil] = true; // Adding desert fossil to infectable tiles, without it no infection will spread over to it.
 		}
 
 		// This code is called when the game attempts to convert our hallowed tile into a new biome
@@ -69,6 +70,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMerge[TileID.CorruptSandstone][Type] = true;
 
 			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Corruption, Type);
+			//TileID.Sets.Infectable[TileID.DesertFossil] = true; Since desert fossil was already added to infectable tiles in HallowedFossilTile, we don't need to add it again.
+			//Still, having a commented out version of the code here is a reminder that this is needed for the tile to be infectable.
 		}
 
 		public override void Convert(int i, int j, int conversionType) {
@@ -102,6 +105,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMerge[TileID.CrimsonSandstone][Type] = true;
 
 			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Crimson, Type);
+			//TileID.Sets.Infectable[TileID.DesertFossil] = true; Since desert fossil was already added to infectable tiles in HallowedFossilTile, we don't need to add it again.
+			//Still, having a commented out version of the code here is a reminder that this is needed for the tile to be infectable.
 		}
 
 		public override void Convert(int i, int j, int conversionType) {
