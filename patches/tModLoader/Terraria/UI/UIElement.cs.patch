@@ -90,7 +90,7 @@
  	public bool IsMouseHovering { get; private set; }
  
  	public event MouseEvent OnLeftMouseDown;
-@@ -68,7 +_,9 @@
+@@ -68,10 +_,13 @@
  	public event MouseEvent OnRightMouseUp;
  	public event MouseEvent OnRightClick;
  	public event MouseEvent OnRightDoubleClick;
@@ -100,6 +100,10 @@
  	public event MouseEvent OnMouseOut;
  	public event ScrollWheelEvent OnScrollWheel;
  	public event ElementEvent OnUpdate;
++	public event ElementEvent OnDraw;
+ 
+ 	public UIElement()
+ 	{
 @@ -117,6 +_,9 @@
  		}
  	}
@@ -110,6 +114,16 @@
  	public void Append(UIElement element)
  	{
  		element.Remove();
+@@ -148,6 +_,9 @@
+ 
+ 	public virtual void Draw(SpriteBatch spriteBatch)
+ 	{
++		if (this.OnDraw != null)
++			this.OnDraw(this);
++
+ 		bool overflowHidden = OverflowHidden;
+ 		bool useImmediateMode = UseImmediateMode;
+ 		RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
 @@ -167,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();

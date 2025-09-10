@@ -280,10 +280,10 @@ internal class UIModConfigList : UIState
 				MarginTop = -6,
 			};
 
-			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
+			sideIndicator.OnDraw += delegate (UIElement affectedElement) {
 				if (sideIndicator.IsMouseHovering) {
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
-					Main.instance.MouseText(hoverText);
+					UICommon.TooltipMouseText(hoverText);
 				}
 			};
 
