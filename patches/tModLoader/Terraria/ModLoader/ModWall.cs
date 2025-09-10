@@ -109,7 +109,7 @@ public abstract class ModWall : ModBlockType
 		return true;
 	}
 
-	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(int, int, string)"/>
+	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(Vector2, string)"/>
 	public virtual bool CanBeTeleportedTo(int i, int j, Player player, string context)
 	{
 		return true;

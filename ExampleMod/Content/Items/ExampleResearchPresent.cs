@@ -46,8 +46,8 @@ namespace ExampleMod.Content.Items
 
 				// This code is copied from the end of SacrificeItem
 				if (item.stack > 0 && returnRemainderToPlayer) {
-					item.position.X = Main.player[Main.myPlayer].Center.X - item.width / 2;
-					item.position.Y = Main.player[Main.myPlayer].Center.Y - item.height / 2;
+					item.position.X = Main.LocalPlayer.Center.X - item.width / 2;
+					item.position.Y = Main.LocalPlayer.Center.Y - item.height / 2;
 					item = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
 				}
 

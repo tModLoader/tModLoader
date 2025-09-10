@@ -568,7 +568,12 @@
  	public int netID;
  	public int statsAreScaledForThisManyPlayers;
  	public float strengthMultiplier = 1f;
-@@ -290,6 +_,11 @@
+@@ -286,10 +_,16 @@
+ 	public bool homeless;
+ 	public int homeTileX = -1;
+ 	public int homeTileY = -1;
++	/// <summary> Set to 1 for pets to allow them to share a house with a normal Town NPC. Defaults to 0. </summary>
+ 	public int housingCategory;
  	public bool oldHomeless;
  	public int oldHomeTileX = -1;
  	public int oldHomeTileY = -1;
@@ -2708,7 +2713,7 @@
  	}
  
 +	/// <summary>
-+	/// Returns the index within <see cref="Main.npc"/> of the first active NPC in the world of the given NPC type (<see cref="NPC.type"/>).
++	/// Returns the index within <see cref="Main.npc"/> of the first active NPC in the world of the given NPC type (<see cref="NPC.type"/>). Returns -1 if not found.
 +	/// </summary>
 +	/// <param name="Type"></param>
 +	/// <returns></returns>

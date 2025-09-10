@@ -16,6 +16,7 @@ public class PlayerDrawLayerSlot : PlayerDrawLayer
 	internal PlayerDrawLayerSlot(PlayerDrawLayer layer, Multiple.Condition cond, int slot)
 	{
 		Layer = layer;
+		Mod = Layer.Mod;
 		Condition = cond;
 		_slot = slot;
 		AddChildAfter(Layer);

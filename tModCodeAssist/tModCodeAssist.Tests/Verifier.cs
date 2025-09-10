@@ -10,7 +10,7 @@ using tModCodeAssist.Tests.Verifiers;
 
 namespace tModCodeAssist.Tests;
 
-public static  class Verifier
+public static class Verifier
 {
 	public static class Analyzer<TAnalyzer> where TAnalyzer : DiagnosticAnalyzer, new()
 	{
@@ -21,12 +21,13 @@ public static  class Verifier
 				public Test(string testCode, string fixedCode, IEnumerable<DiagnosticResult> expected) : base()
 				{
 					ReferenceAssemblies = ReferenceAssemblies.Net.Net80;
-
+					
 					TestCode = testCode.ReplaceLineEndings();
 					TestState.OutputKind = OutputKind.ConsoleApplication;
 
 					FixedCode = fixedCode.ReplaceLineEndings();
 
+					MarkupOptions = MarkupOptions.UseFirstDescriptor;
 					ExpectedDiagnostics.AddRange(expected);
 
 					NumberOfFixAllIterations = 1;
@@ -38,7 +39,8 @@ public static  class Verifier
 				{
 					return base.ApplyCompilationOptions(project)
 						.AddMetadataReference(MetadataReferences.TmlReference)
-						.AddMetadataReference(MetadataReferences.FnaReference);
+						.AddMetadataReference(MetadataReferences.FnaReference)
+						.AddMetadataReference(MetadataReferences.ReLogicReference);
 				}
 
 				public Test WithAdditionalFiles(IEnumerable<(string fileName, SourceText content)> values)
@@ -76,6 +78,7 @@ public static  class Verifier
 				TestCode = testCode.ReplaceLineEndings();
 				TestState.OutputKind = OutputKind.ConsoleApplication;
 
+				MarkupOptions = MarkupOptions.UseFirstDescriptor;
 				ExpectedDiagnostics.AddRange(expected);
 			}
 

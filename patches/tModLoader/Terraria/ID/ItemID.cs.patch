@@ -408,7 +408,7 @@
  		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
  			new Color(164, 16, 47),
  			new Color(246, 34, 79),
-@@ -939,44 +_,274 @@
+@@ -939,44 +_,276 @@
  			new Color(142, 96, 60)
  		});
  		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
@@ -628,7 +628,8 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then holding that item will allow the player to move the gamepad cursor anywhere on screen.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <br/><br/> Vanilla entries include various ranged weapons (like <see cref="MagicMissile"/> and <see cref="Starfury"/>), minion and sentry staffs, and more.
++		/// <br/><br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] GamepadWholeScreenUseRange = Factory.CreateBoolSet(1326, 5335, 1256, 1244, 3014, 113, 218, 495, 114, 496, 2796, 494, 3006, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 3611, 1299, 1254);
 +
@@ -668,7 +669,8 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can lock-on through solid tiles.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <br/><br/> Vanilla entries include various weapons that don't necessarily need line of sight (like <see cref="Vilethorn"/>, <see cref="SolarEruption"/>, and <see cref="StarWrath"/>), minion and sentry staffs, and more.
++		/// <br/><br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] LockOnIgnoresCollision = Factory.CreateBoolSet(64, 3570, 1327, 3006, 1227, 788, 756, 1228, 65, 3065, 3473, 3051, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 4269, 4273, 4281, 4607, 5069, 5114, 5119, 3014, 3569, 3571);
 +

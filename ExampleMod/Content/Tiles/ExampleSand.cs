@@ -42,5 +42,13 @@ namespace ExampleMod.Content.Tiles
 		public override void WalkDust(ref int dustType, ref bool makeDust, ref Color color) {
 			dustType = DustID.Sand;
 		}
+		// This code is called when the game attempts to convert our example tile into a new biome
+		public override void Convert(int i, int j, int conversionType) {
+			switch (conversionType) {
+				case BiomeConversionID.Sand: // Yellow (desert) solution also converts tiles back into purity, so don't forget that check!
+					WorldGen.ConvertTile(i, j, TileID.Sand);
+					return;
+			}
+		}
 	}
 }

@@ -61,6 +61,33 @@ namespace tModCodeAssist {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors when incorrect ID type is used.
+        /// </summary>
+        internal static string BadIDTypeDescription {
+            get {
+                return ResourceManager.GetString("BadIDTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &quot;{0}&quot; is not type of {1}.
+        /// </summary>
+        internal static string BadIDTypeMessageFormat {
+            get {
+                return ResourceManager.GetString("BadIDTypeMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect ID type is used.
+        /// </summary>
+        internal static string BadIDTypeTitle {
+            get {
+                return ResourceManager.GetString("BadIDTypeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changes magic numbers into appropriate ID values.
         /// </summary>
         internal static string ChangeMagicNumberToIDDescription {
@@ -84,6 +111,60 @@ namespace tModCodeAssist {
         internal static string ChangeMagicNumberToIDTitle {
             get {
                 return ResourceManager.GetString("ChangeMagicNumberToIDTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors when class name or namespace collides with an existing Terraria type name.
+        /// </summary>
+        internal static string CommonCollisionNameDescription {
+            get {
+                return ResourceManager.GetString("CommonCollisionNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class name or namespace &quot;{0}&quot; from &quot;{1}&quot; collides with an existing Terraria type.
+        /// </summary>
+        internal static string CommonCollisionNameMessageFormat {
+            get {
+                return ResourceManager.GetString("CommonCollisionNameMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common type collision name.
+        /// </summary>
+        internal static string CommonCollisionNameTitle {
+            get {
+                return ResourceManager.GetString("CommonCollisionNameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simplifies local (client-side) player access.
+        /// </summary>
+        internal static string SimplifyLocalPlayerDescription {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &quot;{0}&quot; can be simplified for readability.
+        /// </summary>
+        internal static string SimplifyLocalPlayerMessageFormat {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simplify local (client-side) player access.
+        /// </summary>
+        internal static string SimplifyLocalPlayerTitle {
+            get {
+                return ResourceManager.GetString("SimplifyLocalPlayerTitle", resourceCulture);
             }
         }
         

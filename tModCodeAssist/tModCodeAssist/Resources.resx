@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadIDTypeDescription" xml:space="preserve">
+    <value>Errors when incorrect ID type is used</value>
+  </data>
+  <data name="BadIDTypeMessageFormat" xml:space="preserve">
+    <value>The expression "{0}" is not type of {1}</value>
+  </data>
+  <data name="BadIDTypeTitle" xml:space="preserve">
+    <value>Incorrect ID type is used</value>
+  </data>
   <data name="ChangeMagicNumberToIDDescription" xml:space="preserve">
     <value>Changes magic numbers into appropriate ID values</value>
   </data>
@@ -125,6 +134,24 @@
   </data>
   <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
     <value>Change magic numbers into appropriate ID values</value>
+  </data>
+  <data name="CommonCollisionNameTitle" xml:space="preserve">
+    <value>Common type collision name</value>
+  </data>
+  <data name="CommonCollisionNameMessageFormat" xml:space="preserve">
+    <value>Class name or namespace "{0}" from "{1}" collides with an existing Terraria type</value>
+  </data>
+  <data name="CommonCollisionNameDescription" xml:space="preserve">
+    <value>Errors when class name or namespace collides with an existing Terraria type name</value>
+  </data>
+  <data name="SimplifyLocalPlayerDescription" xml:space="preserve">
+    <value>Simplifies local (client-side) player access</value>
+  </data>
+  <data name="SimplifyLocalPlayerMessageFormat" xml:space="preserve">
+    <value>The expression "{0}" can be simplified for readability</value>
+  </data>
+  <data name="SimplifyLocalPlayerTitle" xml:space="preserve">
+    <value>Simplify local (client-side) player access</value>
   </data>
   <data name="SimplifyUnifiedRandomDescription" xml:space="preserve">
     <value>Simplifies common UnifiedRandom usage patterns</value>

@@ -27,4 +27,15 @@ public static class MetadataReferences
 
 		return reference;
 	});
+
+	public static MetadataReference ReLogicReference => _lazyReLogic.Value;
+	private static readonly Lazy<MetadataReference> _lazyReLogic = new Lazy<MetadataReference>(() => {
+		string assemblyPath = typeof(ReLogic.Content.Asset<>).Assembly.Location;
+		string documentationPath = Path.ChangeExtension(assemblyPath, ".xml");
+
+		var documentation = XmlDocumentationProvider.CreateFromFile(documentationPath);
+		var reference = MetadataReference.CreateFromFile(assemblyPath, documentation: documentation);
+
+		return reference;
+	});
 }

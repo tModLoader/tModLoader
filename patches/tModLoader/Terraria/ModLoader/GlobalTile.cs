@@ -344,6 +344,11 @@ public abstract class GlobalTile : GlobalBlockType
 		return true;
 	}
 
+	/// <inheritdoc cref="ModTile.ReplaceTile(int, int, int, int)"/>
+	public virtual void ReplaceTile(int i, int j, int type, int targetType, int targetStyle)
+	{
+	}
+
 	/// <summary>
 	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
 	/// </summary>

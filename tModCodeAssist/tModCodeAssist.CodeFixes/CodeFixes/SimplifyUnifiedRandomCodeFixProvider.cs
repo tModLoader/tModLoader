@@ -12,8 +12,6 @@ using tModCodeAssist.Analyzers;
 
 namespace tModCodeAssist.CodeFixes;
 
-// TODO: handle multiple names for same id
-
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(Diagnostics.SimplifyUnifiedRandom)), Shared]
 public sealed class SimplifyUnifiedRandomCodeFixProvider() : AbstractCodeFixProvider(nameof(Diagnostics.SimplifyUnifiedRandom))
 {

@@ -502,6 +502,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			var path = f.Replace('\\', '/');
 			if (!path.EndsWith(".resources.dll") &&
 				!path.Contains("/Native/") &&
+				!path.Contains("/tModCodeAssist/") &&
 				!path.Contains("/runtime"))
 				yield return f;
 		}

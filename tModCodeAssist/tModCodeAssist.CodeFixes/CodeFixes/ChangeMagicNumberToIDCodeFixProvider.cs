@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -9,31 +10,40 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.Simplification;
+using Microsoft.CodeAnalysis.Text;
 using tModCodeAssist.Analyzers;
 
 namespace tModCodeAssist.CodeFixes;
-
-// TODO: handle multiple names for same id
 
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(Diagnostics.ChangeMagicNumberToID)), Shared]
 public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProvider(nameof(Diagnostics.ChangeMagicNumberToID))
 {
 	public override Microsoft.CodeAnalysis.CodeFixes.FixAllProvider GetFixAllProvider() => new FixAllProvider();
 
+	private static SyntaxNode GetReportedNode(SyntaxNode root, TextSpan location)
+	{
+		return root?.FindNode(location, getInnermostNodeForTie: true).AncestorsAndSelf().First(node => {
+			return node
+				is PrefixUnaryExpressionSyntax { RawKind: (int)SyntaxKind.UnaryMinusExpression, Operand.RawKind: (int)SyntaxKind.NumericLiteralExpression }
+				or { RawKind: (int)SyntaxKind.NumericLiteralExpression };
+		});
+	}
+
 	protected override Task RegisterAsync(CodeFixContext context, Parameters parameters)
 	{
 		var root = parameters.Root;
-		if (root?.FindNode(context.Span, getInnermostNodeForTie: true).FirstAncestorOrSelf<LiteralExpressionSyntax>() is { } syntax) {
+		if (GetReportedNode(root, context.Span) is { } syntax) {
 			string title = Resources.ChangeMagicNumberToIDTitle;
 			const string titleKey = nameof(Resources.ChangeMagicNumberToIDTitle);
 
 			if (!parameters.Diagnostic.Properties.ContainsKey("ShortIdType"))
 				return Task.CompletedTask; // Conflict with Diagnostic registered by old tModLoader.CodeAssist
+
 			var properties = ChangeMagicNumberToIDAnalyzer.Properties.FromImmutable(parameters.Diagnostic.Properties);
 			var (shortIdType, fullIdType, name) = properties;
 
 			context.RegisterCodeFix(CodeAction.Create(
-				string.Format(title, properties),
+				string.Format(title, properties.ShortIdType),
 				cancellationToken => ReplaceMagicNumber(context.Document, root, syntax, fullIdType, name, cancellationToken),
 				titleKey
 			), parameters.Diagnostic);
@@ -92,12 +102,11 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 
 			var syntaxEditor = new SyntaxEditor(root, fixAllContext.Solution.Workspace.Services);
 			foreach (var diagnostic in diagnostics) {
-				var literalSyntax = root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true).FirstAncestorOrSelf<LiteralExpressionSyntax>();
-				if (!literalSyntax.IsKind(SyntaxKind.NumericLiteralExpression))
-					continue;
+				var literalSyntax = GetReportedNode(root, diagnostic.Location.SourceSpan);
 
 				if (!diagnostic.Properties.ContainsKey("ShortIdType"))
 					continue; // Conflict with Diagnostic registered by old tModLoader.CodeAssist
+
 				var properties = ChangeMagicNumberToIDAnalyzer.Properties.FromImmutable(diagnostic.Properties);
 				var (_, fullIdType, name) = properties;
 

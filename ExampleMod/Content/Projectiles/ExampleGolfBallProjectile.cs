@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.height = 7; // The height of the projectile's hitbox.
 			Projectile.friendly = true; // Setting this to anything other than true causes an index out of bounds error.
 			Projectile.penetrate = -1; // Number of times the projectile can penetrate enemies. -1 sets it to infinite penetration.
-			Projectile.aiStyle = 149; // 149 is the golf ball AI.
+			Projectile.aiStyle = ProjAIStyleID.GolfBall; // The aiStyle used by golf balls.
 			Projectile.tileCollide = false; // Tile Collision is set to false, as it's handled in the AI.
 		}
 	}

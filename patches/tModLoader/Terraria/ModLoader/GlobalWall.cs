@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+
 namespace Terraria.ModLoader;
 
 /// <summary>
@@ -44,7 +46,7 @@ public abstract class GlobalWall : GlobalBlockType
 		return true;
 	}
 
-	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(int, int, string)"/>
+	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(Vector2, string)"/>
 	public virtual bool CanBeTeleportedTo(int i, int j, int type, Player player, string context)
 	{
 		return true;

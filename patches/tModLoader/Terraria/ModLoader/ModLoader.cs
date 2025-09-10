@@ -1,24 +1,24 @@
-using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using ReLogic.Content;
+using ReLogic.OS;
+using Terraria.Initializers;
 using Terraria.Localization;
+using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
-using Terraria.ModLoader.UI;
-using Terraria.Initializers;
-using Terraria.ModLoader.Assets;
-using ReLogic.Content;
-using System.Runtime.CompilerServices;
-using Terraria.Social.Steam;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader;
 
@@ -375,6 +375,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
+		Main.Configuration.Put(nameof(ModsMenuSortMode), Enum.GetName(typeof(ModsMenuSortMode), Interface.modsMenu.sortMode));
 	}
 
 	internal static void LoadConfiguration()
@@ -403,6 +404,8 @@ public static class ModLoader
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
 		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
+		if (Enum.TryParse<ModsMenuSortMode>(Main.Configuration.Get(nameof(ModsMenuSortMode), ModsMenuSortMode.RecentlyUpdated.ToString()), out var modsMenuSortMode))
+			Interface.modsMenu.sortMode = modsMenuSortMode;
 	}
 
 	internal static void MigrateSettings()

@@ -1503,11 +1503,12 @@
  				Console.WriteLine("");
  				for (int i = 0; i < WorldList.Count; i++) {
  					Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
-@@ -4180,6 +_,8 @@
+@@ -4180,6 +_,9 @@
  				textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
-+				Console.WriteLine("m\t\t" + Language.GetTextValue("tModLoader.ModsModsList"));
++				string modListCommand = Language.GetTextValue("tModLoader.ModsListCommand");
++				Console.WriteLine(modListCommand + new string('\t', num - modListCommand.Length / 8) + Language.GetTextValue("tModLoader.ModsModsList"));
 +				//Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
@@ -1521,8 +1522,12 @@
  							Console.WriteLine("");
  							Console.WriteLine(Language.GetTextValue("CLI.DeleteConfirmation", WorldList[num2].Name));
  							Console.Write("({0}/{1}): ", Language.GetTextValue("CLI.ShortYes"), Language.GetTextValue("CLI.ShortNo"));
-@@ -4220,7 +_,7 @@
- 				if (text2 == "n" || text2 == "N") {
+@@ -4217,10 +_,10 @@
+ 					continue;
+ 				}
+ 
+-				if (text2 == "n" || text2 == "N") {
++				if (text2 == "n" || text2 == "N" || string.Equals(text2, Language.GetTextValue("CLI.NewWorld_Command"), StringComparison.CurrentCultureIgnoreCase)) {
  					bool flag2 = true;
  					while (flag2) {
 -						Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
@@ -3016,6 +3021,14 @@
  		if (diff == 1)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
  
+@@ -16095,6 +_,7 @@
+ 			hoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
+ 
+ 		int num2 = 30;
++		num2 += hoverItem.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
+ 		int numLines = 1;
+ 		string[] array = new string[num2];
+ 		bool[] array2 = new bool[num2];
 @@ -16104,7 +_,10 @@
  			array3[i] = false;
  		}
