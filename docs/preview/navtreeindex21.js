@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"class_scene_metrics.html":[3,0,1099],
 "class_scene_metrics.html#aad9cd2adbe69564e7db8052770c159f5":[3,0,1099,1],
 "class_scene_metrics.html#ac8f00217d15e334a32dab36b11daa6a4":[3,0,1099,0],
 "class_screen_darkness.html":[3,0,1101],
@@ -248,6 +249,5 @@ var NAVTREEINDEX21 =
 "class_tag_serializer.html#a5f5b3ae8ee7386883a6c6e9224a71510":[3,0,1208,1],
 "class_tally_counter_info_display.html":[3,0,1209],
 "class_tally_counter_info_display.html#a760d62fe493673620e4b0e0aeac90a06":[3,0,1209,0],
-"class_tcp_address.html":[3,0,1210],
-"class_tcp_socket.html":[3,0,1211]
+"class_tcp_address.html":[3,0,1210]
 };

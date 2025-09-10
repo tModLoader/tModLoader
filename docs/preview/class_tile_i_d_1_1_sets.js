@@ -21,6 +21,7 @@ var class_tile_i_d_1_1_sets =
     [ "CanBeDugByShovel", "class_tile_i_d_1_1_sets.html#a7838ca05adaa92855309bde11fae9e57", null ],
     [ "CanBeSloped", "class_tile_i_d_1_1_sets.html#a1358ffd200656f7e6cc8f472ac4f2409", null ],
     [ "CanPlaceNextToNonSolidTile", "class_tile_i_d_1_1_sets.html#a0e33b306f153cde4f64a91c69e9436dd", null ],
+    [ "ClearedOnWorldLoad", "class_tile_i_d_1_1_sets.html#a46ce34cc6904b6825b1cf2a9eb8afa9e", null ],
     [ "Clock", "class_tile_i_d_1_1_sets.html#a4caff834296122a8aadb0b343003a793", null ],
     [ "CloseDoorID", "class_tile_i_d_1_1_sets.html#ac8773c92c420ba16ba27aae76375f64b", null ],
     [ "ConveyorDirection", "class_tile_i_d_1_1_sets.html#ac00c398bd6a42a117a1a337c0b88a05a", null ],

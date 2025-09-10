@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"class_projectile.html#a0ee9622b0db5c7db6f884a650a92941d":[3,0,1029,34],
 "class_projectile.html#a0f5a8d3314bda6bb32403d60071451b1":[3,0,1029,21],
 "class_projectile.html#a101fb0b4bc8d871fb21c0665ae1f6736":[3,0,1029,13],
 "class_projectile.html#a11de2b9189c985447fd5efeed001287b":[3,0,1029,39],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "class_santank_mount_jump.html#a8e80fd33304490e0609601cc6a1aff9d":[3,0,1096,1],
 "class_say_chat_command.html":[3,0,1097],
 "class_scene_effect_loader.html":[3,0,1098],
-"class_scene_effect_loader_1_1_scene_effect_instance.html":[3,0,1098,0],
-"class_scene_metrics.html":[3,0,1099]
+"class_scene_effect_loader_1_1_scene_effect_instance.html":[3,0,1098,0]
 };

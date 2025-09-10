@@ -231,6 +231,16 @@ Used by: Cobweb, Coin Piles, Living Fire Blocks, Smoke Blocks, Bubble Blocks <br
 <tr class="memitem:a1c3b66e6eabc45d3523c261098b89567"><td class="memItemLeft" align="right" valign="top"><a id="a1c3b66e6eabc45d3523c261098b89567" name="a1c3b66e6eabc45d3523c261098b89567"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ChecksForMerge</b> = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407)</td></tr>
 <tr class="separator:a1c3b66e6eabc45d3523c261098b89567"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46ce34cc6904b6825b1cf2a9eb8afa9e"><td class="memItemLeft" align="right" valign="top"><a id="a46ce34cc6904b6825b1cf2a9eb8afa9e" name="a46ce34cc6904b6825b1cf2a9eb8afa9e"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>ClearedOnWorldLoad</b> = Factory.CreateBoolSet(MagicalIceBlock, MysticSnakeRope)</td></tr>
+<tr class="memdesc:a46ce34cc6904b6825b1cf2a9eb8afa9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the tile will be destroyed after the world is loaded, before it is entered. Can be used to get rid of temporary tiles such as the block created by Ice Rod. <br  />
+<br  />
+ The tile will NOT drop it's associated item, but it will trigger any effects invoked through GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool) and <a class="el" href="class_mod_tile.html#af7ec20e3094327b7226a7c03ccb8205a" title="Allows you to determine what happens when the tile at the given coordinates is killed or hit with a p...">ModTile.KillTile(int, int, ref bool, ref bool, ref bool)</a>. <br  />
+<br  />
+ The tile will NOT get destroyed in cases where certain tiles - such as non-empty chests - anchor onto it. <br  />
+<br  />
+ Defaults to <code>false</code>. <br /></td></tr>
+<tr class="separator:a46ce34cc6904b6825b1cf2a9eb8afa9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4caff834296122a8aadb0b343003a793"><td class="memItemLeft" align="right" valign="top"><a id="a4caff834296122a8aadb0b343003a793" name="a4caff834296122a8aadb0b343003a793"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Clock</b> = Factory.CreateBoolSet(GrandfatherClocks)</td></tr>
 <tr class="memdesc:a4caff834296122a8aadb0b343003a793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile is a clock. <br /></td></tr>

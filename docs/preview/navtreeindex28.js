@@ -1,5 +1,7 @@
 var NAVTREEINDEX28 =
 {
+"struct_stat_modifier.html#a1da35d960a7cb7b725c312d6923fa2ef":[3,0,1185,5],
+"struct_stat_modifier.html#a2c77880e64ec8b1147e27abeb524a5ad":[3,0,1185,2],
 "struct_stat_modifier.html#a9176f23c60202e7bfc569a487a2d1f40":[3,0,1185,0],
 "struct_stat_modifier.html#a96742c794c135ab7ac993549e2e5f091":[3,0,1185,8],
 "struct_stat_modifier.html#ab3d983cd1869c9321e7687820bc6d3c5":[3,0,1185,6],

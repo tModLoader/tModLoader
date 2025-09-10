@@ -1,5 +1,7 @@
 var NAVTREEINDEX26 =
 {
+"functions_vars_y.html":[3,3,2,24],
+"functions_vars_z.html":[3,3,2,25],
 "functions_w.html":[3,3,0,22],
 "functions_x.html":[3,3,0,23],
 "functions_y.html":[3,3,0,24],
@@ -247,7 +249,5 @@ var NAVTREEINDEX26 =
 "struct_flame_lash_drawer.html":[3,0,399],
 "struct_float_range.html":[3,0,405],
 "struct_frame_event_data.html":[3,0,411],
-"struct_game_animation_segment.html":[3,0,420],
-"struct_game_mode_data.html":[3,0,426],
-"struct_gen_shape_action_pair.html":[3,0,447]
+"struct_game_animation_segment.html":[3,0,420]
 };
