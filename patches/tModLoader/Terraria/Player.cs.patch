@@ -4521,6 +4521,24 @@
  
  				if (stoned) {
  					int num24 = (int)(((float)num18 * gravDir - 2f) * 20f);
+@@ -19684,6 +_,8 @@
+ 			ResetFloorFlags();
+ 
+ 		bool flag12 = pStone;
++
++		/*
+ 		potionDelayTime = Item.potionDelay;
+ 		restorationDelayTime = Item.restorationDelay;
+ 		mushroomDelayTime = Item.mushroomDelay;
+@@ -19692,6 +_,8 @@
+ 			restorationDelayTime = (int)((float)restorationDelayTime * PhilosopherStoneDurationMultiplier);
+ 			mushroomDelayTime = (int)((float)mushroomDelayTime * PhilosopherStoneDurationMultiplier);
+ 		}
++		*/
++		PlayerLoader.ModifyGlobalPotionDelay(this);
+ 
+ 		if (yoraiz0rEye > 0)
+ 			Yoraiz0rEye();
 @@ -19706,9 +_,16 @@
  		else
  			afkCounter = 0;

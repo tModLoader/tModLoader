@@ -137,6 +137,45 @@ public static class PlayerLoader
 		player.statManaMax = (int)cumulativeMana.ApplyTo(player.statManaMax);
 	}
 
+	/// <summary>
+	/// Resets <see cref="Player.potionDelayTime"/>, <see cref="Player.restorationDelayTime"/> and <see cref="Player.mushroomDelayTime"/> to their expected values by vanilla
+	/// </summary>
+	/// <param name="player"></param>
+	public static void ResetGlobalPotionDelayToVanilla(Player player)
+	{
+		player.potionDelayTime = Item.potionDelay;
+		player.restorationDelayTime = Item.restorationDelay;
+		player.mushroomDelayTime = Item.mushroomDelay;
+
+		if (player.pStone) {
+			player.potionDelayTime = (int)(player.potionDelayTime * Player.PhilosopherStoneDurationMultiplier);
+			player.restorationDelayTime = (int)(player.restorationDelayTime * Player.PhilosopherStoneDurationMultiplier);
+			player.mushroomDelayTime = (int)(player.mushroomDelayTime * Player.PhilosopherStoneDurationMultiplier);
+		}
+	}
+
+	private delegate void DelegateModifyGlobalPotionDelay(out StatModifier potionDelay);
+	private static HookList HookModifyGlobalPotionDelay = AddHook<DelegateModifyGlobalPotionDelay>(p => p.ModifyGlobalPotionDelay);
+
+	/// <summary>
+	/// Reset this player's <see cref="Player.potionDelayTime"/>, <see cref="Player.restorationDelayTime"/> and <see cref="Player.mushroomDelayTime"/> to their vanilla defaults
+	/// and then applies <see cref="ModPlayer.ModifyGlobalPotionDelay(out StatModifier)"/> to them.
+	/// </summary>
+	/// <param name="player"></param>
+	public static void ModifyGlobalPotionDelay(Player player)
+	{
+		StatModifier cumulativePotionDelay = StatModifier.Default;
+
+		foreach (var modPlayer in HookModifyGlobalPotionDelay.Enumerate(player)) {
+			modPlayer.ModifyGlobalPotionDelay(out StatModifier potionDelay);
+		}
+
+		// TODO: Users may also want their own delay times to be effected by these modifiers?
+		player.potionDelayTime = (int)cumulativePotionDelay.ApplyTo(player.potionDelayTime);
+		player.restorationDelayTime = (int)cumulativePotionDelay.ApplyTo(player.restorationDelayTime);
+		player.mushroomDelayTime = (int)cumulativePotionDelay.ApplyTo(player.mushroomDelayTime);
+	}
+
 	private static HookList HookUpdateDead = AddHook<Action>(p => p.UpdateDead);
 
 	public static void UpdateDead(Player player)

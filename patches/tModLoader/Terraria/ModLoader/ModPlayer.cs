@@ -107,6 +107,17 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to modify the global potion delay applied to each all healing potions.  This hook runs right before <see cref="Player.ResetEffects"/>
+	/// when these delays are first calculated.
+	/// <para/> Called on local, server, and remote clients.
+	/// </summary>
+	/// <param name="potionDelay">The modifier to all of the player's potion delays</param>
+	public virtual void ModifyGlobalPotionDelay(out StatModifier potionDelay)
+	{
+		potionDelay = StatModifier.Default;
+	}
+
+	/// <summary>
 	/// Similar to <see cref="ResetEffects"/>, except this is only called when the player is dead. If this is called, then <see cref="ResetEffects"/> will not be called.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
