@@ -277,6 +277,15 @@ Mods: {
 					''' */
 			}
 
+			ExamplePotionDelayAccessory: {
+				// DisplayName: Example Potion Delay Accessory
+				/* Tooltip:
+					'''
+					Decreases the total cooldown of healing potions by {0} seconds
+					Increases the cooldown of healing potions by {1}%
+					''' */
+			}
+
 			ExampleWings: {
 				// DisplayName: Example Wings
 				// Tooltip: This is a modded wing.

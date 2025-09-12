@@ -164,10 +164,14 @@ public static class PlayerLoader
 	/// <param name="player"></param>
 	public static void ModifyGlobalPotionDelay(Player player)
 	{
+		ResetGlobalPotionDelayToVanilla(player);
+
 		StatModifier cumulativePotionDelay = StatModifier.Default;
 
 		foreach (var modPlayer in HookModifyGlobalPotionDelay.Enumerate(player)) {
 			modPlayer.ModifyGlobalPotionDelay(out StatModifier potionDelay);
+
+			cumulativePotionDelay = cumulativePotionDelay.CombineWith(potionDelay);
 		}
 
 		// TODO: Users may also want their own delay times to be effected by these modifiers?
