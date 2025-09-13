@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.UI;
 
@@ -99,23 +98,23 @@ public abstract class ModMenu : ModType
 	}
 
 	/// <summary>
-	/// Called just before the sky is drawn, and allows you to modify some of the parameters of the sky's drawing code.
+	/// Called just before the sky is drawn, and allows you to modify some of the parameters of the sky draw code.
 	/// <br>Return false to prevent the usual sky from drawing.</br>
 	/// </summary>
-	public virtual bool PreDrawSky(SpriteBatch spriteBatch, ref SkyDrawParams drawParams)
+	public virtual bool PreDrawSky(SpriteBatch spriteBatch, ref bool drawStars, ref bool drawSunAndMoon)
 	{
 		return true;
 	}
 
 	/// <summary>
-	/// Called just after the sky is drawn, regardless of what <see cref="PreDrawSky(SpriteBatch, ref SkyDrawParams)"/> returns.
+	/// Called just after the sky is drawn, regardless of what <see cref="PreDrawSky(SpriteBatch, ref bool, ref bool)"/> returns.
 	/// </summary>
 	public virtual void PostDrawSky(SpriteBatch spriteBatch)
 	{
 	}
 
 	/// <summary>
-	/// Called just before the background is drawn.
+	/// Called just before the background is drawn. 
 	/// <br>Return false to prevent the usual background from drawing.</br>
 	/// </summary>
 	public virtual bool PreDrawBackground(SpriteBatch spriteBatch)

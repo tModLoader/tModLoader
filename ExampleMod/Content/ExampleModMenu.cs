@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -50,12 +49,9 @@ namespace ExampleMod.Content
 			return true;
 		}
 
-		public override bool PreDrawSky(SpriteBatch spriteBatch, ref SkyDrawParams drawParams) {
-			drawParams.DrawStars = false; // Prevents the stars in the background from drawing.
-
-			// You can return false to prevent the sky itself from drawing,
-			// this is also possible with the background using PreDrawBackground(SpriteBatch). 
-			return true;   
-		}					
+		public override bool PreDrawSky(SpriteBatch spriteBatch, ref bool drawStars, ref bool drawSunAndMoon) {
+			drawStars = false; // Prevents the stars in the background from drawing.
+			return true; // You can return false here to prevent the sky from drawing, this is also possible with the background using PreDrawBackground(SpriteBatch). 
+		}
 	}
 }
