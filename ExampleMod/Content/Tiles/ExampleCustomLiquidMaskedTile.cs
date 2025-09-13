@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Content.Items.Placeable;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.Liquid;
@@ -32,6 +33,7 @@ public sealed class ExampleCustomLiquidMaskedTile : ModTile
 		// The mask texture is fully white as a convention, and the parts we do not want liquid to show through are filled in.
 		// Note: The tile will still render into the tileTarget, so it will already hide liquids where the normal texture is solid.
 		LiquidEdgeRenderer.TileLiquidMasks[Type] = ModContent.Request<Texture2D>(Texture + "_Mask");
+		AddMapEntry(Color.Orange);
 	}
 
 	public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
