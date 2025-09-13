@@ -141,15 +141,25 @@
  						LiquidCache liquidCache = ptr2[-1];
  						LiquidCache liquidCache2 = ptr2[1];
  						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
-@@ -197,7 +_,7 @@
+@@ -197,11 +_,17 @@
  			ptr2 = ptr;
  			for (int m = 0; m < rectangle.Width; m++) {
  				for (int n = 0; n < rectangle.Height - 10; n++) {
 -					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick)) {
 +					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick || ptr2->EdgeData.HasValue)) {
++						if (ptr2->EdgeData.HasValue) {
++							;
++						}
  						ptr2->Opacity = 1f;
  						ptr2->VisibleType = ptr2->Type;
  						float num3 = 1f / (float)(WATERFALL_LENGTH[ptr2->Type] + 1);
+ 						float num4 = 1f;
++						// TML(liquid-slopes): Duplicate original validity check without edge
++						// data to avoid waterfalls appearing beneath solid tiles.
++						if (!ptr2->IsSolid || ptr2->IsHalfBrick )
+ 						for (int num5 = 1; num5 <= WATERFALL_LENGTH[ptr2->Type]; num5++) {
+ 							num4 -= num3;
+ 							if (ptr2[num5].IsSolid)
 @@ -213,7 +_,7 @@
  						}
  					}
