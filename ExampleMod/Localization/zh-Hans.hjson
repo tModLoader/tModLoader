@@ -1223,6 +1223,11 @@ Mods: {
 				// DisplayName: Fragile Boulder Trap
 				// Tooltip: ""
 			}
+
+			ExampleCustomLiquidMaskedTileItem: {
+				// DisplayName: Fiery Mesh
+				// Tooltip: "'Touch this to BURN!!'"
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

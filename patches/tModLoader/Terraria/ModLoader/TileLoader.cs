@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
+using Terraria.GameContent.Liquid;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -145,6 +146,7 @@ public static class TileLoader
 		//Textures
 		Array.Resize(ref TextureAssets.Tile, nextTile);
 		Array.Resize(ref TextureAssets.HighlightMask, nextTile);
+		Array.Resize(ref LiquidEdgeRenderer.TileLiquidMasks, nextTile);
 
 		//Sets
 		LoaderUtils.ResetStaticMembers(typeof(TileID));

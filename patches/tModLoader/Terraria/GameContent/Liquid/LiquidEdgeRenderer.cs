@@ -52,7 +52,7 @@ public static class LiquidEdgeRenderer
 	/// <br />
 	/// Only shows up when the tile is part of the <see cref="TileID.Sets.BlocksWaterDrawingBehindSelf"/> set.
 	/// </summary>
-	public static Dictionary<int, Asset<Texture2D>> CustomTileMasks = new Dictionary<int, Asset<Texture2D>>();
+	public static Asset<Texture2D>[] TileLiquidMasks = [];
 
 	public static readonly BlendState MaskingBlendState = new BlendState() {
 		ColorSourceBlend = Blend.Zero,
@@ -73,10 +73,10 @@ public static class LiquidEdgeRenderer
 
 		Texture2D texture = MaskTile;
 
-		if (CustomTileMasks.TryGetValue(tileCache.TileType, out Asset<Texture2D>? newTexture) && newTexture != null) {
-			texture = newTexture.Value;
+		// Check if a custom mask is loaded for the tile and use it if so
+		if (TileLiquidMasks.IndexInRange(tileCache.type) && (TileLiquidMasks[tileCache.type]?.IsLoaded ?? false)) {
+			texture = TileLiquidMasks[tileCache.type].Value;
 		}
-
 		Vector2 position = new Vector2(tileX * 16, tileY * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
 
 		if (tileCache.Slope != SlopeType.Solid && !TileID.Sets.HasSlopeFrames[tileCache.TileType]) {
