@@ -135,7 +135,7 @@ public static class LiquidEdgeRenderer
 		Tile tileUpCache = Main.tile[tileX, tileY - 1];
 		Tile tileDownCache = Main.tile[tileX, tileY + 1];
 
-		if (!tileCache.HasTile || tileCache.IsActuated || Main.tileSolidTop[tileCache.type] || (tileCache.IsHalfBlock && (tileLeftCache.liquid > 160 || tileRightCache.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.Slope == SlopeType.Solid && !tileCache.IsHalfBlock))
+		if (!tileCache.HasTile || tileCache.IsActuated || Main.tileSolidTop[tileCache.type] || (tileCache.IsHalfBlock && (tileLeftCache.liquid > 160 || tileRightCache.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)))
 			return;
 
 		int liquidType = 0;
