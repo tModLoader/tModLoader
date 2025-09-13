@@ -10,7 +10,9 @@ namespace SteamWebAPIPublisherTool.SteamCMD;
 
 internal class SteamCmdDownloaderInstance
 {
-	private static string SteamCMDPath = null;
+	internal static string SteamCMDPath { get; set; } = null;
+	internal static string SteamCMDUser { get; set; } = "anonymous";
+
 	private string modInstallTxtPath;
 	private string modDownloadFolderPath;
 
@@ -20,14 +22,8 @@ internal class SteamCmdDownloaderInstance
 		this.modDownloadFolderPath = modDownloadFolderPath;
 	}
 
-	//TODO: Replace this with internal Set; Get;
-	internal static void SetSteamCmdPath(string path)
-	{
-		SteamCMDPath = path;
-	}
-
 	private string SteamCmdLeadingArguments(string steamCmdDownloadList) =>
-		$"+force_install_dir {modDownloadFolderPath} +login anonymous {steamCmdDownloadList} +quit";
+		$"+force_install_dir {modDownloadFolderPath} +login {SteamCMDUser} {steamCmdDownloadList} +quit";
 
 	private string GetActualModDownloadsWorkshopFolder() =>
 		$"{modDownloadFolderPath}/steamapps/workshop/content/1281930";

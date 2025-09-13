@@ -186,7 +186,7 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		return new DisposeWrapper(Close);
 	}
 
-	private void Close()
+	internal void Close()
 	{
 		if (openCounter == 0)
 			return;

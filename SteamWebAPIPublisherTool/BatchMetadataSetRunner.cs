@@ -30,13 +30,13 @@ internal class BatchMetadataSetRunner
 
 	private static string GetWorkingDirectory(int pageId) => $"{Directory.GetCurrentDirectory()}/page{pageId}";
 
-	internal void RunForceDevMetadataUpdate()
+	internal void RunForceDevMetadataUpdate(bool deleteModsWhenComplete)
 	{
 		// Download the Items
 		var actualWorkshopItemsFolder = DownloadItemsToFolder();
 
 		// Update the Metadata
-		ForceUpdateDevMetadata(actualWorkshopItemsFolder);
+		ForceUpdateDevMetadata(actualWorkshopItemsFolder, deleteModsWhenComplete);
 	}
 
 	private string DownloadItemsToFolder()
@@ -49,7 +49,7 @@ internal class BatchMetadataSetRunner
 		return downloader.DownloadItems();
 	}
 
-	private void ForceUpdateDevMetadata(string actualWorkshopItemsFolder)
+	private void ForceUpdateDevMetadata(string actualWorkshopItemsFolder, bool deleteModsWhenComplete)
 	{
 		var devMetadataKvp = IterateWorkshopFilesForDevMetadata(actualWorkshopItemsFolder);
 
@@ -58,8 +58,8 @@ internal class BatchMetadataSetRunner
 			Console.WriteLine($"Metadata for Workshop Item {item.publishedId} has been updated");
 		}
 
-		// Free up disk drive space by cleaning out workshop items folder
-		Directory.Delete(workingDirectory, true);
+		// Free up disk drive space by cleaning out workshop items folder when complete
+		Directory.Delete(actualWorkshopItemsFolder, deleteModsWhenComplete);
 	}
 
 	private List<(string publishedId, string metadata)> IterateWorkshopFilesForDevMetadata(string actualWorkshopItemsFolder)

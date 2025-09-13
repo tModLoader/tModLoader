@@ -9,6 +9,7 @@ using System.Text;
 using System.Drawing.Drawing2D;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using SteamWebAPIPublisherTool.SteamWebApi;
 
 namespace ModLoaderSimple;
 
@@ -19,30 +20,17 @@ public struct ModPubId_t
 
 public struct ModVersionHash
 {
-	public Version tmlVersion; // 7 chars, YYYY.MM
-	public Version modVersion;
 	private string hash; // 28+2 chars, SHA1. +2 is for string type
 
-	public override string ToString() => $"{new Version(tmlVersion.Major, tmlVersion.Minor)}|{modVersion}|{hash}";
+	public override string ToString() => $"{hash}";
 
-	const string pattern = @"^([^\|]+)\|([^\|]+)\|([^\|]+)$";
-
-	public ModVersionHash(string serializedVersionHash)
+	public ModVersionHash(string hash)
 	{
-		var match = new Regex(pattern).Match(serializedVersionHash);
-
-		if (!match.Success)
-			throw new SocialBrowserException($"Malformed Hash Data Detected {serializedVersionHash}");
-
-		tmlVersion = new Version(match.Groups[1].Value);
-		modVersion = new Version(match.Groups[2].Value);
-		hash = match.Groups[3].Value;
+		this.hash = hash;
 	}
 
 	public ModVersionHash(TmodFile modFile)
 	{
-		tmlVersion = modFile.TModLoaderVersion;
-		modVersion = modFile.Version;
 		hash = Encoding.UTF8.GetString(modFile.Hash);
 	}
 
@@ -103,7 +91,9 @@ public interface SocialBrowserModule
 	internal static void CalculateModHashes(string workshopPath, /*ModDownloadItem modDownloadItemAsFound,*/ ref DeveloperMetadata devMetadata)
 	{
 		// Get the hashes from the existing modDownloadItem as found on the workshop
-		//var prevHashes = modDownloadItemAsFound.GetModVersionHashes(); -- Not Required for force batch in PR 4345
+		var itemDetails = SteamWebWrapper.GetItemMetadata(Path.GetFileNameWithoutExtension(workshopPath));
+
+		var prevHashes = string.IsNullOrEmpty(itemDetails.Metadata) ? new List<ModVersionHash>() : JsonSerializer.Deserialize<DeveloperMetadata>(itemDetails.Metadata).modVersionHashes.Select(h => new ModVersionHash(h));
 
 		// Get the new hashes
 		var currentHashes = new List<ModVersionHash>();
@@ -111,10 +101,12 @@ public interface SocialBrowserModule
 			var tModFile = new TmodFile(tModPath);
 			tModFile.Open(); // Needed for Hash data to be populated
 			currentHashes.Add(new ModVersionHash(tModFile));
+
+			tModFile.Close();
 		}
 
-		//List<ModVersionHash> totalHash = currentHashes.Concat(prevHashes.Except(currentHashes).ToList()).ToList();
+		List<ModVersionHash> totalHash = currentHashes.Concat(prevHashes.Except(currentHashes).ToList()).ToList();
 
-		devMetadata.modVersionHashes = currentHashes.Select(h => h.ToString()).ToList();
+		devMetadata.modVersionHashes = totalHash.Select(h => h.ToString()).ToList();
 	}
 }

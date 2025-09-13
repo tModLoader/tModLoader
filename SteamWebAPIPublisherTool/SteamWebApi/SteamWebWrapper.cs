@@ -37,14 +37,39 @@ internal static class SteamWebWrapper
 
 	public class PublishedFileDetail
 	{
-		[JsonPropertyName("result")]
-		public int Result { get; set; }
-
 		[JsonPropertyName("publishedfileid")]
 		public string PublishedFileId { get; set; }
 
-		[JsonPropertyName("language")]
-		public int Language { get; set; }
+		// Optional Properties from deep search
+		[JsonPropertyName("banned")]
+		public bool Banned { get; set; } = false;
+
+		[JsonPropertyName("kvtags")]
+		public List<KevValueTags> KeyValuePairs { get; set; } = new List<KevValueTags>();
+
+		[JsonPropertyName("tags")]
+		public List<UserTags> UserTags { get; set; } = new List<UserTags>();
+
+		[JsonPropertyName("metadata")]
+		public string Metadata { get; set; } = "";
+	}
+
+	public class KevValueTags
+	{
+		[JsonPropertyName("key")]
+		public string key { get; set; } = "";
+
+		[JsonPropertyName("value")]
+		public string value { get; set; } = "";
+	}
+
+	public class UserTags
+	{
+		[JsonPropertyName("tag")]
+		public string tag { get; set; } = "";
+
+		[JsonPropertyName("display_name")]
+		public string displayName { get; set; } = "";
 	}
 
 	//TODO: Replace with internal Set; Get;
@@ -79,6 +104,30 @@ internal static class SteamWebWrapper
 		return await response.Content.ReadAsStringAsync();
 	}
 
+	internal static PublishedFileDetail GetItemMetadata(string publishedFileId)
+	{
+		if (PublisherKey is null)
+			throw new Exception("Publisher Key Must Be Initialized Before Use");
+
+		const string ApiEndpoint = "IPublishedFileService/GetDetails/v1";
+
+		List<KeyValuePair<string, string>> arguments = new List<KeyValuePair<string, string>>() {
+			GetKeyValuePair("publishedfileids[0]", publishedFileId), // the ID of the item requested
+			GetKeyValuePair("admin_query", "false"), // don't show 'hidden' items; this is setup to use anon login in SteamCMD
+			GetKeyValuePair("appid", "1281930"), // tmodloader
+			GetKeyValuePair("key", PublisherKey), // the web api authentication key
+			GetKeyValuePair("includetags", "true"),
+			GetKeyValuePair("includekvtags", "true"),
+			GetKeyValuePair("includemetadata", "true"),
+			GetKeyValuePair("short_description", "true"),
+		};
+
+		var encodedResponse = GetHttpsAsync(ApiEndpoint, arguments).Result;
+		var root = JsonSerializer.Deserialize<PublishedIdQueryOuterResponse>(encodedResponse);
+
+		return root.Response.PublishedFileDetails[0];
+	}
+
 	internal static string SetDeveloperMetadata(string publishedFileId, string metadata)
 	{
 		if (PublisherKey is null)
@@ -96,7 +145,7 @@ internal static class SteamWebWrapper
 		return PostHttpsAsync(ApiEndpoint, arguments).Result;
 	}
 
-	private const float NumberResultsPerPage = 100f;
+	private const float NumberResultsPerPage = 10f;
 
 	private static string QueryForPublisherIdsInnerCursor(string cursor)
 	{
@@ -114,6 +163,7 @@ internal static class SteamWebWrapper
 			GetKeyValuePair("filetype", "0"), // workshop items
 			GetKeyValuePair("admin_query", "false"), // don't show 'hidden' items; this is setup to use anon login
 			GetKeyValuePair("ids_only", "true"), // only return the published ID for speed
+			GetKeyValuePair("return_metadata", "true"), // only return the published ID for speed
 			GetKeyValuePair("key", PublisherKey), // the web api authentication key
 			GetKeyValuePair("cursor", cursor) // the cursor used for deep pagination
 		};
@@ -139,7 +189,7 @@ internal static class SteamWebWrapper
 			cursor = root.Response.NextCursor;
 			publisherIdPages.Add(root.Response.PublishedFileDetails.Select(pid => pid.PublishedFileId).ToArray());
 		}
-		while (cursor != "*" && ++pageTracker < Math.Floor(totalBallparkEntries / NumberResultsPerPage) + 1);
+		while (false && cursor != "*" && ++pageTracker < Math.Floor(totalBallparkEntries / NumberResultsPerPage) + 1);
 
 		Console.WriteLine($"Querying for PublishedFileIds complete");
 
