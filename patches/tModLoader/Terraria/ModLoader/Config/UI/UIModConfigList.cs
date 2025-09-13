@@ -218,16 +218,15 @@ internal class UIModConfigList : UIState
 				return;
 			}
 
-			// TODO: adjust iconPadding + MarginTop to make it even and look nice
 			float iconOffset = iconTexture.Width();
-			float iconPadding = 8;
+			float iconPadding = 2;
 			modPanel.PaddingLeft += iconOffset + iconPadding;
 
 			var sideIndicator = new UIImage(iconTexture) {
 				VAlign = 0.5f,
 				HAlign = 0f,
 				Color = Color.White,
-				MarginLeft = -iconOffset - iconPadding,
+				MarginLeft = -iconOffset - iconPadding - 4.5f, // -4.5 for alignment, 4 is 11 and 5 is 9 so 4.5 is 10
 				MarginTop = -13,
 			};
 
@@ -287,8 +286,8 @@ internal class UIModConfigList : UIState
 				}
 			};
 
-			configList.Add(configPanel);
 			configPanel.Append(sideIndicator);
+			configList.Add(configPanel);
 		}
 	}
 
