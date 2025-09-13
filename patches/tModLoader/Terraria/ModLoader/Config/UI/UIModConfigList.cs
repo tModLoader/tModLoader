@@ -269,14 +269,14 @@ internal class UIModConfigList : UIState
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 
 			float indicatorOffset = indicatorFrame.Width;
-			float indicatorPadding = 8;
+			float indicatorPadding = 6;
 			configPanel.PaddingRight += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
 				Color = Color.White,
-				MarginRight = -indicatorOffset - indicatorPadding,
+				MarginRight = -indicatorOffset - indicatorPadding - 2, // -2 for alignment
 				MarginTop = -6,
 			};
 
