@@ -6710,13 +6710,12 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
-@@ -51113,7 +_,12 @@
+@@ -51113,7 +_,11 @@
  		sceneArea.totalWidth = screenWidth;
  		sceneArea.SceneLocalScreenPositionOffset = Vector2.Zero;
  		SceneArea sceneArea2 = sceneArea;
-+		bool drawStars = true;
-+		bool drawSunAndMoon = true;
-+		bool drawSky = gameMenu ? MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, ref drawStars, ref drawSunAndMoon) : true;
++		SkyDrawParams skyDrawParams = new SkyDrawParams(true, true);
++		bool drawSky = gameMenu ? MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, ref skyDrawParams) : true;
  		if (!mapFullscreen) {
 +			if (!drawSky)
 +				goto skipDrawSky;
@@ -6732,11 +6731,11 @@
  			spriteBatch.End();
  			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, BackgroundViewMatrix.EffectMatrix);
 -			if (shimmerAlpha != 1f)
-+			if (shimmerAlpha != 1f && drawStars)
++			if (shimmerAlpha != 1f && skyDrawParams.DrawStars)
  				DrawStarsInBackground(sceneArea2, artificial: false);
  
 -			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0)
-+			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0 && drawSunAndMoon)
++			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0 && skyDrawParams.DrawSunAndMoon)
  				DrawSunAndMoon(sceneArea2, moonColor, sunColor, num6);
  
  			TimeLogger.DetailedDrawTime(7);
