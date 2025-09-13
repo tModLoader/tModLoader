@@ -819,6 +819,18 @@
  	{
  		newAlternate.Calculate();
  		if (!newTile._hasOwnAlternates)
+@@ -1604,8 +_,11 @@
+ 		newSubTile.CopyFrom(newTile);
+ 		newSubTile.LavaDeath = false;
+ 		newSubTile.LavaPlacement = LiquidPlacement.Allowed;
++		addSubTile(13, 43, 47); // Fix #4756
++		/*
+ 		addSubTile(13, 47);
+ 		addSubTile(43);
++		*/
+ 		addTile(19);
+ 		newTile.CoordinateHeights = new int[1] {
+ 			16
 @@ -2830,6 +_,11 @@
  		addTile(486);
  		newTile.CopyFrom(Style3x2);

@@ -1,14 +1,15 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using static System.Net.WebRequestMethods;
 
 namespace Terraria.ModLoader;
 
@@ -25,6 +26,7 @@ public static class WallLoader
 	internal static readonly Dictionary<int, int> wallTypeToItemType = new();
 	public delegate bool ConvertWall(int i, int j, int type, int conversionType);
 	internal static List<ConvertWall>[][] wallConversionDelegates = null;
+	internal static int[][] wallConversionFallbacks = null;
 	private static bool loaded = false;
 
 	private static Func<int, int, int, bool, bool>[] HookKillSound;
@@ -99,6 +101,8 @@ public static class WallLoader
 		Array.Resize(ref Main.wallFrameCounter, nextWall);
 
 		wallConversionDelegates = new List<ConvertWall>[nextWall][];
+		wallConversionFallbacks = new int[nextWall][];
+		InitializeConversionFallbacks();
 
 		// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
 		// Remove generic arguments once fixed.
@@ -288,10 +292,179 @@ public static class WallLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+	/// <summary>
+	/// Registers a conversion that replaces <paramref name="wallType"/> with <paramref name="toType"/> when touched by <paramref name="conversionType"/> <br/>
+	/// Also registers <paramref name="wallType"/> as a fallback for <paramref name="toType"/> so that other conversions can convert <paramref name="toType"/> as if it was <paramref name="wallType"/>. <br/>
+	/// If you need to register conversions that rely on <see cref="WallID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="wallType">The wall type that has is affected by this conversion.</param>
+	/// <param name="conversionType">The conversion type for which the wall should use this conversion.</param>
+	/// <param name="toType">The wall type that this conversion should convert the wall to.</param>
+	/// <param name="purification">If true, automatically registers purification conversions from toType to wallType as well.</param>
+	public static void RegisterSimpleConversion(int wallType, int conversionType, int toType, bool purification = true)
+	{
+		RegisterConversion(wallType, conversionType, (int i, int j, int type, int conversionType) => {
+			WorldGen.ConvertWall(i, j, toType);
+			return false;
+		});
+		RegisterConversionFallback(toType, wallType, conversionType);
+
+		if (purification) {
+			bool Purify(int i, int j, int type, int conversionType)
+			{
+				WorldGen.ConvertWall(i, j, wallType);
+				return false;
+			}
+			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
+			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
+			RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
+		}
+	}
+
+	private static void InitializeConversionFallbacks()
+	{
+		RegisterConversionFallback(WallID.JungleUnsafe, WallID.GrassUnsafe, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.FlowerUnsafe, WallID.GrassUnsafe, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Grass, WallID.GrassUnsafe, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Jungle, WallID.GrassUnsafe, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Flower, WallID.GrassUnsafe, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.CorruptGrassUnsafe, WallID.GrassUnsafe, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.HallowedGrassUnsafe, WallID.GrassUnsafe, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimsonGrassUnsafe, WallID.GrassUnsafe, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.CorruptGrassEcho, WallID.GrassUnsafe, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.HallowedGrassEcho, WallID.GrassUnsafe, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimsonGrassEcho, WallID.GrassUnsafe, BiomeConversionID.Crimson);
+
+		RegisterConversionFallback(WallID.Cave7Unsafe, WallID.Stone, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Cave8Unsafe, WallID.Stone, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.EbonstoneUnsafe, WallID.Stone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.PearlstoneBrickUnsafe, WallID.Stone, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimstoneUnsafe, WallID.Stone, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.Cave7Echo, WallID.Stone, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Cave8Echo, WallID.Stone, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.EbonstoneEcho, WallID.Stone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.PearlstoneEcho, WallID.Stone, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimstoneEcho, WallID.Stone, BiomeConversionID.Crimson);
+
+		RegisterConversionFallback(WallID.Dirt, WallID.DirtUnsafe, BiomeConversionID.Purity);
+
+		RegisterConversionFallback(WallID.SnowWallEcho, WallID.SnowWallUnsafe, BiomeConversionID.Purity);
+
+		RegisterConversionFallback(WallID.IceEcho, WallID.IceUnsafe, BiomeConversionID.Purity);
+
+		RegisterConversionFallback(WallID.CorruptSandstone, WallID.Sandstone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.HallowSandstone, WallID.Sandstone, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimsonSandstone, WallID.Sandstone, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.SandstoneEcho, WallID.Sandstone, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.CorruptSandstoneEcho, WallID.Sandstone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.HallowSandstoneEcho, WallID.Sandstone, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimsonSandstoneEcho, WallID.Sandstone, BiomeConversionID.Crimson);
+
+		RegisterConversionFallback(WallID.CorruptHardenedSand, WallID.HardenedSand, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.HallowHardenedSand, WallID.HardenedSand, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimsonHardenedSand, WallID.HardenedSand, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.HardenedSandEcho, WallID.HardenedSand, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.CorruptHardenedSandEcho, WallID.HardenedSand, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.HallowHardenedSandEcho, WallID.HardenedSand, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.CrimsonHardenedSandEcho, WallID.HardenedSand, BiomeConversionID.Crimson);
+
+		RegisterConversionFallback(WallID.CorruptionUnsafe1, WallID.RocksUnsafe1, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.CrimsonUnsafe1, WallID.RocksUnsafe1, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.HallowUnsafe1, WallID.RocksUnsafe1, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.JungleUnsafe1, WallID.RocksUnsafe1, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Corruption1Echo, WallID.RocksUnsafe1, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.Crimson1Echo, WallID.RocksUnsafe1, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.Hallow1Echo, WallID.RocksUnsafe1, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.Jungle1Echo, WallID.RocksUnsafe1, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Rocks1Echo, WallID.RocksUnsafe1, BiomeConversionID.Purity);
+
+		RegisterConversionFallback(WallID.CorruptionUnsafe2, WallID.RocksUnsafe2, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.CrimsonUnsafe2, WallID.RocksUnsafe2, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.HallowUnsafe2, WallID.RocksUnsafe2, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.JungleUnsafe2, WallID.RocksUnsafe2, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Corruption2Echo, WallID.RocksUnsafe2, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.Crimson2Echo, WallID.RocksUnsafe2, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.Hallow2Echo, WallID.RocksUnsafe2, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.Jungle2Echo, WallID.RocksUnsafe2, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Rocks2Echo, WallID.RocksUnsafe2, BiomeConversionID.Purity);
+
+		RegisterConversionFallback(WallID.CorruptionUnsafe3, WallID.RocksUnsafe3, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.CrimsonUnsafe3, WallID.RocksUnsafe3, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.HallowUnsafe3, WallID.RocksUnsafe3, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.JungleUnsafe3, WallID.RocksUnsafe3, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Corruption3Echo, WallID.RocksUnsafe3, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.Crimson3Echo, WallID.RocksUnsafe3, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.Hallow3Echo, WallID.RocksUnsafe3, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.Jungle3Echo, WallID.RocksUnsafe3, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Rocks3Echo, WallID.RocksUnsafe3, BiomeConversionID.Purity);
+
+		RegisterConversionFallback(WallID.CorruptionUnsafe4, WallID.RocksUnsafe4, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.CrimsonUnsafe4, WallID.RocksUnsafe4, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.HallowUnsafe4, WallID.RocksUnsafe4, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.JungleUnsafe4, WallID.RocksUnsafe4, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Corruption4Echo, WallID.RocksUnsafe4, BiomeConversionID.Corruption);
+		RegisterConversionFallback(WallID.Crimson4Echo, WallID.RocksUnsafe4, BiomeConversionID.Crimson);
+		RegisterConversionFallback(WallID.Hallow4Echo, WallID.RocksUnsafe4, BiomeConversionID.Hallow);
+		RegisterConversionFallback(WallID.Jungle4Echo, WallID.RocksUnsafe4, BiomeConversionID.Purity);
+		RegisterConversionFallback(WallID.Rocks4Echo, WallID.RocksUnsafe4, BiomeConversionID.Purity);
+	}
+
+	private static int[] GetOrInitConversionFallbacks(int wallType)
+	{
+		if (wallConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "WallLoader.RegisterConversionFallback"));
+
+		ref var fallbacks = ref wallConversionFallbacks[wallType];
+		if (fallbacks is null) {
+			fallbacks = new int[BiomeConversionLoader.BiomeConversionCount];
+			Array.Fill(fallbacks, -1);
+		}
+
+		return fallbacks;
+	}
+
+	/// <summary>
+	/// Sets a fallback wall type for all conversion types except those in <paramref name="exceptForConversionTypes"/> <br/>
+	/// When <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> is called on the <paramref name="wallType"/> but there is no registsred conversion, the tile will be temporarily replaced with <paramref name="fallbackType"/> and conversion will be reattempted.<br/>
+	/// If the <paramref name="fallbackType"/> also has no conversion, the tile remains unchanged. <br/>
+	/// <br/>
+	/// For example <see cref="WallID.EbonstoneUnsafe"/> falls back to <see cref="TileID.Stone"/> so a modded conversion that affects Stone can convert Ebonstone without needing to register a conversion for Ebonstone directly.
+	/// </summary>
+	public static void RegisterConversionFallback(int wallType, int fallbackType, params int[] exceptForConversionTypes)
+	{
+		var fallbacks = GetOrInitConversionFallbacks(wallType);
+		var backup = (int[])fallbacks.Clone();
+		Array.Fill(fallbacks, fallbackType);
+		foreach (var i in exceptForConversionTypes)
+			fallbacks[i] = backup[i];
+	}
+
+	/// <summary>
+	/// Sets an individual conversion fallback. For advanced uses only.
+	/// </summary>
+	public static void SetConversionFallback(int wallType, int conversionType, int fallbackType)
+	{
+		GetOrInitConversionFallbacks(wallType)[conversionType] = fallbackType;
+	}
+
+	/// <summary>
+	/// Tries to retrieve the <paramref name="fallbackType"/> corresponding to the provided <paramref name="wallType"/> and <paramref name="conversionType"/> <br/>
+	/// See also: <seealso cref="RegisterConversionFallback"/>
+	/// </summary>
+	/// <returns>True if the wall has a registered fallback for the given conversion type</returns>
+	public static bool TryGetConversionFallback(int wallType, int conversionType, out int fallbackType)
+	{
+		if (wallConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "WallLoader.TryGetConversionFallback"));
+
+		fallbackType = wallConversionFallbacks[wallType]?[conversionType] ?? -1;
+		return fallbackType >= 0;
+	}
 
 	public static bool Convert(int i, int j, int conversionType)
 	{
-		int type = Main.tile[i, j].wall;
+		var tile = Main.tile[i, j];
+		int type = tile.wall;
 		var list = wallConversionDelegates[type]?[conversionType];
 		if (list != null) {
 			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
@@ -303,6 +476,14 @@ public static class WallLoader
 
 		ModWall modWall = GetWall(type);
 		modWall?.Convert(i, j, conversionType);
+
+		if (tile.wall == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
+			tile.wall = (ushort)fallback;
+			WorldGen.Convert(i, j, conversionType, size: 0, tiles: false);
+
+			if (tile.wall == fallback)
+				tile.wall = (ushort)type;
+		}
 		return true;
 	}
 

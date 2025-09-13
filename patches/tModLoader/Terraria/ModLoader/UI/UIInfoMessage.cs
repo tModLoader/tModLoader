@@ -82,8 +82,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	{
 		_messageBox.SetText(_message);
 		_buttonAlt.SetText(_altText);
-		if (_okText != null)
-			_button.SetText(_okText);
+		_button.SetText(_okText ?? Language.GetTextValue("tModLoader.OK"));
 		bool showAlt = !string.IsNullOrEmpty(_altText);
 		_button.Left.Percent = showAlt ? 0 : .25f;
 		_area.AddOrRemoveChild(_buttonAlt, showAlt);

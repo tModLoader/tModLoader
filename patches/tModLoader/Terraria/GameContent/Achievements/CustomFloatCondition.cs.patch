@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/CustomFloatCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/CustomFloatCondition.cs
+@@ -4,6 +_,10 @@
+ 
+ namespace Terraria.GameContent.Achievements;
+ 
++/// <summary>
++/// A custom condition that tracks a float value. Must be manually adjusted by incrementing <see cref="Value"/> directly. The condition will complete automatically when the supplied max value is reached.
++/// <br/><br/> If multiple custom conditions are used for an achievement, a unique key should be provided.
++/// </summary>
+ public class CustomFloatCondition : AchievementCondition
+ {
+ 	[JsonProperty("Value")]
+@@ -25,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private CustomFloatCondition(string name, float maxValue)
++	public CustomFloatCondition(string name, float maxValue)
+ 		: base(name)
+ 	{
+ 		_maxValue = maxValue;

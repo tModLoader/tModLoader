@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,25 +_,80 @@
+@@ -1,25 +_,81 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -12,6 +12,7 @@
 -public class ProjectileID
 +public partial class ProjectileID
  {
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -130,15 +131,15 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is shot by some minion.
-+		/// <br/> Used for tracking whip effects and preventing minions from cutting tiles.
++		/// <br/><br/> Used for triggering whip effects ("tag" damage) and preventing minions from cutting tiles or damaging critters with their shots.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] MinionShot = Factory.CreateBoolSet(374, 376, 389, 195, 408, 433, 614, 818);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile is shot by some sentry.
-+		/// <br/> Used for tracking whip effects and preventing sentries from cutting tiles.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <br/><br/> Used for triggering whip effects ("tag" damage) and preventing sentries from cutting tiles or damaging critters with their shots.
++		/// <br/><br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] SentryShot = Factory.CreateBoolSet(680, 664, 666, 668, 694, 695, 696, 644, 642, 378, 379, 309, 967);
 +
@@ -316,6 +317,14 @@
  		public static SettingsForCharacterPreview SimpleLoop(int startFrame, int frameCount, int delayPerFrame = 4, bool bounceLoop = false)
  		{
  			if (frameCount < 1)
+@@ -290,6 +_,7 @@
+ 			return settingsForCharacterPreview;
+ 		}
+ 	}
++#endif
+ 
+ 	public const short None = 0;
+ 	public const short WoodenArrowFriendly = 1;
 @@ -1314,5 +_,6 @@
  	public const short JimsDrone = 1020;
  	public const short MoonBoulder = 1021;

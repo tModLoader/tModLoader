@@ -172,6 +172,12 @@
 		"BossBarStyle": "Estilo da Barra de Chefe: {0}",
 		"BossBarStyleNoOptions": "Nenhuma Opção",
 
+		// Achievements
+		// "AchievementsReset": "Reset",
+		// "AchievementsResetConfirm": "Are you sure?",
+		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
+
 		// Workshop
 		"WorkshopDisclaimer": "Ao enviar este item, você concorda com os Termos de Serviço do tModLoader.",
 		"NonModOwnerPublishWarning": "Um mod com o nome \"{0}\" já foi publicado à oficina por outro criador de mods. Se você não é um contribuidor desse mod, não é possível publicá-lo. Se este mod é seu, verifique se está logado na conta correta do Steam. Cada mod deve possuir um nome interno único.",
@@ -674,6 +680,8 @@
 		"TagsUtilityDescription": "Adiciona conteúdo ou recursos relacionados a utilidades",
 		"TagsLibrary": "Biblioteca",
 		"TagsLibraryDescription": "Fornece APIs e recursos adicionais úteis para desenvolvedores de mods",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Qualidade de Vida",
 		"TagsQoLDescription": "Recursos ou alterações que reduzem o tempo gasto em tarefas normalmente menos divertidas.",
 		"TagsGameplay": "Ajustes de Jogatina",

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -2,21 +_,57 @@
+@@ -2,21 +_,58 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -11,6 +11,7 @@
 -public class ItemID
 +public partial class ItemID
  {
++#if !TMLANALYZER
 +	/// <summary>
 +	/// Determines the strength an NPC's banner has on players' interactions with that NPC. Used in <see cref="Sets.BannerStrength"/>
 +	/// </summary>
@@ -407,7 +408,7 @@
  		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
  			new Color(164, 16, 47),
  			new Color(246, 34, 79),
-@@ -939,44 +_,274 @@
+@@ -939,44 +_,276 @@
  			new Color(142, 96, 60)
  		});
  		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
@@ -627,7 +628,8 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then holding that item will allow the player to move the gamepad cursor anywhere on screen.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <br/><br/> Vanilla entries include various ranged weapons (like <see cref="MagicMissile"/> and <see cref="Starfury"/>), minion and sentry staffs, and more.
++		/// <br/><br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] GamepadWholeScreenUseRange = Factory.CreateBoolSet(1326, 5335, 1256, 1244, 3014, 113, 218, 495, 114, 496, 2796, 494, 3006, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 3611, 1299, 1254);
 +
@@ -667,7 +669,8 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can lock-on through solid tiles.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <br/><br/> Vanilla entries include various weapons that don't necessarily need line of sight (like <see cref="Vilethorn"/>, <see cref="SolarEruption"/>, and <see cref="StarWrath"/>), minion and sentry staffs, and more.
++		/// <br/><br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] LockOnIgnoresCollision = Factory.CreateBoolSet(64, 3570, 1327, 3006, 1227, 788, 756, 1228, 65, 3065, 3473, 3051, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 4269, 4273, 4281, 4607, 5069, 5114, 5119, 3014, 3569, 3571);
 +
@@ -724,7 +727,7 @@
  		public static short[] Workbenches = new short[44] {
  			36,
  			635,
-@@ -1038,7 +_,21 @@
+@@ -1038,9 +_,24 @@
  			5187,
  			5208
  		};
@@ -745,7 +748,10 @@
 +		/// </remarks>
  		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 3085, 4879, 1869, 599, 600, 601);
  	}
++#endif
  
+ 	private static Dictionary<string, short> _legacyItemLookup;
+ 	public const short YellowPhasesaberOld = -24;
 @@ -6548,6 +_,7 @@
  	public const short DontHurtNatureBookInactive = 5454;
  	public const short DontHurtComboBookInactive = 5455;

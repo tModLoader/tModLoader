@@ -353,7 +353,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				UseShellExecute = false,
 				RedirectStandardOutput = true
 			}).StandardOutput.ReadToEnd().Trim();
-			Logging.tML.Info("\n" + output);
+			Logging.tML.Info("Found list of sdks:" + '\n' + output);
 
 			if (Platform.IsWindows && dotnetFilename.StartsWith(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86))) {
 				Logging.tML.Warn("Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK was found on the PATH. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. This will prevent you from debugging or building mods in Visual Studio or any other IDE. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk");
@@ -403,8 +403,14 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 			if (proc.ExitCode == 0) {
 				return true;
 			}
+			else {
+				Logging.tML.Debug("Process ended with exit code: " + proc.ExitCode);
+			}
 		}
-		catch (Exception) { }
+		catch (Exception e)
+		{
+			Logging.tML.Debug("Caught Exception during dotnet check:" + e);
+		}
 
 		return false;
 	}

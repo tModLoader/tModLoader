@@ -56,6 +56,15 @@
  					if (item.createTile == 178) {
  						orderInGroup = 5;
  					}
+@@ -627,7 +_,7 @@
+ 			}
+ 
+ 			orderInGroup = -item.rare;
+-			if (item.useStyle > 0)
++			if (item.useStyle != 0) // #3760 - Allow negative useStyle values since all the other useStyle checks allow it
+ 				return ItemGroup.RemainingUseItems;
+ 
+ 			if (item.material)
 @@ -639,7 +_,7 @@
  		public static void SetCreativeMenuOrder()
  		{

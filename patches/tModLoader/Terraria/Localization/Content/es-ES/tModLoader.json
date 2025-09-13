@@ -172,6 +172,12 @@
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
 		"BossBarStyleNoOptions": "Sin opciones",
 
+		// Achievements
+		// "AchievementsReset": "Reset",
+		// "AchievementsResetConfirm": "Are you sure?",
+		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
+
 		// Workshop
 		"WorkshopDisclaimer": "Al publicar este elemento, aceptas los Términos de Servicio de tModLoader",
 		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
@@ -674,6 +680,8 @@
 		"TagsUtilityDescription": "Añaden contenidos o funciones para mejorar las herramientas y utilidades del juego",
 		"TagsLibrary": "Librerías",
 		"TagsLibraryDescription": "Proporcionan APIs y funciones adicionales útiles para los modders",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Mejoras del juego",
 		"TagsQoLDescription": "Introducen características y cambios que reducen el tiempo dedicado a tareas más pesadas",
 		"TagsGameplay": "Mejoras de jugabilidad",

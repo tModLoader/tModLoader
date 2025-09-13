@@ -74,6 +74,9 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.CloneDefaults(ProjectileID.LastPrism);
 		}
 
+		// Held projectiles should set this to false otherwise they will deal contact damage.
+		public override bool? CanDamage() => false;
+
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 			Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
