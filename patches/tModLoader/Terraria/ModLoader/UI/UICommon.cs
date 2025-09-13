@@ -89,7 +89,9 @@ public static class UICommon
 	}
 
 	/// <summary>
-	/// Draws a tooltip on the mouse cursor. Functions like <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> and <see cref="Main.hoverItemName"/>, but adds the same background seen in item tooltips behind the text.
+	/// Draws a tooltip on the mouse cursor.
+	/// <br/><br/> Functions like <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> and <see cref="Main.hoverItemName"/>, but adds the same background seen in item tooltips behind the text.
+	/// <br/><br/> Only works during rendering, calling this during Update will not do anything.
 	/// </summary>
 	/// <param name="text"></param>
 	public static void TooltipMouseText(string text)

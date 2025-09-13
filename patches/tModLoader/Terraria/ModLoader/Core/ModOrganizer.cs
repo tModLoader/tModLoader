@@ -417,7 +417,7 @@ internal static class ModOrganizer
 
 		try {
 			Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
-			Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.LoadingSpecifiedModPack", commandLineModPack));
+			Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.ModPackLoadingSpecifiedModPack", commandLineModPack));
 			var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
 			foreach (var mod in mods) {
 				mod.Enabled = modSet.Contains(mod.Name);
