@@ -99,10 +99,11 @@
  		Rectangle rectangle = new Rectangle(drawArea.X - 2, drawArea.Y - 2, drawArea.Width + 4, drawArea.Height + 4);
  		_drawArea = drawArea;
  		if (_cache.Length < rectangle.Width * rectangle.Height + 1)
-@@ -125,20 +_,22 @@
+@@ -125,20 +_,23 @@
  		if (_drawCache.Length < drawArea.Width * drawArea.Height + 1)
  			_drawCache = new LiquidDrawCache[drawArea.Width * drawArea.Height + 1];
  
++		// TML: Liquid draw caches merged, initialization redundant
 +		/*
  		if (_drawCacheForShimmer.Length < drawArea.Width * drawArea.Height + 1)
  			_drawCacheForShimmer = new SpecialLiquidDrawCache[drawArea.Width * drawArea.Height + 1];
@@ -141,15 +142,12 @@
  						LiquidCache liquidCache = ptr2[-1];
  						LiquidCache liquidCache2 = ptr2[1];
  						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
-@@ -197,11 +_,17 @@
+@@ -197,11 +_,14 @@
  			ptr2 = ptr;
  			for (int m = 0; m < rectangle.Width; m++) {
  				for (int n = 0; n < rectangle.Height - 10; n++) {
 -					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick)) {
 +					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick || ptr2->EdgeData.HasValue)) {
-+						if (ptr2->EdgeData.HasValue) {
-+							;
-+						}
  						ptr2->Opacity = 1f;
  						ptr2->VisibleType = ptr2->Type;
  						float num3 = 1f / (float)(WATERFALL_LENGTH[ptr2->Type] + 1);
@@ -196,7 +194,7 @@
  				}
  			}
  
-+			// TML: 
++			// TML: Liquid draw caches merged, population redundant
 +			/*
  			fixed (LiquidDrawCache* ptr8 = &_drawCache[0]) {
  				fixed (SpecialLiquidDrawCache* ptr10 = &_drawCacheForShimmer[0]) {
