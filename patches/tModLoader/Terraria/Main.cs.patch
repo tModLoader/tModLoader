@@ -6753,7 +6753,7 @@
  		transformationMatrix.Translation -= BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, transformationMatrix);
  		CurrentFrameFlags.Hacks.CurrentBackgroundMatrixForCreditsRoll = transformationMatrix;
-+		if (gameMenu ? MenuLoader.CurrentMenu.PreDrawBackground(spriteBatch) : true)
++		if (!gameMenu || MenuLoader.CurrentMenu.PreDrawBackground(spriteBatch))
 -		DrawBG();
 +			DrawBG();
 +		if (gameMenu)
