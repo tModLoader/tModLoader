@@ -4521,10 +4521,13 @@
  
  				if (stoned) {
  					int num24 = (int)(((float)num18 * gravDir - 2f) * 20f);
-@@ -19684,14 +_,25 @@
+@@ -19683,15 +_,27 @@
+ 		if (jump > 0 || velocity.Y != 0f)
  			ResetFloorFlags();
  
- 		bool flag12 = pStone;
+-		bool flag12 = pStone;
++		// bool flag12 = pStone;
++		StatModifier oldPotionDelay = PotionDelay;
 +
  		potionDelayTime = Item.potionDelay;
  		restorationDelayTime = Item.restorationDelay;
@@ -4587,6 +4590,18 @@
  		if (whoAmI == Main.myPlayer) {
  			if (!onFire && !poisoned)
  				trapDebuffSource = false;
+@@ -19808,8 +_,9 @@
+ 		if (Main.npcShop <= 0)
+ 			discountAvailable = discountEquipped;
+ 
+-		if (flag12 != pStone)
+-			AdjustRemainingPotionSickness();
++		// if (flag12 != pStone)
++		if (oldPotionDelay != PotionDelay)
++			AdjustRemainingPotionSickness(oldPotionDelay.Multiplicative, PotionDelay.Multiplicative);
+ 
+ 		UpdatePermanentBoosters();
+ 		UpdateLuck();
 @@ -19850,6 +_,10 @@
  		if (shadowDodge && !onHitDodge)
  			ClearBuff(59);
@@ -4834,6 +4849,28 @@
  	}
  
  	private void TryToToggleSmartCursor(ref bool smartCursorWanted)
+@@ -21923,15 +_,20 @@
+ 		return result;
+ 	}
+ 
+-	private void AdjustRemainingPotionSickness()
++	private void AdjustRemainingPotionSickness(float oldMultiplier, float newMultiplier)
+ 	{
+ 		if (whoAmI == Main.myPlayer) {
+ 			int num = FindBuffIndex(21);
+ 			if (num != -1) {
++				/*
+ 				float num2 = buffTime[num];
+ 				float philosopherStoneDurationMultiplier = PhilosopherStoneDurationMultiplier;
+ 				num2 = ((!pStone) ? (num2 / philosopherStoneDurationMultiplier) : (num2 * philosopherStoneDurationMultiplier));
+ 				buffTime[num] = (int)num2;
++				*/
++				float time = buffTime[num];
++				time = time / oldMultiplier * newMultiplier;
++				buffTime[num] = (int)time;
+ 			}
+ 		}
+ 	}
 @@ -21989,9 +_,11 @@
  
  	private void CapAttackSpeeds()
