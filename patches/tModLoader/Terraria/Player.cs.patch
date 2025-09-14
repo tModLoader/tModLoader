@@ -8040,7 +8040,7 @@
 +			_ => potionDelayTime,
 +		};
 +
-+		bool skip = false; // CombinedHooks.ModifyPotionDelay(ref baseDelay, ref PotionDelay);
++		bool skip = !CombinedHooks.ModifyPotionDelay(sItem, this, ref baseDelay, ref PotionDelay);
 +		if (skip)
 +			return;
 +

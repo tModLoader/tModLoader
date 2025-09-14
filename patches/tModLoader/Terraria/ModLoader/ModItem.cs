@@ -312,6 +312,11 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	{
 	}
 
+	public virtual bool ModifyPotionDelay(Player player, ref int baseDelay, ref StatModifier potionDelay)
+	{
+		return true;
+	}
+
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.

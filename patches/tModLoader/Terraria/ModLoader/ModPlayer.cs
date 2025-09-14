@@ -669,6 +669,18 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to modify the potion delay applied by a healing potion.
+	/// <para/> By default, returns true; return false to prevent application of Potion Sickness and the potion delay.
+	/// </summary>
+	/// <param name="item">The item being used.</param>
+	/// <param name="baseDelay">The base potion delay length.</param>
+	/// <param name="potionDelay">The modifier to apply to the delay, <see cref="Player.PotionDelay"/>.</param>
+	public virtual bool ModifyPotionDelay(Item item, ref int baseDelay, ref StatModifier potionDelay)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 	/// <para/> Called on local, server, and remote clients.

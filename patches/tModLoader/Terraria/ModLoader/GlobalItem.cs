@@ -211,6 +211,11 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	{
 	}
 
+	public virtual bool ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
+	{
+		return true;
+	}
+
 	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.

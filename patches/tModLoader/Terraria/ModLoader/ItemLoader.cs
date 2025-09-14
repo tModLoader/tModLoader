@@ -511,6 +511,23 @@ public static class ItemLoader
 		}
 	}
 
+	private delegate bool DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay);
+	private static HookList HookModifyPotionDelay = AddHook<DelegateModifyPotionDelay>(g => g.ModifyPotionDelay);
+
+	public static bool ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
+	{
+		bool flag = true;
+
+		if (item.ModItem != null)
+			item.ModItem.ModifyPotionDelay(player, ref baseDelay, ref potionDelay);
+
+		foreach (var g in HookModifyManaCost.Enumerate(item)) {
+			flag &= g.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
+		}
+
+		return flag;
+	}
+
 	private delegate bool? DelegateCanConsumeBait(Player baiter, Item bait);
 	private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(g => g.CanConsumeBait);
 

@@ -719,6 +719,20 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate bool DelegateModifyPotionDelay(Item item, ref int baseDelay, ref StatModifier potionDelay);
+	private static HookList HookModifyPotionDelay = AddHook<DelegateModifyPotionDelay>(p => p.ModifyPotionDelay);
+
+	public static bool ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
+	{
+		bool flag = true;
+
+		foreach (var modPlayer in HookModifyPotionDelay.Enumerate(player)) {
+			flag &= modPlayer.ModifyPotionDelay(item, ref baseDelay, ref potionDelay);
+		}
+
+		return flag;
+	}
+
 	private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage);
 	private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 	/// <summary>
