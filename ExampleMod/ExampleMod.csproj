@@ -10,7 +10,4 @@
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\Items\Accessories\ExamplePotionDelayAccessory.cs" />
-  </ItemGroup>
 </Project>

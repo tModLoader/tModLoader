@@ -20,33 +20,11 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			// The effects are applied in ExampleStatBonusAccessoryPlayer below.
-			player.GetModPlayer<ExamplePotionDelayAccessoryPlayer>().examplePotionDelayAccessory = true;
-		}
-	}
-
-	// Some movement effects are not suitable to be modified in ModItem.UpdateAccessory due to how the math is done.
-	// ModPlayer.PostUpdateRunSpeeds is suitable for these modifications.
-	public class ExamplePotionDelayAccessoryPlayer : ModPlayer
-	{
-		public bool examplePotionDelayAccessory = false;
-
-		public override void ResetEffects() {
-			examplePotionDelayAccessory = false;
-		}
-
-		public override void ModifyGlobalPotionDelay(out StatModifier potionDelay) {
-			base.ModifyGlobalPotionDelay(out potionDelay);
-
-			if (!examplePotionDelayAccessory) {
-				return;
-			}
-
 			// You can learn more about StatModifiers by referring to ExampleStatBonusAccessory.
 			// Note that since we want to apply an additive decrease, we use `-=` to subtract the total
 			// instead of `+=` to increase. You can also use `+=` with a negative value.
-			potionDelay.Flat -= ExamplePotionDelayAccessory.FlatDelayDecrease;
-			potionDelay *= 1 + ExamplePotionDelayAccessory.MultiplicativeDelayBonus / 100f;
+			player.PotionDelay.Flat -= FlatDelayDecrease;
+			player.PotionDelay *= 1 + MultiplicativeDelayBonus / 100f;
 		}
 	}
 }

@@ -92,6 +92,12 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public StatModifier breathEffectiveness = StatModifier.Default;
 
+	/// <summary>
+	/// Modifies cooldown of health potions.
+	/// <para/> Applied 
+	/// </summary>
+	public StatModifier PotionDelay = StatModifier.Default;
+
 	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
 	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;

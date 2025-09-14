@@ -4521,21 +4521,29 @@
  
  				if (stoned) {
  					int num24 = (int)(((float)num18 * gravDir - 2f) * 20f);
-@@ -19684,6 +_,8 @@
+@@ -19684,14 +_,25 @@
  			ResetFloorFlags();
  
  		bool flag12 = pStone;
 +
-+		/*
  		potionDelayTime = Item.potionDelay;
  		restorationDelayTime = Item.restorationDelay;
  		mushroomDelayTime = Item.mushroomDelay;
-@@ -19692,6 +_,8 @@
++
++		// TML: Make potion delay modifiers more extensible.  Philosopher's Stone
++		// multiplier is now applied as part of an accessible StatModifier.
++		// *DelayTime fields are no longer set to their reduced amounts and are
++		// instead combined with the StatModifier when being applied.
++		/*
+ 		if (pStone) {
+ 			potionDelayTime = (int)((float)potionDelayTime * PhilosopherStoneDurationMultiplier);
  			restorationDelayTime = (int)((float)restorationDelayTime * PhilosopherStoneDurationMultiplier);
  			mushroomDelayTime = (int)((float)mushroomDelayTime * PhilosopherStoneDurationMultiplier);
  		}
 +		*/
-+		PlayerLoader.ModifyGlobalPotionDelay(this);
++		PotionDelay = StatModifier.Default;
++		if (pStone)
++			PotionDelay *= PhilosopherStoneDurationMultiplier;
  
  		if (yoraiz0rEye > 0)
  			Yoraiz0rEye();
@@ -8009,7 +8017,39 @@
  					break;
  
  				int type2 = Main.projectile[list[l]].type;
-@@ -39862,8 +_,12 @@
+@@ -39836,6 +_,9 @@
+ 
+ 	private void ApplyPotionDelay(Item sItem)
+ 	{
++		// TML: Rewrite this for simplicity as part of an effort to give
++		// modders more control over potion delay application.
++		/*
+ 		if (sItem.type == 3001) {
+ 			int minValue = 2400;
+ 			int num = 4200;
+@@ -39858,12 +_,34 @@
+ 			potionDelay = potionDelayTime;
+ 			AddBuff(21, potionDelay);
+ 		}
++		*/
++
++		int baseDelay = sItem.type switch {
++			ItemID.StrangeBrew => Main.rand.Next(2400, 4200 + 1),
++			ItemID.RestorationPotion => restorationDelayTime,
++			ItemID.Mushroom => mushroomDelayTime,
++			_ => potionDelayTime,
++		};
++
++		bool skip = false; // CombinedHooks.ModifyPotionDelay(ref baseDelay, ref PotionDelay);
++		if (skip)
++			return;
++
++		int actualDelay = (int)PotionDelay.ApplyTo(baseDelay);
++		AddBuff(BuffID.PotionSickness, actualDelay);
++
++		if (sItem.type == ItemID.Mushroom)
++			TryToResetHungerToNeutral();
+ 	}
  
  	private void ApplyLifeAndOrMana(Item item)
  	{
