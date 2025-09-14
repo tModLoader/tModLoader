@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,90 @@
+@@ -11,59 +_,94 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -33,6 +33,10 @@
  		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
  		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
 +		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
++
++		<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
++		<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
++		<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
 +	</PropertyGroup>
 +
 +	<!-- Versioning -->
