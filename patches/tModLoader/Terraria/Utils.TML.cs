@@ -44,6 +44,12 @@ partial class Utils
 	public static Point16 ToPoint16(this Vector2 v)
 		=> new Point16((short)v.X, (short)v.Y);
 
+	public static void Deconstruct(this Point point, out int x, out int y)
+	{
+		x = point.X;
+		y = point.Y;
+	}
+
 	public static DateTime UnixTimeStampToDateTime(long unixTimeStamp)
 	{
 		// Unix timestamp is seconds past epoch

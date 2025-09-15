@@ -175,6 +175,7 @@ internal class UIModConfigList : UIState
 					MaxWidth = { Percent = 0.95f },
 					HAlign = 0.5f,
 					ScalePanel = true,
+					UseInnerDimensions = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
 					UseAltColors = () => selectedMod != mod,
@@ -197,6 +198,7 @@ internal class UIModConfigList : UIState
 					MaxWidth = { Percent = 0.95f },
 					HAlign = 0.5f,
 					ScalePanel = true,
+					UseInnerDimensions = true,
 					BackgroundColor = Color.Gray,
 					HoverPanelColor = Color.Gray,
 					HoverBorderColor = Color.Black,
@@ -211,14 +213,24 @@ internal class UIModConfigList : UIState
 
 		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
 		{
-			float width = ChatManager.GetStringSize(FontAssets.MouseText.Value, modPanel.Text, new Vector2(modPanel.TextScaleMax)).X;
-			UIElement icon = GetSmallIcon(mod);
-			if (icon != null && width < uIElement.MaxWidth.Pixels * 0.35f) {
-				icon.Left = new StyleDimension(-width / 2 - 18, 0);
-				modPanel.PaddingLeft = 40;
-				modPanel.TextOriginX = 0.85f;
-				modPanel.Append(icon);
+			var iconTexture = GetSmallIcon(mod);
+			if (iconTexture == null) {
+				return;
 			}
+
+			float iconOffset = iconTexture.Width();
+			float iconPadding = 2;
+			modPanel.PaddingLeft += iconOffset + iconPadding;
+
+			var sideIndicator = new UIImage(iconTexture) {
+				VAlign = 0.5f,
+				HAlign = 0f,
+				Color = Color.White,
+				MarginLeft = -iconOffset - iconPadding - 4.5f, // -4.5 for alignment, 4 is 11 and 5 is 9 so 4.5 is 10
+				MarginTop = -13,
+			};
+
+			modPanel.Append(sideIndicator);
 		}
 	}
 
@@ -234,8 +246,6 @@ internal class UIModConfigList : UIState
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			float indicatorOffset = 24;
-
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
 				MaxWidth = { Percent = 0.95f },
 				HAlign = 0.5f,
@@ -243,7 +253,6 @@ internal class UIModConfigList : UIState
 				UseInnerDimensions = true,
 				ClickSound = SoundID.MenuOpen,
 			};
-			configPanel.PaddingRight += indicatorOffset;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				Interface.modConfig.SetMod(selectedMod, config);
@@ -253,45 +262,41 @@ internal class UIModConfigList : UIState
 					Main.InGameUI.SetState(Interface.modConfig);
 			};
 
-			configList.Add(configPanel);
-
 			// ConfigScope indicator
 			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
-			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0);
-			var serverColor = Colors.RarityRed;
-			var clientColor = Colors.RarityCyan;
+			// -2 to account for padding in texture to avoid texture atlas issues
+			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
+
+			float indicatorOffset = indicatorFrame.Width;
+			float indicatorPadding = 6;
+			configPanel.PaddingRight += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
 				Color = Color.White,
-				MarginRight = -indicatorOffset - 4,
-				MarginTop = -4,
+				MarginRight = -indicatorOffset - indicatorPadding - 2, // -2 for alignment
+				MarginTop = -6,
 			};
 
-			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
+			sideIndicator.OnDraw += delegate (UIElement affectedElement) {
 				if (sideIndicator.IsMouseHovering) {
-					string colorCode = config.Mode == ConfigScope.ServerSide ? serverColor.Hex3() : clientColor.Hex3();
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
-					Main.instance.MouseText($"[c/{colorCode}:{hoverText}]");
+					UICommon.TooltipMouseText(hoverText);
 				}
 			};
 
 			configPanel.Append(sideIndicator);
+			configList.Add(configPanel);
 		}
 	}
 
-	private UIElement GetSmallIcon(Mod mod)
+	private Asset<Texture2D> GetSmallIcon(Mod mod)
 	{
-		Asset<Texture2D> asset;
 		if (mod.HasAsset("icon_small")) {
-			asset = mod.Assets.Request<Texture2D>("icon_small");
+			var asset = mod.Assets.Request<Texture2D>("icon_small");
 			if (asset.Size() == new Vector2(30)) {
-				return new UIImage(asset) {
-					Top = new StyleDimension(-0.5f, -0.4f),
-					HAlign = 0.5f,
-					VAlign = 0.5f
-				};
+				return asset;
 			}
 			mod.Logger.Info("icon_small needs to be 30x30 pixels.");
 		}

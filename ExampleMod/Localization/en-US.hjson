@@ -1203,6 +1203,26 @@ Mods: {
 				DisplayName: Example Custom UseStyle Weapon
 				Tooltip: ""
 			}
+
+			ExampleSentryItem: {
+				DisplayName: Example Sentry Item
+				Tooltip: Summons an example sentry to fight for you
+			}
+
+			ExampleHeldProjectileWeapon: {
+				DisplayName: Example Held Projectile Weapon
+				Tooltip: ""
+			}
+
+			SimpleAccessory: {
+				DisplayName: Simple Accessory
+				Tooltip: Minion and sentry attacks cause frostburn
+			}
+
+			ExampleCutTile: {
+				DisplayName: Fragile Boulder Trap
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1251,6 +1271,9 @@ Mods: {
 			ExampleArrowProjectile.DisplayName: Example Arrow Projectile
 			ExampleHellSolutionProjectile.DisplayName: Example Hell Solution Projectile
 			ExampleInteractableProjectile.DisplayName: Example Interactable Projectile
+			ExampleSentry.DisplayName: Example Sentry
+			ExampleSentryShot.DisplayName: Example Sentry Shot
+			ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
 		}
 
 		Buffs: {

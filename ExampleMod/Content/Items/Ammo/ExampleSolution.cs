@@ -109,7 +109,8 @@ namespace ExampleMod.Content.Items.Ammo
 			ChairType = ModContent.TileType<ExampleChair>();
 			WorkbenchType = ModContent.TileType<ExampleWorkbench>();
 
-			// Register conversions for every natural wall
+			// Normally we'd just use WallLoader.RegisterSimpleConversion on the basic wall types and rely on the fallback system
+			// but we want to convert safe walls to safe example walls and unsafe to unsafe, where vanilla convers safe walls to unsafe walls on all conversions
 			for (int i = 0; i < WallLoader.WallCount; i++) {
 				if (WallID.Sets.Conversion.Dirt[i] ||
 					WallID.Sets.Conversion.Grass[i] ||
@@ -123,23 +124,20 @@ namespace ExampleMod.Content.Items.Ammo
 					WallID.Sets.Conversion.NewWall4[i])
 					WallLoader.RegisterConversion(i, Type, ConvertWalls);
 			}
+			WallLoader.RegisterConversionFallback(WallType, WallID.Dirt, Type);
+			WallLoader.RegisterConversionFallback(UnsafeWallType, WallID.DirtUnsafe, Type);
 
-			// Go over every tile and add a conversion to it for our conversion type if they're part of the list of usual conversion tiles
-			for (int i = 0; i < TileLoader.TileCount; i++) {
-				if (TileID.Sets.Conversion.Sand[i])
-					TileLoader.RegisterConversion(i, Type, ConvertSand);
+			// This registers a conversion from Sand to ExampleSand, as well as a fallback from ExampleSand to Sand, so other solutions can convert ExampleSand (eg to Crimsand)
+			TileLoader.RegisterSimpleConversion(TileID.Sand, Type, SandType);
 
-				if (TileID.Sets.Conversion.Stone[i])
-					TileLoader.RegisterConversion(i, Type, ConvertStone);
-			}
+			// We register a conversion method and fallback separately rather than using RegisterSimpleConversion, because ConvertStone has custom logic for converting trees on the tile above
+			TileLoader.RegisterConversion(TileID.Stone, Type, ConvertStone);
+			TileLoader.RegisterConversionFallback(StoneType, TileID.Stone, Type);
 
+			// Chairs and Workbenches aren't normally converted by solutions, so there's no sensible fallback to register.
+			// We could register a purifying conversion for these too if we wanted
 			TileLoader.RegisterConversion(TileID.Chairs, Type, ConvertChairs);
 			TileLoader.RegisterConversion(TileID.WorkBenches, Type, ConvertWorkbenches);
-		}
-
-		public bool ConvertSand(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertTile(i, j, SandType, true);
-			return false;
 		}
 
 		public bool ConvertStone(int i, int j, int type, int conversionType) {

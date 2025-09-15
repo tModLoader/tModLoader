@@ -46,6 +46,7 @@ public static class TileLoader
 	internal static readonly Dictionary<(int, int), int> tileTypeAndTileStyleToItemType = new();
 	public delegate bool ConvertTile(int i, int j, int type, int conversionType);
 	internal static List<ConvertTile>[][] tileConversionDelegates = null;
+	internal static int[][] tileConversionFallbacks = null;
 	private static bool loaded = false;
 	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -213,6 +214,8 @@ public static class TileLoader
 		}
 
 		tileConversionDelegates = new List<ConvertTile>[nextTile][];
+		tileConversionFallbacks = new int[nextTile][];
+		InitializeConversionFallbacks();
 
 		//Hooks
 
@@ -718,22 +721,143 @@ public static class TileLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+	/// <summary>
+	/// Registers a conversion that replaces <paramref name="tileType"/> with <paramref name="toType"/> when touched by <paramref name="conversionType"/> <br/>
+	/// Also registers <paramref name="tileType"/> as a fallback for <paramref name="toType"/> so that other conversions can convert <paramref name="toType"/> as if it was <paramref name="tileType"/>. <br/>
+	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use this conversion.</param>
+	/// <param name="toType">The tile type that this conversion should convert the tile to.</param>
+	/// <param name="purification">If true, automatically registers purification conversions from toType to tileType as well.</param>
+	public static void RegisterSimpleConversion(int tileType, int conversionType, int toType, bool purification = true)
+	{
+		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
+			WorldGen.ConvertTile(i, j, toType);
+			return false;
+		});
+		RegisterConversionFallback(toType, tileType, conversionType);
 
+		if (purification) {
+			bool Purify(int i, int j, int type, int conversionType)
+			{
+				WorldGen.ConvertTile(i, j, tileType);
+				return false;
+			}
+			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
+			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
+			RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
+		}
+	}
+
+	private static void InitializeConversionFallbacks()
+	{
+		RegisterConversionFallback(TileID.Ebonstone, TileID.Stone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.Crimstone, TileID.Stone, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.Pearlstone, TileID.Stone, BiomeConversionID.Hallow);
+
+		RegisterConversionFallback(TileID.CorruptGrass, TileID.Grass, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.CrimsonGrass, TileID.Grass, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowedGrass, TileID.Grass, BiomeConversionID.Hallow);
+
+		RegisterConversionFallback(TileID.GolfGrassHallowed, TileID.GolfGrass, BiomeConversionID.Hallow);
+		RegisterConversionFallback(TileID.GolfGrass, TileID.Grass, BiomeConversionID.Purity, BiomeConversionID.PurificationPowder, BiomeConversionID.Dirt);
+
+		RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption, BiomeConversionID.GlowingMushroom);
+		RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson, BiomeConversionID.GlowingMushroom);
+		RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom, BiomeConversionID.Corruption, BiomeConversionID.Crimson);
+
+		RegisterConversionFallback(TileID.CorruptIce, TileID.IceBlock, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.FleshIce, TileID.IceBlock, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowedIce, TileID.IceBlock, BiomeConversionID.Hallow);
+
+		RegisterConversionFallback(TileID.Ebonsand, TileID.Sand, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.Crimsand, TileID.Sand, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.Pearlsand, TileID.Sand, BiomeConversionID.Hallow);
+
+		RegisterConversionFallback(TileID.CorruptHardenedSand, TileID.HardenedSand, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.CrimsonHardenedSand, TileID.HardenedSand, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowHardenedSand, TileID.HardenedSand, BiomeConversionID.Hallow);
+
+		RegisterConversionFallback(TileID.CorruptSandstone, TileID.Sandstone, BiomeConversionID.Corruption);
+		RegisterConversionFallback(TileID.CrimsonSandstone, TileID.Sandstone, BiomeConversionID.Crimson);
+		RegisterConversionFallback(TileID.HallowSandstone, TileID.Sandstone, BiomeConversionID.Hallow);
+	}
+
+	private static int[] GetOrInitConversionFallbacks(int tileType)
+	{
+		if (tileConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.RegisterConversionFallback"));
+
+		ref var fallbacks = ref tileConversionFallbacks[tileType];
+		if (fallbacks is null) {
+			fallbacks = new int[BiomeConversionLoader.BiomeConversionCount];
+			Array.Fill(fallbacks, -1);
+		}
+
+		return fallbacks;
+	}
+
+	/// <summary>
+	/// Sets a fallback tile type for all conversion types except those in <paramref name="exceptForConversionTypes"/> <br/>
+	/// When <see cref="WorldGen.Convert(int, int, int, int, bool, bool)"/> is called on the <paramref name="tileType"/> but there is no registsred conversion, the tile will be temporarily replaced with <paramref name="fallbackType"/> and conversion will be reattempted.<br/>
+	/// If the <paramref name="fallbackType"/> also has no conversion, the tile remains unchanged. <br/>
+	/// <br/>
+	/// For example <see cref="TileID.Ebonstone"/> falls back to <see cref="TileID.Stone"/> so a modded conversion that affects Stone can convert Ebonstone without needing to register a conversion for Ebonstone directly.
+	/// </summary>
+	public static void RegisterConversionFallback(int tileType, int fallbackType, params int[] exceptForConversionTypes)
+	{
+		var fallbacks = GetOrInitConversionFallbacks(tileType);
+		var backup = (int[])fallbacks.Clone();
+		Array.Fill(fallbacks, fallbackType);
+		foreach (var i in exceptForConversionTypes)
+			fallbacks[i] = backup[i];
+	}
+
+	/// <summary>
+	/// Sets an individual conversion fallback. For advanced uses only.
+	/// </summary>
+	public static void SetConversionFallback(int tileType, int conversionType, int fallbackType)
+	{
+		GetOrInitConversionFallbacks(tileType)[conversionType] = fallbackType;
+	}
+
+	/// <summary>
+	/// Tries to retrieve the <paramref name="fallbackType"/> corresponding to the provided <paramref name="tileType"/> and <paramref name="conversionType"/> <br/>
+	/// See also: <seealso cref="RegisterConversionFallback"/>
+	/// </summary>
+	/// <returns>True if the tile has a registered fallback for the given conversion type</returns>
+	public static bool TryGetConversionFallback(int tileType, int conversionType, out int fallbackType)
+	{
+		if (tileConversionFallbacks == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorCallDuringLoad", "TileLoader.TryGetConversionFallback"));
+
+		fallbackType = tileConversionFallbacks[tileType]?[conversionType] ?? -1;
+		return fallbackType >= 0;
+	}
 
 	public static bool Convert(int i, int j, int conversionType)
 	{
-		int type = Main.tile[i, j].type;
+		var tile = Main.tile[i, j];
+		int type = tile.TileType;
 		var list = tileConversionDelegates[type]?[conversionType];
 		if (list != null) {
 			foreach (var hook in CollectionsMarshal.AsSpan(list)) {
-				if (!hook(i, j, type, conversionType)) {
+				if (!hook(i, j, type, conversionType))
 					return false;
-				}
 			}
 		}
 
-		ModTile modTile = GetTile(type);
-		modTile?.Convert(i, j, conversionType);
+		GetTile(type)?.Convert(i, j, conversionType);
+
+		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
+			tile.TileType = (ushort)fallback;
+			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
+
+			if (tile.TileType == fallback)
+				tile.TileType = (ushort)type;
+		}
+
 		return true;
 	}
 

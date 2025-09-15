@@ -75,6 +75,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
 		public override void SetDefaults() {

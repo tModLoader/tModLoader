@@ -25,34 +25,14 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMerge[TileID.HallowSandstone][Type] = true;
 
 			// We need to register a conversion from the vanilla desert fossil into our modded variants, so our custom code can be called when the game attempts to convert the vanilla tile
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Hallow, ConvertToHallow);
-		}
-
-		public bool ConvertToHallow(int i, int j, int type, int conversionType) {
-
-			// This method is called whenever hallow biome conversion happens on a desert fossil tile, as per the RegisterConversion we called in SetStaticDefaults
-			// We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or tiles
-
-			// We can use the ConvertTile utility method to change the fossil tile into our hallowed fossil tile, and it'll automatically handle tile frame updates and network syncing!
-			WorldGen.ConvertTile(i, j, Type);
-			return false;
+			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Hallow, Type);
 		}
 
 		// This code is called when the game attempts to convert our hallowed tile into a new biome
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
-				// Purification powder doesn't convert hallow tiles back into purity, so we don't check for BiomeConversionID.PurificationPowder
-				// And Chlorophyte conversion is usually the same as purity, except it tries to create jungle tiles and destroy plants. In this case, neither is needed to it's gonna have the exact same behavior as purity
-				case BiomeConversionID.Chlorophyte:
-				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand: // Yellow (desert) solution also converts evil/hallowed tiles back into purity, so don't forget that check!
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-					return;
-				case BiomeConversionID.Corruption:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
-					return;
-				case BiomeConversionID.Crimson:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
 					return;
 
 				// This example showcases how to make hallow and evil biome conversion work, but you can extend this code to work for the other vanilla solutions.
@@ -88,27 +68,13 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.CorruptSandstone][Type] = true;
 
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Corruption, ConvertToCorruption);
-		}
-
-		public bool ConvertToCorruption(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertTile(i, j, Type);
-			return false;
+			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Corruption, Type);
 		}
 
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
-				case BiomeConversionID.Chlorophyte:
-				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
-				case BiomeConversionID.PurificationPowder:
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-					return;
-				case BiomeConversionID.Hallow:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
-					return;
-				case BiomeConversionID.Crimson:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CrimsonFossilTile>());
 					return;
 			}
 		}
@@ -135,27 +101,13 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.ChecksForMerge[Type] = true;
 			Main.tileMerge[TileID.CrimsonSandstone][Type] = true;
 
-			TileLoader.RegisterConversion(TileID.DesertFossil, BiomeConversionID.Crimson, ConvertToCrimson);
-		}
-
-		public bool ConvertToCrimson(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertTile(i, j, Type);
-			return false;
+			TileLoader.RegisterSimpleConversion(TileID.DesertFossil, BiomeConversionID.Crimson, Type);
 		}
 
 		public override void Convert(int i, int j, int conversionType) {
 			switch (conversionType) {
-				case BiomeConversionID.Chlorophyte:
-				case BiomeConversionID.Purity:
 				case BiomeConversionID.Sand:
-				case BiomeConversionID.PurificationPowder:
 					WorldGen.ConvertTile(i, j, TileID.DesertFossil);
-					return;
-				case BiomeConversionID.Hallow:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<HallowedFossilTile>());
-					return;
-				case BiomeConversionID.Corruption:
-					WorldGen.ConvertTile(i, j, ModContent.TileType<CorruptFossilTile>());
 					return;
 			}
 		}
