@@ -154,7 +154,7 @@
  						float num4 = 1f;
 +						// TML(liquid-slopes): Duplicate original validity check without edge
 +						// data to avoid waterfalls appearing beneath solid tiles.
-+						if (!ptr2->IsSolid || ptr2->IsHalfBrick )
++						if (!ptr2->IsSolid || ptr2->IsHalfBrick)
  						for (int num5 = 1; num5 <= WATERFALL_LENGTH[ptr2->Type]; num5++) {
  							num4 -= num3;
  							if (ptr2[num5].IsSolid)
@@ -167,7 +167,29 @@
  						ptr2->VisibleLiquidLevel = 1f;
  						ptr2->HasVisibleLiquid = false;
  					}
-@@ -424,7 +_,9 @@
+@@ -227,6 +_,7 @@
+ 				ptr2 += 10;
+ 			}
+ 
++
+ 			ptr2 = ptr;
+ 			ptr2 += num;
+ 			for (int num6 = 2; num6 < rectangle.Width - 2; num6++) {
+@@ -247,7 +_,7 @@
+ 						float num10 = 0f;
+ 						float num11 = 1f;
+ 						float visibleLiquidLevel = ptr2->VisibleLiquidLevel;
+-						if (!liquidCache.HasVisibleLiquid)
++						if (!liquidCache.HasVisibleLiquid || (liquidCache.EdgeData.HasValue && ptr2->LiquidLevel < 250 && !liquidCache.IsHalfBrick))
+ 							num10 += liquidCache2.VisibleLiquidLevel * (1f - visibleLiquidLevel);
+ 
+ 						if (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid && !liquidCache2.IsHalfBrick)
+@@ -421,10 +_,14 @@
+ 								float num21 = Math.Max(0.25f, ptr2->VisibleRightWall);
+ 								float num22 = Math.Min(0.75f, ptr2->VisibleTopWall);
+ 								float num23 = Math.Max(0.25f, ptr2->VisibleBottomWall);
++
++								if (!LiquidEdgeRenderer.Active)
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
  
