@@ -107,7 +107,7 @@ public static class TileLoader
 	private static Action[] HookPostSetupTileMerge;
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
-	private static Action<int, int, int, int>[] HookOnTileConverted;
+	private static Action<int, int, int, int, int>[] HookOnTileConverted;
 
 	internal static int ReserveTileID()
 	{
@@ -1470,13 +1470,13 @@ public static class TileLoader
 		return false;
 	}
 
-	public static void OnTileConverted(int i, int j, int fromType, int toType)
+	public static void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 		foreach (var hook in HookOnTileConverted) {
-			hook(i, j, fromType, toType);
+			hook(i, j, fromType, toType, conversionType);
 		}
 
-		GetTile(fromType)?.OnTileConverted(i, j, fromType, toType);
-		GetTile(toType)?.OnTileConverted(i, j, fromType, toType);
+		GetTile(fromType)?.OnTileConverted(i, j, fromType, toType, conversionType);
+		GetTile(toType)?.OnTileConverted(i, j, fromType, toType, conversionType);
 	}
 }

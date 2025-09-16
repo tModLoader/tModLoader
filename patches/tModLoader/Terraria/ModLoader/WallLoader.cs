@@ -49,6 +49,7 @@ public static class WallLoader
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
+	private static Action<int, int, int, int, int>[] HookOnWallConverted;
 
 	internal static int ReserveWallID()
 	{
@@ -120,6 +121,7 @@ public static class WallLoader
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalWalls, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalWalls, g => g.PlaceInWorld);
+		ModLoader.BuildGlobalHook(ref HookOnWallConverted, globalWalls, g => g.OnWallConverted);
 
 		if (!unloading) {
 			loaded = true;
@@ -563,6 +565,15 @@ public static class WallLoader
 		}
 
 		GetWall(type)?.PlaceInWorld(i, j, item);
+	}
+	public static void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
+		foreach (var hook in HookOnWallConverted) {
+			hook(i, j, fromType, toType, conversionType);
+		}
+
+		GetWall(fromType)?.OnWallConverted(i, j, fromType, toType, conversionType);
+		GetWall(toType)?.OnWallConverted(i, j, fromType, toType, conversionType);
 	}
 
 	internal static void FinishSetup()

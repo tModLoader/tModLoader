@@ -51,4 +51,8 @@ public abstract class GlobalWall : GlobalBlockType
 	{
 		return true;
 	}
+
+	public virtual void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
+	}
 }

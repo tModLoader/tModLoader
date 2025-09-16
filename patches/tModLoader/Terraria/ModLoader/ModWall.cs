@@ -114,4 +114,8 @@ public abstract class ModWall : ModBlockType
 	{
 		return true;
 	}
+
+	public virtual void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
+	}
 }

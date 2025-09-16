@@ -1519,21 +1519,32 @@
  		if (aiStyle == 1) {
  			AI_001();
  		}
-@@ -17290,6 +_,8 @@
+@@ -17289,7 +_,11 @@
+ 						if (!(base.position.X + (float)width > vector15.X) || !(base.position.X < vector15.X + 16f) || !(base.position.Y + (float)height > vector15.Y) || !(base.position.Y < vector15.Y + 16f) || !Main.tile[num96, num97].active())
  							continue;
  
++						int tileType = Main.tile[num96, num97].type;
++						int wall = Main.tile[num96, num97].wall;
  						if (type == 10) {
 +							if (!TileLoader.Convert(num96, num97, BiomeConversionID.PurificationPowder))
 +								goto SkipPurificationConversion;
  							if (Main.tile[num96, num97].type == 23 || Main.tile[num96, num97].type == 199) {
  								Main.tile[num96, num97].type = 2;
  								WorldGen.SquareTileFrame(num96, num97);
-@@ -17348,6 +_,8 @@
+@@ -17348,6 +_,16 @@
  								WorldGen.Convert(num96, num97, 4, 1);
  						}
  
-+					    SkipPurificationConversion:
++						SkipPurificationConversion:
 +
++						if (type == 10) {
++							if (tileType != Main.tile[num96, num97].type) {
++								TileLoader.OnTileConverted(num96, num97, tileType, Main.tile[num96, num97].type, BiomeConversionID.PurificationPowder);
++							}
++							if (wall != Main.tile[num96, num97].wall) {
++								WallLoader.OnWallConverted(num96, num97, wall, Main.tile[num96, num97].wall, BiomeConversionID.PurificationPowder);
++							}
++						}
  						if (!flag3)
  							continue;
  
