@@ -44,9 +44,15 @@ public static class CombinedHooks
 		PlayerLoader.OnMissingMana(player, item, neededMana);
 	}
 
-	public static bool ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
+	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
 	{
-		return PlayerLoader.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay) && ItemLoader.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
+		PlayerLoader.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
+		ItemLoader.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
+	}
+
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		return PlayerLoader.ApplyPotionDelay(item, player, potionDelay) && ItemLoader.ApplyPotionDelay(item, player, potionDelay);
 	}
 
 	public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo)

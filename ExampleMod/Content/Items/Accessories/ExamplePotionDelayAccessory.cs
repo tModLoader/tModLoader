@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
+	// This example accessory adjusts healing potion sickness/delay/cooldown, similar to the Philosopher's Stone.
 	public class ExamplePotionDelayAccessory : ModItem
 	{
 		// By declaring these here, changing the values will alter the effect, and the tooltip
@@ -21,10 +22,15 @@ namespace ExampleMod.Content.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			// You can learn more about StatModifiers by referring to ExampleStatBonusAccessory.
+
 			// Note that since we want to apply an additive decrease, we use `-=` to subtract the total
 			// instead of `+=` to increase. You can also use `+=` with a negative value.
-			player.PotionDelay.Flat -= FlatDelayDecrease;
-			player.PotionDelay *= 1 + MultiplicativeDelayBonus / 100f;
+			// Decreases the final potion delay after multipliers. Adjusting PotionDelayModifier.Base would adjust the delay before multipliers
+			// Multiply by 60 to convert ticks to seconds.
+			player.PotionDelayModifier.Flat -= FlatDelayDecrease * 60;
+
+			// Increases the potion delay multiplicitively. Philosopher's Stone does player.PotionDelay *= 0.75f to decrease the delay multiplicitively.
+			player.PotionDelayModifier *= 1 + MultiplicativeDelayBonus / 100f;
 		}
 	}
 }

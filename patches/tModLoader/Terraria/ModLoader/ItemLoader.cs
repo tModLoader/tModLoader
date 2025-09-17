@@ -511,21 +511,29 @@ public static class ItemLoader
 		}
 	}
 
-	private delegate bool DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay);
+	private delegate void DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay);
 	private static HookList HookModifyPotionDelay = AddHook<DelegateModifyPotionDelay>(g => g.ModifyPotionDelay);
 
-	public static bool ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
+	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
 	{
-		bool flag = true;
+		item.ModItem?.ModifyPotionDelay(player, ref baseDelay, ref potionDelay);
 
-		if (item.ModItem != null)
-			item.ModItem.ModifyPotionDelay(player, ref baseDelay, ref potionDelay);
+		foreach (var g in HookModifyPotionDelay.Enumerate(item)) {
+			g.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
+		}
+	}
 
-		foreach (var g in HookModifyManaCost.Enumerate(item)) {
-			flag &= g.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
+	private delegate bool DelegateApplyPotionDelay(Item item, Player player, int potionDelay);
+	private static HookList HookApplyPotionDelay = AddHook<DelegateApplyPotionDelay>(g => g.ApplyPotionDelay);
+
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		foreach (var g in HookApplyPotionDelay.Enumerate(item)) {
+			if (!g.ApplyPotionDelay(item, player, potionDelay))
+				return false;
 		}
 
-		return flag;
+		return item.ModItem?.ApplyPotionDelay(player, potionDelay) ?? true;
 	}
 
 	private delegate bool? DelegateCanConsumeBait(Player baiter, Item bait);

@@ -424,7 +424,7 @@ Mods: {
 
 			ExampleHealingPotion: {
 				// DisplayName: Example Healing Potion
-				// Tooltip: ""
+				// Tooltip: Potion cooldown reduced by {0} seconds
 				// RestoreLifeText: "{0} ({1} when quick healing)"
 			}
 
