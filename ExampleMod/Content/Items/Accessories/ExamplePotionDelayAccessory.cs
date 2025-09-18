@@ -9,10 +9,10 @@ namespace ExampleMod.Content.Items.Accessories
 	{
 		// By declaring these here, changing the values will alter the effect, and the tooltip
 		public static readonly int FlatDelayDecrease = 10;
-		public static readonly int MultiplicativeDelayBonus = 10;
+		public static readonly int MultiplicativeDelayDecrease = 15;
 
 		// Insert the modifier values into the tooltip localization. More info on this approach can be found on the wiki: https://github.com/tModLoader/tModLoader/wiki/Localization#binding-values-to-localizations
-		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(FlatDelayDecrease, MultiplicativeDelayBonus);
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(FlatDelayDecrease, MultiplicativeDelayDecrease);
 
 		public override void SetDefaults() {
 			Item.width = 40;
@@ -29,8 +29,8 @@ namespace ExampleMod.Content.Items.Accessories
 			// Multiply by 60 to convert ticks to seconds.
 			player.PotionDelayModifier.Flat -= FlatDelayDecrease * 60;
 
-			// Increases the potion delay multiplicitively. Philosopher's Stone does player.PotionDelay *= 0.75f to decrease the delay multiplicitively.
-			player.PotionDelayModifier *= 1 + MultiplicativeDelayBonus / 100f;
+			// Decreases the potion delay multiplicitively. For reference, Philosopher's Stone does player.PotionDelay *= 0.75f to reduce it by 25%.
+			player.PotionDelayModifier *= 1 - MultiplicativeDelayDecrease / 100f; // Reduce delay by 15%
 		}
 	}
 }

@@ -746,6 +746,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% chance to save ammo",
 		"PercentReducedManaCost": "{0}% reduced mana cost",
+		"ReducesHealingPotionCooldownByPercent": "Reduces the cooldown of healing potions by {0}%",
 
 		"PercentIncreasedMiningSpeed": "{0}% increased mining speed",
 		"PercentIncreasedMovementSpeed": "{0}% increased movement speed",

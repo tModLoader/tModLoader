@@ -748,6 +748,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}%的几率节省弹药",
 		"PercentReducedManaCost": "魔力值消耗减少{0}%",
+		"ReducesHealingPotionCooldownByPercent": "治疗药水的冷却时间缩短{0}%",
 
 		"PercentIncreasedMiningSpeed": "采矿速度增加{0}%",
 		"PercentIncreasedMovementSpeed": "移动速度提高{0}%",

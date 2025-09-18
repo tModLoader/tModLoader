@@ -282,7 +282,7 @@ Mods: {
 				Tooltip:
 					'''
 					Decreases the total cooldown of healing potions by {0} seconds
-					Increases the cooldown of healing potions by {1}%
+					{$CommonItemTooltip.ReducesHealingPotionCooldownByPercent@1}
 					'''
 			}
 

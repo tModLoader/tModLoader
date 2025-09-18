@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Items.Consumables
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
 		}
 
-		public override void ModifyPotionDelay(Player player, ref int baseDelay, ref StatModifier potionDelay) {
+		public override void ModifyPotionDelay(Player player, ref int baseDelay) {
 			baseDelay -= PotionDelayDecrease * 60; // Reduce the potion delay by 15 seconds.
 
 			// If we wanted to bypass potions sickness altogether, the ApplyPotionDelay hook can facilitate that.

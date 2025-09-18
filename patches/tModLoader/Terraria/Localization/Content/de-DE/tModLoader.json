@@ -746,6 +746,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% Chance, Munition zu sparen",
 		"PercentReducedManaCost": "Um {0}% reduzierte Manakosten",
+		"ReducesHealingPotionCooldownByPercent": "Reduziert die Abklingzeit von Tränken um {0}%",
 
 		"PercentIncreasedMiningSpeed": "Um {0} % erhöhtes Abbautempo",
 		"PercentIncreasedMovementSpeed": "Um {0}% erhöhtes Bewegungstempo",

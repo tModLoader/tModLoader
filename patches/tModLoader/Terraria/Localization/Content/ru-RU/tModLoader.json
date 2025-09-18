@@ -746,6 +746,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}%-ный шанс сэкономить боеприпасы",
 		"PercentReducedManaCost": "{0}%-ное снижение расхода маны",
+		"ReducesHealingPotionCooldownByPercent": "Уменьшает время восстановления лечебных зелий на {0} %",
 
 		"PercentIncreasedMiningSpeed": "{0}%-ное увеличение скорости добычи",
 		"PercentIncreasedMovementSpeed": "{0}%-ное увеличение скорости передвижения",
