@@ -608,8 +608,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
 			else {
 				SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
-				bool useDropdown = Interface.modConfig.mod.TModLoaderVersion.MajorMinor() >= new Version(2025, 9) && sliderAttribute == null;
-				if (useDropdown)
+				bool useNewElements = Interface.modConfig.mod.TModLoaderVersion.MajorMinor() >= new Version(2025, 9) && sliderAttribute == null;
+				if (useNewElements)
 					e = new EnumElement2();
 				else
 					e = new EnumElement();
@@ -863,7 +863,6 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 	internal void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
 		blockInput?.Remove();
 		activeDialog?.Remove();
 	}

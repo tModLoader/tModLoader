@@ -7,9 +7,16 @@ using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.Elements;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
+/// <summary>
+/// Supports 3 modes of operation:
+/// Normal: Options are presented in an expanded panel
+/// DropdownAttribute: Options are presented in a dropdown, fading out the background. If more than 4 enum elements, the dropdown becomes a wider UIGrid
+/// CycleAttribute: Options are cycled through on left/right click
+/// </summary>
 internal class EnumElement2 : ConfigElement
 {
 	private UIAutoScaleTextTextPanel<string> OptionChoice { get; set; }
@@ -18,55 +25,62 @@ internal class EnumElement2 : ConfigElement
 	private NestedUIGrid ChooserList { get; set; }
 	private bool UpdateNeeded { get; set; }
 	private bool SelectionExpanded { get; set; }
+	private bool DropDown { get; set; }
+	private bool Cycle { get; set; }
 
 	private Func<object> _getValue;
 	private Func<string> _getValueString;
 	private Func<int> _getIndex;
 	private Action<int> _setValue;
+	private int max;
 	private string[] valueStrings;
-	
-	private bool Expand { get; set; } // EXPERIMENTS
-	private bool DropDownAlt { get; set; } // EXPERIMENTS
+	private string[] tooltips;
+	private int hoveredIndex = -2; // -2 is no hover, -1 is unknown enum value
 
 	public override void OnBind()
 	{
 		base.OnBind();
 		valueStrings = Enum.GetNames(MemberInfo.Type);
+		max = valueStrings.Length;
+		tooltips = new string[max];
 
-		var ExpandAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ExpandAttribute>(MemberInfo, Item, List);
-		var DrawTicksAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<DrawTicksAttribute>(MemberInfo, Item, List);
-		Expand = ExpandAttribute != null;
-		DropDownAlt = DrawTicksAttribute != null;
+		var DropdownAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<DropdownAttribute>(MemberInfo, Item, List);
+		var CycleAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CycleAttribute>(MemberInfo, Item, List);
+		DropDown = DropdownAttribute != null;
+		Cycle = CycleAttribute != null;
 
 		// Retrieve individual Enum member labels
-		for (int i = 0; i < valueStrings.Length; i++) {
+		for (int i = 0; i < max; i++) {
 			var enumFieldFieldInfo = MemberInfo.Type.GetField(valueStrings[i]);
 			if (enumFieldFieldInfo != null) {
 				string name = ConfigManager.GetLocalizedLabel(new PropertyFieldWrapper(enumFieldFieldInfo));
 				valueStrings[i] = name;
+
+				string tooltip = ConfigManager.GetLocalizedTooltip(new PropertyFieldWrapper(enumFieldFieldInfo));
+				tooltips[i] = tooltip;
 			}
 		}
 
-		_getValue = () => DefaultGetValue();
-		_getValueString = () => DefaultGetStringValue();
-		_getIndex = () => DefaultGetIndex();
-		_setValue = (int value) => DefaultSetValue(value);
-
-		
+		_getValue = DefaultGetValue;
+		_getValueString = DefaultGetStringValue;
+		_getIndex = DefaultGetIndex;
+		_setValue = DefaultSetValue;
 
 		OptionChoice = new UIAutoScaleTextTextPanel<string>(_getValueString());
 		OptionChoice.SetPadding(0);
 		OptionChoice.Width.Set(120 + 24 + 12, 0f);
 		OptionChoice.UseInnerDimensions = true;
-		//OptionChoice.MarginLeft = 24;
-		OptionChoice.PaddingLeft = 36;
+		OptionChoice.PaddingLeft = Cycle ? 6 : 36;
 		OptionChoice.PaddingRight = 6;
-		//OptionChoice.TextOriginX = 1f;
 		OptionChoice.Height.Set(30, 0f);
 		OptionChoice.Left.Set(-4, 0f);
 		OptionChoice.HAlign = 1f;
 		OptionChoice.OnLeftClick += (a, b) => {
-			if (Expand) {
+			if (Cycle) {
+				_setValue((_getIndex() + 1) % max);
+				UpdateNeeded = true;
+			}
+			else if (!DropDown) {
 				SelectionExpanded = !SelectionExpanded;
 				UpdateNeeded = true;
 			}
@@ -74,150 +88,93 @@ internal class EnumElement2 : ConfigElement
 				ShowDropdown();
 			}
 		};
+		OptionChoice.OnRightClick += (a, b) => {
+			if (Cycle) {
+				int index = _getIndex();
+				_setValue(index == -1 ? max - 1 : (index - 1 + max) % max);
+				UpdateNeeded = true;
+			}
+		};
+		OptionChoice.OnUpdate += (a) => {
+			if (a.IsMouseHovering)
+				hoveredIndex = _getIndex();
+		};
 		Append(OptionChoice);
 
-		var dropdownIcon = new UIImage(UICommon.DropdownIconTexture); //24x24
-		dropdownIcon.MarginLeft = -12;
-		dropdownIcon.MarginTop = -12;
-		dropdownIcon.MarginLeft = -36;
-		dropdownIcon.MarginTop = 0;
-		dropdownIcon.RemoveFloatingPointsFromDrawPosition = true;
-		OptionChoice.Append(dropdownIcon);
+		if (!Cycle) {
+			var dropdownIcon = new UIImage(UICommon.DropdownIconTexture); //24x24
+			dropdownIcon.MarginLeft = -12;
+			dropdownIcon.MarginTop = -12;
+			dropdownIcon.MarginLeft = -36;
+			dropdownIcon.MarginTop = 0;
+			dropdownIcon.RemoveFloatingPointsFromDrawPosition = true;
+			OptionChoice.Append(dropdownIcon);
+		}
 
-		//var divider = new UIImage(UICommon.DividerTexture); // 8x4 texture
-		//divider.Rotation = MathHelper.PiOver2;
-		//divider.ImageScale = 3; 
-		//divider.Left.Set(24, 0);
-		//OptionChoice.Append(divider);
-
-		if (Expand || DropDownAlt) {
-			ChooserPanel = new UIPanel();
-			ChooserPanel.Top.Set(30, 0);
-			// Each is 30 tall, and 5 list padding. 12 panel padding top and bottom minus the final row list padding
-			ChooserPanel.Height.Set(19 + (int)Math.Ceiling(valueStrings.Length / 4f) * 35, 0);
-			ChooserPanel.Width.Set(0, 1);
-			ChooserPanel.BackgroundColor = Color.CornflowerBlue;
-
-			ChooserList = new NestedUIGrid();
-			ChooserList.Top.Set(0, 0);
-			ChooserList.Height.Set(0, 1);
-			ChooserList.Width.Set(0, 1);
-			ChooserPanel.Append(ChooserList);
+		if (!DropDown || max > 4) {
+			ChooserPanel = new UIPanel() {
+				Top = new(30, 0),
+				Width = new(-8, 1),
+				Left = new(4, 0),
+				BackgroundColor = Color.CornflowerBlue,
+				// Each is 30 tall, and 5 list padding. 12 panel padding top and bottom minus the final row list padding
+				Height = new(19 + (int)Math.Ceiling(max / 4f) * 35, 0),
+			};
 		}
 		else {
 			int desiredWidth = 132;
-			//ChooserPanel = new UIPanel();
-			//ChooserPanel.Top.Set(30, 0);
-			//// Each is 30 tall, and 5 list padding. 12 panel padding top and bottom minus the final row list padding
-			//ChooserPanel.Height.Set(19 + (int)Math.Ceiling(valueStrings.Length / 4f) * 35, 0);
-			//ChooserPanel.Width.Set(0, 1);
-			//ChooserPanel.BackgroundColor = Color.CornflowerBlue;
-
-
 			ChooserPanel = new UIPanel() {
-				Width = new Terraria.UI.StyleDimension(desiredWidth, 0f),
-				Height = new Terraria.UI.StyleDimension(valueStrings.Length * 35 + 12 - 1, 0f),
+				Width = new(desiredWidth, 0f),
+				Height = new(max * 35 + 12 - 1, 0f),
 				BackgroundColor = Color.CornflowerBlue,
-				//BorderColor = Color.Black
 			};
-			Terraria.UI.CalculatedStyle anchorButtonDimensions = OptionChoice.GetDimensions();
-			//// button.top is what we want, but actually the parent...
-			//_toggleModsDialog.Top.Set(OptionChoice.Parent.Parent.Top.Pixels + anchorButtonDimensions.Height, 0f);
-			//_toggleModsDialog.Left.Set(-4, 0f);
-			//_toggleModsDialog.HAlign = 1f;
-			//_toggleModsDialog.SetPadding(6f);
 		}
+
+		ChooserList = new NestedUIGrid() {
+			Height = new(30, 1),
+			Width = new(0, 1),
+		};
+		ChooserList.ManualSortMethod = (e) => { };
+		ChooserPanel.Append(ChooserList);
 	}
 
-	protected override void DrawSelf(SpriteBatch spriteBatch)
+	public override void Draw(SpriteBatch spriteBatch)
 	{
-		base.DrawSelf(spriteBatch);
-	}
-
-	protected override void DrawChildren(SpriteBatch spriteBatch)
-	{
-		base.DrawChildren(spriteBatch);
-
-		//spriteBatch.Draw(UICommon.DividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - _modIconAdjust) / 8f, 1f), SpriteEffects.None, 0f);
+		base.Draw(spriteBatch);
+		if (ChooserPanel.IsMouseHovering)
+			UIModConfig.Tooltip = "";
+		if (hoveredIndex != -2)
+			UIModConfig.Tooltip = hoveredIndex != -1 ? tooltips[hoveredIndex] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
 	}
 
 	private void ShowDropdown()
 	{
-		//if (DropDownAlt) {
-			Terraria.UI.CalculatedStyle anchorButtonDimensions = OptionChoice.GetDimensions();
-			// button.top is what we want, but actually the parent...
-			ChooserPanel.Top.Set(OptionChoice.Parent.Parent.Top.Pixels + anchorButtonDimensions.Height, 0f);
-			ChooserPanel.Left.Set(-4, 0f);
-			ChooserPanel.HAlign = 1f;
-			ChooserPanel.SetPadding(6f);
-		//}
-		if (DropDownAlt) {
+		CalculatedStyle anchorButtonDimensions = OptionChoice.GetDimensions();
+		// The top value we want is actually the UISortableElement containing this element: OptionChoice->This->UISortableElement
+		ChooserPanel.Top.Set(OptionChoice.Parent.Parent.Top.Pixels + anchorButtonDimensions.Height, 0f);
+		ChooserPanel.Left.Set(-4, 0f);
+		ChooserPanel.HAlign = 1f;
+		ChooserPanel.SetPadding(6f);
+
+		if (!DropDown || max > 4) {
 			ChooserPanel.SetPadding(12f);
 			ChooserPanel.Left.Set(12, 0f);
 			ChooserPanel.Width.Set(-24, 1);
 			ChooserPanel.HAlign = 0f;
 		}
 
-		//int desiredWidth = 132;
-
-		//var _toggleModsDialog = new UIPanel() {
-		//	Width = new Terraria.UI.StyleDimension(desiredWidth, 0f),
-		//	Height = new Terraria.UI.StyleDimension(valueStrings.Length * 35 + 12 - 1, 0f),
-		//	//HAlign = .5f,
-		//	//VAlign = .5f,
-		//	BackgroundColor = new Color(63, 82, 151),
-		//	BorderColor = Color.Black
-		//};
-		//Terraria.UI.CalculatedStyle anchorButtonDimensions = OptionChoice.GetDimensions();
-		//// button.top is what we want, but actually the parent...
-		//_toggleModsDialog.Top.Set(OptionChoice.Parent.Parent.Top.Pixels + anchorButtonDimensions.Height, 0f);
-		//_toggleModsDialog.Left.Set(-4, 0f);
-		//_toggleModsDialog.HAlign = 1f;
-		//_toggleModsDialog.SetPadding(6f);
-
-
 		Interface.modConfig.BlockInput(ChooserPanel);
 
-		//int y = 0;
-		//foreach (var value in valueStrings) {
-		//	var option = new UITextPanel<string>(value);
-		//	option.Top.Set(y, 0f);
-		//	option.OnLeftClick += (a, b) => {
-		//		OptionChoice.SetText(value);
-		//		Interface.modConfig.UnblockInput(a, b);
-		//	};
-		//	_toggleModsDialog.Append(option);
-		//	y += 40;
-		//}
-		if (DropDownAlt)
+		if (Options == null) {
+			Options = CreateDefinitionOptionElementList();
 			ChooserList.Clear();
-
-		int y = 0;
-		for (int i = 0; i < valueStrings.Length; i++) {
-			int index = i;
-			var optionElement = new UIAutoScaleTextTextPanel<string>(valueStrings[i]);
-			optionElement.Width.Set(120, 0f);
-			optionElement.Height.Set(30, 0f);
-			if(!DropDownAlt)
-				optionElement.Top.Set(y, 0f);
-			optionElement.OnLeftClick += (a, b) => {
-				_setValue(index);
-				UpdateNeeded = true;
-				//SelectionExpanded = false;
-
-				Interface.modConfig.UnblockInput(a, b);
-			};
-			if (!DropDownAlt)
-				ChooserPanel.Append(optionElement);
-			else {
-				ChooserList.Add(optionElement);
-			}
-			y += 35;
+			ChooserList.AddRange(Options);
 		}
 	}
 
 	public override void Update(GameTime gameTime)
 	{
+		hoveredIndex = -2;
 		base.Update(gameTime);
 
 		if (!UpdateNeeded)
@@ -231,14 +188,15 @@ internal class EnumElement2 : ConfigElement
 			ChooserList.AddRange(Options);
 		}
 
-		if (!SelectionExpanded)
+		if (!SelectionExpanded) {
+			ChooserPanel.MouseOut(new UIMouseEvent(ChooserPanel, new Vector2(Main.mouseX, Main.mouseY))); // Without this, this element will still think it is hovered when the height changes because the MouseOut logic travels up the parents, but it doesn't have a parent anymore.
 			ChooserPanel.Remove();
-		else
+		}
+		else {
 			Append(ChooserPanel);
+		}
 
-		float newHeight = SelectionExpanded ? 240 : 30;
-		if (SelectionExpanded)
-			newHeight = 30 + ChooserPanel.Height.Pixels;
+		float newHeight = SelectionExpanded ? 30 + ChooserPanel.Height.Pixels + 4 : 30;
 		Height.Set(newHeight, 0f);
 
 		if (Parent != null && Parent is UISortableElement) {
@@ -252,7 +210,7 @@ internal class EnumElement2 : ConfigElement
 	{
 		var options = new List<UIAutoScaleTextTextPanel<string>>();
 
-		for (int i = 0; i < valueStrings.Length; i++) {
+		for (int i = 0; i < max; i++) {
 			int index = i;
 			var optionElement = new UIAutoScaleTextTextPanel<string>(valueStrings[i]);
 			optionElement.Width.Set(120, 0f);
@@ -260,7 +218,14 @@ internal class EnumElement2 : ConfigElement
 			optionElement.OnLeftClick += (a, b) => {
 				_setValue(index);
 				UpdateNeeded = true;
-				SelectionExpanded = false;
+				if (!DropDown)
+					SelectionExpanded = false;
+				else
+					Interface.modConfig.UnblockInput(a, b);
+			};
+			optionElement.OnUpdate += (a) => {
+				if (a.IsMouseHovering)
+					hoveredIndex = index;
 			};
 			options.Add(optionElement);
 		}
