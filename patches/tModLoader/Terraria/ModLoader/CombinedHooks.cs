@@ -44,12 +44,6 @@ public static class CombinedHooks
 		PlayerLoader.OnMissingMana(player, item, neededMana);
 	}
 
-	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
-	{
-		PlayerLoader.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
-		ItemLoader.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
-	}
-
 	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
 	{
 		return PlayerLoader.ApplyPotionDelay(item, player, potionDelay) && ItemLoader.ApplyPotionDelay(item, player, potionDelay);

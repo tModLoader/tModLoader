@@ -212,14 +212,13 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to dynamically modify the potion delay applied by a specific healing potion. <paramref name="baseDelay"/> and <paramref name="potionDelay"/> will be used to calculate a final potion delay, provided in <see cref="ApplyPotionDelay"/>.
+	/// Allows you to dynamically modify the potion delay applied by a specific healing potion. <paramref name="baseDelay"/> and <see cref="Player.PotionDelayModifier"/> will be used to calculate a final potion delay, provided in <see cref="ApplyPotionDelay"/>.
 	/// <br/><br/> Modders can modify <see cref="Player.PotionDelayModifier"/> directly in hooks like <see cref="ModItem.UpdateAccessory(Player, bool)"/> rather than use this hook to adjust potion delay times for all items.
 	/// </summary>
 	/// <param name="item">The healing item being used.</param>
 	/// <param name="player">The player consuming the item.</param>
 	/// <param name="baseDelay">The base potion delay length, in ticks.</param>
-	/// <param name="potionDelay">The modifier to apply to the delay, equivalent to <see cref="Player.PotionDelayModifier"/>.</param>
-	public virtual void ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
+	public virtual void ModifyPotionDelay(Item item, Player player, ref int baseDelay)
 	{
 	}
 

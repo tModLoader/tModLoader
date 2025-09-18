@@ -44,19 +44,19 @@
 +
 +	/// <summary>
 +	/// The default cooldown, in ticks, of most healing items.
-+	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/>, <see cref="Player.PotionDelayModifier"/>, or <see cref="ModPlayer.ModifyPotionDelay(Item, ref int, ref StatModifier)"/>.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int potionDelay = 3600;
 +
 +	/// <summary>
 +	/// The default cooldown, in ticks, of Restoration Potions.
-+	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/>, <see cref="Player.PotionDelayModifier"/>, or <see cref="ModPlayer.ModifyPotionDelay(Item, ref int, ref StatModifier)"/>.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int restorationDelay = 2700;
 +
 +	/// <summary>
 +	/// The default cooldown, in ticks, of Mushrooms.
-+	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/>, <see cref="Player.PotionDelayModifier"/>, or <see cref="ModPlayer.ModifyPotionDelay(Item, ref int, ref StatModifier)"/>.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int mushroomDelay = 1800;
 +

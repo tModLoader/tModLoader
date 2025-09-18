@@ -94,7 +94,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	/// <summary>
 	/// Modifies the cooldown of health potions. Can be used to adjust potion cooldown calculations, similar to the Philosopher's Stone.
-	/// <br/><br/> Use <see cref="ModItem.ModifyPotionDelay(Player, ref int, ref StatModifier)"/> and similar hooks for item-specific adjustments.
 	/// </summary>
 	public StatModifier PotionDelayModifier = StatModifier.Default;
 

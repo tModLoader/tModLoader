@@ -8080,12 +8080,12 @@
 +			_ => potionDelayTime,
 +		};
 +
-+		CombinedHooks.ModifyPotionDelay(sItem, this, ref baseDelay, ref PotionDelayModifier);
++		ItemLoader.ModifyPotionDelay(sItem, this, ref baseDelay);
 +
 +		int actualDelay = (int)PotionDelayModifier.ApplyTo(baseDelay);
 +
 +		bool skip = !CombinedHooks.ApplyPotionDelay(sItem, this, actualDelay);
-+		if (skip)
++		if (skip || actualDelay <= 0)
 +			return;
 +
 +		potionDelay = actualDelay;

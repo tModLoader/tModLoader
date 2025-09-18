@@ -511,15 +511,15 @@ public static class ItemLoader
 		}
 	}
 
-	private delegate void DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay);
+	private delegate void DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay);
 	private static HookList HookModifyPotionDelay = AddHook<DelegateModifyPotionDelay>(g => g.ModifyPotionDelay);
 
-	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay, ref StatModifier potionDelay)
+	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay)
 	{
-		item.ModItem?.ModifyPotionDelay(player, ref baseDelay, ref potionDelay);
+		item.ModItem?.ModifyPotionDelay(player, ref baseDelay);
 
 		foreach (var g in HookModifyPotionDelay.Enumerate(item)) {
-			g.ModifyPotionDelay(item, player, ref baseDelay, ref potionDelay);
+			g.ModifyPotionDelay(item, player, ref baseDelay);
 		}
 	}
 
