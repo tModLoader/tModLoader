@@ -412,6 +412,33 @@ ModConfigShowcaseMisc: {
 		// Label: List of Ints
 		// Tooltip: ""
 	}
+
+	EnumDefault: {
+		// Label: Enum Default
+		// Tooltip: ""
+	}
+
+	EnumSlider: {
+		// Label: Enum Slider
+		// Tooltip: ""
+	}
+
+	EnumDropdown: {
+		// Label: Enum Dropdown
+		// Tooltip: ""
+	}
+
+	EnumCycle: {
+		// Label: Enum Cycle
+		// Tooltip: Left or right click to select an option
+	}
+
+	Headers: {
+		// CustomElements: Custom Elements
+		// EnumOptions: Enum Options
+		// Collections: Collections
+		// CustomDataClasses: Custom Data Classes
+	}
 }
 
 ModConfigShowcaseRanges: {
@@ -613,7 +640,7 @@ SampleEnum: {
 
 	Odd: {
 		// Label: Odd
-		// Tooltip: ""
+		// Tooltip: Add a tooltip if an enum option needs more explanation
 	}
 
 	Peculiar: {
