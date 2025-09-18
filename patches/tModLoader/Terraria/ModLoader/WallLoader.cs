@@ -481,6 +481,7 @@ public static class WallLoader
 
 		if (tile.wall == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.wall = (ushort)fallback;
+			using var recursionCounter = new WorldGen.ConversionRecursion();
 			WorldGen.Convert(i, j, conversionType, size: 0, tiles: false);
 
 			if (tile.wall == fallback)

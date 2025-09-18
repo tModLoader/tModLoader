@@ -1,8 +1,8 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -854,6 +854,7 @@ public static class TileLoader
 
 		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.TileType = (ushort)fallback;
+			using var recursionCounter = new WorldGen.ConversionRecursion();
 			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
 
 			if (tile.TileType == fallback)
