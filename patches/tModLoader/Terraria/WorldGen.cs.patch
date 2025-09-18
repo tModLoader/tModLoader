@@ -3015,7 +3015,7 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
-@@ -50637,6 +_,18 @@
+@@ -50637,6 +_,19 @@
  					if (!InWorld(num8, num9, 2) || !Main.tile[num8, num9].active())
  						continue;
  
@@ -3024,6 +3024,7 @@
 +
 +					if (preHookType != Main.tile[num8, num9].type) {
 +						flag = true;
++						TileLoader.OnTileConverted(num8, num9, preHookType, Main.tile[num8, num9].type, 9);
 +
 +						continue;
 +					}
@@ -3044,7 +3045,7 @@
  				if (nearbyChlorophyte(num11, num12)) {
  					ChlorophyteDefense(num11, num12);
  				}
-@@ -50715,6 +_,19 @@
+@@ -50715,6 +_,20 @@
  					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
  						continue;
  
@@ -3052,6 +3053,7 @@
 +					bool convertTile = TileLoader.Convert(num11, num12, 1);
 +
 +					if (preHookType != Main.tile[num11, num12].type) {
++						TileLoader.OnTileConverted(num11, num12, preHookType, Main.tile[num11, num12].type, 1);
 +						if (genRand.Next(2) == 0)
 +							flag2 = true;
 +
@@ -3074,7 +3076,7 @@
  				if (nearbyChlorophyte(num13, num14)) {
  					ChlorophyteDefense(num13, num14);
  				}
-@@ -50799,6 +_,19 @@
+@@ -50799,6 +_,20 @@
  					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
  						continue;
  
@@ -3082,6 +3084,7 @@
 +					bool convertTile = TileLoader.Convert(num13, num14, 4);
 +
 +					if (preHookType != Main.tile[num13, num14].type) {
++						TileLoader.OnTileConverted(num13, num14, preHookType, Main.tile[num13, num14].type, 4);
 +						if (genRand.Next(2) == 0)
 +							flag3 = true;
 +
@@ -3094,7 +3097,7 @@
  					if (Main.tile[num13, num14].type == 2) {
  						if (genRand.Next(2) == 0)
  							flag3 = true;
-@@ -50878,6 +_,22 @@
+@@ -50878,6 +_,23 @@
  			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
  				continue;
  
@@ -3105,6 +3108,7 @@
 +			bool convertTile = TileLoader.Convert(num15, num16, 2);
 +
 +			if (preHookType != Main.tile[num15, num16].type) {
++				TileLoader.OnTileConverted(num15, num16, preHookType, Main.tile[num15, num16].type, 2);
 +				if (genRand.Next(2) == 0)
 +					flag4 = true;
 +
