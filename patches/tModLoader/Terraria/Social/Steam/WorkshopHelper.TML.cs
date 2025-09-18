@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis.Differencing;
-using Microsoft.Xna.Framework;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -19,7 +17,6 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
-using Terraria.UI.Chat;
 
 namespace Terraria.Social.Steam;
 

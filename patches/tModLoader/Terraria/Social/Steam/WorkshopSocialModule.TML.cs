@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using Newtonsoft.Json;
 using Terraria.Localization;

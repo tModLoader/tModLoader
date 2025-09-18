@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ReLogic.OS;
 using Steamworks;
 using Terraria.Localization;

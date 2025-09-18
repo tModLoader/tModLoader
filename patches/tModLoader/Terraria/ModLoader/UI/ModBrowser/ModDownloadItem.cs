@@ -2,12 +2,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
-using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
