@@ -882,8 +882,7 @@ internal class BlockInputElement : UIElement
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
-		var drawArea = Parent.Parent.GetDimensions().ToRectangle();
-		drawArea = elementToBlock.GetDimensions().ToRectangle();
+		var drawArea = elementToBlock.GetDimensions().ToRectangle();
 		spriteBatch.Draw(TextureAssets.MagicPixel.Value, drawArea, Color.Black * 0.5f);
 	}
 }

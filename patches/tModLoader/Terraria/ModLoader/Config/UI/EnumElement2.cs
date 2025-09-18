@@ -44,10 +44,12 @@ internal class EnumElement2 : ConfigElement
 		max = valueStrings.Length;
 		tooltips = new string[max];
 
-		var DropdownAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<DropdownAttribute>(MemberInfo, Item, List);
-		var CycleAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CycleAttribute>(MemberInfo, Item, List);
-		DropDown = DropdownAttribute != null;
-		Cycle = CycleAttribute != null;
+		if (ConfigManager.GetCustomAttributeFromMemberThenMemberType<DropdownAttribute>(MemberInfo, Item, List) != null) {
+			DropDown = true;
+		}
+		else if (ConfigManager.GetCustomAttributeFromMemberThenMemberType<CycleAttribute>(MemberInfo, Item, List) != null) {
+			Cycle = true;
+		}
 
 		// Retrieve individual Enum member labels
 		for (int i = 0; i < max; i++) {
