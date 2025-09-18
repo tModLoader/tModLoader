@@ -4850,7 +4850,7 @@
  	}
  
  	private void TryToToggleSmartCursor(ref bool smartCursorWanted)
-@@ -21923,15 +_,22 @@
+@@ -21923,15 +_,21 @@
  		return result;
  	}
  
@@ -4866,10 +4866,9 @@
  				num2 = ((!pStone) ? (num2 / philosopherStoneDurationMultiplier) : (num2 * philosopherStoneDurationMultiplier));
  				buffTime[num] = (int)num2;
 +				*/
-+				float oldMultiplier = oldPotionDelayModifier.Multiplicative * oldPotionDelayModifier.Additive;
-+				float newMultiplier = PotionDelayModifier.Multiplicative * PotionDelayModifier.Additive;
-+				float time = buffTime[num];
-+				time = time / oldMultiplier * newMultiplier;
++				float time = PotionDelayModifier.ApplyTo(oldPotionDelayModifier.Undo(buffTime[num]));
++				if (time < 1)
++					time = 1;
 +				buffTime[num] = (int)time;
  			}
  		}
