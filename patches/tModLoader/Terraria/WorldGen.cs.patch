@@ -1939,8 +1939,8 @@
 +	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
 +
 +	[ThreadStatic]
-+	static int conversionRecursionDepth;
-+	internal class ConversionRecursion : IDisposable
++	private static int conversionRecursionDepth;
++	internal readonly struct ConversionRecursion : IDisposable
 +	{
 +		public ConversionRecursion() => conversionRecursionDepth++;
 +		void IDisposable.Dispose() => conversionRecursionDepth--;
