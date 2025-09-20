@@ -101,7 +101,7 @@ public partial class WorldGen
 			if (!InWorld(testX, testY, 10))
 				return;
 
-			if (nearbyChlorophyte(testX, testY)) {
+			if (nearbyChlorophyte(testX, testY) && conversionType != BiomeConversionID.Hallow) {
 				ChlorophyteDefense(testX, testY);
 				return;
 			}
