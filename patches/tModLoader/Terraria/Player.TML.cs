@@ -92,6 +92,11 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public StatModifier breathEffectiveness = StatModifier.Default;
 
+	/// <summary>
+	/// Modifies the cooldown of health potions. Can be used to adjust potion cooldown calculations, similar to the Philosopher's Stone.
+	/// </summary>
+	public StatModifier PotionDelayModifier = StatModifier.Default;
+
 	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
 	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;

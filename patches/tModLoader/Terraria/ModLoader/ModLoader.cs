@@ -67,6 +67,7 @@ public static class ModLoader
 	internal static bool showNewUpdatedModsInfo = true;
 	internal static bool showConfirmationWindowWhenEnableDisableAllMods = true;
 	internal static bool skipLoad;
+	internal static bool preparingServerSidePublish;
 	internal static Action OnSuccessfulLoad;
 
 	internal static bool isLoading;
@@ -134,6 +135,9 @@ public static class ModLoader
 			ModContent.Load(token);
 
 			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
+
+			if (preparingServerSidePublish)
+				Environment.Exit(0);
 
 			if (OnSuccessfulLoad != null) {
 				OnSuccessfulLoad();
@@ -289,7 +293,9 @@ public static class ModLoader
 			Console.WriteLine(msg);
 			Console.ResetColor();
 
-			if (fatal) {
+			if (preparingServerSidePublish)
+				Environment.Exit(-1);
+			else if (fatal) {
 				Console.WriteLine("Press any key to exit...");
 				Console.ReadKey();
 				Environment.Exit(-1);

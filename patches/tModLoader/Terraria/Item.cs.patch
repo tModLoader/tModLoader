@@ -43,20 +43,20 @@
  	public static int[] cachedItemSpawnsByType = ItemID.Sets.Factory.CreateIntSet(-1);
 +
 +	/// <summary>
-+	/// The default cooldown, in ticks, of most healing items.<br/>
-+	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.potionDelayTime"/>.<br/>
++	/// The default cooldown, in ticks, of most healing items.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int potionDelay = 3600;
 +
 +	/// <summary>
-+	/// The default cooldown, in ticks, of Restoration Potions.<br/>
-+	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.restorationDelayTime"/>.<br/>
++	/// The default cooldown, in ticks, of Restoration Potions.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int restorationDelay = 2700;
 +
 +	/// <summary>
-+	/// The default cooldown, in ticks, of Mushrooms.<br/>
-+	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.mushroomDelayTime"/>.<br/>
++	/// The default cooldown, in ticks, of Mushrooms.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int mushroomDelay = 1800;
 +
@@ -417,8 +417,8 @@
  	public int healMana;
 +
 +	/// <summary>
-+	/// If true, this item will inflict potion sickness on use. Also determines whether the item cannot be used when the player has potion sickness, and if the item can be used with the Quick Heal key.
-+	/// <br/> Defaults to <see langword="false"/>.
++	/// If true, this item will inflict potion sickness on use. Also determines whether the item cannot be used when the player has potion sickness (<see cref="Player.potionDelay"/> > 0), and if the item can be used with the Quick Heal key.
++	/// <br/><br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool potion;
 +
