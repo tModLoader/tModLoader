@@ -721,6 +721,22 @@ public static class TileLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+
+	/// <summary>
+	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert"/> <br/>
+	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use custom conversion code.</param>
+	/// <param name="toType">What <paramref name="tileType"/> is converted into when it's hit with the <paramref name="conversionType"/>.</param>
+	public static void RegisterConversion(int tileType, int conversionType, int toType)
+	{
+		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
+			WorldGen.ConvertTile(i, j, toType);
+			return false;
+		});
+	}
+
 	/// <summary>
 	/// Registers a conversion that replaces <paramref name="tileType"/> with <paramref name="toType"/> when touched by <paramref name="conversionType"/> <br/>
 	/// Also registers <paramref name="tileType"/> as a fallback for <paramref name="toType"/> so that other conversions can convert <paramref name="toType"/> as if it was <paramref name="tileType"/>. <br/>
@@ -730,17 +746,14 @@ public static class TileLoader
 	/// <param name="conversionType">The conversion type for which the tile should use this conversion.</param>
 	/// <param name="toType">The tile type that this conversion should convert the tile to.</param>
 	/// <param name="purification">If true, automatically registers purification conversions from toType to tileType as well.</param>
-	/// <param name="fallback">If true, automatically registers tileType as fallback tile of toType.</param>
-	public static void RegisterSimpleConversion(int tileType, int conversionType, int toType, bool purification = true, bool fallback = true)
+	public static void RegisterSimpleConversion(int tileType, int conversionType, int toType, bool purification = true)
 	{
 		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
 			WorldGen.ConvertTile(i, j, toType);
 			return false;
 		});
 
-		if(fallback) {
-			RegisterConversionFallback(toType, tileType, conversionType);
-		}
+		RegisterConversionFallback(toType, tileType, conversionType);
 
 		if (purification) {
 			bool Purify(int i, int j, int type, int conversionType)
