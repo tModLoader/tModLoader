@@ -7,7 +7,9 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Steamworks;
 using Terraria.Social.Base;
+using static Terraria.Social.Steam.SteamWebWrapper;
 
 namespace Terraria.Social.Steam;
 
@@ -15,7 +17,31 @@ internal class BatchMetadataSetRunner
 {
 	private string workingDirectory;
 
-	internal BatchMetadataSetRunner(string workingDirectory)
+	internal static void RunForceUpdate(string publisherKey, string steamCmdPath, string steamCmdUser = "anonymous", string workshopForceDevMetadataFolder = null)
+	{
+		// The below code works, but needs two input arguments and optional 3rd
+		SteamWebWrapper.PublisherKey = publisherKey;
+		SteamCmdDownloaderInstance.SteamCMDPath = steamCmdPath;
+		SteamCmdDownloaderInstance.SteamCMDUser = steamCmdUser;
+
+		bool performFullRun = string.IsNullOrEmpty(workshopForceDevMetadataFolder);
+
+
+		if (performFullRun) {
+			var response = SteamWebWrapper.QueryForPublisherIds();
+
+			for (int i = 0; i < 1/* response.Count*/; i++) {
+				string workingDir = CreateWorkingDirectoryForPage(response[i], i);
+				new BatchMetadataSetRunner(workingDir).RunForceDevMetadataUpdate(deleteModsWhenComplete: true);
+			}
+		}
+		else {
+			// Update items only in the associated folder. good for touchups or running in CI
+			new BatchMetadataSetRunner(workshopForceDevMetadataFolder).RunForceDevMetadataUpdate(deleteModsWhenComplete: false);
+		}
+	}
+
+	private BatchMetadataSetRunner(string workingDirectory)
 	{
 		this.workingDirectory = workingDirectory;
 	}
@@ -57,6 +83,8 @@ internal class BatchMetadataSetRunner
 
 		foreach (var item in devMetadataKvp) {
 			SteamWebWrapper.SetDeveloperMetadata(item.publishedId, item.metadata);
+			//SteamWebWrapper.SetKeyValueTags(publishedFileId, keyValueTags);
+
 			Console.WriteLine($"Metadata for Workshop Item {item.publishedId} has been updated");
 		}
 

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.CodeAnalysis;
 
 namespace Terraria.Social.Steam;
 
@@ -46,7 +47,7 @@ internal static class SteamWebWrapper
 		public bool Banned { get; set; } = false;
 
 		[JsonPropertyName("kvtags")]
-		public List<KevValueTags> KeyValuePairs { get; set; } = new List<KevValueTags>();
+		public List<KeyValueTags> KeyValuePairs { get; set; } = new List<KeyValueTags>();
 
 		[JsonPropertyName("tags")]
 		public List<UserTags> UserTags { get; set; } = new List<UserTags>();
@@ -55,7 +56,7 @@ internal static class SteamWebWrapper
 		public string Metadata { get; set; } = "";
 	}
 
-	public class KevValueTags
+	public class KeyValueTags
 	{
 		[JsonPropertyName("key")]
 		public string key { get; set; } = "";
@@ -139,6 +140,27 @@ internal static class SteamWebWrapper
 
 		return PostHttpsAsync(ApiEndpoint, arguments).Result;
 	}
+
+	// We don't know enough about what the formatting is for this method's tags_to_add to use it in Github Actions yet - Solxan
+	// https://steamapi.xpaw.me/#IPublishedFileService/UpdateKeyValueTags
+	/* 
+	internal static string SetKeyValueTags(string publishedFileId, List<KeyValueTags> keyValueTags)
+	{
+		if (PublisherKey is null)
+			throw new Exception("Publisher Key Must Be Initialized Before Use");
+
+		const string ApiEndpoint = "IPublishedFileService/UpdateKeyValueTags/v1";
+
+		List<KeyValuePair<string, string>> arguments = new List<KeyValuePair<string, string>>() {
+			GetKeyValuePair("publishedfileid", publishedFileId),
+			GetKeyValuePair("key", PublisherKey),
+			GetKeyValuePair("appid", "1281930"),
+			GetKeyValuePair("tags_to_add", JsonSerializer.Serialize(keyValueTags));
+		};
+
+		return PostHttpsAsync(ApiEndpoint, arguments).Result;
+	}
+	*/
 
 	private const float NumberResultsPerPage = 10f;
 

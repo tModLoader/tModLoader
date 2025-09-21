@@ -24,7 +24,7 @@ public partial class WorkshopHelper
 {
 	internal static string[] MetadataKeys = new string[8] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences", "versionsummary" };
 
-	// TODO: Per latest testing by Solxan, this doesn't work anymore. replace with SetMetadata via WebAPI
+	// TODO: Per latest testing by Solxan Sept 2025, this doesn't work anymore. replace with SetMetadata via WebAPI
 	private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
 
 	public class ModPublisherInstance : UGCBased.APublisherInstance
