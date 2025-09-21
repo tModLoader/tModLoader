@@ -335,12 +335,12 @@ public static class SteamedWraps
 		}
 	}
 
-	public static bool FetchDeveloperMetadata(UGCQueryHandle_t handle, uint index, out string devMetadata)
+	public static bool FetchDeveloperMetadata(UGCQueryHandle_t handle, uint index, out string devMetadataSerialized)
 	{
 		if (SteamClient)
-			return SteamUGC.GetQueryUGCMetadata(handle, index, out devMetadata, Constants.k_cchDeveloperMetadataMax);
+			return SteamUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
 		else if (SteamAvailable)
-			return SteamGameServerUGC.GetQueryUGCMetadata(handle, index, out devMetadata, Constants.k_cchDeveloperMetadataMax);
+			return SteamGameServerUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
 
 		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}

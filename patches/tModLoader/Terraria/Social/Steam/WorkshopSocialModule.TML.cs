@@ -28,17 +28,18 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		var state = WorkshopHelper.TryGetModDownloadItem(modFile.Name, out modDownloadItemAsFound);
+		var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(modFile.Name, out modDownloadItemAsFound);
 
-		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed || state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
+		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
 
 		currPublishID = 0;
-		
 
+		// TODO: Localized String missing 
 		if (state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
+			IssueReporter.ReportInstantUploadProblem("TODO: Localized String - Workshop Item is Corrupted; reach out in tML support");
 			return false;
 		}
 
@@ -184,10 +185,8 @@ public partial class WorkshopSocialModule
 			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 			// Developer Metadata Calculations must occur after cleanup old publish
-			var devMetadata = new DeveloperMetadata();
-			CalculateModHashes(workshopFolderPath, modDownloadItemAsFound, ref devMetadata);
-			TrimDevMetadata(ref devMetadata);
-			buildData["developermetadata"] = JsonConvert.SerializeObject(devMetadata);
+			var devMetadata = new DeveloperMetadata(workshopFolderPath, useWebApi: false, modDownloadItemAsFound);
+			buildData["developermetadata"] = devMetadata.GetSerialize();
 
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
@@ -199,54 +198,6 @@ public partial class WorkshopSocialModule
 		}
 
 		return false;
-	}
-
-	// PR 4345 - We combine the hash data that is currently on workshop with the hash data from the updated publishing folder to ensure that when mods are updated it is backwards compatible
-	// It is backwards compatible while Steam spends up to an hour rolling out workshop item updates
-	private static void CalculateModHashes(string workshopPath, ModDownloadItem modDownloadItemAsFound, ref DeveloperMetadata devMetadata)
-	{
-		// Get the hashes from the existing modDownloadItem as found on the workshop
-		var prevHashes = modDownloadItemAsFound.GetModVersionHashes();
-
-		// Get the new hashes
-		var currentHashes = new List<ModVersionHash>();
-		foreach (var tModPath in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
-			var tModFile = new TmodFile(tModPath);
-			tModFile.Open(); // Needed for Hash data to be populated
-			currentHashes.Add(new ModVersionHash(tModFile));
-		}
-
-		List<ModVersionHash> totalHash = currentHashes.Concat(prevHashes.Except(currentHashes).ToList()).ToList();
-
-		devMetadata.modVersionHashes = totalHash.Select(h => h.ToString()).ToList();
-	}
-
-	// This methods trims contents of developer metadata based on the preferred order of discarding information.
-	// It is primarily written with the intent of 'in case' we need to store other information in this Workshop text field
-	private static void TrimDevMetadata(ref DeveloperMetadata devMetadata)
-	{
-		const int MaxMetadataLength = Steamworks.Constants.k_cchDeveloperMetadataMax;
-
-		var overflowLength = JsonConvert.SerializeObject(devMetadata).Length - MaxMetadataLength;
-		if (overflowLength <= 0)
-			return;
-
-		int charsSaved = 0;
-
-		// Check if we can reduce the number of ModHashes
-		var minNumberOfHashes = 2 * SocialBrowserModule.keepRequirements.Select(a => a.keepCount).Sum();
-		int hashesToKeep = devMetadata.modVersionHashes.Count;
-		while (hashesToKeep > minNumberOfHashes) {
-			charsSaved += devMetadata.modVersionHashes[hashesToKeep-- - 1].Length;
-
-			if (overflowLength <= charsSaved)
-				break;
-		}
-		devMetadata.modVersionHashes = devMetadata.modVersionHashes.Take(hashesToKeep).ToList();
-
-		// Throw if we can't reduce the total character count to within limits
-		if (overflowLength > charsSaved)
-			throw new Exception("Developer Metadata Exceeds maximum allowed space while meeting minimum requirements. Mod could not be uploaded");
 	}
 
 	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20:0.2.1;2022.07.10.20:0.2.2"
@@ -309,7 +260,7 @@ public partial class WorkshopSocialModule
 
 		if (buildData["modreferences"].Length > 0) {
 			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
-			if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
+			if (!WorkshopHelper.QueryHelper.AQueryInstance.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 				return false;
 
 			foreach (string modRef in modIds) {

@@ -23,8 +23,9 @@ namespace Terraria.Social.Steam;
 public partial class WorkshopHelper
 {
 	internal static string[] MetadataKeys = new string[8] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences", "versionsummary" };
-	//private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
-	private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"Version Summary: ", RegexOptions.Compiled);
+
+	// TODO: Per latest testing by Solxan, this doesn't work anymore. replace with SetMetadata via WebAPI
+	private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
 
 	public class ModPublisherInstance : UGCBased.APublisherInstance
 	{
@@ -38,8 +39,7 @@ public partial class WorkshopHelper
 		NotFound,
 		SearchFailed,
 		Success,
-		RetrievalFailed,
-		Banned
+		RetrievalFailed
 	}
 
 	/// <summary>
@@ -78,21 +78,6 @@ public partial class WorkshopHelper
 	}
 
 	/////// Others ////////////////////
-	internal static WorkshopSearchReturnState TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
-	{
-		var query = new QueryHelper.AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect, returnDevMetadata = true });
-		var state = query.TrySearchByInternalName(modSlug, out item);
-		if (state == WorkshopSearchReturnState.SearchFailed || state == WorkshopSearchReturnState.Success)
-			return state;
-
-		// search of all mods that were published by this user - Does not work with co-published/non-owner
-		// this should catch private / friends-only visibility
-		query.queryParameters.queryType = QueryType.SearchUserPublishedOnly;
-		state = query.TrySearchByInternalName(modSlug, out item);
-
-		return state;
-	}
-
 	// Should this be in SteamedWraps or here?
 	internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId)
 	{
@@ -101,28 +86,6 @@ public partial class WorkshopHelper
 			return false;
 
 		publishId = info.workshopEntryId;
-		return true;
-	}
-
-	/////// Used for Publishing ////////////////////
-	internal static bool TryGetGroupPublishIdsByInternalName(QueryParameters query, out List<string> modIds)
-	{
-		modIds = new List<string>();
-
-		var queryHandle = new QueryHelper.AQueryInstance(query);
-		// default search of all public mods. If fails, returns false
-		if (!queryHandle.TryGroupSearchByInternalName(out var items))
-			return false;
-
-		for (int i = 0; i < query.searchModSlugs.Length; i++) {
-			if (items[i] is null) {
-				Logging.tML.Info($"Unable to find the PublishID for {query.searchModSlugs[i]}");
-				modIds.Add("0");
-			}
-			else
-				modIds.Add(items[i].PublishId.m_ModPubId);
-		}
-
 		return true;
 	}
 
@@ -300,8 +263,8 @@ public partial class WorkshopHelper
 
 			/// <summary>
 			/// For direct information gathering of particular mod/workshop items. Synchronous.
-			/// Note that the List size is 1 to 1 with the provided array.
-			/// If the Mod is not found, the space is filled with a null.
+			/// This method does not guarantee that the returned items are 1 to 1 with the provided searchModIds list
+			/// If the Mod is not found, it is added to the missingMods out list
 			/// </summary>
 			internal List<ModDownloadItem> QueryItemsSynchronously(out List<string> missingMods)
 			{
@@ -320,9 +283,6 @@ public partial class WorkshopHelper
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
 							var match = TryGenerateModDownloadItem((uint)j, out var item);
 							if (match != WorkshopSearchReturnState.Success) {
-								if (match == WorkshopSearchReturnState.Banned) {
-									throw new BannedModException($"The mod {item.DisplayName} with ID {item.PublishId} is Banned!", item.DisplayName, item.PublishId.ToString());
-								}
 
 								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
 								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
@@ -342,6 +302,7 @@ public partial class WorkshopHelper
 				return items;
 			}
 
+			// This is used exclusively by Mod Browser and its SpecialMods filter as of Sept 21, 2025
 			internal async IAsyncEnumerable<ModDownloadItem> QueryAllWorkshopItems([EnumeratorCancellation] CancellationToken token = default)
 			{
 				uint currentPage = 1;
@@ -378,20 +339,42 @@ public partial class WorkshopHelper
 				// Appx. 10 ms per page of 50 items
 				for (uint i = 0; i < _queryReturnCount; i++) {
 					var state = TryGenerateModDownloadItem(i, out var mod);
-					if (state != WorkshopSearchReturnState.Success)
+					if (state != WorkshopSearchReturnState.Success || mod.Banned)
 						continue;
 
 					yield return mod;
 				}
 			}
 
-			//TODO: This Method and it's downstream callers needs work to remove default passed values. Deferred during PR #3346
+			//TODO: This Method and it's upstream callers needs work to remove default passed values. Deferred during PR #3346
+			internal static bool TryGetGroupPublishIdsByInternalName(QueryParameters query, out List<string> modIds)
+			{
+				modIds = new List<string>();
+
+				var queryHandle = new QueryHelper.AQueryInstance(query);
+				// default search of all public mods. If fails, returns false
+				if (!queryHandle.TryGroupSearchByInternalName(out var items))
+					return false;
+
+				for (int i = 0; i < query.searchModSlugs.Length; i++) {
+					if (items[i] is null) {
+						Logging.tML.Info($"Unable to find the PublishID for {query.searchModSlugs[i]}");
+						modIds.Add("0");
+					}
+					else
+						modIds.Add(items[i].PublishId.m_ModPubId);
+				}
+
+				return true;
+			}
+
+			//TODO: This Method and it's upstream callers needs work to remove default passed values. Deferred during PR #3346
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
 			/// Outputs a List of ModDownloadItems of equal length to QueryParameters.SearchModSlugs
 			/// Uses null entries to fill gaps to ensure length consistency
 			/// </summary>
-			internal bool TryGroupSearchByInternalName(out List<ModDownloadItem> items)
+			private bool TryGroupSearchByInternalName(out List<ModDownloadItem> items)
 			{
 				items = new List<ModDownloadItem>();
 
@@ -400,7 +383,7 @@ public partial class WorkshopHelper
 					if (state == WorkshopSearchReturnState.SearchFailed)
 						return false;
 
-					if (state == WorkshopSearchReturnState.Success)
+					if (state == WorkshopSearchReturnState.Success && !item.Banned)
 						items.Add(item);
 					else
 						items.Add(null);
@@ -410,10 +393,27 @@ public partial class WorkshopHelper
 				return true;
 			}
 
+			internal static WorkshopSearchReturnState TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
+			{
+				var query = new AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect, returnDevMetadata = true });
+
+				var state = query.TrySearchByInternalName(modSlug, out item);
+				if (state == WorkshopSearchReturnState.SearchFailed || state == WorkshopSearchReturnState.Success)
+					return state;
+
+				// search of all mods that were published by this user - Does not work with co-published/non-owner
+				// this should catch private / friends-only visibility
+				query.queryParameters.queryType = QueryType.SearchUserPublishedOnly;
+				state = query.TrySearchByInternalName(modSlug, out item);
+
+				return state;
+			}
+
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
+			/// This method does NOT guard against banned items. Plan usage accordingly
 			/// </summary>
-			internal WorkshopSearchReturnState TrySearchByInternalName(string slug, out ModDownloadItem item)
+			private WorkshopSearchReturnState TrySearchByInternalName(string slug, out ModDownloadItem item)
 			{
 				item = null;
 
@@ -426,10 +426,6 @@ public partial class WorkshopHelper
 					}
 
 					var match = TryGenerateModDownloadItem(0, out item);
-
-					if (match == WorkshopSearchReturnState.Banned) {
-						throw new BannedModException($"The mod {item.DisplayName} with ID {item.PublishId} is Banned!", item.DisplayName, item.PublishId.ToString());
-					}
 
 					return match;
 				}
@@ -482,10 +478,6 @@ public partial class WorkshopHelper
 					item = GenerateModDownloadItemFromQuery(index);
 					return WorkshopSearchReturnState.Success;
 				}
-				catch (BannedModException e) {
-					item = new ModDownloadItem(e.displayName, e.modPubId, banned: true);
-					return WorkshopSearchReturnState.Banned;
-				}
 				catch (Exception) {
 					return WorkshopSearchReturnState.RetrievalFailed;
 				}
@@ -508,15 +500,12 @@ public partial class WorkshopHelper
 				string displayname = pDetails.m_rgchTitle;
 				bool banned = pDetails.m_bBanned;
 
-				if (banned) {
-					throw new BannedModException($"Item {id}: '{displayname}' is banned. Skipping...", displayname, id.ToString());
-				}
-
 				// Item Tagged data / Player metadata
 				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
 
 				// Developer Metadata
-				SteamedWraps.FetchDeveloperMetadata(_primaryUGCHandle, i, out string devMetadata);
+				SteamedWraps.FetchDeveloperMetadata(_primaryUGCHandle, i, out string devMetadataSerialized);
+				var devMetadata = new DeveloperMetadata(devMetadataSerialized);
 
 				// Backwards compat code for the metadata version change
 				if (metadata["versionsummary"] == null)

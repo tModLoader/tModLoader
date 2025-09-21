@@ -92,6 +92,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	public void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress)
 	{
 		item.UpdateInstallState();
+		if (item.Banned)
+			throw new BannedModException($"Attempted to Download a Banned Mod {item.DisplayName} with ID {item.PublishId}. Aborting...", item.DisplayName, item.PublishId.ToString());
 
 		var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId.m_ModPubId));
 		bool forceUpdate = item.NeedUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
@@ -108,6 +110,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	/// <summary>
 	/// Assumes Intialize has been run prior to use.
+	/// As of Sept 21, 2025, called exclusively by UI Mod Browser
 	/// </summary>
 	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{

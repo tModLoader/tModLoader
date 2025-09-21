@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using ModLoaderSimple;
+using Terraria.Social.Base;
 
-namespace SteamWebAPIPublisherTool;
+namespace Terraria.Social.Steam;
+
 internal class BatchMetadataSetRunner
 {
 	private string workingDirectory;
@@ -41,7 +43,7 @@ internal class BatchMetadataSetRunner
 
 	private string DownloadItemsToFolder()
 	{
-		var downloader = new SteamCMD.SteamCmdDownloaderInstance(
+		var downloader = new SteamCmdDownloaderInstance(
 			modInstallTxtPath: $"{workingDirectory}/install.txt",
 			modDownloadFolderPath: workingDirectory
 		);
@@ -54,12 +56,13 @@ internal class BatchMetadataSetRunner
 		var devMetadataKvp = IterateWorkshopFilesForDevMetadata(actualWorkshopItemsFolder);
 
 		foreach (var item in devMetadataKvp) {
-			SteamWebApi.SteamWebWrapper.SetDeveloperMetadata(item.publishedId, item.metadata);
+			SteamWebWrapper.SetDeveloperMetadata(item.publishedId, item.metadata);
 			Console.WriteLine($"Metadata for Workshop Item {item.publishedId} has been updated");
 		}
 
 		// Free up disk drive space by cleaning out workshop items folder when complete
-		Directory.Delete(actualWorkshopItemsFolder, deleteModsWhenComplete);
+		if (deleteModsWhenComplete)
+			Directory.Delete(actualWorkshopItemsFolder, true);
 	}
 
 	private List<(string publishedId, string metadata)> IterateWorkshopFilesForDevMetadata(string actualWorkshopItemsFolder)
@@ -72,9 +75,9 @@ internal class BatchMetadataSetRunner
 			var publishId = Path.GetFileNameWithoutExtension(workshopItem);
 
 			// Read the tmod files in directory & Get metadata
-			string devMetadata = SocialBrowserModule.CalculateDevMetadata(workshopItem);
+			var devMetadata = new DeveloperMetadata(workshopItem, useWebApi: true);
 
-			devMetadataKvp.Add((publishId, devMetadata));
+			devMetadataKvp.Add((publishId, devMetadata.GetSerialize()));
 		}
 
 		return devMetadataKvp;

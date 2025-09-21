@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 
-namespace SteamWebAPIPublisherTool.SteamWebApi;
+namespace Terraria.Social.Steam;
+
 internal static class SteamWebWrapper
 {
-	internal static string PublisherKey = null;
+	internal static string PublisherKey { get; set; } = null;
 
 	private static HttpClient _httpClient = new() {
 		BaseAddress = new Uri("https://partner.steam-api.com/")
@@ -71,12 +72,6 @@ internal static class SteamWebWrapper
 		[JsonPropertyName("display_name")]
 		public string displayName { get; set; } = "";
 	}
-
-	//TODO: Replace with internal Set; Get;
-	internal static void SetPublisherKey(string publisherKey)
-	{
-		PublisherKey = publisherKey;
-	} 
 
 	private static KeyValuePair<string, string> GetKeyValuePair(string key, string value) => new KeyValuePair<string, string>(key, value);
 

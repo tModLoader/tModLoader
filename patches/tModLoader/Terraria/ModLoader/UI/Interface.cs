@@ -206,7 +206,7 @@ internal static class Interface
 				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
-						var state = WorkshopHelper.TryGetModDownloadItem(slug, out var item);
+						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
 						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
 							break;
 
@@ -214,6 +214,9 @@ internal static class Interface
 							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
 							continue;
 						}
+
+						if (item.Banned)
+							throw new BannedModException($"The missing dependency {item.DisplayName} is Banned on Workshop.", item.DisplayName, item.PublishId.ToString());
 
 						downloads.Add(item);
 					}
@@ -228,7 +231,7 @@ internal static class Interface
 					// Revisit this code at a later date. Its not apparent how well the interaction of both dependencies and removed mods will play out in terms of UX
 					HashSet<ModPubId_t> removedDownloads = new();
 					foreach (var slug in removedMods) {
-						var state = WorkshopHelper.TryGetModDownloadItem(slug, out var item);
+						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
 						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
 							break;
 
@@ -236,6 +239,9 @@ internal static class Interface
 							Logging.tML.Error($"Could not find removed mod on Workshop: {slug}");
 							continue;
 						}
+
+						if (item.Banned)
+							throw new BannedModException($"The deleted mod {item.DisplayName} is Banned on Workshop.", item.DisplayName, item.PublishId.ToString());
 
 						removedDownloads.Add(item.PublishId);
 					}

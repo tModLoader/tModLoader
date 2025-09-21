@@ -20,7 +20,7 @@ public class ModDownloadItem
 	public readonly string ModIconUrl;
 	public readonly DateTime TimeStamp;
 	public readonly bool Banned;
-	public readonly string DevMetadata;
+	public readonly DeveloperMetadata DevMetadata;
 
 	public readonly string ModReferencesBySlug;
 	public readonly ModPubId_t[] ModReferenceByModId;
@@ -37,7 +37,7 @@ public class ModDownloadItem
 
 	public bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, string devMetadata)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata)
 	{
 		ModName = name;
 		DisplayName = displayName;
@@ -58,13 +58,6 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 		Banned = banned;
 		DevMetadata = devMetadata;
-	}
-
-	internal ModDownloadItem(string displayName, string publishId, bool banned = true)
-	{
-		DisplayName = displayName;
-		PublishId = new ModPubId_t { m_ModPubId = publishId };
-		Banned = banned;
 	}
 
 	internal void UpdateInstallState()
@@ -101,15 +94,6 @@ public class ModDownloadItem
 	public override int GetHashCode()
 	{
 		return GetComparable().GetHashCode();
-	}
-
-	public List<ModVersionHash> GetModVersionHashes()
-	{
-		var devMetadata = JsonConvert.DeserializeObject<DeveloperMetadata>(DevMetadata);
-		if (devMetadata == null || devMetadata.modVersionHashes == null)
-			return new List<ModVersionHash>();
-
-		return devMetadata.modVersionHashes.Select(h => new ModVersionHash(h)).ToList();
 	}
 
 	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)
