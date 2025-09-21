@@ -1,15 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using Steamworks;
 using Terraria.Social.Base;
-using static Terraria.Social.Steam.SteamWebWrapper;
 
 namespace Terraria.Social.Steam;
 
