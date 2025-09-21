@@ -201,6 +201,10 @@
 		// "PublishNewButton": "Publish New",
 		// "DownloadProgress": "Download {0}% Complete",
 		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		// "LoadError": "An error occurred while loading {0}",
@@ -748,6 +752,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% di probabilità di risparmiare munizioni",
 		"PercentReducedManaCost": "Consumo mana ridotto del {0}%",
+		"ReducesHealingPotionCooldownByPercent": "Riduce la ricarica della pozione curativa del {0}%",
 
 		"PercentIncreasedMiningSpeed": "Velocità di estrazione aumentata del {0}%",
 		"PercentIncreasedMovementSpeed": "Velocità di movimento aumentata del {0}%",

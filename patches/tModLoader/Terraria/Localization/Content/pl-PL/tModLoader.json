@@ -199,6 +199,10 @@
 		"PublishNewButton": "Opublikuj nowy",
 		"DownloadProgress": "Pobrano {0}%",
 		"DescriptionLengthExceedLimit": "Opis tego moda (Workshop) przekracza limit znaków Steam wynoszący {0}",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
@@ -746,6 +750,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% szans na zaoszczędzenie amunicji",
 		"PercentReducedManaCost": "{0}% mniejszy koszt many",
+		"ReducesHealingPotionCooldownByPercent": "Skraca czas odnowienia mikstur leczenia o {0}%",
 
 		"PercentIncreasedMiningSpeed": "{0}% zwiększona szybkość kopania",
 		"PercentIncreasedMovementSpeed": "{0}% zwiększona szybkość poruszania się",

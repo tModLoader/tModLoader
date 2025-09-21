@@ -199,6 +199,10 @@
 		"PublishNewButton": "Опубликовать новый",
 		"DownloadProgress": "Скачано {0}%",
 		"DescriptionLengthExceedLimit": "Описание (в Мастерской) этого мода превышает ограничение Steam в {0} символов.",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
@@ -746,6 +750,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}%-ный шанс сэкономить боеприпасы",
 		"PercentReducedManaCost": "{0}%-ное снижение расхода маны",
+		"ReducesHealingPotionCooldownByPercent": "Уменьшает время восстановления лечебных зелий на {0} %",
 
 		"PercentIncreasedMiningSpeed": "{0}%-ное увеличение скорости добычи",
 		"PercentIncreasedMovementSpeed": "{0}%-ное увеличение скорости передвижения",

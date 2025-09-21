@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 
@@ -13,6 +13,7 @@ internal class EnumElement : RangeElement
 	private Action<int> _setValue;
 	private int max;
 	private string[] valueStrings;
+	private string[] tooltips;
 
 	public override int NumberTicks => valueStrings.Length;
 	public override float TickIncrement => 1f / (valueStrings.Length - 1);
@@ -26,6 +27,7 @@ internal class EnumElement : RangeElement
 	{
 		base.OnBind();
 		valueStrings = Enum.GetNames(MemberInfo.Type);
+		tooltips = new string[valueStrings.Length];
 
 		// Retrieve individual Enum member labels
 		for (int i = 0; i < valueStrings.Length; i++) {
@@ -33,6 +35,9 @@ internal class EnumElement : RangeElement
 			if (enumFieldFieldInfo != null) {
 				string name = ConfigManager.GetLocalizedLabel(new PropertyFieldWrapper(enumFieldFieldInfo));
 				valueStrings[i] = name;
+
+				string tooltip = ConfigManager.GetLocalizedTooltip(new PropertyFieldWrapper(enumFieldFieldInfo));
+				tooltips[i] = tooltip;
 			}
 		}
 
@@ -84,5 +89,14 @@ internal class EnumElement : RangeElement
 		if (index < 0) // User manually entered invalid enum number into json or loading future Enum value saved as int.
 			return Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
 		return valueStrings[index];
+	}
+
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+
+		if (IngameOptions.inBar) {
+			int index = _getIndex();
+			UIModConfig.Tooltip = index != -1 ? tooltips[index] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
+		}
 	}
 }

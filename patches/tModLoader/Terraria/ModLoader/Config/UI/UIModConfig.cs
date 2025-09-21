@@ -40,6 +40,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
 	private UIList mainConfigList;
 	private UIScrollbar uIScrollbar;
+	private BlockInputElement blockInput;
+	private UIElement activeDialog;
 	private readonly Stack<UIPanel> configPanelStack = new();
 	private readonly Stack<string> subPageStack = new();
 	//private UIList currentConfigList;
@@ -604,8 +606,14 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		else if (type.IsEnum) {
 			if (list != null)
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
-			else
-				e = new EnumElement();
+			else {
+				SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
+				bool useNewElements = Interface.modConfig.mod.TModLoaderVersion.MajorMinor() >= new Version(2025, 9) && sliderAttribute == null;
+				if (useNewElements)
+					e = new EnumElement2();
+				else
+					e = new EnumElement();
+			}
 		}
 		else if (type.IsArray) {
 			e = new ArrayElement();
@@ -840,5 +848,41 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 			modderOnClose.Invoke();
 			modderOnClose = null;
 		}
+	}
+
+	internal void BlockInput(UIElement dialog)
+	{
+		blockInput = new BlockInputElement(mainConfigList);
+		blockInput.OnLeftMouseDown += UnblockInput;
+		UIElement innerList = mainConfigList.Children.First();
+		innerList.Append(blockInput);
+
+		// Append to UIList.UIInnerList, this is necessary so it moves when scrolled
+		innerList.Append(activeDialog = dialog);
+	}
+
+	internal void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
+	{
+		blockInput?.Remove();
+		activeDialog?.Remove();
+	}
+}
+
+internal class BlockInputElement : UIElement
+{
+	private UIElement elementToBlock;
+
+	public BlockInputElement(UIElement elementToBlock)
+	{
+		Width.Set(0, 1);
+		Height.Set(0, 1);
+
+		this.elementToBlock = elementToBlock;
+	}
+
+	protected override void DrawSelf(SpriteBatch spriteBatch)
+	{
+		var drawArea = elementToBlock.GetDimensions().ToRectangle();
+		spriteBatch.Draw(TextureAssets.MagicPixel.Value, drawArea, Color.Black * 0.5f);
 	}
 }

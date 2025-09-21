@@ -93,10 +93,16 @@
  
  		string value;
  		if ((value = TryParameter("-maxplayers", "-players")) != null) {
-@@ -103,6 +_,16 @@
+@@ -103,6 +_,22 @@
  		if ((s2 = TryParameter("-language")) != null)
  			LanguageManager.Instance.SetLanguage(s2);
  
++		// Added by TML.
++		if (TryParameter("-testservermodloading") is string preparepublish) {
++			ModLoader.UI.UIModSourceItem.TestServerModLoading(preparepublish);
++			// Game will exit after ModLoader.Load or any error
++		}
++
 +		// Added by TML.
 +		if (TryParameter("-publish") is string publish) {
 +			ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);

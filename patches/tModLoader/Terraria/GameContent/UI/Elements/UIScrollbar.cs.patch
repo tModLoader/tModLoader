@@ -18,3 +18,13 @@
  	{
  		spriteBatch.Draw(texture, new Rectangle(dimensions.X, dimensions.Y - 6, dimensions.Width, 6), new Rectangle(0, 0, texture.Width, 6), color);
  		spriteBatch.Draw(texture, new Rectangle(dimensions.X, dimensions.Y, dimensions.Width, dimensions.Height), new Rectangle(0, 6, texture.Width, 4), color);
+@@ -83,7 +_,8 @@
+ 		Rectangle handleRectangle = GetHandleRectangle();
+ 		Vector2 mousePosition = UserInterface.ActiveInstance.MousePosition;
+ 		bool isHoveringOverHandle = _isHoveringOverHandle;
++		// tML: Added IsMouseHovering to account for obstructing UI elements such as popups
+-		_isHoveringOverHandle = handleRectangle.Contains(new Point((int)mousePosition.X, (int)mousePosition.Y));
++		_isHoveringOverHandle = IsMouseHovering && handleRectangle.Contains(new Point((int)mousePosition.X, (int)mousePosition.Y));
+ 		if (!isHoveringOverHandle && _isHoveringOverHandle && Main.hasFocus)
+ 			SoundEngine.PlaySound(12);
+ 
