@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
@@ -87,7 +85,7 @@ public class DeveloperMetadata
 		var currentHashes = new List<ModVersionHash>();
 		foreach (var tModPath in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
 			var tModFile = new TmodFile(tModPath);
-			tModFile.Open(); // Needed for Hash data to be populated
+			using var _ = tModFile.Open(); // Needed for Hash data to be populated
 			currentHashes.Add(new ModVersionHash(tModFile));
 		}
 
