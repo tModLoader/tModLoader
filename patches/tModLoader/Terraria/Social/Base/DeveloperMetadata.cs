@@ -16,47 +16,74 @@ public struct ModVersionHash
 
 	public override string ToString() => hash;
 
-	public ModVersionHash(string encodedHash)
+	private ModVersionHash(string encodedHash)
 	{
 		hash = encodedHash;
 	}
 
 	public ModVersionHash(TmodFile modFile)
 	{
-		hash = Encoding.UTF32.GetString(modFile.Hash);
+		hash = System.Convert.ToBase64String(modFile.Hash);
 	}
 
 	public byte[] GetHash()
 	{
-		return Encoding.UTF32.GetBytes(hash);
+		return System.Convert.FromBase64String(hash);
+	}
+
+	public class VersionHashConverter : JsonConverter<ModVersionHash>
+	{
+		public override void WriteJson(JsonWriter writer, ModVersionHash value, JsonSerializer serializer)
+		{
+			writer.WriteValue(value.ToString());
+		}
+
+		public override ModVersionHash ReadJson(JsonReader reader, Type objectType, ModVersionHash existingValue, bool hasExistingValue, JsonSerializer serializer)
+		{
+			return new ModVersionHash((string)reader.Value);
+		}
 	}
 }
 
 public class DeveloperMetadata
 {
-	internal List<ModVersionHash> modVersionHashes;
+	public List<ModVersionHash> modVersionHashes { get; set; } = new List<ModVersionHash>();
+
+	[JsonConstructor]
+	private DeveloperMetadata() { }
 
 	internal DeveloperMetadata(string workshopPath, bool useWebApi, ModDownloadItem modDownloadItemAsFound = null)
 	{
 		CalculateModHashes(workshopPath, useWebApi , modDownloadItemAsFound);
 		TrimDevMetadata();
 	}
-
+	
 	internal DeveloperMetadata(string serializedDevMetadata)
 	{
-		var devMetadata = JsonConvert.DeserializeObject<DeveloperMetadata>(serializedDevMetadata);
+		// Try-Catch is for error correction for any bizarre dev metadata put on items previously
+		try {
+			var devMetadata = DeSerialize(serializedDevMetadata);
 
-		if (devMetadata == null || devMetadata.modVersionHashes == null) {
-			modVersionHashes = new List<ModVersionHash>();
-			return;
+			if (devMetadata == null || devMetadata.modVersionHashes == null) {
+				modVersionHashes = new List<ModVersionHash>();
+				return;
+			}
+
+			modVersionHashes = devMetadata.modVersionHashes;
 		}
-
-		modVersionHashes = devMetadata.modVersionHashes;
+		catch (Exception) {
+			modVersionHashes = new List<ModVersionHash>();
+		}
 	}
 
 	internal string GetSerialize()
 	{
-		return System.Text.Json.JsonSerializer.Serialize(this);
+		return JsonConvert.SerializeObject(this, Formatting.None, new ModVersionHash.VersionHashConverter());
+	}
+
+	internal static DeveloperMetadata DeSerialize(string serializedDevMetadata)
+	{
+		return JsonConvert.DeserializeObject<DeveloperMetadata>(serializedDevMetadata, new ModVersionHash.VersionHashConverter());
 	}
 
 	// PR 4345 - We combine the hash data that is currently on workshop with the hash data from the updated publishing folder to ensure that when mods are updated it is backwards compatible
@@ -99,7 +126,7 @@ public class DeveloperMetadata
 	{
 		const int MaxMetadataLength = Steamworks.Constants.k_cchDeveloperMetadataMax;
 
-		var overflowLength = JsonConvert.SerializeObject(this).Length - MaxMetadataLength;
+		var overflowLength = GetSerialize().Length - MaxMetadataLength;
 		if (overflowLength <= 0)
 			return;
 
