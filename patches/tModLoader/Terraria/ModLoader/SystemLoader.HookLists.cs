@@ -61,6 +61,8 @@ partial class SystemLoader
 
 	private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
+	private static HookList HookPostWorldLoad = AddHook<Action>(s => s.PostWorldLoad);
+
 	private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
 
 	private static HookList HookClearWorld = AddHook<Action>(s => s.ClearWorld);

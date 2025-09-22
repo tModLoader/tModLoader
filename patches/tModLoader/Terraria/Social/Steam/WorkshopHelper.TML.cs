@@ -162,10 +162,13 @@ public partial class WorkshopHelper
 	}
 
 	//////// Workshop Publishing ////////////////////
-	internal static void PublishMod(LocalMod mod, string iconPath)
+	internal static void PublishMod(LocalMod mod, string iconPath, string[] publishTags = null, WorkshopItemPublicSettingId? publicity = null)
 	{
 		var modFile = mod.modFile;
 		var bp = mod.properties;
+
+		if (bp.side != ModSide.Server && Main.dedServ)
+			throw new Exception(Language.GetTextValue("tModLoader.CommandLinePublishOnlyUsableWithServerSideMods"));
 
 		if (bp.buildVersion != modFile.TModLoaderVersion)
 			throw new WebException(Language.GetTextValue("tModLoader.OutdatedModCantPublishError"));
@@ -210,25 +213,51 @@ public partial class WorkshopHelper
 				SocialAPI.Workshop.Initialize();
 
 				if (!SteamedWraps.SteamClient)
-					return;
+					throw new Exception(Language.GetTextValue("tModLoader.CommandLinePublishNeedsSteam"));
 
 				Thread.Sleep(1500); // Solxan: SteamAPI requires 1 or so seconds to initialize
 
-				var usedTags = Array.Empty<WorkshopTagOption>();
-				var publicity = WorkshopItemPublicSettingId.Public;
+				using (modFile.Open()) {
+					HashSet<string> existingTags = [];
+					if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
+						publicity = publicity ?? info.publicity;
+						existingTags = info.tags.ToHashSet();
 
-				if (SocialAPI.Workshop.TryGetInfoForMod(modFile, out var info)) {
-					usedTags = info.tags.Select(tag => new WorkshopTagOption(tag, tag)).ToArray();
-					publicity = info.publicity;
+						// Remove all non-user selected tags (1.4.4, Server), they'll be added later.
+						existingTags.IntersectWith(SteamedWraps.ModTags.Select(x => x.InternalNameForAPIs));
+					}
+
+					// Use existing Tags if none supplied
+					HashSet<string> setTags = [];
+					if (publishTags != null) {
+						foreach (var publishTag in publishTags) {
+							// Supports key without prefix or api internal name without spaces
+							var foundTag = SteamedWraps.ModTags.FirstOrDefault(x =>
+							string.Equals(x.NameKey.Replace("tModLoader.Tags", "").Replace("Language_", ""), publishTag, StringComparison.InvariantCultureIgnoreCase) ||
+							string.Equals(x.InternalNameForAPIs.Replace(" ", ""), publishTag, StringComparison.InvariantCultureIgnoreCase));
+							if (foundTag != null)
+								setTags.Add(foundTag.InternalNameForAPIs);
+							else
+								Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.WorkshopTagNotFound", publishTag));
+						}
+					}
+					else {
+						setTags = existingTags;
+					}
+
+					// Localization Tags
+					var autoLang = SocialBrowserModule.GetModLocalizationProgress(modFile, existingTags.Select(x => new WorkshopTagOption(x, x)).ToList());
+					setTags.ExceptWith(autoLang.Where(a => !a.setState).Select(b => b.tag.InternalNameForAPIs));
+					setTags.UnionWith(autoLang.Where(a => a.setState).Select(b => b.tag.InternalNameForAPIs));
+
+					var publishSettings = new WorkshopItemPublishSettings {
+						Publicity = publicity ?? WorkshopItemPublicSettingId.Public,
+						UsedTags = setTags.Select(x => new WorkshopTagOption(x, x)).ToArray(),
+						PreviewImagePath = iconPath
+					};
+
+					SocialAPI.Workshop.PublishMod(modFile, values, publishSettings);
 				}
-
-				var publishSetttings = new WorkshopItemPublishSettings {
-					Publicity = publicity,
-					UsedTags = usedTags,
-					PreviewImagePath = iconPath
-				};
-				
-				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 			}
 			finally {
 				SteamedWraps.OnGameExitCleanup();
@@ -306,7 +335,7 @@ public partial class WorkshopHelper
 				missingMods = new List<string>();
 
 				for (int i = 0; i < numPages; i++) {
-					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1) ));
+					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1)));
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
 					try {
@@ -330,7 +359,7 @@ public partial class WorkshopHelper
 						ReleaseWorkshopQuery();
 					}
 				}
-				
+
 				return items;
 			}
 
@@ -444,7 +473,7 @@ public partial class WorkshopHelper
 
 					await Task.Delay(1, token);
 				}
-				
+
 				if (_primaryQueryResult != EResult.k_EResultOK) {
 					SteamedWraps.ReportCheckSteamLogs();
 					throw new Exception($"Error: Unable to access Steam Workshop. ERROR CODE: {_primaryQueryResult}");

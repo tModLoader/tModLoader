@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,352 @@
+@@ -63,79 +_,356 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -124,6 +124,10 @@
 +	/// <br/> Defaults to 3600.
 +	/// </summary>
  	public int timeLeft;
++	/// <summary>
++	/// Represents a delay measured in ticks before this projectile should play a sound again. Automatically decreased by 1 each tick until it reaches 0. It is up to the AI of the projectile to set this to a value and play sounds once it reaches 0.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
  	public int soundDelay;
 +
 +	/// <summary>

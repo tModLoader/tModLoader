@@ -165,6 +165,18 @@ public static partial class SystemLoader
 		}
 	}
 
+	public static void PostWorldLoad()
+	{
+		foreach (var system in HookPostWorldLoad.Enumerate()) {
+			try {
+				system.PostWorldLoad();
+			}
+			catch (Exception e) {
+				throw new CustomModDataException(system.Mod, e.Message, e);
+			}
+		}
+	}
+
 	public static void OnWorldUnload()
 	{
 		foreach (var system in HookOnWorldUnload.Enumerate()) {

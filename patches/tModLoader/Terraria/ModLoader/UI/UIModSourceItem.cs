@@ -1,7 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using ReLogic.OS;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,12 +5,18 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.OS;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
+using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
 
@@ -307,34 +309,63 @@ internal class UIModSourceItem : UIPanel
 				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
 				return;
 			}
+
+			// Test loading the mod under `Main.dedServ = true` conditions
 			var p = new ProcessStartInfo() {
 				UseShellExecute = true,
 				FileName = Process.GetCurrentProcess().MainModule.FileName,
-				Arguments = "tModLoader.dll -server -steam -publish " + _builtMod.modFile.path.Remove(_builtMod.modFile.path.LastIndexOf(".tmod"))
+				Arguments = "tModLoader.dll -server -steam -testservermodloading " + _builtMod.modFile.Name
 			};
+
+			if (Program.LaunchParameters.TryGetValue("-tmlsavedirectory", out var tmlsavedirectory))
+				p.Arguments += $@" -tmlsavedirectory ""{tmlsavedirectory}""";
+			else if (Program.LaunchParameters.TryGetValue("-savedirectory", out var savedirectory))
+				p.Arguments += $@" -savedirectory ""{savedirectory}""";
 
 			var pending = Process.Start(p);
 			pending.WaitForExit();
+			int result = pending.ExitCode;
+			if (result == 0) {
+				string icon = Path.Combine(_mod, "icon_workshop.png");
+
+				if (!File.Exists(icon))
+					icon = Path.Combine(_mod, "icon.png");
+
+				WorkshopHelper.PublishMod(_builtMod, icon);
+			}
+			else {
+				Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.LoadError", _builtMod), Interface.modSourcesID);
+				return;
+			}
 		}
 		catch (WebException e) {
 			UIModBrowser.LogModBrowserException(e, Interface.modSourcesID);
 		}
 	}
 
-	internal static void PublishModCommandLine(string modName)
+	internal static void TestServerModLoading(string modName)
 	{
+		// Create a new console for clarity
+		Platform.Get<IWindowService>().ReleaseConsole();
+		Platform.Get<IWindowService>().CreateAndRedirectConsole();
+		Console.WriteLine("------------------------------------------------------------------");
+		Console.WriteLine(Language.GetTextValue("tModLoader.TestServerModLoadingNotification"));
+		Console.WriteLine("------------------------------------------------------------------");
+
 		try {
-			LocalMod localMod;
+			ModLoader.preparingServerSidePublish = true;
+			LocalMod _builtMod;
 			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
+			Console.WriteLine("Testing mod found at modPath: " + modPath);
 			var modFile = new TmodFile(modPath);
-			using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
-				localMod = new LocalMod(ModLocation.Local, modFile);
+			using (modFile.Open())
+				_builtMod = new LocalMod(ModLocation.Local, modFile);
 
-			string icon = Path.Combine(localMod.properties.modSource, "icon_workshop.png");
+			string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
 			if (!File.Exists(icon))
-				icon = Path.Combine(localMod.properties.modSource, "icon.png");
+				icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
 
-			WorkshopHelper.PublishMod(localMod, icon);
+			ModLoader.EnabledMods.Add(modName);
 		}
 		catch (Exception e) {
 			Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -342,6 +373,37 @@ internal class UIModSourceItem : UIPanel
 			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(1);
 		}
+	}
+
+	internal static void PublishModCommandLine(string modName)
+	{
+		try {
+			var publishTags = LaunchInitializer.TryParameter("-publishtags")?.Split("&");
+
+			WorkshopItemPublicSettingId? publicity = null;
+			if (LaunchInitializer.TryParameter("-publicity") is string publicityString)
+				if (int.TryParse(publicityString, out int publicityInt) && publicityInt >= 0 && publicityInt <= 3) 
+					publicity = (WorkshopItemPublicSettingId)publicityInt;
+
+			LocalMod localMod;
+			var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
+			var modFile = new TmodFile(modPath);
+			using (modFile.Open())
+				localMod = new LocalMod(ModLocation.Local, modFile);
+
+			string icon = Path.Combine(localMod.properties.modSource, "icon_workshop.png");
+			if (!File.Exists(icon))
+				icon = Path.Combine(localMod.properties.modSource, "icon.png");
+
+			WorkshopHelper.PublishMod(localMod, icon, publishTags, publicity);
+		}
+		catch (Exception e) {
+			Console.WriteLine("Something went wrong with command line mod publishing.");
+			Console.WriteLine(e.ToString());
+			Steamworks.SteamAPI.Shutdown();
+			Environment.Exit(1);
+		}
+
 		Console.WriteLine("exiting ");
 		Steamworks.SteamAPI.Shutdown();
 		Environment.Exit(0);

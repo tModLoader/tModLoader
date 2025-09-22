@@ -2755,9 +2755,16 @@
  		for (int k = 0; k < num16; k++) {
  			KillTile_MakeTileDust(i, j, tile);
  		}
-@@ -45756,9 +_,17 @@
+@@ -45754,11 +_,23 @@
+ 		}
+ 	}
  
- 	private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
++	/// <summary>
++	/// Gets the player closest to the provided tile coordinates. Usually used to determine which player mined a tile.
++	/// <br/><br/> Technically this could be incorrect if multiple players are close, but since tile operations do not track which player triggered them, this is a reasonable approach.
++	/// </summary>
+-	private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
++	public static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
  
 +	// made internal, added includeAllModdedLargeObjectDrops param
 -	private static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false)
@@ -2802,6 +2809,24 @@
  				}
  
  				break;
+@@ -47858,13 +_,16 @@
+ 		}
+ 	}
+ 
+-	private static bool KillTile_ShouldDropSeeds(int x, int y)
++	public static bool KillTile_ShouldDropSeeds(int x, int y)
+ 	{
+ 		if (Main.rand.Next(2) == 0) {
++			/*
+ 			if (!GetPlayerForTile(x, y).HasItem(281))
+ 				return GetPlayerForTile(x, y).HasItem(986);
+ 
+ 			return true;
++			*/
++			return GetPlayerForTile(x, y).HasItem(ItemID.Sets.DropSeedsIfInInventory);
+ 		}
+ 
+ 		return false;
 @@ -47881,7 +_,12 @@
  
  					if (Main.tile[i, k] != null) {

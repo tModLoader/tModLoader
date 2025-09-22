@@ -277,6 +277,15 @@ Mods: {
 					'''
 			}
 
+			ExamplePotionDelayAccessory: {
+				DisplayName: Example Potion Delay Accessory
+				Tooltip:
+					'''
+					Decreases the total cooldown of healing potions by {0} seconds
+					{$CommonItemTooltip.ReducesHealingPotionCooldownByPercent@1}
+					'''
+			}
+
 			ExampleWings: {
 				DisplayName: Example Wings
 				Tooltip: This is a modded wing.
@@ -415,7 +424,7 @@ Mods: {
 
 			ExampleHealingPotion: {
 				DisplayName: Example Healing Potion
-				Tooltip: ""
+				Tooltip: Potion cooldown reduced by {0} seconds
 				RestoreLifeText: "{0} ({1} when quick healing)"
 			}
 
@@ -1208,6 +1217,21 @@ Mods: {
 				DisplayName: Example Sentry Item
 				Tooltip: Summons an example sentry to fight for you
 			}
+
+			ExampleHeldProjectileWeapon: {
+				DisplayName: Example Held Projectile Weapon
+				Tooltip: ""
+			}
+
+			SimpleAccessory: {
+				DisplayName: Simple Accessory
+				Tooltip: Minion and sentry attacks cause frostburn
+			}
+
+			ExampleCutTile: {
+				DisplayName: Fragile Boulder Trap
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1258,6 +1282,7 @@ Mods: {
 			ExampleInteractableProjectile.DisplayName: Example Interactable Projectile
 			ExampleSentry.DisplayName: Example Sentry
 			ExampleSentryShot.DisplayName: Example Sentry Shot
+			ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
 		}
 
 		Buffs: {

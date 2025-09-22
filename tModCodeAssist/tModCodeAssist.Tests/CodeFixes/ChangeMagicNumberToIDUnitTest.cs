@@ -37,6 +37,19 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			tile.TileColor = [|1|];
 			tile.WallColor = [|1|];
 			tile.LiquidType = [|1|];
+
+			var projectile = new Projectile();
+			projectile.aiStyle = [|1|];
+
+			Terraria.ModLoader.ModProjectile modProjectile = null;
+			modProjectile.AIType = [|93|];
+
+			var npc = new NPC();
+			npc.aiStyle = [|18|];
+
+			Terraria.ModLoader.ModNPC modNPC = null;
+			modNPC.AIType = [|103|];
+			modNPC.AnimationType = [|64|];
 			""",
 			"""
 			using Terraria;
@@ -65,6 +78,19 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			tile.TileColor = PaintID.RedPaint;
 			tile.WallColor = PaintID.RedPaint;
 			tile.LiquidType = LiquidID.Lava;
+			
+			var projectile = new Projectile();
+			projectile.aiStyle = ProjAIStyleID.Arrow;
+
+			Terraria.ModLoader.ModProjectile modProjectile = null;
+			modProjectile.AIType = ProjectileID.MagicDagger;
+			
+			var npc = new NPC();
+			npc.aiStyle = NPCAIStyleID.Jellyfish;
+			
+			Terraria.ModLoader.ModNPC modNPC = null;
+			modNPC.AIType = NPCID.GreenJellyfish;
+			modNPC.AnimationType = NPCID.PinkJellyfish;
 			""");
 	}
 
@@ -77,6 +103,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 
 			_ = new Item().type == [|1|];
 			_ = new Projectile().type == [|444|];
+			_ = Main.tile[10, 20].TileType == [|8|]; // ref property
 			""",
 			"""
 			using Terraria;
@@ -84,6 +111,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			
 			_ = new Item().type == ItemID.IronPickaxe;
 			_ = new Projectile().type == ProjectileID.Xenopopper;
+			_ = Main.tile[10, 20].TileType == TileID.Gold; // ref property
 			""");
 	}
 
@@ -105,6 +133,8 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			Dust.NewDust(Vector2.Zero, 1, 2, [|3|], 4, 5, 6, Color.Red, 7);
 			Dust.NewDustDirect(Vector2.Zero, 1, 2, [|75|], 4, 5);
 			Dust.NewDustPerfect(Vector2.Zero, [|76|]);
+			new Player().AddBuff([|20|], 120);
+			new NPC().AddBuff([|24|], 120, true);
 			""",
 			"""
 			using Microsoft.Xna.Framework;
@@ -120,6 +150,8 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			Dust.NewDust(Vector2.Zero, 1, 2, DustID.GrassBlades, 4, 5, 6, Color.Red, 7);
 			Dust.NewDustDirect(Vector2.Zero, 1, 2, DustID.CursedTorch, 4, 5);
 			Dust.NewDustPerfect(Vector2.Zero, DustID.Snow);
+			new Player().AddBuff(BuffID.Poisoned, 120);
+			new NPC().AddBuff(BuffID.OnFire, 120, true);
 			""");
 	}
 

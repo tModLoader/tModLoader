@@ -110,7 +110,7 @@
 +			//TML: Added 'buildData', 'existingID', 'changeNotes' parameters.
 +			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null)
  			{
-+				Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
++				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.PublishItem", itemTitle));
  				_issueReporter = issueReporter;
  				_endAction = endAction;
  				_createItemHook = CallResult<CreateItemResult_t>.Create(CreateItemResult);

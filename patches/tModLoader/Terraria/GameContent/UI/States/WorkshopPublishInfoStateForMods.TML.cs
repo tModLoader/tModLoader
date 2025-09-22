@@ -55,7 +55,9 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		}
 
 		/* if ( SocialAPI.Workshop != null) */
-		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
+		using (_dataObject.Open()) {
+			SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
+		}
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
 			// Copy the used preview image to the mod's source directory if it's not a resize and if one isn't there already.
@@ -153,38 +155,15 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 		// Update Localization Tags Automatically if the mod is loaded. (Can only publish if enabled, but just in case.)
 		if (ModLoader.ModLoader.TryGetMod(_dataObject.Name, out ModLoader.Mod mod)) {
-			var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(mod);
-			int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
-			ModLoader.Logging.tML.Info($"Determining localization progress for {mod.Name}:");
-			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
-				if (tagOption.OptionValue.NameKey.StartsWith("tModLoader.TagsLanguage_")) {
-					// I couldn't see any other way to convert this.
-					var culture = tagOption.OptionValue.NameKey.Split('_')[1] switch {
-						"English" => GameCulture.FromName("en-US"),
-						"Spanish" => GameCulture.FromName("es-ES"),
-						"French" => GameCulture.FromName("fr-FR"),
-						"Italian" => GameCulture.FromName("it-IT"),
-						"Russian" => GameCulture.FromName("ru-RU"),
-						"Chinese" => GameCulture.FromName("zh-Hans"),
-						"Portuguese" => GameCulture.FromName("pt-BR"),
-						"German" => GameCulture.FromName("de-DE"),
-						"Polish" => GameCulture.FromName("pl-PL"),
-						_ => throw new NotImplementedException(),
-					};
+			var autoLocalTags = SocialBrowserModule.GetModLocalizationProgress(mod.File, _tagOptions.Where(a => a.IsSelected).Select(b => b.OptionValue).ToList());
 
-					int countOtherEntries;
-					localizationCounts.TryGetValue(culture, out countOtherEntries);
-					float localizationProgress = (float)countOtherEntries / countMaxEntries;
-					ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countMaxEntries}, {localizationProgress:P0}, missing {countMaxEntries - countOtherEntries}");
+			foreach (var localTag in autoLocalTags) {
+				var tagOption = _tagOptions.Find(a => a.OptionValue == localTag.tag);
 
-					bool languageMostlyLocalized = localizationProgress > 0.75f; // 75% Threshold to be localized.
-					bool languagePreviouslyLocalizedAndStillEnough = tagOption.IsSelected && localizationProgress > 0.5f; // If mod previously tagged as localized, persist selection as long as above 50%
-
-					// Override existing selection. Existing selection will persist if still above 50% to accommodate temporarily falling below threshold.
-					tagOption.SetCurrentOption(languageMostlyLocalized || languagePreviouslyLocalizedAndStillEnough ? tagOption.OptionValue : null);
-					// Automatically set option slightly redder, indicating it was automatically selected. Even redder if below 75%
-					tagOption.SetColor(tagOption.IsSelected ? (languageMostlyLocalized ? new Color(192, 175, 235) : new Color(255, 175, 235)) : Colors.InventoryDefaultColor, 1f);
-				}
+				// Override existing selection. Existing selection will persist if still above 50% to accommodate temporarily falling below threshold.
+				tagOption.SetCurrentOption(localTag.setState ? tagOption.OptionValue : null);
+				// Automatically set option slightly redder, indicating it was automatically selected. Even redder if below 75%
+				tagOption.SetColor(tagOption.IsSelected ? (!localTag.degraded ? new Color(192, 175, 235) : new Color(255, 175, 235)) : Colors.InventoryDefaultColor, 1f);
 			}
 			var translationTagOption = _tagOptions.FirstOrDefault(x => x.OptionValue.NameKey == "tModLoader.TagsTranslation");
 			translationTagOption.SetCurrentOption(mod.TranslationForMods != null ? translationTagOption.OptionValue : null);
