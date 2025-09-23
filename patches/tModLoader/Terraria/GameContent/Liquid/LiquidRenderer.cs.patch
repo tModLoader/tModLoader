@@ -175,15 +175,31 @@
  			ptr2 = ptr;
  			ptr2 += num;
  			for (int num6 = 2; num6 < rectangle.Width - 2; num6++) {
-@@ -247,7 +_,7 @@
+@@ -247,8 +_,8 @@
  						float num10 = 0f;
  						float num11 = 1f;
  						float visibleLiquidLevel = ptr2->VisibleLiquidLevel;
 -						if (!liquidCache.HasVisibleLiquid)
-+						if (!liquidCache.HasVisibleLiquid || (liquidCache.EdgeData.HasValue && ptr2->LiquidLevel < 250 && !liquidCache.IsHalfBrick))
- 							num10 += liquidCache2.VisibleLiquidLevel * (1f - visibleLiquidLevel);
+-							num10 += liquidCache2.VisibleLiquidLevel * (1f - visibleLiquidLevel);
++						if (!liquidCache.HasVisibleLiquid || (liquidCache.EdgeData.HasValue && !liquidCache.IsHalfBrick))
++							num10 += (liquidCache2.EdgeData.HasValue ? 1f : liquidCache2.VisibleLiquidLevel) * (1f - visibleLiquidLevel);
  
  						if (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid && !liquidCache2.IsHalfBrick)
+ 							num11 -= liquidCache.VisibleLiquidLevel * (1f - visibleLiquidLevel);
+@@ -320,8 +_,11 @@
+ 							if (ptr2->HasRightEdge)
+ 								ptr2->VisibleRightWall = (ptr2->RightWall * 2f + liquidCache.RightWall + liquidCache2.RightWall) * 0.25f;
+ 						}
+-
+-						if (liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid) {
++						// TML: Change condition to ignore edges when smoothing liquids
++						bool smoothCondition = LiquidEdgeRenderer.Active ?
++							liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid && liquidCache4.HasVisibleLiquid && !liquidCache4.IsSolid :
++							liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid;
++						if (smoothCondition) {
+ 							if (ptr2->HasTopEdge)
+ 								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
+ 
 @@ -421,10 +_,14 @@
  								float num21 = Math.Max(0.25f, ptr2->VisibleRightWall);
  								float num22 = Math.Min(0.75f, ptr2->VisibleTopWall);
