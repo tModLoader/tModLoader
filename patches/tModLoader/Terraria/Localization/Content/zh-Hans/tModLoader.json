@@ -201,10 +201,10 @@
 		"PublishNewButton": "发布新模组",
 		"DownloadProgress": "已下载完成 {0}%",
 		"DescriptionLengthExceedLimit": "此模组的（创意工坊）描述超出Steam限制，上限8000字符，已超出{0}个字符",
-		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
-		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
-		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
-		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
+		"CommandLinePublishNeedsSteam": "命令行发布需要先加载 Steam （-steam 命令行选项）",
+		"CommandLinePublishOnlyUsableWithServerSideMods": "命令行发布暂时仅可用于发布服务器端的模组。",
+		"WorkshopTagNotFound": "你所提供的标签“{0}”不是 -publishtags 的有效选项",
+		"TestServerModLoadingNotification": "此窗口正在测试该服务器端模组是否加载错误。\n请不要关闭此窗口，等待测试完成。",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",

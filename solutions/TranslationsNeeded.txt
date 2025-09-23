@@ -1,4 +1,4 @@
-zh-Hans 4
+zh-Hans 0
 ru-RU 5
 pt-BR 31
 pl-PL 29
