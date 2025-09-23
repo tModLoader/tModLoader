@@ -153,7 +153,7 @@ namespace ExampleMod.Content.Items.Ammo
 			// ...Admittedly, you'd still need this method since vanity trees (Sakura and Willow) aren't part of the vanilla tree types, so they would break on conversion if not accounted for
 			FindAndConvertTree(i, j, tileTypeAbove);
 
-			WorldGen.ConvertTile(i, j, StoneType, true);
+			WorldGen.ConvertTile(i, j, StoneType);
 			return false;
 		}
 
@@ -241,7 +241,7 @@ namespace ExampleMod.Content.Items.Ammo
 			tileTop.TileFrameY = 0;
 			tileBottom.TileFrameY = 18;
 
-			WorldGen.ConvertTile(i, j, ChairType, true);
+			WorldGen.ConvertTile(i, j, ChairType);
 			return false;
 		}
 
@@ -260,7 +260,7 @@ namespace ExampleMod.Content.Items.Ammo
 			tileLeft.TileFrameX = 0;
 			tileRight.TileFrameX = 18;
 
-			WorldGen.ConvertTile(i, j, WorkbenchType, true);
+			WorldGen.ConvertTile(i, j, WorkbenchType);
 			return false;
 		}
 
