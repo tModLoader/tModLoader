@@ -315,7 +315,7 @@ public static class LiquidEdgeRenderer
 			else if (right) {
 				offset = new Vector2(16 - width, depthPush);
 				size = new Rectangle(16 - width, 4, width, 16 - depthPush);
-				if (!left && down) {
+				if (leftEmpty && down) {
 					offset.X += 4;
 					size.Width -= 4;
 				}
