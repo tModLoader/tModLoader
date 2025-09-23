@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,92 @@
+@@ -11,59 +_,94 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -60,8 +60,10 @@
 -			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -		</EmbeddedResource>
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj" ReferenceOutputAssembly="false" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj" ReferenceOutputAssembly="false" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj"
++			ReferenceOutputAssembly="false" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj"
++			ReferenceOutputAssembly="false" />
  
  		<Reference Include="CsvHelper" />
 -		<Reference Include="Ionic.Zip.CF" />
