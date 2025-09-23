@@ -16,11 +16,6 @@ public struct ModVersionHash
 
 	public override string ToString() => hash;
 
-	private ModVersionHash(string encodedHash)
-	{
-		hash = encodedHash;
-	}
-
 	public ModVersionHash(TmodFile modFile)
 	{
 		hash = System.Convert.ToBase64String(modFile.Hash);
@@ -40,7 +35,7 @@ public struct ModVersionHash
 
 		public override ModVersionHash ReadJson(JsonReader reader, Type objectType, ModVersionHash existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
-			return new ModVersionHash((string)reader.Value);
+			return new ModVersionHash() { hash = (string)reader.Value };
 		}
 	}
 }

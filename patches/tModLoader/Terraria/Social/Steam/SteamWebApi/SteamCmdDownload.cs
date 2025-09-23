@@ -21,7 +21,7 @@ internal class SteamCmdDownloaderInstance
 	}
 
 	private string SteamCmdLeadingArguments(string steamCmdDownloadList) =>
-		$"+force_install_dir {modDownloadFolderPath} +login {SteamCMDUser} {steamCmdDownloadList} +quit";
+		$"+force_install_dir \"{modDownloadFolderPath}\" +login {SteamCMDUser} {steamCmdDownloadList} +quit";
 
 	private string GetActualModDownloadsWorkshopFolder() =>
 		$"{modDownloadFolderPath}/steamapps/workshop/content/1281930";

@@ -9,12 +9,11 @@ internal class BatchMetadataSetRunner
 {
 	private string workingDirectory;
 
-	internal static void RunForceUpdate(string publisherKey, string steamCmdPath, string steamCmdUser = "anonymous", string workshopForceDevMetadataFolder = null)
+	internal static void RunForceUpdate(string workshopForceDevMetadataFolder = null)
 	{
-		// The below code works, but needs two input arguments and optional 3rd
-		SteamWebWrapper.PublisherKey = publisherKey;
-		SteamCmdDownloaderInstance.SteamCMDPath = steamCmdPath;
-		SteamCmdDownloaderInstance.SteamCMDUser = steamCmdUser;
+		SteamWebWrapper.PublisherKey = Environment.GetEnvironmentVariable("steam_publisherkey");
+		SteamCmdDownloaderInstance.SteamCMDPath = Environment.GetEnvironmentVariable("steamcmd_path");
+		SteamCmdDownloaderInstance.SteamCMDUser = Environment.GetEnvironmentVariable("steamcmd_user");
 
 		bool performFullRun = string.IsNullOrEmpty(workshopForceDevMetadataFolder);
 
@@ -22,7 +21,7 @@ internal class BatchMetadataSetRunner
 		if (performFullRun) {
 			var response = SteamWebWrapper.QueryForPublisherIds();
 
-			for (int i = 0; i < 1/* response.Count*/; i++) {
+			for (int i = 0; i < response.Count; i++) {
 				string workingDir = CreateWorkingDirectoryForPage(response[i], i);
 				new BatchMetadataSetRunner(workingDir).RunForceDevMetadataUpdate(deleteModsWhenComplete: true);
 			}
@@ -31,6 +30,8 @@ internal class BatchMetadataSetRunner
 			// Update items only in the associated folder. good for touchups or running in CI
 			new BatchMetadataSetRunner(workshopForceDevMetadataFolder).RunForceDevMetadataUpdate(deleteModsWhenComplete: false);
 		}
+
+		Environment.Exit(0);
 	}
 
 	private BatchMetadataSetRunner(string workingDirectory)
@@ -82,7 +83,7 @@ internal class BatchMetadataSetRunner
 
 		// Free up disk drive space by cleaning out workshop items folder when complete
 		if (deleteModsWhenComplete)
-			Directory.Delete(actualWorkshopItemsFolder, true);
+			Directory.Delete(Path.Combine(workingDirectory, "steamapps"), true);
 	}
 
 	private List<(string publishedId, string metadata)> IterateWorkshopFilesForDevMetadata(string actualWorkshopItemsFolder)

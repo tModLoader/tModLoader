@@ -162,7 +162,7 @@ internal static class SteamWebWrapper
 	}
 	*/
 
-	private const float NumberResultsPerPage = 10f;
+	private const float NumberResultsPerPage = 50f;
 
 	private static string QueryForPublisherIdsInnerCursor(string cursor)
 	{
@@ -206,7 +206,7 @@ internal static class SteamWebWrapper
 			cursor = root.Response.NextCursor;
 			publisherIdPages.Add(root.Response.PublishedFileDetails.Select(pid => pid.PublishedFileId).ToArray());
 		}
-		while (false && cursor != "*" && ++pageTracker < Math.Floor(totalBallparkEntries / NumberResultsPerPage) + 1);
+		while (cursor != "*" && ++pageTracker < Math.Floor(totalBallparkEntries / NumberResultsPerPage) + 1);
 
 		Console.WriteLine($"Querying for PublishedFileIds complete");
 
