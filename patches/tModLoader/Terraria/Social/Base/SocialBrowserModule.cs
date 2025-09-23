@@ -14,6 +14,8 @@ namespace Terraria.Social.Base;
 public struct ModPubId_t
 {
 	public string m_ModPubId;
+
+	public override string ToString() => m_ModPubId;
 }
 
 public class SocialBrowserException : Exception
