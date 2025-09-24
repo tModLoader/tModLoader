@@ -277,6 +277,15 @@ Mods: {
 					'''
 			}
 
+			ExamplePotionDelayAccessory: {
+				DisplayName: Example Potion Delay Accessory
+				Tooltip:
+					'''
+					Decreases the total cooldown of healing potions by {0} seconds
+					{$CommonItemTooltip.ReducesHealingPotionCooldownByPercent@1}
+					'''
+			}
+
 			ExampleWings: {
 				DisplayName: Example Wings
 				Tooltip: This is a modded wing.
@@ -415,7 +424,7 @@ Mods: {
 
 			ExampleHealingPotion: {
 				DisplayName: Example Healing Potion
-				Tooltip: ""
+				Tooltip: Potion cooldown reduced by {0} seconds
 				RestoreLifeText: "{0} ({1} when quick healing)"
 			}
 

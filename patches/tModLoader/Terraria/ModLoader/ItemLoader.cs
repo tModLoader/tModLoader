@@ -511,6 +511,31 @@ public static class ItemLoader
 		}
 	}
 
+	private delegate void DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay);
+	private static HookList HookModifyPotionDelay = AddHook<DelegateModifyPotionDelay>(g => g.ModifyPotionDelay);
+
+	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay)
+	{
+		item.ModItem?.ModifyPotionDelay(player, ref baseDelay);
+
+		foreach (var g in HookModifyPotionDelay.Enumerate(item)) {
+			g.ModifyPotionDelay(item, player, ref baseDelay);
+		}
+	}
+
+	private delegate bool DelegateApplyPotionDelay(Item item, Player player, int potionDelay);
+	private static HookList HookApplyPotionDelay = AddHook<DelegateApplyPotionDelay>(g => g.ApplyPotionDelay);
+
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		foreach (var g in HookApplyPotionDelay.Enumerate(item)) {
+			if (!g.ApplyPotionDelay(item, player, potionDelay))
+				return false;
+		}
+
+		return item.ModItem?.ApplyPotionDelay(player, potionDelay) ?? true;
+	}
+
 	private delegate bool? DelegateCanConsumeBait(Player baiter, Item bait);
 	private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(g => g.CanConsumeBait);
 

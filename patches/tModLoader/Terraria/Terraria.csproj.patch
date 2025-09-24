@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,91 @@
+@@ -11,59 +_,95 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -33,6 +33,10 @@
  		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
  		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
 +		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
++
++		<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
++		<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
++		<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
 +	</PropertyGroup>
 +
 +	<!-- Versioning -->
@@ -72,7 +76,7 @@
 +		<Reference Include="TerrariaHooks" />
  
 +		<PackageReference Include="DotNetZip" Version="1.16.0" />
- 		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
+ 		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.2" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.5.0" />
 +		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.0" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />

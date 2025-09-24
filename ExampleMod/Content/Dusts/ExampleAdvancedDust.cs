@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Dusts
@@ -24,7 +25,7 @@ namespace ExampleMod.Content.Dusts
 
 			// Since the vanilla dust texture has all the dust in 1 file, we'll need to do some math.
 			// If you want to use a vanilla dust texture, you can copy and paste it, changing the desiredVanillaDustTexture
-			int desiredVanillaDustTexture = 139;
+			int desiredVanillaDustTexture = DustID.Confetti;
 			int frameX = desiredVanillaDustTexture * 10 % 1000;
 			int frameY = desiredVanillaDustTexture * 10 / 1000 * 30 + Main.rand.Next(3) * 10;
 			dust.frame = new Rectangle(frameX, frameY, 8, 8);

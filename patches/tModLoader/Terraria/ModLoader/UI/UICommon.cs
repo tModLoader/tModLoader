@@ -89,7 +89,9 @@ public static class UICommon
 	}
 
 	/// <summary>
-	/// Draws a tooltip on the mouse cursor. Functions like <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> and <see cref="Main.hoverItemName"/>, but adds the same background seen in item tooltips behind the text.
+	/// Draws a tooltip on the mouse cursor.
+	/// <br/><br/> Functions like <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> and <see cref="Main.hoverItemName"/>, but adds the same background seen in item tooltips behind the text.
+	/// <br/><br/> Only works during rendering, calling this during Update will not do anything.
 	/// </summary>
 	/// <param name="text"></param>
 	public static void TooltipMouseText(string text)
@@ -142,6 +144,7 @@ public static class UICommon
 	public static Asset<Texture2D> InfoDisplayPageArrowTexture { get; internal set; }
 	public static Asset<Texture2D> tModLoaderTitleLinkButtonsTexture { get; internal set; }
 	public static Asset<Texture2D> CopyCodeButtonTexture { get; internal set; }
+	public static Asset<Texture2D> DropdownIconTexture { get; internal set; }
 
 	internal static void LoadTextures()
 	{
@@ -181,5 +184,6 @@ public static class UICommon
 		InfoDisplayPageArrowTexture = LoadEmbeddedTexture("UI.InfoDisplayPageArrow");
 		tModLoaderTitleLinkButtonsTexture = LoadEmbeddedTexture("UI.tModLoaderTitleLinkButtons");
 		CopyCodeButtonTexture = LoadEmbeddedTexture("UI.CopyCodeButton");
+		DropdownIconTexture = LoadEmbeddedTexture("UI.DropdownIcon");
 	}
 }

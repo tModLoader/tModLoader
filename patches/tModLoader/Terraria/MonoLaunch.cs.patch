@@ -65,17 +65,21 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,25 +_,34 @@
+@@ -57,29 +_,39 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  
 -			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
--
--			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
 +			Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
 +			if (name.StartsWith("/tmp/"))
 +				return IntPtr.Zero;
 +
+ 			if (name.StartsWith("steam_api")) {
+ 				Console.WriteLine("\tdelegating to Steamworks.NET.AnyCPU resolver");
+ 				return assemblies[name] = IntPtr.Zero;
+ 			}
+ 
+-			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
 +			string[] files;
 +			try {
 +				files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);

@@ -1,8 +1,10 @@
 using ReLogic.OS;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Terraria.Localization;
 
@@ -30,16 +32,24 @@ internal static class InstallVerifier
 	private static byte[] gogHash;
 	private static byte[] steamHash;
 
+	private static bool IsSteamUnsupported => RuntimeInformation.RuntimeIdentifier == "linux-arm64";
+
+	private static string SteamworksFolder => Path.Combine(Path.GetDirectoryName(typeof(SteamAPI).Assembly.Location), "..", "..");
+
 	static InstallVerifier()
 	{
+		if (IsSteamUnsupported)
+			return;
+
+		var nativesDir = $"{SteamworksFolder}/runtimes/{RuntimeInformation.RuntimeIdentifier}/native";
 		if (Platform.IsWindows) {
-			if (IntPtr.Size == 4) {
-				steamAPIPath = "Libraries/Native/Windows32/steam_api.dll";
-				steamAPIHash = ToByteArray("56d9f94d37cb8f03049a1cc3062bffaf");
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X86) {
+				steamAPIPath = $"{nativesDir}/libsteam_api.dll";
+				steamAPIHash = ToByteArray("6750595142dad4552d0f6f04973a7331");
 			}
 			else {
-				steamAPIPath = "Libraries/Native/Windows/steam_api64.dll";
-				steamAPIHash = ToByteArray("500475b20083ccdc64f12d238cab687a");
+				steamAPIPath = $"{nativesDir}/steam_api64.dll";
+				steamAPIHash = ToByteArray("3bae3a5ecad22eec751e154f68e09361");
 			}
 
 			vanillaSteamAPI = "steam_api.dll";
@@ -47,15 +57,15 @@ internal static class InstallVerifier
 			steamHash = ToByteArray("4530e0acfa4c789f462addb77b405ccb");
 		}
 		else if (Platform.IsOSX) {
-			steamAPIPath = "Libraries/Native/OSX/libsteam_api64.dylib";
-			steamAPIHash = ToByteArray("801e9bf5e5899a41c5999811d870b1ca");
+			steamAPIPath = $"{nativesDir}/libsteam_api.dylib";
+			steamAPIHash = ToByteArray("b7736b391a8276faccb4c055d515d531");
 			vanillaSteamAPI = "libsteam_api.dylib";
 			gogHash = ToByteArray("da2b740b4c6031df3a8b1f68b40cb82b");
 			steamHash = ToByteArray("4512beef5d7607fa1771c3fdf6cdc712");
 		}
 		else if (Platform.IsLinux) {
-			steamAPIPath = "Libraries/Native/Linux/libsteam_api64.so";
-			steamAPIHash = ToByteArray("ccdf20f0b2f9abbe1fea8314b9fab096");
+			steamAPIPath = $"{nativesDir}/libsteam_api.so";
+			steamAPIHash = ToByteArray("4b7a8cabaa354fcd25743aabfb4b1366");
 			vanillaSteamAPI = "libsteam_api.so";
 			gogHash = ToByteArray("9db40ef7cd4b37794cfe29e8866bb6b4");
 			steamHash = ToByteArray("2ff21c600897a9485ca5ae645a06202d");
@@ -198,6 +208,9 @@ internal static class InstallVerifier
 
 	private static void CheckSteam()
 	{
+		if (IsSteamUnsupported)
+			return;
+
 		if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 			Utils.OpenToURL("https://terraria.org");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));

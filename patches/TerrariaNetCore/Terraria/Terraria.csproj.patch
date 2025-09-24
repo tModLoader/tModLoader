@@ -80,7 +80,7 @@
 -		</Reference>
 -		<Reference Include="WindowsBase" />
 +
-+		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
++		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.2" />
  	</ItemGroup>
 +
 +	<!-- Embedded Resources -->

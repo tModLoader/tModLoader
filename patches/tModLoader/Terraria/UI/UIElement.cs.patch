@@ -90,7 +90,7 @@
  	public bool IsMouseHovering { get; private set; }
  
  	public event MouseEvent OnLeftMouseDown;
-@@ -68,7 +_,9 @@
+@@ -68,10 +_,15 @@
  	public event MouseEvent OnRightMouseUp;
  	public event MouseEvent OnRightClick;
  	public event MouseEvent OnRightDoubleClick;
@@ -99,7 +99,13 @@
 +	/// <summary> Called by <see cref="MouseOut(UIMouseEvent)"/>. Use this event instead of inheritance if suitable. </summary>
  	public event MouseEvent OnMouseOut;
  	public event ScrollWheelEvent OnScrollWheel;
++	/// <summary> Called at the start of <see cref="Update(GameTime)"/>. Use this event instead of inheritance if suitable. </summary>
  	public event ElementEvent OnUpdate;
++	/// <summary> Called at the start of <see cref="Draw(SpriteBatch)"/>. Use this event instead of inheritance if suitable. </summary>
++	public event ElementEvent OnDraw;
+ 
+ 	public UIElement()
+ 	{
 @@ -106,10 +_,14 @@
  		}
  	}
@@ -125,7 +131,7 @@
  	public void Append(UIElement element)
  	{
  		element.Remove();
-@@ -146,6 +_,9 @@
+@@ -146,8 +_,14 @@
  		Elements.Clear();
  	}
  
@@ -134,7 +140,12 @@
 +	/// </summary>
  	public virtual void Draw(SpriteBatch spriteBatch)
  	{
++		if (this.OnDraw != null)
++			this.OnDraw(this);
++
  		bool overflowHidden = OverflowHidden;
+ 		bool useImmediateMode = UseImmediateMode;
+ 		RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
 @@ -167,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();

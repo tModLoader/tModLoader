@@ -8,6 +8,12 @@ using Terraria.ModLoader.UI.ModBrowser;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.Social.Steam;
+using System.Text.RegularExpressions;
 
 namespace Terraria.Social.Base;
 
@@ -138,6 +144,48 @@ public interface SocialBrowserModule
 			return "1.4.4-Transitive";
 
 		return "1.4.4"; // Long Term Service Version 1.4.4 (Current)
+	}
+
+	internal static List<(WorkshopTagOption tag, bool setState, bool degraded)> GetModLocalizationProgress(TmodFile tModFile, List<WorkshopTagOption> existingActiveTagsList)
+	{
+		var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(tModFile);
+		int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
+
+		ModLoader.Logging.tML.Info($"Determining localization progress for {tModFile.Name}:");
+
+		List<(WorkshopTagOption tag, bool setState, bool degraded)> autoLangTags = new List<(WorkshopTagOption tag, bool setState, bool degraded)>();
+
+		foreach (var tag in SteamedWraps.ModTags) {
+			if (tag.NameKey.StartsWith("tModLoader.TagsLanguage_")) {
+				// I couldn't see any other way to convert this.
+				var culture = tag.NameKey.Split('_')[1] switch {
+					"English" => GameCulture.FromName("en-US"),
+					"Spanish" => GameCulture.FromName("es-ES"),
+					"French" => GameCulture.FromName("fr-FR"),
+					"Italian" => GameCulture.FromName("it-IT"),
+					"Russian" => GameCulture.FromName("ru-RU"),
+					"Chinese" => GameCulture.FromName("zh-Hans"),
+					"Portuguese" => GameCulture.FromName("pt-BR"),
+					"German" => GameCulture.FromName("de-DE"),
+					"Polish" => GameCulture.FromName("pl-PL"),
+					_ => throw new NotImplementedException(),
+				};
+
+				int countOtherEntries;
+				localizationCounts.TryGetValue(culture, out countOtherEntries);
+				float localizationProgress = (float)countOtherEntries / countMaxEntries;
+
+				ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countMaxEntries}, {localizationProgress:P0}, missing {countMaxEntries - countOtherEntries}");
+
+				bool languageMostlyLocalized = localizationProgress > 0.75f; // 75% Threshold to be localized.
+				bool languagePreviouslyLocalizedAndStillEnough = existingActiveTagsList.Contains(tag) && localizationProgress > 0.5f; // If mod previously tagged as localized, persist selection as long as above 50%
+
+				// Override existing selection. Existing selection will persist if still above 50% to accommodate temporarily falling below threshold.
+				autoLangTags.Add((tag, languageMostlyLocalized || languagePreviouslyLocalizedAndStillEnough, !languageMostlyLocalized));
+			}
+		}
+
+		return autoLangTags;
 	}
 }
 
