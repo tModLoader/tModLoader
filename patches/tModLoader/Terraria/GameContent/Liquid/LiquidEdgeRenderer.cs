@@ -225,7 +225,7 @@ public static class LiquidEdgeRenderer
 
 		bool upLeftEmpty = left && !(tileUpLeftCache.HasTile && Main.tileSolid[tileUpLeftCache.TileType]) && tileUpLeftCache.LiquidAmount <= 0;
 		bool upRightEmpty = right && !(tileUpRightCache.HasTile && Main.tileSolid[tileUpRightCache.TileType]) && tileUpRightCache.LiquidAmount <= 0;
-		bool leftOrRightNotFull = tileLeftCache.LiquidAmount > 0 && tileRightCache.LiquidAmount > 0 && tileLeftCache.LiquidAmount < 250 && tileRightCache.LiquidAmount < 250;
+		bool leftOrRightNotFull = (tileLeftCache.LiquidAmount > 0 && tileLeftCache.LiquidAmount < 250) || (tileRightCache.LiquidAmount < 250 && tileRightCache.LiquidAmount > 0);
 
 		bool similarHeights = left && right ? Math.Abs(tileLeftCache.LiquidAmount - tileRightCache.LiquidAmount) < 100 : true;
 
@@ -311,6 +311,8 @@ public static class LiquidEdgeRenderer
 			else if ((left && right) || tileCache.IsHalfBlock) {
 				highLiquid = (tileLeftCache.LiquidAmount + tileRightCache.LiquidAmount) / 2;
 				int avgDepth = (int)((256 - highLiquid) / 32f) * 2;
+				if (tileCache.IsHalfBlock)
+					avgDepth = depthPush;
 				offset = new Vector2(0, avgDepth);
 				size = new Rectangle(0, 4, 16, 16 - avgDepth);
 			}
