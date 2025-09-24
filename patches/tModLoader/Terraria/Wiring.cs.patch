@@ -74,7 +74,15 @@
  	public static void SkipWire(Point16 point)
  	{
  		_wireSkip[point] = true;
-@@ -198,6 +_,9 @@
+@@ -193,11 +_,17 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Contains shared code for tile interactions. Usually called on the server and all clients. Typically called in conjunction with <c>NetMessage.SendData(MessageID.HitSwitch...)</c> to have the method run everywhere else.
++	/// </summary>
+ 	public static void HitSwitch(int i, int j)
+ 	{
  		if (!WorldGen.InWorld(i, j) || Main.tile[i, j] == null)
  			return;
  

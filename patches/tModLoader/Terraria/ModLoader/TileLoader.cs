@@ -99,6 +99,8 @@ public static class TileLoader
 	private static Func<int, int, int, Item, bool>[] HookAutoSelect;
 	private static Func<int, int, int, bool>[] HookPreHitWire;
 	private static Action<int, int, int>[] HookHitWire;
+	private static Func<int, int, int, bool>[] HookHitSwitch;
+	private static Func<int, int, int, Vector2, int, int, Vector2, int, bool>[] HookSwitchTiles;
 	private static Func<int, int, int, bool>[] HookSlope;
 	private static Action<int, Player>[] HookFloorVisuals;
 	private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
@@ -107,7 +109,6 @@ public static class TileLoader
 	private static Action[] HookPostSetupTileMerge;
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
-	private static Func<int, int, int, bool>[] HookHitSwitch;
 
 	internal static int ReserveTileID()
 	{
@@ -257,6 +258,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookAutoSelect, globalTiles, g => g.AutoSelect);
 		ModLoader.BuildGlobalHook(ref HookPreHitWire, globalTiles, g => g.PreHitWire);
 		ModLoader.BuildGlobalHook(ref HookHitWire, globalTiles, g => g.HitWire);
+		ModLoader.BuildGlobalHook(ref HookHitSwitch, globalTiles, g => g.HitSwitch);
+		ModLoader.BuildGlobalHook(ref HookSwitchTiles, globalTiles, g => g.SwitchTiles);
 		ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 		ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
@@ -264,7 +267,6 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
-		ModLoader.BuildGlobalHook(ref HookHitSwitch, globalTiles, g => g.HitSwitch);
 
 		if (!unloading) {
 			loaded = true;
@@ -1235,6 +1237,26 @@ public static class TileLoader
 		}
 	}
 
+	public static bool HitSwitch(int i, int j, int type)
+	{
+		foreach (var hook in HookHitSwitch) {
+			if (!hook(i, j, type))
+				return false;
+		}
+		GetTile(type)?.HitSwitch(i, j);
+		return true;
+	}
+
+	public static bool SwitchTiles(int i, int j, int type, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	{
+		bool returnValue = false;
+		foreach (var hook in HookSwitchTiles) {
+			returnValue |= hook(i, j, type, position, width, height, oldPosition, objType);
+		}
+		returnValue |= GetTile(type)?.SwitchTiles(i, j, position, width, height, oldPosition, objType) ?? false;
+		return returnValue;
+	}
+
 	public static void FloorVisuals(int type, Player player)
 	{
 		GetTile(type)?.FloorVisuals(player);
@@ -1468,14 +1490,5 @@ public static class TileLoader
 				return true;
 		}
 		return false;
-	}
-
-	public static bool HitSwitch(int x, int y, int type)
-	{
-		foreach (var hook in HookHitSwitch) {
-			if (!hook(x, y, type)) return false;
-		}
-		GetTile(type)?.HitSwitch(x, y);
-		return true;
 	}
 }

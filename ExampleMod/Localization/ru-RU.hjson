@@ -581,7 +581,11 @@ Mods: {
 
 			ExampleSlopedTile: {
 				// DisplayName: Example Sloped Tile
-				// Tooltip: Example tile that can be sloped but is not solid
+				/* Tooltip:
+					'''
+					Example tile that can be sloped but is not solid
+					Activates when a player passes through it in the indicated direction
+					''' */
 			}
 
 			ExampleTorch: {
@@ -1231,6 +1235,11 @@ Mods: {
 			ExampleCutTile: {
 				// DisplayName: Fragile Boulder Trap
 				// Tooltip: ""
+			}
+
+			ExamplePressurePlate: {
+				// DisplayName: Example Weighted Pressure Plate
+				// Tooltip: "{$ItemTooltip.WeightedPressurePlateCyan}"
 			}
 		}
 

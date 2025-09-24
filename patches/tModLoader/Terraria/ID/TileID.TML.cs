@@ -185,11 +185,16 @@ partial class TileID
 		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
 
 		/// <summary>
-		/// If not -1, the tile will act as a pressure plate
-		/// Positive values and 0 work as the type of pressure plate at that frame number
-		/// Negative values use the tile's y frame
+		/// Indicates that this tile is a pressure plate, and which entities should trigger it when they collide with it. Custom tiles will still need to implement <see cref="ModTile.HitSwitch(int, int)"/> to act on the trigger. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExamplePressurePlate.cs">ExamplePressurePlate.cs</see> example demonstrates this.
+		/// <br/><br/> Positive values and 0 indicate that this pressure plate acts like a specific <see cref="PressurePlates"/> style, inheriting the specific set of entity interactions of that style. (See the <see href="https://terraria.wiki.gg/wiki/Pressure_Plates">Pressure Plates wiki page</see>.) For example: 2 for players only, 0 for all entities, 5 for NPC, and 7 for player only but the pressure plate breaks.
+		/// <br/><br/> A -2 value indicates that this pressure plate acts exactly like <see cref="PressurePlates"/>, with each style corresponding to the same entity interactions sets of the <see cref="PressurePlates"/> styles.
+		/// <br/><br/> A -3 value indicates that this is a <see cref="WeightedPressurePlate"/>. It can only be interacted by players but will trigger when stepped on and off.
+		/// <br/><br/> A -4 value indicates that this is a <see cref="ProjectilePressurePad"/>. It can only be interacted by projectiles support all 4 placement orientations.
+		/// <br/><br/> Note that for each of these the tile sprite dimensions should match the vanilla sprite.
+		/// <br/><br/> <see cref="ModTile.SwitchTiles"/> can be used if these options are insufficient and custom collision calculations are needed. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleSlopeTile.cs">ExampleSlopeTile.cs</see> example demonstrates this.
+		/// <br/><br/> Defaults to -1.
 		/// </summary>
-		public static int[] PressurePlate = Factory.CreateIntSet(-1, TileID.PressurePlates, -2);
+		public static int[] PressurePlate = Factory.CreateIntSet(-1, PressurePlates, -2, WeightedPressurePlate, -3, ProjectilePressurePad, -4);
 		
 		// Values taken from WorldFile.ClearTempTiles
 		/// <summary>

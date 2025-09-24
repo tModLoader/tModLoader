@@ -299,6 +299,21 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
+	/// Called when <see cref="Wiring.HitSwitch"/> is called on the tile. Can be used to skip or override the vanilla behavior by returning false.
+	/// <br/><br/> Returns true by default.
+	/// </summary>
+	public virtual bool HitSwitch(int i, int j, int type)
+	{
+		return true;
+	}
+
+	/// <inheritdoc cref="ModTile.SwitchTiles(int, int, Vector2, int, int, Vector2, int)"/>
+	public virtual bool SwitchTiles(int i, int j, int type, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	{
+		return false;
+	}
+
+	/// <summary>
 	/// Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single Player.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -380,14 +395,5 @@ public abstract class GlobalTile : GlobalBlockType
 	public virtual bool ShakeTree(int x, int y, TreeTypes treeType)
 	{
 		return false;
-	}
-
-	/// <summary>
-	/// Allows you to determine whether this tile triggers wires.
-	/// <br/>Return false to prevent it. Returns true by default.
-	/// </summary>
-	public virtual bool HitSwitch(int i, int j, int type)
-	{
-		return true;
 	}
 }

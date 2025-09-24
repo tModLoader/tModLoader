@@ -17,17 +17,43 @@
  			return false;
  
  		int num = tile.blockType();
-@@ -2253,7 +_,10 @@
+@@ -2228,6 +_,16 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Calls collision related tile actions. Acts on <see cref="TileID.Sets.PressurePlate"/>, ProjectilePressurePad, LandMine, GeyserTrap, as well as modded content using <see cref="ModTile.SwitchTiles"/>
++	/// <br/><br/> Successful collisions usually call <see cref="Wiring.HitSwitch(int, int)"/> and sync it.
++	/// <include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' />
++	/// </summary>
++	/// <param name="Position"> <inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='position']"/> </param>
++	/// <param name="Width"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='width']"/></param>
++	/// <param name="Height"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='height']"/></param>
++	/// <param name="oldPosition"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='oldPosition']"/></param>
++	/// <param name="objType"> <inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='objType']"/> </param>
+ 	public static bool SwitchTiles(Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
+ 	{
+ 		int num = (int)(Position.X / 16f) - 1;
+@@ -2253,13 +_,18 @@
  					continue;
  
  				int type = Main.tile[i, j].type;
++				if (TileLoader.SwitchTiles(i, j, Main.tile[i, j].TileType, Position, Width, Height, oldPosition, objType))
++					return true;
 +				/*
  				if (!Main.tile[i, j].active() || (type != 135 && type != 210 && type != 443 && type != 442))
 +				*/
-+				if (!Main.tile[i, j].active() || (TileID.Sets.PressurePlate[type] == -1 && type != 210 && type != 443 && type != 442))
++				if (!Main.tile[i, j].active() || ((TileID.Sets.PressurePlate[type] == -1 || TileID.Sets.PressurePlate[type] == -3) && type != 210 && type != 443))
  					continue;
  
  				vector.X = i * 16;
+ 				vector.Y = j * 16 + 12;
+ 				bool flag = false;
+-				if (type == 442) {
++				if (TileID.Sets.PressurePlate[type] == -4) {
+ 					if (objType == 4) {
+ 						float r1StartX = 0f;
+ 						float r1StartY = 0f;
 @@ -2322,6 +_,7 @@
  					}
  
