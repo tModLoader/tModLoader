@@ -225,11 +225,11 @@ public static class LiquidEdgeRenderer
 
 		bool upLeftEmpty = left && !(tileUpLeftCache.HasTile && Main.tileSolid[tileUpLeftCache.TileType]) && tileUpLeftCache.LiquidAmount <= 0;
 		bool upRightEmpty = right && !(tileUpRightCache.HasTile && Main.tileSolid[tileUpRightCache.TileType]) && tileUpRightCache.LiquidAmount <= 0;
-		bool leftOrRightNotFull = (tileLeftCache.LiquidAmount > 0 && tileLeftCache.LiquidAmount < 250) || (tileRightCache.LiquidAmount < 250 && tileRightCache.LiquidAmount > 0);
+		bool leftOrRightNotFull = (tileLeftCache.LiquidAmount > 0 && tileLeftCache.LiquidAmount < 250) || (tileRightCache.LiquidAmount > 0 && tileRightCache.LiquidAmount < 250);
 
 		bool similarHeights = left && right ? Math.Abs(tileLeftCache.LiquidAmount - tileRightCache.LiquidAmount) < 100 : true;
 
-		bool isSurfaceLiquid = !up && (similarHeights || !(tileUpCache.HasTile && Main.tileSolid[tileUpCache.TileType])) && (upLeftEmpty || upRightEmpty || leftOrRightNotFull);
+		bool isSurfaceLiquid = !up && (similarHeights || blockType != BlockType.Solid || !(tileUpCache.HasTile && Main.tileSolid[tileUpCache.TileType])) && (upLeftEmpty || upRightEmpty || leftOrRightNotFull);
 
 		Rectangle size = new Rectangle(0, 0, 16, 16);
 		Vector2 offset = Vector2.Zero;
@@ -275,6 +275,7 @@ public static class LiquidEdgeRenderer
 				size = new Rectangle(0, depthPush, 16, 16 - depthPush);
 
 				if (left && right) {
+					
 					if (slope is SlopeType.SlopeUpLeft or SlopeType.SlopeDownLeft) {
 						highLiquid = tileRightCache.LiquidAmount;
 					}
@@ -309,7 +310,8 @@ public static class LiquidEdgeRenderer
 				}
 			}
 			else if ((left && right) || tileCache.IsHalfBlock) {
-				highLiquid = (tileLeftCache.LiquidAmount + tileRightCache.LiquidAmount) / 2;
+				if (highLiquid < 255)
+					highLiquid = (tileLeftCache.LiquidAmount + tileRightCache.LiquidAmount) / 2;
 				int avgDepth = (int)((256 - highLiquid) / 32f) * 2;
 				if (tileCache.IsHalfBlock)
 					avgDepth = depthPush;
