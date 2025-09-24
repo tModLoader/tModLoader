@@ -211,12 +211,14 @@ internal static class Interface
 							break;
 
 						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
-							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
+							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}; Error State {state}");
 							continue;
 						}
 
-						if (item.Banned)
-							throw new BannedModException($"The missing dependency {item.DisplayName} is Banned on Workshop.", item.DisplayName, item.PublishId.ToString());
+						if (item.Banned) {
+							Logging.tML.Error($"The missing dependency {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
+							continue;
+						}
 
 						downloads.Add(item);
 					}
@@ -236,12 +238,14 @@ internal static class Interface
 							break;
 
 						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
-							Logging.tML.Error($"Could not find removed mod on Workshop: {slug}");
+							Logging.tML.Error($"Could not find removed mod on Workshop: {slug}; Error State {state}");
 							continue;
 						}
 
-						if (item.Banned)
-							throw new BannedModException($"The deleted mod {item.DisplayName} is Banned on Workshop.", item.DisplayName, item.PublishId.ToString());
+						if (item.Banned) {
+							Logging.tML.Error($"The removed mod {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
+							continue;
+						}
 
 						removedDownloads.Add(item.PublishId);
 					}

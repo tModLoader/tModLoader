@@ -210,18 +210,18 @@ public static class SteamedWraps
 			SteamGameServerUGC.SetSearchText(qHandle, text);
 	}
 
-	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId, QueryParameters qP)
 	{
 		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
 
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
 			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 

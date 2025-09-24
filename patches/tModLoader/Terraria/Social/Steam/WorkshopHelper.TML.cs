@@ -306,7 +306,7 @@ public partial class WorkshopHelper
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
 
 					try {
-						WaitForQueryResult(SteamedWraps.GenerateDirectItemsQuery(idArray));
+						WaitForQueryResult(SteamedWraps.GenerateDirectItemsQuery(idArray, queryParameters));
 
 						for (int j = 0; j < _queryReturnCount; j++) {
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
@@ -451,7 +451,7 @@ public partial class WorkshopHelper
 
 					if (_queryReturnCount == 0) {
 						Logging.tML.Info($"No Mod on Workshop with internal name: {slug}");
-						return WorkshopSearchReturnState.RetrievalFailed;
+						return WorkshopSearchReturnState.NotFound;
 					}
 
 					var match = TryGenerateModDownloadItem(0, out item);
@@ -534,7 +534,7 @@ public partial class WorkshopHelper
 
 				// Developer Metadata
 				SteamedWraps.FetchDeveloperMetadata(_primaryUGCHandle, i, out string devMetadataSerialized);
-				var devMetadata = new DeveloperMetadata(devMetadataSerialized);
+				var devMetadata = DeveloperMetadata.Deserialize(devMetadataSerialized);
 
 				// Backwards compat code for the metadata version change
 				if (metadata["versionsummary"] == null)

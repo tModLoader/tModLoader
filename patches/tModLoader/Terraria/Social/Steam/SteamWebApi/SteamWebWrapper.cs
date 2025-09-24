@@ -13,7 +13,7 @@ namespace Terraria.Social.Steam;
 
 internal static class SteamWebWrapper
 {
-	internal static string PublisherKey { get; set; } = null;
+	internal static string PublisherKey { get; set; } = Environment.GetEnvironmentVariable("steam_publisherkey");
 
 	private static HttpClient _httpClient = new() {
 		BaseAddress = new Uri("https://partner.steam-api.com/")
@@ -102,7 +102,7 @@ internal static class SteamWebWrapper
 
 	internal static PublishedFileDetail GetItemMetadata(string publishedFileId)
 	{
-		if (PublisherKey is null)
+		if (string.IsNullOrEmpty(PublisherKey))
 			throw new Exception("Publisher Key Must Be Initialized Before Use");
 
 		const string ApiEndpoint = "IPublishedFileService/GetDetails/v1";
@@ -126,7 +126,7 @@ internal static class SteamWebWrapper
 
 	internal static string SetDeveloperMetadata(string publishedFileId, string metadata)
 	{
-		if (PublisherKey is null)
+		if (string.IsNullOrEmpty(PublisherKey))
 			throw new Exception("Publisher Key Must Be Initialized Before Use");
 
 		const string ApiEndpoint = "IPublishedFileService/SetDeveloperMetadata/v1";
@@ -146,7 +146,7 @@ internal static class SteamWebWrapper
 	/* 
 	internal static string SetKeyValueTags(string publishedFileId, List<KeyValueTags> keyValueTags)
 	{
-		if (PublisherKey is null)
+		if (string.IsNullOrEmpty(PublisherKey))
 			throw new Exception("Publisher Key Must Be Initialized Before Use");
 
 		const string ApiEndpoint = "IPublishedFileService/UpdateKeyValueTags/v1";
@@ -166,7 +166,7 @@ internal static class SteamWebWrapper
 
 	private static string QueryForPublisherIdsInnerCursor(string cursor)
 	{
-		if (PublisherKey is null)
+		if (string.IsNullOrEmpty(PublisherKey))
 			throw new Exception("Publisher Key Must Be Initialized Before Use");
 
 		const string ApiEndpoint = "IPublishedFileService/QueryFiles/v1";

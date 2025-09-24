@@ -49,6 +49,8 @@ public interface SocialBrowserModule
 
 	public List<ModDownloadItem> DirectQueryItems(QueryParameters queryParams, out List<string> missingMods);
 
+	public DeveloperMetadata GetDeveloperMetadataFromModBrowser(ModPubId_t modId);
+
 	/////// Display of Browser Items ///////////////////////////////////////////
 
 	public string GetModWebPage(ModPubId_t item);

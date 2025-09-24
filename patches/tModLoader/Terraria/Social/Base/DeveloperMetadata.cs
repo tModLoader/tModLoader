@@ -44,84 +44,37 @@ public class DeveloperMetadata
 {
 	public List<ModVersionHash> modVersionHashes { get; set; } = new List<ModVersionHash>();
 
-	[JsonConstructor]
-	private DeveloperMetadata() { }
-
-	internal DeveloperMetadata(string workshopPath, bool useWebApi, ModDownloadItem modDownloadItemAsFound = null)
-	{
-		CalculateModHashes(workshopPath, useWebApi , modDownloadItemAsFound);
-		TrimDevMetadata();
-	}
-	
-	internal DeveloperMetadata(string serializedDevMetadata)
-	{
-		// Try-Catch is for error correction for any bizarre dev metadata put on items previously
-		try {
-			var devMetadata = DeSerialize(serializedDevMetadata);
-
-			if (devMetadata == null || devMetadata.modVersionHashes == null) {
-				modVersionHashes = new List<ModVersionHash>();
-				return;
-			}
-
-			modVersionHashes = devMetadata.modVersionHashes;
-		}
-		catch (Exception) {
-			modVersionHashes = new List<ModVersionHash>();
-		}
-	}
-
-	internal string GetSerialize()
+	internal string Serialize()
 	{
 		return JsonConvert.SerializeObject(this, Formatting.None, new ModVersionHash.VersionHashConverter());
 	}
 
-	internal static DeveloperMetadata DeSerialize(string serializedDevMetadata)
+	internal static DeveloperMetadata Deserialize(string serializedDevMetadata)
 	{
-		return JsonConvert.DeserializeObject<DeveloperMetadata>(serializedDevMetadata, new ModVersionHash.VersionHashConverter());
-	}
+		if (string.IsNullOrWhiteSpace(serializedDevMetadata))
+			return new();
 
-	// PR 4345 - We combine the hash data that is currently on workshop with the hash data from the updated publishing folder to ensure that when mods are updated it is backwards compatible
-	// It is backwards compatible while Steam spends up to an hour rolling out workshop item updates
-	private void CalculateModHashes(string workshopPath, bool useWebApi, ModDownloadItem modDownloadItemAsFound = null)
-	{
-		List<ModVersionHash> prevHashes = new List<ModVersionHash>();
+		try {
+			var devMetadata = JsonConvert.DeserializeObject<DeveloperMetadata>(serializedDevMetadata, new ModVersionHash.VersionHashConverter());
 
-		// Get the old / existing hashes on Workshop
-		if (useWebApi) {
-			var itemDetails = SteamWebWrapper.GetItemMetadata(Path.GetFileNameWithoutExtension(workshopPath));
+			if (devMetadata == null || devMetadata.modVersionHashes == null) {
+				return default;
+			}
 
-			prevHashes = string.IsNullOrEmpty(itemDetails.Metadata) ?
-				new List<ModVersionHash>() :
-				new DeveloperMetadata(itemDetails.Metadata).modVersionHashes;
+			return devMetadata;
 		}
-		else {
-			if (modDownloadItemAsFound is null)
-				throw new Exception("Calculate Dev Metadata without WebApi requires the ModDownloadItem to be passed in.");
-
-			// Get the hashes from the existing modDownloadItem as found on the workshop
-			prevHashes = modDownloadItemAsFound.DevMetadata.modVersionHashes;
+		catch (Exception) {
+			return default;
 		}
-
-		// Get the new hashes
-		var currentHashes = new List<ModVersionHash>();
-		foreach (var tModPath in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
-			var tModFile = new TmodFile(tModPath);
-			using var _ = tModFile.Open(); // Needed for Hash data to be populated
-			currentHashes.Add(new ModVersionHash(tModFile));
-		}
-
-		// Combine the hashes
-		modVersionHashes = currentHashes.Concat(prevHashes.Except(currentHashes).ToList()).ToList();
 	}
 
 	// This methods trims contents of developer metadata based on the preferred order of discarding information.
 	// It is primarily written with the intent of 'in case' we need to store other information in this Workshop text field
-	private void TrimDevMetadata()
+	internal void TrimDevMetadataForPublish()
 	{
 		const int MaxMetadataLength = Steamworks.Constants.k_cchDeveloperMetadataMax;
 
-		var overflowLength = GetSerialize().Length - MaxMetadataLength;
+		var overflowLength = Serialize().Length - MaxMetadataLength;
 		if (overflowLength <= 0)
 			return;
 

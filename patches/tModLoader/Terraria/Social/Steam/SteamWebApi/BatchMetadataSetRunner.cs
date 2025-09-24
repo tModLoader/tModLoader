@@ -11,7 +11,6 @@ internal class BatchMetadataSetRunner
 
 	internal static void RunForceUpdate(string workshopForceDevMetadataFolder = null)
 	{
-		SteamWebWrapper.PublisherKey = Environment.GetEnvironmentVariable("steam_publisherkey");
 		SteamCmdDownloaderInstance.SteamCMDPath = Environment.GetEnvironmentVariable("steamcmd_path");
 		SteamCmdDownloaderInstance.SteamCMDUser = Environment.GetEnvironmentVariable("steamcmd_user");
 
@@ -96,9 +95,9 @@ internal class BatchMetadataSetRunner
 			var publishId = Path.GetFileNameWithoutExtension(workshopItem);
 
 			// Read the tmod files in directory & Get metadata
-			var devMetadata = new DeveloperMetadata(workshopItem, useWebApi: true);
+			var devMetadata = WorkshopSocialModule.GetDeveloperMetadataForPublish(workshopItem, ulong.Parse(publishId));
 
-			devMetadataKvp.Add((publishId, devMetadata.GetSerialize()));
+			devMetadataKvp.Add((publishId, devMetadata.Serialize()));
 		}
 
 		return devMetadataKvp;
