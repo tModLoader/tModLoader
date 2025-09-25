@@ -211,10 +211,10 @@ public static class LiquidEdgeRenderer
 		Tile tileUpLeftCache = Main.tile[tileX - 1, tileY - 1];
 		Tile tileUpRightCache = Main.tile[tileX + 1, tileY - 1];
 
-		bool leftEmpty = !left && !(tileLeftCache.HasTile && Main.tileSolid[tileLeftCache.TileType] && tileLeftCache.BlockType == BlockType.Solid)
+		bool leftEmpty = !left && !WorldGen.SolidTile(tileLeftCache)
 			&& !(tileLeftCache.BlockType is not BlockType.Solid && tileUpLeftCache.LiquidAmount > 0);
 
-		bool rightEmpty = !right && !(WorldGen.SolidTile(tileRightCache) && tileRightCache.BlockType == BlockType.Solid)
+		bool rightEmpty = !right && !WorldGen.SolidTile(tileRightCache)
 			&& !(tileRightCache.BlockType is not BlockType.Solid && tileUpRightCache.LiquidAmount > 0);
 
 		if (slope == SlopeType.SlopeUpLeft && !left && rightEmpty)
@@ -238,10 +238,10 @@ public static class LiquidEdgeRenderer
 		}
 
 		// If air or a top slope is above itself, like half bricks next to covered full liquids
-		bool airAbove = (tileUpCache.Slope is SlopeType.SlopeUpLeft or SlopeType.SlopeUpRight || !(tileUpCache.HasTile && Main.tileSolid[tileUpCache.TileType]));
-		// See if either side has a surface via not being full or not having at tile above
-		bool surfaceOnSide = (left && (tileLeftCache.LiquidAmount < 250 || !(tileUpLeftCache.HasTile && Main.tileSolid[tileUpLeftCache.TileType])))
-			|| (right && (tileRightCache.LiquidAmount < 250 || !(tileUpRightCache.HasTile && Main.tileSolid[tileUpRightCache.TileType])));
+		bool airAbove = !WorldGen.SolidOrSlopedTile(tileUpCache) || tileUpCache.Slope is SlopeType.SlopeUpLeft or SlopeType.SlopeUpRight;
+		// See if either side has a surface via not being full or not having a tile above
+		bool surfaceOnSide = (left && (tileLeftCache.LiquidAmount < 250 || !WorldGen.SolidOrSlopedTile(tileUpLeftCache)))
+			|| (right && (tileRightCache.LiquidAmount < 250 || !WorldGen.SolidOrSlopedTile(tileUpRightCache)));
 
 		bool isSurfaceLiquid = !up && similarHeights && noLiquidInDiagonals && (surfaceOnSide || airAbove);
 
@@ -250,7 +250,7 @@ public static class LiquidEdgeRenderer
 
 		if (up && (left || right)) {
 			size = new Rectangle(0, 6, 16, 16);
-			if (!tileCache.IsHalfBlock && !down && !(tileDownCache.HasTile && Main.tileSolid[tileDownCache.TileType])) {
+			if (!tileCache.IsHalfBlock && !down && !WorldGen.SolidOrSlopedTile(tileDownCache)) {
 				size.Height = 12;
 			}
 		}
