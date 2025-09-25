@@ -186,8 +186,11 @@ namespace MonoMod.RuntimeDetour.HookGen
 
             var add = false;
 
-            foreach (var method in type.Methods)
+            foreach (var method in type.Methods) {
                 add |= GenerateFor(hookType, hookILType, method);
+                if (method.HasCustomAttribute("Terraria.ModLoader.OriginalOverloadAttribute"))
+                    add |= GenerateFor(hookType, hookILType, method, skipOverloadSuffix: true);
+            }
 
             foreach (var nested in type.NestedTypes)
             {
@@ -205,7 +208,7 @@ namespace MonoMod.RuntimeDetour.HookGen
             }
         }
 
-        public bool GenerateFor(TypeDefinition hookType, TypeDefinition hookILType, MethodDefinition method)
+        public bool GenerateFor(TypeDefinition hookType, TypeDefinition hookILType, MethodDefinition method, bool skipOverloadSuffix = false)
         {
             if (method.HasGenericParameters ||
                 method.IsAbstract ||
@@ -228,7 +231,7 @@ namespace MonoMod.RuntimeDetour.HookGen
             if (suffix)
             {
                 overloads = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == name && other != method);
-                if (!overloads.Any())
+                if (!overloads.Any() || skipOverloadSuffix)
                 {
                     suffix = false;
                 }
