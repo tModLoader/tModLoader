@@ -214,7 +214,7 @@ public static class LiquidEdgeRenderer
 		bool leftEmpty = !left && !(tileLeftCache.HasTile && Main.tileSolid[tileLeftCache.TileType] && tileLeftCache.BlockType == BlockType.Solid)
 			&& !(tileLeftCache.BlockType is not BlockType.Solid && tileUpLeftCache.LiquidAmount > 0);
 
-		bool rightEmpty = !right && !(tileRightCache.HasTile && Main.tileSolid[tileRightCache.TileType] && tileRightCache.BlockType == BlockType.Solid)
+		bool rightEmpty = !right && !(WorldGen.SolidTile(tileRightCache) && tileRightCache.BlockType == BlockType.Solid)
 			&& !(tileRightCache.BlockType is not BlockType.Solid && tileUpRightCache.LiquidAmount > 0);
 
 		if (slope == SlopeType.SlopeUpLeft && !left && rightEmpty)
@@ -223,13 +223,27 @@ public static class LiquidEdgeRenderer
 		if (slope == SlopeType.SlopeUpRight && !right && leftEmpty)
 			return;
 
-		bool upLeftEmpty = left && !(tileUpLeftCache.HasTile && Main.tileSolid[tileUpLeftCache.TileType]) && tileUpLeftCache.LiquidAmount <= 0;
-		bool upRightEmpty = right && !(tileUpRightCache.HasTile && Main.tileSolid[tileUpRightCache.TileType]) && tileUpRightCache.LiquidAmount <= 0;
-		bool leftOrRightNotFull = (tileLeftCache.LiquidAmount > 0 && tileLeftCache.LiquidAmount < 250) || (tileRightCache.LiquidAmount > 0 && tileRightCache.LiquidAmount < 250);
+		// If on both sides, make sure liquids are close in level
+		bool similarHeights = left && right && slope == SlopeType.Solid ? Math.Abs(tileLeftCache.LiquidAmount - tileRightCache.LiquidAmount) < 100 : true;
 
-		bool similarHeights = left && right ? Math.Abs(tileLeftCache.LiquidAmount - tileRightCache.LiquidAmount) < 100 : true;
+		bool noLiquidInDiagonals;
+		if (slope is SlopeType.SlopeUpLeft or SlopeType.SlopeDownLeft) {
+			noLiquidInDiagonals = tileUpRightCache.LiquidAmount <= 0;
+		}
+		else if (slope is SlopeType.SlopeUpRight or SlopeType.SlopeDownRight) {
+			noLiquidInDiagonals = tileUpLeftCache.LiquidAmount <= 0;
+		}
+		else {
+			noLiquidInDiagonals = tileUpLeftCache.LiquidAmount <= 0 && tileUpRightCache.LiquidAmount <= 0;
+		}
 
-		bool isSurfaceLiquid = !up && (similarHeights || blockType != BlockType.Solid || !(tileUpCache.HasTile && Main.tileSolid[tileUpCache.TileType])) && (upLeftEmpty || upRightEmpty || leftOrRightNotFull);
+		// If air or a top slope is above itself, like half bricks next to covered full liquids
+		bool airAbove = (tileUpCache.Slope is SlopeType.SlopeUpLeft or SlopeType.SlopeUpRight || !(tileUpCache.HasTile && Main.tileSolid[tileUpCache.TileType]));
+		// See if either side has a surface via not being full or not having at tile above
+		bool surfaceOnSide = (left && (tileLeftCache.LiquidAmount < 250 || !(tileUpLeftCache.HasTile && Main.tileSolid[tileUpLeftCache.TileType])))
+			|| (right && (tileRightCache.LiquidAmount < 250 || !(tileUpRightCache.HasTile && Main.tileSolid[tileUpRightCache.TileType])));
+
+		bool isSurfaceLiquid = !up && similarHeights && noLiquidInDiagonals && (surfaceOnSide || airAbove);
 
 		Rectangle size = new Rectangle(0, 0, 16, 16);
 		Vector2 offset = Vector2.Zero;
