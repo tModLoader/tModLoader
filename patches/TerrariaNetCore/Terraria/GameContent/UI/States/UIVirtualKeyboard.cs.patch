@@ -1,0 +1,10 @@
+--- src/Terraria/Terraria/GameContent/UI/States/UIVirtualKeyboard.cs
++++ src/TerrariaNetCore/Terraria/GameContent/UI/States/UIVirtualKeyboard.cs
+@@ -724,6 +_,7 @@
+ 	{
+ 		base.OnDeactivate();
+ 		PlayerInput.WritingText = false;
++		Main.instance.HandleIME(); // 1.4.5 forward-port
+ 		UILinkPointNavigator.Shortcuts.FANCYUI_SPECIAL_INSTRUCTIONS = 0;
+ 	}
+ 

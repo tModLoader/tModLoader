@@ -1,5 +1,8 @@
 #if NETCORE
-using SDL2;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
+using SDL3;
 
 namespace System.Windows.Forms;
 
@@ -39,54 +42,60 @@ public enum DialogResult
 
 public static class MessageBox
 {
-	private static SDL.SDL_MessageBoxButtonData OKButton = new SDL.SDL_MessageBoxButtonData {
+	private static unsafe readonly SDL.SDL_MessageBoxButtonData OKButton = new() {
 		flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
-		buttonid = (int)DialogResult.OK,
-		text = "OK"
+		buttonID = (int)DialogResult.OK,
+		text = (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference("OK"u8))
 	};
 
-	private static SDL.SDL_MessageBoxButtonData CancelButton = new SDL.SDL_MessageBoxButtonData {
+	private static unsafe readonly SDL.SDL_MessageBoxButtonData CancelButton = new() {
 		flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT,
-		buttonid = (int)DialogResult.Cancel,
-		text = "Cancel"
+		buttonID = (int)DialogResult.Cancel,
+		text = (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference("Cancel"u8))
 	};
 
-	private static SDL.SDL_MessageBoxButtonData YesButton = new SDL.SDL_MessageBoxButtonData {
+	private static unsafe readonly SDL.SDL_MessageBoxButtonData YesButton = new() {
 		flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
-		buttonid = (int)DialogResult.Yes,
-		text = "Yes"
+		buttonID = (int)DialogResult.Yes,
+		text = (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference("Yes"u8))
 	};
 
-	private static SDL.SDL_MessageBoxButtonData NoButton = new SDL.SDL_MessageBoxButtonData {
-		buttonid = (int)DialogResult.No,
-		text = "No"
+	private static unsafe readonly SDL.SDL_MessageBoxButtonData NoButton = new() {
+		buttonID = (int)DialogResult.No,
+		text = (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference("No"u8))
 	};
 
-	private static SDL.SDL_MessageBoxButtonData RetryButton = new SDL.SDL_MessageBoxButtonData {
+	private static unsafe readonly SDL.SDL_MessageBoxButtonData RetryButton = new() {
 		flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
-		buttonid = (int)DialogResult.Retry,
-		text = "Retry"
+		buttonID = (int)DialogResult.Retry,
+		text = (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference("Retry"u8))
 	};
 
-	public static DialogResult Show(string msg, string title, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
+	public static unsafe DialogResult Show(string msg, string title, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
 	{
-		var msgBox = new SDL.SDL_MessageBoxData {
-			flags = (SDL.SDL_MessageBoxFlags)icon,
-			message = msg,
-			title = title,
-			buttons = buttons switch {
-				MessageBoxButtons.OK => new[] { OKButton },
-				MessageBoxButtons.OKCancel => new[] { CancelButton, OKButton },
-				MessageBoxButtons.YesNo => new[] { NoButton, YesButton },
-				MessageBoxButtons.YesNoCancel => new[] { CancelButton, NoButton, YesButton },
-				MessageBoxButtons.RetryCancel => new[] { CancelButton, RetryButton },
-				_ => throw new NotImplementedException(),
-			}
+		// stackalloc
+		Span<SDL.SDL_MessageBoxButtonData> buttonsSpan = buttons switch {
+			MessageBoxButtons.OK => [OKButton],
+			MessageBoxButtons.OKCancel => [CancelButton, OKButton],
+			MessageBoxButtons.YesNo => [NoButton, YesButton],
+			MessageBoxButtons.YesNoCancel => [CancelButton, NoButton, YesButton],
+			MessageBoxButtons.RetryCancel => [CancelButton, RetryButton],
+			_ => throw new NotImplementedException(),
 		};
-		msgBox.numbuttons = msgBox.buttons.Length;
 
-		SDL.SDL_ShowMessageBox(ref msgBox, out int buttonid);
-		return (DialogResult)buttonid;
+		var msgBytes = Encoding.UTF8.GetBytes(msg + '\0');
+		var titleBytes = Encoding.UTF8.GetBytes(title + '\0');
+		fixed (byte* msgPtr = msgBytes, titlePtr = titleBytes) {
+			var msgBox = new SDL.SDL_MessageBoxData {
+				flags = (SDL.SDL_MessageBoxFlags)icon,
+				message = msgPtr,
+				title = titlePtr,
+				buttons = (SDL.SDL_MessageBoxButtonData*)Unsafe.AsPointer(ref buttonsSpan.GetPinnableReference()),
+				numbuttons = buttonsSpan.Length
+			};
+			SDL.SDL_ShowMessageBox(ref msgBox, out int buttonID);
+			return (DialogResult)buttonID;
+		}
 	}
 }
 #endif

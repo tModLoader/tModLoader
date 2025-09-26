@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/GameContent/UI/Elements/UISearchBar.cs
++++ src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UISearchBar.cs
+@@ -158,5 +_,11 @@
+ 		else if (this.OnEndTakingInput != null) {
+ 			this.OnEndTakingInput();
+ 		}
++
++		// 1.4.5 forward-port
++		if (!IsWritingText) {
++			PlayerInput.WritingText = false;
++			Main.instance.HandleIME();
++		}
+ 	}
+ }

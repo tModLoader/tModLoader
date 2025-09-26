@@ -109,7 +109,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,28 @@
+@@ -164,7 +_,29 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -136,9 +136,10 @@
 +			// Anything beyond this point will not be executed
 +			ModCompile.BuildModCommandLine(build);
  
- 		if (Main.dedServ) { // Remove bad environment variables that might be set by other app installs
+ 		// Remove bad environment variables that might be set by other app installs
+ 		if (Main.dedServ) {
  			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
-@@ -171,7 +_,9 @@
+@@ -175,7 +_,9 @@
  
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
@@ -148,7 +149,7 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,14 @@
+@@ -188,9 +_,14 @@
  				Main.instance.IsMouseVisible = false;
  			};
  		}
@@ -164,7 +165,7 @@
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
-@@ -197,10 +_,14 @@
+@@ -201,10 +_,14 @@
  				main.Run();
  		}
  		catch (Exception e) {
@@ -179,7 +180,7 @@
  	private static void TrySettingFNAToOpenGL(string[] args)
  	{
  		bool flag = false;
-@@ -241,4 +_,5 @@
+@@ -245,4 +_,5 @@
  		catch {
  		}
  	}

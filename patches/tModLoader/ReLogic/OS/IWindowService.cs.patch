@@ -25,7 +25,7 @@
 +	// Added by TML.
 +	void SetIcon(GameWindow window)
 +	{
-+		IntPtr surface = SDL2.SDL.SDL_LoadBMP("Libraries/Native/tModLoader.bmp");
-+		SDL2.SDL.SDL_SetWindowIcon(window.Handle, surface);
++		IntPtr surface = SDL3.SDL.SDL_LoadBMP("Libraries/Native/tModLoader.bmp");
++		SDL3.SDL.SDL_SetWindowIcon(window.Handle, surface);
 +	}
  }

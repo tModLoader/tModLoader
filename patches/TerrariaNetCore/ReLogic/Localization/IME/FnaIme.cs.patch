@@ -1,0 +1,24 @@
+--- src/Terraria/ReLogic/Localization/IME/FnaIme.cs
++++ src/TerrariaNetCore/ReLogic/Localization/IME/FnaIme.cs
+@@ -31,6 +_,21 @@
+ 
+ 	public override string GetCandidate(uint index) => string.Empty;
+ 
++	// 1.4.5 forward-port
++	protected override void OnEnable()
++	{
++#if FNA
++		TextInputEXT.StartTextInput();
++#endif
++	}
++
++	protected override void OnDisable()
++	{
++#if FNA
++		TextInputEXT.StopTextInput();
++#endif
++	}
++
+ 	protected override void Dispose(bool disposing)
+ 	{
+ 		if (!_disposedValue) {

@@ -30,14 +30,10 @@ fi
 #export DOTNET_CreateDumpLogToFile="$LaunchLogs/CoreDumpDiagnostics.log"
 #export DOTNET_EnableCrashReport=1
 
-# The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
-# Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
-# without actually invoking managed NativeLibrary resolving events!
+# The following is a workaround for the system's SDL2/3 library being preferred by the linkers for some reason.
 if [ "$_uname" = Darwin ]; then
 	library_dir="$root_dir/Libraries/Native/OSX"
 	export DYLD_LIBRARY_PATH="$library_dir"
-	export VK_ICD_FILENAMES="$library_dir/MoltenVK_icd.json"
-	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
 
 	# El Capitan is a total idiot and wipes this variable out, making the
     # Steam overlay disappear. This sidesteps "System Integrity Protection"
@@ -64,12 +60,11 @@ elif [[ "$_uname" == *"_NT"* ]]; then
 	# removes incompatible 1.3 64 files
 	run_script ./Remove13_64Bit.sh  2>&1 | tee -a "$LogFile"
 
-	# Fixes SDL2 link issues
+	# Prioritise shipped natives
 	export PATH="$root_dir/Libraries/Native/Windows;$PATH"
 else
 	library_dir="$root_dir/Libraries/Native/Linux"
 	export LD_LIBRARY_PATH="$library_dir"
-	ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
 fi
 
 # Detecting Proton usage which can break tModLoader game rendering as of Dec 2023.

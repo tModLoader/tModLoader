@@ -1,0 +1,43 @@
+--- src/TerrariaNetCore/Terraria/BackupMessageBox.cs
++++ src/tModLoader/Terraria/BackupMessageBox.cs
+@@ -97,5 +_,40 @@
+ 			return (DialogResult)buttonID;
+ 		}
+ 	}
++
++	public static unsafe int Show(string msg, string title, string[] buttonLabels, int returnButtonIndex = -1, int cancelButtonIndex = -1, MessageBoxIcon icon = MessageBoxIcon.None)
++	{
++		// stackalloc
++		Span<SDL.SDL_MessageBoxButtonData> buttonsSpan = stackalloc SDL.SDL_MessageBoxButtonData[buttonLabels.Length];
++		for (int i = 0; i < buttonLabels.Length; i++) {
++			var label = buttonLabels[i] + '\0';
++			Span<byte> buf = stackalloc byte[Encoding.UTF8.GetByteCount(label)];
++			Encoding.UTF8.GetBytes(label, buf);
++
++			buttonsSpan[i] = new() {
++				flags = i == returnButtonIndex ? SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT : i == cancelButtonIndex ? SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT : 0,
++				buttonID = i,
++				text = (byte*)Unsafe.AsPointer(ref buf.GetPinnableReference()),
++			};
++		}
++		buttonsSpan.Reverse();
++
++		var msgBytes = Encoding.UTF8.GetBytes(msg + '\0');
++		var titleBytes = Encoding.UTF8.GetBytes(title + '\0');
++		fixed (byte* msgPtr = msgBytes, titlePtr = titleBytes) {
++			var msgBox = new SDL.SDL_MessageBoxData {
++				flags = (SDL.SDL_MessageBoxFlags)icon,
++				message = msgPtr,
++				title = titlePtr,
++				buttons = (SDL.SDL_MessageBoxButtonData*)Unsafe.AsPointer(ref buttonsSpan.GetPinnableReference()),
++				numbuttons = buttonsSpan.Length
++			};
++
++			if (!SDL.SDL_ShowMessageBox(ref msgBox, out int buttonID))
++				return -1;
++
++			return buttonID;
++		}
++	}
+ }
+ #endif

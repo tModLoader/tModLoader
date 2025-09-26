@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
 
@@ -245,11 +246,16 @@ public static partial class Program
 			if (string.IsNullOrEmpty(lastLaunchedTml)) {
 				// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
 				// We can't localized these the normal way because localization isn't loaded at this point.
-				int result = ErrorReporting.ShowMessageBoxWithChoices(
+				int result = MessageBox.Show(
+					msg: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
 					title: "Failed to read config.json configuration file",
-					message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
-					buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
+					buttonLabels: ["1.4.4", "1.4.3", "Cancel"],
+					cancelButtonIndex: 2,
+					icon: MessageBoxIcon.Information
 				);
+				if (result == -1)
+					Logging.tML.Info("PromptUserForNewestTMLVersionLaunched: No selection");
+
 				if (result == 0)
 					lastLaunchedTml = BuildInfo.tMLVersion.ToString();
 				if (result == 1)
@@ -334,7 +340,7 @@ public static partial class Program
 
 			if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64) {
 				if (Program.LaunchParameters.ContainsKey("-build"))
-					Console.WriteLine("Warning: Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK appears to be running. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk"); // MessageBoxShow called below will also error when attempting to load 32 bit SDL2.
+					Console.WriteLine("Warning: Building mods requires the 64 bit dotnet SDK to be installed, but the 32 bit dotnet SDK appears to be running. It is likely that you accidentally installed the 32 bit dotnet SDK and it is taking priority. To fix this, follow the instructions at https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-developers#net-sdk"); // MessageBoxShow called below will also error when attempting to load 32 bit SDL.
 				ErrorReporting.FatalExit("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 			}
 			if (Platform.Current.Type == PlatformType.OSX && Environment.OSVersion.Version < new Version(10, 15)) {
@@ -347,8 +353,6 @@ public static partial class Program
 		
 			if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath, as the static ctor depends on SavePath
 				Logging.tML.Info("Developer mode enabled");
-
-			AttemptSupportHighDPI(isServer); // Can run anytime
 
 		    if (!isServer) {
 		    	NativeLibraries.CheckNativeFAudioDependencies();
@@ -384,30 +388,5 @@ public static partial class Program
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Unhandled Issue with Launch Arguments. Please verify sources such as Steam Launch Options, cli-ArgsConfig, and VS profiles", e);
 		}
-	}
-
-	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
-
-	// Add Support for High DPI displays, such as Mac M1 laptops. Must run before Game constructor.
-	private static void AttemptSupportHighDPI(bool isServer)
-	{
-		if (isServer)
-			return;
-
-		if (Platform.IsWindows) {
-			[System.Runtime.InteropServices.DllImport("user32.dll")]
-			static extern bool SetProcessDPIAware();
-
-			SetProcessDPIAware();
-		}
-
-		SDL2.SDL.SDL_VideoInit(null);
-		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
-		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
-		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
-			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
-			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
-		}
-			
 	}
 }

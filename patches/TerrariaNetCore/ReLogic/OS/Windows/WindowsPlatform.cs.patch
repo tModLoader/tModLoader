@@ -3,20 +3,18 @@
 @@ -1,5 +_,6 @@
  using System;
  using ReLogic.Localization.IME;
-+using SDL2;
++using SDL3;
  
  namespace ReLogic.OS.Windows;
  
-@@ -19,10 +_,18 @@
+@@ -19,10 +_,16 @@
  
  	public override void InitializeClientServices(IntPtr windowHandle)
  	{
 +		// Window.handle from FNAPlatform.CreateWindow() points to an SDL window instead of Win32 window
 +		// Need to convert it to Win32 window
-+		SDL.SDL_SysWMinfo info = new SDL.SDL_SysWMinfo();
-+		SDL.SDL_VERSION(out info.version);
-+		SDL.SDL_GetWindowWMInfo(windowHandle, ref info);
-+		windowHandle = info.info.win.window;
++		uint props = SDL.SDL_GetWindowProperties(windowHandle);
++		windowHandle = SDL.SDL_GetPointerProperty(props, "SDL.window.win32.hwnd", 0);
 +
  		if (_wndProcHook == null)
  			_wndProcHook = new WindowsMessageHook(windowHandle);
