@@ -1,9 +1,28 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/FilterManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/FilterManager.cs
-@@ -194,4 +_,13 @@
+@@ -2,6 +_,7 @@
+ using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
++using Terraria;
+ using Terraria.IO;
+ 
+ namespace Terraria.Graphics.Effects;
+@@ -149,7 +_,8 @@
+ 						graphicsDevice.Clear(clearColor);
+ 						Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+ 						filter.Apply();
+-						Main.spriteBatch.Draw(renderTarget2D2, Vector2.Zero, Main.ColorOfTheSkies);
++						// Use white when retro lighting is active otherwise the result has Main.ColorOfTheSkies applied many times.
++						Main.spriteBatch.Draw(renderTarget2D2, Vector2.Zero, Lighting.UpdateEveryFrame ? Color.White : Main.ColorOfTheSkies);
+ 						Main.spriteBatch.End();
+ 						renderTarget2D2 = ((renderTarget2D2 != screenTarget1) ? screenTarget1 : screenTarget2);
+ 					}
+@@ -193,5 +_,14 @@
+ 			return this.OnPostDraw != null;
  
  		return true;
- 	}
++	}
 +
 +	// Added by TML.
 +	internal void DeactivateAll()
@@ -12,5 +31,5 @@
 +			if (this[key].IsActive())
 +				this[key].Deactivate(Array.Empty<object>());
 +		}
-+	}
+ 	}
  }

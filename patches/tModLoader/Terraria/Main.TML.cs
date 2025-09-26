@@ -671,4 +671,51 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+	
+	// Forces Main.screenTarget, and Main.screenTargetSwap to be initialized when starting with retro lighting enabled.
+	private static bool screenTargetsSet = false;
+	
+	// Initializes Main.screenTarget, and Main.screenTargetSwap whilst disabling others; similar to to Main.ReleaseTargets in that effect.
+	private static void InitScreenTargets()
+	{
+		if (screenTargetsSet)
+            return;
+		
+        if (Main.targetSet) {
+            ReleaseNonScreenTargets();
+			Main.targetSet = false;
+			screenTargetsSet = true;
+		}
+
+        Main.targetSet = false;
+
+        GraphicsDevice device = Main.graphics.GraphicsDevice;
+
+        int width = device.PresentationParameters.BackBufferWidth;
+        int height = device.PresentationParameters.BackBufferHeight;
+
+        Main.screenTarget = new(device, width, height, false, device.PresentationParameters.BackBufferFormat, DepthFormat.None);
+        Main.screenTargetSwap = new(device, width, height, false, device.PresentationParameters.BackBufferFormat, DepthFormat.None);
+
+        screenTargetsSet = true;
+
+        return;
+	}
+	
+	private static void ReleaseNonScreenTargets()
+	{
+		Main.drawToScreen = true;
+        Main.offScreenRange = 0;
+
+        Main.waterTarget?.Dispose();
+        Main.instance.backWaterTarget.Dispose();
+        Main.instance.blackTarget?.Dispose();
+        Main.instance.tileTarget?.Dispose();
+        Main.instance.tile2Target?.Dispose();
+        Main.instance.wallTarget?.Dispose();
+        Main.instance.backgroundTarget?.Dispose();
+		
+		// Unsure if this should be invoked here.
+        //Main.OnRenderTargetsReleased?.Invoke();
+	}
 }
