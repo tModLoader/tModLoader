@@ -687,8 +687,6 @@ public partial class Main
 			screenTargetsSet = true;
 		}
 
-        Main.targetSet = false;
-
         GraphicsDevice device = Main.graphics.GraphicsDevice;
 
         int width = device.PresentationParameters.BackBufferWidth;
@@ -697,7 +695,9 @@ public partial class Main
         Main.screenTarget = new(device, width, height, false, device.PresentationParameters.BackBufferFormat, DepthFormat.None);
         Main.screenTargetSwap = new(device, width, height, false, device.PresentationParameters.BackBufferFormat, DepthFormat.None);
 
-        screenTargetsSet = true;
+		Main.targetSet = false;
+
+		screenTargetsSet = true;
 
         return;
 	}

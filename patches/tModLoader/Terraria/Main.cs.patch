@@ -6705,34 +6705,33 @@
  			_isDrawingOrUpdating = false;
  		}
  	}
-@@ -50802,17 +_,23 @@
- 			DrawToMap();
+@@ -50803,17 +_,19 @@
  			TimeLogger.DetailedDrawTime(1);
  		}
--
+ 
 -		if (Lighting.UpdateEveryFrame)
-+		
 +		if (Lighting.UpdateEveryFrame) {
  			drawToScreen = true;
 +			// The screen target(s) should be the only active target(s) when Retro/Trippy lighting is enabled.
 +			InitScreenTargets();
-+			goto SkipTargetInitialization;
 +		}
  		else
++		{
  			drawToScreen = false;
--
-+		
- 		if (drawToScreen && targetSet)
- 			ReleaseTargets();
--
-+		
- 		if (!drawToScreen && !targetSet)
- 			InitTargets();
-+		
-+		SkipTargetInitialization:
  
+-		if (drawToScreen && targetSet)
+-			ReleaseTargets();
+-
+-		if (!drawToScreen && !targetSet)
+-			InitTargets();
+-
++			if (!targetSet)
++				InitTargets();
++		}
++		
  		fpsCount++;
  		if (!base.IsActive)
+ 			maxQ = true;
 @@ -50898,19 +_,22 @@
  				renderCount = 99;
  			}
@@ -6805,11 +6804,11 @@
  
 +		// Additionally remove the restrictions of the Retro/Trippy lighing modes and allow for screen shaders.
 -		bool flag2 = !(drawToScreen || netMode == 2 || flag) && !mapFullscreen && Lighting.NotRetro && Terraria.Graphics.Effects.Filters.Scene.CanCapture();
-+		bool flag2 = !(drawToScreen || netMode == 2 /*|| flag*/) && !mapFullscreen && /*Lighting.NotRetro &&*/ Terraria.Graphics.Effects.Filters.Scene.CanCapture();
++		bool flag2 = !(/*drawToScreen ||*/ netMode == 2 /*|| flag*/) && !mapFullscreen && /*Lighting.NotRetro &&*/ Terraria.Graphics.Effects.Filters.Scene.CanCapture();
  		if (flag2)
  			Terraria.Graphics.Effects.Filters.Scene.BeginCapture(screenTarget, Microsoft.Xna.Framework.Color.Black);
  
-@@ -51170,7 +_,7 @@
+@@ -51170,19 +_,25 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  		DrawBackgroundBlackFill();
  		spriteBatch.End();
@@ -6818,6 +6817,25 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, UIScaleMatrix);
  		if (gameMenu || netMode == 2) {
  			spriteBatch.End();
++
++			// End the screen capture BEFORE drawing UI.
++			if (flag2)
++				Terraria.Graphics.Effects.Filters.Scene.EndCapture(null, screenTarget, screenTargetSwap, Microsoft.Xna.Framework.Color.Black);
++
+ 			PreDrawMenu(out var screenSizeCache, out var screenSizeCacheAfterScaling);
+ 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, UIScaleMatrix);
+ 			DrawMenu(gameTime);
+ 			PostDrawMenu(screenSizeCache, screenSizeCacheAfterScaling);
+ 			TimeLogger.MenuDrawTime(stopwatch.Elapsed.TotalMilliseconds);
+ 			TimeLogger.EndDrawFrame();
++			/*
+ 			if (flag2)
+ 				Terraria.Graphics.Effects.Filters.Scene.EndCapture(null, screenTarget, screenTargetSwap, Microsoft.Xna.Framework.Color.Black);
+-
++			*/
+ 			return;
+ 		}
+ 
 @@ -51282,6 +_,9 @@
  
  		TimeLogger.DetailedDrawReset();
