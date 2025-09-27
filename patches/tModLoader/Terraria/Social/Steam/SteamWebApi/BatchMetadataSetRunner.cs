@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Terraria.ModLoader;
 using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam;
@@ -21,8 +22,14 @@ internal class BatchMetadataSetRunner
 			var response = SteamWebWrapper.QueryForPublisherIds();
 
 			for (int i = 0; i < response.Count; i++) {
-				string workingDir = CreateWorkingDirectoryForPage(response[i], i);
-				new BatchMetadataSetRunner(workingDir).RunForceDevMetadataUpdate(deleteModsWhenComplete: true);
+				try {
+					string workingDir = CreateWorkingDirectoryForPage(response[i], i);
+					new BatchMetadataSetRunner(workingDir).RunForceDevMetadataUpdate(deleteModsWhenComplete: true);
+					
+				}
+				catch (Exception e) {
+					Logging.tML.Warn($"Page {i} failed to complete;\n{e}");
+				}
 			}
 		}
 		else {
