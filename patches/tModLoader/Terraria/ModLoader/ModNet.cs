@@ -11,6 +11,7 @@ using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.Net;
+using Terraria.Social.Steam;
 using Terraria.UI;
 
 namespace Terraria.ModLoader;
@@ -55,7 +56,7 @@ public static class ModNet
 
 	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
-	internal static bool downloadModsFromServers = true;
+	internal static bool downloadModsFromServers = false;
 
 	internal static bool[] isModdedClient = new bool[256];
 
@@ -204,7 +205,7 @@ public static class ModNet
 
 		int n = reader.ReadInt32();
 		for (int i = 0; i < n; i++) {
-			var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20));
+			var header = new ModHeader(name: reader.ReadString(), new Version(reader.ReadString()), hash: reader.ReadBytes(20));
 			SyncModHeaders.Add(header);
 
 			int configCount = reader.ReadInt32();
@@ -226,7 +227,15 @@ public static class ModNet
 				continue;
 			}
 
-			if (downloadModsFromServers) {
+			bool trustLevel = downloadModsFromServers;
+
+			// This is a basic check for users on Stable builds (from github or Steam) that enforces that a mod must be on workshop before it can be synced to player
+			// This does not affect Self-built or Preview builds of tModLoader so that modders can still develop multiplayer mods offline.
+			// A future PR is adding hash verification, but for now this adds a bare bones guard that will still exist after that PR.
+			if (!WorkshopHelper.TryGetModDownloadItem(header.name, out var item) || item == null)
+				trustLevel &= !BuildInfo.IsStable;
+
+			if (trustLevel) {
 				downloadQueue.Enqueue(header);
 				reloadRequiredExplanationEntries.Add(MakeDownloadModExplanation(modFiles, header, clientMod));
 			}
