@@ -6246,6 +6246,25 @@
  	}
  
  	private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling)
+@@ -42862,11 +_,18 @@
+ 
+ 	private static bool IsBorderlessDisplayAvailable()
+ 	{
++		// TML: Exclusive fullscreen is retired in favor of borderless
++		// fullscreen.  As such, the borderless option serves no purpose (and
++		// is ignored in practice).
++		return false;
++
++		/*
+ 		bool result = false;
+ 		if (Platform.IsWindows)
+ 			result = true;
+ 
+ 		return result;
++		*/
+ 	}
+ 
+ #if !NETCORE
 @@ -43330,9 +_,17 @@
  		float value = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
  		value = MathHelper.Clamp(value, 0f, 1f);
