@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using Newtonsoft.Json;
 using Terraria.ModLoader.Core;
@@ -51,20 +52,17 @@ public class DeveloperMetadata
 
 	internal static DeveloperMetadata Deserialize(string serializedDevMetadata)
 	{
+		// If the item is new, or hasn't had Metadata set yet, it will be new dev metadata
 		if (string.IsNullOrWhiteSpace(serializedDevMetadata))
 			return new();
 
 		try {
-			var devMetadata = JsonConvert.DeserializeObject<DeveloperMetadata>(serializedDevMetadata, new ModVersionHash.VersionHashConverter());
-
-			if (devMetadata == null || devMetadata.modVersionHashes == null) {
-				return default;
-			}
-
-			return devMetadata;
+			return JsonConvert.DeserializeObject<DeveloperMetadata>(serializedDevMetadata, new ModVersionHash.VersionHashConverter());
 		}
 		catch (Exception) {
-			return default;
+			// We will lose any metadata associated with what is on Workshop currently if the Json Deserialize fails...
+			// but its already corrupt if so,  probably safe to rewrite with healthy data in this rare occurence - Solxan
+			return new();
 		}
 	}
 
@@ -74,26 +72,12 @@ public class DeveloperMetadata
 	{
 		const int MaxMetadataLength = Steamworks.Constants.k_cchDeveloperMetadataMax;
 
-		var overflowLength = Serialize().Length - MaxMetadataLength;
-		if (overflowLength <= 0)
-			return;
-
-		int charsSaved = 0;
-
-		// Check if we can reduce the number of ModHashes
+		// In case we want to store anything else down the road and it takes up space, this is the minimum amount of hashes we need to keep
+		// This minimum avoids issues with delays in the deployment time on Steam from when it is published to when it actually arrives for all users globally
 		var minNumberOfHashes = 2 * SocialBrowserModule.keepRequirements.Select(a => a.keepCount).Sum();
-		int hashesToKeep = modVersionHashes.Count;
-
-		while (hashesToKeep > minNumberOfHashes) {
-			charsSaved += modVersionHashes[hashesToKeep-- - 1].ToString().Length;
-
-			if (overflowLength <= charsSaved)
-				break;
+		
+		while (Serialize().Length > MaxMetadataLength && modVersionHashes.Count() > minNumberOfHashes + 2) {
+			modVersionHashes = modVersionHashes.Take(modVersionHashes.Count() - 2).ToList();
 		}
-		modVersionHashes = modVersionHashes.Take(hashesToKeep).ToList();
-
-		// Throw if we can't reduce the total character count to within limits
-		if (overflowLength > charsSaved)
-			throw new Exception("Developer Metadata Exceeds maximum allowed space while meeting minimum requirements. Mod could not be uploaded");
 	}
 }

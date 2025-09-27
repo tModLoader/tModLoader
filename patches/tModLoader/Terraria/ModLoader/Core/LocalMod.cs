@@ -41,7 +41,7 @@ internal class LocalMod
 	{
 	}
 
-	internal static LocalMod OpenModFile(string path)
+	internal static LocalMod FromWorkshopModFile(string path)
 	{
 		var sModFile = new TmodFile(path);
 		using (sModFile.Open())

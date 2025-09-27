@@ -212,7 +212,7 @@ public partial class WorkshopSocialModule
 		var buildVersion = new Version(buildData["version"]);
 
 		foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
-			var mod = LocalMod.OpenModFile(tmod);
+			var mod = LocalMod.FromWorkshopModFile(tmod);
 
 			// New Mod Version being published must have a larger version than all releases on older (or this) tModLoader versions
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor()) {
@@ -258,24 +258,27 @@ public partial class WorkshopSocialModule
 	/// </summary>
 	internal static DeveloperMetadata GetDeveloperMetadataForPublish(string folderPath, ulong publishId)
 	{
-		var newDeveloperMetadata = new DeveloperMetadata();
+		var pubId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
+		var developerMetadata = WorkshopBrowserModule.Instance.GetDeveloperMetadataFromModBrowser(pubId);
 
-		var currentHashes = ModOrganizer.GetModHashesFromFolder(folderPath);
+		var currentHashes = GetModHashesFromFolder(folderPath);
 
-		// Publish ID == 0 is a new mod
-		if (publishId == 0) {
-			newDeveloperMetadata.modVersionHashes = currentHashes;
-			return newDeveloperMetadata;
+		developerMetadata.modVersionHashes = currentHashes.Concat(developerMetadata.modVersionHashes.Except(currentHashes).ToList()).ToList();
+		developerMetadata.TrimDevMetadataForPublish();
+		return developerMetadata;
+	}
+
+	internal static List<ModVersionHash> GetModHashesFromFolder(string folderPath)
+	{
+		// Get the new hashes
+		var currentHashes = new List<ModVersionHash>();
+		foreach (var tModPath in Directory.EnumerateFiles(folderPath, "*.tmod*", SearchOption.AllDirectories)) {
+			var tModFile = new TmodFile(tModPath);
+			using var _ = tModFile.Open(); // Needed for Hash data to be populated
+			currentHashes.Add(new ModVersionHash(tModFile));
 		}
 
-		var pubId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
-		var oldDevMetadata = WorkshopBrowserModule.Instance.GetDeveloperMetadataFromModBrowser(pubId);
-
-		newDeveloperMetadata.modVersionHashes = currentHashes.Concat(oldDevMetadata.modVersionHashes.Except(currentHashes).ToList()).ToList();
-
-		newDeveloperMetadata.TrimDevMetadataForPublish();
-
-		return newDeveloperMetadata;
+		return currentHashes;
 	}
 
 	private static bool TryCalculateWorkshopDeps(ref NameValueCollection buildData)
@@ -373,7 +376,7 @@ public partial class WorkshopSocialModule
 
 		// Create a namevalue collection for checking versioning
 		string newModPath = Path.Combine(ModOrganizer.modPath, $"{modName}.tmod");
-		LocalMod newMod = LocalMod.OpenModFile(newModPath);
+		LocalMod newMod = LocalMod.FromWorkshopModFile(newModPath);
 
 		var buildData = new NameValueCollection() {
 			["version"] = newMod.Version.ToString(),

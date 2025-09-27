@@ -727,19 +727,6 @@ internal static class ModOrganizer
 		return information;
 	}
 
-	internal static List<ModVersionHash> GetModHashesFromFolder(string folderPath)
-	{
-		// Get the new hashes
-		var currentHashes = new List<ModVersionHash>();
-		foreach (var tModPath in Directory.EnumerateFiles(folderPath, "*.tmod*", SearchOption.AllDirectories)) {
-			var tModFile = new TmodFile(tModPath);
-			using var _ = tModFile.Open(); // Needed for Hash data to be populated
-			currentHashes.Add(new ModVersionHash(tModFile));
-		}
-
-		return currentHashes;
-	}
-
 	// Remove skippable preview builds from extended version (ie 2022.5 if stable is 2022.4 & Preview is 2022.6
 	private static void RemoveSkippablePreview(string repo)
 	{

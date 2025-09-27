@@ -181,10 +181,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		// Mod should Exist, check Mod Browser
 		var items = DirectQueryItems(new QueryParameters() { searchModIds = [modId], queryType = QueryType.SearchDirect, returnDevMetadata = true }, out _);
 
-		if (!items.Any())
-			return new();
-
-		return items.First().DevMetadata;
+		return items.FirstOrDefault()?.DevMetadata ?? new();
 	}
 }
 
