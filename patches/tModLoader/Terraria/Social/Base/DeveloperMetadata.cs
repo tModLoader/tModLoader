@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using Newtonsoft.Json;
 using Terraria.ModLoader.Core;
