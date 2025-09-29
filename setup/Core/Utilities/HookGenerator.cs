@@ -235,6 +235,11 @@ namespace MonoMod.RuntimeDetour.HookGen
                 {
                     suffix = false;
                 }
+                if (skipOverloadSuffix) {
+                    if (overloads.Any(x => x.HasCustomAttribute("Terraria.ModLoader.OriginalOverloadAttribute"))) {
+                          throw new Exception($"Multiple overloads for {method.DeclaringType.Name}.{method.Name} with OriginalOverloadAttribute");
+                    }
+                }
             }
 
             if (suffix)
