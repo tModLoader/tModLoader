@@ -279,6 +279,8 @@ namespace MonoMod.RuntimeDetour.HookGen
                 name = nameTmp;
             }
 
+            bool obsolete = method.HasCustomAttribute("System.ObsoleteAttribute"); // Do we need to check if error is true?
+
             // TODO: Fix possible conflict when other members with the same names exist.
 
             var delOrig = GenerateDelegateFor(method);
@@ -310,13 +312,19 @@ namespace MonoMod.RuntimeDetour.HookGen
             addHook.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, delHook));
             addHook.Body = new MethodBody(addHook);
             il = addHook.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Add);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                // TODO: How to log mods using this method still?
+                il.Emit(OpCodes.Ret);
+            }
+            else {
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Add);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookType.Methods.Add(addHook);
 
             var removeHook = new MethodDefinition(
@@ -327,13 +335,18 @@ namespace MonoMod.RuntimeDetour.HookGen
             removeHook.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, delHook));
             removeHook.Body = new MethodBody(removeHook);
             il = removeHook.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Remove);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                il.Emit(OpCodes.Ret);
+            }
+            else { 
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Remove);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookType.Methods.Add(removeHook);
 
             var evHook = new EventDefinition(name, EventAttributes.None, delHook)
@@ -341,6 +354,9 @@ namespace MonoMod.RuntimeDetour.HookGen
                 AddMethod = addHook,
                 RemoveMethod = removeHook
             };
+            if (obsolete) {
+                evHook.CustomAttributes.Add(GenerateObsolete("The hooked method is Obsolete, this detour should not be used.", true));
+            }
             hookType.Events.Add(evHook);
 
             #endregion
@@ -355,13 +371,18 @@ namespace MonoMod.RuntimeDetour.HookGen
             addIL.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, t_ILManipulator));
             addIL.Body = new MethodBody(addIL);
             il = addIL.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Modify);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                il.Emit(OpCodes.Ret);
+            }
+            else {
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Modify);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookILType.Methods.Add(addIL);
 
             var removeIL = new MethodDefinition(
@@ -372,13 +393,18 @@ namespace MonoMod.RuntimeDetour.HookGen
             removeIL.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, t_ILManipulator));
             removeIL.Body = new MethodBody(removeIL);
             il = removeIL.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Unmodify);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                il.Emit(OpCodes.Ret);
+            }
+            else {
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Unmodify);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookILType.Methods.Add(removeIL);
 
             var evIL = new EventDefinition(name, EventAttributes.None, t_ILManipulator)
@@ -386,6 +412,9 @@ namespace MonoMod.RuntimeDetour.HookGen
                 AddMethod = addIL,
                 RemoveMethod = removeIL
             };
+            if (obsolete) {
+                evIL.CustomAttributes.Add(GenerateObsolete("The hooked method is Obsolete, this IL edit should not be used.", true));
+            }
             hookILType.Events.Add(evIL);
 
             #endregion
