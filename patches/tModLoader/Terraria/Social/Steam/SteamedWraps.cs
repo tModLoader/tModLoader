@@ -1,14 +1,12 @@
-using Microsoft.Xna.Framework;
-using ReLogic.OS;
-using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
+using ReLogic.OS;
+using Steamworks;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
@@ -148,6 +146,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetReturnMetadata(qHandle, qP.returnDevMetadata);
 			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
@@ -157,6 +156,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetReturnMetadata(qHandle, qP.returnDevMetadata);
 			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
@@ -210,18 +210,18 @@ public static class SteamedWraps
 			SteamGameServerUGC.SetSearchText(qHandle, text);
 	}
 
-	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId, QueryParameters qP)
 	{
 		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
 
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
 			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
@@ -333,6 +333,16 @@ public static class SteamedWraps
 
 			metadata[key] = val;
 		}
+	}
+
+	public static bool FetchDeveloperMetadata(UGCQueryHandle_t handle, uint index, out string devMetadataSerialized)
+	{
+		if (SteamClient)
+			return SteamUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
+		else if (SteamAvailable)
+			return SteamGameServerUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
+
+		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
 	public static void RunCallbacks()
@@ -656,12 +666,17 @@ public static class SteamedWraps
 		if (!SteamClient)
 			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
 
+		// Add player metadata to the Workshop item
 		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
 		foreach (var key in WorkshopHelper.MetadataKeys) {
 			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
 
+		// Add developer metadata to the Workshop item
+		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData["developermetadata"]);
+
+		// Adde Dependencies to the Workshop item
 		string refs = _entryData.BuildData["workshopdeps"];
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
@@ -678,6 +693,17 @@ public static class SteamedWraps
 				}
 			}
 		}
+	}
+
+	private static bool AddDeveloperMetadata(ref UGCUpdateHandle_t uGCUpdateHandle_t, string developerMetadata)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to AddDeveloperMetadata. Steam Client API not initialized!");
+
+		if (developerMetadata.Length >= Constants.k_cchDeveloperMetadataMax)
+			throw new Exception($"Invalid Call to AddDeveloperMetadata. Developer Metadata exceeds {Constants.k_cchDeveloperMetadataMax} characters");
+
+		return SteamUGC.SetItemMetadata(uGCUpdateHandle_t, developerMetadata);
 	}
 
 	public static readonly List<WorkshopTagOption> ModTags = new List<WorkshopTagOption>();
