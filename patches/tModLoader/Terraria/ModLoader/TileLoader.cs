@@ -146,7 +146,6 @@ public static class TileLoader
 		//Textures
 		Array.Resize(ref TextureAssets.Tile, nextTile);
 		Array.Resize(ref TextureAssets.HighlightMask, nextTile);
-		Array.Resize(ref TextureAssets.LiquidMask, nextTile);
 
 		//Sets
 		LoaderUtils.ResetStaticMembers(typeof(TileID));

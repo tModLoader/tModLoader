@@ -74,11 +74,8 @@ public static class LiquidEdgeRenderer
 	private static void DrawSingleTileMask(SpriteBatch spriteBatch, int tileX, int tileY)
 	{
 		Tile tileCache = Main.tile[tileX, tileY];
-
-		// Check if a custom mask is loaded for the tile and use it if so
-		Texture2D texture = TextureAssets.LiquidMask[tileCache.type]?.Value ?? DefaultLiquidMask;
-
 		Vector2 position = new Vector2(tileX * 16, tileY * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
+		Texture2D texture = DefaultLiquidMask;
 
 		if (tileCache.Slope != SlopeType.Solid && !TileID.Sets.HasSlopeFrames[tileCache.TileType]) {
 			int slopeType = (int)tileCache.Slope;

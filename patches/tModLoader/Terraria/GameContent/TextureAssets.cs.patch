@@ -17,17 +17,3 @@
  public static class TextureAssets
  {
  	public static class RenderTargets
-@@ -190,6 +_,13 @@
- 	public static Asset<Texture2D>[] GlowMask = new Asset<Texture2D>[GlowMaskID.Count];
- 	public static Asset<Texture2D>[] Extra = new Asset<Texture2D>[ExtrasID.Count];
- 	public static Asset<Texture2D>[] HighlightMask = new Asset<Texture2D>[TileID.Count];
-+
-+	/// <summary>
-+	/// Contains liquid mask textures for specific block types that have funny shapes but still need to hide water.
-+	/// <br />
-+	/// Only shows up when the tile is part of the <see cref="TileID.Sets.BlocksWaterDrawingBehindSelf"/> set.
-+	/// </summary>
-+	public static Asset<Texture2D>[] LiquidMask = [];
- 	public static Asset<Texture2D>[] Coin = new Asset<Texture2D>[4];
- 	public static Asset<Texture2D>[] Cursors = new Asset<Texture2D>[18];
- 	public static Asset<Texture2D> CursorRadial;
