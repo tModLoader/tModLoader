@@ -19,10 +19,21 @@ namespace Terraria.ModLoader.UI;
 /// <paramref name="typeOrder"/> dictates the order specific explanations are shown:
 /// <br/> 1: Download, 2: Switch Version, 3: Enable, 4: Disable, 5: Config Change
 /// <para/> <paramref name="mod"/> is internal name, <paramref name="localMod"/> might be null for mods that need to be downloaded.
-/// <br/><br/> <paramref name="subOrder"/> dictates order within a typeOrder. Used for downloads ranging from most severe risk to least:
-/// <br/> 1: Not on workshop, 2: Low subscriber count, 3: On workshop, 4: Unable to access workshop
+/// <br/><br/> <paramref name="riskState"/> dictates order within a typeOrder. Used for downloads ranging from most severe risk to least:
+/// <br/> 1: Banned, 2: Not on workshop, 3: Hash doesn't match workshop files, 4: Low subscriber count, 5: On workshop, 6: Unable to access workshop
 /// </summary>
-internal record ReloadRequiredExplanation(int typeOrder, string mod, LocalMod localMod, string reason, int subOrder = 0);
+internal record ReloadRequiredExplanation(int typeOrder, string mod, LocalMod localMod, string reason, DownloadModRiskState riskState = DownloadModRiskState.Unassigned);
+
+internal enum DownloadModRiskState
+{
+	Unassigned,
+	BannedOnWorkshop,
+	NotOnWorkshop,
+	HashDiffersFromWorkshop,
+	LowSubscriberCount,
+	AvailableOnWorkshop,
+	UnableToVerify,
+}
 
 internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 {
@@ -234,14 +245,17 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 					TextColor = Color.Red
 				};
 
-				string warningKey = entry.subOrder switch {
-					1 => "tModLoader.MPServerModNotAvailableOnWorkshop",
-					2 => "tModLoader.MPServerModAvailableOnWorkshopLowSubscriberCount",
-					3 => "tModLoader.MPServerModAvailableOnWorkshop",
-					_ => "tModLoader.MPServerModUnableToVerify",
+				string warningKey = entry.riskState switch {
+					DownloadModRiskState.BannedOnWorkshop => "tModLoader.MPServerModBannedOnWorkshop",
+					DownloadModRiskState.NotOnWorkshop => "tModLoader.MPServerModNotAvailableOnWorkshop",
+					DownloadModRiskState.HashDiffersFromWorkshop => "tModLoader.MPServerModHashDiffersFromWorkshop",
+					DownloadModRiskState.LowSubscriberCount => "tModLoader.MPServerModAvailableOnWorkshopLowSubscriberCount",
+					DownloadModRiskState.AvailableOnWorkshop => "tModLoader.MPServerModAvailableOnWorkshop",
+					DownloadModRiskState.UnableToVerify => "tModLoader.MPServerModUnableToVerify",
+					_ => throw new NotImplementedException(),
 				};
 				warning.SetText(Language.GetTextValue(warningKey));
-				if(entry.subOrder == 3)
+				if (entry.riskState == DownloadModRiskState.AvailableOnWorkshop)
 					warning.TextColor = Color.White;
 
 				panel.Append(warning);
@@ -251,7 +265,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			}
 		}
 
-		if(Main.tServer != null) {
+		if (Main.tServer != null) {
 			UIPanel panel = new UIPanel();
 			panel.Width.Set(0, 1f);
 			panel.Height.Set(130, 0f);
@@ -293,7 +307,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 		_continueButtonAction = continueButtonAction;
 		_backText = backButtonText;
 		_backAction = backButtonAction;
-		this.reloadRequiredExplanationEntries = reloadRequiredExplanationEntries?.OrderBy(x => x.typeOrder).ThenBy(x => x.subOrder).ThenBy(x => x.mod).ToList();
+		this.reloadRequiredExplanationEntries = reloadRequiredExplanationEntries?.OrderBy(x => x.typeOrder).ThenBy(x => x.riskState).ThenBy(x => x.mod).ToList();
 		Main.menuMode = Interface.serverModsDifferMessageID;
 		Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
 		Main.alreadyGrabbingSunOrMoon = false; // Prevents cursor from being invisible in rare situations because netmode is technically 1 at this menu so it won't reset correctly.
