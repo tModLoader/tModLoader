@@ -6490,7 +6490,7 @@
  
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +
-+		if (LiquidEdgeRenderer.Active && Lighting.NotRetro)
++		if (LiquidEdgeRenderer.Active && !drawToScreen)
 +			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
  	}
  
