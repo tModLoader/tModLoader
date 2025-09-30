@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
+using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Utilities;
-using Terraria.Localization;
-using System.Collections;
-using System.Text;
 
 namespace Terraria.Social.Steam;
 
@@ -26,21 +26,29 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItem(modFile.Name, out var mod)) {
-			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
-			return false;
-		}
+		var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(modFile.Name, out var modDownloadItemAsFound);
 
 		currPublishID = 0;
 
-		if (mod == null) {
+		if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+			return false;
+		}
+		
+		// TODO: Localized String missing 
+		if (state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
+			IssueReporter.ReportInstantUploadProblem("TODO: Localized String - Workshop Item is Corrupted; reach out in tML support");
 			return false;
 		}
 
-		currPublishID = ulong.Parse(mod.PublishId.m_ModPubId);
+		// This is a new Mod. "modDownloadItemAsFound" will be null
+		if (state == WorkshopHelper.WorkshopSearchReturnState.NotFound)
+			return false;
+
+		currPublishID = ulong.Parse(modDownloadItemAsFound.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
-		WorkshopBrowserModule.Instance.DownloadItem(mod, uiProgress: null);
+		WorkshopBrowserModule.Instance.DownloadItem(modDownloadItemAsFound, uiProgress: null);
 
 		// Grab the tags from workshop.json
 		ModOrganizer.WorkshopFileFinder.Refresh(new WorkshopIssueReporter()); // Force detection in case mod wasn't installed
@@ -123,7 +131,7 @@ public partial class WorkshopSocialModule
 		}
 
 		// Check for Beta
-		if (BuildInfo.IsDev) {
+		if (BuildInfo.IsDev && modFile.Name != "ToBeDeleted") {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 			return false;
 		}
@@ -139,6 +147,7 @@ public partial class WorkshopSocialModule
 
 			FixErrorsInWorkshopFolder(workshopFolderPath);
 
+			// NOTE: The check for version being increased occurs within here
 			if (!CalculateVersionsData(workshopFolderPath, ref buildData, out string failureMessage)) {
 				IssueReporter.ReportInstantUploadProblem(failureMessage);
 				return false;
@@ -177,6 +186,11 @@ public partial class WorkshopSocialModule
 			// Should be called after folder created & cleaned up
 			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
+			// Developer Metadata Calculations must occur after cleanup old publish
+			var devMetadata = GetDeveloperMetadataForPublish(workshopFolderPath, currPublishID);
+
+			buildData["developermetadata"] = devMetadata.Serialize();
+
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
 			_publisherInstances.Add(modPublisherInstance);
@@ -198,8 +212,9 @@ public partial class WorkshopSocialModule
 		var buildVersion = new Version(buildData["version"]);
 
 		foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
-			var mod = OpenModFile(tmod);
-			// Mod must have a larger version than all releases on older (or this) tModLoader versions
+			var mod = LocalMod.FromWorkshopModFile(tmod);
+
+			// New Mod Version being published must have a larger version than all releases on older (or this) tModLoader versions
 			if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor()) {
 				if (mod.Version >= buildVersion) {
 					failureMessage = Language.GetTextValue("tModLoader.ModVersionTooSmall", buildVersion, mod.Version);
@@ -235,11 +250,35 @@ public partial class WorkshopSocialModule
 		return summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 	}
 
-	internal static LocalMod OpenModFile(string path)
+	// PR 4345 - We combine the hash data that is currently on workshop with the hash data from the updated publishing folder to ensure that when mods are updated it is backwards compatible
+	// It is backwards compatible while Steam spends up to an hour rolling out workshop item updates
+	/// <summary>
+	/// Gets the revised Developer Metadata fo usage with publishing a new mod or update to an existing mod.
+	/// Takes the folder path containing all .tmod files and the PublishFileID. A PublishFileID of zero is a new mod by convention.
+	/// </summary>
+	internal static DeveloperMetadata GetDeveloperMetadataForPublish(string folderPath, ulong publishId)
 	{
-		var sModFile = new TmodFile(path);
-		using (sModFile.Open())
-			return new LocalMod(ModLocation.Workshop, sModFile);
+		var pubId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
+		var developerMetadata = WorkshopBrowserModule.Instance.GetDeveloperMetadataFromModBrowser(pubId);
+
+		var currentHashes = GetModHashesFromFolder(folderPath);
+
+		developerMetadata.modVersionHashes = currentHashes.Concat(developerMetadata.modVersionHashes.Except(currentHashes).ToList()).ToList();
+		developerMetadata.TrimDevMetadataForPublish();
+		return developerMetadata;
+	}
+
+	internal static List<ModVersionHash> GetModHashesFromFolder(string folderPath)
+	{
+		// Get the new hashes
+		var currentHashes = new List<ModVersionHash>();
+		foreach (var tModPath in Directory.EnumerateFiles(folderPath, "*.tmod*", SearchOption.AllDirectories)) {
+			var tModFile = new TmodFile(tModPath);
+			using var _ = tModFile.Open(); // Needed for Hash data to be populated
+			currentHashes.Add(new ModVersionHash(tModFile));
+		}
+
+		return currentHashes;
 	}
 
 	private static bool TryCalculateWorkshopDeps(ref NameValueCollection buildData)
@@ -248,7 +287,7 @@ public partial class WorkshopSocialModule
 
 		if (buildData["modreferences"].Length > 0) {
 			var query = new QueryParameters() { searchModSlugs = buildData["modreferences"].Split(",") };
-			if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
+			if (!WorkshopHelper.QueryHelper.AQueryInstance.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 				return false;
 
 			foreach (string modRef in modIds) {
@@ -337,7 +376,7 @@ public partial class WorkshopSocialModule
 
 		// Create a namevalue collection for checking versioning
 		string newModPath = Path.Combine(ModOrganizer.modPath, $"{modName}.tmod");
-		LocalMod newMod = OpenModFile(newModPath);
+		LocalMod newMod = LocalMod.FromWorkshopModFile(newModPath);
 
 		var buildData = new NameValueCollection() {
 			["version"] = newMod.Version.ToString(),
@@ -397,5 +436,34 @@ public partial class WorkshopSocialModule
 		File.WriteAllLines(vdf, lines);
 
 		Console.WriteLine("CI Files Prepared");
+	}
+
+	private class SteamCmdWebApiHelper
+	{
+		private string publisherkey;
+
+		private string GetMetadataWeb(string webKey, string publishFileId) {
+			// https://steamapi.xpaw.me/#IPublishedFileService/GetDetails
+
+			string webRequest = $"https://api.steampowered.com/IPublishedFileService/GetDetails/v1/?key={webKey}&publishedfileids%5B0%5D={publishFileId}&includetags=false&includeadditionalpreviews=false&includechildren=false&includekvtags=true&includevotes=false&short_description=true&includeforsaledata=false&includemetadata=true&return_playtime_stats=0&appid=1281930&strip_description_bbcode=false&admin_query=true";
+			/// Response Format Will Include these, if it has data for it. If no data in metadata, will not show at all.
+			/// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
+			/// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
+
+			// 
+
+			return null;
+		}
+
+		private void UpdateKvTagVersionSummary(string webkey, string publishFileId, string versionSummary)
+		{
+			//https://partner.steam-api.com/IPublishedFileService/UpdateKeyValueTags/v1/
+		}
+
+		private void SetDeveloperMetadata(string webKey, string publishFileId, string metadata)
+		{
+			// https://partner.steamgames.com/doc/webapi/IPublishedFileService#SetDeveloperMetadata
+			//string postRequest = curl -v -H "Content-Type: application/json" -X POST -d '{"publishedfileid":"2593761992","appid":"1281930","metadata":"helpme","key":"hjkhjkh"}' https://partner.steam-api.com/IPublishedFileService/SetDeveloperMetadata/v1
+		}
 	}
 }

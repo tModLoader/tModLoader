@@ -1,6 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Initializers/LinkButtonsInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LinkButtonsInitializer.cs
-@@ -18,13 +_,25 @@
+@@ -3,6 +_,7 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+ using Terraria.DataStructures;
++using Terraria.Social;
+ 
+ namespace Terraria.Initializers;
+ 
+@@ -18,13 +_,28 @@
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Forums", "https://forums.terraria.org/index.php", 4));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Merch", "https://terraria.org/store", 5));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Wiki", "https://terraria.wiki.gg/", 6));
@@ -10,7 +18,10 @@
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Discord", "https://tmodloader.net/discord", 0));
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Twitter", "https://twitter.com/tModLoader", 3));
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Wiki", "https://github.com/tModLoader/tModLoader/wiki", 6));
-+		titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://www.patreon.com/tmodloader", 7));
++
++		bool showPatreon = SocialAPI.Mode != SocialMode.Steam;
++		if (showPatreon)
++			titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://www.patreon.com/tmodloader", 7));
  	}
  
  	private static TitleLinkButton MakeSimpleButton(string textKey, string linkUrl, int horizontalFrameIndex)

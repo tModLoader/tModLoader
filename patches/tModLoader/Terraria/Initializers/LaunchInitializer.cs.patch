@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/LaunchInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LaunchInitializer.cs
-@@ -1,6 +_,10 @@
+@@ -1,7 +_,12 @@
  using System;
  using System.Diagnostics;
 +using System.Linq;
@@ -9,8 +9,10 @@
 +using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Engine;
  using Terraria.Social;
++using Terraria.Social.Steam;
  
  namespace Terraria.Initializers;
+ 
 @@ -25,13 +_,58 @@
  		string s;
  		if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out var result))
@@ -93,7 +95,7 @@
  
  		string value;
  		if ((value = TryParameter("-maxplayers", "-players")) != null) {
-@@ -103,6 +_,22 @@
+@@ -103,6 +_,28 @@
  		if ((s2 = TryParameter("-language")) != null)
  			LanguageManager.Instance.SetLanguage(s2);
  
@@ -112,6 +114,12 @@
 +		// Added by TML.
 +		if (TryParameter("-install") is string install)
 +			FileAssociationSupport.HandleFileAssociation(install);
++
++		// Added by TML
++		if (TryParameter("-forceupdatemetadata") is string workshopForceDevMetadataFolder) {
++			BatchMetadataSetRunner.RunForceUpdate(workshopForceDevMetadataFolder);
++			// Application Exits
++		}
 +
  		string worldName;
  		if ((worldName = TryParameter("-worldname")) != null)
