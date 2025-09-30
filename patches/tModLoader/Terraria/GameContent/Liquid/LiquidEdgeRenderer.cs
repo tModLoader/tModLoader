@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 
 using System;
 using System.Collections.Generic;
@@ -43,16 +43,9 @@ public static class LiquidEdgeRenderer
 	/// <summary>
 	/// The default liquid mask tile for tiles in <see cref="TileID.Sets.BlocksWaterDrawingBehindSelf"/>.
 	/// </summary>
-	public static Texture2D MaskTile => (maskTileAsset ??= ModLoader.ModLoader.ManifestAssets.Request<Texture2D>("Terraria.GameContent.Liquid.DefaultTileLiquidMask", AssetRequestMode.ImmediateLoad)).Value;
+	public static Texture2D DefaultLiquidMask => (_defaultLiquidMask ??= ModLoader.ModLoader.ManifestAssets.Request<Texture2D>("Terraria.GameContent.Liquid.DefaultTileLiquidMask", AssetRequestMode.ImmediateLoad)).Value;
 
-	private static Asset<Texture2D>? maskTileAsset;
-
-	/// <summary>
-	/// Contains liquid mask textures for specific block types that have funny shapes but still need to hide water.
-	/// <br />
-	/// Only shows up when the tile is part of the <see cref="TileID.Sets.BlocksWaterDrawingBehindSelf"/> set.
-	/// </summary>
-	public static Asset<Texture2D>[] TileLiquidMasks = [];
+	private static Asset<Texture2D>? _defaultLiquidMask;
 
 	public static readonly BlendState MaskingBlendState = new BlendState() {
 		ColorSourceBlend = Blend.Zero,
@@ -71,12 +64,9 @@ public static class LiquidEdgeRenderer
 	{
 		Tile tileCache = Main.tile[tileX, tileY];
 
-		Texture2D texture = MaskTile;
-
 		// Check if a custom mask is loaded for the tile and use it if so
-		if (TileLiquidMasks.IndexInRange(tileCache.type) && (TileLiquidMasks[tileCache.type]?.IsLoaded ?? false)) {
-			texture = TileLiquidMasks[tileCache.type].Value;
-		}
+		Texture2D texture = TextureAssets.LiquidMask[tileCache.type]?.Value ?? DefaultLiquidMask;
+
 		Vector2 position = new Vector2(tileX * 16, tileY * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
 
 		if (tileCache.Slope != SlopeType.Solid && !TileID.Sets.HasSlopeFrames[tileCache.TileType]) {
