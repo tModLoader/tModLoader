@@ -139,29 +139,18 @@
  						num2 = 1f;
  					}
 -					else if (!ptr2->HasLiquid) {
-+					else if (!ptr2->HasLiquid && !ptr2->EdgeData.HasValue) {
++					else if (!ptr2->HasLiquid && !ptr2->EdgeData.HasValue) { // edge tiles don't have liquid, but shouldn't participate in gap filling
  						LiquidCache liquidCache = ptr2[-1];
  						LiquidCache liquidCache2 = ptr2[1];
  						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
-@@ -197,11 +_,14 @@
- 			ptr2 = ptr;
- 			for (int m = 0; m < rectangle.Width; m++) {
- 				for (int n = 0; n < rectangle.Height - 10; n++) {
--					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick)) {
-+					if (ptr2->HasVisibleLiquid && (!ptr2->IsSolid || ptr2->IsHalfBrick || ptr2->EdgeData.HasValue)) {
- 						ptr2->Opacity = 1f;
- 						ptr2->VisibleType = ptr2->Type;
- 						float num3 = 1f / (float)(WATERFALL_LENGTH[ptr2->Type] + 1);
- 						float num4 = 1f;
-+						// TML(liquid-slopes): Duplicate original validity check without edge
-+						// data to avoid waterfalls appearing beneath solid tiles.
-+						if (!ptr2->IsSolid || ptr2->IsHalfBrick)
- 						for (int num5 = 1; num5 <= WATERFALL_LENGTH[ptr2->Type]; num5++) {
- 							num4 -= num3;
- 							if (ptr2[num5].IsSolid)
-@@ -213,7 +_,7 @@
+@@ -212,8 +_,12 @@
+ 							ptr2[num5].VisibleType = ptr2->Type;
  						}
  					}
++					else if (ptr2->HasVisibleLiquid && ptr2->EdgeData.HasValue) { // edge water needs opacity and visibility set
++						ptr2->Opacity = 1f;
++						ptr2->VisibleType = ptr2->Type;
++					}
  
 -					if (ptr2->IsSolid && !ptr2->IsHalfBrick) {
 +					if (ptr2->IsSolid && !ptr2->IsHalfBrick && !ptr2->EdgeData.HasValue) {
@@ -182,8 +171,8 @@
  						float visibleLiquidLevel = ptr2->VisibleLiquidLevel;
 -						if (!liquidCache.HasVisibleLiquid)
 -							num10 += liquidCache2.VisibleLiquidLevel * (1f - visibleLiquidLevel);
-+						if (!liquidCache.HasVisibleLiquid || (liquidCache.EdgeData.HasValue && !liquidCache.IsHalfBrick))
-+							num10 += (liquidCache2.EdgeData.HasValue ? 1f : liquidCache2.VisibleLiquidLevel) * (1f - visibleLiquidLevel);
++						if (!liquidCache.HasVisibleLiquid || (liquidCache.EdgeData.HasValue && !liquidCache.IsHalfBrick)) // half bricks are meant to leak water below them creating waterfalls and providing 'surface tension' through the bottom
++							num10 += (liquidCache2.EdgeData.HasValue ? 1f : liquidCache2.VisibleLiquidLevel) * (1f - visibleLiquidLevel); // this is just creating the same effect as if the tile above didn't have any edgedata, (empty tiles have VisibleLiquidLevel = 1)
  
  						if (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid && !liquidCache2.IsHalfBrick)
  							num11 -= liquidCache.VisibleLiquidLevel * (1f - visibleLiquidLevel);
@@ -193,7 +182,7 @@
  						}
 -
 -						if (liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid) {
-+						// TML: Change condition to ignore edges when smoothing liquids
++						// Ignore edges when smoothing liquids
 +						bool smoothCondition = edgeData ?
 +							liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid && liquidCache4.HasVisibleLiquid && !liquidCache4.IsSolid :
 +							liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid;
@@ -201,12 +190,7 @@
  							if (ptr2->HasTopEdge)
  								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
  
-@@ -421,10 +_,14 @@
- 								float num21 = Math.Max(0.25f, ptr2->VisibleRightWall);
- 								float num22 = Math.Min(0.75f, ptr2->VisibleTopWall);
- 								float num23 = Math.Max(0.25f, ptr2->VisibleBottomWall);
-+
-+								if (!edgeData)
+@@ -424,7 +_,9 @@
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
  
@@ -222,7 +206,7 @@
  								if (num19 != 2 && !ptr7->HasVisibleLiquid && !ptr7->IsSolid && !ptr7->IsHalfBrick)
  									*(ptr6 - 1) = *ptr6;
 +
-+								if (ptr2->EdgeData.HasValue) {
++								if (ptr2->EdgeData.HasValue) { // ignore previous instructions and use custom framing from LiquidEdgeRenderer
 +									ptr4->LiquidOffset = ptr2->EdgeData.Value.LiquidOffset;
 +									ptr4->SourceRectangle = ptr2->EdgeData.Value.SourceRectangle;
 +								}

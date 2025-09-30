@@ -123,13 +123,16 @@ public static class LiquidEdgeRenderer
 
 	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)
 	{
+		if (!tileCache.HasTile || tileCache.IsActuated || Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type])
+			return;
+
 		Tile tileRightCache = Main.tile[tileX + 1, tileY];
 		Tile tileLeftCache = Main.tile[tileX - 1, tileY];
+		if (tileCache.IsHalfBlock && (tileLeftCache.liquid > 160 || tileRightCache.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY))
+			return;
+
 		Tile tileUpCache = Main.tile[tileX, tileY - 1];
 		Tile tileDownCache = Main.tile[tileX, tileY + 1];
-
-		if (!tileCache.HasTile || tileCache.IsActuated || Main.tileSolidTop[tileCache.type] || (tileCache.IsHalfBlock && (tileLeftCache.liquid > 160 || tileRightCache.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)))
-			return;
 
 		int liquidType = 0;
 
@@ -138,12 +141,10 @@ public static class LiquidEdgeRenderer
 		bool right = false;
 		bool up = false;
 		bool down = false;
-		bool self = false;
 		SlopeType slope = tileCache.Slope;
 		BlockType blockType = tileCache.BlockType;
 
 		if (tileCache.type == TileID.Grate && tileCache.LiquidAmount > 0) {
-			self = true;
 			down = true;
 			left = true;
 			right = true;
@@ -152,8 +153,6 @@ public static class LiquidEdgeRenderer
 		}
 		else {
 			if (tileCache.LiquidAmount > 0 && blockType != BlockType.Solid && (blockType != BlockType.HalfBlock || tileCache.liquid > 160)) {
-				//self = true;
-
 				if (tileCache.LiquidAmount >= highLiquid) {
 					highLiquid = tileCache.LiquidAmount;
 					liquidType = tileCache.LiquidType;
@@ -192,14 +191,11 @@ public static class LiquidEdgeRenderer
 					liquidType = tileDownCache.LiquidType;
 				}
 			}
+
+			if (!up && !down && !left && !right)
+				return;
 		}
 
-		if (!up && !down && !left && !right && !self)
-			return;
-
-		var exempt = tileCache.HasTile && (Main.tileSolidTop[tileCache.type] || !Main.tileSolid[tileCache.type]);
-		if (exempt)
-			return;
 
 		Tile tileUpLeftCache = Main.tile[tileX - 1, tileY - 1];
 		Tile tileUpRightCache = Main.tile[tileX + 1, tileY - 1];
