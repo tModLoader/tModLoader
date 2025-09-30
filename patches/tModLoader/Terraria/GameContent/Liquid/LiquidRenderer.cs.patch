@@ -30,11 +30,8 @@
  		public Rectangle SourceRectangle;
  		public Vector2 LiquidOffset;
  		public bool IsVisible;
-@@ -46,8 +_,10 @@
- 		public byte Type;
- 		public bool IsSurfaceLiquid;
+@@ -48,6 +_,7 @@
  		public bool HasWall;
-+		public LiquidEdgeData? EdgeData;
  	}
  
 +	/*
@@ -90,11 +87,12 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -117,6 +_,8 @@
+@@ -117,6 +_,9 @@
  
  	private unsafe void InternalPrepareDraw(Rectangle drawArea)
  	{
 +		LiquidEdgeRenderer.Edges.Clear();
++		bool edgeData = LiquidEdgeRenderer.Active;
 +
  		Rectangle rectangle = new Rectangle(drawArea.X - 2, drawArea.Y - 2, drawArea.Width + 4, drawArea.Height + 4);
  		_drawArea = drawArea;
@@ -125,14 +123,17 @@
  					if (tile == null)
  						tile = new Tile();
  
-@@ -151,6 +_,7 @@
- 					ptr2->Type = tile.liquidType();
+@@ -152,6 +_,10 @@
  					if (ptr2->IsHalfBrick && !ptr2->HasLiquid)
  						ptr2->Type = ptr2[-1].Type;
-+					LiquidEdgeRenderer.CollectEdgeData(ptr2, tile, i, j);
  
++					ptr2->EdgeData = null;
++					if (edgeData)
++						LiquidEdgeRenderer.CollectEdgeData(ptr2, tile, i, j);
++
  					ptr2++;
  				}
+ 			}
 @@ -165,7 +_,7 @@
  					if (ptr2->IsHalfBrick && ptr2[-1].HasLiquid) {
  						num2 = 1f;
@@ -193,7 +194,7 @@
 -
 -						if (liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid) {
 +						// TML: Change condition to ignore edges when smoothing liquids
-+						bool smoothCondition = LiquidEdgeRenderer.Active ?
++						bool smoothCondition = edgeData ?
 +							liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid && liquidCache4.HasVisibleLiquid && !liquidCache4.IsSolid :
 +							liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid;
 +						if (smoothCondition) {
@@ -205,7 +206,7 @@
  								float num22 = Math.Min(0.75f, ptr2->VisibleTopWall);
  								float num23 = Math.Max(0.25f, ptr2->VisibleBottomWall);
 +
-+								if (!LiquidEdgeRenderer.Active)
++								if (!edgeData)
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
  

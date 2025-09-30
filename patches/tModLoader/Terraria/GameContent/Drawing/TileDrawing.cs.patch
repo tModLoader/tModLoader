@@ -492,7 +492,7 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3148,14 +_,14 @@
+@@ -3148,7 +_,7 @@
  		}
  	}
  
@@ -501,14 +501,6 @@
  	{
  		int num = tileCache.slope();
  		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
- 		if (!behindBlocks)
- 			flag = false;
- 
--		if (flag || num == 0) {
-+		if (flag || num == 0 || LiquidEdgeRenderer.Active) {
- 			Main.tileBatch.Draw(TextureAssets.Liquid[liquidType].Value, position, liquidSize, colors, default(Vector2), 1f, SpriteEffects.None);
- 			return;
- 		}
 @@ -3177,9 +_,9 @@
  		}
  	}

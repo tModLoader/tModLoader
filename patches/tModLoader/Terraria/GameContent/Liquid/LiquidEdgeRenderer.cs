@@ -115,11 +115,6 @@ public static class LiquidEdgeRenderer
 
 	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)
 	{
-		pCache->EdgeData = null;
-
-		if (!Active)
-			return;
-
 		Tile tileRightCache = Main.tile[tileX + 1, tileY];
 		Tile tileLeftCache = Main.tile[tileX - 1, tileY];
 		Tile tileUpCache = Main.tile[tileX, tileY - 1];
