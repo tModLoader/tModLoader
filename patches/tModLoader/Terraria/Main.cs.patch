@@ -6490,7 +6490,7 @@
  
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +
-+		if (LiquidEdgeRenderer.Active) {
++		if (LiquidEdgeRenderer.Active && Lighting.NotRetro) {
 +			spriteBatch.End();
 +
 +			spriteBatch.Begin(SpriteSortMode.Deferred, LiquidEdgeRenderer.MaskingBlendState, DefaultSamplerState, DepthStencilState.None, Rasterizer, LiquidEdgeRenderer.MaskShader);

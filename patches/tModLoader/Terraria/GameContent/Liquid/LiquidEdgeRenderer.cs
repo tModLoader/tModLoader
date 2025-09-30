@@ -31,7 +31,7 @@ public static class LiquidEdgeRenderer
 	/// <summary>
 	/// Whether the new rendering is actually active for this frame.
 	/// </summary>
-	public static bool Active => !Main.keyState.PressingShift() && Lighting.Mode is Graphics.Light.LightMode.Color or Graphics.Light.LightMode.White;
+	public static bool Active => !Main.keyState.PressingShift();
 
 	/// <summary>
 	/// Turns all pixels with alpha above zero white, and all others transparent.
@@ -251,6 +251,9 @@ public static class LiquidEdgeRenderer
 			size = new Rectangle(0, 6, 16, 10);
 
 			if (tileCache.IsHalfBlock || slope != SlopeType.Solid) {
+				if (!down) {
+					size = new Rectangle(0, 0, 16, 16);
+				}
 				if (slope is SlopeType.SlopeUpLeft or SlopeType.SlopeUpRight) {
 					size = new Rectangle(0, 6, 16, 2);
 				}
@@ -299,8 +302,7 @@ public static class LiquidEdgeRenderer
 					if (slope == SlopeType.SlopeDownRight || slope == SlopeType.SlopeUpRight) {
 						offset = new Vector2(0, depthPush);
 						size = new Rectangle(14, depthPush, 14, 16 - depthPush);
-					}
-	
+					}	
 				}
 				else if (right) {
 					if (slope == SlopeType.SlopeDownLeft || slope == SlopeType.SlopeUpLeft) {
@@ -314,11 +316,17 @@ public static class LiquidEdgeRenderer
 				}
 			}
 			else if ((left && right) || tileCache.IsHalfBlock) {
-				if (highLiquid < 255)
+
+				if (left && right && highLiquid < 255) {
 					highLiquid = (tileLeftCache.LiquidAmount + tileRightCache.LiquidAmount) / 2;
-				int avgDepth = (int)((256 - highLiquid) / 32f) * 2;
-				if (tileCache.IsHalfBlock)
+				}
+
+				int avgDepth = Math.Min((int)((256 - highLiquid) / 32f * 2), 12);
+
+				if (tileCache.IsHalfBlock) {
 					avgDepth = depthPush;
+				}
+
 				offset = new Vector2(0, avgDepth);
 				size = new Rectangle(0, 4, 16, 16 - avgDepth);
 			}
@@ -341,11 +349,6 @@ public static class LiquidEdgeRenderer
 
 		size.X = 16;
 		size.Y = isSurfaceLiquid ? 0 : 64;
-
-		if (tileCache.IsHalfBlock && !down) {
-			if (leftEmpty || rightEmpty)
-				return;
-		}
 
 		var newEdgeData = new LiquidRenderer.LiquidEdgeData() {
 			LiquidOffset = offset,
