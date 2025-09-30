@@ -6485,25 +6485,13 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], drawSinglePassLiquids: false);
  				flag = true;
-@@ -47312,9 +_,24 @@
+@@ -47312,9 +_,12 @@
  		}
  
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
 +
-+		if (LiquidEdgeRenderer.Active && Lighting.NotRetro) {
-+			spriteBatch.End();
-+
-+			spriteBatch.Begin(SpriteSortMode.Deferred, LiquidEdgeRenderer.MaskingBlendState, DefaultSamplerState, DepthStencilState.None, Rasterizer, LiquidEdgeRenderer.MaskShader);
-+
-+			spriteBatch.Draw(tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange), Color.White);
-+
-+			foreach (Point edge in LiquidEdgeRenderer.Edges) {
-+				int tileType = tile[edge.X, edge.Y].TileType;
-+				if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileType]) {
-+					LiquidEdgeRenderer.DrawSingleTileMask(spriteBatch, edge.X, edge.Y);
-+				}
-+			}
-+		}
++		if (LiquidEdgeRenderer.Active && Lighting.NotRetro)
++			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
  	}
  
 -	protected void DrawLiquid(bool bg = false, int waterStyle = 0, float Alpha = 1f, bool drawSinglePassLiquids = true)

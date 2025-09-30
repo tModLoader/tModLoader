@@ -91,7 +91,7 @@
  
  	private unsafe void InternalPrepareDraw(Rectangle drawArea)
  	{
-+		LiquidEdgeRenderer.Edges.Clear();
++		LiquidEdgeRenderer.Clear();
 +		bool edgeData = LiquidEdgeRenderer.Active;
 +
  		Rectangle rectangle = new Rectangle(drawArea.X - 2, drawArea.Y - 2, drawArea.Width + 4, drawArea.Height + 4);

@@ -54,13 +54,24 @@ public static class LiquidEdgeRenderer
 		AlphaDestinationBlend = Blend.InverseSourceAlpha
 	};
 
-	/// <summary>
-	/// Tiles which mask rendered liquid (tiles on the edge of bodies of
-	/// liquid).
-	/// </summary>
-	public static List<Point> Edges { get; } = [];
+	private static List<Point> BlockWaterBehindLocations { get; } = [];
 
-	public static void DrawSingleTileMask(SpriteBatch spriteBatch, int tileX, int tileY)
+	public static void Clear()
+	{
+		BlockWaterBehindLocations.Clear();
+	}
+
+	public static void DrawTileMask(SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
+	{
+		spriteBatch.End();
+		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, MaskShader);
+
+		spriteBatch.Draw(tileTarget, tileTargetOffset, Color.White);
+		foreach (var pt in BlockWaterBehindLocations)
+			DrawSingleTileMask(spriteBatch, pt.X, pt.Y);
+	}
+
+	private static void DrawSingleTileMask(SpriteBatch spriteBatch, int tileX, int tileY)
 	{
 		Tile tileCache = Main.tile[tileX, tileY];
 
@@ -345,33 +356,31 @@ public static class LiquidEdgeRenderer
 		size.X = 16;
 		size.Y = isSurfaceLiquid ? 0 : 64;
 
-		var newEdgeData = new LiquidRenderer.LiquidEdgeData() {
+		pCache->EdgeData = new LiquidRenderer.LiquidEdgeData() {
 			LiquidOffset = offset,
 			SourceRectangle = size
 		};
 
-		Edges.Add(new Point(tileX, tileY));
+		if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type])
+			BlockWaterBehindLocations.Add(new Point(tileX, tileY));
 
 		if (blockType is BlockType.HalfBlock) {
 			if (!pCache->IsHalfBrick) {
 				pCache->LiquidLevel = highLiquid / 255f;
 				pCache->Type = (byte)liquidType;
 			}
-			pCache->EdgeData = newEdgeData;
 		}
 		else if (blockType is not BlockType.Solid) {
 			Debug.Assert(pCache->IsSolid);
 
 			pCache->LiquidLevel = highLiquid / 255f;
 			pCache->Type = (byte)liquidType;
-			pCache->EdgeData = newEdgeData;
 		}
 		else {
 			Debug.Assert(pCache->IsSolid);
 
 			pCache->LiquidLevel = highLiquid / 255f;
 			pCache->Type = (byte)liquidType;
-			pCache->EdgeData = newEdgeData;
 		}
 	}
 }
