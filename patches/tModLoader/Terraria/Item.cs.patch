@@ -1287,6 +1287,38 @@
  				return 0;
  		}
  	}
+@@ -3269,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 330;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 72:
+ 				width = 10;
+@@ -3289,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 331;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 73:
+ 				width = 10;
+@@ -3309,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 332;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 74:
+ 				width = 12;
+@@ -3329,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 333;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 75:
+ 				width = 18;
 @@ -7679,6 +_,8 @@
  				value = 300;
  				break;
@@ -1305,6 +1337,30 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -9158,6 +_,7 @@
+ 					consumable = true;
+ 					useAnimation = 45;
+ 					useTime = 45;
++					material = false;
+ 				}
+ 				maxStack = CommonMaxStack;
+ 				rare = 3;
+@@ -9294,6 +_,7 @@
+ 					consumable = true;
+ 					useAnimation = 45;
+ 					useTime = 45;
++					material = false;
+ 				}
+ 				maxStack = CommonMaxStack;
+ 				rare = 3;
+@@ -9306,6 +_,7 @@
+ 					consumable = true;
+ 					useAnimation = 45;
+ 					useTime = 45;
++					material = false;
+ 				}
+ 				maxStack = CommonMaxStack;
+ 				rare = 3;
 @@ -11396,6 +_,7 @@
  				knockBack = 6.5f;
  				melee = true;
@@ -1357,6 +1413,21 @@
  				return;
  			case 3612:
  				useStyle = 1;
+@@ -36121,8 +_,12 @@
+ 			case 3767:
+ 			case 3768:
+ 			case 3769:
+-				SetDefaults(198);
+-				this.type = type;
++				useStyle = 1;
++				knockBack = 3f;
++				width = 40;
++				height = 40;
++				UseSound = SoundID.Item15;
++				melee = true;
+ 				damage = 48;
+ 				useTime = 16;
+ 				useAnimation = 16;
 @@ -36886,6 +_,8 @@
  				shootSpeed = 17f;
  				return;
@@ -1393,6 +1464,37 @@
  	public void DefaultToGolfBall(int projid)
  	{
  		shoot = projid;
+@@ -38632,6 +_,7 @@
+ 				width = 12;
+ 				height = 12;
+ 				value = 100000;
++				material = false;
+ 				break;
+ 			case 4091:
+ 				DefaultToPlaceableTile((ushort)496, 0);
+@@ -38769,6 +_,7 @@
+ 				useTime = 28;
+ 				rare = 3;
+ 				value = sellPrice(0, 2);
++				material = false;
+ 				break;
+ 			case 4132:
+ 				width = 18;
+@@ -39568,8 +_,12 @@
+ 				melee = true;
+ 				break;
+ 			case 4259:
+-				SetDefaults(198);
+-				this.type = type;
++				useStyle = 1;
++				knockBack = 3f;
++				width = 40;
++				height = 40;
++				UseSound = SoundID.Item15;
++				melee = true;
+ 				damage = 48;
+ 				useTime = 16;
+ 				useAnimation = 16;
 @@ -43082,6 +_,8 @@
  				expert = true;
  				break;
@@ -1854,7 +1956,7 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47088,6 +_,28 @@
+@@ -47088,6 +_,30 @@
  		SetDefaults(Type, noMatCheck: false, null);
  	}
  
@@ -1869,6 +1971,7 @@
 +	{
 +		int originalType = type;
 +		int originalNetID = netID;
++		var originalMaterial = material;
 +		var originalModItem = ModItem;
 +		var originalGlobals = _globals;
 +
@@ -1876,6 +1979,7 @@
 +
 +		type = originalType;
 +		netID = originalNetID;
++		material = originalMaterial;
 +		ModItem = originalModItem;
 +		_globals = originalGlobals;
 +	}
@@ -1883,10 +1987,11 @@
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47101,8 +_,11 @@
+@@ -47101,8 +_,12 @@
  			playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  		ResetStats(Type);
++		material = ItemID.Sets.IsAMaterial[type];
 +
 +		/*
  		if (type >= ItemID.Count)
@@ -1915,15 +2020,14 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,19 +_,27 @@
+@@ -47297,19 +_,24 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
+-		if (!noMatCheck)
+-			material = ItemID.Sets.IsAMaterial[type];
 +
 +		ItemLoader.SetDefaults(this);
-+
- 		if (!noMatCheck)
- 			material = ItemID.Sets.IsAMaterial[type];
  
  		RebuildTooltip();
 -		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
