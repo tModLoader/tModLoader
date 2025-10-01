@@ -8,15 +8,20 @@ cd "$(dirname "$0")"
 
 echo "You are on platform: \"$_uname\" arch: \"$_arch\""
 
-# Detect arm64 launches and the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
-if [ "$_arch" = "arm64" ] && [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
-	echo "arm64 environment with Rosetta detected"
-	arm_flag=false
-	for arg in "$@"; do [[ "$arg" = "-arm" ]] && { arm_flag=true; break; }; done
-	if [ "$arm_flag" = false ]; then
-		echo "restarting under arch -x86_64"
-		# Note this only changes the environment, so that dotnet install scripts download an x86 version. Launching an x86 process from an arm shell or vice versa does not require using arch, or otherwise intentionally invoking Rosetta.
+# Check for -arm
+arm_flag=false
+for arg in "$@"; do [[ "$arg" = "-arm" ]] && { arm_flag=true; break; }; done
+
+# Detect the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
+if [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
+	echo "Rosetta detected"
+	# Note this only changes the environment, so that dotnet install scripts download an arm64/x86 version. Launching an x86 process from an arm shell or vice versa does not require using arch, or otherwise intentionally invoking Rosetta.
+	if [ "$_arch" = "arm64" ] && [ "$arm_flag" = false ]; then
+		echo "Restarting under arch -x86_64"
 		exec arch -x86_64 ./ScriptCaller.sh "$@"
+	elif [ "$_arch" = "x86_64" ] && [ "$arm_flag" = true ]; then
+		echo "Restarting under arch -arm64"
+		exec arch -arm64 ./ScriptCaller.sh "$@"
 	fi
 fi
 
