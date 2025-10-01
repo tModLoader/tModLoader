@@ -364,6 +364,7 @@ var hierarchy =
     [ "CommonConditions.Depth", "class_common_conditions_1_1_depth.html", null ],
     [ "DesertDescription", "class_desert_description.html", null ],
     [ "DesertHive", "class_desert_hive.html", null ],
+    [ "DeveloperMetadata", "class_developer_metadata.html", null ],
     [ "DeviceParam", "class_device_param.html", null ],
     [ "Player.DirectionalInputSyncCache", "struct_player_1_1_directional_input_sync_cache.html", null ],
     [ "Item.DisableCloneMethod", "struct_item_1_1_disable_clone_method.html", null ],
@@ -440,7 +441,9 @@ var hierarchy =
       [ "OldHookException", "class_old_hook_exception.html", null ],
       [ "RecipeException", "class_recipe_exception.html", null ],
       [ "ResourceLoadException", "class_resource_load_exception.html", null ],
-      [ "SocialBrowserException", "class_social_browser_exception.html", null ],
+      [ "SocialBrowserException", "class_social_browser_exception.html", [
+        [ "BannedModException", "class_banned_mod_exception.html", null ]
+      ] ],
       [ "TopoSort< T >.SortingException", "class_topo_sort_1_1_sorting_exception.html", null ],
       [ "UsageException", "class_usage_exception.html", null ],
       [ "ValueNotTranslationKeyException", "class_value_not_translation_key_exception.html", null ]
@@ -2031,8 +2034,12 @@ var hierarchy =
       [ "ReferenceDefaultsPreservingResolver.ValueProviderDecorator", "class_reference_defaults_preserving_resolver_1_1_value_provider_decorator.html", null ]
     ] ],
     [ "IVertexType", "class_i_vertex_type.html", null ],
+    [ "JsonConverter", "class_json_converter.html", [
+      [ "ModVersionHash.VersionHashConverter", "class_mod_version_hash_1_1_version_hash_converter.html", null ]
+    ] ],
     [ "KeyCache", "class_key_cache.html", null ],
     [ "KeyConfiguration", "class_key_configuration.html", null ],
+    [ "SteamWebWrapper.KeyValueTags", "class_steam_web_wrapper_1_1_key_value_tags.html", null ],
     [ "Lang", "class_lang.html", null ],
     [ "LangID", "class_lang_i_d.html", null ],
     [ "Language", "class_language.html", null ],
@@ -2104,6 +2111,7 @@ var hierarchy =
     [ "ModSideFilterModesExtensions", "class_mod_side_filter_modes_extensions.html", null ],
     [ "ModsMenuSortModesExtensions", "class_mods_menu_sort_modes_extensions.html", null ],
     [ "ModTypeLookup< T >", "class_mod_type_lookup.html", null ],
+    [ "ModVersionHash", "struct_mod_version_hash.html", null ],
     [ "MonoModHooks", "class_mono_mod_hooks.html", null ],
     [ "MoonlordDeathDrama", "class_moonlord_death_drama.html", null ],
     [ "MoonlordDeathDrama.MoonlordExplosion", "class_moonlord_death_drama_1_1_moonlord_explosion.html", null ],
@@ -2277,6 +2285,9 @@ var hierarchy =
     [ "ProjectileID", "class_projectile_i_d.html", null ],
     [ "ProjectileLoader", "class_projectile_loader.html", null ],
     [ "PropertyFieldWrapper", "class_property_field_wrapper.html", null ],
+    [ "SteamWebWrapper.PublishedFileDetail", "class_steam_web_wrapper_1_1_published_file_detail.html", null ],
+    [ "SteamWebWrapper.PublishedIdQueryInnerResponse", "class_steam_web_wrapper_1_1_published_id_query_inner_response.html", null ],
+    [ "SteamWebWrapper.PublishedIdQueryOuterResponse", "class_steam_web_wrapper_1_1_published_id_query_outer_response.html", null ],
     [ "WorkshopHelper.UGCBased.PublishedItemsFinder", "class_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html", null ],
     [ "PylonLoader", "class_pylon_loader.html", null ],
     [ "QueryParameters", "struct_query_parameters.html", null ],
@@ -2601,6 +2612,7 @@ var hierarchy =
     [ "UPnP", "class_u_pn_p.html", null ],
     [ "UserInterface", "class_user_interface.html", null ],
     [ "UserJoinToServerRequest", "class_user_join_to_server_request.html", null ],
+    [ "SteamWebWrapper.UserTags", "class_steam_web_wrapper_1_1_user_tags.html", null ],
     [ "Utils", "class_utils.html", null ],
     [ "NPC.NPCNameFakeLanguageCategoryPassthrough.V", "struct_n_p_c_1_1_n_p_c_name_fake_language_category_passthrough_1_1_v.html", null ],
     [ "ItemVariants.VariantEntry", "class_item_variants_1_1_variant_entry.html", null ],

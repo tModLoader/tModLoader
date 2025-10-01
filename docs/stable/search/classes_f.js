@@ -111,11 +111,14 @@ var searchData=
   ['projectileloader_108',['ProjectileLoader',['../class_projectile_loader.html',1,'']]],
   ['projectilesmartinteractcandidateprovider_109',['ProjectileSmartInteractCandidateProvider',['../class_projectile_smart_interact_candidate_provider.html',1,'']]],
   ['propertyfieldwrapper_110',['PropertyFieldWrapper',['../class_property_field_wrapper.html',1,'']]],
-  ['publisheditemsfinder_111',['PublishedItemsFinder',['../class_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html',1,'WorkshopHelper::UGCBased']]],
-  ['pumpkinmoondropgatefortrophies_112',['PumpkinMoonDropGateForTrophies',['../class_conditions_1_1_pumpkin_moon_drop_gate_for_trophies.html',1,'Conditions']]],
-  ['pumpkinmoondropgatingchance_113',['PumpkinMoonDropGatingChance',['../class_conditions_1_1_pumpkin_moon_drop_gating_chance.html',1,'Conditions']]],
-  ['punchcameramodifier_114',['PunchCameraModifier',['../class_punch_camera_modifier.html',1,'']]],
-  ['pvpdeathcommand_115',['PVPDeathCommand',['../class_p_v_p_death_command.html',1,'']]],
-  ['pylonloader_116',['PylonLoader',['../class_pylon_loader.html',1,'']]],
-  ['pylonshopnpc_117',['PylonShopNPC',['../class_pylon_shop_n_p_c.html',1,'']]]
+  ['publishedfiledetail_111',['PublishedFileDetail',['../class_steam_web_wrapper_1_1_published_file_detail.html',1,'SteamWebWrapper']]],
+  ['publishedidqueryinnerresponse_112',['PublishedIdQueryInnerResponse',['../class_steam_web_wrapper_1_1_published_id_query_inner_response.html',1,'SteamWebWrapper']]],
+  ['publishedidqueryouterresponse_113',['PublishedIdQueryOuterResponse',['../class_steam_web_wrapper_1_1_published_id_query_outer_response.html',1,'SteamWebWrapper']]],
+  ['publisheditemsfinder_114',['PublishedItemsFinder',['../class_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html',1,'WorkshopHelper::UGCBased']]],
+  ['pumpkinmoondropgatefortrophies_115',['PumpkinMoonDropGateForTrophies',['../class_conditions_1_1_pumpkin_moon_drop_gate_for_trophies.html',1,'Conditions']]],
+  ['pumpkinmoondropgatingchance_116',['PumpkinMoonDropGatingChance',['../class_conditions_1_1_pumpkin_moon_drop_gating_chance.html',1,'Conditions']]],
+  ['punchcameramodifier_117',['PunchCameraModifier',['../class_punch_camera_modifier.html',1,'']]],
+  ['pvpdeathcommand_118',['PVPDeathCommand',['../class_p_v_p_death_command.html',1,'']]],
+  ['pylonloader_119',['PylonLoader',['../class_pylon_loader.html',1,'']]],
+  ['pylonshopnpc_120',['PylonShopNPC',['../class_pylon_shop_n_p_c.html',1,'']]]
 ];

@@ -112,6 +112,9 @@ static EUGCQuery&#160;</td><td class="memItemRight" valign="bottom"><b>Calculate
 <tr class="memitem:a837095659444e8bf4e186d5da9dc368a"><td class="memItemLeft" align="right" valign="top"><a id="a837095659444e8bf4e186d5da9dc368a" name="a837095659444e8bf4e186d5da9dc368a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>DoesWorkshopItemNeedUpdate</b> (PublishedFileId_t publishId)</td></tr>
 <tr class="separator:a837095659444e8bf4e186d5da9dc368a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a698de990e5bae708125780fcf771de57"><td class="memItemLeft" align="right" valign="top"><a id="a698de990e5bae708125780fcf771de57" name="a698de990e5bae708125780fcf771de57"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FetchDeveloperMetadata</b> (UGCQueryHandle_t handle, uint index, out string devMetadataSerialized)</td></tr>
+<tr class="separator:a698de990e5bae708125780fcf771de57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ffd922c6336c0c3c8e58ae895c840bd"><td class="memItemLeft" align="right" valign="top"><a id="a8ffd922c6336c0c3c8e58ae895c840bd" name="a8ffd922c6336c0c3c8e58ae895c840bd"></a>
 static PublishedFileId_t[]&#160;</td><td class="memItemRight" valign="bottom"><b>FetchItemDependencies</b> (UGCQueryHandle_t handle, uint index, uint numChildren)</td></tr>
 <tr class="separator:a8ffd922c6336c0c3c8e58ae895c840bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,9 +133,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>FetchPreviewIm
 <tr class="memitem:a2c3dd25dfeaeecf1ab50555df70fb60a"><td class="memItemLeft" align="right" valign="top"><a id="a2c3dd25dfeaeecf1ab50555df70fb60a" name="a2c3dd25dfeaeecf1ab50555df70fb60a"></a>
 static SteamAPICall_t&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateAndSubmitModBrowserQuery</b> (uint page, <a class="el" href="struct_query_parameters.html">QueryParameters</a> qP, string internalName=null)</td></tr>
 <tr class="separator:a2c3dd25dfeaeecf1ab50555df70fb60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fa8cb5d037f94392aab98bedac84de7"><td class="memItemLeft" align="right" valign="top"><a id="a6fa8cb5d037f94392aab98bedac84de7" name="a6fa8cb5d037f94392aab98bedac84de7"></a>
-static SteamAPICall_t&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateDirectItemsQuery</b> (string[] modId)</td></tr>
-<tr class="separator:a6fa8cb5d037f94392aab98bedac84de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add0aa2338f01706d098f591394b27044"><td class="memItemLeft" align="right" valign="top"><a id="add0aa2338f01706d098f591394b27044" name="add0aa2338f01706d098f591394b27044"></a>
+static SteamAPICall_t&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateDirectItemsQuery</b> (string[] modId, <a class="el" href="struct_query_parameters.html">QueryParameters</a> qP)</td></tr>
+<tr class="separator:add0aa2338f01706d098f591394b27044"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00aefcf0261bede44e9d6e71d8b2633d"><td class="memItemLeft" align="right" valign="top"><a id="a00aefcf0261bede44e9d6e71d8b2633d" name="a00aefcf0261bede44e9d6e71d8b2633d"></a>
 static <a class="el" href="struct_steamed_wraps_1_1_item_install_info.html">ItemInstallInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetInstallInfo</b> (PublishedFileId_t publishId)</td></tr>
 <tr class="separator:a00aefcf0261bede44e9d6e71d8b2633d"><td class="memSeparator" colspan="2">&#160;</td></tr>
