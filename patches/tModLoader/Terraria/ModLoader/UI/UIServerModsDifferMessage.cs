@@ -57,7 +57,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 	private string _backText;
 	private List<ReloadRequiredExplanation> reloadRequiredExplanationEntries;
 
-	private const int WarningMessagePanelHeight = 130;
+	private const int WarningMessagePanelHeight = 70;
 
 	public UIState PreviousUIState { get; set; }
 
@@ -247,8 +247,8 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 
 				string warningKey = entry.riskState switch {
 					DownloadModRiskState.BannedOnWorkshop => "tModLoader.MPServerModBannedOnWorkshop",
-					DownloadModRiskState.NotOnWorkshop => "tModLoader.MPServerModNotAvailableOnWorkshop",
-					DownloadModRiskState.HashDiffersFromWorkshop => "tModLoader.MPServerModHashDiffersFromWorkshop",
+					DownloadModRiskState.NotOnWorkshop => "tModLoader.MPServerModCustomBuild",
+					DownloadModRiskState.HashDiffersFromWorkshop => "tModLoader.MPServerModCustomBuild",
 					DownloadModRiskState.LowSubscriberCount => "tModLoader.MPServerModAvailableOnWorkshopLowSubscriberCount",
 					DownloadModRiskState.AvailableOnWorkshop => "tModLoader.MPServerModAvailableOnWorkshop",
 					DownloadModRiskState.UnableToVerify => "tModLoader.MPServerModUnableToVerify",
