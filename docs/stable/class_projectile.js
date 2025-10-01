@@ -54,6 +54,7 @@ var class_projectile =
     [ "oldPos", "class_projectile.html#a213f7bd6149faa2f193f1b7d890d9889", null ],
     [ "oldRot", "class_projectile.html#af13b8c2eca21e7745473cff173eeddd6", null ],
     [ "oldSpriteDirection", "class_projectile.html#abf4cdfa42fb235343e30a60054e4d5fb", null ],
+    [ "originalDamage", "class_projectile.html#a4bf284ef443e824985e9701030266231", null ],
     [ "owner", "class_projectile.html#aab5b090f7428f4d974921a807149e991", null ],
     [ "ownerHitCheck", "class_projectile.html#a5ffe8b63be7cd588f1fc8782a46e99de", null ],
     [ "penetrate", "class_projectile.html#a94391ca36fc93547aba841b6fc4af5a0", null ],
@@ -77,5 +78,6 @@ var class_projectile =
     [ "ModProjectile", "class_projectile.html#acf73b38dd6006395707713d1afb995ea", null ],
     [ "Opacity", "class_projectile.html#aaaef267521b5f0b04e58f12ec817da83", null ],
     [ "OriginalArmorPenetration", "class_projectile.html#ab9b496d833e80e1b7a950e968ec3841c", null ],
-    [ "OriginalCritChance", "class_projectile.html#aa4f752f854e89325b991e7db7a316562", null ]
+    [ "OriginalCritChance", "class_projectile.html#aa4f752f854e89325b991e7db7a316562", null ],
+    [ "OwnerMinionAttackTargetNPC", "class_projectile.html#ad328a29da8e27df99d82fb057fc87546", null ]
 ];

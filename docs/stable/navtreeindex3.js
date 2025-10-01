@@ -1,5 +1,10 @@
 var NAVTREEINDEX3 =
 {
+"class_crash_watcher.html":[3,0,210],
+"class_creative_item_sacrifices_catalog.html":[3,0,211],
+"class_creative_power_manager.html":[3,0,212],
+"class_creative_power_settings.html":[3,0,214],
+"class_creative_powers.html":[3,0,213],
 "class_creative_powers_1_1_a_per_player_slider_power.html":[3,0,213,0],
 "class_creative_powers_1_1_a_per_player_toggle_power.html":[3,0,213,1],
 "class_creative_powers_1_1_a_shared_button_power.html":[3,0,213,2],
@@ -227,8 +232,10 @@ var NAVTREEINDEX3 =
 "class_emote_bubble_loader.html":[3,0,303],
 "class_emote_bubble_loader.html#af7f41a3aafdadb01ed0d4bafe40fad0f":[3,0,303,0],
 "class_emote_button.html":[3,0,304],
-"class_emote_button.html#a8a3e32b6c074facc577bad3b31202696":[3,0,304,0],
-"class_emote_button.html#ab7312f19fe1a2e2d86034ecdd7ce0c1d":[3,0,304,1],
+"class_emote_button.html#a8a3e32b6c074facc577bad3b31202696":[3,0,304,1],
+"class_emote_button.html#a9b8bf53914e9bfc9d7d2c4d6f54ded1d":[3,0,304,0],
+"class_emote_button.html#ab7312f19fe1a2e2d86034ecdd7ce0c1d":[3,0,304,2],
+"class_emote_button.html#acb7caaa1200e44fd726512e65dd5e60e":[3,0,304,3],
 "class_emote_command.html":[3,0,305],
 "class_emote_i_d.html":[3,0,306],
 "class_emote_i_d_1_1_category.html":[3,0,306,0],
@@ -240,14 +247,7 @@ var NAVTREEINDEX3 =
 "class_emote_i_d_1_1_category.html#ab01aa776dcb1b3aa7b5a8d35fd83266f":[3,0,306,0,0],
 "class_emote_i_d_1_1_category.html#adffe3d2b871e0b53fe59678fbb6a4787":[3,0,306,0,1],
 "class_emotes_group_list_item.html":[3,0,307],
+"class_emotes_group_list_item.html#a6aea2c2db4df338d1f2792441d1c1f8e":[3,0,307,0],
 "class_empress_shader.html":[3,0,309],
-"class_empty_diagnostics_u_i.html":[3,0,310],
-"class_enabled_filter_modes_extensions.html":[3,0,311],
-"class_enchanted_sword_biome.html":[3,0,312],
-"class_entity.html":[3,0,313],
-"class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db":[3,0,313,9],
-"class_entity.html#a15845e02eda396ef77c53297c53cae9e":[3,0,313,11],
-"class_entity.html#a2e50cbf5d9dc0e20b5a152dbfa17e022":[3,0,313,8],
-"class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b":[3,0,313,1],
-"class_entity.html#a6e117c5fa3562f8b5b0f05982c0f8739":[3,0,313,5]
+"class_empty_diagnostics_u_i.html":[3,0,310]
 };

@@ -19,12 +19,13 @@ var searchData=
   ['orepickaxepowerrequirements_16',['OrePickaxePowerRequirements',['../class_game_tip_i_d.html#aafed67febd5e4e767f00af2548efd439',1,'GameTipID']]],
   ['origin_17',['Origin',['../class_drawable_tooltip_line.html#ac79493ea7168ee83d0b39a955b5d6fc4',1,'DrawableTooltipLine']]],
   ['origin_18',['origin',['../struct_resource_overlay_draw_context.html#ae160fa29ecda73a5bd5c81d80a380651',1,'ResourceOverlayDrawContext']]],
-  ['overflowprotectiontimeoffset_19',['OverflowProtectionTimeOffset',['../class_item_i_d_1_1_sets.html#a6915023f572009c72d09f2fdf23768c8',1,'ItemID::Sets']]],
-  ['overpoweredsand_20',['OverpoweredSand',['../class_game_tip_i_d.html#af8f708671b2675af7b7cea8bd829f19d',1,'GameTipID']]],
-  ['overridecolor_21',['OverrideColor',['../class_tooltip_line.html#adc6a212a9b0baa54b2e0c4be7fdf6f1a',1,'TooltipLine']]],
-  ['overridehelmet_22',['OverrideHelmet',['../class_armor_i_ds_1_1_face_1_1_sets.html#a9351883d09292f0e0bd384990ae6acbb',1,'ArmorIDs::Face::Sets']]],
-  ['overrideslegs_23',['OverridesLegs',['../class_armor_i_ds_1_1_legs_1_1_sets.html#a14ffb01de00e6b93beaec2a16964d443',1,'ArmorIDs.Legs.Sets.OverridesLegs()'],['../class_armor_i_ds_1_1_shoe_1_1_sets.html#a711b67685a8cf77864753da8a2dbef30',1,'ArmorIDs.Shoe.Sets.OverridesLegs()']]],
-  ['ownedprojectilecounts_24',['ownedProjectileCounts',['../class_player.html#a0c756f83a2e3b6e39904eda03030b15f',1,'Player']]],
-  ['owner_25',['owner',['../class_projectile.html#aab5b090f7428f4d974921a807149e991',1,'Projectile']]],
-  ['ownerhitcheck_26',['ownerHitCheck',['../class_projectile.html#a5ffe8b63be7cd588f1fc8782a46e99de',1,'Projectile']]]
+  ['originaldamage_19',['originalDamage',['../class_projectile.html#a4bf284ef443e824985e9701030266231',1,'Projectile']]],
+  ['overflowprotectiontimeoffset_20',['OverflowProtectionTimeOffset',['../class_item_i_d_1_1_sets.html#a6915023f572009c72d09f2fdf23768c8',1,'ItemID::Sets']]],
+  ['overpoweredsand_21',['OverpoweredSand',['../class_game_tip_i_d.html#af8f708671b2675af7b7cea8bd829f19d',1,'GameTipID']]],
+  ['overridecolor_22',['OverrideColor',['../class_tooltip_line.html#adc6a212a9b0baa54b2e0c4be7fdf6f1a',1,'TooltipLine']]],
+  ['overridehelmet_23',['OverrideHelmet',['../class_armor_i_ds_1_1_face_1_1_sets.html#a9351883d09292f0e0bd384990ae6acbb',1,'ArmorIDs::Face::Sets']]],
+  ['overrideslegs_24',['OverridesLegs',['../class_armor_i_ds_1_1_legs_1_1_sets.html#a14ffb01de00e6b93beaec2a16964d443',1,'ArmorIDs.Legs.Sets.OverridesLegs()'],['../class_armor_i_ds_1_1_shoe_1_1_sets.html#a711b67685a8cf77864753da8a2dbef30',1,'ArmorIDs.Shoe.Sets.OverridesLegs()']]],
+  ['ownedprojectilecounts_25',['ownedProjectileCounts',['../class_player.html#a0c756f83a2e3b6e39904eda03030b15f',1,'Player']]],
+  ['owner_26',['owner',['../class_projectile.html#aab5b090f7428f4d974921a807149e991',1,'Projectile']]],
+  ['ownerhitcheck_27',['ownerHitCheck',['../class_projectile.html#a5ffe8b63be7cd588f1fc8782a46e99de',1,'Projectile']]]
 ];

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,22 +85,25 @@ $(document).ready(function(){initNavTree('class_custom_flag_condition.html','');
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_custom_flag_condition-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">CustomFlagCondition Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>A custom boolean condition. Must be manually completed by calling AchievementCondition.Complete. <br  />
+<br  />
+ If multiple custom conditions are used for an achievement, a unique key should be provided.  
+ <a href="class_custom_flag_condition.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_achievement_condition.html">AchievementCondition</a>.</p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:abbf7cae4c36ae50d1c9dae1c54df6303"><td class="memItemLeft" align="right" valign="top"><a id="abbf7cae4c36ae50d1c9dae1c54df6303" name="abbf7cae4c36ae50d1c9dae1c54df6303"></a>
-static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (string name)</td></tr>
-<tr class="separator:abbf7cae4c36ae50d1c9dae1c54df6303"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a822c8519cc1de57ee99da3dc6d84d19c"><td class="memItemLeft" align="right" valign="top"><a id="a822c8519cc1de57ee99da3dc6d84d19c" name="a822c8519cc1de57ee99da3dc6d84d19c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CustomFlagCondition</b> (string name)</td></tr>
+<tr class="separator:a822c8519cc1de57ee99da3dc6d84d19c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_achievement_condition"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_achievement_condition')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_achievement_condition.html">AchievementCondition</a></td></tr>
 <tr class="memitem:a0205c4f01c8590226036210f91128106 inherit pub_methods_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="a0205c4f01c8590226036210f91128106" name="a0205c4f01c8590226036210f91128106"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>AchievementUpdate</b> (<a class="el" href="class_achievement_condition.html">AchievementCondition</a> condition)</td></tr>
@@ -117,6 +120,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Complete</b> 
 <tr class="memitem:aa4a877293b5acc919023bc62eaba39d4 inherit pub_methods_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="aa4a877293b5acc919023bc62eaba39d4" name="aa4a877293b5acc919023bc62eaba39d4"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Load</b> (JObject state)</td></tr>
 <tr class="separator:aa4a877293b5acc919023bc62eaba39d4 inherit pub_methods_class_achievement_condition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:abbf7cae4c36ae50d1c9dae1c54df6303"><td class="memItemLeft" align="right" valign="top"><a id="abbf7cae4c36ae50d1c9dae1c54df6303" name="abbf7cae4c36ae50d1c9dae1c54df6303"></a>
+static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (string name)</td></tr>
+<tr class="separator:abbf7cae4c36ae50d1c9dae1c54df6303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_class_achievement_condition"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_achievement_condition')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_achievement_condition.html">AchievementCondition</a></td></tr>
 <tr class="memitem:af3850a9af9fb13e1c519475ac8bc19e2 inherit pub_attribs_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="af3850a9af9fb13e1c519475ac8bc19e2" name="af3850a9af9fb13e1c519475ac8bc19e2"></a>
 readonly string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b></td></tr>
@@ -141,7 +153,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCompleted</b><code>
 AchievementUpdate&#160;</td><td class="memItemRight" valign="bottom"><b>OnComplete</b></td></tr>
 <tr class="separator:a4e537b163ebf11bdb3bd1d0d796bcd7a inherit events_class_achievement_condition"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >A custom boolean condition. Must be manually completed by calling AchievementCondition.Complete. <br  />
+<br  />
+ If multiple custom conditions are used for an achievement, a unique key should be provided. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

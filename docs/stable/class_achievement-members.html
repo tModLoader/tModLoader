@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('class_achievement.html',''); initResiz
 
 <p>This is the complete list of members for <a class="el" href="class_achievement.html">Achievement</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Achievement</b>(string name) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Achievement</b>(string name, ModAchievement modAchievement=null) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>AchievementCompleted</b>(Achievement achievement) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>AddCondition</b>(AchievementCondition condition) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>AddConditions</b>(params AchievementCondition[] conditions) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
@@ -102,14 +102,18 @@ $(document).ready(function(){initNavTree('class_achievement.html',''); initResiz
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>GetCondition</b>(string conditionName) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>GetTracker</b>() (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>HasTracker</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Id</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>IsCompleted</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Load</b>(Dictionary&lt; string, JObject &gt; conditions) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Hidden</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>Id</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>IsCompleted</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>Load</b>(Dictionary&lt; string, JObject &gt; conditions) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ModAchievement</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>Name</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>OnCompleted</b> (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>SetCategory</b>(AchievementCategory category) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>UseConditionsCompletedTracker</b>() (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>UseConditionsCompletedTracker</b>(params string[] conditions) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ToString</b>() (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>UseConditionsCompletedTracker</b>() (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>UseConditionsCompletedTracker</b>(params string[] conditions) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>UseTracker</b>(IAchievementTracker tracker) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>UseTrackerFromCondition</b>(string conditionName) (defined in <a class="el" href="class_achievement.html">Achievement</a>)</td><td class="entry"><a class="el" href="class_achievement.html">Achievement</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

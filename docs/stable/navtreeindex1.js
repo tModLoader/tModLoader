@@ -1,5 +1,9 @@
 var NAVTREEINDEX1 =
 {
+"class_bestiary_portrait_background_based_on_world_evil_provider_preference_info_element.html#a9a55bc8fd1ef2cd5cfbbfd5b3d9cb734":[3,0,81,0],
+"class_bestiary_portrait_background_provider_preference_info_element.html":[3,0,82],
+"class_bestiary_portrait_background_provider_preference_info_element.html#ae300d150f6b983ca2b9571d629faa514":[3,0,82,0],
+"class_bestiary_unlocks_tracker.html":[3,0,85],
 "class_big_endian_reader.html":[3,0,86],
 "class_big_endian_writer.html":[3,0,87],
 "class_big_progress_bar_helper.html":[3,0,89],
@@ -245,9 +249,5 @@ var NAVTREEINDEX1 =
 "class_conditions_1_1_corrupt_key_condition.html":[3,0,193,3],
 "class_conditions_1_1_corrupt_key_condition.html#a4a2af6330c220510299314aabfd484ff":[3,0,193,3,0],
 "class_conditions_1_1_corrupt_key_condition.html#afe1bbf22aac45f71e5c88434844a1dec":[3,0,193,3,1],
-"class_conditions_1_1_crimson_key_condition.html":[3,0,193,4],
-"class_conditions_1_1_crimson_key_condition.html#a967bf404cf4b1f307249879ddf3376ba":[3,0,193,4,1],
-"class_conditions_1_1_crimson_key_condition.html#af2fce7bb323db0b6fb291b5587ef1948":[3,0,193,4,0],
-"class_conditions_1_1_desert_key_condition.html":[3,0,193,5],
-"class_conditions_1_1_desert_key_condition.html#a54268ed0868bed39906f9bf781206236":[3,0,193,5,1]
+"class_conditions_1_1_crimson_key_condition.html":[3,0,193,4]
 };

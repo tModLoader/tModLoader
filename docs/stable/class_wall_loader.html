@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -157,6 +157,28 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>RandomUpdate</
 <tr class="memdesc:a6f91c964d84df346689a44103c395617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a wall type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded walls, you can directly use Convert <br  />
  If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_wall_loader.html#a6f91c964d84df346689a44103c395617">More...</a><br /></td></tr>
 <tr class="separator:a6f91c964d84df346689a44103c395617"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7812e2490f19c8e0b51b8d37b616f83a"><td class="memItemLeft" align="right" valign="top"><a id="a7812e2490f19c8e0b51b8d37b616f83a" name="a7812e2490f19c8e0b51b8d37b616f83a"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterConversionFallback</b> (int wallType, int fallbackType, params int[] exceptForConversionTypes)</td></tr>
+<tr class="memdesc:a7812e2490f19c8e0b51b8d37b616f83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a fallback wall type for all conversion types except those in <em>exceptForConversionTypes</em>  <br  />
+ When <a class="el" href="class_world_gen.html#a3708e3da9f373cad064eb35b7d2710d7" title="Converts biome variant tiles and walls to a target biome.  Converts a 9x9 square by default,...">WorldGen.Convert(int, int, int, int, bool, bool)</a> is called on the <em>wallType</em>  but there is no registsred conversion, the tile will be temporarily replaced with <em>fallbackType</em>  and conversion will be reattempted.<br  />
+ If the <em>fallbackType</em>  also has no conversion, the tile remains unchanged. <br  />
+ <br  />
+ For example WallID.EbonstoneUnsafe falls back to TileID.Stone so a modded conversion that affects Stone can convert Ebonstone without needing to register a conversion for Ebonstone directly. <br /></td></tr>
+<tr class="separator:a7812e2490f19c8e0b51b8d37b616f83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b78077d4ebb3789cc083d050c1d649c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wall_loader.html#a1b78077d4ebb3789cc083d050c1d649c">RegisterSimpleConversion</a> (int wallType, int conversionType, int toType, bool purification=true)</td></tr>
+<tr class="memdesc:a1b78077d4ebb3789cc083d050c1d649c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a conversion that replaces <em>wallType</em>  with <em>toType</em>  when touched by <em>conversionType</em>  <br  />
+ Also registers <em>wallType</em>  as a fallback for <em>toType</em>  so that other conversions can convert <em>toType</em>  as if it was <em>wallType</em> . <br  />
+ If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_wall_loader.html#a1b78077d4ebb3789cc083d050c1d649c">More...</a><br /></td></tr>
+<tr class="separator:a1b78077d4ebb3789cc083d050c1d649c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af04845da6b6ee7d33d2abb2577c92381"><td class="memItemLeft" align="right" valign="top"><a id="af04845da6b6ee7d33d2abb2577c92381" name="af04845da6b6ee7d33d2abb2577c92381"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetConversionFallback</b> (int wallType, int conversionType, int fallbackType)</td></tr>
+<tr class="memdesc:af04845da6b6ee7d33d2abb2577c92381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an individual conversion fallback. For advanced uses only. <br /></td></tr>
+<tr class="separator:af04845da6b6ee7d33d2abb2577c92381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24400b7df39c41c4bc23b4f171a7bffa"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wall_loader.html#a24400b7df39c41c4bc23b4f171a7bffa">TryGetConversionFallback</a> (int wallType, int conversionType, out int fallbackType)</td></tr>
+<tr class="memdesc:a24400b7df39c41c4bc23b4f171a7bffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to retrieve the <em>fallbackType</em>  corresponding to the provided <em>wallType</em>  and <em>conversionType</em>  <br  />
+ See also: </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_wall_loader.html#a7812e2490f19c8e0b51b8d37b616f83a" title="Sets a fallback wall type for all conversion types except those in exceptForConversionTypes    When W...">RegisterConversionFallback</a></dd></dl>
+ <a href="class_wall_loader.html#a24400b7df39c41c4bc23b4f171a7bffa">More...</a><br /></td></tr>
+<tr class="separator:a24400b7df39c41c4bc23b4f171a7bffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67ae44c6a3da0fb45ca10e1597b86007"><td class="memItemLeft" align="right" valign="top"><a id="a67ae44c6a3da0fb45ca10e1597b86007" name="a67ae44c6a3da0fb45ca10e1597b86007"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>WallFrame</b> (int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber)</td></tr>
 <tr class="separator:a67ae44c6a3da0fb45ca10e1597b86007"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,6 +242,114 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>WallCount</b><c
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1b78077d4ebb3789cc083d050c1d649c" name="a1b78077d4ebb3789cc083d050c1d649c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b78077d4ebb3789cc083d050c1d649c">&#9670;&nbsp;</a></span>RegisterSimpleConversion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WallLoader.RegisterSimpleConversion </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wallType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>toType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>purification</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a conversion that replaces <em>wallType</em>  with <em>toType</em>  when touched by <em>conversionType</em>  <br  />
+ Also registers <em>wallType</em>  as a fallback for <em>toType</em>  so that other conversions can convert <em>toType</em>  as if it was <em>wallType</em> . <br  />
+ If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wallType</td><td>The wall type that has is affected by this conversion.</td></tr>
+    <tr><td class="paramname">conversionType</td><td>The conversion type for which the wall should use this conversion.</td></tr>
+    <tr><td class="paramname">toType</td><td>The wall type that this conversion should convert the wall to.</td></tr>
+    <tr><td class="paramname">purification</td><td>If true, automatically registers purification conversions from toType to wallType as well.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a24400b7df39c41c4bc23b4f171a7bffa" name="a24400b7df39c41c4bc23b4f171a7bffa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24400b7df39c41c4bc23b4f171a7bffa">&#9670;&nbsp;</a></span>TryGetConversionFallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool WallLoader.TryGetConversionFallback </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wallType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out int&#160;</td>
+          <td class="paramname"><em>fallbackType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tries to retrieve the <em>fallbackType</em>  corresponding to the provided <em>wallType</em>  and <em>conversionType</em>  <br  />
+ See also: </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_wall_loader.html#a7812e2490f19c8e0b51b8d37b616f83a" title="Sets a fallback wall type for all conversion types except those in exceptForConversionTypes    When W...">RegisterConversionFallback</a></dd></dl>
+</p>
+<dl class="section return"><dt>Returns</dt><dd>True if the wall has a registered fallback for the given conversion type</dd></dl>
 
 </div>
 </div>

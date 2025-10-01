@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('class_pos_data_1_1_ordered_sparse_look
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acbdc6855f8d1cc6b232f2160c80c7ffa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pos_data_1_1_ordered_sparse_lookup_builder.html#acbdc6855f8d1cc6b232f2160c80c7ffa">OrderedSparseLookupBuilder</a> (int capacity=1048576, bool compressEqualValues=true, bool insertDefaultEntries=false)</td></tr>
-<tr class="memdesc:acbdc6855f8d1cc6b232f2160c80c7ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use <em>compressEqualValues</em>  to produce a smaller lookup which won't work with PosData.LookupExact When using <em>compressEqualValues</em>  without <em>insertDefaultEntries</em> , unspecified positions will default to the value of the previous specified position  <a href="class_pos_data_1_1_ordered_sparse_lookup_builder.html#acbdc6855f8d1cc6b232f2160c80c7ffa">More...</a><br /></td></tr>
+<tr class="memdesc:acbdc6855f8d1cc6b232f2160c80c7ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use <em>compressEqualValues</em>  to produce a smaller lookup which won't work with PosData.LookupExact&lt;T&gt;(PosData&lt;T&gt;[], int, int, out T) When using <em>compressEqualValues</em>  without <em>insertDefaultEntries</em> , unspecified positions will default to the value of the previous specified position  <a href="class_pos_data_1_1_ordered_sparse_lookup_builder.html#acbdc6855f8d1cc6b232f2160c80c7ffa">More...</a><br /></td></tr>
 <tr class="separator:acbdc6855f8d1cc6b232f2160c80c7ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c2cb3ad4175f076bfc2f19ba2affb4e"><td class="memItemLeft" align="right" valign="top"><a id="a5c2cb3ad4175f076bfc2f19ba2affb4e" name="a5c2cb3ad4175f076bfc2f19ba2affb4e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (int pos, T value)</td></tr>
@@ -144,7 +144,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (int x, int y
       </table>
 </div><div class="memdoc">
 
-<p>Use <em>compressEqualValues</em>  to produce a smaller lookup which won't work with PosData.LookupExact When using <em>compressEqualValues</em>  without <em>insertDefaultEntries</em> , unspecified positions will default to the value of the previous specified position </p>
+<p>Use <em>compressEqualValues</em>  to produce a smaller lookup which won't work with PosData.LookupExact&lt;T&gt;(PosData&lt;T&gt;[], int, int, out T) When using <em>compressEqualValues</em>  without <em>insertDefaultEntries</em> , unspecified positions will default to the value of the previous specified position </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">capacity</td><td>Defaults to 1M entries to reduce reallocations. Final built collection will be smaller. </td></tr>

@@ -98,6 +98,7 @@ var class_n_p_c =
     [ "GravityMultiplier", "class_n_p_c.html#ae63c16ee50368bdb03ab0ba2087929eb", null ],
     [ "hide", "class_n_p_c.html#ab559bbc9e10d0286b2e5ca809a93c60b", null ],
     [ "HitSound", "class_n_p_c.html#a7382206aed23b6a97466a38861e900f8", null ],
+    [ "housingCategory", "class_n_p_c.html#a99dc367e8cf01fc8d9d5030afcc393c9", null ],
     [ "immortal", "class_n_p_c.html#a2da9304fef64e72d2a5b6ede4743646a", null ],
     [ "immune", "class_n_p_c.html#aa4d5cb97dff20ac9a01c5915e4f75837", null ],
     [ "killCount", "class_n_p_c.html#ab9a217d81e5d1832e957e6972eef9674", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -199,6 +199,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostSetupTile
 <tr class="memitem:ad7027bde2eb2f5e85f9823e8c5195ef6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6">PreShakeTree</a> (int <a class="el" href="class_chest.html#af522167a0a0219d36dd3a933cc1624f5">x</a>, int <a class="el" href="class_chest.html#aed3156e68c6284abd05b66e276113665">y</a>, TreeTypes treeType)</td></tr>
 <tr class="memdesc:ad7027bde2eb2f5e85f9823e8c5195ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook runs before <a class="el" href="class_global_tile.html#a55ba6a9536bb124af00a371850286dbb" title="This hook runs when any tree is shaken (See the Tree Shaking wiki page). It is intended to be used to...">ShakeTree(int, int, TreeTypes)</a> and is intended to be used to spawn bonus tree shaking drops and prevent existing drops using <a class="el" href="class_n_p_c_loader.html#ad278795f89f080ad20f4a1670593eede" title="Allows you to stop an NPC from dropping specific loot by adding item IDs to this list....">NPCLoader.blockLoot</a>. The tile coordinates provided indicates the leafy top of the tree where entities should be spawned. Runs on the server or singleplayer.  <a href="class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6">More...</a><br /></td></tr>
 <tr class="separator:ad7027bde2eb2f5e85f9823e8c5195ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cbc7f978a5c213a5690a4e8f4774770"><td class="memItemLeft" align="right" valign="top"><a id="a7cbc7f978a5c213a5690a4e8f4774770" name="a7cbc7f978a5c213a5690a4e8f4774770"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ReplaceTile</b> (int i, int j, int type, int targetType, int targetStyle)</td></tr>
+<tr class="separator:a7cbc7f978a5c213a5690a4e8f4774770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7419ebee394a8290e7731b86e47676f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_tile.html#ab7419ebee394a8290e7731b86e47676f">RightClick</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:ab7419ebee394a8290e7731b86e47676f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when any tile is right-clicked by the player.  <a href="class_global_tile.html#ab7419ebee394a8290e7731b86e47676f">More...</a><br /></td></tr>
 <tr class="separator:ab7419ebee394a8290e7731b86e47676f"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -41,6 +41,7 @@ var class_mod_system =
     [ "PostUpdateTime", "class_mod_system.html#aef069f82d408785fbde30b0327579879", null ],
     [ "PostUpdateWorld", "class_mod_system.html#a293da73b3fc469aee8b830d1f2b84c88", null ],
     [ "PostWorldGen", "class_mod_system.html#a1e07950efda5aa9a2505cca4b1de6a1f", null ],
+    [ "PostWorldLoad", "class_mod_system.html#a420a22b570f31900387ca75e60c5256e", null ],
     [ "PreDrawMapIconOverlay", "class_mod_system.html#a43b9677e636951b1b9cdff7e101623bc", null ],
     [ "PreSaveAndQuit", "class_mod_system.html#a342b61155bcc6b2a3832d4298ecffa11", null ],
     [ "PreUpdateDusts", "class_mod_system.html#a0bb8bc9fb1b047afe725da59354b7573", null ],

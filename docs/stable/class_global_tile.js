@@ -27,6 +27,7 @@ var class_global_tile =
     [ "PreHitWire", "class_global_tile.html#a9e1dd0f415df215847048a005719966c", null ],
     [ "PreShakeTree", "class_global_tile.html#ad7027bde2eb2f5e85f9823e8c5195ef6", null ],
     [ "Register", "class_global_tile.html#afe930e11a453ea3bac520f8c5b7a481d", null ],
+    [ "ReplaceTile", "class_global_tile.html#a7cbc7f978a5c213a5690a4e8f4774770", null ],
     [ "RightClick", "class_global_tile.html#ab7419ebee394a8290e7731b86e47676f", null ],
     [ "SetSpriteEffects", "class_global_tile.html#a21006e6002030adc0e508f52a7432fcb", null ],
     [ "SetupContent", "class_global_tile.html#a91ad460f801e6aabb68ae343c9fa5c81", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,28 +85,34 @@ $(document).ready(function(){initNavTree('class_n_p_c_killed_condition.html','')
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_n_p_c_killed_condition-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">NPCKilledCondition Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>Satisfied when any of the provided NPCs is killed. Only players who damaged/"interacted" with the <a class="el" href="class_n_p_c.html">NPC</a> (<a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">NPC.playerInteraction</a>) will be awarded the achievement. <br  />
+<br  />
+ Use multiple conditions if tracking multiple <a class="el" href="class_n_p_c.html">NPC</a> individually is needed.  
+ <a href="class_n_p_c_killed_condition.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_achievement_condition.html">AchievementCondition</a>.</p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aed99a4483e6a707e45bb1b692132823c"><td class="memItemLeft" align="right" valign="top"><a id="aed99a4483e6a707e45bb1b692132823c" name="aed99a4483e6a707e45bb1b692132823c"></a>
-static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (params short[] npcIds)</td></tr>
-<tr class="separator:aed99a4483e6a707e45bb1b692132823c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b4ee6e1e32f80b14d5038067659b078"><td class="memItemLeft" align="right" valign="top"><a id="a6b4ee6e1e32f80b14d5038067659b078" name="a6b4ee6e1e32f80b14d5038067659b078"></a>
-static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (short npcId)</td></tr>
-<tr class="separator:a6b4ee6e1e32f80b14d5038067659b078"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a318515321b423a3c4e12841e3310037d"><td class="memItemLeft" align="right" valign="top"><a id="a318515321b423a3c4e12841e3310037d" name="a318515321b423a3c4e12841e3310037d"></a>
-static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateMany</b> (params short[] npcs)</td></tr>
-<tr class="separator:a318515321b423a3c4e12841e3310037d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aeda2a2cb0cb84d5fce1b400c597c14eb"><td class="memItemLeft" align="right" valign="top"><a id="aeda2a2cb0cb84d5fce1b400c597c14eb" name="aeda2a2cb0cb84d5fce1b400c597c14eb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NPCKilledCondition</b> (short npcId)</td></tr>
+<tr class="separator:aeda2a2cb0cb84d5fce1b400c597c14eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a621838d2dc46d69305aa969cf99d8bd2"><td class="memItemLeft" align="right" valign="top"><a id="a621838d2dc46d69305aa969cf99d8bd2" name="a621838d2dc46d69305aa969cf99d8bd2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NPCKilledCondition</b> (short npcId, string name)</td></tr>
+<tr class="separator:a621838d2dc46d69305aa969cf99d8bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad60d106a3fa120c259b8725c1d85706"><td class="memItemLeft" align="right" valign="top"><a id="aad60d106a3fa120c259b8725c1d85706" name="aad60d106a3fa120c259b8725c1d85706"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NPCKilledCondition</b> (short[] npcIds)</td></tr>
+<tr class="separator:aad60d106a3fa120c259b8725c1d85706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71b80be111884ca8afc1c8ea98a58808"><td class="memItemLeft" align="right" valign="top"><a id="a71b80be111884ca8afc1c8ea98a58808" name="a71b80be111884ca8afc1c8ea98a58808"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NPCKilledCondition</b> (short[] npcIds, string name)</td></tr>
+<tr class="separator:a71b80be111884ca8afc1c8ea98a58808"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_achievement_condition"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_achievement_condition')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_achievement_condition.html">AchievementCondition</a></td></tr>
 <tr class="memitem:a0205c4f01c8590226036210f91128106 inherit pub_methods_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="a0205c4f01c8590226036210f91128106" name="a0205c4f01c8590226036210f91128106"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>AchievementUpdate</b> (<a class="el" href="class_achievement_condition.html">AchievementCondition</a> condition)</td></tr>
@@ -123,6 +129,21 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Complete</b> 
 <tr class="memitem:aa4a877293b5acc919023bc62eaba39d4 inherit pub_methods_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="aa4a877293b5acc919023bc62eaba39d4" name="aa4a877293b5acc919023bc62eaba39d4"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Load</b> (JObject state)</td></tr>
 <tr class="separator:aa4a877293b5acc919023bc62eaba39d4 inherit pub_methods_class_achievement_condition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aed99a4483e6a707e45bb1b692132823c"><td class="memItemLeft" align="right" valign="top"><a id="aed99a4483e6a707e45bb1b692132823c" name="aed99a4483e6a707e45bb1b692132823c"></a>
+static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (params short[] npcIds)</td></tr>
+<tr class="separator:aed99a4483e6a707e45bb1b692132823c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b4ee6e1e32f80b14d5038067659b078"><td class="memItemLeft" align="right" valign="top"><a id="a6b4ee6e1e32f80b14d5038067659b078" name="a6b4ee6e1e32f80b14d5038067659b078"></a>
+static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (short npcId)</td></tr>
+<tr class="separator:a6b4ee6e1e32f80b14d5038067659b078"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a318515321b423a3c4e12841e3310037d"><td class="memItemLeft" align="right" valign="top"><a id="a318515321b423a3c4e12841e3310037d" name="a318515321b423a3c4e12841e3310037d"></a>
+static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>CreateMany</b> (params short[] npcs)</td></tr>
+<tr class="separator:a318515321b423a3c4e12841e3310037d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_class_achievement_condition"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_achievement_condition')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_achievement_condition.html">AchievementCondition</a></td></tr>
 <tr class="memitem:af3850a9af9fb13e1c519475ac8bc19e2 inherit pub_attribs_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="af3850a9af9fb13e1c519475ac8bc19e2" name="af3850a9af9fb13e1c519475ac8bc19e2"></a>
 readonly string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b></td></tr>
@@ -147,7 +168,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCompleted</b><code>
 AchievementUpdate&#160;</td><td class="memItemRight" valign="bottom"><b>OnComplete</b></td></tr>
 <tr class="separator:a4e537b163ebf11bdb3bd1d0d796bcd7a inherit events_class_achievement_condition"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Satisfied when any of the provided NPCs is killed. Only players who damaged/"interacted" with the <a class="el" href="class_n_p_c.html">NPC</a> (<a class="el" href="class_n_p_c.html#a2733db98473f44858e9a5ec94c3a1698" title="Tracks which Players have damaged this NPC. Damaging boss minions or other parts of a boss is usually...">NPC.playerInteraction</a>) will be awarded the achievement. <br  />
+<br  />
+ Use multiple conditions if tracking multiple <a class="el" href="class_n_p_c.html">NPC</a> individually is needed. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

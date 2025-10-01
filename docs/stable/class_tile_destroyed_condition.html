@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -85,22 +85,28 @@ $(document).ready(function(){initNavTree('class_tile_destroyed_condition.html','
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_tile_destroyed_condition-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TileDestroyedCondition Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>Satisfied when any of the provided tiles is mined. <br  />
+<br  />
+ Called in <a class="el" href="class_world_gen.html#aab8789310665bd013cbc7cbc955137ed" title="Attempts to destroy the tile at the provided tile coordinates.Callers can use fail ,...">WorldGen.KillTile</a>, but will only be satisfied if <a class="el" href="class_achievements_helper.html#ad7c313333a96cd5ae911f69771e2038c" title="Tracks if the local player is actively mining to determine if TileDestroyedCondition should be satisf...">AchievementsHelper.CurrentlyMining</a> is true.  
+ <a href="class_tile_destroyed_condition.html#details">More...</a></p>
+
 <p>Inherits <a class="el" href="class_achievement_condition.html">AchievementCondition</a>.</p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac02e1cb0020fc3002a7347b7946a8bb9"><td class="memItemLeft" align="right" valign="top"><a id="ac02e1cb0020fc3002a7347b7946a8bb9" name="ac02e1cb0020fc3002a7347b7946a8bb9"></a>
-static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (params ushort[] tileIds)</td></tr>
-<tr class="separator:ac02e1cb0020fc3002a7347b7946a8bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a9e447da21811a5352259d3bcfe3edd25"><td class="memItemLeft" align="right" valign="top"><a id="a9e447da21811a5352259d3bcfe3edd25" name="a9e447da21811a5352259d3bcfe3edd25"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TileDestroyedCondition</b> (ushort[] tileIds)</td></tr>
+<tr class="separator:a9e447da21811a5352259d3bcfe3edd25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a096de1a29132f73ae211bcbaaed1e0cc"><td class="memItemLeft" align="right" valign="top"><a id="a096de1a29132f73ae211bcbaaed1e0cc" name="a096de1a29132f73ae211bcbaaed1e0cc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TileDestroyedCondition</b> (ushort[] tileIds, string name)</td></tr>
+<tr class="separator:a096de1a29132f73ae211bcbaaed1e0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_achievement_condition"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_achievement_condition')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_achievement_condition.html">AchievementCondition</a></td></tr>
 <tr class="memitem:a0205c4f01c8590226036210f91128106 inherit pub_methods_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="a0205c4f01c8590226036210f91128106" name="a0205c4f01c8590226036210f91128106"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>AchievementUpdate</b> (<a class="el" href="class_achievement_condition.html">AchievementCondition</a> condition)</td></tr>
@@ -117,6 +123,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Complete</b> 
 <tr class="memitem:aa4a877293b5acc919023bc62eaba39d4 inherit pub_methods_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="aa4a877293b5acc919023bc62eaba39d4" name="aa4a877293b5acc919023bc62eaba39d4"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Load</b> (JObject state)</td></tr>
 <tr class="separator:aa4a877293b5acc919023bc62eaba39d4 inherit pub_methods_class_achievement_condition"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac02e1cb0020fc3002a7347b7946a8bb9"><td class="memItemLeft" align="right" valign="top"><a id="ac02e1cb0020fc3002a7347b7946a8bb9" name="ac02e1cb0020fc3002a7347b7946a8bb9"></a>
+static <a class="el" href="class_achievement_condition.html">AchievementCondition</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (params ushort[] tileIds)</td></tr>
+<tr class="separator:ac02e1cb0020fc3002a7347b7946a8bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_class_achievement_condition"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_achievement_condition')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_achievement_condition.html">AchievementCondition</a></td></tr>
 <tr class="memitem:af3850a9af9fb13e1c519475ac8bc19e2 inherit pub_attribs_class_achievement_condition"><td class="memItemLeft" align="right" valign="top"><a id="af3850a9af9fb13e1c519475ac8bc19e2" name="af3850a9af9fb13e1c519475ac8bc19e2"></a>
 readonly string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b></td></tr>
@@ -141,7 +156,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCompleted</b><code>
 AchievementUpdate&#160;</td><td class="memItemRight" valign="bottom"><b>OnComplete</b></td></tr>
 <tr class="separator:a4e537b163ebf11bdb3bd1d0d796bcd7a inherit events_class_achievement_condition"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Satisfied when any of the provided tiles is mined. <br  />
+<br  />
+ Called in <a class="el" href="class_world_gen.html#aab8789310665bd013cbc7cbc955137ed" title="Attempts to destroy the tile at the provided tile coordinates.Callers can use fail ,...">WorldGen.KillTile</a>, but will only be satisfied if <a class="el" href="class_achievements_helper.html#ad7c313333a96cd5ae911f69771e2038c" title="Tracks if the local player is actively mining to determine if TileDestroyedCondition should be satisf...">AchievementsHelper.CurrentlyMining</a> is true. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

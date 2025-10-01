@@ -14,7 +14,7 @@ var searchData=
   ['beard_11',['Beard',['../class_armor_i_ds_1_1_beard.html',1,'ArmorIDs']]],
   ['beatanymechboss_12',['BeatAnyMechBoss',['../class_conditions_1_1_beat_any_mech_boss.html',1,'Conditions']]],
   ['beesseed_13',['BeesSeed',['../class_conditions_1_1_bees_seed.html',1,'Conditions']]],
-  ['before_14',['Before',['../class_builder_toggle_1_1_before.html',1,'BuilderToggle.Before'],['../class_extra_jump_1_1_before.html',1,'ExtraJump.Before'],['../class_mod_map_layer_1_1_before.html',1,'ModMapLayer.Before']]],
+  ['before_14',['Before',['../class_builder_toggle_1_1_before.html',1,'BuilderToggle.Before'],['../class_extra_jump_1_1_before.html',1,'ExtraJump.Before'],['../class_mod_achievement_1_1_before.html',1,'ModAchievement.Before'],['../class_mod_map_layer_1_1_before.html',1,'ModMapLayer.Before']]],
   ['beforeparent_15',['BeforeParent',['../class_player_draw_layer_1_1_before_parent.html',1,'PlayerDrawLayer']]],
   ['bestiarydatabase_16',['BestiaryDatabase',['../class_bestiary_database.html',1,'']]],
   ['bestiarydatabasenpcspopulator_17',['BestiaryDatabaseNPCsPopulator',['../class_bestiary_database_n_p_cs_populator.html',1,'']]],
