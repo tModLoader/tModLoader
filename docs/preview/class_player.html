@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -791,6 +791,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasBuff</b> (int type
 <tr class="memitem:a5e07c64c086c69b720beaf6cee7299d1"><td class="memItemLeft" align="right" valign="top"><a id="a5e07c64c086c69b720beaf6cee7299d1" name="a5e07c64c086c69b720beaf6cee7299d1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasEnoughPickPowerToHurtTile</b> (int x, int y)</td></tr>
 <tr class="separator:a5e07c64c086c69b720beaf6cee7299d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b21803b3e87f3755e3bb0ab4c2fbe32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#a7b21803b3e87f3755e3bb0ab4c2fbe32">HasItem</a> (bool[] itemSet)</td></tr>
+<tr class="memdesc:a7b21803b3e87f3755e3bb0ab4c2fbe32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player has any item in their <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a> that appears in the provided <a class="el" href="class_item.html">Item</a> ID set (<em>itemSet</em> ). <br  />
+<br  />
+ For example <code>if (player.HasItem(<a class="el" href="class_item_i_d_1_1_sets.html#ac7f218dce213d94f5e7e16c6af518941" title="If true for a given item type (Item.type), then that item is a glowstick.   Glowsticks work underwate...">ItemID.Sets.Glowsticks</a>))</code> would return true if the player has any glowstick item. <br  />
+<br  />
+ Does not check Void Bag.  <a href="class_player.html#a7b21803b3e87f3755e3bb0ab4c2fbe32">More...</a><br /></td></tr>
+<tr class="separator:a7b21803b3e87f3755e3bb0ab4c2fbe32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_player.html#ab7ab9a131fdae7b983e6fbd30ca602d9">HasItem</a> (int type)</td></tr>
 <tr class="memdesc:ab7ab9a131fdae7b983e6fbd30ca602d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player has the specified item in their <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a>. <br  />
  Does not check Void Bag. <br  />
@@ -1576,6 +1583,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearPlayerTem
 <tr class="separator:a0d33c705c0b394b284c1800408b7b126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f3e6eafbdbb24e5283a06ccab3fee5a"><td class="memItemLeft" align="right" valign="top"><a id="a8f3e6eafbdbb24e5283a06ccab3fee5a" name="a8f3e6eafbdbb24e5283a06ccab3fee5a"></a>
 static byte&#160;</td><td class="memItemRight" valign="bottom"><b>FindClosest</b> (Vector2 <a class="el" href="class_position.html">Position</a>, int Width, int Height)</td></tr>
+<tr class="memdesc:a8f3e6eafbdbb24e5283a06ccab3fee5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds and returns the index of the closest player to the center of a rectangle defined by the provided arguments. The arguments are usually <a class="el" href="class_entity.html#aea6af1b1841c5129ac2ddce832b53075" title="The position of this Entity in world coordinates. Note that this corresponds to the top left corner o...">Entity.position</a>, <a class="el" href="class_entity.html#aa687666b6a0f25fe0115c0ac6aa6aca5" title="The width of this Entity&#39;s hitbox, in pixels.">Entity.width</a>, and <a class="el" href="class_entity.html#aeb2eecb2f55bd15f630e2d8e1bb6cad1" title="The height of this Entity&#39;s hitbox, in pixels.">Entity.height</a>. <br /></td></tr>
 <tr class="separator:a8f3e6eafbdbb24e5283a06ccab3fee5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae51737dd3cf3d6d1377460a456ef158e"><td class="memItemLeft" align="right" valign="top"><a id="ae51737dd3cf3d6d1377460a456ef158e" name="ae51737dd3cf3d6d1377460a456ef158e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FixLoadedData_EliminiateDuplicateAccessories</b> (<a class="el" href="class_item.html">Item</a>[] armorArray)</td></tr>
@@ -3812,7 +3820,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>portalPhysicsFlag</b>
 <tr class="separator:a56319dbe4931e7a77bab43d982baae6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a201c52749d7defd7d0732d8271ca270c"><td class="memItemLeft" align="right" valign="top"><a id="a201c52749d7defd7d0732d8271ca270c" name="a201c52749d7defd7d0732d8271ca270c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>potionDelay</b></td></tr>
+<tr class="memdesc:a201c52749d7defd7d0732d8271ca270c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The potion sickness delay, in ticks. This value mirrors the remaining time for the BuffID.PotionSickness buff. <br /></td></tr>
 <tr class="separator:a201c52749d7defd7d0732d8271ca270c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16dc6eb52d9eb823d76031d225d264f4"><td class="memItemLeft" align="right" valign="top"><a id="a16dc6eb52d9eb823d76031d225d264f4" name="a16dc6eb52d9eb823d76031d225d264f4"></a>
+<a class="el" href="struct_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PotionDelayModifier</b> = StatModifier.Default</td></tr>
+<tr class="memdesc:a16dc6eb52d9eb823d76031d225d264f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies the cooldown of health potions. Can be used to adjust potion cooldown calculations, similar to the Philosopher's Stone. <br /></td></tr>
+<tr class="separator:a16dc6eb52d9eb823d76031d225d264f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a143249ec1331c3fc1459a7a39a2681ed"><td class="memItemLeft" align="right" valign="top"><a id="a143249ec1331c3fc1459a7a39a2681ed" name="a143249ec1331c3fc1459a7a39a2681ed"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>potionDelayTime</b> = <a class="el" href="class_item.html#a37e8155ad98f72d1b5f55a860907bea4">Item.potionDelay</a></td></tr>
 <tr class="separator:a143249ec1331c3fc1459a7a39a2681ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6488,8 +6501,39 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a7b21803b3e87f3755e3bb0ab4c2fbe32" name="a7b21803b3e87f3755e3bb0ab4c2fbe32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b21803b3e87f3755e3bb0ab4c2fbe32">&#9670;&nbsp;</a></span>HasItem() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Player.HasItem </td>
+          <td>(</td>
+          <td class="paramtype">bool[]&#160;</td>
+          <td class="paramname"><em>itemSet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the player has any item in their <a class="el" href="class_player.html#a590dce4227b207c8976811be19f2cf64" title="The player&#39;s normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventor...">inventory</a> that appears in the provided <a class="el" href="class_item.html">Item</a> ID set (<em>itemSet</em> ). <br  />
+<br  />
+ For example <code>if (player.HasItem(<a class="el" href="class_item_i_d_1_1_sets.html#ac7f218dce213d94f5e7e16c6af518941" title="If true for a given item type (Item.type), then that item is a glowstick.   Glowsticks work underwate...">ItemID.Sets.Glowsticks</a>))</code> would return true if the player has any glowstick item. <br  />
+<br  />
+ Does not check Void Bag. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">itemSet</td><td>A set of length ItemLoader.ItemCount to check against</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the player has such an item</dd></dl>
+
+</div>
+</div>
 <a id="ab7ab9a131fdae7b983e6fbd30ca602d9" name="ab7ab9a131fdae7b983e6fbd30ca602d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7ab9a131fdae7b983e6fbd30ca602d9">&#9670;&nbsp;</a></span>HasItem()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7ab9a131fdae7b983e6fbd30ca602d9">&#9670;&nbsp;</a></span>HasItem() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

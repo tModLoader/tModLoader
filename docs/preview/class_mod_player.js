@@ -3,6 +3,7 @@ var class_mod_player =
     [ "AddMaterialsForCrafting", "class_mod_player.html#a50b71076f90fd0a452ba4b15c7ed8716", null ],
     [ "AddStartingItems", "class_mod_player.html#ab123bb4ad3907a192513002bc8f21a7a", null ],
     [ "AnglerQuestReward", "class_mod_player.html#a4eba6c93717354fc57d7145664cd5a95", null ],
+    [ "ApplyPotionDelay", "class_mod_player.html#a6dff6521e2f1b90dc185e79cd814ebb3", null ],
     [ "ArmorSetBonusActivated", "class_mod_player.html#af9057df46f682f9e1c44f4c09b94214b", null ],
     [ "ArmorSetBonusHeld", "class_mod_player.html#a5f7ab038c72693153dbb418fed131dc9", null ],
     [ "CanAutoReuseItem", "class_mod_player.html#a5ddd550c1c3a464c384977f3796ae85e", null ],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['achievement_0',['Achievement',['../class_mod_achievement.html#aba57eb51e06cfd855c97f6af43809841',1,'ModAchievement']]],
-  ['active_1',['Active',['../struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566',1,'ExtraJumpState.Active()'],['../class_mount.html#aa483adda277f6331faff69109f6b7b50',1,'Mount.Active()']]],
+  ['active_1',['Active',['../struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566',1,'ExtraJumpState.Active()'],['../class_mount.html#aa483adda277f6331faff69109f6b7b50',1,'Mount.Active()'],['../class_liquid_edge_renderer.html#ad5f8be29271c979b3d73eb9658d29538',1,'LiquidEdgeRenderer.Active()']]],
   ['activeculture_2',['ActiveCulture',['../class_language.html#ab29445df6a42420ac4794550a084d521',1,'Language']]],
   ['activeitems_3',['ActiveItems',['../class_main.html#a607e325ba26d67f18452a649dd715de9',1,'Main']]],
   ['activenpcs_4',['ActiveNPCs',['../class_main.html#a55969af8fef5fd9819d1854403cf794b',1,'Main']]],

@@ -36,6 +36,8 @@ var class_u_i_element =
     [ "Width", "class_u_i_element.html#a55b6234d960a77675f0df0d2a9bacba3", null ],
     [ "IsMouseHovering", "class_u_i_element.html#aba62cb6c45cec2084e04c79e464e7e54", null ],
     [ "Parent", "class_u_i_element.html#a1c3b69b222a611a5e114ded4c78d2461", null ],
+    [ "OnDraw", "class_u_i_element.html#a4515441ee437b4fa1af9d96f28d2b100", null ],
     [ "OnMouseOut", "class_u_i_element.html#ab6037c80c528d1b9b09bbd9657f04fac", null ],
-    [ "OnMouseOver", "class_u_i_element.html#ac7736aa1484dbdc46bfa15d4ec421544", null ]
+    [ "OnMouseOver", "class_u_i_element.html#ac7736aa1484dbdc46bfa15d4ec421544", null ],
+    [ "OnUpdate", "class_u_i_element.html#a84868077ad254e8b5f82770844752cea", null ]
 ];

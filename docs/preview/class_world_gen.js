@@ -14,6 +14,7 @@ var class_world_gen =
     [ "Convert", "class_world_gen.html#a3708e3da9f373cad064eb35b7d2710d7", null ],
     [ "ConvertTile", "class_world_gen.html#a8b218eba48d8b0d018eb87eb2b78b253", null ],
     [ "ConvertWall", "class_world_gen.html#a4959269f52c93923394fc70bd91c0b39", null ],
+    [ "GetPlayerForTile", "class_world_gen.html#af4692f185db68afdfd0d24a1ee7a9746", null ],
     [ "GetTreeBottom", "class_world_gen.html#aa9afddbc1172acfb7cf6564d2ace3fd0", null ],
     [ "GrowMoreVines", "class_world_gen.html#a449552fb320c54ae613675a3e35d59ec", null ],
     [ "InWorld", "class_world_gen.html#a5ee5c1aa704eb7690bc7fdd4a1147e66", null ],

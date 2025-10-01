@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -976,7 +976,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>playerIndexTheItemIsRe
 <tr class="separator:a74e48a31d491176ed1f3035a107b7fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed70ad8fd98d49df20a70d26c9c2e56d"><td class="memItemLeft" align="right" valign="top"><a id="aed70ad8fd98d49df20a70d26c9c2e56d" name="aed70ad8fd98d49df20a70d26c9c2e56d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>potion</b></td></tr>
-<tr class="memdesc:aed70ad8fd98d49df20a70d26c9c2e56d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this item will inflict potion sickness on use. Also determines whether the item cannot be used when the player has potion sickness, and if the item can be used with the Quick Heal key. <br  />
+<tr class="memdesc:aed70ad8fd98d49df20a70d26c9c2e56d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this item will inflict potion sickness on use. Also determines whether the item cannot be used when the player has potion sickness (<a class="el" href="class_player.html#a201c52749d7defd7d0732d8271ca270c" title="The potion sickness delay, in ticks. This value mirrors the remaining time for the BuffID....">Player.potionDelay</a> &gt; 0), and if the item can be used with the Quick Heal key. <br  />
+<br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:aed70ad8fd98d49df20a70d26c9c2e56d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad19d05c738f67bd61c40e5b265d7f9a0"><td class="memItemLeft" align="right" valign="top"><a id="ad19d05c738f67bd61c40e5b265d7f9a0" name="ad19d05c738f67bd61c40e5b265d7f9a0"></a>
@@ -1324,9 +1325,9 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>manaGrabRange</
 <tr class="separator:a6eff6b27f302bc86e68a62c340badc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe89f43c2dab80619ef8867972f333cf"><td class="memItemLeft" align="right" valign="top"><a id="afe89f43c2dab80619ef8867972f333cf" name="afe89f43c2dab80619ef8867972f333cf"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>mushroomDelay</b> = 1800</td></tr>
-<tr class="memdesc:afe89f43c2dab80619ef8867972f333cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of Mushrooms.<br  />
- This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.mushroomDelayTime.<br  />
- <br /></td></tr>
+<tr class="memdesc:afe89f43c2dab80619ef8867972f333cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of Mushrooms. <br  />
+<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone and <a class="el" href="class_player.html#a16dc6eb52d9eb823d76031d225d264f4" title="Modifies the cooldown of health potions. Can be used to adjust potion cooldown calculations,...">Player.PotionDelayModifier</a>. <br /></td></tr>
 <tr class="separator:afe89f43c2dab80619ef8867972f333cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbfd756bfdc2a5287005f4e012f55a63"><td class="memItemLeft" align="right" valign="top"><a id="acbfd756bfdc2a5287005f4e012f55a63" name="acbfd756bfdc2a5287005f4e012f55a63"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfNewItems</b> = 0</td></tr>
@@ -1336,15 +1337,15 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>platinum</b> = 1
 <tr class="separator:acfdb1deffd1304209dc910a60d112c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37e8155ad98f72d1b5f55a860907bea4"><td class="memItemLeft" align="right" valign="top"><a id="a37e8155ad98f72d1b5f55a860907bea4" name="a37e8155ad98f72d1b5f55a860907bea4"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>potionDelay</b> = 3600</td></tr>
-<tr class="memdesc:a37e8155ad98f72d1b5f55a860907bea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of most healing items.<br  />
- This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.potionDelayTime.<br  />
- <br /></td></tr>
+<tr class="memdesc:a37e8155ad98f72d1b5f55a860907bea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of most healing items. <br  />
+<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone and <a class="el" href="class_player.html#a16dc6eb52d9eb823d76031d225d264f4" title="Modifies the cooldown of health potions. Can be used to adjust potion cooldown calculations,...">Player.PotionDelayModifier</a>. <br /></td></tr>
 <tr class="separator:a37e8155ad98f72d1b5f55a860907bea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1ae960811fed2407701b6689bb234ce"><td class="memItemLeft" align="right" valign="top"><a id="af1ae960811fed2407701b6689bb234ce" name="af1ae960811fed2407701b6689bb234ce"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>restorationDelay</b> = 2700</td></tr>
-<tr class="memdesc:af1ae960811fed2407701b6689bb234ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of Restoration Potions.<br  />
- This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.restorationDelayTime.<br  />
- <br /></td></tr>
+<tr class="memdesc:af1ae960811fed2407701b6689bb234ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of Restoration Potions. <br  />
+<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, For creating a Philosopher's Stone-like item, see Player.pStone and <a class="el" href="class_player.html#a16dc6eb52d9eb823d76031d225d264f4" title="Modifies the cooldown of health potions. Can be used to adjust potion cooldown calculations,...">Player.PotionDelayModifier</a>. <br /></td></tr>
 <tr class="separator:af1ae960811fed2407701b6689bb234ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afedfce53e7c4cf776f4aa6cf860abfb0"><td class="memItemLeft" align="right" valign="top"><a id="afedfce53e7c4cf776f4aa6cf860abfb0" name="afedfce53e7c4cf776f4aa6cf860abfb0"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>silver</b> = 100</td></tr>

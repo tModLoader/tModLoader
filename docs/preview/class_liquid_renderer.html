@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -96,6 +96,15 @@ $(document).ready(function(){initNavTree('class_liquid_renderer.html',''); initR
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_liquid_renderer_1_1_liquid_cache.html">LiquidCache</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_liquid_renderer_1_1_liquid_draw_cache.html">LiquidDrawCache</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_liquid_renderer_1_1_liquid_edge_data.html">LiquidEdgeData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a78aabefccfbfba79b132b5be28d7ce77"><td class="memItemLeft" align="right" valign="top"><a id="a78aabefccfbfba79b132b5be28d7ce77" name="a78aabefccfbfba79b132b5be28d7ce77"></a>
@@ -158,12 +167,16 @@ Asset&lt; Texture2D &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:a712f44394621a5376f99d032ad1e2d74"><td class="memItemLeft" align="right" valign="top">static readonly float[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_liquid_renderer.html#a712f44394621a5376f99d032ad1e2d74">DEFAULT_OPACITY</a></td></tr>
+<tr class="separator:a712f44394621a5376f99d032ad1e2d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accb685eb277773a84f983e95b762cb55"><td class="memItemLeft" align="right" valign="top"><a id="accb685eb277773a84f983e95b762cb55" name="accb685eb277773a84f983e95b762cb55"></a>
 static <a class="el" href="class_liquid_renderer.html">LiquidRenderer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b></td></tr>
 <tr class="separator:accb685eb277773a84f983e95b762cb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b28427af3000480508023e846865df9"><td class="memItemLeft" align="right" valign="top"><a id="a7b28427af3000480508023e846865df9" name="a7b28427af3000480508023e846865df9"></a>
 const float&#160;</td><td class="memItemRight" valign="bottom"><b>MIN_LIQUID_SIZE</b> = 0.25f</td></tr>
 <tr class="separator:a7b28427af3000480508023e846865df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b5fcd3b2ab96dde55080b73b787b93d"><td class="memItemLeft" align="right" valign="top">static readonly int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_liquid_renderer.html#a0b5fcd3b2ab96dde55080b73b787b93d">WATERFALL_LENGTH</a></td></tr>
+<tr class="separator:a0b5fcd3b2ab96dde55080b73b787b93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -171,6 +184,63 @@ Events</h2></td></tr>
 Action&lt; Color[], Rectangle &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>WaveFilters</b></td></tr>
 <tr class="separator:adf3e6bb9fd732c49b6dbc488743afa53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a712f44394621a5376f99d032ad1e2d74" name="a712f44394621a5376f99d032ad1e2d74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a712f44394621a5376f99d032ad1e2d74">&#9670;&nbsp;</a></span>DEFAULT_OPACITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float [] LiquidRenderer.DEFAULT_OPACITY</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> <span class="keywordtype">float</span>[4] {</div>
+<div class="line">        0.6f,</div>
+<div class="line">        0.95f,</div>
+<div class="line">        0.95f,</div>
+<div class="line">        0.75f</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a0b5fcd3b2ab96dde55080b73b787b93d" name="a0b5fcd3b2ab96dde55080b73b787b93d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b5fcd3b2ab96dde55080b73b787b93d">&#9670;&nbsp;</a></span>WATERFALL_LENGTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly int [] LiquidRenderer.WATERFALL_LENGTH</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> <span class="keywordtype">int</span>[4] {</div>
+<div class="line">        10,</div>
+<div class="line">        3,</div>
+<div class="line">        2,</div>
+<div class="line">        10</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

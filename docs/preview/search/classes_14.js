@@ -153,6 +153,7 @@ var searchData=
   ['usageexception_150',['UsageException',['../class_usage_exception.html',1,'']]],
   ['userinterface_151',['UserInterface',['../class_user_interface.html',1,'']]],
   ['userjointoserverrequest_152',['UserJoinToServerRequest',['../class_user_join_to_server_request.html',1,'']]],
-  ['ushorttagserializer_153',['UShortTagSerializer',['../class_u_short_tag_serializer.html',1,'']]],
-  ['utils_154',['Utils',['../class_utils.html',1,'']]]
+  ['usertags_153',['UserTags',['../class_steam_web_wrapper_1_1_user_tags.html',1,'SteamWebWrapper']]],
+  ['ushorttagserializer_154',['UShortTagSerializer',['../class_u_short_tag_serializer.html',1,'']]],
+  ['utils_155',['Utils',['../class_utils.html',1,'']]]
 ];
