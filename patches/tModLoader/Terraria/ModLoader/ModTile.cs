@@ -702,6 +702,11 @@ public abstract class ModTile : ModBlockType
 	{
 	}
 
+
+	public virtual bool DrawCracks(SpriteBatch spriteBatch, int i, int j, int damage, int crackStyle) {
+		return false;
+	}
+
 	/// <summary>
 	/// Customizes a tile drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, specifically how the tile reacts to wind and player interactions.
 	/// <para/> The parameters are as follows:

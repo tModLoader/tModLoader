@@ -6731,15 +6731,55 @@
  	}
  
  	private void UpdateOceanWaterLineForAmbience()
-@@ -50677,7 +_,7 @@
+@@ -50675,28 +_,40 @@
+ 			if (!flag2)
+ 				continue;
  
++			Tile currentTile = tile[x, y];
++
++			/* Check if the current tile is a modded tile. */
++			if (crackType == 1 && currentTile.HasTile && TileLoader.GetTile(currentTile.TileType) is { } modTile) {
++				/* If it is a modtile, custom drawing it handled and we should skip the rest of this loop for this tile. */
++				if (modTile.DrawCracks(spriteBatch, x, y, damage, hitter.data[i].crackStyle)) {
++					continue;
++				}
++			}
++
++			/* Below code changed to use currentTile over tile[x, y] for consistency. */
++
  			bool flag3 = false;
  			bool flag4 = false;
 -			if (tile[x, y].type == 10) {
-+			if (TileLoader.IsClosedDoor(tile[x, y])) {
++			if (TileLoader.IsClosedDoor(currentTile)) {
  				flag3 = false;
  			}
- 			else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
+-			else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
++			else if (tileSolid[currentTile.type] && !tileSolidTop[currentTile.type]) {
+ 				flag3 = true;
+ 			}
+-			else if (WorldGen.IsTreeType(tile[x, y].type)) {
++			else if (WorldGen.IsTreeType(currentTile.type)) {
+ 				flag4 = true;
+-				int num = tile[x, y].frameX / 22;
+-				int num2 = tile[x, y].frameY / 22;
++				int num = currentTile.frameX / 22;
++				int num2 = currentTile.frameY / 22;
+ 				if (num2 < 9)
+ 					flag3 = ((num != 1 && num != 2) || num2 < 6 || num2 > 8) && (num != 3 || num2 > 2) && (num != 4 || num2 < 3 || num2 > 5) && ((num != 5 || num2 < 6 || num2 > 8) ? true : false);
+ 			}
+-			else if (tile[x, y].type == 72) {
++			else if (currentTile.type == 72) {
+ 				flag4 = true;
+-				if (tile[x, y].frameX <= 34)
++				if (currentTile.frameX <= 34)
+ 					flag3 = true;
+ 			}
+ 
+-			if (flag3 && tile[x, y].slope() == 0 && !tile[x, y].halfBrick()) {
++			if (flag3 && currentTile.slope() == 0 && !currentTile.halfBrick()) {
+ 				int num3 = 0;
+ 				if (damage >= 80)
+ 					num3 = 3;
 @@ -50755,6 +_,17 @@
  
  	protected override void Draw(GameTime gameTime)

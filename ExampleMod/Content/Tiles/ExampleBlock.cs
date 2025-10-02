@@ -1,6 +1,7 @@
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,6 +15,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;
 
+			MineResist = 1.5f;
+
 			DustType = ModContent.DustType<Sparkle>();
 			VanillaFallbackOnModDeletion = TileID.DiamondGemspark;
 
@@ -26,6 +29,46 @@ namespace ExampleMod.Content.Tiles
 
 		public override void ChangeWaterfallStyle(ref int style) {
 			style = ModContent.GetInstance<ExampleWaterfallStyle>().Slot;
+		}
+
+		public override bool DrawCracks(SpriteBatch spriteBatch, int i, int j, int damage, int crackStyle) {
+			Texture2D customCrackTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleBlock_Cracks").Value;
+
+			if (customCrackTexture == null) {
+				return false;
+			}
+
+			int frame = damage switch {
+				>= 80 => 3,
+				>= 60 => 2,
+				>= 40 => 1,
+				>= 20 => 0,
+				_ => 0
+			};
+
+			int crackFrameHeight = customCrackTexture.Height / 4;
+			Rectangle crackSourceRect = new(0, frame * crackFrameHeight, 16, 16);
+
+			Vector2 drawOffset = new Vector2(Main.offScreenRange, Main.offScreenRange);
+			if (Main.drawToScreen) {
+				drawOffset = Vector2.Zero;
+			}
+			Vector2 drawPos =
+				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + drawOffset;
+
+			spriteBatch.Draw(
+				customCrackTexture,
+				drawPos,
+				crackSourceRect,
+				Lighting.GetColor(i, j),
+				0f,
+				Vector2.Zero,
+				1f,
+				SpriteEffects.None,
+				0f
+			);
+
+			return true;
 		}
 	}
 }
