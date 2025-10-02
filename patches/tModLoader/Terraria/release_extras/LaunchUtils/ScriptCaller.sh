@@ -10,7 +10,7 @@ echo "You are on platform: \"$_uname\" arch: \"$_arch\""
 
 # Check for -arm
 arm_flag=false
-for arg in "$@"; do [[ "$arg" = "-arm" ]] && { arm_flag=true; break; }; done
+for arg in "$@"; do [[ "$arg" == "-arm" || "$arg" == "-arm64" ]] && { arm_flag=true; break; }; done
 
 # Detect the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
 if [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
