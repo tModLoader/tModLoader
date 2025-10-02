@@ -21,4 +21,8 @@ if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
 	echo "wsl detected. Setting dotnet_dir=dotnet_wsl" 2>&1 | tee -a "$LogFile"
 	export dotnet_dir="$root_dir/dotnet_wsl"
 fi
+if [ "$_arch" = "arm64" ]; then
+	echo "arm64 detected. Setting dotnet_dir=dotnet_arm64" 2>&1 | tee -a "$LogFile"
+	export dotnet_dir="$root_dir/dotnet_arm64"
+fi
 echo "Success! dotnet_version=$dotnet_version" 2>&1 | tee -a "$LogFile"
