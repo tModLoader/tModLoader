@@ -8,10 +8,10 @@
  	[DllImport("msvcrt", CallingConvention = CallingConvention.Cdecl)]
  	private static extern void free(IntPtr ptr);
 +	*/
-+	private static void free(IntPtr ptr)
++	private unsafe static void free(IntPtr ptr)
 +	{
-+		// The proper way to deallocate.
-+		Marshal.FreeHGlobal(ptr);
++		// Cross-platform C deallocation.
++		NativeMemory.Free((void*)ptr);
 +	}
  
  	[DllImport("nfd", CallingConvention = CallingConvention.Cdecl, EntryPoint = "NFD_OpenDialog")]
