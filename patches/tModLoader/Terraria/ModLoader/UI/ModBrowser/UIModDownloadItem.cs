@@ -27,6 +27,7 @@ internal class UIModDownloadItem : UIPanel
 	private readonly UIText _modName;
 	private readonly UIImage _updateButton;
 	private readonly UIImage _updateWithDepsButton;
+	private readonly UIModDownloadStatus modDownloadStatusIndicator;
 	private readonly UIImage _moreInfoButton;
 	private readonly UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
 	internal ModIconStatus ModIconStatus = ModIconStatus.UNKNOWN;
@@ -104,6 +105,10 @@ internal class UIModDownloadItem : UIPanel
 		_updateButton.Left.Pixels += 36 + PADDING;
 		_updateButton.OnLeftClick += ShowGameNeedsRestart;
 
+		modDownloadStatusIndicator = new UIModDownloadStatus();
+		modDownloadStatusIndicator.Left.Pixels = _updateButton.Left.Pixels;
+		modDownloadStatusIndicator.Top.Pixels = _updateButton.Top.Pixels;
+
 		_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
 		_updateWithDepsButton.CopyStyle(_moreInfoButton);
 		_updateWithDepsButton.Left.Pixels += 36 + PADDING;
@@ -132,9 +137,18 @@ internal class UIModDownloadItem : UIPanel
 
 		_updateWithDepsButton.Remove();
 		_updateButton.Remove();
+		modDownloadStatusIndicator.Remove();
 
 		if (ModDownload.AppNeedRestartToReinstall) {
 			Append(_updateButton);
+		}
+		else if (ModDownload.Downloading) {
+			Append(modDownloadStatusIndicator);
+			modDownloadStatusIndicator.SetCurrentState(ModDownloadStatusState.Downloading);
+		}
+		else if (ModDownload.Queued) {
+			Append(modDownloadStatusIndicator);
+			modDownloadStatusIndicator.SetCurrentState(ModDownloadStatusState.Queued);
 		}
 		else if (ModDownload.NeedUpdate || !ModDownload.IsInstalled) {
 			Append(_updateWithDepsButton);
@@ -180,6 +194,16 @@ internal class UIModDownloadItem : UIPanel
 		}
 		else if (_moreInfoButton?.IsMouseHovering == true) {
 			tooltip = ViewModInfoText;
+		}
+		else if(modDownloadStatusIndicator?.IsMouseHovering == true) {
+			if (ModDownload.IsInstalled) {
+				// Will be in this state for a split second
+			}
+			else if (ModDownload.Downloading)
+				//tooltip = Language.GetTextValue("tModLoader.MBDownloadingMod", ModDownload.DisplayName);
+				tooltip = "Downloading";
+			else
+				tooltip = "Queued for download";
 		}
 	}
 
@@ -308,6 +332,11 @@ internal class UIModDownloadItem : UIPanel
 	private async void DownloadWithDeps(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
+
+		if (Main.keyState.PressingShift()) {
+			UIModBrowser.DownloadModsNoUI([ModDownload]);
+			return;
+		}
 
 		bool success = await Interface.modBrowser.DownloadMods(new[] { ModDownload });
 		if (success)

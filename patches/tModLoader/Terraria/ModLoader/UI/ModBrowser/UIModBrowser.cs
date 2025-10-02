@@ -62,6 +62,9 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	private List<ModPubId_t> _specialModPackFilter;
 
 	private HashSet<string> modSlugsToUpdateInstallInfo = new();
+	internal static Queue<ModDownloadItem> DownloadQueue = new();
+	internal static ModDownloadItem ActiveDownload;
+	internal static Task DownloadTask;
 
 	// Debouncing to avoid sending unnecessary amount of start and abort queries
 	// to Steam mainly when typing fast in the search bar
@@ -498,6 +501,64 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 		finally {
 			ModOrganizer.LocalModsChanged(downloadedList, isDeletion: false);
+		}
+	}
+
+	internal static void DownloadModsNoUI(IEnumerable<ModDownloadItem> mods)
+	{
+		var set = mods.ToHashSet();
+		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(set);
+
+		var fullList = ModDownloadItem.NeedsInstallOrUpdate(set).ToList();
+		if (!fullList.Any())
+			return;
+
+		lock (DownloadQueue) {
+			foreach (var item in fullList) {
+				DownloadQueue.Enqueue(item);
+
+				var notification = new ModDownloadNotification(item);
+				InGameNotificationsTracker.AddMenuNotification(notification);
+				item.notification = notification;
+			}
+		}
+
+		lock (Interface.modBrowser.modSlugsToUpdateInstallInfo) {
+			Interface.modBrowser.modSlugsToUpdateInstallInfo.UnionWith(fullList.Select(x=>x.ModName));
+		}
+
+		if (DownloadTask == null || DownloadTask.IsCompleted) {
+			DownloadTask = Task.Run(DownloadTaskTask);
+		}
+	}
+
+	internal static void DownloadTaskTask()
+	{
+		try {
+			while (DownloadQueue.Count > 0) {
+				var mod = DownloadQueue.Dequeue();
+
+				bool wasInstalled = mod.IsInstalled;
+
+				if (ModLoader.TryGetMod(mod.ModName, out var loadedMod)) {
+					loadedMod.Close();
+
+					// We must clear the Installed reference in ModDownloadItem to facilitate downloading, in addition to disabling - Solxan
+					mod.Installed = null;
+					//setReloadRequred?.Invoke();
+				}
+				 
+				Interface.modBrowser.SocialBackend.DownloadItem(mod, mod.notification);
+				//if (!wasInstalled)
+				//	onNewModInstalled?.Invoke(mod);
+
+				ModOrganizer.LocalModsChanged([mod.ModName], isDeletion: false);
+			}
+		}
+		catch (Exception ex) {
+			//LogModBrowserException(ex, previousMenuId);
+		}
+		finally {
 		}
 	}
 

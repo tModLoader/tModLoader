@@ -6084,6 +6084,15 @@
  		}
  
  		if (!WorldGen.drunkWorldGen) {
+@@ -42546,6 +_,8 @@
+ 			num110 += 20f;
+ 		}
+ 
++		InGameNotificationsTracker.DrawInMenu(spriteBatch);
++
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerStateForCursor, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, UIScaleMatrix);
+ 		WorkshopPublishingIndicator.Draw(spriteBatch);
 @@ -42576,6 +_,22 @@
  		else
  			mouseRightRelease = true;

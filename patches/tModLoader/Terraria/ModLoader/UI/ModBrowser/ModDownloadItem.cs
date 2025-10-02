@@ -31,8 +31,12 @@ public class ModDownloadItem
 	public readonly Version ModloaderVersion;
 
 	internal LocalMod Installed;
+	internal ModDownloadNotification notification;
+
 	public bool NeedUpdate { get; private set; }
 	public bool AppNeedRestartToReinstall { get; private set; }
+	public bool Downloading { get; private set; }
+	public bool Queued { get; private set; }
 
 	public bool IsInstalled => Installed != null;
 
@@ -71,6 +75,9 @@ public class ModDownloadItem
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
 		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);
+
+		Downloading = this == UIModBrowser.ActiveDownload;
+		Queued = UIModBrowser.DownloadQueue.Contains(this);
 	}
 
 	public override bool Equals(object obj) => Equals(obj as ModDownloadItem);
