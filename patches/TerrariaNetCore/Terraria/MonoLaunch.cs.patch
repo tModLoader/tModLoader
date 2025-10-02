@@ -11,17 +11,18 @@
  using Terraria;
  
  namespace Terraria;
-@@ -13,6 +_,9 @@
+@@ -13,6 +_,10 @@
  
  	private static void Main(string[] args)
  	{
 +#if NETCORE
 +		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
++		OverwriteCorrectSteamworksAssembly();
 +#else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -25,9 +_,59 @@
+@@ -25,9 +_,71 @@
  				return Assembly.Load(array);
  			}
  		};
@@ -30,6 +31,18 @@
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
  		Program.LaunchGame(args, monoArgs: true);
  	}
++
++	private static void OverwriteCorrectSteamworksAssembly()
++	{
++		// https://github.com/rlabrecque/Steamworks.NET/pull/738
++		// pre-empt the standard assembly resolver with a different version of Steamworks.NET that has the correct Packsize for struct marshalling
++		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
++			var nugetPath = "Libraries/steamworks.net.anycpu/2025.162.2/lib/net8.0/Steamworks.NET.dll";
++			var windowsPath = "Libraries/Steamworks.NET.AnyCPU.Windows/Steamworks.NET.dll";
++			File.Copy(windowsPath, nugetPath, overwrite: true);
++			File.Copy(Path.ChangeExtension(windowsPath, "pdb"), Path.ChangeExtension(nugetPath, "pdb"), overwrite: true);
++		}
++	}
 +
 +#if NETCORE
 +	public static readonly string NativesDir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", NativePlatformDir);

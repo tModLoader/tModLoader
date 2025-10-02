@@ -27,9 +27,9 @@
  #if NETCORE
 +		NativeLibraries.SetNativeLibraryPath(NativesDir);
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
+ 		OverwriteCorrectSteamworksAssembly();
  #else
- 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,6 +_,35 @@
+@@ -35,6 +_,35 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
@@ -65,7 +65,7 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,29 +_,39 @@
+@@ -70,29 +_,39 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  
