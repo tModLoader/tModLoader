@@ -178,6 +178,8 @@ public static class LocalizationLoader
 		return false;
 	}
 
+	private static List<(string key, string value)> LoadTranslations(Mod mod, GameCulture culture) => LoadTranslations(mod.File, culture);
+
 	private static List<(string key, string value)> LoadTranslations(TmodFile tModFile, GameCulture culture)
 	{
 		if (tModFile == null)
