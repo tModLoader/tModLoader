@@ -518,22 +518,30 @@ public static class SteamedWraps
 	internal class ModDownloadInstance
 	{
 		// All of the below are for actually verifying a download has completed in the 'proper' steam method, but hasn't worked for gameserver?
-		private EResult _downloadCallback;
-		protected Callback<DownloadItemResult_t> _downloadHook;
+		private EResult _downloadCallbackResult;
 
-		public ModDownloadInstance()
+		private Callback<DownloadItemResult_t> RegisterDownloadCallback(PublishedFileId_t publishId)
 		{
+			void MarkDownloadComplete(DownloadItemResult_t result)
+			{
+				// https://github.com/rlabrecque/Steamworks.NET/issues/747
+				// can't check these fields since marshalling is broken. Hope and prayers instead
+				result.m_nPublishedFileId = publishId;
+				result.m_eResult = EResult.k_EResultOK;
+
+				Logging.tML.Debug($"Steam Download Callback: appId={result.m_unAppID}, fileId={result.m_nPublishedFileId} result={result.m_eResult}");
+
+				if (result.m_unAppID != ModLoader.Engine.Steam.TMLAppID_t || result.m_nPublishedFileId != publishId)
+					return;
+
+				_downloadCallbackResult = result.m_eResult;
+			}
+
 			// For Steam Users
 			if (SteamClient)
-				_downloadHook = Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
+				return Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
 			else // For Non-Steam Users
-				_downloadHook = Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
-		}
-
-		internal void MarkDownloadComplete(DownloadItemResult_t result)
-		{
-			_downloadCallback = result.m_eResult;
-			Logging.tML.Debug($"Download Callback Received From Steam: {_downloadCallback}");
+				return Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
 		}
 
 		/// <summary>
@@ -543,6 +551,8 @@ public static class SteamedWraps
 		{
 			if (!SteamAvailable)
 				return;
+
+			using var _callback = RegisterDownloadCallback(publishId);
 
 			if (SteamClient)
 				SteamUGC.SubscribeItem(publishId);
@@ -623,15 +633,15 @@ public static class SteamedWraps
 
 			// Due to issues with Steam moving files from downloading folder to installed folder,
 			// there can be some latency in detecting it's installed. - Solxan
-			while (_downloadCallback == EResult.k_EResultNone) {
+			while (_downloadCallbackResult == EResult.k_EResultNone) {
 				Thread.Sleep(100);
 				RunCallbacks();
 			}
 
-			if (_downloadCallback != EResult.k_EResultOK) {
+			if (_downloadCallbackResult != EResult.k_EResultOK) {
 				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
 				ReportCheckSteamLogs();
-				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
+				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallbackResult}");
 			}
 		}
 	}
