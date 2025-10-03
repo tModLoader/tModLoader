@@ -675,11 +675,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	private void HandleBeingInChestRange_TMLCheckFields()
 	{
-		if (chest != BankID.Safe)
-			safeProjTracker.Clear();
+		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+			if (chest != storage.ChestType) {
+				continue;
+			}
 
-		if (chest != BankID.DefendersForge)
-			defendersForgeProjTracker.Clear();
+			storage.GetProjectileReference(this).Clear();
+			break;
+		}
 	}
 
 	private void InteractiveProjectileOpenCloseSound2(Projectile projectile)
@@ -692,7 +695,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	private void HandleBeingInChestRange_TMLBankLogic(ref bool flag)
 	{
-		(TrackedProjectileReference TrackedProjectileReference, int bankID)[] banks = [(safeProjTracker, BankID.Safe), (defendersForgeProjTracker, BankID.DefendersForge)];
+		// TODO: Cache this?
+		// (TrackedProjectileReference TrackedProjectileReference, int bankID)[] banks = [(safeProjTracker, BankID.Safe), (defendersForgeProjTracker, BankID.DefendersForge)];
+		IEnumerable<(TrackedProjectileReference TrackedProjectileReference, int bankID)> banks = ModContent.GetContent<PortableStorage>().Select(x => (x.GetProjectileReference(this), x.ChestType));
 		foreach (var bank in banks) {
 			int index = bank.TrackedProjectileReference.ProjectileLocalIndex;
 			if (index >= 0) {
@@ -722,20 +727,21 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	/// <summary>
 	/// Clears all the portable storage projectile trackers
-	/// (<see cref="Player.piggyBankProjTracker"/>, <see cref="Player.safeProjTracker"/>, <see cref="Player.defendersForgeProjTracker"/>, <see cref="Player.voidLensChest"/>)
+	/// (<see cref="piggyBankProjTracker"/>, <see cref="safeProjTracker"/>, <see cref="defendersForgeProjTracker"/>, <see cref="voidLensChest"/>)
+	/// and developer-provided references through <see cref="PortableStorage.GetProjectileReference(Player)"/>.
 	/// </summary>
 	public void ClearPortableBankProjectileTrackers()
 	{
-		piggyBankProjTracker.Clear();
-		voidLensChest.Clear();
-		safeProjTracker.Clear();
-		defendersForgeProjTracker.Clear();
+		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+			storage.GetProjectileReference(this).Clear();
+		}
 	}
 
 	private void clientClone_TMLCloneBankProjTrackers(Player player)
 	{
-		player.safeProjTracker = safeProjTracker;
-		player.defendersForgeProjTracker = defendersForgeProjTracker;
+		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+			storage.GetProjectileReference(player) = storage.GetProjectileReference(this);
+		}
 	}
 
 	/// <summary>

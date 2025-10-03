@@ -674,6 +674,11 @@ public partial class Main
 
 	private static bool TrySyncingMyPlayer_TMLSyncBankFields(Player player)
 	{
-		return Main.player[myPlayer].safeProjTracker != player.safeProjTracker || Main.player[myPlayer].defendersForgeProjTracker != player.defendersForgeProjTracker;
+		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+			if (storage.GetProjectileReference(Main.LocalPlayer) != storage.GetProjectileReference(player))
+				return true;
+		}
+
+		return false;
 	}
 }

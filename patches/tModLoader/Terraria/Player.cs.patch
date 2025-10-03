@@ -4934,39 +4934,35 @@
  		if (wings == 32)
  			num27 = 3;
  
-@@ -23250,11 +_,13 @@
+@@ -23244,13 +_,18 @@
+ 	private void HandleBeingInChestRange()
+ 	{
+ 		if (chest != -1) {
++			/*
+ 			if (chest != -2)
+ 				piggyBankProjTracker.Clear();
+ 
  			if (chest != -5)
  				voidLensChest.Clear();
- 
-+			HandleBeingInChestRange_TMLCheckFields();
++			*/
 +
++			HandleBeingInChestRange_TMLCheckFields();
+ 
  			bool flag = false;
++			/*
  			int projectileLocalIndex = piggyBankProjTracker.ProjectileLocalIndex;
  			if (projectileLocalIndex >= 0) {
  				flag = true;
--				if (!Main.projectile[projectileLocalIndex].active || (Main.projectile[projectileLocalIndex].type != 525 && Main.projectile[projectileLocalIndex].type != 960)) {
-+				if (!Main.projectile[projectileLocalIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex].type] != BankID.PiggyBank) {
- 					Main.PlayInteractiveProjectileOpenCloseSound(Main.projectile[projectileLocalIndex].type, open: false);
- 					chest = -1;
- 					Recipe.FindRecipes();
-@@ -23278,7 +_,7 @@
- 			int projectileLocalIndex2 = voidLensChest.ProjectileLocalIndex;
- 			if (projectileLocalIndex2 >= 0) {
- 				flag = true;
--				if (!Main.projectile[projectileLocalIndex2].active || Main.projectile[projectileLocalIndex2].type != 734) {
-+				if (!Main.projectile[projectileLocalIndex2].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex2].type] != BankID.VoidVault) {
- 					SoundEngine.PlaySound(SoundID.Item130);
- 					chest = -1;
- 					Recipe.FindRecipes();
-@@ -23299,6 +_,8 @@
+@@ -23298,6 +_,9 @@
+ 					}
  				}
  			}
- 
-+			HandleBeingInChestRange_TMLBankLogic(ref flag);
++			*/
 +
++			HandleBeingInChestRange_TMLBankLogic(ref flag);
+ 
  			if (flag)
  				return;
- 
 @@ -23316,8 +_,11 @@
  			}
  		}
@@ -8876,10 +8872,14 @@
  		player.extraAccessory = extraAccessory;
  		player.MinionRestTargetPoint = MinionRestTargetPoint;
  		player.MinionAttackTargetNPC = MinionAttackTargetNPC;
-@@ -41767,38 +_,39 @@
+@@ -41765,40 +_,43 @@
+ 		player.tileEntityAnchor = tileEntityAnchor;
+ 		player.chest = chest;
  		player.talkNPC = talkNPC;
++		/*
  		player.piggyBankProjTracker = piggyBankProjTracker;
  		player.voidLensChest = voidLensChest;
++		*/
 +		clientClone_TMLCloneBankProjTrackers(player);
  		player.hideVisibleAccessory = hideVisibleAccessory;
  		player.hideMisc = hideMisc;

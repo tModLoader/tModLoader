@@ -814,12 +814,20 @@
  				float torchLuck = reader.ReadSingle();
  				byte luckPotion = reader.ReadByte();
  				bool hasGardenGnomeNearby = reader.ReadBoolean();
-@@ -3543,6 +_,8 @@
+@@ -3541,8 +_,16 @@
+ 					num18 = whoAmI;
+ 
  				Player obj = Main.player[num18];
++				/*
  				obj.piggyBankProjTracker.TryReading(reader);
  				obj.voidLensChest.TryReading(reader);
 +				obj.safeProjTracker.TryReading(reader);
 +				obj.defendersForgeProjTracker.TryReading(reader);
++				*/
++				foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++					storage.GetProjectileReference(obj).TryReading(reader);
++				}
++
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(142, -1, whoAmI, null, num18);
  

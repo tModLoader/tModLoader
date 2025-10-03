@@ -361,12 +361,19 @@
  					break;
  				}
  				case 134: {
-@@ -1411,6 +_,8 @@
+@@ -1409,8 +_,15 @@
+ 				case 142: {
+ 					writer.Write((byte)number);
  					Player obj = Main.player[number];
++					foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++						storage.GetProjectileReference(obj).Write(writer);
++					}
++					/*
  					obj.piggyBankProjTracker.Write(writer);
  					obj.voidLensChest.Write(writer);
 +					obj.safeProjTracker.Write(writer);
 +					obj.defendersForgeProjTracker.Write(writer);
++					*/
  					break;
  				}
  				case 146:
