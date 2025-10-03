@@ -5027,7 +5027,7 @@
  				item.TurnToAir();
  		}
  
-+		if (chest <= -1) {
++		if (chest < -1) {
 +			var bankInv = PortableStorageLoader.GetPortableStorageFromChest(chest).GetInventory(this).item;
 +			for (int j = 0; j < 40; j++) {
 +				if (bankInv[j].stack > 0 && bankInv[j].type == 3822)
@@ -5039,14 +5039,14 @@
  		if (this.chest == -2) {
  			Chest chest = bank;
  			for (int j = 0; j < 40; j++) {
-@@ -23681,6 +_,7 @@
+@@ -23678,6 +_,7 @@
+ 					chest4.item[m].TurnToAir();
+ 			}
+ 		}
++		*/
  
  		if (this.chest <= -1)
  			return;
-+		*/
- 
- 		Chest chest5 = Main.chest[this.chest];
- 		for (int n = 0; n < 40; n++) {
 @@ -23694,6 +_,9 @@
  
  	public void ItemCheck_ManageRightClickFeatures()
