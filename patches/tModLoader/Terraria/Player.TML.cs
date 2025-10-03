@@ -677,11 +677,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 			if (chest != storage.ChestType) {
-				continue;
+				storage.GetProjectileReference(this).Clear();
 			}
-
-			storage.GetProjectileReference(this).Clear();
-			break;
 		}
 	}
 
