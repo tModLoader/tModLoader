@@ -33,7 +33,7 @@ public abstract class PortableStorage : ModType
 
 	public int Type { get; internal set; }
 
-	public int ChestType => -(Type + 1);
+	public int ChestType => PortableStorageLoader.ReverseIds(Type);
 
 	protected sealed override void Register()
 	{

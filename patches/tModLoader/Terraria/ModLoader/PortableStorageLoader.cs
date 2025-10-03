@@ -57,6 +57,9 @@ public static class PortableStorageLoader
 			throw new InvalidOperationException("GetPortableStorageFromChests does not accept positive values, if this is a type then use GetPortableStorage");
 		}
 
-		return GetPortableStorage(-(chestIndex + 1));
+		return GetPortableStorage(ReverseIds(chestIndex));
 	}
+
+	// Swap between positive PortableStorage::Type and negative BankID.
+	internal static int ReverseIds(int type) => -(type + 2);
 }
