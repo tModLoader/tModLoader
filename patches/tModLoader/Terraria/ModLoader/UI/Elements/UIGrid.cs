@@ -1,121 +1,119 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.Elements;
 
-//TODO: wow that's a lot of redundant this.
-// TODO: This is out of date. Code needs to be copied over from UIList without breaking binary compat.
+// TODO: wow that's a lot of redundant this.
+// TODO: This is an almost exact copy of UIList, the only meaningful difference is RecalculateChildren, but that might change if we implement additional features.
 /// <summary>
 /// Similar to <see cref="UIList"/> except the elements are arranged in a grid in normal reading order.
 /// <para/> <b>UIList docs:</b>
 /// <inheritdoc cref="UIList"/>
 /// </summary>
-public class UIGrid : UIElement
+public class UIGrid : UIElement, IEnumerable<UIElement>, IEnumerable
 {
 	public delegate bool ElementSearchMethod(UIElement element);
 
 	private class UIInnerList : UIElement
 	{
-		public override bool ContainsPoint(Vector2 point)
-		{
-			return true;
-		}
+		public override bool ContainsPoint(Vector2 point) => true;
 
 		protected override void DrawChildren(SpriteBatch spriteBatch)
 		{
-			Vector2 position = this.Parent.GetDimensions().Position();
-			Vector2 dimensions = new Vector2(this.Parent.GetDimensions().Width, this.Parent.GetDimensions().Height);
-			foreach (UIElement current in this.Elements) {
-				Vector2 position2 = current.GetDimensions().Position();
-				Vector2 dimensions2 = new Vector2(current.GetDimensions().Width, current.GetDimensions().Height);
-				if (Collision.CheckAABBvAABBCollision(position, dimensions, position2, dimensions2)) {
-					current.Draw(spriteBatch);
-				}
+			Vector2 position = base.Parent.GetDimensions().Position();
+			Vector2 dimensions = new Vector2(base.Parent.GetDimensions().Width, base.Parent.GetDimensions().Height);
+			foreach (UIElement element in Elements) {
+				Vector2 position2 = element.GetDimensions().Position();
+				Vector2 dimensions2 = new Vector2(element.GetDimensions().Width, element.GetDimensions().Height);
+				if (Collision.CheckAABBvAABBCollision(position, dimensions, position2, dimensions2))
+					element.Draw(spriteBatch);
 			}
 		}
+
+		public override Rectangle GetViewCullingArea() => base.Parent.GetDimensions().ToRectangle();
 	}
 
 	public List<UIElement> _items = new List<UIElement>();
 	protected UIScrollbar _scrollbar;
-	internal UIElement _innerList = new UIGrid.UIInnerList();
+	internal UIElement _innerList = new UIInnerList();
 	private float _innerListHeight;
 	public float ListPadding = 5f;
+	public Action<List<UIElement>> ManualSortMethod;
 
-	public int Count {
-		get {
-			return this._items.Count;
-		}
-	}
+	public int Count => _items.Count;
 
 	// todo, vertical/horizontal orientation, left to right, etc?
 	public UIGrid()
 	{
-		this._innerList.OverflowHidden = false;
-		this._innerList.Width.Set(0f, 1f);
-		this._innerList.Height.Set(0f, 1f);
-		this.OverflowHidden = true;
-		base.Append(this._innerList);
+		_innerList.OverflowHidden = false;
+		_innerList.Width.Set(0f, 1f);
+		_innerList.Height.Set(0f, 1f);
+		OverflowHidden = true;
+		Append(_innerList);
 	}
 
-	public float GetTotalHeight()
-	{
-		return this._innerListHeight;
-	}
+	public float GetTotalHeight() => _innerListHeight;
 
-	public void Goto(UIGrid.ElementSearchMethod searchMethod, bool center = false)
+	/// <inheritdoc cref="UIList.Goto(UIList.ElementSearchMethod, bool)"/>
+	public void Goto(ElementSearchMethod searchMethod, bool center = false)
 	{
-		for (int i = 0; i < this._items.Count; i++) {
-			if (searchMethod(this._items[i])) {
-				this._scrollbar.ViewPosition = this._items[i].Top.Pixels;
+		var innerDimensionHeight = GetInnerDimensions().Height;
+		for (int i = 0; i < _items.Count; i++) {
+			var item = _items[i];
+			if (searchMethod(item)) {
+				_scrollbar.ViewPosition = item.Top.Pixels;
 				if (center) {
-					this._scrollbar.ViewPosition = this._items[i].Top.Pixels - GetInnerDimensions().Height / 2 + _items[i].GetOuterDimensions().Height / 2;
+					_scrollbar.ViewPosition = item.Top.Pixels - innerDimensionHeight / 2 + item.GetOuterDimensions().Height / 2;
 				}
 				return;
 			}
 		}
 	}
 
+	/// <inheritdoc cref="UIList.Add(UIElement)"/>
 	public virtual void Add(UIElement item)
 	{
-		this._items.Add(item);
-		this._innerList.Append(item);
-		this.UpdateOrder();
-		this._innerList.Recalculate();
+		_items.Add(item);
+		_innerList.Append(item);
+		UpdateOrder();
+		_innerList.Recalculate();
 	}
 
+	/// <inheritdoc cref="UIList.AddRange(IEnumerable{UIElement})"/>
 	public virtual void AddRange(IEnumerable<UIElement> items)
 	{
-		this._items.AddRange(items);
+		_items.AddRange(items);
 		foreach (var item in items) {
-			this._innerList.Append(item);
+			_innerList.Append(item);
 		}
 
-		this.UpdateOrder();
-		this._innerList.Recalculate();
+		UpdateOrder();
+		_innerList.Recalculate();
 	}
 
 	public virtual bool Remove(UIElement item)
 	{
-		this._innerList.RemoveChild(item);
-		this.UpdateOrder();
-		return this._items.Remove(item);
+		_innerList.RemoveChild(item);
+		UpdateOrder();
+		return _items.Remove(item);
 	}
 
 	public virtual void Clear()
 	{
-		this._innerList.RemoveAllChildren();
-		this._items.Clear();
+		_innerList.RemoveAllChildren();
+		_items.Clear();
 	}
 
 	public override void Recalculate()
 	{
 		base.Recalculate();
-		this.UpdateScrollbar();
+		UpdateScrollbar();
 	}
 
 	public override void Update(GameTime gameTime)
@@ -128,9 +126,8 @@ public class UIGrid : UIElement
 	public override void ScrollWheel(UIScrollWheelEvent evt)
 	{
 		base.ScrollWheel(evt);
-		if (this._scrollbar != null) {
-			this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
-		}
+		if (_scrollbar != null)
+			_scrollbar.ViewPosition -= evt.ScrollWheelValue;
 	}
 
 	public override void RecalculateChildren()
@@ -140,65 +137,71 @@ public class UIGrid : UIElement
 		float top = 0f;
 		float left = 0f;
 		float maxRowHeight = 0f;
-		for (int i = 0; i < this._items.Count; i++) {
-			var item = this._items[i];
+		for (int i = 0; i < _items.Count; i++) {
+			var item = _items[i];
 			var outerDimensions = item.GetOuterDimensions();
 			if (left + outerDimensions.Width > availableWidth && left > 0) {
-				top += maxRowHeight + this.ListPadding;
+				top += maxRowHeight + ListPadding;
 				left = 0;
 				maxRowHeight = 0;
 			}
 			maxRowHeight = Math.Max(maxRowHeight, outerDimensions.Height);
 			item.Left.Set(left, 0f);
-			left += outerDimensions.Width + this.ListPadding;
+			left += outerDimensions.Width + ListPadding;
 			item.Top.Set(top, 0f);
 		}
-		this._innerListHeight = top + maxRowHeight;
+		_innerListHeight = top + maxRowHeight;
 	}
 
 	private void UpdateScrollbar()
 	{
-		if (this._scrollbar == null) {
-			return;
+		if (_scrollbar != null) {
+			float height = GetInnerDimensions().Height;
+			_scrollbar.SetView(height, _innerListHeight);
 		}
-		this._scrollbar.SetView(base.GetInnerDimensions().Height, this._innerListHeight);
 	}
 
 	public void SetScrollbar(UIScrollbar scrollbar)
 	{
-		this._scrollbar = scrollbar;
-		this.UpdateScrollbar();
+		_scrollbar = scrollbar;
+		UpdateScrollbar();
 	}
 
 	public void UpdateOrder()
 	{
-		this._items.Sort(new Comparison<UIElement>(this.SortMethod));
-		this.UpdateScrollbar();
+		if (ManualSortMethod != null)
+			ManualSortMethod(_items);
+		else
+			_items.Sort(SortMethod);
+
+		UpdateScrollbar();
 	}
 
-	public int SortMethod(UIElement item1, UIElement item2)
-	{
-		return item1.CompareTo(item2);
-	}
+	public int SortMethod(UIElement item1, UIElement item2) => item1.CompareTo(item2);
 
 	public override List<SnapPoint> GetSnapPoints()
 	{
 		List<SnapPoint> list = new List<SnapPoint>();
-		if (base.GetSnapPoint(out SnapPoint item)) {
-			list.Add(item);
+		if (GetSnapPoint(out var point))
+			list.Add(point);
+
+		foreach (UIElement item in _items) {
+			list.AddRange(item.GetSnapPoints());
 		}
-		foreach (UIElement current in this._items) {
-			list.AddRange(current.GetSnapPoints());
-		}
+
 		return list;
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
-		if (this._scrollbar != null) {
-			this._innerList.Top.Set(-this._scrollbar.GetValue(), 0f);
-		}
+		if (_scrollbar != null)
+			_innerList.Top.Set(0f - _scrollbar.GetValue(), 0f);
+
+		// Recalculate(); // Might change existing behavior to add this in.
 	}
+
+	public IEnumerator<UIElement> GetEnumerator() => ((IEnumerable<UIElement>)_items).GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<UIElement>)_items).GetEnumerator();
 }
 
 class NestedUIGrid : UIGrid

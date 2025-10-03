@@ -172,6 +172,12 @@
 		"BossBarStyle": "Bossleisten-Stil: {0}",
 		"BossBarStyleNoOptions": "Keine Einstellungen",
 
+		// Achievements
+		// "AchievementsReset": "Reset",
+		// "AchievementsResetConfirm": "Are you sure?",
+		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
+
 		// Workshop
 		"WorkshopDisclaimer": "Durch das Einreichen dieses Gegenstands stimmen Sie den tModLoader-Nutzungsbedingungen zu.",
 		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
@@ -193,6 +199,10 @@
 		// "PublishNewButton": "Publish New",
 		"DownloadProgress": "Zu {0}% heruntergeladen",
 		// "DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		"LoadError": "Beim Laden von {0} ist etwas schiefgelaufen",
@@ -308,6 +318,12 @@
 		"MPServerModsCantDownloadReasonSigned": "Du akzeptierst nur Mods aus dem Mod-Browser",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "Du hast das automatische Herunterladen von Mods deaktiviert.",
 		"MPServerModsCantDownloadChangeSettingsHint": "Du musst deine Mods ändern oder den Serverbesitzer bitten sie dir zu schicken.",
+		// "MPServerModsDownloadFromServerWarning": "Mods may contain malicious code. Only download them if you trust the server host.",
+		// "MPServerModAvailableOnWorkshop": "Available on the workshop",
+		// "MPServerModAvailableOnWorkshopLowSubscriberCount": "Low subscriber count. Do you trust the server host?",
+		// "MPServerModBannedOnWorkshop": "This mod has been banned from the workshop and is likly dangerous.",
+		// "MPServerModCustomBuild": "Custom build that has not been published on the workshop. Do you trust the server host?",
+		// "MPServerModUnableToVerify": "This mod was unable to be verified. Unable to access Steam Workshop.",
 		"MPShowServerConsoleYes": "Serverkonsole anzeigen: An",
 		"MPShowServerConsoleNo": "Serverkonsole anzeigen: Aus",
 		"MPErrorModHashMismatch": "Hash unpassend",
@@ -674,6 +690,8 @@
 		"TagsUtilityDescription": "Fügt nützliche Inhalte oder Funktionen hinzu",
 		"TagsLibrary": "Programmbibliothek",
 		"TagsLibraryDescription": "Stellt zusätzliche API & Funktionen bereit, die nützlich für Modder sind",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Lebensqualität",
 		"TagsQoLDescription": "Funktionen oder Änderungen die den Zeitaufwand für eher weniger spaßige Tätigkeiten reduzieren.",
 		"TagsGameplay": "Spielablaufsanpassungen",
@@ -738,6 +756,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% Chance, Munition zu sparen",
 		"PercentReducedManaCost": "Um {0}% reduzierte Manakosten",
+		"ReducesHealingPotionCooldownByPercent": "Reduziert die Abklingzeit von Tränken um {0}%",
 
 		"PercentIncreasedMiningSpeed": "Um {0} % erhöhtes Abbautempo",
 		"PercentIncreasedMovementSpeed": "Um {0}% erhöhtes Bewegungstempo",

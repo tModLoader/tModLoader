@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Terraria.GameContent.Prefixes;
+using Terraria.Achievements;
 
 namespace Terraria.ModLoader;
 
@@ -361,6 +362,7 @@ public static class ModContent
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
 		EmoteBubbleLoader.FinishSetup();
+		AchievementManager.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();
@@ -548,6 +550,7 @@ public static class ModContent
 		HairLoader.Unload();
 		EmoteBubbleLoader.Unload();
 		BiomeConversionLoader.Unload();
+		AchievementManager.Unload();
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();

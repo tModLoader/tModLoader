@@ -10,6 +10,23 @@ Mods: {
 	ExampleMod: {
 		Common.PaperAirplane: Paper Airplane
 
+		Achievements: {
+			MinionBossKilled: {
+				Description: Defeat Minion Boss, a massive eye protected by a ring of friends.
+				FriendlyName: Minion Boss Killed
+			}
+
+			ManyExampleWormsKilled: {
+				Description: Okay...we get it, now please stop murdering these poor worms.
+				FriendlyName: Many Example Worms Killed
+			}
+
+			AdvancedExampleAchievement: {
+				FriendlyName: Advanced Example Achievement
+				Description: This achievement has far too many conditions, but it is great for learning advanced ModAchievement features. Do everything possible with Lava Frog.
+			}
+		}
+
 		CommonItemTooltip: {
 			IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}
 			# It is recommended to make some common tooltips for custom damage classes
@@ -260,6 +277,15 @@ Mods: {
 					'''
 			}
 
+			ExamplePotionDelayAccessory: {
+				DisplayName: Example Potion Delay Accessory
+				Tooltip:
+					'''
+					Decreases the total cooldown of healing potions by {0} seconds
+					{$CommonItemTooltip.ReducesHealingPotionCooldownByPercent@1}
+					'''
+			}
+
 			ExampleWings: {
 				DisplayName: Example Wings
 				Tooltip: This is a modded wing.
@@ -398,7 +424,7 @@ Mods: {
 
 			ExampleHealingPotion: {
 				DisplayName: Example Healing Potion
-				Tooltip: ""
+				Tooltip: Potion cooldown reduced by {0} seconds
 				RestoreLifeText: "{0} ({1} when quick healing)"
 			}
 
@@ -845,6 +871,11 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleTransparentShapedTileItem: {
+				DisplayName: Fiery Mesh
+				Tooltip: "'Touch this to BURN!!'"
+			}
+
 			ExampleAnimatedTileItem: {
 				DisplayName: Red Firefly in a Bottle
 				Tooltip: ""
@@ -1181,6 +1212,31 @@ Mods: {
 				DisplayName: Example Interactable Projectile Item
 				Tooltip: ""
 			}
+
+			ExampleCustomUseStyleWeapon: {
+				DisplayName: Example Custom UseStyle Weapon
+				Tooltip: ""
+			}
+
+			ExampleSentryItem: {
+				DisplayName: Example Sentry Item
+				Tooltip: Summons an example sentry to fight for you
+			}
+
+			ExampleHeldProjectileWeapon: {
+				DisplayName: Example Held Projectile Weapon
+				Tooltip: ""
+			}
+
+			SimpleAccessory: {
+				DisplayName: Simple Accessory
+				Tooltip: Minion and sentry attacks cause frostburn
+			}
+
+			ExampleCutTile: {
+				DisplayName: Fragile Boulder Trap
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1229,6 +1285,9 @@ Mods: {
 			ExampleArrowProjectile.DisplayName: Example Arrow Projectile
 			ExampleHellSolutionProjectile.DisplayName: Example Hell Solution Projectile
 			ExampleInteractableProjectile.DisplayName: Example Interactable Projectile
+			ExampleSentry.DisplayName: Example Sentry
+			ExampleSentryShot.DisplayName: Example Sentry Shot
+			ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
 		}
 
 		Buffs: {

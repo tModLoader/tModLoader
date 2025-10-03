@@ -79,7 +79,17 @@ internal class ModCompile
 	public static bool activelyModding;
 	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
-	public static bool DeveloperMode => Debugger.IsAttached || FindModSources().Length > 0;
+	private static bool? _developerMode;
+	public static bool DeveloperMode => _developerMode ??= CheckDeveloperMode();
+	private static bool CheckDeveloperMode()
+	{
+		if (Debugger.IsAttached || Program.LaunchParameters.ContainsKey("-build") || FindModSources().Length > 0) {
+			Logging.tML.Info("Developer mode enabled");
+			return true;
+		}
+
+		return false;
+	}
 
 	private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
@@ -312,6 +322,22 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		var relPath = resource.Substring(mod.path.Length + 1);
 		using (var src = File.OpenRead(resource))
 		using (var dst = new MemoryStream()) {
+			// Skip icon_small if it is unchanged since it is optional
+			if (relPath == "icon_small.png") {
+				using var defaultIconStream = typeof(ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/icon_small.png");
+				using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+				defaultIconStream.CopyTo(defaultIconMemoryStream);
+				var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+
+				using var modIconMemoryStream = new MemoryStream();
+				src.CopyTo(modIconMemoryStream);
+				var modIconBytes = (ReadOnlySpan<byte>)modIconMemoryStream.GetBuffer();
+
+				if (modIconBytes.SequenceEqual(defaultIconBytes)) {
+					return;
+				}
+			}
+
 			if (!ContentConverters.Convert(ref relPath, src, dst))
 				src.CopyTo(dst);
 
@@ -486,6 +512,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			var path = f.Replace('\\', '/');
 			if (!path.EndsWith(".resources.dll") &&
 				!path.Contains("/Native/") &&
+				!path.Contains("/tModCodeAssist/") &&
 				!path.Contains("/runtime"))
 				yield return f;
 		}

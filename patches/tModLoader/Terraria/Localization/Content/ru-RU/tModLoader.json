@@ -172,6 +172,12 @@
 		"BossBarStyle": "Стиль шкалы здоровья босса: {0}",
 		"BossBarStyleNoOptions": "Нет вариантов",
 
+		// Achievements
+		"AchievementsReset": "Сбросить",
+		"AchievementsResetConfirm": "Вы уверены?",
+		"AchievementsResetConfirmTooltip": "Сброс достижений приведёт к их безвозвратной потере. Вы уверены, что хотите продолжить?",
+		"AchievementsOnlyShowModded": "Показывать только достижения из модов",
+
 		// Workshop
 		"WorkshopDisclaimer": "Опубликовывая этот контент, вы соглашаетесь с правилами пользования tModLoader",
 		"NonModOwnerPublishWarning": "Мод с таким же названием \"{0}\" уже был опубликован в Мастерской другим автором. Если вы не являетесь соавтором этого мода, попытка его публикации не удастся. Если же это ваш мод, пожалуйста, убедитесь, что вы авторизованы в правильном аккаунте Steam. У каждого мода должно быть уникальное внутреннее название.",
@@ -193,6 +199,10 @@
 		"PublishNewButton": "Опубликовать новый",
 		"DownloadProgress": "Скачано {0}%",
 		"DescriptionLengthExceedLimit": "Описание (в Мастерской) этого мода превышает ограничение Steam в {0} символов.",
+		"CommandLinePublishNeedsSteam": "Для публикации через командную строку требуется запущенный Steam (используйте параметр командной строки -steam)",
+		"CommandLinePublishOnlyUsableWithServerSideMods": "В данный момент публикация через командную строку доступна только для серверных модов.",
+		"WorkshopTagNotFound": "Указанный тег «{0}» не является допустимым для параметра -publishtags.",
+		"TestServerModLoadingNotification": "В этом окне выполняется проверка загрузки серверного мода на отсутствие ошибок.\nНе закрывайте окно до завершения тестирования.",
 
 		// Mod Errors
 		"LoadError": "Во время загрузки мода {0} произошла ошибка.",
@@ -308,6 +318,12 @@
 		"MPServerModsCantDownloadReasonSigned": "потому что вы принимаете только моды, подписанные «Браузером модов»",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "потому что вы отключили автоматическое скачивание модов",
 		"MPServerModsCantDownloadChangeSettingsHint": "Вам нужно изменить свои настройки или получить моды у владельца сервера.",
+		// "MPServerModsDownloadFromServerWarning": "Mods may contain malicious code. Only download them if you trust the server host.",
+		// "MPServerModAvailableOnWorkshop": "Available on the workshop",
+		// "MPServerModAvailableOnWorkshopLowSubscriberCount": "Low subscriber count. Do you trust the server host?",
+		// "MPServerModBannedOnWorkshop": "This mod has been banned from the workshop and is likly dangerous.",
+		// "MPServerModCustomBuild": "Custom build that has not been published on the workshop. Do you trust the server host?",
+		// "MPServerModUnableToVerify": "This mod was unable to be verified. Unable to access Steam Workshop.",
 		"MPShowServerConsoleYes": "Отображать консоль сервера: Да",
 		"MPShowServerConsoleNo": "Отображать консоль сервера: Нет",
 		"MPErrorModHashMismatch": "Несоответствие хэша",
@@ -674,6 +690,8 @@
 		"TagsUtilityDescription": "Добавляет ориентированный на полезность контент или функции.",
 		"TagsLibrary": "Библиотека",
 		"TagsLibraryDescription": "Предоставляет дополнительные API и функции, полезные для разработчиков модов.",
+		"TagsTranslation": "Перевод",
+		"TagsTranslationDescription": "Добавляет перевод для другого мода. (устанавливается параметром translationMod = true в файле build.txt)",
 		"TagsQoL": "Качество жизни",
 		"TagsQoLDescription": "Добавляет различные автоматизации, упрощения и оптимизации игровых процессов на рутинные задачи.",
 		"TagsGameplay": "Геймплей",
@@ -738,6 +756,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}%-ный шанс сэкономить боеприпасы",
 		"PercentReducedManaCost": "{0}%-ное снижение расхода маны",
+		"ReducesHealingPotionCooldownByPercent": "Уменьшает время восстановления лечебных зелий на {0} %",
 
 		"PercentIncreasedMiningSpeed": "{0}%-ное увеличение скорости добычи",
 		"PercentIncreasedMovementSpeed": "{0}%-ное увеличение скорости передвижения",

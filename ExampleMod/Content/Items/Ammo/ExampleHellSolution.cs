@@ -90,28 +90,19 @@ namespace ExampleMod.Content.Items.Ammo
 	{
 		public override void PostSetupContent() {
 
-			// Go over every tile and add a conversion to it for our conversion type if they're part of the list of usual conversion tiles
-			for (int i = 0; i < TileLoader.TileCount; i++) {
-				if (TileID.Sets.Conversion.Grass[i] ||
-					TileID.Sets.Conversion.GolfGrass[i])
-					TileLoader.RegisterConversion(i, Type, HellifyGrass);
+			TileLoader.RegisterConversion(TileID.Grass, Type, HellifyGrass);
+			TileLoader.RegisterConversion(TileID.GolfGrass, Type, HellifyGrass);
 
-				if (TileID.Sets.Conversion.Dirt[i] ||
-					TileID.Sets.Conversion.Stone[i] ||
-					TileID.Sets.Conversion.Sand[i])
-					TileLoader.RegisterConversion(i, Type, ConvertToAsh);
-			}
+			TileLoader.RegisterConversion(TileID.Dirt, Type, ConvertToAsh);
+			TileLoader.RegisterConversion(TileID.Stone, Type, ConvertToAsh);
+			TileLoader.RegisterConversion(TileID.Sand, Type, ConvertToAsh);
 
 			// Manually register clay
 			TileLoader.RegisterConversion(TileID.ClayBlock, Type, ConvertToAsh);
 
-			// Do the same for walls
-			for (int i = 0; i < WallLoader.WallCount; i++) {
-				if (WallID.Sets.Conversion.Dirt[i] ||
-					WallID.Sets.Conversion.Grass[i] ||
-					WallID.Sets.Conversion.Stone[i])
-					WallLoader.RegisterConversion(i, Type, HellifyWall);
-			}
+			WallLoader.RegisterConversion(WallID.DirtUnsafe, Type, HellifyWall);
+			WallLoader.RegisterConversion(WallID.GrassUnsafe, Type, HellifyWall);
+			WallLoader.RegisterConversion(WallID.Stone, Type, HellifyWall);
 		}
 
 		public bool ConvertToAsh(int i, int j, int type, int conversionType) {

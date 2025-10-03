@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// This alternate allows for placing the banner on platforms, just like in vanilla.
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
-			TileObjectData.newAlternate.AnchorTop = new AnchorData(AnchorType.Platform, TileObjectData.newTile.Width, 0);
+			TileObjectData.newAlternate.AnchorTop = new AnchorData(AnchorType.PlatformNonHammered, TileObjectData.newTile.Width, 0);
 			TileObjectData.newAlternate.DrawYOffset = -10;
 			TileObjectData.addAlternate(0);
 

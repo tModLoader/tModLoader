@@ -417,7 +417,7 @@ internal static class ModOrganizer
 
 		try {
 			Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
-			Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.LoadingSpecifiedModPack", commandLineModPack));
+			Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.ModPackLoadingSpecifiedModPack", commandLineModPack));
 			var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
 			foreach (var mod in mods) {
 				mod.Enabled = modSet.Contains(mod.Name);
@@ -689,10 +689,7 @@ internal static class ModOrganizer
 		if (information == null || information.Count() <= 3)
 			return;
 
-		(string browserVersion, int keepCount)[] keepRequirements =
-			{ ("1.4.3", 1), ("1.4.4", 3), ("1.3", 1), ("1.4.4-Transitive", 0) };
-
-		foreach (var requirement in keepRequirements) {
+		foreach (var requirement in SocialBrowserModule.keepRequirements) {
 			var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);
 
 			foreach (var item in mods) {

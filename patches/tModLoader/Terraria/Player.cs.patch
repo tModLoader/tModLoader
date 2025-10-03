@@ -447,7 +447,7 @@
  	public Chest bank4 = new Chest(bank: true);
  	public BitsByte voidVaultInfo;
  	public float headRotation;
-@@ -836,15 +_,26 @@
+@@ -836,23 +_,50 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
  	public int nonTorch = -1;
@@ -467,6 +467,9 @@
  	public const int respawnTimerMax = 3600;
  	public long lastTimePlayerWasSaved;
  	public int attackCD;
++	/// <summary>
++	/// The potion sickness delay, in ticks. This value mirrors the remaining time for the <see cref="BuffID.PotionSickness"/> buff.
++	/// </summary>
  	public int potionDelay;
 +	/// <summary>
 +	/// The <see href="https://terraria.wiki.gg/wiki/Difficulty">player difficulty</see>. Valid values are found in <see cref="PlayerDifficultyID"/>. 
@@ -474,9 +477,22 @@
  	public byte difficulty;
  	public byte wetSlime;
  	public HitTile hitTile;
-@@ -853,6 +_,7 @@
+ 	public HitTile hitReplace;
+ 	public int jump;
++	/// <summary>
++	/// The visible head equipment slot. Usually corresponds to the <see cref="Item.legSlot"/> of the visible head ("helmet") armor or vanity item.
++	/// <br/><br/> Defaults to -1.
++	/// </summary>
  	public int head = -1;
++	/// <summary>
++	/// The visible body equipment slot. Usually corresponds to the <see cref="Item.bodySlot"/> of the visible body ("shirt") armor or vanity item.
++	/// <br/><br/> Defaults to -1.
++	/// </summary>
  	public int body = -1;
++	/// <summary>
++	/// The visible legs equipment slot. Usually corresponds to the <see cref="Item.legSlot"/> of the visible legs ("pants") armor or vanity item.
++	/// <br/><br/> Defaults to -1.
++	/// </summary>
  	public int legs = -1;
 +	/* sbyte -> int
  	public sbyte handon = -1;
@@ -741,7 +757,7 @@
  	public bool noItems;
  	public bool cursed;
  	public bool hungry;
-@@ -1194,28 +_,86 @@
+@@ -1194,28 +_,89 @@
  	public bool parryDamageBuff;
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
@@ -813,8 +829,11 @@
 +	/// <br/> Chilled buff (<see cref="chilled"/>): <c>*= 0.75f</c>
 +	/// </summary>
  	public float moveSpeed = 1f;
++	/// <summary> The multiplier on this player's mining speed. For this multiplier smaller values means faster. For example the Mining Potion decreases this by .25f (25%). </summary>
  	public float pickSpeed = 1f;
++	/// <summary> The multiplier on this player's wall placement speed. For example the Builder Potion increases this by .25f (25%). </summary>
  	public float wallSpeed = 1f;
++	/// <summary> The multiplier on this player's tile placement speed. For example the Builder Potion increases this by .25f (25%). </summary>
  	public float tileSpeed = 1f;
  	public bool autoPaint;
  	public bool autoActuator;
@@ -828,7 +847,18 @@
  	public int SpawnY = -1;
  	public Vector2? PotionOfReturnOriginalUsePosition;
  	public Vector2? PotionOfReturnHomePosition;
-@@ -1227,28 +_,92 @@
+@@ -1223,32 +_,103 @@
+ 	public int[] spY = new int[200];
+ 	public string[] spN = new string[200];
+ 	public int[] spI = new int[200];
++	/// <summary>
++	/// The block placement and tool range. Controls how many tiles away from the player the player can place tiles/walls or target with tools. Use <see cref="blockRange"/> for placement-specific boosts and <see cref="Item.tileBoost"/> for item-specific boosts.
++	/// <br/><br/> Note that this field is static, so any adjustments to this field need to first check that the effect is for the local player to avoid bugs in multiplayer! (<c>player.whoAmI == Main.myPlayer</c>)
++	/// <br/><br/> The Toolbox accessory increases this by 1 directly, but the Extendo Grip, Architect Gizmo Pack, and Hand Of Creation all use <see cref="equippedAnyTileRangeAcc"/> to increate range by 3 without stacking their effects.
++	/// <br/><br/> tileRangeX defaults to 5 and tileRangeY defaults to 4.
++	/// </summary>
+ 	public static int tileRangeX = 5;
++	/// <inheritdoc cref="tileRangeX"/>
  	public static int tileRangeY = 4;
  	public int lastTileRangeX;
  	public int lastTileRangeY;
@@ -968,7 +998,7 @@
  	public bool hasJumpOption_Cloud;
  	public bool canJumpAgain_Cloud;
  	public bool isPerformingJump_Cloud;
-@@ -1327,10 +_,32 @@
+@@ -1327,16 +_,42 @@
  	public bool hasJumpOption_Basilisk;
  	public bool canJumpAgain_Basilisk;
  	public bool isPerformingJump_Basilisk;
@@ -1001,6 +1031,16 @@
  	public int extraFall;
  	public bool canFloatInWater;
  	public bool hasFloatingTube;
+ 	public bool frogLegJumpBoost;
+ 	public bool skyStoneEffects;
+ 	public bool spawnMax;
++	/// <summary>
++	/// The extra block placement range. Toolbelt and Builder Potion both increase this by 1. This will be combined with <see cref="Player.tileRangeX"/>/Y and <see cref="Item.tileBoost"/> to determine the total block placement range for the held item.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
+ 	public int blockRange;
+ 	public int[] grappling = new int[20];
+ 	public int grapCount;
 @@ -1347,10 +_,17 @@
  	public int rocketSoundDelay;
  	public bool rocketRelease;
@@ -1100,8 +1140,14 @@
  	public bool[] npcTypeNoAggro = new bool[NPCID.Count];
  	public int lastPortalColorIndex;
  	public int _portalPhysicsTime;
-@@ -1468,9 +_,32 @@
+@@ -1466,19 +_,49 @@
+ 	public int lastTeleportPylonStyleUsed;
+ 	public float MountFishronSpecialCounter;
  	public Vector2 MinionRestTargetPoint = Vector2.Zero;
++	/// <summary>
++	/// The index of the NPC targeted by the player, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// <br/><br/> Will be -1 if there is no current target, or check <see cref="HasMinionAttackTargetNPC"/> instead.
++	/// </summary>
  	public int MinionAttackTargetNPC = -1;
  	public List<Point> TouchedTiles = new List<Point>();
 +	/// <summary>
@@ -1133,6 +1179,17 @@
  	public int itemTimeMax;
  	public int toolTime;
  	public static int BlockInteractionWithProjectiles = 3;
+ 	public const int SafeItemAnimationTimeForPreventingExploits = 20;
+ 	private HashSet<Point> _blackListedTileCoordsForGrappling = new HashSet<Point>();
+ 	private bool makeStrongBee;
++	/// <summary> Increases <see cref="tileRangeX"/>/Y by 3. Used by Extendo Grip, Architect Gizmo Pack, and Hand Of Creation to increase range without stacking their effects. </summary>
+ 	public bool equippedAnyTileRangeAcc;
++	/// <summary> Increases <see cref="tileSpeed"/>/Y by 0.5f (50%). Used by Brick Layer, Architect Gizmo Pack, and Hand Of Creation to increase tile placement speed without stacking their effects. </summary>
+ 	public bool equippedAnyTileSpeedAcc;
++	/// <summary> Increases <see cref="wallSpeed"/>/Y by 0.5f (50%). Used by Portable Cement Mixer, Architect Gizmo Pack, and Hand Of Creation to increase wall placement speed without stacking their effects. </summary>
+ 	public bool equippedAnyWallSpeedAcc;
+ 	private static List<NPC> _hallucinationCandidates = new List<NPC>();
+ 	public bool behindBackWall;
 @@ -1507,7 +_,7 @@
  	private int[] unlitTorchY = new int[maxTorchAttacks];
  	private static int[] _torchAttackPosX = new int[400];
@@ -1222,8 +1279,11 @@
  	public bool ZoneUnderworldHeight {
  		get {
  			return zone3[4];
-@@ -1998,18 +_,20 @@
+@@ -1996,20 +_,23 @@
+ 		}
+ 	}
  
++	/// <summary> A Vector2 comprised of <see cref="Entity.direction"/> (X) and <see cref="gravDir"/> (Y). </summary>
  	public Vector2 Directions => new Vector2(direction, gravDir);
  
 +	/// <summary> The <see cref="Item"/> within the <see cref="inventory"/> currently selected by the player. </summary>
@@ -1284,8 +1344,11 @@
  	public bool isLockedToATile {
  		get {
  			if (!sitting.isSitting)
-@@ -2153,9 +_,16 @@
+@@ -2151,11 +_,19 @@
  
+ 	public bool HasMinionRestTarget => MinionRestTargetPoint != Vector2.Zero;
+ 
++	/// <summary> True if the player currently has a minion attack target (<see cref="MinionAttackTargetNPC"/>. </summary>
  	public bool HasMinionAttackTargetNPC => MinionAttackTargetNPC != -1;
  
 +	/// <summary>
@@ -1428,6 +1491,16 @@
  	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
  	{
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
+@@ -2569,6 +_,9 @@
+ 		golferScoreAccumulated += num;
+ 	}
+ 
++	/// <summary>
++	/// Finds and returns the index of the closest player to the center of a rectangle defined by the provided arguments. The arguments are usually <see cref="Entity.position"/>, <see cref="Entity.width"/>, and <see cref="Entity.height"/>.
++	/// </summary>
+ 	public static byte FindClosest(Vector2 Position, int Width, int Height)
+ 	{
+ 		byte result = 0;
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
@@ -1586,7 +1659,7 @@
  		if (useVoidBag()) {
  			for (int j = 0; j < 40; j++) {
 -				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
-+				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, inventory[j]))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, bank4.item[j]))
  					return bank4.item[j];
  			}
  		}
@@ -4451,6 +4524,33 @@
  
  				if (stoned) {
  					int num24 = (int)(((float)num18 * gravDir - 2f) * 20f);
+@@ -19683,14 +_,25 @@
+ 		if (jump > 0 || velocity.Y != 0f)
+ 			ResetFloorFlags();
+ 
+-		bool flag12 = pStone;
++		//bool flag12 = pStone;
++		StatModifier oldPotionDelay = PotionDelayModifier;
++
+ 		potionDelayTime = Item.potionDelay;
+ 		restorationDelayTime = Item.restorationDelay;
+ 		mushroomDelayTime = Item.mushroomDelay;
++
++		// TML: Make potion delay modifiers more extensible.  Philosopher's Stone
++		// multiplier is now applied as part of an accessible StatModifier.
++		// *DelayTime fields are no longer set to their reduced amounts and are
++		// instead combined with the StatModifier when being applied.
++		PotionDelayModifier = StatModifier.Default;
+ 		if (pStone) {
++			PotionDelayModifier *= PhilosopherStoneDurationMultiplier;
++			/*
+ 			potionDelayTime = (int)((float)potionDelayTime * PhilosopherStoneDurationMultiplier);
+ 			restorationDelayTime = (int)((float)restorationDelayTime * PhilosopherStoneDurationMultiplier);
+ 			mushroomDelayTime = (int)((float)mushroomDelayTime * PhilosopherStoneDurationMultiplier);
++			*/
+ 		}
+ 
+ 		if (yoraiz0rEye > 0)
 @@ -19706,9 +_,16 @@
  		else
  			afkCounter = 0;
@@ -4491,6 +4591,18 @@
  		if (whoAmI == Main.myPlayer) {
  			if (!onFire && !poisoned)
  				trapDebuffSource = false;
+@@ -19808,8 +_,9 @@
+ 		if (Main.npcShop <= 0)
+ 			discountAvailable = discountEquipped;
+ 
++		//if (flag12 != pStone)
+-		if (flag12 != pStone)
++		if (oldPotionDelay != PotionDelayModifier)
+-			AdjustRemainingPotionSickness();
++			AdjustRemainingPotionSickness(oldPotionDelay);
+ 
+ 		UpdatePermanentBoosters();
+ 		UpdateLuck();
 @@ -19850,6 +_,10 @@
  		if (shadowDodge && !onHitDodge)
  			ClearBuff(59);
@@ -4738,6 +4850,29 @@
  	}
  
  	private void TryToToggleSmartCursor(ref bool smartCursorWanted)
+@@ -21923,15 +_,21 @@
+ 		return result;
+ 	}
+ 
+-	private void AdjustRemainingPotionSickness()
++	private void AdjustRemainingPotionSickness(StatModifier oldPotionDelayModifier)
+ 	{
+ 		if (whoAmI == Main.myPlayer) {
+ 			int num = FindBuffIndex(21);
+ 			if (num != -1) {
++				/*
+ 				float num2 = buffTime[num];
+ 				float philosopherStoneDurationMultiplier = PhilosopherStoneDurationMultiplier;
+ 				num2 = ((!pStone) ? (num2 / philosopherStoneDurationMultiplier) : (num2 * philosopherStoneDurationMultiplier));
+ 				buffTime[num] = (int)num2;
++				*/
++				float time = PotionDelayModifier.ApplyTo(oldPotionDelayModifier.Undo(buffTime[num]));
++				if (time < 1)
++					time = 1;
++				buffTime[num] = (int)time;
+ 			}
+ 		}
+ 	}
 @@ -21989,9 +_,11 @@
  
  	private void CapAttackSpeeds()
@@ -7500,6 +7635,17 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
+@@ -35396,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Clamps the provided world position to the normal gameplay range (<see cref="Main.LogicCheckScreenWidth"/>, <see cref="Main.LogicCheckScreenHeight"/>) from this player.
++	/// <br/><br/> This is used to limit the ranges of various items (teleport, minion, sentry, magic missile, etc) to prevent users with high resolution screens from having a gameplay advantage.
++	/// </summary>
+ 	public void LimitPointToPlayerReachableArea(ref Vector2 pointPoisition)
+ 	{
+ 		Vector2 center = base.Center;
 @@ -35442,6 +_,9 @@
  		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPoisition, width, height))
  			return;
@@ -7967,7 +8113,43 @@
  					break;
  
  				int type2 = Main.projectile[list[l]].type;
-@@ -39862,8 +_,12 @@
+@@ -39836,6 +_,9 @@
+ 
+ 	private void ApplyPotionDelay(Item sItem)
+ 	{
++		// TML: Rewrite this for simplicity as part of an effort to give
++		// modders more control over potion delay application.
++		/*
+ 		if (sItem.type == 3001) {
+ 			int minValue = 2400;
+ 			int num = 4200;
+@@ -39858,12 +_,38 @@
+ 			potionDelay = potionDelayTime;
+ 			AddBuff(21, potionDelay);
+ 		}
++		*/
++
++		int baseDelay = sItem.type switch {
++			ItemID.StrangeBrew => Main.rand.Next(2400, 4200 + 1),
++			ItemID.RestorationPotion => restorationDelayTime,
++			ItemID.Mushroom => mushroomDelayTime,
++			_ => potionDelayTime,
++		};
++
++		ItemLoader.ModifyPotionDelay(sItem, this, ref baseDelay);
++
++		int actualDelay = (int)PotionDelayModifier.ApplyTo(baseDelay);
++
++		bool skip = !CombinedHooks.ApplyPotionDelay(sItem, this, actualDelay);
++		if (skip || actualDelay <= 0)
++			return;
++
++		potionDelay = actualDelay;
++		AddBuff(BuffID.PotionSickness, potionDelay);
++
++		if (sItem.type == ItemID.Mushroom)
++			TryToResetHungerToNeutral();
+ 	}
  
  	private void ApplyLifeAndOrMana(Item item)
  	{
@@ -8077,6 +8259,17 @@
  		if (whoAmI == Main.myPlayer && gravDir == -1f) {
  			mount.Dismount(this);
  		}
+@@ -40580,6 +_,10 @@
+ 		return result;
+ 	}
+ 
++	/// <summary>
++	/// Determines a suitable spawn location for a "grounded" sentry (<paramref name="checkProj"/>). The spawn location will be centered on a tile location at the first 3 tile wide area with at least 1 solid tile, searching down from the mouse position. It will also utilize <see cref="LimitPointToPlayerReachableArea(ref Vector2)"/> to limit the mouse position to the normal gameplay range.
++	/// <br/><br/> The final spawn position after using this method will be <c>new Vector2(worldX, worldY - offset);</c>, where <c>offset</c> should most likely be half of the projectile height. <paramref name="pushYUp"/> should be ignored for modded projectiles.
++	/// </summary>
+ 	public void FindSentryRestingSpot(int checkProj, out int worldX, out int worldY, out int pushYUp)
+ 	{
+ 		bool flag = false;
 @@ -40626,6 +_,10 @@
  		worldY = i * 16;
  	}

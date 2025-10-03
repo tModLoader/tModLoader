@@ -172,6 +172,12 @@
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Brak Opcji",
 
+		// Achievements
+		"AchievementsReset": "Resetować",
+		"AchievementsResetConfirm": "Jesteś pewien?",
+		"AchievementsResetConfirmTooltip": "Zresetowanie osiągnięć oznacza, że utracisz je na stałe. Czy na pewno chcesz kontynuować?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
+
 		// Workshop
 		"WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",
 		"NonModOwnerPublishWarning": "Mod o nazwie \"{0}\" został już opublikowany w warsztacie przez innego moddera. Jeśli nie jesteś współtwórcą tego modu, próba publikacji nie powiedzie się. Jeśli to jest Twój mod, upewnij się, że jesteś zalogowany na właściwe konto Steam. Każdy mod musi mieć unikalną wewnętrzną nazwę.",
@@ -193,6 +199,10 @@
 		"PublishNewButton": "Opublikuj nowy",
 		"DownloadProgress": "Pobrano {0}%",
 		"DescriptionLengthExceedLimit": "Opis tego moda (Workshop) przekracza limit znaków Steam wynoszący {0}",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
@@ -308,6 +318,12 @@
 		"MPServerModsCantDownloadReasonSigned": "ponieważ akceptujesz tylko mody podpisane przez przeglądarkę modów",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "ponieważ masz wyłączone automatyczne pobieranie modów",
 		"MPServerModsCantDownloadChangeSettingsHint": "Musisz zmienić swoje ustawienia lub nabyć mody od właściciela serwera.",
+		// "MPServerModsDownloadFromServerWarning": "Mods may contain malicious code. Only download them if you trust the server host.",
+		// "MPServerModAvailableOnWorkshop": "Available on the workshop",
+		// "MPServerModAvailableOnWorkshopLowSubscriberCount": "Low subscriber count. Do you trust the server host?",
+		// "MPServerModBannedOnWorkshop": "This mod has been banned from the workshop and is likly dangerous.",
+		// "MPServerModCustomBuild": "Custom build that has not been published on the workshop. Do you trust the server host?",
+		// "MPServerModUnableToVerify": "This mod was unable to be verified. Unable to access Steam Workshop.",
 		"MPShowServerConsoleYes": "Pokaż Konsolę Serwera: Włączone",
 		"MPShowServerConsoleNo": "Pokaż Konsolę Serwera: Wyłączone",
 		"MPErrorModHashMismatch": "Niezgodność Hash",
@@ -674,6 +690,8 @@
 		"TagsUtilityDescription": "Dodaje rzeczy oraz funkcje zorientowane na wspomaganie gry",
 		"TagsLibrary": "Biblioteka (lib)",
 		"TagsLibraryDescription": "Dostarcza dodatkowe API oraz funkcje użyteczne dla twórców modów",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Zawartość typu QoL (Quality Of Life)",
 		"TagsQoLDescription": "Funkcje lub zmiany, które głownie wspomagają gracza przy wykonywaniu monotonnych aktywności w grze",
 		"TagsGameplay": "Zmiany w mechanikach gry",
@@ -738,6 +756,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% szans na zaoszczędzenie amunicji",
 		"PercentReducedManaCost": "{0}% mniejszy koszt many",
+		"ReducesHealingPotionCooldownByPercent": "Skraca czas odnowienia mikstur leczenia o {0}%",
 
 		"PercentIncreasedMiningSpeed": "{0}% zwiększona szybkość kopania",
 		"PercentIncreasedMovementSpeed": "{0}% zwiększona szybkość poruszania się",

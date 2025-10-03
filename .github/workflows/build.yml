@@ -219,7 +219,7 @@ jobs:
           unzip -q terrariaserver.zip
           
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
-          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
+          cp patches/Terraria/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
           
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
@@ -260,6 +260,9 @@ jobs:
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           (
             set +e;
+            # For some reason tModCodeAssist dlls are not copied to bin unless built first or the Terraria project is built a 2nd time
+            dotnet build tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj -c Release --nologo -v q;
+            dotnet build tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj -c Release --nologo -v q;
             dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl;
             err=$?;
             [[ $err -ne 0 ]] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;

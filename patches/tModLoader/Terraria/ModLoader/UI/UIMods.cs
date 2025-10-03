@@ -32,6 +32,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private readonly List<UIModItem> items = new List<UIModItem>();
 	private Task<List<UIModItem>> modItemsTask;
 	private bool updateNeeded;
+	private bool saveNeeded;
 	private UIMemoryBar ramUsage;
 	private bool showRamUsage;
 	public bool loading;
@@ -54,7 +55,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIAutoScaleTextTextPanel<LocalizedText> _confirmDialogNoButton;
 	private UIText _confirmDialogText;
 	private UIImage _blockInput;
-	private UIPanel _toggleModsDialog;
+	private UIPanel _activeDialog;
 
 	private CancellationTokenSource _cts;
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
@@ -167,10 +168,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 				toggleImage.SetCurrentState((int)sortMode);
 				toggleImage.OnLeftClick += (a, b) => {
 					sortMode = sortMode.NextEnum();
+					saveNeeded = true;
 					updateNeeded = true;
 				};
 				toggleImage.OnRightClick += (a, b) => {
 					sortMode = sortMode.PreviousEnum();
+					saveNeeded = true;
 					updateNeeded = true;
 				};
 			}
@@ -297,6 +300,11 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	public void HandleBackButtonUsage()
 	{
+		if (_blockInput != null && HasChild(_blockInput)) {
+			CloseConfirmDialog(null, null);
+			return;
+		}
+
 		// To prevent entering the game with Configs that violate ReloadRequired
 		if (ConfigManager.AnyModNeedsReload()) {
 			Main.menuMode = Interface.reloadModsID;
@@ -333,11 +341,27 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}
 	}
 
-	private void CloseConfirmDialog(UIMouseEvent evt, UIElement listeningElement)
+	internal void CloseConfirmDialog(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		_blockInput?.Remove();
-		_toggleModsDialog?.Remove();
+		_activeDialog?.Remove();
+	}
+
+	internal void ShowConfirmDialog(UIPanel dialog)
+	{
+		_blockInput = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = Color.Black * 0.5f,
+			ScaleToFit = true
+		};
+		_blockInput.Width = StyleDimension.Fill;
+		_blockInput.Height = StyleDimension.Fill;
+		_blockInput.OnLeftMouseDown += CloseConfirmDialog;
+		Append(_blockInput);
+
+		Append(_activeDialog = dialog);
 	}
 
 	private void QuickEnableAll(UIMouseEvent evt, UIElement listeningElement)
@@ -375,16 +399,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	private void ShowConfirmationWindow(MouseEvent yesAction, string confirmDialogTextKey)
 	{
-		_blockInput = new UIImage(TextureAssets.Extra[190]) {
-			Width = { Percent = 1 },
-			Height = { Percent = 1 },
-			Color = new Color(0, 0, 0, 0),
-			ScaleToFit = true
-		};
-		_blockInput.OnLeftMouseDown += CloseConfirmDialog;
-		Interface.modsMenu.Append(_blockInput);
-
-		_toggleModsDialog = new UIPanel() {
+		var _toggleModsDialog = new UIPanel() {
 			Width = { Percent = .30f },
 			Height = { Percent = .30f },
 			HAlign = .5f,
@@ -393,7 +408,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			BorderColor = Color.Black
 		};
 		_toggleModsDialog.SetPadding(6f);
-		Interface.modsMenu.Append(_toggleModsDialog);
+		ShowConfirmDialog(_toggleModsDialog);
 
 		_confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
 			TextColor = Color.White,
@@ -562,6 +577,10 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		_cts?.Dispose();
 		_cts = null;
 		modListViewPosition = modList.ViewPosition;
+		if (saveNeeded) {
+			saveNeeded = false;
+			Main.SaveSettings();
+		}
 	}
 
 	internal void StoreCurrentScrollPosition()
