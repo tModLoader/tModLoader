@@ -19,10 +19,11 @@
  using Terraria.ObjectData;
  using Terraria.Social;
  using Terraria.UI;
-@@ -35,10 +_,11 @@
+@@ -35,10 +_,12 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
++using static Terraria.ModLoader.BackupIO;
 +using LegacySoundStyle = Terraria.Audio.SoundStyle;
  
  namespace Terraria;
@@ -5022,6 +5023,30 @@
  
  				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
  					StatusFromNPC(Main.npc[i]);
+@@ -23647,6 +_,15 @@
+ 				item.TurnToAir();
+ 		}
+ 
++		if (chest <= -1) {
++			var bankInv = PortableStorageLoader.GetPortableStorageFromChest(chest).GetInventory(this).item;
++			for (int j = 0; j < 40; j++) {
++				if (bankInv[j].stack > 0 && bankInv[j].type == 3822)
++					bankInv[j].TurnToAir();
++			}
++		}
++
++		/*
+ 		if (this.chest == -2) {
+ 			Chest chest = bank;
+ 			for (int j = 0; j < 40; j++) {
+@@ -23681,6 +_,7 @@
+ 
+ 		if (this.chest <= -1)
+ 			return;
++		*/
+ 
+ 		Chest chest5 = Main.chest[this.chest];
+ 		for (int n = 0; n < 40; n++) {
 @@ -23694,6 +_,9 @@
  
  	public void ItemCheck_ManageRightClickFeatures()
@@ -5357,7 +5382,13 @@
  	public void RefreshItems(bool onlyIfVariantChanged = true)
  	{
  		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
-@@ -27301,6 +_,15 @@
+@@ -27296,11 +_,21 @@
+ 		RefreshItems(dye, onlyIfVariantChanged);
+ 		RefreshItems(miscEquips, onlyIfVariantChanged);
+ 		RefreshItems(miscDyes, onlyIfVariantChanged);
++		// TODO: Include all portable storage?
+ 		RefreshItems(bank.item, onlyIfVariantChanged);
+ 		RefreshItems(bank2.item, onlyIfVariantChanged);
  		RefreshItems(bank3.item, onlyIfVariantChanged);
  		RefreshItems(bank4.item, onlyIfVariantChanged);
  		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
@@ -5373,7 +5404,7 @@
  	}
  
  	private void RefreshItems(Item[] array, bool onlyIfVariantChanged)
-@@ -27344,11 +_,29 @@
+@@ -27344,20 +_,62 @@
  		}
  	}
  
@@ -5405,9 +5436,22 @@
  		bool overFlowing;
  		long num = Utils.CoinsCount(out overFlowing, inventory, 58, 57, 56, 55, 54);
  		long num2 = Utils.CoinsCount(out overFlowing, bank.item);
-@@ -27357,7 +_,20 @@
+ 		long num3 = Utils.CoinsCount(out overFlowing, bank2.item);
+ 		long num4 = Utils.CoinsCount(out overFlowing, bank3.item);
  		long num5 = Utils.CoinsCount(out overFlowing, bank4.item);
- 		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
+-		if (Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
++		// TODO: Copied this from my code in another method.
++		// This one can actually be simplified unlike the other.
++		int coinCountIndex = 0;
++		long[] coinCounts = new long[PortableStorageLoader.StorageCount + 1];
++		coinCounts[coinCountIndex++] = num;
++		coinCounts[coinCountIndex++] = num2;
++		coinCounts[coinCountIndex++] = num3;
++		coinCounts[coinCountIndex++] = num4;
++		coinCounts[coinCountIndex++] = num5;
++		foreach (var storage in PortableStorageLoader.GetNonVanillaStorage())
++			coinCounts[coinCountIndex++] = Utils.CoinsCount(out _, storage.GetInventory(this).item);
++		if (Utils.CoinsCombineStacks(out overFlowing, coinCounts) < price)
  			return false;
 +		return true;
 +	}
@@ -5426,6 +5470,22 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
+@@ -27367,10 +_,15 @@
+ 		List<Point> list6 = new List<Point>();
+ 		List<Point> list7 = new List<Point>();
+ 		list.Add(inventory);
++		/*
+ 		list.Add(bank.item);
+ 		list.Add(bank2.item);
+ 		list.Add(bank3.item);
+ 		list.Add(bank4.item);
++		*/
++		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++			list.Add(storage.GetInventory(this).item);
++		}
+ 		for (int i = 0; i < list.Count; i++) {
+ 			dictionary[i] = new List<int>();
+ 		}
 @@ -27569,7 +_,7 @@
  			num2 += 4;
  		}
@@ -9414,6 +9474,27 @@
  	public bool HasItemInInventoryOrOpenVoidBag(int type)
  	{
  		if (!HasItem(type)) {
+@@ -42956,6 +_,12 @@
+ 		if (HasItem(type, miscDyes))
+ 			return true;
+ 
++		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++			if (HasItem(type, storage.GetInventory(this).item))
++				return true;
++		}
++
++		/*
+ 		if (HasItem(type, bank.item))
+ 			return true;
+ 
+@@ -42967,6 +_,7 @@
+ 
+ 		if (HasItem(type, bank4.item))
+ 			return true;
++		*/
+ 
+ 		return false;
+ 	}
 @@ -43028,6 +_,17 @@
  
  	public Player()
@@ -9653,6 +9734,29 @@
  	}
  
  	public bool DropAnglerAccByMissing(List<int> itemIdsOfAccsWeWant, float totalChance, out bool botheredRollingForADrop, out int itemIdToDrop)
+@@ -43716,6 +_,14 @@
+ 			RemoveAnglerAccOptionsFromRewardPool(list, array[j]);
+ 		}
+ 
++		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++			array = storage.GetInventory(this).item;
++			for (int k = 0; k < array.Length; k++) {
++				RemoveAnglerAccOptionsFromRewardPool(list, array[k]);
++			}
++		}
++
++		/*
+ 		array = bank.item;
+ 		for (int k = 0; k < array.Length; k++) {
+ 			RemoveAnglerAccOptionsFromRewardPool(list, array[k]);
+@@ -43735,6 +_,7 @@
+ 		for (int n = 0; n < array.Length; n++) {
+ 			RemoveAnglerAccOptionsFromRewardPool(list, array[n]);
+ 		}
++		*/
+ 
+ 		for (int num = 0; num < Loadouts.Length; num++) {
+ 			array = Loadouts[num].Armor;
 @@ -43845,13 +_,17 @@
  				list.Add(3556);
  			}

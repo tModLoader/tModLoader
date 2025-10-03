@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/CustomCurrencyManager.cs
 +++ src/tModLoader/Terraria/GameContent/UI/CustomCurrencyManager.cs
+@@ -2,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI;
+ 
 @@ -13,6 +_,7 @@
  	public static void Initialize()
  	{
@@ -8,6 +16,14 @@
  		CustomCurrencyID.DefenderMedals = RegisterCurrency(new CustomCurrencySingleCoin(3817, 999L));
  	}
  
+@@ -28,6 +_,7 @@
+ 	{
+ 		CustomCurrencySystem customCurrencySystem = _currencies[currencyIndex];
+ 		Player player = Main.player[Main.myPlayer];
++		// TODO: Hook here to draw?
+ 		bool overFlowing;
+ 		long num = customCurrencySystem.CountCurrency(out overFlowing, player.bank.item);
+ 		long num2 = customCurrencySystem.CountCurrency(out overFlowing, player.bank2.item);
 @@ -63,6 +_,13 @@
  
  	public static bool BuyItem(Player player, long price, int currencyIndex)
@@ -22,9 +38,22 @@
  		CustomCurrencySystem customCurrencySystem = _currencies[currencyIndex];
  		bool overFlowing;
  		long num = customCurrencySystem.CountCurrency(out overFlowing, player.inventory, 58, 57, 56, 55, 54);
-@@ -72,7 +_,12 @@
+@@ -70,9 +_,24 @@
+ 		long num3 = customCurrencySystem.CountCurrency(out overFlowing, player.bank2.item);
+ 		long num4 = customCurrencySystem.CountCurrency(out overFlowing, player.bank3.item);
  		long num5 = customCurrencySystem.CountCurrency(out overFlowing, player.bank4.item);
- 		if (customCurrencySystem.CombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
+-		if (customCurrencySystem.CombineStacks(out overFlowing, num, num2, num3, num4, num5) < price)
++		int countIndex = 0;
++		long[] counts = new long[PortableStorageLoader.StorageCount + 1];
++		counts[countIndex++] = num;
++		counts[countIndex++] = num2;
++		counts[countIndex++] = num3;
++		counts[countIndex++] = num4;
++		counts[countIndex++] = num5;
++		foreach (var storage in PortableStorageLoader.GetNonVanillaStorage()) {
++			counts[countIndex++] = customCurrencySystem.CountCurrency(out _, storage.GetInventory(player).item);
++		}
++		if (customCurrencySystem.CombineStacks(out overFlowing, counts) < price)
  			return false;
 +		return true;
 +	}
@@ -35,6 +64,21 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
+@@ -82,10 +_,14 @@
+ 		List<Point> list6 = new List<Point>();
+ 		List<Point> list7 = new List<Point>();
+ 		list.Add(player.inventory);
++		/*
+ 		list.Add(player.bank.item);
+ 		list.Add(player.bank2.item);
+ 		list.Add(player.bank3.item);
+ 		list.Add(player.bank4.item);
++		*/
++		foreach (var storage in ModContent.GetContent<PortableStorage>())
++			list.Add(storage.GetInventory(player).item);
+ 		for (int i = 0; i < list.Count; i++) {
+ 			dictionary[i] = new List<int>();
+ 		}
 @@ -138,4 +_,12 @@
  	{
  		_currencies[item.shopSpecialCurrency].GetItemExpectedPrice(item, out calcForSelling, out calcForBuying);

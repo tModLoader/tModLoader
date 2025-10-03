@@ -1,7 +1,8 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Achievements/AchievementsHelper.cs
 +++ src/tModLoader/Terraria/GameContent/Achievements/AchievementsHelper.cs
-@@ -1,3 +_,5 @@
+@@ -1,3 +_,6 @@
 +using System.Linq;
++using Terraria.ModLoader;
 +
  namespace Terraria.GameContent.Achievements;
  
@@ -24,6 +25,29 @@
  	public static event NPCKilledEvent OnNPCKilled;
  	public static event ProgressionEventEvent OnProgressionEvent;
  
+@@ -85,6 +_,14 @@
+ 				AchievementsHelper.OnItemPickup(player, (short)player.miscDyes[m].type, player.miscDyes[m].stack);
+ 			}
+ 
++			foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++				var bankInv = storage.GetInventory(player).item;
++				for (int n = 0; n < bankInv.Length; n++) {
++					OnItemPickup(player, (short)bankInv[n].type, bankInv[n].stack);
++				}
++			}
++
++			/*
+ 			for (int n = 0; n < player.bank.item.Length; n++) {
+ 				AchievementsHelper.OnItemPickup(player, (short)player.bank.item[n].type, player.bank.item[n].stack);
+ 			}
+@@ -100,6 +_,7 @@
+ 			for (int num3 = 0; num3 < player.bank4.item.Length; num3++) {
+ 				AchievementsHelper.OnItemPickup(player, (short)player.bank4.item[num3].type, player.bank4.item[num3].stack);
+ 			}
++			*/
+ 
+ 			for (int num4 = 0; num4 < player.Loadouts.Length; num4++) {
+ 				Item[] armor = player.Loadouts[num4].Armor;
 @@ -114,10 +_,10 @@
  			}
  		}

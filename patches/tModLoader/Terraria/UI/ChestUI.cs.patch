@@ -18,6 +18,70 @@
  			}
  		}
  		else if (player.chest == -2) {
+@@ -287,6 +_,13 @@
+ 			inv = Main.chest[player.chest].item;
+ 		}
+ 
++		inv = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++
++		// TODO: Hook for this?
++		if (player.chest == -5)
++			context = 32;
++
++		/*
+ 		if (player.chest == -2) {
+ 			context = 4;
+ 			inv = player.bank.item;
+@@ -306,6 +_,7 @@
+ 			context = 32;
+ 			inv = player.bank4.item;
+ 		}
++		*/
+ 
+ 		Main.inventoryScale = 0.755f;
+ 		if (Utils.FloatIntersect(Main.mouseX, Main.mouseY, 0f, 0f, 73f, Main.instance.invBottom, 560f * Main.inventoryScale, 224f * Main.inventoryScale) && !PlayerInput.IgnoreMouseInterface)
+@@ -346,6 +_,15 @@
+ 			return;
+ 		}
+ 
++		var bankInv = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++		for (int m = 0; m < bankInv.Length; m++) {
++			if (bankInv[m].type > 0) {
++				bankInv[m].position = player.Center;
++				bankInv[m] = player.GetItem(Main.myPlayer, bankInv[m], lootAllSettings);
++			}
++		}
++
++		/*
+ 		if (player.chest == -3) {
+ 			for (int j = 0; j < 40; j++) {
+ 				if (player.bank2.item[j].type > 0) {
+@@ -385,6 +_,7 @@
+ 				player.bank.item[m] = player.GetItem(Main.myPlayer, player.bank.item[m], lootAllSettings);
+ 			}
+ 		}
++		*/
+ 	}
+ 
+ 	public static void DepositAll(ContainerTransferContext context)
+@@ -392,6 +_,9 @@
+ 		Player player = Main.player[Main.myPlayer];
+ 		if (player.chest > -1)
+ 			MoveCoins(player.inventory, Main.chest[player.chest].item, context);
++		else
++			MoveCoins(player.inventory, PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item, context);
++		/*
+ 		else if (player.chest == -3)
+ 			MoveCoins(player.inventory, player.bank2.item, context);
+ 		else if (player.chest == -4)
+@@ -400,6 +_,7 @@
+ 			MoveCoins(player.inventory, player.bank4.item, context);
+ 		else
+ 			MoveCoins(player.inventory, player.bank.item, context);
++		*/
+ 
+ 		for (int num = 49; num >= 10; num--) {
+ 			if (player.inventory[num].stack > 0 && player.inventory[num].type > 0 && !player.inventory[num].favorited) {
 @@ -410,12 +_,18 @@
  							if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
  								continue;
@@ -37,86 +101,134 @@
  							SoundEngine.PlaySound(7);
  							if (player.inventory[num].stack <= 0) {
  								player.inventory[num].SetDefaults();
-@@ -435,12 +_,18 @@
+@@ -433,6 +_,34 @@
+ 							if (Main.netMode == 1)
+ 								NetMessage.SendData(32, -1, -1, null, player.chest, i);
  						}
- 						else if (player.chest == -3) {
- 							if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
-+								if (!ItemLoader.TryStackItems(player.bank2.item[i], player.inventory[num], out _))
++						else {
++							var bankInv = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++							if (bankInv[i].stack < bankInv[i].maxStack && player.inventory[num].IsTheSameAs(bankInv[i])) {
++								if (!ItemLoader.TryStackItems(bankInv[i], player.inventory[num], out _))
 +									continue;
 +
 +								/* #OnStackHook
++								int num3 = player.inventory[num].stack;
++								if (player.inventory[num].stack + player.bank2.item[i].stack > player.bank2.item[i].maxStack)
++									num3 = player.bank2.item[i].maxStack - player.bank2.item[i].stack;
++
++								player.inventory[num].stack -= num3;
++								player.bank2.item[i].stack += num3;
++								*/
++
++								SoundEngine.PlaySound(7);
++								if (player.inventory[num].stack <= 0) {
++									player.inventory[num].SetDefaults();
++									break;
++								}
++
++								if (bankInv[i].type == 0) {
++									bankInv[i] = player.inventory[num].Clone();
++									player.inventory[num].SetDefaults();
++								}
++							}
++						}
++						/*
+ 						else if (player.chest == -3) {
+ 							if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
  								int num3 = player.inventory[num].stack;
- 								if (player.inventory[num].stack + player.bank2.item[i].stack > player.bank2.item[i].maxStack)
- 									num3 = player.bank2.item[i].maxStack - player.bank2.item[i].stack;
+@@ -441,6 +_,7 @@
  
  								player.inventory[num].stack -= num3;
  								player.bank2.item[i].stack += num3;
-+								*/
 +
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -454,13 +_,20 @@
- 							}
- 						}
- 						else if (player.chest == -4) {
-+							//if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
- 							if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
-+								if (!ItemLoader.TryStackItems(player.bank3.item[i], player.inventory[num], out _))
-+									continue;
-+
-+								/* #OnStackHook
- 								int num4 = player.inventory[num].stack;
- 								if (player.inventory[num].stack + player.bank3.item[i].stack > player.bank3.item[i].maxStack)
- 									num4 = player.bank3.item[i].maxStack - player.bank3.item[i].stack;
+@@ -461,6 +_,7 @@
  
  								player.inventory[num].stack -= num4;
  								player.bank3.item[i].stack += num4;
-+								*/
 +
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -474,13 +_,20 @@
- 							}
- 						}
- 						else if (player.chest == -5) {
-+							//if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
- 							if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
-+								if (!ItemLoader.TryStackItems(player.bank4.item[i], player.inventory[num], out _))
-+									continue;
-+
-+								/* #OnStackHook
- 								int num5 = player.inventory[num].stack;
- 								if (player.inventory[num].stack + player.bank4.item[i].stack > player.bank4.item[i].maxStack)
- 									num5 = player.bank4.item[i].maxStack - player.bank4.item[i].stack;
+@@ -481,6 +_,7 @@
  
  								player.inventory[num].stack -= num5;
  								player.bank4.item[i].stack += num5;
-+								*/
 +
  								SoundEngine.PlaySound(7);
  								if (player.inventory[num].stack <= 0) {
  									player.inventory[num].SetDefaults();
-@@ -494,12 +_,18 @@
- 							}
- 						}
- 						else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
-+							if (!ItemLoader.TryStackItems(player.bank.item[i], player.inventory[num], out _))
-+								continue;
-+
-+							/* #OnStackHook
- 							int num6 = player.inventory[num].stack;
- 							if (player.inventory[num].stack + player.bank.item[i].stack > player.bank.item[i].maxStack)
- 								num6 = player.bank.item[i].maxStack - player.bank.item[i].stack;
+@@ -500,6 +_,7 @@
  
  							player.inventory[num].stack -= num6;
  							player.bank.item[i].stack += num6;
-+							*/
 +
  							SoundEngine.PlaySound(7);
  							if (player.inventory[num].stack <= 0) {
  								player.inventory[num].SetDefaults();
+@@ -511,6 +_,7 @@
+ 								player.inventory[num].SetDefaults();
+ 							}
+ 						}
++						*/
+ 					}
+ 				}
+ 
+@@ -528,6 +_,18 @@
+ 							}
+ 						}
+ 					}
++					else {
++						var bankInv = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++						for (int n = 0; n < bankInv.Length; n++) {
++							if (bankInv[n].stack == 0) {
++								SoundEngine.PlaySound(7);
++								bankInv[n] = player.inventory[num].Clone();
++								player.inventory[num].SetDefaults();
++								break;
++							}
++						}
++					}
++					/*
+ 					else if (player.chest == -3) {
+ 						for (int k = 0; k < 40; k++) {
+ 							if (player.bank2.item[k].stack == 0) {
+@@ -568,6 +_,7 @@
+ 							}
+ 						}
+ 					}
++					*/
+ 				}
+ 			}
+ 		}
+@@ -583,6 +_,7 @@
+ 		Vector2 center = player.Center;
+ 		Vector2 containerWorldPosition = context.GetContainerWorldPosition();
+ 		bool canVisualizeTransfers = context.CanVisualizeTransfers;
++		// TODO
+ 		if (!voidStack && player.chest == -5) {
+ 			long coinsMoved = MoveCoins(array, player.bank4.item, context);
+ 			if (canVisualizeTransfers)
+@@ -607,6 +_,9 @@
+ 		Item[] item = player.bank.item;
+ 		if (player.chest > -1)
+ 			item = Main.chest[player.chest].item;
++		else
++			item = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++		/*
+ 		else if (player.chest == -2)
+ 			item = player.bank.item;
+ 		else if (player.chest == -3)
+@@ -615,6 +_,7 @@
+ 			item = player.bank3.item;
+ 		else if (!voidStack && player.chest == -5)
+ 			item = player.bank4.item;
++		*/
+ 
+ 		List<int> list = new List<int>();
+ 		List<int> list2 = new List<int>();
 @@ -661,13 +_,18 @@
  						num4 = num5;
  
@@ -153,7 +265,24 @@
  					if (array[item5.Key].stack == 0)
  						array[item5.Key] = new Item();
  				}
-@@ -794,7 +_,8 @@
+@@ -780,6 +_,9 @@
+ 		Item[] item = player.bank.item;
+ 		if (player.chest > -1)
+ 			item = Main.chest[player.chest].item;
++		else
++			item = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++		/*
+ 		else if (player.chest == -2)
+ 			item = player.bank.item;
+ 		else if (player.chest == -3)
+@@ -788,13 +_,15 @@
+ 			item = player.bank3.item;
+ 		else if (player.chest == -5)
+ 			item = player.bank4.item;
++		*/
+ 
+ 		HashSet<int> hashSet = new HashSet<int>();
+ 		List<int> list = new List<int>();
  		List<int> list2 = new List<int>();
  		for (int num = 57; num >= 0; num--) {
  			if ((num < 50 || num >= 54) && (inventory[num].type < 71 || inventory[num].type > 74)) {
@@ -214,3 +343,22 @@
  				SoundEngine.PlaySound(7);
  				if (I.stack <= 0) {
  					I.SetDefaults();
+@@ -1124,6 +_,10 @@
+ 			chestinv = Main.chest[player.chest].item;
+ 			sync = Main.netMode == 1;
+ 		}
++		else {
++			chestinv = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++		}
++		/*
+ 		else if (player.chest == -2) {
+ 			chestinv = player.bank.item;
+ 		}
+@@ -1136,6 +_,7 @@
+ 		else if (player.chest == -5) {
+ 			chestinv = player.bank4.item;
+ 		}
++		*/
+ 	}
+ 
+ 	public static bool IsBlockedFromTransferIntoChest(Item item, Item[] container)

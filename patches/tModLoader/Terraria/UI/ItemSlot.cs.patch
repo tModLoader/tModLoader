@@ -827,6 +827,33 @@
  		}
  
  		SoundEngine.PlaySound(7);
+@@ -2351,7 +_,16 @@
+ 		long num2 = Utils.CoinsCount(out overFlowing, player.bank2.item);
+ 		long num3 = Utils.CoinsCount(out overFlowing, player.bank3.item);
+ 		long num4 = Utils.CoinsCount(out overFlowing, player.bank4.item);
+-		long num5 = Utils.CoinsCombineStacks(out overFlowing, num, num2, num3, num4);
++		int coinCountIndex = 0;
++		long[] coinCounts = new long[PortableStorageLoader.StorageCount];
++		coinCounts[coinCountIndex++] = num;
++		coinCounts[coinCountIndex++] = num2;
++		coinCounts[coinCountIndex++] = num3;
++		coinCounts[coinCountIndex++] = num4;
++		foreach (var storage in PortableStorageLoader.GetNonVanillaStorage()) {
++			coinCounts[coinCountIndex++] = Utils.CoinsCount(out _, storage.GetInventory(player).item);
++		}
++		long num5 = Utils.CoinsCombineStacks(out overFlowing, coinCounts);
+ 		if (num5 > 0) {
+ 			Main.GetItemDrawFrame(4076, out var itemTexture, out var itemFrame);
+ 			Main.GetItemDrawFrame(3813, out var itemTexture2, out var itemFrame2);
+@@ -2369,6 +_,8 @@
+ 			if (num > 0)
+ 				sb.Draw(itemTexture4, Utils.CenteredRectangle(new Vector2(shopx + 70f, shopy + 60f), itemTexture4.Size() * 0.65f), null, Color.White);
+ 
++			// TODO: Hook for drawing additional icons here?
++
+ 			DrawMoney(sb, Lang.inter[66].Value, shopx, shopy, Utils.CoinsSplit(num5), horizontal);
+ 		}
+ 	}
 @@ -2392,7 +_,7 @@
  
  	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false)
