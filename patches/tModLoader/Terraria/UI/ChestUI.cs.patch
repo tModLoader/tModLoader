@@ -18,7 +18,7 @@
  			}
  		}
  		else if (player.chest == -2) {
-@@ -287,6 +_,13 @@
+@@ -287,6 +_,15 @@
  			inv = Main.chest[player.chest].item;
  		}
  
@@ -27,6 +27,8 @@
 +		// TODO: Hook for this?
 +		if (player.chest == -5)
 +			context = 32;
++		else
++			context = 4;
 +
 +		/*
  		if (player.chest == -2) {
