@@ -13,7 +13,7 @@ public sealed class PiggyBankPortableStorage : PortableStorage
 [Autoload(false)]
 public sealed class SafePortableStorage : PortableStorage
 {
-	public override Chest GetInventory(Player player) => player.bank;
+	public override Chest GetInventory(Player player) => player.bank2;
 
 	public override ref TrackedProjectileReference GetProjectileReference(Player player) => ref player.safeProjTracker;
 }
@@ -21,7 +21,7 @@ public sealed class SafePortableStorage : PortableStorage
 [Autoload(false)]
 public sealed class DefendersForgePortableStorage : PortableStorage
 {
-	public override Chest GetInventory(Player player) => player.bank;
+	public override Chest GetInventory(Player player) => player.bank3;
 
 	public override ref TrackedProjectileReference GetProjectileReference(Player player) => ref player.defendersForgeProjTracker;
 }
