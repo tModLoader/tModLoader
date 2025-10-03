@@ -675,7 +675,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 	private void HandleBeingInChestRange_TMLCheckFields()
 	{
-		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 			if (chest != storage.ChestType) {
 				continue;
 			}
@@ -697,7 +697,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		// TODO: Cache this?
 		// (TrackedProjectileReference TrackedProjectileReference, int bankID)[] banks = [(safeProjTracker, BankID.Safe), (defendersForgeProjTracker, BankID.DefendersForge)];
-		IEnumerable<(TrackedProjectileReference TrackedProjectileReference, int bankID)> banks = ModContent.GetContent<PortableStorage>().Select(x => (x.GetProjectileReference(this), x.ChestType));
+		IEnumerable<(TrackedProjectileReference TrackedProjectileReference, int bankID)> banks = PortableStorageLoader.GetAllStorage().Select(x => (x.GetProjectileReference(this), x.ChestType));
 		foreach (var bank in banks) {
 			int index = bank.TrackedProjectileReference.ProjectileLocalIndex;
 			if (index >= 0) {
@@ -732,14 +732,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public void ClearPortableBankProjectileTrackers()
 	{
-		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 			storage.GetProjectileReference(this).Clear();
 		}
 	}
 
 	private void clientClone_TMLCloneBankProjTrackers(Player player)
 	{
-		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 			storage.GetProjectileReference(player) = storage.GetProjectileReference(this);
 		}
 	}

@@ -674,7 +674,7 @@ public partial class Main
 
 	private static bool TrySyncingMyPlayer_TMLSyncBankFields(Player player)
 	{
-		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
+		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 			if (storage.GetProjectileReference(Main.LocalPlayer) != storage.GetProjectileReference(player))
 				return true;
 		}

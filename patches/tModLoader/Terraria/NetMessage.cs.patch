@@ -365,7 +365,7 @@
  				case 142: {
  					writer.Write((byte)number);
  					Player obj = Main.player[number];
-+					foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++					foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 +						storage.GetProjectileReference(obj).Write(writer);
 +					}
 +					/*

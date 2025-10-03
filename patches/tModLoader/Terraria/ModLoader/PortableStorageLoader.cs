@@ -63,8 +63,9 @@ public static class PortableStorageLoader
 	// Swap between positive PortableStorage::Type and negative BankID.
 	internal static int ReverseIds(int type) => -(type + 2);
 
-	internal static IEnumerable<PortableStorage> GetNonVanillaStorage()
-	{
-		return storageDefinitions[defaultStorageCount..];
-	}
+	internal static IEnumerable<PortableStorage> GetAllStorage() => storageDefinitions;
+
+	internal static IEnumerable<PortableStorage> GetVanillaStorage() => storageDefinitions[..defaultStorageCount];
+
+	internal static IEnumerable<PortableStorage> GetNonVanillaStorage() => storageDefinitions[defaultStorageCount..];
 }

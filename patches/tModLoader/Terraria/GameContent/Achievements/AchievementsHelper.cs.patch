@@ -29,7 +29,7 @@
  				AchievementsHelper.OnItemPickup(player, (short)player.miscDyes[m].type, player.miscDyes[m].stack);
  			}
  
-+			foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++			foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 +				var bankInv = storage.GetInventory(player).item;
 +				for (int n = 0; n < bankInv.Length; n++) {
 +					OnItemPickup(player, (short)bankInv[n].type, bankInv[n].stack);

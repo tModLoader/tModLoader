@@ -74,7 +74,7 @@
  		list.Add(player.bank3.item);
  		list.Add(player.bank4.item);
 +		*/
-+		foreach (var storage in ModContent.GetContent<PortableStorage>())
++		foreach (var storage in PortableStorageLoader.GetAllStorage())
 +			list.Add(storage.GetInventory(player).item);
  		for (int i = 0; i < list.Count; i++) {
  			dictionary[i] = new List<int>();

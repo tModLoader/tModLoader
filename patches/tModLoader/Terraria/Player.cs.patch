@@ -5480,7 +5480,7 @@
  		list.Add(bank3.item);
  		list.Add(bank4.item);
 +		*/
-+		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 +			list.Add(storage.GetInventory(this).item);
 +		}
  		for (int i = 0; i < list.Count; i++) {
@@ -9478,7 +9478,7 @@
  		if (HasItem(type, miscDyes))
  			return true;
  
-+		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 +			if (HasItem(type, storage.GetInventory(this).item))
 +				return true;
 +		}
@@ -9738,7 +9738,7 @@
  			RemoveAnglerAccOptionsFromRewardPool(list, array[j]);
  		}
  
-+		foreach (var storage in ModContent.GetContent<PortableStorage>()) {
++		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
 +			array = storage.GetInventory(this).item;
 +			for (int k = 0; k < array.Length; k++) {
 +				RemoveAnglerAccOptionsFromRewardPool(list, array[k]);
