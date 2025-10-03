@@ -65,7 +65,7 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -70,29 +_,39 @@
+@@ -79,29 +_,39 @@
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  

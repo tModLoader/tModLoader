@@ -22,7 +22,7 @@
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -25,9 +_,71 @@
+@@ -25,9 +_,80 @@
  				return Assembly.Load(array);
  			}
  		};
@@ -39,8 +39,17 @@
 +		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 +			var nugetPath = "Libraries/steamworks.net.anycpu/2025.162.2/lib/net8.0/Steamworks.NET.dll";
 +			var windowsPath = "Libraries/Steamworks.NET.AnyCPU.Windows/Steamworks.NET.dll";
-+			File.Copy(windowsPath, nugetPath, overwrite: true);
-+			File.Copy(Path.ChangeExtension(windowsPath, "pdb"), Path.ChangeExtension(nugetPath, "pdb"), overwrite: true);
++			void Overwrite(string a, string b)
++			{
++				try {
++					File.Copy(a, b, overwrite: true);
++				}
++				catch (Exception ex) {
++					Console.Error.WriteLine($"Failed to overwrite {Path.GetFileName(a)} with Windows version ({ex.Message}). Hoping for the best...");
++				}
++			}
++			Overwrite(windowsPath, nugetPath);
++			Overwrite(Path.ChangeExtension(windowsPath, "pdb"), Path.ChangeExtension(nugetPath, "pdb"));
 +		}
 +	}
 +
