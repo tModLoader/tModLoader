@@ -71,12 +71,30 @@ public static class MonoModHooks
 			}
 
 			Logging.tML.Debug(msg);
+
+			/*
+			// Issue, not actually called anymore since No-op
+			if(info.Entry.GetCustomAttribute<ObsoleteAttribute>() != null) {
+				Logging.tML.Error($"WARNING: The method {StringRep(info.Method.Method)} is Obsolete. Report this issue to the {owner.GetName().Name} author.");
+			}
+			*/
 		};
 
 		DetourManager.ILHookApplied += (info) => {
 			var owner = info.ManipulatorMethod.DeclaringType.Assembly;
 			GetDetourList(owner).ilHooks.Add(info);
 			Logging.tML.Debug($"ILHook {StringRep(info.Method.Method)} added by {owner.GetName().Name}");
+
+			/*
+			if (info.ManipulatorMethod.GetCustomAttribute<ObsoleteAttribute>() != null) {
+				Logging.tML.Error($"WARNING: The method {StringRep(info.Method.Method)} is Obsolete. Report this issue to the {owner.GetName().Name} author.");
+			}
+			*/
+		};
+
+		// Issue, type Action<> is defined in an assembly not imported
+		TerrariaHooks.Logging.OnObsoleteHookSubscribed += (s) => {
+			Logging.tML.Debug($"OnObsoleteHookSubscribed {s}");
 		};
 
 		isInitialized = true;

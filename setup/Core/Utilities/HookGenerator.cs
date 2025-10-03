@@ -1,13 +1,14 @@
-﻿using Mono.Cecil;
-using Mono.Cecil.Cil;
-using MonoMod.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
+using MonoMod.Utils;
 
 // Man, I just want these warnings gone. This needs to be entirely rewritten anyway.
 #pragma warning disable CA1051 // Do not declare visible instance fields
@@ -313,7 +314,10 @@ namespace MonoMod.RuntimeDetour.HookGen
             addHook.Body = new MethodBody(addHook);
             il = addHook.Body.GetILProcessor();
             if (obsolete) {
-                // TODO: How to log mods using this method still?
+                if (LogObsoleteHookSubscribed != null) {
+                    il.Emit(OpCodes.Ldstr, "Warning");
+                    il.Emit(OpCodes.Call, LogObsoleteHookSubscribed);
+                }
                 il.Emit(OpCodes.Ret);
             }
             else {
@@ -646,6 +650,181 @@ namespace MonoMod.RuntimeDetour.HookGen
             return attrib;
         }
 
+        MethodDefinition LogObsoleteHookSubscribed;
+
+        public void GenerateObsoleteLogging()
+        {
+            var assembly = OutputModule.Assembly;
+
+            // Generated on https://cecilifier.me/
+            /*
+            using System;
+
+            namespace TerrariaHooks {
+                public static class Logging
+                {
+                    public static event Action<string> OnObsoleteHookSubscribed;
+
+                    public static void LogObsoleteHookSubscribed(string message){
+                        OnObsoleteHookSubscribed.Invoke(message);
+                    }
+                }
+            }
+            */
+
+            //Class : Logging
+            var cls_Logging_0 = new TypeDefinition("TerrariaHooks", "Logging", TypeAttributes.AnsiClass | TypeAttributes.BeforeFieldInit | TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Sealed, assembly.MainModule.TypeSystem.Object);
+            assembly.MainModule.Types.Add(cls_Logging_0);
+
+
+            //Event: OnObsoleteHookSubscribed
+            var fld_OnObsoleteHookSubscribed_1 = new FieldDefinition("OnObsoleteHookSubscribed", FieldAttributes.Static | FieldAttributes.Private, assembly.MainModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(assembly.MainModule.TypeSystem.String));
+            cls_Logging_0.Fields.Add(fld_OnObsoleteHookSubscribed_1);
+            var md_Add_2 = new MethodDefinition("add_OnObsoleteHookSubscribed", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.SpecialName | MethodAttributes.HideBySig, assembly.MainModule.TypeSystem.Void);
+            md_Add_2.Parameters.Add(new ParameterDefinition("value", ParameterAttributes.None, assembly.MainModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(assembly.MainModule.TypeSystem.String)));
+            var mr_OpenCompExc_3 = assembly.MainModule.ImportReference(typeof(System.Threading.Interlocked).GetMethods().Single(m => m.Name == "CompareExchange" && m.IsGenericMethodDefinition));
+            var gi_CompExp_4 = new GenericInstanceMethod(mr_OpenCompExc_3);
+            gi_CompExp_4.GenericArguments.Add(fld_OnObsoleteHookSubscribed_1.FieldType);
+            md_Add_2.Body = new MethodBody(md_Add_2);
+            var il_Add_5 = md_Add_2.Body.GetILProcessor();
+            var lv_Add_6 = md_Add_2.Body.Instructions;
+            var lbl_LoopStart_7 = il_Add_5.Create(OpCodes.Ldloc_0);
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Nop));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldsfld, fld_OnObsoleteHookSubscribed_1));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Stloc_0));
+            lv_Add_6.Add(lbl_LoopStart_7);
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Stloc_1));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldloc_1));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldarg, 0));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Call, assembly.MainModule.ImportReference(typeof(Delegate).GetMethods().Single(m => m.Name == "Combine" && m.IsStatic && m.GetParameters().Length == 2))));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Castclass, assembly.MainModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(assembly.MainModule.TypeSystem.String)));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Stloc_2));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Nop));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldsflda, fld_OnObsoleteHookSubscribed_1));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldloc_2));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldloc_1));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Call, gi_CompExp_4));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Stloc_0));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldloc_0));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ldloc_1));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Bne_Un_S, lbl_LoopStart_7));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Nop));
+            lv_Add_6.Add(il_Add_5.Create(OpCodes.Ret));
+            md_Add_2.Body.Variables.Add(new VariableDefinition(fld_OnObsoleteHookSubscribed_1.FieldType));
+            md_Add_2.Body.Variables.Add(new VariableDefinition(fld_OnObsoleteHookSubscribed_1.FieldType));
+            md_Add_2.Body.Variables.Add(new VariableDefinition(fld_OnObsoleteHookSubscribed_1.FieldType));
+            md_Add_2.Body.InitLocals = true;
+            cls_Logging_0.Methods.Add(md_Add_2);
+            var md_Remove_8 = new MethodDefinition("remove_OnObsoleteHookSubscribed", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.SpecialName | MethodAttributes.HideBySig, assembly.MainModule.TypeSystem.Void);
+            md_Remove_8.Parameters.Add(new ParameterDefinition("value", ParameterAttributes.None, assembly.MainModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(assembly.MainModule.TypeSystem.String)));
+            var mr_OpenCompExc_9 = assembly.MainModule.ImportReference(typeof(System.Threading.Interlocked).GetMethods().Single(m => m.Name == "CompareExchange" && m.IsGenericMethodDefinition));
+            var gi_CompExp_10 = new GenericInstanceMethod(mr_OpenCompExc_9);
+            gi_CompExp_10.GenericArguments.Add(fld_OnObsoleteHookSubscribed_1.FieldType);
+            md_Remove_8.Body = new MethodBody(md_Remove_8);
+            var il_Remove_11 = md_Remove_8.Body.GetILProcessor();
+            var lv_Remove_12 = md_Remove_8.Body.Instructions;
+            var lbl_LoopStart_13 = il_Remove_11.Create(OpCodes.Ldloc_0);
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Nop));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldsfld, fld_OnObsoleteHookSubscribed_1));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Stloc_0));
+            lv_Remove_12.Add(lbl_LoopStart_13);
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Stloc_1));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldloc_1));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldarg, 0));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Call, assembly.MainModule.ImportReference(typeof(Delegate).GetMethod("Remove"))));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Castclass, assembly.MainModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(assembly.MainModule.TypeSystem.String)));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Stloc_2));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Nop));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldsflda, fld_OnObsoleteHookSubscribed_1));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldloc_2));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldloc_1));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Call, gi_CompExp_10));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Stloc_0));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldloc_0));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ldloc_1));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Bne_Un_S, lbl_LoopStart_13));
+            lv_Remove_12.Add(il_Remove_11.Create(OpCodes.Ret));
+            md_Remove_8.Body.Variables.Add(new VariableDefinition(fld_OnObsoleteHookSubscribed_1.FieldType));
+            md_Remove_8.Body.Variables.Add(new VariableDefinition(fld_OnObsoleteHookSubscribed_1.FieldType));
+            md_Remove_8.Body.Variables.Add(new VariableDefinition(fld_OnObsoleteHookSubscribed_1.FieldType));
+            md_Remove_8.Body.InitLocals = true;
+            cls_Logging_0.Methods.Add(md_Remove_8);
+            var evt_OnObsoleteHookSubscribed_14 = new EventDefinition("OnObsoleteHookSubscribed", EventAttributes.None, assembly.MainModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(assembly.MainModule.TypeSystem.String));
+            evt_OnObsoleteHookSubscribed_14.AddMethod = md_Add_2;
+            evt_OnObsoleteHookSubscribed_14.RemoveMethod = md_Remove_8;
+            cls_Logging_0.Events.Add(evt_OnObsoleteHookSubscribed_14);
+
+            //Method : LogObsoleteHookSubscribed
+            var md_LogObsoleteHookSubscribed_15 = new MethodDefinition("LogObsoleteHookSubscribed", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, assembly.MainModule.TypeSystem.Void);
+            cls_Logging_0.Methods.Add(md_LogObsoleteHookSubscribed_15);
+            md_LogObsoleteHookSubscribed_15.Body.InitLocals = true;
+            var il_LogObsoleteHookSubscribed_16 = md_LogObsoleteHookSubscribed_15.Body.GetILProcessor();
+
+            //Parameters of 'public static void LogObsoleteHookSubscribed(string message){...'
+            var p_Message_17 = new ParameterDefinition("message", ParameterAttributes.None, assembly.MainModule.TypeSystem.String);
+            md_LogObsoleteHookSubscribed_15.Parameters.Add(p_Message_17);
+
+            LogObsoleteHookSubscribed = md_LogObsoleteHookSubscribed_15; // Store reference for later
+
+            //OnObsoleteHookSubscribed.Invoke(message);
+            il_LogObsoleteHookSubscribed_16.Emit(OpCodes.Ldfld, fld_OnObsoleteHookSubscribed_1); // Generator skipped this line
+            il_LogObsoleteHookSubscribed_16.Emit(OpCodes.Ldarg_0);
+            il_LogObsoleteHookSubscribed_16.Emit(OpCodes.Callvirt, assembly.MainModule.ImportReference(TypeHelpers.ResolveMethod(typeof(System.Action<System.String>), "Invoke", System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, "System.String")));
+            il_LogObsoleteHookSubscribed_16.Emit(OpCodes.Ret);
+
+            //** Constructor: Logging() **
+            var ctor_Logging_18 = new MethodDefinition(".ctor", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.RTSpecialName | MethodAttributes.SpecialName, assembly.MainModule.TypeSystem.Void);
+            cls_Logging_0.Methods.Add(ctor_Logging_18);
+            var il_Ctor_Logging_19 = ctor_Logging_18.Body.GetILProcessor();
+            il_Ctor_Logging_19.Emit(OpCodes.Ldarg_0);
+            il_Ctor_Logging_19.Emit(OpCodes.Call, assembly.MainModule.ImportReference(TypeHelpers.DefaultCtorFor(cls_Logging_0.BaseType)));
+            il_Ctor_Logging_19.Emit(OpCodes.Ret);
+        }
+    }
+
+    public class TypeHelpers
+    {
+        public static MethodReference DefaultCtorFor(TypeReference type)
+        {
+            var resolved = type.Resolve();
+            if (resolved == null)
+                return null;
+
+            var ctor = resolved.Methods.SingleOrDefault(m => m.IsConstructor && m.Parameters.Count == 0 && !m.IsStatic);
+            if (ctor == null)
+                return DefaultCtorFor(resolved.BaseType);
+
+            return new MethodReference(".ctor", type.Module.TypeSystem.Void, type) { HasThis = true };
+        }
+
+        public static System.Reflection.MethodBase ResolveMethod(Type declaringType, string methodName, System.Reflection.BindingFlags bindingFlags, params string[] paramTypes)
+        {
+            if (methodName == ".ctor") {
+                var resolvedCtor = declaringType.GetConstructor(
+                    bindingFlags,
+                    null,
+                    paramTypes.Select(Type.GetType).ToArray(),
+                    null);
+
+                if (resolvedCtor == null) {
+                    throw new InvalidOperationException($"Failed to resolve ctor [{declaringType}({string.Join(',', paramTypes)})");
+                }
+
+                return resolvedCtor;
+            }
+
+            var resolvedMethod = declaringType.GetMethod(methodName,
+                bindingFlags,
+                null,
+                paramTypes.Select(Type.GetType).ToArray(),
+                null);
+
+            if (resolvedMethod == null) {
+                throw new InvalidOperationException($"Failed to resolve method {declaringType}.{methodName}({string.Join(',', paramTypes)})");
+            }
+
+            return resolvedMethod;
+        }
     }
 }
 

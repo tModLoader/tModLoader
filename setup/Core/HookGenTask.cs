@@ -80,6 +80,8 @@ namespace Terraria.ModLoader.Setup.Core
 				HookPrivate = true,
 			};
 
+			gen.GenerateObsoleteLogging();
+
 			foreach (var type in mm.Module.Types) {
 				cancellationToken.ThrowIfCancellationRequested();
 
