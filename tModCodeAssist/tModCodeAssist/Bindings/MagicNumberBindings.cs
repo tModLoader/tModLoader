@@ -117,6 +117,7 @@ public static class MagicNumberBindings
 			AddBinding<ItemID>("Terraria.Recipe", "HasResult", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<ItemID>("Terraria.ModLoader.Mod", "CreateRecipe", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<NPCID>("Terraria.Player", "isNearNPC", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<NPCID>("Terraria.NPC", "NewNPC", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<NPCID>("Terraria.NPC", "NewNPCDirect(Terraria.DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<NPCID>("Terraria.NPC", "NewNPCDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, int, int, float, float, float, float, int)", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3));

@@ -79,6 +79,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 
 			var npc = new NPC();
 			npc.aiStyle = [|18|];
+			NPC.NewNPC(entitySource, 0, 0, [|1|], 0, 0, 0, 0, 0, 0);
 			NPC.NewNPCDirect(entitySource, 0, 0, [|1|], 0, 0, 0, 0, 0, 0);
 			NPC.NewNPCDirect(entitySource, new Vector2(0, 0), [|1|], 0, 0, 0, 0, 0, 0);
 
@@ -155,6 +156,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 
 			var npc = new NPC();
 			npc.aiStyle = NPCAIStyleID.Jellyfish;
+			NPC.NewNPC(entitySource, 0, 0, NPCID.BlueSlime, 0, 0, 0, 0, 0, 0);
 			NPC.NewNPCDirect(entitySource, 0, 0, NPCID.BlueSlime, 0, 0, 0, 0, 0, 0);
 			NPC.NewNPCDirect(entitySource, new Vector2(0, 0), NPCID.BlueSlime, 0, 0, 0, 0, 0, 0);
 
