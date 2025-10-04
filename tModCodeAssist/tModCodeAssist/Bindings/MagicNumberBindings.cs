@@ -119,7 +119,7 @@ public static class MagicNumberBindings
 			AddBinding<NPCID>("Terraria.Player", "isNearNPC", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<NPCID>("Terraria.NPC", "NewNPC", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<NPCID>("Terraria.NPC", "NewNPCDirect(Terraria.DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)", (ctx) => new MethodParameterBinding(ctx, 3));
-			AddBinding<NPCID>("Terraria.NPC", "NewNPCDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, int, int, float, float, float, float, int)", (ctx) => new MethodParameterBinding(ctx, 3));
+			AddBinding<NPCID>("Terraria.NPC", "NewNPCDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, int, int, float, float, float, float, int)", (ctx) => new MethodParameterBinding(ctx, 2));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, float, float, float, float, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 5));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectileDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3));
@@ -128,7 +128,6 @@ public static class MagicNumberBindings
 			AddBinding<BuffID>("Terraria.Player", "FindBuffIndex", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.Player", "HasBuff(int)", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.NPC", "AddBuff", (ctx) => new MethodParameterBinding(ctx, 0));
-			AddBinding<BuffID>("Terraria.NPC", "ClearBuff", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.NPC", "FindBuffIndex", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.NPC", "HasBuff(int)", (ctx) => new MethodParameterBinding(ctx, 0));
 
@@ -139,6 +138,7 @@ public static class MagicNumberBindings
 			AddBinding<TileID>("Terraria.ID.TileID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
 			AddBinding<WallID>("Terraria.ID.WallID.Sets", "*", (ctx) => new FieldBinding(ctx));
 			AddBinding<WallID>("Terraria.ID.WallID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<MountID>("Terraria.ID.MountID.Sets", "*", (ctx) => new FieldBinding(ctx));
 		}
 	}
 

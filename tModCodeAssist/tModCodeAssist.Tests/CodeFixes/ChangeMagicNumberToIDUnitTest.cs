@@ -12,6 +12,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	{
 		await VerifyCS.Run(
 			"""
+			using Microsoft.Xna.Framework;
 			using Terraria;
 			using Terraria.DataStructures;
 
@@ -44,15 +45,16 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			player.StatusToNPC([|42|], 0);
 			player.StatusToPlayerPvP([|42|], 0);
 			player.PutItemInInventoryFromItemUsage([|42|]);
-			var entitySource = new EntitySource_ItemOpen(this, itemType, context);
+			var entitySource = new EntitySource_ItemOpen(player, [|42|]);
 			player.QuickSpawnItem(entitySource, [|42|], 1);
 			player.QuickSpawnItemDirect(entitySource, [|42|], 1);
 			player.isNearNPC([|1|]);
 
-			var mount = Mount();
+			var mount = new Mount();
 			if (mount.Type != [|12|])
 			{
-				if (mount._data.buff != [|168|] || mount.BuffType != [|168|])
+				if (mount._data.buff != [|168|]
+					|| mount.BuffType != [|168|])
 				{
 					item.buffType = [|168|];
 					item.mountType = [|12|];
@@ -88,6 +90,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			modNPC.AnimationType = [|64|];
 			""",
 			"""
+			using Microsoft.Xna.Framework;
 			using Terraria;
 			using Terraria.DataStructures;
 			using Terraria.ID;
@@ -121,15 +124,16 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			player.StatusToNPC(ItemID.Shuriken, 0);
 			player.StatusToPlayerPvP(ItemID.Shuriken, 0);
 			player.PutItemInInventoryFromItemUsage(ItemID.Shuriken);
-			var entitySource = new EntitySource_ItemOpen(this, itemType, context);
+			var entitySource = new EntitySource_ItemOpen(player, ItemID.Shuriken);
 			player.QuickSpawnItem(entitySource, ItemID.Shuriken, 1);
 			player.QuickSpawnItemDirect(entitySource, ItemID.Shuriken, 1);
 			player.isNearNPC(NPCID.BlueSlime);
 
-			var mount = Mount();
+			var mount = new Mount();
 			if (mount.Type != MountID.CuteFishron)
 			{
-				if (mount._data.buff != BuffID.CuteFishronMount || mount.BuffType != BuffID.CuteFishronMount)
+				if (mount._data.buff != BuffID.CuteFishronMount
+					|| mount.BuffType != BuffID.CuteFishronMount)
 				{
 					item.buffType = BuffID.CuteFishronMount;
 					item.mountType = MountID.CuteFishron;
@@ -210,9 +214,8 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			new Player().FindBuffIndex([|20|]);
 			new Player().HasBuff([|20|]);
 			new NPC().AddBuff([|24|], 120, true);
-			new Player().ClearBuff([|24|]);
-			new Player().FindBuffIndex([|24|]);
-			new Player().HasBuff([|24|]);
+			new NPC().FindBuffIndex([|24|]);
+			new NPC().HasBuff([|24|]);
 			""",
 			"""
 			using Microsoft.Xna.Framework;
@@ -233,7 +236,6 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			new Player().FindBuffIndex(BuffID.Poisoned);
 			new Player().HasBuff(BuffID.Poisoned);
 			new NPC().AddBuff(BuffID.OnFire, 120, true);
-			new NPC().ClearBuff(BuffID.OnFire);
 			new NPC().FindBuffIndex(BuffID.OnFire);
 			new NPC().HasBuff(BuffID.OnFire);
 			""");
@@ -278,6 +280,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			TileID.Sets.Conversion.Sand[[|461|]] = true;
 			WallID.Sets.Transparent[[|12|]] = true;
 			WallID.Sets.Conversion.Grass[[|65|]] = true;
+			MountID.Sets.Cart[[|12|]] = true;
 			_ = TextureAssets.Extra[[|98|]].Value;
 			""",
 			"""
@@ -292,6 +295,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			TileID.Sets.Conversion.Sand[TileID.SandDrip] = true;
 			WallID.Sets.Transparent[WallID.CopperBrick] = true;
 			WallID.Sets.Conversion.Grass[WallID.FlowerUnsafe] = true;
+			MountID.Sets.Cart[MountID.CuteFishron] = true;
 			_ = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			""");
 	}
