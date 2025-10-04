@@ -45,7 +45,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			player.StatusToNPC([|42|], 0);
 			player.StatusToPlayerPvP([|42|], 0);
 			player.PutItemInInventoryFromItemUsage([|42|]);
-			var entitySource = new EntitySource_ItemOpen(player, [|42|]);
+			var entitySource = new EntitySource_ItemOpen(player, item.type);
 			player.QuickSpawnItem(entitySource, [|42|], 1);
 			player.QuickSpawnItemDirect(entitySource, [|42|], 1);
 			player.isNearNPC([|1|]);
@@ -53,8 +53,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			var mount = new Mount();
 			if (mount.Type != [|12|])
 			{
-				if (mount._data.buff != [|168|]
-					|| mount.BuffType != [|168|])
+				if (mount._data.buff != [|168|] || mount.BuffType != [|168|])
 				{
 					item.buffType = [|168|];
 					item.mountType = [|12|];
@@ -124,7 +123,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			player.StatusToNPC(ItemID.Shuriken, 0);
 			player.StatusToPlayerPvP(ItemID.Shuriken, 0);
 			player.PutItemInInventoryFromItemUsage(ItemID.Shuriken);
-			var entitySource = new EntitySource_ItemOpen(player, ItemID.Shuriken);
+			var entitySource = new EntitySource_ItemOpen(player, item.type);
 			player.QuickSpawnItem(entitySource, ItemID.Shuriken, 1);
 			player.QuickSpawnItemDirect(entitySource, ItemID.Shuriken, 1);
 			player.isNearNPC(NPCID.BlueSlime);
@@ -132,8 +131,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			var mount = new Mount();
 			if (mount.Type != MountID.CuteFishron)
 			{
-				if (mount._data.buff != BuffID.CuteFishronMount
-					|| mount.BuffType != BuffID.CuteFishronMount)
+				if (mount._data.buff != BuffID.CuteFishronMount || mount.BuffType != BuffID.CuteFishronMount)
 				{
 					item.buffType = BuffID.CuteFishronMount;
 					item.mountType = MountID.CuteFishron;
