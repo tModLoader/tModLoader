@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Social/Steam/NetSocialModule.cs
++++ src/tModLoader/Terraria/Social/Steam/NetSocialModule.cs
+@@ -37,7 +_,7 @@
+ 	};
+ 	protected SteamP2PReader _reader;
+ 	protected SteamP2PWriter _writer;
+-	protected Lobby _lobby = new Lobby();
++	internal Lobby _lobby { get; protected private set; } = new Lobby();
+ 	protected ConcurrentDictionary<CSteamID, ConnectionState> _connectionStateMap = new ConcurrentDictionary<CSteamID, ConnectionState>();
+ 	protected object _steamLock = new object();
+ 	private Callback<LobbyChatMsg_t> _lobbyChatMessage;

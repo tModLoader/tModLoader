@@ -6063,6 +6063,30 @@
  				}
  
  				num30++;
+@@ -41523,6 +_,7 @@
+ 				array9[1 + num39] = Lang.menu[88].Value;
+ 				array9[2 + num39] = Lang.menu[5].Value;
+ 				if (selectedMenu == 0) {
++					// Join Via IP Multiplayer Menu Open
+ 					LoadPlayers();
+ 					menuMultiplayer = true;
+ 					SoundEngine.PlaySound(10);
+@@ -41530,6 +_,7 @@
+ 					menuMode = 1;
+ 				}
+ 				else if (selectedMenu == 1 + num39) {
++					// Host & Play Multiplayer Menu Open
+ 					LoadPlayers();
+ 					SoundEngine.PlaySound(10);
+ 					ClearPendingPlayerSelectCallbacks();
+@@ -41538,6 +_,7 @@
+ 					menuServer = true;
+ 				}
+ 				else if (selectedMenu == 1) {
++					// Join via Steam Multiplayer Menu Open
+ 					SoundEngine.PlaySound(10);
+ 					SocialAPI.Friends.OpenJoinInterface();
+ 				}
 @@ -41829,7 +_,11 @@
  					}
  				}

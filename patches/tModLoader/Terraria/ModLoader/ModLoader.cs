@@ -383,6 +383,7 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
 		Main.Configuration.Put(nameof(ModsMenuSortMode), Enum.GetName(typeof(ModsMenuSortMode), Interface.modsMenu.sortMode));
+		Main.Configuration.Put(nameof(ModNet.trustedServerIds), ModNet.trustedServerIds);
 
 		Main.Configuration.Put("LiquidSlopeFix", LiquidEdgeRenderer.Enabled);
 	}
@@ -415,6 +416,8 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
 		if (Enum.TryParse<ModsMenuSortMode>(Main.Configuration.Get(nameof(ModsMenuSortMode), ModsMenuSortMode.RecentlyUpdated.ToString()), out var modsMenuSortMode))
 			Interface.modsMenu.sortMode = modsMenuSortMode;
+
+		Main.Configuration.Get(nameof(ModNet.trustedServerIds), ModNet.trustedServerIds);
 
 		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
 	}

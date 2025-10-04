@@ -57,6 +57,7 @@ public static class ModNet
 	[Obsolete("No longer supported")]
 	public static bool AllowVanillaClients { get; internal set; }
 	internal static bool downloadModsFromServers = true;
+	internal static List<string> trustedServerIds = new List<string>();
 
 	internal static bool[] isModdedClient = new bool[256];
 

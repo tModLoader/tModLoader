@@ -4,7 +4,9 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Steamworks;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -58,6 +60,14 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 	private List<ReloadRequiredExplanation> reloadRequiredExplanationEntries;
 
 	private const int WarningMessagePanelHeight = 70;
+
+	// Confirmation Dialog
+	private UIImage _blockInput;
+	private UIPanel _activeDialog;
+	private UIAutoScaleTextTextPanel<string> _confirmDialogYesButton;
+	private Action _dialogYesAction;
+	private UIAutoScaleTextTextPanel<string> _confirmDialogNoButton;
+	private UIText _confirmDialogText;
 
 	public UIState PreviousUIState { get; set; }
 
@@ -300,11 +310,13 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			return;
 		}
 
+		bool riskyModsPresent = reloadRequiredExplanationEntries.Where(e => e.riskState != DownloadModRiskState.AvailableOnWorkshop).Any();
+
 		_message = message;
 		_gotoMenu = gotoMenu;
 		_gotoState = gotoState;
-		_continueButtonText = continueButtonText;
-		_continueButtonAction = continueButtonAction;
+		_continueButtonText = riskyModsPresent ? Language.GetTextValue("ConfirmDownloadAndContinue") :  continueButtonText;
+		_continueButtonAction = () => ConfirmTrustHost(continueButtonAction, riskyModsPresent);
 		_backText = backButtonText;
 		_backAction = backButtonAction;
 		this.reloadRequiredExplanationEntries = reloadRequiredExplanationEntries?.OrderBy(x => x.typeOrder).ThenBy(x => x.riskState).ThenBy(x => x.mod).ToList();
@@ -321,6 +333,11 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 
 	public void HandleBackButtonUsage()
 	{
+		if (_blockInput != null && HasChild(_blockInput)) {
+			CloseConfirmDialog(null, null);
+			return;
+		}
+
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		Main.menuMode = _gotoMenu;
 		if (_gotoState != null)
@@ -337,5 +354,122 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 	{
 		base.DrawSelf(spriteBatch);
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+	}
+
+	// This is a moderately modified version of the confirmDelete dialog in UIModItem.cs. Possibly refactor this and related in to an interface with default methods in future - Solxan
+	private void ConfirmTrustHost(Action continueWithDownload, bool riskyModsPresent)
+	{
+		if (!riskyModsPresent) {
+			continueWithDownload();
+			return;
+		}
+
+		bool isSteamHosted = false;
+		string trustId = null;
+
+		//TOOD: The below code is theoretical; assumes that either Steam lobby join has progressed to the point where Owner is set OR NetPlay has similaryl progressed
+		// Requires Testing - Solxan
+		if (SteamedWraps.SteamClient) {
+			CSteamID owner = (Social.SocialAPI.Network as Terraria.Social.Steam.NetSocialModule)._lobby.Owner;
+			if (owner != CSteamID.Nil) {
+				isSteamHosted = true;
+				trustId = owner.ToString();
+			}
+		}
+
+		if (!isSteamHosted)
+			trustId = Netplay.ServerIPText;
+
+		// Risky mods are present, check if this is a trusted host
+		bool trustedHost = ModNet.trustedServerIds.Contains(trustId);
+		string confirmationText = Language.GetTextValue(trustedHost ? "tModLoader.UntrustedConfirmSync" : "tModLoader.TrustedConfirmSync");
+
+		_dialogYesAction = () => {
+			if (!trustedHost)
+				ModNet.trustedServerIds.Add(trustId);
+
+			continueWithDownload();
+		};
+
+		/* TODO: Is there a developer mode flag that mod developers can use to silence the prompt? Such as being on a non-Stable build of tml?
+		if (trustedHost && developerMode) {
+			continueWithDownload();
+			return;
+		}
+		*/
+
+		// Everything from here down is reasonably generic? - Solxan
+
+		SoundEngine.PlaySound(10, -1, -1, 1);
+		var _confirmDownloadDialog = new UIPanel() {
+			Width = { Percent = .30f },
+			Height = { Percent = .30f },
+			HAlign = .5f,
+			VAlign = .5f,
+			BackgroundColor = trustedHost ? new Color(63, 82, 151) : Color.OrangeRed,
+			BorderColor = Color.Black
+		};
+		_confirmDownloadDialog.SetPadding(6f);
+		Interface.serverModsDifferMessage.ShowConfirmDialog(_confirmDownloadDialog);
+
+		_confirmDialogYesButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.104")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .85f,
+			HAlign = .15f
+		}.WithFadedMouseOver();
+		_confirmDialogYesButton.OnLeftClick += DialogYesAction;
+		_confirmDownloadDialog.Append(_confirmDialogYesButton);
+
+		_confirmDialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.105")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .85f,
+			HAlign = .85f
+		}.WithFadedMouseOver();
+		_confirmDialogNoButton.OnLeftClick += Interface.modsMenu.CloseConfirmDialog;
+		_confirmDownloadDialog.Append(_confirmDialogNoButton);
+
+		_confirmDialogText = new UIText(confirmationText) {
+			Width = { Percent = .75f },
+			HAlign = .5f,
+			VAlign = .3f,
+			IsWrapped = true
+		};
+		_confirmDownloadDialog.Append(_confirmDialogText);
+
+		Interface.serverModsDifferMessage.Recalculate();
+	}
+
+	private void DialogYesAction(UIMouseEvent evt, UIElement listeningElement)
+	{
+		_dialogYesAction();
+	}
+
+	// This is duplicated from UIMods.cs
+	private void ShowConfirmDialog(UIPanel dialog)
+	{
+		_blockInput = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = Color.Black * 0.5f,
+			ScaleToFit = true
+		};
+		_blockInput.Width = StyleDimension.Fill;
+		_blockInput.Height = StyleDimension.Fill;
+		_blockInput.OnLeftMouseDown += CloseConfirmDialog;
+		Append(_blockInput);
+
+		Append(_activeDialog = dialog);
+	}
+
+	// This is duplicated from UIMods.cs
+	internal void CloseConfirmDialog(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		_blockInput?.Remove();
+		_activeDialog?.Remove();
 	}
 }
